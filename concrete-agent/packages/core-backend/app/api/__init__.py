@@ -25,6 +25,7 @@ from app.api.routes_price_parser import router as price_parser_router
 from app.api.routes_betonarny_discovery import router as betonarny_router
 from app.api.routes_vertex import router as vertex_router
 from app.api.routes_document_search import router as document_search_router
+from app.api.routes_norms_scraper import router as norms_scraper_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -48,5 +49,6 @@ api_router.include_router(price_parser_router)    # /api/v1/price-parser/* (Pric
 api_router.include_router(betonarny_router)       # /api/v1/betonarny/* (Betonárny Discovery)
 api_router.include_router(vertex_router)          # /api/v1/vertex/* (Vertex AI Search)
 api_router.include_router(document_search_router) # /api/search/* (Hybrid Document Search)
+api_router.include_router(norms_scraper_router)  # /api/v1/norms/* (Methvin Norms Scraper)
 
 __all__ = ["api_router"]

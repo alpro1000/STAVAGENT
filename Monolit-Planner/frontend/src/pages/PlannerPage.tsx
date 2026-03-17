@@ -58,6 +58,11 @@ interface AIAdvisorResult {
     sources: string[];
     model: string;
   } | null;
+  productivity_norms: {
+    source: string;
+    work_types: string[];
+    data: Record<string, any>;
+  } | null;
   warnings: string[];
 }
 
@@ -191,6 +196,7 @@ export default function PlannerPage() {
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [showNorms, setShowNorms] = useState(false);
+  const [showProductivityNorms, setShowProductivityNorms] = useState(false);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm(prev => ({ ...prev, [key]: value }));
@@ -545,6 +551,45 @@ export default function PlannerPage() {
                       maxHeight: 200, overflowY: 'auto',
                     }}>
                       {advisor.norms.answer}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Productivity Norms (from methvin.co) */}
+              {advisor.productivity_norms?.data && Object.keys(advisor.productivity_norms.data).length > 0 && (
+                <div style={{ paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
+                  <button
+                    onClick={() => setShowProductivityNorms(!showProductivityNorms)}
+                    style={{
+                      background: 'none', border: 'none', color: '#059669', cursor: 'pointer',
+                      fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'inherit',
+                    }}
+                  >
+                    {showProductivityNorms ? '▼' : '▶'} Výrobní normy (methvin.co)
+                    {` — ${advisor.productivity_norms.work_types?.join(', ')}`}
+                  </button>
+                  {showProductivityNorms && (
+                    <div style={{
+                      marginTop: 6, fontSize: 11, color: '#065f46',
+                      maxHeight: 300, overflowY: 'auto',
+                    }}>
+                      {Object.entries(advisor.productivity_norms.data).map(([key, val]) => (
+                        <div key={key} style={{ marginBottom: 8 }}>
+                          <div style={{ fontWeight: 600, color: '#047857', marginBottom: 2 }}>
+                            {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </div>
+                          <pre style={{
+                            fontSize: 10, background: '#f0fdf4', padding: 6, borderRadius: 4,
+                            overflowX: 'auto', whiteSpace: 'pre-wrap', margin: 0,
+                          }}>
+                            {JSON.stringify(val, null, 2).slice(0, 2000)}
+                          </pre>
+                        </div>
+                      ))}
+                      <div style={{ fontSize: 9, color: '#6b7280', marginTop: 4 }}>
+                        Zdroj: {advisor.productivity_norms.source}
+                      </div>
                     </div>
                   )}
                 </div>

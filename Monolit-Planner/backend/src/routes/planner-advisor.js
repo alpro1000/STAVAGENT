@@ -139,6 +139,43 @@ router.post('/', async (req, res) => {
     logger.warn(`[PlannerAdvisor] KB Research error: ${err.message}`);
   }
 
+  // ── 4. Methvin productivity norms (from scraped KB) ─────────────────────
+  try {
+    const workTypes = mapElementToWorkTypes(element_type);
+    const methvinNorms = {};
+
+    for (const wt of workTypes) {
+      const controller = new AbortController();
+      const tid = setTimeout(() => controller.abort(), 10_000);
+
+      const normsRes = await fetch(`${CORE_API_URL}/api/v1/norms/work-type/${wt}`, {
+        signal: controller.signal,
+      });
+
+      clearTimeout(tid);
+
+      if (normsRes.ok) {
+        const data = await normsRes.json();
+        if (data.methvin_norms && Object.keys(data.methvin_norms).length > 0) {
+          methvinNorms[wt] = data.methvin_norms;
+        }
+        if (data.existing_kb_norms && Object.keys(data.existing_kb_norms).length > 0) {
+          methvinNorms[`${wt}_kb`] = data.existing_kb_norms;
+        }
+      }
+    }
+
+    if (Object.keys(methvinNorms).length > 0) {
+      result.productivity_norms = {
+        source: 'methvin.co + KB',
+        work_types: workTypes,
+        data: methvinNorms,
+      };
+    }
+  } catch (err) {
+    logger.warn(`[PlannerAdvisor] Methvin norms error: ${err.message}`);
+  }
+
   res.json(result);
 });
 
@@ -226,6 +263,23 @@ function suggestFormwork(element_type, volume_m3, has_dilatacni_spary) {
       ? 'Se spárami: doporučeny 2 sady pro překrývající postup (strategie B).'
       : 'Bez spár: 1 sada stačí pro jednorázovou betonáž.',
   };
+}
+
+// ── Element type → work types mapping ─────────────────────────────────────
+
+function mapElementToWorkTypes(element_type) {
+  const map = {
+    zaklady_piliru: ['bedneni', 'beton', 'vyztuž', 'zemni_prace'],
+    driky_piliru: ['bedneni', 'beton', 'vyztuž'],
+    operne_zdi: ['bedneni', 'beton', 'vyztuž', 'zemni_prace'],
+    mostovkova_deska: ['bedneni', 'beton', 'vyztuž'],
+    rimsa: ['bedneni', 'beton', 'vyztuž'],
+    rigel: ['bedneni', 'beton', 'vyztuž'],
+    opery_ulozne_prahy: ['bedneni', 'beton', 'vyztuž'],
+    mostni_zavirne_zidky: ['bedneni', 'beton'],
+    piloty: ['zaklady', 'beton'],
+  };
+  return map[element_type] || ['bedneni', 'beton', 'vyztuž'];
 }
 
 export default router;
