@@ -82,6 +82,30 @@ class Settings(BaseSettings):
     ENABLE_RESOURCE_CALCULATION: bool = Field(default=True, description="Enable TOV calculation")
     
     # ==========================================
+    # VERTEX AI SEARCH (Document Search)
+    # ==========================================
+    VERTEX_DATA_STORE_ID: str = Field(
+        default="",
+        description="Vertex AI Search Data Store ID (leave empty to skip Vertex)"
+    )
+    VERTEX_LOCATION: str = Field(
+        default="global",
+        description="Vertex AI Search location"
+    )
+    VERTEX_COLLECTION: str = Field(
+        default="default_collection",
+        description="Vertex AI Search collection name"
+    )
+    GCS_BUCKET: str = Field(
+        default="stavagent-cenik-norms",
+        description="GCS bucket for document storage"
+    )
+    GOOGLE_PROJECT_ID: str = Field(
+        default="",
+        description="Google Cloud Project ID"
+    )
+
+    # ==========================================
     # LIVE KNOWLEDGE BASE (Perplexity)
     # ==========================================
     ALLOW_WEB_SEARCH: bool = Field(
@@ -337,6 +361,11 @@ class Settings(BaseSettings):
     def has_perplexity(self) -> bool:
         """Check if Perplexity is configured"""
         return bool(self.PERPLEXITY_API_KEY) and self.ALLOW_WEB_SEARCH
+
+    @property
+    def has_vertex_search(self) -> bool:
+        """Check if Vertex AI Search is configured"""
+        return bool(self.VERTEX_DATA_STORE_ID)
 
 
 settings = Settings()
