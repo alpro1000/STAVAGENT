@@ -582,10 +582,9 @@ export default function PlannerPage() {
                     onClick={async () => {
                       setNormsScraping(true);
                       setNormsScrapeResult(null);
-                      const coreUrl = (import.meta as any).env?.VITE_CORE_API_URL
-                        || 'https://concrete-agent-1086027517695.europe-west3.run.app';
                       try {
-                        const r = await fetch(`${coreUrl}/api/v1/norms/scrape-all`, {
+                        // Proxy through Monolit backend to avoid CORS issues
+                        const r = await fetch(`${API_URL}/api/planner-advisor/norms/scrape-all`, {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({}),

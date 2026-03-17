@@ -41,7 +41,7 @@ from app.core.config import settings
 
 # Try to import Gemini client (may not be available)
 try:
-    from app.core.gemini_client import GeminiClient
+    from app.core.gemini_client import GeminiClient, VertexGeminiClient
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
@@ -165,18 +165,30 @@ class MultiRoleOrchestrator:
 
         if multi_role_llm == "gemini":
             if not GEMINI_AVAILABLE:
-                print("⚠️  Gemini requested but not available, falling back to Claude")
-                self.llm_client = ClaudeClient()
-                self.llm_name = "claude"
+                print("⚠️  Gemini requested but not available, trying Vertex AI Gemini (ADC)")
+                try:
+                    self.llm_client = VertexGeminiClient()
+                    self.llm_name = "vertex-ai-gemini"
+                    print("✅ Using Vertex AI Gemini for Multi-Role (ADC)")
+                except Exception as ve:
+                    print(f"⚠️  Vertex AI Gemini also failed: {ve}, falling back to Claude")
+                    self.llm_client = ClaudeClient()
+                    self.llm_name = "claude"
             else:
                 try:
                     self.llm_client = GeminiClient()
                     self.llm_name = "gemini"
                     print(f"✅ Using Gemini for Multi-Role ({self.llm_client.model_name})")
                 except Exception as e:
-                    print(f"⚠️  Gemini failed to initialize: {e}, falling back to Claude")
-                    self.llm_client = ClaudeClient()
-                    self.llm_name = "claude"
+                    print(f"⚠️  Gemini API key invalid/missing: {e}, trying Vertex AI Gemini (ADC)")
+                    try:
+                        self.llm_client = VertexGeminiClient()
+                        self.llm_name = "vertex-ai-gemini"
+                        print("✅ Using Vertex AI Gemini for Multi-Role (ADC)")
+                    except Exception as ve:
+                        print(f"⚠️  Vertex AI Gemini also failed: {ve}, falling back to Claude")
+                        self.llm_client = ClaudeClient()
+                        self.llm_name = "claude"
 
         elif multi_role_llm == "auto":
             # Auto = Try Gemini first, fallback to Claude if it fails
