@@ -1,10 +1,13 @@
 """
 Gemini API Client - compatible interface with ClaudeClient
 COST SAVINGS: Gemini 2.0 Flash = FREE (1500 req/day) or $0.075/MTok vs Claude $3/MTok
+
+Includes VertexGeminiClient for Cloud Run (uses ADC, no API key needed).
 """
 from pathlib import Path
 import json
 import logging
+import os
 import re
 from typing import Dict, Any, Optional
 import pandas as pd
@@ -15,6 +18,13 @@ try:
 except ImportError:
     GEMINI_AVAILABLE = False
     logging.warning("google-generativeai not installed. Gemini client unavailable.")
+
+try:
+    import vertexai
+    from vertexai.generative_models import GenerativeModel as VertexGenerativeModel
+    VERTEX_AVAILABLE = True
+except ImportError:
+    VERTEX_AVAILABLE = False
 
 from app.core.config import settings
 
@@ -329,3 +339,199 @@ class GeminiClient:
         except Exception as e:
             logger.exception("Failed to audit position with Gemini")
             raise
+
+
+class VertexGeminiClient:
+    """
+    Vertex AI Gemini client — drop-in replacement for GeminiClient.
+    Uses Application Default Credentials (ADC) on Cloud Run — no API key needed.
+    Billing goes through Google Cloud project credits.
+    """
+
+    # Models to try, newest first
+    VERTEX_MODELS = [
+        "gemini-2.5-flash-preview-05-20",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-flash-002",
+        "gemini-1.5-flash-001",
+    ]
+
+    def __init__(self):
+        if not VERTEX_AVAILABLE:
+            raise ImportError("google-cloud-aiplatform package required. Install: pip install google-cloud-aiplatform")
+
+        # Resolve project ID: env var → Cloud Run metadata
+        project_id = os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT")
+        if not project_id:
+            try:
+                import requests as _req
+                resp = _req.get(
+                    "http://metadata.google.internal/computeMetadata/v1/project/project-id",
+                    headers={"Metadata-Flavor": "Google"}, timeout=2
+                )
+                if resp.status_code == 200:
+                    project_id = resp.text.strip()
+            except Exception:
+                pass
+        if not project_id:
+            raise ValueError("GOOGLE_PROJECT_ID not found")
+
+        location = os.getenv("VERTEX_LOCATION", "europe-west3")
+
+        # Init Vertex AI SDK
+        creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+        if creds_path and os.path.exists(creds_path):
+            from google.oauth2 import service_account
+            credentials = service_account.Credentials.from_service_account_file(
+                creds_path, scopes=["https://www.googleapis.com/auth/cloud-platform"]
+            )
+            vertexai.init(project=project_id, location=location, credentials=credentials)
+        else:
+            vertexai.init(project=project_id, location=location)
+
+        # Try models until one works
+        preferred = os.getenv("GEMINI_MODEL", "")
+        models_to_try = [preferred] + self.VERTEX_MODELS if preferred else self.VERTEX_MODELS
+
+        self.model_name = None
+        self._model_cls = None
+        for m in models_to_try:
+            if not m:
+                continue
+            try:
+                self._model_cls = VertexGenerativeModel(m)
+                self.model_name = m
+                break
+            except Exception as e:
+                logger.debug(f"Vertex model {m} unavailable: {e}")
+                continue
+
+        if not self._model_cls:
+            raise ValueError(f"No Vertex AI model available (tried: {models_to_try})")
+
+        self.max_tokens = 4096
+        logger.info(f"✅ VertexGeminiClient initialized: {self.model_name} (project={project_id}, location={location})")
+
+    def _create_model(self, temperature: float = 0.3):
+        """Return model with generation config"""
+        return self._model_cls
+
+    def call(
+        self,
+        prompt: str,
+        system_prompt: Optional[str] = None,
+        temperature: float = 0.3
+    ) -> Dict[str, Any]:
+        """Call Vertex AI Gemini — same interface as GeminiClient.call()"""
+        try:
+            full_prompt = prompt
+            if system_prompt:
+                full_prompt = f"{system_prompt}\n\n{prompt}"
+
+            logger.debug(f"Calling Vertex Gemini {self.model_name} ({len(full_prompt)} chars)")
+
+            generation_config = {
+                "temperature": temperature,
+                "max_output_tokens": self.max_tokens,
+            }
+
+            response = self._model_cls.generate_content(
+                full_prompt,
+                generation_config=generation_config,
+            )
+
+            if not response.text:
+                raise ValueError("Vertex Gemini returned empty response")
+
+            result_text = response.text.strip()
+
+            # Remove markdown code blocks
+            code_block_match = re.search(r'```(?:json)?\s*(.*?)\s*```', result_text, re.DOTALL)
+            if code_block_match:
+                result_text = code_block_match.group(1).strip()
+
+            try:
+                return json.loads(result_text)
+            except json.JSONDecodeError:
+                logger.warning("Vertex Gemini response is not valid JSON, returning raw text")
+                return {"raw_text": result_text}
+
+        except Exception as e:
+            logger.exception(f"Vertex Gemini API call failed: {e}")
+            raise
+
+    def parse_excel(self, file_path: Path, prompt_name: str = "parsing/parse_vykaz_vymer") -> Dict[str, Any]:
+        """Parse Excel — delegates to call() with same logic as GeminiClient"""
+        from app.core.config import settings
+        df = pd.read_excel(file_path, sheet_name=0)
+        excel_text = df.to_string(index=False, max_rows=1000)
+        sample_text = df.head(20).to_string(index=False)
+
+        prompts_dir = settings.PROMPTS_DIR / "claude"
+        prompt_path = prompts_dir / f"{prompt_name}.txt"
+        parsing_prompt = prompt_path.read_text(encoding='utf-8') if prompt_path.exists() else "Parse this Excel file and return positions as JSON."
+
+        full_prompt = f"{parsing_prompt}\n\n===== UKÁZKA PRVNÍCH 20 ŘÁDKŮ =====\n{sample_text}\n\n===== CELÝ DOKUMENT =====\n{excel_text}"
+        return self.call(full_prompt)
+
+    def parse_xml(self, file_path: Path, prompt_name: str = None) -> Dict[str, Any]:
+        """Parse XML — delegates to call()"""
+        from app.core.config import settings
+        with open(file_path, 'r', encoding='utf-8') as f:
+            xml_content = f.read()
+
+        if prompt_name is None:
+            if '<unixml' in xml_content.lower():
+                prompt_name = "parsing/parse_kros_unixml"
+            elif '<TZ>' in xml_content or '<Row>' in xml_content:
+                prompt_name = "parsing/parse_kros_table_xml"
+            else:
+                prompt_name = "parsing/parse_vykaz_vymer"
+
+        prompts_dir = settings.PROMPTS_DIR / "claude"
+        prompt_path = prompts_dir / f"{prompt_name}.txt"
+        parsing_prompt = prompt_path.read_text(encoding='utf-8') if prompt_path.exists() else "Parse this XML file and return positions as JSON."
+
+        max_chars = 100000
+        if len(xml_content) > max_chars:
+            xml_content = xml_content[:max_chars] + "\n\n[... XML ZKRÁCENO ...]"
+
+        full_prompt = f"{parsing_prompt}\n\n===== XML DOKUMENT =====\n{xml_content}"
+        return self.call(full_prompt)
+
+    def parse_pdf(self, file_path: Path, prompt_name: str = "parsing/parse_vykaz_vymer") -> Dict[str, Any]:
+        """Parse PDF via Vertex AI Gemini"""
+        from app.core.config import settings
+        from vertexai.generative_models import Part
+
+        prompts_dir = settings.PROMPTS_DIR / "claude"
+        prompt_path = prompts_dir / f"{prompt_name}.txt"
+        parsing_prompt = prompt_path.read_text(encoding='utf-8') if prompt_path.exists() else "Parse this PDF file and return positions as JSON."
+
+        with open(file_path, 'rb') as f:
+            pdf_bytes = f.read()
+        pdf_part = Part.from_data(data=pdf_bytes, mime_type="application/pdf")
+
+        response = self._model_cls.generate_content(
+            [pdf_part, parsing_prompt],
+            generation_config={"temperature": 0.3, "max_output_tokens": self.max_tokens},
+        )
+
+        result_text = response.text.strip()
+        result_text = result_text.replace("```json\n", "").replace("```json", "").replace("```\n", "").replace("```", "").strip()
+
+        try:
+            return json.loads(result_text)
+        except json.JSONDecodeError:
+            return {"raw_text": result_text}
+
+    def audit_position(self, position: Dict[str, Any], knowledge_base: Dict[str, Any], prompt_name: str = "audit/audit_position") -> Dict[str, Any]:
+        """Audit position — same as GeminiClient"""
+        from app.core.config import settings
+        prompts_dir = settings.PROMPTS_DIR / "claude"
+        prompt_path = prompts_dir / f"{prompt_name}.txt"
+        audit_prompt = prompt_path.read_text(encoding='utf-8') if prompt_path.exists() else "Audit this position and return assessment as JSON."
+
+        full_prompt = f"""{audit_prompt}\n\n===== POZICE K AUDITU =====\n{json.dumps(position, indent=2, ensure_ascii=False)}\n\n===== KNOWLEDGE BASE =====\n{json.dumps(knowledge_base, indent=2, ensure_ascii=False)}"""
+        return self.call(full_prompt)

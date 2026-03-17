@@ -23,12 +23,17 @@ logger = logging.getLogger(__name__)
 from app.core.claude_client import ClaudeClient
 from app.core.config import settings
 
-# Try to import Gemini client
+# Try to import Gemini clients
 try:
     from app.core.gemini_client import GeminiClient
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
+
+try:
+    from app.core.gemini_client import VertexGeminiClient, VERTEX_AVAILABLE
+except ImportError:
+    VERTEX_AVAILABLE = False
 
 # Try to import Bedrock client (AWS Activate credits)
 try:
@@ -141,24 +146,40 @@ class HybridMultiRoleOrchestrator:
         # Select LLM client
         multi_role_llm = getattr(settings, 'MULTI_ROLE_LLM', 'gemini').lower()
 
-        if multi_role_llm == "gemini":
+        if multi_role_llm in ("vertex-ai-gemini", "vertex-ai-search"):
+            self._init_vertex_or_fallback()
+        elif multi_role_llm == "gemini":
             self._init_gemini_or_fallback()
         elif multi_role_llm == "bedrock":
             self._init_bedrock_or_fallback()
         elif multi_role_llm == "auto":
-            # Auto chain: Gemini → Bedrock → Claude
-            if not self._try_init_gemini():
-                if not self._try_init_bedrock():
-                    self.llm_client = ClaudeClient()
-                    self.llm_name = "claude"
+            # Auto chain: Vertex → Gemini → Bedrock → Claude
+            if not self._try_init_vertex():
+                if not self._try_init_gemini():
+                    if not self._try_init_bedrock():
+                        self.llm_client = ClaudeClient()
+                        self.llm_name = "claude"
         else:
             self.llm_client = ClaudeClient()
             self.llm_name = "claude"
 
         logger.info(f"✅ HybridMultiRoleOrchestrator initialized with {self.llm_name}")
 
+    def _try_init_vertex(self) -> bool:
+        """Try to initialize Vertex AI Gemini client (Cloud Run ADC). Returns True on success."""
+        if not VERTEX_AVAILABLE:
+            return False
+        try:
+            self.llm_client = VertexGeminiClient()
+            self.llm_name = "vertex-ai-gemini"
+            logger.info(f"Using Vertex AI Gemini for Hybrid Multi-Role ({self.llm_client.model_name})")
+            return True
+        except Exception as e:
+            logger.warning(f"Vertex AI Gemini init failed: {e}")
+            return False
+
     def _try_init_gemini(self) -> bool:
-        """Try to initialize Gemini client. Returns True on success."""
+        """Try to initialize Gemini client (direct API key). Returns True on success."""
         if not GEMINI_AVAILABLE:
             return False
         try:
@@ -182,6 +203,15 @@ class HybridMultiRoleOrchestrator:
         except Exception as e:
             logger.warning(f"Bedrock init failed: {e}")
             return False
+
+    def _init_vertex_or_fallback(self):
+        """Initialize Vertex AI Gemini, falling back to direct Gemini then Claude."""
+        if not self._try_init_vertex():
+            if not self._try_init_gemini():
+                if not self._try_init_bedrock():
+                    self.llm_client = ClaudeClient()
+                    self.llm_name = "claude"
+                    logger.warning("Vertex AI + Gemini unavailable, fell back to Claude")
 
     def _init_gemini_or_fallback(self):
         """Initialize Gemini, falling back to Bedrock then Claude."""

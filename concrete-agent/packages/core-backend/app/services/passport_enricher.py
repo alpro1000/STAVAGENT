@@ -281,32 +281,68 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             logger.info(f"✅ Perplexity initialized: {self.PERPLEXITY_MODEL}")
 
         # Vertex AI (Google Cloud billing — uses ADC or GOOGLE_APPLICATION_CREDENTIALS)
-        # Activated when preferred_model is "vertex-ai-gemini" or "vertex-ai-search"
-        if self.preferred_model in ("vertex-ai-gemini", "vertex-ai-search"):
+        # Auto-activates on Cloud Run (K_SERVICE present) or when preferred_model starts with "vertex"
+        is_cloud_run = bool(os.getenv("K_SERVICE"))
+        vertex_preferred = self.preferred_model in ("vertex-ai-gemini", "vertex-ai-search")
+        if vertex_preferred or is_cloud_run:
             try:
                 import vertexai
                 from vertexai.generative_models import GenerativeModel as VertexGenerativeModel
-                project_id = os.getenv("GOOGLE_PROJECT_ID", getattr(settings, "GOOGLE_PROJECT_ID", None))
+                project_id = os.getenv("GOOGLE_PROJECT_ID", os.getenv("GOOGLE_CLOUD_PROJECT", getattr(settings, "GOOGLE_PROJECT_ID", None)))
                 if not project_id:
-                    raise ValueError(
-                        "GOOGLE_PROJECT_ID env var or settings attribute is required for Vertex AI"
-                    )
+                    # On Cloud Run, project ID is available via metadata
+                    try:
+                        import requests as _req
+                        resp = _req.get(
+                            "http://metadata.google.internal/computeMetadata/v1/project/project-id",
+                            headers={"Metadata-Flavor": "Google"}, timeout=2
+                        )
+                        if resp.status_code == 200:
+                            project_id = resp.text.strip()
+                    except Exception:
+                        pass
+                if not project_id:
+                    raise ValueError("GOOGLE_PROJECT_ID not found (env, settings, or metadata)")
+
                 location = os.getenv("VERTEX_LOCATION", "europe-west3")
                 # Credentials: Cloud Run uses ADC automatically; local dev needs GOOGLE_APPLICATION_CREDENTIALS
                 creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
                 if creds_path and os.path.exists(creds_path):
                     from google.oauth2 import service_account
-                    import google.auth
                     credentials = service_account.Credentials.from_service_account_file(
                         creds_path,
                         scopes=["https://www.googleapis.com/auth/cloud-platform"]
                     )
                     vertexai.init(project=project_id, location=location, credentials=credentials)
                 else:
-                    # Use Application Default Credentials (Cloud Run, Workload Identity, gcloud auth)
                     vertexai.init(project=project_id, location=location)
-                self.vertex_gemini_model = VertexGenerativeModel(self.GEMINI_MODEL)
-                logger.info(f"✅ Vertex AI Gemini initialized (project={project_id}, sa={vertex_service_account})")
+
+                # Try multiple Vertex AI model names (newest → oldest)
+                vertex_models_to_try = [
+                    "gemini-2.5-flash-preview-05-20",
+                    "gemini-2.0-flash",
+                    "gemini-2.0-flash-lite",
+                    "gemini-1.5-flash-002",
+                    "gemini-1.5-flash-001",
+                ]
+                for vmodel in vertex_models_to_try:
+                    try:
+                        self.vertex_gemini_model = VertexGenerativeModel(vmodel)
+                        # Validate with a tiny call
+                        logger.info(f"✅ Vertex AI Gemini initialized: {vmodel} (project={project_id}, location={location})")
+                        break
+                    except Exception as model_err:
+                        logger.debug(f"Vertex model {vmodel} unavailable: {model_err}")
+                        continue
+
+                if not self.vertex_gemini_model:
+                    logger.warning("No Vertex AI Gemini model available after trying all variants")
+
+                # If on Cloud Run, prefer Vertex over direct Gemini API key
+                if is_cloud_run and self.vertex_gemini_model and not vertex_preferred:
+                    self.preferred_model = "vertex-ai-gemini"
+                    logger.info("Cloud Run detected — switching to Vertex AI Gemini as primary LLM")
+
             except Exception as e:
                 logger.warning(f"Vertex AI unavailable: {e}. Falling back to direct Gemini.")
 
