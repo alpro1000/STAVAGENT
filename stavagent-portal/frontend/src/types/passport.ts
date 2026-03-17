@@ -208,12 +208,30 @@ export interface VertexServiceAccountInfo {
 
 export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   {
+    id: AI_MODELS.VERTEX_AI_GEMINI,
+    name: 'Vertex AI Gemini (Google Credits)',
+    cost_per_passport: 'Google credits',
+    speed: 'Rychlý (2-4s)',
+    quality: 'Vysoká',
+    description: 'Gemini přes Vertex AI — firemní billing, žádné API klíče na Cloud Run',
+    provider: 'google',
+  },
+  {
+    id: AI_MODELS.VERTEX_AI_SEARCH,
+    name: 'Vertex AI Search + Extraction',
+    cost_per_passport: 'Google credits',
+    speed: 'Střední (3-6s)',
+    quality: 'Vysoká',
+    description: 'Vertex AI Search (normy + ceny) + Gemini enrichment',
+    provider: 'google',
+  },
+  {
     id: AI_MODELS.GEMINI,
     name: 'Gemini 2.5 Flash Lite',
     cost_per_passport: 'ZDARMA',
     speed: 'Velmi rychlý (1-2s)',
     quality: 'Vysoká',
-    description: 'Výchozí model - nejlepší poměr cena/výkon',
+    description: 'Přímé API — výchozí fallback, nejlepší poměr cena/výkon',
     provider: 'google',
   },
   {
@@ -222,7 +240,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     cost_per_passport: '$0.0006',
     speed: 'Rychlý (2-3s)',
     quality: 'Velmi vysoká',
-    description: 'Nejlevnější Claude model',
+    description: 'Nejlevnější Claude model (claude-haiku-4-5-20251015)',
     provider: 'anthropic',
   },
   {
@@ -231,16 +249,16 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     cost_per_passport: '$0.0075',
     speed: 'Střední (3-5s)',
     quality: 'Maximální',
-    description: 'Nejlepší kvalita, nejvyšší přesnost',
+    description: 'Nejlepší kvalita (claude-sonnet-4-6-20250217)',
     provider: 'anthropic',
   },
   {
     id: AI_MODELS.OPENAI_MINI,
-    name: 'GPT-4o Mini',
+    name: 'GPT-4.1 Mini',
     cost_per_passport: '$0.0004',
     speed: 'Rychlý (2-3s)',
     quality: 'Dobrá',
-    description: 'Levný OpenAI model',
+    description: 'Levný OpenAI model (gpt-4.1-mini)',
     provider: 'openai',
   },
   {
@@ -251,24 +269,6 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     quality: 'Vysoká',
     description: 'Online vyhledávání + AI',
     provider: 'perplexity',
-  },
-  {
-    id: AI_MODELS.VERTEX_AI_GEMINI,
-    name: 'Vertex AI Gemini (Google Credits)',
-    cost_per_passport: 'Google credits',
-    speed: 'Rychlý (2-4s)',
-    quality: 'Vysoká',
-    description: 'Gemini přes Vertex AI - vhodné pro firemní Google billing a vyšší limity',
-    provider: 'google',
-  },
-  {
-    id: AI_MODELS.VERTEX_AI_SEARCH,
-    name: 'Vertex AI Search + Extraction',
-    cost_per_passport: 'Google credits',
-    speed: 'Střední (3-6s)',
-    quality: 'Vysoká',
-    description: 'Univerzální adaptive extraction + summary přes Vertex AI Search',
-    provider: 'google',
   },
 ];
 

@@ -348,13 +348,13 @@ class VertexGeminiClient:
     Billing goes through Google Cloud project credits.
     """
 
-    # Models to try, newest first
+    # Models to try, newest GA first (verified 2026-03-17)
     VERTEX_MODELS = [
-        "gemini-2.5-flash-preview-05-20",
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-lite",
-        "gemini-1.5-flash-002",
-        "gemini-1.5-flash-001",
+        "gemini-3-flash",           # Preview: best multimodal agents
+        "gemini-2.5-flash",         # GA: speed + intelligence, configurable thinking
+        "gemini-2.5-flash-lite",    # GA: cheap high-volume
+        "gemini-2.0-flash",         # GA: general purpose
+        "gemini-2.0-flash-lite",    # GA: ultra-efficient simple tasks
     ]
 
     def __init__(self):

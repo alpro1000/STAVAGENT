@@ -25,6 +25,7 @@ import type { RebarLiteResult } from './rebar-lite.js';
 import type { PourTaskResult } from './pour-task-engine.js';
 import type { ThreePhaseCostResult } from './formwork.js';
 import type { MonteCarloResult } from './pert.js';
+import { calculateCuring } from './maturity.js';
 import type { ConcreteClass, CementType, ElementType } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
@@ -169,6 +170,15 @@ export interface PlannerOutput {
 
   // --- Monte Carlo (optional) ---
   monte_carlo?: MonteCarloResult;
+
+  // --- Norms sources (traceability of work norms) ---
+  norms_sources: {
+    formwork_assembly: string;
+    formwork_disassembly: string;
+    rebar: string;
+    curing: string;
+    skruz?: string;
+  };
 
   // --- Warnings ---
   warnings: string[];
@@ -478,12 +488,35 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings.push(scheduleResult.bottleneck);
   }
 
-  // For bridge decks, temporary support structure (skruž) often remains longer than
-  // formwork stripping. Apply a minimum 21-day hold from the last concrete pour.
+  // ─── 7b. Skruž (temporary support structure) for bridge decks ────────────
+  // ČSN 73 6244: minimum 21 days from last concrete pour before skruž removal.
+  // Compare with maturity model if available — use the longer of the two.
   if (elementType === 'mostovkova_deska') {
     const lastConcreteFinish = Math.max(...scheduleResult.tact_details.map(t => t.concrete[1]), 0);
-    const skruzMinDays = 21;
-    const withSkruzHold = Math.max(scheduleResult.total_days, lastConcreteFinish + skruzMinDays);
+    const skruzMinDays = 21; // ČSN 73 6244 default
+
+    // Calculate maturity-based curing if params are available
+    let maturityCuringDays = 0;
+    let maturityInfo = '';
+    if (maturityParams) {
+      const curingResult = calculateCuring({
+        concrete_class: maturityParams.concrete_class,
+        temperature_c: maturityParams.temperature_c,
+        cement_type: maturityParams.cement_type,
+        element_type: 'slab', // Bridge deck = horizontal slab (conservative)
+        strip_strength_pct: 70, // 70% f_ck required for horizontal elements
+      });
+      maturityCuringDays = curingResult.min_curing_days;
+      maturityInfo = `Zrání dle ČSN EN 13670: ${maturityCuringDays} dní ` +
+        `(${curingResult.strip_strength_pct}% f_ck při ${maturityParams.temperature_c}°C, ` +
+        `${maturityParams.cement_type || 'CEM_I'})`;
+      log.push(`Maturity curing for bridge deck: ${maturityCuringDays}d (${curingResult.strip_strength_pct}% f_ck)`);
+    }
+
+    // Use the longer: skruž standard (21d) vs maturity curing
+    const effectiveHoldDays = Math.max(skruzMinDays, maturityCuringDays);
+    const withSkruzHold = Math.max(scheduleResult.total_days, lastConcreteFinish + effectiveHoldDays);
+
     if (withSkruzHold > scheduleResult.total_days) {
       const delta = roundTo(withSkruzHold - scheduleResult.total_days, 2);
       scheduleResult.total_days = roundTo(withSkruzHold, 2);
@@ -491,11 +524,30 @@ export function planElement(input: PlannerInput): PlannerOutput {
       scheduleResult.savings_pct = scheduleResult.sequential_days > 0
         ? roundTo((scheduleResult.savings_days / scheduleResult.sequential_days) * 100, 1)
         : 0;
+
+      if (maturityCuringDays > skruzMinDays) {
+        warnings.push(
+          `Zrání betonu (${maturityCuringDays} dní, ČSN EN 13670) přesahuje minimální dobu skruže (21 dní, ČSN 73 6244). ` +
+          `Použita delší hodnota. ${maturityInfo}. Harmonogram prodloužen o ${delta} dní.`
+        );
+      } else {
+        warnings.push(
+          `Skruž (podpěrná konstrukce): minimální doba ponechání ${effectiveHoldDays} dní od poslední betonáže ` +
+          `(ČSN 73 6244). ${maturityInfo ? maturityInfo + '. ' : ''}Harmonogram prodloužen o ${delta} dní.`
+        );
+      }
+      log.push(`Skruz hold: effective=${effectiveHoldDays}d (skruz=${skruzMinDays}d, maturity=${maturityCuringDays}d), ` +
+        `last CON ${roundTo(lastConcreteFinish, 2)}d => total ${roundTo(withSkruzHold, 2)}d (+${delta}d)`);
+    }
+
+    // For no-spáry bridge deck: full area scaffolding is mandatory
+    if (isBridgeMonolith) {
       warnings.push(
-        `Skruž (podpěrná konstrukce): minimální doba ponechání 21 dní od poslední betonáže. ` +
-        `Harmonogram prodloužen o ${delta} dní.`
+        `Mostovka bez dilatačních spár: celá plocha mostovky = jeden záběr. ` +
+        `Skruž (podpěrná konstrukce) musí pokrýt celou plochu mostovky (${fwArea} m²). ` +
+        `Nelze postupně přestavovat — skruž zůstává pod celou konstrukcí po dobu min. ${effectiveHoldDays} dní.`
       );
-      log.push(`Skruz hold applied: last CON finish ${roundTo(lastConcreteFinish, 2)}d + 21d => total ${roundTo(withSkruzHold, 2)}d`);
+      log.push(`Monolithic bridge deck: full-area scaffolding required (${fwArea} m²), hold ${effectiveHoldDays}d`);
     }
   }
 
@@ -554,6 +606,23 @@ export function planElement(input: PlannerInput): PlannerOutput {
       pour_labor_czk: pourLaborCZK,
       total_labor_czk: totalLaborCZK,
       formwork_rental_czk: formworkRentalCZK,
+    },
+    norms_sources: {
+      formwork_assembly: `${fwSystem.name}: ${adjustedNorms.assembly_h_m2} h/m² ` +
+        `(základ ${fwSystem.assembly_h_m2} h/m² × faktor obtížnosti ${adjustedNorms.difficulty_factor}). ` +
+        `Zdroj: FORMWORK_SYSTEMS (element-classifier.ts, data z katalogů Doka/PERI/NOE)`,
+      formwork_disassembly: `${fwSystem.name}: ${adjustedNorms.disassembly_h_m2} h/m² ` +
+        `(základ ${fwSystem.disassembly_h_m2} h/m² × ${adjustedNorms.difficulty_factor}). Zdroj: katalog výrobce`,
+      rebar: `${rebarResult.norm_h_per_t} h/t (typ: ${rebarResult.mass_source}). ` +
+        `Zdroj: REBAR_NORMS (element-classifier.ts, ČSN 73 0210, oborové průměry)`,
+      curing: maturityParams
+        ? `ČSN EN 13670 Tab. NA.2: ${curingDays} dní při ${temperature}°C, ` +
+          `${maturityParams.concrete_class}, ${maturityParams.cement_type || 'CEM_I'}`
+        : `Výchozí: ${curingDays} dní (24h strip_wait). Pro přesnější odhad zadejte třídu betonu a teplotu`,
+      ...(elementType === 'mostovkova_deska' ? {
+        skruz: `ČSN 73 6244: min. 21 dní od poslední betonáže. ` +
+          `Porovnáno se zráním dle ČSN EN 13670 — použita delší hodnota.`,
+      } : {}),
     },
     monte_carlo: scheduleResult.monte_carlo,
     warnings,

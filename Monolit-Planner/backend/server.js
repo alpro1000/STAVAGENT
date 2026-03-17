@@ -32,6 +32,7 @@ import r0Routes from './src/routes/r0.js';
 import kbResearchRoutes from './src/routes/kb-research.js';
 import registryRoutes from './src/routes/registry.js';
 import relinkRoutes from './src/routes/relink.js';
+import plannerAdvisorRoutes from './src/routes/planner-advisor.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -180,6 +181,7 @@ app.use('/api/r0', r0Routes);
 app.use('/api/kb/research', kbResearchRoutes);
 app.use('/api/v1/registry', registryRoutes);
 app.use('/api/relink', relinkRoutes);
+app.use('/api/planner-advisor', plannerAdvisorRoutes);
 
 // DEBUG routes - ONLY enabled in development
 if (process.env.NODE_ENV !== 'production') {

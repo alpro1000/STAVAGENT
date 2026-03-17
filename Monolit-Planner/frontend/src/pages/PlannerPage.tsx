@@ -14,7 +14,7 @@
  *   - Warnings + decision log
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
   planElement,
   addWorkDays,
@@ -26,6 +26,40 @@ import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-share
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import '../styles/r0.css';
+
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+
+// ─── AI Advisor types ──────────────────────────────────────────────────────
+
+interface AIAdvisorResult {
+  approach: {
+    text: string;
+    model: string;
+    confidence: number;
+    parsed?: {
+      pour_mode?: string;
+      sub_mode?: string;
+      recommended_tacts?: number;
+      tact_volume_m3?: number;
+      reasoning?: string;
+      warnings?: string[];
+      overtime_recommendation?: string;
+      pump_type?: string;
+    };
+  } | null;
+  formwork_suggestion: {
+    recommended: { name: string; manufacturer: string; rental_czk_m2_month: number } | null;
+    alternatives: { name: string; manufacturer: string }[];
+    num_sets_recommendation: number;
+    tip: string;
+  } | null;
+  norms: {
+    answer: string;
+    sources: string[];
+    model: string;
+  } | null;
+  warnings: string[];
+}
 
 // ─── Element type labels ────────────────────────────────────────────────────
 
@@ -154,17 +188,65 @@ export default function PlannerPage() {
   const [error, setError] = useState<string | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
+  const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
+  const [advisorLoading, setAdvisorLoading] = useState(false);
+  const [showNorms, setShowNorms] = useState(false);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
+  // ── AI Advisor call ─────────────────────────────────────────────────────
+  const fetchAdvisor = useCallback(async () => {
+    setAdvisorLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/planner-advisor`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          element_type: form.use_name_classification ? undefined : form.element_type,
+          element_name: form.use_name_classification ? form.element_name : undefined,
+          volume_m3: form.volume_m3,
+          has_dilatacni_spary: form.tact_mode === 'spary' ? form.has_dilatacni_spary : false,
+          concrete_class: form.concrete_class,
+          temperature_c: form.temperature_c,
+          total_length_m: form.total_length_m,
+          spara_spacing_m: form.spara_spacing_m,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        // Try to parse JSON from approach text
+        if (data.approach?.text) {
+          try {
+            const jsonMatch = data.approach.text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              data.approach.parsed = JSON.parse(jsonMatch[0]);
+            }
+          } catch { /* ignore parse errors */ }
+        }
+        setAdvisor(data);
+      }
+    } catch (err) {
+      console.warn('AI Advisor error:', err);
+    } finally {
+      setAdvisorLoading(false);
+    }
+  }, [form.element_type, form.element_name, form.use_name_classification, form.volume_m3,
+      form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
+      form.total_length_m, form.spara_spacing_m]);
+
   const handleCalculate = () => {
     setError(null);
     try {
+      // Determine effective has_dilatacni_spary:
+      // - In 'spary' mode: use checkbox value
+      // - In 'manual' mode: always false (tacts are set directly)
+      const effectiveHasSpary = form.tact_mode === 'spary' ? form.has_dilatacni_spary : false;
+
       const input: PlannerInput = {
         volume_m3: form.volume_m3,
-        has_dilatacni_spary: form.has_dilatacni_spary,
+        has_dilatacni_spary: effectiveHasSpary,
         season: form.season,
         use_retarder: form.use_retarder,
         concrete_class: form.concrete_class,
@@ -194,7 +276,7 @@ export default function PlannerPage() {
       if (form.rebar_mass_kg) {
         input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
       }
-      if (form.tact_mode === 'spary' && form.has_dilatacni_spary) {
+      if (effectiveHasSpary) {
         input.spara_spacing_m = form.spara_spacing_m;
         input.total_length_m = form.total_length_m;
         input.adjacent_sections = form.adjacent_sections;
@@ -208,8 +290,6 @@ export default function PlannerPage() {
         if (form.scheduling_mode_override) {
           input.scheduling_mode_override = form.scheduling_mode_override;
         }
-        // In manual mode, spáry don't drive tact count
-        input.has_dilatacni_spary = false;
       }
       if (form.formwork_system_name) {
         input.formwork_system_name = form.formwork_system_name;
@@ -339,6 +419,143 @@ export default function PlannerPage() {
             </>
           )}
 
+          {/* ─── AI Advisor Button ─── */}
+          <button
+            onClick={fetchAdvisor}
+            disabled={advisorLoading}
+            style={{
+              width: '100%', padding: '10px', marginBottom: 12,
+              background: advisorLoading ? 'var(--r0-slate-300)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              color: 'white', border: 'none', borderRadius: 6,
+              fontSize: 13, fontWeight: 600, cursor: advisorLoading ? 'wait' : 'pointer',
+              fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            }}
+          >
+            {advisorLoading ? '⏳ AI analyzuje...' : '✨ AI doporučení (podstup, bednění, normy)'}
+          </button>
+
+          {/* ─── AI Advisor Results ─── */}
+          {advisor && (
+            <div style={{
+              marginBottom: 12, padding: '10px 12px',
+              background: '#f5f3ff', border: '1px solid #c4b5fd', borderRadius: 6,
+              fontSize: 12, lineHeight: 1.6,
+            }}>
+              {/* Approach recommendation */}
+              {advisor.approach?.parsed && (
+                <div style={{ marginBottom: 8 }}>
+                  <div style={{ fontWeight: 700, color: '#5b21b6', marginBottom: 4 }}>Doporučený postup:</div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 4 }}>
+                    <span style={{
+                      padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                      background: advisor.approach.parsed.pour_mode === 'sectional' ? '#dbeafe' : '#dcfce7',
+                      color: advisor.approach.parsed.pour_mode === 'sectional' ? '#1e40af' : '#166534',
+                    }}>
+                      {advisor.approach.parsed.pour_mode === 'sectional' ? 'Záběrový' : 'Monolitický'}
+                    </span>
+                    <span style={{
+                      padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                      background: '#fef3c7', color: '#92400e',
+                    }}>
+                      {advisor.approach.parsed.sub_mode || 'auto'}
+                    </span>
+                    {advisor.approach.parsed.recommended_tacts && (
+                      <span style={{
+                        padding: '2px 8px', borderRadius: 4, fontSize: 11,
+                        background: '#e0e7ff', color: '#3730a3',
+                      }}>
+                        {advisor.approach.parsed.recommended_tacts} záběrů
+                      </span>
+                    )}
+                  </div>
+                  {advisor.approach.parsed.reasoning && (
+                    <div style={{ color: '#6b21a8', fontSize: 11 }}>
+                      {advisor.approach.parsed.reasoning}
+                    </div>
+                  )}
+                  {advisor.approach.parsed.pump_type && (
+                    <div style={{ color: '#6b21a8', fontSize: 11, marginTop: 2 }}>
+                      Čerpadlo: <strong>{advisor.approach.parsed.pump_type}</strong>
+                    </div>
+                  )}
+                </div>
+              )}
+              {advisor.approach && !advisor.approach.parsed && advisor.approach.text && (
+                <div style={{ marginBottom: 8, color: '#6b21a8', whiteSpace: 'pre-wrap' }}>
+                  {advisor.approach.text.substring(0, 500)}
+                </div>
+              )}
+
+              {/* Formwork suggestion */}
+              {advisor.formwork_suggestion?.recommended && (
+                <div style={{ marginBottom: 8, paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
+                  <div style={{ fontWeight: 700, color: '#5b21b6', marginBottom: 4 }}>Doporučené bednění:</div>
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                    <span style={{
+                      padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
+                      background: '#d1fae5', color: '#065f46',
+                    }}>
+                      {advisor.formwork_suggestion.recommended.name}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--r0-slate-500)' }}>
+                      ({advisor.formwork_suggestion.recommended.manufacturer})
+                    </span>
+                    <button
+                      onClick={() => {
+                        update('formwork_system_name', advisor.formwork_suggestion!.recommended!.name);
+                        setShowAdvanced(true);
+                      }}
+                      style={{
+                        padding: '2px 8px', border: '1px solid #6366f1', borderRadius: 4,
+                        background: 'white', color: '#6366f1', fontSize: 10, cursor: 'pointer',
+                        fontFamily: 'inherit',
+                      }}
+                    >
+                      Použít
+                    </button>
+                  </div>
+                  <div style={{ fontSize: 11, color: '#7c3aed', marginTop: 4 }}>
+                    {advisor.formwork_suggestion.tip}
+                  </div>
+                  {advisor.formwork_suggestion.alternatives.length > 0 && (
+                    <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginTop: 2 }}>
+                      Alternativy: {advisor.formwork_suggestion.alternatives.map(a => a.name).join(', ')}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Norms */}
+              {advisor.norms?.answer && (
+                <div style={{ paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
+                  <button
+                    onClick={() => setShowNorms(!showNorms)}
+                    style={{
+                      background: 'none', border: 'none', color: '#6366f1', cursor: 'pointer',
+                      fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'inherit',
+                    }}
+                  >
+                    {showNorms ? '▼' : '▶'} Relevantní normy ČSN EN
+                    {advisor.norms.sources?.length > 0 && ` (${advisor.norms.sources.length} zdrojů)`}
+                  </button>
+                  {showNorms && (
+                    <div style={{
+                      marginTop: 6, fontSize: 11, color: '#4c1d95',
+                      whiteSpace: 'pre-wrap', lineHeight: 1.5,
+                      maxHeight: 200, overflowY: 'auto',
+                    }}>
+                      {advisor.norms.answer}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 6, textAlign: 'right' }}>
+                Model: {advisor.approach?.model || 'vertex-ai'}
+              </div>
+            </div>
+          )}
+
           {/* ─── Volumes ─── */}
           <Section title="Objemy">
             <Field label="Objem betonu (m³)">
@@ -412,6 +629,16 @@ export default function PlannerPage() {
                   />
                   {' '}Dilatační spáry
                 </label>
+                {!form.has_dilatacni_spary && (
+                  <div style={{
+                    padding: '8px 10px', marginBottom: 8,
+                    background: '#fef9c3', border: '1px solid #fde68a', borderRadius: 4,
+                    fontSize: 11, color: '#92400e', lineHeight: 1.5,
+                  }}>
+                    Bez dilatačních spár = monolitický záběr v jednom průchodu.
+                    Zajistěte dostatečnou kapacitu čerpadla a betonárny.
+                  </div>
+                )}
                 {form.has_dilatacni_spary && (
                   <>
                     <Field label="Rozteč spár (m)">
@@ -926,6 +1153,21 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
           </div>
         </div>
       </Card>
+
+      {/* Norms Sources */}
+      {plan.norms_sources && (
+        <Card title="Zdroje norem" icon="📚">
+          <div style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--r0-slate-600)' }}>
+            <Row label="Montáž bednění" value={plan.norms_sources.formwork_assembly} />
+            <Row label="Demontáž" value={plan.norms_sources.formwork_disassembly} />
+            <Row label="Výztuž" value={plan.norms_sources.rebar} />
+            <Row label="Zrání betonu" value={plan.norms_sources.curing} />
+            {plan.norms_sources.skruz && (
+              <Row label="Skruž" value={plan.norms_sources.skruz} />
+            )}
+          </div>
+        </Card>
+      )}
 
       {/* Decision Log */}
       <button onClick={onToggleLog} style={{
