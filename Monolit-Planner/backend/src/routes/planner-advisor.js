@@ -19,7 +19,30 @@ import {
 const router = express.Router();
 
 const CORE_API_URL = process.env.CORE_API_URL || process.env.STAVAGENT_CORE_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
-const TIMEOUT_MS = 30_000;
+const TIMEOUT_MS = 60_000; // 60s to account for Cloud Run cold starts
+
+/**
+ * Fetch with retry for Cloud Run cold-start resilience.
+ * Retries once after 2s on connection reset / network errors.
+ */
+async function fetchWithRetry(url, options, retries = 1) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fetch(url, options);
+    } catch (err) {
+      const isRetryable = err.cause?.code === 'ECONNRESET' ||
+        err.cause?.code === 'UND_ERR_SOCKET' ||
+        err.message?.includes('fetch failed') ||
+        err.message?.includes('ECONNRESET');
+      if (attempt < retries && isRetryable) {
+        logger.info(`[PlannerAdvisor] Retry ${attempt + 1} after ${err.message}`);
+        await new Promise(r => setTimeout(r, 2000));
+        continue;
+      }
+      throw err;
+    }
+  }
+}
 
 /**
  * POST /api/planner-advisor
@@ -66,7 +89,7 @@ router.post('/', async (req, res) => {
     const controller = new AbortController();
     const tid = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-    const coreRes = await fetch(`${CORE_API_URL}/api/v1/multi-role/ask`, {
+    const coreRes = await fetchWithRetry(`${CORE_API_URL}/api/v1/multi-role/ask`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -114,7 +137,7 @@ router.post('/', async (req, res) => {
     const controller = new AbortController();
     const tid = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-    const kbRes = await fetch(`${CORE_API_URL}/api/v1/kb/research`, {
+    const kbRes = await fetchWithRetry(`${CORE_API_URL}/api/v1/kb/research`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -148,7 +171,7 @@ router.post('/', async (req, res) => {
       const controller = new AbortController();
       const tid = setTimeout(() => controller.abort(), 10_000);
 
-      const normsRes = await fetch(`${CORE_API_URL}/api/v1/norms/work-type/${wt}`, {
+      const normsRes = await fetchWithRetry(`${CORE_API_URL}/api/v1/norms/work-type/${wt}`, {
         signal: controller.signal,
       });
 
@@ -281,5 +304,35 @@ function mapElementToWorkTypes(element_type) {
   };
   return map[element_type] || ['bedneni', 'beton', 'vyztuž'];
 }
+
+// ── Proxy: /api/planner-advisor/norms/scrape-all → concrete-agent ───────────
+// Avoids CORS issues when calling concrete-agent directly from the browser
+
+router.post('/norms/scrape-all', async (req, res) => {
+  try {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 300_000); // 5 min for full scrape
+
+    const coreRes = await fetch(`${CORE_API_URL}/api/v1/norms/scrape-all`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body || {}),
+      signal: controller.signal,
+    });
+
+    clearTimeout(tid);
+
+    if (coreRes.ok) {
+      const data = await coreRes.json();
+      res.json(data);
+    } else {
+      const text = await coreRes.text().catch(() => '');
+      res.status(coreRes.status).json({ error: text || `Core returned ${coreRes.status}` });
+    }
+  } catch (err) {
+    logger.warn(`[PlannerAdvisor] norms/scrape-all proxy error: ${err.message}`);
+    res.status(502).json({ error: `Proxy error: ${err.message}` });
+  }
+});
 
 export default router;

@@ -21,14 +21,14 @@ export interface PositionInstance {
 }
 
 export async function getProjectPositions(projectId: string): Promise<PositionInstance[]> {
-  const response = await fetch(`${API_BASE}/api/registry/projects/${projectId}/positions`);
+  const response = await fetch(`${API_BASE}/api/v1/registry/projects/${projectId}/positions`);
   if (!response.ok) throw new Error('Failed to fetch positions');
   const data = await response.json();
   return data.positions || [];
 }
 
 export async function getPositionById(positionId: string): Promise<PositionInstance> {
-  const response = await fetch(`${API_BASE}/api/registry/positions/${positionId}`);
+  const response = await fetch(`${API_BASE}/api/v1/registry/positions/${positionId}`);
   if (!response.ok) throw new Error('Failed to fetch position');
   return (await response.json()).position;
 }

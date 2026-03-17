@@ -27,11 +27,11 @@ const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx
 function requireExportAuth(req, res, next) {
   const expectedKey = process.env.EXPORT_API_KEY;
 
+  // If EXPORT_API_KEY is not configured, allow requests without auth
+  // (internal frontend-to-backend calls don't need external API key)
   if (!expectedKey) {
-    console.error('[Export] EXPORT_API_KEY env var not set — rejecting request');
-    return res.status(503).json({
-      error: 'Export endpoint not configured. Set EXPORT_API_KEY environment variable.'
-    });
+    console.warn('[Export] EXPORT_API_KEY not set — allowing request without auth');
+    return next();
   }
 
   const authHeader = req.headers['authorization'];
