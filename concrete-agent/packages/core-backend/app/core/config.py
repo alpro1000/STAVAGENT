@@ -52,9 +52,9 @@ class Settings(BaseSettings):
     # ==========================================
     # AI MODELS
     # ==========================================
-    CLAUDE_MODEL: str = Field(default="claude-sonnet-4-6", description="Claude model (Sonnet 4.6 - latest Feb 2026)")
-    GEMINI_MODEL: str = Field(default="gemini-2.0-flash", description="Gemini model (2.0 Flash - stable, fast)")
-    GPT4_MODEL: str = Field(default="gpt-4.1", description="GPT-4 model (gpt-4.1 - Feb 2026, includes vision)")
+    CLAUDE_MODEL: str = Field(default="claude-sonnet-4-6-20250217", description="Claude Sonnet 4.6 GA (balance speed/quality, 1M ctx)")
+    GEMINI_MODEL: str = Field(default="gemini-2.5-flash-lite", description="Gemini 2.5 Flash Lite GA (cheap high-volume)")
+    GPT4_MODEL: str = Field(default="gpt-4.1", description="GPT-4.1 (smartest without reasoning)")
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")
 
@@ -73,7 +73,7 @@ class Settings(BaseSettings):
     AWS_ACCESS_KEY_ID: str = Field(default="", description="AWS access key for Bedrock")
     AWS_SECRET_ACCESS_KEY: str = Field(default="", description="AWS secret key for Bedrock")
     AWS_DEFAULT_REGION: str = Field(default="eu-central-1", description="AWS region (Frankfurt)")
-    BEDROCK_MODEL_ID: str = Field(default="anthropic.claude-3-5-haiku-20241022-v1:0", description="Bedrock model ID")
+    BEDROCK_MODEL_ID: str = Field(default="anthropic.claude-haiku-4-5-20251015-v1:0", description="Bedrock model ID (Claude Haiku 4.5 GA)")
     BEDROCK_ENABLED: bool = Field(default=True, description="Enable Bedrock as LLM provider")
     
     # ==========================================

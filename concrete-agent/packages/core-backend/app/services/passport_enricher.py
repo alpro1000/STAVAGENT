@@ -180,12 +180,12 @@ PŘÍKLADY RIZIK:
 
 VRAŤ POUZE JSON, žádný další text před ani za."""
 
-    # Model configurations (UPDATED 2026-03-02 - using actual existing models)
-    GEMINI_MODEL = "gemini-2.5-flash-lite"  # Free tier, fastest (1-2s)
-    CLAUDE_MODEL = "claude-sonnet-4-6"  # Best balance ($3/MTok)
-    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5"  # Fastest, cheapest ($1/MTok)
-    OPENAI_MODEL = "gpt-4.1"  # Smart without reasoning
-    OPENAI_MINI_MODEL = "gpt-5-mini"  # Fast, budget GPT-5
+    # Model configurations (UPDATED 2026-03-17 — verified against official docs)
+    GEMINI_MODEL = "gemini-2.5-flash-lite"  # GA, cheap high-volume
+    CLAUDE_MODEL = "claude-sonnet-4-6-20250217"  # GA, balance speed/quality 1M ctx
+    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5-20251015"  # GA, fast cheap high-traffic
+    OPENAI_MODEL = "gpt-4.1"  # Smartest without reasoning
+    OPENAI_MINI_MODEL = "gpt-4.1-mini"  # Smaller, faster
     PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
 
     def __init__(self, preferred_model: Optional[str] = None, vertex_service_account: Optional[str] = None):
@@ -317,13 +317,13 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 else:
                     vertexai.init(project=project_id, location=location)
 
-                # Try multiple Vertex AI model names (newest → oldest)
+                # Try multiple Vertex AI model names (newest GA → oldest)
                 vertex_models_to_try = [
-                    "gemini-2.5-flash-preview-05-20",
-                    "gemini-2.0-flash",
-                    "gemini-2.0-flash-lite",
-                    "gemini-1.5-flash-002",
-                    "gemini-1.5-flash-001",
+                    "gemini-3-flash",           # Preview: best multimodal agents
+                    "gemini-2.5-flash",         # GA: speed + intelligence
+                    "gemini-2.5-flash-lite",    # GA: cheap high-volume
+                    "gemini-2.0-flash",         # GA: general purpose
+                    "gemini-2.0-flash-lite",    # GA: ultra-efficient
                 ]
                 for vmodel in vertex_models_to_try:
                     try:

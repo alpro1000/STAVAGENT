@@ -30,8 +30,9 @@ except ImportError:
     logger.info("boto3 not installed — Bedrock client unavailable. pip install boto3")
 
 
-# Default to Haiku via Bedrock (cheapest, fastest)
-DEFAULT_MODEL_ID = "anthropic.claude-3-5-haiku-20241022-v1:0"
+# Default to Haiku 4.5 via Bedrock (cheapest, fastest)
+# NOTE: claude-3-5-haiku-20241022 has been REMOVED by Anthropic — use claude-haiku-4-5
+DEFAULT_MODEL_ID = "anthropic.claude-haiku-4-5-20251015-v1:0"
 
 
 def is_bedrock_available() -> bool:
