@@ -231,17 +231,17 @@ export function getFallbackChain(primaryProvider = null) {
   const primary = primaryProvider || process.env.LLM_PROVIDER || 'gemini';
 
   // Define fallback chains for each provider
-  // Priority: cheapest/free first for fallbacks
-  const defaultFallback = ['deepseek', 'glm', 'qwen', 'gemini', 'grok', 'openai', 'claude'];
+  // Only use GCP-credit providers (Gemini) — no paid API fallbacks
+  const defaultFallback = ['gemini'];
 
   const chains = {
-    gemini: ['gemini', 'deepseek', 'glm', 'qwen', 'grok', 'openai', 'claude'],
-    claude: ['claude', 'deepseek', 'gemini', 'glm', 'qwen', 'grok', 'openai'],
-    openai: ['openai', 'deepseek', 'gemini', 'glm', 'qwen', 'grok', 'claude'],
-    deepseek: ['deepseek', 'glm', 'qwen', 'gemini', 'grok', 'openai', 'claude'],
-    grok: ['grok', 'deepseek', 'gemini', 'glm', 'qwen', 'openai', 'claude'],
-    qwen: ['qwen', 'deepseek', 'glm', 'gemini', 'grok', 'openai', 'claude'],
-    glm: ['glm', 'deepseek', 'qwen', 'gemini', 'grok', 'openai', 'claude']
+    gemini: ['gemini'],
+    claude: ['gemini'],   // Redirect to Gemini (GCP credits)
+    openai: ['gemini'],   // Redirect to Gemini (GCP credits)
+    deepseek: ['gemini'],
+    grok: ['gemini'],
+    qwen: ['gemini'],
+    glm: ['gemini']
   };
 
   return chains[primary.toLowerCase()] || defaultFallback;
@@ -763,34 +763,34 @@ const TASK_TYPES = {
  */
 const TASK_MODEL_ROUTING = {
   [TASK_TYPES.KEYWORD_GENERATION]: {
-    priority: ['gemini', 'openai', 'claude'],
-    reason: 'Fast and cheap for simple extraction',
+    priority: ['gemini'],
+    reason: 'Fast and cheap for simple extraction (GCP credits)',
     preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.TRANSLATION]: {
-    priority: ['gemini', 'claude', 'openai'],
-    reason: 'Fast translation with good quality',
+    priority: ['gemini'],
+    reason: 'Fast translation with good quality (GCP credits)',
     preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.BLOCK_ANALYSIS]: {
-    priority: ['claude', 'openai', 'gemini'],
-    reason: 'Complex reasoning requires best quality',
-    preferModel: 'claude-sonnet-4-6'
+    priority: ['gemini'],
+    reason: 'Complex reasoning via Gemini Pro (GCP credits)',
+    preferModel: 'gemini-2.5-pro'
   },
   [TASK_TYPES.URS_SELECTION]: {
-    priority: ['claude', 'openai', 'gemini'],
-    reason: 'Critical decision - needs expert reasoning',
-    preferModel: 'claude-sonnet-4-6'
+    priority: ['gemini'],
+    reason: 'Critical decision via Gemini Pro (GCP credits)',
+    preferModel: 'gemini-2.5-pro'
   },
   [TASK_TYPES.VALIDATION]: {
-    priority: ['openai', 'claude', 'gemini'],
-    reason: 'Different POV for validation',
-    preferModel: 'gpt-4.1'
+    priority: ['gemini'],
+    reason: 'Validation via Gemini (GCP credits)',
+    preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.NORMS_INTERPRETATION]: {
-    priority: ['claude', 'openai', 'gemini'],
-    reason: 'Technical norms require precise understanding',
-    preferModel: 'claude-sonnet-4-6'
+    priority: ['gemini'],
+    reason: 'Technical norms via Gemini Pro (GCP credits)',
+    preferModel: 'gemini-2.5-pro'
   }
 };
 
@@ -925,8 +925,8 @@ function formatProviderName(provider) {
  * Check if model is recommended (best value)
  */
 function isRecommendedModel(modelId) {
-  // Recommended models: cheap + good quality
-  const recommended = ['deepseek-v3', 'gemini-2.5-flash-lite', 'glm-4-flash', 'gpt-5-mini'];
+  // Recommended models: GCP credits only (Gemini)
+  const recommended = ['gemini-2.5-flash-lite', 'gemini-2.5-pro'];
   return recommended.includes(modelId);
 }
 
