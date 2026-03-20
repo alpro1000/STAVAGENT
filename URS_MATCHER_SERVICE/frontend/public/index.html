@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URS Matcher Kiosk</title>
+  <title>Klasifikátor stavebních prací</title>
   <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
   <link rel="stylesheet" href="/styles.css">
 </head>
@@ -28,8 +28,8 @@
       </div>
 
       <div class="header-content">
-        <h1>URS Matcher Kiosk</h1>
-        <p class="subtitle">Automatické vyhledání pozic v katalogu ÚRS</p>
+        <h1>Klasifikátor stavebních prací</h1>
+        <p class="subtitle">Automatická klasifikace a vyhledávání stavebních pozic</p>
       </div>
     </header>
 
@@ -64,8 +64,8 @@
                       <span class="mode-timing">~2-3 min</span>
                     </span>
                     <span class="mode-description">
-                      Optimalizovaný pipeline pro běžné BOQ listy
-                      <br>• Gemini AI + Lokální databáze + Perplexity
+                      Optimalizovaný pipeline pro běžné výkazy výměr
+                      <br>• AI analýza + Lokální databáze + Webové vyhledávání
                       <br>• Doporučeno pro většinu souborů
                     </span>
                   </span>
@@ -128,7 +128,7 @@
             <div class="action-card">
               <div class="action-icon">📋</div>
               <h3>Dávkové zpracování</h3>
-              <p>Seznam pozic → automatické vyhledání ÚRS kódů</p>
+              <p>Seznam pozic → automatická klasifikace a kódování</p>
 
               <button class="btn btn-primary" id="openBatchBtn">
                 📋 Dávkový režim
@@ -184,7 +184,7 @@
                 <label>
                   Katalog:
                   <select id="batchCatalog">
-                    <option value="urs" selected>ÚRS (online)</option>
+                    <option value="urs" selected>Online databáze</option>
                     <option value="otskp">OTSKP (lokální)</option>
                     <option value="both">Oba katalogy</option>
                   </select>
@@ -345,7 +345,7 @@
     </main>
 
     <footer class="app-footer">
-      <p>URS Matcher Service v1.0 | <a href="/health">Stav systému</a></p>
+      <p>Klasifikátor stavebních prací v1.0 | <a href="/health">Stav systému</a></p>
     </footer>
   </div>
 
