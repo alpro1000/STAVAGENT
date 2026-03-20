@@ -111,6 +111,7 @@ interface Node {
   duration: number;
   crew: 'formwork' | 'rebar' | null;
   fs_preds: string[];        // finish-to-start predecessors
+  fs_lags?: Map<string, number>;  // additional lag after specific predecessor finish
   ss_source?: string;        // start-to-start source
   ss_lag?: number;           // lag after ss_source starts
   set: number;
@@ -186,6 +187,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
 
   const nodes: Node[] = [];
   const rebar_lag = assembly_days * (rebar_lag_pct / 100);
+  const tactSetMap = new Map<number, number>(); // tact index → set (0-based)
 
   // Map from execution order → tact index
   // executionPos[i] = which tact is scheduled at position i
@@ -194,19 +196,24 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
   for (let execPos = 0; execPos < num_tacts; execPos++) {
     const t = tactOrder[execPos]; // original tact index
     const set = execPos % num_sets;
+    tactSetMap.set(t, set);
     const prevOnSet = execPos - num_sets; // previous execution position on same set
     const prevTactOnSet = prevOnSet >= 0 ? tactOrder[prevOnSet] : -1;
 
     // Chess mode: add cure dependency between adjacent tacts
     const chessPreds: string[] = [];
+    const chessLags = new Map<string, number>();
     if (scheduling_mode === 'chess') {
       // If this tact is adjacent to an already-scheduled tact, add cure wait
       // Adjacent = tact index differs by 1
       for (let prevExec = 0; prevExec < execPos; prevExec++) {
         const prevT = tactOrder[prevExec];
         if (Math.abs(prevT - t) === 1) {
-          // Neighbor tact — must wait for its concrete to cure
+          // Neighbor tact — must wait for its concrete to finish + cure_between_neighbors_days
           chessPreds.push(`T${prevT}_CON`);
+          if (cure_between_neighbors_days > 0) {
+            chessLags.set(`T${prevT}_CON`, cure_between_neighbors_days);
+          }
         }
       }
     }
@@ -219,7 +226,8 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
 
     nodes.push({
       id: `T${t}_ASM`, tact: t, type: 'assembly', duration: assembly_days,
-      crew: 'formwork', fs_preds: asmPreds, set,
+      crew: 'formwork', fs_preds: asmPreds,
+      fs_lags: chessLags.size > 0 ? chessLags : undefined, set,
     });
 
     // REB: start-to-start with ASM (lag = assembly_days × lag%)
@@ -268,7 +276,8 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
       for (const p of node.fs_preds) {
         const s = sched.get(p);
         if (!s) { ready = false; break; }
-        es = Math.max(es, s.finish);
+        const lag = node.fs_lags?.get(p) ?? 0;
+        es = Math.max(es, s.finish + lag);
       }
       if (!ready) continue;
 
@@ -336,7 +345,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
     };
     tact_details.push({
       tact: t + 1,
-      set: (t % num_sets) + 1,
+      set: (tactSetMap.get(t) ?? (t % num_sets)) + 1,
       assembly: g(`T${t}_ASM`),
       rebar: g(`T${t}_REB`),
       concrete: g(`T${t}_CON`),

@@ -431,16 +431,6 @@ export function planElement(input: PlannerInput): PlannerOutput {
     pourDecision.num_tacts,
   );
 
-  // Strategy comparison
-  const strategies = calculateStrategiesDetailed({
-    assembly_days: assemblyDays,
-    rebar_days: 0, // Will be filled after rebar calc
-    concrete_days: DEFAULTS.concrete_days,
-    curing_days: curingDays,
-    disassembly_days: disassemblyDays,
-    num_captures: pourDecision.num_tacts,
-  });
-
   // ─── 5. Rebar Calculation ──────────────────────────────────────────────
 
   const rebarResult = calculateRebarLite({
