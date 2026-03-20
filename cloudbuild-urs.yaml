@@ -66,6 +66,7 @@ steps:
       - --port=3001
       - --remove-env-vars=PPLX_API_KEY,ANTHROPIC_API_KEY,GOOGLE_AI_KEY,GOOGLE_API_KEY,OPENAI_API_KEY
       - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_API_KEY=GOOGLE_AI_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest
+      - --update-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,LLM_PROVIDER=gemini
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:${_TAG}
