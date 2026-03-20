@@ -235,7 +235,7 @@ function buildExtractionPrompt(fullText, existingPositions) {
   let prompt = `Analyzuj tento dokument a extrahuj seznam stavebních prací.
 
 DOKUMENT:
-${fullText.substring(0, 15000)} ${fullText.length > 15000 ? '...(zkráceno)' : ''}
+${fullText.substring(0, 50000)} ${fullText.length > 50000 ? '...(zkráceno — dokument přesahuje 50 000 znaků)' : ''}
 
 `;
 

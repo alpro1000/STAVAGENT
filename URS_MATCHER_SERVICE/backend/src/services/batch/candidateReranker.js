@@ -115,7 +115,36 @@ export async function rerank(subWork, candidates, topN = 4) {
     logger.error(`[CandidateReranker] Error: ${error.message}`);
     logger.error(`[CandidateReranker] Stack: ${error.stack}`);
 
-    // Return fallback: unknown + low confidence
+    // Graceful fallback: if LLM unavailable, return raw candidates sorted by confidence
+    // This ensures OTSKP/local results are still shown even without LLM ranking
+    if (candidates && candidates.length > 0) {
+      logger.warn(`[CandidateReranker] LLM unavailable — returning top ${Math.min(topN, candidates.length)} raw candidates`);
+      const rawTop = candidates
+        .slice()
+        .sort((a, b) => (b.confidence || 0) - (a.confidence || 0))
+        .slice(0, topN)
+        .map((c, i) => ({
+          rank: i + 1,
+          code: c.code || 'UNKNOWN',
+          name: c.name || 'Unknown',
+          unit: c.unit || '',
+          score: Math.round((c.confidence || 0) * 100),
+          confidence: (c.confidence || 0) >= 0.7 ? 'high' : (c.confidence || 0) >= 0.4 ? 'medium' : 'low',
+          reason: `Bez LLM hodnocení (${error.message.includes('No model') ? 'žádný LLM klíč' : error.message.substring(0, 60)})`,
+          evidence: c.snippet || '',
+          needsReview: (c.confidence || 0) < 0.7,
+          source: 'fallback_no_llm'
+        }));
+      return {
+        subWork: subWork,
+        topCandidates: rawTop,
+        reasoning: `LLM nedostupný — surové kandidáty ze katalogu (${error.message.substring(0, 80)})`,
+        timing: { totalMs: Date.now() - startTime, llmMs: 0 },
+        error: error.message
+      };
+    }
+
+    // No candidates at all
     return {
       subWork: subWork,
       topCandidates: [{

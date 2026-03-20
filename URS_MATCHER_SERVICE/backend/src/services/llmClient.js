@@ -442,14 +442,50 @@ async function callClaudeAPIWithClient(client, systemPrompt, userPrompt, control
 }
 
 /**
- * Call Gemini API with specific client config
+ * Fetch GCP access token from Cloud Run metadata server (ADC, no extra packages needed).
+ * Returns null if not running on GCP or metadata server is unreachable.
+ */
+async function fetchGCPAccessToken() {
+  try {
+    const resp = await axios.get(
+      'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
+      { headers: { 'Metadata-Flavor': 'Google' }, timeout: 3000 }
+    );
+    return resp.data.access_token || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Call Gemini API with specific client config.
+ * When GOOGLE_GENAI_USE_VERTEXAI=true, uses Vertex AI endpoint with ADC token
+ * (no API key required — uses the Cloud Run service account automatically).
+ * Falls back to Google AI API key mode when not on GCP or token fetch fails.
  */
 async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, controller) {
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${client.model}:generateContent`;
-  const headers = {
-    'content-type': 'application/json',
-    'x-goog-api-key': client.apiKey
-  };
+  const useVertexAI = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
+  const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+  const vertexLocation = process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3';
+
+  let apiUrl;
+  let headers = { 'content-type': 'application/json' };
+
+  if (useVertexAI && vertexProject) {
+    const token = await fetchGCPAccessToken();
+    if (token) {
+      apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${client.model}:generateContent`;
+      headers['Authorization'] = `Bearer ${token}`;
+      logger.debug(`[Gemini] Using Vertex AI endpoint (ADC): ${vertexLocation}`);
+    } else {
+      logger.warn('[Gemini] GOOGLE_GENAI_USE_VERTEXAI=true but metadata server unavailable, falling back to API key mode');
+      apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${client.model}:generateContent`;
+      headers['x-goog-api-key'] = client.apiKey;
+    }
+  } else {
+    apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${client.model}:generateContent`;
+    headers['x-goog-api-key'] = client.apiKey;
+  }
 
   const response = await axios.post(
     apiUrl,

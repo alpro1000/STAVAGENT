@@ -48,12 +48,12 @@ export function getLLMConfig() {
 
   switch (provider) {
   case 'claude':
-    apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+    apiKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
     // claude-sonnet-4-6 is current as of Feb 2026 (claude-sonnet-4-5 → 4-6)
     defaultModel = 'claude-sonnet-4-6';
     break;
   case 'gemini':
-    apiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
+    apiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
     // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
     defaultModel = 'gemini-2.5-flash-lite';
     break;
@@ -81,8 +81,16 @@ export function getLLMConfig() {
   const model = process.env.LLM_MODEL || defaultModel;
   const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10);
 
+  // When GOOGLE_GENAI_USE_VERTEXAI=true for gemini provider, API key is optional:
+  // the LLM client will use Cloud Run ADC (metadata server) instead.
+  const useVertexAI = provider === 'gemini' && process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
+
   if (!apiKey) {
-    logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, GOOGLE_API_KEY, LLM_API_KEY, OPENAI_API_KEY. Fallback providers will be used.', primaryProvider);
+    if (useVertexAI) {
+      logger.info('[LLMConfig] Gemini provider: no API key set, will use Vertex AI ADC (GOOGLE_GENAI_USE_VERTEXAI=true)');
+    } else {
+      logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, CLAUDE_API_KEY, GOOGLE_API_KEY, GOOGLE_AI_KEY, GEMINI_API_KEY, LLM_API_KEY. Fallback providers will be used.', primaryProvider);
+    }
   }
 
   // Validate provider
@@ -91,7 +99,7 @@ export function getLLMConfig() {
   }
 
   return {
-    enabled: Boolean(apiKey),
+    enabled: Boolean(apiKey) || useVertexAI,
     provider: primaryProvider.toLowerCase(),
     apiKey: apiKey,
     model: model,
@@ -107,9 +115,9 @@ export function getLLMConfig() {
 function getApiKeyForProvider(provider) {
   switch (provider) {
   case 'claude':
-    return process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+    return process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
   case 'gemini':
-    return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
+    return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
   case 'deepseek':
     return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
   case 'grok':
@@ -134,7 +142,7 @@ export function getAvailableProviders() {
   const providers = {};
 
   // Check Claude
-  const claudeKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+  const claudeKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
   if (claudeKey && validateAPIKey(claudeKey, 'claude')) {
     providers.claude = {
       enabled: true,
@@ -146,7 +154,7 @@ export function getAvailableProviders() {
   }
 
   // Check Gemini
-  const geminiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
+  const geminiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
   if (geminiKey && validateAPIKey(geminiKey, 'gemini')) {
     providers.gemini = {
       enabled: true,
@@ -231,17 +239,17 @@ export function getFallbackChain(primaryProvider = null) {
   const primary = primaryProvider || process.env.LLM_PROVIDER || 'gemini';
 
   // Define fallback chains for each provider
-  // Only use GCP-credit providers (Gemini) — no paid API fallbacks
-  const defaultFallback = ['gemini'];
+  // Primary provider first, then cheapest alternatives as fallbacks
+  const defaultFallback = ['gemini', 'openai', 'deepseek', 'claude'];
 
   const chains = {
-    gemini: ['gemini'],
-    claude: ['gemini'],   // Redirect to Gemini (GCP credits)
-    openai: ['gemini'],   // Redirect to Gemini (GCP credits)
-    deepseek: ['gemini'],
-    grok: ['gemini'],
-    qwen: ['gemini'],
-    glm: ['gemini']
+    gemini: ['gemini', 'openai', 'deepseek', 'claude'],
+    claude: ['claude', 'gemini', 'openai', 'deepseek'],
+    openai: ['openai', 'gemini', 'deepseek', 'claude'],
+    deepseek: ['deepseek', 'openai', 'gemini', 'claude'],
+    grok: ['grok', 'openai', 'gemini', 'deepseek'],
+    qwen: ['qwen', 'deepseek', 'gemini', 'openai'],
+    glm: ['glm', 'deepseek', 'gemini', 'openai']
   };
 
   return chains[primary.toLowerCase()] || defaultFallback;
@@ -422,12 +430,13 @@ export const CATALOG_MODE = getCatalogMode();
  * @returns {Object} Perplexity config
  */
 export function getPerplexityConfig() {
-  const apiKey = process.env.PPLX_API_KEY;
+  // Check both secret names: PPLX_API_KEY (primary) and PERPLEXITY_API_KEY (alias in Secret Manager)
+  const apiKey = process.env.PPLX_API_KEY || process.env.PERPLEXITY_API_KEY;
   const model = process.env.PPLX_MODEL || 'sonar';
   const timeoutMs = parseInt(process.env.PPLX_TIMEOUT_MS || '60000', 10);
 
   if (!apiKey) {
-    logger.warn('[PerplexityConfig] No PPLX_API_KEY set. Perplexity features will be disabled.');
+    logger.warn('[PerplexityConfig] No PPLX_API_KEY or PERPLEXITY_API_KEY set. Perplexity features will be disabled.');
     return {
       enabled: false,
       model: model,
@@ -763,33 +772,33 @@ const TASK_TYPES = {
  */
 const TASK_MODEL_ROUTING = {
   [TASK_TYPES.KEYWORD_GENERATION]: {
-    priority: ['gemini'],
-    reason: 'Fast and cheap for simple extraction (GCP credits)',
+    priority: ['gemini', 'deepseek', 'openai', 'claude'],
+    reason: 'Fast and cheap for simple extraction',
     preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.TRANSLATION]: {
-    priority: ['gemini'],
-    reason: 'Fast translation with good quality (GCP credits)',
+    priority: ['gemini', 'deepseek', 'openai', 'claude'],
+    reason: 'Fast translation with good quality',
     preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.BLOCK_ANALYSIS]: {
-    priority: ['gemini'],
-    reason: 'Complex reasoning via Gemini Pro (GCP credits)',
+    priority: ['gemini', 'openai', 'claude', 'deepseek'],
+    reason: 'Complex reasoning — best quality model',
     preferModel: 'gemini-2.5-pro'
   },
   [TASK_TYPES.URS_SELECTION]: {
-    priority: ['gemini'],
-    reason: 'Critical decision via Gemini Pro (GCP credits)',
+    priority: ['gemini', 'openai', 'claude', 'deepseek'],
+    reason: 'Critical URS code selection — best quality model',
     preferModel: 'gemini-2.5-pro'
   },
   [TASK_TYPES.VALIDATION]: {
-    priority: ['gemini'],
-    reason: 'Validation via Gemini (GCP credits)',
-    preferModel: 'gemini-2.5-flash'
+    priority: ['gemini', 'deepseek', 'openai', 'claude'],
+    reason: 'Validation — fast and reliable',
+    preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.NORMS_INTERPRETATION]: {
-    priority: ['gemini'],
-    reason: 'Technical norms via Gemini Pro (GCP credits)',
+    priority: ['gemini', 'openai', 'claude', 'deepseek'],
+    reason: 'Technical norms — high quality reasoning',
     preferModel: 'gemini-2.5-pro'
   }
 };

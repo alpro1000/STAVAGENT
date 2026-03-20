@@ -211,12 +211,14 @@ async def _generate_adaptive_summary(
     if not document_text:
         raise HTTPException(status_code=400, detail="Failed to extract text from document")
 
-    # Generate adaptive summary
+    # Generate adaptive summary — max_chars=0 means "use model's native context limit"
+    # (Gemini: 200K chars, Claude: 150K, OpenAI: 100K). BriefDocumentSummarizer auto-selects
+    # direct vs. chunked MAP-REDUCE strategy based on document size vs. model limit.
     summarizer = BriefDocumentSummarizer(preferred_model=preferred_model)
     result = await summarizer.summarize(
         document_text=document_text,
         language="cs",
-        max_chars=8000
+        max_chars=0  # use model's native context limit (was 8000 — too small for 40-50 page docs)
     )
 
     # Wrap in passport-compatible response format

@@ -527,6 +527,26 @@ router.post('/import-from-registry', async (req, res) => {
     // 2. UPSERT positions by registry_item_id (preserves position_instance_id)
     // 3. Clean up positions that no longer exist in incoming data
 
+    // Helper: re-ensure portal_project and kiosk_link rows exist after a ROLLBACK+BEGIN.
+    // ROLLBACK discards ALL prior statements in the transaction — including the portal_projects
+    // UPSERT done above — causing FK constraint failures when portal_objects is inserted later.
+    const reEnsureProjectRows = async () => {
+      await client.query(
+        `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
+         VALUES ($1, $2, 'registry', 1, NOW(), NOW())
+         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
+        [projectId, project_name]
+      );
+      if (registry_project_id) {
+        await client.query(
+          `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
+           VALUES ($1, $2, 'registry', $3, 'active', NOW(), NOW())
+           ON CONFLICT (portal_project_id, kiosk_type) DO UPDATE SET kiosk_project_id = $3, last_sync = NOW(), status = 'active'`,
+          [`link_${uuidv4()}`, projectId, registry_project_id]
+        );
+      }
+    };
+
     // Check if Migration 005 columns exist (registry_item_id, tov_labor, etc.)
     // These are required for full registry sync. Fall back gracefully if not yet run.
     let hasRegistrySyncColumns = true;
@@ -536,9 +556,11 @@ router.post('/import-from-registry', async (req, res) => {
       if (colErr.message && colErr.message.includes('column')) {
         hasRegistrySyncColumns = false;
         console.warn('[Integration] Migration 005 columns not yet applied — using basic INSERT (no TOV/registry_item_id)');
-        // ROLLBACK the failed statement to reset transaction state
+        // ROLLBACK the failed statement to reset transaction state.
+        // Re-insert project rows afterwards since ROLLBACK discards all prior INSERTs.
         await client.query('ROLLBACK');
         await client.query('BEGIN');
+        await reEnsureProjectRows();
       } else {
         throw colErr;
       }
@@ -553,9 +575,11 @@ router.post('/import-from-registry', async (req, res) => {
         if (colErr.message && colErr.message.includes('column')) {
           hasPhase8Columns = false;
           console.warn('[Integration] Phase 8 columns (sheet_name) not yet applied — using fallback INSERT');
-          // Reset aborted transaction state
+          // Reset aborted transaction state.
+          // Re-insert project rows afterwards since ROLLBACK discards all prior INSERTs.
           await client.query('ROLLBACK');
           await client.query('BEGIN');
+          await reEnsureProjectRows();
         } else {
           throw colErr;
         }

@@ -74,6 +74,9 @@ async function initDatabase() {
   try {
     const schema = fs.readFileSync(join(__dirname, 'schema.sql'), 'utf8');
     await pool.query(schema);
+    // Run additive migrations for columns added after initial schema deployment.
+    // ALTER TABLE ... ADD COLUMN IF NOT EXISTS is idempotent and safe to run on every startup.
+    await pool.query(`ALTER TABLE registry_items ADD COLUMN IF NOT EXISTS sync_metadata TEXT;`);
     dbReady = true;
     console.log('[DB] Schema initialized — ready');
   } catch (error) {
