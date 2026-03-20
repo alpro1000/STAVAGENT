@@ -14,7 +14,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: ANTHROPIC_API_KEY
 
     strategy:
       matrix:
