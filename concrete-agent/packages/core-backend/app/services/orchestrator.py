@@ -221,14 +221,34 @@ class MultiRoleOrchestrator:
                 self.llm_name = "vertex-ai-gemini"
                 print("✅ Using Vertex AI Gemini for Multi-Role (ADC)")
             except Exception as e:
-                # Do NOT fall back to Claude when vertex-ai-gemini is explicitly configured.
-                # A Claude fallback causes 401 errors when ANTHROPIC_API_KEY is not valid.
-                # Surface the Vertex AI error clearly instead.
-                raise RuntimeError(
-                    f"MULTI_ROLE_LLM=vertex-ai-gemini is configured but VertexGeminiClient failed to initialize: {e}. "
-                    "Check GCP ADC credentials (Application Default Credentials) and ensure the service account "
-                    "has roles/aiplatform.user. To allow fallback, set MULTI_ROLE_LLM=auto instead."
-                ) from e
+                print(f"⚠️  Vertex AI Gemini failed: {e}")
+                # Try Gemini API key as fallback
+                if GEMINI_AVAILABLE:
+                    try:
+                        self.llm_client = GeminiClient()
+                        self.llm_name = "gemini"
+                        print("✅ Fallback to Gemini API key mode")
+                    except Exception as ge:
+                        print(f"⚠️  Gemini API key also failed: {ge}, trying Claude")
+                        try:
+                            self.llm_client = ClaudeClient()
+                            self.llm_name = "claude"
+                            print("✅ Fallback to Claude for Multi-Role")
+                        except Exception as ce:
+                            raise RuntimeError(
+                                f"All LLM clients failed. Vertex AI: {e}, Gemini: {ge}, Claude: {ce}. "
+                                "Check ADC credentials, GOOGLE_API_KEY, or ANTHROPIC_API_KEY."
+                            ) from e
+                else:
+                    try:
+                        self.llm_client = ClaudeClient()
+                        self.llm_name = "claude"
+                        print("✅ Fallback to Claude for Multi-Role")
+                    except Exception as ce:
+                        raise RuntimeError(
+                            f"All LLM clients failed. Vertex AI: {e}, Claude: {ce}. "
+                            "Check ADC credentials or ANTHROPIC_API_KEY."
+                        ) from e
 
         else:  # "claude" or anything else
             self.llm_client = ClaudeClient()

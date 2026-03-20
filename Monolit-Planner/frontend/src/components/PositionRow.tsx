@@ -69,7 +69,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
     setSyncingToPortal(true);
     setSyncStatus('idle');
 
-    const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+    const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
     const professionMap: Record<string, string> = {
       beton: 'Betonář', 'bednění': 'Tesař / Bednář', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
     };
