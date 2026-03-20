@@ -76,12 +76,8 @@ function isVertexModel(model: AIModelType): boolean {
 }
 
 function resolveCorePreferredModel(model: AIModelType): AIModelType {
-  // CORE passport endpoint currently accepts legacy provider model IDs.
-  // For Vertex modes we keep compatibility by falling back to gemini and
-  // sending Vertex routing hints in additional fields.
-  if (isVertexModel(model)) {
-    return AI_MODELS.GEMINI;
-  }
+  // CORE passport endpoint accepts vertex-ai-gemini and vertex-ai-search directly.
+  // Pass vertex model IDs as-is so backend routes to Vertex AI (ADC auth).
   return model;
 }
 
@@ -599,7 +595,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               </div>
             )}
 
-            {/* Vertex service account selector */}
+            {/* Vertex service account selector (informational — ADC handles auth automatically on Cloud Run) */}
             {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                 <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
@@ -622,7 +618,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
             {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
               <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
-                {VERTEX_SERVICE_ACCOUNT_OPTIONS.find(a => a.id === selectedVertexAccount)?.description}
+                ℹ️ Autentizace přes ADC (Application Default Credentials) — na Cloud Run automaticky. Výběr účtu je pouze informativní.
               </div>
             )}
 

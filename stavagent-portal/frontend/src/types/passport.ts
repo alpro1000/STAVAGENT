@@ -174,7 +174,7 @@ export const AI_MODELS = {
   GEMINI: 'gemini',
   CLAUDE_SONNET: 'claude-sonnet',
   CLAUDE_HAIKU: 'claude-haiku',
-  OPENAI_GPT4: 'openai-gpt4',
+  OPENAI_GPT4: 'openai',       // Backend expects 'openai', not 'openai-gpt4'
   OPENAI_MINI: 'openai-mini',
   PERPLEXITY: 'perplexity',
   VERTEX_AI_SEARCH: 'vertex-ai-search',
