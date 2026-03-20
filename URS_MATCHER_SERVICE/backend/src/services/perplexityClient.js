@@ -61,8 +61,8 @@ async function processRequest(queueEntry) {
 export async function searchUrsSite(inputText) {
   try {
     if (!PERPLEXITY_CONFIG.enabled) {
-      logger.warn('[Perplexity] API not enabled (PPLX_API_KEY missing?), returning empty result');
-      logger.warn('[Perplexity] Set PPLX_API_KEY environment variable to enable Perplexity search');
+      logger.warn('[Perplexity] API not enabled (PPLX_API_KEY / PERPLEXITY_API_KEY missing?), returning empty result');
+      logger.warn('[Perplexity] Set PPLX_API_KEY or PERPLEXITY_API_KEY environment variable to enable Perplexity search');
       return [];
     }
 

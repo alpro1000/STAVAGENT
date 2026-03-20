@@ -422,12 +422,13 @@ export const CATALOG_MODE = getCatalogMode();
  * @returns {Object} Perplexity config
  */
 export function getPerplexityConfig() {
-  const apiKey = process.env.PPLX_API_KEY;
+  // Check both secret names: PPLX_API_KEY (primary) and PERPLEXITY_API_KEY (alias in Secret Manager)
+  const apiKey = process.env.PPLX_API_KEY || process.env.PERPLEXITY_API_KEY;
   const model = process.env.PPLX_MODEL || 'sonar';
   const timeoutMs = parseInt(process.env.PPLX_TIMEOUT_MS || '60000', 10);
 
   if (!apiKey) {
-    logger.warn('[PerplexityConfig] No PPLX_API_KEY set. Perplexity features will be disabled.');
+    logger.warn('[PerplexityConfig] No PPLX_API_KEY or PERPLEXITY_API_KEY set. Perplexity features will be disabled.');
     return {
       enabled: false,
       model: model,
