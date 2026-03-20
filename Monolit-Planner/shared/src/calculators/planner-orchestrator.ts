@@ -25,8 +25,8 @@ import type { RebarLiteResult } from './rebar-lite.js';
 import type { PourTaskResult } from './pour-task-engine.js';
 import type { ThreePhaseCostResult } from './formwork.js';
 import type { MonteCarloResult } from './pert.js';
-import { calculateCuring } from './maturity.js';
-import type { ConcreteClass, CementType, ElementType } from './maturity.js';
+import { calculateCuring, PROPS_MIN_DAYS } from './maturity.js';
+import type { ConcreteClass, CementType, ElementType, Season } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 
@@ -364,6 +364,39 @@ export function planElement(input: PlannerInput): PlannerOutput {
     element_type: mapElementType(profile),
   } : undefined;
 
+  // Map SeasonMode ('hot'|'normal'|'cold') → Season ('leto'|'podzim_jaro'|'zima') for PROPS_MIN_DAYS
+  const seasonForCuring: Season =
+    input.season === 'hot' ? 'leto' :
+    input.season === 'cold' ? 'zima' : 'podzim_jaro';
+
+  // Calculate strip wait hours from maturity model (fixes curingDays = 0 bug)
+  let stripWaitHours = 24; // default: 1 calendar day
+  if (maturityParams) {
+    const maturityForStrip = calculateCuring({
+      concrete_class: maturityParams.concrete_class,
+      temperature_c: maturityParams.temperature_c,
+      cement_type: maturityParams.cement_type,
+      element_type: mapElementType(profile) as ElementType,
+      strip_strength_pct: elementType === 'mostovkova_deska' ? 70 : undefined,
+    });
+    stripWaitHours = maturityForStrip.min_curing_hours;
+    log.push(`Maturity strip: ${(stripWaitHours / 24).toFixed(1)}d (${maturityForStrip.strip_strength_pct}% f_ck, ` +
+      `${maturityParams.temperature_c}°C, ${maturityParams.cement_type ?? 'CEM_I'})`);
+  }
+
+  // Bridge decks: enforce skruž minimum hold (seasonal, ČSN 73 6244 / PROPS_MIN_DAYS)
+  const skruzMinDays = elementType === 'mostovkova_deska'
+    ? (PROPS_MIN_DAYS['mostovka']?.[seasonForCuring] ?? 21)
+    : 0;
+  if (skruzMinDays > 0) {
+    const skruzMinHours = skruzMinDays * 24;
+    if (stripWaitHours < skruzMinHours) {
+      log.push(`Skruž min (${skruzMinDays}d, sezóna "${seasonForCuring}", ČSN 73 6244) > maturity ` +
+        `(${(stripWaitHours / 24).toFixed(1)}d) → using skruž minimum`);
+      stripWaitHours = skruzMinHours;
+    }
+  }
+
   // Use formwork calculator for base durations
   const fwBase = calculateFormwork({
     area_m2: fwArea,
@@ -373,13 +406,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
     shift_h: shift,
     k,
     wage_czk_h: wage,
-    strip_wait_hours: maturityParams ? 0 : 24, // Will be overridden by scheduler if maturity given
+    strip_wait_hours: stripWaitHours, // correctly includes maturity + skruž minimum
     move_clean_hours: 2,
   });
 
   const assemblyDays = fwBase.assembly_days;
   const disassemblyDays = fwBase.disassembly_days;
-  const curingDays = fwBase.wait_days;
+  const curingDays = fwBase.wait_days; // now correct: max(maturity, skruž_min)
 
   // 3-phase cost model
   const threePhase = calculateThreePhaseFormwork(
@@ -489,32 +522,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // ─── 7b. Skruž (temporary support structure) for bridge decks ────────────
-  // ČSN 73 6244: minimum 21 days from last concrete pour before skruž removal.
-  // Compare with maturity model if available — use the longer of the two.
+  // skruzMinDays and curingDays already computed above (includes seasonal + maturity).
+  // curingDays is enforced per-tact by the scheduler.
+  // Here we check if the last tact's hold extends beyond the schedule end.
   if (elementType === 'mostovkova_deska') {
     const lastConcreteFinish = Math.max(...scheduleResult.tact_details.map(t => t.concrete[1]), 0);
-    const skruzMinDays = 21; // ČSN 73 6244 default
-
-    // Calculate maturity-based curing if params are available
-    let maturityCuringDays = 0;
-    let maturityInfo = '';
-    if (maturityParams) {
-      const curingResult = calculateCuring({
-        concrete_class: maturityParams.concrete_class,
-        temperature_c: maturityParams.temperature_c,
-        cement_type: maturityParams.cement_type,
-        element_type: 'slab', // Bridge deck = horizontal slab (conservative)
-        strip_strength_pct: 70, // 70% f_ck required for horizontal elements
-      });
-      maturityCuringDays = curingResult.min_curing_days;
-      maturityInfo = `Zrání dle ČSN EN 13670: ${maturityCuringDays} dní ` +
-        `(${curingResult.strip_strength_pct}% f_ck při ${maturityParams.temperature_c}°C, ` +
-        `${maturityParams.cement_type || 'CEM_I'})`;
-      log.push(`Maturity curing for bridge deck: ${maturityCuringDays}d (${curingResult.strip_strength_pct}% f_ck)`);
-    }
-
-    // Use the longer: skruž standard (21d) vs maturity curing
-    const effectiveHoldDays = Math.max(skruzMinDays, maturityCuringDays);
+    // effectiveHoldDays = curingDays (already max(maturity, skruž_min) from above)
+    const effectiveHoldDays = curingDays;
     const withSkruzHold = Math.max(scheduleResult.total_days, lastConcreteFinish + effectiveHoldDays);
 
     if (withSkruzHold > scheduleResult.total_days) {
@@ -524,19 +538,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
       scheduleResult.savings_pct = scheduleResult.sequential_days > 0
         ? roundTo((scheduleResult.savings_days / scheduleResult.sequential_days) * 100, 1)
         : 0;
-
-      if (maturityCuringDays > skruzMinDays) {
-        warnings.push(
-          `Zrání betonu (${maturityCuringDays} dní, ČSN EN 13670) přesahuje minimální dobu skruže (21 dní, ČSN 73 6244). ` +
-          `Použita delší hodnota. ${maturityInfo}. Harmonogram prodloužen o ${delta} dní.`
-        );
-      } else {
-        warnings.push(
-          `Skruž (podpěrná konstrukce): minimální doba ponechání ${effectiveHoldDays} dní od poslední betonáže ` +
-          `(ČSN 73 6244). ${maturityInfo ? maturityInfo + '. ' : ''}Harmonogram prodloužen o ${delta} dní.`
-        );
-      }
-      log.push(`Skruz hold: effective=${effectiveHoldDays}d (skruz=${skruzMinDays}d, maturity=${maturityCuringDays}d), ` +
+      warnings.push(
+        `Skruž (podpěrná konstrukce): minimální doba ponechání ${effectiveHoldDays} dní od poslední betonáže ` +
+        `(sezóna "${seasonForCuring}": ČSN 73 6244 min. ${skruzMinDays}d). Harmonogram prodloužen o ${delta} dní.`
+      );
+      log.push(`Skruz hold: ${effectiveHoldDays}d (skruž=${skruzMinDays}d sezóna="${seasonForCuring}"), ` +
         `last CON ${roundTo(lastConcreteFinish, 2)}d => total ${roundTo(withSkruzHold, 2)}d (+${delta}d)`);
     }
 
