@@ -48,12 +48,12 @@ export function getLLMConfig() {
 
   switch (provider) {
   case 'claude':
-    apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+    apiKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
     // claude-sonnet-4-6 is current as of Feb 2026 (claude-sonnet-4-5 → 4-6)
     defaultModel = 'claude-sonnet-4-6';
     break;
   case 'gemini':
-    apiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
+    apiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
     // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
     defaultModel = 'gemini-2.5-flash-lite';
     break;
@@ -81,8 +81,16 @@ export function getLLMConfig() {
   const model = process.env.LLM_MODEL || defaultModel;
   const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10);
 
+  // When GOOGLE_GENAI_USE_VERTEXAI=true for gemini provider, API key is optional:
+  // the LLM client will use Cloud Run ADC (metadata server) instead.
+  const useVertexAI = provider === 'gemini' && process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
+
   if (!apiKey) {
-    logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, GOOGLE_API_KEY, LLM_API_KEY, OPENAI_API_KEY. Fallback providers will be used.', primaryProvider);
+    if (useVertexAI) {
+      logger.info('[LLMConfig] Gemini provider: no API key set, will use Vertex AI ADC (GOOGLE_GENAI_USE_VERTEXAI=true)');
+    } else {
+      logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, CLAUDE_API_KEY, GOOGLE_API_KEY, GOOGLE_AI_KEY, GEMINI_API_KEY, LLM_API_KEY. Fallback providers will be used.', primaryProvider);
+    }
   }
 
   // Validate provider
@@ -91,7 +99,7 @@ export function getLLMConfig() {
   }
 
   return {
-    enabled: Boolean(apiKey),
+    enabled: Boolean(apiKey) || useVertexAI,
     provider: primaryProvider.toLowerCase(),
     apiKey: apiKey,
     model: model,
@@ -107,7 +115,7 @@ export function getLLMConfig() {
 function getApiKeyForProvider(provider) {
   switch (provider) {
   case 'claude':
-    return process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+    return process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
   case 'gemini':
     return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
   case 'deepseek':
@@ -134,7 +142,7 @@ export function getAvailableProviders() {
   const providers = {};
 
   // Check Claude
-  const claudeKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+  const claudeKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
   if (claudeKey && validateAPIKey(claudeKey, 'claude')) {
     providers.claude = {
       enabled: true,
