@@ -26,6 +26,7 @@ from app.api.routes_betonarny_discovery import router as betonarny_router
 from app.api.routes_vertex import router as vertex_router
 from app.api.routes_document_search import router as document_search_router
 from app.api.routes_norms_scraper import router as norms_scraper_router
+from app.api.routes_llm_status import router as llm_status_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -50,5 +51,6 @@ api_router.include_router(betonarny_router)       # /api/v1/betonarny/* (Betoná
 api_router.include_router(vertex_router)          # /api/v1/vertex/* (Vertex AI Search)
 api_router.include_router(document_search_router) # /api/search/* (Hybrid Document Search)
 api_router.include_router(norms_scraper_router)  # /api/v1/norms/* (Methvin Norms Scraper)
+api_router.include_router(llm_status_router)     # /api/v1/llm/status (LLM health + probe)
 
 __all__ = ["api_router"]
