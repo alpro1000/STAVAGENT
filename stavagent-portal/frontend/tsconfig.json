@@ -24,7 +24,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@monolit/shared": ["../shared/src"]
+      "@monolit/shared": ["../shared/src"],
+      "@stavagent/portal-shared": ["../shared/src"]
     }
   },
   "include": ["src"],
