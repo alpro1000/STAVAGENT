@@ -2,14 +2,17 @@
 LLM Status endpoint — shows which LLM is active and runs a live probe test.
 
 GET /api/v1/llm/status
+Requires authentication: Authorization: Bearer <SERVICE_TOKEN> or X-Api-Key: <API_KEY>
 """
 import logging
 import os
 import time
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+
+from app.core.auth import verify_token
 
 logger = logging.getLogger(__name__)
 
@@ -32,20 +35,27 @@ class LLMStatusResponse(BaseModel):
     vertex_sdk_available: bool
     gemini_sdk_available: bool
     google_api_key_set: bool
-    google_project_id_env: Optional[str] = None
-    google_application_credentials: Optional[str] = None
+    google_project_id_env_set: bool
+    google_application_credentials_set: bool
     probe: LLMProbeResult
     init_error: Optional[str] = None
     timestamp: str
 
 
-@router.get("/status", response_model=LLMStatusResponse, summary="LLM health + probe test")
+@router.get(
+    "/status",
+    response_model=LLMStatusResponse,
+    summary="LLM health + probe test",
+    dependencies=[Depends(verify_token)],
+)
 async def llm_status() -> Dict[str, Any]:
     """
     Instantiate the configured LLM client and send a tiny probe request.
 
+    Requires authentication (Authorization: Bearer <token> or X-Api-Key: <key>).
     Useful for diagnosing Vertex AI auth issues, missing IAM roles, or wrong project IDs.
     Returns full init details and a live latency measurement.
+    Sensitive values (paths, project IDs) are NOT returned — only set/not-set flags.
     """
     import datetime
 
@@ -66,8 +76,9 @@ async def llm_status() -> Dict[str, Any]:
 
     configured_llm = getattr(settings, "MULTI_ROLE_LLM", "vertex-ai-gemini")
     google_api_key_set = bool(getattr(settings, "GOOGLE_API_KEY", ""))
-    google_project_id_env = os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT")
-    creds_env = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+    # Report only SET/NOT SET — never return the actual values
+    google_project_id_env_set = bool(os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT"))
+    creds_env_set = bool(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
     active_llm: Optional[str] = None
     model_name: Optional[str] = None
@@ -122,9 +133,10 @@ async def llm_status() -> Dict[str, Any]:
         vertex_sdk_available=vertex_sdk,
         gemini_sdk_available=gemini_sdk,
         google_api_key_set=google_api_key_set,
-        google_project_id_env=google_project_id_env,
-        google_application_credentials=creds_env,
+        google_project_id_env_set=google_project_id_env_set,
+        google_application_credentials_set=creds_env_set,
         probe=probe,
         init_error=init_error,
         timestamp=datetime.datetime.utcnow().isoformat() + "Z",
     ).model_dump()
+
