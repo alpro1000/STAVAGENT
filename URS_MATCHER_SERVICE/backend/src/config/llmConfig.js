@@ -109,7 +109,7 @@ function getApiKeyForProvider(provider) {
   case 'claude':
     return process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
   case 'gemini':
-    return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
+    return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
   case 'deepseek':
     return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
   case 'grok':

@@ -221,9 +221,14 @@ class MultiRoleOrchestrator:
                 self.llm_name = "vertex-ai-gemini"
                 print("✅ Using Vertex AI Gemini for Multi-Role (ADC)")
             except Exception as e:
-                print(f"⚠️  Vertex AI Gemini failed: {e}, falling back to Claude")
-                self.llm_client = ClaudeClient()
-                self.llm_name = "claude"
+                # Do NOT fall back to Claude when vertex-ai-gemini is explicitly configured.
+                # A Claude fallback causes 401 errors when ANTHROPIC_API_KEY is not valid.
+                # Surface the Vertex AI error clearly instead.
+                raise RuntimeError(
+                    f"MULTI_ROLE_LLM=vertex-ai-gemini is configured but VertexGeminiClient failed to initialize: {e}. "
+                    "Check GCP ADC credentials (Application Default Credentials) and ensure the service account "
+                    "has roles/aiplatform.user. To allow fallback, set MULTI_ROLE_LLM=auto instead."
+                ) from e
 
         else:  # "claude" or anything else
             self.llm_client = ClaudeClient()
