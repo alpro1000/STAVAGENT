@@ -319,11 +319,10 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
 
                 # Try multiple Vertex AI model names (newest GA → oldest)
                 vertex_models_to_try = [
-                    "gemini-3-flash",           # Preview: best multimodal agents
-                    "gemini-2.5-flash",         # GA: speed + intelligence
+                    "gemini-2.5-flash",         # GA: speed + intelligence (1M ctx)
                     "gemini-2.5-flash-lite",    # GA: cheap high-volume
-                    "gemini-2.0-flash",         # GA: general purpose
-                    "gemini-2.0-flash-lite",    # GA: ultra-efficient
+                    "gemini-2.0-flash",         # GA: general purpose (fallback)
+                    "gemini-2.0-flash-lite",    # GA: ultra-efficient (fallback)
                 ]
                 for vmodel in vertex_models_to_try:
                     try:
@@ -391,9 +390,30 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # Prepare facts summary for LLM
         facts_summary = self._prepare_facts_summary(passport)
 
-        # Truncate document text if too long (keep first 5k chars for faster processing)
-        # UPDATED 2025-03-02: Reduced from 30K to 5K to improve speed (30K caused 300s timeouts)
-        truncated_text = document_text[:5000] if len(document_text) > 5000 else document_text
+        # Adaptive truncation for Layer 3 enrichment context.
+        # Context limits based on model speed + quality (avoids timeout):
+        #   Vertex AI Gemini / Gemini API: up to 80K chars (2.5 Flash is fast at large context)
+        #   Claude (200K token ctx):        up to 50K chars
+        #   Default / others:               up to 10K chars
+        # For very long documents we take the first 70% + last 30% to capture both
+        # document header info and final sections (summary, notes, conditions).
+        if self.vertex_gemini_model or self.gemini_model:
+            max_enrichment_chars = 80_000
+        elif self.claude_client:
+            max_enrichment_chars = 50_000
+        else:
+            max_enrichment_chars = 10_000
+
+        if len(document_text) > max_enrichment_chars:
+            head = int(max_enrichment_chars * 0.7)
+            tail = max_enrichment_chars - head
+            truncated_text = (
+                document_text[:head]
+                + "\n...[zkráceno — střední část dokumentu vynechána]...\n"
+                + document_text[-tail:]
+            )
+        else:
+            truncated_text = document_text
 
         # Build prompt
         prompt = self.ENRICHMENT_PROMPT.format(
