@@ -462,6 +462,7 @@ async function fetchGCPAccessToken() {
  * When GOOGLE_GENAI_USE_VERTEXAI=true, uses Vertex AI endpoint with ADC token
  * (no API key required — uses the Cloud Run service account automatically).
  * Falls back to Google AI API key mode when not on GCP or token fetch fails.
+ * On 404 (model not on Google AI API, e.g. gemini-2.5-flash-lite), retries with gemini-2.0-flash.
  */
 async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, controller) {
   const useVertexAI = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
@@ -470,12 +471,14 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
 
   let apiUrl;
   let headers = { 'content-type': 'application/json' };
+  let isVertexPath = false;
 
   if (useVertexAI && vertexProject) {
     const token = await fetchGCPAccessToken();
     if (token) {
       apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${client.model}:generateContent`;
       headers['Authorization'] = `Bearer ${token}`;
+      isVertexPath = true;
       logger.debug(`[Gemini] Using Vertex AI endpoint (ADC): ${vertexLocation}`);
     } else {
       logger.warn('[Gemini] GOOGLE_GENAI_USE_VERTEXAI=true but metadata server unavailable, falling back to API key mode');
@@ -487,24 +490,31 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
     headers['x-goog-api-key'] = client.apiKey;
   }
 
-  const response = await axios.post(
-    apiUrl,
-    {
-      systemInstruction: { parts: [{ text: systemPrompt }] },
-      contents: { parts: [{ text: userPrompt }] },
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 4096
-      }
-    },
-    {
-      headers: headers,
-      timeout: client.timeoutMs,
-      signal: controller.signal
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: { parts: [{ text: userPrompt }] },
+    generationConfig: {
+      temperature: 0.3,
+      maxOutputTokens: 4096
     }
-  );
+  };
+  const axiosConfig = { headers, timeout: client.timeoutMs, signal: controller.signal };
 
-  return response.data.candidates[0].content.parts[0].text;
+  try {
+    const response = await axios.post(apiUrl, body, axiosConfig);
+    return response.data.candidates[0].content.parts[0].text;
+  } catch (error) {
+    // 404 on Google AI API = model not available on this endpoint (e.g. gemini-2.5-flash-lite is Vertex-only)
+    // Retry once with gemini-2.0-flash which is available on both APIs
+    const FALLBACK_MODEL = 'gemini-2.0-flash';
+    if (!isVertexPath && error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
+      logger.warn(`[Gemini] Model "${client.model}" not found on Google AI API (404) — retrying with ${FALLBACK_MODEL}`);
+      const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${FALLBACK_MODEL}:generateContent`;
+      const fallbackResponse = await axios.post(fallbackUrl, body, { ...axiosConfig, headers: { ...headers } });
+      return fallbackResponse.data.candidates[0].content.parts[0].text;
+    }
+    throw error;
+  }
 }
 
 /**
