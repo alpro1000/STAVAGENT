@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import re
+import time
 from typing import Dict, Any, Optional
 import pandas as pd
 
@@ -358,12 +359,18 @@ class VertexGeminiClient:
     ]
 
     def __init__(self):
+        logger.info("=== VertexGeminiClient INIT START ===")
+
         if not VERTEX_AVAILABLE:
+            logger.error("❌ google-cloud-aiplatform NOT installed — pip install google-cloud-aiplatform")
             raise ImportError("google-cloud-aiplatform package required. Install: pip install google-cloud-aiplatform")
+        logger.info("✅ [1/5] google-cloud-aiplatform package available")
 
         # Resolve project ID: env var → Cloud Run metadata
         project_id = os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT")
+        _project_source = "env (GOOGLE_PROJECT_ID / GOOGLE_CLOUD_PROJECT)"
         if not project_id:
+            logger.info("      GOOGLE_PROJECT_ID/GOOGLE_CLOUD_PROJECT not set — trying GCP metadata server")
             try:
                 import requests as _req
                 resp = _req.get(
@@ -372,46 +379,66 @@ class VertexGeminiClient:
                 )
                 if resp.status_code == 200:
                     project_id = resp.text.strip()
-            except Exception:
-                pass
+                    _project_source = "GCP metadata server"
+                else:
+                    logger.warning(f"      metadata server returned HTTP {resp.status_code}")
+            except Exception as _meta_err:
+                logger.warning(f"      metadata server unreachable: {_meta_err} (not on Cloud Run?)")
         if not project_id:
+            logger.error("❌ [2/5] project_id NOT found — set GOOGLE_PROJECT_ID env var")
             raise ValueError("GOOGLE_PROJECT_ID not found")
+        logger.info(f"✅ [2/5] project_id={project_id!r} (source: {_project_source})")
 
         location = os.getenv("VERTEX_LOCATION", "europe-west3")
+        logger.info(f"✅ [3/5] location={location!r} (env VERTEX_LOCATION or default europe-west3)")
 
         # Init Vertex AI SDK
         creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
         if creds_path and os.path.exists(creds_path):
+            logger.info(f"      credentials: GOOGLE_APPLICATION_CREDENTIALS={creds_path}")
             from google.oauth2 import service_account
             credentials = service_account.Credentials.from_service_account_file(
                 creds_path, scopes=["https://www.googleapis.com/auth/cloud-platform"]
             )
             vertexai.init(project=project_id, location=location, credentials=credentials)
-        else:
+            logger.info("✅ [4/5] vertexai.init() — service account file credentials")
+        elif creds_path:
+            logger.warning(f"      GOOGLE_APPLICATION_CREDENTIALS set but file not found: {creds_path!r}")
             vertexai.init(project=project_id, location=location)
+            logger.info("✅ [4/5] vertexai.init() — ADC (GOOGLE_APPLICATION_CREDENTIALS missing, fallback)")
+        else:
+            logger.info("      GOOGLE_APPLICATION_CREDENTIALS not set — using ADC (Cloud Run SA or gcloud auth)")
+            vertexai.init(project=project_id, location=location)
+            logger.info("✅ [4/5] vertexai.init() — Application Default Credentials (ADC)")
 
         # Try models until one works
         preferred = os.getenv("GEMINI_MODEL", "")
         models_to_try = [preferred] + self.VERTEX_MODELS if preferred else self.VERTEX_MODELS
+        # Remove empty strings and duplicates while preserving order
+        seen: set = set()
+        models_to_try = [m for m in models_to_try if m and not (m in seen or seen.add(m))]  # type: ignore[func-returns-value]
+        logger.info(f"      [5/5] trying models in order: {models_to_try}")
 
         self.model_name = None
         self._model_cls = None
         for m in models_to_try:
-            if not m:
-                continue
             try:
                 self._model_cls = VertexGenerativeModel(m)
                 self.model_name = m
+                logger.info(f"✅ [5/5] model selected: {m!r}")
                 break
             except Exception as e:
-                logger.debug(f"Vertex model {m} unavailable: {e}")
-                continue
+                logger.warning(f"      ✗ model {m!r} unavailable: {type(e).__name__}: {e}")
 
         if not self._model_cls:
+            logger.error(f"❌ [5/5] no model available (tried: {models_to_try}) — check IAM role roles/aiplatform.user")
             raise ValueError(f"No Vertex AI model available (tried: {models_to_try})")
 
         self.max_tokens = 4096
-        logger.info(f"✅ VertexGeminiClient initialized: {self.model_name} (project={project_id}, location={location})")
+        self._project_id = project_id
+        self._location = location
+        logger.info(f"✅ VertexGeminiClient READY: model={self.model_name!r} project={project_id!r} location={location!r}")
+        logger.info("=== VertexGeminiClient INIT DONE ===")
 
     def _create_model(self, temperature: float = 0.3):
         """Return model with generation config"""
@@ -424,13 +451,19 @@ class VertexGeminiClient:
         temperature: float = 0.3
     ) -> Dict[str, Any]:
         """Call Vertex AI Gemini — same interface as GeminiClient.call()"""
+        t0 = time.monotonic()
+        full_prompt = prompt
+        if system_prompt:
+            full_prompt = f"{system_prompt}\n\n{prompt}"
+
+        prompt_chars = len(full_prompt)
+        prompt_tokens_est = prompt_chars // 4
+        logger.info(
+            f"→ Vertex Gemini call: model={self.model_name!r} "
+            f"prompt={prompt_chars}ch (~{prompt_tokens_est}tok) temperature={temperature}"
+        )
+
         try:
-            full_prompt = prompt
-            if system_prompt:
-                full_prompt = f"{system_prompt}\n\n{prompt}"
-
-            logger.debug(f"Calling Vertex Gemini {self.model_name} ({len(full_prompt)} chars)")
-
             generation_config = {
                 "temperature": temperature,
                 "max_output_tokens": self.max_tokens,
@@ -441,24 +474,43 @@ class VertexGeminiClient:
                 generation_config=generation_config,
             )
 
+            elapsed_ms = int((time.monotonic() - t0) * 1000)
+
             if not response.text:
+                logger.error(f"❌ Vertex Gemini empty response ({elapsed_ms}ms) — finish_reason={getattr(response, 'prompt_feedback', 'n/a')}")
                 raise ValueError("Vertex Gemini returned empty response")
 
             result_text = response.text.strip()
+            response_chars = len(result_text)
 
             # Remove markdown code blocks
             code_block_match = re.search(r'```(?:json)?\s*(.*?)\s*```', result_text, re.DOTALL)
             if code_block_match:
                 result_text = code_block_match.group(1).strip()
+                logger.debug("      stripped markdown code block from response")
 
             try:
-                return json.loads(result_text)
-            except json.JSONDecodeError:
-                logger.warning("Vertex Gemini response is not valid JSON, returning raw text")
+                parsed = json.loads(result_text)
+                logger.info(
+                    f"✅ Vertex Gemini OK: {elapsed_ms}ms, "
+                    f"response={response_chars}ch (~{response_chars//4}tok), "
+                    f"json keys={list(parsed.keys()) if isinstance(parsed, dict) else type(parsed).__name__}"
+                )
+                return parsed
+            except json.JSONDecodeError as json_err:
+                logger.warning(
+                    f"⚠️  Vertex Gemini response is not valid JSON ({elapsed_ms}ms): {json_err} — "
+                    f"returning raw_text ({response_chars}ch). Preview: {result_text[:120]!r}"
+                )
                 return {"raw_text": result_text}
 
         except Exception as e:
-            logger.exception(f"Vertex Gemini API call failed: {e}")
+            elapsed_ms = int((time.monotonic() - t0) * 1000)
+            logger.error(
+                f"❌ Vertex Gemini call FAILED ({elapsed_ms}ms): {type(e).__name__}: {e}. "
+                f"model={self.model_name!r} project={self._project_id!r} location={self._location!r}"
+            )
+            logger.exception("Vertex Gemini full traceback:")
             raise
 
     def parse_excel(self, file_path: Path, prompt_name: str = "parsing/parse_vykaz_vymer") -> Dict[str, Any]:
