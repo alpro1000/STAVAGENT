@@ -402,10 +402,15 @@ class WorkflowC:
         """Parse file using SmartParser"""
         result = self.parser.parse(file_path)
 
-        if not result.get("success"):
-            raise ValueError(f"Parsing failed: {result.get('error', 'Unknown error')}")
+        if result.get("error"):
+            raise ValueError(f"Parsing failed: {result['error']}")
 
-        return result.get("positions", [])
+        positions = result.get("positions", [])
+        if not positions:
+            strategy = result.get("strategy", "unknown")
+            raise ValueError(f"Parsing returned 0 positions (strategy={strategy})")
+
+        return positions
 
     async def _parse_content(
         self,
