@@ -368,6 +368,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const seasonForCuring: Season =
     input.season === 'hot' ? 'leto' :
     input.season === 'cold' ? 'zima' : 'podzim_jaro';
+  if (!input.season) {
+    log.push(`Season not specified — defaulting to "podzim_jaro" (21d skruž hold). Pass season: 'hot'|'normal'|'cold' for accurate results.`);
+  }
 
   // Calculate strip wait hours from maturity model (fixes curingDays = 0 bug)
   let stripWaitHours = 24; // default: 1 calendar day
@@ -385,8 +388,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // Bridge decks: enforce skruž minimum hold (seasonal, ČSN 73 6244 / PROPS_MIN_DAYS)
+  const skruzTableLookup = PROPS_MIN_DAYS['mostovka']?.[seasonForCuring];
+  if (elementType === 'mostovkova_deska' && skruzTableLookup === undefined) {
+    log.push(`WARN: PROPS_MIN_DAYS['mostovka']['${seasonForCuring}'] not found — using hardcoded fallback 21d. Check maturity.ts PROPS_MIN_DAYS table.`);
+    warnings.push(`Skruž: sezónní tabulka PROPS_MIN_DAYS neobsahuje hodnotu pro "${seasonForCuring}" — použito výchozích 21 dní.`);
+  }
   const skruzMinDays = elementType === 'mostovkova_deska'
-    ? (PROPS_MIN_DAYS['mostovka']?.[seasonForCuring] ?? 21)
+    ? (skruzTableLookup ?? 21)
     : 0;
   if (skruzMinDays > 0) {
     const skruzMinHours = skruzMinDays * 24;
