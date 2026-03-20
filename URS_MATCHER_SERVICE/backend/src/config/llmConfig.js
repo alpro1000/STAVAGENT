@@ -153,16 +153,22 @@ export function getAvailableProviders() {
     };
   }
 
-  // Check Gemini
+  // Check Gemini — via API key OR Vertex AI ADC (no API key needed on Cloud Run)
   const geminiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
-  if (geminiKey && validateAPIKey(geminiKey, 'gemini')) {
+  const useVertexForGemini = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true' &&
+    Boolean(process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT);
+  if ((geminiKey && validateAPIKey(geminiKey, 'gemini')) || useVertexForGemini) {
     providers.gemini = {
       enabled: true,
       provider: 'gemini',
-      apiKey: geminiKey,
+      apiKey: geminiKey || null,
       model: process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
-      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10),
+      isVertexAI: useVertexForGemini
     };
+    if (useVertexForGemini) {
+      logger.info('[LLMConfig] Gemini via Vertex AI ADC (GOOGLE_GENAI_USE_VERTEXAI=true) — no API key required');
+    }
   }
 
   // Check OpenAI
