@@ -506,7 +506,7 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
   } catch (error) {
     // 404 on Google AI API = model not available on this endpoint (e.g. gemini-2.5-flash-lite is Vertex-only)
     // Retry once with gemini-2.0-flash which is available on both APIs
-    const FALLBACK_MODEL = 'gemini-2.0-flash';
+    const FALLBACK_MODEL = 'gemini-2.5-flash';
     if (!isVertexPath && error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
       logger.warn(`[Gemini] Model "${client.model}" not found on Google AI API (404) — retrying with ${FALLBACK_MODEL}`);
       const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${FALLBACK_MODEL}:generateContent`;
