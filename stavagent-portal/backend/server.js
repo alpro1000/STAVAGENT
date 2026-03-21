@@ -40,6 +40,7 @@ import coreProxyRoutes from './src/routes/core-proxy.js';
 import cabinetRoutes from './src/routes/cabinet.js';
 import orgsRoutes from './src/routes/orgs.js';
 import connectionsRoutes from './src/routes/connections.js';
+import pumpRoutes from './src/routes/pump.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -215,6 +216,9 @@ app.use('/api/orgs', orgsRoutes);
 
 // Service Connections — encrypted API keys + model routing (Sprint 2)
 app.use('/api/connections', connectionsRoutes);
+
+// Unified Pump Calculator — suppliers, models, calculate, compare (Phase 9)
+app.use('/api/pump', pumpRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);

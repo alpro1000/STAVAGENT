@@ -19,7 +19,7 @@ STAVAGENT/
 └── .github/workflows/     ← CI/CD (keep-alive, monolit CI, test coverage, URS tests)
 ```
 
-**Infrastructure:** Backends on **Google Cloud Run** (europe-west3), frontends on **Vercel**, CI/CD via **Cloud Build**.
+**Infrastructure:** Backends on **Google Cloud Run** (europe-west3), frontends on **Vercel**, CI/CD via **Cloud Build**. No Render — всё на GC + Vercel.
 
 | Service | URL |
 |---------|-----|
@@ -58,6 +58,19 @@ Portal → CORE:  POST /workflow/a/import (multipart/form-data)
 Portal → Kiosk: POST /import (JSON: projectId, positions[])
 Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ```
+
+---
+
+## Key Features
+
+**TOV Profession Mapping:**
+- Betonování → Betonář
+- Bednění → Tesař/Bednář
+- Výztuž → Železář
+
+**Sync metadata tracking:** Bi-directional sync between Portal ↔ Kiosks (Monolit, Registry) via `position_instance_id` and `portal_project_id`.
+
+**Integration imports:** Default `owner_id=1` for positions imported via integration routes (Portal→Kiosk).
 
 ---
 

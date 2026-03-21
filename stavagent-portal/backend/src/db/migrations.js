@@ -155,6 +155,9 @@ async function initPostgresSchema() {
   // Run Phase 8 migrations (Position Instance Architecture v1.0)
   await runPhase8Migrations();
 
+  // Run Phase 9 migrations (Unified Pump Calculator)
+  await runPhase9Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 }
@@ -631,6 +634,54 @@ async function runPhase8Migrations() {
     console.log('[PostgreSQL Migrations] ✅ Phase 8 migrations completed successfully');
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 8 migrations:', error);
+  }
+}
+
+/**
+ * Phase 9: Unified Pump Calculator
+ * Creates pump_suppliers, pump_models, pump_accessories_catalog, pump_calculations
+ * Seeds 3 builtin suppliers (Berger, Frischbeton, Beton Union) with all models
+ */
+async function runPhase9Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 9 migrations (Unified Pump Calculator)...');
+
+    if (!USE_POSTGRES) {
+      console.log('[Migration] Skipping Phase 9 - SQLite not supported for this migration');
+      return;
+    }
+
+    const migrationPath = join(__dirname, 'migrations', 'add-pump-suppliers.sql');
+
+    if (!fs.existsSync(migrationPath)) {
+      console.log('[Migration] ⚠️  Phase 9 migration file not found, skipping');
+      return;
+    }
+
+    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+
+    const statements = migrationSQL
+      .split(';')
+      .map(s => s.trim())
+      .filter(s => s.length > 0 && !s.startsWith('--'));
+
+    for (const statement of statements) {
+      try {
+        await db.exec(statement + ';');
+      } catch (error) {
+        const safeErrors = ['already exists', 'duplicate column', 'duplicate key', 'multiple primary', 'violates unique'];
+        const isSafe = safeErrors.some(msg => error.message?.toLowerCase().includes(msg));
+        if (!isSafe) {
+          console.error('[Migration Phase 9] Statement error:', error.message);
+          console.error('[Migration Phase 9] Statement:', statement.substring(0, 100));
+        }
+      }
+    }
+
+    console.log('[Migration] ✓ pump_suppliers, pump_models, pump_accessories_catalog, pump_calculations');
+    console.log('[PostgreSQL Migrations] ✅ Phase 9 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 9 migrations:', error);
   }
 }
 
