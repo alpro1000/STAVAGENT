@@ -39,11 +39,6 @@ const SERVICES = [
     desc: 'Fuzzy search, klasifikace, Excel export.',
   },
   {
-    icon: '🧮',
-    name: 'R0 Kalkulátory',
-    desc: 'Deterministické výpočty výztuže a bednění.',
-  },
-  {
     icon: '⚙️',
     name: 'Modul čerpání',
     desc: 'Logistika čerpání betonu. Připravujeme.',
