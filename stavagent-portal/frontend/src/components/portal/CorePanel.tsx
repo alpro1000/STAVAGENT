@@ -103,7 +103,7 @@ const KIOSK_META = {
       `https://monolit-planner-frontend.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
   registry: {
-    label: 'Klasifikátor stavebních prací',
+    label: 'Registr Rozpočtů',
     icon: '\u{1F4CA}',
     color: '#8b5cf6',
     bg: '#f5f3ff',
@@ -111,7 +111,7 @@ const KIOSK_META = {
       `https://stavagent-backend-ktwx.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}&portal_project=${portalProjectId}`,
   },
   urs_matcher: {
-    label: 'Klasifikátor URS',
+    label: 'Klasifikátor stavebních prací',
     icon: '\u{1F50E}',
     color: '#10b981',
     bg: '#ecfdf5',

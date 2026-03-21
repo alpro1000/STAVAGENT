@@ -120,7 +120,7 @@ const SERVICES: Service[] = [
   },
   {
     id: 'urs-matcher',
-    name: 'Klasifikátor URS',
+    name: 'Klasifikátor stavebních prací',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
     icon: '🔎',
     url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
@@ -129,7 +129,7 @@ const SERVICES: Service[] = [
   },
   {
     id: 'rozpocet-registry',
-    name: 'Klasifikátor stavebních prací',
+    name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
     url: 'https://stavagent-backend-ktwx.vercel.app',

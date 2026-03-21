@@ -40,12 +40,12 @@ const SERVICES = [
   },
   {
     icon: '🔎',
-    name: 'Klasifikátor URS',
+    name: 'Klasifikátor stavebních prací',
     desc: 'AI párování položek rozpočtu s kódy URS. 4fázový matching.',
   },
   {
     icon: '📊',
-    name: 'Klasifikátor stavebních prací',
+    name: 'Registr Rozpočtů',
     desc: '10 skupin prací, fuzzy search, AI klasifikace, Excel export.',
   },
   {
