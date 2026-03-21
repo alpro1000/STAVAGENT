@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft } from 'lucide-react';
+import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft, LogIn, User, LogOut } from 'lucide-react';
 import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
@@ -202,7 +202,7 @@ const SERVICES: Service[] = [
 ];
 
 export default function PortalPage() {
-  const { user } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const isAdmin = user?.role === 'admin';
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -418,7 +418,7 @@ export default function PortalPage() {
                 </p>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: '8px', flexShrink: 0, alignItems: 'center' }}>
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="c-btn c-btn--primary"
@@ -426,22 +426,61 @@ export default function PortalPage() {
                 <Plus size={20} />
                 Nový projekt
               </button>
-              <button
-                onClick={() => navigate('/cabinet')}
-                className="c-btn"
-                style={{
-                  background: 'var(--bg-secondary, #f1f5f9)',
-                  color: 'var(--text-primary)',
-                  border: '1px solid var(--border-color, #e5e7eb)',
-                  padding: '8px 14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-                title="Nastavení"
-              >
-                <Settings size={18} />
-              </button>
+              {isAuthenticated ? (
+                <>
+                  <button
+                    onClick={() => navigate('/cabinet')}
+                    className="c-btn"
+                    style={{
+                      background: 'var(--bg-secondary, #f1f5f9)',
+                      color: 'var(--text-primary)',
+                      border: '1px solid var(--border-color, #e5e7eb)',
+                      padding: '8px 14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      fontSize: '13px',
+                    }}
+                    title="Kabinet"
+                  >
+                    <User size={16} />
+                    {user?.name || 'Kabinet'}
+                  </button>
+                  <button
+                    onClick={() => { logout(); navigate('/login'); }}
+                    className="c-btn"
+                    style={{
+                      background: 'transparent',
+                      color: 'var(--text-muted, #94a3b8)',
+                      border: '1px solid var(--border-color, #e5e7eb)',
+                      padding: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    title="Odhlásit se"
+                  >
+                    <LogOut size={16} />
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => navigate('/login')}
+                  className="c-btn"
+                  style={{
+                    background: 'var(--bg-secondary, #f1f5f9)',
+                    color: 'var(--text-primary)',
+                    border: '1px solid var(--border-color, #e5e7eb)',
+                    padding: '8px 14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '13px',
+                  }}
+                >
+                  <LogIn size={16} />
+                  Přihlásit se
+                </button>
+              )}
             </div>
           </div>
         </div>
