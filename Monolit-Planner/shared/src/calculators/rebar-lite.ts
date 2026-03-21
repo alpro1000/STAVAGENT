@@ -54,7 +54,8 @@ export interface RebarLiteResult {
   most_likely_days: number;
   pessimistic_days: number;
 
-  // --- Crew recommendation ---
+  // --- Crew ---
+  crew_size: number;
   recommended_crew: number;
   /** If target_days were given, what crew is needed */
   crew_for_target?: number;
@@ -157,6 +158,7 @@ export function calculateRebarLite(input: RebarLiteInput): RebarLiteResult {
     optimistic_days,
     most_likely_days,
     pessimistic_days,
+    crew_size: crew,
     recommended_crew,
     element_type: input.element_type,
     confidence: base.confidence,

@@ -112,11 +112,11 @@ const SERVICES: Service[] = [
   {
     id: 'monolit-planner',
     name: 'Monolit Planner',
-    description: 'Výpočet nákladů na monolitické betonové konstrukce. Převod všech nákladů na metriku Kč/m³ se zaokrouhlením KROS.',
+    description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
     icon: '🪨',
     url: 'https://monolit-planner-frontend.vercel.app',
     status: 'active',
-    tags: ['Beton', 'KROS', 'Most', 'Budova']
+    tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
   },
   {
     id: 'urs-matcher',
@@ -139,11 +139,11 @@ const SERVICES: Service[] = [
   {
     id: 'element-planner',
     name: 'Plánovač elementu',
-    description: 'Plánování betonáže mostních a stavebních elementů. AI doporučení podstu, bednění, normy ČSN EN. Skruž, záběry, šachovnicový postup, maturity model.',
+    description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
     icon: '📐',
     url: 'https://monolit-planner-frontend.vercel.app/planner',
     status: 'active',
-    tags: ['Plánování', 'Bednění', 'Skruž', 'AI doporučení', 'ČSN EN 13670']
+    tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
   },
   {
     id: 'objednavka-betonu',

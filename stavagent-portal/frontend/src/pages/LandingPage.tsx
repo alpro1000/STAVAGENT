@@ -26,7 +26,12 @@ const SERVICES = [
   {
     icon: '🪨',
     name: 'Monolit Planner',
-    desc: 'Náklady monolitického betonu. Kč/m³ + KROS.',
+    desc: 'Rozpočet betonových konstrukcí. Kč/m³ + KROS.',
+  },
+  {
+    icon: '📐',
+    name: 'Plánovač elementu',
+    desc: 'Deterministický kalkulátor betonáže. RCPSP + Monte Carlo.',
   },
   {
     icon: '🔎',
