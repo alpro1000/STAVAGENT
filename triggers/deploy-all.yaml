@@ -1,17 +1,17 @@
-name: portal-deploy
+name: deploy-all
+description: "Manual trigger to deploy ALL services"
 location: europe-west3
 github:
   owner: alpro1000
   name: STAVAGENT
   push:
-    branch: "^main$"
-filename: cloudbuild-portal.yaml
-includedFiles:
-  - "stavagent-portal/**"
+    branch: "^$"
+filename: cloudbuild.yaml
 substitutions:
   _REGION: europe-west3
   _TAG: $SHORT_SHA
+  _FORCE_DEPLOY: "true"
 serviceAccount: projects/project-947a512a-481d-49b5-81c/serviceAccounts/1086027517695@cloudbuild.gserviceaccount.com
 
 approvalConfig:
-  approvalRequired: false
+  approvalRequired: true
