@@ -367,7 +367,6 @@ export default function PlannerPage() {
           </h1>
         </div>
         <div className="r0-header-right">
-          <a href="/r0" className="r0-back-link" style={{ marginRight: 12 }}>R0 Core →</a>
           <span className="r0-badge">v1.0</span>
         </div>
       </header>

@@ -26,7 +26,6 @@ import {
   type TariffRate,
 } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
-import '../styles/r0.css';
 
 // ─── Persistence ─────────────────────────────────────────────────────────────
 
