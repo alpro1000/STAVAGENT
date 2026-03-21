@@ -50,6 +50,9 @@ Frontends: Vercel (auto-deploy from GitHub)
    - Artifact Registry API
    - Cloud SQL Admin API
    - Secret Manager API
+   - Cloud Logging API
+   - Vertex AI API
+   - IAM API
 3. **GitHub** connected to Cloud Build
 4. **gcloud CLI** installed and authenticated
 
@@ -90,13 +93,22 @@ triggers/
 ├── monolit.yaml            → watches Monolit-Planner/**
 ├── portal.yaml             → watches stavagent-portal/**
 ├── urs.yaml                → watches URS_MATCHER_SERVICE/**
-└── registry.yaml           → watches rozpocet-registry-backend/**
+├── registry.yaml           → watches rozpocet-registry-backend/**
+└── deploy-all.yaml         → manual trigger, all services (approval required)
 ```
+
+All triggers specify `location: europe-west3` and explicit `serviceAccount`.
 
 ### Import triggers
 
 ```bash
-gcloud builds triggers import --source=triggers/concrete-agent.yaml
+# Import all triggers at once:
+for f in triggers/*.yaml; do
+  gcloud builds triggers import --source="$f" --region=europe-west3
+done
+
+# Or individually:
+gcloud builds triggers import --source=triggers/concrete-agent.yaml --region=europe-west3
 gcloud builds triggers import --source=triggers/monolit.yaml
 gcloud builds triggers import --source=triggers/portal.yaml
 gcloud builds triggers import --source=triggers/urs.yaml

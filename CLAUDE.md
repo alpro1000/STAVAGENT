@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.0.0
-**Last Updated:** 2026-03-20
+**Version:** 3.1.0
+**Last Updated:** 2026-03-21
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -183,6 +183,10 @@ VITE_DISABLE_AUTH=true
 
 **Cloud Build** (per-service, push to main): `cloudbuild-{concrete,monolit,portal,urs,registry}.yaml` + `triggers/*.yaml`
 - Guard step (git diff), Docker build → Artifact Registry, Cloud Run deploy with secrets
+- `cloudbuild.yaml` — deploy-all (manual trigger, approval required)
+- All triggers: `location: europe-west3`, explicit `serviceAccount`
+- Setup: `./gcp/setup-gcp.sh` (APIs, AR repo, secrets, IAM)
+- Trigger import: `gcloud builds triggers import --source=triggers/<name>.yaml --region=europe-west3`
 
 **GitHub Actions:** keep-alive (14min pings), monolit-planner-ci, test-coverage, test-urs-matcher
 
@@ -192,7 +196,9 @@ VITE_DISABLE_AUTH=true
 
 **Awaiting user action:**
 - MASTER_ENCRYPTION_KEY: `openssl rand -hex 32` → Secret Manager (for Sprint 2 Service Connections)
-- Cloud Build triggers import (if not done): `gcloud builds triggers import --source=triggers/*.yaml`
+- Cloud Build setup (if not done): run `./gcp/setup-gcp.sh` in Cloud Shell
+- Cloud Build triggers import (if not done): `for f in triggers/*.yaml; do gcloud builds triggers import --source="$f" --region=europe-west3; done`
+- Set real API key values in Secret Manager (GOOGLE_API_KEY, ANTHROPIC_API_KEY, etc.)
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
