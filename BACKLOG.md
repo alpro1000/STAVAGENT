@@ -1,6 +1,6 @@
 # STAVAGENT Backlog & Pending Plans
 
-**Last Updated:** 2026-03-16
+**Last Updated:** 2026-03-21
 **Maintained By:** Development Team
 
 ---
@@ -93,20 +93,23 @@ curl -s https://monolit-planner-api-1086027517695.europe-west3.run.app/api/confi
 
 ---
 
-### 2. R0 Deterministic Core + Unified Architecture PR
+### 2. ~~R0 Deterministic Core~~ → УДАЛЁН (Session 2026-03-21)
 
-**Status:** ⏳ PR ready for merge
-**Branch:** `claude/portal-audit-improvements-8F2Co`
-**Service:** Portal + All Kiosks
+**Status:** ✅ R0 frontend удалён, заменён Element Planner
+**Branch:** `claude/check-vertex-ai-prod-kb07G`
 
-**User Action Required:**
-- [ ] Review PR at: `https://github.com/alpro1000/STAVAGENT/compare/main...claude/portal-audit-improvements-8F2Co`
-- [ ] Merge to main
+R0 модуль был пустой и не использовался — Element Planner и Pump Calculator сделаны отдельно.
+Удалено: 5 компонентов (R0App, ScheduleView, CapturesPanel, ElementsTable, ProjectsList), маршрут /r0.
+Оставлено: backend routes + DB tables (безопасно, не мешают).
 
-**What's Included:**
-- R0 Deterministic Core API, UI, migrations
-- Unified Project Architecture (Portal aggregates all kiosks)
-- ESM import fixes
+### 2b. Element Planner — User Documentation (NEW)
+
+**Status:** ⏳ Не начато
+**Service:** Monolit-Planner frontend
+
+**Задача:** Создать встроенную документацию/help panel для пользователей Element Planner.
+Описать: методологию (RCPSP граф, Monte Carlo), что вводить, как интерпретировать результаты,
+что означает "экономия времени", почему это оценка продолжительности а не точный расчёт опалубки.
 
 ---
 
@@ -421,6 +424,19 @@ docs/archive/
 
 **Total Pending Items:** 17
 **Next Critical Path:** Deploy all services → Test with real PDFs → Formwork rental audit → Kiosk import E2E
+
+### Recently Completed (Session 14, 2026-03-21)
+- ✅ **Element Planner расширен до 20 типов элементов** (9 мостовых + 11 зданий: стены, плиты, колонны, фундаменты, лестницы, резервуары, сваи и др.)
+- ✅ **Динамический concrete_days** — вместо хардкода 1 день, рассчитывается из фактических часов заливки
+- ✅ **Непрерывная заливка** — для монолитных элементов автомасштабирование бригады до 15 чел., смены до 16ч, +25% за сверхурочные
+- ✅ **Скруж (подпёрная конструкция)** — обобщена для ВСЕХ горизонтальных элементов (не только mostovkova_deska)
+- ✅ **Визуальный Gantt** — цветные горизонтальные бары по фазам (PlannerGantt.tsx)
+- ✅ **Excel export** — 4-листовая XLSX книга (Souhrn, Harmonogram, Gantt, Log) через SheetJS
+- ✅ **AI prompt выровнен** — детерминированные правила встроены в промпт, AI не противоречит расчётам
+- ✅ **R0 модуль удалён** — пустой/неиспользуемый, 1052 строки удалены, backend оставлен
+- ✅ **Дизайн-система консолидирована** — r0.css очищен (838→190 строк), 25+ CSS-переменных, 0 хардкодированных hex-цветов
+- ✅ **JSON вывод исправлен** — AI advisor показывает человекочитаемый формат вместо сырого JSON
+- ✅ 336 тестов проходят
 
 ### Recently Completed (Session 13, 2026-03-16)
 - ✅ Sprint 1 Backend: organizations, org_members в DB, 5 ролей, 12 org endpoints, cabinet stats, PATCH /api/auth/me
