@@ -53,7 +53,7 @@ export function getLLMConfig() {
     defaultModel = 'claude-sonnet-4-6';
     break;
   case 'gemini':
-    apiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
+    apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
     // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
     defaultModel = 'gemini-2.5-flash-lite';
     break;
@@ -89,7 +89,7 @@ export function getLLMConfig() {
     if (useVertexAI) {
       logger.info('[LLMConfig] Gemini provider: no API key set, will use Vertex AI ADC (GOOGLE_GENAI_USE_VERTEXAI=true)');
     } else {
-      logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, CLAUDE_API_KEY, GOOGLE_API_KEY, GOOGLE_AI_KEY, GEMINI_API_KEY, LLM_API_KEY. Fallback providers will be used.', primaryProvider);
+      logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, CLAUDE_API_KEY, GOOGLE_API_KEY, GEMINI_API_KEY, LLM_API_KEY. Fallback providers will be used.', primaryProvider);
     }
   }
 
@@ -117,7 +117,7 @@ function getApiKeyForProvider(provider) {
   case 'claude':
     return process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
   case 'gemini':
-    return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
+    return process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
   case 'deepseek':
     return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
   case 'grok':
@@ -154,7 +154,7 @@ export function getAvailableProviders() {
   }
 
   // Check Gemini — via API key OR Vertex AI ADC (no API key needed on Cloud Run)
-  const geminiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
+  const geminiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
   const useVertexForGemini = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true' &&
     Boolean(process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT);
   if ((geminiKey && validateAPIKey(geminiKey, 'gemini')) || useVertexForGemini) {

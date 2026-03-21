@@ -153,7 +153,7 @@ All sensitive values stored in GCP Secret Manager:
 | `JWT_SECRET` | stavagent-portal | JWT signing key |
 | `GOOGLE_API_KEY` | concrete-agent | Gemini API key |
 | `ANTHROPIC_API_KEY` | concrete-agent, urs-matcher | Claude API key |
-| `GOOGLE_AI_KEY` | urs-matcher | Google AI key |
+| `GOOGLE_API_KEY` | urs-matcher, monolit-planner | Gemini API key |
 | `OPENAI_API_KEY` | urs-matcher | OpenAI API key |
 | `PPLX_API_KEY` | urs-matcher | Perplexity API key |
 

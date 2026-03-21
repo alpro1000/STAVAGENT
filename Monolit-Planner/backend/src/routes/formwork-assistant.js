@@ -489,9 +489,9 @@ router.post('/', async (req, res) => {
 
     // Helper: call Gemini API directly (fastest, cheapest)
     async function callGeminiDirect(prompt) {
-      const apiKey = process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY;
+      const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
       if (!apiKey) {
-        logger.warn('[Formwork v3] Gemini skipped — GOOGLE_AI_KEY / GOOGLE_API_KEY not set');
+        logger.warn('[Formwork v3] Gemini skipped — GOOGLE_API_KEY / GEMINI_API_KEY not set');
         return null;
       }
 
@@ -578,7 +578,7 @@ router.post('/', async (req, res) => {
     }
 
     // Execute AI chain based on selected model
-    const hasGemini = !!(process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY);
+    const hasGemini = !!(process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY);
     const hasOpenAI = !!process.env.OPENAI_API_KEY;
     logger.info(`[Formwork v3] AI chain: model=${model}, gemini=${hasGemini}, openai=${hasOpenAI}, core=${CORE_API_URL}`);
 
