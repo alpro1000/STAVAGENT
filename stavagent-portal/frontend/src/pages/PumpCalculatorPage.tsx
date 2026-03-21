@@ -7,13 +7,16 @@
  *   3. See surcharges (weekend/holiday/night) auto-detected from date
  *   4. See working days calendar context
  *
- * Uses pump-engine logic (browser-side, no backend needed).
+ * Fetches suppliers from Portal API (/api/pump/suppliers) with fallback
+ * to hardcoded data when API is unavailable (offline mode).
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { pumpAPI } from '../services/api';
+import type { PumpSupplier, PumpModel } from '../services/api';
 
-// ─── Embedded pump supplier data (from rozpocet-registry) ────────────────────
+// ─── Local types for client-side calculation ─────────────────────────────────
 
 type BillingModel = 'hourly' | 'hourly_plus_m3' | 'per_15min';
 
@@ -45,9 +48,12 @@ interface Supplier {
   pumps: PumpSpec[];
   hose_per_m_per_day: number;
   surcharges: SupplierSurcharges;
+  is_builtin?: boolean;
 }
 
-const SUPPLIERS: Supplier[] = [
+// ─── Hardcoded fallback data (used when API is unavailable) ──────────────────
+
+const FALLBACK_SUPPLIERS: Supplier[] = [
   {
     id: 'berger_sadov', name: 'Berger Beton Sadov', billing_model: 'hourly_plus_m3',
     pumps: [
@@ -57,6 +63,7 @@ const SUPPLIERS: Supplier[] = [
     ],
     hose_per_m_per_day: 140,
     surcharges: { saturday_pct: 15, sunday_pct: 20, night_pct: 15 },
+    is_builtin: true,
   },
   {
     id: 'frischbeton_kv', name: 'Frischbeton KV', billing_model: 'per_15min',
@@ -69,6 +76,7 @@ const SUPPLIERS: Supplier[] = [
     ],
     hose_per_m_per_day: 130,
     surcharges: { night_per_h: 200, sunday_per_h: 220 },
+    is_builtin: true,
   },
   {
     id: 'beton_union', name: 'Beton Union Plzeň', billing_model: 'hourly',
@@ -80,8 +88,45 @@ const SUPPLIERS: Supplier[] = [
     ],
     hose_per_m_per_day: 120,
     surcharges: { saturday: 1500, sunday: 2000, night: 1200 },
+    is_builtin: true,
   },
 ];
+
+// ─── API → local format converter ───────────────────────────────────────────
+
+function apiModelToPumpSpec(model: PumpModel): PumpSpec {
+  return {
+    name: model.name,
+    reach_m: model.reach_m ?? 0,
+    arrival_fixed: model.arrival_fixed_czk ?? undefined,
+    arrival_per_km: model.arrival_per_km_czk ?? undefined,
+    operation_per_h: model.operation_per_h_czk ?? undefined,
+    operation_per_15min: model.operation_per_15min_czk ?? undefined,
+    volume_per_m3: model.volume_per_m3_czk ?? undefined,
+  };
+}
+
+function apiSupplierToLocal(supplier: PumpSupplier): Supplier {
+  const sc = (supplier.surcharges || {}) as Record<string, number>;
+  return {
+    id: supplier.slug,
+    name: supplier.name,
+    billing_model: supplier.billing_model as BillingModel,
+    pumps: (supplier.models || []).map(apiModelToPumpSpec),
+    hose_per_m_per_day: supplier.hose_per_m_per_day ?? 0,
+    surcharges: {
+      saturday: sc.saturday,
+      sunday: sc.sunday,
+      night: sc.night,
+      saturday_pct: sc.saturday_pct,
+      sunday_pct: sc.sunday_pct,
+      night_pct: sc.night_pct,
+      night_per_h: sc.night_per_h,
+      sunday_per_h: sc.sunday_per_h,
+    },
+    is_builtin: supplier.is_builtin,
+  };
+}
 
 // ─── Czech holidays (embedded from calendar-engine) ──────────────────────────
 
@@ -203,11 +248,12 @@ interface PumpResult {
 }
 
 function compareAll(
+  suppliers: Supplier[],
   volume: number, distance: number, hours: number, minReach: number,
   dayType: DayType, isNight: boolean,
 ): PumpResult[] {
   const results: PumpResult[] = [];
-  for (const sup of SUPPLIERS) {
+  for (const sup of suppliers) {
     for (const pump of sup.pumps) {
       if (pump.reach_m < minReach) continue;
       const arrival = calculateArrival(pump, distance);
@@ -529,6 +575,53 @@ const S = {
 export default function PumpCalculatorPage() {
   const navigate = useNavigate();
 
+  // Data source
+  const [suppliers, setSuppliers] = useState<Supplier[]>(FALLBACK_SUPPLIERS);
+  const [dataSource, setDataSource] = useState<'loading' | 'api' | 'offline'>('loading');
+  const [supplierCount, setSupplierCount] = useState({ builtin: 3, custom: 0 });
+
+  // Fetch suppliers from API on mount
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const apiSuppliers = await pumpAPI.getSuppliers();
+        if (cancelled) return;
+
+        // Fetch models for each supplier
+        const withModels = await Promise.all(
+          apiSuppliers.map(async (s) => {
+            try {
+              const full = await pumpAPI.getSupplier(s.slug || s.id);
+              return full;
+            } catch {
+              return s;
+            }
+          })
+        );
+        if (cancelled) return;
+
+        const localSuppliers = withModels
+          .map(apiSupplierToLocal)
+          .filter(s => s.pumps.length > 0);
+
+        if (localSuppliers.length > 0) {
+          setSuppliers(localSuppliers);
+          setDataSource('api');
+          setSupplierCount({
+            builtin: localSuppliers.filter(s => s.is_builtin).length,
+            custom: localSuppliers.filter(s => !s.is_builtin).length,
+          });
+        } else {
+          setDataSource('offline');
+        }
+      } catch {
+        if (!cancelled) setDataSource('offline');
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   // Inputs
   const [volume, setVolume] = useState(60);
   const [distance, setDistance] = useState(30);
@@ -548,8 +641,8 @@ export default function PumpCalculatorPage() {
   // Calculate results
   const results = useMemo(() => {
     if (volume <= 0 || hours <= 0) return [];
-    return compareAll(volume, distance, hours, minReach, dayInfo.type, isNight);
-  }, [volume, distance, hours, minReach, dayInfo.type, isNight]);
+    return compareAll(suppliers, volume, distance, hours, minReach, dayInfo.type, isNight);
+  }, [suppliers, volume, distance, hours, minReach, dayInfo.type, isNight]);
 
   const hasSurcharges = dayInfo.type !== 'workday' || isNight;
 
@@ -611,9 +704,23 @@ export default function PumpCalculatorPage() {
             Kalkulace čerpadla
           </h1>
         </div>
-        <span style={{ fontSize: '12px', color: 'var(--text-muted, #7A7D80)' }}>
-          {workingDaysInMonth} prac. dnů v měsíci
-        </span>
+        <div style={{ textAlign: 'right' as const }}>
+          <span style={{ fontSize: '12px', color: 'var(--text-muted, #7A7D80)', display: 'block' }}>
+            {workingDaysInMonth} prac. dnů v měsíci
+          </span>
+          <span style={{
+            fontSize: '10px',
+            color: dataSource === 'api' ? '#1e7e34' : dataSource === 'loading' ? '#e65100' : '#7A7D80',
+            display: 'block',
+            marginTop: '2px',
+          }}>
+            {dataSource === 'api'
+              ? `DB: ${supplierCount.builtin}+${supplierCount.custom} dodavatelů`
+              : dataSource === 'loading'
+                ? 'Načítání...'
+                : 'Offline režim'}
+          </span>
+        </div>
       </div>
 
       <div style={S.container}>
