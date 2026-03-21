@@ -41,8 +41,13 @@ describe('Element Classifier', () => {
       expect(result.element_type).toBe('operne_zdi');
     });
 
-    it('classifies columns/pilíře', () => {
+    it('classifies building columns', () => {
       const result = classifyElement('SLOUPY 1.NP');
+      expect(result.element_type).toBe('sloup');
+    });
+
+    it('classifies bridge piers', () => {
+      const result = classifyElement('Dříky pilířů P1-P3');
       expect(result.element_type).toBe('driky_piliru');
     });
 
@@ -183,9 +188,9 @@ describe('Element Classifier', () => {
   // ─── getAllElementTypes ──────────────────────────────────────────────
 
   describe('getAllElementTypes', () => {
-    it('returns 9 element types', () => {
+    it('returns 20 element types (9 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(9);
+      expect(types).toHaveLength(20);
     });
 
     it('each type has Czech label', () => {

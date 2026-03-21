@@ -353,7 +353,10 @@ export type ConstructionType =
   | 'pilire_mostu'     // Bridge piers
   | 'sloupy'           // Columns
   | 'mostovka'         // Bridge deck / floor slab
-  | 'rimsy';           // Cornices / cantilevers
+  | 'rimsy'            // Cornices / cantilevers
+  | 'stropni_deska'    // Floor slab (building)
+  | 'pruvlak'          // Beam / girder (building)
+  | 'schodiste';       // Staircase
 
 /** Season (temperature range) — maps to average temperature */
 export type Season = 'leto' | 'podzim_jaro' | 'zima';
@@ -373,6 +376,9 @@ const CONSTRUCTION_TO_ELEMENT: Record<ConstructionType, ElementType> = {
   sloupy:        'column',
   mostovka:      'slab',     // Horizontal, heavily loaded
   rimsy:         'beam',     // Cantilever, horizontal
+  stropni_deska: 'slab',    // Floor slab = horizontal
+  pruvlak:       'beam',    // Beam = horizontal
+  schodiste:     'slab',    // Staircase = sloped horizontal
 };
 
 /** Orientation — affects whether props are needed */
@@ -383,6 +389,9 @@ export const CONSTRUCTION_ORIENTATION: Record<ConstructionType, 'vertical' | 'ho
   sloupy:         'vertical',
   mostovka:       'horizontal',
   rimsy:          'horizontal',
+  stropni_deska:  'horizontal',
+  pruvlak:        'horizontal',
+  schodiste:      'horizontal',
 };
 
 /**
@@ -394,8 +403,11 @@ export const CONSTRUCTION_ORIENTATION: Record<ConstructionType, 'vertical' | 'ho
  * but props stay until concrete reaches near-full design strength.
  */
 export const PROPS_MIN_DAYS: Partial<Record<ConstructionType, Record<Season, number>>> = {
-  mostovka: { leto: 14, podzim_jaro: 21, zima: 28 },
-  rimsy:    { leto: 7,  podzim_jaro: 10, zima: 14 },
+  mostovka:      { leto: 14, podzim_jaro: 21, zima: 28 },  // ČSN 73 6244 + TKP17
+  rimsy:         { leto: 7,  podzim_jaro: 10, zima: 14 },
+  stropni_deska: { leto: 7,  podzim_jaro: 14, zima: 21 },  // ČSN EN 13670, běžný strop
+  pruvlak:       { leto: 10, podzim_jaro: 14, zima: 21 },  // průvlaky = vyšší zatížení
+  schodiste:     { leto: 7,  podzim_jaro: 14, zima: 21 },  // schodiště = šikmý strop
 };
 
 /** Labels for construction types (Czech) */
@@ -406,6 +418,9 @@ export const CONSTRUCTION_LABELS: Record<ConstructionType, string> = {
   steny:          'Stěny / opěry',
   sloupy:         'Sloupy',
   rimsy:          'Římsy / konzoly',
+  stropni_deska:  'Stropní / podlahová deska',
+  pruvlak:        'Průvlak / trám',
+  schodiste:      'Schodiště',
 };
 
 /** Labels for seasons (Czech) */

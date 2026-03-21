@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppProvider } from './context/AppContext';
 import MainApp from './components/MainApp';
-import R0App from './components/r0/R0App';
 import PlannerPage from './pages/PlannerPage';
 import RegistryView from './pages/RegistryView';
 import TariffPage from './pages/TariffPage';
@@ -56,11 +55,6 @@ function App() {
           <Route
             path="/tariffs"
             element={<TariffPage />}
-          />
-          {/* R0 Deterministic Core */}
-          <Route
-            path="/r0/*"
-            element={<R0App />}
           />
         </Routes>
       </BrowserRouter>

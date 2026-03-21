@@ -25,6 +25,8 @@ import { FORMWORK_SYSTEMS } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
+import PlannerGantt from '../components/PlannerGantt';
+import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
 import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
@@ -68,16 +70,29 @@ interface AIAdvisorResult {
 
 // ─── Element type labels ────────────────────────────────────────────────────
 
-const ELEMENT_TYPES: { value: StructuralElementType; label: string }[] = [
-  { value: 'zaklady_piliru', label: 'Základy pilířů / patky' },
-  { value: 'driky_piliru', label: 'Dříky pilířů' },
-  { value: 'operne_zdi', label: 'Opěrné zdi' },
-  { value: 'mostovkova_deska', label: 'Mostovková deska' },
-  { value: 'rimsa', label: 'Římsová deska' },
-  { value: 'rigel', label: 'Příčník (ригель)' },
-  { value: 'opery_ulozne_prahy', label: 'Opěry, úložné prahy' },
-  { value: 'mostni_zavirne_zidky', label: 'Mostní závěrné zídky' },
-  { value: 'other', label: 'Jiný typ' },
+const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: string }[] = [
+  // Building elements (pozemní stavby)
+  { value: 'zakladova_deska', label: 'Základová deska', group: 'Pozemní stavby' },
+  { value: 'zakladovy_pas', label: 'Základový pás', group: 'Pozemní stavby' },
+  { value: 'zakladova_patka', label: 'Základová patka', group: 'Pozemní stavby' },
+  { value: 'stropni_deska', label: 'Stropní / podlahová deska', group: 'Pozemní stavby' },
+  { value: 'stena', label: 'Monolitická stěna', group: 'Pozemní stavby' },
+  { value: 'sloup', label: 'Sloup', group: 'Pozemní stavby' },
+  { value: 'pruvlak', label: 'Průvlak / trám', group: 'Pozemní stavby' },
+  { value: 'schodiste', label: 'Schodiště', group: 'Pozemní stavby' },
+  { value: 'nadrz', label: 'Nádrž / jímka / bazén', group: 'Pozemní stavby' },
+  { value: 'podzemni_stena', label: 'Podzemní stěna (milánská)', group: 'Pozemní stavby' },
+  { value: 'pilota', label: 'Pilota / mikropilota', group: 'Pozemní stavby' },
+  // Bridge elements (mostní prvky)
+  { value: 'zaklady_piliru', label: 'Základy pilířů', group: 'Mostní prvky' },
+  { value: 'driky_piliru', label: 'Dříky pilířů', group: 'Mostní prvky' },
+  { value: 'operne_zdi', label: 'Opěrné zdi', group: 'Mostní prvky' },
+  { value: 'mostovkova_deska', label: 'Mostovková deska', group: 'Mostní prvky' },
+  { value: 'rimsa', label: 'Římsová deska', group: 'Mostní prvky' },
+  { value: 'rigel', label: 'Příčník (ригель)', group: 'Mostní prvky' },
+  { value: 'opery_ulozne_prahy', label: 'Opěry, úložné prahy', group: 'Mostní prvky' },
+  { value: 'mostni_zavirne_zidky', label: 'Závěrné zídky', group: 'Mostní prvky' },
+  { value: 'other', label: 'Jiný typ', group: '' },
 ];
 
 const SEASONS: { value: SeasonMode; label: string }[] = [
@@ -227,11 +242,16 @@ export default function PlannerPage() {
         // Try to parse JSON from approach text
         if (data.approach?.text) {
           try {
-            const jsonMatch = data.approach.text.match(/\{[\s\S]*\}/);
+            // Use non-greedy match to find the first complete JSON object
+            const jsonMatch = data.approach.text.match(/\{[\s\S]*?\}(?=[^}]*$)/)
+              || data.approach.text.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
               data.approach.parsed = JSON.parse(jsonMatch[0]);
             }
-          } catch { /* ignore parse errors */ }
+          } catch {
+            // If JSON parse fails, try to extract key-value pairs from text
+            console.warn('AI Advisor: could not parse JSON from response, using text fallback');
+          }
         }
         setAdvisor(data);
       }
@@ -347,7 +367,6 @@ export default function PlannerPage() {
           </h1>
         </div>
         <div className="r0-header-right">
-          <a href="/r0" className="r0-back-link" style={{ marginRight: 12 }}>R0 Core →</a>
           <span className="r0-badge">v1.0</span>
         </div>
       </header>
@@ -393,9 +412,24 @@ export default function PlannerPage() {
                   value={form.element_type}
                   onChange={e => update('element_type', e.target.value as StructuralElementType)}
                 >
-                  {ELEMENT_TYPES.map(t => (
-                    <option key={t.value} value={t.value}>{t.label}</option>
-                  ))}
+                  {(() => {
+                    const groups = [...new Set(ELEMENT_TYPES.map(t => t.group).filter(Boolean))];
+                    const ungrouped = ELEMENT_TYPES.filter(t => !t.group);
+                    return (
+                      <>
+                        {groups.map(g => (
+                          <optgroup key={g} label={g}>
+                            {ELEMENT_TYPES.filter(t => t.group === g).map(t => (
+                              <option key={t.value} value={t.value}>{t.label}</option>
+                            ))}
+                          </optgroup>
+                        ))}
+                        {ungrouped.map(t => (
+                          <option key={t.value} value={t.value}>{t.label}</option>
+                        ))}
+                      </>
+                    );
+                  })()}
                 </select>
               </Field>
             )}
@@ -489,8 +523,30 @@ export default function PlannerPage() {
                 </div>
               )}
               {advisor.approach && !advisor.approach.parsed && advisor.approach.text && (
-                <div style={{ marginBottom: 8, color: '#6b21a8', whiteSpace: 'pre-wrap' }}>
-                  {advisor.approach.text.substring(0, 500)}
+                <div style={{ marginBottom: 8, color: '#6b21a8', fontSize: 12, lineHeight: 1.5 }}>
+                  {advisor.approach.text
+                    .replace(/[{}"]/g, '')
+                    .replace(/,\s*/g, '\n')
+                    .split('\n')
+                    .filter((line: string) => line.trim())
+                    .slice(0, 10)
+                    .map((line: string, i: number) => {
+                      const [key, ...rest] = line.split(':');
+                      const val = rest.join(':').trim();
+                      if (!val) return <div key={i}>{line.trim()}</div>;
+                      const label: Record<string, string> = {
+                        pour_mode: 'Postup', sub_mode: 'Režim', recommended_tacts: 'Záběry',
+                        tact_volume_m3: 'Objem záběru', reasoning: 'Zdůvodnění',
+                        warnings: 'Upozornění', overtime_recommendation: 'Přesčas',
+                        pump_type: 'Čerpadlo',
+                      };
+                      return (
+                        <div key={i} style={{ marginBottom: 2 }}>
+                          <strong>{label[key.trim()] || key.trim()}:</strong>{' '}
+                          {val.replace(/[\[\]]/g, '')}
+                        </div>
+                      );
+                    })}
                 </div>
               )}
 
@@ -625,19 +681,40 @@ export default function PlannerPage() {
                     marginTop: 6, fontSize: 11, color: '#065f46',
                     maxHeight: 300, overflowY: 'auto',
                   }}>
-                    {Object.entries(advisor.productivity_norms.data).map(([key, val]) => (
-                      <div key={key} style={{ marginBottom: 8 }}>
-                        <div style={{ fontWeight: 600, color: '#047857', marginBottom: 2 }}>
-                          {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    {Object.entries(advisor.productivity_norms.data).map(([key, val]) => {
+                      const items = Array.isArray(val) ? val : typeof val === 'object' && val ? [val] : [];
+                      return (
+                        <div key={key} style={{ marginBottom: 8 }}>
+                          <div style={{ fontWeight: 600, color: '#047857', marginBottom: 2 }}>
+                            {key.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                          </div>
+                          {items.length > 0 ? (
+                            <table style={{ fontSize: 10, borderCollapse: 'collapse', width: '100%' }}>
+                              <tbody>
+                                {items.slice(0, 20).map((item: any, i: number) => (
+                                  <tr key={i} style={{ borderBottom: '1px solid #d1fae5' }}>
+                                    {typeof item === 'object' ? (
+                                      Object.entries(item).slice(0, 5).map(([k, v]) => (
+                                        <td key={k} style={{ padding: '2px 6px', verticalAlign: 'top' }}>
+                                          <span style={{ color: '#6b7280' }}>{k}: </span>
+                                          <span style={{ color: '#065f46' }}>{String(v)}</span>
+                                        </td>
+                                      ))
+                                    ) : (
+                                      <td style={{ padding: '2px 6px', color: '#065f46' }}>{String(item)}</td>
+                                    )}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          ) : (
+                            <div style={{ fontSize: 10, color: '#065f46', padding: '2px 6px' }}>
+                              {typeof val === 'string' ? val : JSON.stringify(val, null, 2).slice(0, 500)}
+                            </div>
+                          )}
                         </div>
-                        <pre style={{
-                          fontSize: 10, background: '#f0fdf4', padding: 6, borderRadius: 4,
-                          overflowX: 'auto', whiteSpace: 'pre-wrap', margin: 0,
-                        }}>
-                          {JSON.stringify(val, null, 2).slice(0, 2000)}
-                        </pre>
-                      </div>
-                    ))}
+                      );
+                    })}
                     <div style={{ fontSize: 9, color: '#6b7280', marginTop: 4 }}>
                       Zdroj: {advisor.productivity_norms.source}
                     </div>
@@ -1036,11 +1113,21 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Action buttons */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         <button
-          onClick={() => exportPlanToCSV(plan, startDate)}
+          onClick={() => exportPlanToXLSX(plan as any, startDate)}
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
-            background: 'var(--r0-slate-800)', color: 'white',
+            background: '#059669', color: 'white',
+          }}
+        >
+          Stáhnout Excel (.xlsx)
+        </button>
+        <button
+          onClick={() => exportPlanToCSV(plan, startDate)}
+          style={{
+            padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-slate-300)',
+            cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
+            background: 'white', color: 'var(--r0-slate-700)',
           }}
         >
           Stáhnout CSV
@@ -1173,14 +1260,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
           </div>
         )}
 
-        {plan.schedule.gantt && (
-          <pre style={{
-            background: 'var(--r0-slate-800)', color: '#e2e8f0',
-            padding: 16, borderRadius: 6, fontSize: 11, lineHeight: 1.5,
-            overflowX: 'auto', margin: 0, fontFamily: "'JetBrains Mono', monospace",
-          }}>
-            {plan.schedule.gantt}
-          </pre>
+        {plan.schedule.tact_details && plan.schedule.tact_details.length > 0 && (
+          <PlannerGantt
+            tact_details={plan.schedule.tact_details}
+            total_days={plan.schedule.total_days}
+            ganttText={plan.schedule.gantt}
+          />
         )}
 
         {/* Calendar timeline — map work-day milestones to dates */}
@@ -1194,20 +1279,22 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
                     <th style={thStyle}>Záběr</th>
-                    <th style={thStyle}>Montáž</th>
-                    <th style={thStyle}>Beton</th>
-                    <th style={thStyle}>Zrání</th>
-                    <th style={thStyle}>Demontáž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #3b82f6' }}>Montáž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #f59e0b' }}>Výztuž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #ef4444' }}>Beton</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #a3e635' }}>Zrání</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #8b5cf6' }}>Demontáž</th>
                   </tr>
                 </thead>
                 <tbody>
                   {plan.schedule.tact_details.map(td => (
                     <tr key={td.tact} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
-                      <td style={tdStyle}><strong>T{td.tact} (S{td.set})</strong></td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
+                      <td style={tdStyle}><strong>T{td.tact}</strong> <span style={{ color: '#94a3b8' }}>S{td.set}</span></td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #3b82f6' }}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #f59e0b' }}>{formatWorkDayRange(calendarInfo.start, td.rebar)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #ef4444' }}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #a3e635' }}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #8b5cf6' }}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
                     </tr>
                   ))}
                 </tbody>
