@@ -11,43 +11,52 @@ const SERVICES = [
   {
     icon: '🔍',
     name: 'Audit projektu',
-    desc: 'AI audit s 6 specialisty. GREEN/AMBER/RED klasifikace.',
-  },
-  {
-    icon: '📁',
-    name: 'Akumulace dokumentů',
-    desc: 'Postupné nahrávání, hash-cache, LLM souhrn.',
-  },
-  {
-    icon: '📋',
-    name: 'Shrnutí dokumentu',
-    desc: 'Adaptive extraction + summary z PDF/Excel s volbou modelu.',
+    desc: 'AI audit s 6 specialisty. GREEN/AMBER/RED klasifikace dokumentů.',
   },
   {
     icon: '🪨',
     name: 'Monolit Planner',
-    desc: 'Rozpočet betonových konstrukcí. Kč/m³ + KROS.',
+    desc: 'Rozpočet betonových konstrukcí. Kč/m³, KROS zaokrouhlení, Excel export.',
   },
   {
     icon: '📐',
     name: 'Plánovač elementu',
-    desc: 'Deterministický kalkulátor betonáže. RCPSP + Monte Carlo.',
+    desc: '20 typů prvků, Gantt harmonogram, RCPSP + Monte Carlo simulace.',
+  },
+  {
+    icon: '🏗️',
+    name: 'Objednávka betonu',
+    desc: 'Vyhledání betonáren, porovnání cen: beton + doprava + čerpadlo.',
+  },
+  {
+    icon: '⚙️',
+    name: 'Kalkulačka čerpadel',
+    desc: '3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář.',
+  },
+  {
+    icon: '📄',
+    name: 'Ceníky dodavatelů',
+    desc: 'Upload PDF ceníků → strukturovaná data. Batch srovnání dodavatelů.',
   },
   {
     icon: '🔎',
-    name: 'URS Matcher',
-    desc: 'AI párování popisů s kódy URS.',
+    name: 'Klasifikátor stavebních prací',
+    desc: 'AI párování položek rozpočtu s kódy URS. 4fázový matching.',
   },
   {
     icon: '📊',
     name: 'Registr Rozpočtů',
-    desc: 'Fuzzy search, klasifikace, Excel export.',
+    desc: '10 skupin prací, fuzzy search, AI klasifikace, Excel export.',
   },
   {
-    icon: '⚙️',
-    name: 'Modul čerpání',
-    desc: 'Logistika čerpání betonu. Připravujeme.',
-    soon: true,
+    icon: '📁',
+    name: 'Akumulace dokumentů',
+    desc: 'Postupné nahrávání souborů, hash-cache, automatický LLM souhrn.',
+  },
+  {
+    icon: '📋',
+    name: 'Shrnutí dokumentu',
+    desc: 'Adaptivní extrakce + shrnutí z PDF/Excel s volbou AI modelu.',
   },
 ];
 
@@ -55,22 +64,22 @@ const FEATURES = [
   {
     icon: <Zap size={28} />,
     title: 'AI analýza',
-    desc: 'Multi-Role systém s 6 AI specialisty analyzuje vaše dokumenty během sekund.',
+    desc: 'Multi-Role systém s 6 AI specialisty: audit, klasifikace a párování během sekund.',
   },
   {
     icon: <Shield size={28} />,
     title: 'Spolehlivost',
-    desc: 'Deterministické jádro R0 zajišťuje přesné výpočty bez halucinací.',
+    desc: 'Deterministické výpočty — RCPSP, Monte Carlo, KROS zaokrouhlení. Bez halucinací.',
   },
   {
     icon: <BarChart3 size={28} />,
-    title: 'Excel export',
-    desc: 'Profesionální výstupy s hyperlinky, KPI formulemi a KROS zaokrouhlením.',
+    title: 'Excel + Gantt',
+    desc: 'Profesionální výstupy: harmonogramy, rozpočty a ceníky s exportem do Excelu.',
   },
   {
     icon: <Layers size={28} />,
-    title: 'Modulární',
-    desc: '10 specializovaných kioscích. Každý řeší konkrétní stavební úkol.',
+    title: '10 modulů',
+    desc: 'Od auditu po čerpadla. Každý modul řeší konkrétní stavební úkol.',
   },
 ];
 
@@ -154,8 +163,8 @@ export default function LandingPage() {
           maxWidth: '600px',
           margin: '0 auto 36px',
         }}>
-          Audit rozpočtů, párování URS kódů, kalkulace betonu a&nbsp;export do Excelu.
-          Vše na jednom místě.
+          Audit rozpočtů, kalkulace betonu, harmonogramy betonáže, objednávky čerpadel
+          a&nbsp;export do Excelu. 10&nbsp;modulů na jednom místě.
         </p>
         <button
           onClick={() => navigate('/portal')}
@@ -229,7 +238,7 @@ export default function LandingPage() {
           marginBottom: '32px',
           fontSize: '15px',
         }}>
-          10 specializovaných kioscích pro stavební profesionály
+          10 specializovaných modulů pro stavební profesionály
         </p>
 
         <div style={{
@@ -240,35 +249,21 @@ export default function LandingPage() {
           {SERVICES.map((s) => (
             <div
               key={s.name}
-              onClick={s.soon ? undefined : () => navigate('/portal')}
+              onClick={() => navigate('/portal')}
               style={{
                 background: 'var(--panel-clean)',
                 borderRadius: '10px',
                 padding: '20px',
                 boxShadow: 'var(--shadow-panel)',
-                cursor: s.soon ? 'default' : 'pointer',
-                opacity: s.soon ? 0.55 : 1,
+                cursor: 'pointer',
                 transition: 'transform 0.15s',
               }}
-              onMouseEnter={(e) => { if (!s.soon) (e.currentTarget.style.transform = 'translateY(-2px)'); }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
             >
               <span style={{ fontSize: '28px', display: 'block', marginBottom: '10px' }}>{s.icon}</span>
               <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '6px', color: 'var(--text-primary)' }}>
                 {s.name}
-                {s.soon && (
-                  <span style={{
-                    fontSize: '10px',
-                    background: 'var(--status-info)',
-                    color: '#fff',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    marginLeft: '8px',
-                    verticalAlign: 'middle',
-                  }}>
-                    Brzy
-                  </span>
-                )}
               </h4>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.45 }}>
                 {s.desc}

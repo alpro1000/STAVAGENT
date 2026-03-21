@@ -51,7 +51,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
       `https://stavagent-backend-ktwx.vercel.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
   urs_matcher: {
-    label: 'URS Matcher',
+    label: 'Klasifikátor stavebních prací',
     icon: '🔎',
     buildUrl: (link, portalId) =>
       `https://urs-matcher-service-1086027517695.europe-west3.run.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,

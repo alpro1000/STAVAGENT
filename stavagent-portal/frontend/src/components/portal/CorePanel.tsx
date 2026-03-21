@@ -111,7 +111,7 @@ const KIOSK_META = {
       `https://stavagent-backend-ktwx.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}&portal_project=${portalProjectId}`,
   },
   urs_matcher: {
-    label: 'URS Matcher',
+    label: 'Klasifikátor stavebních prací',
     icon: '\u{1F50E}',
     color: '#10b981',
     bg: '#ecfdf5',

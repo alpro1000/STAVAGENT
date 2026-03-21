@@ -66,8 +66,8 @@ export const STATUS_COLORS: Record<ConnectionStatus, string> = {
 
 export const KIOSK_LABELS: Record<string, string> = {
   monolit: 'Monolit Planner',
-  registry: 'Rozpočet Registry',
-  urs_matcher: 'URS Matcher',
+  registry: 'Registr Rozpočtů',
+  urs_matcher: 'Klasifikátor stavebních prací',
   pump: 'Pump Calculator',
   formwork: 'Formwork Calculator',
 };
