@@ -1113,7 +1113,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Action buttons */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         <button
-          onClick={() => exportPlanToXLSX(plan as any, startDate)}
+          onClick={() => { exportPlanToXLSX(plan as any, startDate); }}
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
