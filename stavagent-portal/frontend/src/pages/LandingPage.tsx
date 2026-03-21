@@ -249,35 +249,21 @@ export default function LandingPage() {
           {SERVICES.map((s) => (
             <div
               key={s.name}
-              onClick={s.soon ? undefined : () => navigate('/portal')}
+              onClick={() => navigate('/portal')}
               style={{
                 background: 'var(--panel-clean)',
                 borderRadius: '10px',
                 padding: '20px',
                 boxShadow: 'var(--shadow-panel)',
-                cursor: s.soon ? 'default' : 'pointer',
-                opacity: s.soon ? 0.55 : 1,
+                cursor: 'pointer',
                 transition: 'transform 0.15s',
               }}
-              onMouseEnter={(e) => { if (!s.soon) (e.currentTarget.style.transform = 'translateY(-2px)'); }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
             >
               <span style={{ fontSize: '28px', display: 'block', marginBottom: '10px' }}>{s.icon}</span>
               <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '6px', color: 'var(--text-primary)' }}>
                 {s.name}
-                {s.soon && (
-                  <span style={{
-                    fontSize: '10px',
-                    background: 'var(--status-info)',
-                    color: '#fff',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    marginLeft: '8px',
-                    verticalAlign: 'middle',
-                  }}>
-                    Brzy
-                  </span>
-                )}
               </h4>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.45 }}>
                 {s.desc}
