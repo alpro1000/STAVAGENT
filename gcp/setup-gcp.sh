@@ -74,6 +74,9 @@ APIS=(
   "artifactregistry.googleapis.com"
   "secretmanager.googleapis.com"
   "sqladmin.googleapis.com"
+  "logging.googleapis.com"
+  "aiplatform.googleapis.com"
+  "iam.googleapis.com"
 )
 for api in "${APIS[@]}"; do
   gcloud services enable "$api" --quiet 2>/dev/null && log "API: $api" || warn "API $api (may already be enabled)"
@@ -127,9 +130,16 @@ create_secret "REGISTRY_DATABASE_URL" "$REGISTRY_DB_URL"
 # JWT Secret for Portal
 create_secret "JWT_SECRET" "stavagent-jwt-secret-$(openssl rand -hex 16)"
 
+# concrete-agent DATABASE_URL (asyncpg format for Python)
+CONCRETE_DB_URL="postgresql+asyncpg://${DB_USER}:${DB_PASS}@/${DB_USER}?host=/cloudsql/${CLOUD_SQL_CONNECTION}"
+create_secret "CONCRETE_DATABASE_URL" "$CONCRETE_DB_URL"
+
+# SERVICE_TOKEN for inter-service authentication
+create_secret "SERVICE_TOKEN" "stavagent-svc-$(openssl rand -hex 16)"
+
 # Placeholder secrets for API keys (set actual values in GCP Console)
 warn "The following API key secrets need real values — set them in GCP Console → Secret Manager:"
-for secret_name in GOOGLE_API_KEY ANTHROPIC_API_KEY GOOGLE_AI_KEY OPENAI_API_KEY PPLX_API_KEY; do
+for secret_name in GOOGLE_API_KEY ANTHROPIC_API_KEY GOOGLE_AI_KEY OPENAI_API_KEY PPLX_API_KEY PERPLEXITY_API_KEY; do
   if ! gcloud secrets describe "$secret_name" >/dev/null 2>&1; then
     echo -n "PLACEHOLDER" | gcloud secrets create "$secret_name" --data-file=- --replication-policy=automatic --quiet
     warn "  Created placeholder: $secret_name ← SET REAL VALUE!"
@@ -175,6 +185,20 @@ gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
   --role="roles/secretmanager.secretAccessor" \
   --quiet >/dev/null 2>&1
 log "Cloud Build → Secret Manager accessor"
+
+# Cloud Build needs logging (for CLOUD_LOGGING_ONLY option)
+gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
+  --member="serviceAccount:${CLOUD_BUILD_SA}" \
+  --role="roles/logging.logWriter" \
+  --quiet >/dev/null 2>&1
+log "Cloud Build → Log writer"
+
+# Cloud Run (compute SA) needs Vertex AI access
+gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
+  --member="serviceAccount:${COMPUTE_SA}" \
+  --role="roles/aiplatform.user" \
+  --quiet >/dev/null 2>&1
+log "Cloud Run → Vertex AI user"
 
 # Cloud Run (compute SA) needs Cloud SQL client
 gcloud projects add-iam-policy-binding "${PROJECT_ID}" \
@@ -240,6 +264,7 @@ echo "     - ANTHROPIC_API_KEY     (Claude API key)"
 echo "     - GOOGLE_AI_KEY         (Google AI for URS Matcher)"
 echo "     - OPENAI_API_KEY        (OpenAI for URS Matcher)"
 echo "     - PPLX_API_KEY          (Perplexity for URS Matcher)"
+echo "     - PERPLEXITY_API_KEY    (Perplexity for concrete-agent)"
 echo ""
 echo "  2. SET DATABASE PASSWORD in secret values:"
 echo "     Update PORTAL_DATABASE_URL, MONOLIT_DATABASE_URL, REGISTRY_DATABASE_URL"
