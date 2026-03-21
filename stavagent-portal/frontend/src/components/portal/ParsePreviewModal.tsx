@@ -130,7 +130,7 @@ const KIOSK_URLS: Record<string, string> = {
 const KIOSK_LABELS: Record<string, { name: string; icon: string; color: string }> = {
   monolit: { name: 'Monolit Planner', icon: '🪨', color: '#6366f1' },
   registry: { name: 'Klasifikátor stavebních prací', icon: '📊', color: '#0ea5e9' },
-  urs_matcher: { name: 'URS Matcher', icon: '🔎', color: '#10b981' },
+  urs_matcher: { name: 'Klasifikátor URS', icon: '🔎', color: '#10b981' },
 };
 
 const TYPE_LABELS: Record<string, string> = {

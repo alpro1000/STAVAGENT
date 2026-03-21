@@ -40,7 +40,7 @@ const SERVICES = [
   },
   {
     icon: '🔎',
-    name: 'URS Matcher',
+    name: 'Klasifikátor URS',
     desc: 'AI párování položek rozpočtu s kódy URS. 4fázový matching.',
   },
   {

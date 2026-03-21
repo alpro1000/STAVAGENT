@@ -120,7 +120,7 @@ const SERVICES: Service[] = [
   },
   {
     id: 'urs-matcher',
-    name: 'URS Matcher',
+    name: 'Klasifikátor URS',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
     icon: '🔎',
     url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
