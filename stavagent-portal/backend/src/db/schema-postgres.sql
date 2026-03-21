@@ -492,3 +492,71 @@ ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS monolit_position_id VARCHA
 
 CREATE INDEX IF NOT EXISTS idx_portal_positions_registry_item ON portal_positions(registry_item_id);
 
+-- ============================================================================
+-- MIGRATION 006: Unified Pump Calculator (Phase 9)
+-- pump_suppliers, pump_models, pump_accessories_catalog, pump_calculations
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS pump_suppliers (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug          VARCHAR(50) UNIQUE NOT NULL,
+  name          VARCHAR(200) NOT NULL,
+  billing_model VARCHAR(20) NOT NULL CHECK (billing_model IN ('hourly', 'hourly_plus_m3', 'per_15min', 'custom')),
+  is_builtin    BOOLEAN DEFAULT false,
+  contact       JSONB DEFAULT '{}',
+  surcharges    JSONB DEFAULT '{}',
+  hose_per_m_per_day NUMERIC(10,2),
+  metadata      JSONB DEFAULT '{}',
+  created_by    INTEGER REFERENCES users(id),
+  created_at    TIMESTAMP DEFAULT NOW(),
+  updated_at    TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS pump_models (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  supplier_id         UUID NOT NULL REFERENCES pump_suppliers(id) ON DELETE CASCADE,
+  name                VARCHAR(100) NOT NULL,
+  reach_m             NUMERIC(5,1),
+  boom_m              NUMERIC(5,1),
+  arrival_fixed_czk   NUMERIC(10,2),
+  arrival_per_km_czk  NUMERIC(10,2),
+  operation_per_h_czk NUMERIC(10,2),
+  operation_per_15min_czk NUMERIC(10,2),
+  volume_per_m3_czk   NUMERIC(10,2),
+  practical_m3_h      NUMERIC(5,1),
+  theoretical_m3_h    NUMERIC(5,1),
+  priplatek_czk_m3    NUMERIC(10,2) DEFAULT 0,
+  notes               TEXT,
+  metadata            JSONB DEFAULT '{}',
+  sort_order          INTEGER DEFAULT 0,
+  created_at          TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS pump_accessories_catalog (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  supplier_id   UUID REFERENCES pump_suppliers(id) ON DELETE CASCADE,
+  name          VARCHAR(200) NOT NULL,
+  unit          VARCHAR(10) NOT NULL,
+  czk_per_unit  NUMERIC(10,2) NOT NULL,
+  is_common     BOOLEAN DEFAULT false,
+  notes         TEXT,
+  created_at    TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS pump_calculations (
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  position_instance_id  UUID,
+  project_id            VARCHAR(255),
+  supplier_id           UUID REFERENCES pump_suppliers(id),
+  model_id              UUID REFERENCES pump_models(id),
+  input_params          JSONB NOT NULL,
+  result                JSONB NOT NULL,
+  created_by            INTEGER REFERENCES users(id),
+  created_at            TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_pump_models_supplier ON pump_models(supplier_id);
+CREATE INDEX IF NOT EXISTS idx_pump_accessories_supplier ON pump_accessories_catalog(supplier_id);
+CREATE INDEX IF NOT EXISTS idx_pump_calc_position ON pump_calculations(position_instance_id);
+CREATE INDEX IF NOT EXISTS idx_pump_calc_project ON pump_calculations(project_id);
+
