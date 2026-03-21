@@ -10,6 +10,8 @@ import Sidebar from './Sidebar';
 import KPIPanel from './KPIPanel';
 import PositionsTable from './PositionsTable';
 import PortalBreadcrumb from './PortalBreadcrumb';
+import PortalImportModal from './PortalImportModal';
+import type { PortalData } from './PortalImportModal';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { useAppContext } from '../context/AppContext';
 import { API_URL } from '../services/api';
@@ -100,7 +102,10 @@ export default function MainApp() {
     }
   }, [bridges]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Portal import: read ?portal_file_id=&portal_api= URL params on load
+  // ── Portal import: read ?portal_file_id=&portal_api= URL params on load ──
+  const [portalImportData, setPortalImportData] = useState<PortalData | null>(null);
+  const [portalImporting, setPortalImporting] = useState(false);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const portalFileId = params.get('portal_file_id');
@@ -111,7 +116,8 @@ export default function MainApp() {
     // Clean URL params immediately so refresh doesn't re-trigger
     window.history.replaceState({}, '', window.location.pathname);
 
-    const loadFromPortal = async () => {
+    // Fetch preview data and show confirmation modal
+    (async () => {
       try {
         const resp = await fetch(
           `${portalApi}/api/portal-files/${portalFileId}/parsed-data/for-kiosk/monolit`
@@ -120,91 +126,104 @@ export default function MainApp() {
         const data = await resp.json();
 
         if (!data.success || !data.sheets?.length) {
-          alert('❌ Portal vrátil prázdná data. Ujistěte se, že soubor byl nejdříve zparsován.');
+          alert('Portal vrátil prázdná data. Ujistěte se, že soubor byl nejdříve zparsován.');
           return;
         }
 
-        const bridgeId = `portal-${portalFileId.slice(0, 8)}`;
-        const bridgeName = data.file_name?.replace(/\.[^.]+$/, '') || 'Import z Portal';
-
-        // Create bridge (ignore "already exists" — idempotent)
-        const bridgeResp = await fetch(`${API_URL}/api/bridges`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bridge_id: bridgeId, project_name: bridgeName, object_name: bridgeName }),
-        });
-        if (!bridgeResp.ok) {
-          const err = await bridgeResp.json();
-          if (!err.error?.includes('already exists')) throw new Error(err.error || 'Failed to create bridge');
-        }
-
-        // Map Portal items → Monolit positions
-        const positions: Record<string, unknown>[] = [];
-        for (const sheet of data.sheets) {
-          for (const item of sheet.items) {
-            positions.push({
-              part_name: sheet.name || 'Import',
-              item_name: item.popis || item.kod || 'Položka',
-              subtype: item.detectedType || 'jine',
-              unit: item.mj || 'm3',
-              qty: typeof item.mnozstvi === 'number' ? item.mnozstvi : 0,
-              crew_size: 4,
-              wage_czk_ph: 398,
-              shift_hours: 10,
-              days: 0,
-              otskp_code: item.kod || null,
-            });
-          }
-        }
-
-        if (positions.length === 0) {
-          alert('❌ V souboru nebyly nalezeny žádné betonové pozice (beton / bednění / výztuž) pro Monolit.');
-          return;
-        }
-
-        const posResp = await fetch(`${API_URL}/api/positions`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bridge_id: bridgeId, positions }),
-        });
-        if (!posResp.ok) {
-          const err = await posResp.json();
-          throw new Error(err.error || 'Failed to create positions');
-        }
-
-        // Update bridges context + React Query cache immediately (no refetch race)
-        const newBridge = {
-          bridge_id: bridgeId,
-          project_name: bridgeName,
-          object_name: bridgeName,
-          element_count: positions.length,
-          concrete_m3: 0,
-          sum_kros_czk: 0,
-          status: 'active' as const,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-        setBridges((prev) => {
-          const existingIds = new Set(prev.map(b => b.bridge_id));
-          return existingIds.has(bridgeId) ? prev : [...prev, newBridge];
-        });
-        queryClient.setQueryData(['bridges'], (old: typeof bridges) => {
-          if (!old) return [newBridge];
-          const existingIds = new Set(old.map(b => b.bridge_id));
-          return existingIds.has(bridgeId) ? old : [...old, newBridge];
-        });
-        setSelectedBridge(bridgeId);
-        queryClient.invalidateQueries({ queryKey: ['positions'] });
-
-        alert(`✅ Import z Portal úspěšný! Načteno ${positions.length} pozic z "${bridgeName}".`);
+        setPortalImportData(data);
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : String(err);
-        alert(`❌ Import z Portal selhal: ${message}`);
+        alert(`Import z Portal selhal: ${message}`);
       }
-    };
-
-    loadFromPortal();
+    })();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handlePortalImportConfirm = async () => {
+    if (!portalImportData) return;
+    setPortalImporting(true);
+
+    try {
+      const data = portalImportData;
+      const bridgeId = `portal-${data.file_id.slice(0, 8)}`;
+      const bridgeName = data.file_name?.replace(/\.[^.]+$/, '') || 'Import z Portal';
+
+      // Create bridge (ignore "already exists" — idempotent)
+      const bridgeResp = await fetch(`${API_URL}/api/bridges`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bridge_id: bridgeId, project_name: bridgeName, object_name: bridgeName }),
+      });
+      if (!bridgeResp.ok) {
+        const err = await bridgeResp.json();
+        if (!err.error?.includes('already exists')) throw new Error(err.error || 'Failed to create bridge');
+      }
+
+      // Map Portal items → Monolit positions
+      const positions: Record<string, unknown>[] = [];
+      for (const sheet of data.sheets) {
+        for (const item of sheet.items) {
+          positions.push({
+            part_name: sheet.name || 'Import',
+            item_name: item.popis || item.kod || 'Položka',
+            subtype: item.detectedType || 'jine',
+            unit: item.mj || 'm3',
+            qty: typeof item.mnozstvi === 'number' ? item.mnozstvi : 0,
+            crew_size: 4,
+            wage_czk_ph: 398,
+            shift_hours: 10,
+            days: 0,
+            otskp_code: item.kod || null,
+          });
+        }
+      }
+
+      if (positions.length === 0) {
+        alert('V souboru nebyly nalezeny žádné betonové pozice pro Monolit.');
+        return;
+      }
+
+      const posResp = await fetch(`${API_URL}/api/positions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bridge_id: bridgeId, positions }),
+      });
+      if (!posResp.ok) {
+        const err = await posResp.json();
+        throw new Error(err.error || 'Failed to create positions');
+      }
+
+      // Update bridges context + React Query cache immediately
+      const newBridge = {
+        bridge_id: bridgeId,
+        project_name: bridgeName,
+        object_name: bridgeName,
+        element_count: positions.length,
+        concrete_m3: 0,
+        sum_kros_czk: 0,
+        status: 'active' as const,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      setBridges((prev) => {
+        const existingIds = new Set(prev.map(b => b.bridge_id));
+        return existingIds.has(bridgeId) ? prev : [...prev, newBridge];
+      });
+      queryClient.setQueryData(['bridges'], (old: typeof bridges) => {
+        if (!old) return [newBridge];
+        const existingIds = new Set(old.map(b => b.bridge_id));
+        return existingIds.has(bridgeId) ? old : [...old, newBridge];
+      });
+      setSelectedBridge(bridgeId);
+      queryClient.invalidateQueries({ queryKey: ['positions'] });
+
+      setPortalImportData(null);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      alert(`Import z Portal selhal: ${message}`);
+    } finally {
+      setPortalImporting(false);
+    }
+  };
 
   return (
     <div className="app">
@@ -224,6 +243,16 @@ export default function MainApp() {
           <PositionsTable />
         </main>
       </div>
+
+      {/* Portal Import Confirmation Modal */}
+      {portalImportData && (
+        <PortalImportModal
+          data={portalImportData}
+          onConfirm={handlePortalImportConfirm}
+          onCancel={() => setPortalImportData(null)}
+          importing={portalImporting}
+        />
+      )}
     </div>
   );
 }
