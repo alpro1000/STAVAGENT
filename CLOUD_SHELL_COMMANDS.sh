@@ -283,7 +283,7 @@ MAX_FILE_SIZE=10485760"
 # 3. monolit-planner-api (Cloud Run | Node.js/Express)
 # ----------------------------------------------------------------
 # Нет единого LLM_PROVIDER — fallback по ключам:
-#   1. GOOGLE_AI_KEY (Gemini) → прямые AI подсказки (FF_AI_DAYS_SUGGEST)
+#   1. GOOGLE_API_KEY (Gemini) → прямые AI подсказки (FF_AI_DAYS_SUGGEST)
 #   2. OPENAI_API_KEY (GPT)   → запасной вариант
 #   3. CORE_API_URL           → сложные задачи через concrete-agent Multi-Role
 # Логика в: backend/src/services/timeNormsService.js
@@ -299,7 +299,7 @@ CORS_ORIGIN=https://monolit-planner-frontend.vercel.app|\
 CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
 CORE_TIMEOUT=90000|\
 ENABLE_CORE_FALLBACK=true|\
-GOOGLE_AI_KEY=$GOOGLE_API_KEY|\
+GOOGLE_API_KEY=$GOOGLE_API_KEY|\
 GEMINI_MODEL=$PRIMARY_GEMINI|\
 GEMINI_MODEL_HEAVY=$GEMINI_HEAVY|\
 ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY|\

@@ -139,7 +139,7 @@ create_secret "SERVICE_TOKEN" "stavagent-svc-$(openssl rand -hex 16)"
 
 # Placeholder secrets for API keys (set actual values in GCP Console)
 warn "The following API key secrets need real values — set them in GCP Console → Secret Manager:"
-for secret_name in GOOGLE_API_KEY ANTHROPIC_API_KEY GOOGLE_AI_KEY OPENAI_API_KEY PPLX_API_KEY PERPLEXITY_API_KEY; do
+for secret_name in GOOGLE_API_KEY ANTHROPIC_API_KEY OPENAI_API_KEY PPLX_API_KEY PERPLEXITY_API_KEY; do
   if ! gcloud secrets describe "$secret_name" >/dev/null 2>&1; then
     echo -n "PLACEHOLDER" | gcloud secrets create "$secret_name" --data-file=- --replication-policy=automatic --quiet
     warn "  Created placeholder: $secret_name ← SET REAL VALUE!"
@@ -261,7 +261,7 @@ echo ""
 echo "     Required secrets:"
 echo "     - GOOGLE_API_KEY        (Gemini API key)"
 echo "     - ANTHROPIC_API_KEY     (Claude API key)"
-echo "     - GOOGLE_AI_KEY         (Google AI for URS Matcher)"
+echo "     - GEMINI_API_KEY        (Gemini alias, optional)"
 echo "     - OPENAI_API_KEY        (OpenAI for URS Matcher)"
 echo "     - PPLX_API_KEY          (Perplexity for URS Matcher)"
 echo "     - PERPLEXITY_API_KEY    (Perplexity for concrete-agent)"
