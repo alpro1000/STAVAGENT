@@ -198,9 +198,11 @@ VITE_DISABLE_AUTH=true
 
 **Awaiting user action:**
 - MASTER_ENCRYPTION_KEY: `openssl rand -hex 32` → Secret Manager (for Sprint 2 Service Connections)
-- Cloud Build setup (if not done): run `./gcp/setup-gcp.sh` in Cloud Shell
-- Cloud Build triggers import (if not done): `for f in triggers/*.yaml; do gcloud builds triggers import --source="$f" --region=europe-west3; done`
 - Set real API key values in Secret Manager (GOOGLE_API_KEY, ANTHROPIC_API_KEY, etc.)
+
+**Completed (2026-03-21):**
+- Cloud Build setup (`setup-gcp.sh`) — done
+- Cloud Build triggers imported — active
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 

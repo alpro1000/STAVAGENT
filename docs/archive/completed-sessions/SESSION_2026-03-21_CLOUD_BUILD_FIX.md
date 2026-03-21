@@ -76,16 +76,9 @@ Audit log показал, что Cloud Build SA (`1086027517695@cloudbuild.gserv
 
 ---
 
-## Необходимые действия после мержа
+## Действия после мержа
 
-1. **Запустить `./gcp/setup-gcp.sh`** в Cloud Shell для применения новых API, секретов и IAM bindings
-2. **Импортировать триггеры:**
-   ```bash
-   for f in triggers/*.yaml; do
-     gcloud builds triggers import --source="$f" --region=europe-west3
-   done
-   ```
-3. **Заполнить реальные значения** для placeholder секретов в Secret Manager
+Деплой выполнен пользователем (setup-gcp.sh + импорт триггеров). Cloud Build триггеры активны.
 
 ---
 
@@ -94,5 +87,4 @@ Audit log показал, что Cloud Build SA (`1086027517695@cloudbuild.gserv
 - [x] Диагностика FAILED_PRECONDITION
 - [x] Исправление конфигурации
 - [x] Коммит и push
-- [ ] Запуск setup-gcp.sh (требует Cloud Shell)
-- [ ] Импорт триггеров (требует Cloud Shell)
+- [x] Деплой выполнен (setup-gcp.sh + импорт триггеров)
