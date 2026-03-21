@@ -175,7 +175,7 @@ const DEFAULT_FORM: FormState = {
   shift_h: 10,
   wage_czk_h: 398,
   formwork_system_name: '',
-  enable_monte_carlo: false,
+  enable_monte_carlo: true,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
 };
@@ -1221,10 +1221,19 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
             <Row label="Doba / záběr" value={`${formatNum(plan.rebar.duration_days)} dní`} />
           </div>
           <div>
-            <Row label="Pracovníků (doporuč.)" value={plan.rebar.recommended_crew.toString()} />
+            <Row label="Pracovníků (výpočet)" value={plan.rebar.crew_size.toString()} />
+            {plan.rebar.recommended_crew !== plan.rebar.crew_size && (
+              <Row label="Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} />
+            )}
             <Row label="Norma" value={`${plan.rebar.norm_h_per_t} h/t`} />
             <Row label="Náklady / záběr" value={formatCZK(plan.rebar.cost_labor)} />
           </div>
+        </div>
+        {/* PERT 3-point estimate */}
+        <div style={{ marginTop: 8, fontSize: 13, color: '#666', display: 'flex', gap: 16 }}>
+          <span>PERT: optimistická {formatNum(plan.rebar.optimistic_days)} d</span>
+          <span>| nejpravděpodobnější {formatNum(plan.rebar.most_likely_days)} d</span>
+          <span>| pesimistická {formatNum(plan.rebar.pessimistic_days)} d</span>
         </div>
       </Card>
 
