@@ -219,8 +219,8 @@ PATCH  /api/connections/kiosk-toggles
 
 ### 7. Universal Parser Phase 2 — Portal Frontend + Kiosk Integration
 
-**Status:** ⏳ Phase 1 Complete (backend), Phase 2 planned
-**Branch:** `claude/continue-implementation-NEOkf`
+**Status:** ✅ Phase 2 Complete
+**Branch:** `claude/universal-parser-phase-2-0Fu4g`
 **Service:** Portal + All Kiosks
 
 **Phase 1 (✅ Done):**
@@ -229,13 +229,14 @@ PATCH  /api/connections/kiosk-toggles
 - [x] API endpoints: parse, parsed-data, summary, for-kiosk/:type
 - [x] Auto-parse on upload + 11 tests
 
-**Phase 2 (⏳ Next):**
-- [ ] Portal Frontend: parse preview UI (summary, sheets, work types)
-- [ ] Portal Frontend: "Send to Kiosk" buttons from preview
-- [ ] Portal Frontend: parse status indicator (parsing → parsed → error)
-- [ ] Monolit: "Load from Portal" option (GET /for-kiosk/monolit)
-- [ ] Registry: "Load from Portal" option (GET /for-kiosk/registry)
-- [ ] URS Matcher: "Load from Portal" option (GET /for-kiosk/urs_matcher)
+**Phase 2 (✅ Done):**
+- [x] Portal Frontend: ParsePreviewPage.tsx — full-page preview (summary, sheets, work types, positions table)
+- [x] Portal Frontend: "Open in Kiosk" buttons from preview (Monolit, Registry, URS Matcher)
+- [x] Portal Frontend: parse status indicator (parsing → parsed → error) — in CorePanel
+- [x] CorePanel: "Pozice" button linking to ParsePreviewPage
+- [x] Monolit: "Load from Portal" — auto-detect ?portal_file_id=, confirmation modal, import positions
+- [x] Registry: "Load from Portal" — auto-detect ?portal_file_id=, create project in Zustand store
+- [x] URS Matcher: "Load from Portal" — auto-detect ?portal_file_id=, pre-fill batch textarea
 
 **Phase 3 (planned):**
 - [ ] Bi-directional sync: kiosks save results back to Portal
