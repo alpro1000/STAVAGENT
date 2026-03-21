@@ -24,11 +24,11 @@ interface PlannerGanttProps {
 }
 
 const PHASES = [
-  { key: 'assembly', label: 'Montáž', color: '#3b82f6', textColor: '#1e3a5f' },
-  { key: 'rebar', label: 'Výztuž', color: '#f59e0b', textColor: '#78350f' },
-  { key: 'concrete', label: 'Beton', color: '#ef4444', textColor: '#7f1d1d' },
-  { key: 'curing', label: 'Zrání', color: '#a3e635', textColor: '#365314' },
-  { key: 'stripping', label: 'Demontáž', color: '#8b5cf6', textColor: '#3b0764' },
+  { key: 'assembly', label: 'Montáž', color: 'var(--r0-phase-assembly)' },
+  { key: 'rebar', label: 'Výztuž', color: 'var(--r0-phase-rebar)' },
+  { key: 'concrete', label: 'Beton', color: 'var(--r0-phase-concrete)' },
+  { key: 'curing', label: 'Zrání', color: 'var(--r0-phase-curing)' },
+  { key: 'stripping', label: 'Demontáž', color: 'var(--r0-phase-stripping)' },
 ] as const;
 
 type PhaseKey = typeof PHASES[number]['key'];
@@ -63,10 +63,10 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
                   width: dayWidth,
                   textAlign: 'center',
                   fontSize: 10,
-                  color: d % 5 === 0 ? '#334155' : '#94a3b8',
+                  color: d % 5 === 0 ? 'var(--r0-slate-700)' : 'var(--r0-slate-400)',
                   fontWeight: d % 5 === 0 ? 700 : 400,
-                  fontFamily: "'JetBrains Mono', monospace",
-                  borderLeft: d % 5 === 0 ? '1px solid #e2e8f0' : 'none',
+                  fontFamily: 'var(--r0-font-mono)',
+                  borderLeft: d % 5 === 0 ? '1px solid var(--r0-slate-200)' : 'none',
                   paddingBottom: 4,
                 }}
               >
@@ -81,23 +81,23 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
               {/* Label */}
               <div style={{
                 width: 100, flexShrink: 0, paddingRight: 8,
-                fontSize: 11, fontWeight: 600, color: '#475569',
-                textAlign: 'right', fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 11, fontWeight: 600, color: 'var(--r0-slate-600)',
+                textAlign: 'right', fontFamily: 'var(--r0-font-mono)',
               }}>
-                T{td.tact} <span style={{ color: '#94a3b8', fontWeight: 400 }}>(S{td.set})</span>
+                T{td.tact} <span style={{ color: 'var(--r0-slate-400)', fontWeight: 400 }}>(S{td.set})</span>
               </div>
 
               {/* Bar area */}
               <div style={{
                 position: 'relative', height: 22, flex: 1,
-                background: '#f8fafc',
+                background: 'var(--r0-slate-50)',
                 borderRadius: 3,
               }}>
                 {/* Grid lines */}
                 {Array.from({ length: days }, (_, d) => d % 5 === 0 ? (
                   <div key={d} style={{
                     position: 'absolute', left: d * dayWidth, top: 0, bottom: 0,
-                    width: 1, background: '#e2e8f0',
+                    width: 1, background: 'var(--r0-slate-200)',
                   }} />
                 ) : null)}
 
@@ -148,13 +148,13 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
       {/* Legend */}
       <div style={{
         display: 'flex', gap: 12, flexWrap: 'wrap',
-        padding: '8px 12px', background: '#f8fafc', borderRadius: 6,
+        padding: '8px 12px', background: 'var(--r0-slate-50)', borderRadius: 6,
         marginBottom: 8,
       }}>
         {PHASES.map(p => (
           <div key={p.key} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <div style={{ width: 14, height: 10, borderRadius: 2, background: p.color }} />
-            <span style={{ fontSize: 11, color: '#475569' }}>{p.label}</span>
+            <span style={{ fontSize: 11, color: 'var(--r0-slate-600)' }}>{p.label}</span>
           </div>
         ))}
       </div>
@@ -165,7 +165,7 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
           <button
             onClick={() => setShowText(!showText)}
             style={{
-              background: 'none', border: 'none', color: '#6366f1',
+              background: 'none', border: 'none', color: 'var(--r0-indigo)',
               cursor: 'pointer', fontSize: 11, padding: 0, fontFamily: 'inherit',
             }}
           >
@@ -173,9 +173,9 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
           </button>
           {showText && (
             <pre style={{
-              background: '#1e293b', color: '#e2e8f0',
+              background: 'var(--r0-slate-800)', color: 'var(--r0-slate-200)',
               padding: 12, borderRadius: 6, fontSize: 10, lineHeight: 1.5,
-              overflowX: 'auto', margin: '6px 0 0', fontFamily: "'JetBrains Mono', monospace",
+              overflowX: 'auto', margin: '6px 0 0', fontFamily: 'var(--r0-font-mono)',
             }}>
               {ganttText}
             </pre>
@@ -185,4 +185,3 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
     </div>
   );
 }
-

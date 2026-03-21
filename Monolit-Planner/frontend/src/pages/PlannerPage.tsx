@@ -440,8 +440,8 @@ export default function PlannerPage() {
             <>
               <div style={{
                 padding: '10px 12px', marginBottom: 12,
-                background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 6,
-                fontSize: 11, color: '#0c4a6e', lineHeight: 1.6,
+                background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 6,
+                fontSize: 11, color: 'var(--r0-info-text)', lineHeight: 1.6,
               }}>
                 <strong>Mostovková deska — logika záběrů:</strong><br/>
                 <strong>Bez dilatačních spár:</strong> zálivka v jednom průchodu → navýšit čerpadla, osádku a kapacitu čerstvého betonu.<br/>
@@ -467,7 +467,7 @@ export default function PlannerPage() {
             disabled={advisorLoading}
             style={{
               width: '100%', padding: '10px', marginBottom: 12,
-              background: advisorLoading ? 'var(--r0-slate-300)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              background: advisorLoading ? 'var(--r0-slate-300)' : 'linear-gradient(135deg, var(--r0-indigo), var(--r0-purple))',
               color: 'white', border: 'none', borderRadius: 6,
               fontSize: 13, fontWeight: 600, cursor: advisorLoading ? 'wait' : 'pointer',
               fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
@@ -480,50 +480,50 @@ export default function PlannerPage() {
           {advisor && (
             <div style={{
               marginBottom: 12, padding: '10px 12px',
-              background: '#f5f3ff', border: '1px solid #c4b5fd', borderRadius: 6,
+              background: 'var(--r0-ai-bg)', border: '1px solid var(--r0-ai-border)', borderRadius: 6,
               fontSize: 12, lineHeight: 1.6,
             }}>
               {/* Approach recommendation */}
               {advisor.approach?.parsed && (
                 <div style={{ marginBottom: 8 }}>
-                  <div style={{ fontWeight: 700, color: '#5b21b6', marginBottom: 4 }}>Doporučený postup:</div>
+                  <div style={{ fontWeight: 700, color: 'var(--r0-ai-text)', marginBottom: 4 }}>Doporučený postup:</div>
                   <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 4 }}>
                     <span style={{
                       padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
-                      background: advisor.approach.parsed.pour_mode === 'sectional' ? '#dbeafe' : '#dcfce7',
-                      color: advisor.approach.parsed.pour_mode === 'sectional' ? '#1e40af' : '#166534',
+                      background: advisor.approach.parsed.pour_mode === 'sectional' ? 'var(--r0-badge-blue-bg)' : 'var(--r0-badge-green-bg)',
+                      color: advisor.approach.parsed.pour_mode === 'sectional' ? 'var(--r0-badge-blue-text)' : 'var(--r0-badge-green-text)',
                     }}>
                       {advisor.approach.parsed.pour_mode === 'sectional' ? 'Záběrový' : 'Monolitický'}
                     </span>
                     <span style={{
                       padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
-                      background: '#fef3c7', color: '#92400e',
+                      background: 'var(--r0-badge-amber-bg)', color: 'var(--r0-warn-text)',
                     }}>
                       {advisor.approach.parsed.sub_mode || 'auto'}
                     </span>
                     {advisor.approach.parsed.recommended_tacts && (
                       <span style={{
                         padding: '2px 8px', borderRadius: 4, fontSize: 11,
-                        background: '#e0e7ff', color: '#3730a3',
+                        background: 'var(--r0-badge-indigo-bg)', color: 'var(--r0-badge-indigo-text)',
                       }}>
                         {advisor.approach.parsed.recommended_tacts} záběrů
                       </span>
                     )}
                   </div>
                   {advisor.approach.parsed.reasoning && (
-                    <div style={{ color: '#6b21a8', fontSize: 11 }}>
+                    <div style={{ color: 'var(--r0-ai-muted)', fontSize: 11 }}>
                       {advisor.approach.parsed.reasoning}
                     </div>
                   )}
                   {advisor.approach.parsed.pump_type && (
-                    <div style={{ color: '#6b21a8', fontSize: 11, marginTop: 2 }}>
+                    <div style={{ color: 'var(--r0-ai-muted)', fontSize: 11, marginTop: 2 }}>
                       Čerpadlo: <strong>{advisor.approach.parsed.pump_type}</strong>
                     </div>
                   )}
                 </div>
               )}
               {advisor.approach && !advisor.approach.parsed && advisor.approach.text && (
-                <div style={{ marginBottom: 8, color: '#6b21a8', fontSize: 12, lineHeight: 1.5 }}>
+                <div style={{ marginBottom: 8, color: 'var(--r0-ai-muted)', fontSize: 12, lineHeight: 1.5 }}>
                   {advisor.approach.text
                     .replace(/[{}"]/g, '')
                     .replace(/,\s*/g, '\n')
@@ -552,12 +552,12 @@ export default function PlannerPage() {
 
               {/* Formwork suggestion */}
               {advisor.formwork_suggestion?.recommended && (
-                <div style={{ marginBottom: 8, paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
-                  <div style={{ fontWeight: 700, color: '#5b21b6', marginBottom: 4 }}>Doporučené bednění:</div>
+                <div style={{ marginBottom: 8, paddingTop: 8, borderTop: '1px solid var(--r0-ai-divider)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--r0-ai-text)', marginBottom: 4 }}>Doporučené bednění:</div>
                   <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                     <span style={{
                       padding: '2px 8px', borderRadius: 4, fontSize: 11, fontWeight: 600,
-                      background: '#d1fae5', color: '#065f46',
+                      background: 'var(--r0-norms-border)', color: 'var(--r0-norms-text)',
                     }}>
                       {advisor.formwork_suggestion.recommended.name}
                     </span>
@@ -570,15 +570,15 @@ export default function PlannerPage() {
                         setShowAdvanced(true);
                       }}
                       style={{
-                        padding: '2px 8px', border: '1px solid #6366f1', borderRadius: 4,
-                        background: 'white', color: '#6366f1', fontSize: 10, cursor: 'pointer',
+                        padding: '2px 8px', border: '1px solid var(--r0-indigo)', borderRadius: 4,
+                        background: 'white', color: 'var(--r0-indigo)', fontSize: 10, cursor: 'pointer',
                         fontFamily: 'inherit',
                       }}
                     >
                       Použít
                     </button>
                   </div>
-                  <div style={{ fontSize: 11, color: '#7c3aed', marginTop: 4 }}>
+                  <div style={{ fontSize: 11, color: 'var(--r0-ai-muted)', marginTop: 4 }}>
                     {advisor.formwork_suggestion.tip}
                   </div>
                   {advisor.formwork_suggestion.alternatives.length > 0 && (
@@ -591,11 +591,11 @@ export default function PlannerPage() {
 
               {/* Norms */}
               {advisor.norms?.answer && (
-                <div style={{ paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
+                <div style={{ paddingTop: 8, borderTop: '1px solid var(--r0-ai-divider)' }}>
                   <button
                     onClick={() => setShowNorms(!showNorms)}
                     style={{
-                      background: 'none', border: 'none', color: '#6366f1', cursor: 'pointer',
+                      background: 'none', border: 'none', color: 'var(--r0-indigo)', cursor: 'pointer',
                       fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'inherit',
                     }}
                   >
@@ -604,7 +604,7 @@ export default function PlannerPage() {
                   </button>
                   {showNorms && (
                     <div style={{
-                      marginTop: 6, fontSize: 11, color: '#4c1d95',
+                      marginTop: 6, fontSize: 11, color: 'var(--r0-ai-text)',
                       whiteSpace: 'pre-wrap', lineHeight: 1.5,
                       maxHeight: 200, overflowY: 'auto',
                     }}>
@@ -615,13 +615,13 @@ export default function PlannerPage() {
               )}
 
               {/* Productivity Norms (from methvin.co) */}
-              <div style={{ paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
+              <div style={{ paddingTop: 8, borderTop: '1px solid var(--r0-ai-divider)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   {advisor.productivity_norms?.data && Object.keys(advisor.productivity_norms.data).length > 0 ? (
                     <button
                       onClick={() => setShowProductivityNorms(!showProductivityNorms)}
                       style={{
-                        background: 'none', border: 'none', color: '#059669', cursor: 'pointer',
+                        background: 'none', border: 'none', color: 'var(--r0-green-dark)', cursor: 'pointer',
                         fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'inherit',
                       }}
                     >
@@ -629,7 +629,7 @@ export default function PlannerPage() {
                       {` — ${advisor.productivity_norms.work_types?.join(', ')}`}
                     </button>
                   ) : (
-                    <span style={{ fontSize: 11, color: '#9ca3af' }}>
+                    <span style={{ fontSize: 11, color: 'var(--r0-slate-400)' }}>
                       Výrobní normy zatím nestaženy
                     </span>
                   )}
@@ -663,8 +663,8 @@ export default function PlannerPage() {
                     }}
                     style={{
                       fontSize: 10, padding: '2px 8px', borderRadius: 4,
-                      border: '1px solid #d1d5db', background: normsScraping ? '#f3f4f6' : '#ecfdf5',
-                      color: '#059669', cursor: normsScraping ? 'wait' : 'pointer',
+                      border: '1px solid var(--r0-slate-300)', background: normsScraping ? 'var(--r0-slate-100)' : 'var(--r0-norms-bg)',
+                      color: 'var(--r0-green-dark)', cursor: normsScraping ? 'wait' : 'pointer',
                       fontFamily: 'inherit', fontWeight: 500,
                     }}
                   >
@@ -672,50 +672,50 @@ export default function PlannerPage() {
                   </button>
                 </div>
                 {normsScrapeResult && (
-                  <div style={{ fontSize: 10, color: '#059669', marginTop: 4 }}>
+                  <div style={{ fontSize: 10, color: 'var(--r0-green-dark)', marginTop: 4 }}>
                     {normsScrapeResult}
                   </div>
                 )}
                 {showProductivityNorms && advisor.productivity_norms?.data && (
                   <div style={{
-                    marginTop: 6, fontSize: 11, color: '#065f46',
+                    marginTop: 6, fontSize: 11, color: 'var(--r0-norms-text)',
                     maxHeight: 300, overflowY: 'auto',
                   }}>
                     {Object.entries(advisor.productivity_norms.data).map(([key, val]) => {
                       const items = Array.isArray(val) ? val : typeof val === 'object' && val ? [val] : [];
                       return (
                         <div key={key} style={{ marginBottom: 8 }}>
-                          <div style={{ fontWeight: 600, color: '#047857', marginBottom: 2 }}>
+                          <div style={{ fontWeight: 600, color: 'var(--r0-norms-accent)', marginBottom: 2 }}>
                             {key.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
                           </div>
                           {items.length > 0 ? (
                             <table style={{ fontSize: 10, borderCollapse: 'collapse', width: '100%' }}>
                               <tbody>
                                 {items.slice(0, 20).map((item: any, i: number) => (
-                                  <tr key={i} style={{ borderBottom: '1px solid #d1fae5' }}>
+                                  <tr key={i} style={{ borderBottom: '1px solid var(--r0-norms-border)' }}>
                                     {typeof item === 'object' ? (
                                       Object.entries(item).slice(0, 5).map(([k, v]) => (
                                         <td key={k} style={{ padding: '2px 6px', verticalAlign: 'top' }}>
-                                          <span style={{ color: '#6b7280' }}>{k}: </span>
-                                          <span style={{ color: '#065f46' }}>{String(v)}</span>
+                                          <span style={{ color: 'var(--r0-muted)' }}>{k}: </span>
+                                          <span style={{ color: 'var(--r0-norms-text)' }}>{String(v)}</span>
                                         </td>
                                       ))
                                     ) : (
-                                      <td style={{ padding: '2px 6px', color: '#065f46' }}>{String(item)}</td>
+                                      <td style={{ padding: '2px 6px', color: 'var(--r0-norms-text)' }}>{String(item)}</td>
                                     )}
                                   </tr>
                                 ))}
                               </tbody>
                             </table>
                           ) : (
-                            <div style={{ fontSize: 10, color: '#065f46', padding: '2px 6px' }}>
+                            <div style={{ fontSize: 10, color: 'var(--r0-norms-text)', padding: '2px 6px' }}>
                               {typeof val === 'string' ? val : JSON.stringify(val, null, 2).slice(0, 500)}
                             </div>
                           )}
                         </div>
                       );
                     })}
-                    <div style={{ fontSize: 9, color: '#6b7280', marginTop: 4 }}>
+                    <div style={{ fontSize: 9, color: 'var(--r0-muted)', marginTop: 4 }}>
                       Zdroj: {advisor.productivity_norms.source}
                     </div>
                   </div>
@@ -804,8 +804,8 @@ export default function PlannerPage() {
                 {!form.has_dilatacni_spary && (
                   <div style={{
                     padding: '8px 10px', marginBottom: 8,
-                    background: '#fef9c3', border: '1px solid #fde68a', borderRadius: 4,
-                    fontSize: 11, color: '#92400e', lineHeight: 1.5,
+                    background: 'var(--r0-warn-bg)', border: '1px solid var(--r0-warn-border)', borderRadius: 4,
+                    fontSize: 11, color: 'var(--r0-warn-text)', lineHeight: 1.5,
                   }}>
                     Bez dilatačních spár = monolitický záběr v jednom průchodu.
                     Zajistěte dostatečnou kapacitu čerpadla a betonárny.
@@ -844,8 +844,8 @@ export default function PlannerPage() {
               <>
                 <div style={{
                   padding: '8px 10px', marginBottom: 10,
-                  background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 4,
-                  fontSize: 11, color: '#1e40af', lineHeight: 1.5,
+                  background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
+                  fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
                 }}>
                   Pro základy, pilíře, opěry: každý element = 1 záběr.<br/>
                   Např. 569 m³ na 2 opěry + 8 pilířů = 10 záběrů.
@@ -1013,8 +1013,8 @@ export default function PlannerPage() {
 
           {error && (
             <div style={{
-              marginTop: 12, padding: 12, background: '#fef2f2',
-              border: '1px solid #fecaca', borderRadius: 6, color: '#dc2626', fontSize: 13,
+              marginTop: 12, padding: 12, background: 'var(--r0-error-bg)',
+              border: '1px solid var(--r0-error-border)', borderRadius: 6, color: 'var(--r0-error-text)', fontSize: 13,
             }}>
               {error}
             </div>
@@ -1117,7 +1117,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
-            background: '#059669', color: 'white',
+            background: 'var(--r0-green-dark)', color: 'white',
           }}
         >
           Stáhnout Excel (.xlsx)
@@ -1158,7 +1158,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Warnings */}
       {plan.warnings.length > 0 && (
         <Card title="Varování" icon="⚠️" borderColor="var(--r0-orange)">
-          <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, color: '#92400e' }}>
+          <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, color: 'var(--r0-warn-text)' }}>
             {plan.warnings.map((w, i) => <li key={i} style={{ marginBottom: 4 }}>{w}</li>)}
           </ul>
         </Card>
@@ -1279,22 +1279,22 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
                     <th style={thStyle}>Záběr</th>
-                    <th style={{ ...thStyle, borderLeft: '3px solid #3b82f6' }}>Montáž</th>
-                    <th style={{ ...thStyle, borderLeft: '3px solid #f59e0b' }}>Výztuž</th>
-                    <th style={{ ...thStyle, borderLeft: '3px solid #ef4444' }}>Beton</th>
-                    <th style={{ ...thStyle, borderLeft: '3px solid #a3e635' }}>Zrání</th>
-                    <th style={{ ...thStyle, borderLeft: '3px solid #8b5cf6' }}>Demontáž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid var(--r0-phase-assembly)' }}>Montáž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid var(--r0-phase-rebar)' }}>Výztuž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid var(--r0-phase-concrete)' }}>Beton</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid var(--r0-phase-curing)' }}>Zrání</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid var(--r0-phase-stripping)' }}>Demontáž</th>
                   </tr>
                 </thead>
                 <tbody>
                   {plan.schedule.tact_details.map(td => (
                     <tr key={td.tact} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
-                      <td style={tdStyle}><strong>T{td.tact}</strong> <span style={{ color: '#94a3b8' }}>S{td.set}</span></td>
-                      <td style={{ ...tdStyle, borderLeft: '3px solid #3b82f6' }}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
-                      <td style={{ ...tdStyle, borderLeft: '3px solid #f59e0b' }}>{formatWorkDayRange(calendarInfo.start, td.rebar)}</td>
-                      <td style={{ ...tdStyle, borderLeft: '3px solid #ef4444' }}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
-                      <td style={{ ...tdStyle, borderLeft: '3px solid #a3e635' }}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
-                      <td style={{ ...tdStyle, borderLeft: '3px solid #8b5cf6' }}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
+                      <td style={tdStyle}><strong>T{td.tact}</strong> <span style={{ color: 'var(--r0-slate-400)' }}>S{td.set}</span></td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid var(--r0-phase-assembly)' }}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid var(--r0-phase-rebar)' }}>{formatWorkDayRange(calendarInfo.start, td.rebar)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid var(--r0-phase-concrete)' }}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid var(--r0-phase-curing)' }}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid var(--r0-phase-stripping)' }}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
                     </tr>
                   ))}
                 </tbody>
