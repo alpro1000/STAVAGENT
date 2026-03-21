@@ -11,9 +11,10 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X, Send, FileText, CheckCircle, AlertTriangle, XCircle,
-  RefreshCw, Upload, Loader, BarChart2, ExternalLink, ChevronDown, ChevronUp, Trash2
+  RefreshCw, Upload, Loader, BarChart2, ExternalLink, ChevronDown, ChevronUp, Trash2, Table2
 } from 'lucide-react';
 import { API_URL } from '../../services/api';
 import { KioskLinksPanel } from './KioskLinksPanel';
@@ -153,6 +154,7 @@ function formatCZK(value: number): string {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function CorePanel({ project, onClose, onRefresh, onDelete, inline = false }: CorePanelProps) {
+  const navigate = useNavigate();
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -538,18 +540,32 @@ export default function CorePanel({ project, onClose, onRefresh, onDelete, inlin
                       {getParseStatusBadge(file.parse_status)}
                       <div style={{ display: 'flex', gap: '6px' }}>
                         {file.parse_status === 'parsed' && (
-                          <button
-                            onClick={() => loadParsedSummary(file.file_id)}
-                            style={{
-                              display: 'inline-flex', alignItems: 'center', gap: '4px',
-                              fontSize: '11px', padding: '3px 8px', borderRadius: '6px',
-                              border: '1px solid #3b82f6', color: '#3b82f6', background: '#eff6ff',
-                              cursor: 'pointer', fontWeight: 500,
-                            }}
-                          >
-                            <BarChart2 style={{ width: 11, height: 11 }} />
-                            {selectedFileId === file.file_id ? 'Skrýt' : 'Souhrn'}
-                          </button>
+                          <>
+                            <button
+                              onClick={() => loadParsedSummary(file.file_id)}
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                                fontSize: '11px', padding: '3px 8px', borderRadius: '6px',
+                                border: '1px solid #3b82f6', color: '#3b82f6', background: '#eff6ff',
+                                cursor: 'pointer', fontWeight: 500,
+                              }}
+                            >
+                              <BarChart2 style={{ width: 11, height: 11 }} />
+                              {selectedFileId === file.file_id ? 'Skrýt' : 'Souhrn'}
+                            </button>
+                            <button
+                              onClick={() => navigate(`/parse-preview/${file.file_id}`)}
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                                fontSize: '11px', padding: '3px 8px', borderRadius: '6px',
+                                border: '1px solid #8b5cf6', color: '#8b5cf6', background: '#f5f3ff',
+                                cursor: 'pointer', fontWeight: 500,
+                              }}
+                            >
+                              <Table2 style={{ width: 11, height: 11 }} />
+                              Pozice
+                            </button>
+                          </>
                         )}
                         {isExcelFile(file) && (file.parse_status === 'not_parsed' || file.parse_status === 'error' || file.parse_status == null) && (
                           <button
