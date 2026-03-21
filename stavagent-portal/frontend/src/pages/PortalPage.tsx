@@ -137,15 +137,6 @@ const SERVICES: Service[] = [
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
   {
-    id: 'r0-calculators',
-    name: 'R0 Kalkulátory',
-    description: 'Detérministické jádro: výpočet výztuže, bednění, betonáže. Scheduling Engine s kritickou cestou. AI-prořab navrhuje, jádro počítá.',
-    icon: '🧮',
-    url: 'https://monolit-planner-frontend.vercel.app/r0',
-    status: 'beta',
-    tags: ['Deterministické', 'Scheduling', 'AI-prořab', 'Traceability']
-  },
-  {
     id: 'element-planner',
     name: 'Plánovač elementu',
     description: 'Plánování betonáže mostních a stavebních elementů. AI doporučení podstu, bednění, normy ČSN EN. Skruž, záběry, šachovnicový postup, maturity model.',
