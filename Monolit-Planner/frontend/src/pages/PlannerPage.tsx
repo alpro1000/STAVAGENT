@@ -21,7 +21,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -123,6 +123,7 @@ interface FormState {
   volume_m3: number;
   formwork_area_m2: string; // empty = auto-estimate
   rebar_mass_kg: string;    // empty = auto-estimate
+  height_m: string;         // empty = not set (props can't be calculated)
   tact_mode: TactMode;      // 'spary' = auto from joints, 'manual' = direct input
   has_dilatacni_spary: boolean;
   spara_spacing_m: number;
@@ -155,6 +156,7 @@ const DEFAULT_FORM: FormState = {
   volume_m3: 120,
   formwork_area_m2: '',
   rebar_mass_kg: '',
+  height_m: '',
   tact_mode: 'spary',
   has_dilatacni_spary: true,
   spara_spacing_m: 10,
@@ -319,6 +321,9 @@ export default function PlannerPage() {
         if (form.scheduling_mode_override) {
           input.scheduling_mode_override = form.scheduling_mode_override;
         }
+      }
+      if (form.height_m) {
+        input.height_m = parseFloat(form.height_m);
       }
       if (form.formwork_system_name) {
         input.formwork_system_name = form.formwork_system_name;
@@ -985,6 +990,44 @@ export default function PlannerPage() {
                 placeholder="automatický odhad"
               />
             </Field>
+
+            {/* ─── Height + Element Dimension Hint ─── */}
+            {(() => {
+              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              const hint = ELEMENT_DIMENSION_HINTS[elemType];
+              if (!hint) return null;
+              return (
+                <>
+                  {hint.has_height && (
+                    <Field
+                      label="Výška (m)"
+                      hint={hint.typical_height_range
+                        ? `typicky ${hint.typical_height_range[0]}–${hint.typical_height_range[1]} m`
+                        : 'pro výpočet podpěr'}
+                    >
+                      <input
+                        type="number"
+                        style={inputStyle}
+                        value={form.height_m}
+                        onChange={e => update('height_m', e.target.value)}
+                        placeholder={hint.typical_height_range
+                          ? `${hint.typical_height_range[0]}–${hint.typical_height_range[1]} m`
+                          : 'výška elementu'}
+                        min={0.1}
+                        step={0.1}
+                      />
+                    </Field>
+                  )}
+                  <div style={{
+                    padding: '6px 10px', marginBottom: 8,
+                    background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
+                    fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
+                  }}>
+                    {hint.hint_cs}
+                  </div>
+                </>
+              );
+            })()}
           </Section>
 
           {/* ─── Záběry (Tacts) ─── */}
@@ -1464,6 +1507,38 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
           <span>| pesimistická {formatNum(plan.rebar.pessimistic_days)} d</span>
         </div>
       </Card>
+
+      {/* Props (podpěry) */}
+      {plan.props && plan.props.needed && (
+        <Card title="Podpěrná konstrukce (stojky / skruž)" icon="🏗️">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+            <div>
+              <div style={subTitle}>Systém</div>
+              <Row label="Typ" value={plan.props.system.name} />
+              <Row label="Výrobce" value={plan.props.system.manufacturer} />
+              <Row label="Raster" value={`${plan.props.grid_spacing_m} × ${plan.props.grid_spacing_m} m`} />
+              <Row label="Počet stojek" value={`${plan.props.num_props_per_tact} ks`} bold />
+            </div>
+            <div>
+              <div style={subTitle}>Časy (na záběr)</div>
+              <Row label="Montáž" value={`${plan.props.assembly_days} dní`} />
+              <Row label="Ponechání" value={`${plan.props.hold_days} dní`} bold />
+              <Row label="Demontáž" value={`${plan.props.disassembly_days} dní`} />
+              <Row label="Pronájem celkem" value={`${plan.props.rental_days} dní`} />
+            </div>
+            <div>
+              <div style={subTitle}>Náklady</div>
+              <Row label="Pronájem" value={formatCZK(plan.props.rental_cost_czk)} />
+              <Row label="Práce" value={formatCZK(plan.props.labor_cost_czk)} />
+              <Row label="Celkem" value={formatCZK(plan.props.total_cost_czk)} bold />
+              <Row label="Hmotnost" value={`${(plan.props.total_weight_kg / 1000).toFixed(1)} t`} />
+              {plan.props.crane_needed && (
+                <Row label="Jeřáb" value="Nutný pro montáž" />
+              )}
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Schedule / Gantt */}
       <Card title="Harmonogram" icon="📅">

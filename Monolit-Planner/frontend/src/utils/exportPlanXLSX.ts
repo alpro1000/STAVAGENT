@@ -17,7 +17,8 @@ interface PlannerOutput {
     tact_details: Array<{ tact: number; set: number; assembly: [number, number]; rebar: [number, number]; concrete: [number, number]; curing: [number, number]; stripping: [number, number] }>;
     gantt?: string; critical_path?: string[];
   };
-  costs: { formwork_labor_czk: number; rebar_labor_czk: number; pour_labor_czk: number; formwork_rental_czk: number; total_labor_czk: number };
+  costs: { formwork_labor_czk: number; rebar_labor_czk: number; pour_labor_czk: number; formwork_rental_czk: number; total_labor_czk: number; props_labor_czk?: number; props_rental_czk?: number };
+  props?: { needed: boolean; system: { name: string; manufacturer: string }; grid_spacing_m: number; num_props_per_tact: number; total_props_needed: number; assembly_days: number; disassembly_days: number; hold_days: number; rental_days: number; rental_cost_czk: number; labor_cost_czk: number; total_cost_czk: number; total_weight_kg: number; crane_needed: boolean };
   strategies: any;
   monte_carlo?: { p50: number; p80: number; p90: number; p95: number; mean: number; std_dev: number };
   warnings: string[];
@@ -229,6 +230,26 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string) {
   addKV('Doba čerpání', plan.pour.total_pour_hours, 'h');
   addKV('Doba betonáže', plan.pour.pour_days, 'dní');
 
+  // Podpěrná konstrukce (if calculated)
+  if (plan.props?.needed) {
+    ws1.addRow([]);
+    addSection('Podpěrná konstrukce (stojky / skruž)');
+    addKV('Systém', `${plan.props.system.name} (${plan.props.system.manufacturer})`);
+    addKV('Raster', `${plan.props.grid_spacing_m} × ${plan.props.grid_spacing_m} m`);
+    addKV('Počet stojek / záběr', plan.props.num_props_per_tact, 'ks');
+    addKV('Montáž / záběr', plan.props.assembly_days, 'dní');
+    addKV('Ponechání', plan.props.hold_days, 'dní');
+    addKV('Demontáž / záběr', plan.props.disassembly_days, 'dní');
+    addKV('Pronájem celkem', plan.props.rental_days, 'dní');
+    addKV('Hmotnost', `${(plan.props.total_weight_kg / 1000).toFixed(1)}`, 't');
+    addKV('Pronájem — náklady', Math.round(plan.props.rental_cost_czk), 'Kč');
+    addKV('Práce — náklady', Math.round(plan.props.labor_cost_czk), 'Kč');
+    addKV('Celkem podpěry', Math.round(plan.props.total_cost_czk), 'Kč');
+    if (plan.props.crane_needed) {
+      addKV('Jeřáb', 'Nutný pro montáž/demontáž podpěr');
+    }
+  }
+
   ws1.addRow([]);
 
   // Harmonogram
@@ -258,6 +279,8 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string) {
   addKV('Výztuž — práce', Math.round(plan.costs.rebar_labor_czk), 'Kč');
   addKV('Betonáž — práce', Math.round(plan.costs.pour_labor_czk), 'Kč');
   addKV('Bednění — pronájem', Math.round(plan.costs.formwork_rental_czk), 'Kč');
+  if (plan.costs.props_labor_czk) addKV('Podpěry — práce', Math.round(plan.costs.props_labor_czk), 'Kč');
+  if (plan.costs.props_rental_czk) addKV('Podpěry — pronájem', Math.round(plan.costs.props_rental_czk), 'Kč');
 
   // Totals
   const totalLaborRow = ws1.addRow(['CELKEM práce', Math.round(plan.costs.total_labor_czk), 'Kč']);
@@ -266,7 +289,7 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string) {
   totalLaborRow.getCell(2).numFmt = '#,##0';
   totalLaborRow.getCell(2).alignment = { horizontal: 'right' };
 
-  const totalAllRow = ws1.addRow(['CELKEM vše', Math.round(plan.costs.total_labor_czk + plan.costs.formwork_rental_czk), 'Kč']);
+  const totalAllRow = ws1.addRow(['CELKEM vše', Math.round(plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + (plan.costs.props_rental_czk || 0)), 'Kč']);
   applyTotalStyle(totalAllRow, 3);
   applyKpiValueStyle(totalAllRow.getCell(2));
   totalAllRow.getCell(2).numFmt = '#,##0';

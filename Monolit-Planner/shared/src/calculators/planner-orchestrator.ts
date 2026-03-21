@@ -29,6 +29,8 @@ import { calculateCuring, PROPS_MIN_DAYS } from './maturity.js';
 import type { ConcreteClass, CementType, ElementType, Season, ConstructionType } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
+import { calculateProps } from './props-calculator.js';
+import type { PropsCalculatorResult } from './props-calculator.js';
 
 import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm } from '../classifiers/element-classifier.js';
 import { decidePourMode } from './pour-decision.js';
@@ -47,11 +49,13 @@ export interface PlannerInput {
   /** Or explicit type (skips classification) */
   element_type?: StructuralElementType;
 
-  // --- Volumes ---
+  // --- Volumes & Dimensions ---
   /** Total concrete volume (m³) */
   volume_m3: number;
   /** Formwork area per tact (m²). If not given, estimated as volume^(2/3) × 6 */
   formwork_area_m2?: number;
+  /** Height from ground/floor to underside of element (m). Used for props calculation. */
+  height_m?: number;
 
   // --- Rebar ---
   /** Exact rebar mass (kg). If not given, estimated from element type. */
@@ -166,7 +170,14 @@ export interface PlannerOutput {
     total_labor_czk: number;
     /** Formwork rental (monthly rate × rental_days / 30). Only if system has rental. */
     formwork_rental_czk: number;
+    /** Props labor (assembly + disassembly). 0 if no props. */
+    props_labor_czk: number;
+    /** Props rental. 0 if no props. */
+    props_rental_czk: number;
   };
+
+  // --- Props (podpěry) — only for horizontal elements with needs_supports ---
+  props?: PropsCalculatorResult;
 
   // --- Monte Carlo (optional) ---
   monte_carlo?: MonteCarloResult;
@@ -592,6 +603,32 @@ export function planElement(input: PlannerInput): PlannerOutput {
     log.push(`Bridge pour sequencing required by resources: sets=${numSets}/${numBridges}, crews=${numFWCrews}/${numBridges}`);
   }
 
+  // ─── 7c. Props (podpěry / stojky / skruž) ─────────────────────────────
+  let propsResult: PropsCalculatorResult | undefined;
+  if (profile.needs_supports && input.height_m && input.height_m > 0) {
+    propsResult = calculateProps({
+      element_type: elementType,
+      height_m: input.height_m,
+      formwork_area_m2: fwArea,
+      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
+      crew_size: crew,
+      shift_h: shift,
+      k,
+      wage_czk_h: wage,
+      num_tacts: pourDecision.num_tacts,
+    });
+    warnings.push(...propsResult.warnings);
+    log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
+      `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
+    log.push(...propsResult.log.map(l => `  props: ${l}`));
+  } else if (profile.needs_supports && !input.height_m) {
+    warnings.push(
+      `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
+      `ale není zadána výška. Zadejte výšku pro výpočet podpěr, počtu stojek a nákladů na pronájem.`
+    );
+    log.push(`Props: skipped — height_m not provided for element with needs_supports=true`);
+  }
+
   // ─── 8. Cost Summary ──────────────────────────────────────────────────
 
   const formworkLaborCZK = threePhase.total_cost_labor;
@@ -611,7 +648,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
     ? roundTo(fwArea * fwSystem.rental_czk_m2_month * (rentalDaysPerSet / 30) * numSets, 2)
     : 0;
 
-  const totalLaborCZK = roundTo(formworkLaborCZK + rebarLaborCZK + pourLaborCZK, 2);
+  // Props costs
+  const propsLaborCZK = propsResult?.labor_cost_czk ?? 0;
+  const propsRentalCZK = propsResult?.rental_cost_czk ?? 0;
+
+  const totalLaborCZK = roundTo(formworkLaborCZK + rebarLaborCZK + pourLaborCZK + propsLaborCZK, 2);
 
   // ─── 9. Assemble Output ───────────────────────────────────────────────
 
@@ -634,12 +675,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
     rebar: rebarResult,
     pour: pourResult,
     schedule: scheduleResult,
+    props: propsResult,
     costs: {
       formwork_labor_czk: formworkLaborCZK,
       rebar_labor_czk: rebarLaborCZK,
       pour_labor_czk: pourLaborCZK,
       total_labor_czk: totalLaborCZK,
       formwork_rental_czk: formworkRentalCZK,
+      props_labor_czk: propsLaborCZK,
+      props_rental_czk: propsRentalCZK,
     },
     norms_sources: {
       formwork_assembly: `${fwSystem.name}: ${adjustedNorms.assembly_h_m2} h/m² ` +
