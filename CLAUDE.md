@@ -19,7 +19,7 @@ STAVAGENT/
 └── .github/workflows/     ← CI/CD (keep-alive, monolit CI, test coverage, URS tests)
 ```
 
-**Infrastructure:** All services (backends + frontends) on **Google Cloud Run** (europe-west3), CI/CD via **Cloud Build**. No Render/Vercel — everything on GC.
+**Infrastructure:** Backends on **Google Cloud Run** (europe-west3), frontends on **Vercel**, CI/CD via **Cloud Build**. No Render — всё на GC + Vercel.
 
 | Service | URL |
 |---------|-----|
