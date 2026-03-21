@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.0.0
-**Last Updated:** 2026-03-20
+**Version:** 3.1.0
+**Last Updated:** 2026-03-21
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -84,15 +84,17 @@ Key routes: `backend/src/routes/{portal-projects,auth,orgs,cabinet}.js`, `backen
 Design: Digital Concrete / Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM (`.c-btn`, `.c-panel`, `.c-card`)
 
 ### 3. Monolit-Planner (Kiosk)
-Node.js/Express + React. Concrete cost calculator: CZK/m³ metric, Excel import, OTSKP codes, AI days suggestion, Unified Registry, Relink algorithm, 335 shared tests.
+Node.js/Express + React. Concrete cost calculator: CZK/m³ metric, Excel import, OTSKP codes, AI days suggestion, Unified Registry, Relink algorithm, **336 shared tests**.
 
 Critical formulas: `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x / 50) * 50`
 
 Work types: beton (m³), bednění (m²), výztuž (kg), jiné
 
-Structure: `shared/` (formulas + scheduler, 335 tests), `backend/` (Express, PostgreSQL/SQLite), `frontend/` (React)
+**Element Planner** (`/planner`): Universal tool for ALL monolithic concrete works (20 element types: 9 bridge + 11 building). 7-engine pipeline: Element Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler (DAG) → PERT Monte Carlo. Visual Gantt chart + XLSX export. Design system: CSS variables in `r0.css` (Slate Minimal palette).
 
-Design: Slate Minimal (Tailwind Slate + Emerald/Amber/Sky)
+Structure: `shared/` (formulas + scheduler, 336 tests), `backend/` (Express, PostgreSQL/SQLite), `frontend/` (React)
+
+Design: Slate Minimal — CSS variables (`--r0-*`), zero hardcoded hex colors in planner components
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
 Node.js/Express + SQLite. BOQ→URS code matching via AI. 4-phase: Norms Search → Multi-model LLM Routing → Knowledge Base → Learning System. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 8 LLM providers configured (Gemini primary via Vertex AI). 159 tests.
@@ -198,7 +200,7 @@ VITE_DISABLE_AUTH=true
 
 **Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
 
-**Feature roadmap:** Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2, Vitest migration
+**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2, Vitest migration
 
 ---
 
