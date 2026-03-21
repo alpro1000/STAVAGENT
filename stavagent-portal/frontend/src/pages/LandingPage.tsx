@@ -31,7 +31,7 @@ const SERVICES = [
   {
     icon: '📐',
     name: 'Plánovač elementu',
-    desc: 'Plánování betonáže. Gantt + Monte Carlo.',
+    desc: 'Deterministický kalkulátor betonáže. RCPSP + Monte Carlo.',
   },
   {
     icon: '🔎',

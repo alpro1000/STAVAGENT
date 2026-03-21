@@ -139,11 +139,11 @@ const SERVICES: Service[] = [
   {
     id: 'element-planner',
     name: 'Plánovač elementu',
-    description: 'Plánování betonáže 20 typů elementů (mosty + budovy). 7-krokový pipeline: klasifikace → záběry → bednění 3-fáze → výztuž → betonáž → RCPSP scheduler → PERT Monte Carlo. Gantt + XLSX export.',
+    description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
     icon: '📐',
     url: 'https://monolit-planner-frontend.vercel.app/planner',
     status: 'active',
-    tags: ['Plánování', 'Bednění', 'Výztuž', 'Monte Carlo', 'Gantt']
+    tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
   },
   {
     id: 'objednavka-betonu',
