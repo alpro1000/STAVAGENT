@@ -889,6 +889,156 @@ export const betonarnyAPI = {
   },
 };
 
+// ============ Pump Calculator API ============
+
+export interface PumpSupplier {
+  id: string;
+  slug: string;
+  name: string;
+  billing_model: 'hourly' | 'hourly_plus_m3' | 'per_15min' | 'custom';
+  is_builtin: boolean;
+  contact: Record<string, string> | null;
+  surcharges: Record<string, number> | null;
+  hose_per_m_per_day: number | null;
+  metadata: Record<string, any> | null;
+  model_count?: number;
+  models?: PumpModel[];
+}
+
+export interface PumpModel {
+  id: string;
+  supplier_id: string;
+  name: string;
+  reach_m: number | null;
+  boom_m: number | null;
+  arrival_fixed_czk: number | null;
+  arrival_per_km_czk: number | null;
+  operation_per_h_czk: number | null;
+  operation_per_15min_czk: number | null;
+  volume_per_m3_czk: number | null;
+  practical_m3_h: number | null;
+  theoretical_m3_h: number | null;
+  priplatek_czk_m3: number | null;
+  notes: string | null;
+  sort_order: number;
+}
+
+export interface PumpAccessory {
+  id: string;
+  supplier_id: string | null;
+  name: string;
+  unit: string;
+  czk_per_unit: number;
+  is_common: boolean;
+  notes: string | null;
+}
+
+export interface PumpCalculateInput {
+  vzdalenost_km: number;
+  celkem_m3: number;
+  hodiny_cerpani?: number;
+  pocet_pristaveni?: number;
+  stavba_h?: number;
+  myti_h?: number;
+  accessories?: Array<{ czk_per_unit: number; mnozstvi: number }>;
+  surcharges?: Array<{ czk_per_pristaveni: number }>;
+  date?: string | null;
+  is_night?: boolean;
+  min_reach_m?: number;
+}
+
+export interface PumpCalculateResult {
+  supplier_slug: string;
+  supplier_name: string;
+  model_name: string;
+  billing_model: string;
+  vzdalenost_km: number;
+  celkem_m3: number;
+  pocet_pristaveni: number;
+  vykon_m3h: number;
+  hodiny_cerpani: number;
+  hodiny_overhead: number;
+  hodiny_celkem: number;
+  doprava: number;
+  manipulace: number;
+  priplatek_m3: number;
+  prislusenstvi: number;
+  priplatky: number;
+  day_type_surcharge: number;
+  konecna_cena: number;
+  cena_per_m3: number;
+}
+
+export const pumpAPI = {
+  getSuppliers: async (): Promise<PumpSupplier[]> => {
+    const { data } = await api.get('/api/pump/suppliers');
+    return data;
+  },
+
+  getSupplier: async (id: string): Promise<PumpSupplier> => {
+    const { data } = await api.get(`/api/pump/suppliers/${id}`);
+    return data;
+  },
+
+  createSupplier: async (params: Partial<PumpSupplier>): Promise<PumpSupplier> => {
+    const { data } = await api.post('/api/pump/suppliers', params);
+    return data;
+  },
+
+  updateSupplier: async (id: string, params: Partial<PumpSupplier>): Promise<PumpSupplier> => {
+    const { data } = await api.put(`/api/pump/suppliers/${id}`, params);
+    return data;
+  },
+
+  deleteSupplier: async (id: string): Promise<void> => {
+    await api.delete(`/api/pump/suppliers/${id}`);
+  },
+
+  getModels: async (supplierId: string): Promise<PumpModel[]> => {
+    const { data } = await api.get(`/api/pump/suppliers/${supplierId}/models`);
+    return data;
+  },
+
+  createModel: async (supplierId: string, params: Partial<PumpModel>): Promise<PumpModel> => {
+    const { data } = await api.post(`/api/pump/suppliers/${supplierId}/models`, params);
+    return data;
+  },
+
+  updateModel: async (modelId: string, params: Partial<PumpModel>): Promise<PumpModel> => {
+    const { data } = await api.put(`/api/pump/models/${modelId}`, params);
+    return data;
+  },
+
+  deleteModel: async (modelId: string): Promise<void> => {
+    await api.delete(`/api/pump/models/${modelId}`);
+  },
+
+  getAccessories: async (supplierId?: string): Promise<PumpAccessory[]> => {
+    const params = supplierId ? { supplier_id: supplierId } : {};
+    const { data } = await api.get('/api/pump/accessories', { params });
+    return data;
+  },
+
+  compare: async (input: PumpCalculateInput): Promise<PumpCalculateResult[]> => {
+    const { data } = await api.post('/api/pump/compare', { input });
+    return data;
+  },
+
+  calculate: async (supplierId: string, modelId: string, input: PumpCalculateInput): Promise<PumpCalculateResult> => {
+    const { data } = await api.post('/api/pump/calculate', {
+      supplier_id: supplierId,
+      model_id: modelId,
+      input,
+    });
+    return data;
+  },
+
+  getHolidays: async (year: number): Promise<Array<{ date: string; dayType: string }>> => {
+    const { data } = await api.get(`/api/pump/holidays/${year}`);
+    return data;
+  },
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;
