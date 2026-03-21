@@ -25,6 +25,8 @@ import { FORMWORK_SYSTEMS } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
+import PlannerGantt from '../components/PlannerGantt';
+import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
 import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
@@ -1112,11 +1114,21 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Action buttons */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         <button
-          onClick={() => exportPlanToCSV(plan, startDate)}
+          onClick={() => exportPlanToXLSX(plan as any, startDate)}
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
-            background: 'var(--r0-slate-800)', color: 'white',
+            background: '#059669', color: 'white',
+          }}
+        >
+          Stáhnout Excel (.xlsx)
+        </button>
+        <button
+          onClick={() => exportPlanToCSV(plan, startDate)}
+          style={{
+            padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-slate-300)',
+            cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
+            background: 'white', color: 'var(--r0-slate-700)',
           }}
         >
           Stáhnout CSV
@@ -1249,14 +1261,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
           </div>
         )}
 
-        {plan.schedule.gantt && (
-          <pre style={{
-            background: 'var(--r0-slate-800)', color: '#e2e8f0',
-            padding: 16, borderRadius: 6, fontSize: 11, lineHeight: 1.5,
-            overflowX: 'auto', margin: 0, fontFamily: "'JetBrains Mono', monospace",
-          }}>
-            {plan.schedule.gantt}
-          </pre>
+        {plan.schedule.tact_details && plan.schedule.tact_details.length > 0 && (
+          <PlannerGantt
+            tact_details={plan.schedule.tact_details}
+            total_days={plan.schedule.total_days}
+            ganttText={plan.schedule.gantt}
+          />
         )}
 
         {/* Calendar timeline — map work-day milestones to dates */}
@@ -1270,20 +1280,22 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
                 <thead>
                   <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
                     <th style={thStyle}>Záběr</th>
-                    <th style={thStyle}>Montáž</th>
-                    <th style={thStyle}>Beton</th>
-                    <th style={thStyle}>Zrání</th>
-                    <th style={thStyle}>Demontáž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #3b82f6' }}>Montáž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #f59e0b' }}>Výztuž</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #ef4444' }}>Beton</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #a3e635' }}>Zrání</th>
+                    <th style={{ ...thStyle, borderLeft: '3px solid #8b5cf6' }}>Demontáž</th>
                   </tr>
                 </thead>
                 <tbody>
                   {plan.schedule.tact_details.map(td => (
                     <tr key={td.tact} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
-                      <td style={tdStyle}><strong>T{td.tact} (S{td.set})</strong></td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
-                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
+                      <td style={tdStyle}><strong>T{td.tact}</strong> <span style={{ color: '#94a3b8' }}>S{td.set}</span></td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #3b82f6' }}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #f59e0b' }}>{formatWorkDayRange(calendarInfo.start, td.rebar)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #ef4444' }}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #a3e635' }}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
+                      <td style={{ ...tdStyle, borderLeft: '3px solid #8b5cf6' }}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
                     </tr>
                   ))}
                 </tbody>
