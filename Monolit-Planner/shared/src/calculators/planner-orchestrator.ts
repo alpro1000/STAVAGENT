@@ -26,7 +26,7 @@ import type { PourTaskResult } from './pour-task-engine.js';
 import type { ThreePhaseCostResult } from './formwork.js';
 import type { MonteCarloResult } from './pert.js';
 import { calculateCuring, PROPS_MIN_DAYS } from './maturity.js';
-import type { ConcreteClass, CementType, ElementType, Season } from './maturity.js';
+import type { ConcreteClass, CementType, ElementType, Season, ConstructionType } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 
@@ -380,21 +380,31 @@ export function planElement(input: PlannerInput): PlannerOutput {
       temperature_c: maturityParams.temperature_c,
       cement_type: maturityParams.cement_type,
       element_type: mapElementType(profile) as ElementType,
-      strip_strength_pct: elementType === 'mostovkova_deska' ? 70 : undefined,
+      strip_strength_pct: profile.strip_strength_pct,
     });
     stripWaitHours = maturityForStrip.min_curing_hours;
     log.push(`Maturity strip: ${(stripWaitHours / 24).toFixed(1)}d (${maturityForStrip.strip_strength_pct}% f_ck, ` +
       `${maturityParams.temperature_c}°C, ${maturityParams.cement_type ?? 'CEM_I'})`);
   }
 
-  // Bridge decks: enforce skruž minimum hold (seasonal, ČSN 73 6244 / PROPS_MIN_DAYS)
-  const skruzTableLookup = PROPS_MIN_DAYS['mostovka']?.[seasonForCuring];
-  if (elementType === 'mostovkova_deska' && skruzTableLookup === undefined) {
-    log.push(`WARN: PROPS_MIN_DAYS['mostovka']['${seasonForCuring}'] not found — using hardcoded fallback 21d. Check maturity.ts PROPS_MIN_DAYS table.`);
-    warnings.push(`Skruž: sezónní tabulka PROPS_MIN_DAYS neobsahuje hodnotu pro "${seasonForCuring}" — použito výchozích 21 dní.`);
+  // Skruž / props minimum hold for ALL horizontal elements (ČSN EN 13670 + ČSN 73 6244)
+  // Map structural element type → maturity ConstructionType for PROPS_MIN_DAYS lookup
+  const skruzConstructionType: ConstructionType | null =
+    elementType === 'mostovkova_deska' ? 'mostovka' :
+    elementType === 'rimsa' ? 'rimsy' :
+    elementType === 'stropni_deska' || elementType === 'zakladova_deska' ? 'stropni_deska' :
+    elementType === 'pruvlak' || elementType === 'rigel' ? 'pruvlak' :
+    elementType === 'schodiste' ? 'schodiste' :
+    null;
+
+  const skruzTableLookup = skruzConstructionType ? PROPS_MIN_DAYS[skruzConstructionType]?.[seasonForCuring] : undefined;
+  if (profile.needs_supports && skruzConstructionType && skruzTableLookup === undefined) {
+    const fallbackDays = elementType === 'mostovkova_deska' ? 21 : 14;
+    log.push(`WARN: PROPS_MIN_DAYS['${skruzConstructionType}']['${seasonForCuring}'] not found — using fallback ${fallbackDays}d.`);
+    warnings.push(`Skruž: sezónní tabulka PROPS_MIN_DAYS neobsahuje hodnotu pro "${seasonForCuring}" — použito ${fallbackDays} dní.`);
   }
-  const skruzMinDays = elementType === 'mostovkova_deska'
-    ? (skruzTableLookup ?? 21)
+  const skruzMinDays = profile.needs_supports && skruzConstructionType
+    ? (skruzTableLookup ?? (elementType === 'mostovkova_deska' ? 21 : 14))
     : 0;
   if (skruzMinDays > 0) {
     const skruzMinHours = skruzMinDays * 24;
@@ -447,16 +457,6 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source})`);
 
-  // Recalculate strategies with actual rebar days
-  const strategiesWithRebar = calculateStrategiesDetailed({
-    assembly_days: assemblyDays,
-    rebar_days: rebarResult.duration_days,
-    concrete_days: DEFAULTS.concrete_days,
-    curing_days: curingDays,
-    disassembly_days: disassemblyDays,
-    num_captures: pourDecision.num_tacts,
-  });
-
   // ─── 6. Pour Task ──────────────────────────────────────────────────────
 
   const pourResult = calculatePourTask({
@@ -471,25 +471,51 @@ export function planElement(input: PlannerInput): PlannerOutput {
   log.push(`Pour: ${pourResult.effective_rate_m3_h}m³/h, ${pourResult.total_pour_hours}h/tact (bottleneck: ${pourResult.rate_bottleneck})`);
   warnings.push(...pourResult.warnings);
 
-  // Monolithic deck pours without dilation joints are typically executed continuously
-  // in one uninterrupted operation (extended shift + reinforced crew).
-  const uninterruptedDeckPour =
-    elementType === 'mostovkova_deska' &&
-    !input.has_dilatacni_spary &&
-    pourDecision.pour_mode === 'monolithic';
+  // Continuous pour detection: monolithic elements must be poured in one uninterrupted
+  // operation (no work joints allowed). Scale crew + pump instead of extending days.
+  const isContinuousPour = pourDecision.pour_mode === 'monolithic';
 
+  // Calculate actual concrete_days from pour hours:
+  // - Continuous pour: ALWAYS 1 day (extended shift), scale crew/pump instead
+  // - Sectional pour: pour_hours / shift_h (fractional, rounded)
+  let concreteDays: number;
   let effectivePourCrew = crew;
-  if (uninterruptedDeckPour && pourResult.total_pour_hours > shift) {
-    // Scale crew by pour/shift ratio, cap at 12 people (operational limit in current model)
-    effectivePourCrew = Math.min(12, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
+  let effectiveShift = shift;
+
+  if (isContinuousPour && pourResult.total_pour_hours > shift) {
+    // Continuous pour exceeds normal shift — scale resources, keep as 1 day
+    concreteDays = 1;
+
+    // Scale crew: enough workers to complete pour in one extended shift
+    const maxCrew = 15;
+    effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
+
+    // Extended shift for continuous pour (up to 16h practical max)
+    effectiveShift = Math.min(16, Math.max(shift, pourResult.total_pour_hours));
+
     warnings.push(
-      `Monolitická zálivka bez spár: doporučeno navýšit osádku na ${effectivePourCrew} pracovníků a organizovat ` +
-      `nepřerušitelnou směnu 12–15h (bez pracovního švu).`
+      `Monolitická zálivka (${pourDecision.tact_volume_m3}m³): nutno zalít v jednom záběru bez přerušení. ` +
+      `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
+      `směna ${roundTo(effectiveShift, 1)}h. ` +
+      (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
     );
-    if (effectivePourCrew > crew) {
-      log.push(`Crew auto-scale (monolithic no-joint): ${crew} → ${effectivePourCrew}`);
-    }
+    log.push(`Continuous pour: ${pourResult.total_pour_hours}h → 1 day, crew ${crew}→${effectivePourCrew}, shift ${shift}→${roundTo(effectiveShift, 1)}h`);
+  } else {
+    // Normal pour: calculate days from hours
+    concreteDays = Math.max(1, roundTo(pourResult.total_pour_hours / shift, 2));
+    // For very small pours (< half shift), still count as 1 day minimum
+    if (concreteDays < 1) concreteDays = 1;
   }
+
+  // Strategy comparison (now with actual rebar + concrete days)
+  const strategiesWithRebar = calculateStrategiesDetailed({
+    assembly_days: assemblyDays,
+    rebar_days: rebarResult.duration_days,
+    concrete_days: concreteDays,
+    curing_days: curingDays,
+    disassembly_days: disassemblyDays,
+    num_captures: pourDecision.num_tacts,
+  });
 
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
 
@@ -498,7 +524,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     num_sets: numSets,
     assembly_days: assemblyDays,
     rebar_days: rebarResult.duration_days,
-    concrete_days: DEFAULTS.concrete_days,
+    concrete_days: concreteDays,
     curing_days: curingDays,
     stripping_days: disassemblyDays,
     num_formwork_crews: numFWCrews,
@@ -519,13 +545,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings.push(scheduleResult.bottleneck);
   }
 
-  // ─── 7b. Skruž (temporary support structure) for bridge decks ────────────
+  // ─── 7b. Skruž (podpěrná konstrukce / stojky) for horizontal elements ────
+  // Applies to ALL elements with needs_supports: mostovka, stropní deska, průvlak, schodiště, římsa, rigel
   // skruzMinDays and curingDays already computed above (includes seasonal + maturity).
   // curingDays is enforced per-tact by the scheduler.
   // Here we check if the last tact's hold extends beyond the schedule end.
-  if (elementType === 'mostovkova_deska') {
+  if (profile.needs_supports && skruzMinDays > 0) {
     const lastConcreteFinish = Math.max(...scheduleResult.tact_details.map(t => t.concrete[1]), 0);
-    // effectiveHoldDays = curingDays (already max(maturity, skruž_min) from above)
     const effectiveHoldDays = curingDays;
     const withSkruzHold = Math.max(scheduleResult.total_days, lastConcreteFinish + effectiveHoldDays);
 
@@ -536,22 +562,23 @@ export function planElement(input: PlannerInput): PlannerOutput {
       scheduleResult.savings_pct = scheduleResult.sequential_days > 0
         ? roundTo((scheduleResult.savings_days / scheduleResult.sequential_days) * 100, 1)
         : 0;
+      const normLabel = elementType === 'mostovkova_deska' ? 'ČSN 73 6244' : 'ČSN EN 13670';
       warnings.push(
-        `Skruž (podpěrná konstrukce): minimální doba ponechání ${effectiveHoldDays} dní od poslední betonáže ` +
-        `(sezóna "${seasonForCuring}": ČSN 73 6244 min. ${skruzMinDays}d). Harmonogram prodloužen o ${delta} dní.`
+        `Podpěrná konstrukce (skruž/stojky): minimální doba ponechání ${effectiveHoldDays} dní od poslední betonáže ` +
+        `(sezóna "${seasonForCuring}": ${normLabel} min. ${skruzMinDays}d). Harmonogram prodloužen o ${delta} dní.`
       );
-      log.push(`Skruz hold: ${effectiveHoldDays}d (skruž=${skruzMinDays}d sezóna="${seasonForCuring}"), ` +
+      log.push(`Props hold: ${effectiveHoldDays}d (min=${skruzMinDays}d, sezóna="${seasonForCuring}", ${normLabel}), ` +
         `last CON ${roundTo(lastConcreteFinish, 2)}d => total ${roundTo(withSkruzHold, 2)}d (+${delta}d)`);
     }
 
-    // For no-spáry bridge deck: full area scaffolding is mandatory
-    if (isBridgeMonolith) {
+    // For monolithic pours of horizontal elements: full area support is mandatory
+    if (pourDecision.pour_mode === 'monolithic') {
       warnings.push(
-        `Mostovka bez dilatačních spár: celá plocha mostovky = jeden záběr. ` +
-        `Skruž (podpěrná konstrukce) musí pokrýt celou plochu mostovky (${fwArea} m²). ` +
-        `Nelze postupně přestavovat — skruž zůstává pod celou konstrukcí po dobu min. ${effectiveHoldDays} dní.`
+        `${profile.label_cs} bez spár: celá plocha = jeden záběr. ` +
+        `Podpěrná konstrukce musí pokrýt celou plochu (${fwArea} m²). ` +
+        `Nelze postupně přestavovat — podpěry zůstávají po dobu min. ${effectiveHoldDays} dní.`
       );
-      log.push(`Monolithic bridge deck: full-area scaffolding required (${fwArea} m²), hold ${effectiveHoldDays}d`);
+      log.push(`Monolithic horizontal element: full-area support required (${fwArea} m²), hold ${effectiveHoldDays}d`);
     }
   }
 
@@ -570,8 +597,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const formworkLaborCZK = threePhase.total_cost_labor;
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
   // Pour labor: crew × hours × wage per tact × num_tacts
-  const regularHours = Math.min(10, pourResult.total_pour_hours);
-  const overtimeHours = Math.max(0, pourResult.total_pour_hours - 10);
+  // Overtime premium 25% applies after standard shift (default 10h)
+  const overtimeThreshold = shift; // use configured shift, not hardcoded 10
+  const actualPourHours = isContinuousPour ? effectiveShift : pourResult.total_pour_hours;
+  const regularHours = Math.min(overtimeThreshold, actualPourHours);
+  const overtimeHours = Math.max(0, actualPourHours - overtimeThreshold);
   const laborPerWorkerPerTact = (regularHours * wage) + (overtimeHours * wage * 1.25);
   const pourLaborCZK = roundTo(laborPerWorkerPerTact * effectivePourCrew * pourDecision.num_tacts, 2);
 

@@ -214,35 +214,43 @@ function buildApproachPrompt({
   total_length_m,
   spara_spacing_m,
 }) {
-  return `Jsi expert na betonáž monolitických konstrukcí.
+  const sparyText = has_dilatacni_spary
+    ? `ano, rozteč ${spara_spacing_m || '?'} m → sekční betonáž (záběry)`
+    : 'ne → monolitická betonáž (jeden záběr, nepřerušitelná)';
+
+  return `Jsi expert na betonáž monolitických konstrukcí (mosty i pozemní stavby).
 
 ELEMENT: ${elementLabel} (typ: ${element_type || 'neurčen'})
 OBJEM: ${volume_m3} m³
 BETON: ${concrete_class || 'C30/37'}
 TEPLOTA: ${temperature_c || 15}°C
 DÉLKA: ${total_length_m ? total_length_m + ' m' : 'neurčena'}
-DILATAČNÍ SPÁRY: ${has_dilatacni_spary ? `ano, rozteč ${spara_spacing_m || '?'} m` : 'ne'}
+DILATAČNÍ SPÁRY: ${sparyText}
 
-Doporuč optimální postup betonáže. Odpověz strukturovaně v JSON:
+PRAVIDLA (dodržuj přesně):
+- Postup betonáže určuje VÝHRADNĚ přítomnost dilatačních spár:
+  • Spáry ANO → sectional (záběrový), sub_mode závisí na typu prvku
+  • Spáry NE → monolithic (vše v jednom záběru)
+- Monolitická betonáž = celý objem v jednom nepřerušeném záběru, i kdyby to trvalo 12-16h
+  • Navýšit osádku (až 15 lidí), čerpadla, prodloužit směnu
+  • Příplatek 25% za přesčas od 10. hodiny
+- Šachovnicový postup (chess) = sousední záběry nejdříve liché, pak sudé (min. 24h tvrdnutí mezi sousedy)
+- Podpěrná konstrukce (skruž/stojky) je nutná pro všechny vodorovné prvky (desky, průvlaky, schodiště, římsy)
+
+Odpověz v tomto JSON formátu:
 {
-  "pour_mode": "sectional | monolithic",
-  "sub_mode": "chess | linear | single_pour",
-  "recommended_tacts": <číslo>,
-  "tact_volume_m3": <číslo>,
+  "pour_mode": "sectional" nebo "monolithic",
+  "sub_mode": "chess" nebo "linear" nebo "single_pour",
+  "recommended_tacts": <počet záběrů>,
+  "tact_volume_m3": <objem jednoho záběru>,
   "reasoning": "<2-3 věty proč tento postup>",
   "warnings": ["<seznam rizik/upozornění>"],
-  "overtime_recommendation": "<zda doporučuješ přesčas nebo víkendovou práci>",
-  "pump_type": "<doporučený typ čerpadla: stacionární | mobilní | autodomíchávač>"
+  "overtime_recommendation": "<doporučení k přesčasu>",
+  "pump_type": "<stacionární | mobilní | autodomíchávač>"
 }
 
-Zohledni:
-- ČSN EN 13670 požadavky na betonáž
-- Maximální objem na záběr (typicky 30-60 m³/den)
-- Šachovnicový postup pro sousední záběry (chess)
-- Klimatické podmínky a vliv na zrání betonu
-- Dostupnost čerpadel a betonáren
-
-ODPOVĚZ POUZE JSON.`;
+Zohledni: ČSN EN 13670, ČSN 73 6244 (mosty), technologické okno betonu, klimatické podmínky.
+ODPOVĚZ POUZE VALIDNÍM JSON.`;
 }
 
 // ── Formwork suggestion (deterministic) ─────────────────────────────────────
@@ -250,6 +258,7 @@ ODPOVĚZ POUZE JSON.`;
 function suggestFormwork(element_type, volume_m3, has_dilatacni_spary) {
   // Map element types to suitable formwork systems
   const elementFormworkMap = {
+    // Bridge elements
     zaklady_piliru: ['Frami Xlife', 'Framax Xlife', 'TRIO'],
     driky_piliru: ['SL-1 Sloupové', 'Frami Xlife', 'TRIO'],
     operne_zdi: ['Framax Xlife', 'Frami Xlife', 'TRIO'],
@@ -258,6 +267,18 @@ function suggestFormwork(element_type, volume_m3, has_dilatacni_spary) {
     rigel: ['Framax Xlife', 'TRIO', 'Frami Xlife'],
     opery_ulozne_prahy: ['Framax Xlife', 'Frami Xlife', 'TRIO'],
     mostni_zavirne_zidky: ['Frami Xlife', 'Tradiční tesařské'],
+    // Building elements
+    zakladova_deska: ['Frami Xlife', 'Tradiční tesařské'],
+    zakladovy_pas: ['Frami Xlife', 'Tradiční tesařské'],
+    zakladova_patka: ['Frami Xlife', 'Tradiční tesařské'],
+    stropni_deska: ['Dokaflex', 'Top 50', 'Tradiční tesařské'],
+    stena: ['Framax Xlife', 'Frami Xlife', 'TRIO'],
+    sloup: ['SL-1 Sloupové', 'Framax Xlife'],
+    pruvlak: ['Dokaflex', 'Tradiční tesařské'],
+    schodiste: ['Tradiční tesařské', 'Dokaflex'],
+    nadrz: ['Framax Xlife', 'Frami Xlife'],
+    podzemni_stena: ['Tradiční tesařské'],
+    pilota: ['Tradiční tesařské'],
     other: ['Frami Xlife', 'Framax Xlife'],
   };
 

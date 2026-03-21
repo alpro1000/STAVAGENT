@@ -68,16 +68,29 @@ interface AIAdvisorResult {
 
 // ─── Element type labels ────────────────────────────────────────────────────
 
-const ELEMENT_TYPES: { value: StructuralElementType; label: string }[] = [
-  { value: 'zaklady_piliru', label: 'Základy pilířů / patky' },
-  { value: 'driky_piliru', label: 'Dříky pilířů' },
-  { value: 'operne_zdi', label: 'Opěrné zdi' },
-  { value: 'mostovkova_deska', label: 'Mostovková deska' },
-  { value: 'rimsa', label: 'Římsová deska' },
-  { value: 'rigel', label: 'Příčník (ригель)' },
-  { value: 'opery_ulozne_prahy', label: 'Opěry, úložné prahy' },
-  { value: 'mostni_zavirne_zidky', label: 'Mostní závěrné zídky' },
-  { value: 'other', label: 'Jiný typ' },
+const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: string }[] = [
+  // Building elements (pozemní stavby)
+  { value: 'zakladova_deska', label: 'Základová deska', group: 'Pozemní stavby' },
+  { value: 'zakladovy_pas', label: 'Základový pás', group: 'Pozemní stavby' },
+  { value: 'zakladova_patka', label: 'Základová patka', group: 'Pozemní stavby' },
+  { value: 'stropni_deska', label: 'Stropní / podlahová deska', group: 'Pozemní stavby' },
+  { value: 'stena', label: 'Monolitická stěna', group: 'Pozemní stavby' },
+  { value: 'sloup', label: 'Sloup', group: 'Pozemní stavby' },
+  { value: 'pruvlak', label: 'Průvlak / trám', group: 'Pozemní stavby' },
+  { value: 'schodiste', label: 'Schodiště', group: 'Pozemní stavby' },
+  { value: 'nadrz', label: 'Nádrž / jímka / bazén', group: 'Pozemní stavby' },
+  { value: 'podzemni_stena', label: 'Podzemní stěna (milánská)', group: 'Pozemní stavby' },
+  { value: 'pilota', label: 'Pilota / mikropilota', group: 'Pozemní stavby' },
+  // Bridge elements (mostní prvky)
+  { value: 'zaklady_piliru', label: 'Základy pilířů', group: 'Mostní prvky' },
+  { value: 'driky_piliru', label: 'Dříky pilířů', group: 'Mostní prvky' },
+  { value: 'operne_zdi', label: 'Opěrné zdi', group: 'Mostní prvky' },
+  { value: 'mostovkova_deska', label: 'Mostovková deska', group: 'Mostní prvky' },
+  { value: 'rimsa', label: 'Římsová deska', group: 'Mostní prvky' },
+  { value: 'rigel', label: 'Příčník (ригель)', group: 'Mostní prvky' },
+  { value: 'opery_ulozne_prahy', label: 'Opěry, úložné prahy', group: 'Mostní prvky' },
+  { value: 'mostni_zavirne_zidky', label: 'Závěrné zídky', group: 'Mostní prvky' },
+  { value: 'other', label: 'Jiný typ', group: '' },
 ];
 
 const SEASONS: { value: SeasonMode; label: string }[] = [
@@ -398,9 +411,24 @@ export default function PlannerPage() {
                   value={form.element_type}
                   onChange={e => update('element_type', e.target.value as StructuralElementType)}
                 >
-                  {ELEMENT_TYPES.map(t => (
-                    <option key={t.value} value={t.value}>{t.label}</option>
-                  ))}
+                  {(() => {
+                    const groups = [...new Set(ELEMENT_TYPES.map(t => t.group).filter(Boolean))];
+                    const ungrouped = ELEMENT_TYPES.filter(t => !t.group);
+                    return (
+                      <>
+                        {groups.map(g => (
+                          <optgroup key={g} label={g}>
+                            {ELEMENT_TYPES.filter(t => t.group === g).map(t => (
+                              <option key={t.value} value={t.value}>{t.label}</option>
+                            ))}
+                          </optgroup>
+                        ))}
+                        {ungrouped.map(t => (
+                          <option key={t.value} value={t.value}>{t.label}</option>
+                        ))}
+                      </>
+                    );
+                  })()}
                 </select>
               </Field>
             )}

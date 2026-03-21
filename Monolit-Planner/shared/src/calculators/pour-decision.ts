@@ -40,14 +40,27 @@ export type SeasonMode = 'hot' | 'normal' | 'cold';
 
 /** Element type — used ONLY for default suggestions, NOT for mode determination */
 export type StructuralElementType =
-  | 'zaklady_piliru'      // Základy pilířů
-  | 'driky_piliru'        // Dříky pilířů
+  // ─── Bridge elements (mostní prvky) ───
+  | 'zaklady_piliru'      // Základy pilířů mostu
+  | 'driky_piliru'        // Dříky pilířů / sloupy mostu
   | 'rimsa'               // Římsová deska
-  | 'operne_zdi'          // Opěrné zdi
-  | 'mostovkova_deska'    // Mostovková deska
+  | 'operne_zdi'          // Opěrné zdi (mostní i pozemní)
+  | 'mostovkova_deska'    // Mostovková deska / nosná konstrukce
   | 'rigel'               // Příčník / ригель
   | 'opery_ulozne_prahy'  // Opěry, úložné prahy
   | 'mostni_zavirne_zidky'// Mostní závěrné zídky
+  // ─── Building elements (pozemní stavby) ───
+  | 'zakladova_deska'     // Základová deska (foundation slab)
+  | 'zakladovy_pas'       // Základový pás (strip foundation)
+  | 'zakladova_patka'     // Základová patka (pad foundation)
+  | 'stropni_deska'       // Stropní deska / podlahová deska (floor slab)
+  | 'stena'               // Monolitická stěna (wall, core wall, shear wall)
+  | 'sloup'               // Sloup (column, pillar)
+  | 'pruvlak'             // Průvlak / trám (beam, girder)
+  | 'schodiste'           // Schodiště (staircase)
+  | 'nadrz'               // Nádrž / jímka / bazén (tank, reservoir, pool)
+  | 'podzemni_stena'      // Podzemní stěna / milánská stěna (diaphragm wall)
+  | 'pilota'              // Pilota / mikropilota (pile)
   | 'other';
 
 // ─── Input / Output ─────────────────────────────────────────────────────────
@@ -172,6 +185,73 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
     typical_sub_mode: null,
     typical_spara_spacing_m: null,
     description_cs: 'Závěrné zídky — malý monolit, bez švů',
+  },
+  // ─── Building elements ───
+  zakladova_deska: {
+    typical_has_spary: 'depends',
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Základová deska — malá (<100m²) = monolit, velká = se spárami (15-25 m)',
+  },
+  zakladovy_pas: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Základový pás — obvykle monolit v jednom záběru',
+  },
+  zakladova_patka: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Základová patka — vždy monolit, každá patka = 1 záběr',
+  },
+  stropni_deska: {
+    typical_has_spary: 'depends',
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Stropní deska — malá (<200m²) = monolit, velká = se spárami. Vyžaduje skruž/stojky.',
+  },
+  stena: {
+    typical_has_spary: 'depends',
+    typical_sub_mode: 'adjacent_chess',
+    typical_spara_spacing_m: 6,
+    description_cs: 'Monolitická stěna — krátká = monolit, dlouhá = záběry 4-8 m, šachovnicový postup',
+  },
+  sloup: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Sloup — vždy monolit v jednom záběru, každý sloup = 1 záběr',
+  },
+  pruvlak: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Průvlak/trám — obvykle monolit společně se stropní deskou. Vyžaduje skruž.',
+  },
+  schodiste: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Schodiště — monolit, složité bednění, spodní bednění + boční šablony',
+  },
+  nadrz: {
+    typical_has_spary: true,
+    typical_sub_mode: 'adjacent_chess',
+    typical_spara_spacing_m: 6,
+    description_cs: 'Nádrž/jímka — vodonepropustný beton (C30/37 XA), záběry 4-8 m, šachovnicový postup',
+  },
+  podzemni_stena: {
+    typical_has_spary: true,
+    typical_sub_mode: 'independent',
+    typical_spara_spacing_m: null,
+    description_cs: 'Podzemní/milánská stěna — každý panel = 1 záběr, betonáž pod bentonitovou suspenzi',
+  },
+  pilota: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Pilota — monolit, betonáž kontraktorovou rourou, každá pilota = 1 záběr',
   },
   other: {
     typical_has_spary: 'depends',
