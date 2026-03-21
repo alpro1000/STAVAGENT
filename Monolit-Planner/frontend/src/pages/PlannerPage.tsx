@@ -208,6 +208,7 @@ export default function PlannerPage() {
   const [error, setError] = useState<string | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [showNorms, setShowNorms] = useState(false);
@@ -367,9 +368,79 @@ export default function PlannerPage() {
           </h1>
         </div>
         <div className="r0-header-right">
+          <button
+            onClick={() => setShowHelp(!showHelp)}
+            style={{
+              background: showHelp ? 'var(--r0-orange)' : 'transparent',
+              color: showHelp ? 'white' : 'var(--r0-slate-600)',
+              border: `1px solid ${showHelp ? 'var(--r0-orange)' : 'var(--r0-slate-300)'}`,
+              borderRadius: 6, padding: '4px 12px', cursor: 'pointer',
+              fontSize: 13, fontFamily: 'inherit', fontWeight: 600,
+            }}
+          >
+            ? Nápověda
+          </button>
           <span className="r0-badge">v1.0</span>
         </div>
       </header>
+
+      {/* ─── Help Panel ─── */}
+      {showHelp && (
+        <div style={{
+          background: 'var(--r0-slate-50)', borderBottom: '1px solid var(--r0-slate-200)',
+          padding: '16px 24px', fontSize: 13, lineHeight: 1.6, color: 'var(--r0-slate-700)',
+        }}>
+          <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+            <h3 style={{ margin: '0 0 12px', fontSize: 15, color: 'var(--r0-slate-800)' }}>
+              Plánovač elementu — Nápověda
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+              <div>
+                <h4 style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--r0-orange)' }}>Co tento nástroj dělá</h4>
+                <p style={{ margin: '0 0 10px' }}>
+                  Plánuje betonáž monolitických konstrukcí od zadání po harmonogram.
+                  Pokrývá 20 typů elementů (9 mostních + 11 pozemních): základy, pilíře,
+                  opěry, mostovky, stěny, sloupy, desky, schodiště a další.
+                </p>
+                <h4 style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--r0-orange)' }}>7-krokový výpočetní pipeline</h4>
+                <ol style={{ margin: 0, paddingLeft: 18 }}>
+                  <li><strong>Klasifikace elementu</strong> — typ konstrukce, orientace, profil výztuže</li>
+                  <li><strong>Rozhodnutí o betonáži</strong> — monolitický/prefabrikát, záběry, šachový postup</li>
+                  <li><strong>Bednění 3-fázové</strong> — montáž → zrání → demontáž, normy DOKA/PERI/NOE</li>
+                  <li><strong>Výztuž (Rebar Lite)</strong> — hmotnost z profilu nebo zadaná, norma ČSN 73 0210</li>
+                  <li><strong>Betonáž (Pour Task)</strong> — rychlost, čerpadlo, T-window, kapacita betonárny</li>
+                  <li><strong>RCPSP Scheduler</strong> — DAG závislostí, kritická cesta, paralelizace čet</li>
+                  <li><strong>PERT Monte Carlo</strong> — pravděpodobnostní odhad délky (P50/P80/P90/P95)</li>
+                </ol>
+              </div>
+              <div>
+                <h4 style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--r0-orange)' }}>Jak začít</h4>
+                <ol style={{ margin: '0 0 10px', paddingLeft: 18 }}>
+                  <li>Vyberte <strong>typ elementu</strong> (nebo zadejte název pro AI klasifikaci)</li>
+                  <li>Zadejte <strong>objem betonu</strong> (m³) — povinný údaj</li>
+                  <li>Volitelně: plocha bednění (m²), hmotnost výztuže (kg)</li>
+                  <li>Nastavte záběry — dilatační spáry nebo manuální počet</li>
+                  <li>Klikněte <strong>Vypočítat plán</strong></li>
+                </ol>
+                <h4 style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--r0-orange)' }}>Pokročilé nastavení</h4>
+                <ul style={{ margin: '0 0 10px', paddingLeft: 18 }}>
+                  <li><strong>Sady bednění</strong> — kolik sad máte k dispozici (víc = rychlejší rotace)</li>
+                  <li><strong>Čety</strong> — oddělené čety pro bednění a výztuž</li>
+                  <li><strong>Pracovníků/četa</strong> — ovlivňuje dobu výztuže (dефолт: 4)</li>
+                  <li><strong>Směna</strong> — délka pracovního dne (dефолт: 10 h)</li>
+                  <li><strong>Systém bednění</strong> — Frami Xlife, Framax, Trio, PERI VARIO aj.</li>
+                </ul>
+                <h4 style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--r0-orange)' }}>Normy a zdroje</h4>
+                <p style={{ margin: 0 }}>
+                  Výpočty vychází z: ČSN EN 13670 (betonáž), ČSN 73 0210 (výztuž),
+                  katalogů DOKA/PERI/NOE (bednění), KROS (zaokrouhlení cen).
+                  Vše je trackovatelné v sekci "Zdroje norem" a "Rozhodovací log".
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: 0, height: 'calc(100vh - 56px)' }}>
         {/* LEFT: Input Form */}
