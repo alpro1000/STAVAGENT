@@ -45,7 +45,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
       `https://monolit-planner-frontend.vercel.app/?project=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
   registry: {
-    label: 'Registr Rozpočtů',
+    label: 'Klasifikátor stavebních prací',
     icon: '📊',
     buildUrl: (link, portalId) =>
       `https://stavagent-backend-ktwx.vercel.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,

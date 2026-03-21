@@ -45,7 +45,7 @@ const SERVICES = [
   },
   {
     icon: '📊',
-    name: 'Registr Rozpočtů',
+    name: 'Klasifikátor stavebních prací',
     desc: '10 skupin prací, fuzzy search, AI klasifikace, Excel export.',
   },
   {

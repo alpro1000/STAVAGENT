@@ -129,7 +129,7 @@ const SERVICES: Service[] = [
   },
   {
     id: 'rozpocet-registry',
-    name: 'Registr Rozpočtů',
+    name: 'Klasifikátor stavebních prací',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
     url: 'https://stavagent-backend-ktwx.vercel.app',
