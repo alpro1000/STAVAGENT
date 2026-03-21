@@ -1020,7 +1020,7 @@ async function runPhase8FormworkCalculator() {
 
     // Add curing_days to positions
     try {
-      await db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 3`);
+      await db.exec(`ALTER TABLE positions ADD COLUMN IF NOT EXISTS curing_days INTEGER DEFAULT 3`);
       console.log('[Migration 008] ✓ curing_days column added (default 3)');
     } catch (error) {
       if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
@@ -1081,7 +1081,7 @@ async function runPhase9PositionInstanceId() {
     console.log('[PostgreSQL Migrations] Running Phase 9 (Position Instance ID)...');
 
     try {
-      await db.exec(`ALTER TABLE positions ADD COLUMN position_instance_id VARCHAR(255) UNIQUE`);
+      await db.exec(`ALTER TABLE positions ADD COLUMN IF NOT EXISTS position_instance_id VARCHAR(255) UNIQUE`);
       console.log('[Migration 009] ✓ position_instance_id column added');
     } catch (error) {
       if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
