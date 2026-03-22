@@ -88,7 +88,7 @@ const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: strin
   { value: 'driky_piliru', label: 'Dříky pilířů', group: 'Mostní prvky' },
   { value: 'operne_zdi', label: 'Opěrné zdi', group: 'Mostní prvky' },
   { value: 'mostovkova_deska', label: 'Mostovková deska', group: 'Mostní prvky' },
-  { value: 'rimsa', label: 'Římsová deska', group: 'Mostní prvky' },
+  { value: 'rimsa', label: 'Římsa', group: 'Mostní prvky' },
   { value: 'rigel', label: 'Příčník (ригель)', group: 'Mostní prvky' },
   { value: 'opery_ulozne_prahy', label: 'Opěry, úložné prahy', group: 'Mostní prvky' },
   { value: 'mostni_zavirne_zidky', label: 'Závěrné zídky', group: 'Mostní prvky' },
@@ -158,7 +158,7 @@ const DEFAULT_FORM: FormState = {
   rebar_mass_kg: '',
   height_m: '',
   tact_mode: 'spary',
-  has_dilatacni_spary: true,
+  has_dilatacni_spary: false,
   spara_spacing_m: 10,
   total_length_m: 50,
   adjacent_sections: true,
@@ -845,6 +845,19 @@ export default function PlannerPage() {
                 </select>
               </Field>
             </>
+          )}
+
+          {/* ─── Římsa: length-based pour hint ─── */}
+          {(form.element_type === 'rimsa' && !form.use_name_classification) && (
+            <div style={{
+              padding: '10px 12px', marginBottom: 12,
+              background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 6,
+              fontSize: 11, color: 'var(--r0-info-text)', lineHeight: 1.6,
+            }}>
+              <strong>Římsa — záběry podle délky mostu:</strong><br/>
+              Římsy se betonují po úsecích 25–30 m. Počet záběrů závisí na celkové délce mostu.<br/>
+              Zadejte délku mostu v sekci záběrů pro správný výpočet.
+            </div>
           )}
 
           {/* ─── AI Advisor Button ─── */}

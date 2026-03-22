@@ -93,7 +93,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     pump_typical: true,
   },
   rimsa: {
-    label_cs: 'Římsová deska',
+    label_cs: 'Římsa',
     recommended_formwork: ['Římsové bednění T', 'Tradiční tesařské'],
     difficulty_factor: 1.15,
     needs_supports: true,

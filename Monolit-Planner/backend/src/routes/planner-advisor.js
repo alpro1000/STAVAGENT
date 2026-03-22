@@ -235,6 +235,7 @@ PRAVIDLA (dodržuj přesně):
   • Navýšit osádku (až 15 lidí), čerpadla, prodloužit směnu
   • Příplatek 25% za přesčas od 10. hodiny
 - Šachovnicový postup (chess) = sousední záběry nejdříve liché, pak sudé (min. 24h tvrdnutí mezi sousedy)
+- Římsy: VŽDY sekční betonáž po 25–30 m bez ohledu na dilatační spáry. Počet záběrů = délka mostu ÷ 25–30 m. Římsa NENÍ deska.
 - Podpěrná konstrukce (skruž/stojky) je nutná pro všechny vodorovné prvky (desky, průvlaky, schodiště, římsy)
 
 Odpověz v tomto JSON formátu:
