@@ -10,7 +10,7 @@ interface UsageStatsProps {
   onRefresh?: () => void;
 }
 
-export default function UsageStats({ onRefresh }: UsageStatsProps) {
+export default function UsageStats({ onRefresh: _onRefresh }: UsageStatsProps) {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
