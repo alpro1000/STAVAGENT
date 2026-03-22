@@ -88,6 +88,8 @@ Node.js/Express + React. Main entry point: JWT auth, project management, file up
 
 **Sprint 1 Cabinets+Roles (complete):** Organizations + org_members tables, 5 roles (admin/manager/estimator/viewer/api_client), orgRole.js middleware, cabinet.js + orgs.js (12 endpoints), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage + cabinet/ and org/ components.
 
+**Auth + SaaS (complete):** JWT auth enabled on all routes, seed admin, login/cabinet UI. SaaS admin panel: usage tracking, feature flags, quotas, anti-fraud. ParsePreviewPage for Excel import preview.
+
 **Sprint 2 Service Connections (schema only):** `service_connections` table exists (AES-256-GCM encrypted credentials), needs API endpoints + frontend UI + MASTER_ENCRYPTION_KEY.
 
 DB tables: `users, organizations, org_members, portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, position_instances, position_templates, position_audit_log, service_connections`
@@ -103,7 +105,7 @@ Critical formulas: `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = 
 
 Work types: beton (m³), bednění (m²), výztuž (kg), jiné
 
-**Element Planner** (`/planner`): Universal tool for ALL monolithic concrete works (20 element types: 9 bridge + 11 building). 7-engine pipeline: Element Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler (DAG) → PERT Monte Carlo. Visual Gantt chart + XLSX export. Design system: CSS variables in `r0.css` (Slate Minimal palette).
+**Element Planner** (`/planner`): Universal tool for ALL monolithic concrete works (20 element types: 9 bridge + 11 building). 7-engine pipeline: Element Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler (DAG) → PERT Monte Carlo. Visual Gantt chart + XLSX export. Design system: CSS variables in `r0.css` (Slate Minimal palette). **Mobile responsive:** sidebar/results stack vertically (≤768px), grids collapse via `.r0-grid-2/3/4` classes.
 
 Structure: `shared/` (formulas + scheduler, 336 tests), `backend/` (Express, PostgreSQL/SQLite), `frontend/` (React)
 
@@ -213,13 +215,20 @@ VITE_DISABLE_AUTH=true
 - MASTER_ENCRYPTION_KEY: `openssl rand -hex 32` → Secret Manager (for Sprint 2 Service Connections)
 - Set real API key values in Secret Manager (GOOGLE_API_KEY, ANTHROPIC_API_KEY, etc.)
 
-**Completed (2026-03-21):**
+**Completed (2026-03-22):**
 - Cloud Build setup (`setup-gcp.sh`) — done
 - Cloud Build triggers imported — active
+- CI fix: `test-shared.yml` cache-dependency-path corrected
+- Portal: Auth enabled (JWT login, seed admin, cabinet UI, all routes behind auth)
+- Portal: SaaS admin panel (usage tracking, feature flags, quotas, anti-fraud)
+- Portal: ParsePreviewPage + PortalImportModal → Monolit
+- Planner: formwork comparison table, scenario snapshots (side-by-side), localStorage persistence
+- Planner: bug fixes (negative values, season→temp, total rebar, římsa classification, dilatační spáry)
+- Planner: mobile responsive (sidebar+results stack, grids collapse)
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
-**Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
+**Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage), Monolit CLAUDE.MD refactoring (2900+ lines)
 
 **Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2, Vitest migration
 
