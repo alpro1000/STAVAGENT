@@ -50,14 +50,59 @@
       "assembly_h_m2": 0.50,
       "disassembly_h_m2": 0.15,
       "disassembly_ratio": 0.30,
-      "rental_czk_m2_month": 480.00,
-      "poznamka": "Rámové bednění PERI, alternativa k Framax Xlife. Lehčí rám = rychlejší montáž. Pro h=2,7 m.",
+      "rental_czk_m2_month": 736.00,
+      "poznamka": "Rámové bednění PERI pro dříky opěr mostů. Cena aktualizována z nabídky DO-25-0056409 (průměr 4 variant: 725, 714, 747, 756 CZK/m²/měsíc).",
       "varianty": [
-        { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.15 },
-        { "vyska_m": 3.3, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.16 }
+        { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.15, "bridge_config": "U_kolma" },
+        { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.15, "bridge_config": "L_sikma" },
+        { "vyska_m": 3.3, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.16 },
+        { "vyska_m": 5.4, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.16, "bridge_config": "U_kolma" },
+        { "vyska_m": 5.4, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.16, "bridge_config": "L_sikma" }
       ],
-      "vhodne_pro": ["stěny budov", "mostní pilíře h=2,7 m", "náhrada Framax u PERI dodavatelů"],
-      "zdroj": "PERI průmyslové normy 2024"
+      "vhodne_pro": ["dříky opěr mostů h=2,7–5,4 m", "stěny budov", "náhrada Framax u PERI dodavatelů"],
+      "zdroj": "formwork_systems_peri.json + PERI průmyslové normy 2024"
+    },
+
+    "DOMINO": {
+      "vyrobce": "PERI",
+      "kategorie": "stena",
+      "assembly_h_m2": 0.65,
+      "disassembly_h_m2": 0.20,
+      "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 658.00,
+      "poznamka": "Lehké ruční bednění pro základy opěr, dříky opěr a propustky. Cena aktualizována z nabídky DO-25-0056409 (průměr 8 variant: 477–796 CZK/m²/měsíc).",
+      "varianty": [
+        { "vyska_m": 1.0,  "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "ucel": "základy opěr" },
+        { "vyska_m": 1.25, "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "ucel": "základy opěr" },
+        { "vyska_m": 1.5,  "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "ucel": "základy opěr" },
+        { "vyska_m": 2.25, "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "ucel": "propustky" },
+        { "vyska_m": 2.5,  "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "bridge_config": "U_kolma", "ucel": "dříky opěr" },
+        { "vyska_m": 2.5,  "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "bridge_config": "L_sikma", "ucel": "dříky opěr" },
+        { "vyska_m": 3.75, "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "bridge_config": "U_kolma", "ucel": "dříky opěr" },
+        { "vyska_m": 3.75, "assembly_h_m2": 0.65, "disassembly_h_m2": 0.20, "bridge_config": "L_sikma", "ucel": "dříky opěr" }
+      ],
+      "vhodne_pro": ["základy opěr mostů", "dříky opěr h=2,5–3,75 m", "propustky", "nízké stěny a základy"],
+      "zdroj": "formwork_systems_peri.json + PERI průmyslové normy 2024"
+    },
+
+    "VARIO": {
+      "vyrobce": "PERI",
+      "kategorie": "sloupy",
+      "assembly_h_m2": 0.90,
+      "disassembly_h_m2": 0.27,
+      "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 807.00,
+      "poznamka": "Zakázkové panelové bednění pro mostní pilíře. NE zaměňovat s VARIO GT 24 (nosníkové bednění pro vysoké stěny). Cena z nabídky DO-25-0056409 (průměr 5 variant: 657–973 CZK/m²/měsíc).",
+      "varianty": [
+        { "vyska_m": 4.5,  "assembly_h_m2": 0.90, "disassembly_h_m2": 0.27, "prurez_m": "1.2x1.2" },
+        { "vyska_m": 6.0,  "assembly_h_m2": 0.90, "disassembly_h_m2": 0.27, "prurez_m": "1.2x1.2" },
+        { "vyska_m": 8.1,  "assembly_h_m2": 0.90, "disassembly_h_m2": 0.27, "prurez_m": "1.2x2.4" },
+        { "vyska_m": 8.1,  "assembly_h_m2": 0.90, "disassembly_h_m2": 0.27, "prurez_m": "1.5x1.5" },
+        { "vyska_m": 12.5, "assembly_h_m2": 0.90, "disassembly_h_m2": 0.27, "prurez_m": "1.5x2.4" }
+      ],
+      "vhodne_pro": ["mostní pilíře — čtvercové i obdélníkové průřezy", "pilíře nadjezdů a estakád", "vysoké pilíře údolních mostů"],
+      "pozadavky": "jeřáb povinný",
+      "zdroj": "formwork_systems_peri.json + PERI nabídka DO-25-0056409.0.11"
     },
 
     "Top 50": {
@@ -183,6 +228,127 @@
       "poznamka": "Převěšené pojízdné bednění pro římsу na dlouhých mostech >150 m. Méně komponent než TU. Takty max. 5 m.",
       "vhodne_pro": ["mosty >150 m délky", "rovné mosty nebo R≥250 m", "velkosériová opakovaná betonáž říms"],
       "zdroj": "formwork_systems_doka.json + Školení zákazníků DOKA 2026"
+    },
+
+    "DUO": {
+      "vyrobce": "PERI",
+      "kategorie": "univerzalni",
+      "assembly_h_m2": 0.55,
+      "disassembly_h_m2": 0.17,
+      "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 450.00,
+      "poznamka": "Univerzální lehké bednění pro stěny i stropy. Panel 8,5 kg — montáž bez jeřábu. Max. tlak betonu 40 kN/m².",
+      "varianty": [
+        { "vyska_m": 0.75, "assembly_h_m2": 0.55, "disassembly_h_m2": 0.17 },
+        { "vyska_m": 1.00, "assembly_h_m2": 0.55, "disassembly_h_m2": 0.17 },
+        { "vyska_m": 1.25, "assembly_h_m2": 0.55, "disassembly_h_m2": 0.17 },
+        { "vyska_m": 1.50, "assembly_h_m2": 0.55, "disassembly_h_m2": 0.17 },
+        { "vyska_m": 2.70, "assembly_h_m2": 0.58, "disassembly_h_m2": 0.18 }
+      ],
+      "vhodne_pro": ["nízké stěny", "stropy bytových domů", "malé stavby bez jeřábu", "rekonstrukce"],
+      "zdroj": "PERI katalog 2024"
+    },
+
+    "QUATTRO": {
+      "vyrobce": "PERI",
+      "kategorie": "sloupy",
+      "assembly_h_m2": 0.75,
+      "disassembly_h_m2": 0.23,
+      "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 560.00,
+      "poznamka": "Sloupové bednění pro čtvercové a obdélníkové sloupy do rozměru 80×80 cm. Stavitelné pomocí vřetenových prvků.",
+      "varianty": [
+        { "vyska_m": 2.7, "assembly_h_m2": 0.75, "disassembly_h_m2": 0.23 },
+        { "vyska_m": 3.3, "assembly_h_m2": 0.78, "disassembly_h_m2": 0.24 },
+        { "vyska_m": 4.5, "assembly_h_m2": 0.82, "disassembly_h_m2": 0.25 }
+      ],
+      "vhodne_pro": ["sloupy budov do 80 cm", "pilíře nadjezdů — malé průřezy"],
+      "pozadavky": "jeřáb doporučen pro h > 3 m",
+      "zdroj": "PERI katalog 2024"
+    },
+
+    "MULTIFLEX": {
+      "vyrobce": "PERI",
+      "kategorie": "strop",
+      "assembly_h_m2": 0.50,
+      "disassembly_h_m2": 0.16,
+      "disassembly_ratio": 0.32,
+      "rental_czk_m2_month": 380.00,
+      "poznamka": "Flexibilní nosníkové stropní bednění s GT 24 nosníky. Variabilní rastr — vhodné pro nepravidelné půdorysy.",
+      "varianty": [
+        { "podpera_h_m": 2.5, "assembly_h_m2": 0.48, "disassembly_h_m2": 0.15 },
+        { "podpera_h_m": 3.5, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.16 },
+        { "podpera_h_m": 5.0, "assembly_h_m2": 0.55, "disassembly_h_m2": 0.18 }
+      ],
+      "vhodne_pro": ["stropy budov", "desky nepravidelných půdorysů", "stropy s průvlaky"],
+      "zdroj": "PERI katalog 2024"
+    },
+
+    "RUNDFLEX": {
+      "vyrobce": "PERI",
+      "kategorie": "stena",
+      "assembly_h_m2": 0.80,
+      "disassembly_h_m2": 0.24,
+      "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 620.00,
+      "poznamka": "Kruhové stěnové bednění. Min. poloměr R = 1,0 m. Segmenty nastavitelné po 5 cm.",
+      "varianty": [
+        { "vyska_m": 2.7, "assembly_h_m2": 0.80, "disassembly_h_m2": 0.24 },
+        { "vyska_m": 3.3, "assembly_h_m2": 0.85, "disassembly_h_m2": 0.26 }
+      ],
+      "vhodne_pro": ["kruhové nádrže", "šachty", "věže", "kruhové sloupy R > 1 m"],
+      "pozadavky": "jeřáb povinný",
+      "zdroj": "PERI katalog 2024"
+    },
+
+    "SRS": {
+      "vyrobce": "PERI",
+      "kategorie": "sloupy",
+      "assembly_h_m2": 0.85,
+      "disassembly_h_m2": 0.27,
+      "disassembly_ratio": 0.32,
+      "rental_czk_m2_month": 650.00,
+      "poznamka": "Kruhové sloupové bednění. Ocelové panely — nejvyšší kvalita povrchu. Průměr 25–70 cm (rastr 5 cm), speciály do 120 cm. Dvoudílná konstrukce s integrovanou třmenovou tyčí.",
+      "varianty": [
+        { "vyska_m": 1.2, "assembly_h_m2": 0.80, "disassembly_h_m2": 0.25 },
+        { "vyska_m": 2.4, "assembly_h_m2": 0.85, "disassembly_h_m2": 0.27 },
+        { "vyska_m": 3.0, "assembly_h_m2": 0.85, "disassembly_h_m2": 0.27 },
+        { "vyska_m": 6.0, "assembly_h_m2": 0.90, "disassembly_h_m2": 0.29 },
+        { "vyska_m": 8.4, "assembly_h_m2": 0.95, "disassembly_h_m2": 0.30 }
+      ],
+      "vhodne_pro": ["kruhové sloupy Ø 25–70 cm", "architektonický beton — kruhovÿ průřez", "mostní pilíře — kruhový průřez"],
+      "pozadavky": "jeřáb povinný (dvě poloviny)",
+      "zdroj": "PERI katalog 2024 + peri.com.au/products/srs"
+    },
+
+    "VARIOKIT": {
+      "vyrobce": "PERI",
+      "kategorie": "inzenyrske",
+      "assembly_h_m2": 1.00,
+      "disassembly_h_m2": 0.35,
+      "disassembly_ratio": 0.35,
+      "rental_czk_m2_month": 850.00,
+      "poznamka": "Inženýrská stavebnice pro mostní stavby a tunely. Modulární systém VGK (zábradlí), VGB (nosníky), VST (stojky). Projektově specifické řešení.",
+      "vhodne_pro": ["mostní nosné konstrukce", "tunelové oblouky", "spodní stavba mostů — zakázkové řešení"],
+      "pozadavky": "jeřáb povinný, PERI inženýrský návrh",
+      "zdroj": "PERI katalog 2024"
+    },
+
+    "CB 240": {
+      "vyrobce": "PERI",
+      "kategorie": "splhaci",
+      "assembly_h_m2": 0.95,
+      "disassembly_h_m2": 0.30,
+      "disassembly_ratio": 0.32,
+      "rental_czk_m2_month": 680.00,
+      "poznamka": "Šplhací konzola pro jednostranné bednění. Nosnost 240 kN na konzolu. Převěšuje se jeřábem.",
+      "varianty": [
+        { "vyska_m": 3.0, "assembly_h_m2": 0.95, "disassembly_h_m2": 0.30 },
+        { "vyska_m": 4.5, "assembly_h_m2": 1.00, "disassembly_h_m2": 0.32 }
+      ],
+      "vhodne_pro": ["jednostranné bednění jader", "výtahové šachty", "vysoké opěrné zdi"],
+      "pozadavky": "jeřáb povinný",
+      "zdroj": "PERI katalog 2024"
     },
 
     "Tradiční tesařské": {
