@@ -31,10 +31,10 @@ function safeGetPool() {
 
 const router = express.Router();
 
-// Temp storage — files deleted after parse
+// Temp storage — use /tmp for Cloud Run compatibility (read-only filesystem)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const tmpDir = path.join(process.cwd(), 'uploads', 'tmp');
+    const tmpDir = process.env.UPLOAD_TMP_DIR || path.join('/tmp', 'parse-preview');
     if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
     cb(null, tmpDir);
   },
@@ -295,7 +295,7 @@ router.post('/import', upload.single('file'), async (req, res) => {
     });
   } catch (err) {
     if (client) await client.query('ROLLBACK');
-    console.error('[ParsePreview] Import error:', err.message);
+    console.error('[ParsePreview] Import error:', err.message, err.stack);
     res.status(500).json({ success: false, error: err.message || 'Failed to import' });
   } finally {
     if (client) client.release();
