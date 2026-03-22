@@ -228,6 +228,53 @@ interface ScenarioSnapshot {
   savings_pct: number;
 }
 
+// ─── NumInput: allows clearing field while editing, validates on blur ────────
+
+function NumInput({ value, onChange, min = 0, max, fallback, step, style, placeholder }: {
+  value: number | string;
+  onChange: (v: number | string) => void;
+  min?: number;
+  max?: number;
+  fallback?: number;       // value to set if field left empty (undefined = allow empty string)
+  step?: number;
+  style?: React.CSSProperties;
+  placeholder?: string;
+}) {
+  const [draft, setDraft] = useState<string | null>(null);
+  const editing = draft !== null;
+
+  const handleFocus = () => setDraft(String(value));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setDraft(e.target.value);
+  const handleBlur = () => {
+    const raw = (draft ?? '').trim();
+    setDraft(null);
+    if (raw === '') {
+      onChange(fallback !== undefined ? fallback : '');
+      return;
+    }
+    let num = parseFloat(raw);
+    if (isNaN(num)) { onChange(fallback !== undefined ? fallback : ''); return; }
+    if (num < min) num = min;
+    if (max !== undefined && num > max) num = max;
+    onChange(typeof value === 'string' && fallback === undefined ? String(num) : num);
+  };
+
+  return (
+    <input
+      type="number"
+      style={style}
+      value={editing ? draft : value}
+      onFocus={handleFocus}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      min={min}
+      max={max}
+      step={step}
+      placeholder={placeholder}
+    />
+  );
+}
+
 // ─── localStorage keys ──────────────────────────────────────────────────────
 
 const LS_FORM_KEY = 'planner-form';
@@ -1070,31 +1117,16 @@ export default function PlannerPage() {
           {/* ─── Volumes ─── */}
           <Section title="Objemy">
             <Field label="Objem betonu (m³)">
-              <input
-                type="number"
-                style={inputStyle}
-                value={form.volume_m3}
-                onChange={e => update('volume_m3', parseFloat(e.target.value) || 0)}
-                min={1}
-              />
+              <NumInput style={inputStyle} value={form.volume_m3} min={0.1} fallback={1}
+                onChange={v => update('volume_m3', v as number)} />
             </Field>
             <Field label="Plocha bednění (m²)" hint="prázdné = odhad">
-              <input
-                type="number"
-                style={inputStyle}
-                value={form.formwork_area_m2}
-                onChange={e => update('formwork_area_m2', e.target.value)}
-                placeholder="automatický odhad"
-              />
+              <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
+                onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
             <Field label="Hmotnost výztuže (kg)" hint="prázdné = odhad">
-              <input
-                type="number"
-                style={inputStyle}
-                value={form.rebar_mass_kg}
-                onChange={e => update('rebar_mass_kg', e.target.value)}
-                placeholder="automatický odhad"
-              />
+              <NumInput style={inputStyle} value={form.rebar_mass_kg} min={0}
+                onChange={v => update('rebar_mass_kg', String(v))} placeholder="automatický odhad" />
             </Field>
 
             {/* ─── Height + Element Dimension Hint ─── */}
@@ -1111,17 +1143,11 @@ export default function PlannerPage() {
                         ? `typicky ${hint.typical_height_range[0]}–${hint.typical_height_range[1]} m`
                         : 'pro výpočet podpěr'}
                     >
-                      <input
-                        type="number"
-                        style={inputStyle}
-                        value={form.height_m}
-                        onChange={e => update('height_m', e.target.value)}
+                      <NumInput style={inputStyle} value={form.height_m} min={0.1} step={0.1}
+                        onChange={v => update('height_m', String(v))}
                         placeholder={hint.typical_height_range
                           ? `${hint.typical_height_range[0]}–${hint.typical_height_range[1]} m`
-                          : 'výška elementu'}
-                        min={0.1}
-                        step={0.1}
-                      />
+                          : 'výška elementu'} />
                     </Field>
                   )}
                   <div style={{
@@ -1191,20 +1217,12 @@ export default function PlannerPage() {
                 {form.has_dilatacni_spary && (
                   <>
                     <Field label="Rozteč spár (m)">
-                      <input
-                        type="number"
-                        style={inputStyle}
-                        value={form.spara_spacing_m}
-                        onChange={e => update('spara_spacing_m', parseFloat(e.target.value) || 0)}
-                      />
+                      <NumInput style={inputStyle} value={form.spara_spacing_m} min={0.1} fallback={1}
+                        onChange={v => update('spara_spacing_m', v as number)} />
                     </Field>
                     <Field label="Celková délka (m)">
-                      <input
-                        type="number"
-                        style={inputStyle}
-                        value={form.total_length_m}
-                        onChange={e => update('total_length_m', parseFloat(e.target.value) || 0)}
-                      />
+                      <NumInput style={inputStyle} value={form.total_length_m} min={0.1} fallback={1}
+                        onChange={v => update('total_length_m', v as number)} />
                     </Field>
                     <label style={labelStyle}>
                       <input
@@ -1228,25 +1246,15 @@ export default function PlannerPage() {
                   Např. 569 m³ na 2 opěry + 8 pilířů = 10 záběrů.
                 </div>
                 <Field label="Počet záběrů">
-                  <input
-                    type="number"
-                    style={inputStyle}
-                    value={form.num_tacts_override}
-                    onChange={e => update('num_tacts_override', e.target.value)}
-                    placeholder="např. 10"
-                    min={1}
-                  />
+                  <NumInput style={inputStyle} value={form.num_tacts_override} min={1}
+                    onChange={v => update('num_tacts_override', String(v))} placeholder="např. 10" />
                 </Field>
                 <Field label="Objem na záběr (m³)" hint="prázdné = celkem ÷ záběry">
-                  <input
-                    type="number"
-                    style={inputStyle}
-                    value={form.tact_volume_m3_override}
-                    onChange={e => update('tact_volume_m3_override', e.target.value)}
+                  <NumInput style={inputStyle} value={form.tact_volume_m3_override} min={0.1}
+                    onChange={v => update('tact_volume_m3_override', String(v))}
                     placeholder={form.num_tacts_override
                       ? `${(form.volume_m3 / (parseInt(form.num_tacts_override) || 1)).toFixed(1)} m³ (auto)`
-                      : 'automatický výpočet'}
-                  />
+                      : 'automatický výpočet'} />
                 </Field>
                 <Field label="Režim betonáže">
                   <select
@@ -1306,8 +1314,8 @@ export default function PlannerPage() {
               </select>
             </Field>
             <Field label="Teplota (°C)">
-              <input type="number" style={inputStyle} value={form.temperature_c}
-                onChange={e => update('temperature_c', parseFloat(e.target.value) || 0)} />
+              <NumInput style={inputStyle} value={form.temperature_c} min={-30} max={50} fallback={15}
+                onChange={v => update('temperature_c', v as number)} />
             </Field>
           </Section>
 
@@ -1327,28 +1335,28 @@ export default function PlannerPage() {
               <Section title="Zdroje">
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                   <Field label="Sady bednění">
-                    <input type="number" style={inputStyle} value={form.num_sets} min={1} max={10}
-                      onChange={e => update('num_sets', parseInt(e.target.value) || 1)} />
+                    <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
+                      onChange={v => update('num_sets', v as number)} />
                   </Field>
                   <Field label="Čety bednění">
-                    <input type="number" style={inputStyle} value={form.num_formwork_crews} min={1} max={5}
-                      onChange={e => update('num_formwork_crews', parseInt(e.target.value) || 1)} />
+                    <NumInput style={inputStyle} value={form.num_formwork_crews} min={1} max={5} fallback={1}
+                      onChange={v => update('num_formwork_crews', v as number)} />
                   </Field>
                   <Field label="Čety výztuže">
-                    <input type="number" style={inputStyle} value={form.num_rebar_crews} min={1} max={5}
-                      onChange={e => update('num_rebar_crews', parseInt(e.target.value) || 1)} />
+                    <NumInput style={inputStyle} value={form.num_rebar_crews} min={1} max={5} fallback={1}
+                      onChange={v => update('num_rebar_crews', v as number)} />
                   </Field>
                   <Field label="Pracovníků/četa">
-                    <input type="number" style={inputStyle} value={form.crew_size} min={2} max={10}
-                      onChange={e => update('crew_size', parseInt(e.target.value) || 4)} />
+                    <NumInput style={inputStyle} value={form.crew_size} min={2} max={10} fallback={4}
+                      onChange={v => update('crew_size', v as number)} />
                   </Field>
                   <Field label="Směna (h)">
-                    <input type="number" style={inputStyle} value={form.shift_h} min={6} max={12}
-                      onChange={e => update('shift_h', parseFloat(e.target.value) || 10)} />
+                    <NumInput style={inputStyle} value={form.shift_h} min={6} max={12} fallback={10}
+                      onChange={v => update('shift_h', v as number)} />
                   </Field>
                   <Field label="Mzda (Kč/h)">
-                    <input type="number" style={inputStyle} value={form.wage_czk_h} min={100}
-                      onChange={e => update('wage_czk_h', parseFloat(e.target.value) || 398)} />
+                    <NumInput style={inputStyle} value={form.wage_czk_h} min={100} fallback={398}
+                      onChange={v => update('wage_czk_h', v as number)} />
                   </Field>
                 </div>
               </Section>
