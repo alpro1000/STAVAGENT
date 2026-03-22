@@ -2916,3 +2916,43 @@ b8327d9 - 🔧 Improve PostgreSQL error handling
 
 **⚡ ВНИМАНИЕ:** Файл разросся до 2900+ строк. Следующая сессия должна начаться с рефакторинга CLAUDE.MD!
 
+---
+
+## 🔧 СЕССИЯ: Mobile Responsive Element Planner + CI Fix
+
+**Дата:** 22.03.2026
+**Branch:** `claude/universal-parser-phase-2-0Fu4g`
+
+### Выполнено
+
+#### 1. FIX: CI cache path (`test-shared.yml`)
+- `cache-dependency-path` указывал на несуществующий `Monolit-Planner/shared/package-lock.json`
+- Исправлено на `Monolit-Planner/package-lock.json` (lock-файл лежит на уровне монорепо пакета)
+- Ошибка: `"Some specified paths were not resolved, unable to cache dependencies"`
+
+#### 2. FIX: Element Planner не отображал результаты на мобильном
+**Проблема:** Боковая панель (sidebar) имела фиксированную ширину 380px с `flexShrink: 0`. На мобильном экране sidebar занимал всю ширину, а `<main>` с результатами уезжал за правый край.
+
+**Решение:**
+- **`r0.css`**: Добавлены CSS-классы `.r0-planner-layout`, `.r0-planner-sidebar`, `.r0-planner-main`
+- Добавлены responsive grid-классы: `.r0-grid-2`, `.r0-grid-3`, `.r0-grid-4`
+- Добавлены: `.r0-action-bar`, `.r0-pert-row`, `.r0-calendar-banner`, `.r0-help-grid`
+- `@media ≤768px`: sidebar + main встают друг под другом, все grid-ы → 1 колонка
+- `@media ≤1024px`: grid-4 → 2 колонки, grid-3 → 2 колонки
+- **`PlannerPage.tsx`**: Заменены inline-стили на CSS-классы во всех секциях результатов (KPI, Element, Bednění, Výztuž, Props, Harmonogram, Monte Carlo, Náklady)
+
+### Задание на следующую сессию
+
+**Приоритет 1: Тестирование mobile responsive на устройстве**
+- [ ] Проверить на реальном мобильном телефоне (или DevTools → mobile emulation)
+- [ ] Убедиться что все карточки результатов видны и читаемы
+- [ ] Проверить Gantt chart scroll на мобильном
+- [ ] Проверить таблицу календарных милников (overflowX: auto)
+
+**Приоритет 2: Universal Parser Phase 2** (из roadmap)
+- [ ] Продолжить работу по Universal Parser Phase 2
+
+**Приоритет 3: Рефакторинг CLAUDE.MD**
+- [ ] Файл > 2900 строк — вынести старые сессии в архив
+- [ ] Оставить только актуальную структуру + последние 2-3 сессии
+
