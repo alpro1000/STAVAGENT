@@ -27,7 +27,7 @@ const router = express.Router();
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = path.join(process.cwd(), 'uploads', 'portal');
+    const uploadDir = process.env.UPLOAD_DIR || path.join('/tmp', 'portal-uploads');
 
     // Create directory if it doesn't exist
     if (!fs.existsSync(uploadDir)) {
