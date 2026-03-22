@@ -26,7 +26,7 @@ export interface FormworkSystemSpec {
 }
 
 /**
- * All formwork systems — 16 systems (DOKA, PERI, ULMA, NOE, Místní)
+ * All formwork systems — 17 systems (DOKA, PERI, ULMA, NOE, Místní)
  *
  * Assembly norms represent person-hours per m² (or per bm).
  * Disassembly_h_m2 = assembly_h_m2 × disassembly_ratio.
@@ -106,13 +106,13 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
   {
     name: 'TRIO',
     manufacturer: 'PERI',
-    heights: ['2.70', '3.30'],
+    heights: ['2.70', '3.30', '5.40'],
     assembly_h_m2: 0.50,
     disassembly_h_m2: 0.15,
     disassembly_ratio: 0.30,
-    rental_czk_m2_month: 480.00,
+    rental_czk_m2_month: 736.00,
     unit: 'm2',
-    description: 'Rámové bednění PERI pro stěny a sloupy',
+    description: 'Rámové bednění PERI pro dříky opěr mostů (h=2,7–5,4 m)',
   },
   {
     name: 'MAXIMO',
@@ -128,13 +128,13 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
   {
     name: 'DOMINO',
     manufacturer: 'PERI',
-    heights: ['1.00', '1.25', '1.50', '2.00', '2.50'],
+    heights: ['1.00', '1.25', '1.50', '2.00', '2.25', '2.50', '3.75'],
     assembly_h_m2: 0.65,
     disassembly_h_m2: 0.20,
     disassembly_ratio: 0.30,
-    rental_czk_m2_month: 420.00,
+    rental_czk_m2_month: 658.00,
     unit: 'm2',
-    description: 'Lehké ruční bednění pro základy a nízké stěny',
+    description: 'Lehké ruční bednění pro základy opěr, dříky opěr a propustky (mostní stavby)',
   },
   {
     name: 'SKYDECK',
@@ -157,6 +157,17 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 600.00,
     unit: 'm2',
     description: 'Nosníkové bednění pro vysoké stěny a pilíře (do 12 m)',
+  },
+  {
+    name: 'VARIO',
+    manufacturer: 'PERI',
+    heights: ['4.50', '6.00', '8.10', '12.50'],
+    assembly_h_m2: 0.90,
+    disassembly_h_m2: 0.27,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 807.00,
+    unit: 'm2',
+    description: 'Zakázkové panelové bednění PERI pro mostní pilíře (průřezy 1,2–2,4 m, výšky 4,5–12,5 m)',
   },
   // ── ULMA ─────────────────────────────────────────────────────────────
   {

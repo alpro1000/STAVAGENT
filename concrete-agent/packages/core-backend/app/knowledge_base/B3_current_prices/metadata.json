@@ -1,9 +1,12 @@
 {
   "category": "B3_current_prices",
-  "last_updated": "2025-10-09",
-  "version": "1.0",
-  "source": "Initial setup",
-  "description": "Current market prices",
-  "files": [],
-  "notes": "Category initialized. Ready for data."
+  "last_updated": "2026-03-22",
+  "version": "1.1",
+  "source": "DOKA ceník 2025-01-01 + PERI nabídka DO-25-0056409.0.11",
+  "description": "Current market prices for formwork systems (rental, purchase, consumables)",
+  "files": [
+    "formwork_systems_doka.json",
+    "formwork_systems_peri.json"
+  ],
+  "notes": "DOKA prices from official price list with 68% discount. PERI prices from project offer D6 KV-OV (bridge formwork)."
 }

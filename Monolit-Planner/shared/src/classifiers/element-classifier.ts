@@ -64,7 +64,7 @@ export interface ElementProfile {
 const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'element_type' | 'confidence'>> = {
   zaklady_piliru: {
     label_cs: 'Základy pilířů / patky',
-    recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
+    recommended_formwork: ['Frami Xlife', 'DOMINO', 'Tradiční tesařské'],
     difficulty_factor: 0.9,
     needs_supports: false,
     needs_platforms: false,
@@ -79,7 +79,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   driky_piliru: {
     label_cs: 'Dříky pilířů / sloupy',
-    recommended_formwork: ['SL-1 Sloupové', 'Framax Xlife'],
+    recommended_formwork: ['SL-1 Sloupové', 'VARIO', 'Framax Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
     needs_platforms: true,
@@ -154,7 +154,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   opery_ulozne_prahy: {
     label_cs: 'Opěry, úložné prahy',
-    recommended_formwork: ['Framax Xlife', 'Frami Xlife'],
+    recommended_formwork: ['Framax Xlife', 'TRIO', 'DOMINO', 'Frami Xlife'],
     difficulty_factor: 1.0,
     needs_supports: false,
     needs_platforms: true,
