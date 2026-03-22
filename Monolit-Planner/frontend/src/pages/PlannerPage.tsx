@@ -1856,27 +1856,38 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
       {/* Rebar */}
       <Card title="Výztuž" icon="🔩">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div>
-            <Row label="Hmotnost / záběr" value={`${formatNum(plan.rebar.mass_kg, 0)} kg`} />
-            <Row label="Zdroj" value={plan.rebar.mass_source === 'estimated' ? 'Odhad z profilu' : 'Zadaná hodnota'} />
-            <Row label="Doba / záběr" value={`${formatNum(plan.rebar.duration_days)} dní`} />
-          </div>
-          <div>
-            <Row label="Pracovníků (výpočet)" value={plan.rebar.crew_size.toString()} />
-            {plan.rebar.recommended_crew !== plan.rebar.crew_size && (
-              <Row label="Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} />
-            )}
-            <Row label="Norma" value={`${plan.rebar.norm_h_per_t} h/t`} />
-            <Row label="Náklady / záběr" value={formatCZK(plan.rebar.cost_labor)} />
-          </div>
-        </div>
-        {/* PERT 3-point estimate */}
-        <div style={{ marginTop: 8, fontSize: 13, color: '#666', display: 'flex', gap: 16 }}>
-          <span>PERT: optimistická {formatNum(plan.rebar.optimistic_days)} d</span>
-          <span>| nejpravděpodobnější {formatNum(plan.rebar.most_likely_days)} d</span>
-          <span>| pesimistická {formatNum(plan.rebar.pessimistic_days)} d</span>
-        </div>
+        {(() => {
+          const nTacts = plan.pour_decision.num_tacts;
+          const totalMassKg = plan.rebar.mass_kg * nTacts;
+          const totalMassT = totalMassKg / 1000;
+          return (
+            <>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                <div>
+                  <Row label="Hmotnost celkem" value={totalMassT >= 1 ? `${formatNum(totalMassT, 1)} t` : `${formatNum(totalMassKg, 0)} kg`} bold />
+                  <Row label="Hmotnost / záběr" value={`${formatNum(plan.rebar.mass_kg, 0)} kg`} />
+                  <Row label="Zdroj" value={plan.rebar.mass_source === 'estimated' ? 'Odhad z profilu' : 'Zadaná hodnota'} />
+                  <Row label="Doba / záběr" value={`${formatNum(plan.rebar.duration_days)} dní`} />
+                </div>
+                <div>
+                  <Row label="Náklady celkem" value={formatCZK(plan.rebar.cost_labor * nTacts)} bold />
+                  <Row label="Náklady / záběr" value={formatCZK(plan.rebar.cost_labor)} />
+                  <Row label="Pracovníků" value={plan.rebar.crew_size.toString()} />
+                  {plan.rebar.recommended_crew !== plan.rebar.crew_size && (
+                    <Row label="Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} />
+                  )}
+                  <Row label="Norma" value={`${plan.rebar.norm_h_per_t} h/t`} />
+                </div>
+              </div>
+              {/* PERT 3-point estimate */}
+              <div style={{ marginTop: 8, fontSize: 13, color: '#666', display: 'flex', gap: 16 }}>
+                <span>PERT: optimistická {formatNum(plan.rebar.optimistic_days)} d</span>
+                <span>| nejpravděpodobnější {formatNum(plan.rebar.most_likely_days)} d</span>
+                <span>| pesimistická {formatNum(plan.rebar.pessimistic_days)} d</span>
+              </div>
+            </>
+          );
+        })()}
       </Card>
 
       {/* Props (podpěry) */}
