@@ -95,10 +95,10 @@ const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: strin
   { value: 'other', label: 'Jiný typ', group: '' },
 ];
 
-const SEASONS: { value: SeasonMode; label: string }[] = [
-  { value: 'normal', label: 'Normální (5-25°C)' },
-  { value: 'hot', label: 'Horko (>25°C)' },
-  { value: 'cold', label: 'Zima (<5°C)' },
+const SEASONS: { value: SeasonMode; label: string; temp: number }[] = [
+  { value: 'normal', label: 'Normální (5-25°C)', temp: 15 },
+  { value: 'hot', label: 'Horko (>25°C)', temp: 30 },
+  { value: 'cold', label: 'Zima (<5°C)', temp: 0 },
 ];
 
 const CONCRETE_CLASSES: ConcreteClass[] = [
@@ -1286,12 +1286,20 @@ export default function PlannerPage() {
               <select
                 style={inputStyle}
                 value={form.season}
-                onChange={e => update('season', e.target.value as SeasonMode)}
+                onChange={e => {
+                  const s = e.target.value as SeasonMode;
+                  const meta = SEASONS.find(x => x.value === s);
+                  setForm(prev => ({ ...prev, season: s, temperature_c: meta?.temp ?? prev.temperature_c }));
+                }}
               >
                 {SEASONS.map(s => (
                   <option key={s.value} value={s.value}>{s.label}</option>
                 ))}
               </select>
+            </Field>
+            <Field label="Teplota (°C)" hint="nastavena dle sezóny, lze upravit">
+              <NumInput style={inputStyle} value={form.temperature_c} min={-30} max={50} fallback={15}
+                onChange={v => update('temperature_c', v as number)} />
             </Field>
           </Section>
 
@@ -1312,10 +1320,6 @@ export default function PlannerPage() {
                   <option key={c.value} value={c.value}>{c.label}</option>
                 ))}
               </select>
-            </Field>
-            <Field label="Teplota (°C)">
-              <NumInput style={inputStyle} value={form.temperature_c} min={-30} max={50} fallback={15}
-                onChange={v => update('temperature_c', v as number)} />
             </Field>
           </Section>
 
