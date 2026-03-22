@@ -230,6 +230,58 @@
 }
 
 /* ============================================
+   PLANNER LAYOUT (sidebar + main)
+   ============================================ */
+
+.r0-planner-layout {
+  display: flex;
+  gap: 0;
+  height: calc(100vh - var(--r0-header-height));
+}
+
+.r0-planner-sidebar {
+  width: var(--r0-sidebar-width);
+  flex-shrink: 0;
+  background: var(--r0-slate-50);
+  border-right: 1px solid var(--r0-slate-200);
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+
+.r0-planner-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  background: var(--r0-slate-100);
+}
+
+/* ============================================
+   RESULT GRID HELPERS
+   ============================================ */
+
+.r0-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.r0-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.r0-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.r0-action-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.r0-pert-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; }
+
+.r0-calendar-banner {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: var(--r0-slate-50);
+  border-radius: 6px;
+  border: 1px solid var(--r0-slate-200);
+  font-size: 13px;
+}
+
+.r0-help-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 
@@ -237,10 +289,78 @@
   :root {
     --r0-sidebar-width: 320px;
   }
+
+  .r0-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .r0-grid-3 { grid-template-columns: 1fr 1fr; }
+  .r0-help-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 768px) {
   :root {
     --r0-sidebar-width: 100%;
+  }
+
+  /* Stack sidebar and main vertically */
+  .r0-planner-layout {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .r0-planner-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--r0-slate-200);
+    max-height: none;
+  }
+
+  .r0-planner-main {
+    padding: 16px;
+    min-height: 50vh;
+  }
+
+  /* All grids stack to single column */
+  .r0-grid-4,
+  .r0-grid-3,
+  .r0-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .r0-help-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Header compact */
+  .r0-header {
+    padding: 0 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .r0-header-left {
+    gap: 0.75rem;
+  }
+
+  .r0-title {
+    font-size: 1rem;
+  }
+
+  .r0-back-link {
+    font-size: 0.75rem;
+  }
+
+  /* PERT row wraps */
+  .r0-pert-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Calendar banner wraps */
+  .r0-calendar-banner {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Action buttons wrap */
+  .r0-action-bar {
+    flex-wrap: wrap;
   }
 }
