@@ -560,3 +560,123 @@ CREATE INDEX IF NOT EXISTS idx_pump_accessories_supplier ON pump_accessories_cat
 CREATE INDEX IF NOT EXISTS idx_pump_calc_position ON pump_calculations(position_instance_id);
 CREATE INDEX IF NOT EXISTS idx_pump_calc_project ON pump_calculations(project_id);
 
+-- ============================================================================
+-- MIGRATION 007: Usage Tracking & Quotas (SaaS Phase 1)
+-- Tracks every pipeline call, LLM token usage, and enforces free-tier limits
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS usage_events (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  org_id            UUID REFERENCES organizations(id) ON DELETE SET NULL,
+  event_type        VARCHAR(50) NOT NULL,  -- 'pipeline_run', 'file_upload', 'llm_call', 'export'
+  service           VARCHAR(50) NOT NULL,  -- 'workflow_a', 'workflow_c', 'price_parser', 'pump', 'urs_matcher', 'chat'
+  model_name        VARCHAR(100),          -- 'gemini-2.5-flash-lite', 'gemini-2.5-pro', etc.
+  tokens_input      INTEGER DEFAULT 0,
+  tokens_output     INTEGER DEFAULT 0,
+  tokens_total      INTEGER DEFAULT 0,
+  cost_usd          REAL DEFAULT 0,
+  file_size_bytes   BIGINT DEFAULT 0,
+  metadata          JSONB DEFAULT '{}',    -- extra context (file_name, project_id, etc.)
+  ip_address        VARCHAR(45),
+  created_at        TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_usage_events_user ON usage_events(user_id);
+CREATE INDEX IF NOT EXISTS idx_usage_events_org ON usage_events(org_id);
+CREATE INDEX IF NOT EXISTS idx_usage_events_type ON usage_events(event_type);
+CREATE INDEX IF NOT EXISTS idx_usage_events_service ON usage_events(service);
+CREATE INDEX IF NOT EXISTS idx_usage_events_model ON usage_events(model_name);
+CREATE INDEX IF NOT EXISTS idx_usage_events_created ON usage_events(created_at DESC);
+
+-- ============================================================================
+-- MIGRATION 008: Feature Flags (Granular service/module/action toggles)
+-- Admin can enable/disable any feature per plan, org, or specific user
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS feature_flags (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  flag_key          VARCHAR(100) NOT NULL,         -- e.g. 'workflow_c', 'pump.compare', 'price_parser.upload'
+  display_name      VARCHAR(255) NOT NULL,
+  description       TEXT,
+  category          VARCHAR(50) NOT NULL DEFAULT 'service',  -- 'service', 'module', 'action'
+  default_enabled   BOOLEAN DEFAULT true,
+  created_at        TIMESTAMP DEFAULT NOW(),
+  updated_at        TIMESTAMP DEFAULT NOW(),
+  UNIQUE(flag_key)
+);
+
+CREATE TABLE IF NOT EXISTS feature_flag_overrides (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  flag_id           UUID NOT NULL REFERENCES feature_flags(id) ON DELETE CASCADE,
+  scope_type        VARCHAR(20) NOT NULL CHECK (scope_type IN ('plan', 'org', 'user')),
+  scope_value       VARCHAR(255) NOT NULL,  -- plan name, org UUID, or user ID
+  enabled           BOOLEAN NOT NULL,
+  set_by            INTEGER REFERENCES users(id),
+  created_at        TIMESTAMP DEFAULT NOW(),
+  UNIQUE(flag_id, scope_type, scope_value)
+);
+
+CREATE INDEX IF NOT EXISTS idx_feature_flags_key ON feature_flags(flag_key);
+CREATE INDEX IF NOT EXISTS idx_feature_flags_category ON feature_flags(category);
+CREATE INDEX IF NOT EXISTS idx_feature_flag_overrides_flag ON feature_flag_overrides(flag_id);
+CREATE INDEX IF NOT EXISTS idx_feature_flag_overrides_scope ON feature_flag_overrides(scope_type, scope_value);
+
+-- ============================================================================
+-- MIGRATION 009: Registration IP Tracking & Phone Verification (Anti-fraud)
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS registration_ips (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  ip_address        VARCHAR(45) NOT NULL,
+  user_id           INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  fingerprint       VARCHAR(255),          -- browser fingerprint hash
+  user_agent        TEXT,
+  created_at        TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_registration_ips_ip ON registration_ips(ip_address);
+CREATE INDEX IF NOT EXISTS idx_registration_ips_created ON registration_ips(created_at DESC);
+
+CREATE TABLE IF NOT EXISTS phone_verification_tokens (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  phone             VARCHAR(30) NOT NULL,
+  code_hash         VARCHAR(255) NOT NULL,  -- SHA256 of 6-digit code
+  attempts          INTEGER DEFAULT 0,
+  max_attempts      INTEGER DEFAULT 3,
+  expires_at        TIMESTAMP NOT NULL,
+  created_at        TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_phone_verification_user ON phone_verification_tokens(user_id);
+
+-- Extend users table with phone verification and quota fields
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_verified BOOLEAN DEFAULT false;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone_verified_at TIMESTAMP;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS registration_ip VARCHAR(45);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS free_pipeline_runs_used INTEGER DEFAULT 0;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS plan VARCHAR(20) DEFAULT 'free';
+
+-- ============================================================================
+-- MIGRATION 010: Seed default feature flags
+-- ============================================================================
+
+INSERT INTO feature_flags (id, flag_key, display_name, description, category, default_enabled) VALUES
+  (gen_random_uuid(), 'portal',              'Portal',                    'Hlavní portál — přehled projektů',                'service', true),
+  (gen_random_uuid(), 'workflow_a',          'Workflow A (Import)',       'Upload a import dokumentů do CORE',               'service', true),
+  (gen_random_uuid(), 'workflow_c',          'Workflow C (Audit)',        'AI audit rozpočtu — multi-role validace',          'service', true),
+  (gen_random_uuid(), 'price_parser',        'Price Parser',             'Parsování ceníků betonáren z PDF',                'service', true),
+  (gen_random_uuid(), 'pump',                'Pump Calculator',          'Kalkulátor čerpadel betonu',                      'service', true),
+  (gen_random_uuid(), 'objednavka_betonu',   'Objednávka betonu',        'Vyhledávání betonáren + kalkulace',               'service', true),
+  (gen_random_uuid(), 'monolit',             'Monolit Planner',          'Kalkulátor monolitických betonů',                 'service', true),
+  (gen_random_uuid(), 'registry',            'Rozpočet Registry',        'Klasifikace položek rozpočtu',                    'service', true),
+  (gen_random_uuid(), 'urs_matcher',         'URS Matcher',              'Párování položek na URS kódy',                    'service', true),
+  (gen_random_uuid(), 'chat',                'Chat Assistant',           'AI chat asistent v projektech',                   'module',  true),
+  (gen_random_uuid(), 'export_xlsx',         'Export XLSX',              'Export výsledků do Excel',                         'action',  true),
+  (gen_random_uuid(), 'export_csv',          'Export CSV',               'Export výsledků do CSV',                           'action',  true),
+  (gen_random_uuid(), 'kb_research',         'Knowledge Base',           'Přístup ke znalostní bázi (KROS, ČSN)',           'module',  true),
+  (gen_random_uuid(), 'file_upload',         'Nahrávání souborů',        'Upload PDF/Excel/XML dokumentů',                  'action',  true),
+  (gen_random_uuid(), 'google_drive',        'Google Drive',             'Připojení Google Drive',                          'module',  false)
+ON CONFLICT (flag_key) DO NOTHING;
+

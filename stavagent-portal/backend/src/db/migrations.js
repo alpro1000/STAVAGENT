@@ -158,8 +158,60 @@ async function initPostgresSchema() {
   // Run Phase 9 migrations (Unified Pump Calculator)
   await runPhase9Migrations();
 
+  // Seed admin user if no admin exists yet
+  await seedAdminIfNeeded();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
+}
+
+/**
+ * Seed default admin user if no real admin exists in the database.
+ * Uses bcrypt for password hashing. The default password MUST be changed on first login.
+ * Idempotent: only runs when no admin user (other than the kiosk system user) is found.
+ */
+async function seedAdminIfNeeded() {
+  try {
+    // Check if a real admin (not kiosk system user id=1) exists
+    const adminExists = await db.prepare(
+      "SELECT id FROM users WHERE role = 'admin' AND email != 'kiosk@stavagent.local'"
+    ).get();
+
+    if (adminExists) {
+      return; // Admin already exists, nothing to do
+    }
+
+    // Dynamic import bcrypt (only needed once)
+    const bcrypt = await import('bcrypt');
+
+    const email = 'admin@stavagent.cz';
+    const password = '123456';
+    const name = 'Admin';
+
+    // Check if user with this email already exists
+    const existingUser = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (existingUser) {
+      // User exists but is not admin — promote to admin
+      await db.prepare(
+        "UPDATE users SET role = 'admin', email_verified = true, email_verified_at = ? WHERE email = ?"
+      ).run(new Date().toISOString(), email);
+      console.log(`[Seed Admin] Promoted existing user ${email} to admin`);
+      return;
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    await db.prepare(`
+      INSERT INTO users (email, password_hash, name, role, email_verified, email_verified_at)
+      VALUES (?, ?, ?, 'admin', true, ?)
+    `).run(email, passwordHash, name, new Date().toISOString());
+
+    console.log(`[Seed Admin] ✅ Created default admin: ${email} / 123456`);
+    console.log('[Seed Admin] ⚠️  CHANGE THE PASSWORD after first login!');
+  } catch (error) {
+    console.error('[Seed Admin] Error seeding admin:', error.message);
+    // Non-fatal — don't crash the app
+  }
 }
 
 /**

@@ -47,6 +47,11 @@ router.get('/users', requireAuth, adminOnly, async (req, res) => {
         role,
         email_verified,
         email_verified_at,
+        phone,
+        phone_verified,
+        plan,
+        free_pipeline_runs_used,
+        registration_ip,
         created_at,
         updated_at
       FROM users
@@ -508,6 +513,266 @@ router.get('/model-audit-report', requireAuth, adminOnly, async (req, res) => {
       error: 'Failed to load model audit report',
       message: 'Chyba při načítání reportu modelového auditu',
     });
+  }
+});
+
+// ============================================================================
+// USAGE STATS (SaaS Phase 1)
+// ============================================================================
+
+/**
+ * GET /api/admin/usage-stats
+ * Get usage statistics (tokens, models, services, top users)
+ */
+router.get('/usage-stats', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { days = 30, user_id } = req.query;
+    const { getUsageStats } = await import('../services/usageTracker.js');
+
+    const stats = await getUsageStats({
+      days: parseInt(days),
+      userId: user_id ? parseInt(user_id) : null,
+    });
+
+    await logAdminAction(req.user.userId, 'VIEW_USAGE_STATS', { days });
+
+    res.json({ success: true, data: stats });
+  } catch (error) {
+    logger.error('[ADMIN] Error fetching usage stats:', error);
+    res.status(500).json({ error: 'Failed to fetch usage statistics' });
+  }
+});
+
+/**
+ * GET /api/admin/user-usage/:id
+ * Get detailed usage for a specific user
+ */
+router.get('/user-usage/:id', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const { getUserUsage } = await import('../services/usageTracker.js');
+
+    const usage = await getUserUsage(userId);
+    if (!usage) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ success: true, data: usage });
+  } catch (error) {
+    logger.error('[ADMIN] Error fetching user usage:', error);
+    res.status(500).json({ error: 'Failed to fetch user usage' });
+  }
+});
+
+// ============================================================================
+// FEATURE FLAGS (Granular toggles)
+// ============================================================================
+
+/**
+ * GET /api/admin/feature-flags
+ * List all feature flags with overrides
+ */
+router.get('/feature-flags', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { getAllFlagsAdmin } = await import('../services/featureFlags.js');
+    const flags = await getAllFlagsAdmin();
+
+    res.json({ success: true, data: flags });
+  } catch (error) {
+    logger.error('[ADMIN] Error fetching feature flags:', error);
+    res.status(500).json({ error: 'Failed to fetch feature flags' });
+  }
+});
+
+/**
+ * PUT /api/admin/feature-flags/:flagKey/default
+ * Update default enabled state of a flag
+ */
+router.put('/feature-flags/:flagKey/default', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { flagKey } = req.params;
+    const { enabled } = req.body;
+
+    if (typeof enabled !== 'boolean') {
+      return res.status(400).json({ error: 'enabled must be a boolean' });
+    }
+
+    const { updateFlagDefault } = await import('../services/featureFlags.js');
+    await updateFlagDefault(flagKey, enabled);
+
+    await logAdminAction(req.user.userId, 'UPDATE_FEATURE_FLAG', {
+      flag_key: flagKey,
+      default_enabled: enabled,
+    });
+
+    res.json({ success: true, message: `Flag '${flagKey}' default set to ${enabled}` });
+  } catch (error) {
+    logger.error('[ADMIN] Error updating feature flag:', error);
+    res.status(500).json({ error: 'Failed to update feature flag' });
+  }
+});
+
+/**
+ * POST /api/admin/feature-flags/:flagKey/override
+ * Set an override for a specific scope (plan/org/user)
+ */
+router.post('/feature-flags/:flagKey/override', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { flagKey } = req.params;
+    const { scope_type, scope_value, enabled } = req.body;
+
+    if (!['plan', 'org', 'user'].includes(scope_type)) {
+      return res.status(400).json({ error: 'scope_type must be plan, org, or user' });
+    }
+    if (!scope_value) {
+      return res.status(400).json({ error: 'scope_value is required' });
+    }
+    if (typeof enabled !== 'boolean') {
+      return res.status(400).json({ error: 'enabled must be a boolean' });
+    }
+
+    const { setFlagOverride } = await import('../services/featureFlags.js');
+    await setFlagOverride(flagKey, scope_type, scope_value, enabled, req.user.userId);
+
+    await logAdminAction(req.user.userId, 'SET_FEATURE_FLAG_OVERRIDE', {
+      flag_key: flagKey,
+      scope_type,
+      scope_value,
+      enabled,
+    });
+
+    res.json({ success: true, message: 'Override set' });
+  } catch (error) {
+    logger.error('[ADMIN] Error setting flag override:', error);
+    res.status(500).json({ error: error.message || 'Failed to set override' });
+  }
+});
+
+/**
+ * DELETE /api/admin/feature-flags/:flagKey/override
+ * Remove an override
+ */
+router.delete('/feature-flags/:flagKey/override', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { flagKey } = req.params;
+    const { scope_type, scope_value } = req.body;
+
+    const { removeFlagOverride } = await import('../services/featureFlags.js');
+    await removeFlagOverride(flagKey, scope_type, scope_value);
+
+    await logAdminAction(req.user.userId, 'REMOVE_FEATURE_FLAG_OVERRIDE', {
+      flag_key: flagKey,
+      scope_type,
+      scope_value,
+    });
+
+    res.json({ success: true, message: 'Override removed' });
+  } catch (error) {
+    logger.error('[ADMIN] Error removing flag override:', error);
+    res.status(500).json({ error: 'Failed to remove override' });
+  }
+});
+
+/**
+ * POST /api/admin/feature-flags
+ * Create a new feature flag
+ */
+router.post('/feature-flags', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { flag_key, display_name, description, category, default_enabled } = req.body;
+
+    if (!flag_key || !display_name) {
+      return res.status(400).json({ error: 'flag_key and display_name are required' });
+    }
+
+    const { createFlag } = await import('../services/featureFlags.js');
+    await createFlag({
+      flagKey: flag_key,
+      displayName: display_name,
+      description,
+      category,
+      defaultEnabled: default_enabled,
+    });
+
+    await logAdminAction(req.user.userId, 'CREATE_FEATURE_FLAG', { flag_key });
+
+    res.status(201).json({ success: true, message: `Flag '${flag_key}' created` });
+  } catch (error) {
+    logger.error('[ADMIN] Error creating feature flag:', error);
+    res.status(500).json({ error: 'Failed to create feature flag' });
+  }
+});
+
+// ============================================================================
+// IP ANTI-FRAUD STATS
+// ============================================================================
+
+/**
+ * GET /api/admin/registration-ips
+ * Get registration IP statistics for anti-fraud monitoring
+ */
+router.get('/registration-ips', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { days = 7 } = req.query;
+    const { getRegistrationIPStats } = await import('../middleware/ipAntifraud.js');
+
+    const stats = await getRegistrationIPStats(parseInt(days));
+
+    res.json({ success: true, data: stats });
+  } catch (error) {
+    logger.error('[ADMIN] Error fetching IP stats:', error);
+    res.status(500).json({ error: 'Failed to fetch IP statistics' });
+  }
+});
+
+/**
+ * PUT /api/admin/users/:id/plan
+ * Change user's plan (free/starter/professional/enterprise)
+ */
+router.put('/users/:id/plan', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+    const { plan } = req.body;
+
+    const validPlans = ['free', 'starter', 'professional', 'enterprise'];
+    if (!validPlans.includes(plan)) {
+      return res.status(400).json({ error: `Plan must be one of: ${validPlans.join(', ')}` });
+    }
+
+    await db.prepare('UPDATE users SET plan = ? WHERE id = ?').run(plan, userId);
+
+    await logAdminAction(req.user.userId, 'CHANGE_USER_PLAN', {
+      target_user_id: userId,
+      plan,
+    });
+
+    res.json({ success: true, message: `User ${userId} plan changed to ${plan}` });
+  } catch (error) {
+    logger.error('[ADMIN] Error changing user plan:', error);
+    res.status(500).json({ error: 'Failed to change user plan' });
+  }
+});
+
+/**
+ * PUT /api/admin/users/:id/quota-reset
+ * Reset a user's free pipeline runs counter
+ */
+router.put('/users/:id/quota-reset', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id);
+
+    await db.prepare(
+      'UPDATE users SET free_pipeline_runs_used = 0 WHERE id = ?'
+    ).run(userId);
+
+    await logAdminAction(req.user.userId, 'RESET_USER_QUOTA', {
+      target_user_id: userId,
+    });
+
+    res.json({ success: true, message: `Quota reset for user ${userId}` });
+  } catch (error) {
+    logger.error('[ADMIN] Error resetting quota:', error);
+    res.status(500).json({ error: 'Failed to reset quota' });
   }
 });
 

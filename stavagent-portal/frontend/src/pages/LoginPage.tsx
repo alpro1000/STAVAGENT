@@ -22,7 +22,7 @@ export default function LoginPage() {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    navigate('/');
+    navigate('/portal');
     return null;
   }
 
@@ -36,8 +36,7 @@ export default function LoginPage() {
     try {
       if (isLoginMode) {
         await login(email, password);
-        // Navigate to home on success
-        navigate('/');
+        navigate('/portal');
       } else {
         if (!name.trim()) {
           setError('Jméno je povinné');

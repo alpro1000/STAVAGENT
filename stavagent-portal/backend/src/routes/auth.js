@@ -13,13 +13,14 @@ import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { generateToken, requireAuth } from '../middleware/auth.js';
 import { sendVerificationEmail } from '../services/emailService.js';
+import { checkRegistrationIP, recordRegistrationIP } from '../middleware/ipAntifraud.js';
 
 const router = express.Router();
 
 const SALT_ROUNDS = 10;
 
-// POST /api/auth/register - Register new user (requires email verification)
-router.post('/register', async (req, res) => {
+// POST /api/auth/register - Register new user (requires email verification + IP check)
+router.post('/register', checkRegistrationIP, async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
@@ -79,6 +80,11 @@ router.post('/register', async (req, res) => {
     if (!emailResult.success) {
       logger.warn(`Failed to send verification email to ${email}: ${emailResult.error}`);
       // Don't fail registration if email fails in dev/test mode
+    }
+
+    // Record registration IP for anti-fraud
+    if (req.registrationIP) {
+      await recordRegistrationIP(req.registrationIP, userId, req.registrationUA);
     }
 
     logger.info(`User registered: ${email} (ID: ${userId}) - awaiting email verification`);
@@ -177,7 +183,7 @@ router.get('/me', requireAuth, async (req, res) => {
     // req.user is set by requireAuth middleware
     const user = await db.prepare(`
       SELECT id, email, name, role, email_verified, created_at,
-             phone, company, avatar_url, timezone, preferences, org_id
+             phone, phone_verified, company, avatar_url, timezone, preferences, org_id, plan
       FROM users
       WHERE id = ?
     `).get(req.user.userId);
@@ -196,11 +202,13 @@ router.get('/me', requireAuth, async (req, res) => {
         email_verified: user.email_verified,
         created_at: user.created_at,
         phone: user.phone,
+        phone_verified: user.phone_verified || false,
         company: user.company,
         avatar_url: user.avatar_url,
         timezone: user.timezone,
         preferences: user.preferences,
-        org_id: user.org_id
+        org_id: user.org_id,
+        plan: user.plan || 'free',
       }
     });
   } catch (error) {
@@ -259,7 +267,7 @@ router.patch('/me', requireAuth, async (req, res) => {
 
     const updated = await db.prepare(`
       SELECT id, email, name, role, email_verified, created_at,
-             phone, company, avatar_url, timezone, preferences, org_id
+             phone, phone_verified, plan, company, avatar_url, timezone, preferences, org_id
       FROM users WHERE id = ?
     `).get(userId);
 
@@ -644,6 +652,165 @@ router.post('/force-verify-email', async (req, res) => {
   } catch (error) {
     logger.error('Force verify email error:', error);
     res.status(500).json({ error: 'Server error during email verification' });
+  }
+});
+
+// POST /api/auth/send-phone-code - Send phone verification code
+router.post('/send-phone-code', requireAuth, async (req, res) => {
+  try {
+    const { phone } = req.body;
+    const userId = req.user.userId;
+
+    if (!phone) {
+      return res.status(400).json({ error: 'Phone number is required' });
+    }
+
+    // Validate phone format (Czech: +420XXXXXXXXX or international)
+    const phoneRegex = /^\+\d{10,15}$/;
+    if (!phoneRegex.test(phone)) {
+      return res.status(400).json({
+        error: 'Invalid phone format',
+        message: 'Telefon musí být ve formátu +420XXXXXXXXX'
+      });
+    }
+
+    // Generate 6-digit code
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    const codeHash = createHash('sha256').update(code).digest('hex');
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString(); // 10 min
+
+    // Delete old tokens for this user
+    await db.prepare('DELETE FROM phone_verification_tokens WHERE user_id = ?').run(userId);
+
+    // Store new token
+    await db.prepare(`
+      INSERT INTO phone_verification_tokens (id, user_id, phone, code_hash, expires_at)
+      VALUES (?, ?, ?, ?, ?)
+    `).run(randomUUID(), userId, phone, codeHash, expiresAt);
+
+    // TODO: Send SMS via Twilio/MessageBird
+    // For now, log the code (dev mode) and return success
+    logger.info(`[PHONE] Verification code for ${phone}: ${code} (user ${userId})`);
+
+    // In production, integrate SMS provider:
+    // await sendSMS(phone, `Váš ověřovací kód StavAgent: ${code}`);
+
+    res.json({
+      success: true,
+      message: 'Ověřovací kód byl odeslán na váš telefon',
+      // DEV ONLY: remove in production
+      ...(process.env.NODE_ENV !== 'production' ? { dev_code: code } : {}),
+    });
+  } catch (error) {
+    logger.error('Send phone code error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// POST /api/auth/verify-phone - Verify phone with code
+router.post('/verify-phone', requireAuth, async (req, res) => {
+  try {
+    const { code } = req.body;
+    const userId = req.user.userId;
+
+    if (!code) {
+      return res.status(400).json({ error: 'Verification code is required' });
+    }
+
+    const codeHash = createHash('sha256').update(String(code)).digest('hex');
+
+    const token = await db.prepare(`
+      SELECT * FROM phone_verification_tokens
+      WHERE user_id = ? AND code_hash = ?
+    `).get(userId, codeHash);
+
+    if (!token) {
+      // Increment attempts on the latest token
+      await db.prepare(`
+        UPDATE phone_verification_tokens
+        SET attempts = attempts + 1
+        WHERE user_id = ?
+      `).run(userId);
+
+      return res.status(400).json({
+        error: 'Invalid code',
+        message: 'Neplatný ověřovací kód'
+      });
+    }
+
+    if (new Date(token.expires_at) < new Date()) {
+      return res.status(400).json({
+        error: 'Code expired',
+        message: 'Ověřovací kód vypršel. Vyžádejte nový.'
+      });
+    }
+
+    if (token.attempts >= token.max_attempts) {
+      return res.status(429).json({
+        error: 'Too many attempts',
+        message: 'Příliš mnoho pokusů. Vyžádejte nový kód.'
+      });
+    }
+
+    // Mark phone as verified
+    const now = new Date().toISOString();
+    await db.prepare(`
+      UPDATE users SET phone = ?, phone_verified = true, phone_verified_at = ?, updated_at = ?
+      WHERE id = ?
+    `).run(token.phone, now, now, userId);
+
+    // Delete token
+    await db.prepare('DELETE FROM phone_verification_tokens WHERE user_id = ?').run(userId);
+
+    logger.info(`Phone verified for user ${userId}: ${token.phone}`);
+
+    res.json({
+      success: true,
+      message: 'Telefon byl úspěšně ověřen',
+      phone: token.phone,
+    });
+  } catch (error) {
+    logger.error('Verify phone error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/auth/usage - Get current user's usage & quota info
+router.get('/usage', requireAuth, async (req, res) => {
+  try {
+    const { getUserUsage } = await import('../services/usageTracker.js');
+    const usage = await getUserUsage(req.user.userId);
+
+    if (!usage) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ success: true, data: usage });
+  } catch (error) {
+    logger.error('Get usage error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET /api/auth/features - Get feature flags for current user
+router.get('/features', requireAuth, async (req, res) => {
+  try {
+    const { getAllFlagsForContext } = await import('../services/featureFlags.js');
+
+    const user = await db.prepare(
+      'SELECT plan, org_id FROM users WHERE id = ?'
+    ).get(req.user.userId);
+
+    const flags = await getAllFlagsForContext({
+      userId: req.user.userId,
+      orgId: user?.org_id || null,
+      plan: user?.plan || 'free',
+    });
+
+    res.json({ success: true, data: flags });
+  } catch (error) {
+    logger.error('Get features error:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

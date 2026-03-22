@@ -14,12 +14,14 @@ interface User {
   name: string;
   role: string;
   phone?: string | null;
+  phone_verified?: boolean;
   company?: string | null;
   avatar_url?: string | null;
   timezone?: string;
   preferences?: Record<string, unknown>;
   org_id?: string | null;
   email_verified?: boolean;
+  plan?: string;
   created_at?: string;
 }
 

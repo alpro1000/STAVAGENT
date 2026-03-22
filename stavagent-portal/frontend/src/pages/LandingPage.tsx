@@ -5,7 +5,8 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap, Shield, BarChart3, Layers } from 'lucide-react';
+import { ArrowRight, Zap, Shield, BarChart3, Layers, LogIn, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const SERVICES = [
   {
@@ -85,6 +86,7 @@ const FEATURES = [
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <div style={{
@@ -112,24 +114,67 @@ export default function LandingPage() {
             StavAgent
           </span>
         </div>
-        <button
-          onClick={() => navigate('/portal')}
-          style={{
-            padding: '8px 20px',
-            background: 'var(--accent-orange)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-            fontWeight: 600,
-            fontSize: '14px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}
-        >
-          Vstoupit <ArrowRight size={16} />
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {isAuthenticated ? (
+            <button
+              onClick={() => navigate('/cabinet')}
+              style={{
+                padding: '8px 16px',
+                background: 'transparent',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border-default, #d1d5db)',
+                borderRadius: '8px',
+                fontWeight: 500,
+                fontSize: '14px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <User size={16} />
+              {user?.name || 'Kabinet'}
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/login')}
+              style={{
+                padding: '8px 16px',
+                background: 'transparent',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border-default, #d1d5db)',
+                borderRadius: '8px',
+                fontWeight: 500,
+                fontSize: '14px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <LogIn size={16} />
+              Přihlásit se
+            </button>
+          )}
+          <button
+            onClick={() => navigate('/portal')}
+            style={{
+              padding: '8px 20px',
+              background: 'var(--accent-orange)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              fontWeight: 600,
+              fontSize: '14px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            Vstoupit <ArrowRight size={16} />
+          </button>
+        </div>
       </nav>
 
       {/* ── HERO ── */}

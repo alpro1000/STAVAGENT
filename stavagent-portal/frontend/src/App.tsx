@@ -84,17 +84,13 @@ function App() {
               {/* Public landing page (eager) */}
               <Route path="/" element={<LandingPage />} />
 
-              {/* Portal (eager — main hub) */}
-              <Route path="/portal" element={<PortalPage />} />
+              {/* Portal (eager — main hub, requires login) */}
+              <Route path="/portal" element={<ProtectedRoute><PortalPage /></ProtectedRoute>} />
 
-              {/* Unified concrete order: search plants + calculate + compare */}
-              <Route path="/objednavka-betonu" element={<ObjednavkaBetonuPage />} />
-
-              {/* Pump Calculator - standalone, mobile-first */}
-              <Route path="/pump" element={<PumpCalculatorPage />} />
-
-              {/* Price Parser - admin tool: upload supplier PDF price lists */}
-              <Route path="/price-parser" element={<PriceParserPage />} />
+              {/* Services — require login */}
+              <Route path="/objednavka-betonu" element={<ProtectedRoute><ObjednavkaBetonuPage /></ProtectedRoute>} />
+              <Route path="/pump" element={<ProtectedRoute><PumpCalculatorPage /></ProtectedRoute>} />
+              <Route path="/price-parser" element={<ProtectedRoute><PriceParserPage /></ProtectedRoute>} />
 
               {/* Betonárny — redirects to unified page */}
               <Route path="/betonarny" element={<Navigate to="/objednavka-betonu" replace />} />
@@ -104,8 +100,8 @@ function App() {
               <Route path="/cabinet/orgs" element={<ProtectedRoute><CabinetOrgsPage /></ProtectedRoute>} />
               <Route path="/cabinet/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
 
-              {/* Parse Preview — full-page view of parsed file data */}
-              <Route path="/parse-preview/:fileId" element={<ParsePreviewPage />} />
+              {/* Parse Preview — requires login */}
+              <Route path="/parse-preview/:fileId" element={<ProtectedRoute><ParsePreviewPage /></ProtectedRoute>} />
 
               {/* Org detail (Sprint 1) */}
               <Route path="/org/:id" element={<ProtectedRoute><OrgPage /></ProtectedRoute>} />
