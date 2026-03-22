@@ -2918,36 +2918,99 @@ b8327d9 - 🔧 Improve PostgreSQL error handling
 
 ---
 
-## 🔧 СЕССИЯ: Mobile Responsive Element Planner + CI Fix
+## 🔧 СЕССИЯ 22.03.2026 — Полный цикл: Portal Auth + SaaS Admin + Element Planner UX + Mobile
 
-**Дата:** 22.03.2026
 **Branch:** `claude/universal-parser-phase-2-0Fu4g`
+**Масштаб:** 16 коммитов, 36 файлов, 4570+ строк добавлено
 
-### Выполнено
+---
 
-#### 1. FIX: CI cache path (`test-shared.yml`)
-- `cache-dependency-path` указывал на несуществующий `Monolit-Planner/shared/package-lock.json`
-- Исправлено на `Monolit-Planner/package-lock.json` (lock-файл лежит на уровне монорепо пакета)
-- Ошибка: `"Some specified paths were not resolved, unable to cache dependencies"`
+### A. STAVAGENT-PORTAL: Auth + SaaS Admin (4 коммита)
 
-#### 2. FIX: Element Planner не отображал результаты на мобильном
-**Проблема:** Боковая панель (sidebar) имела фиксированную ширину 380px с `flexShrink: 0`. На мобильном экране sidebar занимал всю ширину, а `<main>` с результатами уезжал за правый край.
+#### 1. ParsePreviewPage — полноэкранный просмотр Excel (`c29a211`)
+- Новая страница `/parse-preview` для просмотра распарсенных данных Excel
+- 706 строк — полная UI для предпросмотра импорта
 
-**Решение:**
-- **`r0.css`**: Добавлены CSS-классы `.r0-planner-layout`, `.r0-planner-sidebar`, `.r0-planner-main`
-- Добавлены responsive grid-классы: `.r0-grid-2`, `.r0-grid-3`, `.r0-grid-4`
-- Добавлены: `.r0-action-bar`, `.r0-pert-row`, `.r0-calendar-banner`, `.r0-help-grid`
-- `@media ≤768px`: sidebar + main встают друг под другом, все grid-ы → 1 колонка
-- `@media ≤1024px`: grid-4 → 2 колонки, grid-3 → 2 колонки
-- **`PlannerPage.tsx`**: Заменены inline-стили на CSS-классы во всех секциях результатов (KPI, Element, Bednění, Výztuž, Props, Harmonogram, Monte Carlo, Náklady)
+#### 2. PortalImportModal → Monolit (`c90034b`)
+- Модальное окно импорта из портала в Monolit
+- Phase 2 отмечена как завершённая
+
+#### 3. Auth: Login + Cabinet UI (`e00ae5b`)
+- Включена JWT авторизация на портале
+- Seed admin пользователь
+- Login-страница + Cabinet UI
+
+#### 4. Закрытие всех сервисов за логином (`ffbeea3`)
+- Все маршруты портала требуют авторизации
+
+#### 5. SaaS Admin Panel (`cdb70e6`)
+- Панель администратора: usage tracking, feature flags, квоты, anti-fraud
+- Полная система контроля использования сервисов
+
+#### 6. Фиксы SaaS (`b3acac3`, `5ffd1da`)
+- quotaCheck: исправлена race condition при dynamic import
+- PATCH /me: добавлены недостающие колонки
+- UsageStats: убран неиспользуемый параметр (TS6133)
+
+---
+
+### B. ELEMENT PLANNER: Новые фичи (3 коммита)
+
+#### 7. Сравнение бeднění + новые производители (`59ca893`)
+- Таблица сравнения всех систем бeднění (сортировка по цене)
+- Добавлены новые производители в каталог
+- Уточнено отображение длительности бетонирования
+
+#### 8. Scenario Snapshots — сравнение вариантов (`66f869d`)
+- Сохранение снимков расчёта (crew/sets/formwork)
+- Side-by-side сравнение нескольких вариантов
+- Выбор лучшего сценария
+
+#### 9. localStorage persistence (`661f454`)
+- Форма и сценарии сохраняются в localStorage
+- При перезагрузке страницы данные восстанавливаются
+
+---
+
+### C. ELEMENT PLANNER: Баг-фиксы (4 коммита)
+
+#### 10. Защита от отрицательных значений (`4663a21`)
+- NumInput компонент: min=0, запрет ввода отрицательных
+- Улучшен UX числовых полей
+
+#### 11. Сезон → температура (`61bb67e`)
+- Выбор сезона (нормальный/жарко/зима) корректно передаёт температуру в расчёт
+
+#### 12. Суммарная масса и стоимость вызтуже (`1c7cf4a`)
+- Отображаются итоговые значения (все záběry), а не только per-tact
+
+#### 13. Дилатační spáry OFF по умолчанию + římsa ≠ deska (`a8154fc`)
+- Dilatační spáry выключены по умолчанию
+- Римса корректно классифицируется (не как deska)
+
+---
+
+### D. CI/CD + MOBILE (2 коммита)
+
+#### 14. CI fix: test-shared.yml (`394c482`)
+- `cache-dependency-path` указывал на несуществующий `shared/package-lock.json`
+- Исправлено на `Monolit-Planner/package-lock.json`
+
+#### 15. Mobile Responsive Element Planner (`e3b80e8`)
+- Sidebar 380px фиксированная → CSS-классы с media-запросами
+- `r0.css`: `.r0-planner-layout/sidebar/main`, `.r0-grid-2/3/4`
+- `@media ≤768px`: вертикальный стек, все grid-ы → 1 колонка
+- `@media ≤1024px`: 4/3-колоночные grid-ы → 2 колонки
+
+---
 
 ### Задание на следующую сессию
 
-**Приоритет 1: Тестирование mobile responsive на устройстве**
-- [ ] Проверить на реальном мобильном телефоне (или DevTools → mobile emulation)
-- [ ] Убедиться что все карточки результатов видны и читаемы
-- [ ] Проверить Gantt chart scroll на мобильном
-- [ ] Проверить таблицу календарных милников (overflowX: auto)
+**Приоритет 1: Мердж и тестирование**
+- [ ] Мерджить ветку в main
+- [ ] Проверить mobile responsive на реальном устройстве
+- [ ] Проверить auth flow: login → cabinet → portal
+- [ ] Проверить SaaS admin panel: квоты, feature flags
 
 **Приоритет 2: Universal Parser Phase 2** (из roadmap)
 - [ ] Продолжить работу по Universal Parser Phase 2

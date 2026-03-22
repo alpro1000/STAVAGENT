@@ -88,6 +88,8 @@ Node.js/Express + React. Main entry point: JWT auth, project management, file up
 
 **Sprint 1 Cabinets+Roles (complete):** Organizations + org_members tables, 5 roles (admin/manager/estimator/viewer/api_client), orgRole.js middleware, cabinet.js + orgs.js (12 endpoints), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage + cabinet/ and org/ components.
 
+**Auth + SaaS (complete):** JWT auth enabled on all routes, seed admin, login/cabinet UI. SaaS admin panel: usage tracking, feature flags, quotas, anti-fraud. ParsePreviewPage for Excel import preview.
+
 **Sprint 2 Service Connections (schema only):** `service_connections` table exists (AES-256-GCM encrypted credentials), needs API endpoints + frontend UI + MASTER_ENCRYPTION_KEY.
 
 DB tables: `users, organizations, org_members, portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, position_instances, position_templates, position_audit_log, service_connections`
@@ -216,8 +218,13 @@ VITE_DISABLE_AUTH=true
 **Completed (2026-03-22):**
 - Cloud Build setup (`setup-gcp.sh`) — done
 - Cloud Build triggers imported — active
-- CI fix: `test-shared.yml` cache-dependency-path corrected (`shared/` → root `package-lock.json`)
-- Element Planner mobile responsive: sidebar+results stack vertically, grids collapse to 1 column
+- CI fix: `test-shared.yml` cache-dependency-path corrected
+- Portal: Auth enabled (JWT login, seed admin, cabinet UI, all routes behind auth)
+- Portal: SaaS admin panel (usage tracking, feature flags, quotas, anti-fraud)
+- Portal: ParsePreviewPage + PortalImportModal → Monolit
+- Planner: formwork comparison table, scenario snapshots (side-by-side), localStorage persistence
+- Planner: bug fixes (negative values, season→temp, total rebar, římsa classification, dilatační spáry)
+- Planner: mobile responsive (sidebar+results stack, grids collapse)
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
