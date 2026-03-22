@@ -139,7 +139,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   rigel: {
     label_cs: 'Příčník / ригель',
-    recommended_formwork: ['Framax Xlife', 'Tradiční tesařské'],
+    recommended_formwork: ['Framax Xlife', 'VARIO GT 24', 'Tradiční tesařské'],
     difficulty_factor: 1.1,
     needs_supports: true,
     needs_platforms: true,
@@ -306,7 +306,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   nadrz: {
     label_cs: 'Nádrž / jímka / bazén',
-    recommended_formwork: ['Framax Xlife', 'Frami Xlife'],
+    recommended_formwork: ['Framax Xlife', 'RUNDFLEX', 'Frami Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
     needs_platforms: true,
