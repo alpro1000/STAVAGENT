@@ -202,6 +202,32 @@ function formatWorkDayRange(baseDate: Date, range: [number, number]): string {
   return startStr === endStr ? startStr : `${startStr} – ${endStr}`;
 }
 
+// ─── Scenario Snapshot ──────────────────────────────────────────────────────
+
+interface ScenarioSnapshot {
+  id: number;
+  label: string;
+  crew_size: number;
+  num_sets: number;
+  shift_h: number;
+  formwork_system: string;
+  manufacturer: string;
+  total_days: number;
+  formwork_labor_czk: number;
+  rebar_labor_czk: number;
+  pour_labor_czk: number;
+  total_labor_czk: number;
+  rental_czk: number;
+  total_all_czk: number;
+  assembly_days: number;
+  disassembly_days: number;
+  curing_days: number;
+  pour_hours: number;
+  has_overtime: boolean;
+  overtime_info: string;
+  savings_pct: number;
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function PlannerPage() {
@@ -224,6 +250,10 @@ export default function PlannerPage() {
     disassembly_days: number;
   }> | null>(null);
   const [showComparison, setShowComparison] = useState(false);
+
+  // ── Scenario snapshots for side-by-side comparison ──
+  const [scenarios, setScenarios] = useState<ScenarioSnapshot[]>([]);
+  const [scenarioSeq, setScenarioSeq] = useState(0);
   const [showNorms, setShowNorms] = useState(false);
   const [showProductivityNorms, setShowProductivityNorms] = useState(false);
   const [normsScraping, setNormsScraping] = useState(false);
@@ -382,6 +412,38 @@ export default function PlannerPage() {
   }, []);
 
   const plan = result ?? firstRun;
+
+  /** Save current result as a scenario snapshot for comparison */
+  const handleSaveScenario = () => {
+    if (!plan) return;
+    const nextSeq = scenarioSeq + 1;
+    setScenarioSeq(nextSeq);
+    const overtimeWarning = plan.warnings.find(w => w.includes('přesčas') || w.includes('Monolitická zálivka'));
+    const snap: ScenarioSnapshot = {
+      id: nextSeq,
+      label: `S${nextSeq}: ${plan.formwork.system.name}, ${form.crew_size} prac., ${form.num_sets} kompl.`,
+      crew_size: form.crew_size,
+      num_sets: form.num_sets,
+      shift_h: form.shift_h,
+      formwork_system: plan.formwork.system.name,
+      manufacturer: plan.formwork.system.manufacturer,
+      total_days: plan.schedule.total_days,
+      formwork_labor_czk: plan.costs.formwork_labor_czk,
+      rebar_labor_czk: plan.costs.rebar_labor_czk,
+      pour_labor_czk: plan.costs.pour_labor_czk,
+      total_labor_czk: plan.costs.total_labor_czk,
+      rental_czk: plan.costs.formwork_rental_czk,
+      total_all_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
+      assembly_days: plan.formwork.assembly_days,
+      disassembly_days: plan.formwork.disassembly_days,
+      curing_days: plan.formwork.curing_days,
+      pour_hours: plan.pour.total_pour_hours,
+      has_overtime: !!overtimeWarning,
+      overtime_info: overtimeWarning || '',
+      savings_pct: plan.schedule.savings_pct,
+    };
+    setScenarios(prev => [...prev, snap]);
+  };
 
   return (
     <div className="r0-app">
@@ -1318,6 +1380,32 @@ export default function PlannerPage() {
               Porovnat bednění (všechny systémy)
             </button>
           )}
+          {plan && (
+            <button
+              onClick={handleSaveScenario}
+              style={{
+                width: '100%', padding: '10px', marginTop: 8,
+                background: 'var(--r0-slate-100, #f1f5f9)', color: 'var(--r0-slate-700, #334155)',
+                border: '1px solid var(--r0-slate-300, #cbd5e1)',
+                borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              + Uložit scénář {scenarios.length > 0 ? `(${scenarios.length})` : ''}
+            </button>
+          )}
+          {scenarios.length > 0 && (
+            <button
+              onClick={() => { setScenarios([]); setScenarioSeq(0); }}
+              style={{
+                width: '100%', padding: '6px', marginTop: 4,
+                background: 'none', color: 'var(--r0-slate-400)',
+                border: 'none', fontSize: 11, cursor: 'pointer',
+              }}
+            >
+              Vymazat scénáře
+            </button>
+          )}
 
           {error && (
             <div style={{
@@ -1420,6 +1508,124 @@ export default function PlannerPage() {
                   </tbody>
                 </table>
               </div>
+            </div>
+          )}
+
+          {/* ─── Scenario Comparison Panel ─── */}
+          {scenarios.length >= 2 && (
+            <div style={{
+              marginTop: 16, padding: 16,
+              background: 'var(--r0-white, #fff)',
+              borderRadius: 8,
+              border: '2px solid var(--r0-orange, #f59e0b)',
+            }}>
+              <h3 style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: 'var(--r0-slate-800, #1e293b)' }}>
+                Porovnání scénářů ({scenarios.length})
+              </h3>
+              <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 12 }}>
+                Zelené = nejlevnější, oranžové = nejrychlejší. Přesčas označen.
+              </div>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--r0-slate-200, #e2e8f0)' }}>
+                      {['Scénář', 'Bednění', 'Pracovníků', 'Kompl.', 'Směna', 'Dní celkem', 'Montáž', 'Zrání',
+                        'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'Přesčas', ''].map((h, idx) => (
+                        <th key={idx} style={{
+                          textAlign: idx >= 5 ? 'right' : 'left', padding: '6px 6px', fontSize: 10,
+                          color: 'var(--r0-slate-500)', fontWeight: 600, whiteSpace: 'nowrap',
+                          ...(h === 'Celkem (Kč)' ? { borderLeft: '2px solid var(--r0-orange, #f59e0b)' } : {}),
+                        }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const minCost = Math.min(...scenarios.map(s => s.total_all_czk));
+                      const minDays = Math.min(...scenarios.map(s => s.total_days));
+                      return scenarios.map((s) => {
+                        const isCheapest = s.total_all_czk === minCost;
+                        const isFastest = s.total_days === minDays;
+                        return (
+                          <tr key={s.id} style={{
+                            borderBottom: '1px solid var(--r0-slate-100, #f1f5f9)',
+                            background: isCheapest ? 'rgba(34,197,94,0.06)' : isFastest ? 'rgba(245,158,11,0.06)' : undefined,
+                          }}>
+                            <td style={{ padding: '5px 6px', fontWeight: 600, fontSize: 11 }}>
+                              S{s.id}
+                              {isCheapest && <span title="Nejlevnější" style={{ color: '#22c55e', marginLeft: 4 }}>$</span>}
+                              {isFastest && <span title="Nejrychlejší" style={{ color: '#f59e0b', marginLeft: 2 }}>⚡</span>}
+                            </td>
+                            <td style={{ padding: '5px 6px', fontSize: 11 }}>{s.formwork_system}<br /><span style={{ color: 'var(--r0-slate-400)', fontSize: 10 }}>{s.manufacturer}</span></td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.crew_size}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_sets}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.shift_h}h</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700 }}>{s.total_days}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.assembly_days}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.curing_days}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.disassembly_days}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.pour_hours)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_labor_czk)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.rental_czk)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>
+                              {formatCZK(s.total_all_czk)}
+                            </td>
+                            <td style={{ padding: '5px 6px', textAlign: 'center' }}>
+                              {s.has_overtime ? (
+                                <span title={s.overtime_info} style={{
+                                  display: 'inline-block', background: '#fef3c7', color: '#92400e',
+                                  borderRadius: 4, padding: '1px 6px', fontSize: 10, fontWeight: 600,
+                                  cursor: 'help',
+                                }}>OT</span>
+                              ) : (
+                                <span style={{ color: '#22c55e', fontSize: 10 }}>—</span>
+                              )}
+                            </td>
+                            <td style={{ padding: '5px 6px' }}>
+                              <button onClick={() => setScenarios(prev => prev.filter(x => x.id !== s.id))}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--r0-slate-400)', fontSize: 14 }}
+                                title="Odebrat">✕</button>
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+              {scenarios.length >= 2 && (() => {
+                const cheapest = scenarios.reduce((a, b) => a.total_all_czk <= b.total_all_czk ? a : b);
+                const mostExpensive = scenarios.reduce((a, b) => a.total_all_czk >= b.total_all_czk ? a : b);
+                const savings = mostExpensive.total_all_czk - cheapest.total_all_czk;
+                const savingsPct = ((savings / mostExpensive.total_all_czk) * 100).toFixed(0);
+                const fastest = scenarios.reduce((a, b) => a.total_days <= b.total_days ? a : b);
+                const slowest = scenarios.reduce((a, b) => a.total_days >= b.total_days ? a : b);
+                return (
+                  <div style={{ marginTop: 12, padding: 10, background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, fontSize: 12 }}>
+                    <strong>Rozdíl:</strong>{' '}
+                    Nejlevnější <strong>S{cheapest.id}</strong> ({formatCZK(cheapest.total_all_czk)}) vs
+                    nejdražší <strong>S{mostExpensive.id}</strong> ({formatCZK(mostExpensive.total_all_czk)})
+                    → úspora <strong style={{ color: '#22c55e' }}>{formatCZK(savings)} (−{savingsPct}%)</strong>
+                    {fastest.id !== slowest.id && (
+                      <span>
+                        {' | '}Čas: <strong>S{fastest.id}</strong> ({fastest.total_days}d) vs
+                        <strong> S{slowest.id}</strong> ({slowest.total_days}d)
+                        → <strong style={{ color: '#f59e0b' }}>{slowest.total_days - fastest.total_days} dní</strong> rozdíl
+                      </span>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+          {scenarios.length === 1 && (
+            <div style={{
+              marginTop: 16, padding: 12, background: 'var(--r0-white, #fff)',
+              borderRadius: 8, border: '1px dashed var(--r0-slate-300, #cbd5e1)',
+              fontSize: 12, color: 'var(--r0-slate-500)', textAlign: 'center',
+            }}>
+              Uložen 1 scénář (<strong>{scenarios[0].label}</strong>).
+              Změňte nastavení a klikněte "Uložit scénář" pro porovnání.
             </div>
           )}
         </main>
