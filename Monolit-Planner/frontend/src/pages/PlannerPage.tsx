@@ -578,7 +578,7 @@ export default function PlannerPage() {
             </div>
 
             {/* ── 3-column grid: Pipeline + Models + Settings ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 20 }}>
+            <div className="r0-help-grid">
 
               {/* Column 1: Pipeline */}
               <div>
@@ -757,16 +757,9 @@ export default function PlannerPage() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 0, height: 'calc(100vh - 56px)' }}>
+      <div className="r0-planner-layout">
         {/* LEFT: Input Form */}
-        <aside style={{
-          width: 380,
-          flexShrink: 0,
-          background: 'var(--r0-slate-50)',
-          borderRight: '1px solid var(--r0-slate-200)',
-          overflowY: 'auto',
-          padding: '16px 20px',
-        }}>
+        <aside className="r0-planner-sidebar">
           <h2 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 16px', color: 'var(--r0-slate-800)' }}>
             Vstupní parametry
           </h2>
@@ -1476,7 +1469,7 @@ export default function PlannerPage() {
         </aside>
 
         {/* RIGHT: Results */}
-        <main style={{ flex: 1, overflowY: 'auto', padding: '20px 24px', background: 'var(--r0-slate-100)' }}>
+        <main className="r0-planner-main">
           {plan ? (
             <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} />
           ) : (
@@ -1766,7 +1759,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
       {/* Action buttons */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+      <div className="r0-action-bar">
         <button
           onClick={() => { exportPlanToXLSX(plan as any, startDate); }}
           style={{
@@ -1803,7 +1796,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
+      <div className="r0-grid-4" style={{ marginBottom: 20 }}>
         <KPICard label="Celkem dní" value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color="var(--r0-blue)" />
         <KPICard label="Počet záběrů" value={plan.pour_decision.num_tacts} unit="taktů" color="var(--r0-orange)" />
         <KPICard label="Náklady práce" value={formatCZK(plan.costs.total_labor_czk)} color="var(--r0-green)" />
@@ -1820,7 +1813,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       )}
 
       {/* Element + Pour */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+      <div className="r0-grid-2">
         <Card title="Element" icon="🧱">
           <Row label="Typ" value={plan.element.label_cs} />
           <Row label="Klasifikace" value={`${(plan.element.classification_confidence * 100).toFixed(0)}%`} />
@@ -1842,7 +1835,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
       {/* Formwork */}
       <Card title="Bednění" icon="📦">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+        <div className="r0-grid-3">
           <div>
             <div style={subTitle}>Systém</div>
             <Row label="Název" value={plan.formwork.system.name} />
@@ -1875,7 +1868,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
           const totalMassT = totalMassKg / 1000;
           return (
             <>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="r0-grid-2" style={{ gap: 16 }}>
                 <div>
                   <Row label="Hmotnost celkem" value={totalMassT >= 1 ? `${formatNum(totalMassT, 1)} t` : `${formatNum(totalMassKg, 0)} kg`} bold />
                   <Row label="Hmotnost / záběr" value={`${formatNum(plan.rebar.mass_kg, 0)} kg`} />
@@ -1893,7 +1886,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
                 </div>
               </div>
               {/* PERT 3-point estimate */}
-              <div style={{ marginTop: 8, fontSize: 13, color: '#666', display: 'flex', gap: 16 }}>
+              <div className="r0-pert-row" style={{ color: '#666' }}>
                 <span>PERT: optimistická {formatNum(plan.rebar.optimistic_days)} d</span>
                 <span>| nejpravděpodobnější {formatNum(plan.rebar.most_likely_days)} d</span>
                 <span>| pesimistická {formatNum(plan.rebar.pessimistic_days)} d</span>
@@ -1906,7 +1899,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Props (podpěry) */}
       {plan.props && plan.props.needed && (
         <Card title="Podpěrná konstrukce (stojky / skruž)" icon="🏗️">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+          <div className="r0-grid-3">
             <div>
               <div style={subTitle}>Systém</div>
               <Row label="Typ" value={plan.props.system.name} />
@@ -1937,7 +1930,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
       {/* Schedule / Gantt */}
       <Card title="Harmonogram" icon="📅">
-        <div style={{ display: 'grid', gridTemplateColumns: calendarInfo ? '1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
+        <div className={calendarInfo ? 'r0-grid-4' : 'r0-grid-3'} style={{ marginBottom: 12 }}>
           <Row label="Celkem (prac.)" value={`${plan.schedule.total_days} dní`} bold />
           <Row label="Sekvenčně" value={`${plan.schedule.sequential_days} dní`} />
           <Row label="Úspora" value={`${plan.schedule.savings_pct}%`} bold />
@@ -1948,11 +1941,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
         {/* Calendar dates banner */}
         {calendarInfo && (
-          <div style={{
-            display: 'flex', gap: 16, padding: '10px 14px', marginBottom: 12,
-            background: 'var(--r0-slate-50)', borderRadius: 6,
-            border: '1px solid var(--r0-slate-200)', fontSize: 13,
-          }}>
+          <div className="r0-calendar-banner">
             <span>
               <span style={{ color: 'var(--r0-slate-500)' }}>Zahájení: </span>
               <strong>{calendarInfo.formatDate(calendarInfo.start)}</strong>
@@ -2022,7 +2011,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Monte Carlo */}
       {plan.monte_carlo && (
         <Card title="Monte Carlo (PERT)" icon="🎲">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          <div className="r0-grid-4">
             <Row label="P50 (medián)" value={`${plan.monte_carlo.p50} dní`} />
             <Row label="P80" value={`${plan.monte_carlo.p80} dní`} />
             <Row label="P90" value={`${plan.monte_carlo.p90} dní`} />
@@ -2037,7 +2026,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
       {/* Costs Summary */}
       <Card title="Souhrn nákladů" icon="💰">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="r0-grid-2">
           <div>
             <Row label="Bednění (práce)" value={formatCZK(plan.costs.formwork_labor_czk)} />
             <Row label="Výztuž (práce)" value={formatCZK(plan.costs.rebar_labor_czk)} />
