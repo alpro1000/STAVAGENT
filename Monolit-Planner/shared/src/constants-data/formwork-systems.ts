@@ -26,12 +26,16 @@ export interface FormworkSystemSpec {
 }
 
 /**
- * All formwork systems — 8 systems
+ * All formwork systems — 16 systems (DOKA, PERI, ULMA, NOE, Místní)
  *
  * Assembly norms represent person-hours per m² (or per bm).
  * Disassembly_h_m2 = assembly_h_m2 × disassembly_ratio.
+ *
+ * Sources: DOKA price lists 2024, PERI catalog 2024, ULMA CZ 2024,
+ *          NOE-Schaltechnik catalog 2024, industry standards.
  */
 export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
+  // ── DOKA ─────────────────────────────────────────────────────────────
   {
     name: 'Frami Xlife',
     manufacturer: 'DOKA',
@@ -53,17 +57,6 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 520.00,
     unit: 'm2',
     description: 'Velkoformátové rámové bednění pro vysoké stěny, pilíře',
-  },
-  {
-    name: 'TRIO',
-    manufacturer: 'PERI',
-    heights: ['2.70', '3.30'],
-    assembly_h_m2: 0.50,
-    disassembly_h_m2: 0.15,
-    disassembly_ratio: 0.30,
-    rental_czk_m2_month: 480.00,
-    unit: 'm2',
-    description: 'Rámové bednění PERI pro stěny a sloupy',
   },
   {
     name: 'Top 50',
@@ -99,17 +92,6 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Sloupové bednění pro pilíře mostů',
   },
   {
-    name: 'Tradiční tesařské',
-    manufacturer: 'Místní',
-    heights: ['libovolná'],
-    assembly_h_m2: 1.30,
-    disassembly_h_m2: 0.65,
-    disassembly_ratio: 0.50,
-    rental_czk_m2_month: 0,
-    unit: 'm2',
-    description: 'Jednorázové tesařské bednění (bez pronájmu, materiál)',
-  },
-  {
     name: 'Římsové bednění T',
     manufacturer: 'DOKA',
     heights: ['libovolná'],
@@ -119,6 +101,120 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 0,
     unit: 'bm',
     description: 'Konzolové bednění říms mostu (0,30–0,45 h/bm)',
+  },
+  // ── PERI ─────────────────────────────────────────────────────────────
+  {
+    name: 'TRIO',
+    manufacturer: 'PERI',
+    heights: ['2.70', '3.30'],
+    assembly_h_m2: 0.50,
+    disassembly_h_m2: 0.15,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 480.00,
+    unit: 'm2',
+    description: 'Rámové bednění PERI pro stěny a sloupy',
+  },
+  {
+    name: 'MAXIMO',
+    manufacturer: 'PERI',
+    heights: ['2.70', '3.30', '3.60'],
+    assembly_h_m2: 0.40,
+    disassembly_h_m2: 0.12,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 550.00,
+    unit: 'm2',
+    description: 'Velkoformátové stěnové bednění bez viditelných kotev',
+  },
+  {
+    name: 'DOMINO',
+    manufacturer: 'PERI',
+    heights: ['1.00', '1.25', '1.50', '2.00', '2.50'],
+    assembly_h_m2: 0.65,
+    disassembly_h_m2: 0.20,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 420.00,
+    unit: 'm2',
+    description: 'Lehké ruční bednění pro základy a nízké stěny',
+  },
+  {
+    name: 'SKYDECK',
+    manufacturer: 'PERI',
+    heights: ['do 6.00'],
+    assembly_h_m2: 0.35,
+    disassembly_h_m2: 0.11,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 400.00,
+    unit: 'm2',
+    description: 'Panelové stropní bednění — rychlá montáž zespodu',
+  },
+  {
+    name: 'VARIO GT 24',
+    manufacturer: 'PERI',
+    heights: ['3.00', '6.00', '9.00', '12.00'],
+    assembly_h_m2: 0.85,
+    disassembly_h_m2: 0.26,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 600.00,
+    unit: 'm2',
+    description: 'Nosníkové bednění pro vysoké stěny a pilíře (do 12 m)',
+  },
+  // ── ULMA ─────────────────────────────────────────────────────────────
+  {
+    name: 'MEGALITE',
+    manufacturer: 'ULMA',
+    heights: ['2.70', '3.00', '3.30'],
+    assembly_h_m2: 0.48,
+    disassembly_h_m2: 0.14,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 490.00,
+    unit: 'm2',
+    description: 'Velkoformátové stěnové bednění ULMA — lehká konstrukce',
+  },
+  {
+    name: 'COMAIN',
+    manufacturer: 'ULMA',
+    heights: ['1.00', '1.50', '2.00', '2.50'],
+    assembly_h_m2: 0.68,
+    disassembly_h_m2: 0.22,
+    disassembly_ratio: 0.32,
+    rental_czk_m2_month: 460.00,
+    unit: 'm2',
+    description: 'Rámové bednění ULMA pro základy, opěrné zdi',
+  },
+  {
+    name: 'CC-4',
+    manufacturer: 'ULMA',
+    heights: ['do 6.00'],
+    assembly_h_m2: 0.42,
+    disassembly_h_m2: 0.13,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 370.00,
+    unit: 'm2',
+    description: 'Stropní bednění ULMA s hliníkovými nosníky',
+  },
+  // ── NOE ──────────────────────────────────────────────────────────────
+  {
+    name: 'NOEtop',
+    manufacturer: 'NOE',
+    heights: ['2.70', '3.00', '3.30'],
+    assembly_h_m2: 0.52,
+    disassembly_h_m2: 0.16,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 470.00,
+    unit: 'm2',
+    description: 'Rámové stěnové bednění NOE — jednoduché spínání',
+  },
+  // ── Místní ───────────────────────────────────────────────────────────
+  {
+    name: 'Tradiční tesařské',
+    manufacturer: 'Místní',
+    heights: ['libovolná'],
+    assembly_h_m2: 1.30,
+    disassembly_h_m2: 0.65,
+    disassembly_ratio: 0.50,
+    rental_czk_m2_month: 0,
+    unit: 'm2',
+    description: 'Jednorázové tesařské bednění (bez pronájmu, materiál)',
   },
 ];
 

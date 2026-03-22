@@ -213,6 +213,17 @@ export default function PlannerPage() {
   const [showHelp, setShowHelp] = useState(false);
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
+  const [comparison, setComparison] = useState<Array<{
+    system: string;
+    manufacturer: string;
+    total_days: number;
+    total_cost_czk: number;
+    formwork_labor_czk: number;
+    rental_czk: number;
+    assembly_days: number;
+    disassembly_days: number;
+  }> | null>(null);
+  const [showComparison, setShowComparison] = useState(false);
   const [showNorms, setShowNorms] = useState(false);
   const [showProductivityNorms, setShowProductivityNorms] = useState(false);
   const [normsScraping, setNormsScraping] = useState(false);
@@ -269,75 +280,87 @@ export default function PlannerPage() {
 
   const handleCalculate = () => {
     setError(null);
+    setShowComparison(false);
     try {
-      // Determine effective has_dilatacni_spary:
-      // - In 'spary' mode: use checkbox value
-      // - In 'manual' mode: always false (tacts are set directly)
-      const effectiveHasSpary = form.tact_mode === 'spary' ? form.has_dilatacni_spary : false;
-
-      const input: PlannerInput = {
-        volume_m3: form.volume_m3,
-        has_dilatacni_spary: effectiveHasSpary,
-        season: form.season,
-        use_retarder: form.use_retarder,
-        concrete_class: form.concrete_class,
-        cement_type: form.cement_type,
-        temperature_c: form.temperature_c,
-        num_sets: form.num_sets,
-        num_formwork_crews: form.num_formwork_crews,
-        num_rebar_crews: form.num_rebar_crews,
-        crew_size: form.crew_size,
-        shift_h: form.shift_h,
-        k: 0.8,
-        wage_czk_h: form.wage_czk_h,
-        enable_monte_carlo: form.enable_monte_carlo,
-      };
-
-      // Element identification
-      if (form.use_name_classification && form.element_name.trim()) {
-        input.element_name = form.element_name.trim();
-      } else {
-        input.element_type = form.element_type;
-      }
-
-      // Optional overrides
-      if (form.formwork_area_m2) {
-        input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
-      }
-      if (form.rebar_mass_kg) {
-        input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
-      }
-      if (effectiveHasSpary) {
-        input.spara_spacing_m = form.spara_spacing_m;
-        input.total_length_m = form.total_length_m;
-        input.adjacent_sections = form.adjacent_sections;
-      }
-      // Direct tact input (foundations, piers, etc.)
-      if (form.tact_mode === 'manual' && form.num_tacts_override) {
-        input.num_tacts_override = parseInt(form.num_tacts_override);
-        if (form.tact_volume_m3_override) {
-          input.tact_volume_m3_override = parseFloat(form.tact_volume_m3_override);
-        }
-        if (form.scheduling_mode_override) {
-          input.scheduling_mode_override = form.scheduling_mode_override;
-        }
-      }
-      if (form.height_m) {
-        input.height_m = parseFloat(form.height_m);
-      }
+      const input = buildInput();
       if (form.formwork_system_name) {
         input.formwork_system_name = form.formwork_system_name;
       }
-      if (form.num_bridges > 1) {
-        input.num_bridges = form.num_bridges;
-      }
-
       const output = planElement(input);
       setResult(output);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba výpočtu');
       setResult(null);
     }
+  };
+
+  const handleCompare = () => {
+    if (!result) return;
+    const baseInput = buildInput();
+    const results: typeof comparison = [];
+    for (const sys of FORMWORK_SYSTEMS) {
+      if (sys.unit === 'bm') continue; // skip linear-meter systems (cornice)
+      try {
+        const out = planElement({ ...baseInput, formwork_system_name: sys.name });
+        results.push({
+          system: sys.name,
+          manufacturer: sys.manufacturer,
+          total_days: out.schedule.total_days,
+          total_cost_czk: out.costs.total_labor_czk + out.costs.formwork_rental_czk,
+          formwork_labor_czk: out.costs.formwork_labor_czk,
+          rental_czk: out.costs.formwork_rental_czk,
+          assembly_days: out.formwork.assembly_days,
+          disassembly_days: out.formwork.disassembly_days,
+        });
+      } catch {
+        // skip incompatible systems
+      }
+    }
+    results.sort((a, b) => a.total_cost_czk - b.total_cost_czk);
+    setComparison(results);
+    setShowComparison(true);
+  };
+
+  /** Build PlannerInput from current form state (shared by calculate + compare) */
+  const buildInput = (): PlannerInput => {
+    const effectiveHasSpary = form.tact_mode === 'spary' ? form.has_dilatacni_spary : false;
+    const input: PlannerInput = {
+      volume_m3: form.volume_m3,
+      has_dilatacni_spary: effectiveHasSpary,
+      season: form.season,
+      use_retarder: form.use_retarder,
+      concrete_class: form.concrete_class,
+      cement_type: form.cement_type,
+      temperature_c: form.temperature_c,
+      num_sets: form.num_sets,
+      num_formwork_crews: form.num_formwork_crews,
+      num_rebar_crews: form.num_rebar_crews,
+      crew_size: form.crew_size,
+      shift_h: form.shift_h,
+      k: 0.8,
+      wage_czk_h: form.wage_czk_h,
+      enable_monte_carlo: form.enable_monte_carlo,
+    };
+    if (form.use_name_classification && form.element_name.trim()) {
+      input.element_name = form.element_name.trim();
+    } else {
+      input.element_type = form.element_type;
+    }
+    if (form.formwork_area_m2) input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
+    if (form.rebar_mass_kg) input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
+    if (effectiveHasSpary) {
+      input.spara_spacing_m = form.spara_spacing_m;
+      input.total_length_m = form.total_length_m;
+      input.adjacent_sections = form.adjacent_sections;
+    }
+    if (form.tact_mode === 'manual' && form.num_tacts_override) {
+      input.num_tacts_override = parseInt(form.num_tacts_override);
+      if (form.tact_volume_m3_override) input.tact_volume_m3_override = parseFloat(form.tact_volume_m3_override);
+      if (form.scheduling_mode_override) input.scheduling_mode_override = form.scheduling_mode_override;
+    }
+    if (form.height_m) input.height_m = parseFloat(form.height_m);
+    if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
+    return input;
   };
 
   // Auto-calculate on first render with defaults
@@ -1281,6 +1304,20 @@ export default function PlannerPage() {
           >
             Vypočítat plán
           </button>
+          {result && (
+            <button
+              onClick={handleCompare}
+              style={{
+                width: '100%', padding: '10px', marginTop: 8,
+                background: 'var(--r0-slate-200, #e2e8f0)', color: 'var(--r0-slate-700, #334155)',
+                border: '1px solid var(--r0-slate-300, #cbd5e1)',
+                borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                fontFamily: 'inherit',
+              }}
+            >
+              Porovnat bednění (všechny systémy)
+            </button>
+          )}
 
           {error && (
             <div style={{
@@ -1300,6 +1337,89 @@ export default function PlannerPage() {
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
               <div style={{ fontSize: 48 }}>📐</div>
               <p style={{ fontSize: 16, marginTop: 16 }}>Nastavte parametry a klikněte "Vypočítat plán"</p>
+            </div>
+          )}
+
+          {/* ─── Formwork Comparison Table ─── */}
+          {showComparison && comparison && comparison.length > 0 && (
+            <div style={{
+              marginTop: 16, padding: 16,
+              background: 'var(--r0-white, #fff)',
+              borderRadius: 8,
+              border: '1px solid var(--r0-slate-200, #e2e8f0)',
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--r0-slate-800, #1e293b)' }}>
+                  Porovnání bednění ({comparison.length} systémů)
+                </h3>
+                <button onClick={() => setShowComparison(false)} style={{
+                  background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: 'var(--r0-slate-400)',
+                }}>✕</button>
+              </div>
+              <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 8 }}>
+                Seřazeno od nejlevnějšího. Zelené = nejlepší varianta.
+              </div>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--r0-slate-200, #e2e8f0)' }}>
+                      <th style={{ textAlign: 'left', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>#</th>
+                      <th style={{ textAlign: 'left', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Systém</th>
+                      <th style={{ textAlign: 'left', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Výrobce</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Celkem dní</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Montáž (d)</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Demontáž (d)</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Práce (Kč)</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>Pronájem (Kč)</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>Celkem (Kč)</th>
+                      <th style={{ textAlign: 'right', padding: '6px 8px', fontSize: 11, color: 'var(--r0-slate-500)', fontWeight: 600 }}>vs. 1.</th>
+                      <th style={{ textAlign: 'center', padding: '6px 8px', fontSize: 11 }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparison.map((c, i) => {
+                      const isBest = i === 0;
+                      const isCurrent = plan && c.system === plan.formwork.system.name;
+                      const diff = i > 0 ? c.total_cost_czk - comparison[0].total_cost_czk : 0;
+                      const diffPct = i > 0 ? ((diff / comparison[0].total_cost_czk) * 100).toFixed(0) : '';
+                      return (
+                        <tr key={c.system} style={{
+                          borderBottom: '1px solid var(--r0-slate-100, #f1f5f9)',
+                          background: isBest ? 'rgba(34,197,94,0.06)' : isCurrent ? 'rgba(245,158,11,0.06)' : undefined,
+                        }}>
+                          <td style={{ padding: '5px 8px', fontWeight: isBest ? 700 : 400 }}>{i + 1}</td>
+                          <td style={{ padding: '5px 8px', fontWeight: isBest || isCurrent ? 700 : 400 }}>
+                            {c.system} {isCurrent ? '◀' : ''}
+                          </td>
+                          <td style={{ padding: '5px 8px', color: 'var(--r0-slate-500)' }}>{c.manufacturer}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.total_days}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.assembly_days}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.disassembly_days}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatCZK(c.formwork_labor_czk)}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatCZK(c.rental_czk)}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right', fontWeight: 700, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>
+                            {formatCZK(c.total_cost_czk)}
+                          </td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right', color: i === 0 ? '#22c55e' : '#ef4444', fontSize: 11 }}>
+                            {i === 0 ? 'BEST' : `+${diffPct}%`}
+                          </td>
+                          <td style={{ padding: '5px 8px', textAlign: 'center' }}>
+                            {!isCurrent && (
+                              <button
+                                onClick={() => { update('formwork_system_name', c.system); }}
+                                style={{
+                                  background: 'none', border: '1px solid var(--r0-slate-300)', borderRadius: 4,
+                                  padding: '2px 8px', fontSize: 11, cursor: 'pointer', color: 'var(--r0-slate-600)',
+                                }}
+                              >Použít</button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </main>
@@ -1583,8 +1703,16 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
         {/* Calendar timeline — map work-day milestones to dates */}
         {calendarInfo && plan.schedule.tact_details && plan.schedule.tact_details.length > 0 && (
           <div style={{ marginTop: 12 }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-600)', marginBottom: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-600)', marginBottom: 4 }}>
               Kalendářní milníky (záběry)
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 8 }}>
+              Datumy = kalendářní rozsah (vč. víkendů). Samotná betonáž trvá{' '}
+              <strong style={{ color: 'var(--r0-phase-concrete, #f59e0b)' }}>
+                {plan.pour.total_pour_hours < 1
+                  ? `${Math.round(plan.pour.total_pour_hours * 60)} min`
+                  : `${formatNum(plan.pour.total_pour_hours)} h`}
+              </strong> / záběr ({formatNum(plan.pour.effective_rate_m3_h)} m³/h).
             </div>
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
