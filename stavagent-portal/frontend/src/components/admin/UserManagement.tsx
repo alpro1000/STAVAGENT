@@ -1,6 +1,6 @@
 /**
  * User Management Component
- * List, view, edit, and delete users
+ * List, view, edit users with plan/quota controls
  */
 
 import { useState, useEffect } from 'react';
@@ -13,6 +13,11 @@ interface User {
   role: string;
   email_verified: boolean;
   email_verified_at?: string;
+  phone?: string;
+  phone_verified?: boolean;
+  plan?: string;
+  free_pipeline_runs_used?: number;
+  registration_ip?: string;
   created_at: string;
 }
 
@@ -26,12 +31,12 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
   const [error, setError] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editingRole, setEditingRole] = useState('');
+  const [editingPlan, setEditingPlan] = useState('free');
   const [verifyEmail, setVerifyEmail] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
+  useEffect(() => { loadUsers(); }, []);
 
   const loadUsers = async () => {
     try {
@@ -40,7 +45,7 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
       setUsers(response.data || []);
       setError('');
     } catch (err: any) {
-      setError(err.message || 'Chyba při načítání uživatelů');
+      setError(err.message || 'Chyba');
     } finally {
       setLoading(false);
     }
@@ -49,131 +54,131 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
   const handleSelectUser = (user: User) => {
     setSelectedUser(user);
     setEditingRole(user.role);
+    setEditingPlan(user.plan || 'free');
     setVerifyEmail(user.email_verified);
     setError('');
   };
 
   const handleSaveUser = async () => {
     if (!selectedUser) return;
-
     try {
       setSaving(true);
       const changes: any = {};
+      if (editingRole !== selectedUser.role) changes.role = editingRole;
+      if (verifyEmail !== selectedUser.email_verified) changes.email_verified = verifyEmail;
 
-      if (editingRole !== selectedUser.role) {
-        changes.role = editingRole;
+      if (Object.keys(changes).length > 0) {
+        await adminAPI.updateUser(selectedUser.id, changes);
       }
 
-      if (verifyEmail !== selectedUser.email_verified) {
-        changes.email_verified = verifyEmail;
+      // Plan change
+      if (editingPlan !== (selectedUser.plan || 'free')) {
+        await adminAPI.changeUserPlan(selectedUser.id, editingPlan);
       }
 
-      if (Object.keys(changes).length === 0) {
-        setError('Žádné změny k uložení');
-        setSaving(false);
-        return;
-      }
-
-      await adminAPI.updateUser(selectedUser.id, changes);
       setError('');
       setSelectedUser(null);
       onUserUpdated();
       loadUsers();
     } catch (err: any) {
-      setError(err.message || 'Chyba při uložení změn');
+      setError(err.message || 'Chyba');
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDeleteUser = async (userId: number, email: string) => {
-    if (!window.confirm(`Opravdu chcete smazat uživatele ${email}? Tuto akci nelze vrátit.`)) {
-      return;
+  const handleResetQuota = async () => {
+    if (!selectedUser) return;
+    if (!window.confirm(`Reset kvoty pro ${selectedUser.email}?`)) return;
+    try {
+      await adminAPI.resetUserQuota(selectedUser.id);
+      loadUsers();
+    } catch (err: any) {
+      setError(err.message);
     }
+  };
 
+  const handleDeleteUser = async (userId: number, email: string) => {
+    if (!window.confirm(`Opravdu smazat ${email}? Nelze vratit.`)) return;
     try {
       await adminAPI.deleteUser(userId);
-      setError('');
       setSelectedUser(null);
       onUserUpdated();
       loadUsers();
     } catch (err: any) {
-      setError(err.message || 'Chyba při mazání uživatele');
+      setError(err.message);
     }
   };
 
+  const filteredUsers = filter
+    ? users.filter(u =>
+        u.email.toLowerCase().includes(filter.toLowerCase()) ||
+        u.name.toLowerCase().includes(filter.toLowerCase())
+      )
+    : users;
+
+  const planBadge = (plan: string) => {
+    const colors: Record<string, string> = {
+      free: '#6b7280', starter: '#3b82f6', professional: '#8b5cf6', enterprise: '#f59e0b',
+    };
+    return (
+      <span style={{
+        fontSize: 10, padding: '1px 6px', borderRadius: 3,
+        background: colors[plan] || '#6b7280', color: '#fff',
+      }}>{plan}</span>
+    );
+  };
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
       {/* Users List */}
-      <div style={{
-        background: 'white',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          padding: '16px',
-          borderBottom: '1px solid #e2e8f0',
-          fontWeight: '600',
-          fontSize: '14px'
-        }}>
-          Uživatelé ({users.length})
+      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, overflow: 'hidden' }}>
+        <div style={{ padding: 12, borderBottom: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontWeight: 600, fontSize: 14 }}>Uzivatele ({users.length})</span>
+          <input
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            placeholder="Hledat..."
+            style={{
+              marginLeft: 'auto', padding: '4px 8px', border: '1px solid #e2e8f0',
+              borderRadius: 4, fontSize: 12, width: 140,
+            }}
+          />
         </div>
 
         {loading ? (
-          <div style={{ padding: '40px 20px', textAlign: 'center', color: '#718096' }}>
-            Načítání uživatelů...
-          </div>
-        ) : error && !selectedUser ? (
-          <div style={{ padding: '20px', color: '#742a2a', background: '#fed7d7' }}>
-            {error}
-          </div>
-        ) : users.length === 0 ? (
-          <div style={{ padding: '40px 20px', textAlign: 'center', color: '#718096' }}>
-            Žádní uživatelé
-          </div>
+          <div style={{ padding: 40, textAlign: 'center', color: '#718096' }}>Nacitam...</div>
         ) : (
-          <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
-            {users.map(user => (
+          <div style={{ maxHeight: 600, overflowY: 'auto' }}>
+            {filteredUsers.map(user => (
               <div
                 key={user.id}
                 onClick={() => handleSelectUser(user)}
                 style={{
-                  padding: '12px 16px',
-                  borderBottom: '1px solid #edf2f7',
-                  cursor: 'pointer',
-                  background: selectedUser?.id === user.id ? '#edf2f7' : 'white',
-                  transition: 'background 0.2s'
-                }}
-                onMouseEnter={e => {
-                  if (selectedUser?.id !== user.id) {
-                    e.currentTarget.style.background = '#f7fafc';
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (selectedUser?.id !== user.id) {
-                    e.currentTarget.style.background = 'white';
-                  }
+                  padding: '10px 16px', borderBottom: '1px solid #f3f4f6', cursor: 'pointer',
+                  background: selectedUser?.id === user.id ? '#edf2f7' : '#fff',
                 }}
               >
-                <div style={{ fontWeight: '500', fontSize: '13px', marginBottom: '4px' }}>
+                <div style={{ fontWeight: 500, fontSize: 13, marginBottom: 2 }}>
                   {user.name}
                 </div>
-                <div style={{ fontSize: '12px', color: '#718096', marginBottom: '4px' }}>
+                <div style={{ fontSize: 12, color: '#718096', marginBottom: 4 }}>
                   {user.email}
                 </div>
-                <div style={{ fontSize: '11px', color: '#a0aec0' }}>
+                <div style={{ fontSize: 11, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                   <span style={{
-                    display: 'inline-block',
-                    padding: '2px 8px',
+                    padding: '1px 6px', borderRadius: 3,
                     background: user.role === 'admin' ? '#fed7d7' : '#c6f6d5',
                     color: user.role === 'admin' ? '#742a2a' : '#22543d',
-                    borderRadius: '3px',
-                    marginRight: '8px'
-                  }}>
-                    {user.role === 'admin' ? '👑 Admin' : '👤 User'}
-                  </span>
-                  {user.email_verified ? '✅ Ověřen' : '❌ Neověřen'}
+                  }}>{user.role}</span>
+                  {planBadge(user.plan || 'free')}
+                  {user.email_verified && <span style={{ color: '#38a169' }}>email</span>}
+                  {user.phone_verified && <span style={{ color: '#38a169' }}>tel</span>}
+                  {(user.free_pipeline_runs_used || 0) > 0 && (
+                    <span style={{ color: '#6b7280' }}>
+                      {user.free_pipeline_runs_used} runs
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
@@ -182,166 +187,110 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
       </div>
 
       {/* User Edit Panel */}
-      <div style={{
-        background: 'white',
-        border: '1px solid #e2e8f0',
-        borderRadius: '8px',
-        padding: '20px'
-      }}>
+      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 20 }}>
         {selectedUser ? (
           <>
-            <h3 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: '600' }}>
-              Upravit uživatele
+            <h3 style={{ marginBottom: 16, fontSize: 16, fontWeight: 600 }}>
+              Upravit uzivatele
             </h3>
 
             {error && (
               <div style={{
-                padding: '12px',
-                background: '#fed7d7',
-                border: '1px solid #fc8181',
-                borderRadius: '4px',
-                marginBottom: '16px',
-                color: '#742a2a',
-                fontSize: '13px'
-              }}>
-                {error}
-              </div>
+                padding: 12, background: '#fed7d7', border: '1px solid #fc8181',
+                borderRadius: 4, marginBottom: 16, color: '#742a2a', fontSize: 13,
+              }}>{error}</div>
             )}
 
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '13px',
-                fontWeight: '500',
-                marginBottom: '6px',
-                color: '#2d3748'
-              }}>
-                Jméno
-              </label>
-              <div style={{
-                padding: '10px 12px',
-                background: '#f7fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '4px',
-                fontSize: '13px'
-              }}>
+            {/* Name & Email (read-only) */}
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: '#6b7280', marginBottom: 4 }}>Jmeno</label>
+              <div style={{ padding: '8px 12px', background: '#f7fafc', border: '1px solid #e2e8f0', borderRadius: 4, fontSize: 13 }}>
                 {selectedUser.name}
               </div>
             </div>
 
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '13px',
-                fontWeight: '500',
-                marginBottom: '6px',
-                color: '#2d3748'
-              }}>
-                Email
-              </label>
-              <div style={{
-                padding: '10px 12px',
-                background: '#f7fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '4px',
-                fontSize: '13px'
-              }}>
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: '#6b7280', marginBottom: 4 }}>Email</label>
+              <div style={{ padding: '8px 12px', background: '#f7fafc', border: '1px solid #e2e8f0', borderRadius: 4, fontSize: 13 }}>
                 {selectedUser.email}
               </div>
             </div>
 
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{
-                display: 'block',
-                fontSize: '13px',
-                fontWeight: '500',
-                marginBottom: '6px',
-                color: '#2d3748'
-              }}>
-                Role
-              </label>
+            {/* Role */}
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: '#6b7280', marginBottom: 4 }}>Role</label>
               <select
                 value={editingRole}
                 onChange={e => setEditingRole(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '4px',
-                  fontSize: '13px',
-                  outline: 'none'
-                }}
+                style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 4, fontSize: 13 }}
               >
-                <option value="user">👤 User</option>
-                <option value="admin">👑 Admin</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
               </select>
             </div>
 
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                fontSize: '13px',
-                fontWeight: '500'
-              }}>
-                <input
-                  type="checkbox"
-                  checked={verifyEmail}
-                  onChange={e => setVerifyEmail(e.target.checked)}
-                  style={{ marginRight: '8px' }}
-                />
-                Email ověřen
+            {/* Plan */}
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: '#6b7280', marginBottom: 4 }}>Plan</label>
+              <select
+                value={editingPlan}
+                onChange={e => setEditingPlan(e.target.value)}
+                style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 4, fontSize: 13 }}
+              >
+                <option value="free">Free</option>
+                <option value="starter">Starter</option>
+                <option value="professional">Professional</option>
+                <option value="enterprise">Enterprise</option>
+              </select>
+            </div>
+
+            {/* Checkboxes */}
+            <div style={{ marginBottom: 12 }}>
+              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>
+                <input type="checkbox" checked={verifyEmail} onChange={e => setVerifyEmail(e.target.checked)} style={{ marginRight: 8 }} />
+                Email overen
               </label>
             </div>
 
-            <div style={{ marginBottom: '16px', fontSize: '12px', color: '#718096' }}>
-              <div>Vytvořen: {new Date(selectedUser.created_at).toLocaleDateString('cs-CZ')}</div>
-              {selectedUser.email_verified_at && (
-                <div>Ověřen: {new Date(selectedUser.email_verified_at).toLocaleDateString('cs-CZ')}</div>
-              )}
+            {/* Usage info */}
+            <div style={{ marginBottom: 16, fontSize: 12, color: '#6b7280', borderTop: '1px solid #f3f4f6', paddingTop: 8 }}>
+              <div>Pipeline runs: {selectedUser.free_pipeline_runs_used || 0}</div>
+              {selectedUser.phone && <div>Tel: {selectedUser.phone} {selectedUser.phone_verified ? '(overen)' : '(neoveren)'}</div>}
+              {selectedUser.registration_ip && <div>Reg. IP: {selectedUser.registration_ip}</div>}
+              <div>Vytvoren: {new Date(selectedUser.created_at).toLocaleDateString('cs-CZ')}</div>
             </div>
 
-            <div style={{ display: 'flex', gap: '8px' }}>
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <button
                 onClick={handleSaveUser}
                 disabled={saving}
                 style={{
-                  flex: 1,
-                  padding: '10px',
-                  background: '#667eea',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                  fontSize: '13px',
-                  opacity: saving ? 0.6 : 1
+                  flex: 1, padding: 10, background: '#FF9F1C', color: '#fff',
+                  border: 'none', borderRadius: 4, cursor: 'pointer', fontWeight: 600, fontSize: 13,
+                  opacity: saving ? 0.6 : 1,
                 }}
-              >
-                {saving ? 'Ukládám...' : 'Uložit'}
-              </button>
+              >{saving ? 'Ukladam...' : 'Ulozit'}</button>
+              <button
+                onClick={handleResetQuota}
+                style={{
+                  padding: '10px 16px', background: '#3b82f6', color: '#fff',
+                  border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13,
+                }}
+                title="Vynulovat pocitadlo bezplatnych pipeline runs"
+              >Reset kvoty</button>
               <button
                 onClick={() => handleDeleteUser(selectedUser.id, selectedUser.email)}
                 style={{
-                  flex: 1,
-                  padding: '10px',
-                  background: '#f56565',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                  fontSize: '13px'
+                  padding: '10px 16px', background: '#e53e3e', color: '#fff',
+                  border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13,
                 }}
-              >
-                Smazat
-              </button>
+              >Smazat</button>
             </div>
           </>
         ) : (
-          <div style={{ textAlign: 'center', color: '#718096', padding: '40px 20px' }}>
-            Vyberte uživatele ze seznamu na levé straně
+          <div style={{ textAlign: 'center', color: '#718096', padding: 40 }}>
+            Vyberte uzivatele ze seznamu
           </div>
         )}
       </div>

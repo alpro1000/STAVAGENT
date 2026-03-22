@@ -517,7 +517,81 @@ export const adminAPI = {
   getModelAuditReport: async (): Promise<any> => {
     const { data } = await api.get('/api/admin/model-audit-report');
     return data;
-  }
+  },
+  // Usage stats
+  getUsageStats: async (days = 30, userId?: number): Promise<any> => {
+    const params: any = { days };
+    if (userId) params.user_id = userId;
+    const { data } = await api.get('/api/admin/usage-stats', { params });
+    return data;
+  },
+  getUserUsage: async (userId: number): Promise<any> => {
+    const { data } = await api.get(`/api/admin/user-usage/${userId}`);
+    return data;
+  },
+  // Feature flags
+  getFeatureFlags: async (): Promise<any> => {
+    const { data } = await api.get('/api/admin/feature-flags');
+    return data;
+  },
+  updateFlagDefault: async (flagKey: string, enabled: boolean): Promise<any> => {
+    const { data } = await api.put(`/api/admin/feature-flags/${flagKey}/default`, { enabled });
+    return data;
+  },
+  setFlagOverride: async (flagKey: string, scopeType: string, scopeValue: string, enabled: boolean): Promise<any> => {
+    const { data } = await api.post(`/api/admin/feature-flags/${flagKey}/override`, {
+      scope_type: scopeType, scope_value: scopeValue, enabled,
+    });
+    return data;
+  },
+  removeFlagOverride: async (flagKey: string, scopeType: string, scopeValue: string): Promise<any> => {
+    const { data } = await api.delete(`/api/admin/feature-flags/${flagKey}/override`, {
+      data: { scope_type: scopeType, scope_value: scopeValue },
+    });
+    return data;
+  },
+  createFeatureFlag: async (params: { flag_key: string; display_name: string; description?: string; category?: string; default_enabled?: boolean }): Promise<any> => {
+    const { data } = await api.post('/api/admin/feature-flags', params);
+    return data;
+  },
+  // IP anti-fraud
+  getRegistrationIPs: async (days = 7): Promise<any> => {
+    const { data } = await api.get('/api/admin/registration-ips', { params: { days } });
+    return data;
+  },
+  // User plan & quota
+  changeUserPlan: async (userId: number, plan: string): Promise<any> => {
+    const { data } = await api.put(`/api/admin/users/${userId}/plan`, { plan });
+    return data;
+  },
+  resetUserQuota: async (userId: number): Promise<any> => {
+    const { data } = await api.put(`/api/admin/users/${userId}/quota-reset`);
+    return data;
+  },
+};
+
+// User-facing usage & features
+export const usageAPI = {
+  getMyUsage: async (): Promise<any> => {
+    const { data } = await api.get('/api/auth/usage');
+    return data;
+  },
+  getMyFeatures: async (): Promise<any> => {
+    const { data } = await api.get('/api/auth/features');
+    return data;
+  },
+};
+
+// Phone verification
+export const phoneAPI = {
+  sendCode: async (phone: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/send-phone-code', { phone });
+    return data;
+  },
+  verifyCode: async (code: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/verify-phone', { code });
+    return data;
+  },
 };
 
 // ============ Workflow C Types ============
