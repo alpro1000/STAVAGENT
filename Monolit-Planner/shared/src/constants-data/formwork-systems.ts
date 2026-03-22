@@ -23,6 +23,22 @@ export interface FormworkSystemSpec {
   /** Measurement unit: 'm2' (default) or 'bm' (linear meters, e.g. cornice formwork) */
   unit: 'm2' | 'bm';
   description: string;
+
+  // ── Technical specs (optional, from PERI/DOKA catalogs) ──────────────
+  /** Panel weight (kg/m²) — affects crane requirement and handling */
+  weight_kg_m2?: number;
+  /** Max fresh concrete pressure (kN/m²) — determines pour rate limit */
+  pressure_kn_m2?: number;
+  /** Max single panel weight (kg) — determines if crane needed */
+  max_panel_weight_kg?: number;
+  /** Whether crane is required for assembly/relocation */
+  needs_crane?: boolean;
+  /** Minimum radius for circular formwork (m) — only for RUNDFLEX, SRS */
+  min_radius_m?: number;
+  /** Standard panel widths available (mm) */
+  panel_widths_mm?: number[];
+  /** Purchase price per m² (CZK) — multi-use purchase from PERI offer */
+  purchase_czk_m2?: number;
 }
 
 /**
@@ -31,8 +47,10 @@ export interface FormworkSystemSpec {
  * Assembly norms represent person-hours per m² (or per bm).
  * Disassembly_h_m2 = assembly_h_m2 × disassembly_ratio.
  *
- * Sources: DOKA price lists 2024, PERI catalog 2024, ULMA CZ 2024,
+ * Sources: DOKA price lists 2024, PERI catalog 2024/2025, ULMA CZ 2024,
  *          NOE-Schaltechnik catalog 2024, industry standards.
+ *          PERI offer DO-25-0056409 (D6 Karlovy Vary, 2025-03-30).
+ *          PERI product brochures (prospekty): weight, pressure, panel specs.
  */
 export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
   // ── DOKA ─────────────────────────────────────────────────────────────
@@ -46,6 +64,11 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 507.20,
     unit: 'm2',
     description: 'Rámové bednění pro základy, opěry, nízké stěny',
+    weight_kg_m2: 30,
+    pressure_kn_m2: 60,
+    max_panel_weight_kg: 52,
+    needs_crane: false,
+    panel_widths_mm: [300, 450, 600, 750, 900],
   },
   {
     name: 'Framax Xlife',
@@ -57,6 +80,11 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 520.00,
     unit: 'm2',
     description: 'Velkoformátové rámové bednění pro vysoké stěny, pilíře',
+    weight_kg_m2: 56,
+    pressure_kn_m2: 80,
+    max_panel_weight_kg: 350,
+    needs_crane: true,
+    panel_widths_mm: [300, 450, 600, 900, 1200],
   },
   {
     name: 'Top 50',
@@ -68,6 +96,9 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 380.00,
     unit: 'm2',
     description: 'Stropní bednění, desky, mostovky',
+    weight_kg_m2: 25,
+    pressure_kn_m2: 75,
+    needs_crane: true,
   },
   {
     name: 'Dokaflex',
@@ -79,6 +110,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 350.00,
     unit: 'm2',
     description: 'Flexibilní stropní bednění s nosníky H20',
+    weight_kg_m2: 18,
+    needs_crane: false,
   },
   {
     name: 'SL-1 Sloupové',
@@ -90,6 +123,9 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 580.00,
     unit: 'm2',
     description: 'Sloupové bednění pro pilíře mostů',
+    weight_kg_m2: 65,
+    pressure_kn_m2: 80,
+    needs_crane: true,
   },
   {
     name: 'Římsové bednění T',
@@ -101,6 +137,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 0,
     unit: 'bm',
     description: 'Konzolové bednění říms mostu (0,30–0,45 h/bm)',
+    needs_crane: true,
   },
   // ── PERI ─────────────────────────────────────────────────────────────
   {
@@ -113,6 +150,12 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 736.00,
     unit: 'm2',
     description: 'Rámové bednění PERI pro opěry mostů (h=2,7–5,4 m, ~50 kg/m², tlak 80 kN/m²)',
+    weight_kg_m2: 50,
+    pressure_kn_m2: 80,
+    max_panel_weight_kg: 230,
+    needs_crane: true,
+    panel_widths_mm: [300, 330, 600, 720, 900, 1200],
+    purchase_czk_m2: 4866,
   },
   {
     name: 'MAXIMO',
@@ -124,6 +167,11 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 550.00,
     unit: 'm2',
     description: 'Velkoformátové stěnové bednění PERI bez viditelných kotev (~55 kg/m², tlak 80 kN/m², MX spínání)',
+    weight_kg_m2: 55,
+    pressure_kn_m2: 80,
+    max_panel_weight_kg: 510,
+    needs_crane: true,
+    panel_widths_mm: [300, 450, 600, 900, 1200, 2400],
   },
   {
     name: 'DOMINO',
@@ -135,6 +183,12 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 658.00,
     unit: 'm2',
     description: 'Lehké ruční bednění PERI (~24 kg/m² alu, tlak 50–60 kN/m², základy, opěry, propustky)',
+    weight_kg_m2: 24,
+    pressure_kn_m2: 55,
+    max_panel_weight_kg: 50,
+    needs_crane: false,
+    panel_widths_mm: [250, 300, 375, 500, 625, 750],
+    purchase_czk_m2: 4092,
   },
   {
     name: 'SKYDECK',
@@ -146,6 +200,9 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 400.00,
     unit: 'm2',
     description: 'Panelové stropní bednění PERI (~14 kg/m², 0,29 stojek/m², rychlé odbednění po 1 dni)',
+    weight_kg_m2: 14,
+    max_panel_weight_kg: 20,
+    needs_crane: false,
   },
   {
     name: 'VARIO GT 24',
@@ -157,6 +214,9 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 600.00,
     unit: 'm2',
     description: 'Nosníkové bednění pro vysoké stěny a pilíře (do 12 m)',
+    weight_kg_m2: 60,
+    pressure_kn_m2: 80,
+    needs_crane: true,
   },
   {
     name: 'VARIO',
@@ -168,6 +228,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 807.00,
     unit: 'm2',
     description: 'Zakázkové panelové bednění PERI pro mostní pilíře (průřezy 1,2–2,4 m, výšky 4,5–12,5 m)',
+    weight_kg_m2: 65,
+    pressure_kn_m2: 80,
+    needs_crane: true,
+    purchase_czk_m2: 5133,
   },
   {
     name: 'DUO',
@@ -179,6 +243,11 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 450.00,
     unit: 'm2',
     description: 'Univerzální lehké bednění PERI pro stěny i stropy (~22 kg/m², max. 25 kg/díl, bez jeřábu, tlak 50 kN/m²)',
+    weight_kg_m2: 22,
+    pressure_kn_m2: 50,
+    max_panel_weight_kg: 25,
+    needs_crane: false,
+    panel_widths_mm: [250, 500, 750, 1000],
   },
   {
     name: 'QUATTRO',
@@ -190,6 +259,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 560.00,
     unit: 'm2',
     description: 'Sloupové bednění PERI pro sloupy 20–60 cm (rastr 5 cm, tlak 80 kN/m²)',
+    weight_kg_m2: 48,
+    pressure_kn_m2: 80,
+    max_panel_weight_kg: 120,
+    needs_crane: true,
   },
   {
     name: 'MULTIFLEX',
@@ -201,6 +274,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 380.00,
     unit: 'm2',
     description: 'Flexibilní nosníkové stropní bednění PERI s GT 24 nosníky',
+    weight_kg_m2: 20,
+    needs_crane: false,
   },
   {
     name: 'RUNDFLEX',
@@ -212,6 +287,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 620.00,
     unit: 'm2',
     description: 'Kruhové stěnové bednění PERI (R ≥ 1,0 m, tlak 60 kN/m², nádrže, sila, rampy)',
+    weight_kg_m2: 45,
+    pressure_kn_m2: 60,
+    needs_crane: true,
+    min_radius_m: 1.0,
   },
   {
     name: 'SRS',
@@ -223,6 +302,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 650.00,
     unit: 'm2',
     description: 'Kruhové sloupové bednění PERI (Ø 25–70 cm, ocelové panely, architektonický beton)',
+    weight_kg_m2: 70,
+    pressure_kn_m2: 80,
+    needs_crane: true,
+    min_radius_m: 0.125,
   },
   {
     name: 'VARIOKIT',
@@ -234,6 +317,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 850.00,
     unit: 'm2',
     description: 'Inženýrská stavebnice PERI pro mosty a tunely (VGK, VGB, VST moduly)',
+    weight_kg_m2: 80,
+    needs_crane: true,
   },
   {
     name: 'CB 240',
@@ -245,6 +330,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 680.00,
     unit: 'm2',
     description: 'Šplhací konzola PERI pro jednostranné bednění (nosnost 240 kN)',
+    weight_kg_m2: 75,
+    needs_crane: true,
   },
   // ── ULMA ─────────────────────────────────────────────────────────────
   {
@@ -257,6 +344,9 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 490.00,
     unit: 'm2',
     description: 'Velkoformátové stěnové bednění ULMA — lehká konstrukce',
+    weight_kg_m2: 38,
+    pressure_kn_m2: 80,
+    needs_crane: true,
   },
   {
     name: 'COMAIN',
@@ -268,6 +358,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 460.00,
     unit: 'm2',
     description: 'Rámové bednění ULMA pro základy, opěrné zdi',
+    weight_kg_m2: 32,
+    pressure_kn_m2: 60,
+    max_panel_weight_kg: 60,
+    needs_crane: false,
   },
   {
     name: 'CC-4',
@@ -279,6 +373,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 370.00,
     unit: 'm2',
     description: 'Stropní bednění ULMA s hliníkovými nosníky',
+    weight_kg_m2: 16,
+    needs_crane: false,
   },
   // ── NOE ──────────────────────────────────────────────────────────────
   {
@@ -291,6 +387,9 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 470.00,
     unit: 'm2',
     description: 'Rámové stěnové bednění NOE — jednoduché spínání',
+    weight_kg_m2: 46,
+    pressure_kn_m2: 60,
+    needs_crane: true,
   },
   // ── Místní ───────────────────────────────────────────────────────────
   {
@@ -303,6 +402,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 0,
     unit: 'm2',
     description: 'Jednorázové tesařské bednění (bez pronájmu, materiál)',
+    weight_kg_m2: 35,
+    needs_crane: false,
   },
 ];
 
@@ -314,4 +415,14 @@ export function findFormworkSystem(name: string): FormworkSystemSpec | undefined
 /** Get default formwork system (Frami Xlife) */
 export function getDefaultFormworkSystem(): FormworkSystemSpec {
   return FORMWORK_SYSTEMS[0];
+}
+
+/** Filter systems that don't require crane (manual handling only) */
+export function getManualFormworkSystems(): FormworkSystemSpec[] {
+  return FORMWORK_SYSTEMS.filter(s => s.needs_crane === false);
+}
+
+/** Filter systems by maximum concrete pressure (kN/m²) */
+export function getSystemsByMinPressure(minPressure: number): FormworkSystemSpec[] {
+  return FORMWORK_SYSTEMS.filter(s => s.pressure_kn_m2 != null && s.pressure_kn_m2 >= minPressure);
 }
