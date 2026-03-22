@@ -26,7 +26,7 @@ export interface FormworkSystemSpec {
 }
 
 /**
- * All formwork systems — 17 systems (DOKA, PERI, ULMA, NOE, Místní)
+ * All formwork systems — 25 systems (DOKA, PERI, ULMA, NOE, Místní)
  *
  * Assembly norms represent person-hours per m² (or per bm).
  * Disassembly_h_m2 = assembly_h_m2 × disassembly_ratio.
@@ -168,6 +168,83 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     rental_czk_m2_month: 807.00,
     unit: 'm2',
     description: 'Zakázkové panelové bednění PERI pro mostní pilíře (průřezy 1,2–2,4 m, výšky 4,5–12,5 m)',
+  },
+  {
+    name: 'DUO',
+    manufacturer: 'PERI',
+    heights: ['0.75', '1.00', '1.25', '1.50', '2.70'],
+    assembly_h_m2: 0.55,
+    disassembly_h_m2: 0.17,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 450.00,
+    unit: 'm2',
+    description: 'Univerzální lehké bednění PERI pro stěny i stropy (panel 8,5 kg, bez jeřábu)',
+  },
+  {
+    name: 'QUATTRO',
+    manufacturer: 'PERI',
+    heights: ['2.70', '3.00', '3.30', '4.50'],
+    assembly_h_m2: 0.75,
+    disassembly_h_m2: 0.23,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 560.00,
+    unit: 'm2',
+    description: 'Sloupové bednění PERI pro čtvercové/obdélníkové sloupy (do 80 cm)',
+  },
+  {
+    name: 'MULTIFLEX',
+    manufacturer: 'PERI',
+    heights: ['do 5.00'],
+    assembly_h_m2: 0.50,
+    disassembly_h_m2: 0.16,
+    disassembly_ratio: 0.32,
+    rental_czk_m2_month: 380.00,
+    unit: 'm2',
+    description: 'Flexibilní nosníkové stropní bednění PERI s GT 24 nosníky',
+  },
+  {
+    name: 'RUNDFLEX',
+    manufacturer: 'PERI',
+    heights: ['2.70', '3.00', '3.30'],
+    assembly_h_m2: 0.80,
+    disassembly_h_m2: 0.24,
+    disassembly_ratio: 0.30,
+    rental_czk_m2_month: 620.00,
+    unit: 'm2',
+    description: 'Kruhové stěnové bednění PERI pro válcové konstrukce (R ≥ 1,0 m)',
+  },
+  {
+    name: 'SRS',
+    manufacturer: 'PERI',
+    heights: ['3.00', '4.50', '6.00'],
+    assembly_h_m2: 1.10,
+    disassembly_h_m2: 0.35,
+    disassembly_ratio: 0.32,
+    rental_czk_m2_month: 720.00,
+    unit: 'm2',
+    description: 'Šplhací bednění PERI na kolejnicích pro vysoké konstrukce (jádra, pilíře)',
+  },
+  {
+    name: 'VARIOKIT',
+    manufacturer: 'PERI',
+    heights: ['libovolná'],
+    assembly_h_m2: 1.00,
+    disassembly_h_m2: 0.35,
+    disassembly_ratio: 0.35,
+    rental_czk_m2_month: 850.00,
+    unit: 'm2',
+    description: 'Inženýrská stavebnice PERI pro mosty a tunely (VGK, VGB, VST moduly)',
+  },
+  {
+    name: 'CB 240',
+    manufacturer: 'PERI',
+    heights: ['3.00', '4.50'],
+    assembly_h_m2: 0.95,
+    disassembly_h_m2: 0.30,
+    disassembly_ratio: 0.32,
+    rental_czk_m2_month: 680.00,
+    unit: 'm2',
+    description: 'Šplhací konzola PERI pro jednostranné bednění (nosnost 240 kN)',
   },
   // ── ULMA ─────────────────────────────────────────────────────────────
   {
