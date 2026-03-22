@@ -14,7 +14,7 @@
  *   - Warnings + decision log
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   planElement,
   addWorkDays,
@@ -228,10 +228,26 @@ interface ScenarioSnapshot {
   savings_pct: number;
 }
 
+// ─── localStorage keys ──────────────────────────────────────────────────────
+
+const LS_FORM_KEY = 'planner-form';
+const LS_SCENARIOS_KEY = 'planner-scenarios';
+const LS_SCENARIO_SEQ_KEY = 'planner-scenario-seq';
+
+function loadFromLS<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw) as T;
+  } catch {
+    return fallback;
+  }
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function PlannerPage() {
-  const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [form, setForm] = useState<FormState>(() => loadFromLS(LS_FORM_KEY, DEFAULT_FORM));
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -252,8 +268,13 @@ export default function PlannerPage() {
   const [showComparison, setShowComparison] = useState(false);
 
   // ── Scenario snapshots for side-by-side comparison ──
-  const [scenarios, setScenarios] = useState<ScenarioSnapshot[]>([]);
-  const [scenarioSeq, setScenarioSeq] = useState(0);
+  const [scenarios, setScenarios] = useState<ScenarioSnapshot[]>(() => loadFromLS(LS_SCENARIOS_KEY, []));
+  const [scenarioSeq, setScenarioSeq] = useState(() => loadFromLS(LS_SCENARIO_SEQ_KEY, 0));
+
+  // ── Persist to localStorage ──
+  useEffect(() => { localStorage.setItem(LS_FORM_KEY, JSON.stringify(form)); }, [form]);
+  useEffect(() => { localStorage.setItem(LS_SCENARIOS_KEY, JSON.stringify(scenarios)); }, [scenarios]);
+  useEffect(() => { localStorage.setItem(LS_SCENARIO_SEQ_KEY, JSON.stringify(scenarioSeq)); }, [scenarioSeq]);
   const [showNorms, setShowNorms] = useState(false);
   const [showProductivityNorms, setShowProductivityNorms] = useState(false);
   const [normsScraping, setNormsScraping] = useState(false);
@@ -1406,6 +1427,18 @@ export default function PlannerPage() {
               Vymazat scénáře
             </button>
           )}
+
+          <button
+            onClick={() => { setForm(DEFAULT_FORM); setResult(null); setError(null); setAdvisor(null); setComparison(null); }}
+            style={{
+              width: '100%', padding: '6px', marginTop: 8,
+              background: 'none', color: 'var(--r0-slate-400)',
+              border: '1px solid var(--r0-slate-300, #cbd5e1)',
+              borderRadius: 6, fontSize: 11, cursor: 'pointer',
+            }}
+          >
+            Resetovat formulář
+          </button>
 
           {error && (
             <div style={{
