@@ -51,6 +51,7 @@ import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 // Middleware
 import { requireAuth } from './src/middleware/auth.js';
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter, connectionTestLimiter } from './src/middleware/rateLimiter.js';
+import { requireServiceKey } from './src/middleware/serviceAuth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -187,17 +188,17 @@ app.use('/api/portal-projects', portalProjectsRoutes);
 app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
 app.use('/api/kiosk-links', kioskLinksRoutes);
 
-// Portal documents (passports, summaries, kiosk outputs) - NO AUTH for kiosk saving
-app.use('/api/portal-documents', portalDocumentsRoutes);
+// Portal documents (passports, summaries, kiosk outputs) - service key for kiosk writes
+app.use('/api/portal-documents', requireServiceKey, portalDocumentsRoutes);
 
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 
-// Integration routes (Monolit ↔ Registry sync) - NO AUTH REQUIRED
-app.use('/api/integration', integrationRoutes);
+// Integration routes (Monolit ↔ Registry sync) - service key required
+app.use('/api/integration', requireServiceKey, integrationRoutes);
 
-// Position Instances API (PositionInstance Architecture v1.0) - NO AUTH for kiosk access
-app.use('/api/positions', positionInstancesRoutes);
+// Position Instances API (PositionInstance Architecture v1.0) - service key required
+app.use('/api/positions', requireServiceKey, positionInstancesRoutes);
 
 // KB Research proxy — no auth required (question is public)
 app.use('/api/kb/research', kbResearchRoutes);
