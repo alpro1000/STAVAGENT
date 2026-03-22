@@ -267,7 +267,7 @@ router.patch('/me', requireAuth, async (req, res) => {
 
     const updated = await db.prepare(`
       SELECT id, email, name, role, email_verified, created_at,
-             phone, company, avatar_url, timezone, preferences, org_id
+             phone, phone_verified, plan, company, avatar_url, timezone, preferences, org_id
       FROM users WHERE id = ?
     `).get(userId);
 

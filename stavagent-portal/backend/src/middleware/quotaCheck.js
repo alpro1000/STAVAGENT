@@ -3,6 +3,7 @@
  * Enforces free-tier pipeline limits before processing
  */
 
+import db from '../db/index.js';
 import { checkQuota, trackUsage } from '../services/usageTracker.js';
 import { isFeatureEnabled } from '../services/featureFlags.js';
 import { logger } from '../utils/logger.js';
@@ -22,8 +23,7 @@ export function requireQuota(service) {
       }
 
       // Check feature flag
-      const user = await import('../db/index.js').then(m => m.default)
-        .then(db => db.prepare('SELECT plan, org_id FROM users WHERE id = ?').get(userId));
+      const user = await db.prepare('SELECT plan, org_id FROM users WHERE id = ?').get(userId);
 
       const flagEnabled = await isFeatureEnabled(service, {
         userId,
