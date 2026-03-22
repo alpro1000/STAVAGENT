@@ -303,20 +303,22 @@
 
     "SRS": {
       "vyrobce": "PERI",
-      "kategorie": "splhaci",
-      "assembly_h_m2": 1.10,
-      "disassembly_h_m2": 0.35,
+      "kategorie": "sloupy",
+      "assembly_h_m2": 0.85,
+      "disassembly_h_m2": 0.27,
       "disassembly_ratio": 0.32,
-      "rental_czk_m2_month": 720.00,
-      "poznamka": "Šplhací bednění na kolejnicích. Systém se přesouvá po kolejnicích hydraulicky/jeřábem. Pro vysoké monolitické konstrukce.",
+      "rental_czk_m2_month": 650.00,
+      "poznamka": "Kruhové sloupové bednění. Ocelové panely — nejvyšší kvalita povrchu. Průměr 25–70 cm (rastr 5 cm), speciály do 120 cm. Dvoudílná konstrukce s integrovanou třmenovou tyčí.",
       "varianty": [
-        { "vyska_m": 3.0, "assembly_h_m2": 1.10, "disassembly_h_m2": 0.35 },
-        { "vyska_m": 4.5, "assembly_h_m2": 1.15, "disassembly_h_m2": 0.37 },
-        { "vyska_m": 6.0, "assembly_h_m2": 1.20, "disassembly_h_m2": 0.38 }
+        { "vyska_m": 1.2, "assembly_h_m2": 0.80, "disassembly_h_m2": 0.25 },
+        { "vyska_m": 2.4, "assembly_h_m2": 0.85, "disassembly_h_m2": 0.27 },
+        { "vyska_m": 3.0, "assembly_h_m2": 0.85, "disassembly_h_m2": 0.27 },
+        { "vyska_m": 6.0, "assembly_h_m2": 0.90, "disassembly_h_m2": 0.29 },
+        { "vyska_m": 8.4, "assembly_h_m2": 0.95, "disassembly_h_m2": 0.30 }
       ],
-      "vhodne_pro": ["jádra výškových budov", "vysoké pilíře", "pylony zavěšených mostů", "chladicí věže"],
-      "pozadavky": "jeřáb povinný, specializovaná montáž",
-      "zdroj": "PERI katalog 2024"
+      "vhodne_pro": ["kruhové sloupy Ø 25–70 cm", "architektonický beton — kruhovÿ průřez", "mostní pilíře — kruhový průřez"],
+      "pozadavky": "jeřáb povinný (dvě poloviny)",
+      "zdroj": "PERI katalog 2024 + peri.com.au/products/srs"
     },
 
     "VARIOKIT": {

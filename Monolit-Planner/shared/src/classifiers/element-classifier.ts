@@ -261,7 +261,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   sloup: {
     label_cs: 'Sloup',
-    recommended_formwork: ['SL-1 Sloupové', 'QUATTRO', 'Framax Xlife'],
+    recommended_formwork: ['SL-1 Sloupové', 'QUATTRO', 'SRS', 'Framax Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
     needs_platforms: true,

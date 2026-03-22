@@ -8,6 +8,7 @@
  * Generate: openssl rand -hex 32
  */
 
+import crypto from 'crypto';
 import { logger } from '../utils/logger.js';
 
 const SERVICE_API_KEY = process.env.SERVICE_API_KEY;
@@ -34,8 +35,11 @@ export function requireServiceKey(req, res, next) {
     });
   }
 
-  // Constant-time comparison to prevent timing attacks
-  if (provided.length !== SERVICE_API_KEY.length || !timingSafeEqual(provided, SERVICE_API_KEY)) {
+  // Constant-time comparison to prevent timing attacks (CWE-208)
+  const providedBuffer = Buffer.from(provided, 'utf8');
+  const expectedBuffer = Buffer.from(SERVICE_API_KEY, 'utf8');
+
+  if (providedBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(providedBuffer, expectedBuffer)) {
     logger.warn(`[ServiceAuth] Invalid X-Service-Key on ${req.method} ${req.path} from ${req.ip}`);
     return res.status(403).json({
       error: 'Forbidden',
@@ -44,16 +48,4 @@ export function requireServiceKey(req, res, next) {
   }
 
   next();
-}
-
-/**
- * Constant-time string comparison (prevents timing attacks)
- */
-function timingSafeEqual(a, b) {
-  if (a.length !== b.length) return false;
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return result === 0;
 }
