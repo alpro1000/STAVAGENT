@@ -932,3 +932,47 @@ Contains:
 - Excel parser improvements
 - Production deployment fixes
 - Session 22.03.2026: Portal Auth + SaaS Admin + Element Planner UX + Mobile (16 commits)
+
+---
+
+## 🔧 СЕССИЯ 22.03.2026 (2) — PERI Formwork Integration + Security Fix
+
+**Branch:** `claude/auth-saas-planner-features-jIqEd`
+**Коммиты:** 4
+
+### Что сделано
+
+#### 1. PERI pricing из оффера DO-25-0056409 (`1d54378`)
+- Создан `B3_current_prices/formwork_systems_peri.json` — 17 вариантов (DOMINO 8, TRIO 4, VARIO 5)
+- Средневзвешенные цены: DOMINO 658, TRIO 736, VARIO 807 CZK/m²/мес
+- Обновлён `B4_production_benchmarks/bedneni.json` — нормы монтажа/демонтажа
+- Обновлён `formwork-systems.ts` — цены TRIO 480→736, DOMINO 420→658, новый VARIO 807
+
+#### 2. 8 новых систем PERI + PDF парсер (`c6f5de2`)
+- Добавлены: DUO, QUATTRO, MULTIFLEX, RUNDFLEX, SRS, VARIOKIT, CB 240
+- Каталог: 16→25 систем (DOKA, PERI, ULMA, NOE, Místní)
+- `element-classifier.ts` — обновлены рекомендации для всех типов элементов
+- Создан `data/peri-pdfs/parse_peri_pdfs.py` — скрипт извлечения данных из PDF проспектов PERI
+
+#### 3. Коррекция SRS + верифицированные спеки + security fix (`633c495`)
+- SRS: исправлен с "šplhací" на "kruhové sloupové bednění" (Ø 25-70cm)
+- Добавлены верифицированные технические характеристики (kg/m², kN/m²) ко всем системам PERI
+- QUATTRO высоты → [2.50, 2.75, 3.50, 4.50]
+- RUNDFLEX высоты → [0.60, 1.20, 1.80, 2.40, 3.00, 3.60]
+- **Security fix (CWE-208):** `serviceAuth.js` — заменён кастомный `timingSafeEqual` на `crypto.timingSafeEqual`
+
+#### 4. Service Auth + CLAUDE.MD refactor (`6105240`)
+- `serviceAuth.js` — middleware для аутентификации kiosk↔portal (X-Service-Key)
+- `rateLimiter.js` — обновлён, health checks исключены
+- `CLAUDE.MD` — рефакторинг 2900→935 строк, сессии вынесены в `docs/SESSIONS_ARCHIVE.md`
+- Merge conflict с main — решён
+
+### Тесты
+- **336/336 pass** (shared tests)
+
+### Задание на следующую сессию
+1. **PDF парсинг:** скачать PDF из GCS `stavagent-cenik-norms` → `data/peri-pdfs/`, запустить `parse_peri_pdfs.py`
+2. **Обогащение данных:** дополнить `formwork-systems.ts` данными из PDF (вес панелей, давление бетона, точные размеры)
+3. **Мердж PR** в main (конфликт решён, security fix применён)
+4. **Sprint 2:** Service Connections API endpoints + frontend UI + MASTER_ENCRYPTION_KEY
+5. **Position write-back:** синхронизация Monolit+Registry→Portal

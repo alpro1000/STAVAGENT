@@ -222,13 +222,28 @@ VITE_DISABLE_AUTH=true
 - Portal: Auth enabled (JWT login, seed admin, cabinet UI, all routes behind auth)
 - Portal: SaaS admin panel (usage tracking, feature flags, quotas, anti-fraud)
 - Portal: ParsePreviewPage + PortalImportModal → Monolit
+- Portal: serviceAuth.js — service-level auth middleware for kiosk↔portal (X-Service-Key)
+- Portal: serviceAuth.js — timing attack fix (CWE-208): replaced custom timingSafeEqual with crypto.timingSafeEqual
 - Planner: formwork comparison table, scenario snapshots (side-by-side), localStorage persistence
 - Planner: bug fixes (negative values, season→temp, total rebar, římsa classification, dilatační spáry)
 - Planner: mobile responsive (sidebar+results stack, grids collapse)
+- Planner: PERI formwork catalog — 25 systems total (DOKA, PERI, ULMA, NOE, Místní)
+- Planner: PERI pricing from offer DO-25-0056409 → KB JSON (B3) + benchmarks (B4)
+- Planner: element-classifier updated with PERI system recommendations
+- Planner: Monolit CLAUDE.MD refactored (2900→935 lines, sessions archived)
+- CORE: formwork_systems_peri.json — 17 variants (DOMINO/TRIO/VARIO) with rental/purchase prices
+- Data: parse_peri_pdfs.py — GCS PDF extraction script for PERI brochures
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
-**Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage), Monolit CLAUDE.MD refactoring (2900+ lines)
+**Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
+
+**Next session tasks:**
+1. User downloads PERI PDFs from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py` to extract specs
+2. Enrich formwork-systems.ts with parsed PDF data (panel weights, concrete pressures, exact dimensions)
+3. Merge PR `claude/auth-saas-planner-features-jIqEd` → main (conflict resolved, security fix applied)
+4. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
+5. Position write-back: Monolit+Registry→Portal sync
 
 **Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2, Vitest migration
 
