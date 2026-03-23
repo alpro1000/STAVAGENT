@@ -539,6 +539,63 @@ export function getAdjustedAssemblyNorm(
  * Estimate rebar mass from element type and concrete volume.
  * Uses typical reinforcement ratios per element type.
  */
+/**
+ * Element-to-category mapping: which formwork categories are suitable for each orientation.
+ * Wall systems fit vertical elements, slab systems fit horizontal, etc.
+ */
+const ELEMENT_SUITABLE_CATEGORIES: Record<string, Set<string>> = {
+  vertical: new Set(['wall', 'universal']),
+  horizontal: new Set(['slab', 'universal']),
+};
+
+/**
+ * Get formwork systems suitable for a given element type.
+ * Combines: (1) explicitly recommended systems + (2) all systems of compatible category.
+ * Returns { recommended, compatible, all } with deduplication.
+ */
+export function getSuitableSystemsForElement(elementType: StructuralElementType): {
+  recommended: FormworkSystemSpec[];
+  compatible: FormworkSystemSpec[];
+  all: FormworkSystemSpec[];
+} {
+  const profile = ELEMENT_CATALOG[elementType];
+  const orientation = profile.orientation;
+  const suitableCategories = ELEMENT_SUITABLE_CATEGORIES[orientation] ?? new Set(['wall', 'universal']);
+
+  // Column elements also accept column-category systems
+  if (['sloup', 'driky_piliru'].includes(elementType)) {
+    suitableCategories.add('column');
+  }
+  // Tanks/basins accept special (RUNDFLEX)
+  if (elementType === 'nadrz') {
+    suitableCategories.add('special');
+  }
+
+  const recommendedNames = new Set(profile.recommended_formwork);
+
+  const recommended: FormworkSystemSpec[] = [];
+  const compatible: FormworkSystemSpec[] = [];
+
+  for (const sys of FORMWORK_SYSTEMS) {
+    if (sys.unit === 'bm') continue; // skip linear-meter systems
+    const cat = sys.formwork_category ?? 'wall';
+    const isSuitable = suitableCategories.has(cat);
+    const isRecommended = recommendedNames.has(sys.name);
+
+    if (isRecommended) {
+      recommended.push(sys);
+    } else if (isSuitable) {
+      compatible.push(sys);
+    }
+  }
+
+  return {
+    recommended,
+    compatible,
+    all: [...recommended, ...compatible],
+  };
+}
+
 export function estimateRebarMass(
   elementType: StructuralElementType,
   volume_m3: number

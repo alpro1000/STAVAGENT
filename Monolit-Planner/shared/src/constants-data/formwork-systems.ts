@@ -39,6 +39,8 @@ export interface FormworkSystemSpec {
   panel_widths_mm?: number[];
   /** Purchase price per m² (CZK) — multi-use purchase from PERI offer */
   purchase_czk_m2?: number;
+  /** Formwork category: wall, slab, column, special, universal */
+  formwork_category?: 'wall' | 'slab' | 'column' | 'special' | 'universal';
 }
 
 /**
@@ -69,6 +71,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     max_panel_weight_kg: 52,
     needs_crane: false,
     panel_widths_mm: [300, 450, 600, 750, 900],
+    formwork_category: 'wall',
   },
   {
     name: 'Framax Xlife',
@@ -85,6 +88,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     max_panel_weight_kg: 350,
     needs_crane: true,
     panel_widths_mm: [300, 450, 600, 900, 1200],
+    formwork_category: 'wall',
   },
   {
     name: 'Top 50',
@@ -99,6 +103,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 25,
     pressure_kn_m2: 75,
     needs_crane: true,
+    formwork_category: 'slab',
   },
   {
     name: 'Dokaflex',
@@ -112,6 +117,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Flexibilní stropní bednění s nosníky H20',
     weight_kg_m2: 18,
     needs_crane: false,
+    formwork_category: 'slab',
   },
   {
     name: 'SL-1 Sloupové',
@@ -126,6 +132,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 65,
     pressure_kn_m2: 80,
     needs_crane: true,
+    formwork_category: 'column',
   },
   {
     name: 'Římsové bednění T',
@@ -138,6 +145,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     unit: 'bm',
     description: 'Konzolové bednění říms mostu (0,30–0,45 h/bm)',
     needs_crane: true,
+    formwork_category: 'special',
   },
   // ── PERI ─────────────────────────────────────────────────────────────
   {
@@ -156,6 +164,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     panel_widths_mm: [300, 330, 600, 720, 900, 1200],
     purchase_czk_m2: 4866,
+    formwork_category: 'wall',
   },
   {
     name: 'MAXIMO',
@@ -172,6 +181,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     max_panel_weight_kg: 510,
     needs_crane: true,
     panel_widths_mm: [300, 450, 600, 900, 1200, 2400],
+    formwork_category: 'wall',
   },
   {
     name: 'DOMINO',
@@ -189,6 +199,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: false,
     panel_widths_mm: [250, 300, 375, 500, 625, 750],
     purchase_czk_m2: 4092,
+    formwork_category: 'wall',
   },
   {
     name: 'SKYDECK',
@@ -203,6 +214,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 14,
     max_panel_weight_kg: 20,
     needs_crane: false,
+    formwork_category: 'slab',
   },
   {
     name: 'VARIO GT 24',
@@ -217,6 +229,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 60,
     pressure_kn_m2: 80,
     needs_crane: true,
+    formwork_category: 'wall',
   },
   {
     name: 'VARIO',
@@ -232,6 +245,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 80,
     needs_crane: true,
     purchase_czk_m2: 5133,
+    formwork_category: 'column',
   },
   {
     name: 'DUO',
@@ -248,6 +262,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     max_panel_weight_kg: 25,
     needs_crane: false,
     panel_widths_mm: [250, 500, 750, 1000],
+    formwork_category: 'universal',
   },
   {
     name: 'QUATTRO',
@@ -263,6 +278,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 80,
     max_panel_weight_kg: 120,
     needs_crane: true,
+    formwork_category: 'column',
   },
   {
     name: 'MULTIFLEX',
@@ -276,6 +292,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Flexibilní nosníkové stropní bednění PERI s GT 24 nosníky',
     weight_kg_m2: 20,
     needs_crane: false,
+    formwork_category: 'slab',
   },
   {
     name: 'RUNDFLEX',
@@ -291,6 +308,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 60,
     needs_crane: true,
     min_radius_m: 1.0,
+    formwork_category: 'special',
   },
   {
     name: 'SRS',
@@ -306,6 +324,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 80,
     needs_crane: true,
     min_radius_m: 0.125,
+    formwork_category: 'column',
   },
   {
     name: 'VARIOKIT',
@@ -319,6 +338,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Inženýrská stavebnice PERI pro mosty a tunely (VGK, VGB, VST moduly)',
     weight_kg_m2: 80,
     needs_crane: true,
+    formwork_category: 'special',
   },
   {
     name: 'CB 240',
@@ -332,6 +352,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Šplhací konzola PERI pro jednostranné bednění (nosnost 240 kN)',
     weight_kg_m2: 75,
     needs_crane: true,
+    formwork_category: 'special',
   },
   // ── ULMA ─────────────────────────────────────────────────────────────
   {
@@ -347,6 +368,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 38,
     pressure_kn_m2: 80,
     needs_crane: true,
+    formwork_category: 'wall',
   },
   {
     name: 'COMAIN',
@@ -362,6 +384,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 60,
     max_panel_weight_kg: 60,
     needs_crane: false,
+    formwork_category: 'wall',
   },
   {
     name: 'CC-4',
@@ -375,6 +398,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Stropní bednění ULMA s hliníkovými nosníky',
     weight_kg_m2: 16,
     needs_crane: false,
+    formwork_category: 'slab',
   },
   // ── NOE ──────────────────────────────────────────────────────────────
   {
@@ -390,6 +414,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 46,
     pressure_kn_m2: 60,
     needs_crane: true,
+    formwork_category: 'wall',
   },
   // ── Místní ───────────────────────────────────────────────────────────
   {
@@ -404,6 +429,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Jednorázové tesařské bednění (bez pronájmu, materiál)',
     weight_kg_m2: 35,
     needs_crane: false,
+    formwork_category: 'universal',
   },
 ];
 

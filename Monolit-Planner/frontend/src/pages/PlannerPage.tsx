@@ -21,7 +21,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -123,6 +123,7 @@ interface FormState {
   volume_m3: number;
   formwork_area_m2: string; // empty = auto-estimate
   rebar_mass_kg: string;    // empty = auto-estimate
+  rebar_norm_kg_m3: string; // empty = auto, kg per m³
   height_m: string;         // empty = not set (props can't be calculated)
   tact_mode: TactMode;      // 'spary' = auto from joints, 'manual' = direct input
   has_dilatacni_spary: boolean;
@@ -156,6 +157,7 @@ const DEFAULT_FORM: FormState = {
   volume_m3: 120,
   formwork_area_m2: '',
   rebar_mass_kg: '',
+  rebar_norm_kg_m3: '',
   height_m: '',
   tact_mode: 'spary',
   has_dilatacni_spary: false,
@@ -210,12 +212,17 @@ interface ScenarioSnapshot {
   crew_size: number;
   num_sets: number;
   shift_h: number;
+  wage_czk_h: number;
+  num_formwork_crews: number;
+  num_rebar_crews: number;
   formwork_system: string;
   manufacturer: string;
   total_days: number;
   formwork_labor_czk: number;
   rebar_labor_czk: number;
   pour_labor_czk: number;
+  props_labor_czk: number;
+  props_rental_czk: number;
   total_labor_czk: number;
   rental_czk: number;
   total_all_czk: number;
@@ -311,6 +318,7 @@ export default function PlannerPage() {
     rental_czk: number;
     assembly_days: number;
     disassembly_days: number;
+    is_recommended?: boolean;
   }> | null>(null);
   const [showComparison, setShowComparison] = useState(false);
 
@@ -396,8 +404,10 @@ export default function PlannerPage() {
     if (!result) return;
     const baseInput = buildInput();
     const results: typeof comparison = [];
-    for (const sys of FORMWORK_SYSTEMS) {
-      if (sys.unit === 'bm') continue; // skip linear-meter systems (cornice)
+    // Filter systems suitable for the current element type
+    const elemType = form.use_name_classification ? 'other' : form.element_type;
+    const suitable = getSuitableSystemsForElement(elemType);
+    for (const sys of suitable.all) {
       try {
         const out = planElement({ ...baseInput, formwork_system_name: sys.name });
         results.push({
@@ -409,6 +419,7 @@ export default function PlannerPage() {
           rental_czk: out.costs.formwork_rental_czk,
           assembly_days: out.formwork.assembly_days,
           disassembly_days: out.formwork.disassembly_days,
+          is_recommended: suitable.recommended.some(r => r.name === sys.name),
         });
       } catch {
         // skip incompatible systems
@@ -493,15 +504,20 @@ export default function PlannerPage() {
       crew_size: form.crew_size,
       num_sets: form.num_sets,
       shift_h: form.shift_h,
+      wage_czk_h: form.wage_czk_h,
+      num_formwork_crews: form.num_formwork_crews,
+      num_rebar_crews: form.num_rebar_crews,
       formwork_system: plan.formwork.system.name,
       manufacturer: plan.formwork.system.manufacturer,
       total_days: plan.schedule.total_days,
       formwork_labor_czk: plan.costs.formwork_labor_czk,
       rebar_labor_czk: plan.costs.rebar_labor_czk,
       pour_labor_czk: plan.costs.pour_labor_czk,
+      props_labor_czk: plan.costs.props_labor_czk || 0,
+      props_rental_czk: plan.costs.props_rental_czk || 0,
       total_labor_czk: plan.costs.total_labor_czk,
       rental_czk: plan.costs.formwork_rental_czk,
-      total_all_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
+      total_all_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + (plan.costs.props_labor_czk || 0) + (plan.costs.props_rental_czk || 0),
       assembly_days: plan.formwork.assembly_days,
       disassembly_days: plan.formwork.disassembly_days,
       curing_days: plan.formwork.curing_days,
@@ -1130,9 +1146,29 @@ export default function PlannerPage() {
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
-            <Field label="Hmotnost výztuže (kg)" hint="prázdné = odhad">
+            <Field label="Norma výztuže (kg/m³)" hint="prázdné = odhad z profilu elementu">
+              <NumInput style={inputStyle} value={form.rebar_norm_kg_m3} min={0}
+                onChange={v => {
+                  const norm = String(v);
+                  update('rebar_norm_kg_m3', norm);
+                  if (norm && form.volume_m3 > 0) {
+                    update('rebar_mass_kg', String(Math.round(parseFloat(norm) * form.volume_m3)));
+                  } else if (!norm) {
+                    update('rebar_mass_kg', '');
+                  }
+                }} placeholder="auto" />
+            </Field>
+            <Field label="Hmotnost výztuže celkem (kg)" hint="prázdné = odhad, nebo se vypočte z normy">
               <NumInput style={inputStyle} value={form.rebar_mass_kg} min={0}
-                onChange={v => update('rebar_mass_kg', String(v))} placeholder="automatický odhad" />
+                onChange={v => {
+                  const kg = String(v);
+                  update('rebar_mass_kg', kg);
+                  if (kg && form.volume_m3 > 0) {
+                    update('rebar_norm_kg_m3', String(Math.round(parseFloat(kg) / form.volume_m3)));
+                  } else if (!kg) {
+                    update('rebar_norm_kg_m3', '');
+                  }
+                }} placeholder="automatický odhad" />
             </Field>
 
             {/* ─── Height + Element Dimension Hint ─── */}
@@ -1471,7 +1507,7 @@ export default function PlannerPage() {
         {/* RIGHT: Results */}
         <main className="r0-planner-main">
           {plan ? (
-            <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} />
+            <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} scenarios={scenarios} />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
               <div style={{ fontSize: 48 }}>📐</div>
@@ -1496,7 +1532,8 @@ export default function PlannerPage() {
                 }}>✕</button>
               </div>
               <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 8 }}>
-                Seřazeno od nejlevnějšího. Zelené = nejlepší varianta.
+                Pouze systémy vhodné pro tento typ elementu. Seřazeno od nejlevnějšího. Zelené = nejlepší.
+                {' '}Ceny pronájmu: DOKA ceník 2024, PERI nabídka DO-25-0056409 (2025), ULMA CZ 2024, NOE 2024.
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
@@ -1528,12 +1565,13 @@ export default function PlannerPage() {
                         }}>
                           <td style={{ padding: '5px 8px', fontWeight: isBest ? 700 : 400 }}>{i + 1}</td>
                           <td style={{ padding: '5px 8px', fontWeight: isBest || isCurrent ? 700 : 400 }}>
-                            {c.system} {isCurrent ? '◀' : ''}
+                            {c.system} {isCurrent ? '◀' : ''}{' '}
+                            {c.is_recommended && <span title="Doporučeno pro tento typ elementu" style={{ color: '#22c55e', fontSize: 10 }}>REC</span>}
                           </td>
                           <td style={{ padding: '5px 8px', color: 'var(--r0-slate-500)' }}>{c.manufacturer}</td>
-                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.total_days}</td>
-                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.assembly_days}</td>
-                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.disassembly_days}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatNum(c.total_days, 1)}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatNum(c.assembly_days, 1)}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatNum(c.disassembly_days, 1)}</td>
                           <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatCZK(c.formwork_labor_czk)}</td>
                           <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatCZK(c.rental_czk)}</td>
                           <td style={{ padding: '5px 8px', textAlign: 'right', fontWeight: 700, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>
@@ -1573,17 +1611,21 @@ export default function PlannerPage() {
               <h3 style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: 'var(--r0-slate-800, #1e293b)' }}>
                 Porovnání scénářů ({scenarios.length})
               </h3>
-              <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 12 }}>
-                Zelené = nejlevnější, oranžové = nejrychlejší. Přesčas označen.
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 12 }}>
+                <span>Zelené = nejlevnější, oranžové = nejrychlejší. Scénáře se ukládají v prohlížeči.</span>
+                <button onClick={() => { setScenarios([]); setScenarioSeq(0); }}
+                  style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, padding: '2px 8px', fontSize: 10, cursor: 'pointer' }}>
+                  Vymazat vše
+                </button>
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid var(--r0-slate-200, #e2e8f0)' }}>
-                      {['Scénář', 'Bednění', 'Pracovníků', 'Kompl.', 'Směna', 'Dní celkem', 'Montáž', 'Zrání',
-                        'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'Přesčas', ''].map((h, idx) => (
+                      {['Scénář', 'Bednění', 'Tesaři', 'Železáři', 'Sady', 'Směna', 'Mzda', 'Dní', 'Montáž', 'Zrání',
+                        'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'OT', ''].map((h, idx) => (
                         <th key={idx} style={{
-                          textAlign: idx >= 5 ? 'right' : 'left', padding: '6px 6px', fontSize: 10,
+                          textAlign: idx >= 7 ? 'right' : 'left', padding: '6px 4px', fontSize: 10,
                           color: 'var(--r0-slate-500)', fontWeight: 600, whiteSpace: 'nowrap',
                           ...(h === 'Celkem (Kč)' ? { borderLeft: '2px solid var(--r0-orange, #f59e0b)' } : {}),
                         }}>{h}</th>
@@ -1608,14 +1650,16 @@ export default function PlannerPage() {
                               {isFastest && <span title="Nejrychlejší" style={{ color: '#f59e0b', marginLeft: 2 }}>⚡</span>}
                             </td>
                             <td style={{ padding: '5px 6px', fontSize: 11 }}>{s.formwork_system}<br /><span style={{ color: 'var(--r0-slate-400)', fontSize: 10 }}>{s.manufacturer}</span></td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.crew_size}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_sets}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.shift_h}h</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700 }}>{s.total_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.assembly_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.curing_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.disassembly_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.pour_hours)}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_formwork_crews ?? 1}×{s.crew_size}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_sets}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.shift_h}h</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.wage_czk_h ?? 220}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right', fontWeight: 700 }}>{formatNum(s.total_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.assembly_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.curing_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.disassembly_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.pour_hours, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_labor_czk)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.rental_czk)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>
@@ -1659,9 +1703,9 @@ export default function PlannerPage() {
                     → úspora <strong style={{ color: '#22c55e' }}>{formatCZK(savings)} (−{savingsPct}%)</strong>
                     {fastest.id !== slowest.id && (
                       <span>
-                        {' | '}Čas: <strong>S{fastest.id}</strong> ({fastest.total_days}d) vs
-                        <strong> S{slowest.id}</strong> ({slowest.total_days}d)
-                        → <strong style={{ color: '#f59e0b' }}>{slowest.total_days - fastest.total_days} dní</strong> rozdíl
+                        {' | '}Čas: <strong>S{fastest.id}</strong> ({formatNum(fastest.total_days, 1)}d) vs
+                        <strong> S{slowest.id}</strong> ({formatNum(slowest.total_days, 1)}d)
+                        → <strong style={{ color: '#f59e0b' }}>{formatNum(slowest.total_days - fastest.total_days, 1)} dní</strong> rozdíl
                       </span>
                     )}
                   </div>
@@ -1735,11 +1779,12 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
   onToggleLog: () => void;
+  scenarios?: any[];
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -1761,7 +1806,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Action buttons */}
       <div className="r0-action-bar">
         <button
-          onClick={() => { exportPlanToXLSX(plan as any, startDate); }}
+          onClick={() => { exportPlanToXLSX(plan as any, startDate, scenarios && scenarios.length > 0 ? scenarios : undefined); }}
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
@@ -2026,18 +2071,27 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
       {/* Costs Summary */}
       <Card title="Souhrn nákladů" icon="💰">
-        <div className="r0-grid-2">
-          <div>
-            <Row label="Bednění (práce)" value={formatCZK(plan.costs.formwork_labor_czk)} />
-            <Row label="Výztuž (práce)" value={formatCZK(plan.costs.rebar_labor_czk)} />
-            <Row label="Betonáž (práce)" value={formatCZK(plan.costs.pour_labor_czk)} />
-          </div>
-          <div>
-            <Row label="Pronájem bednění" value={formatCZK(plan.costs.formwork_rental_czk)} />
-            <Row label="Celkem práce" value={formatCZK(plan.costs.total_labor_czk)} bold />
-            <Row label="Celkem vše" value={formatCZK(plan.costs.total_labor_czk + plan.costs.formwork_rental_czk)} bold />
-          </div>
-        </div>
+        {(() => {
+          const propsLabor = plan.costs.props_labor_czk || 0;
+          const propsRental = plan.costs.props_rental_czk || 0;
+          const totalAll = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
+          return (
+            <div className="r0-grid-2">
+              <div>
+                <Row label="Bednění (práce)" value={formatCZK(plan.costs.formwork_labor_czk)} />
+                <Row label="Výztuž (práce)" value={formatCZK(plan.costs.rebar_labor_czk)} />
+                <Row label="Betonáž (práce)" value={formatCZK(plan.costs.pour_labor_czk)} />
+                {propsLabor > 0 && <Row label="Podpěry (práce)" value={formatCZK(propsLabor)} />}
+              </div>
+              <div>
+                <Row label="Pronájem bednění" value={formatCZK(plan.costs.formwork_rental_czk)} />
+                {propsRental > 0 && <Row label="Pronájem podpěr" value={formatCZK(propsRental)} />}
+                <Row label="Celkem práce" value={formatCZK(plan.costs.total_labor_czk + propsLabor)} bold />
+                <Row label="Celkem vše" value={formatCZK(totalAll)} bold />
+              </div>
+            </div>
+          );
+        })()}
       </Card>
 
       {/* Norms Sources */}
