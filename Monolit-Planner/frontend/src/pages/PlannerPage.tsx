@@ -567,6 +567,7 @@ export default function PlannerPage() {
         </div>
         <div className="r0-header-right">
           <button
+            className="r0-btn"
             onClick={() => setShowHelp(!showHelp)}
             style={{
               background: showHelp ? 'var(--r0-orange)' : 'transparent',
@@ -576,7 +577,7 @@ export default function PlannerPage() {
               fontSize: 13, fontFamily: 'inherit', fontWeight: 600,
             }}
           >
-            ? Nápověda
+            ?
           </button>
           <span className="r0-badge">v1.0</span>
         </div>
