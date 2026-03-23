@@ -88,8 +88,10 @@ export interface PlannerInput {
   num_formwork_crews?: number;
   /** Rebar crew count. Default: 1 */
   num_rebar_crews?: number;
-  /** Crew size (workers per crew). Default: 4 */
+  /** Crew size — formwork (workers per crew). Default: 4 */
   crew_size?: number;
+  /** Crew size — rebar (workers per crew). Default: 4. If not set, falls back to crew_size. */
+  crew_size_rebar?: number;
   /** Shift hours. Default: 10 */
   shift_h?: number;
   /** Time utilization factor. Default: 0.8 */
@@ -176,6 +178,24 @@ export interface PlannerOutput {
     props_rental_czk: number;
   };
 
+  // --- Resources summary ---
+  resources: {
+    /** Formwork crews × workers per crew */
+    total_formwork_workers: number;
+    /** Rebar crews × workers per crew */
+    total_rebar_workers: number;
+    /** Formwork crew count */
+    num_formwork_crews: number;
+    /** Rebar crew count */
+    num_rebar_crews: number;
+    /** Workers per formwork crew */
+    crew_size_formwork: number;
+    /** Workers per rebar crew */
+    crew_size_rebar: number;
+    /** Shift hours */
+    shift_h: number;
+  };
+
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
 
@@ -205,6 +225,7 @@ const DEFAULTS = {
   num_formwork_crews: 1,
   num_rebar_crews: 1,
   crew_size: 4,
+  crew_size_rebar: 4,
   shift_h: 10,
   k: 0.8,
   wage_czk_h: 398,
@@ -241,12 +262,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // Unpack defaults
   const crew = input.crew_size ?? DEFAULTS.crew_size;
+  const crewRebar = input.crew_size_rebar ?? input.crew_size ?? DEFAULTS.crew_size_rebar;
   const shift = input.shift_h ?? DEFAULTS.shift_h;
   const k = input.k ?? DEFAULTS.k;
   const wage = input.wage_czk_h ?? DEFAULTS.wage_czk_h;
   const rawNumSets = input.num_sets ?? DEFAULTS.num_sets;
   const numFWCrews = input.num_formwork_crews ?? DEFAULTS.num_formwork_crews;
   const numRBCrews = input.num_rebar_crews ?? DEFAULTS.num_rebar_crews;
+  // Effective rebar workforce per tact: all rebar crews work together on one tact
+  const effectiveRebarCrew = numRBCrews * crewRebar;
   const temperature = input.temperature_c ?? DEFAULTS.temperature_c;
 
   // ─── 1. Element Classification ──────────────────────────────────────────
@@ -460,13 +484,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
     mass_kg: input.rebar_mass_kg
       ? input.rebar_mass_kg / pourDecision.num_tacts // Distribute across tacts
       : undefined,
-    crew_size: crew,
+    crew_size: effectiveRebarCrew, // all rebar crews work together: numRBCrews × crewRebar
     shift_h: shift,
     k,
     wage_czk_h: wage,
   });
 
-  log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source})`);
+  log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews}×${crewRebar}=${effectiveRebarCrew} železářů)`);
 
   // ─── 6. Pour Task ──────────────────────────────────────────────────────
 
@@ -501,8 +525,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
     const maxCrew = 15;
     effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
 
-    // Extended shift for continuous pour (up to 16h practical max)
-    effectiveShift = Math.min(16, Math.max(shift, pourResult.total_pour_hours));
+    // Extended shift for continuous pour (capped at 12h — labor code maximum)
+    effectiveShift = Math.min(12, Math.max(shift, pourResult.total_pour_hours));
 
     warnings.push(
       `Monolitická zálivka (${pourDecision.tact_volume_m3}m³): nutno zalít v jednom záběru bez přerušení. ` +
@@ -539,7 +563,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     curing_days: curingDays,
     stripping_days: disassemblyDays,
     num_formwork_crews: numFWCrews,
-    num_rebar_crews: numRBCrews,
+    num_rebar_crews: 1, // rebar crews already factored into per-tact duration via effectiveRebarCrew
     rebar_lag_pct: 50,
     scheduling_mode: pourDecision.scheduling_mode,
     cure_between_neighbors_days: pourDecision.cure_between_neighbors_h / 24,
@@ -675,6 +699,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
     rebar: rebarResult,
     pour: pourResult,
     schedule: scheduleResult,
+    resources: {
+      total_formwork_workers: numFWCrews * crew,
+      total_rebar_workers: effectiveRebarCrew,
+      num_formwork_crews: numFWCrews,
+      num_rebar_crews: numRBCrews,
+      crew_size_formwork: crew,
+      crew_size_rebar: crewRebar,
+      shift_h: shift,
+    },
     props: propsResult,
     costs: {
       formwork_labor_czk: formworkLaborCZK,

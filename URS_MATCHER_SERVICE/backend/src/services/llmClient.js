@@ -504,14 +504,21 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
     const response = await axios.post(apiUrl, body, axiosConfig);
     return response.data.candidates[0].content.parts[0].text;
   } catch (error) {
-    // 404 on Google AI API = model not available on this endpoint (e.g. gemini-2.5-flash-lite is Vertex-only)
-    // Retry once with gemini-2.0-flash which is available on both APIs
     const FALLBACK_MODEL = 'gemini-2.5-flash';
-    if (!isVertexPath && error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
-      logger.warn(`[Gemini] Model "${client.model}" not found on Google AI API (404) — retrying with ${FALLBACK_MODEL}`);
-      const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${FALLBACK_MODEL}:generateContent`;
-      const fallbackResponse = await axios.post(fallbackUrl, body, { ...axiosConfig, headers: { ...headers } });
-      return fallbackResponse.data.candidates[0].content.parts[0].text;
+    if (error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
+      if (isVertexPath) {
+        // 404 on Vertex AI = model not available in this region/project — retry with fallback model
+        logger.warn(`[Gemini] Model "${client.model}" not found on Vertex AI (404) — retrying with ${FALLBACK_MODEL}`);
+        const fallbackUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${FALLBACK_MODEL}:generateContent`;
+        const fallbackResponse = await axios.post(fallbackUrl, body, axiosConfig);
+        return fallbackResponse.data.candidates[0].content.parts[0].text;
+      } else {
+        // 404 on Google AI API = model not available on this endpoint
+        logger.warn(`[Gemini] Model "${client.model}" not found on Google AI API (404) — retrying with ${FALLBACK_MODEL}`);
+        const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${FALLBACK_MODEL}:generateContent`;
+        const fallbackResponse = await axios.post(fallbackUrl, body, { ...axiosConfig, headers: { ...headers } });
+        return fallbackResponse.data.candidates[0].content.parts[0].text;
+      }
     }
     throw error;
   }
