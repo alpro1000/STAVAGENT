@@ -550,6 +550,19 @@ function analyzeBottleneck(
     return `Četa výztuže nevytížena ${Math.round((1 - util.rebar_crews) * 100)}% — úzké hrdlo je četa bednění`;
   }
 
+  // Cross-recommendation: if formwork has multiple crews but rebar only 1,
+  // rebar becomes the bottleneck (can't keep up with faster formwork)
+  if (numFW >= 2 && numRB === 1 && util.rebar_crews > 0.7) {
+    return `⚠️ Máte ${numFW} čety tesařů ale jen 1 četu železářů (vytížení ${Math.round(util.rebar_crews * 100)}%). ` +
+      `Armování se stane úzkým hrdlem — zvažte přidání druhé čety železářů.`;
+  }
+
+  // Reverse: rebar has multiple crews but formwork only 1
+  if (numRB >= 2 && numFW === 1 && util.formwork_crews > 0.7) {
+    return `⚠️ Máte ${numRB} čety železářů ale jen 1 četu tesařů (vytížení ${Math.round(util.formwork_crews * 100)}%). ` +
+      `Bednění se stane úzkým hrdlem — zvažte přidání druhé čety tesařů.`;
+  }
+
   return null;
 }
 

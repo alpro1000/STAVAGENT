@@ -146,6 +146,9 @@ interface FormState {
   crew_size_rebar: number;
   shift_h: number;
   wage_czk_h: number;
+  wage_formwork_czk_h: string; // empty = use wage_czk_h
+  wage_rebar_czk_h: string;    // empty = use wage_czk_h
+  wage_pour_czk_h: string;     // empty = use wage_czk_h
   formwork_system_name: string; // empty = auto
   rental_czk_override: string; // empty = catalog price, number = user override
   enable_monte_carlo: boolean;
@@ -182,6 +185,9 @@ const DEFAULT_FORM: FormState = {
   crew_size_rebar: 4,
   shift_h: 10,
   wage_czk_h: 398,
+  wage_formwork_czk_h: '',
+  wage_rebar_czk_h: '',
+  wage_pour_czk_h: '',
   formwork_system_name: '',
   rental_czk_override: '',
   enable_monte_carlo: false,
@@ -219,6 +225,9 @@ interface ScenarioSnapshot {
   num_sets: number;
   shift_h: number;
   wage_czk_h: number;
+  wage_formwork_czk_h?: number;
+  wage_rebar_czk_h?: number;
+  wage_pour_czk_h?: number;
   num_formwork_crews: number;
   num_rebar_crews: number;
   formwork_system: string;
@@ -455,6 +464,9 @@ export default function PlannerPage() {
       shift_h: form.shift_h,
       k: 0.8,
       wage_czk_h: form.wage_czk_h,
+      ...(form.wage_formwork_czk_h ? { wage_formwork_czk_h: Number(form.wage_formwork_czk_h) } : {}),
+      ...(form.wage_rebar_czk_h ? { wage_rebar_czk_h: Number(form.wage_rebar_czk_h) } : {}),
+      ...(form.wage_pour_czk_h ? { wage_pour_czk_h: Number(form.wage_pour_czk_h) } : {}),
       enable_monte_carlo: form.enable_monte_carlo,
     };
     if (form.use_name_classification && form.element_name.trim()) {
@@ -514,6 +526,9 @@ export default function PlannerPage() {
       num_sets: form.num_sets,
       shift_h: form.shift_h,
       wage_czk_h: form.wage_czk_h,
+      wage_formwork_czk_h: form.wage_formwork_czk_h ? Number(form.wage_formwork_czk_h) : undefined,
+      wage_rebar_czk_h: form.wage_rebar_czk_h ? Number(form.wage_rebar_czk_h) : undefined,
+      wage_pour_czk_h: form.wage_pour_czk_h ? Number(form.wage_pour_czk_h) : undefined,
       num_formwork_crews: form.num_formwork_crews,
       num_rebar_crews: form.num_rebar_crews,
       formwork_system: plan.formwork.system.name,
@@ -1452,9 +1467,26 @@ export default function PlannerPage() {
                     <NumInput style={inputStyle} value={form.shift_h} min={6} max={12} fallback={10}
                       onChange={v => update('shift_h', v as number)} />
                   </Field>
-                  <Field label="Mzda (Kč/h)">
+                  <Field label="Mzda — základ (Kč/h)">
                     <NumInput style={inputStyle} value={form.wage_czk_h} min={100} fallback={398}
                       onChange={v => update('wage_czk_h', v as number)} />
+                  </Field>
+                </div>
+                <div style={{ marginTop: 6, fontSize: 11, color: 'var(--r0-slate-400)' }}>
+                  Mzda podle profese (prázdné = základ {form.wage_czk_h} Kč/h):
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 4 }}>
+                  <Field label="Tesaři (Kč/h)">
+                    <NumInput style={inputStyle} value={form.wage_formwork_czk_h} min={100}
+                      onChange={v => update('wage_formwork_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
+                  </Field>
+                  <Field label="Železáři (Kč/h)">
+                    <NumInput style={inputStyle} value={form.wage_rebar_czk_h} min={100}
+                      onChange={v => update('wage_rebar_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
+                  </Field>
+                  <Field label="Betonáři (Kč/h)">
+                    <NumInput style={inputStyle} value={form.wage_pour_czk_h} min={100}
+                      onChange={v => update('wage_pour_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
                   </Field>
                 </div>
               </Section>
@@ -1777,7 +1809,8 @@ export default function PlannerPage() {
                       {['Scénář', 'Bednění', 'Tesaři', 'Železáři', 'Sady', 'Směna', 'Mzda', 'Dní', 'Montáž', 'Zrání',
                         'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'OT', ''].map((h, idx) => (
                         <th key={idx} style={{
-                          textAlign: idx >= 7 ? 'right' : 'left', padding: '6px 4px', fontSize: 10,
+                          textAlign: idx <= 1 ? 'left' : idx === 15 ? 'center' : 'right',
+                          padding: '6px 4px', fontSize: 10,
                           color: 'var(--r0-slate-500)', fontWeight: 600, whiteSpace: 'nowrap',
                           ...(h === 'Celkem (Kč)' ? { borderLeft: '2px solid var(--r0-orange, #f59e0b)' } : {}),
                         }}>{h}</th>
@@ -1806,7 +1839,16 @@ export default function PlannerPage() {
                             <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size_rebar ?? s.crew_size}={((s.num_rebar_crews ?? 1) * (s.crew_size_rebar ?? s.crew_size))}</td>
                             <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_sets}</td>
                             <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.shift_h}h</td>
-                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.wage_czk_h ?? 220}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }} title={
+                              (s.wage_formwork_czk_h || s.wage_rebar_czk_h || s.wage_pour_czk_h)
+                                ? `T: ${s.wage_formwork_czk_h ?? s.wage_czk_h}, Ž: ${s.wage_rebar_czk_h ?? s.wage_czk_h}, B: ${s.wage_pour_czk_h ?? s.wage_czk_h}`
+                                : undefined
+                            }>
+                              {(s.wage_formwork_czk_h || s.wage_rebar_czk_h || s.wage_pour_czk_h)
+                                ? <span style={{ fontSize: 10 }}>T{s.wage_formwork_czk_h ?? s.wage_czk_h}/Ž{s.wage_rebar_czk_h ?? s.wage_czk_h}/B{s.wage_pour_czk_h ?? s.wage_czk_h}</span>
+                                : (s.wage_czk_h ?? 398)
+                              }
+                            </td>
                             <td style={{ padding: '5px 4px', textAlign: 'right', fontWeight: 700 }}>{formatNum(s.total_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.assembly_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.curing_days, 1)}</td>
@@ -2078,7 +2120,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
                   <Row label="Náklady / záběr" value={formatCZK(plan.rebar.cost_labor)} />
                   <Row label="Železářů celkem" value={`${plan.resources?.total_rebar_workers ?? plan.rebar.crew_size} (${plan.resources?.num_rebar_crews ?? 1}×${plan.resources?.crew_size_rebar ?? plan.rebar.crew_size})`} />
                   {plan.rebar.recommended_crew !== plan.rebar.crew_size && (
-                    <Row label="Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} />
+                    <div style={{
+                      background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 6,
+                      padding: '4px 8px', marginTop: 4,
+                    }}>
+                      <Row label="⚠️ Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} bold />
+                    </div>
                   )}
                   <Row label="Norma" value={`${plan.rebar.norm_h_per_t} h/t`} />
                 </div>
