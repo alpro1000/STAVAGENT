@@ -1,8 +1,8 @@
 """
 LLM client wrapper for price parser.
 
-Uses Gemini (default, cheap) with Claude fallback.
-Reuses app-level config (GOOGLE_API_KEY, ANTHROPIC_API_KEY, GEMINI_MODEL).
+Uses Vertex AI Gemini (primary, GCP credits) with Bedrock/Claude fallback.
+Falls back to direct Gemini API only if Vertex AI unavailable (local dev).
 """
 
 from __future__ import annotations
@@ -23,14 +23,20 @@ async def ask_llm(prompt: str, *, temperature: float = 0.1) -> str:
     """
     Send a prompt to the configured LLM and return raw text response.
 
-    Tries Gemini first (cheap), then Claude as fallback.
+    Priority: Vertex AI Gemini → direct Gemini → Bedrock → Claude.
     """
-    # Try Gemini first (free/cheap)
+    # Try Vertex AI Gemini first (GCP credits, primary)
+    try:
+        return await _ask_vertex_gemini(prompt, temperature=temperature)
+    except Exception as e:
+        logger.warning("Vertex AI Gemini failed: %s, trying direct Gemini", e)
+
+    # Fallback: direct Gemini API (local dev)
     if settings.GOOGLE_API_KEY:
         try:
             return await _ask_gemini(prompt, temperature=temperature)
         except Exception as e:
-            logger.warning("Gemini failed: %s, falling back to Bedrock", e)
+            logger.warning("Direct Gemini failed: %s, falling back to Bedrock", e)
 
     # Fallback to AWS Bedrock Claude (uses AWS Activate credits)
     if settings.BEDROCK_ENABLED and settings.AWS_ACCESS_KEY_ID:
@@ -91,10 +97,31 @@ async def _ask_bedrock(prompt: str, *, temperature: float = 0.1) -> str:
     return await ask_bedrock_claude(prompt, temperature=temperature)
 
 
-# ── Gemini ───────────────────────────────────────────────────────────────────
+# ── Vertex AI Gemini (primary) ───────────────────────────────────────────────
+
+async def _ask_vertex_gemini(prompt: str, *, temperature: float = 0.1) -> str:
+    """Call Gemini via Vertex AI (ADC, GCP credits). Primary path on Cloud Run."""
+    try:
+        from app.core.gemini_client import VertexGeminiClient, VERTEX_AVAILABLE
+    except ImportError:
+        raise RuntimeError("google-cloud-aiplatform not installed")
+
+    if not VERTEX_AVAILABLE:
+        raise RuntimeError("Vertex AI SDK not available")
+
+    # Reuse singleton-ish client (VertexGeminiClient caches model in __init__)
+    client = VertexGeminiClient()
+    result = client.call(prompt, temperature=temperature)
+    # Result is dict with raw_text or parsed JSON
+    if isinstance(result, dict) and "raw_text" in result:
+        return result["raw_text"]
+    return json.dumps(result, ensure_ascii=False)
+
+
+# ── Gemini direct (local dev fallback) ───────────────────────────────────────
 
 async def _ask_gemini(prompt: str, *, temperature: float = 0.1) -> str:
-    """Call Google Gemini API."""
+    """Call Google Gemini API directly (local dev fallback only)."""
     import google.generativeai as genai
 
     genai.configure(api_key=settings.GOOGLE_API_KEY)

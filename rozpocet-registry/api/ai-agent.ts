@@ -17,7 +17,9 @@ const AI_ENABLED = process.env.AI_ENABLED !== 'false'; // Default: true
 // ─── Formwork assistant: model config ────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
 const GEMINI_MODEL   = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
-const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+const VERTEX_PROJECT = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+const VERTEX_LOCATION = process.env.VERTEX_LOCATION || 'europe-west3';
+const USE_VERTEX     = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
 const CLAUDE_API_KEY  = process.env.ANTHROPIC_API_KEY;
 const CLAUDE_MODEL    = process.env.CLAUDE_MODEL || 'claude-sonnet-4-6';
 
@@ -84,9 +86,32 @@ ${warnings.length > 0 ? '\nRIZIKA:\n' + warnings.map(w => '- ' + w).join('\n') :
 Vrať POUZE JSON: {"zduvodneni":"<2-3 věty česky>","upozorneni":["<upozornění 1>","<upozornění 2>"]}`;
 }
 
+async function fwGetGeminiEndpoint(): Promise<{ url: string; headers: Record<string, string> }> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  // Try Vertex AI ADC (Cloud Run)
+  if (USE_VERTEX && VERTEX_PROJECT) {
+    try {
+      const metaRes = await fetch(
+        'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
+        { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(2000) }
+      );
+      if (metaRes.ok) {
+        const t = await metaRes.json();
+        if (t.access_token) {
+          headers['Authorization'] = `Bearer ${t.access_token}`;
+          return { url: `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${VERTEX_PROJECT}/locations/${VERTEX_LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`, headers };
+        }
+      }
+    } catch { /* not on Cloud Run */ }
+  }
+  // Fallback: direct API
+  if (!GEMINI_API_KEY) throw new Error('No Vertex AI ADC and no GOOGLE_API_KEY');
+  return { url: `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`, headers };
+}
+
 async function fwCallGemini(prompt: string) {
-  if (!GEMINI_API_KEY) throw new Error('GEMINI_API_KEY not configured');
-  const r = await fetch(`${GEMINI_ENDPOINT}?key=${GEMINI_API_KEY}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3, maxOutputTokens: 500 } }) });
+  const { url, headers } = await fwGetGeminiEndpoint();
+  const r = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3, maxOutputTokens: 500 } }) });
   if (!r.ok) throw new Error(`Gemini ${r.status}`);
   const d = await r.json();
   const text: string = d.candidates?.[0]?.content?.parts?.[0]?.text || '';

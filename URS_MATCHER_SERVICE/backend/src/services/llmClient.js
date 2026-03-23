@@ -458,14 +458,13 @@ async function fetchGCPAccessToken() {
 }
 
 /**
- * Call Gemini API with specific client config.
- * When GOOGLE_GENAI_USE_VERTEXAI=true, uses Vertex AI endpoint with ADC token
- * (no API key required — uses the Cloud Run service account automatically).
- * Falls back to Google AI API key mode when not on GCP or token fetch fails.
- * On 404 (model not available), retries with gemini-2.5-flash (GA, available in europe-west3).
+ * Call Gemini via Vertex AI (primary) with direct API fallback.
+ *
+ * Strategy: Vertex AI ADC first (Cloud Run, no API key, GCP credits).
+ * Falls back to direct generativelanguage.googleapis.com only if ADC unavailable (local dev).
+ * On 404 retries with gemini-2.5-flash (GA, available in europe-west3).
  */
 async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, controller) {
-  const useVertexAI = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
   const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
   const vertexLocation = process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3';
 
@@ -473,21 +472,20 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
   let headers = { 'content-type': 'application/json' };
   let isVertexPath = false;
 
-  if (useVertexAI && vertexProject) {
-    const token = await fetchGCPAccessToken();
-    if (token) {
-      apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${client.model}:generateContent`;
-      headers['Authorization'] = `Bearer ${token}`;
-      isVertexPath = true;
-      logger.debug(`[Gemini] Using Vertex AI endpoint (ADC): ${vertexLocation}`);
-    } else {
-      logger.warn('[Gemini] GOOGLE_GENAI_USE_VERTEXAI=true but metadata server unavailable, falling back to API key mode');
-      apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${client.model}:generateContent`;
-      headers['x-goog-api-key'] = client.apiKey;
-    }
-  } else {
+  // Always try Vertex AI first (ADC, GCP credits)
+  const token = vertexProject ? await fetchGCPAccessToken() : null;
+  if (token && vertexProject) {
+    apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${client.model}:generateContent`;
+    headers['Authorization'] = `Bearer ${token}`;
+    isVertexPath = true;
+    logger.debug(`[Gemini] Using Vertex AI endpoint (ADC): ${vertexLocation}`);
+  } else if (client.apiKey) {
+    // Fallback: direct API (local dev only, no GCP credits)
+    logger.warn('[Gemini] Vertex AI unavailable (no ADC token), falling back to direct API key (local dev)');
     apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${client.model}:generateContent`;
     headers['x-goog-api-key'] = client.apiKey;
+  } else {
+    throw new Error('No Vertex AI ADC token and no GOOGLE_API_KEY — cannot call Gemini');
   }
 
   const body = {
@@ -506,15 +504,12 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
   } catch (error) {
     const FALLBACK_MODEL = 'gemini-2.5-flash';
     if (error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
+      logger.warn(`[Gemini] Model "${client.model}" 404 — retrying with ${FALLBACK_MODEL}`);
       if (isVertexPath) {
-        // 404 on Vertex AI = model not available in this region/project — retry with fallback model
-        logger.warn(`[Gemini] Model "${client.model}" not found on Vertex AI (404) — retrying with ${FALLBACK_MODEL}`);
         const fallbackUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${FALLBACK_MODEL}:generateContent`;
         const fallbackResponse = await axios.post(fallbackUrl, body, axiosConfig);
         return fallbackResponse.data.candidates[0].content.parts[0].text;
       } else {
-        // 404 on Google AI API = model not available on this endpoint
-        logger.warn(`[Gemini] Model "${client.model}" not found on Google AI API (404) — retrying with ${FALLBACK_MODEL}`);
         const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${FALLBACK_MODEL}:generateContent`;
         const fallbackResponse = await axios.post(fallbackUrl, body, { ...axiosConfig, headers: { ...headers } });
         return fallbackResponse.data.candidates[0].content.parts[0].text;

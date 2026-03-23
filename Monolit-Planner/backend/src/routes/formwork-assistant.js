@@ -487,30 +487,54 @@ router.post('/', async (req, res) => {
         + `Cyklus: montáž ${A}d + arm. ${R}d + beton 1d + zrání ${C}d + dem. ${D}d. `
         + `Strategie: ${stratSummary}. Doporuč optimální strategii. Max 5 vět.`;
 
-    // Helper: call Gemini API directly (fastest, cheapest)
+    // Helper: call Gemini via Vertex AI (primary) or direct API (local dev fallback)
     async function callGeminiDirect(prompt) {
-      const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        logger.warn('[Formwork v3] Gemini skipped — GOOGLE_API_KEY / GEMINI_API_KEY not set');
-        return null;
-      }
-
       const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+      const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+      const vertexLocation = process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3';
+
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
       try {
-        const gRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: { maxOutputTokens: 600, temperature: 0.4 },
-            }),
-            signal: controller.signal,
+        let apiUrl;
+        let headers = { 'Content-Type': 'application/json' };
+
+        // Try Vertex AI ADC first (Cloud Run, GCP credits)
+        let token = null;
+        if (vertexProject) {
+          try {
+            const metaRes = await fetch(
+              'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
+              { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(3000) }
+            );
+            if (metaRes.ok) { const d = await metaRes.json(); token = d.access_token; }
+          } catch { /* not on Cloud Run */ }
+        }
+
+        if (token && vertexProject) {
+          apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${geminiModel}:generateContent`;
+          headers['Authorization'] = `Bearer ${token}`;
+          logger.info(`[Formwork v3] Vertex AI (ADC): ${vertexLocation}/${geminiModel}`);
+        } else {
+          // Fallback: direct API (local dev only)
+          const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
+          if (!apiKey) {
+            logger.warn('[Formwork v3] Gemini skipped — no Vertex AI ADC and no GOOGLE_API_KEY');
+            return null;
           }
-        );
+          apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
+          logger.warn('[Formwork v3] Vertex AI unavailable, using direct API (local dev)');
+        }
+
+        const gRes = await fetch(apiUrl, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { maxOutputTokens: 600, temperature: 0.4 },
+          }),
+          signal: controller.signal,
+        });
         clearTimeout(timeoutId);
         if (!gRes.ok) throw new Error(`Gemini ${gRes.status}`);
         const gData = await gRes.json();
@@ -518,7 +542,7 @@ router.post('/', async (req, res) => {
         if (text) return { text, model: geminiModel };
       } catch (e) {
         clearTimeout(timeoutId);
-        logger.warn(`[Formwork v3] Gemini direct: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+        logger.warn(`[Formwork v3] Gemini: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
       }
       return null;
     }
