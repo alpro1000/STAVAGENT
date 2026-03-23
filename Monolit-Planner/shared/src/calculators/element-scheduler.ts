@@ -536,18 +536,18 @@ function analyzeBottleneck(
 ): string | null {
   // If FW crew is > 90% utilized → bottleneck is crew
   if (util.formwork_crews > 0.9 && numFW === 1) {
-    return `Formwork crew at ${Math.round(util.formwork_crews * 100)}% — consider adding a second crew`;
+    return `Četa bednění na ${Math.round(util.formwork_crews * 100)}% — zvažte přidání druhé čety`;
   }
 
   // If sets are > 85% utilized and curing is long → more sets would help
   const avgSetUtil = util.sets.reduce((s, v) => s + v, 0) / util.sets.length;
   if (avgSetUtil > 0.85 && curingDays > workDays) {
-    return `Sets at ${Math.round(avgSetUtil * 100)}% occupancy, curing ${curingDays}d > work ${workDays}d — additional set would reduce idle time`;
+    return `Sady bednění na ${Math.round(avgSetUtil * 100)}%, zrání ${curingDays}d > práce ${workDays}d — další sada by snížila prostoje`;
   }
 
   // If rebar crew idle > 50% → rebar is not the bottleneck
   if (util.rebar_crews < 0.5 && util.formwork_crews > 0.7) {
-    return `Rebar crew idle ${Math.round((1 - util.rebar_crews) * 100)}% — formwork crew is the bottleneck`;
+    return `Četa výztuže nevytížena ${Math.round((1 - util.rebar_crews) * 100)}% — úzké hrdlo je četa bednění`;
   }
 
   return null;

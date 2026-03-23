@@ -179,7 +179,7 @@ const DEFAULT_FORM: FormState = {
   shift_h: 10,
   wage_czk_h: 398,
   formwork_system_name: '',
-  enable_monte_carlo: true,
+  enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
 };
@@ -563,8 +563,13 @@ export default function PlannerPage() {
         <div style={{
           background: 'var(--r0-slate-50)', borderBottom: '1px solid var(--r0-slate-200)',
           padding: '20px 24px', fontSize: 13, lineHeight: 1.7, color: 'var(--r0-slate-700)',
-          maxHeight: 'calc(100vh - 60px)', overflowY: 'auto',
+          maxHeight: 'calc(100vh - 60px)', overflowY: 'auto', position: 'relative',
         }}>
+          <button onClick={() => setShowHelp(false)} style={{
+            position: 'sticky', top: 0, float: 'right', background: 'var(--r0-slate-200)',
+            border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer',
+            fontSize: 13, fontWeight: 600, color: 'var(--r0-slate-700)', zIndex: 1,
+          }}>Zavřít nápovědu ✕</button>
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             {/* ── Intro ── */}
             <h3 style={{ margin: '0 0 6px', fontSize: 16, color: 'var(--r0-slate-800)' }}>
@@ -831,8 +836,13 @@ export default function PlannerPage() {
           </Section>
 
           {/* ─── Mostovková deska: bridge config + context hint ─── */}
-          {(form.element_type === 'mostovkova_deska' && !form.use_name_classification) && (
-            <>
+          <div style={{
+            maxHeight: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 300 : 0,
+            opacity: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 1 : 0,
+            overflow: 'hidden',
+            transition: 'max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease',
+            marginBottom: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 12 : 0,
+          }}>
               <div style={{
                 padding: '10px 12px', marginBottom: 12,
                 background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 6,
@@ -853,8 +863,7 @@ export default function PlannerPage() {
                   <option value={2}>2 — levý + pravý (souběžné)</option>
                 </select>
               </Field>
-            </>
-          )}
+          </div>
 
           {/* ─── Římsa: length-based pour hint ─── */}
           {(form.element_type === 'rimsa' && !form.use_name_classification) && (
@@ -1425,6 +1434,9 @@ export default function PlannerPage() {
                     onChange={e => update('enable_monte_carlo', e.target.checked)} />
                   {' '}Monte Carlo simulace (PERT)
                 </label>
+                <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 2, marginLeft: 18 }}>
+                  1000× náhodná simulace doby záběru. Ukazuje P50–P95 odhady termínů. Zpomaluje výpočet.
+                </div>
               </Section>
             </>
           )}
@@ -1874,7 +1886,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
           <Row label="Záběrů" value={plan.pour_decision.num_tacts.toString()} />
           <Row label="Objem/záběr" value={`${formatNum(plan.pour_decision.tact_volume_m3)} m³`} />
           <Row label="Rychlost" value={`${formatNum(plan.pour.effective_rate_m3_h)} m³/h`} />
-          <Row label="Bottleneck" value={plan.pour.rate_bottleneck} />
+          <Row label="Úzké hrdlo" value={plan.pour.rate_bottleneck} />
         </Card>
       </div>
 
