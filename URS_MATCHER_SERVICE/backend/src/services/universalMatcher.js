@@ -74,6 +74,24 @@ export async function universalMatch(input) {
 
   try {
     // 1. Detect language and normalize
+    if (!input.text || typeof input.text !== 'string') {
+      return {
+        query: {
+          detected_language: 'error',
+          normalized_text_cs: null,
+          quantity: input.quantity || null,
+          unit: input.unit || null
+        },
+        matches: [],
+        related_items: [],
+        explanation_cs: 'Chybí text pro analýzu.',
+        knowledge_suggestions: [],
+        status: 'error',
+        notes_cs: 'Input text is null or not a string',
+        execution_time_ms: Date.now() - startTime
+      };
+    }
+
     const detectedLanguage = detectLanguage(input.text);
     const normalizedCzech = normalizeTextToCzech(input.text);
 
@@ -330,9 +348,15 @@ async function callUniversalLLM(prompt) {
         throw new Error('LLM response exceeded maximum allowed size');
       }
 
+      // Strip markdown code fences (```json ... ```) that LLMs often wrap around JSON
+      let jsonStr = response.trim();
+      if (jsonStr.startsWith('```')) {
+        jsonStr = jsonStr.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?\s*```\s*$/, '');
+      }
+
       // Parse JSON
       try {
-        response = JSON.parse(response);
+        response = JSON.parse(jsonStr);
       } catch (parseError) {
         logger.error(`[UniversalMatcher] Invalid JSON from LLM: ${parseError.message}`);
         throw new Error('LLM returned invalid JSON');
