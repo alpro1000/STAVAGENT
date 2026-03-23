@@ -66,6 +66,14 @@ export async function getDatabase() {
   return db;
 }
 
+export async function closeDatabase() {
+  if (db) {
+    await db.close();
+    db = null;
+    logger.info('[DB] Connection closed');
+  }
+}
+
 /**
  * Run migrations for existing databases
  * Adds new columns that may not exist in older installations

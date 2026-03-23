@@ -16,7 +16,7 @@ import {
   insertMapping
 } from '../src/services/knowledgeBase.js';
 
-import { getDatabase } from '../src/db/init.js';
+import { getDatabase, closeDatabase } from '../src/db/init.js';
 
 // ============================================================================
 // TEST SETUP - Insert test URS codes
@@ -54,6 +54,10 @@ beforeAll(async () => {
     console.warn('Warning: Failed to insert test URS codes:', error.message);
     // Continue with tests even if setup fails
   }
+});
+
+afterAll(async () => {
+  await closeDatabase();
 });
 
 // ============================================================================
