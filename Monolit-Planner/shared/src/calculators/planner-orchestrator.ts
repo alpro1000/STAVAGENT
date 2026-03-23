@@ -96,8 +96,15 @@ export interface PlannerInput {
   shift_h?: number;
   /** Time utilization factor. Default: 0.8 */
   k?: number;
-  /** Wage CZK/h. Default: 398 */
+  /** Wage CZK/h. Default: 398. Used as fallback when trade-specific wages are not set. */
   wage_czk_h?: number;
+  /** Formwork workers (tesaři/bednáři) wage CZK/h. Falls back to wage_czk_h. */
+  wage_formwork_czk_h?: number;
+  /** Rebar workers (železáři) wage CZK/h. Falls back to wage_czk_h. */
+  wage_rebar_czk_h?: number;
+  /** Concrete workers (betonáři) wage CZK/h. Falls back to wage_czk_h.
+   *  Typically higher due to overtime on continuous pours (bridges). */
+  wage_pour_czk_h?: number;
 
   // --- Formwork override ---
   /** Explicit formwork system name (overrides auto-recommendation) */
@@ -171,6 +178,8 @@ export interface PlannerOutput {
     formwork_labor_czk: number;
     rebar_labor_czk: number;
     pour_labor_czk: number;
+    /** Night shift premium for continuous pours >12h (§ 116 ZP: +10%) */
+    pour_night_premium_czk: number;
     total_labor_czk: number;
     /** Formwork rental (monthly rate × rental_days / 30). Only if system has rental. */
     formwork_rental_czk: number;
@@ -196,6 +205,12 @@ export interface PlannerOutput {
     crew_size_rebar: number;
     /** Shift hours */
     shift_h: number;
+    /** Trade-specific wages (Kč/h) */
+    wage_formwork_czk_h: number;
+    wage_rebar_czk_h: number;
+    wage_pour_czk_h: number;
+    /** Number of crew shifts for continuous pours (1 = normal, 2+ = crew relief) */
+    pour_shifts: number;
   };
 
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
@@ -268,6 +283,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const shift = input.shift_h ?? DEFAULTS.shift_h;
   const k = input.k ?? DEFAULTS.k;
   const wage = input.wage_czk_h ?? DEFAULTS.wage_czk_h;
+  const wageFormwork = input.wage_formwork_czk_h ?? wage;
+  const wageRebar = input.wage_rebar_czk_h ?? wage;
+  const wagePour = input.wage_pour_czk_h ?? wage;
   const rawNumSets = input.num_sets ?? DEFAULTS.num_sets;
   const numFWCrews = input.num_formwork_crews ?? DEFAULTS.num_formwork_crews;
   const numRBCrews = input.num_rebar_crews ?? DEFAULTS.num_rebar_crews;
@@ -393,6 +411,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
   );
   log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`);
 
+  // Warn about estimated formwork area for complex elements where estimation is unreliable
+  const COMPLEX_ELEMENT_TYPES = ['opery_ulozne_prahy', 'operne_zdi', 'rimsa', 'schodiste'];
+  if (!input.formwork_area_m2 && COMPLEX_ELEMENT_TYPES.includes(elementType)) {
+    warnings.push(
+      `⚠️ ${profile.label_cs}: plocha bednění je odhadnuta (${fwArea} m²). ` +
+      `Tento typ má složitou geometrii (dřík + křídla + stěna) — zadejte skutečnou plochu pro přesný výpočet.`
+    );
+  }
+
   // Maturity-based curing or default
   const maturityParams = input.concrete_class ? {
     concrete_class: input.concrete_class,
@@ -460,7 +487,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     crew_size: crew,
     shift_h: shift,
     k,
-    wage_czk_h: wage,
+    wage_czk_h: wageFormwork,
     strip_wait_hours: stripWaitHours, // correctly includes maturity + skruž minimum
     move_clean_hours: 2,
   });
@@ -474,7 +501,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     fwArea,
     adjustedNorms.assembly_h_m2,
     adjustedNorms.disassembly_h_m2,
-    crew, shift, k, wage,
+    crew, shift, k, wageFormwork,
     pourDecision.num_tacts,
   );
 
@@ -489,7 +516,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     crew_size: crewRebar, // per-crew size; parallelism across tacts via RCPSP num_rebar_crews
     shift_h: shift,
     k,
-    wage_czk_h: wage,
+    wage_czk_h: wageRebar,
   });
 
   log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews} čet×${crewRebar} prac.=${numRBCrews * crewRebar} železářů, RCPSP parallel=${numRBCrews})`);
@@ -519,24 +546,52 @@ export function planElement(input: PlannerInput): PlannerOutput {
   let effectivePourCrew = crew;
   let effectiveShift = shift;
 
+  // Night shift premium (§ 116 ZP: min. +10%)
+  const NIGHT_PREMIUM = 0.10;
+  let pourNightPremiumCZK = 0;
+  let numPourShifts = 1;
+
   if (isContinuousPour && pourResult.total_pour_hours > shift) {
-    // Continuous pour exceeds normal shift — scale resources, keep as 1 day
+    // Continuous pour exceeds normal shift — can't stop, no work joints allowed.
     concreteDays = 1;
 
-    // Scale crew: enough workers to complete pour in one extended shift
-    const maxCrew = 15;
-    effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
+    // Czech labor law (§ 83 Zákoník práce): max shift = 12 hours.
+    // For pours > 12h: crew relief (střídání čet) — fresh crew replaces tired one.
+    const MAX_LEGAL_SHIFT = 12;
 
-    // Extended shift for continuous pour (capped at 12h — labor code maximum)
-    effectiveShift = Math.min(12, Math.max(shift, pourResult.total_pour_hours));
+    if (pourResult.total_pour_hours <= MAX_LEGAL_SHIFT) {
+      // Fits in one extended shift (up to 12h legal max)
+      effectiveShift = pourResult.total_pour_hours;
+      const maxCrew = 15;
+      effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
 
-    warnings.push(
-      `Monolitická zálivka (${pourDecision.tact_volume_m3}m³): nutno zalít v jednom záběru bez přerušení. ` +
-      `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
-      `směna ${roundTo(effectiveShift, 1)}h. ` +
-      (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
-    );
-    log.push(`Continuous pour: ${pourResult.total_pour_hours}h → 1 day, crew ${crew}→${effectivePourCrew}, shift ${shift}→${roundTo(effectiveShift, 1)}h`);
+      warnings.push(
+        `Monolitická zálivka (${pourDecision.tact_volume_m3}m³): nutno zalít v jednom záběru bez přerušení. ` +
+        `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
+        `směna ${roundTo(effectiveShift, 1)}h. ` +
+        (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
+      );
+    } else {
+      // Pour > 12h: multi-shift operation (střídání čet)
+      // Each shift max 12h, crews rotate.
+      numPourShifts = Math.ceil(pourResult.total_pour_hours / MAX_LEGAL_SHIFT);
+      effectiveShift = MAX_LEGAL_SHIFT;
+      const maxCrew = 15;
+      effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * MAX_LEGAL_SHIFT) / shift)));
+      const nightHours = Math.max(0, pourResult.total_pour_hours - MAX_LEGAL_SHIFT);
+      pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
+
+      warnings.push(
+        `Monolitická zálivka (${pourDecision.tact_volume_m3}m³, ${roundTo(pourResult.total_pour_hours, 1)}h): ` +
+        `nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
+        `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} pracovníků). ` +
+        `Noční směna: +${nightHours.toFixed(1)}h s příplatkem +10% (§ 116 ZP).`
+      );
+    }
+
+    log.push(`Continuous pour: ${pourResult.total_pour_hours}h → 1 day, ` +
+      `${numPourShifts} shift(s), crew ${crew}→${effectivePourCrew}, ` +
+      `shift ${shift}→${roundTo(effectiveShift, 1)}h`);
   } else {
     // Normal pour: calculate days from hours
     concreteDays = Math.max(1, roundTo(pourResult.total_pour_hours / shift, 2));
@@ -640,7 +695,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       crew_size: crew,
       shift_h: shift,
       k,
-      wage_czk_h: wage,
+      wage_czk_h: wageFormwork,
       num_tacts: pourDecision.num_tacts,
     });
     warnings.push(...propsResult.warnings);
@@ -660,13 +715,19 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const formworkLaborCZK = threePhase.total_cost_labor;
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
   // Pour labor: crew × hours × wage per tact × num_tacts
-  // Overtime premium 25% applies after standard shift (default 10h)
+  // Overtime premium 25% applies after standard shift (§ 114 ZP)
+  // Night premium 10% applies for hours in night shifts (§ 116 ZP)
   const overtimeThreshold = shift; // use configured shift, not hardcoded 10
   const actualPourHours = isContinuousPour ? effectiveShift : pourResult.total_pour_hours;
   const regularHours = Math.min(overtimeThreshold, actualPourHours);
   const overtimeHours = Math.max(0, actualPourHours - overtimeThreshold);
-  const laborPerWorkerPerTact = (regularHours * wage) + (overtimeHours * wage * 1.25);
-  const pourLaborCZK = roundTo(laborPerWorkerPerTact * effectivePourCrew * pourDecision.num_tacts, 2);
+  const laborPerWorkerPerTact = (regularHours * wagePour) + (overtimeHours * wagePour * 1.25);
+  // For multi-shift pours: each shift pays full crew, plus night premium
+  const pourLaborCZK = roundTo(
+    laborPerWorkerPerTact * effectivePourCrew * numPourShifts * pourDecision.num_tacts +
+    pourNightPremiumCZK * pourDecision.num_tacts,
+    2,
+  );
 
   // Rental cost (monthly → daily). User override takes precedence over catalog.
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport
@@ -713,12 +774,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
       crew_size_formwork: crew,
       crew_size_rebar: crewRebar,
       shift_h: shift,
+      wage_formwork_czk_h: wageFormwork,
+      wage_rebar_czk_h: wageRebar,
+      wage_pour_czk_h: wagePour,
+      pour_shifts: numPourShifts,
     },
     props: propsResult,
     costs: {
       formwork_labor_czk: formworkLaborCZK,
       rebar_labor_czk: rebarLaborCZK,
       pour_labor_czk: pourLaborCZK,
+      pour_night_premium_czk: pourNightPremiumCZK * pourDecision.num_tacts,
       total_labor_czk: totalLaborCZK,
       formwork_rental_czk: formworkRentalCZK,
       props_labor_czk: propsLaborCZK,
