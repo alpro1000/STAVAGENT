@@ -545,13 +545,13 @@ const MODEL_PRICING = {
     qualityScore: 7
   },
   // Gemini models (Google)
-  'gemini-2.5-flash-lite': {
+  'gemini-2.5-flash': {
     provider: 'gemini',
-    inputCost: 0.075,     // extremely cheap
-    outputCost: 0.30,
-    costPerMinute: 0.001,
-    speedScore: 10,
-    qualityScore: 8
+    inputCost: 0.15,
+    outputCost: 0.60,
+    costPerMinute: 0.002,
+    speedScore: 9,
+    qualityScore: 9
   },
   'gemini-2.5-pro': {
     provider: 'gemini',
@@ -780,12 +780,12 @@ const TASK_MODEL_ROUTING = {
   [TASK_TYPES.KEYWORD_GENERATION]: {
     priority: ['gemini', 'deepseek', 'openai', 'claude'],
     reason: 'Fast and cheap for simple extraction',
-    preferModel: 'gemini-2.5-flash-lite'
+    preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.TRANSLATION]: {
     priority: ['gemini', 'deepseek', 'openai', 'claude'],
     reason: 'Fast translation with good quality',
-    preferModel: 'gemini-2.5-flash-lite'
+    preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.BLOCK_ANALYSIS]: {
     priority: ['gemini', 'openai', 'claude', 'deepseek'],
@@ -800,7 +800,7 @@ const TASK_MODEL_ROUTING = {
   [TASK_TYPES.VALIDATION]: {
     priority: ['gemini', 'deepseek', 'openai', 'claude'],
     reason: 'Validation — fast and reliable',
-    preferModel: 'gemini-2.5-flash-lite'
+    preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.NORMS_INTERPRETATION]: {
     priority: ['gemini', 'openai', 'claude', 'deepseek'],
@@ -906,7 +906,7 @@ function formatModelName(modelId) {
     'claude-opus-4-6': 'Claude Opus 4.6',
     'gpt-4.1': 'GPT-4.1',
     'gpt-5-mini': 'GPT-5 Mini',
-    'gemini-2.5-flash-lite': 'Gemini 2.5 Flash Lite',
+    'gemini-2.5-flash': 'Gemini 2.5 Flash',
     'gemini-2.5-pro': 'Gemini 2.5 Pro',
     'deepseek-v3': 'DeepSeek V3',
     'deepseek-reasoner': 'DeepSeek Reasoner',
@@ -941,7 +941,7 @@ function formatProviderName(provider) {
  */
 function isRecommendedModel(modelId) {
   // Recommended models: GCP credits only (Gemini)
-  const recommended = ['gemini-2.5-flash-lite', 'gemini-2.5-pro'];
+  const recommended = ['gemini-2.5-flash', 'gemini-2.5-pro'];
   return recommended.includes(modelId);
 }
 

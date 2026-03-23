@@ -20,9 +20,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Search, MapPin, Phone, Globe, Loader2,
   Building2, ChevronDown, ChevronUp, Edit3, Check, X,
-  Calculator, Truck, Droplets,
+  Calculator, Truck, Droplets, RefreshCw, Download,
 } from 'lucide-react';
-import { betonarnyAPI, type ConcretePlant } from '../services/api';
+import { betonarnyAPI, type ConcretePlant, type ScrapeResult } from '../services/api';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -117,6 +117,11 @@ export default function ObjednavkaBetonuPage() {
   const [needPump, setNeedPump] = useState(true);
   const [pumpHoursOverride, setPumpHoursOverride] = useState<number | null>(null);
 
+  // ── Admin scrape state
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [scraping, setScraping] = useState(false);
+  const [scrapeResult, setScrapeResult] = useState<ScrapeResult | null>(null);
+
   // ── Results (plants with calculation)
   const [plantsRaw, setPlantsRaw] = useState<ConcretePlant[]>([]);
   const [manualData, setManualData] = useState<Record<string, { manual: ManualPrices; editing: boolean }>>({});
@@ -159,6 +164,22 @@ export default function ObjednavkaBetonuPage() {
       },
       () => { setSearchError('Geolokace zamítnuta'); setGeoLoading(false); },
     );
+  }, []);
+
+  const handleScrape = useCallback(async () => {
+    setScraping(true);
+    setScrapeResult(null);
+    try {
+      const result = await betonarnyAPI.scrape(undefined, 5);
+      setScrapeResult(result);
+    } catch (e: unknown) {
+      setScrapeResult({
+        plants_found: 0, plants_new: 0, plants_updated: 0,
+        errors: [e instanceof Error ? e.message : 'Scraping selhal'],
+      });
+    } finally {
+      setScraping(false);
+    }
   }, []);
 
   // ── Calculate total for each plant
@@ -400,6 +421,67 @@ export default function ObjednavkaBetonuPage() {
             )}
           </div>
         )}
+
+        {/* ── Admin: Scraping BetonServer ─────────────────────────── */}
+        <div style={{
+          background: 'white', borderRadius: 8,
+          border: '1px solid #e5e7eb', overflow: 'hidden', marginTop: 24,
+        }}>
+          <button
+            onClick={() => setShowAdmin(prev => !prev)}
+            style={{
+              width: '100%',
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '12px 16px',
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 14, fontWeight: 600, color: '#6b7280', textAlign: 'left',
+            }}
+          >
+            <RefreshCw size={16} />
+            <span style={{ flex: 1 }}>Admin — Scraping BetonServer.cz</span>
+            {showAdmin ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          </button>
+
+          {showAdmin && (
+            <div style={{ padding: '0 16px 16px' }}>
+              <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 12 }}>
+                Spustí scraping BetonServer.cz pro aktualizaci seznamu betonáren.
+                Doporučeno spouštět 1× měsíčně.
+              </p>
+              <button
+                onClick={handleScrape}
+                disabled={scraping}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '8px 20px',
+                  background: '#374151', color: 'white', border: 'none',
+                  borderRadius: 6, fontSize: 13, fontWeight: 500, cursor: 'pointer',
+                  opacity: scraping ? 0.6 : 1,
+                }}
+              >
+                {scraping ? <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} /> : <Download size={14} />}
+                {scraping ? 'Scrapuji...' : 'Spustit scraping'}
+              </button>
+
+              {scrapeResult && (
+                <div style={{
+                  marginTop: 12, padding: '10px 14px',
+                  background: scrapeResult.errors.length > 0 ? '#fef2f2' : '#f0fdf4',
+                  borderRadius: 6, fontSize: 13,
+                }}>
+                  <div>Nalezeno: <strong>{scrapeResult.plants_found}</strong></div>
+                  <div>Nových: <strong>{scrapeResult.plants_new}</strong></div>
+                  <div>Aktualizovaných: <strong>{scrapeResult.plants_updated}</strong></div>
+                  {scrapeResult.errors.length > 0 && (
+                    <div style={{ color: '#dc2626', marginTop: 4 }}>
+                      Chyby: {scrapeResult.errors.join(', ')}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const AI_ENABLED = process.env.AI_ENABLED !== 'false'; // Default: true
 
 // ─── Formwork assistant: model config ────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
-const GEMINI_MODEL   = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+const GEMINI_MODEL   = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 const VERTEX_PROJECT = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
 const VERTEX_LOCATION = process.env.VERTEX_LOCATION || 'europe-west3';
 const USE_VERTEX     = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
