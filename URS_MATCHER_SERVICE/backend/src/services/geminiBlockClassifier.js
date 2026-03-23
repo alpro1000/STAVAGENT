@@ -254,6 +254,23 @@ RESPONSE FORMAT (POUZE JSON):
 // HELPER: Call Gemini with strict timeout
 // ============================================================================
 
+/**
+ * Fetch GCP access token from Cloud Run metadata server (ADC).
+ */
+async function fetchGCPAccessToken() {
+  try {
+    const resp = await fetch(
+      'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
+      { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(3000) }
+    );
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return data.access_token || null;
+  } catch {
+    return null;
+  }
+}
+
 async function callGeminiWithTimeout(prompt, timeoutMs) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -263,46 +280,56 @@ async function callGeminiWithTimeout(prompt, timeoutMs) {
     const runtimeModel = getRuntimeModel();
     const availableProviders = getAvailableProviders();
 
-    // Determine which model and API key to use
-    let apiKey;
     let modelName;
-
-    // Check if runtime model is Gemini - use it
     if (runtimeModel.isRuntimeSelected && runtimeModel.provider === 'gemini') {
-      apiKey = availableProviders.gemini?.apiKey;
       modelName = runtimeModel.model;
       logger.info(`[GEMINI-CLASSIFIER] Using runtime-selected model: ${modelName}`);
     } else if (availableProviders.gemini?.enabled) {
-      // Fall back to Gemini from available providers
-      apiKey = availableProviders.gemini.apiKey;
       modelName = availableProviders.gemini.model;
       logger.debug(`[GEMINI-CLASSIFIER] Using default Gemini model: ${modelName}`);
     } else {
-      // Last resort: environment variables
-      apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
       modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
     }
 
-    if (!apiKey) {
-      throw new Error('GOOGLE_API_KEY not set');
+    // Always try Vertex AI first (ADC, GCP credits)
+    const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
+    const vertexLocation = process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3';
+    const token = vertexProject ? await fetchGCPAccessToken() : null;
+
+    let apiUrl;
+    let headers = { 'content-type': 'application/json' };
+
+    if (token && vertexProject) {
+      apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${modelName}:generateContent`;
+      headers['Authorization'] = `Bearer ${token}`;
+      logger.debug(`[GEMINI-CLASSIFIER] Using Vertex AI (ADC): ${vertexLocation}/${modelName}`);
+    } else {
+      // Fallback: direct API (local dev only)
+      const apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
+      if (!apiKey) throw new Error('No Vertex AI ADC and no GOOGLE_API_KEY');
+      apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+      headers['x-goog-api-key'] = apiKey;
+      logger.warn(`[GEMINI-CLASSIFIER] Vertex AI unavailable, using direct API (local dev)`);
     }
 
-    // Import Gemini client dynamically
-    const { default: genai } = await import('google-generativeai');
+    const body = {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.3, maxOutputTokens: 4096 },
+    };
 
-    genai.configure({ apiKey });
-    const model = genai.getGenerativeModel({ model: modelName });
+    const resp = await fetch(apiUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
 
-    // Call Gemini
-    const response = await model.generateContent(prompt);
-    const text = response.text;
-
-    if (!text) {
-      throw new Error('Gemini returned empty response');
-    }
+    if (!resp.ok) throw new Error(`Gemini ${resp.status}: ${await resp.text().catch(() => '')}`);
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('Gemini returned empty response');
 
     logger.debug(`[GEMINI-CLASSIFIER] Gemini (${modelName}) responded: ${text.length} chars`);
-
     return text;
 
   } catch (error) {

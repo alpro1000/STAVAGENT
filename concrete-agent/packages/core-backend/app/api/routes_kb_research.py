@@ -274,22 +274,57 @@ async def _call_perplexity(question: str) -> tuple[str, list[SourceItem]]:
     return content, sources
 
 
-# ── Gemini fallback ───────────────────────────────────────────────────────────
+# ── Vertex AI / Gemini helpers ────────────────────────────────────────────────
 
-async def _call_gemini_fallback(question: str) -> str:
+def _get_gemini_url_and_headers() -> tuple:
     """
-    Direct Gemini call when Perplexity is unavailable.
-    Uses GOOGLE_API_KEY + GEMINI_MODEL from settings.
+    Build Gemini API URL + headers. Vertex AI (ADC) first, direct API fallback.
+    Returns (url_template, headers) where url_template needs model name.
     """
+    import os
+    model = getattr(settings, "GEMINI_MODEL", "gemini-2.5-flash-lite")
+    project_id = os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT")
+    location = os.getenv("VERTEX_LOCATION", "europe-west3")
+
+    # Try Vertex AI ADC first
+    if project_id:
+        try:
+            import requests as _req
+            resp = _req.get(
+                "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token",
+                headers={"Metadata-Flavor": "Google"}, timeout=2
+            )
+            if resp.status_code == 200:
+                token = resp.json().get("access_token")
+                if token:
+                    url = (
+                        f"https://{location}-aiplatform.googleapis.com/v1/projects/"
+                        f"{project_id}/locations/{location}/publishers/google/models/"
+                        f"{model}:generateContent"
+                    )
+                    return url, {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}, model
+        except Exception:
+            pass
+
+    # Fallback: direct API (local dev only)
     api_key = getattr(settings, "GOOGLE_API_KEY", None)
     if not api_key:
-        raise ValueError("GOOGLE_API_KEY not configured")
-
-    model = getattr(settings, "GEMINI_MODEL", "gemini-2.5-flash-lite")
+        raise ValueError("No Vertex AI ADC and no GOOGLE_API_KEY configured")
     url = (
         f"https://generativelanguage.googleapis.com/v1beta/models/"
         f"{model}:generateContent?key={api_key}"
     )
+    return url, {"Content-Type": "application/json"}, model
+
+
+# ── Gemini fallback ───────────────────────────────────────────────────────────
+
+async def _call_gemini_fallback(question: str) -> str:
+    """
+    Gemini call when Perplexity is unavailable.
+    Uses Vertex AI (ADC) first, direct API as fallback.
+    """
+    url, headers, _model = _get_gemini_url_and_headers()
 
     system_prompt = (
         "Jsi expert na české stavební normy, technologické postupy a ceníky. "
@@ -305,7 +340,7 @@ async def _call_gemini_fallback(question: str) -> str:
     }
 
     async with httpx.AsyncClient(timeout=30.0) as http:
-        resp = await http.post(url, json=payload)
+        resp = await http.post(url, json=payload, headers=headers)
         resp.raise_for_status()
         data = resp.json()
 
@@ -363,17 +398,10 @@ def _extract_json_from_response(text: str) -> Optional[dict]:
 async def _call_gemini_expert(question: str, system_prompt: str) -> dict:
     """
     Call Gemini with the standards_researcher expert prompt.
+    Uses Vertex AI (ADC) first, direct API fallback.
     Returns parsed structured JSON dict.
     """
-    api_key = getattr(settings, "GOOGLE_API_KEY", None)
-    if not api_key:
-        raise ValueError("GOOGLE_API_KEY not configured")
-
-    model = getattr(settings, "GEMINI_MODEL", "gemini-2.5-flash-lite")
-    url = (
-        f"https://generativelanguage.googleapis.com/v1beta/models/"
-        f"{model}:generateContent?key={api_key}"
-    )
+    url, headers, _model = _get_gemini_url_and_headers()
 
     full_prompt = (
         f"{system_prompt}\n\n"
@@ -393,7 +421,7 @@ async def _call_gemini_expert(question: str, system_prompt: str) -> dict:
     }
 
     async with httpx.AsyncClient(timeout=60.0) as http:
-        resp = await http.post(url, json=payload)
+        resp = await http.post(url, json=payload, headers=headers)
         resp.raise_for_status()
         data = resp.json()
 
