@@ -134,21 +134,22 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
     rates.push({ source: 'site', rate: input.site_constraint_m3_h });
   }
 
-  // Effective rate = MIN of all constraints
+  // --- Pump decision (before rate calc — affects effective rate) ---
+  const pump_needed = profile.pump_typical || input.volume_m3 > 5;
+  const pumps_required = input.volume_m3 > 300 ? 2 : 1;
+  const backup_pump_recommended = input.volume_m3 > 200;
+
+  // Effective rate = MIN of all constraints, multiplied by number of pumps
   rates.sort((a, b) => a.rate - b.rate);
   const effective = rates[0];
-  const effective_rate_m3_h = effective.rate;
+  const single_pump_rate = effective.rate;
+  const effective_rate_m3_h = single_pump_rate * pumps_required;
   const rate_bottleneck = effective.source;
 
   // --- Calculate durations ---
   const pumping_hours = input.volume_m3 / effective_rate_m3_h;
   const total_pour_hours = setup + pumping_hours + washout;
   const pour_days = roundTo(total_pour_hours / shift, 2);
-
-  // --- Pump decision ---
-  const pump_needed = profile.pump_typical || input.volume_m3 > 5;
-  const pumps_required = input.volume_m3 > 300 ? 2 : 1;
-  const backup_pump_recommended = input.volume_m3 > 200;
 
   // --- Time window ---
   const window_config = T_WINDOW_HOURS[season];
@@ -166,7 +167,7 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
     );
   }
   if (pumps_required > 1) {
-    warnings.push(`Objem ${input.volume_m3}m³ vyžaduje ${pumps_required} čerpadla.`);
+    warnings.push(`Objem ${input.volume_m3}m³ vyžaduje ${pumps_required} čerpadla (${effective_rate_m3_h} m³/h celkem).`);
   }
   if (backup_pump_recommended) {
     warnings.push(`Objem > 200m³ — doporučeno záložní čerpadlo.`);
@@ -182,7 +183,7 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
   const assumptions = [
     `element=${input.element_type}`,
     `vol=${input.volume_m3}m³`,
-    `Q_eff=${effective_rate_m3_h}m³/h (${rate_bottleneck})`,
+    `Q_eff=${effective_rate_m3_h}m³/h (${rate_bottleneck}${pumps_required > 1 ? ` ×${pumps_required} čerpadel` : ''})`,
     `window=${pour_window_h}h`,
     `season=${season}`,
     useRetarder ? 'retarder=yes' : 'retarder=no',

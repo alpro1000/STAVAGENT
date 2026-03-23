@@ -145,7 +145,34 @@ function applyKpiValueStyle(cell: ExcelJS.Cell) {
 // MAIN EXPORT FUNCTION
 // ============================================
 
-export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string) {
+interface ScenarioData {
+  id: number;
+  label: string;
+  formwork_system: string;
+  manufacturer: string;
+  num_formwork_crews: number;
+  num_rebar_crews: number;
+  crew_size: number;
+  num_sets: number;
+  shift_h: number;
+  wage_czk_h: number;
+  total_days: number;
+  assembly_days: number;
+  curing_days: number;
+  disassembly_days: number;
+  pour_hours: number;
+  formwork_labor_czk: number;
+  rebar_labor_czk: number;
+  pour_labor_czk: number;
+  props_labor_czk: number;
+  props_rental_czk: number;
+  total_labor_czk: number;
+  rental_czk: number;
+  total_all_czk: number;
+  has_overtime: boolean;
+}
+
+export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string, scenarios?: ScenarioData[]) {
   const wb = new ExcelJS.Workbook();
   wb.creator = 'STAVAGENT Planner';
   wb.created = new Date();
@@ -413,6 +440,79 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string) {
     applyDataRowStyle(r, idx, 1);
     r.getCell(1).font = { name: FONT_MAIN, size: 10, color: { argb: 'FF' + C.textSecondary } };
   });
+
+  // ─── Sheet 5: Scenarios (if any) ─────────────────────────────────────
+  if (scenarios && scenarios.length > 0) {
+    const ws5 = wb.addWorksheet('Porovnání scénářů', {
+      properties: { defaultColWidth: 16 },
+      views: [{ showGridLines: false }],
+    });
+
+    const scHeaders = [
+      'Scénář', 'Bednění', 'Výrobce', 'Tesaři', 'Železáři', 'Sady',
+      'Směna (h)', 'Mzda (Kč/h)', 'Dní celkem', 'Montáž (d)', 'Zrání (d)',
+      'Demontáž (d)', 'Betonáž (h)', 'Bednění práce (Kč)', 'Výztuž práce (Kč)',
+      'Betonáž práce (Kč)', 'Podpěry (Kč)', 'Pronájem (Kč)', 'Celkem práce (Kč)',
+      'Celkem vše (Kč)', 'Přesčas',
+    ];
+
+    const scTitle = ws5.addRow(['POROVNÁNÍ SCÉNÁŘŮ']);
+    ws5.mergeCells(scTitle.number, 1, scTitle.number, scHeaders.length);
+    applyTitleStyle(scTitle, scHeaders.length);
+
+    ws5.addRow([]);
+
+    const scHeaderRow = ws5.addRow(scHeaders);
+    scHeaderRow.eachCell((cell) => {
+      cell.font = { name: FONT_MAIN, size: 10, bold: true, color: { argb: 'FF' + C.textPrimary } };
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF' + C.sectionBg } };
+      cell.border = { bottom: { style: 'medium', color: { argb: 'FF' + C.borderMedium } } };
+      cell.alignment = { horizontal: 'center', vertical: 'middle' };
+    });
+
+    const minCost = Math.min(...scenarios.map(s => s.total_all_czk));
+    const minDays = Math.min(...scenarios.map(s => s.total_days));
+
+    scenarios.forEach((s, idx) => {
+      const row = ws5.addRow([
+        `S${s.id}`, s.formwork_system, s.manufacturer,
+        `${s.num_formwork_crews ?? 1}×${s.crew_size}`,
+        `${s.num_rebar_crews ?? 1}×${s.crew_size}`,
+        s.num_sets, s.shift_h, s.wage_czk_h ?? 220,
+        Math.round(s.total_days * 10) / 10,
+        Math.round(s.assembly_days * 10) / 10,
+        Math.round(s.curing_days * 10) / 10,
+        Math.round(s.disassembly_days * 10) / 10,
+        Math.round(s.pour_hours * 10) / 10,
+        Math.round(s.formwork_labor_czk), Math.round(s.rebar_labor_czk),
+        Math.round(s.pour_labor_czk), Math.round((s.props_labor_czk || 0) + (s.props_rental_czk || 0)),
+        Math.round(s.rental_czk), Math.round(s.total_labor_czk),
+        Math.round(s.total_all_czk), s.has_overtime ? 'ANO' : 'NE',
+      ]);
+      applyDataRowStyle(row, idx, scHeaders.length);
+      // Highlight cheapest green, fastest orange
+      if (s.total_all_czk === minCost) {
+        row.eachCell((cell) => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE6F4EA' } }; });
+      } else if (s.total_days === minDays) {
+        row.eachCell((cell) => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFF7ED' } }; });
+      }
+    });
+
+    // Summary row
+    if (scenarios.length >= 2) {
+      ws5.addRow([]);
+      const cheapest = scenarios.reduce((a, b) => a.total_all_czk <= b.total_all_czk ? a : b);
+      const expensive = scenarios.reduce((a, b) => a.total_all_czk >= b.total_all_czk ? a : b);
+      const savings = expensive.total_all_czk - cheapest.total_all_czk;
+      const pct = ((savings / expensive.total_all_czk) * 100).toFixed(0);
+      const sumRow = ws5.addRow([`Úspora: S${cheapest.id} vs S${expensive.id} = ${Math.round(savings).toLocaleString('cs-CZ')} Kč (−${pct}%)`]);
+      ws5.mergeCells(sumRow.number, 1, sumRow.number, scHeaders.length);
+      sumRow.getCell(1).font = { name: FONT_MAIN, size: 11, bold: true, color: { argb: 'FF' + C.positive } };
+    }
+
+    // Set column widths
+    ws5.columns = scHeaders.map((h) => ({ width: h.includes('Kč') ? 20 : h.length > 12 ? 18 : 14 }));
+  }
 
   // ─── Download ───────────────────────────────────────────────────────
   const filename = `plan_${plan.element.type}_${startDate || 'export'}.xlsx`;

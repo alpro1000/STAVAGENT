@@ -123,6 +123,7 @@ interface FormState {
   volume_m3: number;
   formwork_area_m2: string; // empty = auto-estimate
   rebar_mass_kg: string;    // empty = auto-estimate
+  rebar_norm_kg_m3: string; // empty = auto, kg per m³
   height_m: string;         // empty = not set (props can't be calculated)
   tact_mode: TactMode;      // 'spary' = auto from joints, 'manual' = direct input
   has_dilatacni_spary: boolean;
@@ -156,6 +157,7 @@ const DEFAULT_FORM: FormState = {
   volume_m3: 120,
   formwork_area_m2: '',
   rebar_mass_kg: '',
+  rebar_norm_kg_m3: '',
   height_m: '',
   tact_mode: 'spary',
   has_dilatacni_spary: false,
@@ -210,6 +212,7 @@ interface ScenarioSnapshot {
   crew_size: number;
   num_sets: number;
   shift_h: number;
+  wage_czk_h: number;
   num_formwork_crews: number;
   num_rebar_crews: number;
   formwork_system: string;
@@ -218,6 +221,8 @@ interface ScenarioSnapshot {
   formwork_labor_czk: number;
   rebar_labor_czk: number;
   pour_labor_czk: number;
+  props_labor_czk: number;
+  props_rental_czk: number;
   total_labor_czk: number;
   rental_czk: number;
   total_all_czk: number;
@@ -499,6 +504,7 @@ export default function PlannerPage() {
       crew_size: form.crew_size,
       num_sets: form.num_sets,
       shift_h: form.shift_h,
+      wage_czk_h: form.wage_czk_h,
       num_formwork_crews: form.num_formwork_crews,
       num_rebar_crews: form.num_rebar_crews,
       formwork_system: plan.formwork.system.name,
@@ -507,9 +513,11 @@ export default function PlannerPage() {
       formwork_labor_czk: plan.costs.formwork_labor_czk,
       rebar_labor_czk: plan.costs.rebar_labor_czk,
       pour_labor_czk: plan.costs.pour_labor_czk,
+      props_labor_czk: plan.costs.props_labor_czk || 0,
+      props_rental_czk: plan.costs.props_rental_czk || 0,
       total_labor_czk: plan.costs.total_labor_czk,
       rental_czk: plan.costs.formwork_rental_czk,
-      total_all_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
+      total_all_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + (plan.costs.props_labor_czk || 0) + (plan.costs.props_rental_czk || 0),
       assembly_days: plan.formwork.assembly_days,
       disassembly_days: plan.formwork.disassembly_days,
       curing_days: plan.formwork.curing_days,
@@ -1138,22 +1146,29 @@ export default function PlannerPage() {
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
-            <Field label="Hmotnost výztuže (kg)" hint="prázdné = odhad, zadejte CELKOVOU hmotnost">
+            <Field label="Norma výztuže (kg/m³)" hint="prázdné = odhad z profilu elementu">
+              <NumInput style={inputStyle} value={form.rebar_norm_kg_m3} min={0}
+                onChange={v => {
+                  const norm = String(v);
+                  update('rebar_norm_kg_m3', norm);
+                  if (norm && form.volume_m3 > 0) {
+                    update('rebar_mass_kg', String(Math.round(parseFloat(norm) * form.volume_m3)));
+                  } else if (!norm) {
+                    update('rebar_mass_kg', '');
+                  }
+                }} placeholder="auto" />
+            </Field>
+            <Field label="Hmotnost výztuže celkem (kg)" hint="prázdné = odhad, nebo se vypočte z normy">
               <NumInput style={inputStyle} value={form.rebar_mass_kg} min={0}
-                onChange={v => update('rebar_mass_kg', String(v))} placeholder="automatický odhad" />
-              {form.rebar_mass_kg && form.volume_m3 > 0 && (() => {
-                const kg = parseFloat(form.rebar_mass_kg);
-                const ratio = kg / form.volume_m3;
-                if (ratio < 20 && kg > 0) {
-                  return (
-                    <div style={{ fontSize: 11, color: '#dc2626', marginTop: 2 }}>
-                      Pozor: {formatNum(ratio, 1)} kg/m³ je velmi nízká hustota výztuže (typicky 50–200 kg/m³).
-                      Zadejte celkovou hmotnost v kg (ne na m³). Odhad: ~{formatNum(form.volume_m3 * 100, 0)} kg.
-                    </div>
-                  );
-                }
-                return null;
-              })()}
+                onChange={v => {
+                  const kg = String(v);
+                  update('rebar_mass_kg', kg);
+                  if (kg && form.volume_m3 > 0) {
+                    update('rebar_norm_kg_m3', String(Math.round(parseFloat(kg) / form.volume_m3)));
+                  } else if (!kg) {
+                    update('rebar_norm_kg_m3', '');
+                  }
+                }} placeholder="automatický odhad" />
             </Field>
 
             {/* ─── Height + Element Dimension Hint ─── */}
@@ -1492,7 +1507,7 @@ export default function PlannerPage() {
         {/* RIGHT: Results */}
         <main className="r0-planner-main">
           {plan ? (
-            <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} />
+            <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} scenarios={scenarios} />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
               <div style={{ fontSize: 48 }}>📐</div>
@@ -1596,17 +1611,21 @@ export default function PlannerPage() {
               <h3 style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: 'var(--r0-slate-800, #1e293b)' }}>
                 Porovnání scénářů ({scenarios.length})
               </h3>
-              <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 12 }}>
-                Zelené = nejlevnější, oranžové = nejrychlejší. Přesčas označen.
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 12 }}>
+                <span>Zelené = nejlevnější, oranžové = nejrychlejší. Scénáře se ukládají v prohlížeči.</span>
+                <button onClick={() => { setScenarios([]); setScenarioSeq(0); }}
+                  style={{ background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 4, padding: '2px 8px', fontSize: 10, cursor: 'pointer' }}>
+                  Vymazat vše
+                </button>
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid var(--r0-slate-200, #e2e8f0)' }}>
-                      {['Scénář', 'Bednění', 'Tesaři', 'Železáři', 'Kompl.', 'Směna', 'Dní celkem', 'Montáž', 'Zrání',
-                        'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'Přesčas', ''].map((h, idx) => (
+                      {['Scénář', 'Bednění', 'Tesaři', 'Železáři', 'Sady', 'Směna', 'Mzda', 'Dní', 'Montáž', 'Zrání',
+                        'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'OT', ''].map((h, idx) => (
                         <th key={idx} style={{
-                          textAlign: idx >= 6 ? 'right' : 'left', padding: '6px 6px', fontSize: 10,
+                          textAlign: idx >= 7 ? 'right' : 'left', padding: '6px 4px', fontSize: 10,
                           color: 'var(--r0-slate-500)', fontWeight: 600, whiteSpace: 'nowrap',
                           ...(h === 'Celkem (Kč)' ? { borderLeft: '2px solid var(--r0-orange, #f59e0b)' } : {}),
                         }}>{h}</th>
@@ -1631,11 +1650,12 @@ export default function PlannerPage() {
                               {isFastest && <span title="Nejrychlejší" style={{ color: '#f59e0b', marginLeft: 2 }}>⚡</span>}
                             </td>
                             <td style={{ padding: '5px 6px', fontSize: 11 }}>{s.formwork_system}<br /><span style={{ color: 'var(--r0-slate-400)', fontSize: 10 }}>{s.manufacturer}</span></td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_formwork_crews ?? 1}×{s.crew_size}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_sets}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.shift_h}h</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700 }}>{formatNum(s.total_days, 1)}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_formwork_crews ?? 1}×{s.crew_size}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_sets}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.shift_h}h</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.wage_czk_h ?? 220}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right', fontWeight: 700 }}>{formatNum(s.total_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.assembly_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.curing_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.disassembly_days, 1)}</td>
@@ -1759,11 +1779,12 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
   onToggleLog: () => void;
+  scenarios?: any[];
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -1785,7 +1806,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
       {/* Action buttons */}
       <div className="r0-action-bar">
         <button
-          onClick={() => { exportPlanToXLSX(plan as any, startDate); }}
+          onClick={() => { exportPlanToXLSX(plan as any, startDate, scenarios && scenarios.length > 0 ? scenarios : undefined); }}
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
@@ -2050,18 +2071,27 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
       {/* Costs Summary */}
       <Card title="Souhrn nákladů" icon="💰">
-        <div className="r0-grid-2">
-          <div>
-            <Row label="Bednění (práce)" value={formatCZK(plan.costs.formwork_labor_czk)} />
-            <Row label="Výztuž (práce)" value={formatCZK(plan.costs.rebar_labor_czk)} />
-            <Row label="Betonáž (práce)" value={formatCZK(plan.costs.pour_labor_czk)} />
-          </div>
-          <div>
-            <Row label="Pronájem bednění" value={formatCZK(plan.costs.formwork_rental_czk)} />
-            <Row label="Celkem práce" value={formatCZK(plan.costs.total_labor_czk)} bold />
-            <Row label="Celkem vše" value={formatCZK(plan.costs.total_labor_czk + plan.costs.formwork_rental_czk)} bold />
-          </div>
-        </div>
+        {(() => {
+          const propsLabor = plan.costs.props_labor_czk || 0;
+          const propsRental = plan.costs.props_rental_czk || 0;
+          const totalAll = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
+          return (
+            <div className="r0-grid-2">
+              <div>
+                <Row label="Bednění (práce)" value={formatCZK(plan.costs.formwork_labor_czk)} />
+                <Row label="Výztuž (práce)" value={formatCZK(plan.costs.rebar_labor_czk)} />
+                <Row label="Betonáž (práce)" value={formatCZK(plan.costs.pour_labor_czk)} />
+                {propsLabor > 0 && <Row label="Podpěry (práce)" value={formatCZK(propsLabor)} />}
+              </div>
+              <div>
+                <Row label="Pronájem bednění" value={formatCZK(plan.costs.formwork_rental_czk)} />
+                {propsRental > 0 && <Row label="Pronájem podpěr" value={formatCZK(propsRental)} />}
+                <Row label="Celkem práce" value={formatCZK(plan.costs.total_labor_czk + propsLabor)} bold />
+                <Row label="Celkem vše" value={formatCZK(totalAll)} bold />
+              </div>
+            </div>
+          );
+        })()}
       </Card>
 
       {/* Norms Sources */}
