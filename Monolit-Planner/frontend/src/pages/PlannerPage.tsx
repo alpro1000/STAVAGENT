@@ -30,6 +30,7 @@ import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
 import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+const IS_ADMIN = (import.meta as any).env?.VITE_ADMIN_MODE === 'true';
 
 // ─── AI Advisor types ──────────────────────────────────────────────────────
 
@@ -1058,43 +1059,46 @@ export default function PlannerPage() {
                       Výrobní normy zatím nestaženy
                     </span>
                   )}
-                  <button
-                    disabled={normsScraping}
-                    onClick={async () => {
-                      setNormsScraping(true);
-                      setNormsScrapeResult(null);
-                      try {
-                        // Proxy through Monolit backend to avoid CORS issues
-                        const r = await fetch(`${API_URL}/api/planner-advisor/norms/scrape-all`, {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({}),
-                        });
-                        if (r.ok) {
-                          const data = await r.json();
-                          const cats = data.summary?.categories || {};
-                          const total = Object.keys(cats).length;
-                          const ok = Object.values(cats).filter((c: any) => c.has_data).length;
-                          setNormsScrapeResult(`Staženo ${ok}/${total} kategorií (${data.summary?.total_queries || '?'} dotazů)`);
-                        } else {
-                          setNormsScrapeResult('Chyba při stahování');
+                  {/* Scrape button — admin only (VITE_ADMIN_MODE=true) */}
+                  {IS_ADMIN && (
+                    <button
+                      disabled={normsScraping}
+                      onClick={async () => {
+                        setNormsScraping(true);
+                        setNormsScrapeResult(null);
+                        try {
+                          // Proxy through Monolit backend to avoid CORS issues
+                          const r = await fetch(`${API_URL}/api/planner-advisor/norms/scrape-all`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({}),
+                          });
+                          if (r.ok) {
+                            const data = await r.json();
+                            const cats = data.summary?.categories || {};
+                            const total = Object.keys(cats).length;
+                            const ok = Object.values(cats).filter((c: any) => c.has_data).length;
+                            setNormsScrapeResult(`Staženo ${ok}/${total} kategorií (${data.summary?.total_queries || '?'} dotazů)`);
+                          } else {
+                            setNormsScrapeResult('Chyba při stahování');
+                          }
+                        } catch (e: any) {
+                          setNormsScrapeResult(`Chyba: ${e.message}`);
                         }
-                      } catch (e: any) {
-                        setNormsScrapeResult(`Chyba: ${e.message}`);
-                      }
-                      setNormsScraping(false);
-                      // Refresh advisor to pick up new norms
-                      fetchAdvisor();
-                    }}
-                    style={{
-                      fontSize: 10, padding: '2px 8px', borderRadius: 4,
-                      border: '1px solid var(--r0-slate-300)', background: normsScraping ? 'var(--r0-slate-100)' : 'var(--r0-norms-bg)',
-                      color: 'var(--r0-green-dark)', cursor: normsScraping ? 'wait' : 'pointer',
-                      fontFamily: 'inherit', fontWeight: 500,
-                    }}
-                  >
-                    {normsScraping ? '⏳ Stahuji všechny normy...' : '📥 Stáhnout všechny normy z methvin.co'}
-                  </button>
+                        setNormsScraping(false);
+                        // Refresh advisor to pick up new norms
+                        fetchAdvisor();
+                      }}
+                      style={{
+                        fontSize: 10, padding: '2px 8px', borderRadius: 4,
+                        border: '1px solid var(--r0-slate-300)', background: normsScraping ? 'var(--r0-slate-100)' : 'var(--r0-norms-bg)',
+                        color: 'var(--r0-green-dark)', cursor: normsScraping ? 'wait' : 'pointer',
+                        fontFamily: 'inherit', fontWeight: 500,
+                      }}
+                    >
+                      {normsScraping ? '⏳ Stahuji všechny normy...' : '📥 Stáhnout všechny normy z methvin.co'}
+                    </button>
+                  )}
                 </div>
                 {normsScrapeResult && (
                   <div style={{ fontSize: 10, color: 'var(--r0-green-dark)', marginTop: 4 }}>
