@@ -18,5 +18,9 @@ export default {
     '/tests/'
   ],
   // Make jest globals available in ES modules
-  injectGlobals: true
+  injectGlobals: true,
+  // Close database connections after each worker's tests complete
+  setupFilesAfterEnv: ['./tests/globalTeardown.js'],
+  // Integration tests make real LLM API calls that need more than 5s
+  testTimeout: 30000
 };
