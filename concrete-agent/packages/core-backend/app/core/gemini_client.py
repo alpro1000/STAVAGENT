@@ -45,9 +45,9 @@ class GeminiClient:
 
         genai.configure(api_key=settings.GOOGLE_API_KEY)
 
-        # Default model: gemini-2.5-flash-lite (GA, cheap high-volume)
-        # Alternatives: gemini-2.5-flash (balanced), gemini-2.5-pro (highest quality)
-        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash-lite')
+        # Default model: gemini-2.5-flash (GA, verified working in europe-west3)
+        # Alternatives: gemini-2.5-pro (highest quality)
+        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash')
 
         # Safety settings - allow technical content
         self.safety_settings = [
@@ -349,13 +349,14 @@ class VertexGeminiClient:
     Billing goes through Google Cloud project credits.
     """
 
-    # GA models available in europe-west3 (verified 2026-03-16 official docs):
-    #   ✅ gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.5-flash-image
-    #   ❌ gemini-2.0-flash, gemini-2.0-flash-lite, gemini-3-* (not in europe-west3)
+    # GA models in europe-west3 (verified 2026-03-23 live testing):
+    #   ✅ gemini-2.5-flash, gemini-2.5-pro — confirmed working
+    #   ❌ gemini-2.5-flash-lite — docs say available but returns 404
+    #   ❌ gemini-2.0-flash, gemini-2.0-flash-lite, gemini-3-* — not in europe-west3
     #   ❌ preview variants (-preview-09-2025) — not in europe-west3
     VERTEX_MODELS = [
-        "gemini-2.5-flash-lite",    # GA: cheap high-volume (preferred)
-        "gemini-2.5-flash",         # GA: speed + intelligence, configurable thinking
+        "gemini-2.5-flash",         # GA: speed + intelligence (verified working)
+        "gemini-2.5-flash-lite",    # GA: cheap (docs say available, 404 in practice)
         "gemini-2.5-pro",           # GA: highest quality (expensive, last resort)
     ]
 

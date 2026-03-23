@@ -34,7 +34,7 @@ const DEFAULT_MODEL_CONFIG = {
   primary: 'gemini',
   fallback: 'openai',
   model_overrides: {
-    gemini: 'gemini-2.5-flash-lite',
+    gemini: 'gemini-2.5-flash',
     openai: 'gpt-4o-mini',
     anthropic: 'claude-sonnet-4-20250514',
   },

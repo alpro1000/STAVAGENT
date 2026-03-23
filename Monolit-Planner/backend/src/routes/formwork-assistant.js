@@ -489,7 +489,7 @@ router.post('/', async (req, res) => {
 
     // Helper: call Gemini via Vertex AI (primary) or direct API (local dev fallback)
     async function callGeminiDirect(prompt) {
-      const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+      const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
       const vertexProject = process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT;
       const vertexLocation = process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || 'europe-west3';
 

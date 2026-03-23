@@ -288,7 +288,7 @@ async function callGeminiWithTimeout(prompt, timeoutMs) {
       modelName = availableProviders.gemini.model;
       logger.debug(`[GEMINI-CLASSIFIER] Using default Gemini model: ${modelName}`);
     } else {
-      modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+      modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
     }
 
     // Always try Vertex AI first (ADC, GCP credits)

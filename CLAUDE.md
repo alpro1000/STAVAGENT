@@ -36,7 +36,7 @@ STAVAGENT/
 
 **GCP Project:** `project-947a512a-481d-49b5-81c` (ID: 1086027517695), SA: `1086027517695-compute@developer.gserviceaccount.com`
 
-**LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash-lite` (fast, cheap), `gemini-2.5-flash` (balanced), `gemini-2.5-pro` (heavy). All GA in europe-west3.
+**LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash` (default, fast), `gemini-2.5-pro` (heavy). Note: `gemini-2.5-flash-lite` returns 404 in europe-west3 despite docs (2026-03-23).
 
 ---
 
@@ -165,7 +165,7 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 # concrete-agent
 DATABASE_URL=postgresql+asyncpg://...
 MULTI_ROLE_LLM=gemini
-GEMINI_MODEL=gemini-2.5-flash-lite
+GEMINI_MODEL=gemini-2.5-flash
 # On Cloud Run: uses ADC (no GOOGLE_API_KEY needed)
 # Local dev: GOOGLE_API_KEY=... or ANTHROPIC_API_KEY=...
 
