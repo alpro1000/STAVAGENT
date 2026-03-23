@@ -54,7 +54,7 @@ class PassportEnricher:
 
     | Model | Provider | Cost | Speed | Quality | Use Case |
     |-------|----------|------|-------|---------|----------|
-    | Gemini 2.0 Flash | Google | FREE* | Fast (3s) | Good | Default, cost-sensitive |
+    | Gemini 2.5 Flash Lite | Google | Cheap | Fast (3s) | Good | Default, cost-sensitive |
     | Claude Haiku | Anthropic | $0.25/MTok | Very Fast (2s) | Good | Speed-critical |
     | GPT-4o Mini | OpenAI | $0.15/MTok | Fast (3s) | Good | Alternative to Gemini |
     | Claude Sonnet | Anthropic | $3/MTok | Medium (4s) | Excellent | High-quality enrichment |
@@ -317,12 +317,12 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 else:
                     vertexai.init(project=project_id, location=location)
 
-                # Try multiple Vertex AI model names (newest GA → oldest)
+                # Try multiple Vertex AI model names (GA only, europe-west3 verified 2026-03-23)
+                # NOTE: gemini-2.0-flash/lite NOT available in europe-west3
                 vertex_models_to_try = [
                     "gemini-2.5-flash",         # GA: speed + intelligence (1M ctx)
                     "gemini-2.5-flash-lite",    # GA: cheap high-volume
-                    "gemini-2.0-flash",         # GA: general purpose (fallback)
-                    "gemini-2.0-flash-lite",    # GA: ultra-efficient (fallback)
+                    "gemini-2.5-pro",           # GA: highest quality (last resort)
                 ]
                 for vmodel in vertex_models_to_try:
                     try:

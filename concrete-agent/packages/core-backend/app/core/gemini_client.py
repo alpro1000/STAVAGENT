@@ -1,6 +1,6 @@
 """
 Gemini API Client - compatible interface with ClaudeClient
-COST SAVINGS: Gemini 2.0 Flash = FREE (1500 req/day) or $0.075/MTok vs Claude $3/MTok
+COST SAVINGS: Gemini 2.5 Flash Lite = cheap ($0.075/MTok) vs Claude $3/MTok
 
 Includes VertexGeminiClient for Cloud Run (uses ADC, no API key needed).
 """
@@ -349,13 +349,13 @@ class VertexGeminiClient:
     Billing goes through Google Cloud project credits.
     """
 
-    # Models to try, newest GA first (verified 2026-03-17)
+    # Models to try, newest GA first (verified 2026-03-23, europe-west3 only)
+    # NOTE: gemini-2.0-flash, gemini-2.0-flash-lite, gemini-3-* are NOT available in europe-west3.
+    #       Only gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite are available.
     VERTEX_MODELS = [
-        "gemini-3-flash",           # Preview: best multimodal agents
         "gemini-2.5-flash",         # GA: speed + intelligence, configurable thinking
-        "gemini-2.5-flash-lite",    # GA: cheap high-volume
-        "gemini-2.0-flash",         # GA: general purpose
-        "gemini-2.0-flash-lite",    # GA: ultra-efficient simple tasks
+        "gemini-2.5-flash-lite",    # GA: cheap high-volume (default)
+        "gemini-2.5-pro",           # GA: highest quality (expensive, last resort)
     ]
 
     def __init__(self):
