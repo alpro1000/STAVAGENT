@@ -1793,3 +1793,43 @@ This project follows best practices from modern Python starter repositories:
 - ✅ JavaScript + Python integration examples
 - ✅ Complete troubleshooting & monitoring guide
 - ✅ Auto-deployment to production (live now!)
+
+---
+
+## LLM Configuration (Updated 2026-03-23)
+
+### Vertex AI Gemini (Primary — Cloud Run)
+
+**Client:** `app/core/gemini_client.py` → `VertexGeminiClient`
+**Auth:** ADC (Application Default Credentials), no API key on Cloud Run
+**SA:** `1086027517695-compute@developer.gserviceaccount.com` → `roles/aiplatform.user`
+
+**Default model:** `gemini-2.5-flash` (env `GEMINI_MODEL`)
+
+**Fallback chain:** `GEMINI_MODEL` env → `gemini-2.5-flash` → `gemini-2.5-flash-lite` → `gemini-2.5-pro`
+
+**Probe call:** At first `VertexGeminiClient()` init, each model is tested with a real `generate_content("Reply with exactly: ok")`. If 404/error → next model. Result cached at class level (`_validated_model_cls`) — subsequent inits instant.
+
+### Known Issues
+
+| Model | Status | Notes |
+|-------|--------|-------|
+| `gemini-2.5-flash` | ✅ Working | Default, verified 2026-03-23 |
+| `gemini-2.5-flash-lite` | ❌ 404 | Google docs say available in europe-west3, returns 404 in practice |
+| `gemini-2.5-pro` | ✅ Working | Expensive, last resort |
+| `gemini-2.0-flash` | ❌ | Not available in europe-west3 |
+
+### Files that reference GEMINI_MODEL
+
+- `app/core/config.py` — Settings default
+- `app/core/gemini_client.py` — VertexGeminiClient + GeminiClient
+- `app/services/passport_enricher.py` — Passport module
+- `app/api/routes_kb_research.py` — KB Research endpoints
+- `app/services/price_parser/llm_client.py` — Price parser
+
+### Правило документирования
+
+**ВАЖНО:** Каждое изменение в LLM конфигурации, моделях, IAM или Vertex AI ОБЯЗАТЕЛЬНО документировать:
+1. Обновить этот раздел
+2. Обновить `CLAUDE.md` (root) → Quick Debugging + Backlog
+3. Создать `docs/SESSION_YYYY-MM-DD_<ТЕМА>.md`

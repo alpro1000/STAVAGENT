@@ -7,10 +7,9 @@
 - Output: $15 per 1M tokens
 - Multi-Role request (30k tokens): **$0.10-0.50 per request**
 
-**After (Gemini 2.0 Flash):**
-- **FREE**: 1,500 requests per day
-- Paid tier: $0.075 per 1M tokens (40x cheaper!)
-- Multi-Role request: **$0.00 (free) or $0.002 (paid)**
+**After (Gemini 2.5 Flash via Vertex AI):**
+- Uses GCP credits (ADC auth on Cloud Run, no API key)
+- Multi-Role request: ~$0.002 per request
 
 ## 🚀 Quick Setup
 
@@ -41,8 +40,9 @@ Add to `.env` or Render environment variables:
 # Required: Google AI API key
 GOOGLE_API_KEY=your-google-api-key-here
 
-# Optional: Choose Gemini model (default: gemini-2.0-flash-exp)
-GEMINI_MODEL=gemini-2.0-flash-exp
+# Optional: Choose Gemini model (default: gemini-2.5-flash)
+# NOTE (2026-03-23): gemini-2.5-flash-lite returns 404 in europe-west3 despite docs
+GEMINI_MODEL=gemini-2.5-flash
 
 # Optional: Choose LLM for Multi-Role (default: gemini)
 # Options: "gemini", "claude", "auto" (Gemini with Claude fallback)
@@ -66,14 +66,15 @@ Expected output:
 
 ## 📊 Available Models
 
-| Model | Cost | Speed | Quality | Context |
-|-------|------|-------|---------|---------|
-| **gemini-2.0-flash-exp** | FREE | ⚡⚡⚡ | ⭐⭐⭐⭐ | 1M tokens |
-| gemini-1.5-flash | $0.075/MTok | ⚡⚡⚡ | ⭐⭐⭐⭐ | 1M tokens |
-| gemini-1.5-pro | $1.25/MTok | ⚡⚡ | ⭐⭐⭐⭐⭐ | 2M tokens |
-| claude-sonnet-4-5 | $3/$15/MTok | ⚡⚡ | ⭐⭐⭐⭐⭐ | 200k tokens |
+| Model | europe-west3 | Speed | Quality | Context |
+|-------|-------------|-------|---------|---------|
+| **gemini-2.5-flash** | ✅ Working | ⚡⚡⚡ | ⭐⭐⭐⭐ | 1M tokens |
+| gemini-2.5-flash-lite | ❌ 404 | ⚡⚡⚡ | ⭐⭐⭐ | 1M tokens |
+| gemini-2.5-pro | ✅ Working | ⚡⚡ | ⭐⭐⭐⭐⭐ | 1M tokens |
 
-**Recommendation**: Use `gemini-2.0-flash-exp` (FREE, fast, good quality)
+**Recommendation**: Use `gemini-2.5-flash` (default, verified working 2026-03-23)
+
+**Note (2026-03-23):** `gemini-2.5-flash-lite` is listed as available in europe-west3 in Google docs but returns 404 in practice. Probe call in `VertexGeminiClient` auto-detects this and falls back.
 
 ## ⚙️ Multi-Role LLM Modes
 

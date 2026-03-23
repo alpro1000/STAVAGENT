@@ -1,4 +1,4 @@
-# NEXT SESSION — после 2026-03-21 (Session 16)
+# NEXT SESSION — после 2026-03-23 (Session 17)
 
 ## Как начать следующий сеанс
 
@@ -70,12 +70,41 @@
 
 ---
 
+## Что сделано 2026-03-23
+
+- ✅ VertexGeminiClient: probe call + class-level cache (probe validates model with real LLM call)
+- ✅ Default model: `gemini-2.5-flash` (flash-lite returns 404 despite Google docs)
+- ✅ 15 файлов обновлено (все сервисы, cloudbuild, .env.example)
+- ✅ Cloud Run redeployed (revision concrete-agent-00068-hzt)
+- ✅ IAM verified: `roles/aiplatform.user` на SA
+- ✅ Подробности: `docs/SESSION_2026-03-23_GEMINI_MODEL_FIX.md`
+
+---
+
 ## Контекст для Claude
 
 Текущее состояние системы:
 - **8 сервисов** на GCP (Cloud Run) + Vercel, все ✅
-- **LLM:** Vertex AI Gemini (ADC auth, GCP credits)
+- **LLM:** Vertex AI Gemini (ADC auth, GCP credits), default `gemini-2.5-flash`
 - **CI/CD:** Cloud Build (5 per-service triggers) + GitHub Actions
 - **Тесты:** 336 shared (Monolit) + 159 (URS Matcher)
 - **Портал:** 10 модулей active, Sprint 1 Cabinets+Roles done
 - **Дизайн:** Digital Concrete / Brutalist Neumorphism, Slate Minimal для Planner
+
+---
+
+## ПРАВИЛО: Документирование сессий
+
+**КАЖДУЮ сессию работы ОБЯЗАТЕЛЬНО документировать:**
+
+1. **Создать** `docs/SESSION_YYYY-MM-DD_<ТЕМА>.md` — полный отчёт
+2. **Обновить** `CLAUDE.md` → раздел Backlog/Completed + Quick Debugging
+3. **Обновить** `NEXT_SESSION.md` → что сделано + что дальше
+4. **Обновить** `BACKLOG.md` → если появились новые задачи
+5. **Обновить** service-level CLAUDE.md (concrete-agent, Monolit и т.д.) если затронут сервис
+
+Формат SESSION файла:
+```
+# SESSION YYYY-MM-DD — Тема
+Проблема → Диагностика → Решение → Изменённые файлы → Выводы
+```

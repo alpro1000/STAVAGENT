@@ -397,6 +397,24 @@ cd ../shared && npm audit fix
 
 ---
 
+## ✅ Completed (2026-03-23)
+
+### Gemini Model Fix — VertexGeminiClient Probe + Fallback
+
+**Branch:** `claude/fix-worker-teardown-tYAkq`
+**Session docs:** `docs/SESSION_2026-03-23_GEMINI_MODEL_FIX.md`
+
+**Что сделано:**
+- ✅ VertexGeminiClient: probe call validates model with real LLM call (not just constructor)
+- ✅ Class-level cache: probe runs once, all instances reuse result
+- ✅ Default model: `gemini-2.5-flash-lite` → `gemini-2.5-flash` (flash-lite 404 in europe-west3)
+- ✅ 15+ файлов обновлено (все сервисы, cloudbuild, .env.example, docs)
+- ✅ Cloud Run redeployed: `concrete-agent-00068-hzt` with `GEMINI_MODEL=gemini-2.5-flash`
+- ✅ IAM verified: SA has `roles/aiplatform.user`
+- ✅ SDK version logging for diagnostics
+
+---
+
 ## ✅ Completed Work Reference
 
 For historical reference, completed work is archived in:

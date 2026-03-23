@@ -193,6 +193,8 @@ VITE_DISABLE_AUTH=true
 | CORE unavailable | Cloud Run status, `/health`, Secret Manager |
 | DB connection | Cloud SQL instance status, `--add-cloudsql-instances` in cloudbuild |
 | LLM 401 errors | Vertex AI: check SA role `aiplatform.user`, ADC auth |
+| LLM 404 model not found | Model not available in europe-west3. Use probe call fallback. Check `VertexGeminiClient` logs |
+| gemini-2.5-flash-lite 404 | Known issue (2026-03-23): docs say available, returns 404. Use `gemini-2.5-flash` |
 
 ---
 
@@ -214,6 +216,14 @@ VITE_DISABLE_AUTH=true
 **Awaiting user action:**
 - MASTER_ENCRYPTION_KEY: `openssl rand -hex 32` → Secret Manager (for Sprint 2 Service Connections)
 - Set real API key values in Secret Manager (GOOGLE_API_KEY, ANTHROPIC_API_KEY, etc.)
+
+**Completed (2026-03-23):**
+- VertexGeminiClient: probe call + class-level cache — validates model with real LLM call, fallback automatic
+- Default model switched from `gemini-2.5-flash-lite` (404) to `gemini-2.5-flash` across all 15 files
+- SDK version logging added for diagnostics
+- IAM verified: SA has `roles/aiplatform.user`, Vertex AI API enabled
+- Cloud Run redeployed with `GEMINI_MODEL=gemini-2.5-flash` (revision concrete-agent-00068-hzt)
+- Session docs: `docs/SESSION_2026-03-23_GEMINI_MODEL_FIX.md`
 
 **Completed (2026-03-22):**
 - Cloud Build setup (`setup-gcp.sh`) — done
