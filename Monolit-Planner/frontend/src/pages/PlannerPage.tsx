@@ -21,7 +21,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -210,6 +210,8 @@ interface ScenarioSnapshot {
   crew_size: number;
   num_sets: number;
   shift_h: number;
+  num_formwork_crews: number;
+  num_rebar_crews: number;
   formwork_system: string;
   manufacturer: string;
   total_days: number;
@@ -311,6 +313,7 @@ export default function PlannerPage() {
     rental_czk: number;
     assembly_days: number;
     disassembly_days: number;
+    is_recommended?: boolean;
   }> | null>(null);
   const [showComparison, setShowComparison] = useState(false);
 
@@ -396,8 +399,10 @@ export default function PlannerPage() {
     if (!result) return;
     const baseInput = buildInput();
     const results: typeof comparison = [];
-    for (const sys of FORMWORK_SYSTEMS) {
-      if (sys.unit === 'bm') continue; // skip linear-meter systems (cornice)
+    // Filter systems suitable for the current element type
+    const elemType = form.use_name_classification ? 'other' : form.element_type;
+    const suitable = getSuitableSystemsForElement(elemType);
+    for (const sys of suitable.all) {
       try {
         const out = planElement({ ...baseInput, formwork_system_name: sys.name });
         results.push({
@@ -409,6 +414,7 @@ export default function PlannerPage() {
           rental_czk: out.costs.formwork_rental_czk,
           assembly_days: out.formwork.assembly_days,
           disassembly_days: out.formwork.disassembly_days,
+          is_recommended: suitable.recommended.some(r => r.name === sys.name),
         });
       } catch {
         // skip incompatible systems
@@ -493,6 +499,8 @@ export default function PlannerPage() {
       crew_size: form.crew_size,
       num_sets: form.num_sets,
       shift_h: form.shift_h,
+      num_formwork_crews: form.num_formwork_crews,
+      num_rebar_crews: form.num_rebar_crews,
       formwork_system: plan.formwork.system.name,
       manufacturer: plan.formwork.system.manufacturer,
       total_days: plan.schedule.total_days,
@@ -1130,9 +1138,22 @@ export default function PlannerPage() {
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
-            <Field label="Hmotnost výztuže (kg)" hint="prázdné = odhad">
+            <Field label="Hmotnost výztuže (kg)" hint="prázdné = odhad, zadejte CELKOVOU hmotnost">
               <NumInput style={inputStyle} value={form.rebar_mass_kg} min={0}
                 onChange={v => update('rebar_mass_kg', String(v))} placeholder="automatický odhad" />
+              {form.rebar_mass_kg && form.volume_m3 > 0 && (() => {
+                const kg = parseFloat(form.rebar_mass_kg);
+                const ratio = kg / form.volume_m3;
+                if (ratio < 20 && kg > 0) {
+                  return (
+                    <div style={{ fontSize: 11, color: '#dc2626', marginTop: 2 }}>
+                      Pozor: {formatNum(ratio, 1)} kg/m³ je velmi nízká hustota výztuže (typicky 50–200 kg/m³).
+                      Zadejte celkovou hmotnost v kg (ne na m³). Odhad: ~{formatNum(form.volume_m3 * 100, 0)} kg.
+                    </div>
+                  );
+                }
+                return null;
+              })()}
             </Field>
 
             {/* ─── Height + Element Dimension Hint ─── */}
@@ -1496,7 +1517,8 @@ export default function PlannerPage() {
                 }}>✕</button>
               </div>
               <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginBottom: 8 }}>
-                Seřazeno od nejlevnějšího. Zelené = nejlepší varianta.
+                Pouze systémy vhodné pro tento typ elementu. Seřazeno od nejlevnějšího. Zelené = nejlepší.
+                {' '}Ceny pronájmu: DOKA ceník 2024, PERI nabídka DO-25-0056409 (2025), ULMA CZ 2024, NOE 2024.
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
@@ -1528,12 +1550,13 @@ export default function PlannerPage() {
                         }}>
                           <td style={{ padding: '5px 8px', fontWeight: isBest ? 700 : 400 }}>{i + 1}</td>
                           <td style={{ padding: '5px 8px', fontWeight: isBest || isCurrent ? 700 : 400 }}>
-                            {c.system} {isCurrent ? '◀' : ''}
+                            {c.system} {isCurrent ? '◀' : ''}{' '}
+                            {c.is_recommended && <span title="Doporučeno pro tento typ elementu" style={{ color: '#22c55e', fontSize: 10 }}>REC</span>}
                           </td>
                           <td style={{ padding: '5px 8px', color: 'var(--r0-slate-500)' }}>{c.manufacturer}</td>
-                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.total_days}</td>
-                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.assembly_days}</td>
-                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{c.disassembly_days}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatNum(c.total_days, 1)}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatNum(c.assembly_days, 1)}</td>
+                          <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatNum(c.disassembly_days, 1)}</td>
                           <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatCZK(c.formwork_labor_czk)}</td>
                           <td style={{ padding: '5px 8px', textAlign: 'right' }}>{formatCZK(c.rental_czk)}</td>
                           <td style={{ padding: '5px 8px', textAlign: 'right', fontWeight: 700, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>
@@ -1580,10 +1603,10 @@ export default function PlannerPage() {
                 <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid var(--r0-slate-200, #e2e8f0)' }}>
-                      {['Scénář', 'Bednění', 'Pracovníků', 'Kompl.', 'Směna', 'Dní celkem', 'Montáž', 'Zrání',
+                      {['Scénář', 'Bednění', 'Tesaři', 'Železáři', 'Kompl.', 'Směna', 'Dní celkem', 'Montáž', 'Zrání',
                         'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'Přesčas', ''].map((h, idx) => (
                         <th key={idx} style={{
-                          textAlign: idx >= 5 ? 'right' : 'left', padding: '6px 6px', fontSize: 10,
+                          textAlign: idx >= 6 ? 'right' : 'left', padding: '6px 6px', fontSize: 10,
                           color: 'var(--r0-slate-500)', fontWeight: 600, whiteSpace: 'nowrap',
                           ...(h === 'Celkem (Kč)' ? { borderLeft: '2px solid var(--r0-orange, #f59e0b)' } : {}),
                         }}>{h}</th>
@@ -1608,14 +1631,15 @@ export default function PlannerPage() {
                               {isFastest && <span title="Nejrychlejší" style={{ color: '#f59e0b', marginLeft: 2 }}>⚡</span>}
                             </td>
                             <td style={{ padding: '5px 6px', fontSize: 11 }}>{s.formwork_system}<br /><span style={{ color: 'var(--r0-slate-400)', fontSize: 10 }}>{s.manufacturer}</span></td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.crew_size}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_formwork_crews ?? 1}×{s.crew_size}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.num_sets}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.shift_h}h</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700 }}>{s.total_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.assembly_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.curing_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{s.disassembly_days}</td>
-                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.pour_hours)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700 }}>{formatNum(s.total_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.assembly_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.curing_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.disassembly_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.pour_hours, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_labor_czk)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.rental_czk)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right', fontWeight: 700, borderLeft: '2px solid var(--r0-orange, #f59e0b)' }}>
@@ -1659,9 +1683,9 @@ export default function PlannerPage() {
                     → úspora <strong style={{ color: '#22c55e' }}>{formatCZK(savings)} (−{savingsPct}%)</strong>
                     {fastest.id !== slowest.id && (
                       <span>
-                        {' | '}Čas: <strong>S{fastest.id}</strong> ({fastest.total_days}d) vs
-                        <strong> S{slowest.id}</strong> ({slowest.total_days}d)
-                        → <strong style={{ color: '#f59e0b' }}>{slowest.total_days - fastest.total_days} dní</strong> rozdíl
+                        {' | '}Čas: <strong>S{fastest.id}</strong> ({formatNum(fastest.total_days, 1)}d) vs
+                        <strong> S{slowest.id}</strong> ({formatNum(slowest.total_days, 1)}d)
+                        → <strong style={{ color: '#f59e0b' }}>{formatNum(slowest.total_days - fastest.total_days, 1)} dní</strong> rozdíl
                       </span>
                     )}
                   </div>
