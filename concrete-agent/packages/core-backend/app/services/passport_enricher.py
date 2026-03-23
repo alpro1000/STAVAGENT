@@ -221,7 +221,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 genai.configure(api_key=settings.GOOGLE_API_KEY)
                 # Try primary model, fallback to stable versions if not available
                 # UPDATED 2026-03-02: Using Gemini 2.5 family (2.0 discontinued March 31, 2026)
-                for model_to_try in [self.GEMINI_MODEL, "gemini-2.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash"]:
+                for model_to_try in [self.GEMINI_MODEL, "gemini-2.5-flash-lite", "gemini-1.5-flash-latest", "gemini-1.5-flash"]:
                     try:
                         self.gemini_model = genai.GenerativeModel(model_to_try)
                         logger.info(f"✅ Gemini initialized: {model_to_try}")
@@ -320,7 +320,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 # Try multiple Vertex AI model names (GA only, europe-west3 verified 2026-03-23)
                 # NOTE: gemini-2.0-flash/lite NOT available in europe-west3
                 vertex_models_to_try = [
-                    "gemini-2.5-flash",         # GA: speed + intelligence (1M ctx)
+                    "gemini-2.5-flash-lite",         # GA: speed + intelligence (1M ctx)
                     "gemini-2.5-flash-lite",    # GA: cheap high-volume
                     "gemini-2.5-pro",           # GA: highest quality (last resort)
                 ]

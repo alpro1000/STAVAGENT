@@ -45,8 +45,8 @@ class GeminiClient:
 
         genai.configure(api_key=settings.GOOGLE_API_KEY)
 
-        # Default model: gemini-2.5-flash-lite (Feb 2026, fast, cheap)
-        # Alternatives: gemini-2.5-pro (higher quality), gemini-2.5-flash-lite (balanced)
+        # Default model: gemini-2.5-flash-lite (GA, cheap high-volume)
+        # Alternatives: gemini-2.5-flash (balanced), gemini-2.5-pro (highest quality)
         self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash-lite')
 
         # Safety settings - allow technical content
@@ -349,14 +349,19 @@ class VertexGeminiClient:
     Billing goes through Google Cloud project credits.
     """
 
-    # Models to try, newest GA first (verified 2026-03-23, europe-west3 only)
-    # NOTE: gemini-2.0-flash, gemini-2.0-flash-lite, gemini-3-* are NOT available in europe-west3.
-    #       Only gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite are available.
+    # GA models available in europe-west3 (verified 2026-03-16 official docs):
+    #   ✅ gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite, gemini-2.5-flash-image
+    #   ❌ gemini-2.0-flash, gemini-2.0-flash-lite, gemini-3-* (not in europe-west3)
+    #   ❌ preview variants (-preview-09-2025) — not in europe-west3
     VERTEX_MODELS = [
+        "gemini-2.5-flash-lite",    # GA: cheap high-volume (preferred)
         "gemini-2.5-flash",         # GA: speed + intelligence, configurable thinking
-        "gemini-2.5-flash-lite",    # GA: cheap high-volume (default)
         "gemini-2.5-pro",           # GA: highest quality (expensive, last resort)
     ]
+
+    # Class-level cache: probe runs once, all instances reuse result
+    _validated_model_name: str | None = None
+    _validated_model_cls = None
 
     def __init__(self):
         logger.info("=== VertexGeminiClient INIT START ===")
@@ -364,7 +369,12 @@ class VertexGeminiClient:
         if not VERTEX_AVAILABLE:
             logger.error("❌ google-cloud-aiplatform NOT installed — pip install google-cloud-aiplatform")
             raise ImportError("google-cloud-aiplatform package required. Install: pip install google-cloud-aiplatform")
-        logger.info("✅ [1/5] google-cloud-aiplatform package available")
+        try:
+            import google.cloud.aiplatform as _aip
+            _sdk_ver = getattr(_aip, '__version__', 'unknown')
+        except Exception:
+            _sdk_ver = 'unknown'
+        logger.info(f"✅ [1/5] google-cloud-aiplatform {_sdk_ver}")
 
         # Resolve project ID: env var → Cloud Run metadata
         project_id = os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT")
@@ -411,28 +421,43 @@ class VertexGeminiClient:
             vertexai.init(project=project_id, location=location)
             logger.info("✅ [4/5] vertexai.init() — Application Default Credentials (ADC)")
 
-        # Try models until one works
-        preferred = os.getenv("GEMINI_MODEL", "")
-        models_to_try = [preferred] + self.VERTEX_MODELS if preferred else self.VERTEX_MODELS
-        # Remove empty strings and duplicates while preserving order
-        seen: set = set()
-        models_to_try = [m for m in models_to_try if m and not (m in seen or seen.add(m))]  # type: ignore[func-returns-value]
-        logger.info(f"      [5/5] trying models in order: {models_to_try}")
+        # Try models until one works (probe validates model actually responds)
+        # Class-level cache: probe runs once across all instances
+        if VertexGeminiClient._validated_model_cls is not None:
+            self.model_name = VertexGeminiClient._validated_model_name
+            self._model_cls = VertexGeminiClient._validated_model_cls
+            logger.info(f"✅ [5/5] model reused from cache: {self.model_name!r}")
+        else:
+            preferred = os.getenv("GEMINI_MODEL", "")
+            models_to_try = [preferred] + self.VERTEX_MODELS if preferred else self.VERTEX_MODELS
+            # Remove empty strings and duplicates while preserving order
+            seen: set = set()
+            models_to_try = [m for m in models_to_try if m and not (m in seen or seen.add(m))]  # type: ignore[func-returns-value]
+            logger.info(f"      [5/5] trying models in order: {models_to_try}")
 
-        self.model_name = None
-        self._model_cls = None
-        for m in models_to_try:
-            try:
-                self._model_cls = VertexGenerativeModel(m)
-                self.model_name = m
-                logger.info(f"✅ [5/5] model selected: {m!r}")
-                break
-            except Exception as e:
-                logger.warning(f"      ✗ model {m!r} unavailable: {type(e).__name__}: {e}")
+            self.model_name = None
+            self._model_cls = None
+            for m in models_to_try:
+                try:
+                    candidate = VertexGenerativeModel(m)
+                    # Probe: constructor doesn't validate model — only generate_content does
+                    candidate.generate_content(
+                        "Reply with exactly: ok",
+                        generation_config={"temperature": 0, "max_output_tokens": 4},
+                    )
+                    self._model_cls = candidate
+                    self.model_name = m
+                    # Cache at class level for all future instances
+                    VertexGeminiClient._validated_model_cls = candidate
+                    VertexGeminiClient._validated_model_name = m
+                    logger.info(f"✅ [5/5] model selected: {m!r} (probe OK)")
+                    break
+                except Exception as e:
+                    logger.warning(f"      ✗ model {m!r} failed probe: {type(e).__name__}: {e}")
 
-        if not self._model_cls:
-            logger.error(f"❌ [5/5] no model available (tried: {models_to_try}) — check IAM role roles/aiplatform.user")
-            raise ValueError(f"No Vertex AI model available (tried: {models_to_try})")
+            if not self._model_cls:
+                logger.error(f"❌ [5/5] no model available (tried: {models_to_try}) — check IAM role roles/aiplatform.user or Vertex AI API enabled")
+                raise ValueError(f"No Vertex AI model available (tried: {models_to_try})")
 
         self.max_tokens = 4096
         self._project_id = project_id

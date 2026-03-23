@@ -36,7 +36,7 @@ STAVAGENT/
 
 **GCP Project:** `project-947a512a-481d-49b5-81c` (ID: 1086027517695), SA: `1086027517695-compute@developer.gserviceaccount.com`
 
-**LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash-lite` (fast), `gemini-2.5-pro` (heavy).
+**LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash-lite` (fast, cheap), `gemini-2.5-flash` (balanced), `gemini-2.5-pro` (heavy). All GA in europe-west3.
 
 ---
 
