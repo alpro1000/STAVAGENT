@@ -1632,10 +1632,10 @@ export default function PlannerPage() {
             <button
               onClick={handleCompare}
               style={{
-                width: '100%', padding: '10px', marginTop: 8,
-                background: 'var(--r0-slate-200, #e2e8f0)', color: 'var(--r0-slate-700, #334155)',
-                border: '1px solid var(--r0-slate-300, #cbd5e1)',
-                borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                width: '100%', padding: '12px', marginTop: 8,
+                background: 'var(--r0-orange)', color: 'white',
+                border: 'none',
+                borderRadius: 6, fontSize: 14, fontWeight: 700, cursor: 'pointer',
                 fontFamily: 'inherit',
               }}
             >

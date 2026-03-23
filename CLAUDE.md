@@ -193,6 +193,7 @@ VITE_DISABLE_AUTH=true
 | CORE unavailable | Cloud Run status, `/health`, Secret Manager |
 | DB connection | Cloud SQL instance status, `--add-cloudsql-instances` in cloudbuild |
 | LLM 401 errors | Vertex AI: check SA role `aiplatform.user`, ADC auth |
+| LLM 404 errors | Model not in region: `gemini-2.5-flash-lite` returns 404 in europe-west3 despite docs (2026-03-23). Use `gemini-2.5-flash` |
 
 ---
 
@@ -233,6 +234,11 @@ VITE_DISABLE_AUTH=true
 - Planner: Monolit CLAUDE.MD refactored (2900→935 lines, sessions archived)
 - CORE: formwork_systems_peri.json — 17 variants (DOMINO/TRIO/VARIO) with rental/purchase prices
 - Data: parse_peri_pdfs.py — GCS PDF extraction script for PERI brochures
+
+**Completed (2026-03-23):**
+- CORE: gemini-2.5-flash-lite 404 fix — switched default to gemini-2.5-flash across all services (17 files)
+- CORE: VertexGeminiClient probe call — validates model with real API call before use, class-level cache
+- CORE: model fallback chain (GEMINI_MODEL env → flash → flash-lite → pro)
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 

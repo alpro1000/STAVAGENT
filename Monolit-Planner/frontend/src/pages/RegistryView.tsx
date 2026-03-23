@@ -68,10 +68,10 @@ export default function RegistryView() {
   return (
     <>
     <PortalBreadcrumb />
-    <div className="c-panel" style={{ margin: '24px', padding: '24px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+    <div className="c-panel" style={{ margin: 'clamp(8px, 2vw, 24px)', padding: 'clamp(10px, 2vw, 24px)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
         <Link to="/" className="c-btn c-btn--sm" style={{ textDecoration: 'none' }}>← Zpět</Link>
-        <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>Registry pozic</h1>
+        <h1 style={{ margin: 0, fontSize: 'clamp(16px, 4vw, 24px)', fontWeight: 700 }}>Registry pozic</h1>
         <span className="c-badge c-badge--orange">{filtered.length}</span>
       </div>
       
@@ -182,8 +182,8 @@ export default function RegistryView() {
           </p>
         </div>
       ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table className="c-table" style={{ width: '100%' }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <table className="c-table" style={{ width: '100%', minWidth: '550px' }}>
             <thead>
               <tr>
                 <th style={{ width: '40px' }}>

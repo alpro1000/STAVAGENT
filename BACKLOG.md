@@ -426,6 +426,12 @@ docs/archive/
 **Total Pending Items:** 17
 **Next Critical Path:** Deploy all services → Test with real PDFs → Formwork rental audit → Kiosk import E2E
 
+### Recently Completed (Session 17, 2026-03-23)
+- ✅ **Gemini flash-lite 404 fix** — `gemini-2.5-flash-lite` returns 404 in europe-west3, switched default to `gemini-2.5-flash` across 17 files
+- ✅ **VertexGeminiClient probe call** — validates model with real `generate_content()` call before use, class-level cache, zero extra latency after first init
+- ✅ **Model fallback chain** — `GEMINI_MODEL` env → `gemini-2.5-flash` → `gemini-2.5-flash-lite` → `gemini-2.5-pro`
+- ✅ **Session documentation** — full session report + documentation rule established
+
 ### Recently Completed (Session 14, 2026-03-21)
 - ✅ **Element Planner расширен до 20 типов элементов** (9 мостовых + 11 зданий: стены, плиты, колонны, фундаменты, лестницы, резервуары, сваи и др.)
 - ✅ **Динамический concrete_days** — вместо хардкода 1 день, рассчитывается из фактических часов заливки
