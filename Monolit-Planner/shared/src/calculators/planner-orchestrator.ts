@@ -102,6 +102,8 @@ export interface PlannerInput {
   // --- Formwork override ---
   /** Explicit formwork system name (overrides auto-recommendation) */
   formwork_system_name?: string;
+  /** Override rental price (Kč/m²/month or Kč/bm/month). If set, replaces catalog value. */
+  rental_czk_override?: number;
 
   // --- Tact override ---
   /** Direct number of tacts (overrides auto-calculation from spáry).
@@ -664,11 +666,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const laborPerWorkerPerTact = (regularHours * wage) + (overtimeHours * wage * 1.25);
   const pourLaborCZK = roundTo(laborPerWorkerPerTact * effectivePourCrew * pourDecision.num_tacts, 2);
 
-  // Rental cost (monthly → daily)
+  // Rental cost (monthly → daily). User override takes precedence over catalog.
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport
-  const formworkRentalCZK = fwSystem.rental_czk_m2_month > 0
-    ? roundTo(fwArea * fwSystem.rental_czk_m2_month * (rentalDaysPerSet / 30) * numSets, 2)
+  const rentalRate = input.rental_czk_override ?? fwSystem.rental_czk_m2_month;
+  const formworkRentalCZK = rentalRate > 0
+    ? roundTo(fwArea * rentalRate * (rentalDaysPerSet / 30) * numSets, 2)
     : 0;
+  if (input.rental_czk_override !== undefined) {
+    log.push(`Rental: user override ${rentalRate} Kč/${fwSystem.unit}/měs (catalog: ${fwSystem.rental_czk_m2_month})`);
+  }
 
   // Props costs
   const propsLaborCZK = propsResult?.labor_cost_czk ?? 0;

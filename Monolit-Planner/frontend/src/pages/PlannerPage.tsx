@@ -146,6 +146,7 @@ interface FormState {
   shift_h: number;
   wage_czk_h: number;
   formwork_system_name: string; // empty = auto
+  rental_czk_override: string; // empty = catalog price, number = user override
   enable_monte_carlo: boolean;
   start_date: string; // ISO date string for calendar mapping
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
@@ -181,6 +182,7 @@ const DEFAULT_FORM: FormState = {
   shift_h: 10,
   wage_czk_h: 398,
   formwork_system_name: '',
+  rental_czk_override: '',
   enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
@@ -473,6 +475,7 @@ export default function PlannerPage() {
     }
     if (form.height_m) input.height_m = parseFloat(form.height_m);
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
+    if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
     return input;
   };
 
@@ -1455,13 +1458,110 @@ export default function PlannerPage() {
               <Section title="Bednění (override)">
                 <Field label="Systém bednění">
                   <select style={inputStyle} value={form.formwork_system_name}
-                    onChange={e => update('formwork_system_name', e.target.value)}>
+                    onChange={e => {
+                      update('formwork_system_name', e.target.value);
+                      update('rental_czk_override', ''); // reset override on system change
+                    }}>
                     <option value="">Automatický výběr</option>
                     {FORMWORK_SYSTEMS.map(s => (
                       <option key={s.name} value={s.name}>{s.name} ({s.manufacturer})</option>
                     ))}
                   </select>
                 </Field>
+
+                {/* Editable rental price */}
+                {(() => {
+                  const selected = form.formwork_system_name
+                    ? FORMWORK_SYSTEMS.find(s => s.name === form.formwork_system_name)
+                    : null;
+                  const catalogPrice = selected?.rental_czk_m2_month ?? 0;
+                  const unit = selected?.unit ?? 'm2';
+                  return (
+                    <div style={{ marginTop: 8, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 6 }}>
+                        Pronájem bednění
+                      </div>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, alignItems: 'end' }}>
+                        <Field label={`Katalogová cena (Kč/${unit}/měs)`}>
+                          <input style={{ ...inputStyle, background: '#e2e8f0', cursor: 'not-allowed' }}
+                            value={selected ? catalogPrice.toFixed(0) : '—'}
+                            readOnly disabled />
+                        </Field>
+                        <Field label={`Vaše cena (Kč/${unit}/měs)`}>
+                          <input style={{
+                            ...inputStyle,
+                            borderColor: form.rental_czk_override ? 'var(--r0-orange, #f59e0b)' : undefined,
+                            fontWeight: form.rental_czk_override ? 700 : undefined,
+                          }}
+                            type="number" min={0} step={10}
+                            placeholder={selected ? catalogPrice.toFixed(0) : '—'}
+                            value={form.rental_czk_override}
+                            onChange={e => update('rental_czk_override', e.target.value)} />
+                        </Field>
+                      </div>
+                      {form.rental_czk_override && (
+                        <div style={{ fontSize: 10, color: 'var(--r0-orange, #f59e0b)', marginTop: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span>
+                            Přepsána katalogová cena: {catalogPrice} → {form.rental_czk_override} Kč/{unit}/měs
+                            {catalogPrice > 0 && ` (${((parseFloat(form.rental_czk_override) / catalogPrice - 1) * 100).toFixed(0)}%)`}
+                          </span>
+                          <button onClick={() => update('rental_czk_override', '')}
+                            style={{ background: 'none', border: 'none', color: 'var(--r0-slate-400)', cursor: 'pointer', fontSize: 10, textDecoration: 'underline' }}>
+                            Obnovit katalog
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Compact catalog table */}
+                      <details style={{ marginTop: 8 }}>
+                        <summary style={{ fontSize: 11, color: 'var(--r0-blue, #3b82f6)', cursor: 'pointer', userSelect: 'none' }}>
+                          Katalog cen ({FORMWORK_SYSTEMS.length} systémů)
+                        </summary>
+                        <div style={{ maxHeight: 260, overflowY: 'auto', marginTop: 6 }}>
+                          <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse', fontFamily: "'JetBrains Mono', monospace" }}>
+                            <thead>
+                              <tr style={{ borderBottom: '1px solid var(--r0-slate-200, #e2e8f0)', position: 'sticky', top: 0, background: 'var(--r0-slate-50, #f8fafc)' }}>
+                                <th style={{ textAlign: 'left', padding: '3px 4px', fontSize: 10, fontWeight: 600 }}>Systém</th>
+                                <th style={{ textAlign: 'left', padding: '3px 4px', fontSize: 10, fontWeight: 600 }}>Výrobce</th>
+                                <th style={{ textAlign: 'right', padding: '3px 4px', fontSize: 10, fontWeight: 600 }}>Kč/j./měs</th>
+                                <th style={{ textAlign: 'center', padding: '3px 4px', fontSize: 10, fontWeight: 600 }}>j.</th>
+                                <th style={{ textAlign: 'center', padding: '3px 4px', fontSize: 10, fontWeight: 600 }}></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {FORMWORK_SYSTEMS.map(s => (
+                                <tr key={s.name} style={{
+                                  borderBottom: '1px solid var(--r0-slate-100, #f1f5f9)',
+                                  background: s.name === form.formwork_system_name ? 'rgba(245,158,11,0.08)' : undefined,
+                                }}>
+                                  <td style={{ padding: '3px 4px' }}>{s.name}</td>
+                                  <td style={{ padding: '3px 4px', color: 'var(--r0-slate-400)' }}>{s.manufacturer}</td>
+                                  <td style={{ padding: '3px 4px', textAlign: 'right', fontWeight: 600 }}>
+                                    {s.rental_czk_m2_month > 0 ? s.rental_czk_m2_month.toFixed(0) : '—'}
+                                  </td>
+                                  <td style={{ padding: '3px 4px', textAlign: 'center', color: 'var(--r0-slate-400)' }}>{s.unit}</td>
+                                  <td style={{ padding: '2px 4px', textAlign: 'center' }}>
+                                    <button onClick={() => {
+                                      update('formwork_system_name', s.name);
+                                      update('rental_czk_override', '');
+                                    }}
+                                      style={{
+                                        background: s.name === form.formwork_system_name ? 'var(--r0-orange, #f59e0b)' : 'var(--r0-slate-200, #e2e8f0)',
+                                        color: s.name === form.formwork_system_name ? 'white' : 'var(--r0-slate-600)',
+                                        border: 'none', borderRadius: 3, padding: '1px 6px', fontSize: 10, cursor: 'pointer',
+                                      }}>
+                                      {s.name === form.formwork_system_name ? '✓' : 'Vybrat'}
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </details>
+                    </div>
+                  );
+                })()}
               </Section>
 
               <Section title="Simulace">
