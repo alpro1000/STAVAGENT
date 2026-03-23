@@ -102,6 +102,8 @@ export interface PlannerInput {
   // --- Formwork override ---
   /** Explicit formwork system name (overrides auto-recommendation) */
   formwork_system_name?: string;
+  /** Override rental price (Kč/m²/month or Kč/bm/month). If set, replaces catalog value. */
+  rental_czk_override?: number;
 
   // --- Tact override ---
   /** Direct number of tacts (overrides auto-calculation from spáry).
@@ -269,8 +271,6 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const rawNumSets = input.num_sets ?? DEFAULTS.num_sets;
   const numFWCrews = input.num_formwork_crews ?? DEFAULTS.num_formwork_crews;
   const numRBCrews = input.num_rebar_crews ?? DEFAULTS.num_rebar_crews;
-  // Effective rebar workforce per tact: all rebar crews work together on one tact
-  const effectiveRebarCrew = numRBCrews * crewRebar;
   const temperature = input.temperature_c ?? DEFAULTS.temperature_c;
 
   // ─── 1. Element Classification ──────────────────────────────────────────
@@ -484,13 +484,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
     mass_kg: input.rebar_mass_kg
       ? input.rebar_mass_kg / pourDecision.num_tacts // Distribute across tacts
       : undefined,
-    crew_size: effectiveRebarCrew, // all rebar crews work together: numRBCrews × crewRebar
+    crew_size: crewRebar, // per-crew size; parallelism across tacts via RCPSP num_rebar_crews
     shift_h: shift,
     k,
     wage_czk_h: wage,
   });
 
-  log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews}×${crewRebar}=${effectiveRebarCrew} železářů)`);
+  log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews} čet×${crewRebar} prac.=${numRBCrews * crewRebar} železářů, RCPSP parallel=${numRBCrews})`);
 
   // ─── 6. Pour Task ──────────────────────────────────────────────────────
 
@@ -563,7 +563,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     curing_days: curingDays,
     stripping_days: disassemblyDays,
     num_formwork_crews: numFWCrews,
-    num_rebar_crews: 1, // rebar crews already factored into per-tact duration via effectiveRebarCrew
+    num_rebar_crews: numRBCrews, // parallel rebar crews across tacts (RCPSP)
     rebar_lag_pct: 50,
     scheduling_mode: pourDecision.scheduling_mode,
     cure_between_neighbors_days: pourDecision.cure_between_neighbors_h / 24,
@@ -666,11 +666,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const laborPerWorkerPerTact = (regularHours * wage) + (overtimeHours * wage * 1.25);
   const pourLaborCZK = roundTo(laborPerWorkerPerTact * effectivePourCrew * pourDecision.num_tacts, 2);
 
-  // Rental cost (monthly → daily)
+  // Rental cost (monthly → daily). User override takes precedence over catalog.
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport
-  const formworkRentalCZK = fwSystem.rental_czk_m2_month > 0
-    ? roundTo(fwArea * fwSystem.rental_czk_m2_month * (rentalDaysPerSet / 30) * numSets, 2)
+  const rentalRate = input.rental_czk_override ?? fwSystem.rental_czk_m2_month;
+  const formworkRentalCZK = rentalRate > 0
+    ? roundTo(fwArea * rentalRate * (rentalDaysPerSet / 30) * numSets, 2)
     : 0;
+  if (input.rental_czk_override !== undefined) {
+    log.push(`Rental: user override ${rentalRate} Kč/${fwSystem.unit}/měs (catalog: ${fwSystem.rental_czk_m2_month})`);
+  }
 
   // Props costs
   const propsLaborCZK = propsResult?.labor_cost_czk ?? 0;
@@ -701,7 +705,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     schedule: scheduleResult,
     resources: {
       total_formwork_workers: numFWCrews * crew,
-      total_rebar_workers: effectiveRebarCrew,
+      total_rebar_workers: numRBCrews * crewRebar,
       num_formwork_crews: numFWCrews,
       num_rebar_crews: numRBCrews,
       crew_size_formwork: crew,

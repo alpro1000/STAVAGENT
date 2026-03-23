@@ -462,7 +462,7 @@ async function fetchGCPAccessToken() {
  * When GOOGLE_GENAI_USE_VERTEXAI=true, uses Vertex AI endpoint with ADC token
  * (no API key required — uses the Cloud Run service account automatically).
  * Falls back to Google AI API key mode when not on GCP or token fetch fails.
- * On 404 (model not on Google AI API, e.g. gemini-2.5-flash-lite), retries with gemini-2.0-flash.
+ * On 404 (model not available), retries with gemini-2.5-flash (GA, available in europe-west3).
  */
 async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, controller) {
   const useVertexAI = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
