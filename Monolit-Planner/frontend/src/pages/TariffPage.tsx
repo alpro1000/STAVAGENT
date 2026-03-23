@@ -553,7 +553,7 @@ export default function TariffPage() {
   }, [registry, updateRegistry]);
 
   return (
-    <div style={{
+    <div className="tariff-page" style={{
       minHeight: '100vh',
       background: 'var(--bg-textured, #e8eaed)',
       fontFamily: "'Inter', -apple-system, sans-serif",

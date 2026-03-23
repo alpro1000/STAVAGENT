@@ -236,6 +236,13 @@ export default function MainApp() {
       />
 
       <div className={`main-layout ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        {/* Mobile overlay backdrop */}
+        {sidebarOpen && (
+          <div
+            className="sidebar-overlay"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
         <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
         <main className={`content ${sidebarOpen ? 'with-sidebar' : ''}`}>
