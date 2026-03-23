@@ -142,6 +142,7 @@ interface FormState {
   num_formwork_crews: number;
   num_rebar_crews: number;
   crew_size: number;
+  crew_size_rebar: number;
   shift_h: number;
   wage_czk_h: number;
   formwork_system_name: string; // empty = auto
@@ -176,6 +177,7 @@ const DEFAULT_FORM: FormState = {
   num_formwork_crews: 1,
   num_rebar_crews: 1,
   crew_size: 4,
+  crew_size_rebar: 4,
   shift_h: 10,
   wage_czk_h: 398,
   formwork_system_name: '',
@@ -210,6 +212,7 @@ interface ScenarioSnapshot {
   id: number;
   label: string;
   crew_size: number;
+  crew_size_rebar: number;
   num_sets: number;
   shift_h: number;
   wage_czk_h: number;
@@ -445,6 +448,7 @@ export default function PlannerPage() {
       num_formwork_crews: form.num_formwork_crews,
       num_rebar_crews: form.num_rebar_crews,
       crew_size: form.crew_size,
+      crew_size_rebar: form.crew_size_rebar,
       shift_h: form.shift_h,
       k: 0.8,
       wage_czk_h: form.wage_czk_h,
@@ -500,8 +504,9 @@ export default function PlannerPage() {
     const overtimeWarning = plan.warnings.find(w => w.includes('přesčas') || w.includes('Monolitická zálivka'));
     const snap: ScenarioSnapshot = {
       id: nextSeq,
-      label: `S${nextSeq}: ${plan.formwork.system.name}, ${form.crew_size} prac., ${form.num_sets} kompl.`,
+      label: `S${nextSeq}: ${plan.formwork.system.name}, T${form.num_formwork_crews}×${form.crew_size} Ž${form.num_rebar_crews}×${form.crew_size_rebar}, ${form.num_sets} kompl.`,
       crew_size: form.crew_size,
+      crew_size_rebar: form.crew_size_rebar,
       num_sets: form.num_sets,
       shift_h: form.shift_h,
       wage_czk_h: form.wage_czk_h,
@@ -739,9 +744,9 @@ export default function PlannerPage() {
                 <div style={{ fontSize: 12, marginBottom: 12 }}>
                   <ul style={{ margin: 0, paddingLeft: 16 }}>
                     <li><strong>Sady bednění</strong> — víc sad = rychlejší rotace mezi záběry</li>
-                    <li><strong>Čety bednění / výztuže</strong> — oddělené čety, paralelní práce</li>
-                    <li><strong>Pracovníků / četa</strong> — přímo ovlivňuje dobu výztuže (výchozí: 4)</li>
-                    <li><strong>Směna</strong> — délka pracovního dne (výchozí: 10 h)</li>
+                    <li><strong>Tesaři</strong> — čety × pracovníků/četa = celkem tesařů na bednění</li>
+                    <li><strong>Železáři</strong> — čety × pracovníků/četa = celkem železářů (přímo ovlivňuje dobu výztuže)</li>
+                    <li><strong>Směna</strong> — délka pracovního dne, max 12 h (platí pro tesaře i železáře)</li>
                     <li><strong>Využití (k)</strong> — faktor 0.8 = 80% efektivního času (přestávky, logistika)</li>
                     <li><strong>Systém bednění</strong> — Frami Xlife, Framax, Top 50, Dokaflex, PERI VARIO</li>
                     <li><strong>Třída betonu</strong> — C12/15 až C50/60, ovlivňuje dobu zrání</li>
@@ -1388,24 +1393,55 @@ export default function PlannerPage() {
           {showAdvanced && (
             <>
               <Section title="Zdroje">
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                  <Field label="Sady bednění">
-                    <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
-                      onChange={v => update('num_sets', v as number)} />
-                  </Field>
-                  <Field label="Čety bednění">
-                    <NumInput style={inputStyle} value={form.num_formwork_crews} min={1} max={5} fallback={1}
-                      onChange={v => update('num_formwork_crews', v as number)} />
-                  </Field>
-                  <Field label="Čety výztuže">
-                    <NumInput style={inputStyle} value={form.num_rebar_crews} min={1} max={5} fallback={1}
-                      onChange={v => update('num_rebar_crews', v as number)} />
-                  </Field>
-                  <Field label="Pracovníků/četa">
-                    <NumInput style={inputStyle} value={form.crew_size} min={2} max={10} fallback={4}
-                      onChange={v => update('crew_size', v as number)} />
-                  </Field>
-                  <Field label="Směna (h)">
+                {/* Sady bednění — separate row */}
+                <Field label="Sady bednění (kompletní soupravy)">
+                  <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
+                    onChange={v => update('num_sets', v as number)} />
+                </Field>
+
+                {/* Tesaři (bednění) */}
+                <div style={{ marginTop: 10, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 6 }}>
+                    Tesaři / bednáři (bednění)
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <Field label="Čety">
+                      <NumInput style={inputStyle} value={form.num_formwork_crews} min={1} max={5} fallback={1}
+                        onChange={v => update('num_formwork_crews', v as number)} />
+                    </Field>
+                    <Field label="Pracovníků / četa">
+                      <NumInput style={inputStyle} value={form.crew_size} min={2} max={10} fallback={4}
+                        onChange={v => update('crew_size', v as number)} />
+                    </Field>
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--r0-slate-500, #64748b)', marginTop: 4, fontWeight: 600 }}>
+                    Celkem tesařů: {form.num_formwork_crews * form.crew_size}
+                  </div>
+                </div>
+
+                {/* Železáři (výztuž) */}
+                <div style={{ marginTop: 8, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 6 }}>
+                    Železáři (výztuž)
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <Field label="Čety">
+                      <NumInput style={inputStyle} value={form.num_rebar_crews} min={1} max={10} fallback={1}
+                        onChange={v => update('num_rebar_crews', v as number)} />
+                    </Field>
+                    <Field label="Pracovníků / četa">
+                      <NumInput style={inputStyle} value={form.crew_size_rebar} min={2} max={10} fallback={4}
+                        onChange={v => update('crew_size_rebar', v as number)} />
+                    </Field>
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--r0-slate-500, #64748b)', marginTop: 4, fontWeight: 600 }}>
+                    Celkem železářů: {form.num_rebar_crews * form.crew_size_rebar}
+                  </div>
+                </div>
+
+                {/* Směna + Mzda — shared */}
+                <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                  <Field label="Směna (h) — tesaři + železáři">
                     <NumInput style={inputStyle} value={form.shift_h} min={6} max={12} fallback={10}
                       onChange={v => update('shift_h', v as number)} />
                   </Field>
@@ -1662,8 +1698,8 @@ export default function PlannerPage() {
                               {isFastest && <span title="Nejrychlejší" style={{ color: '#f59e0b', marginLeft: 2 }}>⚡</span>}
                             </td>
                             <td style={{ padding: '5px 6px', fontSize: 11 }}>{s.formwork_system}<br /><span style={{ color: 'var(--r0-slate-400)', fontSize: 10 }}>{s.manufacturer}</span></td>
-                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_formwork_crews ?? 1}×{s.crew_size}</td>
-                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_formwork_crews ?? 1}×{s.crew_size}={((s.num_formwork_crews ?? 1) * s.crew_size)}</td>
+                            <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_rebar_crews ?? 1}×{s.crew_size_rebar ?? s.crew_size}={((s.num_rebar_crews ?? 1) * (s.crew_size_rebar ?? s.crew_size))}</td>
                             <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.num_sets}</td>
                             <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.shift_h}h</td>
                             <td style={{ padding: '5px 4px', textAlign: 'right' }}>{s.wage_czk_h ?? 220}</td>
@@ -1900,6 +1936,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
             <Row label="Pronájem" value={plan.formwork.system.rental_czk_m2_month > 0
               ? `${formatNum(plan.formwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
               : 'Bez pronájmu'} />
+            <Row label="Tesařů celkem" value={`${plan.resources?.total_formwork_workers ?? '-'} (${plan.resources?.num_formwork_crews ?? 1}×${plan.resources?.crew_size_formwork ?? '-'})`} />
           </div>
           <div>
             <div style={subTitle}>Časy (na záběr)</div>
@@ -1935,7 +1972,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
                 <div>
                   <Row label="Náklady celkem" value={formatCZK(plan.rebar.cost_labor * nTacts)} bold />
                   <Row label="Náklady / záběr" value={formatCZK(plan.rebar.cost_labor)} />
-                  <Row label="Pracovníků" value={plan.rebar.crew_size.toString()} />
+                  <Row label="Železářů celkem" value={`${plan.resources?.total_rebar_workers ?? plan.rebar.crew_size} (${plan.resources?.num_rebar_crews ?? 1}×${plan.resources?.crew_size_rebar ?? plan.rebar.crew_size})`} />
                   {plan.rebar.recommended_crew !== plan.rebar.crew_size && (
                     <Row label="Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} />
                   )}
