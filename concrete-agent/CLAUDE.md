@@ -632,6 +632,36 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 ---
 
+## LLM Configuration (updated 2026-03-23)
+
+### Models
+
+| Model | Status | Use case |
+|-------|--------|----------|
+| `gemini-2.5-flash` | **Default**, verified in europe-west3 | Multi-Role, parsing, all tasks |
+| `gemini-2.5-pro` | Available, expensive | Heavy analysis (last resort) |
+| `gemini-2.5-flash-lite` | **404 in europe-west3** despite docs | Do NOT use (2026-03-23) |
+
+### VertexGeminiClient (Cloud Run)
+
+- **Auth:** Application Default Credentials (ADC) — no API key needed on Cloud Run
+- **Probe call:** On first init, sends `"Reply with exactly: ok"` to validate model responds. If model returns 404/error, falls through to next in `VERTEX_MODELS` list.
+- **Class-level cache:** Probe runs once per process; all subsequent instances reuse the validated model (zero extra latency).
+- **Fallback order:** `GEMINI_MODEL` env → `gemini-2.5-flash` → `gemini-2.5-flash-lite` → `gemini-2.5-pro`
+
+### Key files
+
+- `app/core/config.py` — `GEMINI_MODEL` default, `MULTI_ROLE_LLM` selector
+- `app/core/gemini_client.py` — `GeminiClient` (API key) + `VertexGeminiClient` (ADC)
+- `GEMINI_SETUP.md` — setup guide, model table, cost comparison
+
+### Known issues
+
+- `gemini-2.5-flash-lite`: Google lists it in europe-west3 model catalog but endpoint returns 404 (as of 2026-03-23)
+- `VertexGenerativeModel(model_name)` constructor does NOT validate the model — only `generate_content()` does. That's why the probe call exists.
+
+---
+
 ## Architecture Overview
 
 ### Two Main Workflows

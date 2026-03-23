@@ -1,4 +1,4 @@
-# NEXT SESSION — после 2026-03-21 (Session 16)
+# NEXT SESSION — после 2026-03-23 (Session 17)
 
 ## Как начать следующий сеанс
 
@@ -6,6 +6,14 @@
 Продолжи работу над STAVAGENT. Прочитай CLAUDE.md, BACKLOG.md и NEXT_SESSION.md.
 [описание задачи]
 ```
+
+---
+
+## Что сделано 2026-03-23 (Session 17)
+
+- **Gemini flash-lite 404 fix:** `gemini-2.5-flash-lite` returns 404 in europe-west3 → switched default to `gemini-2.5-flash` across 17 files
+- **VertexGeminiClient probe call:** validates model with real API call, class-level cache, auto-fallback chain
+- **Documentation session rule** established (see below)
 
 ---
 
@@ -64,9 +72,19 @@
 |--------|-----------|--------|
 | MASTER_ENCRYPTION_KEY | `openssl rand -hex 32` → Secret Manager | Блокирует Sprint 2 |
 | Poradna env vars | PERPLEXITY_API_KEY, OPENAI_API_KEY → Secret Manager | Без них — Gemini fallback |
-| AI Suggestion SQL | Выполнить `БЫСТРОЕ_РЕШЕНИЕ.sql` в Cloud SQL | Включит ✨ кнопку в Monolit |
+| AI Suggestion SQL | Выполнить `БЫСТРОЕ_РЕШЕНИЕ.sql` в Cloud SQL | Включит кнопку в Monolit |
 | Stripe аккаунт | dashboard.stripe.com → 4 продукта | Блокирует Sprint 3 |
 | Google Drive OAuth2 | Cloud Project → Drive API → credentials | Опционально |
+
+---
+
+## Правило документирования (обязательно каждую сессию)
+
+1. Создать `docs/SESSION_YYYY-MM-DD_<ТЕМА>.md` — полный отчёт сессии
+2. Обновить `CLAUDE.md` → Backlog/Completed + Quick Debugging
+3. Обновить `NEXT_SESSION.md` → что сделано + что дальше
+4. Обновить `BACKLOG.md` → новые задачи/завершённые
+5. Обновить service-level `CLAUDE.md` если затронут сервис
 
 ---
 
@@ -74,7 +92,7 @@
 
 Текущее состояние системы:
 - **8 сервисов** на GCP (Cloud Run) + Vercel, все ✅
-- **LLM:** Vertex AI Gemini (ADC auth, GCP credits)
+- **LLM:** Vertex AI Gemini (ADC auth, GCP credits), default `gemini-2.5-flash`
 - **CI/CD:** Cloud Build (5 per-service triggers) + GitHub Actions
 - **Тесты:** 336 shared (Monolit) + 159 (URS Matcher)
 - **Портал:** 10 модулей active, Sprint 1 Cabinets+Roles done

@@ -7,10 +7,10 @@
 - Output: $15 per 1M tokens
 - Multi-Role request (30k tokens): **$0.10-0.50 per request**
 
-**After (Gemini 2.0 Flash):**
-- **FREE**: 1,500 requests per day
-- Paid tier: $0.075 per 1M tokens (40x cheaper!)
-- Multi-Role request: **$0.00 (free) or $0.002 (paid)**
+**After (Gemini 2.5 Flash via Vertex AI):**
+- Vertex AI: billed through GCP project credits (ADC, no API key on Cloud Run)
+- Paid tier: $0.15 per 1M input tokens, $0.60 per 1M output tokens
+- Multi-Role request: **~$0.005 per request**
 
 ## 🚀 Quick Setup
 
@@ -41,12 +41,12 @@ Add to `.env` or Render environment variables:
 # Required: Google AI API key
 GOOGLE_API_KEY=your-google-api-key-here
 
-# Optional: Choose Gemini model (default: gemini-2.0-flash-exp)
-GEMINI_MODEL=gemini-2.0-flash-exp
+# Optional: Choose Gemini model (default: gemini-2.5-flash)
+GEMINI_MODEL=gemini-2.5-flash
 
-# Optional: Choose LLM for Multi-Role (default: gemini)
-# Options: "gemini", "claude", "auto" (Gemini with Claude fallback)
-MULTI_ROLE_LLM=gemini
+# Optional: Choose LLM for Multi-Role (default: vertex-ai-gemini)
+# Options: "vertex-ai-gemini" (Cloud Run ADC), "gemini" (API key), "claude", "bedrock", "auto"
+MULTI_ROLE_LLM=vertex-ai-gemini
 ```
 
 ### 4. Test Gemini Client
@@ -58,22 +58,25 @@ python scripts/test_gemini_client.py
 
 Expected output:
 ```
-✅ Gemini client initialized with model: gemini-2.0-flash-exp
+✅ Gemini client initialized with model: gemini-2.5-flash
 ✅ TEST PASSED: Gemini returned valid JSON!
 ✅ TEST PASSED: Gemini handled Multi-Role prompt!
 🎉 ALL TESTS PASSED!
 ```
 
-## 📊 Available Models
+## Available Models (updated 2026-03-23)
 
-| Model | Cost | Speed | Quality | Context |
-|-------|------|-------|---------|---------|
-| **gemini-2.0-flash-exp** | FREE | ⚡⚡⚡ | ⭐⭐⭐⭐ | 1M tokens |
-| gemini-1.5-flash | $0.075/MTok | ⚡⚡⚡ | ⭐⭐⭐⭐ | 1M tokens |
-| gemini-1.5-pro | $1.25/MTok | ⚡⚡ | ⭐⭐⭐⭐⭐ | 2M tokens |
-| claude-sonnet-4-5 | $3/$15/MTok | ⚡⚡ | ⭐⭐⭐⭐⭐ | 200k tokens |
+| Model | Status (europe-west3) | Cost (input/output) | Speed | Quality |
+|-------|----------------------|---------------------|-------|---------|
+| **gemini-2.5-flash** | **GA, verified working** | $0.15/$0.60 per MTok | Fast | High |
+| gemini-2.5-pro | GA, available | $1.25/$10.00 per MTok | Slow | Highest |
+| gemini-2.5-flash-lite | **404 in practice** | N/A | N/A | N/A |
+| claude-sonnet-4-6 | Via Anthropic API | $3/$15 per MTok | Medium | Highest |
+| claude-haiku-4-5 | Via AWS Bedrock | ~$0.80/$4 per MTok | Fast | High |
 
-**Recommendation**: Use `gemini-2.0-flash-exp` (FREE, fast, good quality)
+**Recommendation**: Use `gemini-2.5-flash` via Vertex AI (ADC on Cloud Run, GCP credits)
+
+**Warning**: `gemini-2.5-flash-lite` is listed in Google docs but returns 404 in europe-west3 (as of 2026-03-23). The `VertexGeminiClient` probe call will auto-skip it.
 
 ## ⚙️ Multi-Role LLM Modes
 
@@ -129,7 +132,7 @@ Expected response:
 ### Check logs:
 
 ```
-✅ Using Gemini for Multi-Role (gemini-2.0-flash-exp)
+✅ Using Gemini for Multi-Role (gemini-2.5-flash)
 🎯 Executing 3 roles for complexity: COMPLEX
    Roles: ['document_validator', 'concrete_specialist', 'standards_checker']
 [1/3] Invoking document_validator...
@@ -166,7 +169,7 @@ git pull origin claude/read-documentation-files-01Vo44KnWy6z62npLLLTPg1C
 
 ```bash
 GOOGLE_API_KEY=your-key-here
-GEMINI_MODEL=gemini-2.0-flash-exp
+GEMINI_MODEL=gemini-2.5-flash
 MULTI_ROLE_LLM=auto
 ```
 
@@ -198,10 +201,12 @@ Redeploy. System will use Claude for all Multi-Role requests.
 
 ## 📝 Notes
 
-- Gemini 2.0 Flash is in experimental preview (very stable)
-- For production, consider `gemini-1.5-flash` (stable, still 40x cheaper)
+- Gemini 2.5 Flash is GA and the default model (verified in europe-west3)
+- On Cloud Run: use `vertex-ai-gemini` mode (ADC auth, no API key needed)
+- Local dev: use `gemini` mode with `GOOGLE_API_KEY` from AI Studio
 - Large prompts (~30k tokens) work fine with Gemini 1M context
 - Gemini supports JSON mode natively (good for structured output)
+- `gemini-2.5-flash-lite` returns 404 in europe-west3 despite being listed in docs (2026-03-23)
 
 ## ✅ Checklist
 
@@ -216,7 +221,7 @@ Redeploy. System will use Claude for all Multi-Role requests.
 
 ---
 
-**Last Updated**: 2025-12-10
+**Last Updated**: 2026-03-23
 **Related Commits**:
 - Gemini client implementation
 - Multi-Role orchestrator Gemini support
