@@ -52,7 +52,7 @@ export interface PlannerInput {
   // --- Volumes & Dimensions ---
   /** Total concrete volume (m³) */
   volume_m3: number;
-  /** Formwork area per tact (m²). If not given, estimated as volume^(2/3) × 6 */
+  /** Formwork area per tact (m²). If not given, estimated from volume, height, and element geometry */
   formwork_area_m2?: number;
   /** Height from ground/floor to underside of element (m). Used for props calculation. */
   height_m?: number;
@@ -388,7 +388,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 4. Formwork Calculation ────────────────────────────────────────────
 
   // Estimate formwork area if not given
-  const fwArea = input.formwork_area_m2 ?? estimateFormworkArea(input.volume_m3, pourDecision.num_tacts);
+  const fwArea = input.formwork_area_m2 ?? estimateFormworkArea(
+    input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation,
+  );
   log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`);
 
   // Maturity-based curing or default
@@ -749,13 +751,44 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
 /**
  * Estimate formwork area when not given.
- * Rough heuristic: cube root of volume × 6 faces ÷ num_tacts.
- * This is a very rough estimate — user should provide actual area.
+ *
+ * When height is available (foundations, walls, piers):
+ *   footprint = volume / height
+ *   Assume aspect ratio ~3:1 for vertical elements (validated on real pier data)
+ *   W = sqrt(footprint / 3), L = 3W
+ *   perimeter = 2(L + W)
+ *   formwork = perimeter × height  (only side faces — top is open for pour)
+ *
+ * When height is NOT available (slabs, other horizontal):
+ *   Cube-root fallback: 4 × (volume_per_tact)^(2/3)
+ *
+ * @param totalVolume_m3 - Total concrete volume
+ * @param numTacts - Number of pour tacts
+ * @param height_m - Element height (optional)
+ * @param orientation - 'vertical' or 'horizontal'
  */
-function estimateFormworkArea(totalVolume_m3: number, numTacts: number): number {
+function estimateFormworkArea(
+  totalVolume_m3: number,
+  numTacts: number,
+  height_m?: number,
+  orientation?: string,
+): number {
   const volumePerTact = totalVolume_m3 / numTacts;
-  // Assume roughly cubic shape: side = vol^(1/3)
-  // Formwork covers 4 sides (vertical) + maybe bottom = ~4 × side²
+
+  // For vertical elements with known height: perimeter × height
+  if (height_m && height_m > 0 && orientation !== 'horizontal') {
+    const footprint = volumePerTact / height_m;
+    // Aspect ratio ~3:1 (typical for pier foundations, validated on real data:
+    //   pilíř 12.6×4.2m → ratio 3.0, pilíř 11.8×4.2m → ratio 2.81)
+    const aspectRatio = 3;
+    const W = Math.sqrt(footprint / aspectRatio);
+    const L = aspectRatio * W;
+    const perimeter = 2 * (L + W);
+    const estimated = roundTo(perimeter * height_m, 1);
+    return Math.max(estimated, 5);
+  }
+
+  // Fallback: cube-root heuristic (4 vertical faces)
   const side = Math.pow(volumePerTact, 1 / 3);
   const estimated = roundTo(4 * side * side, 1);
   return Math.max(estimated, 5); // Minimum 5 m²

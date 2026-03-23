@@ -1777,7 +1777,8 @@ export default function PlannerPage() {
                       {['Scénář', 'Bednění', 'Tesaři', 'Železáři', 'Sady', 'Směna', 'Mzda', 'Dní', 'Montáž', 'Zrání',
                         'Demontáž', 'Betonáž (h)', 'Práce (Kč)', 'Pronájem (Kč)', 'Celkem (Kč)', 'OT', ''].map((h, idx) => (
                         <th key={idx} style={{
-                          textAlign: idx >= 7 ? 'right' : 'left', padding: '6px 4px', fontSize: 10,
+                          textAlign: idx <= 1 ? 'left' : idx === 15 ? 'center' : 'right',
+                          padding: '6px 4px', fontSize: 10,
                           color: 'var(--r0-slate-500)', fontWeight: 600, whiteSpace: 'nowrap',
                           ...(h === 'Celkem (Kč)' ? { borderLeft: '2px solid var(--r0-orange, #f59e0b)' } : {}),
                         }}>{h}</th>
@@ -2078,7 +2079,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
                   <Row label="Náklady / záběr" value={formatCZK(plan.rebar.cost_labor)} />
                   <Row label="Železářů celkem" value={`${plan.resources?.total_rebar_workers ?? plan.rebar.crew_size} (${plan.resources?.num_rebar_crews ?? 1}×${plan.resources?.crew_size_rebar ?? plan.rebar.crew_size})`} />
                   {plan.rebar.recommended_crew !== plan.rebar.crew_size && (
-                    <Row label="Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} />
+                    <div style={{
+                      background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 6,
+                      padding: '4px 8px', marginTop: 4,
+                    }}>
+                      <Row label="⚠️ Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} bold />
+                    </div>
                   )}
                   <Row label="Norma" value={`${plan.rebar.norm_h_per_t} h/t`} />
                 </div>
