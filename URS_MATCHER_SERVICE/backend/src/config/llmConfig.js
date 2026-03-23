@@ -54,8 +54,8 @@ export function getLLMConfig() {
     break;
   case 'gemini':
     apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
-    // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
-    defaultModel = 'gemini-2.5-flash-lite';
+    // gemini-2.5-flash (GA, verified working in europe-west3)
+    defaultModel = 'gemini-2.5-flash';
     break;
   case 'deepseek':
     apiKey = process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
@@ -162,7 +162,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'gemini',
       apiKey: geminiKey || null,
-      model: process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
+      model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10),
       isVertexAI: useVertexForGemini
     };
