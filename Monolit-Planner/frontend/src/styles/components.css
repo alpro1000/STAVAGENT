@@ -2494,46 +2494,77 @@ select:focus {
 
 @media (max-width: 768px) {
   /* Header: compact for mobile */
-  .header {
+  .header,
+  .c-header {
     height: 50px;
     padding: 0 10px;
     gap: 8px;
   }
 
-  .header-logo h1 {
-    font-size: 14px;
+  .header-logo h1,
+  .c-header__title {
+    font-size: 14px !important;
   }
 
   .header-controls {
-    gap: 6px;
+    gap: 4px;
   }
 
+  /* Hide most buttons on mobile, show only essential ones */
+  .header-controls .c-btn,
+  .header-controls .c-select,
   .header-controls .btn-primary,
-  .header-controls .btn-secondary,
-  .header-controls .btn-create,
-  .header-controls .btn-info {
+  .header-controls .btn-secondary {
+    display: none;
+  }
+
+  /* Show only: hamburger, create, object select */
+  .header-hamburger,
+  .header-controls .c-btn--primary,
+  .header-controls .c-select {
+    display: inline-flex !important;
+  }
+
+  .header-hamburger {
+    display: inline-flex !important;
+  }
+
+  .header-controls .c-select {
+    min-width: 120px !important;
+    max-width: 140px !important;
+    font-size: 12px !important;
+  }
+
+  .header-controls .c-btn--primary {
     padding: 5px 8px;
     font-size: 11px;
   }
 
   /* Sidebar: overlay on mobile instead of pushing content */
   .sidebar {
-    position: fixed;
+    position: fixed !important;
     top: 50px;
     left: 0;
     bottom: 0;
-    width: 280px;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
     z-index: 200;
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
     transform: translateX(-100%);
     transition: transform 0.25s ease;
+    overflow-y: auto;
   }
 
-  .main-layout.sidebar-open .sidebar {
+  /* Show sidebar when open */
+  .sidebar.open {
     transform: translateX(0);
   }
 
+  /* Hide sidebar when collapsed */
   .sidebar.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
     transform: translateX(-100%);
   }
 
@@ -2606,8 +2637,12 @@ select:focus {
   }
 }
 
-/* Hide overlay on desktop */
+/* Hide overlay and hamburger on desktop */
 .sidebar-overlay {
+  display: none;
+}
+
+.header-hamburger {
   display: none;
 }
 

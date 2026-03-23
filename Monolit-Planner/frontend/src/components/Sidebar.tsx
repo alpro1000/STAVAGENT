@@ -38,6 +38,14 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
   const [projectToDelete, setProjectToDelete] = useState<{ name: string; count: number } | null>(null);
   const [projectToRename, setProjectToRename] = useState<string | null>(null);
+
+  // Mobile detection: disable resize + use CSS-driven layout
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [showAddObjectModal, setShowAddObjectModal] = useState(false);
   const [selectedProjectForAdd, setSelectedProjectForAdd] = useState<string | null>(null);
   // Multi-select state
@@ -352,15 +360,18 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         borderRadius: 0,
         padding: 0,
         borderTop: 'none',
-        width: isOpen ? `${sidebarWidth}px` : '70px',
-        transition: isResizing ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        position: 'relative',
-        minWidth: isOpen ? `${MIN_WIDTH}px` : undefined,
-        maxWidth: isOpen ? `${MAX_WIDTH}px` : undefined,
+        // On mobile: CSS controls width/position (fixed overlay)
+        ...(isMobile ? {} : {
+          width: isOpen ? `${sidebarWidth}px` : '70px',
+          transition: isResizing ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          position: 'relative' as const,
+          minWidth: isOpen ? `${MIN_WIDTH}px` : undefined,
+          maxWidth: isOpen ? `${MAX_WIDTH}px` : undefined,
+        }),
       }}
     >
-      {/* Resize Handle */}
-      {isOpen && (
+      {/* Resize Handle (desktop only) */}
+      {isOpen && !isMobile && (
         <div
           className="sidebar-resize-handle"
           onMouseDown={handleMouseDown}

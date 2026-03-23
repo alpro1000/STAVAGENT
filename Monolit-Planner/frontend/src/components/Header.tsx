@@ -19,7 +19,7 @@ interface HeaderProps {
   setSidebarOpen: (open: boolean) => void;
 }
 
-export default function Header({ isDark, toggleTheme }: HeaderProps) {
+export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpen }: HeaderProps) {
   const { selectedBridge, setSelectedBridge, bridges, setBridges } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const { saveXLSX, isSaving } = useExports();
@@ -204,9 +204,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
         </div>
 
-        <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap', alignItems: 'center', gap: '6px' }}>
+        <div className="u-flex u-gap-sm header-controls" style={{ flexWrap: 'wrap', alignItems: 'center', gap: '6px' }}>
+          {/* Hamburger menu for mobile sidebar toggle */}
           <button
-            className="c-btn"
+            className="c-btn header-hamburger"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            title={sidebarOpen ? 'Zavřít panel' : 'Otevřít panel'}
+            style={{ minWidth: '36px', padding: '6px', fontSize: '20px', lineHeight: 1 }}
+          >
+            {sidebarOpen ? '✕' : '☰'}
+          </button>
+
+          <button
+            className="c-btn header-btn-desktop"
             onClick={toggleTheme}
             title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
             style={{ minWidth: '36px', padding: '6px' }}
