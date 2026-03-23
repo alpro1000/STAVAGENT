@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     # AI MODELS
     # ==========================================
     CLAUDE_MODEL: str = Field(default="claude-sonnet-4-6-20250217", description="Claude Sonnet 4.6 GA (balance speed/quality, 1M ctx)")
-    GEMINI_MODEL: str = Field(default="gemini-2.5-flash", description="Gemini 2.5 Flash GA (speed + intelligence, europe-west3)")
+    GEMINI_MODEL: str = Field(default="gemini-2.5-flash-lite", description="Gemini 2.5 Flash Lite GA (cheap high-volume, europe-west3)")
     GPT4_MODEL: str = Field(default="gpt-4.1", description="GPT-4.1 (smartest without reasoning)")
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")

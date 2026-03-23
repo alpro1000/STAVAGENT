@@ -53,7 +53,7 @@ steps:
       - --allow-unauthenticated
       - --port=8000
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
-      - --set-env-vars=GEMINI_MODEL=gemini-2.5-flash,MULTI_ROLE_LLM=vertex-ai-gemini,VERTEX_LOCATION=europe-west3,GOOGLE_PROJECT_ID=$PROJECT_ID
+      - --set-env-vars=GEMINI_MODEL=gemini-2.5-flash-lite,MULTI_ROLE_LLM=vertex-ai-gemini,VERTEX_LOCATION=europe-west3,GOOGLE_PROJECT_ID=$PROJECT_ID
       - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest
 
   # ─── stavagent-portal ─────────────────────────────────────
@@ -165,7 +165,7 @@ steps:
       - --port=3001
       - --remove-env-vars=PPLX_API_KEY,ANTHROPIC_API_KEY,GOOGLE_AI_KEY,GOOGLE_API_KEY,OPENAI_API_KEY
       - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_API_KEY=GOOGLE_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest
-      - --update-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,LLM_PROVIDER=gemini,GEMINI_MODEL=gemini-2.5-flash,GOOGLE_CLOUD_PROJECT=$PROJECT_ID,VERTEX_LOCATION=europe-west3
+      - --update-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,LLM_PROVIDER=gemini,GEMINI_MODEL=gemini-2.5-flash-lite,GOOGLE_CLOUD_PROJECT=$PROJECT_ID,VERTEX_LOCATION=europe-west3
 
   # ─── rozpocet-registry-backend ────────────────────────────
   - name: gcr.io/cloud-builders/docker

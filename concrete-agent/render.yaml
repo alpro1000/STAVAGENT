@@ -29,7 +29,7 @@ services:
       - key: MULTI_ROLE_LLM
         value: gemini
       - key: GEMINI_MODEL
-        value: gemini-2.5-flash
+        value: gemini-2.5-flash-lite
       
       # AI Models
       - key: CLAUDE_MODEL

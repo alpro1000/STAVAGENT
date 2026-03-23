@@ -282,7 +282,7 @@ def _get_gemini_url_and_headers() -> tuple:
     Returns (url_template, headers) where url_template needs model name.
     """
     import os
-    model = getattr(settings, "GEMINI_MODEL", "gemini-2.5-flash")
+    model = getattr(settings, "GEMINI_MODEL", "gemini-2.5-flash-lite")
     project_id = os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT")
     location = os.getenv("VERTEX_LOCATION", "europe-west3")
 
@@ -521,7 +521,7 @@ async def expert_research(request: ExpertResearchRequest):
 
     try:
         result = await _call_gemini_expert(question, system_prompt)
-        model_used = f"gemini/{getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash')}"
+        model_used = f"gemini/{getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash-lite')}"
         logger.info(
             f"[KBExpert] Gemini OK — lang={result.get('query_language')} "
             f"standards={len(result.get('standards', []))} "
@@ -629,7 +629,7 @@ async def research_question(request: KBResearchRequest):
         # ── 3. Gemini fallback ─────────────────────────────────────────────────
         try:
             answer     = await _call_gemini_fallback(question)
-            model_used = f"gemini/{getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash')}"
+            model_used = f"gemini/{getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash-lite')}"
             logger.info("[KBResearch] Gemini fallback OK")
         except Exception as gem_err:
             logger.warning(f"[KBResearch] Gemini fallback failed: {gem_err}")

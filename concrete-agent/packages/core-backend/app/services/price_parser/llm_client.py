@@ -109,7 +109,7 @@ async def _ask_vertex_gemini(prompt: str, *, temperature: float = 0.1) -> str:
     if not VERTEX_AVAILABLE:
         raise RuntimeError("Vertex AI SDK not available")
 
-    # Reuse singleton-ish client (VertexGeminiClient caches model in __init__)
+    # Probe runs once (class-level cache), subsequent inits are instant
     client = VertexGeminiClient()
     result = client.call(prompt, temperature=temperature)
     # Result is dict with raw_text or parsed JSON
