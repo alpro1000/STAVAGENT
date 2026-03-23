@@ -45,9 +45,9 @@ class GeminiClient:
 
         genai.configure(api_key=settings.GOOGLE_API_KEY)
 
-        # Default model: gemini-2.5-flash-lite (Feb 2026, fast, cheap)
-        # Alternatives: gemini-2.5-pro (higher quality), gemini-2.5-flash-lite (balanced)
-        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash-lite')
+        # Default model: gemini-2.5-flash (GA, europe-west3 available)
+        # Alternatives: gemini-2.5-pro (higher quality), gemini-2.5-flash-lite (cheap but not in all regions)
+        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash')
 
         # Safety settings - allow technical content
         self.safety_settings = [
@@ -423,9 +423,15 @@ class VertexGeminiClient:
         self._model_cls = None
         for m in models_to_try:
             try:
-                self._model_cls = VertexGenerativeModel(m)
+                candidate = VertexGenerativeModel(m)
+                # Probe with a tiny call — constructor doesn't validate model existence
+                candidate.generate_content(
+                    "Reply with exactly: ok",
+                    generation_config={"temperature": 0, "max_output_tokens": 4},
+                )
+                self._model_cls = candidate
                 self.model_name = m
-                logger.info(f"✅ [5/5] model selected: {m!r}")
+                logger.info(f"✅ [5/5] model selected: {m!r} (probe OK)")
                 break
             except Exception as e:
                 logger.warning(f"      ✗ model {m!r} unavailable: {type(e).__name__}: {e}")

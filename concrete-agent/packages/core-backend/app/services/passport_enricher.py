@@ -181,7 +181,7 @@ PŘÍKLADY RIZIK:
 VRAŤ POUZE JSON, žádný další text před ani za."""
 
     # Model configurations (UPDATED 2026-03-17 — verified against official docs)
-    GEMINI_MODEL = "gemini-2.5-flash-lite"  # GA, cheap high-volume
+    GEMINI_MODEL = "gemini-2.5-flash"  # GA, cheap high-volume
     CLAUDE_MODEL = "claude-sonnet-4-6-20250217"  # GA, balance speed/quality 1M ctx
     CLAUDE_HAIKU_MODEL = "claude-haiku-4-5-20251015"  # GA, fast cheap high-traffic
     OPENAI_MODEL = "gpt-4.1"  # Smartest without reasoning
@@ -321,7 +321,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 # NOTE: gemini-2.0-flash/lite NOT available in europe-west3
                 vertex_models_to_try = [
                     "gemini-2.5-flash",         # GA: speed + intelligence (1M ctx)
-                    "gemini-2.5-flash-lite",    # GA: cheap high-volume
+                    "gemini-2.5-flash",    # GA: cheap high-volume
                     "gemini-2.5-pro",           # GA: highest quality (last resort)
                 ]
                 for vmodel in vertex_models_to_try:
