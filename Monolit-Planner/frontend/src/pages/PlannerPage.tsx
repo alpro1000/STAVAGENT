@@ -1475,19 +1475,22 @@ export default function PlannerPage() {
                 <div style={{ marginTop: 6, fontSize: 11, color: 'var(--r0-slate-400)' }}>
                   Mzda podle profese (prázdné = základ {form.wage_czk_h} Kč/h):
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginTop: 4 }}>
-                  <Field label="Tesaři (Kč/h)">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginTop: 4 }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Tesaři (Kč/h)</label>
                     <NumInput style={inputStyle} value={form.wage_formwork_czk_h} min={100}
                       onChange={v => update('wage_formwork_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
-                  </Field>
-                  <Field label="Železáři (Kč/h)">
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Železáři (Kč/h)</label>
                     <NumInput style={inputStyle} value={form.wage_rebar_czk_h} min={100}
                       onChange={v => update('wage_rebar_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
-                  </Field>
-                  <Field label="Betonáři (Kč/h)">
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Betonáři (Kč/h)</label>
                     <NumInput style={inputStyle} value={form.wage_pour_czk_h} min={100}
                       onChange={v => update('wage_pour_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
-                  </Field>
+                  </div>
                 </div>
               </Section>
 
