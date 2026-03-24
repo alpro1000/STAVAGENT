@@ -20,6 +20,7 @@ import { LaborTab } from './LaborTab';
 import { MachineryTab } from './MachineryTab';
 import { MaterialsTab } from './MaterialsTab';
 import { TOVSummary } from './TOVSummary';
+import { MONOLIT_FRONTEND_URL } from '../../utils/config.js';
 
 interface TOVModalProps {
   isOpen: boolean;
@@ -234,7 +235,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
           <div className="ml-auto flex items-center pr-4">
             {localData.monolitMetadata?.project_id ? (
               <a
-                href={`${localData.monolitMetadata.monolit_url || 'https://monolit-planner-frontend.vercel.app'}?project=${encodeURIComponent(localData.monolitMetadata.project_id)}&part=${encodeURIComponent(localData.monolitMetadata.part_name || '')}${item.position_instance_id ? `&position_instance_id=${encodeURIComponent(item.position_instance_id)}` : ''}`}
+                href={`${localData.monolitMetadata.monolit_url || MONOLIT_FRONTEND_URL}?project=${encodeURIComponent(localData.monolitMetadata.project_id)}&part=${encodeURIComponent(localData.monolitMetadata.part_name || '')}${item.position_instance_id ? `&position_instance_id=${encodeURIComponent(item.position_instance_id)}` : ''}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-500/10 hover:bg-blue-500/20 rounded transition-colors border border-blue-300/50"
@@ -248,7 +249,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               </a>
             ) : (
               <a
-                href="https://monolit-planner-frontend.vercel.app"
+                href={MONOLIT_FRONTEND_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-500 hover:bg-blue-500/10 rounded transition-colors"

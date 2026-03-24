@@ -27,11 +27,11 @@ class GeminiClient:
         
         genai.configure(api_key=api_key)
         
-        # Gemini 1.5 Flash - быстрая и дешевая модель
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
-        
-        # Gemini 1.5 Pro - для сложных задач
-        self.model_pro = genai.GenerativeModel('gemini-1.5-pro')
+        # Gemini 2.5 Flash - быстрая и дешевая модель
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
+
+        # Gemini 2.5 Pro - для сложных задач
+        self.model_pro = genai.GenerativeModel('gemini-2.5-pro')
     
     async def parse_pdf(
         self,

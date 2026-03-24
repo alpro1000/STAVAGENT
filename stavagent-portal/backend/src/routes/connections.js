@@ -15,7 +15,7 @@ import express from 'express';
 import { randomUUID } from 'crypto';
 import db from '../db/index.js';
 import { requireAuth } from '../middleware/auth.js';
-import { requireOrgRole } from '../middleware/orgRole.js';
+import { requireOrgRole, resolveOrgId } from '../middleware/orgRole.js';
 import { encrypt, decrypt, isEncryptionAvailable } from '../services/encryptionService.js';
 import { logger } from '../utils/logger.js';
 import { connectionTestLimiter } from '../middleware/rateLimiter.js';
@@ -44,14 +44,6 @@ const DEFAULT_MODEL_CONFIG = {
 const ALL_KIOSKS = ['monolit', 'registry', 'urs_matcher', 'pump', 'formwork'];
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-
-/**
- * Resolve the user's active org_id. Uses query/body org_id, or falls back to
- * the user's default org_id from their profile.
- */
-function resolveOrgId(req) {
-  return req.query.org_id || req.body.org_id || req.user.org_id || null;
-}
 
 /**
  * Mask an API key for display: show first 4 and last 4 chars.

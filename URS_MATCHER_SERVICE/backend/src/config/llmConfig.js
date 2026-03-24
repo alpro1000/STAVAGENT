@@ -75,7 +75,7 @@ export function getLLMConfig() {
     break;
   default:
     apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
-    defaultModel = 'gpt-5-mini';
+    defaultModel = 'gpt-4o-mini';
   }
 
   const model = process.env.LLM_MODEL || defaultModel;
@@ -178,7 +178,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'openai',
       apiKey: openaiKey,
-      model: process.env.OPENAI_MODEL || 'gpt-5-mini',
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -536,7 +536,7 @@ const MODEL_PRICING = {
     speedScore: 9,
     qualityScore: 9
   },
-  'gpt-5-mini': {
+  'gpt-4o-mini': {
     provider: 'openai',
     inputCost: 0.15,
     outputCost: 0.60,
@@ -905,7 +905,7 @@ function formatModelName(modelId) {
     'claude-sonnet-4-6': 'Claude Sonnet 4.6',
     'claude-opus-4-6': 'Claude Opus 4.6',
     'gpt-4.1': 'GPT-4.1',
-    'gpt-5-mini': 'GPT-5 Mini',
+    'gpt-4o-mini': 'GPT-4o Mini',
     'gemini-2.5-flash': 'Gemini 2.5 Flash',
     'gemini-2.5-pro': 'Gemini 2.5 Pro',
     'deepseek-v3': 'DeepSeek V3',

@@ -3,7 +3,9 @@
  * Replaces localStorage with PostgreSQL backend
  */
 
-const API_URL = import.meta.env.VITE_REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
+import { REGISTRY_API_URL } from '../utils/config.js';
+
+const API_URL = REGISTRY_API_URL;
 const USER_ID = 1; // Default user for now (no auth)
 const FETCH_TIMEOUT = 8000; // 8s timeout for backend calls
 

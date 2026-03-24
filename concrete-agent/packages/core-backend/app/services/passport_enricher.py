@@ -221,7 +221,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 genai.configure(api_key=settings.GOOGLE_API_KEY)
                 # Try primary model, fallback to stable versions if not available
                 # UPDATED 2026-03-02: Using Gemini 2.5 family (2.0 discontinued March 31, 2026)
-                for model_to_try in [self.GEMINI_MODEL, "gemini-2.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash"]:
+                for model_to_try in [self.GEMINI_MODEL, "gemini-2.5-flash", "gemini-2.5-pro"]:
                     try:
                         self.gemini_model = genai.GenerativeModel(model_to_try)
                         logger.info(f"✅ Gemini initialized: {model_to_try}")

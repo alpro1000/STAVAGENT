@@ -17,7 +17,7 @@ export interface InstanceMapping {
   monolith_payload?: MonolithPayload | null;
 }
 
-const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
+import { PORTAL_API_URL } from '../utils/config.js';
 
 // Debounce timers per project
 const syncTimers = new Map<string, ReturnType<typeof setTimeout>>();
