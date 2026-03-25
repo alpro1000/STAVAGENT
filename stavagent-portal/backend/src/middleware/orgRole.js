@@ -22,6 +22,15 @@ import db from '../db/index.js';
  *   2. req.body.org_id
  *   3. req.query.org_id
  */
+/**
+ * Resolve the user's active org_id from request context.
+ * Checks (in order): params.id, query.org_id, body.org_id, user.org_id.
+ * Returns null if none found.
+ */
+export function resolveOrgId(req) {
+  return req.params.id || req.query.org_id || req.body.org_id || req.user?.org_id || null;
+}
+
 export function requireOrgRole(...allowedRoles) {
   return async (req, res, next) => {
     try {

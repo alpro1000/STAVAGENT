@@ -14,7 +14,7 @@ STAVAGENT/
 ├── stavagent-portal/      ← Portal/Dispatcher (Node.js/Express/React, port 3001)
 ├── Monolit-Planner/       ← Kiosk: Concrete Calculator (Node.js/React, port 3001/5173)
 ├── URS_MATCHER_SERVICE/   ← Kiosk: URS Matching (Node.js, port 3001/3000)
-├── rozpocet-registry/     ← Kiosk: BOQ Registry (React/Vite browser-only, port 5173)
+├── rozpocet-registry/     ← Kiosk: BOQ Registry (React/Vite + Vercel serverless backend, port 5173)
 ├── docs/                  ← System-level documentation
 └── .github/workflows/     ← CI/CD (keep-alive, monolit CI, test coverage, URS tests)
 ```
@@ -46,7 +46,7 @@ STAVAGENT/
 Portal (Dispatcher) ──┬──→ concrete-agent (CORE: AI, parsing, audit, Multi-Role)
                       ├──→ Monolit-Planner (concrete cost calculator, CZK/m³)
                       ├──→ URS_MATCHER_SERVICE (BOQ→URS code matching)
-                      └──→ rozpocet-registry (BOQ classification, browser-only)
+                      └──→ rozpocet-registry (BOQ classification, browser + Vercel serverless backend)
 
 Flow: User → Portal upload → CORE parse/audit → Kiosk calculate → Portal results
 Linking: portal_project_id (UUID) → core_processing_id + kiosk_result_id
@@ -115,7 +115,7 @@ Design: Slate Minimal — CSS variables (`--r0-*`), zero hardcoded hex colors in
 Node.js/Express + SQLite. BOQ→URS code matching via AI. 4-phase: Norms Search → Multi-model LLM Routing → Knowledge Base → Learning System. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 8 LLM providers configured (Gemini primary via Vertex AI). 159 tests.
 
 ### 5. rozpocet-registry (Kiosk)
-React 19 + TypeScript + Vite (browser-only, Zustand + localStorage). BOQ classification into 10 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison.
+React 19 + TypeScript + Vite + Vercel serverless backend (`api/`). BOQ classification into 11 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison.
 
 ---
 
@@ -151,7 +151,7 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 **Git Hooks (Husky):** Pre-commit runs 34 formula tests (~470ms), pre-push validates branch + tests.
 
 **Key decisions:**
-- rozpocet-registry: browser-only, Zustand + localStorage
+- rozpocet-registry: browser + Vercel serverless backend (`api/`), Zustand + localStorage
 - Monolit: PostgreSQL prod, SQLite dev
 - URS Matcher: per-request LLM fallback
 - concrete-agent: Vertex AI Gemini primary (GCP credits, no API keys on Cloud Run)
@@ -189,7 +189,7 @@ VITE_DISABLE_AUTH=true
 |---------|-------|
 | URS empty results | LLM timeout (90s), AbortController per-provider, Multi-Role URL |
 | Monolit wrong calc | `concrete_m3` value, `unit_cost_on_m3`, KROS rounding `Math.ceil(x/50)*50` |
-| Registry classification | `constants.ts` 10 groups, `classificationRules.ts`, diacritics normalization |
+| Registry classification | `constants.ts` 11 groups, `classificationRules.ts`, diacritics normalization |
 | CORE unavailable | Cloud Run status, `/health`, Secret Manager |
 | DB connection | Cloud SQL instance status, `--add-cloudsql-instances` in cloudbuild |
 | LLM 401 errors | Vertex AI: check SA role `aiplatform.user`, ADC auth |

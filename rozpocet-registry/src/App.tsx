@@ -23,6 +23,7 @@ import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, 
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
 import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows } from 'lucide-react';
+import { PORTAL_API_URL } from './utils/config.js';
 
 /**
  * Convert portal item data (tov_labor/tov_machinery/tov_materials OR dov_payload)
@@ -461,7 +462,7 @@ function App() {
     window.history.replaceState({}, '', window.location.pathname);
 
     try {
-      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
+      const PORTAL_API = PORTAL_API_URL;
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
         credentials: 'include'
       });

@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { Plus, Trash2, ExternalLink } from 'lucide-react';
 import type { MaterialResource, FormworkRentalRow } from '../../types/unified';
+import { MONOLIT_FRONTEND_URL } from '../../utils/config.js';
 import { v4 as uuidv4 } from 'uuid';
 import { FormworkRentalSection } from './FormworkRentalSection';
 
@@ -81,7 +82,7 @@ export function MaterialsTab({
   };
 
   const openInMonolit = () => {
-    window.open('https://monolit-planner-frontend.vercel.app', '_blank');
+    window.open(MONOLIT_FRONTEND_URL, '_blank');
   };
 
   const totalCost = resources.reduce((sum, r) => sum + (r.totalCost || 0), 0);
