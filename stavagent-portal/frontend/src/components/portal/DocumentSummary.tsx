@@ -1299,6 +1299,196 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 )}
               </>
             )}
+
+            {/* === TYPE-SPECIFIC EXTRACTIONS === */}
+
+            {/* Technical Report (TZ) */}
+            {(passportData as any).technical && (() => {
+              const t = (passportData as any).technical;
+              const rows: [string, string][] = [];
+              if (t.structure_type) rows.push(['Typ konstrukce', t.structure_type]);
+              if (t.structure_subtype) rows.push(['Podtyp', t.structure_subtype]);
+              if (t.total_length_m) rows.push(['Délka', `${t.total_length_m} m`]);
+              if (t.width_m) rows.push(['Šířka', `${t.width_m} m`]);
+              if (t.height_m) rows.push(['Výška', `${t.height_m} m`]);
+              if (t.area_m2) rows.push(['Plocha', `${t.area_m2} m²`]);
+              if (t.volume_m3) rows.push(['Objem', `${t.volume_m3} m³`]);
+              if (t.span_count) rows.push(['Počet polí', `${t.span_count}`]);
+              if (t.span_lengths_m?.length) rows.push(['Rozpětí', t.span_lengths_m.map((v: number) => `${v} m`).join(', ')]);
+              if (t.concrete_grade) rows.push(['Beton', t.concrete_grade]);
+              if (t.reinforcement_grade) rows.push(['Výztuž', t.reinforcement_grade]);
+              if (t.foundation_type) rows.push(['Základy', t.foundation_type]);
+              if (t.fabrication_method) rows.push(['Výstavba', t.fabrication_method]);
+              if (t.load_class) rows.push(['Zatížení', t.load_class]);
+              if (t.design_life_years) rows.push(['Životnost', `${t.design_life_years} let`]);
+              if (t.construction_duration_months) rows.push(['Doba výstavby', `${t.construction_duration_months} měsíců`]);
+              if (t.applicable_standards?.length) rows.push(['Normy', t.applicable_standards.join(', ')]);
+              if (t.special_conditions?.length) rows.push(['Speciální podmínky', t.special_conditions.join('; ')]);
+              if (rows.length === 0) return null;
+              return (
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', borderBottom: '2px solid #3B82F6', paddingBottom: '6px' }}>
+                    Technické parametry (AI extrakce)
+                  </div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                    <tbody>
+                      {rows.map(([label, value], i) => (
+                        <tr key={i}>
+                          <td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)', width: '160px' }}>{label}</td>
+                          <td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            })()}
+
+            {/* Bill of Quantities (RO) */}
+            {(passportData as any).bill_of_quantities && (() => {
+              const b = (passportData as any).bill_of_quantities;
+              const rows: [string, string][] = [];
+              if (b.total_items) rows.push(['Počet položek', `${b.total_items}`]);
+              if (b.total_price_czk) rows.push(['Celková cena', `${b.total_price_czk.toLocaleString('cs-CZ')} Kč`]);
+              if (b.concrete_volume_m3) rows.push(['Beton', `${b.concrete_volume_m3} m³`]);
+              if (b.steel_tonnage_t) rows.push(['Výztuž', `${b.steel_tonnage_t} t`]);
+              if (b.earthwork_volume_m3) rows.push(['Zemní práce', `${b.earthwork_volume_m3} m³`]);
+              if (rows.length === 0) return null;
+              return (
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', borderBottom: '2px solid #10B981', paddingBottom: '6px' }}>
+                    Rozpočet — souhrn (AI extrakce)
+                  </div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                    <tbody>
+                      {rows.map(([label, value], i) => (
+                        <tr key={i}>
+                          <td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)', width: '160px' }}>{label}</td>
+                          <td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {b.categories?.length > 0 && (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', marginTop: '10px' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
+                          <th style={{ textAlign: 'left', padding: '4px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Kategorie</th>
+                          <th style={{ textAlign: 'right', padding: '4px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Cena</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {b.categories.map((cat: any, i: number) => (
+                          <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                            <td style={{ padding: '4px 10px' }}>{cat.name}</td>
+                            <td style={{ padding: '4px 10px', textAlign: 'right', fontWeight: 500 }}>
+                              {cat.price_czk ? `${Number(cat.price_czk).toLocaleString('cs-CZ')} Kč` : '—'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* Tender Conditions (PD) */}
+            {(passportData as any).tender_conditions && (() => {
+              const p = (passportData as any).tender_conditions;
+              const rows: [string, string][] = [];
+              if (p.tender_name) rows.push(['Název zakázky', p.tender_name]);
+              if (p.contracting_authority) rows.push(['Zadavatel', p.contracting_authority]);
+              if (p.submission_deadline) rows.push(['Termín podání', p.submission_deadline]);
+              if (p.question_deadline) rows.push(['Termín pro dotazy', p.question_deadline]);
+              if (p.estimated_budget) rows.push(['Předpokládaná hodnota', `${Number(p.estimated_budget).toLocaleString('cs-CZ')} ${p.currency || 'CZK'}`]);
+              if (p.submission_method) rows.push(['Způsob podání', p.submission_method]);
+              if (rows.length === 0) return null;
+              return (
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', borderBottom: '2px solid #8B5CF6', paddingBottom: '6px' }}>
+                    Zadávací podmínky (AI extrakce)
+                  </div>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                    <tbody>
+                      {rows.map(([label, value], i) => (
+                        <tr key={i}>
+                          <td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)', width: '180px' }}>{label}</td>
+                          <td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {p.qualification_criteria?.length > 0 && (
+                    <div style={{ marginTop: '8px', paddingLeft: '10px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Kvalifikace: </span>
+                      <span style={{ fontSize: '13px' }}>{p.qualification_criteria.join('; ')}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            {/* Schedule (HA) */}
+            {(passportData as any).schedule && (() => {
+              const s = (passportData as any).schedule;
+              const rows: [string, string][] = [];
+              if (s.total_duration_months) rows.push(['Celková doba', `${s.total_duration_months} měsíců`]);
+              if (s.start_date) rows.push(['Zahájení', s.start_date]);
+              if (s.end_date) rows.push(['Dokončení', s.end_date]);
+              if (rows.length === 0 && !s.phases?.length && !s.milestones?.length) return null;
+              return (
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', borderBottom: '2px solid #EC4899', paddingBottom: '6px' }}>
+                    Harmonogram (AI extrakce)
+                  </div>
+                  {rows.length > 0 && (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                      <tbody>
+                        {rows.map(([label, value], i) => (
+                          <tr key={i}>
+                            <td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)', width: '160px' }}>{label}</td>
+                            <td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                  {s.phases?.length > 0 && (
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', marginTop: '10px' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
+                          <th style={{ textAlign: 'left', padding: '4px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Etapa</th>
+                          <th style={{ textAlign: 'left', padding: '4px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Trvání</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {s.phases.map((phase: any, i: number) => (
+                          <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                            <td style={{ padding: '4px 10px' }}>{phase.name}</td>
+                            <td style={{ padding: '4px 10px' }}>{phase.duration || '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                  {s.milestones?.length > 0 && (
+                    <div style={{ marginTop: '8px', paddingLeft: '10px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Milníky: </span>
+                      <span style={{ fontSize: '13px' }}>
+                        {s.milestones.map((m: any) => `${m.name}${m.date ? ` (${m.date})` : ''}`).join(' — ')}
+                      </span>
+                    </div>
+                  )}
+                  {s.critical_path?.length > 0 && (
+                    <div style={{ marginTop: '6px', paddingLeft: '10px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: '#EF4444', textTransform: 'uppercase' }}>Kritická cesta: </span>
+                      <span style={{ fontSize: '13px' }}>{s.critical_path.join(' → ')}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
           </div>
 
           {/* Metadata */}

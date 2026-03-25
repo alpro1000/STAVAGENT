@@ -3,15 +3,16 @@ Document Classifier — 3-tier classification for Czech construction documents.
 
 Tier 1: Filename patterns (fast, 0.9 confidence)
 Tier 2: Content keywords (medium, 0.4-0.85 confidence)
-Tier 3: AI fallback (slow, 0.5-0.8 confidence) — TODO
+Tier 3: AI fallback (LLM, 0.5-0.8 confidence)
 
 Author: STAVAGENT Team
-Version: 1.0.0
+Version: 1.1.0
 """
 
 import logging
 import unicodedata
-from typing import Dict, List
+import json
+from typing import Dict, List, Optional
 
 from app.models.passport_schema import DocCategory, ClassificationInfo
 
@@ -113,14 +114,10 @@ def _normalize(text: str) -> str:
 
 def classify_document(filename: str, text: str = "") -> ClassificationInfo:
     """
-    Classify a construction document using 3-tier approach.
+    Classify a construction document using tiers 1-2 (sync, no LLM).
 
-    Args:
-        filename: Original filename
-        text: Extracted document text (optional, used for tier 2)
-
-    Returns:
-        ClassificationInfo with category, confidence, method
+    For full 3-tier classification including AI fallback, use
+    classify_document_async() instead.
     """
     # Tier 1: Filename patterns
     result = _classify_by_filename(filename)
@@ -140,10 +137,77 @@ def classify_document(filename: str, text: str = "") -> ClassificationInfo:
                      f"({result.method}, confidence={result.confidence:.2f})")
         return result
 
-    # Tier 3: AI classification — TODO: integrate with LLM client
-    # For now, return best guess from tier 1/2
     logger.info(f"Classification uncertain for '{filename}': "
                  f"{result.category.value} (confidence={result.confidence:.2f})")
+    return result
+
+
+AI_CLASSIFY_PROMPT = """Klasifikuj tento dokument do JEDNÉ z těchto kategorií:
+
+TZ — Technická zpráva (konstrukční řešení, materiály, statika)
+RO — Rozpočet / Výkaz výměr (položky, ceny, množství)
+PD — Podmínky / Zadávací dokumentace (tender, kvalifikace, lhůty)
+VY — Výkresy (výkresová dokumentace, situace, řezy)
+SM — Smlouva / Návrh (smluvní strany, předmět díla)
+HA — Harmonogram (etapy, milníky, termíny)
+GE — Geologický průzkum (vrty, zemina, hladina vody)
+ZP — BOZP / Životní prostředí (bezpečnost, EIA)
+TI — Titulní list / Obsah
+OT — Ostatní
+
+Název souboru: {filename}
+
+ÚSEK DOKUMENTU (prvních 3000 znaků):
+{text_snippet}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{"category": "XX", "reason": "krátké odůvodnění"}}"""
+
+
+async def classify_document_async(
+    filename: str,
+    text: str = "",
+    llm_call=None,
+) -> ClassificationInfo:
+    """
+    Full 3-tier classification with AI fallback.
+
+    Args:
+        filename: Original filename
+        text: Extracted document text
+        llm_call: Async callable (prompt) -> dict|None from PassportEnricher._call_llm
+    """
+    # Try tiers 1-2 first
+    result = classify_document(filename, text)
+    if result.confidence >= 0.5:
+        return result
+
+    # Tier 3: AI classification
+    if llm_call and text:
+        try:
+            snippet = text[:3000]
+            prompt = AI_CLASSIFY_PROMPT.format(filename=filename, text_snippet=snippet)
+            ai_result = await llm_call(prompt)
+
+            if ai_result and isinstance(ai_result, dict):
+                raw_cat = ai_result.get("category", "").upper().strip()
+                # Validate category
+                valid_cats = {c.value for c in DocCategory}
+                if raw_cat in valid_cats:
+                    ai_classification = ClassificationInfo(
+                        category=DocCategory(raw_cat),
+                        confidence=0.7,
+                        method="ai",
+                        detected_keywords=[ai_result.get("reason", "")],
+                    )
+                    logger.info(
+                        f"AI classified '{filename}' as {raw_cat} "
+                        f"(reason: {ai_result.get('reason', '?')})"
+                    )
+                    return ai_classification
+        except Exception as e:
+            logger.warning(f"AI classification failed for '{filename}': {e}")
+
     return result
 
 

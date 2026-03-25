@@ -33,6 +33,7 @@ Date: 2026-02-10
 import logging
 import time
 import uuid
+import asyncio
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from datetime import datetime
@@ -40,7 +41,8 @@ from datetime import datetime
 from app.parsers.smart_parser import SmartParser
 from app.services.regex_extractor import CzechConstructionExtractor
 from app.services.passport_enricher import PassportEnricher
-from app.services.document_classifier import classify_document
+from app.services.document_classifier import classify_document, classify_document_async
+from app.core.config import settings
 from app.models.passport_schema import (
     ProjectPassport,
     PassportGenerationRequest,
@@ -48,6 +50,11 @@ from app.models.passport_schema import (
     PassportMetadata,
     PassportStatistics,
     ClassificationInfo,
+    DocCategory,
+    TechnicalExtraction,
+    BillOfQuantitiesExtraction,
+    TenderConditionsExtraction,
+    ScheduleExtraction,
 )
 
 logger = logging.getLogger(__name__)
@@ -133,10 +140,11 @@ class DocumentProcessor:
             layer1_time = int((time.time() - layer1_start) * 1000)
             logger.info(f"Layer 1 complete: {layer1_time}ms, {len(document_text)} chars")
 
-            # === CLASSIFICATION: Detect document type ===
-            classification = classify_document(
+            # === CLASSIFICATION: Detect document type (3-tier with AI fallback) ===
+            classification = await classify_document_async(
                 filename=Path(file_path).name,
                 text=document_text,
+                llm_call=self.enricher._call_llm if enable_ai_enrichment else None,
             )
             logger.info(f"Classification: {classification.category.value} "
                          f"(confidence={classification.confidence:.2f}, method={classification.method})")
@@ -195,6 +203,13 @@ class DocumentProcessor:
                     'time_ms': 0,
                     'enrichments_added': 0
                 }
+
+            # === TYPE-SPECIFIC EXTRACTION (based on classification) ===
+            type_extractions: Dict[str, Any] = {}
+            if enable_ai_enrichment and classification.confidence >= 0.5:
+                type_extractions = await self._extract_type_specific(
+                    classification, document_text
+                )
 
             # Calculate total time
             total_time = int((time.time() - start_time) * 1000)
@@ -265,6 +280,10 @@ class DocumentProcessor:
                 metadata=metadata,
                 statistics=statistics,
                 classification=classification,
+                technical=type_extractions.get("technical"),
+                bill_of_quantities=type_extractions.get("bill_of_quantities"),
+                tender_conditions=type_extractions.get("tender_conditions"),
+                schedule=type_extractions.get("schedule"),
             )
 
         except Exception as e:
@@ -289,7 +308,12 @@ class DocumentProcessor:
         project_id: Optional[str] = None
     ) -> Dict[str, Any]:
         """
-        Parse document using SmartParser.
+        Parse document using SmartParser + cascading PDF recovery.
+
+        Pipeline for PDFs:
+          1. SmartParser (pdfplumber) — fast, primary
+          2. PdfTextRecovery (pdfminer→pypdfium2→poppler→OCR) — scans, broken fonts
+          3. MinerU (async subprocess) — deep structural extraction
 
         Returns:
             {
@@ -307,43 +331,18 @@ class DocumentProcessor:
         size_mb = path_obj.stat().st_size / (1024 * 1024)
         logger.info(f"Parsing file: {path_obj.name} ({size_mb:.1f}MB)")
 
-        # For large PDFs (>20MB), use streaming parser
+        # Use SmartParser for structural parsing (positions, tables)
         if path_obj.suffix.lower() == '.pdf' and size_mb > 20:
-            logger.warning(f"Large PDF detected ({size_mb:.1f}MB) - using streaming parser with page limit")
-            parsed = self.parser.parse(path_obj, project_id=project_id)
-            # Extract only first 50 pages for large PDFs to avoid memory overflow
-            text_content = ""
-            try:
-                import pdfplumber
-                with pdfplumber.open(path_obj) as pdf:
-                    max_pages = min(50, len(pdf.pages))
-                    logger.info(f"Extracting text from first {max_pages} pages (total: {len(pdf.pages)})")
-                    for page_num in range(max_pages):
-                        page_text = pdf.pages[page_num].extract_text()
-                        if page_text:
-                            text_content += page_text + "\n"
-                logger.info(f"PDF text extracted: {len(text_content)} chars from {max_pages} pages")
-            except Exception as e:
-                logger.warning(f"Failed to extract PDF text: {e}")
-        else:
-            # Use SmartParser for normal-sized files
-            parsed = self.parser.parse(path_obj, project_id=project_id)
+            logger.warning(f"Large PDF ({size_mb:.1f}MB) — streaming parser")
+        parsed = self.parser.parse(path_obj, project_id=project_id)
 
-            # Extract text content
-            text_content = ""
+        text_content = ""
 
-            # For PDFs: ALWAYS extract full text with pdfplumber first
-            if path_obj.suffix.lower() == '.pdf':
-                try:
-                    import pdfplumber
-                    with pdfplumber.open(path_obj) as pdf:
-                        for page in pdf.pages:
-                            page_text = page.extract_text()
-                            if page_text:
-                                text_content += page_text + "\n"
-                    logger.info(f"PDF full text extracted: {len(text_content)} chars from {len(pdf.pages)} pages")
-                except Exception as e:
-                    logger.warning(f"Failed to extract PDF text with pdfplumber: {e}")
+        # === PDF TEXT EXTRACTION: 3-tier cascade ===
+        if path_obj.suffix.lower() == '.pdf':
+            text_content = await self._extract_pdf_text(path_obj)
+
+        # === NON-PDF: handled by SmartParser directly ===
 
         # Supplement with position descriptions from SmartParser (table data)
         if 'positions' in parsed:
@@ -369,6 +368,175 @@ class DocumentProcessor:
             'structure': parsed.get('project_info', {}),
             'raw_parsed': parsed
         }
+
+    # =============================================================================
+    # PDF TEXT EXTRACTION: 3-tier cascade
+    # =============================================================================
+
+    async def _extract_pdf_text(self, path_obj: Path) -> str:
+        """
+        Extract text from PDF with 3-tier fallback:
+          Tier 1: pdfplumber (fast, good for digital PDFs)
+          Tier 2: PdfTextRecovery (pdfminer→pdfium→poppler→OCR — scans, broken fonts)
+          Tier 3: MinerU async subprocess (deep structural extraction)
+
+        Returns best available text.
+        """
+        text_content = ""
+        total_pages = 0
+        strategy = "none"
+
+        # --- Tier 1: pdfplumber (primary, fast) ---
+        try:
+            import pdfplumber
+            with pdfplumber.open(path_obj) as pdf:
+                total_pages = len(pdf.pages)
+                max_pages = min(total_pages, 70)
+                empty_count = 0
+                for page_num in range(max_pages):
+                    try:
+                        page_text = pdf.pages[page_num].extract_text()
+                        if page_text and page_text.strip():
+                            text_content += page_text + "\n"
+                        else:
+                            empty_count += 1
+                    except Exception as page_err:
+                        logger.debug(f"Page {page_num + 1} pdfplumber error: {page_err}")
+                        empty_count += 1
+
+                if empty_count > 0:
+                    logger.info(f"PDF tier-1 (pdfplumber): skipped {empty_count} empty pages")
+                logger.info(f"PDF tier-1 (pdfplumber): {len(text_content)} chars from {max_pages}/{total_pages} pages")
+                strategy = "pdfplumber"
+        except Exception as e:
+            logger.warning(f"PDF tier-1 (pdfplumber) failed: {e}")
+
+        # --- Quality check: is pdfplumber text usable? ---
+        # Threshold: at least 50 chars per page on average (otherwise likely scan/bad encoding)
+        avg_chars_per_page = len(text_content) / max(total_pages, 1)
+        text_quality_ok = avg_chars_per_page >= 50 and len(text_content) > 200
+
+        if text_quality_ok:
+            logger.info(f"PDF text quality OK ({avg_chars_per_page:.0f} chars/page avg), using pdfplumber")
+            return text_content
+
+        # --- Tier 2: PdfTextRecovery (cascading extractors + OCR) ---
+        logger.info(f"PDF text quality low ({avg_chars_per_page:.0f} chars/page), trying PdfTextRecovery")
+        try:
+            from app.services.pdf_text_recovery import PdfTextRecovery
+
+            recovery = PdfTextRecovery()
+            # Run sync recovery in thread pool to avoid blocking
+            summary = await asyncio.to_thread(recovery.recover, path_obj)
+
+            recovered_text = ""
+            for page in summary.pages:
+                if page.accepted.text and page.accepted.text.strip():
+                    recovered_text += page.accepted.text + "\n"
+
+            counters = summary.page_state_counters()
+            logger.info(
+                f"PDF tier-2 (recovery): {len(recovered_text)} chars, "
+                f"states: good={counters.get('good_text', 0)} "
+                f"encoded={counters.get('encoded_text', 0)} "
+                f"image={counters.get('image_only', 0)}, "
+                f"pdfium={summary.used_pdfium}, poppler={summary.used_poppler}, "
+                f"ocr_pages={len(summary.queued_ocr_pages)}"
+            )
+
+            if len(recovered_text) > len(text_content):
+                text_content = recovered_text
+                strategy = "pdf_recovery"
+                logger.info("PDF tier-2 produced better text, using recovery result")
+        except Exception as e:
+            logger.warning(f"PDF tier-2 (recovery) failed: {e}")
+
+        # --- Tier 3: MinerU (async subprocess, deep extraction) ---
+        if settings.USE_MINERU and len(text_content) < 500:
+            logger.info("PDF text still sparse, trying MinerU (tier-3)")
+            try:
+                mineru_text = await self._run_mineru_async(path_obj)
+                if mineru_text and len(mineru_text) > len(text_content):
+                    text_content = mineru_text
+                    strategy = "mineru"
+                    logger.info(f"PDF tier-3 (MinerU): {len(mineru_text)} chars extracted")
+            except Exception as e:
+                logger.warning(f"PDF tier-3 (MinerU) failed: {e}")
+
+        logger.info(f"PDF extraction final: strategy={strategy}, {len(text_content)} chars")
+        return text_content
+
+    async def _run_mineru_async(self, pdf_path: Path) -> str:
+        """
+        Run MinerU as async subprocess. Returns extracted text.
+        Properly async — no asyncio.run() antipattern.
+        """
+        import shutil
+        import tempfile
+        import unicodedata
+        import re
+
+        # Slugify filename to avoid MinerU crash with diacritics
+        stem = pdf_path.stem
+        normalized = unicodedata.normalize("NFKD", stem)
+        safe_stem = re.sub(r"[^\w\-]", "_", normalized.encode("ascii", "ignore").decode("ascii")).strip("_") or "doc"
+
+        output_dir = Path(tempfile.gettempdir()) / "mineru_output" / safe_stem
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Copy file if filename has diacritics
+        if safe_stem != stem:
+            source_path = output_dir / f"{safe_stem}.pdf"
+            shutil.copy2(pdf_path, source_path)
+        else:
+            source_path = pdf_path
+
+        # MinerU 2.x: default backend is hybrid-auto-engine (VLM + pipeline)
+        # Omit -b flag to use the smarter default; -d cpu for Cloud Run (no GPU)
+        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-d", "cpu"]
+        logger.info(f"MinerU async: {' '.join(cmd)}")
+
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        try:
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=300)  # 5 min max
+        except asyncio.TimeoutError:
+            proc.kill()
+            logger.error("MinerU timed out after 300s")
+            return ""
+
+        if proc.returncode != 0:
+            err_text = stderr.decode("utf-8", errors="replace")[:500]
+            logger.error(f"MinerU exited {proc.returncode}: {err_text}")
+            return ""
+
+        # Read output markdown
+        md_files = list(output_dir.rglob("*.md"))
+        if not md_files:
+            logger.warning("MinerU produced no output files")
+            return ""
+
+        md_content = md_files[0].read_text(encoding="utf-8", errors="replace")
+
+        # Strip markdown formatting, keep text
+        # Remove table HTML tags but keep content
+        text = re.sub(r"</?(?:table|tr|td|th|thead|tbody)[^>]*>", " ", md_content)
+        text = re.sub(r"[#*_`>|]", "", text)  # Remove markdown formatting
+        text = re.sub(r"\n{3,}", "\n\n", text)  # Collapse extra newlines
+        text = re.sub(r"  +", " ", text)  # Collapse spaces
+
+        # Cleanup temp if copy was made
+        if safe_stem != stem:
+            try:
+                source_path.unlink(missing_ok=True)
+            except Exception:
+                pass
+
+        return text.strip()
 
     # =============================================================================
     # PASSPORT BUILDING
@@ -474,6 +642,144 @@ class DocumentProcessor:
             return 'Bednění'
 
         return 'Ostatní'
+
+    # =============================================================================
+    # TYPE-SPECIFIC AI EXTRACTION
+    # =============================================================================
+
+    TYPE_EXTRACTION_PROMPTS: Dict[DocCategory, str] = {
+        DocCategory.TZ: """Analyzuj tuto technickou zprávu. Extrahuj POUZE fakta nalezená v textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "project_name": "název projektu nebo null",
+  "structure_type": "typ konstrukce (most, budova, tunel...) nebo null",
+  "structure_subtype": "podtyp nebo null",
+  "total_length_m": číslo nebo null,
+  "width_m": číslo nebo null,
+  "height_m": číslo nebo null,
+  "area_m2": číslo nebo null,
+  "volume_m3": číslo nebo null,
+  "span_count": číslo nebo null,
+  "span_lengths_m": [čísla] nebo [],
+  "concrete_grade": "C30/37" nebo null,
+  "reinforcement_grade": "B500B" nebo null,
+  "foundation_type": "typ základu" nebo null,
+  "fabrication_method": "metoda výroby/výstavby" nebo null,
+  "load_class": "třída zatížení" nebo null,
+  "design_life_years": číslo nebo null,
+  "applicable_standards": ["ČSN ...", "EN ..."],
+  "construction_duration_months": číslo nebo null,
+  "special_conditions": ["speciální podmínky"]
+}}""",
+
+        DocCategory.RO: """Analyzuj tento rozpočet/výkaz výměr. Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "total_items": počet položek,
+  "total_price_czk": celková cena nebo null,
+  "categories": [{{"name": "HSV", "price_czk": číslo}}, ...],
+  "key_materials": [{{"name": "Beton C30/37", "quantity": číslo, "unit": "m3"}}, ...],
+  "concrete_volume_m3": číslo nebo null,
+  "steel_tonnage_t": číslo nebo null,
+  "earthwork_volume_m3": číslo nebo null
+}}""",
+
+        DocCategory.PD: """Analyzuj zadávací/smluvní podmínky. Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "tender_name": "název zakázky" nebo null,
+  "contracting_authority": "zadavatel" nebo null,
+  "submission_deadline": "termín podání" nebo null,
+  "question_deadline": "termín pro dotazy" nebo null,
+  "estimated_budget": číslo nebo null,
+  "currency": "CZK",
+  "required_documents": ["seznam požadovaných dokumentů"],
+  "qualification_criteria": ["kvalifikační předpoklady"],
+  "evaluation_criteria": [{{"criterion": "název", "weight_pct": číslo}}],
+  "submission_method": "způsob podání" nebo null
+}}""",
+
+        DocCategory.HA: """Analyzuj tento harmonogram. Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "total_duration_months": číslo nebo null,
+  "start_date": "datum" nebo null,
+  "end_date": "datum" nebo null,
+  "phases": [{{"name": "etapa", "duration": "trvání"}}, ...],
+  "milestones": [{{"name": "milník", "date": "datum"}}, ...],
+  "critical_path": ["aktivity na kritické cestě"]
+}}""",
+    }
+
+    EXTRACTION_MODEL_MAP = {
+        DocCategory.TZ: TechnicalExtraction,
+        DocCategory.RO: BillOfQuantitiesExtraction,
+        DocCategory.PD: TenderConditionsExtraction,
+        DocCategory.HA: ScheduleExtraction,
+    }
+
+    async def _extract_type_specific(
+        self,
+        classification: ClassificationInfo,
+        document_text: str,
+    ) -> Dict[str, Any]:
+        """
+        Run type-specific AI extraction based on document classification.
+
+        Returns dict with keys like 'technical', 'bill_of_quantities', etc.
+        """
+        category = classification.category
+        prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
+        model_cls = self.EXTRACTION_MODEL_MAP.get(category)
+
+        if not prompt_template or not model_cls:
+            return {}
+
+        # Limit text to avoid token overflow (use first 30K chars)
+        text_for_extraction = document_text[:30_000]
+        prompt = prompt_template.format(text=text_for_extraction)
+
+        try:
+            result = await self.enricher._call_llm(prompt)
+            if not result or not isinstance(result, dict):
+                return {}
+
+            # Parse into Pydantic model for validation
+            extraction = model_cls(**result)
+
+            # Map category to response field name
+            field_map = {
+                DocCategory.TZ: "technical",
+                DocCategory.RO: "bill_of_quantities",
+                DocCategory.PD: "tender_conditions",
+                DocCategory.HA: "schedule",
+            }
+            field_name = field_map.get(category)
+            if field_name:
+                logger.info(f"Type-specific extraction ({category.value}): "
+                             f"{len(result)} fields extracted")
+                return {field_name: extraction}
+
+        except Exception as e:
+            logger.warning(f"Type-specific extraction failed ({category.value}): {e}")
+
+        return {}
 
 
 # =============================================================================

@@ -86,6 +86,10 @@ class SmartParser:
         return self.kros_parser.parse(str(path))
 
     def parse_pdf(self, path: Path) -> Dict[str, Any]:
+        """
+        Sync PDF parsing — pdfplumber → memory_pdf fallback.
+        MinerU is now handled async by DocumentProcessor._run_mineru_async().
+        """
         size_mb = _get_file_size_mb(path)
         logger.info(f"SmartParser: PDF {path.name} ({size_mb:.1f}MB)")
         if size_mb > SIZE_THRESHOLD_MB:
@@ -96,16 +100,9 @@ class SmartParser:
             if positions:
                 logger.info(f"SmartParser: pdfplumber extracted {len(positions)} positions")
                 return {"positions": positions, "strategy": "pdfplumber"}
-            logger.info("SmartParser: pdfplumber returned 0 positions, trying MinerU")
+            logger.info("SmartParser: pdfplumber returned 0 positions")
         except Exception as e:
             logger.warning(f"SmartParser: pdfplumber failed: {e}")
-        if ENABLE_MINERU:
-            try:
-                mineru_result = asyncio.run(self._parse_with_mineru_async(path))
-                if mineru_result and mineru_result.get("positions"):
-                    return mineru_result
-            except Exception as e:
-                logger.warning(f"SmartParser: MinerU failed: {e}")
         return self.memory_pdf.parse(str(path))
 
     async def _parse_with_mineru_async(self, pdf_path: Path) -> Dict[str, Any]:
@@ -118,7 +115,8 @@ class SmartParser:
             source_path = safe_pdf
         else:
             source_path = pdf_path
-        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-b", "pipeline", "-d", "cpu"]
+        # MinerU 2.x: omit -b to use default hybrid-auto-engine backend
+        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-d", "cpu"]
         logger.info(f"SmartParser: running MinerU async: {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_exec(
             *cmd,

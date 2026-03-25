@@ -237,9 +237,13 @@ async def _generate_adaptive_summary(
     if not document_text:
         raise HTTPException(status_code=400, detail="Failed to extract text from document")
 
-    # Classify document
-    from app.services.document_classifier import classify_document
-    classification = classify_document(Path(file_path).name, document_text)
+    # Classify document (3-tier with AI fallback)
+    from app.services.document_classifier import classify_document_async
+    from app.services.passport_enricher import PassportEnricher
+    _enricher = PassportEnricher(preferred_model=preferred_model)
+    classification = await classify_document_async(
+        Path(file_path).name, document_text, llm_call=_enricher._call_llm
+    )
 
     # Generate adaptive summary
     summarizer = BriefDocumentSummarizer(preferred_model=preferred_model)
