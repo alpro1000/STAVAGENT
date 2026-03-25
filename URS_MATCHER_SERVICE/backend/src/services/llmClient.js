@@ -490,7 +490,7 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
 
   const body = {
     systemInstruction: { parts: [{ text: systemPrompt }] },
-    contents: { parts: [{ text: userPrompt }] },
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
     generationConfig: {
       temperature: 0.3,
       maxOutputTokens: 4096
@@ -502,6 +502,9 @@ async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, control
     const response = await axios.post(apiUrl, body, axiosConfig);
     return response.data.candidates[0].content.parts[0].text;
   } catch (error) {
+    if (error.response?.data) {
+      logger.error(`[Gemini] API error ${error.response.status}: ${JSON.stringify(error.response.data).substring(0, 500)}`);
+    }
     const FALLBACK_MODEL = 'gemini-2.5-flash';
     if (error.response?.status === 404 && client.model !== FALLBACK_MODEL) {
       logger.warn(`[Gemini] Model "${client.model}" 404 — retrying with ${FALLBACK_MODEL}`);
