@@ -222,6 +222,17 @@ export default function PortalPage() {
   const [projectNotFound, setProjectNotFound] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'services' | 'projects' | 'admin'>('services');
 
+  // Lock body scroll when any modal is open
+  const anyModalOpen = showCreateModal || showAuditModal || showDocumentsModal || showDocumentSummaryModal || showParsePreviewModal || showDrawingAnalysis;
+  useEffect(() => {
+    if (anyModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [anyModalOpen]);
+
   // Load projects on mount
   useEffect(() => {
     loadProjects();
@@ -864,6 +875,9 @@ export default function PortalPage() {
       {/* Document Summary Modal */}
       {showDocumentSummaryModal && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Shrnutí dokumentu"
           style={{
             position: 'fixed',
             inset: 0,
@@ -873,6 +887,7 @@ export default function PortalPage() {
             justifyContent: 'center',
             zIndex: 1000,
             padding: '24px',
+            overflowY: 'auto',
           }}
           onClick={(e) => {
             e.stopPropagation();

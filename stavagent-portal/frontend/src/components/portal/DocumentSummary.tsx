@@ -17,7 +17,7 @@
  * Version: 2.0.0 (2026-02-10) - Project Passport Integration
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Upload,
   FileText,
@@ -99,12 +99,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [selectedVertexAccount, setSelectedVertexAccount] = useState<VertexServiceAccountType>('vertex-ai-search');
 
   // File input ref
-  const fileInputRef = useCallback((node: HTMLInputElement | null) => {
-    if (node) {
-      // Store ref without using useState to avoid re-renders
-      (window as any).__fileInputRef = node;
-    }
-  }, []);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Save to project state
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -288,16 +283,13 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
   // Trigger file input click
   const handleUploadClick = useCallback(() => {
-    const fileInput = (window as any).__fileInputRef;
-    if (fileInput) {
-      fileInput.click();
-    }
+    fileInputRef.current?.click();
   }, []);
 
   // Save to project
   const handleSaveToProject = useCallback(async () => {
     if (!uploadedFile || !selectedProjectId) {
-      alert('Vyberte projekt před uložením');
+      setError('Vyberte projekt před uložením');
       return;
     }
 
@@ -416,7 +408,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   // Google Drive - Upload file
   const handleUploadToDrive = useCallback(async () => {
     if (!uploadedFile || !selectedGoogleFolder) {
-      alert('Vyberte složku Google Drive před nahráním');
+      setError('Vyberte složku Google Drive před nahráním');
       return;
     }
 
@@ -641,7 +633,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
       {/* Hidden file input */}
       <input
-        ref={fileInputRef}
+        ref={fileInputRef as React.RefObject<HTMLInputElement>}
         type="file"
         accept=".pdf,.xlsx,.xls,.xml"
         onChange={handleFileSelect}
@@ -729,7 +721,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       {passportData && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Action bar */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px', flexWrap: 'wrap' }}>
               <CheckCircle size={20} style={{ color: 'var(--success)' }} />
               <span>
@@ -759,13 +751,13 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 </>
               )}
             </div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
               {/* Project selector and save button */}
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
                 className="c-input"
-                style={{ minWidth: '200px' }}
+                style={{ minWidth: '180px', flex: '1 1 180px' }}
                 disabled={isSaving}
               >
                 <option value="">Vyberte projekt...</option>
@@ -828,7 +820,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                     value={selectedGoogleFolder}
                     onChange={(e) => setSelectedGoogleFolder(e.target.value)}
                     className="c-input"
-                    style={{ minWidth: '180px' }}
+                    style={{ minWidth: '160px', flex: '1 1 160px' }}
                     disabled={isUploadingToDrive || googleFolders.length === 0}
                   >
                     <option value="">Vyberte složku Drive...</option>
