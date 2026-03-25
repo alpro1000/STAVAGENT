@@ -40,12 +40,14 @@ from datetime import datetime
 from app.parsers.smart_parser import SmartParser
 from app.services.regex_extractor import CzechConstructionExtractor
 from app.services.passport_enricher import PassportEnricher
+from app.services.document_classifier import classify_document
 from app.models.passport_schema import (
     ProjectPassport,
     PassportGenerationRequest,
     PassportGenerationResponse,
     PassportMetadata,
-    PassportStatistics
+    PassportStatistics,
+    ClassificationInfo,
 )
 
 logger = logging.getLogger(__name__)
@@ -130,6 +132,14 @@ class DocumentProcessor:
 
             layer1_time = int((time.time() - layer1_start) * 1000)
             logger.info(f"Layer 1 complete: {layer1_time}ms, {len(document_text)} chars")
+
+            # === CLASSIFICATION: Detect document type ===
+            classification = classify_document(
+                filename=Path(file_path).name,
+                text=document_text,
+            )
+            logger.info(f"Classification: {classification.category.value} "
+                         f"(confidence={classification.confidence:.2f}, method={classification.method})")
 
             # === LAYER 2: REGEX EXTRACTION (Deterministic facts) ===
             logger.info("LAYER 2: Extracting deterministic facts")
@@ -253,7 +263,8 @@ class DocumentProcessor:
                 passport=passport,
                 processing_time_ms=total_time,
                 metadata=metadata,
-                statistics=statistics
+                statistics=statistics,
+                classification=classification,
             )
 
         except Exception as e:

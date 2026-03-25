@@ -166,6 +166,87 @@ export interface PassportGenerationResponse {
   analysis_mode?: 'adaptive_extraction' | 'summary_only';
   format?: 'adaptive_v2';
   adaptive_summary?: AdaptiveSummary;
+  // Classification & type-specific extractions
+  classification?: ClassificationInfo;
+  technical?: TechnicalExtraction;
+  bill_of_quantities?: BillOfQuantitiesExtraction;
+  tender_conditions?: TenderConditionsExtraction;
+  schedule?: ScheduleExtraction;
+}
+
+// ===== Document Classification (3-tier) =====
+
+export type DocCategory = 'TZ' | 'RO' | 'PD' | 'VY' | 'SM' | 'HA' | 'GE' | 'ZP' | 'TI' | 'OT';
+
+export const DOC_CATEGORY_LABELS: Record<DocCategory, string> = {
+  TZ: 'Technická zpráva',
+  RO: 'Rozpočet / Výkaz výměr',
+  PD: 'Podmínky / Zadávací dokumentace',
+  VY: 'Výkresy',
+  SM: 'Smlouva',
+  HA: 'Harmonogram',
+  GE: 'Geologický průzkum',
+  ZP: 'BOZP / Životní prostředí',
+  TI: 'Titulní list / Obsah',
+  OT: 'Ostatní',
+};
+
+export const DOC_CATEGORY_COLORS: Record<DocCategory, string> = {
+  TZ: '#3B82F6',
+  RO: '#10B981',
+  PD: '#8B5CF6',
+  VY: '#F59E0B',
+  SM: '#6366F1',
+  HA: '#EC4899',
+  GE: '#78716C',
+  ZP: '#EF4444',
+  TI: '#94A3B8',
+  OT: '#9CA3AF',
+};
+
+export interface ClassificationInfo {
+  category: DocCategory;
+  confidence: number;
+  method: 'filename' | 'keywords' | 'ai';
+  detected_keywords?: string[];
+}
+
+// ===== Type-Specific Extractions =====
+
+export interface TechnicalExtraction {
+  project_name?: string;
+  structure_type?: string;
+  dimensions?: Record<string, string | number>;
+  spans?: string[];
+  materials?: string[];
+  standards?: string[];
+  construction_method?: string;
+  foundation_type?: string;
+}
+
+export interface BillOfQuantitiesExtraction {
+  total_items?: number;
+  total_price_czk?: number;
+  categories?: string[];
+  key_materials?: string[];
+  volumes?: Record<string, number>;
+}
+
+export interface TenderConditionsExtraction {
+  tender_name?: string;
+  contracting_authority?: string;
+  deadlines?: Record<string, string>;
+  documents?: string[];
+  criteria?: string[];
+  budget?: string;
+}
+
+export interface ScheduleExtraction {
+  duration?: string;
+  dates?: Record<string, string>;
+  phases?: string[];
+  milestones?: string[];
+  critical_path?: string[];
 }
 
 // ===== AI Model Selection =====

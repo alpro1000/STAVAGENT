@@ -24,6 +24,20 @@ from enum import Enum
 # ENUMS
 # =============================================================================
 
+class DocCategory(str, Enum):
+    """Document type classification for Czech construction documents"""
+    TZ = "TZ"   # Technická zpráva (Technical Report)
+    RO = "RO"   # Rozpočet / Výkaz výměr (Bill of Quantities)
+    PD = "PD"   # Podmínky (Tender Conditions)
+    VY = "VY"   # Výkresy (Drawings metadata)
+    SM = "SM"   # Smlouva / Návrh (Contract Draft)
+    HA = "HA"   # Harmonogram (Schedule)
+    GE = "GE"   # Geologie / Průzkum (Geotechnical)
+    ZP = "ZP"   # Zpráva BOZP / EIA (Safety/Environmental)
+    TI = "TI"   # Titulní list / Obsah (Title Page / TOC)
+    OT = "OT"   # Ostatní (Other)
+
+
 class ExposureClass(str, Enum):
     """ČSN EN 206 Třída prostředí (Exposure Classes)"""
     XC1 = "XC1"  # Suché nebo trvale mokré
@@ -462,6 +476,80 @@ class ProjectPassport(BaseModel):
 # API REQUEST/RESPONSE MODELS
 # =============================================================================
 
+# =============================================================================
+# TYPE-SPECIFIC EXTRACTION MODELS (for classified documents)
+# =============================================================================
+
+class TechnicalExtraction(BaseModel):
+    """Extracted parameters from Technical Report (TZ)"""
+    project_name: Optional[str] = None
+    structure_type: Optional[str] = None
+    structure_subtype: Optional[str] = None
+    total_length_m: Optional[float] = None
+    width_m: Optional[float] = None
+    height_m: Optional[float] = None
+    area_m2: Optional[float] = None
+    volume_m3: Optional[float] = None
+    span_count: Optional[int] = None
+    span_lengths_m: List[float] = Field(default_factory=list)
+    concrete_grade: Optional[str] = None
+    reinforcement_grade: Optional[str] = None
+    foundation_type: Optional[str] = None
+    fabrication_method: Optional[str] = None
+    load_class: Optional[str] = None
+    design_life_years: Optional[int] = None
+    applicable_standards: List[str] = Field(default_factory=list)
+    construction_duration_months: Optional[int] = None
+    special_conditions: List[str] = Field(default_factory=list)
+    source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+class BillOfQuantitiesExtraction(BaseModel):
+    """Extracted parameters from Rozpočet / Výkaz výměr (RO)"""
+    total_items: int = 0
+    total_price_czk: Optional[float] = None
+    categories: List[Dict[str, Any]] = Field(default_factory=list)
+    key_materials: List[Dict[str, Any]] = Field(default_factory=list)
+    concrete_volume_m3: Optional[float] = None
+    steel_tonnage_t: Optional[float] = None
+    earthwork_volume_m3: Optional[float] = None
+    source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+class TenderConditionsExtraction(BaseModel):
+    """Extracted parameters from Tender Conditions (PD)"""
+    tender_name: Optional[str] = None
+    contracting_authority: Optional[str] = None
+    submission_deadline: Optional[str] = None
+    question_deadline: Optional[str] = None
+    estimated_budget: Optional[float] = None
+    currency: str = "CZK"
+    required_documents: List[str] = Field(default_factory=list)
+    qualification_criteria: List[str] = Field(default_factory=list)
+    evaluation_criteria: List[Dict[str, Any]] = Field(default_factory=list)
+    submission_method: Optional[str] = None
+    source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+class ScheduleExtraction(BaseModel):
+    """Extracted from Harmonogram (HA)"""
+    total_duration_months: Optional[int] = None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
+    phases: List[Dict[str, Any]] = Field(default_factory=list)
+    milestones: List[Dict[str, Any]] = Field(default_factory=list)
+    critical_path: List[str] = Field(default_factory=list)
+    source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+class ClassificationInfo(BaseModel):
+    """Document classification result attached to response"""
+    category: DocCategory = DocCategory.OT
+    confidence: float = 0.0
+    method: str = "none"  # "filename", "keywords", "ai"
+    detected_keywords: List[str] = Field(default_factory=list)
+
+
 class PassportGenerationRequest(BaseModel):
     """Request to generate a project passport"""
     project_id: str = Field(..., description="Project ID")
@@ -515,6 +603,15 @@ class PassportGenerationResponse(BaseModel):
     processing_time_ms: int = Field(..., description="Total processing time")
     metadata: Optional[PassportMetadata] = Field(None, description="Processing metadata")
     statistics: Optional[PassportStatistics] = Field(None, description="Passport statistics")
+
+    # Document classification (new)
+    classification: Optional[ClassificationInfo] = Field(None, description="Document type classification")
+
+    # Type-specific extractions (new, populated based on classification)
+    technical: Optional[TechnicalExtraction] = Field(None, description="TZ extraction")
+    bill_of_quantities: Optional[BillOfQuantitiesExtraction] = Field(None, description="RO extraction")
+    tender_conditions: Optional[TenderConditionsExtraction] = Field(None, description="PD extraction")
+    schedule: Optional[ScheduleExtraction] = Field(None, description="HA extraction")
 
     model_config = ConfigDict(
         json_schema_extra={
