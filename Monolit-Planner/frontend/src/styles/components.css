@@ -823,7 +823,12 @@ button:disabled {
   display: flex;
   flex: 1;
   min-height: calc(100vh - 60px);
-  overflow: hidden;
+}
+
+@media (min-width: 769px) {
+  .main-layout {
+    overflow: hidden;
+  }
 }
 
 .content {

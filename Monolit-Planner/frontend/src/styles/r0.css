@@ -312,12 +312,14 @@
     border-right: none;
     border-bottom: 1px solid var(--r0-slate-200);
     max-height: none;
+    overflow-y: visible;
     padding: 12px 14px;
   }
 
   .r0-planner-main {
     padding: 12px;
-    min-height: 50vh;
+    min-height: auto;
+    overflow-y: visible;
   }
 
   /* All grids stack to single column */
