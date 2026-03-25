@@ -240,6 +240,30 @@ VITE_DISABLE_AUTH=true
 - CORE: VertexGeminiClient probe call — validates model with real API call before use, class-level cache
 - CORE: model fallback chain (GEMINI_MODEL env → flash → flash-lite → pro)
 
+**Completed (2026-03-25):**
+- **8 cross-service cleanups:**
+  - CORS: removed `onrender.com` from concrete-agent allow_origin_regex
+  - Models: gemini-1.5-* → gemini-2.5-flash/pro (passport_enricher, gemini_client)
+  - Models: gpt-5-mini → gpt-4o-mini (URS llmConfig.js, .env.example, 9 occurrences)
+  - Cleanup: removed Render.com references from portal .env.example files
+  - Registry: centralized hardcoded URLs → `src/utils/config.ts` (7 files updated)
+  - Portal: extracted `resolveOrgId()` from connections.js → shared middleware in orgRole.js
+  - CLAUDE.md: registry = "browser + Vercel serverless backend", 11 groups (was 10)
+- **Planner: Resource Optimization engine (always-on):**
+  - New `deadline_days` optional input (investor/project deadline)
+  - Grid search: tries all crew/set combinations (up to 4 crews, 6 sets) after every calculation
+  - Shows up to 5 faster variants sorted by cost: cheapest_faster, fastest, best_for_deadline
+  - When deadline set + exceeded: red overrun banner, "Pro splnění termínu" recommendation
+  - When no faster variant exists: "aktuální nastavení je optimální"
+  - Types: `DeadlineCheckResult`, `DeadlineOptimizationVariant` exported from shared
+  - XLSX export includes optimization section
+- **Planner: Mobile scroll fix:**
+  - Root cause: `#root { height: 100vh; overflow: hidden }` + `.main-layout { overflow: hidden }` blocked mobile scrolling
+  - Fix: `#root { min-height: 100vh }` (no overflow), `.main-layout` overflow:hidden only on desktop (≥769px)
+  - `.r0-planner-sidebar/.r0-planner-main`: overflow-y: visible on mobile
+  - Results panel now scrolls properly on mobile after calculation
+- **Build fix:** added `deadline_check` type to local `PlannerOutput` in `exportPlanXLSX.ts`
+
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
 **Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
