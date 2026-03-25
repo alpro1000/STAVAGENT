@@ -17,7 +17,7 @@
  * Version: 2.0.0 (2026-02-10) - Project Passport Integration
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Upload,
   FileText,
@@ -50,10 +50,9 @@ import type {
   PassportGenerationResponse,
   ProjectPassport,
   AIModelType,
-  VertexServiceAccountType,
   AdaptiveTopic,
 } from '../../types/passport';
-import { AI_MODELS, AI_MODEL_OPTIONS, VERTEX_SERVICE_ACCOUNT_OPTIONS } from '../../types/passport';
+import { AI_MODELS, AI_MODEL_OPTIONS } from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -72,13 +71,7 @@ function getFileExtension(filename: string): string {
 }
 
 function isVertexModel(model: AIModelType): boolean {
-  return model === AI_MODELS.VERTEX_AI_GEMINI || model === AI_MODELS.VERTEX_AI_SEARCH;
-}
-
-function resolveCorePreferredModel(model: AIModelType): AIModelType {
-  // CORE passport endpoint accepts vertex-ai-gemini and vertex-ai-search directly.
-  // Pass vertex model IDs as-is so backend routes to Vertex AI (ADC auth).
-  return model;
+  return model === AI_MODELS.VERTEX_AI_GEMINI;
 }
 
 function extractPassportError(data: any): string {
@@ -96,15 +89,8 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
   const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
   const [analysisMode, setAnalysisMode] = useState<'adaptive_extraction' | 'summary_only'>('adaptive_extraction');
-  const [selectedVertexAccount, setSelectedVertexAccount] = useState<VertexServiceAccountType>('vertex-ai-search');
-
   // File input ref
-  const fileInputRef = useCallback((node: HTMLInputElement | null) => {
-    if (node) {
-      // Store ref without using useState to avoid re-renders
-      (window as any).__fileInputRef = node;
-    }
-  }, []);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Save to project state
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -185,13 +171,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('project_name', file.name.replace(/\.[^/.]+$/, '')); // Remove extension
       formData.append('enable_ai_enrichment', enableAiEnrichment.toString());
       if (enableAiEnrichment) {
-        formData.append('preferred_model', resolveCorePreferredModel(selectedModel));
+        formData.append('preferred_model', selectedModel);
         formData.append('requested_model', selectedModel);
       }
       formData.append('analysis_mode', analysisMode);
 
       if (enableAiEnrichment && isVertexModel(selectedModel)) {
-        formData.append('vertex_service_account', selectedVertexAccount);
         formData.append('llm_provider', 'vertex-ai');
       }
 
@@ -253,7 +238,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     } finally {
       setIsUploading(false);
     }
-  }, [selectedModel, enableAiEnrichment, analysisMode, selectedVertexAccount]);
+  }, [selectedModel, enableAiEnrichment, analysisMode]);
 
   // Drag and drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -288,16 +273,13 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
   // Trigger file input click
   const handleUploadClick = useCallback(() => {
-    const fileInput = (window as any).__fileInputRef;
-    if (fileInput) {
-      fileInput.click();
-    }
+    fileInputRef.current?.click();
   }, []);
 
   // Save to project
   const handleSaveToProject = useCallback(async () => {
     if (!uploadedFile || !selectedProjectId) {
-      alert('Vyberte projekt před uložením');
+      setError('Vyberte projekt před uložením');
       return;
     }
 
@@ -416,7 +398,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   // Google Drive - Upload file
   const handleUploadToDrive = useCallback(async () => {
     if (!uploadedFile || !selectedGoogleFolder) {
-      alert('Vyberte složku Google Drive před nahráním');
+      setError('Vyberte složku Google Drive před nahráním');
       return;
     }
 
@@ -595,33 +577,6 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               </div>
             )}
 
-            {/* Vertex service account selector (informational — ADC handles auth automatically on Cloud Run) */}
-            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
-                  Vertex účet:
-                </label>
-                <select
-                  value={selectedVertexAccount}
-                  onChange={(e) => setSelectedVertexAccount(e.target.value as VertexServiceAccountType)}
-                  className="c-input"
-                  style={{ flex: 1, maxWidth: '300px' }}
-                >
-                  {VERTEX_SERVICE_ACCOUNT_OPTIONS.map(account => (
-                    <option key={account.id} value={account.id}>
-                      {account.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
-              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
-                ℹ️ Autentizace přes ADC (Application Default Credentials) — na Cloud Run automaticky. Výběr účtu je pouze informativní.
-              </div>
-            )}
-
             {/* Model description */}
             {enableAiEnrichment && (
               <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
@@ -641,7 +596,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
       {/* Hidden file input */}
       <input
-        ref={fileInputRef}
+        ref={fileInputRef as React.RefObject<HTMLInputElement>}
         type="file"
         accept=".pdf,.xlsx,.xls,.xml"
         onChange={handleFileSelect}
@@ -729,7 +684,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       {passportData && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Action bar */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px', flexWrap: 'wrap' }}>
               <CheckCircle size={20} style={{ color: 'var(--success)' }} />
               <span>
@@ -759,13 +714,13 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 </>
               )}
             </div>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
               {/* Project selector and save button */}
               <select
                 value={selectedProjectId}
                 onChange={(e) => setSelectedProjectId(e.target.value)}
                 className="c-input"
-                style={{ minWidth: '200px' }}
+                style={{ minWidth: '180px', flex: '1 1 180px' }}
                 disabled={isSaving}
               >
                 <option value="">Vyberte projekt...</option>
@@ -828,7 +783,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                     value={selectedGoogleFolder}
                     onChange={(e) => setSelectedGoogleFolder(e.target.value)}
                     className="c-input"
-                    style={{ minWidth: '180px' }}
+                    style={{ minWidth: '160px', flex: '1 1 160px' }}
                     disabled={isUploadingToDrive || googleFolders.length === 0}
                   >
                     <option value="">Vyberte složku Drive...</option>

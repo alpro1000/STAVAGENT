@@ -32,7 +32,7 @@ except ImportError:
 
 # Default to Haiku 4.5 via Bedrock (cheapest, fastest)
 # NOTE: claude-3-5-haiku-20241022 has been REMOVED by Anthropic — use claude-haiku-4-5
-DEFAULT_MODEL_ID = "anthropic.claude-haiku-4-5-20251015-v1:0"
+DEFAULT_MODEL_ID = "anthropic.claude-haiku-4-5-20251001-v1:0"
 
 
 def is_bedrock_available() -> bool:

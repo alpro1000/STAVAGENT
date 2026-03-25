@@ -177,7 +177,6 @@ export const AI_MODELS = {
   OPENAI_GPT4: 'openai',       // Backend expects 'openai', not 'openai-gpt4'
   OPENAI_MINI: 'openai-mini',
   PERPLEXITY: 'perplexity',
-  VERTEX_AI_SEARCH: 'vertex-ai-search',
   VERTEX_AI_GEMINI: 'vertex-ai-gemini',
 } as const;
 
@@ -193,18 +192,6 @@ export interface AIModelInfo {
   provider?: 'google' | 'anthropic' | 'openai' | 'perplexity';
 }
 
-export const VERTEX_SERVICE_ACCOUNTS = {
-  AUTO_VERTEX_SEARCH: 'vertex-ai-search',
-  STAVAGENT_VERTEX_SEARCH: 'stavagent-vertex-search',
-} as const;
-
-export type VertexServiceAccountType = typeof VERTEX_SERVICE_ACCOUNTS[keyof typeof VERTEX_SERVICE_ACCOUNTS];
-
-export interface VertexServiceAccountInfo {
-  id: VertexServiceAccountType;
-  name: string;
-  description: string;
-}
 
 export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   {
@@ -217,21 +204,12 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     provider: 'google',
   },
   {
-    id: AI_MODELS.VERTEX_AI_SEARCH,
-    name: 'Vertex AI Search + Extraction',
-    cost_per_passport: 'Google credits',
-    speed: 'Střední (3-6s)',
-    quality: 'Vysoká',
-    description: 'Vertex AI Search (normy + ceny) + Gemini enrichment',
-    provider: 'google',
-  },
-  {
     id: AI_MODELS.GEMINI,
-    name: 'Gemini 2.5 Flash Lite',
+    name: 'Gemini 2.5 Flash',
     cost_per_passport: 'ZDARMA',
     speed: 'Velmi rychlý (1-2s)',
     quality: 'Vysoká',
-    description: 'Přímé API — výchozí fallback, nejlepší poměr cena/výkon',
+    description: 'Přímé API (gemini-2.5-flash) — výchozí fallback, nejlepší poměr cena/výkon',
     provider: 'google',
   },
   {
@@ -240,7 +218,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     cost_per_passport: '$0.0006',
     speed: 'Rychlý (2-3s)',
     quality: 'Velmi vysoká',
-    description: 'Nejlevnější Claude model (claude-haiku-4-5-20251015)',
+    description: 'Nejlevnější Claude model (claude-haiku-4-5-20251001)',
     provider: 'anthropic',
   },
   {
@@ -249,7 +227,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     cost_per_passport: '$0.0075',
     speed: 'Střední (3-5s)',
     quality: 'Maximální',
-    description: 'Nejlepší kvalita (claude-sonnet-4-6-20250217)',
+    description: 'Nejlepší kvalita (claude-sonnet-4-6)',
     provider: 'anthropic',
   },
   {
@@ -272,15 +250,3 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   },
 ];
 
-export const VERTEX_SERVICE_ACCOUNT_OPTIONS: VertexServiceAccountInfo[] = [
-  {
-    id: VERTEX_SERVICE_ACCOUNTS.AUTO_VERTEX_SEARCH,
-    name: 'vertex-ai-search@…',
-    description: 'Automaticky vytvořený účet Google pro Vertex AI Search',
-  },
-  {
-    id: VERTEX_SERVICE_ACCOUNTS.STAVAGENT_VERTEX_SEARCH,
-    name: 'stavagent-vertex-search@…',
-    description: 'Manuálně spravovaný servisní účet STAV Agent pro Vertex AI',
-  },
-];
