@@ -154,6 +154,7 @@ interface FormState {
   enable_monte_carlo: boolean;
   start_date: string; // ISO date string for calendar mapping
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
+  deadline_days: string; // empty = no deadline, number = investor deadline in working days
 }
 
 const DEFAULT_FORM: FormState = {
@@ -193,6 +194,7 @@ const DEFAULT_FORM: FormState = {
   enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
+  deadline_days: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -468,6 +470,7 @@ export default function PlannerPage() {
       ...(form.wage_rebar_czk_h ? { wage_rebar_czk_h: Number(form.wage_rebar_czk_h) } : {}),
       ...(form.wage_pour_czk_h ? { wage_pour_czk_h: Number(form.wage_pour_czk_h) } : {}),
       enable_monte_carlo: form.enable_monte_carlo,
+      ...(form.deadline_days ? { deadline_days: Number(form.deadline_days) } : {}),
     };
     if (form.use_name_classification && form.element_name.trim()) {
       input.element_name = form.element_name.trim();
@@ -1360,6 +1363,16 @@ export default function PlannerPage() {
                 onChange={e => update('start_date', e.target.value)}
               />
             </Field>
+            <Field label="Termín investora (prac. dní)" hint="požadovaný deadline — systém varuje při překročení">
+              <input
+                type="number"
+                style={inputStyle}
+                placeholder="např. 35"
+                min={1}
+                value={form.deadline_days}
+                onChange={e => update('deadline_days', e.target.value)}
+              />
+            </Field>
 
             <Field label="Sezóna">
               <select
@@ -2040,11 +2053,137 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
 
       {/* KPI Cards */}
       <div className="r0-grid-4" style={{ marginBottom: 20 }}>
-        <KPICard label="Celkem dní" value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color="var(--r0-blue)" />
+        <KPICard label={plan.deadline_check && !plan.deadline_check.fits ? `Celkem dní (termín ${plan.deadline_check.deadline_days}d)` : 'Celkem dní'} value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color={plan.deadline_check && !plan.deadline_check.fits ? '#ef4444' : 'var(--r0-blue)'} />
         <KPICard label="Počet záběrů" value={plan.pour_decision.num_tacts} unit="taktů" color="var(--r0-orange)" />
         <KPICard label="Náklady práce" value={formatCZK(plan.costs.total_labor_czk)} color="var(--r0-green)" />
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
       </div>
+
+      {/* Resource Optimization + Deadline Check */}
+      {plan.deadline_check && (() => {
+        const dc = plan.deadline_check;
+        const hasDeadline = dc.deadline_days != null;
+        const hasSuggestions = dc.suggestions.length > 0;
+
+        // Determine card style
+        const deadlineExceeded = hasDeadline && !dc.fits;
+        const title = deadlineExceeded
+          ? `Termín investora — PŘEKROČEN (+${dc.overrun_days}d)`
+          : hasSuggestions
+            ? 'Optimalizace zdrojů'
+            : 'Optimalizace zdrojů — aktuální nastavení je optimální';
+        const icon = deadlineExceeded ? '🚨' : hasSuggestions ? '⚡' : '✅';
+        const borderColor = deadlineExceeded ? '#ef4444' : hasSuggestions ? 'var(--r0-blue)' : 'var(--r0-green)';
+
+        return (
+          <Card title={title} icon={icon} borderColor={borderColor}>
+            <div style={{ fontSize: 13 }}>
+              {/* Deadline overrun banner */}
+              {deadlineExceeded && (
+                <div style={{
+                  marginBottom: 12, padding: '10px 14px', borderRadius: 6,
+                  background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
+                  fontWeight: 600,
+                }}>
+                  Termín: {dc.deadline_days} dní | Vypočteno: {dc.calculated_days} dní | Překročení: +{dc.overrun_days} dní ({Math.round((dc.overrun_days / dc.deadline_days!) * 100)}%)
+                </div>
+              )}
+
+              {/* Suggestions table */}
+              {hasSuggestions ? (
+                <>
+                  <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
+                        <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>#</th>
+                        <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Konfigurace</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Dní</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Úspora dní</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Náklady</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Rozdíl Kč</th>
+                        {hasDeadline && <th style={{ textAlign: 'center', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Termín</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dc.suggestions.map((s, i) => {
+                        const isBestDeadline = hasDeadline && dc.best_for_deadline && s.label === dc.best_for_deadline.label;
+                        return (
+                          <tr key={i} style={{
+                            borderBottom: '1px solid var(--r0-slate-100)',
+                            background: isBestDeadline ? '#f0fdf4' : i === 0 ? '#eff6ff' : 'transparent',
+                            fontWeight: isBestDeadline || i === 0 ? 600 : 400,
+                          }}>
+                            <td style={{ padding: '5px 6px' }}>{isBestDeadline ? '⭐' : i + 1}</td>
+                            <td style={{ padding: '5px 6px' }}>{s.label}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.total_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', color: '#16a34a' }}>
+                              −{formatNum(dc.calculated_days - s.total_days, 1)}
+                            </td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_cost_czk)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', color: s.extra_cost_czk > 0 ? '#dc2626' : '#16a34a' }}>
+                              {s.extra_cost_czk > 0 ? '+' : ''}{formatCZK(s.extra_cost_czk)}
+                            </td>
+                            {hasDeadline && (
+                              <td style={{ padding: '5px 6px', textAlign: 'center' }}>
+                                {s.fits_deadline ? <span style={{ color: '#16a34a' }}>OK</span> : <span style={{ color: '#dc2626' }}>NE</span>}
+                              </td>
+                            )}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+
+                  {/* Summary line */}
+                  <div style={{ marginTop: 10, padding: '10px 14px', borderRadius: 6, background: 'var(--r0-slate-50, #f8fafc)', fontSize: 12 }}>
+                    {dc.fastest && (
+                      <span>
+                        <strong>Nejrychlejší:</strong> {formatNum(dc.fastest.total_days, 1)} dní ({dc.fastest.label})
+                        {dc.fastest.extra_cost_czk > 0 && <span style={{ color: '#dc2626' }}> +{formatCZK(dc.fastest.extra_cost_czk)}</span>}
+                      </span>
+                    )}
+                    {dc.cheapest_faster && dc.fastest && dc.cheapest_faster.label !== dc.fastest.label && (
+                      <span>
+                        {' | '}<strong>Nejlevnější zrychlení:</strong> {formatNum(dc.cheapest_faster.total_days, 1)} dní
+                        {dc.cheapest_faster.extra_cost_czk > 0
+                          ? <span style={{ color: '#dc2626' }}> +{formatCZK(dc.cheapest_faster.extra_cost_czk)}</span>
+                          : <span style={{ color: '#16a34a' }}> {formatCZK(dc.cheapest_faster.extra_cost_czk)}</span>
+                        }
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Deadline best recommendation */}
+                  {deadlineExceeded && dc.best_for_deadline && (
+                    <div style={{
+                      marginTop: 8, padding: '10px 14px', borderRadius: 6,
+                      background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534',
+                    }}>
+                      <strong>Pro splnění termínu:</strong> {dc.best_for_deadline.label} → {formatNum(dc.best_for_deadline.total_days, 1)} dní
+                      {dc.best_for_deadline.extra_cost_czk > 0 && (
+                        <span> (navíc {formatCZK(dc.best_for_deadline.extra_cost_czk)})</span>
+                      )}
+                    </div>
+                  )}
+                  {deadlineExceeded && !dc.best_for_deadline && (
+                    <div style={{
+                      marginTop: 8, padding: '10px 14px', borderRadius: 6,
+                      background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
+                    }}>
+                      Žádná kombinace zdrojů (až 4 čety, 6 sad) nesplní termín {dc.deadline_days} dní.
+                      Zvažte delší směny, jiný systém bednění, nebo úpravu projektu.
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div style={{ color: 'var(--r0-slate-500)', fontStyle: 'italic' }}>
+                  Aktuální konfigurace je již optimální — přidání čet nebo sad nezrychlí harmonogram.
+                </div>
+              )}
+            </div>
+          </Card>
+        );
+      })()}
 
       {/* Warnings */}
       {plan.warnings.length > 0 && (

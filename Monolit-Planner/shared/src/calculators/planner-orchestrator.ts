@@ -138,6 +138,11 @@ export interface PlannerInput {
   enable_monte_carlo?: boolean;
   /** Monte Carlo iterations. Default: 10000 */
   monte_carlo_iterations?: number;
+
+  // --- Deadline constraint ---
+  /** Investor/project deadline in working days. If total_days exceeds this,
+   *  the system warns and suggests optimized resource configurations. */
+  deadline_days?: number;
 }
 
 // ─── Output ─────────────────────────────────────────────────────────────────
@@ -219,6 +224,9 @@ export interface PlannerOutput {
   // --- Monte Carlo (optional) ---
   monte_carlo?: MonteCarloResult;
 
+  // --- Deadline check (optional) ---
+  deadline_check?: DeadlineCheckResult;
+
   // --- Norms sources (traceability of work norms) ---
   norms_sources: {
     formwork_assembly: string;
@@ -233,6 +241,40 @@ export interface PlannerOutput {
 
   // --- Traceability ---
   decision_log: string[];
+}
+
+// ─── Deadline Check ─────────────────────────────────────────────────────────
+
+export interface DeadlineOptimizationVariant {
+  /** Label for display, e.g. "2 čety bednění, 2 čety výztuže, 3 sady" */
+  label: string;
+  num_formwork_crews: number;
+  num_rebar_crews: number;
+  num_sets: number;
+  total_days: number;
+  total_cost_czk: number;
+  /** Extra cost vs. current configuration */
+  extra_cost_czk: number;
+  fits_deadline: boolean;
+}
+
+export interface DeadlineCheckResult {
+  /** Investor/project deadline (working days), undefined if not set */
+  deadline_days?: number;
+  /** Calculated total duration (working days) */
+  calculated_days: number;
+  /** Overrun in working days (0 if within deadline or no deadline) */
+  overrun_days: number;
+  /** true if no deadline set, or calculated_days <= deadline_days */
+  fits: boolean;
+  /** ALL optimization variants that are faster, sorted by cost (cheapest first) */
+  suggestions: DeadlineOptimizationVariant[];
+  /** Cheapest variant that is faster than current */
+  cheapest_faster?: DeadlineOptimizationVariant;
+  /** Fastest variant overall */
+  fastest?: DeadlineOptimizationVariant;
+  /** Best for deadline: cheapest variant that fits deadline (only when deadline set) */
+  best_for_deadline?: DeadlineOptimizationVariant;
 }
 
 // ─── Defaults ───────────────────────────────────────────────────────────────
@@ -808,6 +850,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
       } : {}),
     },
     monte_carlo: scheduleResult.monte_carlo,
+    deadline_check: checkDeadline(input, scheduleResult.total_days, totalLaborCZK + formworkRentalCZK, {
+      pourDecision, assemblyDays, rebarResult, concreteDays, curingDays, disassemblyDays,
+      numFWCrews, numRBCrews, numSets, maturityParams, fwArea, fwSystem,
+      wageFormwork, wageRebar, wagePour, crew, crewRebar, shift, k,
+    }),
     warnings,
     decision_log: [...log, ...pourDecision.decision_log],
   };
@@ -873,4 +920,135 @@ function mapElementType(profile: ElementProfile): ElementType {
 function roundTo(value: number, decimals: number): number {
   const factor = Math.pow(10, decimals);
   return Math.round(value * factor) / factor;
+}
+
+// ─── Deadline Check & Optimization ──────────────────────────────────────────
+
+interface DeadlineContext {
+  pourDecision: PourDecisionOutput;
+  assemblyDays: number;
+  rebarResult: RebarLiteResult;
+  concreteDays: number;
+  curingDays: number;
+  disassemblyDays: number;
+  numFWCrews: number;
+  numRBCrews: number;
+  numSets: number;
+  maturityParams: any;
+  fwArea: number;
+  fwSystem: FormworkSystemSpec;
+  wageFormwork: number;
+  wageRebar: number;
+  wagePour: number;
+  crew: number;
+  crewRebar: number;
+  shift: number;
+  k: number;
+}
+
+/**
+ * Always compute resource optimization variants (faster/cheaper alternatives).
+ * If deadline_days is set, additionally check overrun and mark fitting variants.
+ *
+ * Optimization space (grid search, bounded to prevent explosion):
+ *   - num_formwork_crews: current .. min(current+3, num_tacts)
+ *   - num_rebar_crews:    current .. min(current+3, num_tacts)
+ *   - num_sets:           current .. min(current+3, num_tacts)
+ */
+function checkDeadline(
+  input: PlannerInput,
+  calculatedDays: number,
+  currentTotalCost: number,
+  ctx: DeadlineContext,
+): DeadlineCheckResult {
+  const deadline = (input.deadline_days && input.deadline_days > 0) ? input.deadline_days : undefined;
+  const overrun = deadline ? Math.max(0, roundTo(calculatedDays - deadline, 1)) : 0;
+  const fits = deadline ? calculatedDays <= deadline : true;
+
+  // ─── Try optimization variants ──────────────────────────────
+  const numTacts = ctx.pourDecision.num_tacts;
+  const maxCrews = Math.min(numTacts, 4);   // practical ceiling
+  const maxSets = Math.min(numTacts, 6);
+
+  const variants: DeadlineOptimizationVariant[] = [];
+
+  for (let fwC = ctx.numFWCrews; fwC <= maxCrews; fwC++) {
+    for (let rbC = ctx.numRBCrews; rbC <= maxCrews; rbC++) {
+      for (let sets = ctx.numSets; sets <= maxSets; sets++) {
+        // Skip the current configuration (already computed)
+        if (fwC === ctx.numFWCrews && rbC === ctx.numRBCrews && sets === ctx.numSets) continue;
+
+        try {
+          const sched = scheduleElement({
+            num_tacts: numTacts,
+            num_sets: sets,
+            assembly_days: ctx.assemblyDays,
+            rebar_days: ctx.rebarResult.duration_days,
+            concrete_days: ctx.concreteDays,
+            curing_days: ctx.curingDays,
+            stripping_days: ctx.disassemblyDays,
+            num_formwork_crews: fwC,
+            num_rebar_crews: rbC,
+            rebar_lag_pct: 50,
+            scheduling_mode: ctx.pourDecision.scheduling_mode,
+            cure_between_neighbors_days: ctx.pourDecision.cure_between_neighbors_h / 24,
+            maturity_params: ctx.maturityParams,
+          });
+
+          const days = sched.total_days;
+          // Only keep variants that are actually faster
+          if (days >= calculatedDays) continue;
+
+          // Estimate cost for this variant
+          const rentalDays = days + 2;
+          const rentalRate = ctx.fwSystem.rental_czk_m2_month;
+          const rentalCZK = rentalRate > 0
+            ? roundTo(ctx.fwArea * rentalRate * (rentalDays / 30) * sets, 2)
+            : 0;
+          const fwLabor = ctx.fwSystem.assembly_h_m2 * ctx.fwArea * ctx.wageFormwork +
+                          ctx.fwSystem.disassembly_h_m2 * ctx.fwArea * ctx.wageFormwork;
+          const rbLabor = ctx.rebarResult.cost_labor * numTacts;
+          const totalCost = roundTo(fwLabor + rbLabor + rentalCZK, 0);
+
+          const fitsDeadline = deadline ? days <= deadline : true;
+          const label = `${fwC} čet bednění, ${rbC} čet výztuže, ${sets} sad`;
+
+          variants.push({
+            label,
+            num_formwork_crews: fwC,
+            num_rebar_crews: rbC,
+            num_sets: sets,
+            total_days: days,
+            total_cost_czk: totalCost,
+            extra_cost_czk: roundTo(totalCost - currentTotalCost, 0),
+            fits_deadline: fitsDeadline,
+          });
+        } catch {
+          // Skip invalid combinations
+        }
+      }
+    }
+  }
+
+  // Sort all faster variants by cost (cheapest first)
+  variants.sort((a, b) => a.total_cost_czk - b.total_cost_czk);
+
+  const cheapestFaster = variants[0];
+  const fastest = variants.length > 0
+    ? variants.reduce((a, b) => a.total_days < b.total_days ? a : b)
+    : undefined;
+  const bestForDeadline = deadline
+    ? variants.filter(v => v.fits_deadline).sort((a, b) => a.total_cost_czk - b.total_cost_czk)[0]
+    : undefined;
+
+  return {
+    deadline_days: deadline,
+    calculated_days: calculatedDays,
+    overrun_days: overrun,
+    fits,
+    suggestions: variants.slice(0, 5),
+    cheapest_faster: cheapestFaster,
+    fastest,
+    best_for_deadline: bestForDeadline,
+  };
 }
