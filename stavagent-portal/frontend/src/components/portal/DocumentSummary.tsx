@@ -20,29 +20,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Upload,
-  FileText,
   CheckCircle,
   AlertTriangle,
   Loader2,
-  Building2,
-  MapPin,
-  User,
-  Hash,
-  Boxes,
-  Calendar,
-  ClipboardList,
   Download,
   X,
   FileSpreadsheet,
   Database,
   Cloud,
-  Folder,
   Zap,
-  Shield,
-  Ruler,
-  AlertCircle,
-  TrendingUp,
-  Users,
 } from 'lucide-react';
 
 // Import Passport types
@@ -51,8 +37,10 @@ import type {
   ProjectPassport,
   AIModelType,
   AdaptiveTopic,
+  ClassificationInfo,
+  DocCategory,
 } from '../../types/passport';
-import { AI_MODELS, AI_MODEL_OPTIONS } from '../../types/passport';
+import { AI_MODELS, AI_MODEL_OPTIONS, DOC_CATEGORY_LABELS, DOC_CATEGORY_COLORS } from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -837,485 +825,481 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
             </div>
           </div>
 
-          {/* === ADAPTIVE SUMMARY MODE (summary_only) === */}
-          {((passportData as any).analysis_mode === 'summary_only' || (passportData as any).format === 'adaptive_v2') ? (
-            <>
-              {/* Document header */}
-              <div className="c-card" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
-                  <div>
-                    <h3 style={{ margin: '0 0 8px', fontSize: '18px', fontWeight: 600 }}>
-                      {passportData.passport.project_name}
-                    </h3>
-                    {(passportData.passport as any).document_type && (
-                      <span style={{
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        background: 'var(--accent-primary)',
-                        color: 'white',
-                        padding: '2px 10px',
-                        borderRadius: '12px',
-                      }}>
-                        {(passportData.passport as any).document_type}
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', textAlign: 'right' }}>
-                    <div>{((passportData.passport as any).topics || []).length} nalezených témat</div>
-                    <div>{passportData?.metadata?.ai_model_used || 'gemini'}</div>
-                  </div>
-                </div>
-
-                {/* Executive summary */}
-                {passportData.passport.description && (
-                  <p style={{ margin: 0, lineHeight: 1.7, color: 'var(--text-primary)', fontSize: '15px' }}>
-                    {passportData.passport.description}
-                  </p>
-                )}
-              </div>
-
-              {/* Warnings */}
-              {((passportData.passport as any).warnings || []).length > 0 && (
-                <div className="c-card" style={{ borderLeft: '3px solid #EF4444', backgroundColor: 'rgba(239,68,68,0.05)' }}>
-                  <h3 style={{ margin: '0 0 12px', fontSize: '15px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <AlertTriangle size={18} style={{ color: '#EF4444' }} />
-                    Upozornění
-                  </h3>
-                  <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {((passportData.passport as any).warnings || []).map((w: string, i: number) => (
-                      <li key={i} style={{ fontSize: '14px', color: 'var(--text-primary)' }}>{w}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Dynamic Topics */}
-              {((passportData.passport as any).topics || []).map((topic: AdaptiveTopic, index: number) => (
-                <div
-                  key={index}
-                  className="c-card"
-                  style={{
-                    borderLeft: `3px solid ${
-                      topic.importance === 'high' ? 'var(--accent-primary)' :
-                      topic.importance === 'medium' ? 'var(--accent-secondary, #64748b)' :
-                      'var(--border-default)'
-                    }`,
-                  }}
-                >
-                  <h3 style={{
-                    margin: '0 0 12px',
-                    fontSize: '16px',
+          {/* === DOCUMENT ANALYSIS RESULT — Clean flowing layout === */}
+          <div style={{
+            backgroundColor: '#f8f9fa',
+            borderRadius: '8px',
+            padding: '28px 32px',
+            lineHeight: 1.8,
+            fontSize: '14px',
+            color: 'var(--text-primary)',
+          }}>
+            {/* Classification badge */}
+            {(passportData as any).classification && (() => {
+              const cls = (passportData as any).classification as ClassificationInfo;
+              const catColor = DOC_CATEGORY_COLORS[cls.category] || '#9CA3AF';
+              return (
+                <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: '12px',
                     fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
+                    background: catColor,
+                    color: 'white',
+                    padding: '3px 12px',
+                    borderRadius: '12px',
+                    letterSpacing: '0.3px',
                   }}>
-                    <span style={{ fontSize: '20px' }}>{topic.icon}</span>
-                    {topic.title}
-                    {topic.importance === 'high' && (
-                      <span style={{
-                        fontSize: '11px',
-                        fontWeight: 500,
-                        background: 'var(--accent-primary)',
-                        color: 'white',
-                        padding: '1px 8px',
-                        borderRadius: '10px',
-                        marginLeft: '4px',
-                      }}>
-                        klíčové
-                      </span>
-                    )}
-                  </h3>
+                    {cls.category} — {DOC_CATEGORY_LABELS[cls.category] || cls.category}
+                  </span>
+                  <span style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                    {cls.method === 'filename' ? 'Rozpoznáno z názvu souboru' :
+                     cls.method === 'keywords' ? 'Rozpoznáno z obsahu' :
+                     'Rozpoznáno pomocí AI'}
+                    {' '}({(cls.confidence * 100).toFixed(0)}%)
+                  </span>
+                  {cls.detected_keywords && cls.detected_keywords.length > 0 && (
+                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)' }}>
+                      [{cls.detected_keywords.slice(0, 3).join(', ')}]
+                    </span>
+                  )}
+                </div>
+              );
+            })()}
 
-                  {/* Topic content */}
-                  <p style={{ margin: '0 0 12px', lineHeight: 1.7, color: 'var(--text-primary)', fontSize: '14px' }}>
-                    {topic.content}
-                  </p>
+            {/* Document header */}
+            <h3 style={{ margin: '0 0 6px', fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)' }}>
+              {passportData.passport.project_name}
+            </h3>
+            {(passportData.passport as any).document_type && (
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                {(passportData.passport as any).document_type}
+              </div>
+            )}
+            {passportData.passport.structure_type && (
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                Typ konstrukce: <strong>{passportData.passport.structure_type}</strong>
+              </div>
+            )}
 
-                  {/* Key facts */}
-                  {topic.key_facts && topic.key_facts.length > 0 && (
-                    <div style={{
-                      backgroundColor: 'var(--bg-secondary)',
-                      borderRadius: '6px',
-                      padding: '12px 16px',
+            {/* Executive summary — flowing text */}
+            {passportData.passport.description && (
+              <p style={{ margin: '0 0 20px', lineHeight: 1.8, fontSize: '15px' }}>
+                {passportData.passport.description}
+              </p>
+            )}
+
+            {/* Technical highlights */}
+            {passportData.passport.technical_highlights && passportData.passport.technical_highlights.length > 0 && (
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Technické hlavní body
+                </div>
+                <ul style={{ margin: 0, paddingLeft: '18px' }}>
+                  {passportData.passport.technical_highlights.map((hl, i) => (
+                    <li key={i} style={{ marginBottom: '2px' }}>{hl}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Warnings — inline alert strip */}
+            {((passportData.passport as any).warnings || []).length > 0 && (
+              <div style={{
+                background: 'rgba(239,68,68,0.08)',
+                borderLeft: '3px solid #EF4444',
+                borderRadius: '0 6px 6px 0',
+                padding: '10px 16px',
+                marginBottom: '20px',
+              }}>
+                <div style={{ fontWeight: 600, fontSize: '13px', color: '#EF4444', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <AlertTriangle size={14} />
+                  Upozornění
+                </div>
+                {((passportData.passport as any).warnings || []).map((w: string, i: number) => (
+                  <div key={i} style={{ fontSize: '13px', color: 'var(--text-primary)', marginBottom: '2px' }}>{w}</div>
+                ))}
+              </div>
+            )}
+
+            {/* === ADAPTIVE SUMMARY TOPICS — flowing text with inline tables === */}
+            {((passportData as any).analysis_mode === 'summary_only' || (passportData as any).format === 'adaptive_v2') ? (
+              <>
+                {((passportData.passport as any).topics || []).map((topic: AdaptiveTopic, index: number) => (
+                  <div key={index} style={{ marginBottom: '22px' }}>
+                    {/* Topic heading — inline with importance accent */}
+                    <h4 style={{
+                      margin: '0 0 6px',
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      color: topic.importance === 'high' ? 'var(--accent-primary)' : 'var(--text-primary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
                     }}>
-                      <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-tertiary)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        Klíčová fakta
-                      </div>
-                      <ul style={{ margin: 0, paddingLeft: '16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        {topic.key_facts.map((fact, i) => (
-                          <li key={i} style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                            {fact}
-                          </li>
+                      <span>{topic.icon}</span>
+                      {topic.title}
+                      {topic.importance === 'high' && (
+                        <span style={{
+                          fontSize: '10px',
+                          fontWeight: 600,
+                          background: 'var(--accent-primary)',
+                          color: 'white',
+                          padding: '1px 6px',
+                          borderRadius: '8px',
+                        }}>
+                          klíčové
+                        </span>
+                      )}
+                    </h4>
+
+                    {/* Topic content — flowing paragraph */}
+                    <p style={{ margin: '0 0 8px', lineHeight: 1.8 }}>
+                      {topic.content}
+                    </p>
+
+                    {/* Key facts as compact table */}
+                    {topic.key_facts && topic.key_facts.length > 0 && (
+                      <table style={{
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        fontSize: '13px',
+                        marginBottom: '4px',
+                      }}>
+                        <tbody>
+                          {topic.key_facts.map((fact, i) => (
+                            <tr key={i}>
+                              <td style={{
+                                padding: '4px 10px',
+                                borderBottom: '1px solid rgba(0,0,0,0.06)',
+                                color: 'var(--text-secondary)',
+                                verticalAlign: 'top',
+                              }}>
+                                <span style={{ color: topic.importance === 'high' ? 'var(--accent-primary)' : '#64748b', fontWeight: 500 }}>
+                                  {fact}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                {/* === STRUCTURED PASSPORT — tables for structured data === */}
+
+                {/* Statistics table */}
+                {(passportData?.statistics?.total_concrete_m3 || passportData?.statistics?.total_reinforcement_t ||
+                  passportData?.statistics?.unique_concrete_classes || passportData?.statistics?.unique_steel_grades) && (
+                  <table style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    marginBottom: '24px',
+                    fontSize: '14px',
+                  }}>
+                    <thead>
+                      <tr>
+                        <th colSpan={2} style={{
+                          textAlign: 'left',
+                          padding: '8px 10px',
+                          fontSize: '13px',
+                          fontWeight: 600,
+                          color: 'var(--text-secondary)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                          borderBottom: '2px solid var(--accent-primary)',
+                        }}>
+                          Souhrnné údaje
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(passportData?.statistics?.total_concrete_m3 ?? 0) > 0 && (
+                        <tr>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', color: 'var(--text-secondary)' }}>Beton celkem</td>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', fontWeight: 600, color: 'var(--accent-primary)' }}>
+                            {formatNumber(passportData.statistics!.total_concrete_m3)} m³
+                          </td>
+                        </tr>
+                      )}
+                      {(passportData?.statistics?.total_reinforcement_t ?? 0) > 0 && (
+                        <tr>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', color: 'var(--text-secondary)' }}>Výztuž celkem</td>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', fontWeight: 600 }}>
+                            {formatNumber(passportData.statistics!.total_reinforcement_t)} t
+                          </td>
+                        </tr>
+                      )}
+                      {(passportData?.statistics?.unique_concrete_classes ?? 0) > 0 && (
+                        <tr>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', color: 'var(--text-secondary)' }}>Třídy betonu</td>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', fontWeight: 600 }}>
+                            {passportData.statistics!.unique_concrete_classes}
+                          </td>
+                        </tr>
+                      )}
+                      {(passportData?.statistics?.unique_steel_grades ?? 0) > 0 && (
+                        <tr>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', color: 'var(--text-secondary)' }}>Ocelové třídy</td>
+                          <td style={{ padding: '6px 10px', borderBottom: '1px solid rgba(0,0,0,0.06)', fontWeight: 600 }}>
+                            {passportData.statistics!.unique_steel_grades}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                )}
+
+                {/* Concrete specifications table */}
+                {passportData.passport.concrete_specifications.length > 0 && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '8px',
+                      borderBottom: '2px solid var(--accent-primary)',
+                      paddingBottom: '6px',
+                    }}>
+                      Specifikace betonu
+                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Třída</th>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Expozice</th>
+                          <th style={{ textAlign: 'right', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Objem</th>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Vlastnosti</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {passportData.passport.concrete_specifications.map((spec, i) => (
+                          <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                            <td style={{ padding: '6px 10px', fontWeight: 600, color: 'var(--accent-primary)' }}>{spec.concrete_class}</td>
+                            <td style={{ padding: '6px 10px' }}>{spec.exposure_classes?.join(', ') || '—'}</td>
+                            <td style={{ padding: '6px 10px', textAlign: 'right' }}>{spec.volume_m3 !== null ? `${formatNumber(spec.volume_m3)} m³` : '—'}</td>
+                            <td style={{ padding: '6px 10px', fontSize: '12px', color: 'var(--text-secondary)' }}>{spec.special_properties?.join(', ') || '—'}</td>
+                          </tr>
                         ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </>
-          ) : (
-            <>
-              {/* === STRUCTURED PASSPORT MODE (adaptive_extraction) === */}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
 
-              {/* Statistics Overview */}
-              <div className="c-card" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <TrendingUp size={20} />
-                  Shrnutí pasportu
-                </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
-                  <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Název projektu</div>
-                    <div style={{ fontWeight: 600, fontSize: '18px' }}>{passportData.passport.project_name}</div>
-                  </div>
-                  <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Beton celkem</div>
-                    <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--accent-primary)' }}>
-                      {formatNumber(passportData?.statistics?.total_concrete_m3 ?? 0)} <span style={{ fontSize: '14px', fontWeight: 400 }}>m³</span>
+                {/* Reinforcement table */}
+                {passportData.passport.reinforcement.length > 0 && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '8px',
+                      borderBottom: '2px solid #64748b',
+                      paddingBottom: '6px',
+                    }}>
+                      Výztuž
                     </div>
-                  </div>
-                  <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Výztuž celkem</div>
-                    <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--accent-secondary)' }}>
-                      {formatNumber(passportData?.statistics?.total_reinforcement_t ?? 0)} <span style={{ fontSize: '14px', fontWeight: 400 }}>t</span>
-                    </div>
-                  </div>
-                  <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Třídy betonu</div>
-                    <div style={{ fontSize: '24px', fontWeight: 600 }}>
-                      {passportData?.statistics?.unique_concrete_classes ?? 0}
-                    </div>
-                  </div>
-                  <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Ocelové třídy</div>
-                    <div style={{ fontSize: '24px', fontWeight: 600 }}>
-                      {passportData?.statistics?.unique_steel_grades ?? 0}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* AI Description Card — always shown when description exists (important for Technická zpráva) */}
-              {passportData.passport.description && (
-                <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
-                  <h3 style={{ margin: '0 0 12px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Zap size={20} style={{ color: 'var(--accent-primary)' }} />
-                    Popis projektu (AI)
-                    {passportData.passport.structure_type && (
-                      <span style={{ fontSize: '12px', fontWeight: 400, background: 'var(--bg-secondary)', padding: '2px 8px', borderRadius: '4px', marginLeft: '8px' }}>
-                        {passportData.passport.structure_type}
-                      </span>
-                    )}
-                  </h3>
-                  <p style={{ margin: '0 0 12px', lineHeight: 1.6, color: 'var(--text-primary)' }}>
-                    {passportData.passport.description}
-                  </p>
-                  {passportData.passport.technical_highlights && passportData.passport.technical_highlights.length > 0 && (
-                    <div>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '8px' }}>Technické hlavní body:</div>
-                      <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        {passportData.passport.technical_highlights.map((hl, i) => (
-                          <li key={i} style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{hl}</li>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Třída oceli</th>
+                          <th style={{ textAlign: 'right', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Hmotnost</th>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Průměry</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {passportData.passport.reinforcement.map((steel, i) => (
+                          <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                            <td style={{ padding: '6px 10px', fontWeight: 600 }}>{steel.steel_grade}</td>
+                            <td style={{ padding: '6px 10px', textAlign: 'right' }}>{steel.tonnage_t !== null ? `${formatNumber(steel.tonnage_t)} t` : '—'}</td>
+                            <td style={{ padding: '6px 10px', fontSize: '12px' }}>{steel.bar_diameters.length > 0 ? steel.bar_diameters.join(', ') : '—'}</td>
+                          </tr>
                         ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
 
-              {/* Concrete Specifications Card (structured mode only) */}
-          {passportData.passport.concrete_specifications.length > 0 && (
-            <div className="c-card">
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Boxes size={20} />
-                Specifikace betonu ({passportData.passport.concrete_specifications.length})
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {passportData.passport.concrete_specifications.map((spec, index) => (
-                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: '3px solid var(--accent-primary)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
-                      <div style={{ fontWeight: 600, fontSize: '16px' }}>{spec.concrete_class}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                        Spolehlivost: {(spec.confidence * 100).toFixed(0)}%
-                      </div>
+                {/* Dimensions — compact key-value table */}
+                {passportData.passport.dimensions && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '8px',
+                      borderBottom: '2px solid #F59E0B',
+                      paddingBottom: '6px',
+                    }}>
+                      Rozměry objektu
                     </div>
-                    {(spec.exposure_classes?.length ?? 0) > 0 && (
-                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Expozice:</strong> {spec.exposure_classes!.join(', ')}
-                      </div>
-                    )}
-                    {spec.volume_m3 !== null && (
-                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Objem:</strong> {formatNumber(spec.volume_m3)} m³
-                      </div>
-                    )}
-                    {(spec.special_properties?.length ?? 0) > 0 && (
-                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Vlastnosti:</strong> {spec.special_properties!.join(', ')}
-                      </div>
-                    )}
-                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
-                      {spec.source_text}
-                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                      <tbody>
+                        {passportData.passport.dimensions.floors_above_ground !== null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Nadzemní podlaží</td><td style={{ padding: '4px 10px', fontWeight: 600, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{passportData.passport.dimensions.floors_above_ground} NP</td></tr>
+                        )}
+                        {passportData.passport.dimensions.floors_underground !== null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Podzemní podlaží</td><td style={{ padding: '4px 10px', fontWeight: 600, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{passportData.passport.dimensions.floors_underground} PP</td></tr>
+                        )}
+                        {passportData.passport.dimensions.height_m !== null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Výška</td><td style={{ padding: '4px 10px', fontWeight: 600, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{formatNumber(passportData.passport.dimensions.height_m)} m</td></tr>
+                        )}
+                        {passportData.passport.dimensions.length_m !== null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Délka</td><td style={{ padding: '4px 10px', fontWeight: 600, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{formatNumber(passportData.passport.dimensions.length_m)} m</td></tr>
+                        )}
+                        {passportData.passport.dimensions.width_m !== null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Šířka</td><td style={{ padding: '4px 10px', fontWeight: 600, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{formatNumber(passportData.passport.dimensions.width_m)} m</td></tr>
+                        )}
+                        {passportData.passport.dimensions.built_up_area_m2 !== null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Zastavěná plocha</td><td style={{ padding: '4px 10px', fontWeight: 600, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{formatNumber(passportData.passport.dimensions.built_up_area_m2)} m²</td></tr>
+                        )}
+                      </tbody>
+                    </table>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                )}
 
-          {/* Reinforcement Card */}
-          {passportData.passport.reinforcement.length > 0 && (
-            <div className="c-card">
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Shield size={20} />
-                Výztuž ({passportData.passport.reinforcement.length})
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {passportData.passport.reinforcement.map((steel, index) => (
-                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: '3px solid var(--accent-secondary)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
-                      <div style={{ fontWeight: 600, fontSize: '16px' }}>{steel.steel_grade}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                        Spolehlivost: {(steel.confidence * 100).toFixed(0)}%
-                      </div>
+                {/* Special requirements — flowing text */}
+                {passportData.passport.special_requirements.length > 0 && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '8px',
+                      borderBottom: '2px solid #FF9F1C',
+                      paddingBottom: '6px',
+                    }}>
+                      Speciální požadavky
                     </div>
-                    {steel.tonnage_t !== null && (
-                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Hmotnost:</strong> {formatNumber(steel.tonnage_t)} t
+                    {passportData.passport.special_requirements.map((req, i) => (
+                      <div key={i} style={{ marginBottom: '8px', paddingLeft: '10px', borderLeft: '2px solid #FF9F1C' }}>
+                        <strong>{req.requirement_type}</strong>
+                        {req.standard && <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginLeft: '6px' }}>({req.standard})</span>}
+                        <span style={{ marginLeft: '6px' }}>— {req.description}</span>
                       </div>
-                    )}
-                    {steel.bar_diameters.length > 0 && (
-                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Průměry:</strong> {steel.bar_diameters.join(', ')}
-                      </div>
-                    )}
-                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
-                      {steel.source_text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Building Dimensions Card */}
-          {passportData.passport.dimensions && (
-            <div className="c-card">
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Ruler size={20} />
-                Rozměry objektu
-              </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
-                {passportData.passport.dimensions.floors_above_ground !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Nadzemní podlaží</div>
-                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{passportData.passport.dimensions.floors_above_ground} NP</div>
-                  </div>
-                )}
-                {passportData.passport.dimensions.floors_underground !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Podzemní podlaží</div>
-                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{passportData.passport.dimensions.floors_underground} PP</div>
-                  </div>
-                )}
-                {passportData.passport.dimensions.height_m !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Výška</div>
-                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.height_m)} m</div>
-                  </div>
-                )}
-                {passportData.passport.dimensions.length_m !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Délka</div>
-                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.length_m)} m</div>
-                  </div>
-                )}
-                {passportData.passport.dimensions.width_m !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Šířka</div>
-                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.width_m)} m</div>
-                  </div>
-                )}
-                {passportData.passport.dimensions.built_up_area_m2 !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Zastavěná plocha</div>
-                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.built_up_area_m2)} m²</div>
-                  </div>
-                )}
-              </div>
-              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                Spolehlivost: {(passportData.passport.dimensions.confidence * 100).toFixed(0)}%
-              </div>
-            </div>
-          )}
-
-          {/* Special Requirements Card */}
-          {passportData.passport.special_requirements.length > 0 && (
-            <div className="c-card">
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <AlertCircle size={20} />
-                Speciální požadavky ({passportData.passport.special_requirements.length})
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {passportData.passport.special_requirements.map((req, index) => (
-                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: '3px solid #FF9F1C' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '6px' }}>
-                      <div style={{ fontWeight: 600 }}>{req.requirement_type}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                        Spolehlivost: {(req.confidence * 100).toFixed(0)}%
-                      </div>
-                    </div>
-                    <div style={{ fontSize: '14px', marginBottom: '6px' }}>{req.description}</div>
-                    {req.standard && (
-                      <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                        <strong>Norma:</strong> {req.standard}
-                      </div>
-                    )}
-                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
-                      {req.source_text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* AI Enrichment: Risks */}
-          {passportData.passport.risks.length > 0 && (
-            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
-              <h3 style={{ margin: '0 0 8px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Zap size={20} style={{ color: 'var(--accent-primary)' }} />
-                Hodnocení rizik (AI obohacení)
-              </h3>
-              <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginBottom: '16px' }}>
-                Generováno pomocí {passportData?.metadata?.ai_model_used || 'unknown'}
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {passportData.passport.risks.map((risk, index) => (
-                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: `3px solid ${risk.severity === 'High' ? '#EF4444' : risk.severity === 'Medium' ? '#F59E0B' : '#10B981'}` }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '6px' }}>
-                      <div style={{ fontWeight: 600 }}>{risk.risk_category} - {risk.severity}</div>
-                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                        Spolehlivost: {(risk.confidence * 100).toFixed(0)}%
-                      </div>
-                    </div>
-                    <div style={{ fontSize: '14px', marginBottom: '6px' }}>{risk.description}</div>
-                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                      <strong>Zmírnění:</strong> {risk.mitigation}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* AI Enrichment: Location */}
-          {passportData.passport.location && (
-            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <MapPin size={20} />
-                Lokace (AI obohacení)
-              </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-                {passportData.passport.location.city && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Město</div>
-                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.city}</div>
-                  </div>
-                )}
-                {passportData.passport.location.region && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Kraj</div>
-                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.region}</div>
-                  </div>
-                )}
-                {passportData.passport.location.address && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Adresa</div>
-                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.address}</div>
-                  </div>
-                )}
-                {passportData.passport.location.coordinates && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Souřadnice</div>
-                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.coordinates}</div>
-                  </div>
-                )}
-              </div>
-              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                Spolehlivost: {(passportData.passport.location.confidence * 100).toFixed(0)}%
-              </div>
-            </div>
-          )}
-
-          {/* AI Enrichment: Timeline */}
-          {passportData.passport.timeline && (
-            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Calendar size={20} />
-                Harmonogram (AI obohacení)
-              </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px', marginBottom: '16px' }}>
-                {passportData.passport.timeline.start_date && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Zahájení</div>
-                    <div style={{ fontWeight: 500 }}>{formatDate(passportData.passport.timeline.start_date)}</div>
-                  </div>
-                )}
-                {passportData.passport.timeline.end_date && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Dokončení</div>
-                    <div style={{ fontWeight: 500 }}>{formatDate(passportData.passport.timeline.end_date)}</div>
-                  </div>
-                )}
-                {passportData.passport.timeline.duration_months !== null && (
-                  <div>
-                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Délka trvání</div>
-                    <div style={{ fontWeight: 500 }}>{passportData.passport.timeline.duration_months} měsíců</div>
-                  </div>
-                )}
-              </div>
-              {passportData.passport.timeline.critical_milestones.length > 0 && (
-                <div>
-                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '8px' }}>Kritické milníky</div>
-                  <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    {passportData.passport.timeline.critical_milestones.map((milestone, index) => (
-                      <li key={index} style={{ marginBottom: '4px' }}>{milestone}</li>
                     ))}
-                  </ul>
-                </div>
-              )}
-              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                Spolehlivost: {(passportData.passport.timeline.confidence * 100).toFixed(0)}%
-              </div>
-            </div>
-          )}
-
-          {/* AI Enrichment: Stakeholders */}
-          {passportData.passport.stakeholders.length > 0 && (
-            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
-              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Users size={20} />
-                Zúčastněné strany (AI obohacení)
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {passportData.passport.stakeholders.map((stakeholder, index) => (
-                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <div style={{ fontWeight: 600 }}>{stakeholder.name}</div>
-                      <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{stakeholder.role}</div>
-                    </div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
-                      Spolehlivost: {(stakeholder.confidence * 100).toFixed(0)}%
-                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-            </>
-          )}
+                )}
+
+                {/* Risks table — color-coded severity */}
+                {passportData.passport.risks.length > 0 && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '8px',
+                      borderBottom: '2px solid #EF4444',
+                      paddingBottom: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}>
+                      <Zap size={14} style={{ color: 'var(--accent-primary)' }} />
+                      Hodnocení rizik (AI)
+                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)', width: '8px' }}></th>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Kategorie</th>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Popis</th>
+                          <th style={{ textAlign: 'left', padding: '6px 10px', fontWeight: 600, fontSize: '12px', color: 'var(--text-tertiary)' }}>Zmírnění</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {passportData.passport.risks.map((risk, i) => (
+                          <tr key={i} style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+                            <td style={{ padding: '6px 4px' }}>
+                              <div style={{
+                                width: '8px',
+                                height: '8px',
+                                borderRadius: '50%',
+                                backgroundColor: risk.severity === 'High' ? '#EF4444' : risk.severity === 'Medium' ? '#F59E0B' : '#10B981',
+                              }} />
+                            </td>
+                            <td style={{ padding: '6px 10px', fontWeight: 600, whiteSpace: 'nowrap' }}>{risk.risk_category}</td>
+                            <td style={{ padding: '6px 10px' }}>{risk.description}</td>
+                            <td style={{ padding: '6px 10px', color: 'var(--text-secondary)', fontSize: '12px' }}>{risk.mitigation}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                {/* Location + Timeline + Stakeholders — compact flowing text */}
+                {(passportData.passport.location || passportData.passport.timeline || passportData.passport.stakeholders.length > 0) && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <div style={{
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: 'var(--text-secondary)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      marginBottom: '8px',
+                      borderBottom: '2px solid #6366F1',
+                      paddingBottom: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}>
+                      <Zap size={14} style={{ color: 'var(--accent-primary)' }} />
+                      Další informace (AI)
+                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                      <tbody>
+                        {passportData.passport.location?.city && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)', width: '140px' }}>Město</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{passportData.passport.location.city}</td></tr>
+                        )}
+                        {passportData.passport.location?.region && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Kraj</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{passportData.passport.location.region}</td></tr>
+                        )}
+                        {passportData.passport.location?.address && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Adresa</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{passportData.passport.location.address}</td></tr>
+                        )}
+                        {passportData.passport.timeline?.start_date && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Zahájení</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{formatDate(passportData.passport.timeline.start_date)}</td></tr>
+                        )}
+                        {passportData.passport.timeline?.end_date && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Dokončení</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{formatDate(passportData.passport.timeline.end_date)}</td></tr>
+                        )}
+                        {passportData.passport.timeline?.duration_months != null && (
+                          <tr><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>Délka trvání</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{passportData.passport.timeline.duration_months} měsíců</td></tr>
+                        )}
+                        {passportData.passport.stakeholders.map((s, i) => (
+                          <tr key={i}><td style={{ padding: '4px 10px', color: 'var(--text-secondary)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{s.role}</td><td style={{ padding: '4px 10px', fontWeight: 500, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>{s.name}</td></tr>
+                        ))}
+                      </tbody>
+                    </table>
+
+                    {/* Critical milestones as flowing list */}
+                    {passportData.passport.timeline?.critical_milestones && passportData.passport.timeline.critical_milestones.length > 0 && (
+                      <div style={{ marginTop: '10px', paddingLeft: '10px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Milníky: </span>
+                        <span style={{ fontSize: '13px' }}>
+                          {passportData.passport.timeline.critical_milestones.join(' — ')}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
 
           {/* Metadata */}
           <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', textAlign: 'right' }}>

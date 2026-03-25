@@ -69,8 +69,8 @@ pandas>=2.2.0
 openpyxl>=3.1.0
 # xlrd==2.0.1
 pdfplumber>=0.11.0  # Для проверки PDF
-# CSV parsing (for KROS/RTS exports)
-# Built-in csv module sufficient
+python-docx>=1.1.0  # DOCX parsing for document summary
+# CSV parsing: pandas handles CSV via pd.read_csv
 
 # ==========================================
 # CONFIGURATION & VALIDATION

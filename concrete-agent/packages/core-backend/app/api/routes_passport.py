@@ -87,7 +87,7 @@ async def generate_passport(
     logger.info(f"Generating passport: {project_name}, AI: {enable_ai_enrichment}, mode: {analysis_mode}")
 
     # Validate file type
-    allowed_extensions = ['.pdf', '.xlsx', '.xls', '.xml']
+    allowed_extensions = ['.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv']
     file_ext = Path(file.filename).suffix.lower()
 
     if file_ext not in allowed_extensions:
@@ -185,13 +185,39 @@ async def _generate_adaptive_summary(
             with pdfplumber.open(file_path) as pdf:
                 total_pages = len(pdf.pages)
                 logger.info(f"PDF has {total_pages} pages — reading all")
-                for page in pdf.pages:  # Read ALL pages, not just first 10
+                for page in pdf.pages:
                     page_text = page.extract_text()
                     if page_text:
                         document_text += page_text + "\n"
                 logger.info(f"Extracted {len(document_text)} chars from {total_pages} pages")
         except Exception as e:
             logger.warning(f"Failed to extract PDF text: {e}")
+
+    elif file_ext == '.docx':
+        try:
+            import docx
+            doc = docx.Document(file_path)
+            paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
+            document_text = "\n".join(paragraphs)
+            # Extract tables
+            for table in doc.tables:
+                for row in table.rows:
+                    cells = [cell.text.strip() for cell in row.cells]
+                    document_text += "\n" + " | ".join(cells)
+            total_pages = max(1, len(paragraphs) // 30)
+            logger.info(f"DOCX extracted: {len(document_text)} chars, ~{total_pages} pages")
+        except Exception as e:
+            logger.warning(f"Failed to extract DOCX text: {e}")
+
+    elif file_ext == '.csv':
+        try:
+            import pandas as pd
+            df = pd.read_csv(file_path, encoding="utf-8", on_bad_lines="skip")
+            document_text = df.to_string()
+            total_pages = 1
+            logger.info(f"CSV extracted: {len(document_text)} chars, {len(df)} rows")
+        except Exception as e:
+            logger.warning(f"Failed to extract CSV: {e}")
 
     if not document_text:
         # Fallback: try SmartParser for Excel/XML
@@ -211,9 +237,11 @@ async def _generate_adaptive_summary(
     if not document_text:
         raise HTTPException(status_code=400, detail="Failed to extract text from document")
 
-    # Generate adaptive summary — max_chars=0 means "use model's native context limit"
-    # (Gemini: 200K chars, Claude: 150K, OpenAI: 100K). BriefDocumentSummarizer auto-selects
-    # direct vs. chunked MAP-REDUCE strategy based on document size vs. model limit.
+    # Classify document
+    from app.services.document_classifier import classify_document
+    classification = classify_document(Path(file_path).name, document_text)
+
+    # Generate adaptive summary
     summarizer = BriefDocumentSummarizer(preferred_model=preferred_model)
     result = await summarizer.summarize(
         document_text=document_text,
@@ -229,6 +257,7 @@ async def _generate_adaptive_summary(
         "format": "adaptive_v2",
         "project_name": project_name,
         "adaptive_summary": result,
+        "classification": classification.model_dump(),
         # Minimal passport stub for backward compatibility
         "passport": {
             "passport_id": f"summary_{int(_time.time())}",
