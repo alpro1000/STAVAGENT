@@ -315,7 +315,7 @@ Output must be valid JSON with all required fields.
     def _load_kros_database(self) -> List[Dict]:
         """Load local KROS database"""
         
-        kros_file = settings.KB_DIR / "B5_URS_KROS4" / "kros_sample.json"
+        kros_file = settings.KB_DIR / "B1_urs_codes" / "kros_sample.json"
         
         if kros_file.exists():
             with open(kros_file, "r", encoding="utf-8") as f:
@@ -328,7 +328,7 @@ Output must be valid JSON with all required fields.
     def _load_csn_standards(self) -> List[Dict]:
         """Load local ČSN standards"""
         
-        csn_file = settings.KB_DIR / "B1_Normy_Standardy" / "csn_en_206.json"
+        csn_file = settings.KB_DIR / "B2_csn_standards" / "csn_en_206.json"
         
         if csn_file.exists():
             with open(csn_file, "r", encoding="utf-8") as f:
