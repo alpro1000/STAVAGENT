@@ -227,11 +227,11 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   },
   {
     id: AI_MODELS.GEMINI,
-    name: 'Gemini 2.5 Flash Lite',
+    name: 'Gemini 2.5 Flash',
     cost_per_passport: 'ZDARMA',
     speed: 'Velmi rychlý (1-2s)',
     quality: 'Vysoká',
-    description: 'Přímé API — výchozí fallback, nejlepší poměr cena/výkon',
+    description: 'Přímé API (gemini-2.5-flash) — výchozí fallback, nejlepší poměr cena/výkon',
     provider: 'google',
   },
   {
@@ -240,7 +240,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     cost_per_passport: '$0.0006',
     speed: 'Rychlý (2-3s)',
     quality: 'Velmi vysoká',
-    description: 'Nejlevnější Claude model (claude-haiku-4-5-20251015)',
+    description: 'Nejlevnější Claude model (claude-haiku-4-5-20251001)',
     provider: 'anthropic',
   },
   {
@@ -249,7 +249,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     cost_per_passport: '$0.0075',
     speed: 'Střední (3-5s)',
     quality: 'Maximální',
-    description: 'Nejlepší kvalita (claude-sonnet-4-6-20250217)',
+    description: 'Nejlepší kvalita (claude-sonnet-4-6)',
     provider: 'anthropic',
   },
   {

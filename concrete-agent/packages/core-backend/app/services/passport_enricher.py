@@ -182,8 +182,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
 
     # Model configurations (UPDATED 2026-03-17 — verified against official docs)
     GEMINI_MODEL = "gemini-2.5-flash"  # GA, verified working in europe-west3
-    CLAUDE_MODEL = "claude-sonnet-4-6-20250217"  # GA, balance speed/quality 1M ctx
-    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5-20251015"  # GA, fast cheap high-traffic
+    CLAUDE_MODEL = "claude-sonnet-4-6"  # GA, balance speed/quality 1M ctx
+    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5-20251001"  # GA, fast cheap high-traffic
     OPENAI_MODEL = "gpt-4.1"  # Smartest without reasoning
     OPENAI_MINI_MODEL = "gpt-4.1-mini"  # Smaller, faster
     PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
