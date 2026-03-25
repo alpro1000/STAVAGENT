@@ -970,6 +970,52 @@ Contains:
 ### Тесты
 - **336/336 pass** (shared tests)
 
+---
+
+## 🔧 СЕССИЯ 25.03.2026 — Resource Optimization + Mobile Fix + Cross-service cleanup
+
+**Branch:** `claude/document-session-fixes-Yq83C`
+**Коммиты:** 5
+
+### Что сделано
+
+#### 1. 8 cross-service cleanups (`d8e07bf`)
+- Убран `onrender.com` из CORS regex (concrete-agent/main.py)
+- Обновлены fallback модели: gemini-1.5-* → gemini-2.5-flash/pro (passport_enricher, gemini_client)
+- Исправлено: gpt-5-mini → gpt-4o-mini (URS llmConfig.js + .env.example, 9 мест)
+- Удалены Render-комментарии из portal .env.example
+- Централизованы хардкод-URL в rozpocet-registry → `src/utils/config.ts` (7 файлов)
+- `resolveOrgId()` вынесен из connections.js в shared middleware orgRole.js
+- CLAUDE.md обновлён: registry = "browser + Vercel serverless backend", 11 групп
+
+#### 2. Planner: Resource Optimization engine — always-on (`f263984`, `2edb8c9`)
+- Новый опциональный вход `deadline_days` (дедлайн инвестора, пrac. дни)
+- **Grid search после каждого расчёта:** перебор комбинаций (до 4 бригад, 6 сад)
+- Фильтрация: только варианты быстрее текущего, сортировка по стоимости
+- Вывод: `cheapest_faster`, `fastest`, `best_for_deadline` (если дедлайн задан)
+- UI: карточка "Optimalizace zdrojů" с таблицей вариантов + summary line
+- При превышении дедлайна: красный баннер + рекомендация "Pro splnění termínu"
+- Если нельзя ускорить: "aktuální nastavení je optimální"
+- XLSX экспорт обновлён
+- Типы: `DeadlineCheckResult`, `DeadlineOptimizationVariant`
+- **Файлы:** `planner-orchestrator.ts`, `PlannerPage.tsx`, `exportPlanXLSX.ts`
+
+#### 3. Build fix: exportPlanXLSX type error (`8ab5e01`)
+- Локальный интерфейс `PlannerOutput` в `exportPlanXLSX.ts` не импортирует из shared
+- Добавлен `deadline_check` с полными типами
+
+#### 4. Mobile scroll fix (`07e3827`)
+- **Причина:** каскад `height: 100vh; overflow: hidden` на трёх уровнях (#root, .main-layout, planner containers)
+- **Исправление:**
+  - `#root`: `height: 100vh` → `min-height: 100vh`, убран `overflow: hidden`
+  - `.main-layout`: `overflow: hidden` только на desktop (≥769px media query)
+  - `.r0-planner-sidebar/.r0-planner-main`: `overflow-y: visible` на мобильном
+- Результат: sidebar и results прокручиваются на мобильном, desktop layout не затронут
+- **Файлы:** `global.css`, `components.css`, `r0.css`
+
+### Тесты
+- **336/336 pass** (shared tests)
+
 ### Задание на следующую сессию
 1. **PDF парсинг:** скачать PDF из GCS `stavagent-cenik-norms` → `data/peri-pdfs/`, запустить `parse_peri_pdfs.py`
 2. **Обогащение данных:** дополнить `formwork-systems.ts` данными из PDF (вес панелей, давление бетона, точные размеры)
