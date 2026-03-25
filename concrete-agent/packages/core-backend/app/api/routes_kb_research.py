@@ -256,7 +256,7 @@ async def _call_perplexity(question: str) -> tuple[str, list[SourceItem]]:
     client = PerplexityClient()
     raw = await client._search(
         query=question,
-        domains=_CZECH_CONSTRUCTION_DOMAINS,
+        domains=_CONSTRUCTION_SEARCH_DOMAINS,
         search_recency_filter="year",
     )
     content = (
