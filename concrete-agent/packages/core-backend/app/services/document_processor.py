@@ -41,7 +41,10 @@ from datetime import datetime
 from app.parsers.smart_parser import SmartParser
 from app.services.regex_extractor import CzechConstructionExtractor
 from app.services.passport_enricher import PassportEnricher
-from app.services.document_classifier import classify_document, classify_document_async
+from app.services.document_classifier import (
+    classify_document, classify_document_async,
+    enrich_classification,
+)
 from app.core.config import settings
 from app.models.passport_schema import (
     ProjectPassport,
@@ -55,6 +58,10 @@ from app.models.passport_schema import (
     BillOfQuantitiesExtraction,
     TenderConditionsExtraction,
     ScheduleExtraction,
+    GTPExtraction,
+    TenderExtraction,
+    BridgeSOParams,
+    DocSubType,
 )
 
 logger = logging.getLogger(__name__)
@@ -146,8 +153,12 @@ class DocumentProcessor:
                 text=document_text,
                 llm_call=self.enricher._call_llm if enable_ai_enrichment else None,
             )
+            # v3: Enrich classification with sub_type, SO code, priority
+            classification = enrich_classification(classification, Path(file_path).name)
+
             logger.info(f"Classification: {classification.category.value} "
-                         f"(confidence={classification.confidence:.2f}, method={classification.method})")
+                         f"(confidence={classification.confidence:.2f}, method={classification.method}, "
+                         f"sub_type={classification.sub_type}, so_code={classification.so_code})")
 
             # === LAYER 2: REGEX EXTRACTION (Deterministic facts) ===
             logger.info("LAYER 2: Extracting deterministic facts")
@@ -284,6 +295,10 @@ class DocumentProcessor:
                 bill_of_quantities=type_extractions.get("bill_of_quantities"),
                 tender_conditions=type_extractions.get("tender_conditions"),
                 schedule=type_extractions.get("schedule"),
+                # v3 fields
+                tender=type_extractions.get("tender"),
+                gtp=type_extractions.get("gtp"),
+                bridge_params=type_extractions.get("bridge_params"),
             )
 
         except Exception as e:
@@ -725,13 +740,126 @@ VRAŤ POUZE VALIDNÍ JSON:
   "milestones": [{{"name": "milník", "date": "datum"}}, ...],
   "critical_path": ["aktivity na kritické cestě"]
 }}""",
+
+        DocCategory.GE: """Analyzuj geotechnický pasport (GTP/IGP). Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. VRTY: ID, hloubka, souřadnice, vrstvy zemin
+2. HLADINA PODZEMNÍ VODY: naražená + ustálená pro každý vrt
+3. AGRESIVITA: XA třída, SO4, pH, CO2agr
+4. BLUDNÉ PROUDY: stupeň ochrany
+5. GEOTECHNICKÁ KATEGORIE
+6. TYPY ZEMIN: kód, popis, parametry (Edef, φ, c, Rp)
+7. SEDÁNÍ: hodnoty, místa, konsolidace
+8. DOPORUČENÍ: typ založení, hloubka pilot, opatření
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "boreholes": [{{"borehole_id": "J516", "depth_m": 15.0, "elevation_bpv": 489.53, "layers": [{{"depth_from_m": 0, "depth_to_m": 3.5, "soil_type_code": "Q2p", "csn_class": "F3/MS", "description": "popis"}}]}}],
+  "soil_types": [{{"code": "P1a", "description": "popis", "edef_mpa": číslo, "phi_deg": číslo, "c_kpa": číslo}}],
+  "groundwater_levels": {{"J516": {{"narazena": 1.80, "ustalena": 1.15}}}},
+  "water_aggressivity": "XA2" nebo null,
+  "aggressivity_details": {{"SO4": 58.8, "pH": 6.16, "CO2_agr": 34}},
+  "stray_current_class": číslo nebo null,
+  "geotechnical_category": číslo nebo null,
+  "foundation_recommendation": "text" nebo null,
+  "pile_depth_estimate": "8-10 m" nebo null,
+  "special_measures": ["ocelové výpažnice", "geotechnický dozor"],
+  "settlements": [{{"location": "za opěrou km 2,680", "value_cm": 24.2, "consolidation_95pct_days": 150}}]
+}}""",
     }
+
+    # v3: Extended prompts for bridge dílčí TZ and full PD
+    BRIDGE_TZ_PROMPT = """Parsuj českou technickou zprávu mostu (dílčí TZ SO 2xx) podle ČSN 73 6200.
+
+DOKUMENT:
+{text}
+
+Extrahuj KAŽDOU hodnotu z Odst. 4.x (klasifikace) a Odst. 5.x (rozměry):
+- Odst. 4.1-4.16: druh, překážka, počet polí, materiál, typ mostu
+- Odst. 5.3→light_span_m, 5.4→span_m, 5.7→nk_length_m, 5.9→bridge_length_m
+- Odst. 5.13→bridge_width_m, 5.14→free_width_m, 5.19→bridge_height_m
+- Odst. 5.20→structural_height_m, 5.23→clearance_under_m, 5.28→load_class
+
+Dále extrahuj: NK (nosníky, deska, sklony), založení (piloty, průměr, délka),
+beton (NK, spodní stavba, ochrana, podkladní), sedání, PKO, související SO.
+
+KRITICKÉ: Pokud se hodnota změnila oproti DSP, zapiš do pile_change_note.
+
+VRAŤ POUZE VALIDNÍ JSON matching BridgeSOParams schema:
+{{
+  "csn_4_1": "text", "csn_4_2": "text", "csn_4_3": "text",
+  "csn_4_12": "text", "csn_4_14": "text",
+  "light_span_m": číslo, "span_m": číslo, "span_config": "17+25+17",
+  "nk_length_m": číslo, "nk_area_m2": číslo,
+  "bridge_length_m": číslo, "bridge_width_m": číslo,
+  "free_width_m": číslo, "bridge_height_m": číslo,
+  "structural_height_m": číslo, "clearance_under_m": číslo,
+  "load_class": "ČSN EN 1991-2, skupina 1",
+  "nk_type": "text", "beam_count": číslo, "beam_spacing_mm": číslo,
+  "slab_thickness_mm": číslo,
+  "foundation_type": "text", "pile_diameter_mm": číslo, "pile_length_m": číslo,
+  "pile_change_note": "text nebo null",
+  "concrete_nk": "C30/37-XF2,XD1,XC4", "concrete_substructure": "text",
+  "reinforcement": "B500B",
+  "settlement_abutment_1_mm": číslo, "deflection_span_mm": číslo,
+  "consolidation_95pct_days": číslo,
+  "pko_aggressivity": "C4", "stray_current_protection": číslo,
+  "related_sos": ["SO 020", "SO 101"],
+  "obstacle_crossed": "text", "chainage_km": číslo
+}}"""
+
+    FULL_PD_PROMPT = """Analyzuj zadávací dokumentaci (ZD) veřejné zakázky dle ZZVZ (zákon 134/2016 Sb.).
+
+TOTO JE NEJKRITIČTĚJŠÍ EXTRAKCE — chybějící požadavek = diskvalifikace uchazeče.
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. IDENTIFIKACE: název zakázky, číslo, IČO zadavatele, kontakt, datová schránka
+2. HODNOTA: předpokládaná hodnota v Kč bez DPH — PŘESNÉ číslo
+3. KVALIFIKACE §74-79: KAŽDÝ práh (obrat, reference, personál, vybavení)
+4. HODNOTÍCÍ KRITÉRIA: název, váha %, směr (nižší/vyšší = lepší), min/max
+5. PODÁNÍ: elektronický nástroj, max MB, formáty, papírové podání
+6. LHŮTA + JISTOTA: měsíce, částka, bankovní záruka, účet, VS
+7. PODDODAVATELÉ: vlastní kapacity, identifikace
+8. PŘÍLOHY: číslo + název každé přílohy
+
+VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
+{{
+  "tender_name": "text", "tender_number": "text",
+  "procedure_type": "otevřené řízení § 56 ZZVZ",
+  "contracting_authority": "text", "authority_ico": "text",
+  "contact_person": "text", "data_box": "text",
+  "estimated_value_czk": číslo,
+  "min_annual_turnover_czk": číslo nebo null,
+  "turnover_period": "text",
+  "required_personnel": [{{"role": "text", "reference_description": "text", "authorization_required": "text"}}],
+  "required_references": [{{"reference_code": "4.5.1a", "description": "text", "min_value_czk": číslo}}],
+  "required_equipment": [{{"description": "text", "min_capacity": "text"}}],
+  "evaluation_criteria": [{{"name": "text", "weight_pct": číslo, "direction": "lower_better"}}],
+  "submission_method": "elektronicky", "electronic_tool": "text",
+  "max_file_size_mb": číslo, "accepted_formats": ["pdf", "docx"],
+  "binding_period_months": číslo,
+  "jistota_required": true/false, "jistota_amount_czk": číslo,
+  "jistota_forms": ["bankovní záruka"], "jistota_bank_account": "text",
+  "jistota_variable_symbol": "text",
+  "own_capacity_required": ["text"],
+  "attachments": [{{"number": 1, "name": "text"}}],
+  "contract_type": "FIDIC Red Book nebo null",
+  "risk_flags": ["popis rizika"]
+}}"""
 
     EXTRACTION_MODEL_MAP = {
         DocCategory.TZ: TechnicalExtraction,
         DocCategory.RO: BillOfQuantitiesExtraction,
         DocCategory.PD: TenderConditionsExtraction,
         DocCategory.HA: ScheduleExtraction,
+        DocCategory.GE: GTPExtraction,
     }
 
     async def _extract_type_specific(
@@ -742,44 +870,116 @@ VRAŤ POUZE VALIDNÍ JSON:
         """
         Run type-specific AI extraction based on document classification.
 
+        v3: Uses enriched classification (sub_type) to select specialized prompts:
+        - TZ with sub_type TZ-D on bridge docs → BRIDGE_TZ_PROMPT → BridgeSOParams
+        - PD with sub_type PD-ZD → FULL_PD_PROMPT → TenderExtraction
+        - GE → GTP prompt → GTPExtraction
+        - Otherwise uses standard TYPE_EXTRACTION_PROMPTS
+
+        Also runs Layer 2 regex extraction for PD/Bridge/GTP fields.
+
         Returns dict with keys like 'technical', 'bill_of_quantities', etc.
         """
         category = classification.category
-        prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
-        model_cls = self.EXTRACTION_MODEL_MAP.get(category)
+        results: Dict[str, Any] = {}
+
+        # --- Layer 2 regex pre-extraction for specialized types ---
+        if category == DocCategory.PD:
+            pd_regex = self.extractor.extract_pd(document_text)
+            if pd_regex:
+                results["pd_regex"] = pd_regex
+                logger.info(f"PD regex: {len(pd_regex)} fields extracted")
+
+        if category == DocCategory.TZ:
+            bridge_regex = self.extractor.extract_bridge(document_text)
+            if bridge_regex:
+                results["bridge_regex"] = bridge_regex
+                logger.info(f"Bridge regex: {len(bridge_regex)} fields extracted")
+
+        if category == DocCategory.GE:
+            gtp_regex = self.extractor.extract_gtp(document_text)
+            if gtp_regex:
+                results["gtp_regex"] = gtp_regex
+                logger.info(f"GTP regex: {len(gtp_regex)} fields extracted")
+
+        # --- Select prompt and model based on sub_type ---
+        prompt_template = None
+        model_cls = None
+
+        # v3: Check for specialized prompts based on sub_type
+        sub_type = getattr(classification, 'sub_type', None)
+
+        if category == DocCategory.TZ and sub_type == DocSubType.TZ_D:
+            # Bridge dílčí TZ — use full ČSN 73 6200 prompt
+            prompt_template = self.BRIDGE_TZ_PROMPT
+            model_cls = BridgeSOParams
+        elif category == DocCategory.PD and sub_type in (DocSubType.PD_ZD, None):
+            # Full PD/Zadávací dokumentace — use ZZVZ prompt
+            prompt_template = self.FULL_PD_PROMPT
+            model_cls = TenderExtraction
+        else:
+            # Standard extraction
+            prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
+            model_cls = self.EXTRACTION_MODEL_MAP.get(category)
 
         if not prompt_template or not model_cls:
-            return {}
+            return results
 
         # Limit text to avoid token overflow (use first 30K chars)
         text_for_extraction = document_text[:30_000]
         prompt = prompt_template.format(text=text_for_extraction)
 
         try:
-            result = await self.enricher._call_llm(prompt)
-            if not result or not isinstance(result, dict):
-                return {}
+            ai_result = await self.enricher._call_llm(prompt)
+            if not ai_result or not isinstance(ai_result, dict):
+                return results
+
+            # Merge regex facts into AI result (regex wins on conflicts — confidence=1.0)
+            if category == DocCategory.PD and "pd_regex" in results:
+                for k, v in results["pd_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
+
+            if category == DocCategory.TZ and "bridge_regex" in results:
+                for k, v in results["bridge_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
+
+            if category == DocCategory.GE and "gtp_regex" in results:
+                for k, v in results["gtp_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
 
             # Parse into Pydantic model for validation
-            extraction = model_cls(**result)
+            extraction = model_cls(**ai_result)
 
-            # Map category to response field name
+            # Map to response field name
             field_map = {
                 DocCategory.TZ: "technical",
                 DocCategory.RO: "bill_of_quantities",
                 DocCategory.PD: "tender_conditions",
                 DocCategory.HA: "schedule",
+                DocCategory.GE: "gtp",
             }
-            field_name = field_map.get(category)
-            if field_name:
-                logger.info(f"Type-specific extraction ({category.value}): "
-                             f"{len(result)} fields extracted")
-                return {field_name: extraction}
+
+            # v3: Override field name for specialized extractions
+            if model_cls == BridgeSOParams:
+                results["bridge_params"] = extraction
+                logger.info(f"Bridge TZ extraction: {len(ai_result)} fields")
+            elif model_cls == TenderExtraction:
+                results["tender"] = extraction
+                logger.info(f"Full PD extraction: {len(ai_result)} fields")
+            else:
+                field_name = field_map.get(category)
+                if field_name:
+                    results[field_name] = extraction
+                    logger.info(f"Type-specific extraction ({category.value}): "
+                                 f"{len(ai_result)} fields extracted")
 
         except Exception as e:
             logger.warning(f"Type-specific extraction failed ({category.value}): {e}")
 
-        return {}
+        return results
 
 
 # =============================================================================

@@ -489,6 +489,357 @@ class CzechConstructionExtractor:
         return requirements
 
     # =============================================================================
+    # V3: PD (TENDER) EXTRACTION — confidence = 1.0
+    # =============================================================================
+
+    PD_PATTERNS = {
+        # Estimated value: "1 279 250 000 Kč", "1279250000 CZK"
+        'estimated_value': r'[Pp]ředpokládan[áa]\s+hodnot[ay].*?(?:činí|je)?\s*:?\s*([\d\s]+(?:[.,]\d+)?)\s*(?:mil\.?\s*)?(?:Kč|CZK)',
+        'value_czk': r'([\d\s,.]+)\s*(?:mil\.?\s*)?Kč\s*bez\s*DPH',
+
+        # Jistota: "15 000 000 Kč", "15 mil. Kč"
+        'jistota_amount': r'jistot[uůay].*?(?:ve\s+výši|částk[auě])\s*\*?\*?([\d\s]+(?:[.,]\d+)?)\s*(?:mil\.?\s*)?(?:Kč|CZK)',
+
+        # Zadávací lhůta: "10 měsíců"
+        'binding_period': r'(?:zadávací\s+lhůta|účastníci.*?nesmí.*?odstoupit).*?(\d+)\s*měsíc',
+
+        # Evaluation weights: "**Cena** **90 %**", "Cena 90%"
+        'eval_weight': r'(?:\*{2})?([^*\n]{3,60}?)(?:\*{2})?\s+(?:\*{2})?(\d+)\s*%',
+
+        # Qualification: "400 mil. Kč", "600 mil. Kč"
+        'qualification_mil': r'(\d+)\s*mil\.?\s*Kč',
+        'qualification_min': r'minimálně\s*([\d\s]+)\s*(?:mil\.?\s*)?(?:Kč|CZK)',
+
+        # Záruční doba: "60 měsíců", "84 měsíců"
+        'warranty_months': r'záruční\s+dob[ayuě].*?(\d+)\s*měsíc',
+
+        # Bank account: "10006-15937031/0710"
+        'bank_account': r'účet.*?č\.\s*([\d-]+/\d+)',
+        'variable_symbol': r'variabilní\s+symbol.*?(\d{6,})',
+
+        # Tender number
+        'tender_number': r'[Čč]íslo\s+(?:veřejné\s+)?zakázky[:\s]*([\w-]+)',
+        'isprofin': r'ISPROFIN[:/\s]*([\d\s]+)',
+
+        # FIDIC
+        'fidic': r'(FIDIC)',
+        'fidic_book': r'(Red\s+Book|Yellow\s+Book|Silver\s+Book)',
+
+        # File limits
+        'file_size_mb': r'(\d+)\s*MB',
+
+        # Electronic tool
+        'e_tool': r'(?:elektronický\s+nástroj|Tender\s+arena|eGORDION)',
+
+        # Přílohy: "Příloha č. 1 – Dopis nabídky"
+        'attachment': r'Příloha\s+č\.\s*(\d+)\s*[-–—]\s*(.+?)(?:\n|$)',
+
+        # Own capacity
+        'own_capacity': r'vlastními\s+kapacitami.*?:\s*(.*?)(?:\.|$)',
+
+        # IČO
+        'ico': r'IČ[O:]?\s*(\d{8})',
+    }
+
+    def extract_pd(self, text: str) -> Dict[str, Any]:
+        """
+        Extract tender (PD) data from text. All confidence = 1.0.
+
+        Returns dict with keys matching TenderExtraction fields.
+        """
+        result: Dict[str, Any] = {}
+
+        # Estimated value
+        for pat in [self.PD_PATTERNS['estimated_value'], self.PD_PATTERNS['value_czk']]:
+            m = re.search(pat, text, re.IGNORECASE | re.DOTALL)
+            if m:
+                result['estimated_value_czk'] = self._parse_czech_number(m.group(1))
+                break
+
+        # Jistota
+        m = re.search(self.PD_PATTERNS['jistota_amount'], text, re.IGNORECASE | re.DOTALL)
+        if m:
+            result['jistota_amount_czk'] = self._parse_czech_number(m.group(1))
+            result['jistota_required'] = True
+
+        # Binding period
+        m = re.search(self.PD_PATTERNS['binding_period'], text, re.IGNORECASE | re.DOTALL)
+        if m:
+            result['binding_period_months'] = int(m.group(1))
+
+        # Evaluation criteria weights
+        weights = []
+        for m in re.finditer(self.PD_PATTERNS['eval_weight'], text):
+            name = m.group(1).strip()
+            pct = float(m.group(2))
+            if 3 < pct <= 100 and len(name) > 3:
+                direction = 'lower_better' if 'cen' in name.lower() else 'higher_better'
+                weights.append({'name': name, 'weight_pct': pct, 'direction': direction})
+        if weights:
+            result['evaluation_criteria'] = weights
+
+        # Warranty
+        m = re.search(self.PD_PATTERNS['warranty_months'], text, re.IGNORECASE | re.DOTALL)
+        if m:
+            result['warranty_months'] = int(m.group(1))
+
+        # Bank account + VS
+        m = re.search(self.PD_PATTERNS['bank_account'], text, re.IGNORECASE)
+        if m:
+            result['jistota_bank_account'] = m.group(1)
+        m = re.search(self.PD_PATTERNS['variable_symbol'], text, re.IGNORECASE)
+        if m:
+            result['jistota_variable_symbol'] = m.group(1)
+
+        # Tender number
+        m = re.search(self.PD_PATTERNS['tender_number'], text, re.IGNORECASE)
+        if m:
+            result['tender_number'] = m.group(1)
+
+        # FIDIC
+        m = re.search(self.PD_PATTERNS['fidic'], text)
+        if m:
+            result['contract_type'] = 'FIDIC'
+            book_m = re.search(self.PD_PATTERNS['fidic_book'], text, re.IGNORECASE)
+            if book_m:
+                result['contract_type'] = f'FIDIC {book_m.group(1)}'
+
+        # File size limits
+        sizes = [int(m.group(1)) for m in re.finditer(self.PD_PATTERNS['file_size_mb'], text)]
+        if sizes:
+            result['max_file_size_mb'] = max(sizes)
+
+        # Electronic tool
+        m = re.search(self.PD_PATTERNS['e_tool'], text, re.IGNORECASE)
+        if m:
+            result['electronic_tool'] = m.group(0)
+
+        # Attachments
+        attachments = []
+        for m in re.finditer(self.PD_PATTERNS['attachment'], text):
+            attachments.append({'number': int(m.group(1)), 'name': m.group(2).strip()})
+        if attachments:
+            result['attachments'] = attachments
+
+        # IČO
+        m = re.search(self.PD_PATTERNS['ico'], text, re.IGNORECASE)
+        if m:
+            result['authority_ico'] = m.group(1)
+
+        # Qualification thresholds (all mil CZK amounts)
+        qual_amounts = []
+        for m in re.finditer(self.PD_PATTERNS['qualification_mil'], text):
+            qual_amounts.append(int(m.group(1)))
+        if qual_amounts:
+            result['qualification_thresholds_mil_czk'] = sorted(set(qual_amounts), reverse=True)
+
+        logger.info(f"PD regex extraction: {len(result)} fields found")
+        return result
+
+    # =============================================================================
+    # V3: BRIDGE DIMENSION EXTRACTION
+    # =============================================================================
+
+    BRIDGE_PATTERNS = {
+        # ČSN 73 6200 Odst. 5 dimensions
+        'bridge_length': r'délka\s+mostu[:\s]*(\d+[\.,]?\d*)\s*m',
+        'bridge_width': r'šířka\s+mostu[:\s]*(\d+[\.,]?\d*)\s*m',
+        'free_width': r'voln[áa]\s+šířk[ay][:\s]*(\d+[\.,]?\d*)\s*m',
+        'bridge_height': r'výška\s+mostu[:\s]*(\d+[\.,]?\d*)\s*m',
+        'clearance_under': r'voln[áa]\s+výšk[ay]\s+pod\s+most[:\w\s]*?(\d+[\.,]?\d*)\s*m',
+        'span': r'rozpětí[:\s]*(\d+[\.,]?\d*)\s*m',
+        'light_span': r'světlost[:\s]*(\d+[\.,]?\d*)\s*m',
+        'nk_length': r'délka\s+(?:nosné\s+konstrukce|NK)[:\s]*(\d+[\.,]?\d*)\s*m',
+        'nk_area': r'plocha\s+(?:nosné\s+konstrukce|NK)[:\s]*(\d+[\.,]?\d*)\s*m[²2]',
+
+        # Structural details
+        'beam_count': r'(\d+)\s*[×x]\s*(?:nosník|předpjat)',
+        'beam_spacing': r'(?:osová\s+)?vzdálenost\s+nosníků[:\s]*(\d+)\s*mm',
+        'slab_thickness': r'(?:spřažen[áa]\s+)?desk[ay]\s+(?:tl\.?|tloušťk[ay])[:\s]*(\d+)\s*mm',
+        'pile_diameter': r'(?:pilotyø|průměr\w*\s+pilot)[:\s]*(\d+)\s*mm',
+        'pile_length': r'délk[ay]\s+pilot[:\s]*(\d+[\.,]?\d*)\s*m',
+
+        # Slopes
+        'transverse_slope': r'příčný\s+sklon[:\s]*(\d+[\.,]?\d*)\s*%',
+        'longitudinal_slope': r'podélný\s+sklon[:\s]*(\d+[\.,]?\d*)\s*%',
+
+        # Settlement
+        'settlement': r'sedání[:\s]*(\d+[\.,]?\d*)\s*mm',
+        'deflection': r'průhyb[:\s]*(\d+[\.,]?\d*)\s*mm',
+
+        # SO code
+        'so_code': r'SO\s*(\d{3})',
+
+        # Related SOs
+        'related_so_list': r'SO\s+\d{3}',
+
+        # Chainage
+        'chainage': r'(?:km|staničení)[:\s]*(\d+[\.,]\d+)',
+    }
+
+    def extract_bridge(self, text: str) -> Dict[str, Any]:
+        """Extract bridge parameters from text. Confidence = 1.0."""
+        result: Dict[str, Any] = {}
+
+        float_fields = {
+            'bridge_length_m': 'bridge_length',
+            'bridge_width_m': 'bridge_width',
+            'free_width_m': 'free_width',
+            'bridge_height_m': 'bridge_height',
+            'clearance_under_m': 'clearance_under',
+            'span_m': 'span',
+            'light_span_m': 'light_span',
+            'nk_length_m': 'nk_length',
+            'nk_area_m2': 'nk_area',
+            'pile_length_m': 'pile_length',
+            'transverse_slope_pct': 'transverse_slope',
+            'longitudinal_slope_pct': 'longitudinal_slope',
+            'chainage_km': 'chainage',
+        }
+
+        for field, pattern_key in float_fields.items():
+            m = re.search(self.BRIDGE_PATTERNS[pattern_key], text, re.IGNORECASE)
+            if m:
+                result[field] = float(m.group(1).replace(',', '.'))
+
+        int_fields = {
+            'beam_count': 'beam_count',
+            'beam_spacing_mm': 'beam_spacing',
+            'slab_thickness_mm': 'slab_thickness',
+            'pile_diameter_mm': 'pile_diameter',
+        }
+
+        for field, pattern_key in int_fields.items():
+            m = re.search(self.BRIDGE_PATTERNS[pattern_key], text, re.IGNORECASE)
+            if m:
+                result[field] = int(m.group(1))
+
+        # Settlement / deflection
+        m = re.search(self.BRIDGE_PATTERNS['settlement'], text, re.IGNORECASE)
+        if m:
+            result['settlement_abutment_1_mm'] = float(m.group(1).replace(',', '.'))
+        m = re.search(self.BRIDGE_PATTERNS['deflection'], text, re.IGNORECASE)
+        if m:
+            result['deflection_span_mm'] = float(m.group(1).replace(',', '.'))
+
+        # Related SOs
+        so_codes = list(set(re.findall(self.BRIDGE_PATTERNS['related_so_list'], text)))
+        if so_codes:
+            result['related_sos'] = sorted(so_codes)
+
+        # Concrete specs from text: "C30/37-XF2,XD1,XC4"
+        concrete_spec = re.search(r'(C\d{2}/\d{2}[-\w,\s]+)', text)
+        if concrete_spec:
+            result['concrete_nk'] = concrete_spec.group(1).strip()
+
+        # Reinforcement
+        rebar = re.search(r'(B500[ABC])', text)
+        if rebar:
+            result['reinforcement'] = rebar.group(1)
+
+        # Cover
+        cover = re.search(r'krytí[:\s]*(\d+/\d+)\s*mm', text, re.IGNORECASE)
+        if cover:
+            result['cover_mm'] = cover.group(1) + ' mm'
+
+        logger.info(f"Bridge regex extraction: {len(result)} fields found")
+        return result
+
+    # =============================================================================
+    # V3: GTP (GEOTECHNICAL) EXTRACTION
+    # =============================================================================
+
+    GTP_PATTERNS = {
+        # Aggressivity class
+        'xa_class': r'(XA[123])',
+        # Groundwater level
+        'hpv': r'(?:HPV|hladina\s+podzemní\s+vody)[:\s]*(\d+[\.,]\d+)\s*m',
+        # Borehole ID
+        'borehole': r'(J\d{2,4}|JV\d{2,4})',
+        # Stray currents
+        'stray_current': r'bludný(?:ch)?\s+proud[ůy].*?stupeň\s+(\d)',
+        # Geotechnical category
+        'geo_category': r'geotechnick[áa]\s+kategorie[:\s]*(\d)',
+        # Soil aggressivity values
+        'so4': r'SO[₄4].*?(\d+[\.,]\d+)',
+        'ph': r'pH[:\s]*(\d+[\.,]\d+)',
+        'co2_agr': r'CO[₂2]\s*(?:agr)?[:\s]*(\d+[\.,]?\d*)',
+    }
+
+    def extract_gtp(self, text: str) -> Dict[str, Any]:
+        """Extract geotechnical data from text. Confidence = 1.0."""
+        result: Dict[str, Any] = {}
+
+        # XA class
+        m = re.search(self.GTP_PATTERNS['xa_class'], text)
+        if m:
+            result['water_aggressivity'] = m.group(1)
+
+        # HPV
+        levels = [float(m.group(1).replace(',', '.'))
+                  for m in re.finditer(self.GTP_PATTERNS['hpv'], text, re.IGNORECASE)]
+        if levels:
+            result['groundwater_level_m'] = f"{min(levels):.2f}-{max(levels):.2f} m" if len(levels) > 1 else f"{levels[0]:.2f} m"
+
+        # Boreholes
+        boreholes = list(set(re.findall(self.GTP_PATTERNS['borehole'], text)))
+        if boreholes:
+            result['gtp_boreholes'] = sorted(boreholes)
+
+        # Stray currents
+        m = re.search(self.GTP_PATTERNS['stray_current'], text, re.IGNORECASE)
+        if m:
+            result['stray_current_class'] = int(m.group(1))
+
+        # Geotechnical category
+        m = re.search(self.GTP_PATTERNS['geo_category'], text, re.IGNORECASE)
+        if m:
+            result['geotechnical_category'] = int(m.group(1))
+
+        # Aggressivity details
+        details: Dict[str, float] = {}
+        m = re.search(self.GTP_PATTERNS['so4'], text)
+        if m:
+            details['SO4'] = float(m.group(1).replace(',', '.'))
+        m = re.search(self.GTP_PATTERNS['ph'], text)
+        if m:
+            details['pH'] = float(m.group(1).replace(',', '.'))
+        m = re.search(self.GTP_PATTERNS['co2_agr'], text)
+        if m:
+            details['CO2_agr'] = float(m.group(1).replace(',', '.'))
+        if details:
+            result['aggressivity_details'] = details
+
+        logger.info(f"GTP regex extraction: {len(result)} fields found")
+        return result
+
+    # =============================================================================
+    # V3: CZECH NUMBER PARSER
+    # =============================================================================
+
+    def _parse_czech_number(self, text: str) -> Optional[float]:
+        """Parse Czech-formatted number: '1 279 250 000' or '1.279.250.000' or '15,5'."""
+        if not text:
+            return None
+        cleaned = text.strip().replace('\xa0', '').replace(' ', '')
+        # Handle "1.279.250.000" (thousands dots) vs "15,5" (decimal comma)
+        if ',' in cleaned and '.' in cleaned:
+            cleaned = cleaned.replace('.', '').replace(',', '.')
+        elif ',' in cleaned:
+            # Could be decimal comma or thousands separator
+            parts = cleaned.split(',')
+            if len(parts[-1]) <= 2:
+                cleaned = cleaned.replace(',', '.')
+            else:
+                cleaned = cleaned.replace(',', '')
+        elif cleaned.count('.') > 1:
+            cleaned = cleaned.replace('.', '')
+        try:
+            return float(cleaned)
+        except ValueError:
+            return None
+
+    # =============================================================================
     # HELPER METHODS
     # =============================================================================
 
