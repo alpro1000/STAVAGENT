@@ -40,7 +40,7 @@ from datetime import datetime
 from app.parsers.smart_parser import SmartParser
 from app.services.regex_extractor import CzechConstructionExtractor
 from app.services.passport_enricher import PassportEnricher
-from app.services.document_classifier import classify_document
+from app.services.document_classifier import classify_document, classify_document_async
 from app.models.passport_schema import (
     ProjectPassport,
     PassportGenerationRequest,
@@ -48,6 +48,11 @@ from app.models.passport_schema import (
     PassportMetadata,
     PassportStatistics,
     ClassificationInfo,
+    DocCategory,
+    TechnicalExtraction,
+    BillOfQuantitiesExtraction,
+    TenderConditionsExtraction,
+    ScheduleExtraction,
 )
 
 logger = logging.getLogger(__name__)
@@ -133,10 +138,11 @@ class DocumentProcessor:
             layer1_time = int((time.time() - layer1_start) * 1000)
             logger.info(f"Layer 1 complete: {layer1_time}ms, {len(document_text)} chars")
 
-            # === CLASSIFICATION: Detect document type ===
-            classification = classify_document(
+            # === CLASSIFICATION: Detect document type (3-tier with AI fallback) ===
+            classification = await classify_document_async(
                 filename=Path(file_path).name,
                 text=document_text,
+                llm_call=self.enricher._call_llm if enable_ai_enrichment else None,
             )
             logger.info(f"Classification: {classification.category.value} "
                          f"(confidence={classification.confidence:.2f}, method={classification.method})")
@@ -195,6 +201,13 @@ class DocumentProcessor:
                     'time_ms': 0,
                     'enrichments_added': 0
                 }
+
+            # === TYPE-SPECIFIC EXTRACTION (based on classification) ===
+            type_extractions: Dict[str, Any] = {}
+            if enable_ai_enrichment and classification.confidence >= 0.5:
+                type_extractions = await self._extract_type_specific(
+                    classification, document_text
+                )
 
             # Calculate total time
             total_time = int((time.time() - start_time) * 1000)
@@ -265,6 +278,10 @@ class DocumentProcessor:
                 metadata=metadata,
                 statistics=statistics,
                 classification=classification,
+                technical=type_extractions.get("technical"),
+                bill_of_quantities=type_extractions.get("bill_of_quantities"),
+                tender_conditions=type_extractions.get("tender_conditions"),
+                schedule=type_extractions.get("schedule"),
             )
 
         except Exception as e:
@@ -333,15 +350,27 @@ class DocumentProcessor:
             text_content = ""
 
             # For PDFs: ALWAYS extract full text with pdfplumber first
+            # Handles 50-70+ page docs; skips empty pages gracefully
             if path_obj.suffix.lower() == '.pdf':
                 try:
                     import pdfplumber
                     with pdfplumber.open(path_obj) as pdf:
-                        for page in pdf.pages:
-                            page_text = page.extract_text()
-                            if page_text:
-                                text_content += page_text + "\n"
-                    logger.info(f"PDF full text extracted: {len(text_content)} chars from {len(pdf.pages)} pages")
+                        total_pages = len(pdf.pages)
+                        max_pages = min(total_pages, 70)  # Cap at 70 pages for very long docs
+                        empty_count = 0
+                        for page_num in range(max_pages):
+                            try:
+                                page_text = pdf.pages[page_num].extract_text()
+                                if page_text and page_text.strip():
+                                    text_content += page_text + "\n"
+                                else:
+                                    empty_count += 1
+                            except Exception as page_err:
+                                logger.debug(f"Page {page_num + 1} extraction error: {page_err}")
+                                empty_count += 1
+                        if empty_count > 0:
+                            logger.info(f"PDF: skipped {empty_count} empty/unreadable pages")
+                        logger.info(f"PDF full text extracted: {len(text_content)} chars from {max_pages}/{total_pages} pages")
                 except Exception as e:
                     logger.warning(f"Failed to extract PDF text with pdfplumber: {e}")
 
@@ -474,6 +503,144 @@ class DocumentProcessor:
             return 'Bednění'
 
         return 'Ostatní'
+
+    # =============================================================================
+    # TYPE-SPECIFIC AI EXTRACTION
+    # =============================================================================
+
+    TYPE_EXTRACTION_PROMPTS: Dict[DocCategory, str] = {
+        DocCategory.TZ: """Analyzuj tuto technickou zprávu. Extrahuj POUZE fakta nalezená v textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "project_name": "název projektu nebo null",
+  "structure_type": "typ konstrukce (most, budova, tunel...) nebo null",
+  "structure_subtype": "podtyp nebo null",
+  "total_length_m": číslo nebo null,
+  "width_m": číslo nebo null,
+  "height_m": číslo nebo null,
+  "area_m2": číslo nebo null,
+  "volume_m3": číslo nebo null,
+  "span_count": číslo nebo null,
+  "span_lengths_m": [čísla] nebo [],
+  "concrete_grade": "C30/37" nebo null,
+  "reinforcement_grade": "B500B" nebo null,
+  "foundation_type": "typ základu" nebo null,
+  "fabrication_method": "metoda výroby/výstavby" nebo null,
+  "load_class": "třída zatížení" nebo null,
+  "design_life_years": číslo nebo null,
+  "applicable_standards": ["ČSN ...", "EN ..."],
+  "construction_duration_months": číslo nebo null,
+  "special_conditions": ["speciální podmínky"]
+}}""",
+
+        DocCategory.RO: """Analyzuj tento rozpočet/výkaz výměr. Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "total_items": počet položek,
+  "total_price_czk": celková cena nebo null,
+  "categories": [{{"name": "HSV", "price_czk": číslo}}, ...],
+  "key_materials": [{{"name": "Beton C30/37", "quantity": číslo, "unit": "m3"}}, ...],
+  "concrete_volume_m3": číslo nebo null,
+  "steel_tonnage_t": číslo nebo null,
+  "earthwork_volume_m3": číslo nebo null
+}}""",
+
+        DocCategory.PD: """Analyzuj zadávací/smluvní podmínky. Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "tender_name": "název zakázky" nebo null,
+  "contracting_authority": "zadavatel" nebo null,
+  "submission_deadline": "termín podání" nebo null,
+  "question_deadline": "termín pro dotazy" nebo null,
+  "estimated_budget": číslo nebo null,
+  "currency": "CZK",
+  "required_documents": ["seznam požadovaných dokumentů"],
+  "qualification_criteria": ["kvalifikační předpoklady"],
+  "evaluation_criteria": [{{"criterion": "název", "weight_pct": číslo}}],
+  "submission_method": "způsob podání" nebo null
+}}""",
+
+        DocCategory.HA: """Analyzuj tento harmonogram. Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "total_duration_months": číslo nebo null,
+  "start_date": "datum" nebo null,
+  "end_date": "datum" nebo null,
+  "phases": [{{"name": "etapa", "duration": "trvání"}}, ...],
+  "milestones": [{{"name": "milník", "date": "datum"}}, ...],
+  "critical_path": ["aktivity na kritické cestě"]
+}}""",
+    }
+
+    EXTRACTION_MODEL_MAP = {
+        DocCategory.TZ: TechnicalExtraction,
+        DocCategory.RO: BillOfQuantitiesExtraction,
+        DocCategory.PD: TenderConditionsExtraction,
+        DocCategory.HA: ScheduleExtraction,
+    }
+
+    async def _extract_type_specific(
+        self,
+        classification: ClassificationInfo,
+        document_text: str,
+    ) -> Dict[str, Any]:
+        """
+        Run type-specific AI extraction based on document classification.
+
+        Returns dict with keys like 'technical', 'bill_of_quantities', etc.
+        """
+        category = classification.category
+        prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
+        model_cls = self.EXTRACTION_MODEL_MAP.get(category)
+
+        if not prompt_template or not model_cls:
+            return {}
+
+        # Limit text to avoid token overflow (use first 30K chars)
+        text_for_extraction = document_text[:30_000]
+        prompt = prompt_template.format(text=text_for_extraction)
+
+        try:
+            result = await self.enricher._call_llm(prompt)
+            if not result or not isinstance(result, dict):
+                return {}
+
+            # Parse into Pydantic model for validation
+            extraction = model_cls(**result)
+
+            # Map category to response field name
+            field_map = {
+                DocCategory.TZ: "technical",
+                DocCategory.RO: "bill_of_quantities",
+                DocCategory.PD: "tender_conditions",
+                DocCategory.HA: "schedule",
+            }
+            field_name = field_map.get(category)
+            if field_name:
+                logger.info(f"Type-specific extraction ({category.value}): "
+                             f"{len(result)} fields extracted")
+                return {field_name: extraction}
+
+        except Exception as e:
+            logger.warning(f"Type-specific extraction failed ({category.value}): {e}")
+
+        return {}
 
 
 # =============================================================================
