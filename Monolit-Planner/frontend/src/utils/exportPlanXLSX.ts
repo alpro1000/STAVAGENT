@@ -21,6 +21,16 @@ interface PlannerOutput {
   props?: { needed: boolean; system: { name: string; manufacturer: string }; grid_spacing_m: number; num_props_per_tact: number; total_props_needed: number; assembly_days: number; disassembly_days: number; hold_days: number; rental_days: number; rental_cost_czk: number; labor_cost_czk: number; total_cost_czk: number; total_weight_kg: number; crane_needed: boolean };
   strategies: any;
   monte_carlo?: { p50: number; p80: number; p90: number; p95: number; mean: number; std_dev: number };
+  deadline_check?: {
+    deadline_days?: number;
+    calculated_days: number;
+    overrun_days: number;
+    fits: boolean;
+    suggestions: Array<{ label: string; total_days: number; total_cost_czk: number; extra_cost_czk: number; fits_deadline: boolean }>;
+    cheapest_faster?: { label: string; total_days: number; extra_cost_czk: number };
+    fastest?: { label: string; total_days: number; extra_cost_czk: number };
+    best_for_deadline?: { label: string; total_days: number; extra_cost_czk: number };
+  };
   warnings: string[];
   decision_log: string[];
 }
