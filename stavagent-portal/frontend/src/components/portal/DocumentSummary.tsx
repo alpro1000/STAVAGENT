@@ -50,10 +50,9 @@ import type {
   PassportGenerationResponse,
   ProjectPassport,
   AIModelType,
-  VertexServiceAccountType,
   AdaptiveTopic,
 } from '../../types/passport';
-import { AI_MODELS, AI_MODEL_OPTIONS, VERTEX_SERVICE_ACCOUNT_OPTIONS } from '../../types/passport';
+import { AI_MODELS, AI_MODEL_OPTIONS } from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -72,13 +71,7 @@ function getFileExtension(filename: string): string {
 }
 
 function isVertexModel(model: AIModelType): boolean {
-  return model === AI_MODELS.VERTEX_AI_GEMINI || model === AI_MODELS.VERTEX_AI_SEARCH;
-}
-
-function resolveCorePreferredModel(model: AIModelType): AIModelType {
-  // CORE passport endpoint accepts vertex-ai-gemini and vertex-ai-search directly.
-  // Pass vertex model IDs as-is so backend routes to Vertex AI (ADC auth).
-  return model;
+  return model === AI_MODELS.VERTEX_AI_GEMINI;
 }
 
 function extractPassportError(data: any): string {
@@ -96,8 +89,6 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
   const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
   const [analysisMode, setAnalysisMode] = useState<'adaptive_extraction' | 'summary_only'>('adaptive_extraction');
-  const [selectedVertexAccount, setSelectedVertexAccount] = useState<VertexServiceAccountType>('vertex-ai-search');
-
   // File input ref
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -180,13 +171,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('project_name', file.name.replace(/\.[^/.]+$/, '')); // Remove extension
       formData.append('enable_ai_enrichment', enableAiEnrichment.toString());
       if (enableAiEnrichment) {
-        formData.append('preferred_model', resolveCorePreferredModel(selectedModel));
+        formData.append('preferred_model', selectedModel);
         formData.append('requested_model', selectedModel);
       }
       formData.append('analysis_mode', analysisMode);
 
       if (enableAiEnrichment && isVertexModel(selectedModel)) {
-        formData.append('vertex_service_account', selectedVertexAccount);
         formData.append('llm_provider', 'vertex-ai');
       }
 
@@ -248,7 +238,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     } finally {
       setIsUploading(false);
     }
-  }, [selectedModel, enableAiEnrichment, analysisMode, selectedVertexAccount]);
+  }, [selectedModel, enableAiEnrichment, analysisMode]);
 
   // Drag and drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -584,33 +574,6 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                     </option>
                   ))}
                 </select>
-              </div>
-            )}
-
-            {/* Vertex service account selector (informational — ADC handles auth automatically on Cloud Run) */}
-            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
-                  Vertex účet:
-                </label>
-                <select
-                  value={selectedVertexAccount}
-                  onChange={(e) => setSelectedVertexAccount(e.target.value as VertexServiceAccountType)}
-                  className="c-input"
-                  style={{ flex: 1, maxWidth: '300px' }}
-                >
-                  {VERTEX_SERVICE_ACCOUNT_OPTIONS.map(account => (
-                    <option key={account.id} value={account.id}>
-                      {account.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
-              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
-                ℹ️ Autentizace přes ADC (Application Default Credentials) — na Cloud Run automaticky. Výběr účtu je pouze informativní.
               </div>
             )}
 
