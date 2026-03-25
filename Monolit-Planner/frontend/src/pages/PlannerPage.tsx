@@ -154,6 +154,7 @@ interface FormState {
   enable_monte_carlo: boolean;
   start_date: string; // ISO date string for calendar mapping
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
+  deadline_days: string; // empty = no deadline, number = investor deadline in working days
 }
 
 const DEFAULT_FORM: FormState = {
@@ -193,6 +194,7 @@ const DEFAULT_FORM: FormState = {
   enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
+  deadline_days: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -468,6 +470,7 @@ export default function PlannerPage() {
       ...(form.wage_rebar_czk_h ? { wage_rebar_czk_h: Number(form.wage_rebar_czk_h) } : {}),
       ...(form.wage_pour_czk_h ? { wage_pour_czk_h: Number(form.wage_pour_czk_h) } : {}),
       enable_monte_carlo: form.enable_monte_carlo,
+      ...(form.deadline_days ? { deadline_days: Number(form.deadline_days) } : {}),
     };
     if (form.use_name_classification && form.element_name.trim()) {
       input.element_name = form.element_name.trim();
@@ -1360,6 +1363,16 @@ export default function PlannerPage() {
                 onChange={e => update('start_date', e.target.value)}
               />
             </Field>
+            <Field label="Termín investora (prac. dní)" hint="požadovaný deadline — systém varuje při překročení">
+              <input
+                type="number"
+                style={inputStyle}
+                placeholder="např. 35"
+                min={1}
+                value={form.deadline_days}
+                onChange={e => update('deadline_days', e.target.value)}
+              />
+            </Field>
 
             <Field label="Sezóna">
               <select
@@ -2040,11 +2053,90 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
 
       {/* KPI Cards */}
       <div className="r0-grid-4" style={{ marginBottom: 20 }}>
-        <KPICard label="Celkem dní" value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color="var(--r0-blue)" />
+        <KPICard label={plan.deadline_check && !plan.deadline_check.fits ? `Celkem dní (termín ${plan.deadline_check.deadline_days}d)` : 'Celkem dní'} value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color={plan.deadline_check && !plan.deadline_check.fits ? '#ef4444' : 'var(--r0-blue)'} />
         <KPICard label="Počet záběrů" value={plan.pour_decision.num_tacts} unit="taktů" color="var(--r0-orange)" />
         <KPICard label="Náklady práce" value={formatCZK(plan.costs.total_labor_czk)} color="var(--r0-green)" />
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
       </div>
+
+      {/* Deadline Check */}
+      {plan.deadline_check && (
+        <Card
+          title={plan.deadline_check.fits ? 'Termín investora — OK' : 'Termín investora — PŘEKROČEN'}
+          icon={plan.deadline_check.fits ? '✅' : '🚨'}
+          borderColor={plan.deadline_check.fits ? 'var(--r0-green)' : '#ef4444'}
+        >
+          <div style={{ fontSize: 13 }}>
+            <Row label="Požadovaný termín" value={`${plan.deadline_check.deadline_days} prac. dní`} />
+            <Row label="Vypočteno" value={`${plan.deadline_check.calculated_days} prac. dní`} bold />
+            {!plan.deadline_check.fits && (
+              <>
+                <div style={{
+                  margin: '10px 0', padding: '10px 14px', borderRadius: 6,
+                  background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
+                  fontWeight: 600,
+                }}>
+                  Překročení: +{plan.deadline_check.overrun_days} dní ({Math.round((plan.deadline_check.overrun_days / plan.deadline_check.deadline_days) * 100)}%)
+                </div>
+                {plan.deadline_check.suggestions.length > 0 ? (
+                  <div style={{ marginTop: 10 }}>
+                    <div style={{ fontWeight: 700, marginBottom: 8, color: 'var(--r0-slate-700)' }}>
+                      Doporučené varianty (seřazeno od nejlevnější):
+                    </div>
+                    <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                      <thead>
+                        <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
+                          <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>#</th>
+                          <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Konfigurace</th>
+                          <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Dní</th>
+                          <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Náklady</th>
+                          <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Rozdíl</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {plan.deadline_check.suggestions.map((s, i) => (
+                          <tr key={i} style={{
+                            borderBottom: '1px solid var(--r0-slate-100)',
+                            background: i === 0 ? '#f0fdf4' : 'transparent',
+                            fontWeight: i === 0 ? 600 : 400,
+                          }}>
+                            <td style={{ padding: '5px 6px' }}>{i === 0 ? '⭐' : i + 1}</td>
+                            <td style={{ padding: '5px 6px' }}>{s.label}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.total_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_cost_czk)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', color: s.extra_cost_czk > 0 ? '#dc2626' : '#16a34a' }}>
+                              {s.extra_cost_czk > 0 ? '+' : ''}{formatCZK(s.extra_cost_czk)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {plan.deadline_check.best && (
+                      <div style={{
+                        marginTop: 10, padding: '10px 14px', borderRadius: 6,
+                        background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534',
+                      }}>
+                        <strong>Doporučení:</strong> {plan.deadline_check.best.label} → {formatNum(plan.deadline_check.best.total_days, 1)} dní
+                        {plan.deadline_check.best.extra_cost_czk > 0 && (
+                          <span> (navíc {formatCZK(plan.deadline_check.best.extra_cost_czk)})</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div style={{
+                    marginTop: 10, padding: '10px 14px', borderRadius: 6,
+                    background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
+                  }}>
+                    Žádná kombinace zdrojů (až 4 čety, 6 sad) nesplní požadovaný termín.
+                    Zvažte delší směny, jiný systém bednění, nebo úpravu projektu.
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </Card>
+      )}
 
       {/* Warnings */}
       {plan.warnings.length > 0 && (

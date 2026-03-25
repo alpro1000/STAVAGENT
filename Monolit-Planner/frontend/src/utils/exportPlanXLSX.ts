@@ -287,6 +287,23 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string, s
   addKV('Úspora', plan.schedule.savings_pct, '%');
   addKV('Datum zahájení', startDate || '-');
 
+  // Deadline check
+  if (plan.deadline_check) {
+    ws1.addRow([]);
+    addSection('Termín investora');
+    addKV('Požadovaný termín', plan.deadline_check.deadline_days, 'dní');
+    addKV('Vypočteno', plan.deadline_check.calculated_days, 'dní');
+    addKV('Stav', plan.deadline_check.fits ? 'SPLNĚNO' : 'PŘEKROČENO');
+    if (!plan.deadline_check.fits) {
+      addKV('Překročení', plan.deadline_check.overrun_days, 'dní');
+      if (plan.deadline_check.best) {
+        addKV('Doporučení', plan.deadline_check.best.label);
+        addKV('Doporučení — dní', plan.deadline_check.best.total_days, 'dní');
+        addKV('Doporučení — navíc', plan.deadline_check.best.extra_cost_czk, 'Kč');
+      }
+    }
+  }
+
   // Monte Carlo
   if (plan.monte_carlo) {
     ws1.addRow([]);
