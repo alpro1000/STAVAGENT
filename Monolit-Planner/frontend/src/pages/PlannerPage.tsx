@@ -2059,84 +2059,131 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
       </div>
 
-      {/* Deadline Check */}
-      {plan.deadline_check && (
-        <Card
-          title={plan.deadline_check.fits ? 'Termín investora — OK' : 'Termín investora — PŘEKROČEN'}
-          icon={plan.deadline_check.fits ? '✅' : '🚨'}
-          borderColor={plan.deadline_check.fits ? 'var(--r0-green)' : '#ef4444'}
-        >
-          <div style={{ fontSize: 13 }}>
-            <Row label="Požadovaný termín" value={`${plan.deadline_check.deadline_days} prac. dní`} />
-            <Row label="Vypočteno" value={`${plan.deadline_check.calculated_days} prac. dní`} bold />
-            {!plan.deadline_check.fits && (
-              <>
+      {/* Resource Optimization + Deadline Check */}
+      {plan.deadline_check && (() => {
+        const dc = plan.deadline_check;
+        const hasDeadline = dc.deadline_days != null;
+        const hasSuggestions = dc.suggestions.length > 0;
+
+        // Determine card style
+        const deadlineExceeded = hasDeadline && !dc.fits;
+        const title = deadlineExceeded
+          ? `Termín investora — PŘEKROČEN (+${dc.overrun_days}d)`
+          : hasSuggestions
+            ? 'Optimalizace zdrojů'
+            : 'Optimalizace zdrojů — aktuální nastavení je optimální';
+        const icon = deadlineExceeded ? '🚨' : hasSuggestions ? '⚡' : '✅';
+        const borderColor = deadlineExceeded ? '#ef4444' : hasSuggestions ? 'var(--r0-blue)' : 'var(--r0-green)';
+
+        return (
+          <Card title={title} icon={icon} borderColor={borderColor}>
+            <div style={{ fontSize: 13 }}>
+              {/* Deadline overrun banner */}
+              {deadlineExceeded && (
                 <div style={{
-                  margin: '10px 0', padding: '10px 14px', borderRadius: 6,
+                  marginBottom: 12, padding: '10px 14px', borderRadius: 6,
                   background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
                   fontWeight: 600,
                 }}>
-                  Překročení: +{plan.deadline_check.overrun_days} dní ({Math.round((plan.deadline_check.overrun_days / plan.deadline_check.deadline_days) * 100)}%)
+                  Termín: {dc.deadline_days} dní | Vypočteno: {dc.calculated_days} dní | Překročení: +{dc.overrun_days} dní ({Math.round((dc.overrun_days / dc.deadline_days!) * 100)}%)
                 </div>
-                {plan.deadline_check.suggestions.length > 0 ? (
-                  <div style={{ marginTop: 10 }}>
-                    <div style={{ fontWeight: 700, marginBottom: 8, color: 'var(--r0-slate-700)' }}>
-                      Doporučené varianty (seřazeno od nejlevnější):
-                    </div>
-                    <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
-                      <thead>
-                        <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
-                          <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>#</th>
-                          <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Konfigurace</th>
-                          <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Dní</th>
-                          <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Náklady</th>
-                          <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)' }}>Rozdíl</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {plan.deadline_check.suggestions.map((s, i) => (
+              )}
+
+              {/* Suggestions table */}
+              {hasSuggestions ? (
+                <>
+                  <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
+                        <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>#</th>
+                        <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Konfigurace</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Dní</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Úspora dní</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Náklady</th>
+                        <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Rozdíl Kč</th>
+                        {hasDeadline && <th style={{ textAlign: 'center', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Termín</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dc.suggestions.map((s, i) => {
+                        const isBestDeadline = hasDeadline && dc.best_for_deadline && s.label === dc.best_for_deadline.label;
+                        return (
                           <tr key={i} style={{
                             borderBottom: '1px solid var(--r0-slate-100)',
-                            background: i === 0 ? '#f0fdf4' : 'transparent',
-                            fontWeight: i === 0 ? 600 : 400,
+                            background: isBestDeadline ? '#f0fdf4' : i === 0 ? '#eff6ff' : 'transparent',
+                            fontWeight: isBestDeadline || i === 0 ? 600 : 400,
                           }}>
-                            <td style={{ padding: '5px 6px' }}>{i === 0 ? '⭐' : i + 1}</td>
+                            <td style={{ padding: '5px 6px' }}>{isBestDeadline ? '⭐' : i + 1}</td>
                             <td style={{ padding: '5px 6px' }}>{s.label}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.total_days, 1)}</td>
+                            <td style={{ padding: '5px 6px', textAlign: 'right', color: '#16a34a' }}>
+                              −{formatNum(dc.calculated_days - s.total_days, 1)}
+                            </td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_cost_czk)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right', color: s.extra_cost_czk > 0 ? '#dc2626' : '#16a34a' }}>
                               {s.extra_cost_czk > 0 ? '+' : ''}{formatCZK(s.extra_cost_czk)}
                             </td>
+                            {hasDeadline && (
+                              <td style={{ padding: '5px 6px', textAlign: 'center' }}>
+                                {s.fits_deadline ? <span style={{ color: '#16a34a' }}>OK</span> : <span style={{ color: '#dc2626' }}>NE</span>}
+                              </td>
+                            )}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {plan.deadline_check.best && (
-                      <div style={{
-                        marginTop: 10, padding: '10px 14px', borderRadius: 6,
-                        background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534',
-                      }}>
-                        <strong>Doporučení:</strong> {plan.deadline_check.best.label} → {formatNum(plan.deadline_check.best.total_days, 1)} dní
-                        {plan.deadline_check.best.extra_cost_czk > 0 && (
-                          <span> (navíc {formatCZK(plan.deadline_check.best.extra_cost_czk)})</span>
-                        )}
-                      </div>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+
+                  {/* Summary line */}
+                  <div style={{ marginTop: 10, padding: '10px 14px', borderRadius: 6, background: 'var(--r0-slate-50, #f8fafc)', fontSize: 12 }}>
+                    {dc.fastest && (
+                      <span>
+                        <strong>Nejrychlejší:</strong> {formatNum(dc.fastest.total_days, 1)} dní ({dc.fastest.label})
+                        {dc.fastest.extra_cost_czk > 0 && <span style={{ color: '#dc2626' }}> +{formatCZK(dc.fastest.extra_cost_czk)}</span>}
+                      </span>
+                    )}
+                    {dc.cheapest_faster && dc.fastest && dc.cheapest_faster.label !== dc.fastest.label && (
+                      <span>
+                        {' | '}<strong>Nejlevnější zrychlení:</strong> {formatNum(dc.cheapest_faster.total_days, 1)} dní
+                        {dc.cheapest_faster.extra_cost_czk > 0
+                          ? <span style={{ color: '#dc2626' }}> +{formatCZK(dc.cheapest_faster.extra_cost_czk)}</span>
+                          : <span style={{ color: '#16a34a' }}> {formatCZK(dc.cheapest_faster.extra_cost_czk)}</span>
+                        }
+                      </span>
                     )}
                   </div>
-                ) : (
-                  <div style={{
-                    marginTop: 10, padding: '10px 14px', borderRadius: 6,
-                    background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
-                  }}>
-                    Žádná kombinace zdrojů (až 4 čety, 6 sad) nesplní požadovaný termín.
-                    Zvažte delší směny, jiný systém bednění, nebo úpravu projektu.
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </Card>
-      )}
+
+                  {/* Deadline best recommendation */}
+                  {deadlineExceeded && dc.best_for_deadline && (
+                    <div style={{
+                      marginTop: 8, padding: '10px 14px', borderRadius: 6,
+                      background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#166534',
+                    }}>
+                      <strong>Pro splnění termínu:</strong> {dc.best_for_deadline.label} → {formatNum(dc.best_for_deadline.total_days, 1)} dní
+                      {dc.best_for_deadline.extra_cost_czk > 0 && (
+                        <span> (navíc {formatCZK(dc.best_for_deadline.extra_cost_czk)})</span>
+                      )}
+                    </div>
+                  )}
+                  {deadlineExceeded && !dc.best_for_deadline && (
+                    <div style={{
+                      marginTop: 8, padding: '10px 14px', borderRadius: 6,
+                      background: '#fef2f2', border: '1px solid #fecaca', color: '#991b1b',
+                    }}>
+                      Žádná kombinace zdrojů (až 4 čety, 6 sad) nesplní termín {dc.deadline_days} dní.
+                      Zvažte delší směny, jiný systém bednění, nebo úpravu projektu.
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div style={{ color: 'var(--r0-slate-500)', fontStyle: 'italic' }}>
+                  Aktuální konfigurace je již optimální — přidání čet nebo sad nezrychlí harmonogram.
+                </div>
+              )}
+            </div>
+          </Card>
+        );
+      })()}
 
       {/* Warnings */}
       {plan.warnings.length > 0 && (

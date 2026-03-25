@@ -259,18 +259,22 @@ export interface DeadlineOptimizationVariant {
 }
 
 export interface DeadlineCheckResult {
-  /** Investor/project deadline (working days) */
-  deadline_days: number;
+  /** Investor/project deadline (working days), undefined if not set */
+  deadline_days?: number;
   /** Calculated total duration (working days) */
   calculated_days: number;
-  /** Overrun in working days (0 if within deadline) */
+  /** Overrun in working days (0 if within deadline or no deadline) */
   overrun_days: number;
-  /** true if calculated_days <= deadline_days */
+  /** true if no deadline set, or calculated_days <= deadline_days */
   fits: boolean;
-  /** Optimization variants sorted by cost (cheapest first), only those that fit deadline */
+  /** ALL optimization variants that are faster, sorted by cost (cheapest first) */
   suggestions: DeadlineOptimizationVariant[];
-  /** Best suggestion: cheapest variant that fits */
-  best?: DeadlineOptimizationVariant;
+  /** Cheapest variant that is faster than current */
+  cheapest_faster?: DeadlineOptimizationVariant;
+  /** Fastest variant overall */
+  fastest?: DeadlineOptimizationVariant;
+  /** Best for deadline: cheapest variant that fits deadline (only when deadline set) */
+  best_for_deadline?: DeadlineOptimizationVariant;
 }
 
 // ─── Defaults ───────────────────────────────────────────────────────────────
@@ -943,9 +947,8 @@ interface DeadlineContext {
 }
 
 /**
- * Check whether the calculated duration fits within the investor/project deadline.
- * If it doesn't, try resource variants (more crews, more sets) and find the cheapest
- * configuration that meets the deadline.
+ * Always compute resource optimization variants (faster/cheaper alternatives).
+ * If deadline_days is set, additionally check overrun and mark fitting variants.
  *
  * Optimization space (grid search, bounded to prevent explosion):
  *   - num_formwork_crews: current .. min(current+3, num_tacts)
@@ -957,22 +960,10 @@ function checkDeadline(
   calculatedDays: number,
   currentTotalCost: number,
   ctx: DeadlineContext,
-): DeadlineCheckResult | undefined {
-  if (!input.deadline_days || input.deadline_days <= 0) return undefined;
-
-  const deadline = input.deadline_days;
-  const overrun = Math.max(0, roundTo(calculatedDays - deadline, 1));
-  const fits = calculatedDays <= deadline;
-
-  if (fits) {
-    return {
-      deadline_days: deadline,
-      calculated_days: calculatedDays,
-      overrun_days: 0,
-      fits: true,
-      suggestions: [],
-    };
-  }
+): DeadlineCheckResult {
+  const deadline = (input.deadline_days && input.deadline_days > 0) ? input.deadline_days : undefined;
+  const overrun = deadline ? Math.max(0, roundTo(calculatedDays - deadline, 1)) : 0;
+  const fits = deadline ? calculatedDays <= deadline : true;
 
   // ─── Try optimization variants ──────────────────────────────
   const numTacts = ctx.pourDecision.num_tacts;
@@ -1005,21 +996,21 @@ function checkDeadline(
           });
 
           const days = sched.total_days;
+          // Only keep variants that are actually faster
+          if (days >= calculatedDays) continue;
 
           // Estimate cost for this variant
-          // Labor scales with crews (more parallelism, same total man-hours, but rental changes)
           const rentalDays = days + 2;
           const rentalRate = ctx.fwSystem.rental_czk_m2_month;
           const rentalCZK = rentalRate > 0
             ? roundTo(ctx.fwArea * rentalRate * (rentalDays / 30) * sets, 2)
             : 0;
-          // Labor stays roughly the same (same total work), but more crews = same hours
           const fwLabor = ctx.fwSystem.assembly_h_m2 * ctx.fwArea * ctx.wageFormwork +
                           ctx.fwSystem.disassembly_h_m2 * ctx.fwArea * ctx.wageFormwork;
           const rbLabor = ctx.rebarResult.cost_labor * numTacts;
           const totalCost = roundTo(fwLabor + rbLabor + rentalCZK, 0);
 
-          const fitsDeadline = days <= deadline;
+          const fitsDeadline = deadline ? days <= deadline : true;
           const label = `${fwC} čet bednění, ${rbC} čet výztuže, ${sets} sad`;
 
           variants.push({
@@ -1039,17 +1030,25 @@ function checkDeadline(
     }
   }
 
-  // Filter only those that fit, sort by cost ascending (cheapest first)
-  const fitting = variants
-    .filter(v => v.fits_deadline)
-    .sort((a, b) => a.total_cost_czk - b.total_cost_czk);
+  // Sort all faster variants by cost (cheapest first)
+  variants.sort((a, b) => a.total_cost_czk - b.total_cost_czk);
+
+  const cheapestFaster = variants[0];
+  const fastest = variants.length > 0
+    ? variants.reduce((a, b) => a.total_days < b.total_days ? a : b)
+    : undefined;
+  const bestForDeadline = deadline
+    ? variants.filter(v => v.fits_deadline).sort((a, b) => a.total_cost_czk - b.total_cost_czk)[0]
+    : undefined;
 
   return {
     deadline_days: deadline,
     calculated_days: calculatedDays,
     overrun_days: overrun,
-    fits: false,
-    suggestions: fitting.slice(0, 5), // Top 5 cheapest options
-    best: fitting[0],
+    fits,
+    suggestions: variants.slice(0, 5),
+    cheapest_faster: cheapestFaster,
+    fastest,
+    best_for_deadline: bestForDeadline,
   };
 }

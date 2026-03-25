@@ -287,20 +287,30 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string, s
   addKV('Úspora', plan.schedule.savings_pct, '%');
   addKV('Datum zahájení', startDate || '-');
 
-  // Deadline check
+  // Resource optimization + deadline
   if (plan.deadline_check) {
+    const dc = plan.deadline_check;
     ws1.addRow([]);
-    addSection('Termín investora');
-    addKV('Požadovaný termín', plan.deadline_check.deadline_days, 'dní');
-    addKV('Vypočteno', plan.deadline_check.calculated_days, 'dní');
-    addKV('Stav', plan.deadline_check.fits ? 'SPLNĚNO' : 'PŘEKROČENO');
-    if (!plan.deadline_check.fits) {
-      addKV('Překročení', plan.deadline_check.overrun_days, 'dní');
-      if (plan.deadline_check.best) {
-        addKV('Doporučení', plan.deadline_check.best.label);
-        addKV('Doporučení — dní', plan.deadline_check.best.total_days, 'dní');
-        addKV('Doporučení — navíc', plan.deadline_check.best.extra_cost_czk, 'Kč');
-      }
+    addSection('Optimalizace zdrojů');
+    if (dc.deadline_days) {
+      addKV('Termín investora', dc.deadline_days, 'dní');
+      addKV('Stav termínu', dc.fits ? 'SPLNĚNO' : 'PŘEKROČENO');
+      if (!dc.fits) addKV('Překročení', dc.overrun_days, 'dní');
+    }
+    if (dc.fastest) {
+      addKV('Nejrychlejší varianta', dc.fastest.label);
+      addKV('Nejrychlejší — dní', dc.fastest.total_days, 'dní');
+      addKV('Nejrychlejší — náklady navíc', dc.fastest.extra_cost_czk, 'Kč');
+    }
+    if (dc.cheapest_faster && (!dc.fastest || dc.cheapest_faster.label !== dc.fastest.label)) {
+      addKV('Nejlevnější zrychlení', dc.cheapest_faster.label);
+      addKV('Nejlevnější — dní', dc.cheapest_faster.total_days, 'dní');
+      addKV('Nejlevnější — náklady navíc', dc.cheapest_faster.extra_cost_czk, 'Kč');
+    }
+    if (dc.best_for_deadline) {
+      addKV('Pro splnění termínu', dc.best_for_deadline.label);
+      addKV('Pro termín — dní', dc.best_for_deadline.total_days, 'dní');
+      addKV('Pro termín — náklady navíc', dc.best_for_deadline.extra_cost_czk, 'Kč');
     }
   }
 
