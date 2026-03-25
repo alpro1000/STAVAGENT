@@ -50,7 +50,7 @@ class WorkflowB:
             logger.info("✅ Using MinerU for PDF parsing (FREE, local)")
             self.mineru = MinerUClient()
             if not self.mineru.available:
-                logger.warning("⚠️  MinerU not available. Install with: pip install magic-pdf[full]")
+                logger.warning("MinerU not available. Install with: pip install mineru[all]")
                 logger.info("Falling back to Vision AI parsing")
                 self.use_mineru = False
         else:

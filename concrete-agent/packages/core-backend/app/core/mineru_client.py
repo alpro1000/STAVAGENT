@@ -1,6 +1,9 @@
 """
-MinerU Client for high-quality PDF parsing
-Интеграция с MinerU для качественного извлечения данных из PDF
+MinerU Client for high-quality PDF parsing (v2.x API)
+Интеграция с MinerU 2.x для качественного извлечения данных из PDF
+
+Package: mineru[all]>=2.7.0  (formerly magic-pdf)
+Docs: https://github.com/opendatalab/MinerU
 """
 import logging
 from pathlib import Path
@@ -12,17 +15,16 @@ logger = logging.getLogger(__name__)
 
 class MinerUClient:
     """
-    MinerU для высококачественного парсинга PDF
-    
+    MinerU 2.x для высококачественного парсинга PDF
+
     Features:
-    - Сохраняет структуру таблиц
-    - Извлекает изображения чертежей
-    - Распознает формулы и расчеты
-    
-    Note: This is a stub implementation. MinerU (magic-pdf) needs to be installed:
-    pip install magic-pdf
+    - Hybrid backend (VLM + pipeline) — better table/image parsing
+    - No pymupdf dependency (removed in v2.0)
+    - Built-in small-parameter VLM (<1B) for document understanding
+
+    Install: pip install mineru[all]  (or: uv pip install mineru[all])
     """
-    
+
     def __init__(self, output_dir: Optional[Path] = None, ocr_engine: str = "paddle"):
         """
         Args:
@@ -32,27 +34,35 @@ class MinerUClient:
         self.output_dir = output_dir or Path("./temp/mineru")
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.ocr_engine = ocr_engine
-        
-        # Check if MinerU is available
+
+        # Check if MinerU 2.x is available
         self.available = self._check_availability()
-    
+
     def _check_availability(self) -> bool:
-        """Check if MinerU is available"""
+        """Check if MinerU 2.x is available"""
         try:
-            from magic_pdf.api import magic_pdf_parse
-            logger.info("✅ MinerU (magic-pdf) is available")
+            from mineru.cli import cli  # noqa: F401
+            logger.info("MinerU 2.x is available")
             return True
         except ImportError:
-            logger.warning("⚠️  MinerU (magic-pdf) not installed. Install with: pip install magic-pdf")
+            try:
+                # Fallback: check CLI binary
+                import shutil
+                if shutil.which("mineru"):
+                    logger.info("MinerU CLI binary found")
+                    return True
+            except Exception:
+                pass
+            logger.warning("MinerU not installed. Install with: pip install mineru[all]")
             return False
-    
+
     def parse_pdf_estimate(self, pdf_path: str) -> Dict[str, Any]:
         """
         Парсинг PDF сметы с сохранением структуры
-        
+
         Args:
             pdf_path: Path to PDF file
-            
+
         Returns:
             Dict with parsed data:
             {
@@ -62,47 +72,60 @@ class MinerUClient:
             }
         """
         if not self.available:
-            raise ImportError("MinerU not available. Install with: pip install magic-pdf")
-        
-        logger.info(f"Parsing PDF with MinerU: {pdf_path}")
-        
+            raise ImportError("MinerU not available. Install with: pip install mineru[all]")
+
+        logger.info(f"Parsing PDF with MinerU 2.x: {pdf_path}")
+
         try:
-            from magic_pdf.api import magic_pdf_parse
-            
-            # Parse PDF
-            result = magic_pdf_parse(
-                pdf_path=pdf_path,
-                output_dir=str(self.output_dir),
-                mode="auto"  # auto, ocr, txt
+            # MinerU 2.x: use CLI subprocess (stable API across versions)
+            import subprocess
+            import tempfile
+
+            out_dir = Path(tempfile.mkdtemp(dir=str(self.output_dir)))
+            cmd = ["mineru", "-p", str(pdf_path), "-o", str(out_dir), "-d", "cpu"]
+
+            result_proc = subprocess.run(
+                cmd, capture_output=True, text=True, timeout=300
             )
-            
+
+            if result_proc.returncode != 0:
+                logger.error(f"MinerU failed: {result_proc.stderr[:500]}")
+                raise RuntimeError(f"MinerU exit code {result_proc.returncode}")
+
+            # Read output markdown
+            md_files = list(out_dir.rglob("*.md"))
+            if not md_files:
+                return {"positions": [], "totals": {}, "metadata": {}}
+
+            md_content = md_files[0].read_text(encoding="utf-8", errors="replace")
+
             # Extract tables and positions
-            tables = self._extract_estimate_tables(result)
-            totals = self._extract_totals(result)
-            
+            tables = self._extract_estimate_tables_from_md(md_content)
+            totals = self._extract_totals_from_text(md_content)
+
             return {
                 "positions": tables,
                 "total_positions": len(tables),
                 "totals": totals,
-                "metadata": result.get("metadata", {}),
+                "metadata": {"parser": "mineru-2.x", "backend": "hybrid-auto-engine"},
                 "document_info": {
                     "document_type": "PDF Estimate",
-                    "format": "PDF_MINERU"
+                    "format": "PDF_MINERU_V2"
                 },
                 "sections": []
             }
-            
+
         except Exception as e:
             logger.error(f"MinerU parsing failed: {e}")
             raise
-    
+
     def parse_technical_drawings(self, pdf_path: str) -> Dict[str, Any]:
         """
         Парсинг технических чертежей
-        
+
         Args:
             pdf_path: Path to drawing PDF
-            
+
         Returns:
             Dict with extracted data:
             - Размеры элементов
@@ -110,156 +133,124 @@ class MinerUClient:
             - Технические условия
         """
         if not self.available:
-            raise ImportError("MinerU not available. Install with: pip install magic-pdf")
-        
-        logger.info(f"Parsing technical drawing with MinerU: {pdf_path}")
-        
+            raise ImportError("MinerU not available. Install with: pip install mineru[all]")
+
+        logger.info(f"Parsing technical drawing with MinerU 2.x: {pdf_path}")
+
         try:
-            from magic_pdf.api import magic_pdf_parse
-            
-            # Parse PDF with OCR for drawings
-            result = magic_pdf_parse(
-                pdf_path=pdf_path,
-                output_dir=str(self.output_dir),
-                mode="ocr"  # Force OCR for drawings
+            import subprocess
+            import tempfile
+
+            out_dir = Path(tempfile.mkdtemp(dir=str(self.output_dir)))
+            cmd = ["mineru", "-p", str(pdf_path), "-o", str(out_dir), "-d", "cpu"]
+
+            result_proc = subprocess.run(
+                cmd, capture_output=True, text=True, timeout=300
             )
-            
-            # Extract dimensions and specifications
-            dimensions = self._extract_dimensions(result)
-            materials = self._extract_materials(result)
-            
+
+            if result_proc.returncode != 0:
+                logger.error(f"MinerU failed: {result_proc.stderr[:500]}")
+                raise RuntimeError(f"MinerU exit code {result_proc.returncode}")
+
+            md_files = list(out_dir.rglob("*.md"))
+            text = md_files[0].read_text(encoding="utf-8", errors="replace") if md_files else ""
+
+            dimensions = self._extract_dimensions(text)
+            materials = self._extract_materials(text)
+
             return {
                 "dimensions": dimensions,
                 "materials": materials,
-                "metadata": result.get("metadata", {}),
-                "raw_text": result.get("text", "")[:5000]
+                "metadata": {"parser": "mineru-2.x"},
+                "raw_text": text[:5000]
             }
-            
+
         except Exception as e:
             logger.error(f"MinerU drawing parsing failed: {e}")
             raise
-    
-    def _extract_estimate_tables(self, result: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """
-        Extract estimate tables from MinerU result
-        
-        Args:
-            result: MinerU parse result
-            
-        Returns:
-            List of position dicts
-        """
-        tables = result.get("tables", [])
+
+    def _extract_estimate_tables_from_md(self, md_content: str) -> List[Dict[str, Any]]:
+        """Extract estimate tables from MinerU markdown output"""
+        import re
+
         positions = []
-        
-        for table_idx, table in enumerate(tables):
-            # Table is a 2D list of cells
-            if not table or len(table) < 2:
-                continue
-            
-            # First row is header
-            header = table[0]
-            
-            # Parse data rows
-            for row_idx, row in enumerate(table[1:], 1):
-                position = self._parse_table_row(header, row, table_idx, row_idx)
+
+        # MinerU 2.x outputs HTML tables or markdown tables in .md
+        rows = re.findall(r"<tr>(.*?)</tr>", md_content, re.DOTALL)
+        for row_idx, row in enumerate(rows):
+            cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.DOTALL)
+            cells = [re.sub(r"<[^>]+>", "", c).strip() for c in cells]
+            if len(cells) >= 2 and cells[0]:
+                position = self._parse_table_cells(cells, row_idx)
                 if position:
                     positions.append(position)
-        
-        logger.info(f"Extracted {len(positions)} positions from {len(tables)} tables")
+
+        # Also try markdown pipe tables: | col1 | col2 |
+        if not positions:
+            for line in md_content.split("\n"):
+                if "|" in line and not line.strip().startswith("|--"):
+                    cells = [c.strip() for c in line.split("|") if c.strip()]
+                    if len(cells) >= 2:
+                        position = self._parse_table_cells(cells, len(positions))
+                        if position:
+                            positions.append(position)
+
+        logger.info(f"Extracted {len(positions)} positions from MinerU output")
         return positions
-    
-    def _parse_table_row(self, header: List[str], row: List[str], table_idx: int, row_idx: int) -> Optional[Dict[str, Any]]:
-        """Parse a single table row into position dict"""
-        if not row:
+
+    def _parse_table_cells(self, cells: List[str], row_idx: int) -> Optional[Dict[str, Any]]:
+        """Parse table cells into position dict"""
+        if not cells or len(cells) < 2:
             return None
-        
-        # Map header to values
-        position = {}
-        
-        for col_idx, (header_cell, data_cell) in enumerate(zip(header, row)):
-            header_lower = str(header_cell).lower()
-            
-            if 'code' in header_lower or 'kód' in header_lower:
-                position['code'] = str(data_cell)
-            elif 'description' in header_lower or 'popis' in header_lower:
-                position['description'] = str(data_cell)
-            elif 'unit' in header_lower or 'mj' in header_lower:
-                position['unit'] = str(data_cell)
-            elif 'quantity' in header_lower or 'množství' in header_lower:
-                position['quantity'] = self._parse_float(str(data_cell))
-            elif 'price' in header_lower or 'cena' in header_lower:
-                if 'unit' in header_lower:
-                    position['unit_price'] = self._parse_float(str(data_cell))
-                else:
-                    position['total_price'] = self._parse_float(str(data_cell))
-        
-        # Add metadata
-        position['table_index'] = table_idx
-        position['row_index'] = row_idx
-        
-        # Only return if we have description
-        if position.get('description'):
+
+        position = {
+            "code": cells[0] if len(cells) > 0 else "",
+            "description": cells[1] if len(cells) > 1 else "",
+            "unit": cells[2] if len(cells) > 2 else "",
+            "row_index": row_idx,
+        }
+
+        # Try to parse price from last cell
+        if len(cells) > 3:
+            position["price"] = self._parse_float(cells[-1])
+
+        if position.get("description"):
             return position
-        
         return None
-    
-    def _extract_totals(self, result: Dict[str, Any]) -> Dict[str, Any]:
-        """Extract total amounts from result"""
-        # Look for total keywords in text
-        text = result.get("text", "")
-        totals = {}
-        
-        # Simple extraction - can be improved
+
+    def _extract_totals_from_text(self, text: str) -> Dict[str, Any]:
+        """Extract total amounts from text"""
         import re
+        totals = {}
         total_pattern = r'(?:total|celkem|suma)[:\s]*(\d+[\d\s,\.]*)'
-        
         matches = re.findall(total_pattern, text.lower())
         if matches:
             totals['total_amount'] = self._parse_float(matches[0])
-        
         return totals
-    
-    def _extract_dimensions(self, result: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """Extract dimensions from technical drawing"""
-        # Parse text for dimension patterns
-        text = result.get("text", "")
-        dimensions = []
-        
-        # Look for dimension patterns like "100 x 200" or "L=500"
+
+    def _extract_dimensions(self, text: str) -> List[Dict[str, Any]]:
+        """Extract dimensions from technical drawing text"""
         import re
+        dimensions = []
         patterns = [
             r'(\d+[\d\.,]*)\s*x\s*(\d+[\d\.,]*)',  # 100 x 200
             r'([LlBbHh])\s*=\s*(\d+[\d\.,]*)',      # L=500
         ]
-        
         for pattern in patterns:
             matches = re.findall(pattern, text)
             for match in matches:
-                dimensions.append({
-                    "raw": match,
-                    "type": "dimension"
-                })
-        
+                dimensions.append({"raw": match, "type": "dimension"})
         return dimensions
-    
-    def _extract_materials(self, result: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+    def _extract_materials(self, text: str) -> List[Dict[str, Any]]:
         """Extract material specifications"""
-        text = result.get("text", "")
         materials = []
-        
-        # Look for material keywords
         material_keywords = ['beton', 'concrete', 'C20/25', 'C25/30', 'ocel', 'steel', 'B500']
-        
         for keyword in material_keywords:
             if keyword.lower() in text.lower():
-                materials.append({
-                    "material": keyword,
-                    "found": True
-                })
-        
+                materials.append({"material": keyword, "found": True})
         return materials
-    
+
     def _parse_float(self, text: str) -> float:
         """Parse float from text"""
         try:

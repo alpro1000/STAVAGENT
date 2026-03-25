@@ -115,7 +115,8 @@ class SmartParser:
             source_path = safe_pdf
         else:
             source_path = pdf_path
-        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-b", "pipeline", "-d", "cpu"]
+        # MinerU 2.x: omit -b to use default hybrid-auto-engine backend
+        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-d", "cpu"]
         logger.info(f"SmartParser: running MinerU async: {' '.join(cmd)}")
         proc = await asyncio.create_subprocess_exec(
             *cmd,

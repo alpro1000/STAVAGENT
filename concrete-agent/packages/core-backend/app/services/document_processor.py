@@ -491,7 +491,9 @@ class DocumentProcessor:
         else:
             source_path = pdf_path
 
-        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-b", "pipeline", "-d", "cpu"]
+        # MinerU 2.x: default backend is hybrid-auto-engine (VLM + pipeline)
+        # Omit -b flag to use the smarter default; -d cpu for Cloud Run (no GPU)
+        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-d", "cpu"]
         logger.info(f"MinerU async: {' '.join(cmd)}")
 
         proc = await asyncio.create_subprocess_exec(

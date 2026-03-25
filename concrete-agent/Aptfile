@@ -1,5 +1,5 @@
-# System dependencies for MinerU (magic-pdf)
-# Render will install these via apt-get
+# System dependencies for MinerU 2.x (pip: mineru[all])
+# Cloud Build / apt-get installs these for OCR fallback
 
 # Poppler - PDF rendering library
 poppler-utils
