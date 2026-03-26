@@ -62,6 +62,10 @@ async def filter_healthcheck_logs(request: Request, call_next):
 # Include API routes
 app.include_router(api_router)
 
+# Universal Parser API (v5.0 — independent of old SmartParser pipeline)
+from app.api.routes_parser import router as parser_router
+app.include_router(parser_router)
+
 # Mount static files (if web directory exists)
 web_dir = settings.BASE_DIR / "web"
 if web_dir.exists():
