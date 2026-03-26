@@ -264,6 +264,23 @@ VITE_DISABLE_AUTH=true
   - Results panel now scrolls properly on mobile after calculation
 - **Build fix:** added `deadline_check` type to local `PlannerOutput` in `exportPlanXLSX.ts`
 
+**Completed (2026-03-26):**
+- **Universal Parser v3.0**: Multi-document merge system
+  - SO file grouping by filename regex, 3-layer extraction pipeline
+  - Priority-based merge with contradiction detection (2% numeric tolerance)
+  - BridgeSOParams, GTPExtraction, TenderExtraction, TechnicalExtraction
+  - Frontend: ProjectAnalysis tabs, SOCard, CoverageMatrix, ContradictionsList, TenderDashboard
+  - `technical` field added to MergedSO for non-bridge/non-GTP universal data
+- **Universal Parser v3.1**: Non-bridge SO type expansion (7 new types)
+  - New schemas: RoadSOParams, TrafficDIOParams, WaterSOParams, VegetationSOParams, ElectroSOParams, PipelineSOParams, SignageSOParams
+  - `so_type_schemas.py` — SO Type Registry with auto-detection by SO number (0xx-8xx ranges + overrides for 180/190)
+  - `so_type_regex.py` — Regex patterns for road, DIO, water, vegetation, electro, pipeline extraction
+  - `document_processor.py` — 6 new AI prompts (ROAD_TZ, DIO, WATER_TZ, VEGETATION_TZ, ELECTRO_TZ, PIPELINE_TZ)
+  - `so_merger.py` — Universal merger: auto-detects SO type, collects type-specific params by priority
+  - `MergedSO` expanded: `so_category`, `so_category_label`, 7 new Optional params fields
+  - Frontend: 8 new Czech label maps, specialized renderers (pavement layers, phases, closures, detours, species table)
+  - Content-based SO type fallback when filename detection fails
+
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
 **Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)

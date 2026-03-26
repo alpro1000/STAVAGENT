@@ -383,3 +383,57 @@ def enrich_classification(info: ClassificationInfo, filename: str) -> Classifica
     info.so_code = extract_so_code(filename)
     info.priority = SUB_TYPE_PRIORITY.get(info.sub_type, 99)
     return info
+
+
+# =============================================================================
+# v3.1: Content-based SO type detection
+# =============================================================================
+
+CONTENT_TYPE_MARKERS = {
+    "vegetation_params": [
+        "vegetační úprav", "trávník", "výsadby", "hydroosev",
+        "travní směs", "dřevin", "keřů", "mulčování",
+    ],
+    "road_params": [
+        "konstrukce vozovky", "aktivní zóna", "příčný sklon",
+        "jízdní pruh", "nezpevněná krajnice", "svodidl",
+        "pavement", "traffic load",
+    ],
+    "bridge_params": [
+        "nosná konstrukce", "mostní", "opěra", "pilíř",
+        "rozpětí", "ložisk", "mostovk",
+    ],
+    "traffic_params": [
+        "dopravně inženýrsk", "fáze výstavby", "objízdná trasa",
+        "uzavírk", "provizorní komunikac",
+    ],
+    "water_params": [
+        "vodovod", "kanalizac", "potrubí", "chránič",
+        "tlaková zkouška", "dezinfik", "DN ",
+    ],
+    "electro_params": [
+        "kabel", "vedení VN", "vedení NN", "CETIN",
+        "optick", "metalick",
+    ],
+    "pipeline_params": [
+        "plynovod", "VTL", "STL", "NTL",
+    ],
+    "signage_params": [
+        "dopravní značení", "vodorovné značení", "svislé značení",
+    ],
+}
+
+
+def detect_so_type_from_content(text: str) -> Optional[str]:
+    """
+    Detect SO type params_key from document content.
+    Returns params_key like 'road_params', 'water_params' etc., or None.
+    """
+    text_lower = text[:20000].lower()
+    scores = {}
+    for params_key, markers in CONTENT_TYPE_MARKERS.items():
+        scores[params_key] = sum(1 for m in markers if m.lower() in text_lower)
+    best = max(scores, key=scores.get) if scores else None
+    if best and scores[best] > 0:
+        return best
+    return None

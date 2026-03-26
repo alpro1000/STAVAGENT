@@ -43,6 +43,11 @@ from app.models.passport_schema import (
     DocSubType,
 )
 from app.services.document_classifier import SUB_TYPE_PRIORITY
+from app.models.so_type_schemas import (
+    detect_so_params_key,
+    get_so_category_label,
+    SO_PARAMS_CLASSES,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -235,6 +240,11 @@ def merge_so_group(
     gtp_source: Optional[str] = None
     tender_data: Optional[Dict[str, Any]] = None
     tender_source: Optional[str] = None
+    # v3.1: SO type-specific params
+    so_type_data: Optional[Dict[str, Any]] = None
+    so_type_source: Optional[str] = None
+    so_type_priority: int = 99
+    so_params_key: Optional[str] = detect_so_params_key(so_code)
     all_contradictions: List[ContradictionRecord] = []
     sources: Dict[str, str] = {}
     file_list: List[str] = []
@@ -293,6 +303,19 @@ def merge_so_group(
                 tender_data = tender
                 tender_source = filename
 
+        # v3.1: SO type-specific params (road_params, water_params, etc.)
+        if so_params_key and so_params_key not in ("bridge_params", "technical"):
+            so_data = fr.get(so_params_key)
+            if so_data and isinstance(so_data, dict):
+                if so_type_data is None or priority < so_type_priority:
+                    so_type_data = so_data
+                    so_type_source = filename
+                    so_type_priority = priority
+                elif priority == so_type_priority and so_type_data:
+                    for k, v in so_data.items():
+                        if v is not None and (k not in so_type_data or so_type_data[k] is None):
+                            so_type_data[k] = v
+
     # Merge bridge params with contradiction detection
     merged_bridge, bridge_contradictions = merge_bridge_params(
         bridge_extractions, so_code
@@ -339,7 +362,6 @@ def merge_so_group(
         try:
             merged_technical = TechnicalExtraction(**technical_data)
             sources["technical"] = technical_source
-            # Derive structure_type and so_name from technical data
             if technical_data.get("structure_type"):
                 structure_type = technical_data["structure_type"]
             if technical_data.get("project_name"):
@@ -347,9 +369,32 @@ def merge_so_group(
         except Exception as e:
             logger.warning(f"Failed to build TechnicalExtraction for {so_code}: {e}")
 
+    # v3.1: Build SO type-specific params
+    so_type_built = None
+    if so_type_data and so_params_key:
+        params_cls = SO_PARAMS_CLASSES.get(so_params_key)
+        if params_cls:
+            try:
+                so_type_built = params_cls(**so_type_data).model_dump(exclude_none=True)
+                sources[so_params_key] = so_type_source
+                logger.info(f"Built {so_params_key} for {so_code}: {len(so_type_built)} fields")
+            except Exception as e:
+                logger.warning(f"Failed to build {so_params_key} for {so_code}: {e}")
+                so_type_built = so_type_data  # Use raw dict as fallback
+                sources[so_params_key] = so_type_source
+
+    # Build SO type kwargs for MergedSO
+    so_type_kwargs: Dict[str, Any] = {}
+    if so_type_built and so_params_key:
+        so_type_kwargs[so_params_key] = so_type_built
+
+    so_category_label = get_so_category_label(so_code)
+
     merged = MergedSO(
         so_code=so_code,
         so_name=so_name,
+        so_category=so_params_key or "technical",
+        so_category_label=so_category_label,
         structure_type=structure_type,
         bridge_params=merged_bridge,
         gtp=merged_gtp,
@@ -360,6 +405,7 @@ def merge_so_group(
         file_count=len(file_list),
         files=file_list,
         coverage=coverage,
+        **so_type_kwargs,
     )
 
     logger.info(

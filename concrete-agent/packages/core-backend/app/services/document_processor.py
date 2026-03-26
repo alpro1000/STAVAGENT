@@ -43,8 +43,10 @@ from app.services.regex_extractor import CzechConstructionExtractor
 from app.services.passport_enricher import PassportEnricher
 from app.services.document_classifier import (
     classify_document, classify_document_async,
-    enrich_classification,
+    enrich_classification, detect_so_type_from_content,
 )
+from app.services.so_type_regex import extract_so_type_params
+from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES
 from app.core.config import settings
 from app.models.passport_schema import (
     ProjectPassport,
@@ -862,6 +864,226 @@ VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
         DocCategory.GE: GTPExtraction,
     }
 
+    # ── v3.1: SO Type-Specific Prompts ──
+
+    ROAD_TZ_PROMPT = """Parsuj českou technickou zprávu pozemní komunikace (SO 1xx).
+
+Dokument sleduje strukturu a–o dle standardu silničních PD.
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "road_designation": "číslo silnice (III/1213, II/173, I/20)",
+  "road_class": 1|2|3,
+  "road_category": "S 6,5/90",
+  "road_type": "přeložka|úprava|novostavba",
+  "road_length_m": 156.191,
+  "alignment_type": "přímá|oblouk",
+  "curve_radius_m": null,
+  "cross_slope_pct": 2.5,
+  "cross_slope_type": "jednostranný|střechovitý",
+  "lane_width_m": 2.75,
+  "lane_count": 2,
+  "shoulder_paved_m": 0.25,
+  "shoulder_unpaved_m": 0.75,
+  "pavement_catalog": "TP 170",
+  "traffic_load_class": "IV",
+  "design_damage_level": "D1",
+  "surface_type": "asfaltový povrch",
+  "pavement_layers": ["ACO 11+ tl. 40mm", "ACL 16+ tl. 60mm", "MZK tl. 170mm"],
+  "active_zone_thickness_m": 0.50,
+  "min_cbr_pct": 15,
+  "earthwork_type": "zářez|násyp|smíšený",
+  "has_sanation": true|false,
+  "sanation_type": "popis sanace",
+  "has_guardrails": true|false,
+  "guardrail_type": "ocelové jednostranné",
+  "drainage_method": "příčný a podélný sklon do příkopů",
+  "intersections": [{{"km": "0.221", "type": "styková"}}],
+  "volume_cut_m3": null,
+  "volume_fill_m3": null,
+  "related_sos": ["SO 221", "SO 801"],
+  "future_owner": "SÚS JK"
+}}
+
+Vrať POUZE validní JSON."""
+
+    DIO_PROMPT = """Parsuj český dokument DIO (Dopravně inženýrská opatření, SO 180).
+
+Tento dokument popisuje fáze výstavby a dopravní omezení.
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "total_duration_weeks": 98,
+  "phases": [
+    {{
+      "phase_number": 1,
+      "name": "Přípravné práce",
+      "duration_weeks": 9,
+      "sos_in_phase": ["SO 020", "SO 321"],
+      "traffic_restrictions": ["uzavírka III/1213"],
+      "key_activities": ["sejmutí humózních vrstev"]
+    }}
+  ],
+  "closures": [
+    {{
+      "road": "III/1213",
+      "closure_type": "úplná uzavírka",
+      "reason": "realizace mostu SO 221",
+      "phase": 2
+    }}
+  ],
+  "detours": [
+    {{
+      "for_road": "III/1213",
+      "route_description": "ze Sedlice po I/20 směr Blatná",
+      "roads_used": ["I/20", "III/1214"]
+    }}
+  ],
+  "bus_impact": "popis dopadu na autobusy",
+  "rail_impact": "popis dopadu na železnici",
+  "provisional_roads": [{{"so": "SO 171", "speed_limit": 30}}],
+  "phase_so_mapping": {{"fáze_1": ["SO 020"], "fáze_2": ["SO 101"]}},
+  "related_sos": ["SO 020", "SO 101", "SO 111"]
+}}
+
+KRITICKÉ: DIO dokumenty uvádí VŠECHNY SO celé stavby. Extrahuj KOMPLETNÍ seznam.
+Vrať POUZE validní JSON."""
+
+    WATER_TZ_PROMPT = """Parsuj českou technickou zprávu vodohospodářského objektu (SO 3xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "water_type": "přeložka_vodovod|přeložka_kanalizace|odvodnění|úprava_vodoteč|meliorace",
+  "pipe_material": "TLT|PE100|PP|PVC|OC",
+  "pipe_dn": 300,
+  "pipe_pn": 16,
+  "pipe_standard": "ČSN EN 545:2007",
+  "pipe_quality": "K9",
+  "pipe_length_m": 444.61,
+  "outer_protection": "popis vnější ochrany",
+  "inner_lining": "cementová vystýlka",
+  "joint_type": "násuvné hrdlové, zámkové BRS",
+  "casing_material": "OC",
+  "casing_dn": 600,
+  "casing_length_m": 154.97,
+  "casing_protection": "pozinkování",
+  "trench_walls": "svislé stěny",
+  "trench_shoring": "pažení od hloubky 1,2 m",
+  "bedding_material": "štěrkopísek max. zrna 4mm",
+  "bedding_depth_mm": 100,
+  "detection_wire": "CYKY (O) 2x4mm²",
+  "warning_foil": "bílá, POZOR VODOVOD",
+  "connection_type": "speciální spojky",
+  "pressure_test": "1,5× max. provozní tlak",
+  "disinfection": true,
+  "crossing_km": ["km 3,556"],
+  "owner": "Jihočeský vodárenský svaz",
+  "related_sos": ["SO 122"]
+}}
+
+Vrať POUZE validní JSON."""
+
+    VEGETATION_TZ_PROMPT = """Parsuj českou technickou zprávu vegetačních úprav (SO 8xx).
+
+Tento dokument je typicky nejdelší. Extrahuj KOMPLETNÍ data.
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "climate_region": "MT7",
+  "total_trees": 188,
+  "total_shrubs": 17226,
+  "tree_species": [
+    {{"code": "QP", "latin_name": "Quercus petraea", "czech_name": "dub zimní", "total_count": 38, "size_category": "strom"}}
+  ],
+  "shrub_species": [
+    {{"code": "CB", "latin_name": "Cotoneaster bullatus", "czech_name": "skalník puchýřnatý", "total_count": 500, "size_category": "velký_keř"}}
+  ],
+  "lawn_methods": [
+    {{"surface_type": "svah", "method": "hydroosev", "seed_rate_g_m2": 20}}
+  ],
+  "lawn_seed_mix": {{
+    "name": "Směs pro svahy",
+    "components": [{{"species_cz": "lipnice luční", "percentage": 20.0}}],
+    "seed_rate_g_m2": 20
+  }},
+  "lawn_care_count": 4,
+  "watering_count": 3,
+  "mulch_material": "hrubá borka",
+  "mulch_thickness_cm": 10,
+  "tree_care_years": 3,
+  "tree_stakes": "3 kůly 2,5m",
+  "standards": ["TKP 13", "TP 99", "ČSN 83 9001"],
+  "greened_sos": ["SO 101", "SO 111"],
+  "related_sos": ["SO 101"]
+}}
+
+Extrahuj KAŽDÝ druh rostliny s počtem. Vrať POUZE validní JSON."""
+
+    ELECTRO_TZ_PROMPT = """Parsuj českou technickou zprávu elektro/sdělovacího objektu (SO 4xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "electro_type": "přeložka_VN|kabelizace_NN|přeložka_optická|DIS_meteostanice",
+  "voltage_level": "VN|NN|VVN",
+  "cable_type": "optický|metalický",
+  "telecom_operator": "CETIN a.s.",
+  "energy_operator": "EG.D a.s.",
+  "chainage_km": "km 3,700",
+  "realized_by": "EG.D a.s.",
+  "is_separate_contract": true,
+  "dis_type": "meteostanice|sčítač dopravy",
+  "related_sos": ["SO 101"]
+}}
+
+Vrať POUZE validní JSON."""
+
+    PIPELINE_TZ_PROMPT = """Parsuj českou technickou zprávu trubního vedení (SO 5xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "pipeline_type": "VTL_plynovod|STL_plynovod",
+  "pressure_class": "VTL|STL|NTL",
+  "pipe_dn": 100,
+  "pipe_material": "ocel|PE",
+  "pipe_length_m": 150.0,
+  "chainage_km": "km 3,730",
+  "operator": "EG.D a.s.",
+  "realized_by": "EG.D a.s.",
+  "is_separate_contract": true,
+  "coordination_note": "koordinace s SO 101.1",
+  "related_sos": ["SO 101"]
+}}
+
+Vrať POUZE validní JSON."""
+
+    # Map params_key → prompt
+    SO_TYPE_PROMPTS = {
+        "road_params": ROAD_TZ_PROMPT,
+        "traffic_params": DIO_PROMPT,
+        "water_params": WATER_TZ_PROMPT,
+        "vegetation_params": VEGETATION_TZ_PROMPT,
+        "electro_params": ELECTRO_TZ_PROMPT,
+        "pipeline_params": PIPELINE_TZ_PROMPT,
+    }
+
     async def _extract_type_specific(
         self,
         classification: ClassificationInfo,
@@ -902,6 +1124,21 @@ VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
                 results["gtp_regex"] = gtp_regex
                 logger.info(f"GTP regex: {len(gtp_regex)} fields extracted")
 
+        # --- v3.1: SO type-specific regex pre-extraction ---
+        so_code = getattr(classification, 'so_code', None)
+        so_params_key = None
+        if so_code:
+            so_params_key = detect_so_params_key(so_code)
+        if not so_params_key and category == DocCategory.TZ:
+            so_params_key = detect_so_type_from_content(document_text)
+
+        if so_params_key and so_params_key not in ("bridge_params", "technical"):
+            so_regex = extract_so_type_params(so_params_key, document_text)
+            if so_regex:
+                results["so_type_regex"] = so_regex
+                results["so_params_key"] = so_params_key
+                logger.info(f"SO type regex ({so_params_key}): {len(so_regex)} fields")
+
         # --- Select prompt and model based on sub_type ---
         prompt_template = None
         model_cls = None
@@ -917,6 +1154,10 @@ VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
             # Full PD/Zadávací dokumentace — use ZZVZ prompt
             prompt_template = self.FULL_PD_PROMPT
             model_cls = TenderExtraction
+        elif so_params_key and so_params_key in self.SO_TYPE_PROMPTS:
+            # v3.1: SO type-specific prompt (road, water, vegetation, DIO, etc.)
+            prompt_template = self.SO_TYPE_PROMPTS[so_params_key]
+            model_cls = SO_PARAMS_CLASSES.get(so_params_key)
         else:
             # Standard extraction
             prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
@@ -950,6 +1191,12 @@ VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
                     if v is not None and (k not in ai_result or ai_result[k] is None):
                         ai_result[k] = v
 
+            # v3.1: Merge SO type regex into AI result
+            if "so_type_regex" in results:
+                for k, v in results["so_type_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
+
             # Parse into Pydantic model for validation
             extraction = model_cls(**ai_result)
 
@@ -969,6 +1216,10 @@ VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
             elif model_cls == TenderExtraction:
                 results["tender"] = extraction
                 logger.info(f"Full PD extraction: {len(ai_result)} fields")
+            elif so_params_key and so_params_key in SO_PARAMS_CLASSES:
+                # v3.1: Store under SO-type-specific key
+                results[so_params_key] = extraction
+                logger.info(f"SO type extraction ({so_params_key}): {len(ai_result)} fields")
             else:
                 field_name = field_map.get(category)
                 if field_name:

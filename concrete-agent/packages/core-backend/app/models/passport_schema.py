@@ -525,11 +525,21 @@ class MergedSO(BaseModel):
     """Result of merging multiple documents for one SO."""
     so_code: str
     so_name: str = ""
+    so_category: Optional[str] = None
+    so_category_label: Optional[str] = None
     structure_type: Optional[StructureType] = None
     bridge_params: Optional[BridgeSOParams] = None
     gtp: Optional[GTPExtraction] = None
     technical: Optional["TechnicalExtraction"] = None
     tender: Optional["TenderExtraction"] = None
+    # v3.1: Universal SO type params (only one populated per SO)
+    road_params: Optional[Dict[str, Any]] = None
+    traffic_params: Optional[Dict[str, Any]] = None
+    water_params: Optional[Dict[str, Any]] = None
+    vegetation_params: Optional[Dict[str, Any]] = None
+    electro_params: Optional[Dict[str, Any]] = None
+    pipeline_params: Optional[Dict[str, Any]] = None
+    signage_params: Optional[Dict[str, Any]] = None
     contradictions: List[ContradictionRecord] = Field(default_factory=list)
     sources: Dict[str, str] = Field(
         default_factory=dict,
