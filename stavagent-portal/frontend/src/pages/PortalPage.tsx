@@ -24,6 +24,7 @@ import DocumentSummary from '../components/portal/DocumentSummary';
 import PoradnaWidget from '../components/portal/PoradnaWidget';
 import ParsePreviewModal from '../components/portal/ParsePreviewModal';
 import DrawingAnalysis from '../components/portal/DrawingAnalysis';
+import SoupisPanel from '../components/portal/SoupisPanel';
 import AdminModelAudit from '../components/portal/AdminModelAudit';
 import ThemeToggle from '../components/ThemeToggle';
 import { useAuth } from '../context/AuthContext';
@@ -108,6 +109,15 @@ const SERVICES: Service[] = [
     url: '#drawing-analysis',
     status: 'active',
     tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
+  },
+  {
+    id: 'soupis-praci',
+    name: 'Soupis prací',
+    description: 'Nahrajte XLSX slepý rozpočet → automatická extrakce všech položek, kapitol, SO. Formáty: Export Komplet (KROS), #RTSROZP# (RTS/Aspe).',
+    icon: '📋',
+    url: '#soupis',
+    status: 'active',
+    tags: ['XLSX', 'Rozpočet', 'OTSKP', 'URS', 'Export Komplet']
   },
   {
     id: 'monolit-planner',
@@ -216,6 +226,7 @@ export default function PortalPage() {
   const [showDocumentSummaryModal, setShowDocumentSummaryModal] = useState(false);
   const [showParsePreviewModal, setShowParsePreviewModal] = useState(false);
   const [showDrawingAnalysis, setShowDrawingAnalysis] = useState(false);
+  const [showSoupisPanel, setShowSoupisPanel] = useState(false);
   const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
   const [backendSleeping, setBackendSleeping] = useState(false);
@@ -223,7 +234,7 @@ export default function PortalPage() {
   const [activeTab, setActiveTab] = useState<'services' | 'projects' | 'admin'>('services');
 
   // Lock body scroll when any modal is open
-  const anyModalOpen = showCreateModal || showAuditModal || showDocumentsModal || showDocumentSummaryModal || showParsePreviewModal || showDrawingAnalysis;
+  const anyModalOpen = showCreateModal || showAuditModal || showDocumentsModal || showDocumentSummaryModal || showParsePreviewModal || showDrawingAnalysis || showSoupisPanel;
   useEffect(() => {
     if (anyModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -604,6 +615,7 @@ export default function PortalPage() {
                   service.id === 'document-summary' ? () => setShowDocumentSummaryModal(true) :
                   service.id === 'universal-parser' ? () => setShowParsePreviewModal(true) :
                   service.id === 'drawing-analysis' ? () => setShowDrawingAnalysis(true) :
+                  service.id === 'soupis-praci' ? () => setShowSoupisPanel(true) :
                   undefined
                 }
               />
@@ -913,6 +925,39 @@ export default function PortalPage() {
       {/* Drawing Analysis Modal (Workflow B) */}
       {showDrawingAnalysis && (
         <DrawingAnalysis onClose={() => setShowDrawingAnalysis(false)} />
+      )}
+
+      {/* Soupis Prací Modal */}
+      {showSoupisPanel && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Soupis prací"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '24px',
+            overflowY: 'auto',
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (e.target === e.currentTarget) {
+              setShowSoupisPanel(false);
+            }
+          }}
+        >
+          <div
+            style={{ maxWidth: '1100px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <SoupisPanel onClose={() => setShowSoupisPanel(false)} />
+          </div>
+        </div>
       )}
 
       {/* Theme Toggle */}
