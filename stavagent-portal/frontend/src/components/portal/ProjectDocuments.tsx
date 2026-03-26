@@ -139,6 +139,52 @@ interface ProjectStatus {
   has_pending_work: boolean;
 }
 
+// Add-document API response types
+interface AddDocumentResult {
+  success: boolean;
+  project_id: string;
+  status: string;
+  identity: {
+    filename: string;
+    doc_type: string;
+    content_hash: string;
+    file_size: number;
+  };
+  summary?: {
+    doc_type: string;
+    title?: string;
+    description?: string;
+    positions_count: number;
+    total_price?: number;
+    chapters: string[];
+    materials: Array<{ name: string; spec?: string; quantity?: number; unit?: string }>;
+    standards: string[];
+    key_requirements: string[];
+    ai_summary?: string;
+    ai_materials: Array<{ name: string; spec?: string; quantity?: number; unit?: string }>;
+    ai_volumes: Array<{ description: string; value: number; unit: string }>;
+    ai_risks: string[];
+    ai_model_used?: string;
+    ai_confidence: number;
+    flags: Array<{ severity: string; message: string }>;
+  };
+  diff?: {
+    document_key: string;
+    is_update: boolean;
+    content_changed: boolean;
+    changes: Array<{ field: string; old_value: any; new_value: any; significance: string }>;
+  };
+  cross_validation?: {
+    validated: boolean;
+    issues: Array<{ severity: string; category: string; tz_reference?: string; soupis_reference?: string; message: string }>;
+    tz_materials_count: number;
+    soupis_materials_count: number;
+    coverage_score: number;
+  };
+  message: string;
+  version: number;
+}
+
 interface ProjectDocumentsProps {
   projectId: string;
   projectName: string;
@@ -150,6 +196,23 @@ import { API_URL, CORE_DIRECT_URL } from '../../services/api';
 // Proxied through portal backend
 const CORE_API_URL = `${API_URL}/api/core`;
 
+const DOC_TYPE_LABELS: Record<string, string> = {
+  soupis_praci: 'Soupis prací',
+  tz_beton: 'TZ Beton',
+  tz_bedneni: 'TZ Bednění',
+  tz_vyztuze: 'TZ Výztuž',
+  tz_hydroizolace: 'TZ Hydroizolace',
+  tz_zemni_prace: 'TZ Zemní práce',
+  tz_komunikace: 'TZ Komunikace',
+  tz_mosty: 'TZ Mosty',
+  tz_elektro: 'TZ Elektro',
+  tz_zti: 'TZ ZTI',
+  tz_vzt: 'TZ VZT',
+  tz_ut: 'TZ ÚT',
+  situace: 'Situace',
+  unknown: 'Neznámý',
+};
+
 export default function ProjectDocuments({ projectId, projectName, onClose }: ProjectDocumentsProps) {
   const [status, setStatus] = useState<ProjectStatus | null>(null);
   const [files, setFiles] = useState<ProjectFile[]>([]);
@@ -157,6 +220,10 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+
+  // New add-document state
+  const [lastResults, setLastResults] = useState<AddDocumentResult[]>([]);
+  const [enableAi, setEnableAi] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [showAddFolder, setShowAddFolder] = useState(false);
   const [folderPath, setFolderPath] = useState('');
@@ -287,20 +354,38 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
 
   const uploadFiles = async (filesToUpload: File[]) => {
     setUploading(true);
+    setError(null);
+    const results: AddDocumentResult[] = [];
 
     try {
       for (const file of filesToUpload) {
         const formData = new FormData();
-        formData.append('project_id', projectId);
         formData.append('file', file);
+        formData.append('enable_ai', enableAi ? 'true' : 'false');
 
-        await fetch(`${CORE_API_URL}/accumulator/files/upload`, {
+        const response = await fetch(`${CORE_API_URL}/project/${projectId}/add-document`, {
           method: 'POST',
           body: formData,
         });
+
+        if (response.ok) {
+          const result: AddDocumentResult = await response.json();
+          results.push(result);
+        } else {
+          const errData = await response.json().catch(() => ({ detail: response.statusText }));
+          results.push({
+            success: false,
+            project_id: projectId,
+            status: 'error',
+            identity: { filename: file.name, doc_type: 'unknown', content_hash: '', file_size: file.size },
+            message: errData.detail || `HTTP ${response.status}`,
+            version: 0,
+          } as AddDocumentResult);
+        }
       }
 
-      // Refresh data
+      setLastResults(results);
+      // Also refresh old-style data
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed');
@@ -661,7 +746,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
             style={{ display: 'none' }}
             accept=".xlsx,.xls,.pdf,.xml,.csv,.json"
           />
-          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', alignItems: 'center' }}>
             <label htmlFor="doc-file-input" className="c-btn c-btn--sm">
               <FileUp size={16} />
               Vybrat soubory
@@ -670,6 +755,16 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
               <FolderPlus size={16} />
               Přidat složku
             </button>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--text-secondary)', cursor: 'pointer', marginLeft: '12px' }}>
+              <input
+                type="checkbox"
+                checked={enableAi}
+                onChange={(e) => setEnableAi(e.target.checked)}
+                style={{ accentColor: 'var(--brand-orange)' }}
+              />
+              <Sparkles size={14} style={{ color: enableAi ? 'var(--brand-orange)' : 'var(--text-secondary)' }} />
+              Gemini AI
+            </label>
           </div>
         </div>
 
@@ -751,6 +846,211 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Add-Document Results */}
+        {lastResults.length > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+              Výsledky zpracování ({lastResults.length})
+            </h4>
+            {lastResults.map((result, idx) => (
+              <div key={idx} className="c-panel c-panel--inset" style={{ marginBottom: '12px' }}>
+                {/* Document header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  {result.success ? (
+                    <CheckCircle size={16} style={{ color: 'var(--status-success)' }} />
+                  ) : (
+                    <XCircle size={16} style={{ color: 'var(--status-error)' }} />
+                  )}
+                  <span style={{ fontSize: '14px', fontWeight: 600 }}>{result.identity?.filename}</span>
+                  <span className="c-badge" style={{
+                    fontSize: '11px',
+                    padding: '2px 8px',
+                    borderRadius: '4px',
+                    background: result.identity?.doc_type?.startsWith('tz_') ? 'rgba(33, 150, 243, 0.15)' : 'rgba(255, 159, 28, 0.15)',
+                    color: result.identity?.doc_type?.startsWith('tz_') ? 'var(--status-info)' : 'var(--brand-orange)',
+                  }}>
+                    {DOC_TYPE_LABELS[result.identity?.doc_type || ''] || result.identity?.doc_type}
+                  </span>
+                  {result.summary?.ai_model_used && (
+                    <span style={{ fontSize: '11px', color: 'var(--brand-orange)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Sparkles size={12} /> {result.summary.ai_model_used}
+                    </span>
+                  )}
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                  {result.message}
+                </div>
+
+                {/* AI Summary */}
+                {result.summary?.ai_summary && (
+                  <div style={{ fontSize: '13px', color: 'var(--text-primary)', marginBottom: '8px', padding: '8px', background: 'rgba(255, 159, 28, 0.06)', borderRadius: '6px', borderLeft: '3px solid var(--brand-orange)' }}>
+                    {result.summary.ai_summary}
+                  </div>
+                )}
+
+                {/* Materials (regex + AI) */}
+                {((result.summary?.materials?.length || 0) > 0 || (result.summary?.ai_materials?.length || 0) > 0) && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Materiály:</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      {(result.summary?.materials || []).map((m, i) => (
+                        <span key={`r${i}`} style={{ fontSize: '11px', padding: '2px 6px', background: 'var(--data-surface)', borderRadius: '4px' }}>
+                          {m.name} {m.spec || ''}
+                        </span>
+                      ))}
+                      {(result.summary?.ai_materials || []).map((m, i) => (
+                        <span key={`a${i}`} style={{ fontSize: '11px', padding: '2px 6px', background: 'rgba(255, 159, 28, 0.1)', borderRadius: '4px', color: 'var(--brand-orange)' }}>
+                          <Sparkles size={10} style={{ display: 'inline', verticalAlign: 'middle' }} /> {m.name} {m.spec || ''} {m.quantity ? `(${m.quantity} ${m.unit || ''})` : ''}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* AI Volumes */}
+                {(result.summary?.ai_volumes?.length || 0) > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Objemy (AI):</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      {(result.summary?.ai_volumes || []).map((v, i) => (
+                        <span key={i} style={{ fontSize: '11px', padding: '2px 6px', background: 'rgba(33, 150, 243, 0.1)', borderRadius: '4px' }}>
+                          {v.description}: {v.value} {v.unit}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* AI Risks */}
+                {(result.summary?.ai_risks?.length || 0) > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px', color: 'var(--status-warning)' }}>Rizika (AI):</div>
+                    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '12px' }}>
+                      {(result.summary?.ai_risks || []).map((r, i) => (
+                        <li key={i} style={{ color: 'var(--text-secondary)' }}>{r}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Standards */}
+                {(result.summary?.standards?.length || 0) > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Normy:</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                      {(result.summary?.standards || []).join(' | ')}
+                    </div>
+                  </div>
+                )}
+
+                {/* Key Requirements */}
+                {(result.summary?.key_requirements?.length || 0) > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Klíčové požadavky:</div>
+                    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '12px' }}>
+                      {(result.summary?.key_requirements || []).slice(0, 5).map((r, i) => (
+                        <li key={i} style={{ color: 'var(--text-secondary)' }}>{r}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Soupis stats */}
+                {(result.summary?.positions_count || 0) > 0 && (
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    {result.summary?.positions_count} pozic
+                    {result.summary?.total_price ? ` | ${result.summary.total_price.toLocaleString('cs-CZ')} Kč` : ''}
+                    {result.summary?.chapters?.length ? ` | ${result.summary.chapters.length} kapitol` : ''}
+                  </div>
+                )}
+
+                {/* Flags */}
+                {(result.summary?.flags?.length || 0) > 0 && (
+                  <div style={{ marginTop: '6px' }}>
+                    {(result.summary?.flags || []).map((f, i) => (
+                      <div key={i} style={{
+                        fontSize: '11px',
+                        padding: '2px 6px',
+                        color: f.severity === 'error' ? 'var(--status-error)' : f.severity === 'warning' ? 'var(--status-warning)' : 'var(--text-secondary)',
+                      }}>
+                        {f.severity === 'error' ? '!' : f.severity === 'warning' ? '!' : 'i'} {f.message}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Diff */}
+                {result.diff?.is_update && result.diff.content_changed && (result.diff.changes?.length || 0) > 0 && (
+                  <div style={{ marginTop: '8px', padding: '6px 8px', background: 'rgba(33, 150, 243, 0.06)', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Změny oproti předchozí verzi:</div>
+                    {result.diff.changes.map((ch, i) => (
+                      <div key={i} style={{ fontSize: '11px', color: ch.significance === 'high' ? 'var(--status-error)' : 'var(--text-secondary)' }}>
+                        {ch.field}: {String(ch.old_value)} → {String(ch.new_value)}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Cross-Validation */}
+            {lastResults.some(r => r.cross_validation?.validated) && (
+              <div className="c-panel c-panel--inset" style={{
+                borderLeft: '3px solid',
+                borderLeftColor: (lastResults.find(r => r.cross_validation?.validated)?.cross_validation?.coverage_score || 0) >= 0.7
+                  ? 'var(--status-success)' : 'var(--status-warning)',
+              }}>
+                <h5 style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <GitCompare size={14} />
+                  Cross-validace TZ vs Soupis prací
+                </h5>
+                {lastResults.filter(r => r.cross_validation?.validated).map((r, idx) => {
+                  const xv = r.cross_validation!;
+                  return (
+                    <div key={idx}>
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '8px', fontSize: '13px' }}>
+                        <div>
+                          <span style={{ fontWeight: 600 }}>Pokrytí:</span>{' '}
+                          <span style={{ color: xv.coverage_score >= 0.7 ? 'var(--status-success)' : 'var(--status-warning)', fontWeight: 600 }}>
+                            {Math.round(xv.coverage_score * 100)}%
+                          </span>
+                        </div>
+                        <div>
+                          <span style={{ fontWeight: 600 }}>Materiálů v TZ:</span> {xv.tz_materials_count}
+                        </div>
+                        <div>
+                          <span style={{ fontWeight: 600 }}>Pozic v soupisu:</span> {xv.soupis_materials_count}
+                        </div>
+                      </div>
+                      {xv.issues.length > 0 && (
+                        <div style={{ maxHeight: '150px', overflow: 'auto' }}>
+                          {xv.issues.map((issue, i) => (
+                            <div key={i} style={{
+                              fontSize: '12px',
+                              padding: '4px 8px',
+                              marginBottom: '4px',
+                              borderRadius: '4px',
+                              background: issue.severity === 'error' ? 'rgba(239, 68, 68, 0.08)' : 'rgba(255, 193, 7, 0.08)',
+                              color: issue.severity === 'error' ? 'var(--status-error)' : 'var(--text-secondary)',
+                            }}>
+                              {issue.message}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {xv.issues.length === 0 && (
+                        <div style={{ fontSize: '12px', color: 'var(--status-success)' }}>
+                          Všechny materiály z TZ nalezeny v soupisu prací.
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 

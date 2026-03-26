@@ -114,6 +114,14 @@ class DocumentSummary(BaseModel):
     key_requirements: List[str] = Field(default_factory=list)
     standards: List[str] = Field(default_factory=list)           # ČSN refs
 
+    # AI enrichment (Gemini/Vertex AI)
+    ai_summary: Optional[str] = None         # AI-generated description
+    ai_materials: List[MaterialEntry] = Field(default_factory=list)
+    ai_volumes: List[VolumeEntry] = Field(default_factory=list)
+    ai_risks: List[str] = Field(default_factory=list)
+    ai_model_used: Optional[str] = None      # e.g. "gemini-2.5-flash"
+    ai_confidence: float = 0.0               # 0.0 = no AI, 0.5-0.9 = AI enriched
+
     # Universal
     flags: List[DocumentFlag] = Field(default_factory=list)
     searchable_text: Optional[str] = None    # First ~2000 chars for search
@@ -145,6 +153,26 @@ class DocumentDiff(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Cross-validation (TZ ↔ Soupis)
+# ---------------------------------------------------------------------------
+class CrossValidationIssue(BaseModel):
+    severity: str = "warning"                # info / warning / error
+    category: str = ""                       # material_mismatch / missing_position / standard_gap
+    tz_reference: Optional[str] = None       # What TZ says
+    soupis_reference: Optional[str] = None   # What soupis says (or "chybí")
+    message: str = ""
+
+
+class CrossValidationResult(BaseModel):
+    """Result of TZ ↔ Soupis cross-validation."""
+    validated: bool = False
+    issues: List[CrossValidationIssue] = Field(default_factory=list)
+    tz_materials_count: int = 0
+    soupis_materials_count: int = 0
+    coverage_score: float = 0.0              # 0.0-1.0: how well soupis covers TZ
+
+
+# ---------------------------------------------------------------------------
 # API Request / Response
 # ---------------------------------------------------------------------------
 class AddDocumentResponse(BaseModel):
@@ -154,5 +182,6 @@ class AddDocumentResponse(BaseModel):
     identity: DocumentIdentity
     summary: Optional[DocumentSummary] = None
     diff: Optional[DocumentDiff] = None
+    cross_validation: Optional[CrossValidationResult] = None
     message: str = ""
     version: int = 1                         # project.json version after update

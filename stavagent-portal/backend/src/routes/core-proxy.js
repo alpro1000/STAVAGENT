@@ -38,6 +38,7 @@ const ROUTE_MAP = {
   'summary': '/api/v1/summary',
   'upload': '/api/upload',
   'parse': '/api/v1/parse',
+  'project': '/api/v1/project',
 };
 
 /** Resolve CORE target URL from request */
