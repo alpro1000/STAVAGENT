@@ -18,13 +18,11 @@ import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
-import ProjectAudit from '../components/portal/ProjectAudit';
 import ProjectDocuments from '../components/portal/ProjectDocuments';
-import DocumentSummary from '../components/portal/DocumentSummary';
+import DocumentAnalysis from '../components/portal/DocumentAnalysis';
 import PoradnaWidget from '../components/portal/PoradnaWidget';
 import ParsePreviewModal from '../components/portal/ParsePreviewModal';
 import DrawingAnalysis from '../components/portal/DrawingAnalysis';
-import SoupisPanel from '../components/portal/SoupisPanel';
 import AdminModelAudit from '../components/portal/AdminModelAudit';
 import ThemeToggle from '../components/ThemeToggle';
 import { useAuth } from '../context/AuthContext';
@@ -221,12 +219,10 @@ export default function PortalPage() {
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
-  const [showAuditModal, setShowAuditModal] = useState(false);
+  const [showDocumentAnalysis, setShowDocumentAnalysis] = useState(false);
   const [showDocumentsModal, setShowDocumentsModal] = useState(false);
-  const [showDocumentSummaryModal, setShowDocumentSummaryModal] = useState(false);
   const [showParsePreviewModal, setShowParsePreviewModal] = useState(false);
   const [showDrawingAnalysis, setShowDrawingAnalysis] = useState(false);
-  const [showSoupisPanel, setShowSoupisPanel] = useState(false);
   const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
   const [backendSleeping, setBackendSleeping] = useState(false);
@@ -234,7 +230,7 @@ export default function PortalPage() {
   const [activeTab, setActiveTab] = useState<'services' | 'projects' | 'admin'>('services');
 
   // Lock body scroll when any modal is open
-  const anyModalOpen = showCreateModal || showAuditModal || showDocumentsModal || showDocumentSummaryModal || showParsePreviewModal || showDrawingAnalysis || showSoupisPanel;
+  const anyModalOpen = showCreateModal || showDocumentAnalysis || showDocumentsModal || showParsePreviewModal || showDrawingAnalysis;
   useEffect(() => {
     if (anyModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -604,18 +600,17 @@ export default function PortalPage() {
                 key={service.id}
                 service={service}
                 onClick={
-                  service.id === 'project-audit' ? () => setShowAuditModal(true) :
+                  service.id === 'project-audit' ? () => setShowDocumentAnalysis(true) :
                   service.id === 'document-accumulator' ? () => {
-                    // For document accumulator, create a new project ID or use existing
                     const newProjectId = `doc-${Date.now()}`;
                     setDocumentsProjectId(newProjectId);
                     setDocumentsProjectName('Nový projekt');
                     setShowDocumentsModal(true);
                   } :
-                  service.id === 'document-summary' ? () => setShowDocumentSummaryModal(true) :
+                  service.id === 'document-summary' ? () => setShowDocumentAnalysis(true) :
                   service.id === 'universal-parser' ? () => setShowParsePreviewModal(true) :
                   service.id === 'drawing-analysis' ? () => setShowDrawingAnalysis(true) :
-                  service.id === 'soupis-praci' ? () => setShowSoupisPanel(true) :
+                  service.id === 'soupis-praci' ? () => setShowDocumentAnalysis(true) :
                   undefined
                 }
               />
@@ -870,9 +865,9 @@ export default function PortalPage() {
         />
       )}
 
-      {/* Project Audit Modal */}
-      {showAuditModal && (
-        <ProjectAudit onClose={() => setShowAuditModal(false)} />
+      {/* Unified Document Analysis Modal (replaces Audit, Summary, Soupis) */}
+      {showDocumentAnalysis && (
+        <DocumentAnalysis onClose={() => setShowDocumentAnalysis(false)} />
       )}
 
       {/* Project Documents Modal */}
@@ -884,39 +879,6 @@ export default function PortalPage() {
         />
       )}
 
-      {/* Document Summary Modal */}
-      {showDocumentSummaryModal && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Shrnutí dokumentu"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '24px',
-            overflowY: 'auto',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (e.target === e.currentTarget) {
-              setShowDocumentSummaryModal(false);
-            }
-          }}
-        >
-          <div
-            style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <DocumentSummary onClose={() => setShowDocumentSummaryModal(false)} />
-          </div>
-        </div>
-      )}
-
       {/* Parse Preview Modal */}
       {showParsePreviewModal && (
         <ParsePreviewModal onClose={() => setShowParsePreviewModal(false)} />
@@ -925,39 +887,6 @@ export default function PortalPage() {
       {/* Drawing Analysis Modal (Workflow B) */}
       {showDrawingAnalysis && (
         <DrawingAnalysis onClose={() => setShowDrawingAnalysis(false)} />
-      )}
-
-      {/* Soupis Prací Modal */}
-      {showSoupisPanel && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Soupis prací"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0, 0, 0, 0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '24px',
-            overflowY: 'auto',
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (e.target === e.currentTarget) {
-              setShowSoupisPanel(false);
-            }
-          }}
-        >
-          <div
-            style={{ maxWidth: '1100px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <SoupisPanel onClose={() => setShowSoupisPanel(false)} />
-          </div>
-        </div>
       )}
 
       {/* Theme Toggle */}
