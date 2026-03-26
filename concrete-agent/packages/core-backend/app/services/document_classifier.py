@@ -568,14 +568,22 @@ CONTENT_TYPE_MARKERS = {
     "vzt_params": [
         "vzduchotechnické zařízení", "klimatizac",
         "rekuperac", "zpětné získávání tepla",
+        "nuceného větrání", "digestoř", "fan-coil",
+        "ČSN EN 13779",
     ],
     "zti_params": [
         "zdravotechnické instalace", "vnitřní vodovod",
         "vnitřní kanalizace", "zařizovací předmět",
+        "splaškové vody", "dešťové vody", "vodoměrná sestava",
+        "zásobník TV", "odpadní potrubí", "větrací hlavice",
+        "ČSN 73 6760", "ČSN EN 806",
     ],
     "ut_params": [
         "ústřední vytápění", "otopná soustava",
         "tepelné čerpadlo", "podlahové vytápění",
+        "kondenzační kotel", "krbová kamna", "komínový systém",
+        "tepelné ztráty", "otopné těleso",
+        "ČSN EN 12831", "ČSN 06 0310",
     ],
     "mar_params": [
         "měření a regulace", "řídicí systém",

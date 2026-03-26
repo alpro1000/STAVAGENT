@@ -1154,48 +1154,128 @@ KRITICKÉ: Extrahuj PZTS backup kalkulaci — klíčové pro rozpočet.
 Vrať POUZE validní JSON matching SlaboproudParams."""
 
     VZT_PROMPT = """Parsuj český dokument vzduchotechniky a klimatizace (D.1.4.xx).
+Profese se NEURČUJE z čísla podsekce! Profese je detekována z OBSAHU.
 
 DOKUMENT:
 {text}
 
-Extrahuj:
-1. JEDNOTKY: pro KAŽDOU VZT jednotku — označení, typ, průtok m³/h,
-   tlak Pa, ohřev kW, chlazení kW, filtr, typ rekuperace, účinnost %
-2. CELKOVÉ PRŮTOKY: přívod, odtah m³/h
-3. CELKOVÉ VÝKONY: ohřev, chlazení kW
-4. POTRUBÍ: materiál, izolace, požární klapky
-5. ŘÍZENÍ: systém MaR, napojení na BMS
-6. HLUK: limitní hladina dB
-7. TEPLOTY: výpočtové teploty (léto/zima, vnitřní/vnější)
+Extrahuj v pořadí priority:
+1. STRATEGIE VĚTRÁNÍ: přirozené / nucené / hybridní / klimatizace
+   - Místnosti s přirozeným větráním (seznam)
+   - Místnosti s nuceným větráním (seznam)
+
+2. DIGESTOŘ (pokud je):
+   - Typ: odtahová / cirkulační
+   - Výstup potrubí: fasáda / střecha
+   - Průměr potrubí mm, průtok m³/h
+
+3. VENTILÁTORY KOUPELNY (pokud jsou):
+   - Typ ventilátoru, způsob ovládání (spínač/čidlo/timer)
+   - Výstup potrubí, DN, místnosti, počet ks
+
+4. NUCENÉ VĚTRÁNÍ / VZT JEDNOTKA (pokud je):
+   - AHU typ, značka, umístění
+   - Přívod/odvod/čerstvý vzduch m³/h
+   - Rekuperace: typ, účinnost %
+   - Filtrace, potrubí materiál+trasa
+
+5. KLIMATIZACE (pokud je):
+   - Typ (split/VRV/VRF/fan-coil), značka, chladivo
+   - Chladící/topný výkon kW
+
+6. GARÁŽ: typ větrání, CO čidlo ano/ne
+
+KRITICKÉ: Mnoho RD má POUZE přirozené větrání + digestoř + ventilátory koupelny.
+NEGENERUJ VZT jednotku pokud není výslovně zmíněna!
 
 Vrať POUZE validní JSON matching VZTParams."""
 
-    ZTI_PROMPT = """Parsuj český dokument zdravotechnických instalací (D.1.4.xx).
+    ZTI_PROMPT = """Parsuj český dokument zdravotně technických instalací (ZTI, D.1.4.xx).
+Profese se NEURČUJE z čísla podsekce! Profese je detekována z OBSAHU.
 
 DOKUMENT:
 {text}
 
-Extrahuj:
-1. VNITŘNÍ VODOVOD: přípojka DN, materiál, izolace, zdroj TUV, teplota °C,
-   cirkulace, vodoměr
-2. VNITŘNÍ KANALIZACE: materiál, přípojka DN, větrání, lapák tuků, podlahové vpusti
-3. DEŠŤOVÁ KANALIZACE: materiál, retenční nádrž, objem m³
-4. ZAŘIZOVACÍ PŘEDMĚTY: počet, typy
-5. POŽÁRNÍ VODOVOD: hydranty, DN
+PRIORITNÍ EXTRAKCE (kritické pro rozpočet):
+1. SPLAŠKOVÁ KANALIZACE:
+   - Materiál vnitřní (PP/PVC), materiál vnější (PVC/KG)
+   - Počet odpadních potrubí a DN, DN hlavní svodné větve
+   - Revizní šachta: ano/ne, umístění
+   - Větrání: nad střechu, typ hlavice a DN
+
+2. DEŠŤOVÁ KANALIZACE:
+   - DN svodů a počet, plocha střechy, C součinitel
+   - Nádrž: typ (akumulační/retenční/kombinovaná), celkový objem m³,
+     akumulační část m³, retenční část m³, název produktu, regulovaný odtok l/s
+
+3. STUDENÁ VODA:
+   - Zdroj (veřejný vodovod/studna), sekundární zdroj
+   - Délka přípojky celkem/nová/stávající m
+   - Vodoměr umístění, trasa rozvodů
+   - Venkovní výtoky (nezámrzný kohout)
+
+4. TEPLÁ VODA:
+   - Typ zdroje ohřevu a značka
+   - Typ zásobníku a značka/model
+   - Objem zásobníku (litry), cirkulace ano/ne
+
+5. TABULKA ZAŘIZOVACÍCH PŘEDMĚTŮ — extrahuj VŠECHNY:
+   WC, umyvadlo, dřez, sprcha, vana, myčka, pračka, podlahová vpusť, kondenzát
+   Pro každý: počet a DU hodnota.
+
+6. VÝPOČTY: ΣDU, Qww [l/s], DN hlavní větve
+
+KRITICKÉ: Extrahuj PŘESNÉ hodnoty (DN, objemy, délky, průtoky).
+Pokud hodnota je s "např.", označ: example_product=true.
 
 Vrať POUZE validní JSON matching ZTIParams."""
 
     UT_PROMPT = """Parsuj český dokument ústředního vytápění (D.1.4.xx).
+Profese se NEURČUJE z čísla podsekce! Profese je detekována z OBSAHU.
 
 DOKUMENT:
 {text}
 
-Extrahuj:
-1. ZDROJ TEPLA: typ (kotel/TČ/výměník), výkon kW, typ TČ, COP, záložní zdroj
-2. OTOPNÁ SOUSTAVA: typ (dvoutrubková?), teplotní spád, materiál potrubí, izolace
-3. OTOPNÁ TĚLESA: typ, počet, podlahové vytápění (plocha m²?)
-4. REGULACE: termostat, zónová regulace, ekvitermní řízení
-5. TEPELNÉ ZTRÁTY: celkem kW, venkovní výpočtová °C, vnitřní °C
+Extrahuj v pořadí priority:
+1. ENERGETICKÉ PARAMETRY (z PENB/TZ pokud jsou):
+   - Průměrný U budovy [W/(m²·K)]
+   - Měrná potřeba tepla, celková dodaná energie, primární energie [kWh/(m²·rok)]
+   - Klasifikační třída (A–G)
+
+2. PRIMÁRNÍ ZDROJ TEPLA:
+   - Typ (kondenzační_kotel/TČ_vzduch_voda/elektrokotel/krbová_kamna)
+   - Palivo (zemní_plyn/elektřina/pelety)
+   - Značka + model (PŘESNĚ jak je napsáno, např. "Bosch Condens 2300i")
+   - Jmenovitý/maximální výkon [kW]
+   - Umístění v budově
+
+3. SEKUNDÁRNÍ / ZÁLOŽNÍ ZDROJ (pokud je):
+   - Typ, palivo, výkon, účel
+
+4. OTOPNÁ SOUSTAVA:
+   - Typ: podlahové / radiátory / kombinované / teplovzdušné
+   - Pro podlahové: značka, produkt (PŘESNĚ), rozteč, tloušťka mazaniny
+   - Rozdělovač umístění + počet okruhů
+   - Přívodní/zpátečková teplota [°C]
+   - Materiál potrubí
+
+5. TOPNÉ ŽEBŘÍKY / DOPLŇKOVÉ:
+   - Elektrické žebříky v koupelnách: ano/ne, počet
+   - Elektrické přímotopy: umístění, počet
+
+6. KOMÍN:
+   - Značka + model (PŘESNĚ, např. "Schiedel KombiGas")
+   - Varianta (např. "UNI SMART")
+   - DN průduchu [mm], vnější rozměry
+   - Počet průduchů, připojené spotřebiče (seznam VŠECH)
+   - Integrovaný přívod vzduchu: ano/ne (LAS)
+
+7. GARÁŽ: typ vytápění, počet těles, výkon kW
+
+KRITICKÉ:
+- KOMÍN je drahý pro rozpočet — extrahuj KAŽDÝ detail.
+- Rozlišuj primární vs sekundární zdroj. "krbová akumulační kamna" = sekundární, NE primární.
+- Výkonové hodnoty: extrahuj OBOJÍ jmenovitý A maximální pokud se liší.
 
 Vrať POUZE validní JSON matching UTParams."""
 

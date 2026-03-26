@@ -744,11 +744,91 @@ class SlaboproudParams(BaseModel):
 
 
 # =============================================================================
-# 10. VZTParams — Vzduchotechnika a klimatizace (D.1.4.xx)
+# 10. VZTParams — Vzduchotechnika a klimatizace (D.1.4.xx) — v4.1
 # =============================================================================
 
+class NaturalVentParams(BaseModel):
+    """Přirozené větrání — základní údaje."""
+    method: Optional[str] = None
+    is_primary: Optional[bool] = None
+    rooms_naturally_vented: List[str] = Field(default_factory=list)
+    special_note: Optional[str] = None
+
+
+class VentZone(BaseModel):
+    """One zone served by VZT unit."""
+    room_name: str = ""
+    supply_m3h: Optional[float] = None
+    exhaust_m3h: Optional[float] = None
+    air_changes_per_hour: Optional[float] = None
+    terminal_type: Optional[str] = None
+
+
+class ForcedVentParams(BaseModel):
+    """Nucené větrání — VZT jednotka, rozvody, rekuperace."""
+    ahu_type: Optional[str] = None
+    ahu_brand: Optional[str] = None
+    ahu_location: Optional[str] = None
+    has_heat_recovery: Optional[bool] = None
+    heat_recovery_type: Optional[str] = None
+    heat_recovery_efficiency_pct: Optional[float] = None
+    supply_air_m3h: Optional[float] = None
+    exhaust_air_m3h: Optional[float] = None
+    outdoor_air_m3h: Optional[float] = None
+    duct_material: Optional[str] = None
+    duct_insulation: Optional[str] = None
+    duct_routing: Optional[str] = None
+    static_pressure_pa: Optional[int] = None
+    design_velocity_ms: Optional[float] = None
+    zones: List[VentZone] = Field(default_factory=list)
+    filter_class: Optional[str] = None
+
+
+class ACParams(BaseModel):
+    """Klimatizace / chlazení."""
+    ac_type: Optional[str] = None
+    brand: Optional[str] = None
+    cooling_power_kw: Optional[float] = None
+    heating_power_kw: Optional[float] = None
+    refrigerant: Optional[str] = None
+    outdoor_unit_location: Optional[str] = None
+    zones: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+class KitchenHoodParams(BaseModel):
+    """Digestoř a odtah z kuchyně."""
+    hood_type: Optional[str] = None
+    duct_outlet: Optional[str] = None
+    duct_dn_mm: Optional[int] = None
+    duct_material: Optional[str] = None
+    flow_rate_m3h: Optional[float] = None
+    grease_filter: Optional[bool] = None
+
+
+class BathroomFanParams(BaseModel):
+    """Ventilátory v koupelnách a WC."""
+    fan_type: Optional[str] = None
+    control_type: Optional[str] = None
+    flow_per_unit_m3h: Optional[float] = None
+    duct_dn_mm: Optional[int] = None
+    duct_outlet: Optional[str] = None
+    rooms: List[str] = Field(default_factory=list)
+    unit_count: Optional[int] = None
+
+
+class GarageVentParams(BaseModel):
+    """Větrání garáže."""
+    ventilation_type: Optional[str] = None
+    co_sensor: Optional[bool] = None
+    openings_area_m2: Optional[float] = None
+    fan_brand: Optional[str] = None
+    flow_m3h: Optional[float] = None
+    fire_damper: Optional[bool] = None
+    note: Optional[str] = None
+
+
 class VZTUnit(BaseModel):
-    """One VZT unit specification."""
+    """One VZT unit specification (for commercial/industrial)."""
     designation: str = ""
     unit_type: Optional[str] = None
     airflow_m3h: Optional[float] = None
@@ -762,12 +842,30 @@ class VZTUnit(BaseModel):
 
 
 class VZTParams(BaseModel):
-    """Vzduchotechnika a klimatizace (D.1.4.xx)."""
+    """Vzduchotechnika a klimatizace (D.1.4.xx) — v4.1 expanded."""
 
     section_id: Optional[str] = None
     pd_level: Optional[str] = None
+    building_name: Optional[str] = None
 
-    # ── VZT units ──
+    # ── Typ větrání ──
+    ventilation_strategy: Optional[str] = None
+
+    # ── Přirozené větrání ──
+    natural_ventilation: Optional[NaturalVentParams] = None
+
+    # ── Nucené větrání ──
+    forced_ventilation: Optional[ForcedVentParams] = None
+
+    # ── Klimatizace ──
+    air_conditioning: Optional[ACParams] = None
+
+    # ── Speciální prvky ──
+    kitchen_hood: Optional[KitchenHoodParams] = None
+    bathroom_fans: Optional[BathroomFanParams] = None
+    garage_ventilation: Optional[GarageVentParams] = None
+
+    # ── VZT units (for commercial buildings) ──
     units: List[VZTUnit] = Field(default_factory=list)
 
     # ── General parameters ──
@@ -785,47 +883,159 @@ class VZTParams(BaseModel):
     control_system: Optional[str] = None
     bms_integration: Optional[bool] = None
 
-    # ── Standards ──
+    # ── Design parameters ──
     noise_limit_db: Optional[int] = None
+    design_outdoor_temp_winter: Optional[float] = None
+    design_outdoor_temp_summer: Optional[float] = None
+    design_indoor_temp: Optional[float] = None
     design_temperatures: Dict[str, str] = Field(default_factory=dict)
 
     sources: Dict[str, str] = Field(default_factory=dict)
 
 
 # =============================================================================
-# 11. ZTIParams — Zdravotechnické instalace (D.1.4.xx)
+# 11. ZTIParams — Zdravotechnické instalace (D.1.4.xx) — v4.1
 # =============================================================================
 
+class DrainPipe(BaseModel):
+    """Odpadní potrubí."""
+    label: Optional[str] = None
+    dn: Optional[int] = None
+    material: Optional[str] = None
+    rooms_served: List[str] = Field(default_factory=list)
+
+
+class SewerageParams(BaseModel):
+    """Splašková kanalizace."""
+    internal_material: Optional[str] = None
+    external_material: Optional[str] = None
+    joint_type: Optional[str] = None
+    uv_protection: Optional[bool] = None
+    ventilation_above_roof: Optional[bool] = None
+    ventilation_cap_type: Optional[str] = None
+    vent_pipe_dn: Optional[int] = None
+    waste_pipes: List[DrainPipe] = Field(default_factory=list)
+    drain_branch_dn: Optional[int] = None
+    drain_slope_pct: Optional[float] = None
+    du_total_ls: Optional[float] = None
+    qww_calculated_ls: Optional[float] = None
+    inspection_shaft: Optional[bool] = None
+    inspection_shaft_location: Optional[str] = None
+
+
+class RainwaterTank(BaseModel):
+    """Retenční/akumulační nádrž."""
+    tank_type: Optional[str] = None
+    total_volume_m3: Optional[float] = None
+    accumulation_volume_m3: Optional[float] = None
+    retention_volume_m3: Optional[float] = None
+    example_product: Optional[str] = None
+    material: Optional[str] = None
+    emptying_time_h: Optional[float] = None
+
+
+class RainwaterParams(BaseModel):
+    """Dešťová kanalizace."""
+    gutter_material: Optional[str] = None
+    downpipe_dn: Optional[int] = None
+    downpipe_count: Optional[int] = None
+    roof_area_m2: Optional[float] = None
+    roof_runoff_coeff: Optional[float] = None
+    paved_area_m2: Optional[float] = None
+    paved_disposal: Optional[str] = None
+    tank: Optional[RainwaterTank] = None
+    qr_ls: Optional[float] = None
+    design_rain_intensity: Optional[float] = None
+    outlet_to: Optional[str] = None
+    outlet_max_ls: Optional[float] = None
+
+
+class ColdWaterParams(BaseModel):
+    """Rozvod studené pitné vody."""
+    supply_source: Optional[str] = None
+    secondary_source: Optional[str] = None
+    separation_standard: Optional[str] = None
+    connection_length_total_m: Optional[float] = None
+    connection_length_new_m: Optional[float] = None
+    connection_length_existing_m: Optional[float] = None
+    meter_location: Optional[str] = None
+    meter_accessible_from: Optional[str] = None
+    pipe_material_internal: Optional[str] = None
+    pipe_routing: Optional[str] = None
+    outlet_fittings: Optional[str] = None
+    outdoor_taps: List[str] = Field(default_factory=list)
+    total_pipe_length_m: Optional[float] = None
+    min_pressure_kpa: Optional[float] = None
+
+
+class HotWaterParams(BaseModel):
+    """Rozvod teplé vody."""
+    heat_source: Optional[str] = None
+    heat_source_brand: Optional[str] = None
+    storage_type: Optional[str] = None
+    storage_brand: Optional[str] = None
+    storage_volume_l: Optional[int] = None
+    storage_location: Optional[str] = None
+    has_circulation: Optional[bool] = None
+    circulation_pump: Optional[str] = None
+    pipe_material: Optional[str] = None
+    pipe_routing: Optional[str] = None
+    rooms_served: List[str] = Field(default_factory=list)
+    thermal_power_kw: Optional[float] = None
+
+
+class PlumbingFixture(BaseModel):
+    """Zařizovací předmět."""
+    fixture_type: str
+    count: int = 0
+    room: Optional[str] = None
+    du_value: Optional[float] = None
+    note: Optional[str] = None
+
+
+class UtilityConnection(BaseModel):
+    """Přípojka inženýrské sítě."""
+    utility_type: str = ""
+    connection_type: str = ""
+    length_m: Optional[float] = None
+    dn: Optional[int] = None
+    owner: Optional[str] = None
+    note: Optional[str] = None
+
+
 class ZTIParams(BaseModel):
-    """Zdravotechnické instalace — vnitřní vodovod + kanalizace (D.1.4.xx)."""
+    """Zdravotně technické instalace — v4.1 expanded (D.1.4.xx)."""
 
     section_id: Optional[str] = None
     pd_level: Optional[str] = None
+    building_name: Optional[str] = None
+    building_type: Optional[str] = None
+    floors_above: Optional[int] = None
+    floors_below: Optional[int] = None
+    occupants: Optional[int] = None
 
-    # ── Vnitřní vodovod ──
-    water_connection_dn: Optional[int] = None
-    water_pipe_material: Optional[str] = None
-    water_pipe_insulation: Optional[str] = None
-    hot_water_source: Optional[str] = None
-    hot_water_temp_c: Optional[int] = None
-    circulation: Optional[bool] = None
-    water_meter_location: Optional[str] = None
-
-    # ── Vnitřní kanalizace ──
-    sewer_pipe_material: Optional[str] = None
-    sewer_connection_dn: Optional[int] = None
-    ventilation_type: Optional[str] = None
-    grease_trap: Optional[bool] = None
-    floor_drains: Optional[bool] = None
+    # ── Splašková kanalizace ──
+    sewage: Optional[SewerageParams] = None
 
     # ── Dešťová kanalizace ──
-    rain_pipe_material: Optional[str] = None
-    rain_retention: Optional[bool] = None
-    rain_retention_volume_m3: Optional[float] = None
+    rainwater: Optional[RainwaterParams] = None
+
+    # ── Rozvod studené vody ──
+    cold_water: Optional[ColdWaterParams] = None
+
+    # ── Rozvod teplé vody ──
+    hot_water: Optional[HotWaterParams] = None
 
     # ── Zařizovací předměty ──
-    fixtures_count: Optional[int] = None
-    fixtures_types: List[str] = Field(default_factory=list)
+    fixtures: List[PlumbingFixture] = Field(default_factory=list)
+
+    # ── Přípojky ──
+    connections: List[UtilityConnection] = Field(default_factory=list)
+
+    # ── Výpočtové parametry ──
+    design_flow_qww_ls: Optional[float] = None
+    main_branch_dn: Optional[int] = None
+    water_demand_m3_year: Optional[float] = None
 
     # ── Požární vodovod ──
     fire_hydrants: Optional[bool] = None
@@ -835,43 +1045,129 @@ class ZTIParams(BaseModel):
 
 
 # =============================================================================
-# 12. UTParams — Ústřední vytápění (D.1.4.xx)
+# 12. UTParams — Ústřední vytápění (D.1.4.xx) — v4.1
 # =============================================================================
 
+class HeatSourceParams(BaseModel):
+    """Zdroj tepla — kotel, TČ, krbová kamna."""
+    source_type: Optional[str] = None
+    fuel: Optional[str] = None
+    brand: Optional[str] = None
+    model: Optional[str] = None
+    nominal_power_kw: Optional[float] = None
+    max_power_kw: Optional[float] = None
+    min_power_kw: Optional[float] = None
+    efficiency_pct: Optional[float] = None
+    location: Optional[str] = None
+    is_primary: Optional[bool] = None
+    note: Optional[str] = None
+
+
+class UnderfloorParams(BaseModel):
+    """Podlahové vytápění."""
+    system_brand: Optional[str] = None
+    system_type: Optional[str] = None
+    example_product: Optional[str] = None
+    pipe_od_mm: Optional[int] = None
+    pipe_spacing_mm: Optional[int] = None
+    screed_thickness_mm: Optional[int] = None
+    insulation_thickness_mm: Optional[int] = None
+    heated_area_m2: Optional[float] = None
+    zones: List[str] = Field(default_factory=list)
+
+
+class RadiatorParams(BaseModel):
+    """Otopná tělesa."""
+    radiator_type: Optional[str] = None
+    total_count: Optional[int] = None
+    electric_towel_rail: Optional[bool] = None
+    electric_count: Optional[int] = None
+
+
+class HeatingSystemParams(BaseModel):
+    """Otopná soustava — typ, rozvody, otopné plochy."""
+    system_type: Optional[str] = None
+    underfloor_heating: Optional[UnderfloorParams] = None
+    radiators: Optional[RadiatorParams] = None
+    pipe_material: Optional[str] = None
+    pipe_routing: Optional[str] = None
+    pipe_insulation: Optional[str] = None
+    manifold_location: Optional[str] = None
+    manifold_circuits: Optional[int] = None
+    supply_temp_c: Optional[float] = None
+    return_temp_c: Optional[float] = None
+    operating_pressure_bar: Optional[float] = None
+    expansion_vessel_l: Optional[int] = None
+    control_type: Optional[str] = None
+    control_brand: Optional[str] = None
+    control_zones: Optional[int] = None
+    circulation_pump: Optional[str] = None
+    pump_brand: Optional[str] = None
+
+
+class ChimneyParams(BaseModel):
+    """Komínový systém."""
+    brand: Optional[str] = None
+    model: Optional[str] = None
+    variant: Optional[str] = None
+    flue_dn_mm: Optional[int] = None
+    outer_dimension: Optional[str] = None
+    shaft_count: Optional[int] = None
+    height_m: Optional[float] = None
+    appliances_connected: List[str] = Field(default_factory=list)
+    air_supply_integrated: Optional[bool] = None
+    installation_standard: Optional[str] = None
+    note: Optional[str] = None
+
+
+class GarageHeatingParams(BaseModel):
+    """Vytápění garáže a vedlejších prostorů."""
+    heating_type: Optional[str] = None
+    unit_type: Optional[str] = None
+    unit_count: Optional[int] = None
+    total_power_kw: Optional[float] = None
+    control: Optional[str] = None
+    note: Optional[str] = None
+
+
 class UTParams(BaseModel):
-    """Ústřední vytápění / otopná soustava (D.1.4.xx)."""
+    """Ústřední vytápění / otopná soustava (D.1.4.xx) — v4.1 expanded."""
 
     section_id: Optional[str] = None
     pd_level: Optional[str] = None
+    building_name: Optional[str] = None
+    building_type: Optional[str] = None
 
-    # ── Zdroj tepla ──
-    heat_source_type: Optional[str] = None
-    heat_source_power_kw: Optional[float] = None
-    heat_pump_type: Optional[str] = None
-    heat_pump_cop: Optional[float] = None
-    backup_source: Optional[str] = None
-
-    # ── Otopná soustava ──
-    system_type: Optional[str] = None
-    design_temps: Optional[str] = None
-    pipe_material: Optional[str] = None
-    pipe_insulation: Optional[str] = None
-
-    # ── Otopná tělesa ──
-    radiator_type: Optional[str] = None
-    radiator_count: Optional[int] = None
-    floor_heating: Optional[bool] = None
-    floor_heating_area_m2: Optional[float] = None
-
-    # ── Regulace ──
-    thermostat_type: Optional[str] = None
-    zone_control: Optional[bool] = None
-    weather_compensation: Optional[bool] = None
+    # ── Energetické parametry (z PENB) ──
+    u_mean_wm2k: Optional[float] = None
+    specific_heat_demand_kwh_m2: Optional[float] = None
+    total_delivered_energy_kwh_m2: Optional[float] = None
+    primary_energy_kwh_m2: Optional[float] = None
+    energy_class: Optional[str] = None
 
     # ── Tepelné ztráty ──
     heat_loss_total_kw: Optional[float] = None
+    heat_loss_w: Optional[float] = None
     design_outdoor_temp_c: Optional[int] = None
     design_indoor_temp_c: Optional[int] = None
+
+    # ── Zdroje tepla ──
+    heat_source: Optional[HeatSourceParams] = None
+    secondary_heat_source: Optional[HeatSourceParams] = None
+    backup_heat_source: Optional[HeatSourceParams] = None
+
+    # ── Otopná soustava ──
+    heating_system: Optional[HeatingSystemParams] = None
+
+    # ── Příprava teplé vody (koordinace se ZTI) ──
+    dhw_source: Optional[str] = None
+    dhw_storage_volume_l: Optional[int] = None
+
+    # ── Komín ──
+    chimney: Optional[ChimneyParams] = None
+
+    # ── Garáž a vedlejší prostory ──
+    garage_heating: Optional[GarageHeatingParams] = None
 
     sources: Dict[str, str] = Field(default_factory=dict)
 
