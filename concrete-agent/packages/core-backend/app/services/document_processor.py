@@ -47,7 +47,7 @@ from app.services.document_classifier import (
     classify_document_enhanced,
 )
 from app.services.so_type_regex import extract_so_type_params
-from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES, D14_PARAMS_CLASSES
+from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES, D14_PARAMS_CLASSES, RAILWAY_PARAMS_CLASSES, ALL_PARAMS_CLASSES
 from app.services.d14_profession_detector import is_d14_document, detect_d14_profession
 from app.core.config import settings
 from app.models.passport_schema import (
@@ -1330,6 +1330,69 @@ Vrať POUZE validní JSON matching MaRParams."""
         "pipeline_params": PIPELINE_TZ_PROMPT,
     }
 
+    # ─── RAILWAY PROMPTS (Správa železnic) ───
+
+    ZEL_SVRSEK_PROMPT = """Parsuj českou technickou zprávu železničního svršku (SO 111-xx, Správa železnic).
+
+DOKUMENT:
+{text}
+
+Extrahuj v pořadí priority:
+1. TRAŤOVÉ PARAMETRY: číslo trati (JŘ + Prohlášení), kategorie dráhy,
+   max rychlost km/h, třída zatížení (C3/D4), zatížení na nápravu t,
+   kategorie TSI INF (P6/F4), počet traťových kolejí
+2. ROZSAH: začátek/konec km, celková délka m, rozsah rekonstrukce km od-do
+3. KOLEJOVÝ ROŠT: typ kolejnice (49 E1 R260), typ pražce (ocelový Y/SB8),
+   rozdělení (l/d/u), počty pražců, upevnění (S15 Skl14), sklon 1:40,
+   frakce a třída lože, min. tloušťka mm, rozchod mm
+4. GPK: poloměr oblouku R m, převýšení D mm, přechodnice Lk m,
+   sklony nivelety ‰, zakružovací oblouky Rv m, navýšení nivelety přes most mm
+5. BK: nová BK ano/ne, délka pásů m, norma SŽ S3/2
+6. LIS: staničení km, typ, délka m, nevstřícnost mm
+
+Vrať POUZE validní JSON matching ZelSvrsekParams."""
+
+    ZEL_SPODEK_PROMPT = """Parsuj českou technickou zprávu železničního spodku (SO 112-xx, Správa železnic).
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. MODULY: požadované Emin,ZP a Emin,PL [MPa]
+2. KPP ZÓNY: typ (KPP1/KPP2/ZKPP), poloha km od-do, vrstvy (materiál + frakce + tloušťka mm)
+3. ZEMNÍ PLÁŇ: příčný sklon %, směr, výška náspu
+4. PLÁŇ TĚLESA: min šířka m, šířka stezky m
+5. ODVODNĚNÍ: sklon %, žebrování
+6. ZÍDKY: typ (U3/gabion), strana, km od-do, délka m, vzdálenost od osy m,
+   rozměry prvku, základ (beton + tloušťka)
+7. STABILITA SVAHU: metoda (Bishop), výsledek (VYHOVUJE/NE), využití %
+
+Vrať POUZE validní JSON matching ZelSpodekParams."""
+
+    IGP_PROMPT = """Parsuj českou závěrečnou zprávu IGP pražcového podloží (Správa železnic, SŽ S4 příloha 9).
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. SONDY: pro KAŽDOU sondu — ID (přesně: "K 55.300"), km, strana, datum,
+   mocnost ŠL celkem cm + znečištěná cm, třída zeminy dle SŽ S4 (G3 G-F Cb),
+   namrzavost, vodní režim, HPV
+2. SZZ: pro KAŽDOU zkoušku — číslo, km, hloubka od TK m, E1 MPa, E2 MPa,
+   poměr E2/E1, opravný součinitel z, redukovaný modul Er MPa
+3. GEOLOGIE: geomorfologická jednotka, typ podloží, hloubka m
+4. HYDROGEOLOGIE: hloubka promrzání hpr m, index mrazu Imn °C.den, HPV m
+5. LABORATOŘ: třída zeminy, filtrační součinitel k m/s, namrzavost
+6. NÁVRH KPP/ZKPP: vrstvy (materiál + tloušťka mm), Ee,ZP a Ee,PL MPa,
+   mrazová kontrola (vyhovuje/ne)
+
+KRITICKÉ:
+- Sondy přesně jako v dokumentu: "K 55.300" NE "K55300"
+- Er = E2,IGP × z (OBOJÍ uvádět)
+- Pro ZKPP: Emin,PL = 70 MPa; pro KPP: Emin,PL = 30 MPa
+
+Vrať POUZE validní JSON matching IGPParams."""
+
     # D.1.4 profession prompts
     D14_PROMPTS = {
         "silnoproud_params": SILNOPROUD_PROMPT,
@@ -1338,6 +1401,10 @@ Vrať POUZE validní JSON matching MaRParams."""
         "zti_params": ZTI_PROMPT,
         "ut_params": UT_PROMPT,
         "mar_params": MAR_PROMPT,
+        # Railway
+        "zel_svrsek_params": ZEL_SVRSEK_PROMPT,
+        "zel_spodek_params": ZEL_SPODEK_PROMPT,
+        "igp_params": IGP_PROMPT,
     }
 
     async def _extract_type_specific(
@@ -1426,7 +1493,7 @@ Vrať POUZE validní JSON matching MaRParams."""
         elif d14_profession and d14_profession in self.D14_PROMPTS:
             # v3.2: D.1.4 profession-specific prompt (silnoproud, slaboproud, VZT, etc.)
             prompt_template = self.D14_PROMPTS[d14_profession]
-            model_cls = D14_PARAMS_CLASSES.get(d14_profession)
+            model_cls = ALL_PARAMS_CLASSES.get(d14_profession)
         elif so_params_key and so_params_key in self.SO_TYPE_PROMPTS:
             # v3.1: SO type-specific prompt (road, water, vegetation, DIO, etc.)
             prompt_template = self.SO_TYPE_PROMPTS[so_params_key]
@@ -1490,7 +1557,7 @@ Vrať POUZE validní JSON matching MaRParams."""
             elif model_cls == TenderExtraction:
                 results["tender"] = extraction
                 logger.info(f"Full PD extraction: {len(ai_result)} fields")
-            elif d14_profession and d14_profession in D14_PARAMS_CLASSES:
+            elif d14_profession and d14_profession in ALL_PARAMS_CLASSES:
                 # v3.2: Store under D.1.4 profession key
                 results[d14_profession] = extraction
                 # Merge regex facts

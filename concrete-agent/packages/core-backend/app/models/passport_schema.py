@@ -547,6 +547,10 @@ class MergedSO(BaseModel):
     zti_params: Optional[Dict[str, Any]] = None
     ut_params: Optional[Dict[str, Any]] = None
     mar_params: Optional[Dict[str, Any]] = None
+    # v4.3: Railway params (Správa železnic)
+    zel_svrsek_params: Optional[Dict[str, Any]] = None
+    zel_spodek_params: Optional[Dict[str, Any]] = None
+    igp_params: Optional[Dict[str, Any]] = None
     d14_profession: Optional[str] = Field(None, description="Detected D.1.4 profession key")
     d14_profession_label: Optional[str] = Field(None, description="Czech label for D.1.4 profession")
     # v3.1.1: Enhanced classification

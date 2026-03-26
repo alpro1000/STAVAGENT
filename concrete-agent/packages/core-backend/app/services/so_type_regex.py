@@ -729,6 +729,217 @@ UT_PATTERNS = {
 
 
 # =============================================================================
+# RAILWAY — Železniční svršek REGEX (SO 111-xx) — v4.3, 20 key patterns
+# =============================================================================
+
+ZEL_SVRSEK_PATTERNS = {
+    "sk_id": re.compile(r"SK\s*(\d{3}[-–]\d{2})"),
+    "so_id": re.compile(r"(SO\s*\d{3}[-–]\d{2}[-–]\d{2}(?:\.\d{2})?)"),
+    "pd_level_zel": re.compile(
+        r"[Ss]tupeň\s+dokumentace\s*:?\s*(DUSP\+PDPS|PDPS|DPS|DUSP|DÚR)"
+    ),
+    "max_speed": re.compile(
+        r"[Mm]aximální\s+traťová\s+rychlost\s*:?\s*(\d+)\s*km/h"
+    ),
+    "load_class_zel": re.compile(
+        r"[Tt]raťová\s+třída\s+zatížení\s*:?\s*(C\d|B\d|D\d)", re.IGNORECASE
+    ),
+    "axle_load": re.compile(
+        r"[Hh]motnost\s+na\s+nápravu\s*:?\s*([\d,]+)\s*t"
+    ),
+    "track_count": re.compile(
+        r"[Pp]očet\s+traťových\s+kolejí\s*:?\s*(\d)"
+    ),
+    "start_km": re.compile(r"[Zz]ačátek\s+stavby\s*:?\s*km\s*([\d,]+)"),
+    "end_km": re.compile(r"[Kk]onec\s+stavby\s*:?\s*km\s*([\d,]+)"),
+    "total_length": re.compile(
+        r"[Cc]elková\s+délka\s+stavby\s*:?\s*([\d,]+)\s*m"
+    ),
+    "rail_type": re.compile(
+        r"kolejnice\s+(4[59]\s+E1|S49|60\s+E1|UIC\s*60)\s*(R\d+)?", re.IGNORECASE
+    ),
+    "sleeper_type": re.compile(
+        r'(ocelový\s+pražec\s+["\u201E]?Y["\u201C]?|betonový\s+pražec\s+\w+)', re.IGNORECASE
+    ),
+    "fastening": re.compile(
+        r"upevnění\s+(S\s*\d{1,2})\s+\(svěrky\s+(\w+)\)", re.IGNORECASE
+    ),
+    "ballast_fraction": re.compile(r"kamenivo\s+fr\.\s*([\d,]+/[\d,]+)"),
+    "ballast_thickness": re.compile(
+        r"[Mm]in\.\s+tl\.\s+kolejového\s+lože\s+(\d+)\s*mm"
+    ),
+    "curve_radius": re.compile(r"[Pp]oloměr[u]?\s+R\s*=\s*(\d+)\s*m"),
+    "cant": re.compile(r"[Pp]řevýšení.*?D\s*=\s*(\d+)\s*mm"),
+    "niveleta_elevation": re.compile(
+        r"niveleta\s+koleje\s+zvýšena\s+o\s+cca\s+([\d,]+)\s*m", re.IGNORECASE
+    ),
+    "gauge_nominal": re.compile(
+        r"[Jj]menovitý\s+rozchod\s+koleje\s+(?:je\s+)?(\d{4})\s*mm"
+    ),
+    "norm_szdc_s3": re.compile(r"(SŽDC\s+S3|SŽ\s+S\s*3)", re.IGNORECASE),
+}
+
+
+# =============================================================================
+# RAILWAY — Železniční spodek REGEX (SO 112-xx) — v4.3, 12 key patterns
+# =============================================================================
+
+ZEL_SPODEK_PATTERNS = {
+    "kpp_type": re.compile(r"(ZKPP|KPP[12]?)\s+(?:bude\s+)?zřízen", re.IGNORECASE),
+    "e_min_zp": re.compile(r"[Ee]min,ZP\s*=\s*([\d,]+)\s*MPa"),
+    "e_min_pl": re.compile(r"[Ee]min,pl(?:,\s*PL)?\s*=\s*([\d,]+)\s*MPa"),
+    "subgrade_slope": re.compile(
+        r"[Jj]ednostranném\s+příčném\s+sklonu.*?([\d,]+)\s*%"
+    ),
+    "min_formation_width": re.compile(
+        r"[Mm]inimální\s+šířka\s+pláně\s+(?:je\s+)?([\d,]+)\s*m"
+    ),
+    "wall_u3_location": re.compile(
+        r"[Pp]refabrikovaná\s+zídka\s+typ\s+U3.*?km\s+([\d,]+)\s*[-–]\s*km\s*([\d,]+)",
+        re.IGNORECASE,
+    ),
+    "wall_gabion_location": re.compile(
+        r"[Gg]abionová\s+zídka.*?km\s+([\d,]+)\s*[-–]\s*km\s*([\d,]+)"
+    ),
+    "wall_axis_distance": re.compile(
+        r"[Vv]zdálenosti\s+([\d,]+)\s*m\s+od\s+osy\s+koleje"
+    ),
+    "wall_foundation": re.compile(
+        r"podkladní\s+beton[ou]?\s+(C\d+/\d+)\s+(?:min\.\s+)?tl\.\s+(\d+)\s*mm",
+        re.IGNORECASE,
+    ),
+    "stability_result": re.compile(
+        r"[Ss]tabilita\s+svahu\s+(VYHOVUJE|NEVYHOVUJE)"
+    ),
+    "utilization_pct": re.compile(r"[Vv]yužití\s*:\s*([\d,]+)\s*%"),
+    "norm_sz_s4": re.compile(r"(SŽ\s+S4|SŽDC\s+S4)", re.IGNORECASE),
+}
+
+
+# =============================================================================
+# RAILWAY — IGP REGEX (inženýrskogeologický průzkum) — v4.3, 14 key patterns
+# =============================================================================
+
+IGP_PATTERNS = {
+    "probe_id": re.compile(
+        r"(?:SONDA|DOKUMENTACE\s+KOPANÉ\s+SONDY)\s+(K\s+[\d,]+\s*(?:[LP])?)",
+        re.IGNORECASE,
+    ),
+    "probe_km": re.compile(r"[Ll]okalizace\s+sondy\s*:?\s*km\s+([\d,]+)"),
+    "probe_depth_tk": re.compile(
+        r"[Hh]loubka\s+(?:sondy|dna\s+sondy)\s+od\s+TK\s*:?\s*([\d,]+)\s*m"
+    ),
+    "ballast_total_cm": re.compile(
+        r"[Dd]rážní\s+štěrk\s+[Cc]elkem\s*\(cm\)\s+(\d+)"
+    ),
+    "ballast_contaminated_cm": re.compile(
+        r"[Dd]rážní\s+štěrk\s+znečištěný\s*\(cm\)\s+(\d+)"
+    ),
+    "soil_class_sz": re.compile(
+        r"(?:třída\s+zeminy|[Kk]lasifikace)\s+(?:zemní\s+pláně\s+)?(G[1-4]\s+[A-Z][-–]?[A-Z]?(?:\s+[A-Z]+)?)"
+    ),
+    "frost_susceptibility_igp": re.compile(
+        r"[Nn]amrzavost\s+zemn[íi]\s+pláně\s*:?\s*(nenamrzavá|mírně\s+namrzavá|namrzavá|vysoce\s+namrzavá)"
+    ),
+    "water_regime": re.compile(
+        r"[Vv]odní\s+režim\s+(?:zemní\s+pláně\s*)?:?\s*(příznivý|nepříznivý|zatížený)"
+    ),
+    "e2_igp": re.compile(r"[Ee]2[,.]IGP\s*=?\s*([\d,]+)\s*MPa"),
+    "correction_z": re.compile(r'[Oo]pravný\s+součinitel\s+["\u201E]?z["\u201C]?\s*=?\s*([\d,]+)'),
+    "er_mpa": re.compile(
+        r"[Rr]edukovaný\s+modul\s+(?:zemní\s+pláně\s+)?[Ee]r\s*=?\s*([\d,]+)\s*MPa"
+    ),
+    "szz_e2": re.compile(r"[Ee]2\s*=\s*([\d,]+)\s*MPa"),
+    "frost_depth": re.compile(r"hpr\s*=\s*([\d,]+)\s*m"),
+    "frost_index": re.compile(r"Imn\s+(?:[\w\s]+)?(?:činí\s+)?([\d,]+)\s*°?C\.den"),
+}
+
+
+# =============================================================================
+# RAILWAY EXTRACTION FUNCTIONS
+# =============================================================================
+
+def extract_zel_svrsek_params(text: str) -> Dict[str, Any]:
+    """Extract railway superstructure parameters."""
+    result = {}
+    for field, pattern in ZEL_SVRSEK_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field in ("max_speed", "track_count"):
+                result[field] = int(val)
+            elif field in ("start_km", "end_km", "total_length", "axle_load"):
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result[field] = parsed
+            elif field in ("curve_radius", "cant", "ballast_thickness",
+                           "gauge_nominal"):
+                result[field] = int(val)
+            elif field == "rail_type":
+                result["rail_type"] = val
+                if m.group(2):
+                    result["rail_steel_class"] = m.group(2).strip()
+            elif field == "fastening":
+                result["fastening_type"] = val
+                result["fastening_clip"] = m.group(2).strip()
+            elif field == "niveleta_elevation":
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result["niveleta_elevation_max_mm"] = int(parsed * 1000)
+            else:
+                result[field] = val
+    return result
+
+
+def extract_zel_spodek_params(text: str) -> Dict[str, Any]:
+    """Extract railway substructure parameters."""
+    result = {}
+    for field, pattern in ZEL_SPODEK_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field in ("e_min_zp", "e_min_pl", "subgrade_slope",
+                         "min_formation_width", "wall_axis_distance",
+                         "utilization_pct"):
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result[field] = parsed
+            elif field == "stability_result":
+                result[field] = val
+            elif field == "wall_foundation":
+                result["foundation_concrete"] = val
+                result["foundation_thickness_mm"] = int(m.group(2))
+            elif field in ("wall_u3_location", "wall_gabion_location"):
+                result[field] = {
+                    "start_km": _parse_czech_number(m.group(1)),
+                    "end_km": _parse_czech_number(m.group(2)),
+                }
+            else:
+                result[field] = val
+    return result
+
+
+def extract_igp_params(text: str) -> Dict[str, Any]:
+    """Extract IGP geotechnical survey parameters."""
+    result = {}
+    for field, pattern in IGP_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field in ("ballast_total_cm", "ballast_contaminated_cm"):
+                result[field] = int(val)
+            elif field in ("e2_igp", "correction_z", "er_mpa", "szz_e2",
+                           "frost_depth", "frost_index", "probe_depth_tk",
+                           "probe_km"):
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result[field] = parsed
+            else:
+                result[field] = val
+    return result
+
+
+# =============================================================================
 # D.1.4 EXTRACTION FUNCTIONS
 # =============================================================================
 
@@ -985,8 +1196,15 @@ D14_TYPE_EXTRACTORS = {
     # mar_params has no specific regex — relies on AI extraction
 }
 
+# Railway extractors
+RAILWAY_TYPE_EXTRACTORS = {
+    "zel_svrsek_params": extract_zel_svrsek_params,
+    "zel_spodek_params": extract_zel_spodek_params,
+    "igp_params": extract_igp_params,
+}
+
 # Combined mapping
-ALL_TYPE_EXTRACTORS = {**SO_TYPE_EXTRACTORS, **D14_TYPE_EXTRACTORS}
+ALL_TYPE_EXTRACTORS = {**SO_TYPE_EXTRACTORS, **D14_TYPE_EXTRACTORS, **RAILWAY_TYPE_EXTRACTORS}
 
 
 def extract_so_type_params(params_key: str, text: str) -> Dict[str, Any]:

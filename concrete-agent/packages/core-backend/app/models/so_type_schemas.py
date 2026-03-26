@@ -1411,6 +1411,461 @@ class MaRParams(BaseModel):
 
 
 # =============================================================================
+# 14. ZelSvrsekParams — Železniční svršek (SO 111-xx) — v4.3
+# =============================================================================
+
+class GPKParams(BaseModel):
+    """Geometrická poloha koleje — směr a výška."""
+    alignment_type: Optional[str] = None
+    curve_direction: Optional[str] = None
+    curve_radius_m: Optional[int] = None
+    cant_mm: Optional[int] = None
+    transition_lk1_m: Optional[int] = None
+    transition_lk2_m: Optional[int] = None
+    design_speed_kmh: Optional[int] = None
+    future_speed_kmh: Optional[int] = None
+    future_speed_v130_kmh: Optional[int] = None
+    gradient_before_pct: Optional[float] = None
+    gradient_after_pct: Optional[float] = None
+    vertical_radius_rv_m: List[int] = Field(default_factory=list)
+    niveleta_elevation_max_mm: Optional[int] = None
+    ln_position_km: Optional[float] = None
+    clearance_profile: Optional[str] = None
+    bridge_clearance: Optional[str] = None
+
+
+class TrackFrameParams(BaseModel):
+    """Kolejový rošt — kolejnice, pražce, lože, upevnění."""
+    rail_type: Optional[str] = None
+    rail_steel_class: Optional[str] = None
+    rail_length_m: Optional[float] = None
+    sleeper_type: Optional[str] = None
+    sleeper_division: Optional[str] = None
+    sleeper_spacing_mm: Optional[int] = None
+    sleeper_support_spacing_mm: Optional[int] = None
+    sleeper_count_transition: Optional[int] = None
+    sleeper_count_standard: Optional[int] = None
+    existing_sleeper_type: Optional[str] = None
+    existing_sleeper_division: Optional[str] = None
+    fastening_type: Optional[str] = None
+    fastening_clip: Optional[str] = None
+    rail_inclination: Optional[str] = None
+    base_plate: Optional[bool] = None
+    ballast_material: Optional[str] = None
+    ballast_fraction: Optional[str] = None
+    ballast_class: Optional[str] = None
+    ballast_thickness_under_y_mm: Optional[int] = None
+    ballast_thickness_under_sb_mm: Optional[int] = None
+    ballast_thickness_bridge_mm_min: Optional[int] = None
+    ballast_thickness_bridge_mm_max: Optional[int] = None
+    ballast_type_open: Optional[bool] = None
+    ballast_type_bridge: Optional[str] = None
+    ballast_contamination_class: Optional[List[str]] = None
+    existing_ballast_depth_cm_range: Optional[str] = None
+    nominal_gauge_mm: Optional[int] = None
+    design_gauge_mm: Optional[int] = None
+    gauge_widening: Optional[bool] = None
+    clearance_profile: Optional[str] = None
+    load_capacity_class: Optional[str] = None
+
+
+class ContinuousWeldedParams(BaseModel):
+    """Bezstyková kolej (BK)."""
+    is_new: Optional[bool] = None
+    rail_strip_length_m: Optional[int] = None
+    temperature_regulation: Optional[bool] = None
+    sleeper_anchor_required: Optional[bool] = None
+    standard_ref: Optional[str] = None
+    dynamic_stabilizer_required: Optional[bool] = None
+
+
+class TrackCircuitParams(BaseModel):
+    """Kolejové obvody a LIS."""
+    location_km: Optional[float] = None
+    lis_type: Optional[str] = None
+    lis_length_m: Optional[float] = None
+    lis_holes: Optional[int] = None
+    lis_offset_mm: Optional[int] = None
+    transformer_relocation: Optional[bool] = None
+    insulation_system: Optional[str] = None
+    regulation_required: Optional[bool] = None
+
+
+class TrackSignParams(BaseModel):
+    """Výstroj trati — návěstidla."""
+    sign_type: Optional[str] = None
+    sign_code: Optional[str] = None
+    action: Optional[str] = None
+    location_km: Optional[float] = None
+    note: Optional[str] = None
+
+
+class TrackAdjustmentZone(BaseModel):
+    """Úsek se směrovou/výškovou úpravou GPK."""
+    start_km: Optional[float] = None
+    end_km: Optional[float] = None
+    length_m: Optional[float] = None
+    action: Optional[str] = None
+
+
+class SalvagedMaterialParams(BaseModel):
+    """Vyzískaný materiál z rekonstrukce."""
+    rails_type: Optional[str] = None
+    sleepers_type: Optional[str] = None
+    ballast_volume_t: Optional[float] = None
+    deposit_location: Optional[str] = None
+    recycling_threshold_t: Optional[float] = None
+    rubber_pads_disposal: Optional[bool] = None
+
+
+class ZelSvrsekParams(BaseModel):
+    """Železniční svršek — kolejový rošt, GPK, výstroj trati (SO 111-xx)."""
+
+    section_id: Optional[str] = None
+    so_id: Optional[str] = None
+    pd_level: Optional[str] = None
+    project_name: Optional[str] = None
+    investor: Optional[str] = None
+    track_section: Optional[str] = None
+    track_number_jrz: Optional[str] = None
+    track_number_prohlaseni: Optional[str] = None
+    track_category: Optional[str] = None
+    region: Optional[str] = None
+
+    # ── Traťové parametry ──
+    max_speed_kmh: Optional[int] = None
+    load_order: Optional[int] = None
+    axle_load_t: Optional[float] = None
+    axle_load_shunting_t: Optional[float] = None
+    load_class: Optional[str] = None
+    tsi_inf_passenger: Optional[str] = None
+    tsi_inf_freight: Optional[str] = None
+    track_position: Optional[str] = None
+    traction_system: Optional[str] = None
+    safety_device: Optional[str] = None
+    track_count: Optional[int] = None
+
+    # ── Rozsah úprav ──
+    start_km: Optional[float] = None
+    end_km: Optional[float] = None
+    total_length_m: Optional[float] = None
+    reconstruction_start_km: Optional[float] = None
+    reconstruction_end_km: Optional[float] = None
+    reconstruction_length_m: Optional[float] = None
+    adjustment_zones: List[TrackAdjustmentZone] = Field(default_factory=list)
+
+    # ── GPK ──
+    gpk: Optional[GPKParams] = None
+
+    # ── Kolejový rošt ──
+    track_frame: Optional[TrackFrameParams] = None
+
+    # ── Bezstyková kolej ──
+    continuous_welded: Optional[ContinuousWeldedParams] = None
+
+    # ── Kolejové obvody a LIS ──
+    track_circuits: List[TrackCircuitParams] = Field(default_factory=list)
+
+    # ── Drážní stezky ──
+    walkway_width_m: Optional[float] = None
+    walkway_renewal: Optional[bool] = None
+
+    # ── Výstroj trati ──
+    track_equipment: List[TrackSignParams] = Field(default_factory=list)
+
+    # ── Vyzískaný materiál ──
+    salvaged_material: Optional[SalvagedMaterialParams] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 15. ZelSpodekParams — Železniční spodek (SO 112-xx) — v4.3
+# =============================================================================
+
+class KPPLayer(BaseModel):
+    """Vrstva KPP."""
+    layer_type: Optional[str] = None
+    material: Optional[str] = None
+    compaction_id: Optional[float] = None
+    thickness_mm: Optional[int] = None
+    thickness_variable: Optional[bool] = None
+    thickness_mm_min: Optional[int] = None
+    thickness_mm_max: Optional[int] = None
+    note: Optional[str] = None
+
+
+class KPPZone(BaseModel):
+    """Konstrukční vrstva pražcového podloží — jedna zóna."""
+    zone_type: Optional[str] = None
+    start_km: Optional[float] = None
+    end_km: Optional[float] = None
+    location: Optional[str] = None
+    e_min_zp_mpa: Optional[float] = None
+    e_min_pl_mpa: Optional[float] = None
+    layers: List[KPPLayer] = Field(default_factory=list)
+
+
+class SubgradeParams(BaseModel):
+    """Zemní pláň."""
+    transverse_slope_pct: Optional[float] = None
+    slope_direction: Optional[str] = None
+    embankment_height_m_range: Optional[str] = None
+    excavation_depth_mm: Optional[int] = None
+    required_e_min_mpa: Optional[float] = None
+
+
+class FormationLevelParams(BaseModel):
+    """Pláň tělesa železničního spodku."""
+    width_min_m: Optional[float] = None
+    walkway_width_m: Optional[float] = None
+    transverse_slope_pct: Optional[float] = None
+    required_e_min_mpa: Optional[float] = None
+    geotechnical_supervision: Optional[bool] = None
+
+
+class RailDrainageParams(BaseModel):
+    """Odvodnění železničního tělesa."""
+    transverse_slope_pct: Optional[float] = None
+    drainage_ribs_spacing_m: Optional[float] = None
+    drainage_rib_material: Optional[str] = None
+    drainage_rib_width_m: Optional[float] = None
+    bridge_drainage_slope_pct: Optional[float] = None
+    bridge_drainage_type: Optional[str] = None
+
+
+class WideningZone(BaseModel):
+    """Jedna zóna rozšíření."""
+    side: Optional[str] = None
+    start_km: Optional[float] = None
+    end_km: Optional[float] = None
+    length_m: Optional[float] = None
+    steps: Optional[int] = None
+
+
+class EmbankmentWideningParams(BaseModel):
+    """Rozšíření drážního tělesa přisypávkou."""
+    widening_zones: List[WideningZone] = Field(default_factory=list)
+    slope_max: Optional[str] = None
+    fill_material: Optional[str] = None
+    step_height_max_mm: Optional[int] = None
+    step_slope_pct: Optional[float] = None
+
+
+class WallZone(BaseModel):
+    """Zóna zídky (prefabrikované U3 nebo gabionové)."""
+    side: Optional[str] = None
+    start_km: Optional[float] = None
+    end_km: Optional[float] = None
+    length_m: Optional[float] = None
+    location_description: Optional[str] = None
+    distance_from_axis_m: Optional[float] = None
+    foundation_concrete: Optional[str] = None
+    foundation_thickness_mm: Optional[int] = None
+    foundation_base_material: Optional[str] = None
+    foundation_base_thickness_mm: Optional[int] = None
+    element_length_m: Optional[float] = None
+    element_width_m: Optional[float] = None
+    element_height_m: Optional[float] = None
+    drainage_holes: Optional[bool] = None
+    drainage_hole_diameter_m: Optional[float] = None
+    backfill_material: Optional[str] = None
+    coating: Optional[str] = None
+    wall_standard: Optional[str] = None
+
+
+class SlopeStabilityParams(BaseModel):
+    """Posouzení stability svahu."""
+    method: Optional[str] = None
+    standard: Optional[str] = None
+    design_situation: Optional[str] = None
+    gamma_g_unfavorable: Optional[float] = None
+    gamma_q: Optional[float] = None
+    gamma_rs: Optional[float] = None
+    utilization_pct: Optional[float] = None
+    result: Optional[str] = None
+    critical_km: Optional[float] = None
+    critical_side: Optional[str] = None
+    phi_ef_degrees: Optional[float] = None
+
+
+class ZelSpodekParams(BaseModel):
+    """Železniční spodek — KPP, ZKPP, zemní pláň, zídky (SO 112-xx)."""
+
+    section_id: Optional[str] = None
+    so_id: Optional[str] = None
+    pd_level: Optional[str] = None
+
+    # ── Moduly přetvárnosti — požadované ──
+    e_min_zp_mpa: Optional[float] = None
+    e_min_pl_mpa: Optional[float] = None
+
+    # ── Typy KPP ──
+    kpp_zones: List[KPPZone] = Field(default_factory=list)
+
+    # ── Zemní pláň ──
+    subgrade: Optional[SubgradeParams] = None
+
+    # ── Pláň tělesa ──
+    formation_level: Optional[FormationLevelParams] = None
+
+    # ── Odvodnění ──
+    drainage: Optional[RailDrainageParams] = None
+
+    # ── Rozšíření drážního tělesa ──
+    embankment_widening: Optional[EmbankmentWideningParams] = None
+
+    # ── Zídky ──
+    precast_walls_u3: List[WallZone] = Field(default_factory=list)
+    gabion_walls: List[WallZone] = Field(default_factory=list)
+
+    # ── Stabilita svahu ──
+    slope_stability: Optional[SlopeStabilityParams] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 16. IGPParams — Inženýrskogeologický průzkum — v4.3
+# =============================================================================
+
+class IGPLayer(BaseModel):
+    """Vrstva v kopané sondě."""
+    depth_from_m: Optional[float] = None
+    depth_to_m: Optional[float] = None
+    description: Optional[str] = None
+    sz_s4_class: Optional[str] = None
+    iso_14688_class: Optional[str] = None
+
+
+class IGPProbe(BaseModel):
+    """Kopaná sonda z IGP průzkumu."""
+    probe_id: Optional[str] = None
+    location_km: Optional[float] = None
+    side: Optional[str] = None
+    date: Optional[str] = None
+    depth_from_tk_m: Optional[float] = None
+    dimensions: Optional[str] = None
+    ballast_total_cm: Optional[int] = None
+    ballast_contaminated_cm: Optional[int] = None
+    subgrade_soil_class: Optional[str] = None
+    subgrade_soil_name: Optional[str] = None
+    frost_susceptibility: Optional[str] = None
+    water_regime: Optional[str] = None
+    groundwater: Optional[str] = None
+    relative_density_id_min: Optional[float] = None
+    layers: List[IGPLayer] = Field(default_factory=list)
+
+
+class SZZResult(BaseModel):
+    """Statická zatěžovací zkouška (SZZ)."""
+    test_id: Optional[int] = None
+    location_km: Optional[float] = None
+    depth_from_tk_m: Optional[float] = None
+    plate_diameter_mm: Optional[int] = None
+    device: Optional[str] = None
+    e1_mpa: Optional[float] = None
+    e2_mpa: Optional[float] = None
+    e2_e1_ratio: Optional[float] = None
+    correction_factor_z: Optional[float] = None
+    er_mpa: Optional[float] = None
+    counterweight: Optional[str] = None
+
+
+class GeologyParams(BaseModel):
+    """Geologická stavba lokality."""
+    geomorphologic_unit: Optional[str] = None
+    bedrock_type: Optional[str] = None
+    bedrock_depth_m: Optional[float] = None
+    quaternary_cover_m: Optional[float] = None
+    quaternary_description: Optional[str] = None
+    embankment_material: Optional[str] = None
+    embankment_height_m: Optional[float] = None
+
+
+class HydrogeologyParams(BaseModel):
+    """Hydrogeologické poměry."""
+    groundwater_depth_m: Optional[float] = None
+    groundwater_type: Optional[str] = None
+    catchment_area: Optional[str] = None
+    frost_depth_m: Optional[float] = None
+    frost_index_imn: Optional[float] = None
+    elevation_band_m: Optional[str] = None
+
+
+class LabResult(BaseModel):
+    """Laboratorní výsledek vzorku zeminy."""
+    sample_id: Optional[str] = None
+    probe_id: Optional[str] = None
+    depth_m: Optional[str] = None
+    soil_class: Optional[str] = None
+    soil_name: Optional[str] = None
+    filtration_coeff_ms: Optional[float] = None
+    frost_susceptibility: Optional[str] = None
+    capillary_rise_m: Optional[float] = None
+    permeability_class: Optional[str] = None
+
+
+class KPPDesignResult(BaseModel):
+    """Výsledek návrhu KPP nebo ZKPP."""
+    zone_type: Optional[str] = None
+    e_subgrade_mpa: Optional[float] = None
+    e_equivalent_zp_mpa: Optional[float] = None
+    e_equivalent_pl_mpa: Optional[float] = None
+    e_required_zp_mpa: Optional[float] = None
+    e_required_pl_mpa: Optional[float] = None
+    frost_check_passes: Optional[bool] = None
+    frost_depth_m: Optional[float] = None
+    final_layers: List[KPPLayer] = Field(default_factory=list)
+
+
+class IGPParams(BaseModel):
+    """Inženýrskogeologický průzkum pražcového podloží."""
+
+    project_name: Optional[str] = None
+    contractor: Optional[str] = None
+    client: Optional[str] = None
+    report_date: Optional[str] = None
+    location_municipality: Optional[str] = None
+    cadastral_area_code: Optional[int] = None
+    elevation_range_m: Optional[str] = None
+
+    # ── Parametry trati ──
+    track_vmax_kmh: Optional[int] = None
+    track_load_class: Optional[str] = None
+    operational_load_mhrt_year: Optional[float] = None
+
+    # ── Požadované moduly ──
+    required_e_min_zp_mpa: Optional[float] = None
+    required_e_min_pl_pp_mpa: Optional[float] = None
+    required_e_min_pl_zkpp_mpa: Optional[float] = None
+
+    # ── Sondy ──
+    probes: List[IGPProbe] = Field(default_factory=list)
+
+    # ── SZZ ──
+    load_tests: List[SZZResult] = Field(default_factory=list)
+
+    # ── Geologie ──
+    geology: Optional[GeologyParams] = None
+
+    # ── Hydrogeologie ──
+    hydrogeology: Optional[HydrogeologyParams] = None
+
+    # ── Laboratorní výsledky ──
+    lab_results: List[LabResult] = Field(default_factory=list)
+
+    # ── Návrh KPP/ZKPP ──
+    kpp_design: Optional[KPPDesignResult] = None
+    zkpp_design: Optional[KPPDesignResult] = None
+
+    # ── Závěr ──
+    conclusion_summary: Optional[str] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
 # PARAMS KEY → CLASS MAPPING
 # =============================================================================
 
@@ -1434,5 +1889,12 @@ D14_PARAMS_CLASSES = {
     "mar_params": MaRParams,
 }
 
-# Combined mapping (SO + D.1.4)
-ALL_PARAMS_CLASSES = {**SO_PARAMS_CLASSES, **D14_PARAMS_CLASSES}
+# Railway document params — keyed by document type detector
+RAILWAY_PARAMS_CLASSES = {
+    "zel_svrsek_params": ZelSvrsekParams,
+    "zel_spodek_params": ZelSpodekParams,
+    "igp_params": IGPParams,
+}
+
+# Combined mapping (SO + D.1.4 + Railway)
+ALL_PARAMS_CLASSES = {**SO_PARAMS_CLASSES, **D14_PARAMS_CLASSES, **RAILWAY_PARAMS_CLASSES}

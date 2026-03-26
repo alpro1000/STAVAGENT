@@ -48,6 +48,7 @@ from app.models.so_type_schemas import (
     get_so_category_label,
     SO_PARAMS_CLASSES,
     D14_PARAMS_CLASSES,
+    ALL_PARAMS_CLASSES,
 )
 from app.services.d14_profession_detector import (
     detect_d14_profession,
@@ -436,7 +437,7 @@ def merge_so_group(
     # v3.2: Build D.1.4 profession params
     d14_built = None
     if d14_data and d14_profession_key:
-        params_cls = D14_PARAMS_CLASSES.get(d14_profession_key)
+        params_cls = ALL_PARAMS_CLASSES.get(d14_profession_key)
         if params_cls:
             try:
                 d14_built = params_cls(**d14_data).model_dump(exclude_none=True)

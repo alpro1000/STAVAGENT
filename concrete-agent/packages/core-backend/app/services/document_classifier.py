@@ -593,6 +593,22 @@ CONTENT_TYPE_MARKERS = {
         "měření a regulace", "řídicí systém",
         "frekvenční měnič", "BMS",
     ],
+    # Railway (Správa železnic)
+    "zel_svrsek_params": [
+        "kolejový rošt", "kolejnice 49 E1", "ocelový pražec",
+        "bezstyková kolej", "SŽDC S3", "SŽ S3",
+        "geometrická poloha koleje", "drážní stezky",
+    ],
+    "zel_spodek_params": [
+        "konstrukce pražcového podloží", "ZKPP", "KPP",
+        "zemní pláň", "prefabrikovaná zídka",
+        "SŽ S4", "modul přetvárnosti",
+    ],
+    "igp_params": [
+        "inženýrskogeologický průzkum", "kopané sondy",
+        "statická zatěžovací zkouška", "SZZ",
+        "redukovaný modul", "drážní štěrk",
+    ],
 }
 
 

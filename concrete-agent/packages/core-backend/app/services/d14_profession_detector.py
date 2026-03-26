@@ -63,6 +63,22 @@ PROFESSION_FILENAME_MARKERS: Dict[str, List[str]] = {
     "mar_params": [
         "měření a regulac", "mereni a regulac", "mar",
     ],
+    # Railway (Správa železnic)
+    "zel_svrsek_params": [
+        "svrsek", "zelsvrsek", "zel_svrsek", "svršek",
+        "sk1", "so111", "kolejovy_rost", "kolej",
+        "zeleznicni_svrsek",
+    ],
+    "zel_spodek_params": [
+        "spodek", "zelspodek", "zel_spodek", "spodok",
+        "so112", "kpp", "zkpp", "prazcove_podlozi",
+        "zeleznicni_spodek",
+    ],
+    "igp_params": [
+        "igp", "inzenyrsko_geologicky", "pruzkum_prazcoveho",
+        "global_geo", "geotechnika", "geotechnicky",
+        "sonda", "szz", "statická_zatěžovací", "staticka_zatezovaci",
+    ],
 }
 
 
@@ -116,6 +132,29 @@ PROFESSION_CONTENT_MARKERS: Dict[str, List[str]] = {
         "měření a regulace", "řídicí systém", "regulátor",
         "čidlo teploty", "frekvenční měnič", "servopohon",
         "sběrnice", "vizualizace", "BMS",
+    ],
+    # Railway (Správa železnic)
+    "zel_svrsek_params": [
+        "kolejový rošt", "kolejnice", "pražce", "pražcové kotvy",
+        "kolejové lože", "bezstyková kolej", "izolované styky",
+        "drážní stezky", "geometrická poloha koleje", "GPK",
+        "SŽDC S3", "SŽ S3/2", "ČSN 73 6360",
+        "Správa železnic", "SK 113", "SO 111",
+    ],
+    "zel_spodek_params": [
+        "konstrukce pražcového podloží", "KPP", "ZKPP",
+        "konstrukční vrstva", "zemní pláň",
+        "pláň tělesa železničního spodku",
+        "štěrkodrť", "ŠD 0/32", "ŠD 0/63",
+        "modul přetvárnosti", "Emin,ZP",
+        "SŽ S4", "VL Ž 2.2",
+    ],
+    "igp_params": [
+        "inženýrskogeologický průzkum", "IGP", "kopané sondy",
+        "statická zatěžovací zkouška", "SZZ",
+        "modul přetvárnosti E2,IGP", "redukovaný modul Er",
+        "drážní štěrk", "třída zeminy", "namrzavost",
+        "ČSN 73 6133", "ČSN EN ISO 14688",
     ],
 }
 
@@ -310,6 +349,9 @@ def get_profession_label(params_key: str) -> str:
         "zti_params": "Zdravotechnické instalace",
         "ut_params": "Ústřední vytápění",
         "mar_params": "Měření a regulace",
+        "zel_svrsek_params": "Železniční svršek",
+        "zel_spodek_params": "Železniční spodek",
+        "igp_params": "Inženýrskogeologický průzkum",
         "unknown": "Neznámá profese",
     }
     return labels.get(params_key, "TZB profese")
