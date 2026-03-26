@@ -11,7 +11,7 @@
  */
 
 import type { CSSProperties, ReactNode } from 'react';
-import type { MergedSO, BridgeSOParams, GTPExtraction } from '../../types/passport';
+import type { MergedSO, BridgeSOParams, GTPExtraction, TechnicalExtraction } from '../../types/passport';
 
 interface SOCardProps {
   so: MergedSO;
@@ -69,6 +69,28 @@ const GTP_LABELS: Record<string, string> = {
   stray_current_class: 'Bludné proudy',
   foundation_recommendation: 'Doporučení zakládání',
   pile_depth_estimate: 'Odhad hloubky pilot',
+};
+
+const TECHNICAL_LABELS: Record<string, string> = {
+  project_name: 'Název projektu',
+  structure_type: 'Typ konstrukce',
+  structure_subtype: 'Podtyp',
+  total_length_m: 'Celková délka (m)',
+  width_m: 'Šířka (m)',
+  height_m: 'Výška (m)',
+  area_m2: 'Plocha (m²)',
+  volume_m3: 'Objem (m³)',
+  span_count: 'Počet polí',
+  span_lengths_m: 'Rozpětí polí (m)',
+  concrete_grade: 'Třída betonu',
+  reinforcement_grade: 'Třída výztuže',
+  foundation_type: 'Typ založení',
+  fabrication_method: 'Metoda výroby',
+  load_class: 'Třída zatížení',
+  design_life_years: 'Návrhová životnost (let)',
+  applicable_standards: 'Normy',
+  construction_duration_months: 'Doba výstavby (měsíce)',
+  special_conditions: 'Zvláštní podmínky',
 };
 
 const STRUCTURE_TYPE_LABELS: Record<string, string> = {
@@ -195,6 +217,13 @@ export default function SOCard({ so }: SOCardProps) {
           )}
         </div>
       </div>
+
+      {/* Technical data section — universal for ALL structure types */}
+      {so.technical && (
+        <Section title="Technické údaje">
+          {renderFieldGrid(so.technical as any, TECHNICAL_LABELS, so.sources)}
+        </Section>
+      )}
 
       {/* Bridge params section — ONLY if bridge_params exists */}
       {so.bridge_params && (

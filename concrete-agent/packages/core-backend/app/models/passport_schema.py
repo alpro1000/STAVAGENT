@@ -528,6 +528,7 @@ class MergedSO(BaseModel):
     structure_type: Optional[StructureType] = None
     bridge_params: Optional[BridgeSOParams] = None
     gtp: Optional[GTPExtraction] = None
+    technical: Optional["TechnicalExtraction"] = None
     tender: Optional["TenderExtraction"] = None
     contradictions: List[ContradictionRecord] = Field(default_factory=list)
     sources: Dict[str, str] = Field(

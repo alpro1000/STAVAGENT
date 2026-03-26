@@ -32,6 +32,7 @@ from decimal import Decimal
 from app.models.passport_schema import (
     BridgeSOParams,
     GTPExtraction,
+    TechnicalExtraction,
     TenderExtraction,
     ContradictionRecord,
     MergedSO,
@@ -227,6 +228,9 @@ def merge_so_group(
         MergedSO with merged data, contradictions, and source tracking.
     """
     bridge_extractions: List[Tuple[str, int, Dict[str, Any]]] = []
+    technical_data: Optional[Dict[str, Any]] = None
+    technical_source: Optional[str] = None
+    technical_priority: int = 99
     gtp_data: Optional[Dict[str, Any]] = None
     gtp_source: Optional[str] = None
     tender_data: Optional[Dict[str, Any]] = None
@@ -263,6 +267,17 @@ def merge_so_group(
                     bridge_fields[k] = tech[k]
             if bridge_fields:
                 bridge_extractions.append((filename, priority, bridge_fields))
+
+            # Collect technical data — merge by priority (lower wins)
+            if technical_data is None or priority < technical_priority:
+                technical_data = tech
+                technical_source = filename
+                technical_priority = priority
+            elif priority == technical_priority and technical_data:
+                # Same priority: merge fields (existing wins for non-null)
+                for k, v in tech.items():
+                    if v is not None and (k not in technical_data or technical_data[k] is None):
+                        technical_data[k] = v
 
         # GTP: take highest priority
         gtp = fr.get("gtp")
@@ -316,10 +331,29 @@ def merge_so_group(
                     DocCategory.PD, DocCategory.ZP]
     }
 
+    # Build TechnicalExtraction for universal data
+    merged_technical = None
+    structure_type = None
+    so_name = ""
+    if technical_data:
+        try:
+            merged_technical = TechnicalExtraction(**technical_data)
+            sources["technical"] = technical_source
+            # Derive structure_type and so_name from technical data
+            if technical_data.get("structure_type"):
+                structure_type = technical_data["structure_type"]
+            if technical_data.get("project_name"):
+                so_name = technical_data["project_name"]
+        except Exception as e:
+            logger.warning(f"Failed to build TechnicalExtraction for {so_code}: {e}")
+
     merged = MergedSO(
         so_code=so_code,
+        so_name=so_name,
+        structure_type=structure_type,
         bridge_params=merged_bridge,
         gtp=merged_gtp,
+        technical=merged_technical,
         tender=merged_tender,
         contradictions=all_contradictions,
         sources=sources,

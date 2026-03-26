@@ -239,12 +239,24 @@ export type DocSubType =
 export interface TechnicalExtraction {
   project_name?: string;
   structure_type?: string;
-  dimensions?: Record<string, string | number>;
-  spans?: string[];
-  materials?: string[];
-  standards?: string[];
-  construction_method?: string;
+  structure_subtype?: string;
+  total_length_m?: number;
+  width_m?: number;
+  height_m?: number;
+  area_m2?: number;
+  volume_m3?: number;
+  span_count?: number;
+  span_lengths_m?: number[];
+  concrete_grade?: string;
+  reinforcement_grade?: string;
   foundation_type?: string;
+  fabrication_method?: string;
+  load_class?: string;
+  design_life_years?: number;
+  applicable_standards?: string[];
+  construction_duration_months?: number;
+  special_conditions?: string[];
+  source_pages?: Record<string, number>;
 }
 
 export interface BillOfQuantitiesExtraction {
@@ -587,6 +599,7 @@ export interface MergedSO {
   structure_type?: string;
   bridge_params?: BridgeSOParams;
   gtp?: GTPExtraction;
+  technical?: TechnicalExtraction;
   tender?: TenderExtraction;
   contradictions?: ContradictionRecord[];
   sources?: Record<string, string>;
