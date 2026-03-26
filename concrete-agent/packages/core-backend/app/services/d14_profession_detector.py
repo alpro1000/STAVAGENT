@@ -46,7 +46,8 @@ PROFESSION_FILENAME_MARKERS: Dict[str, List[str]] = {
         "kontrola vstupu", "strukturovaná kabeláž", "strukturovana kabelaz",
     ],
     "vzt_params": [
-        "vzduchotechni", "vzt", "klimatizac",
+        "vzduchotechni", "vzt", "klimatizac", "vetrani", "větrání",
+        "rekuperac", "nucené_větrání", "vzduchotech",
     ],
     "zti_params": [
         "zdravotechni", "zti", "zdroj", "vodovod", "kanalizac",

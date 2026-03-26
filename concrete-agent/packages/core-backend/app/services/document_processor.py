@@ -1153,40 +1153,67 @@ f) AVT (audiovizuální technika):
 KRITICKÉ: Extrahuj PZTS backup kalkulaci — klíčové pro rozpočet.
 Vrať POUZE validní JSON matching SlaboproudParams."""
 
-    VZT_PROMPT = """Parsuj český dokument vzduchotechniky a klimatizace (D.1.4.xx).
+    VZT_PROMPT = """Parsuj český dokument vzduchotechniky a klimatizace (D.1.4.xx NEBO D.2.x.x).
 Profese se NEURČUJE z čísla podsekce! Profese je detekována z OBSAHU.
 
 DOKUMENT:
 {text}
 
-Extrahuj v pořadí priority:
-1. STRATEGIE VĚTRÁNÍ: přirozené / nucené / hybridní / klimatizace
-   - Místnosti s přirozeným větráním (seznam)
-   - Místnosti s nuceným větráním (seznam)
+KROK 1 — SPOČÍTEJ VZT ZAŘÍZENÍ:
+Najdi všechny hlavičky "Zařízení č. X – [název]".
+Pro každé urči typ: AHU | exhaust_fan | split_cooling | preparation_only
+Pokud dokument obsahuje pouze digestoř + ventilátory koupelny → použij simple formát.
 
-2. DIGESTOŘ (pokud je):
-   - Typ: odtahová / cirkulační
-   - Výstup potrubí: fasáda / střecha
-   - Průměr potrubí mm, průtok m³/h
+KROK 2 — NÁVRHOVÉ PARAMETRY (pokud jsou):
+- Místo, nadmořská výška, léto/zima venkovní °C, entalpie kJ/kg
+- Min intenzita větrání [x/h], odtahy záchod/umyvadlo/pisoár [m³/h]
+- Pokrývá tepelné ztráty? Reguluje vlhkost?
+- Napájení (230/400 V, 50 Hz)
+- Seznam norem/předpisů
 
-3. VENTILÁTORY KOUPELNY (pokud jsou):
-   - Typ ventilátoru, způsob ovládání (spínač/čidlo/timer)
-   - Výstup potrubí, DN, místnosti, počet ks
+KROK 3 — PRO KAŽDÉ AHU ZAŘÍZENÍ:
+- Device ID, obsluhované prostory, celkový průtok m³/h
+- Filtrace: třída (M5/F7) + ePM rating + pozice
+- Rekuperace: typ (deskový/rotační) + účinnost %
+- Zvlhčovač: typ, kapacita kg/hr, přívod vody ano/ne
+- VAV: napětí servomotoru, vstupy (CO2/vlhkost)
+- Potrubí: materiál, třída těsnosti (A/B/C/D)
+- Izolace: interiér hlavní/odbočky [mm] + materiál; exteriér [mm] + materiál; požární [min]
+- Tlumiče hluku: počet, pozice, délka mm
+- Sání/výfuk: nad střechu, typ zakončení, min výška mm
+- is_preparation_only: true pokud jen příprava (dodávka nájemce)
 
-4. NUCENÉ VĚTRÁNÍ / VZT JEDNOTKA (pokud je):
-   - AHU typ, značka, umístění
-   - Přívod/odvod/čerstvý vzduch m³/h
-   - Rekuperace: typ, účinnost %
-   - Filtrace, potrubí materiál+trasa
+KROK 4 — PRO KAŽDÝ ODTAHOVÝ VENTILÁTOR:
+- Průtok m³/h, obsluhovaný prostor, typ potrubí
+- Ovládání (termostat/tlačítko/MaR)
+- Výfuk umístění (střecha/fasáda)
 
-5. KLIMATIZACE (pokud je):
-   - Typ (split/VRV/VRF/fan-coil), značka, chladivo
-   - Chladící/topný výkon kW
+KROK 5 — PRO KAŽDÉ SPLIT CHLAZENÍ:
+- Obsluhovaný prostor, typ (split/VRV)
+- Vnitřní jednotky: typ+počet, venkovní: počet+umístění
+- Chladivo + GWP
+- Komunikační protokol (KNX/Modbus)
+- Redundance: ano/ne
+- Pouze příprava: ano/ne
 
-6. GARÁŽ: typ větrání, CO čidlo ano/ne
+KROK 6 — POŽÁRNÍ KLAPKY (souhrnně):
+- Požární odolnost (EI 60/EI 90)
+- Napětí servopohonu + fail-safe (uzavřeno/otevřeno bez napětí)
+- Limitní spínače, monitoring (EPS/MaR)
 
-KRITICKÉ: Mnoho RD má POUZE přirozené větrání + digestoř + ventilátory koupelny.
-NEGENERUJ VZT jednotku pokud není výslovně zmíněna!
+KROK 7 — MEZIPROFESE (pokud je sekce "Profese X zajistí..."):
+Extrahuj VŠECHNY položky seskupené dle profese:
+silnoproud, ÚT/CHL, EPS, MaR, ZTI, ASŘ → do interprofessional
+
+PRO JEDNODUCHÉ OBJEKTY (RD, bytový dům bez VZT jednotky):
+- Použij simple pole: natural_ventilation, kitchen_hood, bathroom_fans, garage_ventilation
+- NEGENERUJ devices[] pokud jsou jen ventilátory a digestoř!
+
+KRITICKÉ:
+1. Dokument s 10 zařízeními = JEDEN VZTParams, NE 10 oddělených.
+2. "Příprava" (dodávka nájemce) ≠ instalace → is_preparation_only=true.
+3. GWP chladiva MUSÍ být extrahováno (environmentální reporting).
+4. Číslování zařízení ve výstupu MUSÍ odpovídat dokumentu.
 
 Vrať POUZE validní JSON matching VZTParams."""
 

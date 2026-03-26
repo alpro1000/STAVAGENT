@@ -744,8 +744,10 @@ class SlaboproudParams(BaseModel):
 
 
 # =============================================================================
-# 10. VZTParams — Vzduchotechnika a klimatizace (D.1.4.xx) — v4.1
+# 10. VZTParams — Vzduchotechnika a klimatizace (D.1.4.xx / D.2.x.x) — v4.2
 # =============================================================================
+
+# ── v4.1 simple sub-models (backward compat for RD/bytové domy) ──
 
 class NaturalVentParams(BaseModel):
     """Přirozené větrání — základní údaje."""
@@ -827,8 +829,190 @@ class GarageVentParams(BaseModel):
     note: Optional[str] = None
 
 
+# ── v4.2 complex sub-models (multi-device commercial/infrastructure) ──
+
+class DesignParams(BaseModel):
+    """Klimatické a návrhové parametry místa stavby."""
+    location: Optional[str] = None
+    altitude_m: Optional[int] = None
+    summer_outdoor_temp_c: Optional[float] = None
+    winter_outdoor_temp_c: Optional[float] = None
+    summer_enthalpy_kj_kg: Optional[float] = None
+    min_ventilation_intensity: Optional[float] = None
+    toilet_seat_m3h: Optional[int] = None
+    washbasin_m3h: Optional[int] = None
+    urinal_m3h: Optional[int] = None
+    covers_heat_loss: Optional[bool] = None
+    covers_cooling_load: Optional[bool] = None
+    regulates_humidity: Optional[bool] = None
+
+
+class SiteConditions(BaseModel):
+    """Podmínky prostředí — chemikálie, vzduch."""
+    prevailing_wind: Optional[str] = None
+    hazardous_materials: Optional[bool] = None
+    overpressure_equipment: Optional[bool] = None
+    external_influence_protocol: Optional[bool] = None
+    note: Optional[str] = None
+
+
+class InsulationSpec(BaseModel):
+    """Specifikace tepelné/požární izolace potrubí."""
+    interior_main_mm: Optional[int] = None
+    interior_branch_mm: Optional[int] = None
+    interior_material: Optional[str] = None
+    exterior_mm: Optional[int] = None
+    exterior_material: Optional[str] = None
+    fire_resistance_min: Optional[int] = None
+    fire_insulation_type: Optional[str] = None
+
+
+class FilterSpec(BaseModel):
+    """Filtrační stupeň VZT jednotky (EN 779/ISO 16890)."""
+    stage: int = 1
+    filter_class: Optional[str] = None
+    position: Optional[str] = None
+    epm_class: Optional[str] = None
+
+
+class HumidifierParams(BaseModel):
+    """Parní vyvíječ / zvlhčovač vzduchu."""
+    humidifier_type: Optional[str] = None
+    max_capacity_kg_hr: Optional[float] = None
+    location: Optional[str] = None
+    water_supply_required: Optional[bool] = None
+    condensate_drain_required: Optional[bool] = None
+    power_supply: Optional[str] = None
+
+
+class VAVRegulator(BaseModel):
+    """Regulátor variabilního průtoku vzduchu (VAV)."""
+    location: Optional[str] = None
+    actuator_voltage_v: Optional[int] = None
+    control_inputs: List[str] = Field(default_factory=list)
+    control_logic: Optional[str] = None
+    zone: Optional[str] = None
+
+
+class FireDamperSpec(BaseModel):
+    """Požární klapka."""
+    fire_resistance: Optional[str] = None
+    actuator_voltage_v: Optional[int] = None
+    fail_safe: Optional[str] = None
+    limit_switches: Optional[bool] = None
+    monitoring_by: Optional[str] = None
+    control_by: Optional[str] = None
+    standard: Optional[str] = None
+    quantity: Optional[int] = None
+
+
+class FireGrillSpec(BaseModel):
+    """Požární stěnová mřížka."""
+    fire_resistance: Optional[str] = None
+    control_by: Optional[str] = None
+    quantity: Optional[int] = None
+
+
+class DuctSpec(BaseModel):
+    """Specifikace potrubních rozvodů."""
+    material_rectangular: Optional[str] = None
+    material_circular: Optional[str] = None
+    tightness_class: Optional[str] = None
+    flexible_connection: Optional[str] = None
+    exhaust_termination: Optional[str] = None
+    min_roof_height_mm: Optional[int] = None
+
+
+class SilencerSpec(BaseModel):
+    """Tlumič hluku."""
+    position: Optional[str] = None
+    type: Optional[str] = None
+    length_mm: Optional[int] = None
+    quantity: Optional[int] = None
+    note: Optional[str] = None
+
+
+class InterprofRequirements(BaseModel):
+    """Požadavky na spolupracující profese."""
+    silnoproud: List[str] = Field(default_factory=list)
+    ut_chl: List[str] = Field(default_factory=list)
+    eps: List[str] = Field(default_factory=list)
+    mar: List[str] = Field(default_factory=list)
+    zti: List[str] = Field(default_factory=list)
+    asr: List[str] = Field(default_factory=list)
+    other: Dict[str, List[str]] = Field(default_factory=dict)
+
+
+class AHUDevice(BaseModel):
+    """Modulární VZT jednotka."""
+    device_id: str = ""
+    location: Optional[str] = None
+    target_spaces: List[str] = Field(default_factory=list)
+    flow_m3h: Optional[int] = None
+    supply_flow_m3h: Optional[int] = None
+    exhaust_flow_m3h: Optional[int] = None
+    filters: List[FilterSpec] = Field(default_factory=list)
+    heat_recovery_type: Optional[str] = None
+    heat_recovery_efficiency_pct: Optional[float] = None
+    fan_type: Optional[str] = None
+    water_heater: Optional[bool] = None
+    water_cooler: Optional[bool] = None
+    humidifier: Optional[HumidifierParams] = None
+    duct: Optional[DuctSpec] = None
+    insulation: Optional[InsulationSpec] = None
+    silencers: List[SilencerSpec] = Field(default_factory=list)
+    vav_regulators: Optional[str] = None
+    intake_exhaust_location: Optional[str] = None
+    power_supply: Optional[str] = None
+    external_cooler: Optional[str] = None
+    is_preparation_only: Optional[bool] = None
+    note: Optional[str] = None
+
+
+class ExhaustFanDevice(BaseModel):
+    """Odtahový ventilátor (bez AHU)."""
+    device_id: str = ""
+    fan_type: Optional[str] = None
+    flow_m3h: Optional[int] = None
+    target_space: Optional[str] = None
+    duct_type: Optional[str] = None
+    silencer_length_mm: Optional[int] = None
+    exhaust_location: Optional[str] = None
+    air_makeup: Optional[str] = None
+    control: Optional[str] = None
+    pressure_mode: Optional[str] = None
+    note: Optional[str] = None
+
+
+class SplitCoolingDevice(BaseModel):
+    """Split/multi-split klimatizace."""
+    device_id: str = ""
+    system_type: Optional[str] = None
+    target_space: Optional[str] = None
+    indoor_units: List[Dict[str, Any]] = Field(default_factory=list)
+    outdoor_units: List[Dict[str, Any]] = Field(default_factory=list)
+    refrigerant: Optional[str] = None
+    gwp: Optional[int] = None
+    operation_mode: Optional[str] = None
+    communication_protocol: Optional[str] = None
+    redundancy: Optional[bool] = None
+    controller_type: Optional[str] = None
+    is_preparation_only: Optional[bool] = None
+    note: Optional[str] = None
+
+
+class VZTDeviceUnion(BaseModel):
+    """Unifikovaný obal pro libovolné VZT zařízení."""
+    device_number: int = 0
+    device_type: str = ""
+    label: Optional[str] = None
+    ahu: Optional[AHUDevice] = None
+    fan: Optional[ExhaustFanDevice] = None
+    cooling: Optional[SplitCoolingDevice] = None
+
+
 class VZTUnit(BaseModel):
-    """One VZT unit specification (for commercial/industrial)."""
+    """One VZT unit specification (legacy, for simple commercial)."""
     designation: str = ""
     unit_type: Optional[str] = None
     airflow_m3h: Optional[float] = None
@@ -842,48 +1026,67 @@ class VZTUnit(BaseModel):
 
 
 class VZTParams(BaseModel):
-    """Vzduchotechnika a klimatizace (D.1.4.xx) — v4.1 expanded."""
+    """Vzduchotechnika a klimatizace (D.1.4.xx / D.2.x.x) — v4.2."""
 
     section_id: Optional[str] = None
     pd_level: Optional[str] = None
     building_name: Optional[str] = None
+    building_type: Optional[str] = None
+    project_author: Optional[str] = None
+    authorized_engineer: Optional[str] = None
+    investor: Optional[str] = None
+    date: Optional[str] = None
 
-    # ── Typ větrání ──
+    # ── v4.2: Návrhové parametry ──
+    design_params: Optional[DesignParams] = None
+    site_conditions: Optional[SiteConditions] = None
+    power_supply: Optional[str] = None
+
+    # ── Strategie větrání ──
     ventilation_strategy: Optional[str] = None
 
-    # ── Přirozené větrání ──
+    # ── v4.2: Multi-device (commercial/infrastructure) ──
+    devices: List[VZTDeviceUnion] = Field(default_factory=list)
+    total_supply_m3h: Optional[int] = None
+    total_exhaust_m3h: Optional[int] = None
+    ahu_count: Optional[int] = None
+    split_cooling_count: Optional[int] = None
+    exhaust_fan_count: Optional[int] = None
+
+    # ── v4.2: Protipožární prvky ──
+    fire_dampers: Optional[FireDamperSpec] = None
+    fire_grills: Optional[FireGrillSpec] = None
+    fire_damper_count: Optional[int] = None
+
+    # ── v4.2: Potrubí a izolace (project-wide) ──
+    duct_spec: Optional[DuctSpec] = None
+    insulation_spec: Optional[InsulationSpec] = None
+
+    # ── v4.2: Normy a předpisy ──
+    regulations_used: List[str] = Field(default_factory=list)
+
+    # ── v4.2: Požadavky na profese ──
+    interprofessional: Optional[InterprofRequirements] = None
+
+    # ── v4.1: Simple building (backward compat) ──
     natural_ventilation: Optional[NaturalVentParams] = None
-
-    # ── Nucené větrání ──
     forced_ventilation: Optional[ForcedVentParams] = None
-
-    # ── Klimatizace ──
     air_conditioning: Optional[ACParams] = None
-
-    # ── Speciální prvky ──
     kitchen_hood: Optional[KitchenHoodParams] = None
     bathroom_fans: Optional[BathroomFanParams] = None
     garage_ventilation: Optional[GarageVentParams] = None
 
-    # ── VZT units (for commercial buildings) ──
+    # ── Legacy VZT units ──
     units: List[VZTUnit] = Field(default_factory=list)
-
-    # ── General parameters ──
     total_airflow_supply_m3h: Optional[float] = None
     total_airflow_exhaust_m3h: Optional[float] = None
     total_heating_kw: Optional[float] = None
     total_cooling_kw: Optional[float] = None
-
-    # ── Duct system ──
     duct_material: Optional[str] = None
     duct_insulation: Optional[str] = None
-    fire_dampers: Optional[bool] = None
-
-    # ── Control ──
+    fire_dampers_bool: Optional[bool] = None
     control_system: Optional[str] = None
     bms_integration: Optional[bool] = None
-
-    # ── Design parameters ──
     noise_limit_db: Optional[int] = None
     design_outdoor_temp_winter: Optional[float] = None
     design_outdoor_temp_summer: Optional[float] = None

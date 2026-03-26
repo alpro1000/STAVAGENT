@@ -441,6 +441,121 @@ VZT_PATTERNS = {
 
 
 # =============================================================================
+# D.1.4 / D.2.x VZT v4.2 REGEX — multi-device, split, fire dampers (33 patterns)
+# =============================================================================
+
+VZT_V2_PATTERNS = {
+    # ── Stupeň dokumentace ──
+    "pd_level_pdps": re.compile(
+        r"[Ss]tupeň\s+projektové\s+dokumentace\s*:?\s*(PDPS|DPS|DSP|DÚR|VD-ZDS)"
+    ),
+    "section_id_d2": re.compile(r"(D\.\d+\.\d+\.\d+(?:\.\d+)?)"),
+    # ── Multi-device ──
+    "device_header": re.compile(
+        r"Zařízení\s+č\.\s*(\d+)\s*[–-]\s*(.+?)(?:\n|$)", re.IGNORECASE
+    ),
+    "device_flow": re.compile(
+        r"objemovém?\s+průtoku\s+([\d\s]+)\s*m[³3]/h", re.IGNORECASE
+    ),
+    # ── Filtrace s ePM ──
+    "filter_with_epm": re.compile(
+        r"(M5|F7|G4|H13|H14)\s*\(?(ePM\d+\s+\d+\s*%)\)?", re.IGNORECASE
+    ),
+    # ── Zvlhčování ──
+    "humidifier_type": re.compile(
+        r"(elektrodový|parní|UV|infračervený)\s+vyvíječ\s+páry", re.IGNORECASE
+    ),
+    "humidifier_capacity_kg_hr": re.compile(
+        r"(?:max\.?\s+)?výkon(?:u)?\s+([\d,]+)\s*kg/hr?\s+(?:vodní\s+)?páry", re.IGNORECASE
+    ),
+    # ── VAV ──
+    "vav_actuator_v": re.compile(
+        r"regulátory\s+(?:průtoku\s+)?(?:vzduchu\s+)?(?:budou\s+)?osazeny?\s+servomotorem\s+(\d+)\s*V",
+        re.IGNORECASE,
+    ),
+    # ── Požární klapky ──
+    "fire_damper_ei": re.compile(
+        r"(?:[Pp]ožárn[íi]\s+klapk\w+.*?)?(?:odolností\s+)?(EI\s*\d+)"
+    ),
+    "fire_damper_actuator_v": re.compile(
+        r"[Ss]ervopohon\w*\s*[–-]?\s*(\d+)\s*V.*?bez\s+napětí\s+(uzavřeno|otevřeno)",
+        re.IGNORECASE,
+    ),
+    "fire_damper_standard": re.compile(r"(ČSN\s+EN\s+15423)"),
+    "fire_damper_monitoring": re.compile(
+        r"[Mm]onitorování.*?(?:zajistí\s+profese\s+)?(EPS|MaR)"
+    ),
+    # ── Potrubí ──
+    "duct_rectangular_class": re.compile(
+        r"čtyřhranné\w*\s+potrubí\s+z\s+pozink\w*\s+plechu\s+sk\.\s*([I]+)",
+        re.IGNORECASE,
+    ),
+    "duct_tightness_class": re.compile(
+        r'[Tt]řída\s+těsnosti\s+(?:potrubí\s+)?[„"\'"]?([A-D])["\'""]?'
+    ),
+    "flexible_connection_type": re.compile(
+        r"(ohebným?\s+flexi\s+potrubím?|Al\s+hadicí|flexi\s+potrubím?\s+s\s+tepelnou\s+izolací)",
+        re.IGNORECASE,
+    ),
+    # ── Izolace ──
+    "insulation_interior_main_mm": re.compile(
+        r"(?:páteřní\s+rozvody|přívodní\s+potrubí).*?tl\.\s*(\d+)\s*mm",
+        re.IGNORECASE,
+    ),
+    "insulation_interior_branch_mm": re.compile(
+        r"(?:odbočky|připojení\s+distribučních).*?tl\.\s*(\d+)\s*mm",
+        re.IGNORECASE,
+    ),
+    "insulation_interior_material": re.compile(
+        r"(kaučukov[áé]\s+samolepicí)\s+izolaci?", re.IGNORECASE
+    ),
+    "insulation_exterior_mm": re.compile(
+        r"(?:potrubí\s+v\s+exteriéru|na\s+střeše).*?tl\.\s*(\d+)\s*mm",
+        re.IGNORECASE,
+    ),
+    "insulation_fire_resistance_min": re.compile(
+        r"[Pp]ožární\s+(?:odolnost|izolace).*?(\d+)\s*min"
+    ),
+    # ── Split chlazení ──
+    "split_refrigerant": re.compile(
+        r"(?:chladiv[oa]|refrigerant)\s+(R\d+[A-Z]?)", re.IGNORECASE
+    ),
+    "split_gwp": re.compile(r"GWP\s*=\s*(\d+)"),
+    "split_indoor_count": re.compile(
+        r"(\d+)\s*ks\s+vnitřních\s+(?:podstropních|nástěnných)\s+jednotek",
+        re.IGNORECASE,
+    ),
+    "split_protocol": re.compile(
+        r"komunikaci\s+(?:přes\s+protokol\s+)?(KNX|Modbus|BACnet|LonWorks)",
+        re.IGNORECASE,
+    ),
+    "split_redundancy": re.compile(
+        r"(?:vzájemnou\s+redundanci|záložní\s+provoz)", re.IGNORECASE
+    ),
+    # ── Tlumič hluku ──
+    "silencer_count": re.compile(
+        r"(\d+)\s*ks\s+tlumičů?\s+hluku", re.IGNORECASE
+    ),
+    "silencer_length_mm": re.compile(
+        r"tlumič\s+hluku\s+(?:o\s+délce\s+)?(\d+)\s*mm", re.IGNORECASE
+    ),
+    # ── Výfuk/sání ──
+    "roof_outlet_height_mm": re.compile(
+        r"(?:min\.?\s+)?(\d+)\s*mm\s+nad\s+střechu", re.IGNORECASE
+    ),
+    # ── Kondenzát ──
+    "condensate_drain": re.compile(r"odvod\s+kondenzátu", re.IGNORECASE),
+    # ── Energetika ──
+    "power_grid": re.compile(
+        r"[Rr]ozvodná\s+soustava\s+([\d/]+\s*V,?\s*\d+\s*Hz)"
+    ),
+    "eps_disconnect": re.compile(
+        r"odpojení\s+(?:všech\s+)?VZT\s+zařízení.*?EPS", re.IGNORECASE
+    ),
+}
+
+
+# =============================================================================
 # D.1.4 ZTI REGEX — v4.1 (26 patterns)
 # =============================================================================
 

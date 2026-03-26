@@ -569,7 +569,11 @@ CONTENT_TYPE_MARKERS = {
         "vzduchotechnické zařízení", "klimatizac",
         "rekuperac", "zpětné získávání tepla",
         "nuceného větrání", "digestoř", "fan-coil",
-        "ČSN EN 13779",
+        "vzduchotechnická jednotka", "objemový průtok",
+        "rekuperační výměník", "parní vyvíječ",
+        "variabilní průtok vzduchu", "požární klapka EI",
+        "split systém", "zařízení č.",
+        "ČSN EN 13779", "ČSN 12 7010", "ČSN EN 15423",
     ],
     "zti_params": [
         "zdravotechnické instalace", "vnitřní vodovod",
