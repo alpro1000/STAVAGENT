@@ -483,6 +483,81 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         logger.error("All LLM providers failed")
         return None
 
+    async def call_llm_for_task(
+        self, prompt: str, task_type: str = "extract"
+    ) -> Optional[Dict[str, Any]]:
+        """
+        v3.1.1: Task-aware LLM call using provider_router.
+
+        Uses provider_router to pick the ideal provider for the task,
+        then falls back to the standard chain if it fails.
+
+        Args:
+            prompt: The prompt to send
+            task_type: One of "classify", "extract", "contradiction",
+                       "verify", "summarize", "heavy"
+        """
+        try:
+            from app.services.provider_router import TaskType, get_task_provider
+
+            task_map = {
+                "classify": TaskType.CLASSIFY,
+                "extract": TaskType.EXTRACT,
+                "contradiction": TaskType.CONTRADICTION,
+                "verify": TaskType.VERIFY_UNKNOWN,
+                "summarize": TaskType.SUMMARIZE,
+                "heavy": TaskType.HEAVY_ANALYSIS,
+            }
+            task = task_map.get(task_type, TaskType.EXTRACT)
+            provider, model = get_task_provider(task)
+
+            # Map provider_router names to internal provider names
+            router_to_internal = {
+                "vertex-ai-gemini": "Vertex Gemini",
+                "gemini": "Gemini",
+                "claude": "Claude Sonnet" if "sonnet" in model else "Claude Haiku",
+                "perplexity": "Perplexity",
+                "openai": "OpenAI",
+            }
+
+            preferred = router_to_internal.get(provider)
+            if preferred:
+                logger.info(f"Task-based routing: {task_type} → {preferred} ({model})")
+
+                # Try the routed provider first
+                result = await self._try_provider(preferred, prompt)
+                if result:
+                    return result
+
+                logger.info(f"Routed provider {preferred} failed, falling back to chain")
+
+        except Exception as e:
+            logger.warning(f"Provider routing failed: {e}")
+
+        # Fallback to standard chain
+        return await self._call_llm(prompt)
+
+    async def _try_provider(
+        self, provider_name: str, prompt: str
+    ) -> Optional[Dict[str, Any]]:
+        """Try a single provider, return result or None."""
+        try:
+            if provider_name == "Vertex Gemini" and self.vertex_gemini_model:
+                return await self._call_vertex_gemini(prompt)
+            elif provider_name == "Gemini" and self.gemini_model:
+                return await self._call_gemini(prompt)
+            elif provider_name == "Claude Sonnet" and self.claude_client:
+                return await self._call_claude(prompt, self.CLAUDE_MODEL)
+            elif provider_name == "Claude Haiku" and self.claude_client:
+                return await self._call_claude(prompt, self.CLAUDE_HAIKU_MODEL)
+            elif provider_name == "OpenAI" and self.openai_client:
+                return await self._call_openai(prompt, self.OPENAI_MODEL)
+            elif provider_name == "Perplexity" and self.perplexity_available:
+                return await self._call_perplexity(prompt)
+        except Exception as e:
+            logger.warning(f"Provider {provider_name} failed: {e}")
+        return None
+
     def _get_call_order(self) -> List[str]:
         """Get LLM call order based on preferred model"""
         # Map preference to call order

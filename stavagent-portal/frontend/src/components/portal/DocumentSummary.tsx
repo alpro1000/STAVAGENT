@@ -41,6 +41,8 @@ import type {
   DocCategory,
 } from '../../types/passport';
 import { AI_MODELS, AI_MODEL_OPTIONS, DOC_CATEGORY_LABELS, DOC_CATEGORY_COLORS } from '../../types/passport';
+import ProjectAnalysis from './ProjectAnalysis';
+import type { ProjectAnalysisData } from './ProjectAnalysis';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -52,7 +54,7 @@ import { API_URL } from '../../services/api';
 // Proxied through portal backend
 const CORE_API_URL = `${API_URL}/api/core`;
 
-const ALLOWED_FILE_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml'];
+const ALLOWED_FILE_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml', 'docx', 'csv'];
 
 function getFileExtension(filename: string): string {
   return filename.split('.').pop()?.toLowerCase() ?? '';
@@ -76,9 +78,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   // AI Model Selection
   const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
   const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
-  const [analysisMode, setAnalysisMode] = useState<'adaptive_extraction' | 'summary_only'>('adaptive_extraction');
+  const [analysisMode, setAnalysisMode] = useState<'adaptive_extraction' | 'summary_only' | 'project_analysis'>('adaptive_extraction');
   // File input ref
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // v3: Project analysis state (multi-file)
+  const [projectData, setProjectData] = useState<ProjectAnalysisData | null>(null);
 
   // Save to project state
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -140,18 +145,73 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     return () => window.removeEventListener('keydown', handleEscKey);
   }, [onClose, isUploading]);
 
+  // v3: Handle multi-file project analysis
+  const handleProjectUpload = useCallback(async (files: File[]) => {
+    setIsUploading(true);
+    setError(null);
+    setPassportData(null);
+    setProjectData(null);
+    setSaveSuccess(false);
+
+    try {
+      const formData = new FormData();
+      for (const file of files) {
+        formData.append('files', file);
+      }
+      formData.append('project_name', files[0].name.replace(/\.[^/.]+$/, ''));
+      formData.append('enable_ai_enrichment', enableAiEnrichment.toString());
+      if (enableAiEnrichment) {
+        formData.append('preferred_model', selectedModel);
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 600000); // 10 min for multi-file
+
+      const response = await fetch(`${CORE_API_URL}/passport/process-project`, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.detail || `HTTP ${response.status}`);
+      }
+
+      const data: ProjectAnalysisData = await response.json();
+      if (data?.success === false) {
+        throw new Error('Zpracování projektu selhalo.');
+      }
+      setProjectData(data);
+    } catch (err) {
+      let errorMessage = 'Neznámá chyba při zpracování';
+      if (err instanceof Error) {
+        errorMessage = err.name === 'AbortError'
+          ? 'Zpracování trvá příliš dlouho (timeout 10 minut).'
+          : err.message;
+      }
+      setError(errorMessage);
+      console.error('Project analysis error:', err);
+    } finally {
+      setIsUploading(false);
+    }
+  }, [selectedModel, enableAiEnrichment]);
+
   // Handle file upload - NEW: Project Passport API
   const handleFileUpload = useCallback(async (file: File) => {
     setIsUploading(true);
     setError(null);
     setPassportData(null);
+    setProjectData(null);
     setSaveSuccess(false);
     setUploadedFile(file); // Save file for later
 
     try {
       const ext = getFileExtension(file.name);
       if (!ALLOWED_FILE_EXTENSIONS.includes(ext)) {
-        throw new Error(`Nepodporovaný formát ${ext || 'souboru'}. Povolené formáty: PDF, XLSX, XLS, XML.`);
+        throw new Error(`Nepodporovaný formát ${ext || 'souboru'}. Povolené formáty: PDF, XLSX, XLS, XML, DOCX, CSV.`);
       }
 
       const formData = new FormData();
@@ -245,19 +305,27 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
     const files = e.dataTransfer.files;
     if (files.length > 0) {
-      handleFileUpload(files[0]);
+      if (analysisMode === 'project_analysis' && files.length > 1) {
+        handleProjectUpload(Array.from(files));
+      } else {
+        handleFileUpload(files[0]);
+      }
     }
-  }, [handleFileUpload]);
+  }, [handleFileUpload, handleProjectUpload, analysisMode]);
 
   // File input handler
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      handleFileUpload(files[0]);
+      if (analysisMode === 'project_analysis') {
+        handleProjectUpload(Array.from(files));
+      } else {
+        handleFileUpload(files[0]);
+      }
     }
     // Reset input value to allow re-uploading the same file
     e.target.value = '';
-  }, [handleFileUpload]);
+  }, [handleFileUpload, handleProjectUpload, analysisMode]);
 
   // Trigger file input click
   const handleUploadClick = useCallback(() => {
@@ -510,7 +578,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       </div>
 
       {/* AI Configuration Panel - Only show before upload */}
-      {!passportData && !isUploading && (
+      {!passportData && !projectData && !isUploading && (
         <div className="c-panel" style={{ padding: '16px', marginBottom: '24px', backgroundColor: 'var(--bg-secondary)' }}>
           <h3 style={{ margin: '0 0 16px', fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Zap size={16} />
@@ -541,6 +609,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               >
                 <option value="adaptive_extraction">Strukturovaný pasport (beton, výztuž, rozměry)</option>
                 <option value="summary_only">Adaptivní shrnutí (univerzální, dynamické téma)</option>
+                <option value="project_analysis">Projektová analýza (více dokumentů, SO merge)</option>
               </select>
             </div>
 
@@ -586,13 +655,14 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       <input
         ref={fileInputRef as React.RefObject<HTMLInputElement>}
         type="file"
-        accept=".pdf,.xlsx,.xls,.xml"
+        accept=".pdf,.xlsx,.xls,.xml,.docx,.csv"
+        multiple={analysisMode === 'project_analysis'}
         onChange={handleFileSelect}
         style={{ display: 'none' }}
       />
 
       {/* Upload area */}
-      {!passportData && (
+      {!passportData && !projectData && (
         <div
           className={`c-upload-zone ${isDragOver ? 'c-upload-zone--active' : ''}`}
           onDragOver={handleDragOver}
@@ -611,16 +681,22 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
           {isUploading ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
               <Loader2 size={48} className="spin" style={{ color: 'var(--accent-primary)' }} />
-              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>Analyzuji dokument...</p>
+              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
+                {analysisMode === 'project_analysis' ? 'Analyzuji projekt (více dokumentů)...' : 'Analyzuji dokument...'}
+              </p>
             </div>
           ) : (
             <>
               <Upload size={48} style={{ color: 'var(--text-tertiary)', marginBottom: '16px' }} />
               <p style={{ margin: '0 0 8px', fontSize: '16px', fontWeight: 500 }}>
-                Přetáhněte dokument sem
+                {analysisMode === 'project_analysis'
+                  ? 'Přetáhněte dokumenty projektu sem'
+                  : 'Přetáhněte dokument sem'}
               </p>
               <p style={{ margin: '0 0 16px', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                nebo klikněte na tlačítko níže
+                {analysisMode === 'project_analysis'
+                  ? 'Více souborů najednou (TZ, výkresy, GTP, rozpočet...)'
+                  : 'nebo klikněte na tlačítko níže'}
               </p>
               <button
                 onClick={handleUploadClick}
@@ -665,6 +741,26 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               </button>
             )}
           </div>
+        </div>
+      )}
+
+      {/* v3: Project Analysis display (multi-document) */}
+      {projectData && (
+        <div style={{ marginTop: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+            <CheckCircle size={20} style={{ color: 'var(--success)' }} />
+            <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+              Projektová analýza dokončena · {projectData.project_name}
+            </span>
+            <button
+              onClick={() => { setProjectData(null); setError(null); }}
+              className="c-btn c-btn--ghost"
+              style={{ marginLeft: 'auto', padding: '6px 12px', fontSize: '13px' }}
+            >
+              Nová analýza
+            </button>
+          </div>
+          <ProjectAnalysis data={projectData} />
         </div>
       )}
 

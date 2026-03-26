@@ -14,6 +14,7 @@ Version: 1.0.0
 Date: 2026-02-10
 """
 
+from decimal import Decimal
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List, Dict, Any
 from datetime import datetime
@@ -308,6 +309,257 @@ class StructureObject(BaseModel):
 
 
 # =============================================================================
+# V3: BRIDGE SO PARAMS (ČSN 73 6200)
+# =============================================================================
+
+class BridgeSOParams(BaseModel):
+    """
+    v3: Detailed bridge parameters matching ČSN 73 6200 Odst. 4 and 5 structure.
+    Populated from dílčí TZ, výkresy, and GTP with source tracking.
+    """
+
+    # ── Odst. 4: Classification ──
+    csn_4_1: Optional[str] = Field(None, description="4.1 druh převáděné komunikace")
+    csn_4_2: Optional[str] = Field(None, description="4.2 překážka (potok, údolí, ...)")
+    csn_4_3: Optional[str] = Field(None, description="4.3 počet polí (jedno/vícepolový)")
+    csn_4_6: Optional[str] = Field(None, description="4.6 s/bez přesypávky")
+    csn_4_12: Optional[str] = Field(None, description="4.12 materiál (předpjatý/železobeton)")
+    csn_4_14: Optional[str] = Field(None, description="4.14 integrální/s ložisky")
+
+    # ── Odst. 5: Dimensions ──
+    light_span_m: Optional[float] = Field(None, description="5.3 světlost mostního otvoru [m]")
+    span_m: Optional[float] = Field(None, description="5.4 rozpětí mostních polí [m]")
+    span_config: Optional[str] = Field(None, description="rozpětí multi-span, e.g. '17+25+17 = 59 m'")
+    nk_length_m: Optional[float] = Field(None, description="5.7 délka nosné konstrukce [m]")
+    nk_area_m2: Optional[float] = Field(None, description="plocha NK [m²]")
+    bridge_length_m: Optional[float] = Field(None, description="5.9 délka mostu [m]")
+    bridge_width_m: Optional[float] = Field(None, description="5.13 šířka mostu [m]")
+    free_width_m: Optional[float] = Field(None, description="5.14 volná šířka [m]")
+    width_between_railings_m: Optional[float] = Field(None, description="5.16 šířka mezi zábradlím [m]")
+    bridge_height_m: Optional[float] = Field(None, description="5.19 výška mostu [m]")
+    structural_height_m: Optional[float] = Field(None, description="5.20 stavební výška [m]")
+    construction_height: Optional[str] = Field(None, description="5.21 konstrukční výška, e.g. '1.4m nosník + 0.22m deska'")
+    clearance_under_m: Optional[float] = Field(None, description="5.23 volná výška pod mostem [m]")
+    crossing_angle_deg: Optional[int] = Field(None, description="5.11 úhel křížení [°]")
+    skewness_deg: Optional[int] = Field(None, description="5.12 šikmost [°]")
+    load_class: Optional[str] = Field(None, description="5.28 zatížení (ČSN EN 1991-2)")
+
+    # ── NK (nosná konstrukce) ──
+    nk_type: Optional[str] = Field(None, description="typ NK (prefab nosníky + spřažená deska, ...)")
+    beam_count: Optional[int] = Field(None, description="počet nosníků")
+    beam_spacing_mm: Optional[int] = Field(None, description="osová vzdálenost nosníků [mm]")
+    slab_thickness_mm: Optional[int] = Field(None, description="tloušťka spřažené desky [mm]")
+    hard_protection_mm: Optional[int] = Field(None, description="tvrdá ochrana izolace [mm]")
+    transverse_slope_pct: Optional[float] = Field(None, description="příčný sklon [%]")
+    longitudinal_slope_pct: Optional[float] = Field(None, description="podélný sklon [%]")
+
+    # ── Foundation ──
+    foundation_type: Optional[str] = Field(None, description="hlubinné/plošné/piloty")
+    pile_diameter_mm: Optional[int] = Field(None, description="průměr pilot [mm]")
+    pile_length_m: Optional[float] = Field(None, description="délka pilot [m]")
+    pile_change_note: Optional[str] = Field(None, description="změna oproti DSP, e.g. 'zkráceny o 2m'")
+
+    # ── Concrete ──
+    concrete_nk: Optional[str] = Field(None, description="beton NK: C30/37-XF2,XD1,XC4")
+    concrete_substructure: Optional[str] = Field(None, description="beton spodní stavby")
+    concrete_protection: Optional[str] = Field(None, description="beton tvrdé ochrany")
+    concrete_foundation: Optional[str] = Field(None, description="podkladní beton: C12/15-X0")
+    cover_mm: Optional[str] = Field(None, description="krytí výztuže, e.g. '45/55 mm'")
+    reinforcement: Optional[str] = Field(None, description="výztuž: B500B dle ČSN EN 10027-1")
+
+    # ── Deformace ──
+    settlement_abutment_1_mm: Optional[float] = Field(None, description="sedání opěra 1 [mm]")
+    settlement_abutment_2_mm: Optional[float] = Field(None, description="sedání opěra 2 [mm]")
+    deflection_span_mm: Optional[float] = Field(None, description="průhyb pole [mm]")
+    consolidation_95pct_days: Optional[int] = Field(None, description="konsolidace 95% [dny]")
+
+    # ── PKO (protikorozní ochrana) ──
+    pko_aggressivity: Optional[str] = Field(None, description="korozní agresivita: C4, C5")
+    pko_lifetime: Optional[str] = Field(None, description="životnost PKO: V")
+    stray_current_protection: Optional[int] = Field(None, description="stupeň ochrany bludnými proudy")
+
+    # ── Geotechnické údaje (z GTP) ──
+    gtp_boreholes: List[str] = Field(default_factory=list, description="ID vrtů: J516, J517, ...")
+    groundwater_level_m: Optional[str] = Field(None, description="HPV: '1.15-1.79 m'")
+    water_aggressivity: Optional[str] = Field(None, description="agresivita vody: XA2")
+    geotechnical_category: Optional[int] = Field(None, description="geotechnická kategorie")
+    foundation_soils: List[str] = Field(default_factory=list, description="zeminy: P1a, P1c, P2")
+
+    # ── Related SOs ──
+    related_sos: List[str] = Field(default_factory=list, description="SO 020, SO 101, SO 323, ...")
+
+    # ── Crossing info ──
+    obstacle_crossed: Optional[str] = Field(None, description="bezejmenný potok, biokoridor")
+    road_on_bridge: Optional[str] = Field(None, description="SO 101, S9,5/90")
+    chainage_km: Optional[float] = Field(None, description="staničení: 2.710")
+    crossing_point_jtsk: Optional[str] = Field(None, description="JTSK: Y=788614; X=1114445")
+
+    # ── Source tracking ──
+    sources: Dict[str, str] = Field(
+        default_factory=dict,
+        description="Per-field source: {'bridge_length_m': 'dilci_TZ_p4', 'groundwater': 'GTP_p3'}"
+    )
+
+
+# =============================================================================
+# V3: GTP EXTRACTION (Geotechnický pasport)
+# =============================================================================
+
+class SoilLayer(BaseModel):
+    """One layer in a borehole profile."""
+    depth_from_m: float
+    depth_to_m: float
+    soil_type_code: str = Field(..., description="Q2p, P1a, P1c")
+    csn_class: Optional[str] = Field(None, description="F3/MS, R6/CS")
+    description: Optional[str] = None
+    consistency: Optional[str] = Field(None, description="tuhá, pevná, ...")
+
+
+class BoreholeData(BaseModel):
+    """One borehole from GTP / IGP."""
+    borehole_id: str = Field(..., description="J516, JV125, ...")
+    coordinates_jtsk: Optional[str] = None
+    elevation_bpv: Optional[float] = Field(None, description="nadmořská výška Bpv [m]")
+    depth_m: float = Field(..., description="hloubka vrtu [m]")
+    date: Optional[str] = None
+    layers: List[SoilLayer] = Field(default_factory=list)
+
+
+class SoilType(BaseModel):
+    """Geotechnický typ zeminy z tabulky GTP."""
+    code: str = Field(..., description="H, Q2p, P1a, ...")
+    description: Optional[str] = None
+    depth_range: Optional[str] = None
+    edef_mpa: Optional[float] = Field(None, description="modul přetvárnosti [MPa]")
+    phi_deg: Optional[float] = Field(None, description="úhel vnitřního tření [°]")
+    c_kpa: Optional[float] = Field(None, description="soudržnost [kPa]")
+    rp_mpa: Optional[float] = Field(None, description="únosnost [MPa]")
+    permeability: Optional[str] = None
+
+
+class GTPExtraction(BaseModel):
+    """Extracted from geotechnický pasport (GTP) / IGP."""
+
+    # Boreholes
+    boreholes: List[BoreholeData] = Field(default_factory=list)
+
+    # Soil types summary table
+    soil_types: List[SoilType] = Field(default_factory=list)
+
+    # Groundwater
+    groundwater_levels: Dict[str, Dict[str, float]] = Field(
+        default_factory=dict,
+        description="{'J516': {'narazena': 1.80, 'ustalena': 1.15}, ...}"
+    )
+
+    # Aggressivity
+    water_aggressivity: Optional[str] = Field(None, description="XA2")
+    aggressivity_details: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="{'SO4': 58.8, 'pH': 6.16, 'CO2_agr': 34}"
+    )
+
+    # Stray currents
+    stray_current_class: Optional[int] = Field(None, description="stupeň 1-4")
+
+    # Recommendations
+    foundation_recommendation: Optional[str] = None
+    pile_depth_estimate: Optional[str] = Field(None, description="8-10 m")
+    special_measures: List[str] = Field(default_factory=list)
+
+    # Settlement calculations
+    settlements: List[Dict[str, Any]] = Field(
+        default_factory=list,
+        description="[{'location': 'za opěrou km 2,680', 'value_cm': 24.2, ...}]"
+    )
+
+    source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+# =============================================================================
+# V3: CONTRADICTION DETECTION
+# =============================================================================
+
+class ContradictionRecord(BaseModel):
+    """Detected contradiction between documents for same SO."""
+    so_code: str = Field(..., description="SO 202")
+    field_name: str = Field(..., description="bridge_length_m")
+    value_1: str = Field(..., description="32.0")
+    source_1: str = Field(..., description="Souhrnná TZ, strana 6")
+    value_2: str = Field(..., description="31.0")
+    source_2: str = Field(..., description="Dílčí TZ SO 202, Odst. 5.9")
+    resolution: str = Field(..., description="dilci_TZ_wins / kept_existing")
+    severity: str = Field(..., description="high / medium / low")
+    note: str = Field(default="", description="explanation")
+
+
+# =============================================================================
+# V3: SO FILE GROUPING
+# =============================================================================
+
+class SOFile(BaseModel):
+    """One file within an SO group."""
+    filename: str
+    file_type: str = Field(..., description="TZ-D, VY-NK, GE, ...")
+    pages: int = 0
+    processed: bool = False
+    priority: int = Field(default=99, description="1=TZ-D, 2=VY, 3=GE, 4=TZ-S, 5=RO")
+
+
+class SOFileGroup(BaseModel):
+    """Files automatically grouped by SO code."""
+    so_code: str = Field(..., description="SO 202")
+    so_name: str = Field(default="", description="Most přes potok v km 2,710")
+    files: List[SOFile] = Field(default_factory=list)
+    coverage: Dict[str, bool] = Field(
+        default_factory=dict,
+        description="{'TZ': True, 'VY': True, 'GE': False, ...}"
+    )
+    missing_categories: List[str] = Field(
+        default_factory=list,
+        description="['GE', 'HA', 'RO'] — categories without files"
+    )
+
+
+class MergedSO(BaseModel):
+    """Result of merging multiple documents for one SO."""
+    so_code: str
+    so_name: str = ""
+    so_category: Optional[str] = None
+    so_category_label: Optional[str] = None
+    structure_type: Optional[StructureType] = None
+    bridge_params: Optional[BridgeSOParams] = None
+    gtp: Optional[GTPExtraction] = None
+    technical: Optional["TechnicalExtraction"] = None
+    tender: Optional["TenderExtraction"] = None
+    # v3.1: Universal SO type params (only one populated per SO)
+    road_params: Optional[Dict[str, Any]] = None
+    traffic_params: Optional[Dict[str, Any]] = None
+    water_params: Optional[Dict[str, Any]] = None
+    vegetation_params: Optional[Dict[str, Any]] = None
+    electro_params: Optional[Dict[str, Any]] = None
+    pipeline_params: Optional[Dict[str, Any]] = None
+    signage_params: Optional[Dict[str, Any]] = None
+    # v3.1.1: Enhanced classification
+    construction_type: Optional[str] = Field(None, description="dopravní, mostní, pozemní_bytová, etc.")
+    section_ids: List[Dict[str, str]] = Field(default_factory=list, description="Detected section IDs")
+    is_non_construction: bool = Field(default=False)
+    generic_summary: Optional["GenericSummary"] = None
+    contradictions: List[ContradictionRecord] = Field(default_factory=list)
+    sources: Dict[str, str] = Field(
+        default_factory=dict,
+        description="Field → source filename mapping"
+    )
+    file_count: int = 0
+    files: List[str] = Field(default_factory=list, description="List of filenames in this SO")
+    source_documents: List[str] = Field(default_factory=list)
+    coverage: Dict[str, bool] = Field(
+        default_factory=dict,
+        description="{'TZ': True, 'VY': True, 'GE': True, 'RO': False, 'HA': False}"
+    )
+
+
+# =============================================================================
 # MAIN PASSPORT MODEL
 # =============================================================================
 
@@ -517,7 +769,8 @@ class BillOfQuantitiesExtraction(BaseModel):
 
 
 class TenderConditionsExtraction(BaseModel):
-    """Extracted parameters from Tender Conditions (PD)"""
+    """Backward-compatible extraction from Tender Conditions (PD).
+    For full extraction use TenderExtraction (v3)."""
     tender_name: Optional[str] = None
     contracting_authority: Optional[str] = None
     submission_deadline: Optional[str] = None
@@ -528,6 +781,173 @@ class TenderConditionsExtraction(BaseModel):
     qualification_criteria: List[str] = Field(default_factory=list)
     evaluation_criteria: List[Dict[str, Any]] = Field(default_factory=list)
     submission_method: Optional[str] = None
+    source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+# =============================================================================
+# V3: FULL TENDER EXTRACTION (PD — Zadávací dokumentace)
+# =============================================================================
+
+class PersonnelRequirement(BaseModel):
+    """Required team member for the tender."""
+    role: str = Field(..., description="Hlavní stavbyvedoucí")
+    role_code: Optional[str] = Field(None, description="4.4a")
+    experience_years: Optional[int] = None
+    reference_description: str = Field(default="", description="řízení stavby silnice min 600 mil CZK")
+    reference_min_value_czk: Optional[Decimal] = None
+    authorization_required: Optional[str] = Field(None, description="autorizovaný inženýr, obor dopravní stavby")
+    authorization_law: Optional[str] = Field(None, description="zákon 360/1992 Sb.")
+    proof_documents: List[str] = Field(default_factory=list)
+
+
+class ReferenceRequirement(BaseModel):
+    """Required reference project for qualification."""
+    reference_code: str = Field(default="", description="4.5.1a")
+    description: str = Field(default="", description="novostavba/rekonstrukce silnice I.třídy")
+    min_value_czk: Optional[Decimal] = None
+    min_volume: Optional[str] = Field(None, description="430 tis m³ zemních prací")
+    completed_period: Optional[str] = Field(None, description="posledních 10 let")
+    proof_type: str = Field(default="", description="osvědčení objednatele")
+    specific_conditions: List[str] = Field(default_factory=list)
+
+
+class EquipmentRequirement(BaseModel):
+    """Required equipment/facility for the tender."""
+    description: str = Field(..., description="obalovna asfaltových směsí")
+    min_capacity: Optional[str] = Field(None, description="120 t/hod")
+    ownership: str = Field(default="", description="vlastnictví nebo smluvní zajištění")
+    conditions: List[str] = Field(default_factory=list)
+
+
+class EvaluationCriterion(BaseModel):
+    """One evaluation criterion."""
+    name: str = Field(..., description="Nabídková cena stavby v Kč bez DPH")
+    weight_pct: float = Field(..., description="90.0")
+    direction: str = Field(default="lower_better", description="lower_better | higher_better")
+    min_value: Optional[float] = Field(None, description="60 měsíců min")
+    max_scored_value: Optional[float] = Field(None, description="84 měsíců max for full score")
+    unit: Optional[str] = Field(None, description="měsíců")
+    formula: Optional[str] = Field(None, description="100 × (nejnižší cena / hodnocená cena)")
+    disqualification_threshold: Optional[str] = Field(None, description="< 60 = nesplnění")
+
+
+class TenderAttachment(BaseModel):
+    """One attachment to the tender documentation."""
+    number: int
+    name: str
+    description: Optional[str] = None
+    is_form: bool = False
+    is_contract: bool = False
+    is_technical: bool = False
+
+
+class TenderExtraction(BaseModel):
+    """
+    Complete extraction from Zadávací dokumentace (PD).
+    v3: Every field is CRITICAL — missing one = disqualification risk.
+    Based on ZZVZ (zákon 134/2016 Sb.) structure.
+    """
+
+    # ── 1. IDENTIFICATION ──
+    tender_name: str = Field(default="", description="I/20 Hněvkov - Sedlice")
+    tender_number: str = Field(default="", description="05PT-003052")
+    evidence_number: Optional[str] = Field(None, description="ISPROFIN: 327 111 2015")
+    procedure_type: str = Field(default="", description="otevřené řízení § 56 ZZVZ")
+
+    contracting_authority: str = Field(default="", description="ŘSD s.p.")
+    authority_address: str = Field(default="")
+    authority_ico: str = Field(default="", description="65993390")
+    authority_branch: Optional[str] = None
+    contact_person: str = Field(default="")
+    contact_phone: Optional[str] = None
+    data_box: Optional[str] = Field(None, description="datová schránka: zjq4rhz")
+
+    designer: Optional[str] = Field(None, description="projektant PD: Valbek, spol. s r.o.")
+    contract_type: Optional[str] = Field(None, description="FIDIC Red Book")
+
+    # ── 2. SUBJECT & VALUE ──
+    estimated_value_czk: Optional[Decimal] = Field(None, description="1279250000")
+    estimated_value_note: Optional[str] = None
+    currency: str = "CZK"
+    vat_note: str = "bez DPH"
+
+    # ── 3. SITE INSPECTION ──
+    site_inspection_organized: bool = False
+    site_inspection_note: Optional[str] = None
+
+    # ── 4. QUALIFICATION REQUIREMENTS ──
+    basic_eligibility: List[str] = Field(default_factory=list, description="§74 ZZVZ")
+    professional_eligibility: List[str] = Field(default_factory=list, description="§77 ZZVZ")
+
+    # 4.3 Economic
+    min_annual_turnover_czk: Optional[Decimal] = Field(None, description="400000000")
+    turnover_period: Optional[str] = Field(None, description="poslední 3 uzavřená účetní období")
+    turnover_note: Optional[str] = None
+
+    # 4.4 Personnel
+    required_personnel: List[PersonnelRequirement] = Field(default_factory=list)
+
+    # 4.5 References
+    required_references: List[ReferenceRequirement] = Field(default_factory=list)
+
+    # 4.6 Equipment
+    required_equipment: List[EquipmentRequirement] = Field(default_factory=list)
+
+    # ── 5. SUBSTITUTION RULES ──
+    can_substitute_with_declaration: bool = False
+    jeoo_accepted: bool = True
+
+    # ── 6. PRICING ──
+    pricing_method: Optional[str] = Field(None, description="jednotkové ceny v soupisu prací")
+    price_includes: Optional[str] = None
+
+    # ── 7. EVALUATION CRITERIA ──
+    evaluation_criteria: List[EvaluationCriterion] = Field(default_factory=list)
+
+    # ── 8-9. SUBMISSION ──
+    submission_method: str = Field(default="", description="elektronicky")
+    electronic_tool: str = Field(default="", description="Tender arena (eGORDION)")
+    tender_profile_url: Optional[str] = None
+    submission_deadline: Optional[str] = Field(None, description="'na profilu zadavatele' or actual date")
+    max_file_size_mb: Optional[int] = None
+    qualification_size_mb: Optional[int] = None
+    other_docs_size_mb: Optional[int] = None
+    accepted_formats: List[str] = Field(default_factory=list)
+    paper_submission_allowed: bool = False
+
+    # ── 10. OPENING ──
+    opening_method: Optional[str] = None
+
+    # ── 11. ZADÁVACÍ LHŮTA ──
+    binding_period_months: Optional[int] = None
+
+    # ── 12. JISTOTA ──
+    jistota_required: bool = False
+    jistota_amount_czk: Optional[Decimal] = None
+    jistota_forms: List[str] = Field(default_factory=list)
+    jistota_bank_account: Optional[str] = None
+    jistota_variable_symbol: Optional[str] = None
+    jistota_must_be_original: bool = True
+
+    # ── 13. RESERVATIONS ──
+    variants_allowed: bool = False
+    one_bid_only: bool = True
+
+    # ── 14. SUBCONTRACTING ──
+    subcontracting_limit: Optional[str] = None
+    own_capacity_required: List[str] = Field(default_factory=list)
+    subcontractor_identification_deadline: Optional[str] = None
+
+    # ── 15. ATTACHMENTS ──
+    attachments: List[TenderAttachment] = Field(default_factory=list)
+
+    # ── CALCULATED / DERIVED ──
+    submission_deadline_parsed: Optional[datetime] = None
+    days_until_submission: Optional[int] = None
+
+    # ── RISK FLAGS ──
+    risk_flags: List[str] = Field(default_factory=list)
+
     source_pages: Dict[str, int] = Field(default_factory=dict)
 
 
@@ -542,12 +962,68 @@ class ScheduleExtraction(BaseModel):
     source_pages: Dict[str, int] = Field(default_factory=dict)
 
 
+# =============================================================================
+# V3.1.1: NON-CONSTRUCTION DOCUMENT SUMMARY
+# =============================================================================
+
+class GenericSummary(BaseModel):
+    """
+    Summary for non-construction documents (legal, invoices, etc.).
+    Used when document doesn't match any construction schema.
+    """
+    document_type: str = Field(default="unknown", description="Detected type: legal, invoice, correspondence, other")
+    title: Optional[str] = None
+    summary: Optional[str] = Field(None, description="Brief AI-generated summary (2-3 sentences)")
+    key_entities: List[str] = Field(default_factory=list, description="Named entities: people, companies, dates")
+    dates_found: List[str] = Field(default_factory=list, description="Dates mentioned in document")
+    amounts_found: List[str] = Field(default_factory=list, description="Monetary amounts found")
+    language: str = Field(default="cs", description="Detected language")
+    page_count: Optional[int] = None
+    confidence: float = Field(default=0.5, description="Classification confidence")
+
+
+# Resolve forward references after TenderExtraction is defined
+MergedSO.model_rebuild()
+
+
+# =============================================================================
+# V3: DOCUMENT SUB-TYPE CLASSIFICATION
+# =============================================================================
+
+class DocSubType(str, Enum):
+    """Fine-grained document sub-type for multi-doc merge priority."""
+    TZ_S = "TZ-S"       # Souhrnná TZ (overview, lowest detail)
+    TZ_D = "TZ-D"       # Dílčí TZ per SO (highest detail, ČSN structured)
+    VY_SIT = "VY-SIT"   # Situace (layout/plan)
+    VY_POD = "VY-POD"   # Podélný řez (longitudinal section)
+    VY_PRI = "VY-PRI"   # Příčné řezy (cross sections)
+    VY_VYT = "VY-VYT"   # Vytyčovací výkres (setting-out)
+    VY_OPE = "VY-OPE"   # Tvar opěr a křídel (abutment/wing shapes)
+    VY_NK = "VY-NK"     # Tvar nosné konstrukce (superstructure)
+    VY_PRE = "VY-PRE"   # Přechodové oblasti (transition zones)
+    VY_ARM = "VY-ARM"   # Výztuž (reinforcement drawings)
+    VY_VYB = "VY-VYB"   # Vybavení mostu (bridge equipment)
+    VY_GEN = "VY-GEN"   # Generic drawing
+    GE_GTP = "GE-GTP"   # Geotechnický pasport
+    GE_IGP = "GE-IGP"   # Inženýrsko-geologický průzkum
+    RO_SOD = "RO-SOD"   # Soupis prací (itemized)
+    RO_REC = "RO-REC"   # Rekapitulace (summary)
+    PD_ZD = "PD-ZD"     # Zadávací dokumentace
+    PD_KP = "PD-KP"     # Kvalifikační podmínky
+    HA_GEN = "HA-GEN"   # Generic schedule
+    SM_SOD = "SM-SOD"   # Smlouva o dílo
+    OT_GEN = "OT-GEN"   # Other
+
+
 class ClassificationInfo(BaseModel):
     """Document classification result attached to response"""
     category: DocCategory = DocCategory.OT
+    sub_type: Optional[DocSubType] = Field(None, description="Fine-grained sub-type for merge priority")
     confidence: float = 0.0
     method: str = "none"  # "filename", "keywords", "ai"
     detected_keywords: List[str] = Field(default_factory=list)
+    so_code: Optional[str] = Field(None, description="SO code extracted from filename, e.g. 'SO 202'")
+    priority: int = Field(default=99, description="Merge priority: 1=TZ-D, 2=VY, 3=GE, 4=TZ-S, 5=RO")
 
 
 class PassportGenerationRequest(BaseModel):
@@ -607,11 +1083,21 @@ class PassportGenerationResponse(BaseModel):
     # Document classification (new)
     classification: Optional[ClassificationInfo] = Field(None, description="Document type classification")
 
-    # Type-specific extractions (new, populated based on classification)
+    # Type-specific extractions (populated based on classification)
     technical: Optional[TechnicalExtraction] = Field(None, description="TZ extraction")
     bill_of_quantities: Optional[BillOfQuantitiesExtraction] = Field(None, description="RO extraction")
-    tender_conditions: Optional[TenderConditionsExtraction] = Field(None, description="PD extraction")
+    tender_conditions: Optional[TenderConditionsExtraction] = Field(None, description="PD basic extraction")
     schedule: Optional[ScheduleExtraction] = Field(None, description="HA extraction")
+
+    # v3: Full extractions
+    tender: Optional[TenderExtraction] = Field(None, description="PD full tender extraction (v3)")
+    gtp: Optional[GTPExtraction] = Field(None, description="GE geotechnical extraction (v3)")
+    bridge_params: Optional[BridgeSOParams] = Field(None, description="Bridge ČSN 73 6200 params (v3)")
+
+    # v3: Multi-document merge results
+    merged_sos: List[MergedSO] = Field(default_factory=list, description="Merged SO cards (v3)")
+    contradictions: List[ContradictionRecord] = Field(default_factory=list, description="Cross-doc contradictions (v3)")
+    file_groups: List[SOFileGroup] = Field(default_factory=list, description="File→SO grouping (v3)")
 
     model_config = ConfigDict(
         json_schema_extra={

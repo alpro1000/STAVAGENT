@@ -657,3 +657,231 @@ async def get_passport_summary(passport_id: str):
 
 # Import at module level for FastAPI router registration
 from datetime import datetime
+
+
+# ============================================================================
+# v3: MULTI-DOCUMENT PROJECT PROCESSING (SO-based merge)
+# ============================================================================
+
+@router.post("/process-project")
+async def process_project(
+    files: list[UploadFile] = File(..., description="Multiple construction documents"),
+    project_name: str = Form(..., description="Project name"),
+    enable_ai_enrichment: bool = Form(True, description="Enable AI enrichment (Layer 3)"),
+    preferred_model: Optional[str] = Form(None, description="Preferred AI model"),
+    project_id: Optional[str] = Form(None, description="Optional project ID"),
+):
+    """
+    v3: Process multiple documents with SO-based grouping and merge.
+
+    Groups files by SO code from filenames, processes each through the
+    3-layer pipeline, and merges results per-SO with contradiction detection.
+
+    **Filename conventions:**
+    - `201_01_TZ.pdf` → SO 201 (dílčí TZ)
+    - `SO_202_situace.pdf` → SO 202 (výkres)
+    - `technicka_zprava.pdf` → SO 000 (project-level)
+
+    **Returns:**
+    - `merged_sos`: List of MergedSO objects with bridge_params, gtp, tender
+    - `contradictions`: List of detected contradictions across documents
+    - `file_groups`: SOFileGroup list with coverage per SO
+    - Standard passport fields for backward compatibility
+
+    **Example:**
+    ```bash
+    curl -X POST ".../api/v1/passport/process-project" \\
+      -F "files=@201_01_TZ.pdf" \\
+      -F "files=@201_02_situace.pdf" \\
+      -F "files=@202_01_TZ.pdf" \\
+      -F "files=@zadavaci_dokumentace.pdf" \\
+      -F "project_name=Most přes Chrudimku"
+    ```
+    """
+    import time as _time
+    from app.services.file_grouper import group_files_by_so, get_coverage_report
+    from app.services.so_merger import merge_so_group
+
+    start = _time.time()
+    logger.info(f"Processing project: {project_name}, {len(files)} files")
+
+    # Validate files
+    allowed_extensions = ['.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv']
+    temp_dir = tempfile.mkdtemp()
+    saved_paths: list[str] = []
+
+    try:
+        # Save all uploaded files
+        for f in files:
+            ext = Path(f.filename).suffix.lower()
+            if ext not in allowed_extensions:
+                logger.warning(f"Skipping unsupported file: {f.filename}")
+                continue
+            temp_path = os.path.join(temp_dir, f.filename)
+            with open(temp_path, "wb") as out:
+                content = await f.read()
+                out.write(content)
+            saved_paths.append(temp_path)
+            logger.info(f"Saved: {f.filename} ({len(content)} bytes)")
+
+        if not saved_paths:
+            raise HTTPException(status_code=400, detail="No valid files provided")
+
+        # Step 1: Group files by SO code
+        file_groups = group_files_by_so(saved_paths)
+        coverage_report = get_coverage_report(file_groups)
+
+        logger.info(
+            f"File grouping: {len(saved_paths)} files → "
+            f"{len(file_groups)} SO groups"
+        )
+
+        # Step 2: Process each file through the pipeline
+        processor = DocumentProcessor(preferred_model=preferred_model)
+        file_results: Dict[str, Dict[str, Any]] = {}  # filename → results
+
+        for path in saved_paths:
+            filename = Path(path).name
+            logger.info(f"Processing: {filename}")
+
+            try:
+                response = await processor.process(
+                    file_path=path,
+                    project_name=project_name,
+                    enable_ai_enrichment=enable_ai_enrichment,
+                    preferred_model=preferred_model,
+                    project_id=project_id,
+                )
+
+                result_dict: Dict[str, Any] = {
+                    "filename": filename,
+                    "success": response.success,
+                    "classification": response.classification,
+                }
+
+                if response.success:
+                    result_dict["technical"] = (
+                        response.technical.model_dump() if response.technical else None
+                    )
+                    result_dict["bill_of_quantities"] = (
+                        response.bill_of_quantities.model_dump()
+                        if response.bill_of_quantities else None
+                    )
+                    result_dict["tender_conditions"] = (
+                        response.tender_conditions.model_dump()
+                        if response.tender_conditions else None
+                    )
+                    result_dict["schedule"] = (
+                        response.schedule.model_dump() if response.schedule else None
+                    )
+                    # v3 fields
+                    result_dict["tender"] = (
+                        response.tender.model_dump() if response.tender else None
+                    )
+                    result_dict["gtp"] = (
+                        response.gtp.model_dump() if response.gtp else None
+                    )
+                    result_dict["bridge_params"] = (
+                        response.bridge_params.model_dump()
+                        if response.bridge_params else None
+                    )
+                    result_dict["passport"] = (
+                        response.passport.model_dump() if response.passport else None
+                    )
+                    # v3.1.1: Enhanced classification metadata
+                    enhanced_meta = getattr(processor, '_last_enhanced_metadata', None)
+                    if enhanced_meta:
+                        result_dict["section_ids"] = enhanced_meta.get("section_ids", [])
+                        result_dict["construction_type"] = enhanced_meta.get("construction_type")
+                        result_dict["is_non_construction"] = enhanced_meta.get("is_non_construction", False)
+
+                file_results[filename] = result_dict
+
+            except Exception as e:
+                logger.error(f"Failed to process {filename}: {e}")
+                file_results[filename] = {
+                    "filename": filename,
+                    "success": False,
+                    "error": str(e),
+                }
+
+        # Step 3: Merge results per SO group
+        merged_sos = []
+        all_contradictions = []
+
+        for group in file_groups:
+            group_results = []
+            for so_file in group.files:
+                fr = file_results.get(so_file.filename)
+                if fr and fr.get("success"):
+                    group_results.append(fr)
+
+            if group_results:
+                merged = merge_so_group(group.so_code, group_results)
+                merged_sos.append(merged)
+                all_contradictions.extend(merged.contradictions)
+
+        total_time = int((_time.time() - start) * 1000)
+
+        logger.info(
+            f"Project processing complete: {total_time}ms, "
+            f"{len(merged_sos)} merged SOs, "
+            f"{len(all_contradictions)} contradictions"
+        )
+
+        # Build response
+        return JSONResponse(content={
+            "success": True,
+            "project_name": project_name,
+            "processing_time_ms": total_time,
+            "file_count": len(saved_paths),
+
+            # v3: Multi-document results
+            "merged_sos": [so.model_dump(mode="json") for so in merged_sos],
+            "contradictions": [c.model_dump(mode="json") for c in all_contradictions],
+            "file_groups": [g.model_dump(mode="json") for g in file_groups],
+            "coverage_report": coverage_report,
+
+            # Per-file results (for debugging / detail view)
+            "file_results": {
+                fn: {
+                    "success": fr.get("success"),
+                    "classification": (
+                        fr["classification"].model_dump(mode="json")
+                        if fr.get("classification") and hasattr(fr["classification"], "model_dump")
+                        else fr.get("classification")
+                    ),
+                }
+                for fn, fr in file_results.items()
+            },
+
+            # Summary stats
+            "statistics": {
+                "total_files": len(saved_paths),
+                "successful_files": sum(
+                    1 for fr in file_results.values() if fr.get("success")
+                ),
+                "failed_files": sum(
+                    1 for fr in file_results.values() if not fr.get("success")
+                ),
+                "so_groups": len(merged_sos),
+                "contradictions_total": len(all_contradictions),
+                "contradictions_critical": sum(
+                    1 for c in all_contradictions if c.severity == "critical"
+                ),
+            },
+        })
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Project processing failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        # Cleanup temp files
+        import shutil
+        try:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+        except Exception as e:
+            logger.warning(f"Failed to cleanup temp dir: {e}")

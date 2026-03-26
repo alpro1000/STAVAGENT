@@ -2,8 +2,8 @@
 
 > Guidelines for Claude Code (claude.ai/code) when working with this repository
 
-**Version:** 2.4.1
-**Last updated:** 2025-11-20
+**Version:** 2.5.0
+**Last updated:** 2026-03-26
 
 ---
 
@@ -24,6 +24,42 @@
 - **Production:**
   - Backend: https://concrete-agent-1086027517695.europe-west3.run.app (pending Nov 19 deployment)
   - Frontend: https://www.stavagent.cz
+
+---
+
+## Universal Parser (v3.1.1, 2026-03-26)
+
+Multi-document merge system for construction project analysis. Handles SO (stavební objekt), D.x.x, A-F.x section types.
+
+**Architecture:**
+```
+PDF/Excel upload → Document Classifier (4-tier) → Type-specific Extraction → SO Merger → MergedSO response
+```
+
+**4-tier classification:**
+- Tier 0: `learned_patterns.py` — Self-learning patterns (zero-cost, JSON file-based)
+- Tier 1: Filename regex (`so_type_schemas.py`, `document_classifier.py`)
+- Tier 2: Content keyword markers (9 construction categories)
+- Tier 3: AI — Gemini Flash / Perplexity web-search (`perplexity_classifier.py`)
+
+**Key files in `packages/core-backend/app/`:**
+| File | Purpose |
+|------|---------|
+| `services/document_classifier.py` | 4-tier classification, section ID extraction, construction type detection |
+| `services/document_processor.py` | Orchestrator: classification → extraction → enhanced metadata |
+| `services/so_merger.py` | Multi-file merge with contradiction detection (2% tolerance) |
+| `services/passport_enricher.py` | LLM enrichment with task-aware routing |
+| `services/provider_router.py` | Task→LLM mapping (classify→Flash, extract→Sonnet, verify→Perplexity) |
+| `services/perplexity_classifier.py` | Tier 3 web-search for unknown docs + GenericSummary |
+| `services/learned_patterns.py` | Tier 0 self-learning: PatternStore, EnrichmentGap, supplement_partial_result |
+| `services/so_type_schemas.py` | SO type registry (bridge, road, DIO, water, vegetation, electro, pipeline, signage) |
+| `services/so_type_regex.py` | Type-specific regex extraction patterns |
+| `models/passport_schema.py` | MergedSO, GenericSummary, all SO params models |
+| `api/routes_passport.py` | API endpoints, passes enhanced metadata to merger |
+
+**Self-learning cycle:** Perplexity (partial) → LLM supplement → Human review → Tier 0 rule
+
+**Runtime data:** `packages/core-backend/data/learned_patterns.json` (gitignored)
 
 ---
 

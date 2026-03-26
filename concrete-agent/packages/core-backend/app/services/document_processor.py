@@ -41,7 +41,13 @@ from datetime import datetime
 from app.parsers.smart_parser import SmartParser
 from app.services.regex_extractor import CzechConstructionExtractor
 from app.services.passport_enricher import PassportEnricher
-from app.services.document_classifier import classify_document, classify_document_async
+from app.services.document_classifier import (
+    classify_document, classify_document_async,
+    enrich_classification, detect_so_type_from_content,
+    classify_document_enhanced,
+)
+from app.services.so_type_regex import extract_so_type_params
+from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES
 from app.core.config import settings
 from app.models.passport_schema import (
     ProjectPassport,
@@ -55,6 +61,10 @@ from app.models.passport_schema import (
     BillOfQuantitiesExtraction,
     TenderConditionsExtraction,
     ScheduleExtraction,
+    GTPExtraction,
+    TenderExtraction,
+    BridgeSOParams,
+    DocSubType,
 )
 
 logger = logging.getLogger(__name__)
@@ -141,13 +151,33 @@ class DocumentProcessor:
             logger.info(f"Layer 1 complete: {layer1_time}ms, {len(document_text)} chars")
 
             # === CLASSIFICATION: Detect document type (3-tier with AI fallback) ===
-            classification = await classify_document_async(
-                filename=Path(file_path).name,
-                text=document_text,
-                llm_call=self.enricher._call_llm if enable_ai_enrichment else None,
-            )
+            # v3.1.1: Use enhanced classification for flexible section IDs + construction type
+            enhanced = classify_document_enhanced(Path(file_path).name, document_text)
+            classification = enhanced["classification"]
+
+            # If Tiers 1-2 insufficient, try AI (Tier 3)
+            if classification.confidence < 0.5 and enable_ai_enrichment:
+                classification = await classify_document_async(
+                    filename=Path(file_path).name,
+                    text=document_text,
+                    llm_call=self.enricher._call_llm,
+                )
+                classification = enrich_classification(classification, Path(file_path).name)
+                # Re-run enhanced to pick up SO code from content if AI didn't find it
+                if not classification.so_code and enhanced.get("so_code"):
+                    classification.so_code = enhanced["so_code"]
+
+            # Store enhanced metadata for use in merge step
+            self._last_enhanced_metadata = {
+                "section_ids": enhanced.get("section_ids", []),
+                "construction_type": enhanced.get("construction_type"),
+                "is_non_construction": enhanced.get("is_non_construction", False),
+            }
+
             logger.info(f"Classification: {classification.category.value} "
-                         f"(confidence={classification.confidence:.2f}, method={classification.method})")
+                         f"(confidence={classification.confidence:.2f}, method={classification.method}, "
+                         f"sub_type={classification.sub_type}, so_code={classification.so_code}, "
+                         f"construction_type={enhanced.get('construction_type')})")
 
             # === LAYER 2: REGEX EXTRACTION (Deterministic facts) ===
             logger.info("LAYER 2: Extracting deterministic facts")
@@ -284,6 +314,10 @@ class DocumentProcessor:
                 bill_of_quantities=type_extractions.get("bill_of_quantities"),
                 tender_conditions=type_extractions.get("tender_conditions"),
                 schedule=type_extractions.get("schedule"),
+                # v3 fields
+                tender=type_extractions.get("tender"),
+                gtp=type_extractions.get("gtp"),
+                bridge_params=type_extractions.get("bridge_params"),
             )
 
         except Exception as e:
@@ -725,13 +759,346 @@ VRAŤ POUZE VALIDNÍ JSON:
   "milestones": [{{"name": "milník", "date": "datum"}}, ...],
   "critical_path": ["aktivity na kritické cestě"]
 }}""",
+
+        DocCategory.GE: """Analyzuj geotechnický pasport (GTP/IGP). Extrahuj POUZE fakta z textu.
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. VRTY: ID, hloubka, souřadnice, vrstvy zemin
+2. HLADINA PODZEMNÍ VODY: naražená + ustálená pro každý vrt
+3. AGRESIVITA: XA třída, SO4, pH, CO2agr
+4. BLUDNÉ PROUDY: stupeň ochrany
+5. GEOTECHNICKÁ KATEGORIE
+6. TYPY ZEMIN: kód, popis, parametry (Edef, φ, c, Rp)
+7. SEDÁNÍ: hodnoty, místa, konsolidace
+8. DOPORUČENÍ: typ založení, hloubka pilot, opatření
+
+VRAŤ POUZE VALIDNÍ JSON:
+{{
+  "boreholes": [{{"borehole_id": "J516", "depth_m": 15.0, "elevation_bpv": 489.53, "layers": [{{"depth_from_m": 0, "depth_to_m": 3.5, "soil_type_code": "Q2p", "csn_class": "F3/MS", "description": "popis"}}]}}],
+  "soil_types": [{{"code": "P1a", "description": "popis", "edef_mpa": číslo, "phi_deg": číslo, "c_kpa": číslo}}],
+  "groundwater_levels": {{"J516": {{"narazena": 1.80, "ustalena": 1.15}}}},
+  "water_aggressivity": "XA2" nebo null,
+  "aggressivity_details": {{"SO4": 58.8, "pH": 6.16, "CO2_agr": 34}},
+  "stray_current_class": číslo nebo null,
+  "geotechnical_category": číslo nebo null,
+  "foundation_recommendation": "text" nebo null,
+  "pile_depth_estimate": "8-10 m" nebo null,
+  "special_measures": ["ocelové výpažnice", "geotechnický dozor"],
+  "settlements": [{{"location": "za opěrou km 2,680", "value_cm": 24.2, "consolidation_95pct_days": 150}}]
+}}""",
     }
+
+    # v3: Extended prompts for bridge dílčí TZ and full PD
+    BRIDGE_TZ_PROMPT = """Parsuj českou technickou zprávu mostu (dílčí TZ SO 2xx) podle ČSN 73 6200.
+
+DOKUMENT:
+{text}
+
+Extrahuj KAŽDOU hodnotu z Odst. 4.x (klasifikace) a Odst. 5.x (rozměry):
+- Odst. 4.1-4.16: druh, překážka, počet polí, materiál, typ mostu
+- Odst. 5.3→light_span_m, 5.4→span_m, 5.7→nk_length_m, 5.9→bridge_length_m
+- Odst. 5.13→bridge_width_m, 5.14→free_width_m, 5.19→bridge_height_m
+- Odst. 5.20→structural_height_m, 5.23→clearance_under_m, 5.28→load_class
+
+Dále extrahuj: NK (nosníky, deska, sklony), založení (piloty, průměr, délka),
+beton (NK, spodní stavba, ochrana, podkladní), sedání, PKO, související SO.
+
+KRITICKÉ: Pokud se hodnota změnila oproti DSP, zapiš do pile_change_note.
+
+VRAŤ POUZE VALIDNÍ JSON matching BridgeSOParams schema:
+{{
+  "csn_4_1": "text", "csn_4_2": "text", "csn_4_3": "text",
+  "csn_4_12": "text", "csn_4_14": "text",
+  "light_span_m": číslo, "span_m": číslo, "span_config": "17+25+17",
+  "nk_length_m": číslo, "nk_area_m2": číslo,
+  "bridge_length_m": číslo, "bridge_width_m": číslo,
+  "free_width_m": číslo, "bridge_height_m": číslo,
+  "structural_height_m": číslo, "clearance_under_m": číslo,
+  "load_class": "ČSN EN 1991-2, skupina 1",
+  "nk_type": "text", "beam_count": číslo, "beam_spacing_mm": číslo,
+  "slab_thickness_mm": číslo,
+  "foundation_type": "text", "pile_diameter_mm": číslo, "pile_length_m": číslo,
+  "pile_change_note": "text nebo null",
+  "concrete_nk": "C30/37-XF2,XD1,XC4", "concrete_substructure": "text",
+  "reinforcement": "B500B",
+  "settlement_abutment_1_mm": číslo, "deflection_span_mm": číslo,
+  "consolidation_95pct_days": číslo,
+  "pko_aggressivity": "C4", "stray_current_protection": číslo,
+  "related_sos": ["SO 020", "SO 101"],
+  "obstacle_crossed": "text", "chainage_km": číslo
+}}"""
+
+    FULL_PD_PROMPT = """Analyzuj zadávací dokumentaci (ZD) veřejné zakázky dle ZZVZ (zákon 134/2016 Sb.).
+
+TOTO JE NEJKRITIČTĚJŠÍ EXTRAKCE — chybějící požadavek = diskvalifikace uchazeče.
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. IDENTIFIKACE: název zakázky, číslo, IČO zadavatele, kontakt, datová schránka
+2. HODNOTA: předpokládaná hodnota v Kč bez DPH — PŘESNÉ číslo
+3. KVALIFIKACE §74-79: KAŽDÝ práh (obrat, reference, personál, vybavení)
+4. HODNOTÍCÍ KRITÉRIA: název, váha %, směr (nižší/vyšší = lepší), min/max
+5. PODÁNÍ: elektronický nástroj, max MB, formáty, papírové podání
+6. LHŮTA + JISTOTA: měsíce, částka, bankovní záruka, účet, VS
+7. PODDODAVATELÉ: vlastní kapacity, identifikace
+8. PŘÍLOHY: číslo + název každé přílohy
+
+VRAŤ POUZE VALIDNÍ JSON matching TenderExtraction schema:
+{{
+  "tender_name": "text", "tender_number": "text",
+  "procedure_type": "otevřené řízení § 56 ZZVZ",
+  "contracting_authority": "text", "authority_ico": "text",
+  "contact_person": "text", "data_box": "text",
+  "estimated_value_czk": číslo,
+  "min_annual_turnover_czk": číslo nebo null,
+  "turnover_period": "text",
+  "required_personnel": [{{"role": "text", "reference_description": "text", "authorization_required": "text"}}],
+  "required_references": [{{"reference_code": "4.5.1a", "description": "text", "min_value_czk": číslo}}],
+  "required_equipment": [{{"description": "text", "min_capacity": "text"}}],
+  "evaluation_criteria": [{{"name": "text", "weight_pct": číslo, "direction": "lower_better"}}],
+  "submission_method": "elektronicky", "electronic_tool": "text",
+  "max_file_size_mb": číslo, "accepted_formats": ["pdf", "docx"],
+  "binding_period_months": číslo,
+  "jistota_required": true/false, "jistota_amount_czk": číslo,
+  "jistota_forms": ["bankovní záruka"], "jistota_bank_account": "text",
+  "jistota_variable_symbol": "text",
+  "own_capacity_required": ["text"],
+  "attachments": [{{"number": 1, "name": "text"}}],
+  "contract_type": "FIDIC Red Book nebo null",
+  "risk_flags": ["popis rizika"]
+}}"""
 
     EXTRACTION_MODEL_MAP = {
         DocCategory.TZ: TechnicalExtraction,
         DocCategory.RO: BillOfQuantitiesExtraction,
         DocCategory.PD: TenderConditionsExtraction,
         DocCategory.HA: ScheduleExtraction,
+        DocCategory.GE: GTPExtraction,
+    }
+
+    # ── v3.1: SO Type-Specific Prompts ──
+
+    ROAD_TZ_PROMPT = """Parsuj českou technickou zprávu pozemní komunikace (SO 1xx).
+
+Dokument sleduje strukturu a–o dle standardu silničních PD.
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "road_designation": "číslo silnice (III/1213, II/173, I/20)",
+  "road_class": 1|2|3,
+  "road_category": "S 6,5/90",
+  "road_type": "přeložka|úprava|novostavba",
+  "road_length_m": 156.191,
+  "alignment_type": "přímá|oblouk",
+  "curve_radius_m": null,
+  "cross_slope_pct": 2.5,
+  "cross_slope_type": "jednostranný|střechovitý",
+  "lane_width_m": 2.75,
+  "lane_count": 2,
+  "shoulder_paved_m": 0.25,
+  "shoulder_unpaved_m": 0.75,
+  "pavement_catalog": "TP 170",
+  "traffic_load_class": "IV",
+  "design_damage_level": "D1",
+  "surface_type": "asfaltový povrch",
+  "pavement_layers": ["ACO 11+ tl. 40mm", "ACL 16+ tl. 60mm", "MZK tl. 170mm"],
+  "active_zone_thickness_m": 0.50,
+  "min_cbr_pct": 15,
+  "earthwork_type": "zářez|násyp|smíšený",
+  "has_sanation": true|false,
+  "sanation_type": "popis sanace",
+  "has_guardrails": true|false,
+  "guardrail_type": "ocelové jednostranné",
+  "drainage_method": "příčný a podélný sklon do příkopů",
+  "intersections": [{{"km": "0.221", "type": "styková"}}],
+  "volume_cut_m3": null,
+  "volume_fill_m3": null,
+  "related_sos": ["SO 221", "SO 801"],
+  "future_owner": "SÚS JK"
+}}
+
+Vrať POUZE validní JSON."""
+
+    DIO_PROMPT = """Parsuj český dokument DIO (Dopravně inženýrská opatření, SO 180).
+
+Tento dokument popisuje fáze výstavby a dopravní omezení.
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "total_duration_weeks": 98,
+  "phases": [
+    {{
+      "phase_number": 1,
+      "name": "Přípravné práce",
+      "duration_weeks": 9,
+      "sos_in_phase": ["SO 020", "SO 321"],
+      "traffic_restrictions": ["uzavírka III/1213"],
+      "key_activities": ["sejmutí humózních vrstev"]
+    }}
+  ],
+  "closures": [
+    {{
+      "road": "III/1213",
+      "closure_type": "úplná uzavírka",
+      "reason": "realizace mostu SO 221",
+      "phase": 2
+    }}
+  ],
+  "detours": [
+    {{
+      "for_road": "III/1213",
+      "route_description": "ze Sedlice po I/20 směr Blatná",
+      "roads_used": ["I/20", "III/1214"]
+    }}
+  ],
+  "bus_impact": "popis dopadu na autobusy",
+  "rail_impact": "popis dopadu na železnici",
+  "provisional_roads": [{{"so": "SO 171", "speed_limit": 30}}],
+  "phase_so_mapping": {{"fáze_1": ["SO 020"], "fáze_2": ["SO 101"]}},
+  "related_sos": ["SO 020", "SO 101", "SO 111"]
+}}
+
+KRITICKÉ: DIO dokumenty uvádí VŠECHNY SO celé stavby. Extrahuj KOMPLETNÍ seznam.
+Vrať POUZE validní JSON."""
+
+    WATER_TZ_PROMPT = """Parsuj českou technickou zprávu vodohospodářského objektu (SO 3xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "water_type": "přeložka_vodovod|přeložka_kanalizace|odvodnění|úprava_vodoteč|meliorace",
+  "pipe_material": "TLT|PE100|PP|PVC|OC",
+  "pipe_dn": 300,
+  "pipe_pn": 16,
+  "pipe_standard": "ČSN EN 545:2007",
+  "pipe_quality": "K9",
+  "pipe_length_m": 444.61,
+  "outer_protection": "popis vnější ochrany",
+  "inner_lining": "cementová vystýlka",
+  "joint_type": "násuvné hrdlové, zámkové BRS",
+  "casing_material": "OC",
+  "casing_dn": 600,
+  "casing_length_m": 154.97,
+  "casing_protection": "pozinkování",
+  "trench_walls": "svislé stěny",
+  "trench_shoring": "pažení od hloubky 1,2 m",
+  "bedding_material": "štěrkopísek max. zrna 4mm",
+  "bedding_depth_mm": 100,
+  "detection_wire": "CYKY (O) 2x4mm²",
+  "warning_foil": "bílá, POZOR VODOVOD",
+  "connection_type": "speciální spojky",
+  "pressure_test": "1,5× max. provozní tlak",
+  "disinfection": true,
+  "crossing_km": ["km 3,556"],
+  "owner": "Jihočeský vodárenský svaz",
+  "related_sos": ["SO 122"]
+}}
+
+Vrať POUZE validní JSON."""
+
+    VEGETATION_TZ_PROMPT = """Parsuj českou technickou zprávu vegetačních úprav (SO 8xx).
+
+Tento dokument je typicky nejdelší. Extrahuj KOMPLETNÍ data.
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "climate_region": "MT7",
+  "total_trees": 188,
+  "total_shrubs": 17226,
+  "tree_species": [
+    {{"code": "QP", "latin_name": "Quercus petraea", "czech_name": "dub zimní", "total_count": 38, "size_category": "strom"}}
+  ],
+  "shrub_species": [
+    {{"code": "CB", "latin_name": "Cotoneaster bullatus", "czech_name": "skalník puchýřnatý", "total_count": 500, "size_category": "velký_keř"}}
+  ],
+  "lawn_methods": [
+    {{"surface_type": "svah", "method": "hydroosev", "seed_rate_g_m2": 20}}
+  ],
+  "lawn_seed_mix": {{
+    "name": "Směs pro svahy",
+    "components": [{{"species_cz": "lipnice luční", "percentage": 20.0}}],
+    "seed_rate_g_m2": 20
+  }},
+  "lawn_care_count": 4,
+  "watering_count": 3,
+  "mulch_material": "hrubá borka",
+  "mulch_thickness_cm": 10,
+  "tree_care_years": 3,
+  "tree_stakes": "3 kůly 2,5m",
+  "standards": ["TKP 13", "TP 99", "ČSN 83 9001"],
+  "greened_sos": ["SO 101", "SO 111"],
+  "related_sos": ["SO 101"]
+}}
+
+Extrahuj KAŽDÝ druh rostliny s počtem. Vrať POUZE validní JSON."""
+
+    ELECTRO_TZ_PROMPT = """Parsuj českou technickou zprávu elektro/sdělovacího objektu (SO 4xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "electro_type": "přeložka_VN|kabelizace_NN|přeložka_optická|DIS_meteostanice",
+  "voltage_level": "VN|NN|VVN",
+  "cable_type": "optický|metalický",
+  "telecom_operator": "CETIN a.s.",
+  "energy_operator": "EG.D a.s.",
+  "chainage_km": "km 3,700",
+  "realized_by": "EG.D a.s.",
+  "is_separate_contract": true,
+  "dis_type": "meteostanice|sčítač dopravy",
+  "related_sos": ["SO 101"]
+}}
+
+Vrať POUZE validní JSON."""
+
+    PIPELINE_TZ_PROMPT = """Parsuj českou technickou zprávu trubního vedení (SO 5xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj do JSON:
+{{
+  "pipeline_type": "VTL_plynovod|STL_plynovod",
+  "pressure_class": "VTL|STL|NTL",
+  "pipe_dn": 100,
+  "pipe_material": "ocel|PE",
+  "pipe_length_m": 150.0,
+  "chainage_km": "km 3,730",
+  "operator": "EG.D a.s.",
+  "realized_by": "EG.D a.s.",
+  "is_separate_contract": true,
+  "coordination_note": "koordinace s SO 101.1",
+  "related_sos": ["SO 101"]
+}}
+
+Vrať POUZE validní JSON."""
+
+    # Map params_key → prompt
+    SO_TYPE_PROMPTS = {
+        "road_params": ROAD_TZ_PROMPT,
+        "traffic_params": DIO_PROMPT,
+        "water_params": WATER_TZ_PROMPT,
+        "vegetation_params": VEGETATION_TZ_PROMPT,
+        "electro_params": ELECTRO_TZ_PROMPT,
+        "pipeline_params": PIPELINE_TZ_PROMPT,
     }
 
     async def _extract_type_specific(
@@ -742,44 +1109,146 @@ VRAŤ POUZE VALIDNÍ JSON:
         """
         Run type-specific AI extraction based on document classification.
 
+        v3: Uses enriched classification (sub_type) to select specialized prompts:
+        - TZ with sub_type TZ-D on bridge docs → BRIDGE_TZ_PROMPT → BridgeSOParams
+        - PD with sub_type PD-ZD → FULL_PD_PROMPT → TenderExtraction
+        - GE → GTP prompt → GTPExtraction
+        - Otherwise uses standard TYPE_EXTRACTION_PROMPTS
+
+        Also runs Layer 2 regex extraction for PD/Bridge/GTP fields.
+
         Returns dict with keys like 'technical', 'bill_of_quantities', etc.
         """
         category = classification.category
-        prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
-        model_cls = self.EXTRACTION_MODEL_MAP.get(category)
+        results: Dict[str, Any] = {}
+
+        # --- Layer 2 regex pre-extraction for specialized types ---
+        if category == DocCategory.PD:
+            pd_regex = self.extractor.extract_pd(document_text)
+            if pd_regex:
+                results["pd_regex"] = pd_regex
+                logger.info(f"PD regex: {len(pd_regex)} fields extracted")
+
+        if category == DocCategory.TZ:
+            bridge_regex = self.extractor.extract_bridge(document_text)
+            if bridge_regex:
+                results["bridge_regex"] = bridge_regex
+                logger.info(f"Bridge regex: {len(bridge_regex)} fields extracted")
+
+        if category == DocCategory.GE:
+            gtp_regex = self.extractor.extract_gtp(document_text)
+            if gtp_regex:
+                results["gtp_regex"] = gtp_regex
+                logger.info(f"GTP regex: {len(gtp_regex)} fields extracted")
+
+        # --- v3.1: SO type-specific regex pre-extraction ---
+        so_code = getattr(classification, 'so_code', None)
+        so_params_key = None
+        if so_code:
+            so_params_key = detect_so_params_key(so_code)
+        if not so_params_key and category == DocCategory.TZ:
+            so_params_key = detect_so_type_from_content(document_text)
+
+        if so_params_key and so_params_key not in ("bridge_params", "technical"):
+            so_regex = extract_so_type_params(so_params_key, document_text)
+            if so_regex:
+                results["so_type_regex"] = so_regex
+                results["so_params_key"] = so_params_key
+                logger.info(f"SO type regex ({so_params_key}): {len(so_regex)} fields")
+
+        # --- Select prompt and model based on sub_type ---
+        prompt_template = None
+        model_cls = None
+
+        # v3: Check for specialized prompts based on sub_type
+        sub_type = getattr(classification, 'sub_type', None)
+
+        if category == DocCategory.TZ and sub_type == DocSubType.TZ_D:
+            # Bridge dílčí TZ — use full ČSN 73 6200 prompt
+            prompt_template = self.BRIDGE_TZ_PROMPT
+            model_cls = BridgeSOParams
+        elif category == DocCategory.PD and sub_type in (DocSubType.PD_ZD, None):
+            # Full PD/Zadávací dokumentace — use ZZVZ prompt
+            prompt_template = self.FULL_PD_PROMPT
+            model_cls = TenderExtraction
+        elif so_params_key and so_params_key in self.SO_TYPE_PROMPTS:
+            # v3.1: SO type-specific prompt (road, water, vegetation, DIO, etc.)
+            prompt_template = self.SO_TYPE_PROMPTS[so_params_key]
+            model_cls = SO_PARAMS_CLASSES.get(so_params_key)
+        else:
+            # Standard extraction
+            prompt_template = self.TYPE_EXTRACTION_PROMPTS.get(category)
+            model_cls = self.EXTRACTION_MODEL_MAP.get(category)
 
         if not prompt_template or not model_cls:
-            return {}
+            return results
 
         # Limit text to avoid token overflow (use first 30K chars)
         text_for_extraction = document_text[:30_000]
         prompt = prompt_template.format(text=text_for_extraction)
 
         try:
-            result = await self.enricher._call_llm(prompt)
-            if not result or not isinstance(result, dict):
-                return {}
+            # v3.1.1: Use task-based routing for extraction
+            ai_result = await self.enricher.call_llm_for_task(prompt, task_type="extract")
+            if not ai_result or not isinstance(ai_result, dict):
+                return results
+
+            # Merge regex facts into AI result (regex wins on conflicts — confidence=1.0)
+            if category == DocCategory.PD and "pd_regex" in results:
+                for k, v in results["pd_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
+
+            if category == DocCategory.TZ and "bridge_regex" in results:
+                for k, v in results["bridge_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
+
+            if category == DocCategory.GE and "gtp_regex" in results:
+                for k, v in results["gtp_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
+
+            # v3.1: Merge SO type regex into AI result
+            if "so_type_regex" in results:
+                for k, v in results["so_type_regex"].items():
+                    if v is not None and (k not in ai_result or ai_result[k] is None):
+                        ai_result[k] = v
 
             # Parse into Pydantic model for validation
-            extraction = model_cls(**result)
+            extraction = model_cls(**ai_result)
 
-            # Map category to response field name
+            # Map to response field name
             field_map = {
                 DocCategory.TZ: "technical",
                 DocCategory.RO: "bill_of_quantities",
                 DocCategory.PD: "tender_conditions",
                 DocCategory.HA: "schedule",
+                DocCategory.GE: "gtp",
             }
-            field_name = field_map.get(category)
-            if field_name:
-                logger.info(f"Type-specific extraction ({category.value}): "
-                             f"{len(result)} fields extracted")
-                return {field_name: extraction}
+
+            # v3: Override field name for specialized extractions
+            if model_cls == BridgeSOParams:
+                results["bridge_params"] = extraction
+                logger.info(f"Bridge TZ extraction: {len(ai_result)} fields")
+            elif model_cls == TenderExtraction:
+                results["tender"] = extraction
+                logger.info(f"Full PD extraction: {len(ai_result)} fields")
+            elif so_params_key and so_params_key in SO_PARAMS_CLASSES:
+                # v3.1: Store under SO-type-specific key
+                results[so_params_key] = extraction
+                logger.info(f"SO type extraction ({so_params_key}): {len(ai_result)} fields")
+            else:
+                field_name = field_map.get(category)
+                if field_name:
+                    results[field_name] = extraction
+                    logger.info(f"Type-specific extraction ({category.value}): "
+                                 f"{len(ai_result)} fields extracted")
 
         except Exception as e:
             logger.warning(f"Type-specific extraction failed ({category.value}): {e}")
 
-        return {}
+        return results
 
 
 # =============================================================================

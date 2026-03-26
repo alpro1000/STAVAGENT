@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.1.0
-**Last Updated:** 2026-03-21
+**Version:** 3.1.1
+**Last Updated:** 2026-03-26
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -264,18 +264,66 @@ VITE_DISABLE_AUTH=true
   - Results panel now scrolls properly on mobile after calculation
 - **Build fix:** added `deadline_check` type to local `PlannerOutput` in `exportPlanXLSX.ts`
 
+**Completed (2026-03-26):**
+- **Universal Parser v3.0**: Multi-document merge system
+  - SO file grouping by filename regex, 3-layer extraction pipeline
+  - Priority-based merge with contradiction detection (2% numeric tolerance)
+  - BridgeSOParams, GTPExtraction, TenderExtraction, TechnicalExtraction
+  - Frontend: ProjectAnalysis tabs, SOCard, CoverageMatrix, ContradictionsList, TenderDashboard
+  - `technical` field added to MergedSO for non-bridge/non-GTP universal data
+- **Universal Parser v3.1**: Non-bridge SO type expansion (7 new types)
+  - New schemas: RoadSOParams, TrafficDIOParams, WaterSOParams, VegetationSOParams, ElectroSOParams, PipelineSOParams, SignageSOParams
+  - `so_type_schemas.py` — SO Type Registry with auto-detection by SO number (0xx-8xx ranges + overrides for 180/190)
+  - `so_type_regex.py` — Regex patterns for road, DIO, water, vegetation, electro, pipeline extraction
+  - `document_processor.py` — 6 new AI prompts (ROAD_TZ, DIO, WATER_TZ, VEGETATION_TZ, ELECTRO_TZ, PIPELINE_TZ)
+  - `so_merger.py` — Universal merger: auto-detects SO type, collects type-specific params by priority
+  - `MergedSO` expanded: `so_category`, `so_category_label`, 7 new Optional params fields
+  - Frontend: 8 new Czech label maps, specialized renderers (pavement layers, phases, closures, detours, species table)
+  - Content-based SO type fallback when filename detection fails
+- **Universal Parser v3.1.1**: Multi-provider pipeline & flexible detection
+  - `document_classifier.py` v1.2.0 — SECTION_ID_PATTERNS (SO, D.x.x, A-F.x, PS, IO), CONSTRUCTION_TYPE_MARKERS (9 categories)
+  - New functions: `extract_section_ids()`, `detect_construction_type()`, `is_non_construction_document()`, `classify_document_enhanced()`
+  - `provider_router.py` — Task-based LLM routing (TASK_PROVIDER_MAP: classify→Flash, extract→Sonnet, verify→Perplexity)
+  - `perplexity_classifier.py` — Tier 3 web-search classification for unknown docs + non-construction summarization
+  - `GenericSummary` model for non-construction documents (legal, invoices, correspondence)
+  - `MergedSO` expanded: `construction_type`, `section_ids`, `is_non_construction`, `generic_summary`
+  - Frontend: GenericSummary interface, CONSTRUCTION_TYPE_LABELS, NONCONSTRUCTION_TYPE_LABELS, renderGenericSummary()
+  - SOCard: construction type badge, section IDs display, non-construction summary section
+  - **STATUS: Fully wired into pipeline (commit 2).** Integration complete:
+    - `document_processor.py`: uses `classify_document_enhanced()`, stores `_last_enhanced_metadata`
+    - `passport_enricher.py`: `call_llm_for_task(prompt, task_type)` method routes via provider_router
+    - `document_classifier.py`: `classify_document_async()` has Perplexity Tier 3b for unknown docs
+    - `so_merger.py`: populates `construction_type`, `section_ids`, `is_non_construction` from file results
+    - `routes_passport.py`: passes enhanced metadata (`section_ids`, `construction_type`, `is_non_construction`) through to merger
+    - `learned_patterns.py` — Self-learning pattern system:
+      - `LearnedPattern` model + `PatternStore` (JSON file-based, atomic writes)
+      - `match_learned_pattern()` — Tier 0 lookup (fastest, zero-cost)
+      - `learn_from_classification()` — creates patterns from Perplexity + optional LLM supplement
+      - `supplement_partial_result()` — fills gaps when Perplexity returns partial info
+      - `EnrichmentGap` tracking: knows which fields are missing, who resolved them
+      - `needs_review` flag for human verification of low-confidence patterns
+      - 4-step cycle: Perplexity (partial) → LLM (supplement) → Human (review) → Rule (Tier 0)
+      - Wired into `classify_document_enhanced()` as Tier 0 + into `classify_document_async()` learning hook
+
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
 **Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
 
 **Next session tasks:**
-1. User downloads PERI PDFs from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py` to extract specs
-2. Enrich formwork-systems.ts with parsed PDF data (panel weights, concrete pressures, exact dimensions)
-3. Merge PR `claude/auth-saas-planner-features-jIqEd` → main (conflict resolved, security fix applied)
-4. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
-5. Position write-back: Monolit+Registry→Portal sync
+1. **Universal Parser v3.1.1 testing**: Test full pipeline with real PDF documents (bridge SO, road SO, non-construction docs) to validate 4-tier classification, self-learning, and GenericSummary
+2. **Merge branch** `claude/cross-service-cleanup-fixes-ND9ma` → main (4 commits: cross-service cleanups + v3.1.1 full pipeline)
+3. **Merge PR** `claude/auth-saas-planner-features-jIqEd` → main (conflict resolved, security fix applied)
+4. PERI PDFs: download from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py`, enrich formwork-systems.ts
+5. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
+6. Position write-back: Monolit+Registry→Portal sync
 
-**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2, Vitest migration
+**Current branch status:**
+- `claude/cross-service-cleanup-fixes-ND9ma` — pushed, ready for review/merge. Contains:
+  - 8 cross-service cleanups (CORS, models, Render refs, registry URLs, portal middleware)
+  - Planner: Resource Optimization engine + mobile scroll fix
+  - Universal Parser v3.0 → v3.1 → v3.1.1 (full pipeline with self-learning)
+
+**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2 (real PDF testing + tuning), Vitest migration
 
 ---
 
