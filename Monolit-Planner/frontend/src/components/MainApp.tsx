@@ -284,7 +284,7 @@ export default function MainApp() {
           {/* Tab content */}
           {activeTab === 'positions' && <PositionsTable />}
           {activeTab === 'soupis' && (
-            <SoupisTab projectId={bridges?.[0]?.bridge_id || bridges?.[0]?.project_id || ''} />
+            <SoupisTab projectId={bridges?.[0]?.bridge_id || ''} />
           )}
         </main>
       </div>
