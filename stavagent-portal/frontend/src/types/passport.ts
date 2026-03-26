@@ -393,6 +393,7 @@ export interface GTPExtraction {
   water_aggressivity?: string;
   aggressivity_details?: Record<string, number | string>;
   stray_current_class?: number;
+  geotechnical_category?: number;
   foundation_recommendation?: string;
   pile_depth_estimate?: string;
   special_measures?: string[];
@@ -554,7 +555,7 @@ export interface ContradictionRecord {
   value_2: string;
   source_2: string;
   resolution: string;
-  severity: 'high' | 'medium' | 'low';
+  severity: 'critical' | 'warning' | 'info';
   note?: string;
 }
 
@@ -562,10 +563,14 @@ export interface ContradictionRecord {
 
 export interface SOFile {
   filename: string;
-  file_type: string;
-  pages: number;
-  processed: boolean;
-  priority: number;
+  file_path?: string;
+  file_type?: string;
+  file_hash?: string;
+  so_code?: string;
+  pages?: number;
+  processed?: boolean;
+  priority?: number;
+  classification?: ClassificationInfo;
 }
 
 export interface SOFileGroup {
