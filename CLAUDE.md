@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.1.0
-**Last Updated:** 2026-03-21
+**Version:** 3.1.1
+**Last Updated:** 2026-03-26
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -310,13 +310,20 @@ VITE_DISABLE_AUTH=true
 **Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
 
 **Next session tasks:**
-1. User downloads PERI PDFs from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py` to extract specs
-2. Enrich formwork-systems.ts with parsed PDF data (panel weights, concrete pressures, exact dimensions)
-3. Merge PR `claude/auth-saas-planner-features-jIqEd` → main (conflict resolved, security fix applied)
-4. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
-5. Position write-back: Monolit+Registry→Portal sync
+1. **Universal Parser v3.1.1 testing**: Test full pipeline with real PDF documents (bridge SO, road SO, non-construction docs) to validate 4-tier classification, self-learning, and GenericSummary
+2. **Merge branch** `claude/cross-service-cleanup-fixes-ND9ma` → main (4 commits: cross-service cleanups + v3.1.1 full pipeline)
+3. **Merge PR** `claude/auth-saas-planner-features-jIqEd` → main (conflict resolved, security fix applied)
+4. PERI PDFs: download from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py`, enrich formwork-systems.ts
+5. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
+6. Position write-back: Monolit+Registry→Portal sync
 
-**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2, Vitest migration
+**Current branch status:**
+- `claude/cross-service-cleanup-fixes-ND9ma` — pushed, ready for review/merge. Contains:
+  - 8 cross-service cleanups (CORS, models, Render refs, registry URLs, portal middleware)
+  - Planner: Resource Optimization engine + mobile scroll fix
+  - Universal Parser v3.0 → v3.1 → v3.1.1 (full pipeline with self-learning)
+
+**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2 (real PDF testing + tuning), Vitest migration
 
 ---
 
