@@ -15,6 +15,7 @@ VERSION: 1.0.0 (2026-02-10)
 import logging
 from pathlib import Path
 from typing import Dict, Any, Optional
+from datetime import datetime
 import tempfile
 import os
 
@@ -655,8 +656,6 @@ async def get_passport_summary(passport_id: str):
     return summary
 
 
-# Import at module level for FastAPI router registration
-from datetime import datetime
 
 
 # ============================================================================
