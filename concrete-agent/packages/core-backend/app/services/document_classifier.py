@@ -284,6 +284,34 @@ async def classify_document_async(
                 llm_call=perplexity_llm_call or llm_call,
             )
             if pplx_result and pplx_result.get("confidence", 0) > result.confidence:
+                # Learn from Perplexity result (self-learning)
+                try:
+                    from app.services.learned_patterns import (
+                        learn_from_classification, supplement_partial_result,
+                    )
+                    # Check if Perplexity result is partial (missing fields)
+                    is_partial = (
+                        not pplx_result.get("params_key")
+                        or not pplx_result.get("so_type")
+                    )
+                    llm_supplement = None
+                    if is_partial and llm_call:
+                        llm_supplement = await supplement_partial_result(
+                            text, pplx_result, llm_call
+                        )
+
+                    # Store as learned pattern for future Tier 0 matches
+                    learning = learn_from_classification(
+                        filename, text, pplx_result, llm_supplement
+                    )
+                    logger.info(
+                        f"Learned pattern created: completeness={learning.completeness_pct}%, "
+                        f"needs_review={learning.pattern.needs_review}, "
+                        f"gaps={len(learning.gaps)}"
+                    )
+                except Exception as learn_err:
+                    logger.debug(f"Pattern learning skipped: {learn_err}")
+
                 # Map Perplexity result to ClassificationInfo
                 if not pplx_result.get("is_construction", True):
                     # Non-construction → OT
@@ -629,7 +657,38 @@ def classify_document_enhanced(
         - construction_type: detected construction type or None
         - is_non_construction: bool
         - so_code: extracted SO code or None
+        - learned_pattern_used: bool (whether Tier 0 matched)
     """
+    # Tier 0: Check learned patterns first (fastest, zero-cost)
+    try:
+        from app.services.learned_patterns import match_learned_pattern
+        learned = match_learned_pattern(filename, text)
+        if learned and learned.get("confidence", 0) >= 0.6:
+            # Build ClassificationInfo from learned pattern
+            raw_cat = learned.get("doc_category", "OT")
+            valid_cats = {c.value for c in DocCategory}
+            if raw_cat in valid_cats:
+                classification = ClassificationInfo(
+                    category=DocCategory(raw_cat),
+                    confidence=learned["confidence"],
+                    method="learned_pattern",
+                    detected_keywords=[f"pattern#{learned.get('pattern_index', '?')}"],
+                )
+                classification = enrich_classification(classification, filename)
+
+                result = {
+                    "classification": classification,
+                    "section_ids": extract_section_ids(text) if text else [],
+                    "construction_type": learned.get("construction_type") or (detect_construction_type(text) if text else None),
+                    "is_non_construction": not learned.get("is_construction", True),
+                    "so_code": classification.so_code,
+                    "learned_pattern_used": True,
+                }
+                logger.info(f"Tier 0 (learned pattern) matched '{filename}' → {raw_cat}")
+                return result
+    except Exception as e:
+        logger.debug(f"Learned pattern check skipped: {e}")
+
     # Standard classification (Tiers 1-2)
     classification = classify_document(filename, text)
 
@@ -642,6 +701,7 @@ def classify_document_enhanced(
         "construction_type": None,
         "is_non_construction": False,
         "so_code": classification.so_code,
+        "learned_pattern_used": False,
     }
 
     if text:

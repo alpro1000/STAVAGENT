@@ -295,7 +295,15 @@ VITE_DISABLE_AUTH=true
     - `document_classifier.py`: `classify_document_async()` has Perplexity Tier 3b for unknown docs
     - `so_merger.py`: populates `construction_type`, `section_ids`, `is_non_construction` from file results
     - `routes_passport.py`: passes enhanced metadata (`section_ids`, `construction_type`, `is_non_construction`) through to merger
-    - **Remaining:** Self-learning patterns (LearnedPattern: Perplexity findings → new Tier 1 rules)
+    - `learned_patterns.py` — Self-learning pattern system:
+      - `LearnedPattern` model + `PatternStore` (JSON file-based, atomic writes)
+      - `match_learned_pattern()` — Tier 0 lookup (fastest, zero-cost)
+      - `learn_from_classification()` — creates patterns from Perplexity + optional LLM supplement
+      - `supplement_partial_result()` — fills gaps when Perplexity returns partial info
+      - `EnrichmentGap` tracking: knows which fields are missing, who resolved them
+      - `needs_review` flag for human verification of low-confidence patterns
+      - 4-step cycle: Perplexity (partial) → LLM (supplement) → Human (review) → Rule (Tier 0)
+      - Wired into `classify_document_enhanced()` as Tier 0 + into `classify_document_async()` learning hook
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
