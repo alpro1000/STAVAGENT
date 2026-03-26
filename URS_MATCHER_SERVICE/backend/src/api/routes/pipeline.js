@@ -312,4 +312,103 @@ router.get('/otskp/prefix/:prefix', async (req, res) => {
   }
 });
 
+// ============================================================================
+// COMPOSITE DETECTION — OTSKP items that include sub-components
+// ============================================================================
+
+const COMPOSITE_PREFIXES = [
+  '528',  // Kolejový rošt (rails + sleepers + fastening)
+  '529',  // Kolejový rošt variants
+  '52A',  // Kolejový rošt regenerated
+  '52B',  // Kolejový rošt long strips
+  '536',  // Výhybkové konstrukce (whole)
+  '537',  // Betonový žlab (whole)
+];
+
+function isCompositeItem(code) {
+  if (!code) return false;
+  const upper = code.toUpperCase();
+  return COMPOSITE_PREFIXES.some(prefix => upper.startsWith(prefix));
+}
+
+// ============================================================================
+// POST /api/pipeline/match-by-otskp - Match by OTSKP code → URS candidates
+// ============================================================================
+
+router.post('/match-by-otskp', async (req, res) => {
+  const startTime = Date.now();
+
+  try {
+    const { otskp_code, otskp_name, otskp_mj, quantity } = req.body;
+
+    if (!otskp_code) {
+      return res.status(400).json({
+        error: 'Missing "otskp_code" field',
+        usage: 'POST /api/pipeline/match-by-otskp { "otskp_code": "5289E2", "otskp_mj": "M", "quantity": 280 }'
+      });
+    }
+
+    await otskpCatalogService.load();
+
+    // 1. Get OTSKP item
+    const otskpItem = otskpCatalogService.getByCode(otskp_code);
+    const itemName = otskp_name || (otskpItem ? otskpItem.name : otskp_code);
+    const itemMj = otskp_mj || (otskpItem ? otskpItem.unit : 'M');
+
+    // 2. Check if composite
+    const composite = isCompositeItem(otskp_code);
+
+    // 3. Classify to TSKP section
+    let tskpSection = null;
+    try {
+      tskpSection = tskpParserService.classifyToSection(itemName);
+    } catch (e) {
+      logger.warn(`TSKP classification failed for ${otskp_code}: ${e.message}`);
+    }
+
+    // 4. Search for URS candidates via text matching
+    let ursCandidates = [];
+    if (!composite) {
+      try {
+        const matchResult = await matchSingle({
+          text: itemName,
+          quantity: quantity || null,
+          unit: itemMj,
+          catalog: 'urs',
+          sectionHint: tskpSection ? tskpSection.code : null,
+          topN: 5,
+          minConfidence: 0.3,
+        });
+        ursCandidates = matchResult.candidates || [];
+      } catch (e) {
+        logger.warn(`URS search failed for ${otskp_code}: ${e.message}`);
+      }
+    }
+
+    const elapsed = Date.now() - startTime;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        otskp_code,
+        otskp_name: itemName,
+        otskp_mj: itemMj,
+        otskp_price: otskpItem ? otskpItem.price : null,
+        is_composite: composite,
+        composite_note: composite
+          ? 'Kompozitní položka — zahrnuje všechny komponenty v jedné ceně. Nehledejte sub-položky.'
+          : null,
+        tskp_section: tskpSection ? { code: tskpSection.code, name: tskpSection.name } : null,
+        urs_candidates: ursCandidates,
+        candidates_count: ursCandidates.length,
+        elapsed_ms: elapsed,
+      }
+    });
+
+  } catch (error) {
+    logger.error(`match-by-otskp error: ${error.message}`);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;

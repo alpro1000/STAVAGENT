@@ -80,6 +80,11 @@ CONSTRUCTION_TYPE_MARKERS: Dict[str, List[str]] = {
         "žalob", "soud", "rozsud",
         "faktur", "objednávk",
     ],
+    "pozemní_TZB": [
+        "D.1.4", "elektroinstalace", "slaboproud",
+        "vzduchotechnik", "zdravotechnik", "vytápění",
+        "měření a regulac",
+    ],
 }
 
 
@@ -550,6 +555,60 @@ CONTENT_TYPE_MARKERS = {
     "signage_params": [
         "dopravní značení", "vodorovné značení", "svislé značení",
     ],
+    # D.1.4 professions (pozemní stavby) — detected by content
+    "silnoproud_params": [
+        "silnoproudé elektroinstalace", "napájecí soustava",
+        "výkonová bilance", "rozvaděč", "hlavní jistič",
+        "TN-C-S", "TN-S", "CYKY",
+    ],
+    "slaboproud_params": [
+        "slaboproudé systémy", "strukturovaná kabeláž",
+        "EPS", "PZTS", "CCTV", "SKV", "esserbus",
+    ],
+    "vzt_params": [
+        "vzduchotechnické zařízení", "klimatizac",
+        "rekuperac", "zpětné získávání tepla",
+        "nuceného větrání", "digestoř", "fan-coil",
+        "vzduchotechnická jednotka", "objemový průtok",
+        "rekuperační výměník", "parní vyvíječ",
+        "variabilní průtok vzduchu", "požární klapka EI",
+        "split systém", "zařízení č.",
+        "ČSN EN 13779", "ČSN 12 7010", "ČSN EN 15423",
+    ],
+    "zti_params": [
+        "zdravotechnické instalace", "vnitřní vodovod",
+        "vnitřní kanalizace", "zařizovací předmět",
+        "splaškové vody", "dešťové vody", "vodoměrná sestava",
+        "zásobník TV", "odpadní potrubí", "větrací hlavice",
+        "ČSN 73 6760", "ČSN EN 806",
+    ],
+    "ut_params": [
+        "ústřední vytápění", "otopná soustava",
+        "tepelné čerpadlo", "podlahové vytápění",
+        "kondenzační kotel", "krbová kamna", "komínový systém",
+        "tepelné ztráty", "otopné těleso",
+        "ČSN EN 12831", "ČSN 06 0310",
+    ],
+    "mar_params": [
+        "měření a regulace", "řídicí systém",
+        "frekvenční měnič", "BMS",
+    ],
+    # Railway (Správa železnic)
+    "zel_svrsek_params": [
+        "kolejový rošt", "kolejnice 49 E1", "ocelový pražec",
+        "bezstyková kolej", "SŽDC S3", "SŽ S3",
+        "geometrická poloha koleje", "drážní stezky",
+    ],
+    "zel_spodek_params": [
+        "konstrukce pražcového podloží", "ZKPP", "KPP",
+        "zemní pláň", "prefabrikovaná zídka",
+        "SŽ S4", "modul přetvárnosti",
+    ],
+    "igp_params": [
+        "inženýrskogeologický průzkum", "kopané sondy",
+        "statická zatěžovací zkouška", "SZZ",
+        "redukovaný modul", "drážní štěrk",
+    ],
 }
 
 
@@ -702,6 +761,8 @@ def classify_document_enhanced(
         "is_non_construction": False,
         "so_code": classification.so_code,
         "learned_pattern_used": False,
+        "d14_profession": None,
+        "is_d14": False,
     }
 
     if text:
@@ -721,5 +782,16 @@ def classify_document_enhanced(
                     result["so_code"] = f"SO {sid['id']}"
                     classification.so_code = result["so_code"]
                     break
+
+        # v3.2: Detect D.1.4 profession (pozemní stavby)
+        try:
+            from app.services.d14_profession_detector import (
+                is_d14_document, detect_d14_profession,
+            )
+            if is_d14_document(filename, text):
+                result["is_d14"] = True
+                result["d14_profession"] = detect_d14_profession(filename, text)
+        except Exception as e:
+            logger.debug(f"D.1.4 detection skipped: {e}")
 
     return result

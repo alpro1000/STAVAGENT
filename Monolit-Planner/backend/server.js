@@ -33,6 +33,7 @@ import kbResearchRoutes from './src/routes/kb-research.js';
 import registryRoutes from './src/routes/registry.js';
 import relinkRoutes from './src/routes/relink.js';
 import plannerAdvisorRoutes from './src/routes/planner-advisor.js';
+import soupisRoutes from './src/routes/soupis.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -172,6 +173,7 @@ app.use('/api/mapping', mappingRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
+app.use('/api/soupis', soupisRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
 app.use('/api/sheathing', sheathingRoutes);
 app.use('/api/formwork-calculator', formworkCalcRoutes);

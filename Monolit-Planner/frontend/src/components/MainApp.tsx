@@ -12,9 +12,12 @@ import PositionsTable from './PositionsTable';
 import PortalBreadcrumb from './PortalBreadcrumb';
 import PortalImportModal from './PortalImportModal';
 import type { PortalData } from './PortalImportModal';
+import SoupisTab from './SoupisTab';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { useAppContext } from '../context/AppContext';
 import { API_URL } from '../services/api';
+
+type ActiveTab = 'positions' | 'soupis';
 
 const SIDEBAR_STORAGE_KEY = 'monolit-sidebar-open';
 
@@ -29,6 +32,7 @@ export default function MainApp() {
     return window.innerWidth >= 1280;
   });
 
+  const [activeTab, setActiveTab] = useState<ActiveTab>('positions');
   const { isDark, toggleTheme } = useDarkMode();
   const { bridges, setBridges, setSelectedBridge } = useAppContext();
   const queryClient = useQueryClient();
@@ -247,7 +251,41 @@ export default function MainApp() {
 
         <main className={`content ${sidebarOpen ? 'with-sidebar' : ''}`}>
           <KPIPanel />
-          <PositionsTable />
+          {/* Tab switcher */}
+          <div style={{
+            display: 'flex', gap: '0', borderBottom: '2px solid var(--r0-border, #e0e0e0)',
+            margin: '0 0.5rem', paddingTop: '0.25rem',
+          }}>
+            <button
+              onClick={() => setActiveTab('positions')}
+              style={{
+                padding: '0.5rem 1rem', border: 'none', background: 'none', cursor: 'pointer',
+                fontWeight: activeTab === 'positions' ? 600 : 400,
+                borderBottom: activeTab === 'positions' ? '2px solid var(--r0-accent, #FF9F1C)' : '2px solid transparent',
+                marginBottom: '-2px', fontSize: '0.85rem',
+                color: activeTab === 'positions' ? 'var(--r0-text)' : 'var(--r0-text-secondary)',
+              }}
+            >
+              Pozice
+            </button>
+            <button
+              onClick={() => setActiveTab('soupis')}
+              style={{
+                padding: '0.5rem 1rem', border: 'none', background: 'none', cursor: 'pointer',
+                fontWeight: activeTab === 'soupis' ? 600 : 400,
+                borderBottom: activeTab === 'soupis' ? '2px solid var(--r0-accent, #FF9F1C)' : '2px solid transparent',
+                marginBottom: '-2px', fontSize: '0.85rem',
+                color: activeTab === 'soupis' ? 'var(--r0-text)' : 'var(--r0-text-secondary)',
+              }}
+            >
+              Soupis praci
+            </button>
+          </div>
+          {/* Tab content */}
+          {activeTab === 'positions' && <PositionsTable />}
+          {activeTab === 'soupis' && (
+            <SoupisTab projectId={bridges?.[0]?.bridge_id || ''} />
+          )}
         </main>
       </div>
 
