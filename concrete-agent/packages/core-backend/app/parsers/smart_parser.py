@@ -87,22 +87,43 @@ class SmartParser:
 
     def parse_pdf(self, path: Path) -> Dict[str, Any]:
         """
-        Sync PDF parsing — pdfplumber → memory_pdf fallback.
-        MinerU is now handled async by DocumentProcessor._run_mineru_async().
+        Sync PDF parsing — pdfplumber → MinerU HTTP → memory_pdf fallback.
+
+        MinerU is called via HTTP to mineru-service (separate Cloud Run)
+        if MINERU_SERVICE_URL is set. Falls back to pdfplumber if not.
         """
         size_mb = _get_file_size_mb(path)
         logger.info(f"SmartParser: PDF {path.name} ({size_mb:.1f}MB)")
         if size_mb > SIZE_THRESHOLD_MB:
             return self.memory_pdf.parse(str(path))
+
+        # Try pdfplumber first (fastest, local)
         try:
             result = self.pdf_parser.parse(str(path))
             positions = result if isinstance(result, list) else result.get("positions", [])
             if positions:
                 logger.info(f"SmartParser: pdfplumber extracted {len(positions)} positions")
                 return {"positions": positions, "strategy": "pdfplumber"}
-            logger.info("SmartParser: pdfplumber returned 0 positions")
+            logger.info("SmartParser: pdfplumber returned 0 positions, trying MinerU...")
         except Exception as e:
-            logger.warning(f"SmartParser: pdfplumber failed: {e}")
+            logger.warning(f"SmartParser: pdfplumber failed: {e}, trying MinerU...")
+
+        # Try MinerU HTTP service (for scanned/hybrid PDFs)
+        try:
+            from app.parsers.mineru_client import parse_pdf_with_mineru
+            mineru_text = parse_pdf_with_mineru(str(path), method="auto")
+            if mineru_text and len(mineru_text) > 200:
+                logger.info(f"SmartParser: MinerU extracted {len(mineru_text)} chars")
+                return {
+                    "text": mineru_text,
+                    "positions": [],
+                    "strategy": "mineru_service",
+                    "text_length": len(mineru_text),
+                }
+        except Exception as e:
+            logger.warning(f"SmartParser: MinerU service failed: {e}")
+
+        # Final fallback
         return self.memory_pdf.parse(str(path))
 
     async def _parse_with_mineru_async(self, pdf_path: Path) -> Dict[str, Any]:
