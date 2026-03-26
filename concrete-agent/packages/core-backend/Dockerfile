@@ -7,9 +7,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Layer 1: Heavy deps (cached unless requirements change)
 COPY concrete-agent/packages/core-backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Layer 2: Application code (changes frequently)
 COPY concrete-agent/packages/core-backend/ .
 
 EXPOSE 8000

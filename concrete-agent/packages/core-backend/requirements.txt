@@ -53,15 +53,15 @@ google-api-python-client==2.110.0
 cryptography==41.0.7
 
 # ==========================================
-# PDF PARSING (MinerU 2.x - FREE alternative)
+# PDF PARSING (MinerU → separate Cloud Run service)
 # ==========================================
-# MinerU 2.x for high-quality PDF extraction (FREE, local)
-# Package renamed: magic-pdf → mineru (since v2.0)
-# Install: uv pip install mineru[all]  (or: pip install mineru[all])
-# Docs: https://github.com/opendatalab/MinerU
-# Requires Python >=3.10, <3.14
-mineru[all]>=2.7.0  # MinerU 2.x: hybrid VLM backend, no pymupdf dependency
-# Note: poppler/tesseract still needed for OCR fallback tier
+# MinerU moved to mineru_service/ (standalone microservice)
+# concrete-agent calls it via HTTP if MINERU_SERVICE_URL is set
+# See: mineru_service/Dockerfile, cloudbuild-mineru.yaml
+# Local fallback: pdfplumber (always available)
+
+# HTTP client for mineru-service
+httpx>=0.27.0
 
 # ==========================================
 # DATA PROCESSING

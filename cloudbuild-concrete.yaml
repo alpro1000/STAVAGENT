@@ -32,11 +32,22 @@ steps:
         fi
         echo "Changes detected in concrete-agent/ — proceeding"
 
+  # Pull previous image for layer caching (speeds up pip install)
+  - name: gcr.io/cloud-builders/docker
+    id: pull-cache
+    waitFor: [guard]
+    entrypoint: bash
+    args:
+      - -c
+      - docker pull $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:latest || true
+
   - name: gcr.io/cloud-builders/docker
     id: build-concrete
-    waitFor: [guard]
+    waitFor: [pull-cache]
     args:
       - build
+      - --cache-from
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:latest
       - -f
       - concrete-agent/packages/core-backend/Dockerfile
       - -t
@@ -72,7 +83,7 @@ steps:
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
 
-timeout: 1800s
+timeout: 3600s
 options:
   machineType: E2_HIGHCPU_8
   logging: CLOUD_LOGGING_ONLY
