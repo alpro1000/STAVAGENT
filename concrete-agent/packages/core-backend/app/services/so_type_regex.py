@@ -1,13 +1,14 @@
 """
-SO Type-Specific Regex Patterns — v3.1
+SO Type-Specific Regex Patterns — v3.2
 
 Regex patterns for extracting structured data from Czech construction
-documents across all SO types (roads, water, vegetation, DIO, electro, etc.).
+documents across all SO types (roads, water, vegetation, DIO, electro, etc.)
+and D.1.4 professions (silnoproud, slaboproud, VZT, ZTI, UT, MaR).
 
 All matches have confidence=1.0 (deterministic extraction).
 
 Author: STAVAGENT Team
-Version: 3.1.0
+Version: 3.2.0
 Date: 2026-03-26
 """
 
@@ -322,6 +323,262 @@ def extract_pipeline_params(text: str) -> Dict[str, Any]:
     return result
 
 
+# =============================================================================
+# D.1.4 ELEKTRO REGEX (universal — silnoproud + slaboproud)
+# =============================================================================
+
+ELEKTRO_D14_PATTERNS = {
+    "voltage_3phase": re.compile(
+        r"(\d\s*NPE\s*AC\s*50\s*Hz\s*\d+\s*V\s*/\s*TN-[SC][-S]?)", re.IGNORECASE
+    ),
+    "current_system": re.compile(
+        r"[Pp]roudová\s+soustava\s*:?\s*(TN[-–][A-Z-]+)"
+    ),
+    "max_power_kw": re.compile(
+        r"[Mm]aximální\s+soudobý\s+příkon\s*:?\s*([\d,]+)\s*kW", re.IGNORECASE
+    ),
+    "cable_type": re.compile(
+        r"((?:\d+-)?C[YX]K[HBYE]-[JRVEO]\s*\d+x[\d,]+(?:\s*mm²)?)"
+    ),
+    "ip_rating": re.compile(r"(IP\s*[X\d]{2,4})"),
+    "rcd_current_ma": re.compile(
+        r"[Cc]hrání[čc]\w*.*?(\d+)\s*mA"
+    ),
+    "spd_type": re.compile(
+        r"[Ss]vodič\w*\s+(?:třídy\s+)?(T\d\+?T?\d?)"
+    ),
+    "lighting_control": re.compile(r"(DALI|KNX|Loxone)"),
+    "floor_box_count": re.compile(
+        r"(\d+)\s*(?:ks\s+)?podlahov\w+\s+krabic", re.IGNORECASE
+    ),
+    "switchboard": re.compile(
+        r"rozvaděč[eěi]?\s+(R[A-Z]?-?[A-Z0-9]+)", re.IGNORECASE
+    ),
+    "annual_consumption_mwh": re.compile(
+        r"([\d,]+)\s*MWh\s*/\s*rok", re.IGNORECASE
+    ),
+    "d14_section": re.compile(r"(D\.\d+\.\d+(?:\.\w+)?)"),
+    "pd_level": re.compile(
+        r"[Ss]tupeň\s+(?:PD:?\s*)?(DVZ|DPS|DSP|DÚR|PDPS|VD-ZDS)"
+    ),
+    "battery_ah": re.compile(r"akumulátor\w*.*?(\d+)\s*Ah", re.IGNORECASE),
+    "backup_hours": re.compile(
+        r"záloho\w+\s+.*?(\d+[,.]?\d*)\s*hodin", re.IGNORECASE
+    ),
+    "camera_count": re.compile(r"(\d+)\s*ks\s+kamer", re.IGNORECASE),
+    "cable_category": re.compile(
+        r"[Kk]at(?:egorie)?\.?\s*(6A?|7|5E?)"
+    ),
+    "eps_bus_type": re.compile(
+        r"(esserbus|kruhov\w+\s+topologi)", re.IGNORECASE
+    ),
+}
+
+
+# =============================================================================
+# D.1.4 VZT REGEX
+# =============================================================================
+
+VZT_PATTERNS = {
+    "airflow_supply_m3h": re.compile(
+        r"přív(?:od|odní)\w*\s+vzduch\w*\s*:?\s*([\d\s,]+)\s*m[³3]/h", re.IGNORECASE
+    ),
+    "airflow_exhaust_m3h": re.compile(
+        r"odt(?:ah|ahový)\w*\s*:?\s*([\d\s,]+)\s*m[³3]/h", re.IGNORECASE
+    ),
+    "heat_recovery_pct": re.compile(
+        r"účinnost\w*\s+(?:zpětného\s+)?(?:získávání\s+)?(?:tepla\s+)?\s*([\d,]+)\s*%",
+        re.IGNORECASE,
+    ),
+    "noise_limit_db": re.compile(
+        r"hlukov\w+\s+(?:limit|hladina)\w*\s*:?\s*(\d+)\s*dB", re.IGNORECASE
+    ),
+}
+
+
+# =============================================================================
+# D.1.4 ZTI REGEX
+# =============================================================================
+
+ZTI_PATTERNS = {
+    "water_connection_dn": re.compile(
+        r"přípojk\w+\s+vodovod\w*.*?DN\s*(\d+)", re.IGNORECASE
+    ),
+    "sewer_connection_dn": re.compile(
+        r"přípojk\w+\s+kanalizac\w*.*?DN\s*(\d+)", re.IGNORECASE
+    ),
+    "hot_water_temp_c": re.compile(
+        r"tepl\w+\s+vod\w+.*?(\d+)\s*°C", re.IGNORECASE
+    ),
+}
+
+
+# =============================================================================
+# D.1.4 UT REGEX
+# =============================================================================
+
+UT_PATTERNS = {
+    "heat_loss_kw": re.compile(
+        r"(?:tepelná|celková)\s+ztrát\w+\s*:?\s*([\d,]+)\s*kW", re.IGNORECASE
+    ),
+    "heat_pump_cop": re.compile(
+        r"COP\s*:?\s*([\d,]+)"
+    ),
+    "design_outdoor_temp_c": re.compile(
+        r"venkovní\s+výpočtová.*?(-?\d+)\s*°C", re.IGNORECASE
+    ),
+}
+
+
+# =============================================================================
+# D.1.4 EXTRACTION FUNCTIONS
+# =============================================================================
+
+def extract_silnoproud_params(text: str) -> Dict[str, Any]:
+    """Extract silnoproud (strong-current) parameters from document text."""
+    result = {}
+
+    for field, pattern in ELEKTRO_D14_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field == "max_power_kw":
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result["max_concurrent_power_kw"] = parsed
+            elif field == "annual_consumption_mwh":
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result[field] = parsed
+            elif field == "floor_box_count":
+                result["floor_box_count"] = int(val)
+            elif field == "rcd_current_ma":
+                result[field] = int(val)
+            elif field in ("voltage_3phase", "current_system", "cable_type",
+                          "ip_rating", "spd_type", "lighting_control",
+                          "switchboard", "d14_section", "pd_level"):
+                result[field] = val
+
+    # Extract switchboard designations (may be multiple)
+    switchboards = []
+    for m in ELEKTRO_D14_PATTERNS["switchboard"].finditer(text):
+        sw = m.group(1).strip()
+        if sw not in switchboards:
+            switchboards.append(sw)
+    if switchboards:
+        result["switchboard_designations"] = switchboards
+
+    return result
+
+
+def extract_slaboproud_params(text: str) -> Dict[str, Any]:
+    """Extract slaboproud (low-current) parameters from document text."""
+    result = {}
+    subsystems = []
+
+    # Detect present subsystems
+    text_upper = text[:20000].upper()
+    for suffix in ["SCS", "PZTS", "SKV", "CCTV", "EPS", "AVT", "INT", "EZS", "ACS"]:
+        if suffix in text_upper:
+            subsystems.append(suffix)
+    if subsystems:
+        result["subsystems"] = subsystems
+
+    # Cable category
+    m = ELEKTRO_D14_PATTERNS["cable_category"].search(text)
+    if m:
+        result["cable_category"] = f"Cat.{m.group(1)}"
+
+    # EPS bus type
+    m = ELEKTRO_D14_PATTERNS["eps_bus_type"].search(text)
+    if m:
+        result["eps_bus_type"] = m.group(1)
+
+    # Camera count
+    m = ELEKTRO_D14_PATTERNS["camera_count"].search(text)
+    if m:
+        result["camera_count"] = int(m.group(1))
+
+    # Battery
+    m = ELEKTRO_D14_PATTERNS["battery_ah"].search(text)
+    if m:
+        result["battery_ah"] = int(m.group(1))
+
+    # Backup hours
+    m = ELEKTRO_D14_PATTERNS["backup_hours"].search(text)
+    if m:
+        parsed = _parse_czech_number(m.group(1))
+        if parsed is not None:
+            result["backup_hours"] = parsed
+
+    # Section ID and PD level
+    m = ELEKTRO_D14_PATTERNS["d14_section"].search(text)
+    if m:
+        result["section_id"] = m.group(1)
+    m = ELEKTRO_D14_PATTERNS["pd_level"].search(text)
+    if m:
+        result["pd_level"] = m.group(1)
+
+    return result
+
+
+def extract_vzt_params(text: str) -> Dict[str, Any]:
+    """Extract VZT (HVAC) parameters from document text."""
+    result = {}
+    for field, pattern in VZT_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field in ("airflow_supply_m3h", "airflow_exhaust_m3h", "heat_recovery_pct"):
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result[field] = parsed
+            elif field == "noise_limit_db":
+                result[field] = int(val)
+            else:
+                result[field] = val
+    # Map to schema fields
+    if "airflow_supply_m3h" in result:
+        result["total_airflow_supply_m3h"] = result.pop("airflow_supply_m3h")
+    if "airflow_exhaust_m3h" in result:
+        result["total_airflow_exhaust_m3h"] = result.pop("airflow_exhaust_m3h")
+    return result
+
+
+def extract_zti_params(text: str) -> Dict[str, Any]:
+    """Extract ZTI (sanitary) parameters from document text."""
+    result = {}
+    for field, pattern in ZTI_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field.endswith("_dn") or field.endswith("_c"):
+                result[field] = int(val)
+            else:
+                result[field] = val
+    return result
+
+
+def extract_ut_params(text: str) -> Dict[str, Any]:
+    """Extract UT (heating) parameters from document text."""
+    result = {}
+    for field, pattern in UT_PATTERNS.items():
+        m = pattern.search(text)
+        if m:
+            val = m.group(1).strip()
+            if field == "heat_loss_kw":
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result["heat_loss_total_kw"] = parsed
+            elif field == "heat_pump_cop":
+                parsed = _parse_czech_number(val)
+                if parsed is not None:
+                    result[field] = parsed
+            elif field == "design_outdoor_temp_c":
+                result[field] = int(val)
+    return result
+
+
 # Map params_key to extraction function
 SO_TYPE_EXTRACTORS = {
     "road_params": extract_road_params,
@@ -332,16 +589,29 @@ SO_TYPE_EXTRACTORS = {
     "pipeline_params": extract_pipeline_params,
 }
 
+# D.1.4 profession extractors
+D14_TYPE_EXTRACTORS = {
+    "silnoproud_params": extract_silnoproud_params,
+    "slaboproud_params": extract_slaboproud_params,
+    "vzt_params": extract_vzt_params,
+    "zti_params": extract_zti_params,
+    "ut_params": extract_ut_params,
+    # mar_params has no specific regex — relies on AI extraction
+}
+
+# Combined mapping
+ALL_TYPE_EXTRACTORS = {**SO_TYPE_EXTRACTORS, **D14_TYPE_EXTRACTORS}
+
 
 def extract_so_type_params(params_key: str, text: str) -> Dict[str, Any]:
     """
-    Run the appropriate regex extractor for the given SO type.
+    Run the appropriate regex extractor for the given SO type or D.1.4 profession.
     Returns extracted fields dict (may be empty if no matches).
     """
-    extractor = SO_TYPE_EXTRACTORS.get(params_key)
+    extractor = ALL_TYPE_EXTRACTORS.get(params_key)
     if extractor:
         try:
             return extractor(text)
         except Exception as e:
-            logger.warning(f"SO type regex extraction failed for {params_key}: {e}")
+            logger.warning(f"Type regex extraction failed for {params_key}: {e}")
     return {}

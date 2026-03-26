@@ -540,6 +540,15 @@ class MergedSO(BaseModel):
     electro_params: Optional[Dict[str, Any]] = None
     pipeline_params: Optional[Dict[str, Any]] = None
     signage_params: Optional[Dict[str, Any]] = None
+    # v3.2: D.1.4 profession params (pozemní stavby)
+    silnoproud_params: Optional[Dict[str, Any]] = None
+    slaboproud_params: Optional[Dict[str, Any]] = None
+    vzt_params: Optional[Dict[str, Any]] = None
+    zti_params: Optional[Dict[str, Any]] = None
+    ut_params: Optional[Dict[str, Any]] = None
+    mar_params: Optional[Dict[str, Any]] = None
+    d14_profession: Optional[str] = Field(None, description="Detected D.1.4 profession key")
+    d14_profession_label: Optional[str] = Field(None, description="Czech label for D.1.4 profession")
     # v3.1.1: Enhanced classification
     construction_type: Optional[str] = Field(None, description="dopravní, mostní, pozemní_bytová, etc.")
     section_ids: List[Dict[str, str]] = Field(default_factory=list, description="Detected section IDs")

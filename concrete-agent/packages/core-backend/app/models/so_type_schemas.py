@@ -1,5 +1,5 @@
 """
-SO Type-Specific Schemas — v3.1 Universal Parser Expansion
+SO Type-Specific Schemas — v3.2 Universal Parser Expansion
 
 Covers all Czech construction SO (Stavební Objekt) categories:
 - 0xx: Preparation (příprava staveniště)
@@ -11,10 +11,18 @@ Covers all Czech construction SO (Stavební Objekt) categories:
 - 8xx: Vegetation (úprava území)
 - Special: DIO (180), Signage (190)
 
-Based on real documents from I/20 Hněvkov–Sedlice project.
+D.1.4 Professions (pozemní stavby — vyhláška 499/2006 Sb.):
+- SilnoproudParams: silnoproudé elektroinstalace
+- SlaboproudParams: slaboproudé systémy (SCS, PZTS, SKV, CCTV, EPS, AVT, INT)
+- VZTParams: vzduchotechnika a klimatizace
+- ZTIParams: zdravotechnické instalace
+- UTParams: ústřední vytápění
+- MaRParams: měření a regulace
+
+Based on real documents from I/20 Hněvkov–Sedlice + ČZU Menza TC projects.
 
 Author: STAVAGENT Team
-Version: 3.1.0
+Version: 3.2.0
 Date: 2026-03-26
 """
 
@@ -532,6 +540,378 @@ class SignageSOParams(BaseModel):
 
 
 # =============================================================================
+# 8. SilnoproudParams — Silnoproudé elektroinstalace (D.1.4.xx pozemní stavby)
+# =============================================================================
+
+class PowerCircuit(BaseModel):
+    """One row in the výkonová bilance table."""
+    name: str
+    installed_kw: Optional[float] = None
+    concurrency_factor: Optional[float] = None
+    concurrent_kw: Optional[float] = None
+
+
+class EnvironmentZone(BaseModel):
+    """External environment classification per zone (vnější vlivy)."""
+    zone_name: str
+    influences: Dict[str, str] = Field(default_factory=dict)
+    measures: List[str] = Field(default_factory=list)
+
+
+class FloorBox(BaseModel):
+    """Podlahová krabice specification."""
+    room: str = ""
+    count: Optional[int] = None
+    sockets_per_box: Optional[int] = None
+
+
+class TZBConnection(BaseModel):
+    """Connection to a TZB profession (VZT, ZTI, UT, etc.)."""
+    profession: str
+    description: str = ""
+
+
+class SwitchboardInfo(BaseModel):
+    """Switchboard (rozvaděč) specification."""
+    designation: str
+    location: Optional[str] = None
+    main_breaker: Optional[str] = None
+    supply_from: Optional[str] = None
+    supply_cable: Optional[str] = None
+
+
+class SilnoproudParams(BaseModel):
+    """Silnoproudé elektroinstalace — pozemní stavby (D.1.4.xx)."""
+
+    # ── Identification ──
+    section_id: Optional[str] = None
+    pd_level: Optional[str] = None
+    building_name: Optional[str] = None
+    building_type: Optional[str] = None
+    building_area_m2: Optional[float] = None
+    floors: Optional[str] = None
+    location: Optional[str] = None
+
+    # ── 1.1 Napájecí soustava ──
+    voltage_3phase: Optional[str] = None
+    voltage_1phase: Optional[str] = None
+    voltage_dc: Optional[str] = None
+    current_system: Optional[str] = None
+    max_concurrent_power_kw: Optional[float] = None
+    main_breaker: Optional[str] = None
+
+    # ── Protection ──
+    protection_methods: List[str] = Field(default_factory=list)
+    protection_standard: Optional[str] = None
+
+    # ── 1.2 Výkonová bilance ──
+    power_balance: List[PowerCircuit] = Field(default_factory=list)
+    total_installed_kw: Optional[float] = None
+    total_concurrent_kw: Optional[float] = None
+    concurrency_factor: Optional[float] = None
+
+    # ── 1.3 Spotřeba ──
+    annual_consumption_mwh: Optional[float] = None
+    operating_hours_day: Optional[int] = None
+    operating_days_year: Optional[int] = None
+
+    # ── 1.4 Dodávka ──
+    supply_source: Optional[str] = None
+    supply_cable: Optional[str] = None
+    pen_split_location: Optional[str] = None
+
+    # ── 1.5 Vnější vlivy ──
+    environments: List[EnvironmentZone] = Field(default_factory=list)
+
+    # ── Přepětí ──
+    surge_protection_type: Optional[str] = None
+
+    # ── Vedení a instalace ──
+    cable_types_main: List[str] = Field(default_factory=list)
+    installation_methods: List[str] = Field(default_factory=list)
+
+    # ── Osvětlení ──
+    lighting_control: Optional[str] = None
+    emergency_lighting: Optional[bool] = None
+    emergency_duration_min: Optional[int] = None
+
+    # ── Zásuvky ──
+    outlet_cable: Optional[str] = None
+    outlet_ip_rating: Optional[str] = None
+    floor_boxes: List[FloorBox] = Field(default_factory=list)
+
+    # ── Napojení TZB ──
+    tzb_connections: List[TZBConnection] = Field(default_factory=list)
+
+    # ── Rozvaděče ──
+    switchboards: List[SwitchboardInfo] = Field(default_factory=list)
+
+    # ── Revize ──
+    revision_standard: Optional[str] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 9. SlaboproudParams — Slaboproudé systémy (D.1.4.xx pozemní stavby)
+# =============================================================================
+
+class SCSParams(BaseModel):
+    """Strukturovaná kabeláž (SCS)."""
+    cable_category: Optional[str] = None
+    cable_type: Optional[str] = None
+    rack_location: Optional[str] = None
+    rack_size: Optional[str] = None
+    backbone_type: Optional[str] = None
+    outlet_type: Optional[str] = None
+    port_naming_schema: Dict[str, str] = Field(default_factory=dict)
+    max_cables_per_conduit: Dict[str, int] = Field(default_factory=dict)
+
+
+class PZTSParams(BaseModel):
+    """Poplachový zabezpečovací a tísňový systém (PZTS)."""
+    system_brand: Optional[str] = None
+    control_panel: Optional[str] = None
+    detectors: List[Dict[str, Any]] = Field(default_factory=list)
+    current_standby_a: Optional[float] = None
+    current_alarm_a: Optional[float] = None
+    battery_capacity_ah: Optional[int] = None
+    backup_duration_hours: Optional[float] = None
+    monitoring_target: Optional[str] = None
+    compatibility_requirement: Optional[str] = None
+
+
+class SKVParams(BaseModel):
+    """Systém kontroly vstupu (SKV/ACS)."""
+    system_brand: Optional[str] = None
+    reader_technology: Optional[str] = None
+    controlled_doors: List[Dict[str, str]] = Field(default_factory=list)
+    fire_alarm_integration: Optional[str] = None
+
+
+class CCTVParams(BaseModel):
+    """Kamerový systém (CCTV)."""
+    camera_count: Optional[int] = None
+    camera_resolution: Optional[str] = None
+    camera_features: List[str] = Field(default_factory=list)
+    vms_software: Optional[str] = None
+    power_method: Optional[str] = None
+
+
+class EPSParams(BaseModel):
+    """Elektronická požární signalizace (EPS)."""
+    system_brand: Optional[str] = None
+    control_panel: Optional[str] = None
+    panel_location: Optional[str] = None
+    bus_type: Optional[str] = None
+    is_extension: Optional[bool] = None
+    new_modules: List[str] = Field(default_factory=list)
+    fire_cable_type: Optional[str] = None
+    fire_integrity_class: Optional[str] = None
+    controlled_devices: List[str] = Field(default_factory=list)
+
+
+class AVTParams(BaseModel):
+    """Audiovizuální technika (AVT)."""
+    provided_by: Optional[str] = None
+    preparation_scope: Optional[str] = None
+
+
+class IntercomParams(BaseModel):
+    """Interkom / domácí telefon."""
+    technology: Optional[str] = None
+    units: List[Dict[str, str]] = Field(default_factory=list)
+
+
+class SlaboproudParams(BaseModel):
+    """Slaboproudé systémy — SCS, PZTS, SKV, CCTV, EPS, AVT, INT (D.1.4.xx)."""
+
+    # ── Identification ──
+    section_id: Optional[str] = None
+    pd_level: Optional[str] = None
+    subsystems: List[str] = Field(default_factory=list)
+
+    # ── Subsystem params (only present ones populated) ──
+    scs: Optional[SCSParams] = None
+    pzts: Optional[PZTSParams] = None
+    skv: Optional[SKVParams] = None
+    cctv: Optional[CCTVParams] = None
+    eps: Optional[EPSParams] = None
+    avt: Optional[AVTParams] = None
+    intercom: Optional[IntercomParams] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 10. VZTParams — Vzduchotechnika a klimatizace (D.1.4.xx)
+# =============================================================================
+
+class VZTUnit(BaseModel):
+    """One VZT unit specification."""
+    designation: str = ""
+    unit_type: Optional[str] = None
+    airflow_m3h: Optional[float] = None
+    pressure_pa: Optional[float] = None
+    heating_kw: Optional[float] = None
+    cooling_kw: Optional[float] = None
+    filter_class: Optional[str] = None
+    heat_recovery_type: Optional[str] = None
+    heat_recovery_efficiency_pct: Optional[float] = None
+    served_zones: List[str] = Field(default_factory=list)
+
+
+class VZTParams(BaseModel):
+    """Vzduchotechnika a klimatizace (D.1.4.xx)."""
+
+    section_id: Optional[str] = None
+    pd_level: Optional[str] = None
+
+    # ── VZT units ──
+    units: List[VZTUnit] = Field(default_factory=list)
+
+    # ── General parameters ──
+    total_airflow_supply_m3h: Optional[float] = None
+    total_airflow_exhaust_m3h: Optional[float] = None
+    total_heating_kw: Optional[float] = None
+    total_cooling_kw: Optional[float] = None
+
+    # ── Duct system ──
+    duct_material: Optional[str] = None
+    duct_insulation: Optional[str] = None
+    fire_dampers: Optional[bool] = None
+
+    # ── Control ──
+    control_system: Optional[str] = None
+    bms_integration: Optional[bool] = None
+
+    # ── Standards ──
+    noise_limit_db: Optional[int] = None
+    design_temperatures: Dict[str, str] = Field(default_factory=dict)
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 11. ZTIParams — Zdravotechnické instalace (D.1.4.xx)
+# =============================================================================
+
+class ZTIParams(BaseModel):
+    """Zdravotechnické instalace — vnitřní vodovod + kanalizace (D.1.4.xx)."""
+
+    section_id: Optional[str] = None
+    pd_level: Optional[str] = None
+
+    # ── Vnitřní vodovod ──
+    water_connection_dn: Optional[int] = None
+    water_pipe_material: Optional[str] = None
+    water_pipe_insulation: Optional[str] = None
+    hot_water_source: Optional[str] = None
+    hot_water_temp_c: Optional[int] = None
+    circulation: Optional[bool] = None
+    water_meter_location: Optional[str] = None
+
+    # ── Vnitřní kanalizace ──
+    sewer_pipe_material: Optional[str] = None
+    sewer_connection_dn: Optional[int] = None
+    ventilation_type: Optional[str] = None
+    grease_trap: Optional[bool] = None
+    floor_drains: Optional[bool] = None
+
+    # ── Dešťová kanalizace ──
+    rain_pipe_material: Optional[str] = None
+    rain_retention: Optional[bool] = None
+    rain_retention_volume_m3: Optional[float] = None
+
+    # ── Zařizovací předměty ──
+    fixtures_count: Optional[int] = None
+    fixtures_types: List[str] = Field(default_factory=list)
+
+    # ── Požární vodovod ──
+    fire_hydrants: Optional[bool] = None
+    fire_hydrant_dn: Optional[int] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 12. UTParams — Ústřední vytápění (D.1.4.xx)
+# =============================================================================
+
+class UTParams(BaseModel):
+    """Ústřední vytápění / otopná soustava (D.1.4.xx)."""
+
+    section_id: Optional[str] = None
+    pd_level: Optional[str] = None
+
+    # ── Zdroj tepla ──
+    heat_source_type: Optional[str] = None
+    heat_source_power_kw: Optional[float] = None
+    heat_pump_type: Optional[str] = None
+    heat_pump_cop: Optional[float] = None
+    backup_source: Optional[str] = None
+
+    # ── Otopná soustava ──
+    system_type: Optional[str] = None
+    design_temps: Optional[str] = None
+    pipe_material: Optional[str] = None
+    pipe_insulation: Optional[str] = None
+
+    # ── Otopná tělesa ──
+    radiator_type: Optional[str] = None
+    radiator_count: Optional[int] = None
+    floor_heating: Optional[bool] = None
+    floor_heating_area_m2: Optional[float] = None
+
+    # ── Regulace ──
+    thermostat_type: Optional[str] = None
+    zone_control: Optional[bool] = None
+    weather_compensation: Optional[bool] = None
+
+    # ── Tepelné ztráty ──
+    heat_loss_total_kw: Optional[float] = None
+    design_outdoor_temp_c: Optional[int] = None
+    design_indoor_temp_c: Optional[int] = None
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
+# 13. MaRParams — Měření a regulace (D.1.4.xx)
+# =============================================================================
+
+class MaRParams(BaseModel):
+    """Měření a regulace — řídicí systém (D.1.4.xx)."""
+
+    section_id: Optional[str] = None
+    pd_level: Optional[str] = None
+
+    # ── Řídicí systém ──
+    control_system_brand: Optional[str] = None
+    control_system_type: Optional[str] = None
+    plc_type: Optional[str] = None
+    io_points_count: Optional[int] = None
+
+    # ── Komunikace ──
+    bus_protocol: Optional[str] = None
+    bms_integration: Optional[bool] = None
+    visualization: Optional[str] = None
+    remote_access: Optional[bool] = None
+
+    # ── Řízené profese ──
+    controlled_professions: List[str] = Field(default_factory=list)
+    controlled_equipment: List[str] = Field(default_factory=list)
+
+    # ── Senzory ──
+    temperature_sensors_count: Optional[int] = None
+    humidity_sensors_count: Optional[int] = None
+    pressure_sensors_count: Optional[int] = None
+    other_sensors: List[str] = Field(default_factory=list)
+
+    sources: Dict[str, str] = Field(default_factory=dict)
+
+
+# =============================================================================
 # PARAMS KEY → CLASS MAPPING
 # =============================================================================
 
@@ -544,3 +924,16 @@ SO_PARAMS_CLASSES = {
     "pipeline_params": PipelineSOParams,
     "signage_params": SignageSOParams,
 }
+
+# D.1.4 profession params — keyed by profession detector output
+D14_PARAMS_CLASSES = {
+    "silnoproud_params": SilnoproudParams,
+    "slaboproud_params": SlaboproudParams,
+    "vzt_params": VZTParams,
+    "zti_params": ZTIParams,
+    "ut_params": UTParams,
+    "mar_params": MaRParams,
+}
+
+# Combined mapping (SO + D.1.4)
+ALL_PARAMS_CLASSES = {**SO_PARAMS_CLASSES, **D14_PARAMS_CLASSES}

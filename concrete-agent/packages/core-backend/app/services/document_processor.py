@@ -47,7 +47,8 @@ from app.services.document_classifier import (
     classify_document_enhanced,
 )
 from app.services.so_type_regex import extract_so_type_params
-from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES
+from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES, D14_PARAMS_CLASSES
+from app.services.d14_profession_detector import is_d14_document, detect_d14_profession
 from app.core.config import settings
 from app.models.passport_schema import (
     ProjectPassport,
@@ -1091,6 +1092,127 @@ Extrahuj do JSON:
 
 Vrať POUZE validní JSON."""
 
+    # ─── D.1.4 PROFESSION PROMPTS (pozemní stavby) ───
+
+    SILNOPROUD_PROMPT = """Parsuj český dokument silnoproudých elektroinstalací (D.1.4.xx — pozemní stavba).
+
+⚠️ Profese se NEURČUJE z čísla podsekce (D.1.4.10 ≠ vždy silnoproud)!
+Profese je detekována z OBSAHU dokumentu.
+
+DOKUMENT:
+{text}
+
+Extrahuj KOMPLETNÍ údaje:
+
+1. NAPÁJECÍ SOUSTAVA: proudová soustava (TN-C-S/TN-S), napětí, hlavní jistič
+2. VÝKONOVÁ BILANCE: CELÁ tabulka — název okruhu, instalovaný příkon kW, soudobost, soudobý příkon kW
+3. SPOTŘEBA: roční spotřeba MWh, provozní hodiny/den, provozní dny/rok
+4. DODÁVKA: zdroj napájení, přívodní kabel, místo dělení PEN
+5. VNĚJŠÍ VLIVY: pro KAŽDOU zónu: název, vlivy (AA/AB/BA/...), opatření
+6. PŘEPĚTÍ: typ svodiče (T1, T2, T1+T2)
+7. VEDENÍ: všechny typy kabelů (CYKY, CXKH, CHKE...), způsoby instalace
+8. OSVĚTLENÍ: řízení (DALI/KNX), nouzové osvětlení, doba zálohy min
+9. ZÁSUVKY: typ kabelu, IP krytí, podlahové krabice (počet, místnost)
+10. NAPOJENÍ TZB: které profese (VZT, ZTI, UT) a jak
+11. ROZVADĚČE: pro KAŽDÝ: označení (R-xx), umístění, hlavní jistič, napájen z, kabel
+12. REVIZE: norma revize
+
+Vrať POUZE validní JSON matching SilnoproudParams."""
+
+    SLABOPROUD_PROMPT = """Parsuj český dokument slaboproudých systémů (D.1.4.xx — pozemní stavba).
+
+⚠️ Profese se NEURČUJE z čísla podsekce! Profese je detekována z OBSAHU.
+
+DOKUMENT:
+{text}
+
+Dokument obsahuje VÍCE podsystémů. Extrahuj POUZE ty přítomné:
+
+a) SCS (strukturovaná kabeláž):
+   → kategorie kabelu (Cat.6A?), typ (F/FTP?), rack (umístění, velikost 42U?),
+   páteř (optika SM 9/125 OS2?), typ zásuvky, schéma značení portů
+
+c) PZTS (zabezpečovací systém):
+   → značka, ústředna, detektory (typ+počet), KOMPLETNÍ tabulka:
+   klidový odběr A, poplachový odběr A, kapacita Ah, doba zálohy h,
+   monitorování (PCO?), požadavek kompatibility
+
+d) SKV (kontrola vstupu):
+   → značka, technologie čtečky, řízené dveře (seznam), integrace s EPS
+
+e) CCTV (kamery):
+   → počet kamer, rozlišení, vlastnosti, VMS software, napájení (PoE?)
+
+g) EPS (elektronická požární signalizace):
+   → značka, ústředna, umístění, typ sběrnice (esserbus?), rozšíření?,
+   nové moduly, typ požárního kabelu + třída integrity, řízená zařízení
+
+f) AVT (audiovizuální technika):
+   → kdo dodává, rozsah přípravy
+
+KRITICKÉ: Extrahuj PZTS backup kalkulaci — klíčové pro rozpočet.
+Vrať POUZE validní JSON matching SlaboproudParams."""
+
+    VZT_PROMPT = """Parsuj český dokument vzduchotechniky a klimatizace (D.1.4.xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. JEDNOTKY: pro KAŽDOU VZT jednotku — označení, typ, průtok m³/h,
+   tlak Pa, ohřev kW, chlazení kW, filtr, typ rekuperace, účinnost %
+2. CELKOVÉ PRŮTOKY: přívod, odtah m³/h
+3. CELKOVÉ VÝKONY: ohřev, chlazení kW
+4. POTRUBÍ: materiál, izolace, požární klapky
+5. ŘÍZENÍ: systém MaR, napojení na BMS
+6. HLUK: limitní hladina dB
+7. TEPLOTY: výpočtové teploty (léto/zima, vnitřní/vnější)
+
+Vrať POUZE validní JSON matching VZTParams."""
+
+    ZTI_PROMPT = """Parsuj český dokument zdravotechnických instalací (D.1.4.xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. VNITŘNÍ VODOVOD: přípojka DN, materiál, izolace, zdroj TUV, teplota °C,
+   cirkulace, vodoměr
+2. VNITŘNÍ KANALIZACE: materiál, přípojka DN, větrání, lapák tuků, podlahové vpusti
+3. DEŠŤOVÁ KANALIZACE: materiál, retenční nádrž, objem m³
+4. ZAŘIZOVACÍ PŘEDMĚTY: počet, typy
+5. POŽÁRNÍ VODOVOD: hydranty, DN
+
+Vrať POUZE validní JSON matching ZTIParams."""
+
+    UT_PROMPT = """Parsuj český dokument ústředního vytápění (D.1.4.xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. ZDROJ TEPLA: typ (kotel/TČ/výměník), výkon kW, typ TČ, COP, záložní zdroj
+2. OTOPNÁ SOUSTAVA: typ (dvoutrubková?), teplotní spád, materiál potrubí, izolace
+3. OTOPNÁ TĚLESA: typ, počet, podlahové vytápění (plocha m²?)
+4. REGULACE: termostat, zónová regulace, ekvitermní řízení
+5. TEPELNÉ ZTRÁTY: celkem kW, venkovní výpočtová °C, vnitřní °C
+
+Vrať POUZE validní JSON matching UTParams."""
+
+    MAR_PROMPT = """Parsuj český dokument měření a regulace (D.1.4.xx).
+
+DOKUMENT:
+{text}
+
+Extrahuj:
+1. ŘÍDICÍ SYSTÉM: značka, typ, PLC, počet I/O bodů
+2. KOMUNIKACE: sběrnicový protokol, BMS, vizualizace, vzdálený přístup
+3. ŘÍZENÉ PROFESE: které TZB profese řídí (VZT, UT, ZTI...)
+4. ŘÍZENÁ ZAŘÍZENÍ: seznam zařízení
+5. SENZORY: počet teplotních/vlhkostních/tlakových čidel
+
+Vrať POUZE validní JSON matching MaRParams."""
+
     # Map params_key → prompt
     SO_TYPE_PROMPTS = {
         "road_params": ROAD_TZ_PROMPT,
@@ -1099,6 +1221,16 @@ Vrať POUZE validní JSON."""
         "vegetation_params": VEGETATION_TZ_PROMPT,
         "electro_params": ELECTRO_TZ_PROMPT,
         "pipeline_params": PIPELINE_TZ_PROMPT,
+    }
+
+    # D.1.4 profession prompts
+    D14_PROMPTS = {
+        "silnoproud_params": SILNOPROUD_PROMPT,
+        "slaboproud_params": SLABOPROUD_PROMPT,
+        "vzt_params": VZT_PROMPT,
+        "zti_params": ZTI_PROMPT,
+        "ut_params": UT_PROMPT,
+        "mar_params": MAR_PROMPT,
     }
 
     async def _extract_type_specific(
@@ -1156,6 +1288,19 @@ Vrať POUZE validní JSON."""
                 results["so_params_key"] = so_params_key
                 logger.info(f"SO type regex ({so_params_key}): {len(so_regex)} fields")
 
+        # --- v3.2: D.1.4 profession detection and regex extraction ---
+        d14_profession = None
+        filename = getattr(classification, '_filename', '') or ''
+        if is_d14_document(filename, document_text):
+            d14_profession = detect_d14_profession(filename, document_text)
+            if d14_profession and d14_profession != "unknown":
+                results["d14_profession"] = d14_profession
+                # Run D.1.4 regex extraction
+                d14_regex = extract_so_type_params(d14_profession, document_text)
+                if d14_regex:
+                    results["d14_regex"] = d14_regex
+                    logger.info(f"D.1.4 regex ({d14_profession}): {len(d14_regex)} fields")
+
         # --- Select prompt and model based on sub_type ---
         prompt_template = None
         model_cls = None
@@ -1171,6 +1316,10 @@ Vrať POUZE validní JSON."""
             # Full PD/Zadávací dokumentace — use ZZVZ prompt
             prompt_template = self.FULL_PD_PROMPT
             model_cls = TenderExtraction
+        elif d14_profession and d14_profession in self.D14_PROMPTS:
+            # v3.2: D.1.4 profession-specific prompt (silnoproud, slaboproud, VZT, etc.)
+            prompt_template = self.D14_PROMPTS[d14_profession]
+            model_cls = D14_PARAMS_CLASSES.get(d14_profession)
         elif so_params_key and so_params_key in self.SO_TYPE_PROMPTS:
             # v3.1: SO type-specific prompt (road, water, vegetation, DIO, etc.)
             prompt_template = self.SO_TYPE_PROMPTS[so_params_key]
@@ -1234,6 +1383,15 @@ Vrať POUZE validní JSON."""
             elif model_cls == TenderExtraction:
                 results["tender"] = extraction
                 logger.info(f"Full PD extraction: {len(ai_result)} fields")
+            elif d14_profession and d14_profession in D14_PARAMS_CLASSES:
+                # v3.2: Store under D.1.4 profession key
+                results[d14_profession] = extraction
+                # Merge regex facts
+                if "d14_regex" in results:
+                    for k, v in results["d14_regex"].items():
+                        if v is not None and (k not in ai_result or ai_result[k] is None):
+                            ai_result[k] = v
+                logger.info(f"D.1.4 extraction ({d14_profession}): {len(ai_result)} fields")
             elif so_params_key and so_params_key in SO_PARAMS_CLASSES:
                 # v3.1: Store under SO-type-specific key
                 results[so_params_key] = extraction

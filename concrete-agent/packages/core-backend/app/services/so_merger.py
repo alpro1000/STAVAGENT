@@ -47,6 +47,11 @@ from app.models.so_type_schemas import (
     detect_so_params_key,
     get_so_category_label,
     SO_PARAMS_CLASSES,
+    D14_PARAMS_CLASSES,
+)
+from app.services.d14_profession_detector import (
+    detect_d14_profession,
+    get_profession_label,
 )
 from app.models.passport_schema import GenericSummary
 
@@ -254,6 +259,11 @@ def merge_so_group(
     seen_section_keys: set = set()
     construction_types: Dict[str, int] = {}  # type → count
     any_non_construction: bool = False
+    # v3.2: D.1.4 profession data
+    d14_profession_key: Optional[str] = None
+    d14_data: Optional[Dict[str, Any]] = None
+    d14_source: Optional[str] = None
+    d14_priority: int = 99
 
     for fr in file_results:
         filename = fr.get("filename", "unknown")
@@ -335,6 +345,22 @@ def merge_so_group(
                         if v is not None and (k not in so_type_data or so_type_data[k] is None):
                             so_type_data[k] = v
 
+        # v3.2: D.1.4 profession params
+        fr_d14 = fr.get("d14_profession")
+        if fr_d14 and fr_d14 != "unknown":
+            if d14_profession_key is None:
+                d14_profession_key = fr_d14
+            d14_fr_data = fr.get(fr_d14)
+            if d14_fr_data and isinstance(d14_fr_data, dict):
+                if d14_data is None or priority < d14_priority:
+                    d14_data = d14_fr_data
+                    d14_source = filename
+                    d14_priority = priority
+                elif priority == d14_priority and d14_data:
+                    for k, v in d14_fr_data.items():
+                        if v is not None and (k not in d14_data or d14_data[k] is None):
+                            d14_data[k] = v
+
     # Merge bridge params with contradiction detection
     merged_bridge, bridge_contradictions = merge_bridge_params(
         bridge_extractions, so_code
@@ -407,6 +433,22 @@ def merge_so_group(
     if so_type_built and so_params_key:
         so_type_kwargs[so_params_key] = so_type_built
 
+    # v3.2: Build D.1.4 profession params
+    d14_built = None
+    if d14_data and d14_profession_key:
+        params_cls = D14_PARAMS_CLASSES.get(d14_profession_key)
+        if params_cls:
+            try:
+                d14_built = params_cls(**d14_data).model_dump(exclude_none=True)
+                sources[d14_profession_key] = d14_source
+                logger.info(f"Built {d14_profession_key} for {so_code}: {len(d14_built)} fields")
+            except Exception as e:
+                logger.warning(f"Failed to build {d14_profession_key} for {so_code}: {e}")
+                d14_built = d14_data
+                sources[d14_profession_key] = d14_source
+        if d14_built:
+            so_type_kwargs[d14_profession_key] = d14_built
+
     so_category_label = get_so_category_label(so_code)
 
     # v3.1.1: Determine dominant construction type across files
@@ -429,6 +471,9 @@ def merge_so_group(
         gtp=merged_gtp,
         technical=merged_technical,
         tender=merged_tender,
+        # v3.2: D.1.4 profession
+        d14_profession=d14_profession_key,
+        d14_profession_label=get_profession_label(d14_profession_key) if d14_profession_key else None,
         # v3.1.1 fields
         construction_type=dominant_ctype,
         section_ids=all_section_ids,

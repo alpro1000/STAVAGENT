@@ -80,6 +80,11 @@ CONSTRUCTION_TYPE_MARKERS: Dict[str, List[str]] = {
         "žalob", "soud", "rozsud",
         "faktur", "objednávk",
     ],
+    "pozemní_TZB": [
+        "D.1.4", "elektroinstalace", "slaboproud",
+        "vzduchotechnik", "zdravotechnik", "vytápění",
+        "měření a regulac",
+    ],
 }
 
 
@@ -550,6 +555,32 @@ CONTENT_TYPE_MARKERS = {
     "signage_params": [
         "dopravní značení", "vodorovné značení", "svislé značení",
     ],
+    # D.1.4 professions (pozemní stavby) — detected by content
+    "silnoproud_params": [
+        "silnoproudé elektroinstalace", "napájecí soustava",
+        "výkonová bilance", "rozvaděč", "hlavní jistič",
+        "TN-C-S", "TN-S", "CYKY",
+    ],
+    "slaboproud_params": [
+        "slaboproudé systémy", "strukturovaná kabeláž",
+        "EPS", "PZTS", "CCTV", "SKV", "esserbus",
+    ],
+    "vzt_params": [
+        "vzduchotechnické zařízení", "klimatizac",
+        "rekuperac", "zpětné získávání tepla",
+    ],
+    "zti_params": [
+        "zdravotechnické instalace", "vnitřní vodovod",
+        "vnitřní kanalizace", "zařizovací předmět",
+    ],
+    "ut_params": [
+        "ústřední vytápění", "otopná soustava",
+        "tepelné čerpadlo", "podlahové vytápění",
+    ],
+    "mar_params": [
+        "měření a regulace", "řídicí systém",
+        "frekvenční měnič", "BMS",
+    ],
 }
 
 
@@ -702,6 +733,8 @@ def classify_document_enhanced(
         "is_non_construction": False,
         "so_code": classification.so_code,
         "learned_pattern_used": False,
+        "d14_profession": None,
+        "is_d14": False,
     }
 
     if text:
@@ -721,5 +754,16 @@ def classify_document_enhanced(
                     result["so_code"] = f"SO {sid['id']}"
                     classification.so_code = result["so_code"]
                     break
+
+        # v3.2: Detect D.1.4 profession (pozemní stavby)
+        try:
+            from app.services.d14_profession_detector import (
+                is_d14_document, detect_d14_profession,
+            )
+            if is_d14_document(filename, text):
+                result["is_d14"] = True
+                result["d14_profession"] = detect_d14_profession(filename, text)
+        except Exception as e:
+            logger.debug(f"D.1.4 detection skipped: {e}")
 
     return result

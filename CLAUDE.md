@@ -305,25 +305,37 @@ VITE_DISABLE_AUTH=true
       - 4-step cycle: Perplexity (partial) → LLM (supplement) → Human (review) → Rule (Tier 0)
       - Wired into `classify_document_enhanced()` as Tier 0 + into `classify_document_async()` learning hook
 
+**Completed (2026-03-26, session 2):**
+- **Universal Parser v3.2**: D.1.4 profession support (pozemní stavby)
+  - 6 new profession schemas: `SilnoproudParams`, `SlaboproudParams`, `VZTParams`, `ZTIParams`, `UTParams`, `MaRParams`
+  - 14 sub-models: `PowerCircuit`, `EnvironmentZone`, `FloorBox`, `TZBConnection`, `SwitchboardInfo`, `SCSParams`, `PZTSParams`, `SKVParams`, `CCTVParams`, `EPSParams`, `AVTParams`, `IntercomParams`, `VZTUnit`
+  - `d14_profession_detector.py` — Profession detection by filename + content keywords (NOT by D.1.4.xx number!)
+    - `detect_d14_profession()`, `is_d14_document()`, `group_d14_files()`, `detect_slaboproud_subsystem()`
+  - `so_type_regex.py` — New regex patterns: `ELEKTRO_D14_PATTERNS` (20 patterns), `VZT_PATTERNS`, `ZTI_PATTERNS`, `UT_PATTERNS`
+  - `document_processor.py` — 6 new AI prompts: `SILNOPROUD_PROMPT`, `SLABOPROUD_PROMPT`, `VZT_PROMPT`, `ZTI_PROMPT`, `UT_PROMPT`, `MAR_PROMPT`
+  - `document_classifier.py` — D.1.4 detection in `classify_document_enhanced()`, new content markers for 6 professions + `pozemní_TZB`
+  - `so_merger.py` — D.1.4 profession merging, `d14_profession` + `d14_profession_label` on MergedSO
+  - `MergedSO` expanded: 6 new D.1.4 params fields + `d14_profession` + `d14_profession_label`
+  - `so_type_schemas.py` v3.2: `D14_PARAMS_CLASSES`, `ALL_PARAMS_CLASSES` mappings
+
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 
 **Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
 
 **Next session tasks:**
-1. **Universal Parser v3.1.1 testing**: Test full pipeline with real PDF documents (bridge SO, road SO, non-construction docs) to validate 4-tier classification, self-learning, and GenericSummary
-2. **Merge branch** `claude/cross-service-cleanup-fixes-ND9ma` → main (4 commits: cross-service cleanups + v3.1.1 full pipeline)
-3. **Merge PR** `claude/auth-saas-planner-features-jIqEd` → main (conflict resolved, security fix applied)
-4. PERI PDFs: download from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py`, enrich formwork-systems.ts
-5. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
-6. Position write-back: Monolit+Registry→Portal sync
+1. **Universal Parser v3.2 testing**: Test D.1.4 profession detection with real pozemní stavba PDFs (silnoproud TZ, slaboproud TZ)
+2. **Universal Parser v3.1.1 testing**: Test full pipeline with real dopravní stavba PDFs (bridge SO, road SO, non-construction docs)
+3. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
+4. Position write-back: Monolit+Registry→Portal sync
+5. PERI PDFs: download from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py`, enrich formwork-systems.ts
+6. Frontend: D.1.4 renderers (SilnoproudCard, SlaboproudCard, etc.) for ProjectAnalysis page
 
 **Current branch status:**
-- `claude/cross-service-cleanup-fixes-ND9ma` — pushed, ready for review/merge. Contains:
-  - 8 cross-service cleanups (CORS, models, Render refs, registry URLs, portal middleware)
-  - Planner: Resource Optimization engine + mobile scroll fix
-  - Universal Parser v3.0 → v3.1 → v3.1.1 (full pipeline with self-learning)
+- `claude/cross-service-cleanup-integration-7kY7b` — active. Contains:
+  - Everything from merged PR #715 (cross-service cleanups + v3.1.1)
+  - Universal Parser v3.2 (D.1.4 profession support)
 
-**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2 (real PDF testing + tuning), Vitest migration
+**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2 (real PDF testing + tuning), Vitest migration, D.1.4 frontend renderers
 
 ---
 
