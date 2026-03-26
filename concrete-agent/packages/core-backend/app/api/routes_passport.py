@@ -109,6 +109,62 @@ async def generate_passport(
 
         logger.info(f"Saved file to: {temp_file_path} ({len(content)} bytes)")
 
+        # ── v5.0: Try universal parser for XLSX/structured formats ──
+        # Returns ParsedDocument with positions, chapters, SO — alongside Passport
+        soupis_data = None
+        if file_ext in ('.xlsx', '.xlsm', '.xls'):
+            try:
+                from app.parsers.universal_parser import parse_any
+                parsed_doc = parse_any(temp_file_path)
+                if parsed_doc.positions_count > 0:
+                    soupis_data = {
+                        "format": parsed_doc.source_format.value,
+                        "project_name": parsed_doc.project_name,
+                        "project_id": parsed_doc.project_id,
+                        "positions_count": parsed_doc.positions_count,
+                        "coverage_pct": parsed_doc.coverage_pct,
+                        "so_count": len(parsed_doc.stavebni_objekty),
+                        "stavebni_objekty": [
+                            {
+                                "so_id": so.so_id,
+                                "so_name": so.so_name,
+                                "chapters_count": len(so.chapters),
+                                "positions_count": sum(len(ch.positions) for ch in so.chapters),
+                                "chapters": [
+                                    {
+                                        "code": ch.code,
+                                        "name": ch.name,
+                                        "positions": [
+                                            {
+                                                "pc": p.pc,
+                                                "code": p.code,
+                                                "description": p.description,
+                                                "unit": p.unit,
+                                                "quantity": float(p.quantity) if p.quantity else None,
+                                                "unit_price": float(p.unit_price) if p.unit_price else None,
+                                                "total_price": float(p.total_price) if p.total_price else None,
+                                                "price_source": p.price_source,
+                                                "specification": p.specification[:200] if p.specification else None,
+                                                "vv_lines_count": len(p.vv_lines),
+                                                "url": p.url,
+                                            }
+                                            for p in ch.positions
+                                        ],
+                                    }
+                                    for ch in so.chapters
+                                ],
+                            }
+                            for so in parsed_doc.stavebni_objekty
+                        ],
+                        "warnings": parsed_doc.parser_warnings[:10],
+                    }
+                    logger.info(
+                        f"Universal parser: {parsed_doc.positions_count} positions, "
+                        f"format={parsed_doc.source_format.value}"
+                    )
+            except Exception as e:
+                logger.warning(f"Universal parser failed (fallback to SmartParser): {e}")
+
         # Determine effective model
         effective_model = preferred_model
         if not effective_model and llm_provider:
@@ -145,6 +201,12 @@ async def generate_passport(
             _passport_storage[passport_id] = response.passport
 
             logger.info(f"Passport generated: {passport_id}, time: {response.processing_time_ms}ms")
+
+        # v5.0: Attach soupis data if available (from universal parser)
+        if soupis_data:
+            resp_dict = response.model_dump() if hasattr(response, 'model_dump') else response.dict()
+            resp_dict["soupis_praci"] = soupis_data
+            return JSONResponse(content=resp_dict)
 
         return response
 
@@ -726,6 +788,53 @@ async def process_project(
         if not saved_paths:
             raise HTTPException(status_code=400, detail="No valid files provided")
 
+        # v5.0: Try universal parser for XLSX files (soupis prací extraction)
+        all_soupis = []
+        for sp in saved_paths:
+            if Path(sp).suffix.lower() in ('.xlsx', '.xlsm', '.xls'):
+                try:
+                    from app.parsers.universal_parser import parse_any
+                    pd = parse_any(sp)
+                    if pd.positions_count > 0:
+                        all_soupis.append({
+                            "file": Path(sp).name,
+                            "format": pd.source_format.value,
+                            "positions_count": pd.positions_count,
+                            "coverage_pct": pd.coverage_pct,
+                            "so_count": len(pd.stavebni_objekty),
+                            "stavebni_objekty": [
+                                {
+                                    "so_id": so.so_id,
+                                    "so_name": so.so_name,
+                                    "chapters": [
+                                        {
+                                            "code": ch.code,
+                                            "name": ch.name,
+                                            "positions_count": len(ch.positions),
+                                            "positions": [
+                                                {
+                                                    "pc": p.pc,
+                                                    "code": p.code,
+                                                    "description": p.description,
+                                                    "unit": p.unit,
+                                                    "quantity": float(p.quantity) if p.quantity else None,
+                                                    "unit_price": float(p.unit_price) if p.unit_price else None,
+                                                    "total_price": float(p.total_price) if p.total_price else None,
+                                                    "price_source": p.price_source,
+                                                }
+                                                for p in ch.positions
+                                            ],
+                                        }
+                                        for ch in so.chapters
+                                    ],
+                                }
+                                for so in pd.stavebni_objekty
+                            ],
+                        })
+                        logger.info(f"Universal parser: {Path(sp).name} → {pd.positions_count} positions")
+                except Exception as e:
+                    logger.warning(f"Universal parser skipped for {Path(sp).name}: {e}")
+
         # Step 1: Group files by SO code
         file_groups = group_files_by_so(saved_paths)
         coverage_report = get_coverage_report(file_groups)
@@ -869,6 +978,9 @@ async def process_project(
                     1 for c in all_contradictions if c.severity == "critical"
                 ),
             },
+
+            # v5.0: Soupis prací (from universal parser, XLSX files only)
+            "soupis_praci": all_soupis if all_soupis else None,
         })
 
     except HTTPException:
