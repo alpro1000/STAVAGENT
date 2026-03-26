@@ -305,37 +305,89 @@ VITE_DISABLE_AUTH=true
       - 4-step cycle: Perplexity (partial) → LLM (supplement) → Human (review) → Rule (Tier 0)
       - Wired into `classify_document_enhanced()` as Tier 0 + into `classify_document_async()` learning hook
 
-**Completed (2026-03-26, session 2):**
+**Completed (2026-03-26, session 2 — FULL DAY):**
 - **Universal Parser v3.2**: D.1.4 profession support (pozemní stavby)
-  - 6 new profession schemas: `SilnoproudParams`, `SlaboproudParams`, `VZTParams`, `ZTIParams`, `UTParams`, `MaRParams`
-  - 14 sub-models: `PowerCircuit`, `EnvironmentZone`, `FloorBox`, `TZBConnection`, `SwitchboardInfo`, `SCSParams`, `PZTSParams`, `SKVParams`, `CCTVParams`, `EPSParams`, `AVTParams`, `IntercomParams`, `VZTUnit`
-  - `d14_profession_detector.py` — Profession detection by filename + content keywords (NOT by D.1.4.xx number!)
-    - `detect_d14_profession()`, `is_d14_document()`, `group_d14_files()`, `detect_slaboproud_subsystem()`
-  - `so_type_regex.py` — New regex patterns: `ELEKTRO_D14_PATTERNS` (20 patterns), `VZT_PATTERNS`, `ZTI_PATTERNS`, `UT_PATTERNS`
-  - `document_processor.py` — 6 new AI prompts: `SILNOPROUD_PROMPT`, `SLABOPROUD_PROMPT`, `VZT_PROMPT`, `ZTI_PROMPT`, `UT_PROMPT`, `MAR_PROMPT`
-  - `document_classifier.py` — D.1.4 detection in `classify_document_enhanced()`, new content markers for 6 professions + `pozemní_TZB`
-  - `so_merger.py` — D.1.4 profession merging, `d14_profession` + `d14_profession_label` on MergedSO
-  - `MergedSO` expanded: 6 new D.1.4 params fields + `d14_profession` + `d14_profession_label`
-  - `so_type_schemas.py` v3.2: `D14_PARAMS_CLASSES`, `ALL_PARAMS_CLASSES` mappings
+  - 6 profession schemas: SilnoproudParams, SlaboproudParams, VZTParams, ZTIParams, UTParams, MaRParams
+  - `d14_profession_detector.py` — detection by filename + content (NOT by D.1.4.xx number!)
+  - 20 elektro regex + VZT/ZTI/UT patterns, 6 AI prompts
+- **Universal Parser v4.1**: ZTI/VZT/UT expanded with real-document anchoring (RD Valcha)
+  - ZTI: 8 sub-models (Sewerage, Rainwater+Tank, ColdWater, HotWater, PlumbingFixture, UtilityConnection)
+  - VZT: 7 sub-models (NaturalVent, ForcedVent, AC, KitchenHood, BathroomFan, GarageVent)
+  - UT: 7 sub-models (HeatSource, HeatingSystem, Underfloor, Radiator, Chimney, GarageHeating)
+  - 67 regex patterns (26 ZTI + 17 VZT + 24 UT)
+- **Universal Parser v4.2**: VZT multi-device (žst. Cheb PDPS anchor)
+  - 15 sub-models: DesignParams, DuctSpec, FilterSpec, HumidifierParams, VAVRegulator, FireDamperSpec, InterprofRequirements, AHUDevice, ExhaustFanDevice, SplitCoolingDevice, VZTDeviceUnion
+  - 33 regex patterns, D.2.x.x section support, PDPS pd_level
+- **Universal Parser v4.3**: Railway svršek + spodek + IGP (SK113-11 Klatovy anchor)
+  - ZelSvrsekParams: GPK, TrackFrame, ContinuousWelded, TrackCircuit, TrackSign — 7 sub-models
+  - ZelSpodekParams: KPPZone+Layer, Subgrade, FormationLevel, WallZone, SlopeStability — 9 sub-models
+  - IGPParams: IGPProbe+Layer, SZZResult, GeologyParams, HydrogeologyParams, LabResult — 9 sub-models
+  - 46 regex patterns, 3 AI prompts
+- **Universal Multi-Format Parser v5.0**:
+  - `parse_any()` entry point in `app/parsers/universal_parser.py`
+  - `format_detector.py` — auto-detects: XLSX Komplet, XLSX RTSROZP, XML OTSKP/TSKP, PDF, IFC, DXF
+  - `xlsx_komplet_parser.py` — Export Komplet (D/K/PP/VV row types)
+  - `xlsx_rtsrozp_parser.py` — #RTSROZP# (POL1_1/SPI/VV row types)
+  - `models.py` — ParsedDocument → ParsedSO → ParsedChapter → ParsedPosition
+  - **Connected to existing DocumentSummary flow**: both `/generate` and `/process-project` now return `soupis_praci` field alongside passport
+- **OTSKP Price Engine**:
+  - `app/pricing/otskp_engine.py` — OTSKPDatabase, OTSKPSelector (kolej 49E1 variant selection), RailwayPriceEngine
+  - Composite detection: 528xxx = rails+sleepers+fastening in one price
+  - TSKP↔OTSKP bridge mapping
+- **URS Matcher integration**:
+  - `POST /api/pipeline/match-by-otskp` endpoint with composite detection
+  - `otskpToUrsSearch.prompt.js` — OTSKP→URS conversion prompt
+- **MinerU Microservice** (standalone Cloud Run):
+  - `mineru_service/main.py` + `Dockerfile` + `cloudbuild-mineru.yaml`
+  - Extracted from concrete-agent requirements → build time 30min→5min
+  - `app/parsers/mineru_client.py` — HTTP client with Google Cloud ID token auth
+  - Wired into SmartParser fallback chain: pdfplumber → MinerU HTTP → memory_pdf
+  - **Deployed**: mineru-service-1086027517695.europe-west1.run.app
+  - **IAM configured**: concrete-agent SA has roles/run.invoker
+  - **ENV set**: MINERU_SERVICE_URL in concrete-agent Cloud Run
+- **Portal frontend**:
+  - `SoupisPanel.tsx` — file upload → ParsedDocument table (in Portal, NOT Monolit)
+  - `DocumentSummary.tsx` — added Soupis prací section (5th view alongside passport)
+  - `PortalPage.tsx` — new service card "Soupis prací"
+  - `core-proxy.js` — added 'parse' route mapping
+- **Monolit-Planner** — cleanup:
+  - Removed SoupisTab from MainApp (moved to Portal)
+  - Soupis backend routes + DB migration created but may not be needed
+- **Infra fixes**:
+  - Cloud Build timeout 1800→3600s + Docker layer caching
+  - `openai==1.54.3` → `openai>=1.54.3,<3` (mineru compat)
+  - datetime import fix in routes_passport.py (Portal HTTP 500)
 
-**Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
+**Architecture decisions (session 2):**
+- **Path B**: new universal_parser lives alongside old SmartParser — no production breakage
+- **Soupis in Portal**: NOT in Monolit (concrete calculator ≠ soupis prací)
+- **MinerU as microservice**: separate Cloud Run, scale-to-zero, 4GB RAM
+- **concrete-agent stateless**: projects live in Portal DB, not concrete-agent
 
-**Technical debt:** React Error Boundaries, Document Accumulator (in-memory storage)
+**PR #723**: `claude/cross-service-cleanup-integration-7kY7b` → main (17 commits, 39 files, +6208 lines)
 
-**Next session tasks:**
-1. **Universal Parser v3.2 testing**: Test D.1.4 profession detection with real pozemní stavba PDFs (silnoproud TZ, slaboproud TZ)
-2. **Universal Parser v3.1.1 testing**: Test full pipeline with real dopravní stavba PDFs (bridge SO, road SO, non-construction docs)
-3. Sprint 2: Service Connections API + frontend UI + MASTER_ENCRYPTION_KEY setup
-4. Position write-back: Monolit+Registry→Portal sync
-5. PERI PDFs: download from GCS bucket `stavagent-cenik-norms` → `data/peri-pdfs/`, run `parse_peri_pdfs.py`, enrich formwork-systems.ts
-6. Frontend: D.1.4 renderers (SilnoproudCard, SlaboproudCard, etc.) for ProjectAnalysis page
+**Sprint 2 status:** Service Connections API + frontend + encryption — ALREADY COMPLETE (found in previous sessions)
+**Position write-back status:** ALREADY COMPLETE (portalWriteBack.js, dovWriteBack.ts exist)
+
+**Technical debt / TODO (next session):**
+1. **FRONTEND REWRITE**: DocumentSummary.tsx is 1700+ lines of spaghetti (inline styles, `as any` casts). Plan: delete old modals (Audit, Accumulator, Summary, Soupis) → create ONE unified "Analýza dokumentů" module with tabs (Soupis, Passport, AI Audit, Shrnutí)
+2. **Dead files cleanup**: `Monolit-Planner/frontend/src/components/SoupisTab.tsx`, `UrsClassifierDrawer.tsx` — unused, delete
+3. **MinerU CLI fix**: pushed `_detect_cli()` (tries 'mineru' then 'magic-pdf'), needs merge + redeploy
+4. **Testing**: upload real XLSX (Export Komplet + RTSROZP) through Portal DocumentSummary → verify soupis_praci in response
+5. **IFC/DXF/PDF parsers**: stubs exist in universal_parser.py, need implementation when real files available
 
 **Current branch status:**
-- `claude/cross-service-cleanup-integration-7kY7b` — active. Contains:
-  - Everything from merged PR #715 (cross-service cleanups + v3.1.1)
-  - Universal Parser v3.2 (D.1.4 profession support)
+- `claude/cross-service-cleanup-integration-7kY7b` — PR #723 open, 17 commits
+- Contains: v3.2→v5.0 parsers + OTSKP engine + MinerU microservice + Portal Soupis + infra fixes
 
-**Feature roadmap:** Planner user documentation (help panel), Position write-back (Monolit+Registry→Portal), Deep Links, Universal Parser Phase 2 (real PDF testing + tuning), Vitest migration, D.1.4 frontend renderers
+**Feature roadmap:**
+- Frontend rewrite (unified Analýza dokumentů)
+- project.json concept (in Portal DB, NOT concrete-agent)
+- OTSKP price visualization in soupis
+- D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
+- Planner user documentation (help panel)
+- Deep Links
+- Vitest migration
 
 ---
 
