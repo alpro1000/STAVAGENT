@@ -255,7 +255,7 @@ def compute_diff(
         new_val = getattr(new_summary, field_name, None)
         if old_val != new_val:
             # For numeric fields, check if change is significant (>2%)
-            if isinstance(old_val, (int, float)) and isinstance(new_val, (int, float)) and old_val:
+            if isinstance(old_val, (int, float)) and isinstance(new_val, (int, float)) and old_val != 0:
                 pct = abs(new_val - old_val) / abs(old_val)
                 if pct < 0.02:
                     continue  # Within 2% tolerance
@@ -305,7 +305,9 @@ def compute_diff(
 
 def _project_json_path(project_id: str) -> Path:
     """Path to project.json file."""
-    return settings.PROJECT_DIR / f"{project_id}.json"
+    base_dir = settings.PROJECT_DIR
+    base_dir.mkdir(parents=True, exist_ok=True)
+    return base_dir / f"{project_id}.json"
 
 
 def load_project_json(project_id: str) -> Dict[str, Any]:
@@ -444,6 +446,7 @@ async def add_document(
     )
 
     # -- 1. Save temp file --
+    tmp_path = None
     with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as tmp:
         tmp.write(content)
         tmp_path = tmp.name
@@ -533,7 +536,8 @@ async def add_document(
         logger.error("add-document error for %s/%s: %s", project_id, filename, e, exc_info=True)
         raise HTTPException(status_code=422, detail=f"Chyba zpracování: {str(e)}")
     finally:
-        os.unlink(tmp_path)
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 # ===========================================================================

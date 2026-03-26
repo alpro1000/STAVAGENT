@@ -13,6 +13,7 @@ Version: 1.1.0
 
 import os
 import logging
+import threading
 from typing import Optional
 
 logger = logging.getLogger(__name__)
@@ -22,6 +23,7 @@ MINERU_TIMEOUT = int(os.getenv("MINERU_TIMEOUT", "120"))
 
 # Cache the auth token (refreshed on 401)
 _cached_token: Optional[str] = None
+_token_lock = threading.Lock()
 
 
 def _get_id_token() -> Optional[str]:
@@ -29,16 +31,20 @@ def _get_id_token() -> Optional[str]:
     global _cached_token
     if _cached_token:
         return _cached_token
-    try:
-        import google.auth.transport.requests
-        import google.oauth2.id_token
-        auth_req = google.auth.transport.requests.Request()
-        token = google.oauth2.id_token.fetch_id_token(auth_req, MINERU_SERVICE_URL)
-        _cached_token = token
-        return token
-    except Exception as e:
-        logger.debug(f"[MinerU] ID token fetch failed (local dev?): {e}")
-        return None
+    with _token_lock:
+        # Double-check after acquiring lock
+        if _cached_token:
+            return _cached_token
+        try:
+            import google.auth.transport.requests
+            import google.oauth2.id_token
+            auth_req = google.auth.transport.requests.Request()
+            token = google.oauth2.id_token.fetch_id_token(auth_req, MINERU_SERVICE_URL)
+            _cached_token = token
+            return token
+        except Exception as e:
+            logger.debug(f"[MinerU] ID token fetch failed (local dev?): {e}")
+            return None
 
 
 def parse_pdf_with_mineru(
@@ -77,7 +83,8 @@ def parse_pdf_with_mineru(
 
         # Token expired — refresh and retry once
         if response.status_code == 401 and token:
-            _cached_token = None
+            with _token_lock:
+                _cached_token = None
             new_token = _get_id_token()
             if new_token:
                 headers["Authorization"] = f"Bearer {new_token}"
