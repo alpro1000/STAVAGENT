@@ -477,6 +477,78 @@ export const otskpAPI = {
   }
 };
 
+// Soupis prací (Bill of Quantities)
+export interface SoupisItem {
+  id?: string;
+  item_id: string;
+  chapter?: string;
+  code_otskp?: string;
+  code_urs?: string;
+  urs_name?: string;
+  urs_confidence?: number;
+  description: string;
+  specification?: string;
+  unit: string;
+  quantity?: number;
+  unit_price?: number;
+  total_price?: number;
+  quantity_status?: string;
+  confidence?: number;
+  source_param?: string;
+  is_composite?: boolean;
+}
+
+export interface UrsMatchResult {
+  otskp_code: string;
+  otskp_name: string;
+  is_composite: boolean;
+  composite_note?: string;
+  tskp_section?: { code: string; name: string };
+  urs_candidates: Array<{
+    code: string;
+    name: string;
+    unit: string;
+    confidence: number;
+    url?: string;
+  }>;
+}
+
+export const soupisAPI = {
+  get: async (projectId: string) => {
+    const { data } = await api.get(`/api/soupis/${projectId}`);
+    return data;
+  },
+
+  generate: async (projectId: string, items: SoupisItem[]) => {
+    const { data } = await api.post(`/api/soupis/${projectId}/generate`, { items });
+    return data;
+  },
+
+  matchUrs: async (otskpCode: string, otskpName?: string, otskpMj?: string, quantity?: number): Promise<{ success: boolean; data: UrsMatchResult }> => {
+    const { data } = await api.post('/api/soupis/match-urs', {
+      otskp_code: otskpCode,
+      otskp_name: otskpName,
+      otskp_mj: otskpMj,
+      quantity,
+    });
+    return data;
+  },
+
+  updateUrs: async (projectId: string, itemId: string, ursCode: string, ursName: string, confidence: number) => {
+    const { data } = await api.put(`/api/soupis/${projectId}/item/${itemId}`, {
+      code_urs: ursCode,
+      urs_name: ursName,
+      urs_confidence: confidence,
+    });
+    return data;
+  },
+
+  delete: async (projectId: string) => {
+    const { data } = await api.delete(`/api/soupis/${projectId}`);
+    return data;
+  },
+};
+
 // Auth API (email verification, login, etc.)
 export const authAPI = {
   verify: async (token: string): Promise<any> => {
