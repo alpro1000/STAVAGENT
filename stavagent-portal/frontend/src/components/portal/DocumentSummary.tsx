@@ -1591,6 +1591,87 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
           <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', textAlign: 'right' }}>
             Soubor: {passportData?.metadata?.file_name || '—'} | ID: {passportData.passport.passport_id} | Vygenerováno: {new Date(passportData.passport.generated_at).toLocaleString('cs-CZ')}
           </div>
+
+          {/* v5.0: Soupis Prací — parsed positions from universal_parser */}
+          {(passportData as any)?.soupis_praci && (() => {
+            const soupis = (passportData as any).soupis_praci;
+            return (
+              <div style={{ marginTop: '16px', padding: '16px', background: 'var(--bg-secondary, #f8f9fa)', borderRadius: '8px', border: '1px solid var(--border-primary, #e0e0e0)' }}>
+                <h3 style={{ margin: '0 0 12px', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>📋</span> Soupis prací
+                  <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--text-secondary)' }}>
+                    {soupis.positions_count} položek | {soupis.format} | pokrytí {soupis.coverage_pct}%
+                  </span>
+                </h3>
+
+                {soupis.stavebni_objekty?.map((so: any, soIdx: number) => (
+                  <div key={soIdx} style={{ marginBottom: '12px' }}>
+                    {soupis.so_count > 1 && (
+                      <h4 style={{ margin: '0 0 8px', fontSize: '14px', color: 'var(--text-primary)' }}>
+                        {so.so_id} — {so.so_name}
+                      </h4>
+                    )}
+
+                    {so.chapters?.map((ch: any, chIdx: number) => (
+                      <div key={chIdx} style={{ marginBottom: '8px' }}>
+                        <div style={{ fontSize: '13px', fontWeight: 600, padding: '4px 8px', background: 'var(--bg-tertiary, #eee)', borderRadius: '4px', marginBottom: '4px' }}>
+                          {ch.code} — {ch.name}
+                        </div>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+                          <thead>
+                            <tr style={{ borderBottom: '1px solid var(--border-primary, #ddd)', textAlign: 'left' }}>
+                              <th style={{ padding: '3px 6px', width: '35px' }}>PČ</th>
+                              <th style={{ padding: '3px 6px', width: '90px' }}>Kód</th>
+                              <th style={{ padding: '3px 6px' }}>Popis</th>
+                              <th style={{ padding: '3px 6px', width: '35px' }}>MJ</th>
+                              <th style={{ padding: '3px 6px', width: '70px', textAlign: 'right' }}>Množství</th>
+                              <th style={{ padding: '3px 6px', width: '70px', textAlign: 'right' }}>J.cena</th>
+                              <th style={{ padding: '3px 6px', width: '80px', textAlign: 'right' }}>Celkem</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {ch.positions?.slice(0, 50).map((p: any, pIdx: number) => (
+                              <tr key={pIdx} style={{ borderBottom: '1px solid var(--border-secondary, #eee)' }}>
+                                <td style={{ padding: '3px 6px', color: '#999', fontFamily: 'monospace', fontSize: '11px' }}>{p.pc || ''}</td>
+                                <td style={{ padding: '3px 6px', fontFamily: 'monospace', fontSize: '11px' }}>
+                                  {p.url ? <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ color: '#1565c0' }}>{p.code}</a> : p.code}
+                                </td>
+                                <td style={{ padding: '3px 6px' }}>
+                                  <div style={{ fontWeight: 500, fontSize: '12px' }}>{p.description}</div>
+                                  {p.specification && <div style={{ fontSize: '10px', color: '#888', marginTop: '1px' }}>{p.specification.substring(0, 80)}</div>}
+                                </td>
+                                <td style={{ padding: '3px 6px', color: '#666' }}>{p.unit}</td>
+                                <td style={{ padding: '3px 6px', textAlign: 'right', fontFamily: 'monospace' }}>
+                                  {p.quantity != null ? new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 3 }).format(p.quantity) : '—'}
+                                </td>
+                                <td style={{ padding: '3px 6px', textAlign: 'right', fontFamily: 'monospace' }}>
+                                  {p.unit_price != null ? new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 2 }).format(p.unit_price) : '—'}
+                                </td>
+                                <td style={{ padding: '3px 6px', textAlign: 'right', fontFamily: 'monospace', fontWeight: 500 }}>
+                                  {p.total_price != null ? new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(p.total_price) : '—'}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {ch.positions?.length > 50 && (
+                          <div style={{ fontSize: '11px', color: '#999', padding: '4px 6px' }}>
+                            ... a dalších {ch.positions.length - 50} položek
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+
+                {soupis.warnings?.length > 0 && (
+                  <div style={{ fontSize: '11px', color: '#f57c00', marginTop: '8px' }}>
+                    {soupis.warnings.map((w: string, i: number) => <div key={i}>⚠️ {w}</div>)}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </div>
       )}
 
