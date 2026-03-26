@@ -20,18 +20,28 @@ app = FastAPI(title="MinerU Service", version="1.0.0")
 @app.get("/health")
 def health():
     """Health check for Cloud Run."""
-    try:
-        result = subprocess.run(
-            ["magic-pdf", "--version"],
-            capture_output=True, timeout=5
-        )
-        mineru_ok = result.returncode == 0
-    except Exception:
-        mineru_ok = False
+    # MinerU 2.x CLI: try 'mineru' first (v2.x), then 'magic-pdf' (v1.x)
+    mineru_ok = False
+    cli_cmd = None
+    for cmd in ["mineru", "magic-pdf"]:
+        try:
+            result = subprocess.run(
+                [cmd, "--version"],
+                capture_output=True, timeout=5
+            )
+            if result.returncode == 0:
+                mineru_ok = True
+                cli_cmd = cmd
+                break
+        except FileNotFoundError:
+            continue
+        except Exception:
+            continue
 
     return {
         "status": "ok" if mineru_ok else "degraded",
         "mineru_available": mineru_ok,
+        "cli_command": cli_cmd,
     }
 
 
@@ -62,9 +72,10 @@ async def parse_pdf(
         out_dir = os.path.join(tmpdir, "output")
         os.makedirs(out_dir)
 
+        cli_cmd = _detect_cli()
         try:
             result = subprocess.run(
-                ["magic-pdf", "-p", pdf_path, "-o", out_dir, "--method", method],
+                [cli_cmd, "-p", pdf_path, "-o", out_dir, "--method", method],
                 capture_output=True,
                 timeout=180,
                 text=True,
@@ -85,6 +96,15 @@ async def parse_pdf(
             "pages_processed": md_text.count('\n\n'),
             "chars": len(md_text),
         })
+
+
+def _detect_cli() -> str:
+    """Detect MinerU CLI command name (v2.x='mineru', v1.x='magic-pdf')."""
+    import shutil
+    for cmd in ["mineru", "magic-pdf"]:
+        if shutil.which(cmd):
+            return cmd
+    raise RuntimeError("Neither 'mineru' nor 'magic-pdf' CLI found in PATH")
 
 
 def _find_md_output(out_dir: str) -> str:
