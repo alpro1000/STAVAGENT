@@ -289,6 +289,13 @@ VITE_DISABLE_AUTH=true
   - `MergedSO` expanded: `construction_type`, `section_ids`, `is_non_construction`, `generic_summary`
   - Frontend: GenericSummary interface, CONSTRUCTION_TYPE_LABELS, NONCONSTRUCTION_TYPE_LABELS, renderGenericSummary()
   - SOCard: construction type badge, section IDs display, non-construction summary section
+  - **STATUS: Fully wired into pipeline (commit 2).** Integration complete:
+    - `document_processor.py`: uses `classify_document_enhanced()`, stores `_last_enhanced_metadata`
+    - `passport_enricher.py`: `call_llm_for_task(prompt, task_type)` method routes via provider_router
+    - `document_classifier.py`: `classify_document_async()` has Perplexity Tier 3b for unknown docs
+    - `so_merger.py`: populates `construction_type`, `section_ids`, `is_non_construction` from file results
+    - `routes_passport.py`: passes enhanced metadata (`section_ids`, `construction_type`, `is_non_construction`) through to merger
+    - **Remaining:** Self-learning patterns (LearnedPattern: Perplexity findings → new Tier 1 rules)
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 

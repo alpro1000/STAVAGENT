@@ -48,6 +48,7 @@ from app.models.so_type_schemas import (
     get_so_category_label,
     SO_PARAMS_CLASSES,
 )
+from app.models.passport_schema import GenericSummary
 
 logger = logging.getLogger(__name__)
 
@@ -248,6 +249,11 @@ def merge_so_group(
     all_contradictions: List[ContradictionRecord] = []
     sources: Dict[str, str] = {}
     file_list: List[str] = []
+    # v3.1.1: Enhanced classification metadata
+    all_section_ids: List[Dict[str, str]] = []
+    seen_section_keys: set = set()
+    construction_types: Dict[str, int] = {}  # type → count
+    any_non_construction: bool = False
 
     for fr in file_results:
         filename = fr.get("filename", "unknown")
@@ -302,6 +308,19 @@ def merge_so_group(
             if tender_data is None:
                 tender_data = tender
                 tender_source = filename
+
+        # v3.1.1: Collect enhanced classification metadata
+        fr_section_ids = fr.get("section_ids", [])
+        for sid in fr_section_ids:
+            key = f"{sid.get('type')}:{sid.get('id')}"
+            if key not in seen_section_keys:
+                seen_section_keys.add(key)
+                all_section_ids.append(sid)
+        fr_ctype = fr.get("construction_type")
+        if fr_ctype:
+            construction_types[fr_ctype] = construction_types.get(fr_ctype, 0) + 1
+        if fr.get("is_non_construction"):
+            any_non_construction = True
 
         # v3.1: SO type-specific params (road_params, water_params, etc.)
         if so_params_key and so_params_key not in ("bridge_params", "technical"):
@@ -390,6 +409,16 @@ def merge_so_group(
 
     so_category_label = get_so_category_label(so_code)
 
+    # v3.1.1: Determine dominant construction type across files
+    dominant_ctype = None
+    if construction_types:
+        dominant_ctype = max(construction_types, key=construction_types.get)
+
+    # v3.1.1: Non-construction detection — only if ALL files are non-construction
+    is_non_construction = any_non_construction and len(file_list) > 0 and (
+        construction_types.get("nestavební", 0) == len(file_list)
+    )
+
     merged = MergedSO(
         so_code=so_code,
         so_name=so_name,
@@ -400,6 +429,10 @@ def merge_so_group(
         gtp=merged_gtp,
         technical=merged_technical,
         tender=merged_tender,
+        # v3.1.1 fields
+        construction_type=dominant_ctype,
+        section_ids=all_section_ids,
+        is_non_construction=is_non_construction,
         contradictions=all_contradictions,
         sources=sources,
         file_count=len(file_list),

@@ -44,6 +44,7 @@ from app.services.passport_enricher import PassportEnricher
 from app.services.document_classifier import (
     classify_document, classify_document_async,
     enrich_classification, detect_so_type_from_content,
+    classify_document_enhanced,
 )
 from app.services.so_type_regex import extract_so_type_params
 from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES
@@ -150,17 +151,33 @@ class DocumentProcessor:
             logger.info(f"Layer 1 complete: {layer1_time}ms, {len(document_text)} chars")
 
             # === CLASSIFICATION: Detect document type (3-tier with AI fallback) ===
-            classification = await classify_document_async(
-                filename=Path(file_path).name,
-                text=document_text,
-                llm_call=self.enricher._call_llm if enable_ai_enrichment else None,
-            )
-            # v3: Enrich classification with sub_type, SO code, priority
-            classification = enrich_classification(classification, Path(file_path).name)
+            # v3.1.1: Use enhanced classification for flexible section IDs + construction type
+            enhanced = classify_document_enhanced(Path(file_path).name, document_text)
+            classification = enhanced["classification"]
+
+            # If Tiers 1-2 insufficient, try AI (Tier 3)
+            if classification.confidence < 0.5 and enable_ai_enrichment:
+                classification = await classify_document_async(
+                    filename=Path(file_path).name,
+                    text=document_text,
+                    llm_call=self.enricher._call_llm,
+                )
+                classification = enrich_classification(classification, Path(file_path).name)
+                # Re-run enhanced to pick up SO code from content if AI didn't find it
+                if not classification.so_code and enhanced.get("so_code"):
+                    classification.so_code = enhanced["so_code"]
+
+            # Store enhanced metadata for use in merge step
+            self._last_enhanced_metadata = {
+                "section_ids": enhanced.get("section_ids", []),
+                "construction_type": enhanced.get("construction_type"),
+                "is_non_construction": enhanced.get("is_non_construction", False),
+            }
 
             logger.info(f"Classification: {classification.category.value} "
                          f"(confidence={classification.confidence:.2f}, method={classification.method}, "
-                         f"sub_type={classification.sub_type}, so_code={classification.so_code})")
+                         f"sub_type={classification.sub_type}, so_code={classification.so_code}, "
+                         f"construction_type={enhanced.get('construction_type')})")
 
             # === LAYER 2: REGEX EXTRACTION (Deterministic facts) ===
             logger.info("LAYER 2: Extracting deterministic facts")
@@ -1171,7 +1188,8 @@ Vrať POUZE validní JSON."""
         prompt = prompt_template.format(text=text_for_extraction)
 
         try:
-            ai_result = await self.enricher._call_llm(prompt)
+            # v3.1.1: Use task-based routing for extraction
+            ai_result = await self.enricher.call_llm_for_task(prompt, task_type="extract")
             if not ai_result or not isinstance(ai_result, dict):
                 return results
 

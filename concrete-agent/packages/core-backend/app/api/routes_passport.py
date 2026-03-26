@@ -788,6 +788,12 @@ async def process_project(
                     result_dict["passport"] = (
                         response.passport.model_dump() if response.passport else None
                     )
+                    # v3.1.1: Enhanced classification metadata
+                    enhanced_meta = getattr(processor, '_last_enhanced_metadata', None)
+                    if enhanced_meta:
+                        result_dict["section_ids"] = enhanced_meta.get("section_ids", [])
+                        result_dict["construction_type"] = enhanced_meta.get("construction_type")
+                        result_dict["is_non_construction"] = enhanced_meta.get("is_non_construction", False)
 
                 file_results[filename] = result_dict
 

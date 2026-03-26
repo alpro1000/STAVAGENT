@@ -232,6 +232,7 @@ async def classify_document_async(
     filename: str,
     text: str = "",
     llm_call=None,
+    perplexity_llm_call=None,
 ) -> ClassificationInfo:
     """
     Full 3-tier classification with AI fallback.
@@ -240,13 +241,14 @@ async def classify_document_async(
         filename: Original filename
         text: Extracted document text
         llm_call: Async callable (prompt) -> dict|None from PassportEnricher._call_llm
+        perplexity_llm_call: Optional separate callable for Perplexity Tier 3
     """
     # Try tiers 1-2 first
     result = classify_document(filename, text)
     if result.confidence >= 0.5:
         return result
 
-    # Tier 3: AI classification
+    # Tier 3a: Standard AI classification (Gemini Flash / Claude)
     if llm_call and text:
         try:
             snippet = text[:3000]
@@ -271,6 +273,42 @@ async def classify_document_async(
                     return ai_classification
         except Exception as e:
             logger.warning(f"AI classification failed for '{filename}': {e}")
+
+    # Tier 3b: Perplexity web-search verification for unknown documents
+    if (perplexity_llm_call or llm_call) and text and result.confidence < 0.3:
+        try:
+            from app.services.perplexity_classifier import classify_unknown_document
+            pplx_result = await classify_unknown_document(
+                filename=filename,
+                text=text,
+                llm_call=perplexity_llm_call or llm_call,
+            )
+            if pplx_result and pplx_result.get("confidence", 0) > result.confidence:
+                # Map Perplexity result to ClassificationInfo
+                if not pplx_result.get("is_construction", True):
+                    # Non-construction → OT
+                    return ClassificationInfo(
+                        category=DocCategory.OT,
+                        confidence=pplx_result["confidence"],
+                        method="perplexity",
+                        detected_keywords=[
+                            pplx_result.get("document_type", ""),
+                            pplx_result.get("reasoning", ""),
+                        ],
+                    )
+                else:
+                    # Construction doc — classify as TZ by default
+                    return ClassificationInfo(
+                        category=DocCategory.TZ,
+                        confidence=pplx_result["confidence"],
+                        method="perplexity",
+                        detected_keywords=[
+                            pplx_result.get("so_type", ""),
+                            pplx_result.get("reasoning", ""),
+                        ],
+                    )
+        except Exception as e:
+            logger.warning(f"Perplexity Tier 3 failed for '{filename}': {e}")
 
     return result
 
