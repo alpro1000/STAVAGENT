@@ -64,6 +64,9 @@ data/processed/*
 data/results/*
 !data/results/.gitkeep
 
+# Runtime data (learned patterns, etc.)
+packages/core-backend/data/
+
 # ==========================================
 # LOGS
 # ==========================================
