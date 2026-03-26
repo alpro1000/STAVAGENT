@@ -68,7 +68,9 @@ class DocumentIdentity(BaseModel):
     @property
     def key(self) -> str:
         """Unique key for matching: filename::doc_type"""
-        return f"{self.filename}::{self.doc_type.value}"
+        from pathlib import Path
+        sanitized_filename = Path(self.filename).name
+        return f"{sanitized_filename}::{self.doc_type.value}"
 
 
 # ---------------------------------------------------------------------------
