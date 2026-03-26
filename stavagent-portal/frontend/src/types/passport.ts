@@ -785,12 +785,30 @@ export interface MergedSO {
   electro_params?: ElectroSOParams;
   pipeline_params?: PipelineSOParams;
   signage_params?: SignageSOParams;
+  // v3.1.1: Enhanced classification
+  construction_type?: string;
+  section_ids?: Array<{ type: string; id: string }>;
+  is_non_construction?: boolean;
+  generic_summary?: GenericSummary;
   contradictions?: ContradictionRecord[];
   sources?: Record<string, string>;
   file_count?: number;
   files?: string[];
   source_documents?: string[];
   coverage?: Record<string, boolean>;
+}
+
+// v3.1.1: Non-construction document summary
+export interface GenericSummary {
+  document_type: string;  // "legal", "invoice", "correspondence", "other"
+  title?: string;
+  summary?: string;
+  key_entities?: string[];
+  dates_found?: string[];
+  amounts_found?: string[];
+  language?: string;
+  page_count?: number;
+  confidence?: number;
 }
 
 // ===== AI Model Selection =====

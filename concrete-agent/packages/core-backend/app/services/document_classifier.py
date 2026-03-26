@@ -1,23 +1,86 @@
 """
 Document Classifier — 3-tier classification for Czech construction documents.
 
-Tier 1: Filename patterns (fast, 0.9 confidence)
-Tier 2: Content keywords (medium, 0.4-0.85 confidence)
-Tier 3: AI fallback (LLM, 0.5-0.8 confidence)
+Tier 1: Filename patterns + structural ID regex (fast, 0.9 confidence)
+Tier 2: Content keywords + construction type markers (medium, 0.4-0.85 confidence)
+Tier 3: AI fallback / Perplexity verification (LLM, 0.5-0.8 confidence)
 
 Author: STAVAGENT Team
-Version: 1.1.0
+Version: 1.2.0 (v3.1.1)
 """
 
 import logging
 import unicodedata
 import json
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import re
 from app.models.passport_schema import DocCategory, DocSubType, ClassificationInfo
 
 logger = logging.getLogger(__name__)
+
+
+# =============================================================================
+# v3.1.1: FLEXIBLE SECTION ID PATTERNS
+# =============================================================================
+# Not just "SO" — detect ANY structural identifier in Czech PD
+
+SECTION_ID_PATTERNS = [
+    # Dopravní stavby (ŘSD, SŽDC): SO 202, SO 101.1, SO 380.12
+    re.compile(r"SO\s*(\d{3}(?:\.\d+)?)"),
+    # Pozemní stavby (vyhláška 499/2006 Sb.): D.1.1, D.1.4, D.2.1
+    re.compile(r"D\.(\d+\.\d+)"),
+    # Části PD: A.1, B.2, C.3, E.1, F.1 (but NOT D.x.x which is handled above)
+    re.compile(r"([A-CE-F]\.\d+)"),
+    # Průmyslové stavby: PS 01, PS 02
+    re.compile(r"PS\s*(\d{2,3})"),
+    # Inženýrské objekty: IO 01, IO 02
+    re.compile(r"IO\s*(\d{2,3})"),
+]
+
+
+# =============================================================================
+# v3.1.1: CONSTRUCTION TYPE MARKERS
+# =============================================================================
+
+CONSTRUCTION_TYPE_MARKERS: Dict[str, List[str]] = {
+    "dopravní": [
+        "pozemní komunikac", "silnice I/", "silnice II/",
+        "dálnice", "ŘSD", "SŽDC", "železnič",
+        "křižovatk", "MÚK", "mimoúrovňov",
+    ],
+    "mostní": [
+        "nosná konstrukce", "opěra", "pilíř", "rozpětí",
+        "mostovk", "ČSN 73 6200", "předpjat",
+    ],
+    "pozemní_bytová": [
+        "bytový dům", "bytová jednotk", "obytný",
+        "D.1.1", "požárně bezpečnost",
+    ],
+    "pozemní_občanská": [
+        "občanská vybavenost", "administrativní",
+        "školské zařízení", "zdravotnické",
+    ],
+    "průmyslová": [
+        "výrobní hal", "skladová", "technologie",
+        "jeřábová dráh", "PS 0",
+    ],
+    "rekonstrukce": [
+        "rekonstrukc", "bourací práce", "stavební průzkum",
+        "statické posouzení",
+    ],
+    "inženýrské_sítě": [
+        "vodovod", "kanalizac", "plynovod",
+        "vedení VN", "kabelová tras",
+    ],
+    "vegetační": [
+        "vegetační", "sadové úprav", "výsadby dřevin",
+    ],
+    "nestavební": [
+        "žalob", "soud", "rozsud",
+        "faktur", "objednávk",
+    ],
+}
 
 
 # ── Filename patterns ─────────────────────────────────────────────────────
@@ -437,3 +500,128 @@ def detect_so_type_from_content(text: str) -> Optional[str]:
     if best and scores[best] > 0:
         return best
     return None
+
+
+# =============================================================================
+# v3.1.1: FLEXIBLE SECTION ID EXTRACTION
+# =============================================================================
+
+def extract_section_ids(text: str) -> List[Dict[str, str]]:
+    """
+    Extract all structural section IDs from document text.
+
+    Finds SO codes (SO 202), building sections (D.1.1), PD parts (A.1-F.1),
+    industrial objects (PS 01), and engineering objects (IO 01).
+
+    Returns list of dicts: [{"type": "SO", "id": "202"}, {"type": "D", "id": "1.1"}, ...]
+    """
+    results = []
+    seen = set()
+    snippet = text[:30000]
+
+    type_names = ["SO", "D", "PD_SECTION", "PS", "IO"]
+    for pattern, type_name in zip(SECTION_ID_PATTERNS, type_names):
+        for m in pattern.finditer(snippet):
+            raw_id = m.group(1).strip()
+            key = f"{type_name}:{raw_id}"
+            if key not in seen:
+                seen.add(key)
+                results.append({"type": type_name, "id": raw_id})
+
+    return results
+
+
+# =============================================================================
+# v3.1.1: CONSTRUCTION TYPE DETECTION
+# =============================================================================
+
+def detect_construction_type(text: str) -> Optional[str]:
+    """
+    Detect construction project type from document content.
+
+    Returns one of: dopravní, mostní, pozemní_bytová, pozemní_občanská,
+    průmyslová, rekonstrukce, inženýrské_sítě, vegetační, nestavební.
+    Returns None if no type detected.
+    """
+    text_lower = text[:20000].lower()
+    scores: Dict[str, int] = {}
+
+    for ctype, markers in CONSTRUCTION_TYPE_MARKERS.items():
+        scores[ctype] = sum(1 for m in markers if m.lower() in text_lower)
+
+    if not scores:
+        return None
+
+    best = max(scores, key=lambda k: scores[k])
+    if scores[best] == 0:
+        return None
+
+    return best
+
+
+def is_non_construction_document(text: str) -> bool:
+    """
+    Check if document is non-construction (legal, invoices, etc.).
+
+    Returns True if 'nestavební' type scores highest with ≥2 markers.
+    """
+    ctype = detect_construction_type(text)
+    if ctype != "nestavební":
+        return False
+
+    text_lower = text[:20000].lower()
+    score = sum(1 for m in CONSTRUCTION_TYPE_MARKERS["nestavební"] if m.lower() in text_lower)
+    return score >= 2
+
+
+# =============================================================================
+# v3.1.1: ENHANCED CLASSIFICATION (combines all tiers)
+# =============================================================================
+
+def classify_document_enhanced(
+    filename: str, text: str = ""
+) -> Dict[str, Any]:
+    """
+    Enhanced classification combining document category, section IDs,
+    construction type, and non-construction detection.
+
+    Returns dict with:
+        - classification: ClassificationInfo (category, confidence, method)
+        - section_ids: list of detected structural IDs
+        - construction_type: detected construction type or None
+        - is_non_construction: bool
+        - so_code: extracted SO code or None
+    """
+    # Standard classification (Tiers 1-2)
+    classification = classify_document(filename, text)
+
+    # Enrich with sub-type and SO code
+    classification = enrich_classification(classification, filename)
+
+    result = {
+        "classification": classification,
+        "section_ids": [],
+        "construction_type": None,
+        "is_non_construction": False,
+        "so_code": classification.so_code,
+    }
+
+    if text:
+        # Extract all section IDs from content
+        result["section_ids"] = extract_section_ids(text)
+
+        # Detect construction type
+        result["construction_type"] = detect_construction_type(text)
+
+        # Check if non-construction
+        result["is_non_construction"] = is_non_construction_document(text)
+
+        # If no SO code from filename, try to find from section IDs
+        if not result["so_code"]:
+            for sid in result["section_ids"]:
+                if sid["type"] == "SO":
+                    result["so_code"] = f"SO {sid['id']}"
+                    classification.so_code = result["so_code"]
+                    break
+
+    return result

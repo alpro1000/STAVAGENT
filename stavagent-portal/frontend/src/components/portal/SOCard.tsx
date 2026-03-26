@@ -12,6 +12,7 @@ import type {
   RoadSOParams, TrafficDIOParams, WaterSOParams, VegetationSOParams,
   ElectroSOParams, PipelineSOParams, SignageSOParams,
   ConstructionPhase, RoadClosure, DetourRoute, PlantSpecies,
+  GenericSummary,
 } from '../../types/passport';
 
 interface SOCardProps {
@@ -222,6 +223,28 @@ const STRUCTURE_TYPE_LABELS: Record<string, string> = {
   OTHER: 'Jiné',
 };
 
+// v3.1.1: Construction type labels
+const CONSTRUCTION_TYPE_LABELS: Record<string, string> = {
+  'dopravní': 'Dopravní stavba',
+  'mostní': 'Mostní stavba',
+  'pozemní_bytová': 'Pozemní — bytová',
+  'pozemní_občanská': 'Pozemní — občanská',
+  'průmyslová': 'Průmyslová stavba',
+  'rekonstrukce': 'Rekonstrukce',
+  'inženýrské_sítě': 'Inženýrské sítě',
+  'vegetační': 'Vegetační úpravy',
+  'nestavební': 'Nestavební dokument',
+};
+
+// Non-construction document type labels
+const NONCONSTRUCTION_TYPE_LABELS: Record<string, string> = {
+  'legal': 'Právní dokument',
+  'invoice': 'Faktura',
+  'correspondence': 'Korespondence',
+  'other': 'Ostatní',
+  'unknown': 'Neznámý typ',
+};
+
 // Generic formatter for values
 function formatValue(value: any): string {
   if (value === null || value === undefined) return '—';
@@ -310,6 +333,11 @@ export default function SOCard({ so }: SOCardProps) {
           {typeLabel && (
             <span className="c-badge" style={{ backgroundColor: '#FF9F1C', color: '#fff', padding: '2px 10px', borderRadius: '10px', fontSize: '11px', fontWeight: 600 }}>
               {typeLabel}
+            </span>
+          )}
+          {so.construction_type && (
+            <span className="c-badge" style={{ backgroundColor: so.is_non_construction ? '#95a5a6' : '#3498db', color: '#fff', padding: '2px 10px', borderRadius: '10px', fontSize: '11px', fontWeight: 600 }}>
+              {CONSTRUCTION_TYPE_LABELS[so.construction_type] || so.construction_type}
             </span>
           )}
           <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
@@ -405,6 +433,20 @@ export default function SOCard({ so }: SOCardProps) {
         <Section title="Geotechnika">
           {renderGTP(so.gtp, so.sources)}
         </Section>
+      )}
+
+      {/* Non-construction document summary */}
+      {so.is_non_construction && so.generic_summary && (
+        <Section title="Nestavební dokument">
+          {renderGenericSummary(so.generic_summary)}
+        </Section>
+      )}
+
+      {/* Section IDs found in content */}
+      {so.section_ids && so.section_ids.length > 0 && (
+        <div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+          Identifikátory: {so.section_ids.map(s => `${s.type} ${s.id}`).join(', ')}
+        </div>
       )}
 
       {/* Related SOs from any params */}
@@ -643,6 +685,48 @@ function renderRelatedSOs(so: MergedSO) {
   return (
     <div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--text-secondary)' }}>
       Související SO: {sos.join(', ')}
+    </div>
+  );
+}
+
+// ===== Non-construction document summary =====
+function renderGenericSummary(summary: GenericSummary) {
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '8px' }}>
+        <span style={{ fontSize: '12px' }}>
+          Typ: <strong>{NONCONSTRUCTION_TYPE_LABELS[summary.document_type] || summary.document_type}</strong>
+        </span>
+        {summary.title && (
+          <span style={{ fontSize: '12px' }}>
+            Předmět: <strong>{summary.title}</strong>
+          </span>
+        )}
+      </div>
+      {summary.summary && (
+        <div style={{ fontSize: '12px', padding: '8px', backgroundColor: 'rgba(0,0,0,0.02)', borderRadius: '6px', marginBottom: '8px' }}>
+          {summary.summary}
+        </div>
+      )}
+      {summary.key_entities && summary.key_entities.length > 0 && (
+        <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+          Entity: {summary.key_entities.map((e, i) => (
+            <span key={i} style={{ padding: '1px 6px', backgroundColor: 'rgba(52,152,219,0.1)', borderRadius: '3px', marginRight: '4px', fontSize: '11px' }}>
+              {e}
+            </span>
+          ))}
+        </div>
+      )}
+      {summary.dates_found && summary.dates_found.length > 0 && (
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+          Data: {summary.dates_found.join(', ')}
+        </div>
+      )}
+      {summary.amounts_found && summary.amounts_found.length > 0 && (
+        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+          Částky: {summary.amounts_found.join(', ')}
+        </div>
+      )}
     </div>
   );
 }

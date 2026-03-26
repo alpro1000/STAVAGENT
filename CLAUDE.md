@@ -280,6 +280,15 @@ VITE_DISABLE_AUTH=true
   - `MergedSO` expanded: `so_category`, `so_category_label`, 7 new Optional params fields
   - Frontend: 8 new Czech label maps, specialized renderers (pavement layers, phases, closures, detours, species table)
   - Content-based SO type fallback when filename detection fails
+- **Universal Parser v3.1.1**: Multi-provider pipeline & flexible detection
+  - `document_classifier.py` v1.2.0 — SECTION_ID_PATTERNS (SO, D.x.x, A-F.x, PS, IO), CONSTRUCTION_TYPE_MARKERS (9 categories)
+  - New functions: `extract_section_ids()`, `detect_construction_type()`, `is_non_construction_document()`, `classify_document_enhanced()`
+  - `provider_router.py` — Task-based LLM routing (TASK_PROVIDER_MAP: classify→Flash, extract→Sonnet, verify→Perplexity)
+  - `perplexity_classifier.py` — Tier 3 web-search classification for unknown docs + non-construction summarization
+  - `GenericSummary` model for non-construction documents (legal, invoices, correspondence)
+  - `MergedSO` expanded: `construction_type`, `section_ids`, `is_non_construction`, `generic_summary`
+  - Frontend: GenericSummary interface, CONSTRUCTION_TYPE_LABELS, NONCONSTRUCTION_TYPE_LABELS, renderGenericSummary()
+  - SOCard: construction type badge, section IDs display, non-construction summary section
 
 **Sprint 2 remaining:** Service Connections API endpoints + frontend UI + encryption service
 

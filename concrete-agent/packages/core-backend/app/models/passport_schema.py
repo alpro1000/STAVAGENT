@@ -540,6 +540,11 @@ class MergedSO(BaseModel):
     electro_params: Optional[Dict[str, Any]] = None
     pipeline_params: Optional[Dict[str, Any]] = None
     signage_params: Optional[Dict[str, Any]] = None
+    # v3.1.1: Enhanced classification
+    construction_type: Optional[str] = Field(None, description="dopravní, mostní, pozemní_bytová, etc.")
+    section_ids: List[Dict[str, str]] = Field(default_factory=list, description="Detected section IDs")
+    is_non_construction: bool = Field(default=False)
+    generic_summary: Optional["GenericSummary"] = None
     contradictions: List[ContradictionRecord] = Field(default_factory=list)
     sources: Dict[str, str] = Field(
         default_factory=dict,
@@ -955,6 +960,26 @@ class ScheduleExtraction(BaseModel):
     milestones: List[Dict[str, Any]] = Field(default_factory=list)
     critical_path: List[str] = Field(default_factory=list)
     source_pages: Dict[str, int] = Field(default_factory=dict)
+
+
+# =============================================================================
+# V3.1.1: NON-CONSTRUCTION DOCUMENT SUMMARY
+# =============================================================================
+
+class GenericSummary(BaseModel):
+    """
+    Summary for non-construction documents (legal, invoices, etc.).
+    Used when document doesn't match any construction schema.
+    """
+    document_type: str = Field(default="unknown", description="Detected type: legal, invoice, correspondence, other")
+    title: Optional[str] = None
+    summary: Optional[str] = Field(None, description="Brief AI-generated summary (2-3 sentences)")
+    key_entities: List[str] = Field(default_factory=list, description="Named entities: people, companies, dates")
+    dates_found: List[str] = Field(default_factory=list, description="Dates mentioned in document")
+    amounts_found: List[str] = Field(default_factory=list, description="Monetary amounts found")
+    language: str = Field(default="cs", description="Detected language")
+    page_count: Optional[int] = None
+    confidence: float = Field(default=0.5, description="Classification confidence")
 
 
 # Resolve forward references after TenderExtraction is defined
