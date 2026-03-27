@@ -530,7 +530,7 @@ VITE_DISABLE_AUTH=true
   - Saves full passport + soupis + project analysis as JSONB in `portal_documents` table
   - Auto-versioning on re-save to same project
   - Load saved analyses from upload zone → saved docs panel (sorted by date)
-  - Backend: removed `requireServiceKey` from portal-documents route (frontend access)
+  - Backend: `requireAuthOrServiceKey` middleware (accepts JWT or X-Service-Key)
 - **NKB Compliance tab (`ComplianceTab.tsx`):**
   - Auto-runs NKB advisor check when passport data available
   - Builds context from passport (materials, norms, structure type) → `POST /api/core/nkb/advisor`
@@ -595,6 +595,19 @@ VITE_DISABLE_AUTH=true
   - Fields: title, description (textarea), parameter, value, min/max, unit
   - Mandatory checkbox, priority, section_reference, tags
   - Calls POST /api/core/nkb/rules/ingest
+- **Security fix (Amazon Q review):**
+  - `requireAuthOrServiceKey()` middleware: accepts EITHER JWT OR X-Service-Key (CWE-306)
+  - portal-documents endpoint restored with proper auth
+- **Version detection fix:**
+  - Frontend sends `source_file_id` (filename) for auto-increment versioning
+  - SHA-256 `content_hash` in metadata for deduplication
+  - `file_size`, classified `document_type` in save payload
+- **Offline test suite (`test_offline_extraction.py`, 26 tests):**
+  - TestDocumentClassification: 7 tests (silnoproud, statika, geologie, PBŘS, VZT, výkaz, unknown)
+  - TestRegexExtraction: 8 tests (norms, ID, concrete, steel, exposure, quantities, refs, PBŘS)
+  - TestDocumentComparison: 7 tests (equipment match, cable mismatch, power, IP, cross-domain, coverage)
+  - TestNKBSeedData: 4 tests (counts, eurocode, FK integrity)
+  - All run WITHOUT live server, DB, or AI API
 
 ---
 
@@ -655,7 +668,7 @@ VITE_DISABLE_AUTH=true
 ---
 
 **Current branch status:**
-- `claude/batch-insert-update-p4L8D` — 13 commits (full session 4 work)
+- `claude/batch-insert-update-p4L8D` — 16 commits (full session 4 work)
 - PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
