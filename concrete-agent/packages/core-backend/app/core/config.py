@@ -73,9 +73,9 @@ class Settings(BaseSettings):
     AWS_ACCESS_KEY_ID: str = Field(default="", description="AWS access key for Bedrock")
     AWS_SECRET_ACCESS_KEY: str = Field(default="", description="AWS secret key for Bedrock")
     AWS_DEFAULT_REGION: str = Field(default="us-east-1", description="AWS region (N. Virginia — all Bedrock models available)")
-    BEDROCK_MODEL_ID: str = Field(default="us.anthropic.claude-haiku-4-5-20251001-v1:0", description="Bedrock default model ID (us. prefix = cross-region inference)")
-    BEDROCK_FAST_MODEL: str = Field(default="amazon.nova-lite-v1:0", description="Bedrock fast/cheap model (Nova Lite, Free Tier)")
-    BEDROCK_HEAVY_MODEL: str = Field(default="us.anthropic.claude-sonnet-4-6", description="Bedrock heavy model (Claude Sonnet 4.6, cross-region)")
+    BEDROCK_MODEL_ID: str = Field(default="anthropic.claude-3-haiku-20240307-v1:0", description="Bedrock default model (Claude 3 Haiku — confirmed available)")
+    BEDROCK_FAST_MODEL: str = Field(default="anthropic.claude-3-haiku-20240307-v1:0", description="Bedrock fast/cheap model (Claude 3 Haiku, $0.25/1M input)")
+    BEDROCK_HEAVY_MODEL: str = Field(default="anthropic.claude-3-sonnet-20240229-v1:0", description="Bedrock heavy model (Claude 3 Sonnet, $3/1M input)")
     BEDROCK_ENABLED: bool = Field(default=True, description="Enable Bedrock as LLM provider")
     
     # ==========================================

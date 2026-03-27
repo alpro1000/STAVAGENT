@@ -36,20 +36,31 @@ except ImportError:
 
 
 # ============================================================================
-# MODEL CATALOG — all models available in us-east-1 (March 2026)
-# NOTE: Anthropic models require "us." prefix for cross-region inference
+# MODEL CATALOG — Bedrock models in us-east-1 (March 2026)
+#
+# NOTE on cross-region inference:
+#   Claude 3.5+ models may require "us." prefix (e.g. us.anthropic.claude-3-5-...)
+#   Claude 3 models (Haiku/Sonnet/Opus) work WITHOUT prefix.
+#   _detect_provider() handles both formats automatically.
+#
+# STAVAGENT account (302222526850, stavagent-bedrock IAM user):
+#   Confirmed available: claude-3-haiku, claude-3-sonnet, claude-3-opus
+#   Budget: $20 Bedrock playground bonus (exp 2027-02-09) + $84.28 Free Tier
 # ============================================================================
 
 BEDROCK_MODELS = {
-    # ---- Anthropic Claude (us. prefix REQUIRED for cross-region inference) ----
+    # ---- Anthropic Claude 3 (CONFIRMED AVAILABLE, no prefix needed) ----
+    "claude-3-haiku":   "anthropic.claude-3-haiku-20240307-v1:0",     # Cheapest, fastest
+    "claude-3-sonnet":  "anthropic.claude-3-sonnet-20240229-v1:0",    # Balanced
+    "claude-3-opus":    "anthropic.claude-3-opus-20240229-v1:0",      # Most capable
+
+    # ---- Anthropic Claude 3.5+ (may need us. prefix, check quota) ----
+    "claude-haiku-3.5":     "us.anthropic.claude-3-5-haiku-20241022-v1:0",
+    "claude-sonnet-3.5-v2": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+    "claude-sonnet-3.7":    "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+    "claude-haiku-4.5":     "us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "claude-sonnet-4.6":    "us.anthropic.claude-sonnet-4-6",
     "claude-opus-4.6":      "us.anthropic.claude-opus-4-6-v1",
-    "claude-sonnet-4":      "us.anthropic.claude-sonnet-4-20250514-v1:0",
-    "claude-haiku-4.5":     "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-    "claude-sonnet-4.5":    "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
-    "claude-sonnet-3.7":    "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
-    "claude-sonnet-3.5-v2": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
-    "claude-haiku-3.5":     "us.anthropic.claude-3-5-haiku-20241022-v1:0",
 
     # ---- Amazon Nova (no prefix needed) ----
     "nova-premier":  "amazon.nova-premier-v1:0",
@@ -72,8 +83,8 @@ BEDROCK_MODELS = {
     "pixtral-large":  "mistral.pixtral-large-2502-v1:0",
 }
 
-# Default: Haiku 4.5 via cross-region inference (cheapest Anthropic on Bedrock)
-DEFAULT_MODEL_ID = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+# Default: Claude 3 Haiku — confirmed available, cheapest ($0.25/1M input)
+DEFAULT_MODEL_ID = "anthropic.claude-3-haiku-20240307-v1:0"
 
 # Provider detection from model ID prefix
 # NOTE: "us." prefix is stripped before matching

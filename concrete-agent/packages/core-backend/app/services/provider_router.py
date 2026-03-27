@@ -46,34 +46,33 @@ class TaskType(str, Enum):
 TASK_PROVIDER_MAP: Dict[TaskType, list] = {
     TaskType.CLASSIFY: [
         ("vertex-ai-gemini", "gemini-2.5-flash"),
-        ("bedrock", "amazon.nova-lite-v1:0"),       # Free Tier on AWS
+        ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # $0.25/1M, confirmed
         ("gemini", "gemini-2.5-flash"),
-        ("bedrock", "us.anthropic.claude-haiku-4-5-20251001-v1:0"),
     ],
     TaskType.EXTRACT: [
-        ("bedrock", "us.anthropic.claude-sonnet-4-6"),  # AWS credits instead of direct API
+        ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),  # AWS credits, confirmed
         ("claude", "claude-sonnet-4-6"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.CONTRADICTION: [
-        ("bedrock", "us.anthropic.claude-haiku-4-5-20251001-v1:0"),  # AWS credits
+        ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # AWS credits, fast
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.VERIFY_UNKNOWN: [
         ("perplexity", "sonar-pro"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
-        ("bedrock", "amazon.nova-pro-v1:0"),
+        ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),
     ],
     TaskType.SUMMARIZE: [
         ("vertex-ai-gemini", "gemini-2.5-flash"),
-        ("bedrock", "amazon.nova-lite-v1:0"),        # Free Tier
-        ("bedrock", "us.anthropic.claude-haiku-4-5-20251001-v1:0"),
+        ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # Cheap
+        ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.HEAVY_ANALYSIS: [
         ("vertex-ai-gemini", "gemini-2.5-pro"),
-        ("bedrock", "us.anthropic.claude-sonnet-4-6"),   # AWS credits for heavy work
+        ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),  # AWS credits
         ("claude", "claude-sonnet-4-6"),
     ],
 }
