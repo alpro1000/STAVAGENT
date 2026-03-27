@@ -18,7 +18,7 @@ import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
-import DocumentAnalysis from '../components/portal/DocumentAnalysis';
+
 import PoradnaWidget from '../components/portal/PoradnaWidget';
 import DrawingAnalysis from '../components/portal/DrawingAnalysis';
 import AdminModelAudit from '../components/portal/AdminModelAudit';
@@ -185,14 +185,14 @@ export default function PortalPage() {
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
-  const [showDocumentAnalysis, setShowDocumentAnalysis] = useState(false);
+  // DocumentAnalysis moved to /portal/analysis page (no longer a modal)
   const [showDrawingAnalysis, setShowDrawingAnalysis] = useState(false);
   const [backendSleeping, setBackendSleeping] = useState(false);
   const [projectNotFound, setProjectNotFound] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'services' | 'projects' | 'admin'>('services');
 
   // Lock body scroll when any modal is open
-  const anyModalOpen = showCreateModal || showDocumentAnalysis || showDrawingAnalysis;
+  const anyModalOpen = showCreateModal || showDrawingAnalysis;
   useEffect(() => {
     if (anyModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -562,7 +562,7 @@ export default function PortalPage() {
                 key={service.id}
                 service={service}
                 onClick={
-                  service.id === 'document-analysis' ? () => setShowDocumentAnalysis(true) :
+                  service.id === 'document-analysis' ? () => navigate('/portal/analysis') :
                   service.id === 'drawing-analysis' ? () => setShowDrawingAnalysis(true) :
                   undefined
                 }
@@ -816,11 +816,6 @@ export default function PortalPage() {
           onClose={() => setShowCreateModal(false)}
           onCreate={handleCreateProject}
         />
-      )}
-
-      {/* Unified Document Analysis Modal (replaces Audit, Summary, Soupis) */}
-      {showDocumentAnalysis && (
-        <DocumentAnalysis onClose={() => setShowDocumentAnalysis(false)} />
       )}
 
       {/* Drawing Analysis Modal (Workflow B) */}
