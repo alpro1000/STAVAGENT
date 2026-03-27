@@ -37,20 +37,21 @@ except ImportError:
 
 # ============================================================================
 # MODEL CATALOG — all models available in us-east-1 (March 2026)
+# NOTE: Anthropic models require "us." prefix for cross-region inference
 # ============================================================================
 
 BEDROCK_MODELS = {
-    # ---- Anthropic Claude ----
-    "claude-sonnet-4.6":    "anthropic.claude-sonnet-4-6",
-    "claude-opus-4.6":      "anthropic.claude-opus-4-6-v1",
-    "claude-sonnet-4":      "anthropic.claude-sonnet-4-20250514-v1:0",
-    "claude-haiku-4.5":     "anthropic.claude-haiku-4-5-20251001-v1:0",
-    "claude-sonnet-4.5":    "anthropic.claude-sonnet-4-5-20250929-v1:0",
-    "claude-sonnet-3.7":    "anthropic.claude-3-7-sonnet-20250219-v1:0",
-    "claude-sonnet-3.5-v2": "anthropic.claude-3-5-sonnet-20241022-v2:0",
-    "claude-haiku-3.5":     "anthropic.claude-3-5-haiku-20241022-v1:0",
+    # ---- Anthropic Claude (us. prefix REQUIRED for cross-region inference) ----
+    "claude-sonnet-4.6":    "us.anthropic.claude-sonnet-4-6",
+    "claude-opus-4.6":      "us.anthropic.claude-opus-4-6-v1",
+    "claude-sonnet-4":      "us.anthropic.claude-sonnet-4-20250514-v1:0",
+    "claude-haiku-4.5":     "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "claude-sonnet-4.5":    "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "claude-sonnet-3.7":    "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+    "claude-sonnet-3.5-v2": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+    "claude-haiku-3.5":     "us.anthropic.claude-3-5-haiku-20241022-v1:0",
 
-    # ---- Amazon Nova ----
+    # ---- Amazon Nova (no prefix needed) ----
     "nova-premier":  "amazon.nova-premier-v1:0",
     "nova-pro":      "amazon.nova-pro-v1:0",
     "nova-lite":     "amazon.nova-lite-v1:0",
@@ -71,10 +72,11 @@ BEDROCK_MODELS = {
     "pixtral-large":  "mistral.pixtral-large-2502-v1:0",
 }
 
-# Default: Haiku 4.5 (cheapest Anthropic on Bedrock)
-DEFAULT_MODEL_ID = "anthropic.claude-haiku-4-5-20251001-v1:0"
+# Default: Haiku 4.5 via cross-region inference (cheapest Anthropic on Bedrock)
+DEFAULT_MODEL_ID = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
 
 # Provider detection from model ID prefix
+# NOTE: "us." prefix is stripped before matching
 PROVIDER_PREFIXES = {
     "anthropic.": "anthropic",
     "amazon.":    "amazon",
@@ -88,9 +90,15 @@ PROVIDER_PREFIXES = {
 
 
 def _detect_provider(model_id: str) -> str:
-    """Detect provider from Bedrock model ID prefix."""
+    """Detect provider from Bedrock model ID prefix.
+    Handles cross-region prefixes like 'us.anthropic.claude-...'"""
+    # Strip cross-region prefix (us., eu., ap.)
+    bare_id = model_id
+    if bare_id.startswith(("us.", "eu.", "ap.")):
+        bare_id = bare_id[3:]  # Remove "us." / "eu." / "ap."
+
     for prefix, provider in PROVIDER_PREFIXES.items():
-        if model_id.startswith(prefix):
+        if bare_id.startswith(prefix):
             return provider
     return "unknown"
 

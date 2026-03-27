@@ -453,12 +453,13 @@ async function callClaudeAPIWithClient(client, systemPrompt, userPrompt, control
  * Falls back to Bedrock Converse API (HTTP) if SDK not installed.
  */
 async function callBedrockAPIWithClient(client, systemPrompt, userPrompt, controller) {
-  const modelId = client.model || 'anthropic.claude-haiku-4-5-20251001-v1:0';
+  const modelId = client.model || 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
   const region = client.awsRegion || 'us-east-1';
 
-  // Detect provider from model ID prefix
-  const isAnthropic = modelId.startsWith('anthropic.');
-  const isAmazon = modelId.startsWith('amazon.');
+  // Detect provider from model ID prefix (strip cross-region prefix like "us.")
+  const bareModelId = modelId.replace(/^(us|eu|ap)\./, '');
+  const isAnthropic = bareModelId.startsWith('anthropic.');
+  const isAmazon = bareModelId.startsWith('amazon.');
 
   // Build provider-specific request body
   let body;

@@ -48,16 +48,16 @@ TASK_PROVIDER_MAP: Dict[TaskType, list] = {
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("bedrock", "amazon.nova-lite-v1:0"),       # Free Tier on AWS
         ("gemini", "gemini-2.5-flash"),
-        ("bedrock", "anthropic.claude-haiku-4-5-20251001-v1:0"),
+        ("bedrock", "us.anthropic.claude-haiku-4-5-20251001-v1:0"),
     ],
     TaskType.EXTRACT: [
-        ("bedrock", "anthropic.claude-sonnet-4-6"),  # AWS credits instead of direct API
+        ("bedrock", "us.anthropic.claude-sonnet-4-6"),  # AWS credits instead of direct API
         ("claude", "claude-sonnet-4-6"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.CONTRADICTION: [
-        ("bedrock", "anthropic.claude-haiku-4-5-20251001-v1:0"),  # AWS credits
+        ("bedrock", "us.anthropic.claude-haiku-4-5-20251001-v1:0"),  # AWS credits
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
     ],
@@ -69,11 +69,11 @@ TASK_PROVIDER_MAP: Dict[TaskType, list] = {
     TaskType.SUMMARIZE: [
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("bedrock", "amazon.nova-lite-v1:0"),        # Free Tier
-        ("bedrock", "anthropic.claude-haiku-4-5-20251001-v1:0"),
+        ("bedrock", "us.anthropic.claude-haiku-4-5-20251001-v1:0"),
     ],
     TaskType.HEAVY_ANALYSIS: [
         ("vertex-ai-gemini", "gemini-2.5-pro"),
-        ("bedrock", "anthropic.claude-sonnet-4-6"),   # AWS credits for heavy work
+        ("bedrock", "us.anthropic.claude-sonnet-4-6"),   # AWS credits for heavy work
         ("claude", "claude-sonnet-4-6"),
     ],
 }

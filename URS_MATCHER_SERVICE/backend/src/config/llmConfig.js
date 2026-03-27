@@ -62,7 +62,7 @@ export function getLLMConfig() {
     // AWS Bedrock uses AWS credentials, not a single API key
     // We use a sentinel value so config.enabled = true
     apiKey = (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) ? 'bedrock-aws-credentials' : null;
-    defaultModel = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-haiku-4-5-20251001-v1:0';
+    defaultModel = process.env.BEDROCK_MODEL_ID || 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
     break;
   case 'deepseek':
     apiKey = process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
@@ -203,7 +203,7 @@ export function getAvailableProviders() {
       awsAccessKeyId: awsKeyId,
       awsSecretAccessKey: awsSecret,
       awsRegion: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1',
-      model: process.env.BEDROCK_MODEL_ID || 'anthropic.claude-haiku-4-5-20251001-v1:0',
+      model: process.env.BEDROCK_MODEL_ID || 'us.anthropic.claude-haiku-4-5-20251001-v1:0',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
