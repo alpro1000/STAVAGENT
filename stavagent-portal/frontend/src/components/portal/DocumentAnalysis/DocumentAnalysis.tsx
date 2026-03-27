@@ -131,7 +131,7 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
 
     const ext = getFileExtension(file.name);
     if (!ALLOWED_EXTENSIONS.includes(ext)) {
-      setError(`Nepodporovan\u00fd form\u00e1t ${ext || 'souboru'}. Povolen\u00e9: PDF, XLSX, XLS, XML, DOCX, CSV.`);
+      setError(`Nepodporovaný formát ${ext || 'souboru'}. Povolené: PDF, XLSX, XLS, XML, DOCX, CSV.`);
       setIsUploading(false);
       return;
     }
@@ -164,14 +164,14 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
         const errorData = await response.json().catch(() => null);
         let msg = errorData?.detail || `HTTP ${response.status}`;
         if (response.status === 404) msg = 'API endpoint nenalezen. Zkontrolujte, zda je concrete-agent spuštěn.';
-        else if (response.status === 500) msg = 'Chyba serveru při zpracov\u00e1n\u00ed souboru.';
+        else if (response.status === 500) msg = 'Chyba serveru při zpracování souboru.';
         else if (response.status === 413) msg = 'Soubor je příliš velký (max 100 MB).';
         throw new Error(msg);
       }
 
       const data: PassportGenerationResponse = await response.json();
       if (data?.success === false) {
-        throw new Error((data as any)?.detail || (data as any)?.error || (data as any)?.metadata?.error || 'Generov\u00e1n\u00ed pasportu selhalo.');
+        throw new Error((data as any)?.detail || (data as any)?.error || (data as any)?.metadata?.error || 'Generování pasportu selhalo.');
       }
       if (data?.passport) {
         setPassportData({ ...data, success: true });
@@ -183,15 +183,15 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
           setActiveTab('passport');
         }
       } else {
-        throw new Error('Generov\u00e1n\u00ed pasportu selhalo.');
+        throw new Error('Generování pasportu selhalo.');
       }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.name === 'AbortError'
-          ? 'Zpracov\u00e1n\u00ed trvá příliš dlouho (timeout 5 minut).'
+          ? 'Zpracování trvá příliš dlouho (timeout 5 minut).'
           : err.message);
       } else {
-        setError('Nezn\u00e1m\u00e1 chyba při zpracov\u00e1n\u00ed');
+        setError('Neznámá chyba při zpracování');
       }
     } finally {
       setIsUploading(false);
@@ -229,14 +229,14 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
       }
 
       const data: ProjectAnalysisData = await response.json();
-      if (data?.success === false) throw new Error('Zpracov\u00e1n\u00ed projektu selhalo.');
+      if (data?.success === false) throw new Error('Zpracování projektu selhalo.');
       setProjectData(data);
       setActiveTab('project');
     } catch (err) {
       if (err instanceof Error) {
         setError(err.name === 'AbortError' ? 'Timeout 10 minut.' : err.message);
       } else {
-        setError('Nezn\u00e1m\u00e1 chyba');
+        setError('Neznámá chyba');
       }
     } finally {
       setIsUploading(false);
@@ -274,7 +274,7 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
 
   /* ── Save to project ── */
   const handleSaveToProject = useCallback(async () => {
-    if (!uploadedFile || !selectedProjectId) { setError('Vyberte projekt p\u0159ed ulo\u017een\u00edm'); return; }
+    if (!uploadedFile || !selectedProjectId) { setError('Vyberte projekt před uložením'); return; }
     setIsSaving(true);
     setError(null);
     try {
@@ -340,7 +340,7 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
   }, [googleAuth.userId, googleAuth.isAuthorized, loadGoogleFolders]);
 
   const handleUploadToDrive = useCallback(async () => {
-    if (!uploadedFile || !selectedGoogleFolder) { setError('Vyberte slo\u017eku Google Drive'); return; }
+    if (!uploadedFile || !selectedGoogleFolder) { setError('Vyberte složku Google Drive'); return; }
     setIsUploadingToDrive(true);
     setError(null);
     try {
@@ -352,9 +352,9 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
       if (!response.ok) { const errData = await response.json().catch(() => null); throw new Error(errData?.detail || `HTTP ${response.status}`); }
       const data = await response.json();
       if (data.success) { setDriveUploadSuccess(true); setTimeout(() => setDriveUploadSuccess(false), 3000); }
-      else throw new Error('Nahr\u00e1n\u00ed do Google Drive selhalo');
+      else throw new Error('Nahrání do Google Drive selhalo');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Nahr\u00e1n\u00ed selhalo');
+      setError(err instanceof Error ? err.message : 'Nahrání selhalo');
     } finally {
       setIsUploadingToDrive(false);
     }
@@ -369,12 +369,12 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
     passport.concrete_specifications.forEach(spec => {
       rows.push([spec.concrete_class, spec.exposure_classes.join(' '), spec.volume_m3?.toString() || '-', spec.special_properties.join(', ')]);
     });
-    rows.push([], ['=== V\u00ddZTU\u017d ===']);
+    rows.push([], ['=== VÝZTUŽ ===']);
     passport.reinforcement.forEach(steel => {
       rows.push([steel.steel_grade, `${steel.tonnage_t || '-'} t`, steel.bar_diameters.join(', ')]);
     });
     if (passport.special_requirements.length > 0) {
-      rows.push([], ['=== SPECI\u00c1LN\u00cd PO\u017dADAVKY ===']);
+      rows.push([], ['=== SPECIÁLNÍ POŽADAVKY ===']);
       passport.special_requirements.forEach(req => {
         rows.push([req.requirement_type, req.description, req.standard || '-']);
       });
@@ -402,11 +402,11 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
 
   /* ── Tabs config ── */
   const tabs: Array<{ id: TabId; label: string; show: boolean; badge?: number; badgeColor?: string }> = [
-    { id: 'soupis', label: 'Soupis prac\u00ed', show: true },
+    { id: 'soupis', label: 'Soupis prací', show: true },
     { id: 'passport', label: 'Passport', show: true },
     { id: 'audit', label: 'AI Audit', show: true },
-    { id: 'summary', label: 'Shrnut\u00ed', show: !!passportData },
-    { id: 'project', label: `Projektov\u00e1 anal\u00fdza (${projectData?.merged_sos?.length || 0} SO)`, show: !!projectData },
+    { id: 'summary', label: 'Shrnutí', show: !!passportData },
+    { id: 'project', label: `Projektová analýza (${projectData?.merged_sos?.length || 0} SO)`, show: !!projectData },
   ];
 
   const visibleTabs = tabs.filter(t => t.show);
@@ -418,18 +418,18 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
       onClick={e => { if (e.target === e.currentTarget && onClose) onClose(); }}
       role="dialog"
       aria-modal="true"
-      aria-label="Anal\u00fdza dokument\u016f"
+      aria-label="Analýza dokumentů"
     >
       <div className={styles.container} onClick={e => e.stopPropagation()}>
         {/* Header */}
         <div className={styles.header}>
           <h2 className={styles.title}>
             <FileSpreadsheet size={24} />
-            Anal\u00fdza dokument\u016f
+            Analýza dokumentů
           </h2>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             {hasResults && (
-              <button onClick={handleReset} className="c-btn c-btn--ghost c-btn--sm">Nov\u00fd dokument</button>
+              <button onClick={handleReset} className="c-btn c-btn--ghost c-btn--sm">Nový dokument</button>
             )}
             {onClose && (
               <button onClick={onClose} className={styles.closeBtn}><X size={20} /></button>
@@ -440,19 +440,19 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
         {/* AI Configuration — only before upload */}
         {!hasResults && !isUploading && (
           <div className={styles.configPanel}>
-            <h3 className={styles.configTitle}><Zap size={16} /> Konfigurace AI obohacen\u00ed</h3>
+            <h3 className={styles.configTitle}><Zap size={16} /> Konfigurace AI obohacení</h3>
 
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', marginBottom: 8 }}>
               <input type="checkbox" checked={enableAiEnrichment} onChange={e => setEnableAiEnrichment(e.target.checked)} style={{ width: 16, height: 16 }} />
-              <span style={{ fontSize: 14 }}>Povolit AI obohacen\u00ed (rizika, lokace, \u010dasov\u00fd pl\u00e1n)</span>
+              <span style={{ fontSize: 14 }}>Povolit AI obohacení (rizika, lokace, časový plán)</span>
             </label>
 
             <div className={styles.configRow}>
-              <label className={styles.configLabel}>Re\u017eim:</label>
+              <label className={styles.configLabel}>Režim:</label>
               <select value={analysisMode} onChange={e => setAnalysisMode(e.target.value as any)} className="c-input" style={{ flex: 1, maxWidth: 300 }}>
-                <option value="adaptive_extraction">Strukturovan\u00fd pasport (beton, v\u00fdztu\u017e, rozm\u011bry)</option>
-                <option value="summary_only">Adaptivn\u00ed shrnut\u00ed (univerz\u00e1ln\u00ed)</option>
-                <option value="project_analysis">Projektov\u00e1 anal\u00fdza (v\u00edce dokument\u016f, SO merge)</option>
+                <option value="adaptive_extraction">Strukturovaný pasport (beton, výztuž, rozměry)</option>
+                <option value="summary_only">Adaptivní shrnutí (univerzální)</option>
+                <option value="project_analysis">Projektová analýza (více dokumentů, SO merge)</option>
               </select>
             </div>
 
@@ -470,7 +470,7 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
             <div className={styles.configHint}>
               {enableAiEnrichment
                 ? AI_MODEL_OPTIONS.find(m => m.id === selectedModel)?.description
-                : 'Pouze deterministick\u00e1 extrakce (Regex) \u2014 ZDARMA, 100% p\u0159esnost pro technick\u00e9 \u00fadaje'}
+                : 'Pouze deterministická extrakce (Regex) — ZDARMA, 100% přesnost pro technické údaje'}
             </div>
           </div>
         )}
@@ -498,23 +498,23 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
                 <Loader2 size={48} className={styles.spin} style={{ color: 'var(--accent-orange)' }} />
                 <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
-                  {analysisMode === 'project_analysis' ? 'Analyzuji projekt (v\u00edce dokument\u016f)...' : 'Analyzuji dokument...'}
+                  {analysisMode === 'project_analysis' ? 'Analyzuji projekt (více dokumentů)...' : 'Analyzuji dokument...'}
                 </p>
               </div>
             ) : (
               <>
                 <Upload size={48} style={{ color: 'var(--text-muted)', marginBottom: 16 }} />
                 <p className={styles.uploadHint}>
-                  {analysisMode === 'project_analysis' ? 'P\u0159et\u00e1hn\u011bte dokumenty projektu sem' : 'P\u0159et\u00e1hn\u011bte dokument sem'}
+                  {analysisMode === 'project_analysis' ? 'Přetáhněte dokumenty projektu sem' : 'Přetáhněte dokument sem'}
                 </p>
                 <p style={{ margin: '0 0 16px', color: 'var(--text-secondary)', fontSize: 14 }}>
-                  {analysisMode === 'project_analysis' ? 'V\u00edce soubor\u016f najednou (TZ, v\u00fdkresy, GTP, rozpo\u010det...)' : 'nebo klikn\u011bte na tla\u010d\u00edtko n\u00ed\u017ee'}
+                  {analysisMode === 'project_analysis' ? 'Více souborů najednou (TZ, výkresy, GTP, rozpočet...)' : 'nebo klikněte na tlačítko níže'}
                 </p>
                 <button onClick={() => fileInputRef.current?.click()} className="c-btn c-btn--primary" style={{ marginBottom: 16 }}>
                   <Upload size={16} style={{ marginRight: 8 }} />
                   Vybrat soubor
                 </button>
-                <p className={styles.uploadFormats}>Podporovan\u00e9 form\u00e1ty: PDF, XLSX, XLS, XML, DOCX, CSV</p>
+                <p className={styles.uploadFormats}>Podporované formáty: PDF, XLSX, XLS, XML, DOCX, CSV</p>
               </>
             )}
           </div>
@@ -525,7 +525,7 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
           <div className={styles.errorBox}>
             <div className={styles.errorTitle}>
               <AlertTriangle size={20} />
-              <span>Chyba p\u0159i zpracov\u00e1n\u00ed</span>
+              <span>Chyba při zpracování</span>
             </div>
             <p style={{ margin: '0 0 12px', fontSize: 14 }}>{error}</p>
             <div style={{ display: 'flex', gap: 8 }}>
@@ -542,15 +542,15 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
               <div style={{ marginBottom: 16 }}>
                 <div className={styles.metaLine}>
                   <CheckCircle size={20} style={{ color: 'var(--status-success)' }} />
-                  <span>Vygenerov\u00e1no za {typeof passportData?.metadata?.processing_time_seconds === 'number' ? `${passportData.metadata.processing_time_seconds.toFixed(2)}s` : '\u2014'}</span>
+                  <span>Vygenerováno za {typeof passportData?.metadata?.processing_time_seconds === 'number' ? `${passportData.metadata.processing_time_seconds.toFixed(2)}s` : '—'}</span>
                   <span className={styles.separator}>|</span>
-                  <span>Spolehlivost: {typeof passportData?.metadata?.total_confidence === 'number' ? `${(passportData.metadata.total_confidence * 100).toFixed(0)}%` : '\u2014%'}</span>
+                  <span>Spolehlivost: {typeof passportData?.metadata?.total_confidence === 'number' ? `${(passportData.metadata.total_confidence * 100).toFixed(0)}%` : '—%'}</span>
                   {(passportData?.statistics?.ai_enriched_fields ?? 0) > 0 && (
                     <>
                       <span className={styles.separator}>|</span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Zap size={14} style={{ color: 'var(--accent-orange)' }} />
-                        {passportData.statistics!.ai_enriched_fields} AI obohacen\u00ed
+                        {passportData.statistics!.ai_enriched_fields} AI obohacení
                       </span>
                     </>
                   )}
@@ -562,25 +562,25 @@ export default function DocumentAnalysis({ onClose }: DocumentAnalysisProps) {
                     {availableProjects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                   </select>
                   <button onClick={handleSaveToProject} className="c-btn c-btn--primary" disabled={!selectedProjectId || isSaving} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    {isSaving ? <><Loader2 size={16} className={styles.spin} /> Ukl\u00e1d\u00e1m...</> :
-                     saveSuccess ? <><CheckCircle size={16} /> Ulo\u017eeno!</> :
-                     <><Database size={16} /> Ulo\u017eit do projektu</>}
+                    {isSaving ? <><Loader2 size={16} className={styles.spin} /> Ukládám...</> :
+                     saveSuccess ? <><CheckCircle size={16} /> Uloženo!</> :
+                     <><Database size={16} /> Uložit do projektu</>}
                   </button>
                   <div style={{ borderLeft: '1px solid var(--border-default)', height: 32 }} />
                   {!googleAuth.isAuthorized ? (
                     <button onClick={handleGoogleAuth} className="c-btn c-btn--secondary" disabled={googleAuth.isLoading} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      {googleAuth.isLoading ? <><Loader2 size={16} className={styles.spin} /> Autorizuji...</> : <><Cloud size={16} /> P\u0159ipojit Google Drive</>}
+                      {googleAuth.isLoading ? <><Loader2 size={16} className={styles.spin} /> Autorizuji...</> : <><Cloud size={16} /> Připojit Google Drive</>}
                     </button>
                   ) : (
                     <>
                       <select value={selectedGoogleFolder} onChange={e => setSelectedGoogleFolder(e.target.value)} className="c-input" style={{ minWidth: 160, flex: '1 1 160px' }} disabled={isUploadingToDrive || googleFolders.length === 0}>
-                        <option value="">Vyberte slo\u017eku Drive...</option>
+                        <option value="">Vyberte složku Drive...</option>
                         {googleFolders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
                       </select>
                       <button onClick={handleUploadToDrive} className="c-btn c-btn--secondary" disabled={!selectedGoogleFolder || isUploadingToDrive} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        {isUploadingToDrive ? <><Loader2 size={16} className={styles.spin} /> Nahr\u00e1v\u00e1m...</> :
-                         driveUploadSuccess ? <><CheckCircle size={16} /> Nahr\u00e1no!</> :
-                         <><Cloud size={16} /> Nahr\u00e1t do Drive</>}
+                        {isUploadingToDrive ? <><Loader2 size={16} className={styles.spin} /> Nahrávám...</> :
+                         driveUploadSuccess ? <><CheckCircle size={16} /> Nahráno!</> :
+                         <><Cloud size={16} /> Nahrát do Drive</>}
                       </button>
                     </>
                   )}

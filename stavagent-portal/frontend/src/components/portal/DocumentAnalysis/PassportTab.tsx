@@ -42,9 +42,9 @@ export default function PassportTab({ data }: PassportTabProps) {
               {classification.category} — {DOC_CATEGORY_LABELS[classification.category] || classification.category}
             </span>
             <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-              {classification.method === 'filename' ? 'Rozpozn\u00e1no z n\u00e1zvu souboru' :
-               classification.method === 'keywords' ? 'Rozpozn\u00e1no z obsahu' :
-               'Rozpozn\u00e1no pomoc\u00ed AI'}
+              {classification.method === 'filename' ? 'Rozpoznáno z názvu souboru' :
+               classification.method === 'keywords' ? 'Rozpoznáno z obsahu' :
+               'Rozpoznáno pomocí AI'}
               {' '}({(classification.confidence * 100).toFixed(0)}%)
             </span>
             {classification.detected_keywords && classification.detected_keywords.length > 0 && (
@@ -75,7 +75,7 @@ export default function PassportTab({ data }: PassportTabProps) {
       {/* Technical highlights */}
       {passport.technical_highlights?.length > 0 && (
         <div style={{ marginBottom: 20 }}>
-          <div className={styles.sectionHeader}>Technick\u00e9 hlavn\u00ed body</div>
+          <div className={styles.sectionHeader}>Technické hlavní body</div>
           <ul style={{ margin: 0, paddingLeft: 18 }}>
             {passport.technical_highlights.map((hl, i) => <li key={i} style={{ marginBottom: 2 }}>{hl}</li>)}
           </ul>
@@ -87,7 +87,7 @@ export default function PassportTab({ data }: PassportTabProps) {
         <div className={styles.warningStrip}>
           <div className={styles.warningTitle}>
             <AlertTriangle size={14} />
-            Upozorn\u011bn\u00ed
+            Upozornění
           </div>
           {((passport as any).warnings || []).map((w: string, i: number) => (
             <div key={i} style={{ fontSize: 13, marginBottom: 2 }}>{w}</div>
@@ -107,7 +107,7 @@ export default function PassportTab({ data }: PassportTabProps) {
 
       {/* Metadata */}
       <div style={{ color: 'var(--text-muted)', fontSize: 12, textAlign: 'right', marginTop: 16 }}>
-        Soubor: {data?.metadata?.file_name || '\u2014'} | ID: {passport.passport_id} | Vygenerov\u00e1no: {new Date(passport.generated_at).toLocaleString('cs-CZ')}
+        Soubor: {data?.metadata?.file_name || '—'} | ID: {passport.passport_id} | Vygenerováno: {new Date(passport.generated_at).toLocaleString('cs-CZ')}
       </div>
     </div>
   );
@@ -128,7 +128,7 @@ function AdaptiveTopics({ topics }: { topics: AdaptiveTopic[] }) {
             {topic.title}
             {topic.importance === 'high' && (
               <span style={{ fontSize: 10, fontWeight: 600, background: 'var(--accent-orange)', color: '#fff', padding: '1px 6px', borderRadius: 8 }}>
-                kl\u00ed\u010dov\u00e9
+                klíčové
               </span>
             )}
           </h4>
@@ -160,20 +160,20 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
       {(statistics?.total_concrete_m3 || statistics?.total_reinforcement_t || statistics?.unique_concrete_classes || statistics?.unique_steel_grades) && (
         <table className={styles.dataTable}>
           <thead>
-            <tr><th colSpan={2} style={{ borderBottom: '2px solid var(--accent-orange)' }}>Souhrnn\u00e9 \u00fadaje</th></tr>
+            <tr><th colSpan={2} style={{ borderBottom: '2px solid var(--accent-orange)' }}>Souhrnné údaje</th></tr>
           </thead>
           <tbody>
             {(statistics?.total_concrete_m3 ?? 0) > 0 && (
-              <tr><td className={styles.label}>Beton celkem</td><td className={styles.accent}>{formatNumber(statistics!.total_concrete_m3)} m\u00b3</td></tr>
+              <tr><td className={styles.label}>Beton celkem</td><td className={styles.accent}>{formatNumber(statistics!.total_concrete_m3)} m³</td></tr>
             )}
             {(statistics?.total_reinforcement_t ?? 0) > 0 && (
-              <tr><td className={styles.label}>V\u00fdztu\u017e celkem</td><td className={styles.value}>{formatNumber(statistics!.total_reinforcement_t)} t</td></tr>
+              <tr><td className={styles.label}>Výztuž celkem</td><td className={styles.value}>{formatNumber(statistics!.total_reinforcement_t)} t</td></tr>
             )}
             {(statistics?.unique_concrete_classes ?? 0) > 0 && (
-              <tr><td className={styles.label}>T\u0159\u00eddy betonu</td><td className={styles.value}>{statistics!.unique_concrete_classes}</td></tr>
+              <tr><td className={styles.label}>Třídy betonu</td><td className={styles.value}>{statistics!.unique_concrete_classes}</td></tr>
             )}
             {(statistics?.unique_steel_grades ?? 0) > 0 && (
-              <tr><td className={styles.label}>Ocelov\u00e9 t\u0159\u00eddy</td><td className={styles.value}>{statistics!.unique_steel_grades}</td></tr>
+              <tr><td className={styles.label}>Ocelové třídy</td><td className={styles.value}>{statistics!.unique_steel_grades}</td></tr>
             )}
           </tbody>
         </table>
@@ -186,7 +186,7 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
           <table className={styles.dataTable}>
             <thead>
               <tr>
-                <th>T\u0159\u00edda</th>
+                <th>Třída</th>
                 <th>Expozice</th>
                 <th style={{ textAlign: 'right' }}>Objem</th>
                 <th>Vlastnosti</th>
@@ -196,9 +196,9 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
               {passport.concrete_specifications.map((spec, i) => (
                 <tr key={i}>
                   <td className={styles.accent}>{spec.concrete_class}</td>
-                  <td>{spec.exposure_classes?.join(', ') || '\u2014'}</td>
-                  <td className={styles.right}>{spec.volume_m3 !== null ? `${formatNumber(spec.volume_m3)} m\u00b3` : '\u2014'}</td>
-                  <td style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{spec.special_properties?.join(', ') || '\u2014'}</td>
+                  <td>{spec.exposure_classes?.join(', ') || '—'}</td>
+                  <td className={styles.right}>{spec.volume_m3 !== null ? `${formatNumber(spec.volume_m3)} m³` : '—'}</td>
+                  <td style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{spec.special_properties?.join(', ') || '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -209,21 +209,21 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
       {/* Reinforcement */}
       {passport.reinforcement.length > 0 && (
         <div style={{ marginBottom: 24 }}>
-          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #64748b' }}>V\u00fdztu\u017e</div>
+          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #64748b' }}>Výztuž</div>
           <table className={styles.dataTable}>
             <thead>
               <tr>
-                <th>T\u0159\u00edda oceli</th>
+                <th>Třída oceli</th>
                 <th style={{ textAlign: 'right' }}>Hmotnost</th>
-                <th>Pr\u016fm\u011bry</th>
+                <th>Průměry</th>
               </tr>
             </thead>
             <tbody>
               {passport.reinforcement.map((steel, i) => (
                 <tr key={i}>
                   <td className={styles.value}>{steel.steel_grade}</td>
-                  <td className={styles.right}>{steel.tonnage_t !== null ? `${formatNumber(steel.tonnage_t)} t` : '\u2014'}</td>
-                  <td style={{ fontSize: 12 }}>{steel.bar_diameters.length > 0 ? steel.bar_diameters.join(', ') : '\u2014'}</td>
+                  <td className={styles.right}>{steel.tonnage_t !== null ? `${formatNumber(steel.tonnage_t)} t` : '—'}</td>
+                  <td style={{ fontSize: 12 }}>{steel.bar_diameters.length > 0 ? steel.bar_diameters.join(', ') : '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -234,15 +234,15 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
       {/* Dimensions */}
       {passport.dimensions && (
         <div style={{ marginBottom: 24 }}>
-          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #F59E0B' }}>Rozm\u011bry objektu</div>
+          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #F59E0B' }}>Rozměry objektu</div>
           <table className={styles.dataTable}>
             <tbody>
-              {passport.dimensions.floors_above_ground !== null && <tr><td className={styles.label}>Nadzemn\u00ed podla\u017e\u00ed</td><td className={styles.value}>{passport.dimensions.floors_above_ground} NP</td></tr>}
-              {passport.dimensions.floors_underground !== null && <tr><td className={styles.label}>Podzemn\u00ed podla\u017e\u00ed</td><td className={styles.value}>{passport.dimensions.floors_underground} PP</td></tr>}
-              {passport.dimensions.height_m !== null && <tr><td className={styles.label}>V\u00fd\u0161ka</td><td className={styles.value}>{formatNumber(passport.dimensions.height_m)} m</td></tr>}
-              {passport.dimensions.length_m !== null && <tr><td className={styles.label}>D\u00e9lka</td><td className={styles.value}>{formatNumber(passport.dimensions.length_m)} m</td></tr>}
-              {passport.dimensions.width_m !== null && <tr><td className={styles.label}>\u0160\u00ed\u0159ka</td><td className={styles.value}>{formatNumber(passport.dimensions.width_m)} m</td></tr>}
-              {passport.dimensions.built_up_area_m2 !== null && <tr><td className={styles.label}>Zastav\u011bn\u00e1 plocha</td><td className={styles.value}>{formatNumber(passport.dimensions.built_up_area_m2)} m\u00b2</td></tr>}
+              {passport.dimensions.floors_above_ground !== null && <tr><td className={styles.label}>Nadzemní podlaží</td><td className={styles.value}>{passport.dimensions.floors_above_ground} NP</td></tr>}
+              {passport.dimensions.floors_underground !== null && <tr><td className={styles.label}>Podzemní podlaží</td><td className={styles.value}>{passport.dimensions.floors_underground} PP</td></tr>}
+              {passport.dimensions.height_m !== null && <tr><td className={styles.label}>Výška</td><td className={styles.value}>{formatNumber(passport.dimensions.height_m)} m</td></tr>}
+              {passport.dimensions.length_m !== null && <tr><td className={styles.label}>Délka</td><td className={styles.value}>{formatNumber(passport.dimensions.length_m)} m</td></tr>}
+              {passport.dimensions.width_m !== null && <tr><td className={styles.label}>Šířka</td><td className={styles.value}>{formatNumber(passport.dimensions.width_m)} m</td></tr>}
+              {passport.dimensions.built_up_area_m2 !== null && <tr><td className={styles.label}>Zastavěná plocha</td><td className={styles.value}>{formatNumber(passport.dimensions.built_up_area_m2)} m²</td></tr>}
             </tbody>
           </table>
         </div>
@@ -251,12 +251,12 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
       {/* Special requirements */}
       {passport.special_requirements.length > 0 && (
         <div style={{ marginBottom: 24 }}>
-          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #FF9F1C' }}>Speci\u00e1ln\u00ed po\u017eadavky</div>
+          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #FF9F1C' }}>Speciální požadavky</div>
           {passport.special_requirements.map((req, i) => (
             <div key={i} style={{ marginBottom: 8, paddingLeft: 10, borderLeft: '2px solid #FF9F1C' }}>
               <strong>{req.requirement_type}</strong>
               {req.standard && <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 6 }}>({req.standard})</span>}
-              <span style={{ marginLeft: 6 }}>\u2014 {req.description}</span>
+              <span style={{ marginLeft: 6 }}>— {req.description}</span>
             </div>
           ))}
         </div>
@@ -267,11 +267,11 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
         <div style={{ marginBottom: 24 }}>
           <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #EF4444', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Zap size={14} style={{ color: 'var(--accent-orange)' }} />
-            Hodnocen\u00ed rizik (AI)
+            Hodnocení rizik (AI)
           </div>
           <table className={styles.dataTable}>
             <thead>
-              <tr><th style={{ width: 8 }}></th><th>Kategorie</th><th>Popis</th><th>Zm\u00edrn\u011bn\u00ed</th></tr>
+              <tr><th style={{ width: 8 }}></th><th>Kategorie</th><th>Popis</th><th>Zmírnění</th></tr>
             </thead>
             <tbody>
               {passport.risks.map((risk, i) => (
@@ -297,16 +297,16 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
         <div style={{ marginBottom: 24 }}>
           <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #6366F1', display: 'flex', alignItems: 'center', gap: 6 }}>
             <Zap size={14} style={{ color: 'var(--accent-orange)' }} />
-            Dal\u0161\u00ed informace (AI)
+            Další informace (AI)
           </div>
           <table className={styles.dataTable}>
             <tbody>
-              {passport.location?.city && <tr><td className={styles.label}>M\u011bsto</td><td className={styles.value}>{passport.location.city}</td></tr>}
+              {passport.location?.city && <tr><td className={styles.label}>Město</td><td className={styles.value}>{passport.location.city}</td></tr>}
               {passport.location?.region && <tr><td className={styles.label}>Kraj</td><td className={styles.value}>{passport.location.region}</td></tr>}
               {passport.location?.address && <tr><td className={styles.label}>Adresa</td><td className={styles.value}>{passport.location.address}</td></tr>}
-              {passport.timeline?.start_date && <tr><td className={styles.label}>Zah\u00e1jen\u00ed</td><td className={styles.value}>{formatDate(passport.timeline.start_date)}</td></tr>}
-              {passport.timeline?.end_date && <tr><td className={styles.label}>Dokon\u010den\u00ed</td><td className={styles.value}>{formatDate(passport.timeline.end_date)}</td></tr>}
-              {passport.timeline?.duration_months != null && <tr><td className={styles.label}>D\u00e9lka trv\u00e1n\u00ed</td><td className={styles.value}>{passport.timeline.duration_months} m\u011bs\u00edc\u016f</td></tr>}
+              {passport.timeline?.start_date && <tr><td className={styles.label}>Zahájení</td><td className={styles.value}>{formatDate(passport.timeline.start_date)}</td></tr>}
+              {passport.timeline?.end_date && <tr><td className={styles.label}>Dokončení</td><td className={styles.value}>{formatDate(passport.timeline.end_date)}</td></tr>}
+              {passport.timeline?.duration_months != null && <tr><td className={styles.label}>Délka trvání</td><td className={styles.value}>{passport.timeline.duration_months} měsíců</td></tr>}
               {passport.stakeholders.map((s, i) => (
                 <tr key={i}><td className={styles.label}>{s.role}</td><td className={styles.value}>{s.name}</td></tr>
               ))}
@@ -314,8 +314,8 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
           </table>
           {(passport.timeline?.critical_milestones ?? []).length > 0 && passport.timeline && (
             <div style={{ marginTop: 10, paddingLeft: 10 }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Miln\u00edky: </span>
-              <span style={{ fontSize: 13 }}>{passport.timeline.critical_milestones.join(' \u2014 ')}</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Milníky: </span>
+              <span style={{ fontSize: 13 }}>{passport.timeline.critical_milestones.join(' — ')}</span>
             </div>
           )}
         </div>
@@ -330,59 +330,59 @@ function TypeSpecificExtractions({ data }: { data: PassportGenerationResponse })
     <>
       <KeyValueSection
         data={(data as any).technical}
-        title="Technick\u00e9 parametry (AI extrakce)"
+        title="Technické parametry (AI extrakce)"
         borderColor="#3B82F6"
         mapFn={(t: any) => {
           const r: [string, string][] = [];
           if (t.structure_type) r.push(['Typ konstrukce', t.structure_type]);
           if (t.structure_subtype) r.push(['Podtyp', t.structure_subtype]);
-          if (t.total_length_m) r.push(['D\u00e9lka', `${t.total_length_m} m`]);
-          if (t.width_m) r.push(['\u0160\u00ed\u0159ka', `${t.width_m} m`]);
-          if (t.height_m) r.push(['V\u00fd\u0161ka', `${t.height_m} m`]);
-          if (t.area_m2) r.push(['Plocha', `${t.area_m2} m\u00b2`]);
-          if (t.volume_m3) r.push(['Objem', `${t.volume_m3} m\u00b3`]);
-          if (t.span_count) r.push(['Po\u010det pol\u00ed', `${t.span_count}`]);
-          if (t.span_lengths_m?.length) r.push(['Rozp\u011bt\u00ed', t.span_lengths_m.map((v: number) => `${v} m`).join(', ')]);
+          if (t.total_length_m) r.push(['Délka', `${t.total_length_m} m`]);
+          if (t.width_m) r.push(['Šířka', `${t.width_m} m`]);
+          if (t.height_m) r.push(['Výška', `${t.height_m} m`]);
+          if (t.area_m2) r.push(['Plocha', `${t.area_m2} m²`]);
+          if (t.volume_m3) r.push(['Objem', `${t.volume_m3} m³`]);
+          if (t.span_count) r.push(['Počet polí', `${t.span_count}`]);
+          if (t.span_lengths_m?.length) r.push(['Rozpětí', t.span_lengths_m.map((v: number) => `${v} m`).join(', ')]);
           if (t.concrete_grade) r.push(['Beton', t.concrete_grade]);
-          if (t.reinforcement_grade) r.push(['V\u00fdztu\u017e', t.reinforcement_grade]);
-          if (t.foundation_type) r.push(['Z\u00e1klady', t.foundation_type]);
-          if (t.fabrication_method) r.push(['V\u00fdstavba', t.fabrication_method]);
-          if (t.load_class) r.push(['Zat\u00ed\u017een\u00ed', t.load_class]);
-          if (t.design_life_years) r.push(['\u017divotnost', `${t.design_life_years} let`]);
-          if (t.construction_duration_months) r.push(['Doba v\u00fdstavby', `${t.construction_duration_months} m\u011bs\u00edc\u016f`]);
+          if (t.reinforcement_grade) r.push(['Výztuž', t.reinforcement_grade]);
+          if (t.foundation_type) r.push(['Základy', t.foundation_type]);
+          if (t.fabrication_method) r.push(['Výstavba', t.fabrication_method]);
+          if (t.load_class) r.push(['Zatížení', t.load_class]);
+          if (t.design_life_years) r.push(['Životnost', `${t.design_life_years} let`]);
+          if (t.construction_duration_months) r.push(['Doba výstavby', `${t.construction_duration_months} měsíců`]);
           if (t.applicable_standards?.length) r.push(['Normy', t.applicable_standards.join(', ')]);
-          if (t.special_conditions?.length) r.push(['Speci\u00e1ln\u00ed podm\u00ednky', t.special_conditions.join('; ')]);
+          if (t.special_conditions?.length) r.push(['Speciální podmínky', t.special_conditions.join('; ')]);
           return r;
         }}
       />
 
       <KeyValueSection
         data={(data as any).bill_of_quantities}
-        title="Rozpo\u010det \u2014 souhrn (AI extrakce)"
+        title="Rozpočet — souhrn (AI extrakce)"
         borderColor="#10B981"
         mapFn={(b: any) => {
           const r: [string, string][] = [];
-          if (b.total_items) r.push(['Po\u010det polo\u017eek', `${b.total_items}`]);
-          if (b.total_price_czk) r.push(['Celkov\u00e1 cena', `${b.total_price_czk.toLocaleString('cs-CZ')} K\u010d`]);
-          if (b.concrete_volume_m3) r.push(['Beton', `${b.concrete_volume_m3} m\u00b3`]);
-          if (b.steel_tonnage_t) r.push(['V\u00fdztu\u017e', `${b.steel_tonnage_t} t`]);
-          if (b.earthwork_volume_m3) r.push(['Zemn\u00ed pr\u00e1ce', `${b.earthwork_volume_m3} m\u00b3`]);
+          if (b.total_items) r.push(['Počet položek', `${b.total_items}`]);
+          if (b.total_price_czk) r.push(['Celková cena', `${b.total_price_czk.toLocaleString('cs-CZ')} Kč`]);
+          if (b.concrete_volume_m3) r.push(['Beton', `${b.concrete_volume_m3} m³`]);
+          if (b.steel_tonnage_t) r.push(['Výztuž', `${b.steel_tonnage_t} t`]);
+          if (b.earthwork_volume_m3) r.push(['Zemní práce', `${b.earthwork_volume_m3} m³`]);
           return r;
         }}
       />
 
       <KeyValueSection
         data={(data as any).tender_conditions}
-        title="Zad\u00e1vac\u00ed podm\u00ednky (AI extrakce)"
+        title="Zadávací podmínky (AI extrakce)"
         borderColor="#8B5CF6"
         mapFn={(p: any) => {
           const r: [string, string][] = [];
-          if (p.tender_name) r.push(['N\u00e1zev zak\u00e1zky', p.tender_name]);
+          if (p.tender_name) r.push(['Název zakázky', p.tender_name]);
           if (p.contracting_authority) r.push(['Zadavatel', p.contracting_authority]);
-          if (p.submission_deadline) r.push(['Term\u00edn pod\u00e1n\u00ed', p.submission_deadline]);
-          if (p.question_deadline) r.push(['Term\u00edn pro dotazy', p.question_deadline]);
-          if (p.estimated_budget) r.push(['P\u0159edpokl\u00e1dan\u00e1 hodnota', `${Number(p.estimated_budget).toLocaleString('cs-CZ')} ${p.currency || 'CZK'}`]);
-          if (p.submission_method) r.push(['Zp\u016fsob pod\u00e1n\u00ed', p.submission_method]);
+          if (p.submission_deadline) r.push(['Termín podání', p.submission_deadline]);
+          if (p.question_deadline) r.push(['Termín pro dotazy', p.question_deadline]);
+          if (p.estimated_budget) r.push(['Předpokládaná hodnota', `${Number(p.estimated_budget).toLocaleString('cs-CZ')} ${p.currency || 'CZK'}`]);
+          if (p.submission_method) r.push(['Způsob podání', p.submission_method]);
           return r;
         }}
       />
@@ -393,9 +393,9 @@ function TypeSpecificExtractions({ data }: { data: PassportGenerationResponse })
         borderColor="#EC4899"
         mapFn={(s: any) => {
           const r: [string, string][] = [];
-          if (s.total_duration_months) r.push(['Celkov\u00e1 doba', `${s.total_duration_months} m\u011bs\u00edc\u016f`]);
-          if (s.start_date) r.push(['Zah\u00e1jen\u00ed', s.start_date]);
-          if (s.end_date) r.push(['Dokon\u010den\u00ed', s.end_date]);
+          if (s.total_duration_months) r.push(['Celková doba', `${s.total_duration_months} měsíců`]);
+          if (s.start_date) r.push(['Zahájení', s.start_date]);
+          if (s.end_date) r.push(['Dokončení', s.end_date]);
           return r;
         }}
       />

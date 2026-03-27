@@ -58,7 +58,7 @@ interface SoupisTabProps {
 }
 
 const formatNum = (n: number | undefined | null) => {
-  if (n == null) return '\u2014';
+  if (n == null) return '—';
   return new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 2 }).format(n);
 };
 
@@ -104,9 +104,9 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
       }
     } catch (e: any) {
       if (e.name === 'AbortError') {
-        setError('Timeout \u2014 zpracov\u00e1n\u00ed trvalo d\u00e9le ne\u017e 2 minuty');
+        setError('Timeout — zpracování trvalo déle než 2 minuty');
       } else {
-        setError(e.message || 'Chyba p\u0159i zpracov\u00e1n\u00ed');
+        setError(e.message || 'Chyba při zpracování');
       }
     } finally {
       setIsUploading(false);
@@ -149,13 +149,13 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
           {isUploading ? (
             <>
               <Loader2 size={40} className={styles.spin} style={{ color: 'var(--accent-orange)', marginBottom: 8 }} />
-              <p style={{ color: 'var(--text-secondary)' }}>Zpracov\u00e1v\u00e1m dokument...</p>
+              <p style={{ color: 'var(--text-secondary)' }}>Zpracovávám dokument...</p>
             </>
           ) : (
             <>
-              <p className={styles.uploadHint}>P\u0159et\u00e1hn\u011bte soubor sem nebo klikn\u011bte</p>
+              <p className={styles.uploadHint}>Přetáhněte soubor sem nebo klikněte</p>
               <p className={styles.uploadFormats}>
-                Podporovan\u00e9 form\u00e1ty: XLSX (Export Komplet, RTSROZP), XML (OTSKP), PDF
+                Podporované formáty: XLSX (Export Komplet, RTSROZP), XML (OTSKP), PDF
               </p>
             </>
           )}
@@ -182,17 +182,17 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
         padding: '12px 16px', background: 'rgba(76, 175, 80, 0.08)', border: '1px solid rgba(76, 175, 80, 0.2)',
         borderRadius: 8, marginBottom: 16, alignItems: 'center',
       }}>
-        <span><strong>Form\u00e1t:</strong> {result.format}</span>
-        <span><strong>Polo\u017eek:</strong> {result.positions_count}</span>
+        <span><strong>Formát:</strong> {result.format}</span>
+        <span><strong>Položek:</strong> {result.positions_count}</span>
         <span><strong>SO:</strong> {result.so_count}</span>
-        <span><strong>Pokryt\u00ed:</strong> {result.coverage_pct}%</span>
+        <span><strong>Pokrytí:</strong> {result.coverage_pct}%</span>
         {result.project_name && <span><strong>Projekt:</strong> {result.project_name}</span>}
         <button
           onClick={() => { setResult(null); setError(null); setSelectedSO(null); }}
           className="c-btn c-btn--sm c-btn--ghost"
           style={{ marginLeft: 'auto' }}
         >
-          Nov\u00fd soubor
+          Nový soubor
         </button>
       </div>
 
@@ -205,7 +205,7 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
               onClick={() => setSelectedSO(so.so_id)}
               className={`c-btn c-btn--sm ${selectedSO === so.so_id ? 'c-btn--primary' : ''}`}
             >
-              {so.so_id} \u2014 {so.so_name} ({so.positions_count})
+              {so.so_id} — {so.so_name} ({so.positions_count})
             </button>
           ))}
         </div>
@@ -217,16 +217,16 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
           {activeSO.chapters.map(ch => (
             <div key={ch.code} style={{ marginBottom: 16 }}>
               <h4 className={styles.soupisChapterHeader}>
-                {ch.code} \u2014 {ch.name}
+                {ch.code} — {ch.name}
               </h4>
               <table className={styles.soupisTable}>
                 <thead>
                   <tr>
-                    <th style={{ width: 40 }}>P\u010c</th>
-                    <th style={{ width: 100 }}>K\u00f3d</th>
+                    <th style={{ width: 40 }}>PČ</th>
+                    <th style={{ width: 100 }}>Kód</th>
                     <th>Popis</th>
                     <th style={{ width: 40 }}>MJ</th>
-                    <th style={{ width: 80, textAlign: 'right' }}>Mno\u017estv\u00ed</th>
+                    <th style={{ width: 80, textAlign: 'right' }}>Množství</th>
                     <th style={{ width: 80, textAlign: 'right' }}>Jed.cena</th>
                     <th style={{ width: 90, textAlign: 'right' }}>Celkem</th>
                   </tr>

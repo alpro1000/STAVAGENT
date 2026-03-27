@@ -1,20 +1,23 @@
 """
-Provider Router — Task-based LLM routing for v3.1.1.
+Provider Router — Task-based LLM routing for v3.2.
 
 Routes different tasks to optimal LLM providers:
 - Classification → Gemini Flash (fast, cheap)
 - Extraction → Claude Sonnet (precise structured output)
-- Contradiction detection → Claude Haiku (fast comparison)
+- Contradiction detection → Bedrock Claude Haiku (AWS credits, fast comparison)
 - Unknown type verification → Perplexity (web search)
-- Heavy analysis → Gemini Pro (last resort)
+- Heavy analysis → Gemini Pro or Bedrock Claude Sonnet 4.6
+
+Bedrock burns AWS Activate credits — preferred over direct Anthropic API.
+Fallback: Vertex AI (free ADC) → Bedrock (AWS credits) → Direct API (paid)
 
 Author: STAVAGENT Team
-Version: 1.0.0
-Date: 2026-03-26
+Version: 2.0.0
+Date: 2026-03-27
 """
 
 import logging
-from typing import Optional, Dict, Any
+from typing import Optional, Dict
 from enum import Enum
 
 logger = logging.getLogger(__name__)
@@ -33,32 +36,43 @@ class TaskType(str, Enum):
 # Provider preferences per task type.
 # Each entry: list of (provider, model) tuples in priority order.
 # Falls through if provider unavailable.
+#
+# Strategy:
+#   1. Vertex AI Gemini (free on Cloud Run via ADC)
+#   2. Bedrock (burns AWS credits — $1,144 available)
+#   3. Direct Gemini API key
+#   4. Direct Claude API (most expensive)
+#   5. Perplexity (web search only)
 TASK_PROVIDER_MAP: Dict[TaskType, list] = {
     TaskType.CLASSIFY: [
         ("vertex-ai-gemini", "gemini-2.5-flash"),
+        ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # $0.25/1M, confirmed
         ("gemini", "gemini-2.5-flash"),
-        ("claude", "claude-haiku-4-5-20251001"),
     ],
     TaskType.EXTRACT: [
+        ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),  # AWS credits, confirmed
         ("claude", "claude-sonnet-4-6"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.CONTRADICTION: [
-        ("claude", "claude-haiku-4-5-20251001"),
+        ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # AWS credits, fast
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.VERIFY_UNKNOWN: [
         ("perplexity", "sonar-pro"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
+        ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),
     ],
     TaskType.SUMMARIZE: [
         ("vertex-ai-gemini", "gemini-2.5-flash"),
-        ("claude", "claude-haiku-4-5-20251001"),
+        ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # Cheap
+        ("gemini", "gemini-2.5-flash"),
     ],
     TaskType.HEAVY_ANALYSIS: [
         ("vertex-ai-gemini", "gemini-2.5-pro"),
+        ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),  # AWS credits
         ("claude", "claude-sonnet-4-6"),
     ],
 }
@@ -102,7 +116,7 @@ def get_preferred_provider(
 def detect_available_providers() -> set:
     """
     Detect which LLM providers are configured and available.
-    Checks API keys / ADC availability.
+    Checks API keys / ADC / AWS credentials.
     """
     available = set()
 
@@ -110,7 +124,6 @@ def detect_available_providers() -> set:
         from app.core.config import settings
 
         # Vertex AI Gemini (ADC — no key needed on Cloud Run)
-        # Always available as default
         available.add("vertex-ai-gemini")
         available.add("gemini")
 
@@ -122,6 +135,14 @@ def detect_available_providers() -> set:
 
         if getattr(settings, "OPENAI_API_KEY", ""):
             available.add("openai")
+
+        # AWS Bedrock (uses AWS credentials)
+        if (
+            getattr(settings, "AWS_ACCESS_KEY_ID", "")
+            and getattr(settings, "AWS_SECRET_ACCESS_KEY", "")
+            and getattr(settings, "BEDROCK_ENABLED", True)
+        ):
+            available.add("bedrock")
 
     except Exception as e:
         logger.warning(f"Error detecting providers: {e}")

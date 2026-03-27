@@ -341,8 +341,10 @@ async function callLLMProvider(provider, systemPrompt, userPrompt, controller) {
     return await callClaudeAPIWithClient(provider, systemPrompt, userPrompt, controller);
   } else if (provider.provider === 'gemini') {
     return await callGeminiAPIWithClient(provider, systemPrompt, userPrompt, controller);
+  } else if (provider.provider === 'bedrock') {
+    return await callBedrockAPIWithClient(provider, systemPrompt, userPrompt, controller);
   } else {
-    // OpenAI (default)
+    // OpenAI-compatible (OpenAI, DeepSeek, Grok, Qwen, GLM)
     return await callOpenAIAPIWithClient(provider, systemPrompt, userPrompt, controller);
   }
 }
@@ -386,6 +388,8 @@ export async function callLLMForTask(taskType, systemPrompt, userPrompt, timeout
         result = await callClaudeAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
       } else if (taskClient.provider === 'gemini') {
         result = await callGeminiAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      } else if (taskClient.provider === 'bedrock') {
+        result = await callBedrockAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
       } else {
         result = await callOpenAIAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
       }
@@ -439,6 +443,90 @@ async function callClaudeAPIWithClient(client, systemPrompt, userPrompt, control
   );
 
   return response.data.content[0].text;
+}
+
+/**
+ * Call AWS Bedrock API with specific client config.
+ * Uses @aws-sdk/client-bedrock-runtime for invoke_model.
+ * Supports Anthropic Claude, Amazon Nova, Meta Llama, DeepSeek models.
+ *
+ * Falls back to Bedrock Converse API (HTTP) if SDK not installed.
+ */
+async function callBedrockAPIWithClient(client, systemPrompt, userPrompt, controller) {
+  const modelId = client.model || 'anthropic.claude-3-haiku-20240307-v1:0';
+  const region = client.awsRegion || 'us-east-1';
+
+  // Detect provider from model ID prefix (strip cross-region prefix like "us.")
+  const bareModelId = modelId.replace(/^(us|eu|ap)\./, '');
+  const isAnthropic = bareModelId.startsWith('anthropic.');
+  const isAmazon = bareModelId.startsWith('amazon.');
+
+  // Build provider-specific request body
+  let body;
+  if (isAnthropic) {
+    body = {
+      anthropic_version: 'bedrock-2023-05-31',
+      max_tokens: 4096,
+      messages: [{ role: 'user', content: userPrompt }]
+    };
+    if (systemPrompt) body.system = systemPrompt;
+  } else if (isAmazon) {
+    body = {
+      messages: [{ role: 'user', content: [{ text: userPrompt }] }],
+      inferenceConfig: { max_new_tokens: 4096 }
+    };
+    if (systemPrompt) body.system = [{ text: systemPrompt }];
+  } else {
+    // Meta Llama, DeepSeek, Mistral — chat format
+    const messages = [];
+    if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+    messages.push({ role: 'user', content: userPrompt });
+    body = { messages, max_tokens: 4096 };
+  }
+
+  try {
+    // Try AWS SDK first (preferred)
+    const { BedrockRuntimeClient, InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
+
+    const bedrockClient = new BedrockRuntimeClient({
+      region,
+      credentials: {
+        accessKeyId: client.awsAccessKeyId,
+        secretAccessKey: client.awsSecretAccessKey,
+      },
+    });
+
+    const command = new InvokeModelCommand({
+      modelId,
+      contentType: 'application/json',
+      accept: 'application/json',
+      body: JSON.stringify(body),
+    });
+
+    // Respect abort signal
+    const response = await bedrockClient.send(command, {
+      abortSignal: controller.signal,
+    });
+
+    const responseBody = JSON.parse(new TextDecoder().decode(response.body));
+
+    // Parse provider-specific response
+    if (isAnthropic) {
+      return responseBody.content?.[0]?.text || '';
+    } else if (isAmazon) {
+      return responseBody.output?.message?.content?.[0]?.text || '';
+    } else {
+      // Chat completion format (Meta, DeepSeek, Mistral)
+      return responseBody.choices?.[0]?.message?.content ||
+             responseBody.content?.[0]?.text || '';
+    }
+  } catch (importError) {
+    if (importError.code === 'ERR_MODULE_NOT_FOUND') {
+      logger.warn('[LLMClient] @aws-sdk/client-bedrock-runtime not installed. Run: npm install @aws-sdk/client-bedrock-runtime');
+      throw new Error('Bedrock SDK not installed. Run: npm install @aws-sdk/client-bedrock-runtime');
+    }
+    throw importError;
+  }
 }
 
 /**

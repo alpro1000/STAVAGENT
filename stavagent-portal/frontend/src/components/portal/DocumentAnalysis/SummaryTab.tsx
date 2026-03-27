@@ -14,7 +14,7 @@ export default function SummaryTab({ data }: SummaryTabProps) {
   if (!data) {
     return (
       <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-secondary)' }}>
-        Nejprve nahrajte dokument na z\u00e1lo\u017ece <strong>Soupis prac\u00ed</strong> nebo <strong>Passport</strong>.
+        Nejprve nahrajte dokument na záložce <strong>Soupis prací</strong> nebo <strong>Passport</strong>.
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function SummaryTab({ data }: SummaryTabProps) {
             {topic.title}
             {topic.importance === 'high' && (
               <span style={{ fontSize: 10, fontWeight: 600, background: 'var(--accent-orange)', color: '#fff', padding: '1px 6px', borderRadius: 8 }}>
-                kl\u00ed\u010dov\u00e9
+                klíčové
               </span>
             )}
           </h4>
@@ -66,7 +66,7 @@ export default function SummaryTab({ data }: SummaryTabProps) {
         <>
           {passport.technical_highlights?.length > 0 && (
             <div style={{ marginBottom: 20 }}>
-              <div className={styles.sectionHeader}>Technick\u00e9 hlavn\u00ed body</div>
+              <div className={styles.sectionHeader}>Technické hlavní body</div>
               <ul style={{ margin: 0, paddingLeft: 18 }}>
                 {passport.technical_highlights.map((hl, i) => <li key={i} style={{ marginBottom: 2 }}>{hl}</li>)}
               </ul>
@@ -75,7 +75,7 @@ export default function SummaryTab({ data }: SummaryTabProps) {
 
           {passport.stakeholders?.length > 0 && (
             <div style={{ marginBottom: 20 }}>
-              <div className={styles.sectionHeader}>\u00da\u010dastn\u00edci</div>
+              <div className={styles.sectionHeader}>Účastníci</div>
               <table className={styles.dataTable}>
                 <tbody>
                   {passport.stakeholders.map((s, i) => (
@@ -107,8 +107,8 @@ export default function SummaryTab({ data }: SummaryTabProps) {
 
       {/* Metadata */}
       <div style={{ color: 'var(--text-muted)', fontSize: 12, textAlign: 'right', marginTop: 16 }}>
-        Soubor: {data.metadata?.file_name || '\u2014'} |
-        Parser: {data.metadata?.parser_used || '\u2014'} |
+        Soubor: {data.metadata?.file_name || '—'} |
+        Parser: {data.metadata?.parser_used || '—'} |
         Model: {data.metadata?.ai_model_used || 'none'}
       </div>
     </div>

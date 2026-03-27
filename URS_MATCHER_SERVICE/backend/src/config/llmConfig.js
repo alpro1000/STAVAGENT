@@ -9,6 +9,7 @@ const LLM_PROVIDERS = {
   CLAUDE: 'claude',
   OPENAI: 'openai',
   GEMINI: 'gemini',
+  BEDROCK: 'bedrock',      // AWS Bedrock (Claude/Nova/Llama/DeepSeek via AWS credits)
   DEEPSEEK: 'deepseek',    // DeepSeek (Chinese, very cheap)
   GROK: 'grok',            // xAI Grok
   QWEN: 'qwen',            // Alibaba Qwen (free tier available)
@@ -56,6 +57,12 @@ export function getLLMConfig() {
     apiKey = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
     // gemini-2.5-flash (GA, verified working in europe-west3)
     defaultModel = 'gemini-2.5-flash';
+    break;
+  case 'bedrock':
+    // AWS Bedrock uses AWS credentials, not a single API key
+    // We use a sentinel value so config.enabled = true
+    apiKey = (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) ? 'bedrock-aws-credentials' : null;
+    defaultModel = process.env.BEDROCK_MODEL_ID || 'anthropic.claude-3-haiku-20240307-v1:0';
     break;
   case 'deepseek':
     apiKey = process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
@@ -118,6 +125,8 @@ function getApiKeyForProvider(provider) {
     return process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || process.env.LLM_API_KEY;
   case 'gemini':
     return process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.LLM_API_KEY;
+  case 'bedrock':
+    return (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) ? 'bedrock-aws-credentials' : null;
   case 'deepseek':
     return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
   case 'grok':
@@ -179,6 +188,22 @@ export function getAvailableProviders() {
       provider: 'openai',
       apiKey: openaiKey,
       model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
+    };
+  }
+
+  // Check AWS Bedrock (uses AWS credentials, burns AWS Activate credits)
+  const awsKeyId = process.env.AWS_ACCESS_KEY_ID;
+  const awsSecret = process.env.AWS_SECRET_ACCESS_KEY;
+  if (awsKeyId && awsSecret) {
+    providers.bedrock = {
+      enabled: true,
+      provider: 'bedrock',
+      apiKey: 'bedrock-aws-credentials',  // sentinel — actual auth via AWS SDK
+      awsAccessKeyId: awsKeyId,
+      awsSecretAccessKey: awsSecret,
+      awsRegion: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1',
+      model: process.env.BEDROCK_MODEL_ID || 'us.anthropic.claude-haiku-4-5-20251001-v1:0',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -246,16 +271,18 @@ export function getFallbackChain(primaryProvider = null) {
 
   // Define fallback chains for each provider
   // Primary provider first, then cheapest alternatives as fallbacks
-  const defaultFallback = ['gemini', 'openai', 'deepseek', 'claude'];
+  // Bedrock inserted after primary — burns AWS credits before paid APIs
+  const defaultFallback = ['gemini', 'bedrock', 'openai', 'deepseek', 'claude'];
 
   const chains = {
-    gemini: ['gemini', 'openai', 'deepseek', 'claude'],
-    claude: ['claude', 'gemini', 'openai', 'deepseek'],
-    openai: ['openai', 'gemini', 'deepseek', 'claude'],
-    deepseek: ['deepseek', 'openai', 'gemini', 'claude'],
-    grok: ['grok', 'openai', 'gemini', 'deepseek'],
-    qwen: ['qwen', 'deepseek', 'gemini', 'openai'],
-    glm: ['glm', 'deepseek', 'gemini', 'openai']
+    gemini: ['gemini', 'bedrock', 'openai', 'deepseek', 'claude'],
+    claude: ['claude', 'bedrock', 'gemini', 'openai', 'deepseek'],
+    bedrock: ['bedrock', 'gemini', 'openai', 'deepseek', 'claude'],
+    openai: ['openai', 'bedrock', 'gemini', 'deepseek', 'claude'],
+    deepseek: ['deepseek', 'bedrock', 'openai', 'gemini', 'claude'],
+    grok: ['grok', 'bedrock', 'openai', 'gemini', 'deepseek'],
+    qwen: ['qwen', 'bedrock', 'deepseek', 'gemini', 'openai'],
+    glm: ['glm', 'bedrock', 'deepseek', 'gemini', 'openai']
   };
 
   return chains[primary.toLowerCase()] || defaultFallback;
@@ -300,6 +327,19 @@ export function createLLMClient(config) {
       apiKey: config.apiKey,
       model: config.model,
       timeoutMs: config.timeoutMs
+    };
+  }
+
+  // AWS Bedrock (multi-provider via AWS SDK)
+  if (provider === LLM_PROVIDERS.BEDROCK) {
+    return {
+      provider: 'bedrock',
+      awsAccessKeyId: config.awsAccessKeyId || process.env.AWS_ACCESS_KEY_ID,
+      awsSecretAccessKey: config.awsSecretAccessKey || process.env.AWS_SECRET_ACCESS_KEY,
+      awsRegion: config.awsRegion || process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1',
+      model: config.model,
+      timeoutMs: config.timeoutMs,
+      isBedrock: true
     };
   }
 
@@ -386,7 +426,10 @@ export function createLLMClient(config) {
 export function validateAPIKey(apiKey, provider) {
   if (!apiKey) {return false;}
 
-  if (provider === LLM_PROVIDERS.CLAUDE) {
+  if (provider === LLM_PROVIDERS.BEDROCK) {
+    // Bedrock uses AWS credentials, sentinel value means available
+    return apiKey === 'bedrock-aws-credentials';
+  } else if (provider === LLM_PROVIDERS.CLAUDE) {
     // Claude API keys start with 'sk-ant-'
     return apiKey.startsWith('sk-ant-');
   } else if (provider === LLM_PROVIDERS.GEMINI) {
@@ -628,6 +671,47 @@ const MODEL_PRICING = {
     costPerMinute: 0.02,
     speedScore: 8,
     qualityScore: 8
+  },
+  // AWS Bedrock models (burns AWS Activate credits)
+  'bedrock-claude-haiku-4.5': {
+    provider: 'bedrock',
+    inputCost: 0.80,      // $0.80 per 1M input (Haiku via Bedrock)
+    outputCost: 4.0,
+    costPerMinute: 0.05,
+    speedScore: 10,
+    qualityScore: 8
+  },
+  'bedrock-claude-sonnet-4.6': {
+    provider: 'bedrock',
+    inputCost: 3.0,       // $3 per 1M input (Sonnet via Bedrock)
+    outputCost: 15.0,
+    costPerMinute: 0.30,
+    speedScore: 8,
+    qualityScore: 10
+  },
+  'bedrock-nova-lite': {
+    provider: 'bedrock',
+    inputCost: 0.06,      // $0.06 per 1M input (Free Tier available)
+    outputCost: 0.24,
+    costPerMinute: 0.001,
+    speedScore: 9,
+    qualityScore: 7
+  },
+  'bedrock-nova-pro': {
+    provider: 'bedrock',
+    inputCost: 0.80,
+    outputCost: 3.20,
+    costPerMinute: 0.05,
+    speedScore: 8,
+    qualityScore: 8
+  },
+  'bedrock-deepseek-r1': {
+    provider: 'bedrock',
+    inputCost: 1.35,      // Bedrock pricing for DeepSeek-R1
+    outputCost: 5.40,
+    costPerMinute: 0.10,
+    speedScore: 7,
+    qualityScore: 10
   }
 };
 
@@ -778,33 +862,33 @@ const TASK_TYPES = {
  */
 const TASK_MODEL_ROUTING = {
   [TASK_TYPES.KEYWORD_GENERATION]: {
-    priority: ['gemini', 'deepseek', 'openai', 'claude'],
-    reason: 'Fast and cheap for simple extraction',
+    priority: ['gemini', 'bedrock', 'deepseek', 'openai', 'claude'],
+    reason: 'Fast and cheap for simple extraction (Bedrock Nova Lite = Free Tier)',
     preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.TRANSLATION]: {
-    priority: ['gemini', 'deepseek', 'openai', 'claude'],
+    priority: ['gemini', 'bedrock', 'deepseek', 'openai', 'claude'],
     reason: 'Fast translation with good quality',
     preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.BLOCK_ANALYSIS]: {
-    priority: ['gemini', 'openai', 'claude', 'deepseek'],
-    reason: 'Complex reasoning — best quality model',
+    priority: ['gemini', 'bedrock', 'openai', 'claude', 'deepseek'],
+    reason: 'Complex reasoning — Bedrock Claude burns AWS credits instead of direct API',
     preferModel: 'gemini-2.5-pro'
   },
   [TASK_TYPES.URS_SELECTION]: {
-    priority: ['gemini', 'openai', 'claude', 'deepseek'],
+    priority: ['gemini', 'bedrock', 'openai', 'claude', 'deepseek'],
     reason: 'Critical URS code selection — best quality model',
     preferModel: 'gemini-2.5-pro'
   },
   [TASK_TYPES.VALIDATION]: {
-    priority: ['gemini', 'deepseek', 'openai', 'claude'],
-    reason: 'Validation — fast and reliable',
+    priority: ['gemini', 'bedrock', 'deepseek', 'openai', 'claude'],
+    reason: 'Validation — fast and reliable (Bedrock as cheap fallback)',
     preferModel: 'gemini-2.5-flash'
   },
   [TASK_TYPES.NORMS_INTERPRETATION]: {
-    priority: ['gemini', 'openai', 'claude', 'deepseek'],
-    reason: 'Technical norms — high quality reasoning',
+    priority: ['gemini', 'bedrock', 'openai', 'claude', 'deepseek'],
+    reason: 'Technical norms — Bedrock DeepSeek-R1 for reasoning, Claude for quality',
     preferModel: 'gemini-2.5-pro'
   }
 };
@@ -914,6 +998,11 @@ function formatModelName(modelId) {
     'grok-3-mini': 'Grok 3 Mini',
     'qwen-max': 'Qwen Max',
     'qwen-turbo': 'Qwen Turbo',
+    'bedrock-claude-haiku-4.5': 'Bedrock Claude Haiku 4.5',
+    'bedrock-claude-sonnet-4.6': 'Bedrock Claude Sonnet 4.6',
+    'bedrock-nova-lite': 'Bedrock Nova Lite',
+    'bedrock-nova-pro': 'Bedrock Nova Pro',
+    'bedrock-deepseek-r1': 'Bedrock DeepSeek-R1',
     'glm-4-flash': 'GLM-4 Flash (Free)',
     'glm-4': 'GLM-4'
   };
@@ -928,6 +1017,7 @@ function formatProviderName(provider) {
     'claude': 'Anthropic',
     'openai': 'OpenAI',
     'gemini': 'Google',
+    'bedrock': 'AWS Bedrock',
     'deepseek': 'DeepSeek',
     'grok': 'xAI',
     'qwen': 'Alibaba',
@@ -940,8 +1030,8 @@ function formatProviderName(provider) {
  * Check if model is recommended (best value)
  */
 function isRecommendedModel(modelId) {
-  // Recommended models: GCP credits only (Gemini)
-  const recommended = ['gemini-2.5-flash', 'gemini-2.5-pro'];
+  // Recommended models: free/credit-based (Gemini via GCP, Bedrock via AWS credits)
+  const recommended = ['gemini-2.5-flash', 'gemini-2.5-pro', 'bedrock-nova-lite', 'bedrock-claude-haiku-4.5'];
   return recommended.includes(modelId);
 }
 
@@ -1035,6 +1125,7 @@ function getEnvKeyForProvider(provider) {
     'claude': 'ANTHROPIC_API_KEY',
     'openai': 'OPENAI_API_KEY',
     'gemini': 'GOOGLE_API_KEY',
+    'bedrock': 'AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY',
     'deepseek': 'DEEPSEEK_API_KEY',
     'grok': 'XAI_API_KEY',
     'qwen': 'DASHSCOPE_API_KEY',

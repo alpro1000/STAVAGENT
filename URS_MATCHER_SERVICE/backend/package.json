@@ -23,6 +23,7 @@
   "author": "STAVAGENT Team",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.700.0",
     "axios": "^1.13.5",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
