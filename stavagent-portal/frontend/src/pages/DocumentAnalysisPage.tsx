@@ -92,9 +92,7 @@ export default function DocumentAnalysisPage() {
       formData.append('file', file);
       formData.append('project_name', file.name.replace(/\.[^/.]+$/, ''));
       formData.append('enable_ai_enrichment', 'true');
-      // Auto-select mode: spreadsheets → extraction, PDF → adaptive
-      const isSoupis = ['xlsx', 'xls', 'xml'].includes(ext);
-      formData.append('analysis_mode', isSoupis ? 'adaptive_extraction' : 'adaptive_extraction');
+      formData.append('analysis_mode', 'adaptive_extraction');
 
       setUploadProgress(isSoupis ? 'Parsování tabulky...' : 'Analyzuji dokument...');
 
