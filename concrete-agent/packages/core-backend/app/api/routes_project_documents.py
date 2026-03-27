@@ -931,12 +931,113 @@ def _parse_soupis_sync(file_path: str, filename: str) -> Optional[DocumentSummar
 async def _parse_pdf_async(
     file_path: str, filename: str, doc_type: DocType, enable_ai: bool = True,
 ) -> Optional[DocumentSummary]:
-    """Extract text from PDF, generate TZ summary, enrich with Gemini AI."""
+    """
+    Extract text from PDF, generate TZ summary, enrich with full pipeline.
+
+    If enable_ai=True for TZ docs, uses NormIngestionPipeline:
+      L1 (pdfplumber/MinerU) → L2 (50+ regex, conf=1.0)
+      → L3a (Gemini with dedup, conf=0.7) → L3b (Perplexity verify+supplement)
+    """
+    # For TZ docs with AI, use the full ingestion pipeline
+    if enable_ai and doc_type.value.startswith("tz_"):
+        try:
+            from app.services.norm_ingestion_pipeline import NormIngestionPipeline
+            with open(file_path, "rb") as f:
+                file_bytes = f.read()
+            extraction = await NormIngestionPipeline.ingest(
+                file_path=file_path,
+                file_bytes=file_bytes,
+                filename=filename,
+                skip_perplexity=not settings.has_perplexity,
+            )
+
+            # Build DocumentSummary from ExtractionResult
+            text = ""
+            try:
+                import pdfplumber
+                with pdfplumber.open(file_path) as pdf:
+                    for page in pdf.pages[:30]:
+                        text += (page.extract_text() or "") + "\n"
+            except Exception:
+                pass
+
+            summary = generate_summary_from_tz(filename, doc_type, text or "")
+
+            # Enrich summary with pipeline results
+            if extraction.ai_summary:
+                summary.ai_summary = extraction.ai_summary
+                summary.description = extraction.ai_summary
+                summary.ai_model_used = "gemini-flash"
+                summary.ai_confidence = 0.7
+
+            # Add rich regex materials
+            for mat in extraction.materials:
+                if mat.value and str(mat.value) not in [m.spec for m in summary.materials]:
+                    summary.materials.append(MaterialEntry(
+                        name=str(mat.value), spec=str(mat.value),
+                    ))
+
+            # Add AI requirements
+            for req in extraction.ai_key_requirements:
+                req_text = req.get("requirement", "")
+                if req_text and req_text not in summary.key_requirements:
+                    summary.key_requirements.append(req_text)
+
+            # Add AI risks
+            for risk in extraction.ai_risks:
+                desc = risk.get("description", "")
+                if desc:
+                    summary.ai_risks.append(desc)
+
+            # Add AI volumes
+            for vol in extraction.ai_volumes:
+                summary.ai_volumes.append(VolumeEntry(
+                    description=vol.get("item", ""),
+                    value=float(vol.get("value", 0)),
+                    unit=vol.get("unit", ""),
+                ))
+
+            # Add norm references from rich regex
+            existing_stds = set(summary.standards)
+            for ref in extraction.norm_references:
+                ref_str = str(ref.value)
+                if ref_str not in existing_stds:
+                    summary.standards.append(ref_str)
+                    existing_stds.add(ref_str)
+
+            # Add Perplexity verification results as flags
+            for v in extraction.verified_norms:
+                norm = v.get("norm", "")
+                is_current = v.get("is_current", True)
+                if not is_current:
+                    replaced_by = v.get("replaced_by", "neznámo")
+                    summary.flags.append(DocumentFlag(
+                        severity="warning",
+                        message=f"Norma {norm} byla nahrazena: {replaced_by}",
+                        source="perplexity",
+                    ))
+
+            # Store extraction stats in raw_extraction
+            summary.raw_extraction["ingestion_stats"] = extraction.stats
+            summary.raw_extraction["extracted_rules_count"] = len(extraction.extracted_rules)
+
+            logger.info(
+                "Full pipeline for %s: %d norms, %d tolerances, %d rules",
+                filename, len(extraction.norm_references),
+                len(extraction.tolerances), len(extraction.extracted_rules),
+            )
+            return summary
+
+        except Exception as e:
+            logger.warning("Full pipeline failed for %s, falling back: %s", filename, e)
+            # Fall through to legacy path
+
+    # Legacy path: simple extraction
     text = ""
     try:
         import pdfplumber
         with pdfplumber.open(file_path) as pdf:
-            for page in pdf.pages[:30]:  # Max 30 pages
+            for page in pdf.pages[:30]:
                 page_text = page.extract_text() or ""
                 text += page_text + "\n"
     except Exception as e:
@@ -948,7 +1049,6 @@ async def _parse_pdf_async(
         )
 
     if not text.strip():
-        # Try MinerU for scanned PDFs
         try:
             from app.parsers.mineru_client import parse_pdf_with_mineru
             mineru_text = parse_pdf_with_mineru(file_path)
@@ -968,10 +1068,8 @@ async def _parse_pdf_async(
             )],
         )
 
-    # Step 1: Regex extraction (deterministic, confidence=1.0)
     summary = generate_summary_from_tz(filename, doc_type, text)
 
-    # Step 2: AI enrichment (Gemini, confidence=0.5-0.9)
     if enable_ai and doc_type.value.startswith("tz_"):
         summary = await enrich_summary_with_ai(summary, text)
 

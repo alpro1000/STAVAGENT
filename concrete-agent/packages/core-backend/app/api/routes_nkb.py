@@ -14,7 +14,10 @@ Date: 2026-03-27
 import logging
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+import os
+import tempfile
+
+from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 
 from app.models.norm_schemas import (
@@ -187,6 +190,106 @@ async def get_advisor(context: AdvisorContext):
         f"{len(response.recommendations)} recommendations"
     )
     return response
+
+
+# ---------------------------------------------------------------------------
+# PDF Norm Ingestion Pipeline
+# ---------------------------------------------------------------------------
+
+@router.post("/ingest-pdf")
+async def ingest_norm_pdf(
+    file: UploadFile = File(...),
+    skip_perplexity: bool = Form(False),
+    auto_save: bool = Form(False),
+):
+    """
+    Ingest a normative PDF through the full 4-layer pipeline.
+
+    Pipeline: PDF → pdfplumber/MinerU → Regex (conf=1.0)
+              → Gemini Flash (conf=0.7) → Perplexity (conf=0.85)
+              → Compile rules for NKB
+
+    Args:
+        file: PDF document to ingest
+        skip_perplexity: Skip Perplexity verification (faster)
+        auto_save: Auto-save extracted rules to NKB
+    """
+    from app.services.norm_ingestion_pipeline import NormIngestionPipeline
+    from pathlib import Path
+
+    filename = file.filename or "unknown.pdf"
+    ext = Path(filename).suffix.lower()
+    if ext not in (".pdf",):
+        raise HTTPException(status_code=400, detail="Only PDF files supported for norm ingestion")
+
+    content = await file.read()
+    tmp_path = None
+
+    try:
+        with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as tmp:
+            tmp.write(content)
+            tmp_path = tmp.name
+
+        result = await NormIngestionPipeline.ingest(
+            file_path=tmp_path,
+            file_bytes=content,
+            filename=filename,
+            skip_perplexity=skip_perplexity,
+        )
+
+        # Auto-save extracted rules to NKB store
+        saved_rules = 0
+        if auto_save and result.extracted_rules:
+            store = get_norm_store()
+            for rule_data in result.extracted_rules:
+                try:
+                    from app.models.norm_schemas import NormativeRule, RuleType
+                    rule_type_str = rule_data.get("rule_type", "requirement")
+                    try:
+                        rt = RuleType(rule_type_str)
+                    except ValueError:
+                        rt = RuleType.REQUIREMENT
+
+                    rule = NormativeRule(
+                        rule_id=rule_data.get("rule_id", f"auto_{saved_rules}"),
+                        norm_id=rule_data.get("norm_id", "AUTO_INGEST"),
+                        rule_type=rt,
+                        title=str(rule_data.get("value", ""))[:200],
+                        description=rule_data.get("context", ""),
+                        priority=int(rule_data.get("confidence", 0.5) * 100),
+                    )
+                    store.add_rule(rule)
+                    saved_rules += 1
+                except Exception as e:
+                    logger.debug("Failed to auto-save rule: %s", e)
+
+        logger.info(
+            "[NKB] PDF ingestion complete: %s — %d rules extracted, %d saved",
+            filename, len(result.extracted_rules), saved_rules,
+        )
+
+        return {
+            "status": "completed",
+            "filename": filename,
+            "stats": result.stats,
+            "rules": result.extracted_rules,
+            "verified_norms": result.verified_norms,
+            "supplemented_data": result.supplemented_data,
+            "ai_summary": result.ai_summary,
+            "needs_human_review": [
+                r for r in result.extracted_rules if r.get("needs_human_review")
+            ],
+            "auto_saved": saved_rules,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("[NKB] PDF ingestion error: %s", e, exc_info=True)
+        raise HTTPException(status_code=422, detail=f"Ingestion failed: {str(e)}")
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 # ---------------------------------------------------------------------------
