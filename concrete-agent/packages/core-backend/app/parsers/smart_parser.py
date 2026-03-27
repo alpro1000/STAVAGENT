@@ -68,6 +68,10 @@ class SmartParser:
             return self.parse_excel(path)
         elif detected_type == "xml":
             return self.parse_xml(path)
+        elif detected_type == "docx":
+            return self.parse_docx(path)
+        elif detected_type == "csv":
+            return self.parse_csv(path)
         else:
             return self.parse_pdf(path)
 
@@ -84,6 +88,67 @@ class SmartParser:
         if size_mb > SIZE_THRESHOLD_MB:
             return self.memory_xml.parse(str(path))
         return self.kros_parser.parse(str(path))
+
+    def parse_docx(self, path: Path) -> Dict[str, Any]:
+        """Parse DOCX using python-docx → text + tables."""
+        logger.info(f"SmartParser: DOCX {path.name}")
+        try:
+            from docx import Document as DocxDocument
+        except ImportError:
+            logger.warning("python-docx not installed, falling back to PDF path")
+            return {"positions": [], "text": "", "strategy": "docx_fallback"}
+
+        try:
+            doc = DocxDocument(str(path))
+            paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
+            full_text = "\n".join(paragraphs)
+
+            tables_data: list = []
+            for table in doc.tables:
+                rows = []
+                for row in table.rows:
+                    cells = [cell.text.strip() for cell in row.cells]
+                    rows.append(cells)
+                tables_data.append(rows)
+
+            logger.info(f"SmartParser: DOCX extracted {len(paragraphs)} paragraphs, {len(tables_data)} tables")
+            return {
+                "positions": [],
+                "text": full_text,
+                "tables": tables_data,
+                "strategy": "docx",
+                "paragraphs": len(paragraphs),
+            }
+        except Exception as e:
+            logger.error(f"SmartParser: DOCX failed: {e}")
+            return {"positions": [], "text": "", "strategy": "docx_error", "error": str(e)}
+
+    def parse_csv(self, path: Path) -> Dict[str, Any]:
+        """Parse CSV/TSV → text + table."""
+        import csv
+        logger.info(f"SmartParser: CSV {path.name}")
+        try:
+            with open(str(path), "r", encoding="utf-8", errors="replace") as f:
+                sample = f.read(4096)
+                f.seek(0)
+                try:
+                    dialect = csv.Sniffer().sniff(sample, delimiters=",;\t|")
+                except csv.Error:
+                    dialect = csv.excel
+                reader = csv.reader(f, dialect)
+                rows = [row for row in reader]
+
+            text_lines = [" | ".join(c for c in row if c.strip()) for row in rows if any(c.strip() for c in row)]
+            logger.info(f"SmartParser: CSV extracted {len(rows)} rows")
+            return {
+                "positions": [],
+                "text": "\n".join(text_lines),
+                "tables": [rows] if rows else [],
+                "strategy": "csv",
+            }
+        except Exception as e:
+            logger.error(f"SmartParser: CSV failed: {e}")
+            return {"positions": [], "text": "", "strategy": "csv_error", "error": str(e)}
 
     def parse_pdf(self, path: Path) -> Dict[str, Any]:
         """
@@ -179,6 +244,10 @@ class SmartParser:
             return "excel"
         elif ext in (".xml",):
             return "xml"
+        elif ext in (".docx",):
+            return "docx"
+        elif ext in (".csv", ".tsv"):
+            return "csv"
         else:
             return "pdf"
 

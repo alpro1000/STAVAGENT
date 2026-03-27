@@ -322,6 +322,7 @@ class DocumentProcessor:
                 # v3.3: universal extraction fields
                 norms=extracted_facts.get("norms", []),
                 identification=extracted_facts.get("identification"),
+                referenced_documents=extracted_facts.get("referenced_documents", []),
             )
 
         except Exception as e:
@@ -380,7 +381,10 @@ class DocumentProcessor:
         if path_obj.suffix.lower() == '.pdf':
             text_content = await self._extract_pdf_text(path_obj)
 
-        # === NON-PDF: handled by SmartParser directly ===
+        # === DOCX/CSV/other: text from SmartParser result ===
+        elif 'text' in parsed and parsed['text']:
+            text_content = parsed['text']
+            logger.info(f"Text from SmartParser: {len(text_content)} chars")
 
         # Supplement with position descriptions from SmartParser (table data)
         if 'positions' in parsed:
@@ -1449,6 +1453,12 @@ Vrať POUZE validní JSON matching IGPParams."""
             if gtp_regex:
                 results["gtp_regex"] = gtp_regex
                 logger.info(f"GTP regex: {len(gtp_regex)} fields extracted")
+
+        if category == DocCategory.ZP or "požár" in document_text[:3000].lower() or "pbřs" in document_text[:3000].lower():
+            pbrs_regex = self.extractor.extract_pbrs(document_text)
+            if pbrs_regex:
+                results["pbrs_regex"] = pbrs_regex
+                logger.info(f"PBRS regex: {len(pbrs_regex)} fields extracted")
 
         # --- v3.1: SO type-specific regex pre-extraction ---
         so_code = getattr(classification, 'so_code', None)

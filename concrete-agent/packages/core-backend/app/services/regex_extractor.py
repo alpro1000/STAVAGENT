@@ -189,6 +189,9 @@ class CzechConstructionExtractor:
         # Extract project identification
         results['identification'] = self._extract_identification(text)
 
+        # Extract referenced documents (potentially missing)
+        results['referenced_documents'] = self.extract_referenced_documents(text)
+
         logger.info(f"Extraction complete: {self.stats}")
         return results
 
@@ -646,6 +649,65 @@ class CzechConstructionExtractor:
         return result
 
     # =============================================================================
+    # V3.3: PBŘS (FIRE SAFETY) EXTRACTION
+    # =============================================================================
+
+    PBRS_PATTERNS = {
+        'fire_compartment': r'požární\s+úsek\s+(\S+)',
+        'spb': r'SPB\s*[:=]?\s*([I]{1,3}V?)',
+        'fire_resistance': r'(REI?\s*\d+(?:/\d+)?)',
+        'escape_route': r'(CHÚC|NÚC|chráněná\s+úniková\s+cesta)',
+        'fire_load': r'požární\s+zatížení\s*[:=]?\s*(\d+[\.,]?\d*)\s*(kg/m[²2]|MJ/m[²2])',
+        'eps': r'(EPS|elektrická\s+požární\s+signalizace)',
+        'shz': r'(SHZ|stabilní\s+hasicí\s+zařízení|sprinkler)',
+        'zokt': r'(ZOKT|zařízení\s+pro\s+odvod\s+kouře\s+a\s+tepla)',
+        'fire_distance': r'odstupov[áé]\s+vzdálenost[i]?\s*[:=]?\s*(\d+[\.,]?\d*)\s*m',
+        'fire_water': r'požární\s+vod[ay]\s*[:=]?\s*(\d+[\.,]?\d*)\s*(l/s|m³/h)',
+    }
+
+    def extract_pbrs(self, text: str) -> Dict[str, Any]:
+        """Extract fire safety parameters from PBŘS document."""
+        result: Dict[str, Any] = {}
+
+        # Fire compartments
+        compartments = list(set(re.findall(self.PBRS_PATTERNS['fire_compartment'], text, re.IGNORECASE)))
+        if compartments:
+            result['fire_compartments'] = sorted(compartments)
+
+        # SPB (stupeň požární bezpečnosti)
+        spb_values = list(set(re.findall(self.PBRS_PATTERNS['spb'], text)))
+        if spb_values:
+            result['spb_values'] = spb_values
+
+        # Fire resistance
+        resistances = list(set(re.findall(self.PBRS_PATTERNS['fire_resistance'], text)))
+        if resistances:
+            result['fire_resistance_ratings'] = resistances
+
+        # Escape routes
+        routes = list(set(re.findall(self.PBRS_PATTERNS['escape_route'], text, re.IGNORECASE)))
+        if routes:
+            result['escape_routes'] = routes
+
+        # Fire detection/suppression systems
+        for key, pattern_key in [('has_eps', 'eps'), ('has_shz', 'shz'), ('has_zokt', 'zokt')]:
+            if re.search(self.PBRS_PATTERNS[pattern_key], text, re.IGNORECASE):
+                result[key] = True
+
+        # Fire distance
+        m = re.search(self.PBRS_PATTERNS['fire_distance'], text, re.IGNORECASE)
+        if m:
+            result['fire_distance_m'] = float(m.group(1).replace(',', '.'))
+
+        # Fire water supply
+        m = re.search(self.PBRS_PATTERNS['fire_water'], text, re.IGNORECASE)
+        if m:
+            result['fire_water_supply'] = f"{m.group(1)} {m.group(2)}"
+
+        logger.info(f"PBRS regex extraction: {len(result)} fields found")
+        return result
+
+    # =============================================================================
     # V3: BRIDGE DIMENSION EXTRACTION
     # =============================================================================
 
@@ -869,6 +931,31 @@ class CzechConstructionExtractor:
     def _normalize_diacritics(self, text: str) -> str:
         """Remove Czech diacritics for keyword matching"""
         return text.translate(self.DIACRITICS_MAP)
+
+    # =============================================================================
+    # MISSING DOCUMENT REFERENCES
+    # =============================================================================
+
+    MISSING_DOC_PATTERNS = [
+        r'viz\s+příloha\s+(.{5,60})',
+        r'dle\s+(?:posudku|výkresu|projektu|zprávy)\s+(.{5,60})',
+        r'(?:statický|geotechnický|geologický|radonový)\s+(?:posudek|průzkum|protokol)',
+        r'projekt\s+(?:hromosvodu|uzemn[ěe]n[ií]|požárně\s+bezpečnostní)',
+        r'(?:energetický|průkaz)\s+(?:štítek|PENB)',
+        r'protokol\s+o\s+(?:zkoušce|měření|autorizaci)',
+    ]
+
+    def extract_referenced_documents(self, text: str) -> List[str]:
+        """Scan text for mentions of other documents (potentially missing)."""
+        refs: List[str] = []
+        seen: set = set()
+        for pattern in self.MISSING_DOC_PATTERNS:
+            for m in re.finditer(pattern, text, re.IGNORECASE):
+                ref = m.group(0).strip().rstrip('.,;:')
+                if len(ref) > 10 and ref not in seen:
+                    seen.add(ref)
+                    refs.append(ref)
+        return refs[:20]
 
     # =============================================================================
     # NORM REFERENCES EXTRACTION

@@ -1115,6 +1115,7 @@ class PassportGenerationResponse(BaseModel):
     # v3.3: Universal extraction fields (always populated)
     norms: List[str] = Field(default_factory=list, description="Referenced standards (ČSN, zákony, vyhlášky)")
     identification: Optional[Dict[str, str]] = Field(None, description="Project identification (stavba, investor, místo)")
+    referenced_documents: List[str] = Field(default_factory=list, description="Documents mentioned in text (potentially missing)")
 
     model_config = ConfigDict(
         json_schema_extra={

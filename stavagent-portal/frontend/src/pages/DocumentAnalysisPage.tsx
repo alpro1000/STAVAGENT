@@ -425,6 +425,20 @@ export default function DocumentAnalysisPage() {
                     </div>
                   </div>
                 )}
+                {/* Referenced documents (potentially missing) */}
+                {(passportData as any)?.referenced_documents?.length > 0 && (
+                  <div className="da-refs-bar">
+                    <span className="da-refs-label">Odkazované dokumenty</span>
+                    <div className="da-refs-list">
+                      {((passportData as any).referenced_documents as string[]).map((ref, i) => (
+                        <div key={i} className="da-ref-item">
+                          <AlertTriangle size={12} />
+                          <span>{ref}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             )}
 
@@ -735,6 +749,37 @@ const documentAnalysisStyles = `
 .da-tab-content {
   min-height: 300px;
 }
+
+/* ── Referenced documents (missing) ── */
+.da-refs-bar {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: rgba(245, 158, 11, 0.04);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 8px;
+}
+.da-refs-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-orange, #FF9F1C);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.da-refs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.da-ref-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary, #6b7280);
+}
+.da-ref-item svg { color: var(--accent-orange, #FF9F1C); flex-shrink: 0; }
 
 /* ── Classification badge ── */
 .da-class-badge {
