@@ -355,12 +355,41 @@ export default function DocumentAnalysisPage() {
       setSaveSuccess(true);
       setLoadedDocId(result.document_id);
       setShowProjectPicker(false);
+
+      // Also send to CORE add-document for server-side cross-validation (fire-and-forget)
+      if (uploadedFile && projectId) {
+        sendToCoreAddDocument(projectId, uploadedFile).catch(() => {});
+      }
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : 'Uložení selhalo');
     } finally {
       setIsSaving(false);
     }
   }, [passportData, projectData, soupisData, uploadedFile]);
+
+  /* ── Send file to CORE add-document for server-side cross-validation ── */
+  const sendToCoreAddDocument = useCallback(async (projectId: string, file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('enable_ai', 'true');
+
+      const res = await fetch(`${CORE_API_URL}/project/${projectId}/add-document`, {
+        method: 'POST',
+        body: formData,
+        signal: AbortSignal.timeout(120000),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.cross_validation || data.norm_compliance) {
+          console.log('[CORE] add-document cross-validation received');
+        }
+      }
+    } catch {
+      // Non-critical — don't block the save flow
+    }
+  }, []);
 
   /* ── Create project + save ── */
   const handleCreateAndSave = useCallback(async () => {

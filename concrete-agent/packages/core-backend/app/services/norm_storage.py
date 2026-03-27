@@ -590,16 +590,80 @@ def _seed_rules() -> List[NormativeRule]:
 
 
 # ---------------------------------------------------------------------------
-# NormStore — thread-safe registry + rules storage
+# PostgreSQL helpers (optional — falls back to JSON if DB unavailable)
+# ---------------------------------------------------------------------------
+def _get_pg_conn():
+    """Get sync PostgreSQL connection, or None if unavailable."""
+    try:
+        import psycopg2
+        db_url = settings.DATABASE_URL
+        # Convert async URL to sync: postgresql+asyncpg:// → postgresql://
+        if "+asyncpg" in db_url:
+            db_url = db_url.replace("+asyncpg", "")
+        conn = psycopg2.connect(db_url, connect_timeout=5)
+        return conn
+    except Exception as e:
+        logger.debug(f"[NKB] PostgreSQL not available: {e}")
+        return None
+
+
+def _pg_tables_exist(conn) -> bool:
+    """Check if NKB tables exist in PostgreSQL."""
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT EXISTS(SELECT 1 FROM information_schema.tables WHERE table_name = 'nkb_norms')"
+    )
+    result = cur.fetchone()[0]
+    cur.close()
+    return result
+
+
+def _pg_init_tables(conn) -> None:
+    """Run migration SQL to create NKB tables."""
+    migration_path = Path(__file__).parent.parent.parent / "migrations" / "004_nkb_tables.sql"
+    if migration_path.exists():
+        cur = conn.cursor()
+        cur.execute(migration_path.read_text(encoding="utf-8"))
+        conn.commit()
+        cur.close()
+        logger.info("[NKB] PostgreSQL tables created")
+
+
+def _norm_to_pg_row(doc: NormativeDocument) -> tuple:
+    """Convert NormativeDocument to PostgreSQL row values."""
+    return (
+        doc.norm_id, doc.category.value, doc.designation, doc.title,
+        doc.title_en, doc.version, doc.valid_from, doc.valid_to,
+        doc.is_active, doc.replaces, doc.replaced_by,
+        doc.scope.construction_types, doc.scope.phases,
+        doc.scope.objects, doc.scope.regions,
+        doc.source_url, doc.tags, doc.priority,
+    )
+
+
+def _rule_to_pg_row(rule: NormativeRule) -> tuple:
+    """Convert NormativeRule to PostgreSQL row values."""
+    return (
+        rule.rule_id, rule.norm_id, rule.rule_type.value, rule.title,
+        rule.description, rule.applies_to, rule.phase, rule.construction_type,
+        rule.parameter, rule.value, rule.min_value, rule.max_value,
+        rule.unit, rule.formula, rule.is_mandatory, rule.priority,
+        rule.penalty_reference, rule.section_reference, rule.tags,
+    )
+
+
+# ---------------------------------------------------------------------------
+# NormStore — thread-safe registry + rules storage (PostgreSQL + JSON fallback)
 # ---------------------------------------------------------------------------
 class NormStore:
-    """JSON file-based storage for NKB norms and rules."""
+    """NKB storage: PostgreSQL primary, JSON file fallback."""
 
     def __init__(self):
         self._lock = threading.Lock()
         self._registry: Dict[str, NormativeDocument] = {}
         self._rules: Dict[str, NormativeRule] = {}
         self._loaded = False
+        self._use_pg = False  # Set to True if PostgreSQL is available
 
     def _ensure_loaded(self) -> None:
         if self._loaded:
@@ -611,6 +675,106 @@ class NormStore:
             self._loaded = True
 
     def _load_or_seed(self) -> None:
+        # Try PostgreSQL first
+        conn = _get_pg_conn()
+        if conn:
+            try:
+                if not _pg_tables_exist(conn):
+                    _pg_init_tables(conn)
+                self._load_from_pg(conn)
+                if not self._registry:
+                    self._seed_to_pg(conn)
+                self._use_pg = True
+                conn.close()
+                return
+            except Exception as e:
+                logger.warning(f"[NKB] PostgreSQL load failed, using JSON fallback: {e}")
+                try:
+                    conn.close()
+                except Exception:
+                    pass
+
+        # Fallback to JSON files
+        self._load_from_json()
+
+    def _load_from_pg(self, conn) -> None:
+        """Load norms and rules from PostgreSQL."""
+        cur = conn.cursor()
+
+        cur.execute("SELECT norm_id, category, designation, title, title_en, version, "
+                     "valid_from, valid_to, is_active, replaces, replaced_by, "
+                     "scope_construction_types, scope_phases, scope_objects, scope_regions, "
+                     "source_url, tags, priority FROM nkb_norms")
+        for row in cur.fetchall():
+            doc = NormativeDocument(
+                norm_id=row[0], category=NormCategory(row[1]),
+                designation=row[2], title=row[3], title_en=row[4],
+                version=row[5] or "1.0",
+                valid_from=str(row[6]) if row[6] else None,
+                valid_to=str(row[7]) if row[7] else None,
+                is_active=row[8], replaces=row[9] or [], replaced_by=row[10],
+                scope=NormScope(
+                    construction_types=row[11] or [], phases=row[12] or [],
+                    objects=row[13] or [], regions=row[14] or ["ČR"],
+                ),
+                source_url=row[15], tags=row[16] or [], priority=row[17],
+            )
+            self._registry[doc.norm_id] = doc
+
+        cur.execute("SELECT rule_id, norm_id, rule_type, title, description, "
+                     "applies_to, phase, construction_type, parameter, value, "
+                     "min_value, max_value, unit, formula, is_mandatory, priority, "
+                     "penalty_reference, section_reference, tags FROM nkb_rules")
+        for row in cur.fetchall():
+            rule = NormativeRule(
+                rule_id=row[0], norm_id=row[1], rule_type=RuleType(row[2]),
+                title=row[3], description=row[4],
+                applies_to=row[5] or [], phase=row[6], construction_type=row[7],
+                parameter=row[8], value=row[9],
+                min_value=row[10], max_value=row[11],
+                unit=row[12], formula=row[13],
+                is_mandatory=row[14], priority=row[15],
+                penalty_reference=row[16], section_reference=row[17],
+                tags=row[18] or [],
+            )
+            self._rules[rule.rule_id] = rule
+
+        cur.close()
+        logger.info(f"[NKB] Loaded {len(self._registry)} norms, {len(self._rules)} rules from PostgreSQL")
+
+    def _seed_to_pg(self, conn) -> None:
+        """Seed PostgreSQL with default norms and rules."""
+        cur = conn.cursor()
+        for doc in _seed_norms():
+            cur.execute(
+                """INSERT INTO nkb_norms (norm_id, category, designation, title, title_en, version,
+                   valid_from, valid_to, is_active, replaces, replaced_by,
+                   scope_construction_types, scope_phases, scope_objects, scope_regions,
+                   source_url, tags, priority)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                   ON CONFLICT (norm_id) DO NOTHING""",
+                _norm_to_pg_row(doc),
+            )
+            self._registry[doc.norm_id] = doc
+
+        for rule in _seed_rules():
+            cur.execute(
+                """INSERT INTO nkb_rules (rule_id, norm_id, rule_type, title, description,
+                   applies_to, phase, construction_type, parameter, value,
+                   min_value, max_value, unit, formula, is_mandatory, priority,
+                   penalty_reference, section_reference, tags)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                   ON CONFLICT (rule_id) DO NOTHING""",
+                _rule_to_pg_row(rule),
+            )
+            self._rules[rule.rule_id] = rule
+
+        conn.commit()
+        cur.close()
+        logger.info(f"[NKB] Seeded {len(self._registry)} norms, {len(self._rules)} rules to PostgreSQL")
+
+    def _load_from_json(self) -> None:
+        """Load from JSON files (fallback for local dev / no DB)."""
         reg_path = _data_dir() / _REGISTRY_FILE
         rules_path = _data_dir() / _RULES_FILE
 
@@ -665,6 +829,35 @@ class NormStore:
         self._ensure_loaded()
         with self._lock:
             self._registry[doc.norm_id] = doc
+            if self._use_pg:
+                self._pg_upsert_norm(doc)
+            else:
+                self._save_registry()
+
+    def _pg_upsert_norm(self, doc: NormativeDocument) -> None:
+        conn = _get_pg_conn()
+        if not conn:
+            self._save_registry()
+            return
+        try:
+            cur = conn.cursor()
+            cur.execute(
+                """INSERT INTO nkb_norms (norm_id, category, designation, title, title_en, version,
+                   valid_from, valid_to, is_active, replaces, replaced_by,
+                   scope_construction_types, scope_phases, scope_objects, scope_regions,
+                   source_url, tags, priority)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                   ON CONFLICT (norm_id) DO UPDATE SET
+                   category=EXCLUDED.category, designation=EXCLUDED.designation,
+                   title=EXCLUDED.title, tags=EXCLUDED.tags, priority=EXCLUDED.priority,
+                   updated_at=CURRENT_TIMESTAMP""",
+                _norm_to_pg_row(doc),
+            )
+            conn.commit()
+            cur.close()
+            conn.close()
+        except Exception as e:
+            logger.warning(f"[NKB] PG upsert norm failed: {e}")
             self._save_registry()
 
     def search_norms(self, query: NormSearchQuery) -> List[NormativeDocument]:
@@ -708,6 +901,35 @@ class NormStore:
         self._ensure_loaded()
         with self._lock:
             self._rules[rule.rule_id] = rule
+            if self._use_pg:
+                self._pg_upsert_rule(rule)
+            else:
+                self._save_rules()
+
+    def _pg_upsert_rule(self, rule: NormativeRule) -> None:
+        conn = _get_pg_conn()
+        if not conn:
+            self._save_rules()
+            return
+        try:
+            cur = conn.cursor()
+            cur.execute(
+                """INSERT INTO nkb_rules (rule_id, norm_id, rule_type, title, description,
+                   applies_to, phase, construction_type, parameter, value,
+                   min_value, max_value, unit, formula, is_mandatory, priority,
+                   penalty_reference, section_reference, tags)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                   ON CONFLICT (rule_id) DO UPDATE SET
+                   title=EXCLUDED.title, description=EXCLUDED.description,
+                   applies_to=EXCLUDED.applies_to, priority=EXCLUDED.priority,
+                   updated_at=CURRENT_TIMESTAMP""",
+                _rule_to_pg_row(rule),
+            )
+            conn.commit()
+            cur.close()
+            conn.close()
+        except Exception as e:
+            logger.warning(f"[NKB] PG upsert rule failed: {e}")
             self._save_rules()
 
     def search_rules(self, query: RuleSearchQuery) -> List[NormativeRule]:

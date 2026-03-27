@@ -156,12 +156,29 @@ class SmartParser:
 
     def parse_image(self, path: Path) -> Dict[str, Any]:
         """
-        Parse image (JPG/PNG/TIFF) by converting to PDF, then using PDF pipeline.
+        Parse image (JPG/PNG/TIFF).
 
-        Flow: Pillow → save as single-page PDF → parse_pdf() pipeline
-        This leverages pdfplumber → MinerU → memory_pdf fallback chain.
+        Tier 1: MinerU /parse-image (direct OCR, best quality)
+        Tier 2: Pillow → temp PDF → parse_pdf() pipeline (fallback)
         """
         logger.info(f"SmartParser: Image {path.name}")
+
+        # Tier 1: Try MinerU /parse-image endpoint (direct OCR)
+        try:
+            from app.parsers.mineru_client import parse_image_with_mineru
+            text = parse_image_with_mineru(str(path))
+            if text:
+                logger.info(f"SmartParser: Image via MinerU /parse-image: {len(text)} chars")
+                return {
+                    "positions": [],
+                    "text": text,
+                    "strategy": "image_mineru_direct",
+                    "source_image": path.name,
+                }
+        except Exception as e:
+            logger.debug(f"SmartParser: MinerU /parse-image skip: {e}")
+
+        # Tier 2: Pillow → PDF → existing PDF pipeline
         try:
             from PIL import Image
             img = Image.open(str(path))

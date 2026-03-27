@@ -114,6 +114,90 @@ def parse_pdf_with_mineru(
         return None
 
 
+IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".tiff", ".tif", ".bmp", ".gif", ".webp"}
+
+
+def parse_image_with_mineru(image_path: str) -> Optional[str]:
+    """
+    Call mineru-service /parse-image endpoint for direct image OCR.
+
+    The MinerU service converts the image to PDF internally, then runs OCR.
+    This is faster than converting in concrete-agent because MinerU has
+    PaddleOCR and better PDF handling.
+
+    Returns:
+      str  — extracted markdown text
+      None — mineru unavailable or failed (use Pillow→PDF fallback)
+    """
+    global _cached_token
+
+    if not MINERU_SERVICE_URL:
+        logger.debug("[MinerU] MINERU_SERVICE_URL not set, skipping image")
+        return None
+
+    from pathlib import Path
+    ext = Path(image_path).suffix.lower()
+    if ext not in IMAGE_EXTENSIONS:
+        logger.debug(f"[MinerU] Not an image extension: {ext}")
+        return None
+
+    # Map extensions to MIME types
+    mime_map = {
+        ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+        ".png": "image/png", ".tiff": "image/tiff", ".tif": "image/tiff",
+        ".bmp": "image/bmp", ".gif": "image/gif", ".webp": "image/webp",
+    }
+    mime = mime_map.get(ext, "application/octet-stream")
+
+    try:
+        import httpx
+
+        headers = {}
+        token = _get_id_token()
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+
+        filename = Path(image_path).name
+        with open(image_path, 'rb') as f:
+            response = httpx.post(
+                f"{MINERU_SERVICE_URL}/parse-image",
+                files={"file": (filename, f, mime)},
+                headers=headers,
+                timeout=MINERU_TIMEOUT,
+            )
+
+        # Token expired — refresh and retry once
+        if response.status_code == 401 and token:
+            with _token_lock:
+                _cached_token = None
+            new_token = _get_id_token()
+            if new_token:
+                headers["Authorization"] = f"Bearer {new_token}"
+                with open(image_path, 'rb') as f:
+                    response = httpx.post(
+                        f"{MINERU_SERVICE_URL}/parse-image",
+                        files={"file": (filename, f, mime)},
+                        headers=headers,
+                        timeout=MINERU_TIMEOUT,
+                    )
+
+        if response.status_code == 200:
+            data = response.json()
+            text = data.get("text", "")
+            logger.info(
+                f"[MinerU] Image OK: {len(text)} chars, "
+                f"format={data.get('source_format', '?')}"
+            )
+            return text if text else None
+
+        logger.warning(f"[MinerU] Image HTTP {response.status_code}: {response.text[:100]}")
+        return None
+
+    except Exception as e:
+        logger.warning(f"[MinerU] Image error: {e} — using Pillow→PDF fallback")
+        return None
+
+
 def is_mineru_available() -> bool:
     """Quick health check — calls /health endpoint."""
     if not MINERU_SERVICE_URL:
