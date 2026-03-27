@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.3.0
+**Version:** 3.3.1
 **Last Updated:** 2026-03-27
 **Repository:** STAVAGENT (Monorepo)
 
@@ -229,6 +229,7 @@ VITE_DISABLE_AUTH=true
 | DB connection | Cloud SQL instance status, `--add-cloudsql-instances` in cloudbuild |
 | LLM 401 errors | Vertex AI: check SA role `aiplatform.user`, ADC auth |
 | LLM 404 errors | Model not in region: `gemini-2.5-flash-lite` returns 404 in europe-west3 despite docs (2026-03-23). Use `gemini-2.5-flash` |
+| send-to-core 500 | CORE returns `project_id` not `workflow_id`; check `transactionStarted` guard in portal-projects.js |
 
 ---
 
