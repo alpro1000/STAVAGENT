@@ -18,10 +18,8 @@ import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
-import ProjectDocuments from '../components/portal/ProjectDocuments';
 import DocumentAnalysis from '../components/portal/DocumentAnalysis';
 import PoradnaWidget from '../components/portal/PoradnaWidget';
-import ParsePreviewModal from '../components/portal/ParsePreviewModal';
 import DrawingAnalysis from '../components/portal/DrawingAnalysis';
 import AdminModelAudit from '../components/portal/AdminModelAudit';
 import ThemeToggle from '../components/ThemeToggle';
@@ -63,41 +61,15 @@ interface Service {
 
 // Dostupné služby STAVAGENT
 const SERVICES: Service[] = [
+  // ===== ANALÝZA =====
   {
-    id: 'project-audit',
-    name: 'Audit projektu',
-    description: 'Kompletní AI audit výkazu výměr. Multi-Role analýza (6 specialistů) → klasifikace GREEN/AMBER/RED → shrnutí + doporučení.',
-    icon: '🔍',
-    url: '#audit', // Special URL for internal action
+    id: 'document-analysis',
+    name: 'Analýza dokumentů',
+    description: 'Nahrajte PDF/XLSX → automatický passport, soupis prací, AI audit, shrnutí. Univerzální modul: 4 taby (Soupis, Passport, AI Audit, Shrnutí). Multi-SO merge s detekcí rozporů.',
+    icon: '📊',
+    url: '#document-analysis',
     status: 'active',
-    tags: ['AI Audit', 'Multi-Role', 'Workflow C', 'Rychlý']
-  },
-  {
-    id: 'document-accumulator',
-    name: 'Akumulace dokumentů',
-    description: 'Nahrávejte soubory postupně, propojte složky projektu. Pozadí zpracovává, hash-cache přeskakuje nezměněné. LLM souhrn z VŠECH dokumentů.',
-    icon: '📁',
-    url: '#documents', // Special URL for internal action
-    status: 'active',
-    tags: ['Inkrementální', 'Složky', 'Souhrn', 'Background']
-  },
-  {
-    id: 'document-summary',
-    name: 'Shrnutí dokumentu',
-    description: 'Adaptive extraction + summary z PDF/Excel. Univerzální pasport projektu: typ dokumentu, položky, objemy, termíny, požadavky, rizika → JSON.',
-    icon: '📋',
-    url: '#summary', // Special URL for internal action
-    status: 'active',
-    tags: ['Extrakce', 'Adaptive', 'Strukturované data', 'LLM', 'Vertex AI']
-  },
-  {
-    id: 'universal-parser',
-    name: 'Náhled výkazu',
-    description: 'Nahrajte Excel výkaz výměr → okamžitě zjistěte typy prací, listy, metadata a doporučení pro kiosk. Bez projektu, bez uložení.',
-    icon: '🔍',
-    url: '#parse-preview',
-    status: 'active',
-    tags: ['Excel', 'Typy prací', 'Kiosk routing', 'Bez projektu']
+    tags: ['Soupis prací', 'Passport', 'AI Audit', 'Shrnutí', 'Multi-SO']
   },
   {
     id: 'drawing-analysis',
@@ -108,15 +80,7 @@ const SERVICES: Service[] = [
     status: 'active',
     tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
   },
-  {
-    id: 'soupis-praci',
-    name: 'Soupis prací',
-    description: 'Nahrajte XLSX slepý rozpočet → automatická extrakce všech položek, kapitol, SO. Formáty: Export Komplet (KROS), #RTSROZP# (RTS/Aspe).',
-    icon: '📋',
-    url: '#soupis',
-    status: 'active',
-    tags: ['XLSX', 'Rozpočet', 'OTSKP', 'URS', 'Export Komplet']
-  },
+  // ===== KALKULACE =====
   {
     id: 'monolit-planner',
     name: 'Monolit Planner',
@@ -125,24 +89,6 @@ const SERVICES: Service[] = [
     url: 'https://monolit-planner-frontend.vercel.app',
     status: 'active',
     tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
-  },
-  {
-    id: 'urs-matcher',
-    name: 'Klasifikátor stavebních prací',
-    description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
-    icon: '🔎',
-    url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
-    status: 'active',
-    tags: ['Výkaz výměr', 'URS', 'AI párování']
-  },
-  {
-    id: 'rozpocet-registry',
-    name: 'Registr Rozpočtů',
-    description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
-    icon: '📊',
-    url: 'https://stavagent-backend-ktwx.vercel.app',
-    status: 'active',
-    tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
   {
     id: 'element-planner',
@@ -163,15 +109,6 @@ const SERVICES: Service[] = [
     tags: ['Betonárny', 'Kalkulačka', 'Porovnání', 'Prořab']
   },
   {
-    id: 'price-parser',
-    name: 'Ceníky dodavatelů',
-    description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
-    icon: '📄',
-    url: '/price-parser',
-    status: 'active' as const,
-    tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
-  },
-  {
     id: 'pump-module',
     name: 'Kalkulačka čerpadel',
     description: 'Detailní porovnání čerpadel: 3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář. Mobilní verze.',
@@ -180,6 +117,35 @@ const SERVICES: Service[] = [
     status: 'active',
     tags: ['Čerpadlo', 'Mobilní', 'Příplatky', 'Kalendář']
   },
+  {
+    id: 'price-parser',
+    name: 'Ceníky dodavatelů',
+    description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
+    icon: '📄',
+    url: '/price-parser',
+    status: 'active' as const,
+    tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
+  },
+  // ===== KLASIFIKACE =====
+  {
+    id: 'urs-matcher',
+    name: 'Klasifikátor stavebních prací',
+    description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
+    icon: '🔎',
+    url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
+    status: 'active',
+    tags: ['Výkaz výměr', 'URS', 'AI párování']
+  },
+  {
+    id: 'rozpocet-registry',
+    name: 'Registr Rozpočtů',
+    description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
+    icon: '📊',
+    url: 'https://stavagent-backend-ktwx.vercel.app',
+    status: 'active',
+    tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
+  },
+  // ===== PŘIPRAVUJEME =====
   {
     id: 'formwork-calculator',
     name: 'Kalkulačka bednění',
@@ -220,17 +186,13 @@ export default function PortalPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
   const [showDocumentAnalysis, setShowDocumentAnalysis] = useState(false);
-  const [showDocumentsModal, setShowDocumentsModal] = useState(false);
-  const [showParsePreviewModal, setShowParsePreviewModal] = useState(false);
   const [showDrawingAnalysis, setShowDrawingAnalysis] = useState(false);
-  const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
-  const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
   const [backendSleeping, setBackendSleeping] = useState(false);
   const [projectNotFound, setProjectNotFound] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'services' | 'projects' | 'admin'>('services');
 
   // Lock body scroll when any modal is open
-  const anyModalOpen = showCreateModal || showDocumentAnalysis || showDocumentsModal || showParsePreviewModal || showDrawingAnalysis;
+  const anyModalOpen = showCreateModal || showDocumentAnalysis || showDrawingAnalysis;
   useEffect(() => {
     if (anyModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -600,17 +562,8 @@ export default function PortalPage() {
                 key={service.id}
                 service={service}
                 onClick={
-                  service.id === 'project-audit' ? () => setShowDocumentAnalysis(true) :
-                  service.id === 'document-accumulator' ? () => {
-                    const newProjectId = `doc-${Date.now()}`;
-                    setDocumentsProjectId(newProjectId);
-                    setDocumentsProjectName('Nový projekt');
-                    setShowDocumentsModal(true);
-                  } :
-                  service.id === 'document-summary' ? () => setShowDocumentAnalysis(true) :
-                  service.id === 'universal-parser' ? () => setShowParsePreviewModal(true) :
+                  service.id === 'document-analysis' ? () => setShowDocumentAnalysis(true) :
                   service.id === 'drawing-analysis' ? () => setShowDrawingAnalysis(true) :
-                  service.id === 'soupis-praci' ? () => setShowDocumentAnalysis(true) :
                   undefined
                 }
               />
@@ -868,20 +821,6 @@ export default function PortalPage() {
       {/* Unified Document Analysis Modal (replaces Audit, Summary, Soupis) */}
       {showDocumentAnalysis && (
         <DocumentAnalysis onClose={() => setShowDocumentAnalysis(false)} />
-      )}
-
-      {/* Project Documents Modal */}
-      {showDocumentsModal && (
-        <ProjectDocuments
-          projectId={documentsProjectId}
-          projectName={documentsProjectName}
-          onClose={() => setShowDocumentsModal(false)}
-        />
-      )}
-
-      {/* Parse Preview Modal */}
-      {showParsePreviewModal && (
-        <ParsePreviewModal onClose={() => setShowParsePreviewModal(false)} />
       )}
 
       {/* Drawing Analysis Modal (Workflow B) */}
