@@ -104,6 +104,14 @@ export default function NKBAdminPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Add rule form
+  const [showAddRule, setShowAddRule] = useState(false);
+  const [newRule, setNewRule] = useState({
+    rule_id: '', norm_id: '', rule_type: 'requirement', title: '', description: '',
+    applies_to: '', parameter: '', value: '', min_value: '', max_value: '',
+    unit: '', is_mandatory: true, priority: 70, section_reference: '', tags: '',
+  });
+
   /* ── Fetch data ── */
   const fetchNorms = useCallback(async () => {
     setIsLoading(true);
@@ -191,6 +199,49 @@ export default function NKBAdminPage() {
     }
   };
 
+  /* ── Add rule ── */
+  const handleAddRule = async () => {
+    if (!newRule.rule_id || !newRule.norm_id || !newRule.title || !newRule.description) return;
+    setIsSubmitting(true);
+    try {
+      const body: Record<string, unknown> = {
+        rule_id: newRule.rule_id,
+        norm_id: newRule.norm_id,
+        rule_type: newRule.rule_type,
+        title: newRule.title,
+        description: newRule.description,
+        applies_to: newRule.applies_to.split(',').map(s => s.trim()).filter(Boolean),
+        parameter: newRule.parameter || undefined,
+        value: newRule.value || undefined,
+        min_value: newRule.min_value ? Number(newRule.min_value) : undefined,
+        max_value: newRule.max_value ? Number(newRule.max_value) : undefined,
+        unit: newRule.unit || undefined,
+        is_mandatory: newRule.is_mandatory,
+        priority: newRule.priority,
+        section_reference: newRule.section_reference || undefined,
+        tags: newRule.tags.split(',').map(s => s.trim()).filter(Boolean),
+      };
+      const res = await fetch(`${CORE_API_URL}/nkb/rules/ingest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setShowAddRule(false);
+      setNewRule({
+        rule_id: '', norm_id: '', rule_type: 'requirement', title: '', description: '',
+        applies_to: '', parameter: '', value: '', min_value: '', max_value: '',
+        unit: '', is_mandatory: true, priority: 70, section_reference: '', tags: '',
+      });
+      fetchRules();
+      fetchStats();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba při ukládání pravidla');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   /* ── Get rules for a norm ── */
   const normRulesMap = new Map<string, NormativeRule[]>();
   for (const r of rules) {
@@ -248,6 +299,11 @@ export default function NKBAdminPage() {
                 <Plus size={14} /> Přidat normu
               </button>
             )}
+            {tab === 'rules' && (
+              <button onClick={() => setShowAddRule(!showAddRule)} className="c-btn c-btn--primary c-btn--sm">
+                <Plus size={14} /> Přidat pravidlo
+              </button>
+            )}
             <button onClick={tab === 'norms' ? fetchNorms : fetchRules} className="nkb-refresh" title="Obnovit">
               <RefreshCw size={16} />
             </button>
@@ -278,6 +334,57 @@ export default function NKBAdminPage() {
                 {isSubmitting ? <Loader2 size={14} className="da-spin" /> : <Plus size={14} />} Uložit
               </button>
               <button onClick={() => setShowAddNorm(false)} className="c-btn c-btn--ghost c-btn--sm">Zrušit</button>
+            </div>
+          </div>
+        )}
+
+        {/* Add rule form */}
+        {showAddRule && (
+          <div className="nkb-add-form">
+            <div className="nkb-form-row">
+              <input placeholder="ID pravidla (např. CSN_73_0810_R001)" value={newRule.rule_id} onChange={e => setNewRule({ ...newRule, rule_id: e.target.value })} className="nkb-input" />
+              <input placeholder="Norma (norm_id)" value={newRule.norm_id} onChange={e => setNewRule({ ...newRule, norm_id: e.target.value })} className="nkb-input" list="norm-ids" />
+              <datalist id="norm-ids">
+                {norms.map(n => <option key={n.norm_id} value={n.norm_id}>{n.designation}</option>)}
+              </datalist>
+              <select value={newRule.rule_type} onChange={e => setNewRule({ ...newRule, rule_type: e.target.value })} className="nkb-input nkb-input--select">
+                {Object.entries(RULE_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+              </select>
+              <input type="number" placeholder="Priorita" value={newRule.priority} onChange={e => setNewRule({ ...newRule, priority: Number(e.target.value) })} className="nkb-input nkb-input--narrow" />
+            </div>
+            <div className="nkb-form-row">
+              <input placeholder="Název pravidla" value={newRule.title} onChange={e => setNewRule({ ...newRule, title: e.target.value })} className="nkb-input nkb-input--wide" />
+            </div>
+            <div className="nkb-form-row">
+              <textarea
+                placeholder="Popis pravidla (detailně)"
+                value={newRule.description}
+                onChange={e => setNewRule({ ...newRule, description: e.target.value })}
+                className="nkb-input nkb-input--wide nkb-textarea"
+                rows={2}
+              />
+            </div>
+            <div className="nkb-form-row">
+              <input placeholder="Parametr (např. krycí_vrstva)" value={newRule.parameter} onChange={e => setNewRule({ ...newRule, parameter: e.target.value })} className="nkb-input" />
+              <input placeholder="Hodnota" value={newRule.value} onChange={e => setNewRule({ ...newRule, value: e.target.value })} className="nkb-input" />
+              <input placeholder="Min" type="number" step="any" value={newRule.min_value} onChange={e => setNewRule({ ...newRule, min_value: e.target.value })} className="nkb-input nkb-input--narrow" />
+              <input placeholder="Max" type="number" step="any" value={newRule.max_value} onChange={e => setNewRule({ ...newRule, max_value: e.target.value })} className="nkb-input nkb-input--narrow" />
+              <input placeholder="Jednotka" value={newRule.unit} onChange={e => setNewRule({ ...newRule, unit: e.target.value })} className="nkb-input nkb-input--narrow" />
+            </div>
+            <div className="nkb-form-row">
+              <input placeholder="Objekty (čárky: beton, výztuž)" value={newRule.applies_to} onChange={e => setNewRule({ ...newRule, applies_to: e.target.value })} className="nkb-input" />
+              <input placeholder="Odkaz (§, článek)" value={newRule.section_reference} onChange={e => setNewRule({ ...newRule, section_reference: e.target.value })} className="nkb-input" />
+              <input placeholder="Tagy (čárky)" value={newRule.tags} onChange={e => setNewRule({ ...newRule, tags: e.target.value })} className="nkb-input" />
+              <label className="nkb-checkbox">
+                <input type="checkbox" checked={newRule.is_mandatory} onChange={e => setNewRule({ ...newRule, is_mandatory: e.target.checked })} />
+                Povinné
+              </label>
+            </div>
+            <div className="nkb-form-actions">
+              <button onClick={handleAddRule} disabled={isSubmitting || !newRule.rule_id || !newRule.norm_id} className="c-btn c-btn--primary c-btn--sm">
+                {isSubmitting ? <Loader2 size={14} className="da-spin" /> : <Plus size={14} />} Uložit pravidlo
+              </button>
+              <button onClick={() => setShowAddRule(false)} className="c-btn c-btn--ghost c-btn--sm">Zrušit</button>
             </div>
           </div>
         )}
@@ -446,6 +553,12 @@ const nkbStyles = `
 .nkb-input--narrow { max-width: 80px; }
 .nkb-input--wide { flex: 2; }
 .nkb-form-actions { display: flex; gap: 8px; margin-top: 8px; }
+.nkb-textarea { resize: vertical; min-height: 48px; font-family: inherit; }
+.nkb-checkbox {
+  display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
+  color: var(--text-secondary, #6b7280); white-space: nowrap; cursor: pointer;
+}
+.nkb-checkbox input { accent-color: var(--accent-orange, #FF9F1C); }
 
 /* Error / loading / empty */
 .nkb-error { padding: 12px 16px; margin-bottom: 16px; border-radius: 8px; background: rgba(239,68,68,0.06); color: #ef4444; font-size: 13px; }
