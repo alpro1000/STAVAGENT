@@ -21,9 +21,10 @@ const USE_VERTEX = process.env.GOOGLE_GENAI_USE_VERTEXAI === 'true';
 async function getGeminiEndpoint(): Promise<{ url: string; headers: Record<string, string> }> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
 
-  // 1. Try Vertex AI with ADC token (Cloud Run)
-  if (USE_VERTEX && VERTEX_PROJECT) {
+  // 1. Try Vertex AI with ADC token (Cloud Run) — always attempt, uses GCP billing ($1000 bonus)
+  if (VERTEX_PROJECT || process.env.K_SERVICE) {
     try {
+      // Fetch ADC access token from Cloud Run metadata
       const metaRes = await fetch(
         'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
         { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(2000) }
@@ -31,10 +32,21 @@ async function getGeminiEndpoint(): Promise<{ url: string; headers: Record<strin
       if (metaRes.ok) {
         const tokenData = await metaRes.json();
         if (tokenData.access_token) {
-          const url = `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${VERTEX_PROJECT}/locations/${VERTEX_LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`;
-          headers['Authorization'] = `Bearer ${tokenData.access_token}`;
-          console.log(`[Gemini] Using Vertex AI (ADC): ${VERTEX_LOCATION}/${GEMINI_MODEL}`);
-          return { url, headers };
+          // Resolve project ID: env var or metadata
+          let projectId = VERTEX_PROJECT;
+          if (!projectId) {
+            const projRes = await fetch(
+              'http://metadata.google.internal/computeMetadata/v1/project/project-id',
+              { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(2000) }
+            );
+            if (projRes.ok) projectId = (await projRes.text()).trim();
+          }
+          if (projectId) {
+            const url = `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${VERTEX_LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`;
+            headers['Authorization'] = `Bearer ${tokenData.access_token}`;
+            console.log(`[Gemini] Using Vertex AI (ADC): ${VERTEX_LOCATION}/${GEMINI_MODEL}`);
+            return { url, headers };
+          }
         }
       }
     } catch { /* not on Cloud Run */ }

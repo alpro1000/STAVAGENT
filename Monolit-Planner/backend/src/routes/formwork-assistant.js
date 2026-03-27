@@ -499,20 +499,29 @@ router.post('/', async (req, res) => {
         let apiUrl;
         let headers = { 'Content-Type': 'application/json' };
 
-        // Try Vertex AI ADC first (Cloud Run, GCP credits)
+        // Try Vertex AI ADC first (Cloud Run, GCP credits — uses $1000 bonus)
         let token = null;
-        if (vertexProject) {
+        let resolvedProject = vertexProject;
+        if (vertexProject || process.env.K_SERVICE) {
           try {
             const metaRes = await fetch(
               'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
               { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(3000) }
             );
             if (metaRes.ok) { const d = await metaRes.json(); token = d.access_token; }
+            // Auto-resolve project ID from metadata if not set via env
+            if (token && !resolvedProject) {
+              const projRes = await fetch(
+                'http://metadata.google.internal/computeMetadata/v1/project/project-id',
+                { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(2000) }
+              );
+              if (projRes.ok) resolvedProject = (await projRes.text()).trim();
+            }
           } catch { /* not on Cloud Run */ }
         }
 
-        if (token && vertexProject) {
-          apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${vertexProject}/locations/${vertexLocation}/publishers/google/models/${geminiModel}:generateContent`;
+        if (token && resolvedProject) {
+          apiUrl = `https://${vertexLocation}-aiplatform.googleapis.com/v1/projects/${resolvedProject}/locations/${vertexLocation}/publishers/google/models/${geminiModel}:generateContent`;
           headers['Authorization'] = `Bearer ${token}`;
           logger.info(`[Formwork v3] Vertex AI (ADC): ${vertexLocation}/${geminiModel}`);
         } else {
@@ -602,7 +611,7 @@ router.post('/', async (req, res) => {
     }
 
     // Execute AI chain based on selected model
-    const hasGemini = !!(process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY);
+    const hasGemini = !!(process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.VERTEX_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || process.env.K_SERVICE);
     const hasOpenAI = !!process.env.OPENAI_API_KEY;
     logger.info(`[Formwork v3] AI chain: model=${model}, gemini=${hasGemini}, openai=${hasOpenAI}, core=${CORE_API_URL}`);
 
