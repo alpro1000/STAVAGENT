@@ -35,6 +35,7 @@ const OrgInvitePage = lazy(() => import('./pages/OrgInvitePage'));
 const ConnectionsPage = lazy(() => import('./pages/ConnectionsPage'));
 const ParsePreviewPage = lazy(() => import('./pages/ParsePreviewPage'));
 const DocumentAnalysisPage = lazy(() => import('./pages/DocumentAnalysisPage'));
+const NKBAdminPage = lazy(() => import('./pages/NKBAdminPage'));
 
 // ── Loading fallback ─────────────────────────────────────────────────────────
 function PageLoader() {
@@ -103,6 +104,9 @@ function App() {
 
               {/* Document Analysis — full page (replaces modal) */}
               <Route path="/portal/analysis" element={<ProtectedRoute><DocumentAnalysisPage /></ProtectedRoute>} />
+
+              {/* NKB Admin — norm/rule management */}
+              <Route path="/portal/nkb" element={<ProtectedRoute><NKBAdminPage /></ProtectedRoute>} />
 
               {/* Parse Preview — requires login */}
               <Route path="/parse-preview/:fileId" element={<ProtectedRoute><ParsePreviewPage /></ProtectedRoute>} />

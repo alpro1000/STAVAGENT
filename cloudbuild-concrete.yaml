@@ -80,8 +80,31 @@ steps:
       - --set-env-vars=GEMINI_MODEL=gemini-2.5-flash,MULTI_ROLE_LLM=vertex-ai-gemini,VERTEX_LOCATION=europe-west3,GOOGLE_PROJECT_ID=project-947a512a-481d-49b5-81c,AWS_DEFAULT_REGION=us-east-1,BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0,BEDROCK_ENABLED=true
       - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,PERPLEXITY_API_KEY=PPLX_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest
 
+  # Run NKB PostgreSQL migration (creates nkb_norms + nkb_rules if not exist)
+  - name: gcr.io/cloud-builders/gcloud
+    id: nkb-migration
+    waitFor: [deploy-concrete]
+    entrypoint: bash
+    secretEnv: ['CONCRETE_DATABASE_URL']
+    args:
+      - -c
+      - |
+        # Install psql client
+        apt-get update -qq && apt-get install -yqq postgresql-client >/dev/null 2>&1
+        # Convert async URL to psql format
+        DB_URL=$$(echo "$$CONCRETE_DATABASE_URL" | sed 's/+asyncpg//')
+        # Run migration (IF NOT EXISTS — safe to re-run)
+        psql "$$DB_URL" -f concrete-agent/packages/core-backend/migrations/004_nkb_tables.sql \
+          && echo "NKB migration OK" \
+          || echo "NKB migration skipped (DB may be unavailable)"
+
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/CONCRETE_DATABASE_URL/versions/latest
+      env: CONCRETE_DATABASE_URL
 
 timeout: 3600s
 options:
