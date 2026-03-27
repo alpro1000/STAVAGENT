@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.1.1
-**Last Updated:** 2026-03-26
+**Version:** 3.2.0
+**Last Updated:** 2026-03-27
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -79,9 +79,37 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ### 1. concrete-agent (CORE)
 Python FastAPI. Central AI: Multi-Role validation (6 roles), document parsing (PDF/Excel/XML), Knowledge Base (KROS/RTS/ČSN), Workflows A/B/C, Document Accumulator, Google Drive OAuth2, PDF Price Parser, Vertex AI Search.
 
-Key endpoints: `/api/v1/multi-role/ask`, `/workflow/a/import`, `/api/v1/workflow/c/execute`, `/api/v1/accumulator/*`, `/api/v1/price-parser/parse`, `/api/v1/vertex/search`, `/health`
+Key endpoints: `/api/v1/multi-role/ask`, `/workflow/a/import`, `/api/v1/workflow/c/execute`, `/api/v1/accumulator/*`, `/api/v1/price-parser/parse`, `/api/v1/vertex/search`, `/api/v1/project/{id}/add-document`, `/api/v1/nkb/*`, `/health`
 
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`, tests in `packages/core-backend/tests/`
+
+**NKB (Normative Knowledge Base):** 3-layer system for Czech construction norms.
+- Layer 1: Registry — 14 norms (ČSN, VTP, TKP, zákon, vyhláška), JSON storage, priority hierarchy (zákon=100 > vyhláška=90 > ČSN=70 > TKP=60 > VTP=50)
+- Layer 2: Rules — 14 seed rules (10 RuleTypes: tolerance, formula, deadline, procedure, requirement, recommendation, limit, classification, pricing, format)
+- Layer 3: Advisor — AI engine (Gemini + Perplexity), deterministic rule matching → LLM analysis → web-search supplement
+- Files: `models/norm_schemas.py`, `services/{norm_storage.py, norm_matcher.py, norm_advisor.py}`, `api/routes_nkb.py`
+- Endpoints: `GET /norms/search`, `POST /norms/ingest`, `POST /norms/ingest-pdf`, `POST /norms/rules`, `POST /project/{id}/check-compliance`, `POST /advisor`, `GET /stats`
+
+**NormIngestionPipeline:** Full 4-layer PDF extraction pipeline.
+- L1: PDF→Text (pdfplumber + MinerU fallback)
+- L2: Regex extraction (50+ patterns, confidence=1.0) — 16 NORM, 9 TOLERANCE, 5 DEADLINE, 10 MATERIAL, 5 META, 2 FORMULA patterns
+- L3a: Gemini Flash enrichment with "already_extracted" dedup in prompt (confidence=0.7)
+- L3b: Perplexity verify (Call 1: norm currency) + supplement (Call 2: missing data) (confidence=0.85)
+- Compile: auto-generate NormativeRules from all layers
+- Files: `models/extraction_schemas.py`, `services/{regex_norm_extractor.py, norm_ingestion_pipeline.py}`
+- Principle: each layer ADDS, never overwrites data with higher confidence
+
+**Add-Document Pipeline:** Multi-format document processing.
+- `POST /api/v1/project/{id}/add-document` (multipart/form-data)
+- Auto-detects 14 doc types (tz_beton, tz_bedneni, tz_vyztuze, tz_hydro, tz_zemni, tz_komunikace, tz_most, tz_elektro, tz_zti, tz_vzt, tz_ut, soupis_praci, vysledky_zkousek, ostatni)
+- For TZ docs with AI: uses full NormIngestionPipeline (L1→L2→L3a→L3b)
+- Versioning (auto-diff on re-upload), cross-validation TZ↔Soupis, NKB compliance check
+- Files: `api/routes_project_documents.py`, `models/document_schemas.py`
+
+**Multi-Format Parser (v5.0):** `parse_any()` entry point.
+- Formats: XLSX Komplet, XLSX RTSROZP, XML OTSKP/TSKP, PDF, IFC (stub), DXF (stub)
+- Model: ParsedDocument → ParsedSO → ParsedChapter → ParsedPosition
+- Files: `parsers/{universal_parser.py, format_detector.py, xlsx_komplet_parser.py, xlsx_rtsrozp_parser.py}`
 
 ### 2. stavagent-portal (Dispatcher)
 Node.js/Express + React. Main entry point: JWT auth, project management, file upload, kiosk routing, chat assistant.
@@ -369,22 +397,59 @@ VITE_DISABLE_AUTH=true
 **Sprint 2 status:** Service Connections API + frontend + encryption — ALREADY COMPLETE (found in previous sessions)
 **Position write-back status:** ALREADY COMPLETE (portalWriteBack.js, dovWriteBack.ts exist)
 
+**Completed (2026-03-27):**
+- **Add-Document Pipeline (PR #726):**
+  - `POST /api/v1/project/{id}/add-document` — multi-format upload (PDF/Excel/XML)
+  - 14 auto-detected doc types, versioning with auto-diff, cross-validation TZ↔Soupis
+  - Gemini AI enrichment for TZ docs (materials, volumes, risks, standards, key_requirements)
+  - Portal frontend: ProjectDocuments.tsx with upload zone, AI toggle, results display, cross-validation panel
+  - core-proxy.js: `'project' → '/api/v1/project'` route mapping
+- **Security fixes (Amazon Q review):**
+  - Filename injection (CWE-22): `Path(self.filename).name`
+  - Temp file leak: `tmp_path = None` guard + exists() check
+  - Division by zero: `old_val != 0`
+  - UnboundLocalError: tmp_path guard
+  - Missing directory: `mkdir(parents=True, exist_ok=True)`
+- **Thread-safe MinerU client:** `threading.Lock()` with double-checked locking for `_cached_token`
+- **NKB v1.0 (Normative Knowledge Base):**
+  - 3-layer system: Registry (14 norms) → Rules (14 rules) → Advisor (Gemini+Perplexity)
+  - `norm_schemas.py` — NormCategory(13), RuleType(10), NormScope, NormativeDocument, NormativeRule, ComplianceReport
+  - `norm_storage.py` — JSON storage + seed data (ČSN 73 6244, ČSN EN 206, zákon 183/2006, VTP ZP/09/24, etc.)
+  - `norm_matcher.py` — deterministic rule matching by construction_type + phase + materials + keyword search
+  - `norm_advisor.py` — Gemini analysis + Perplexity supplement, structured AdvisorResponse
+  - `routes_nkb.py` — 10 endpoints (search, ingest, ingest-pdf, rules, compliance, advisor, stats)
+  - Wired into add-document pipeline: auto norm_compliance section in project.json
+- **NormIngestionPipeline v1.0:**
+  - `extraction_schemas.py` — ExtractionSource, ExtractedValue (per-value confidence), ExtractionResult
+  - `regex_norm_extractor.py` — 50+ patterns: 16 NORM, 9 TOLERANCE, 5 DEADLINE, 10 MATERIAL, 5 META, 2 FORMULA
+  - `norm_ingestion_pipeline.py` — L1→L2→L3a→L3b orchestrator with confidence tracking
+  - Gemini prompt includes "already_extracted" JSON to prevent duplication
+  - Perplexity: separate verify (Call 1) + supplement (Call 2)
+  - `POST /norms/ingest-pdf` — multipart endpoint with auto_save option
+  - `_parse_pdf_async` uses full pipeline for TZ docs when AI enabled
+- **Type annotation fix:** `_call_gemini_advisor` return type corrected to `Tuple[Optional[Dict], Optional[str]]`
+
 **Technical debt / TODO (next session):**
-1. **FRONTEND REWRITE**: DocumentSummary.tsx is 1700+ lines of spaghetti (inline styles, `as any` casts). Plan: delete old modals (Audit, Accumulator, Summary, Soupis) → create ONE unified "Analýza dokumentů" module with tabs (Soupis, Passport, AI Audit, Shrnutí)
-2. **Dead files cleanup**: `Monolit-Planner/frontend/src/components/SoupisTab.tsx`, `UrsClassifierDrawer.tsx` — unused, delete
-3. **MinerU CLI fix**: pushed `_detect_cli()` (tries 'mineru' then 'magic-pdf'), needs merge + redeploy
-4. **Testing**: upload real XLSX (Export Komplet + RTSROZP) through Portal DocumentSummary → verify soupis_praci in response
-5. **IFC/DXF/PDF parsers**: stubs exist in universal_parser.py, need implementation when real files available
+1. **FRONTEND REWRITE**: DocumentSummary.tsx is 1700+ lines of spaghetti (inline styles, `as any` casts). Plan: delete old modals (Audit, Accumulator, Summary, Soupis) → create ONE unified "Analýza dokumentů" module with tabs (Soupis, Passport, AI Audit, Shrnutí, NKB Compliance)
+2. **NKB Frontend**: Display norm compliance findings, advisor recommendations, ingestion pipeline results in Portal
+3. **Dead files cleanup**: `Monolit-Planner/frontend/src/components/SoupisTab.tsx`, `UrsClassifierDrawer.tsx` — unused, delete
+4. **MinerU CLI fix**: pushed `_detect_cli()` (tries 'mineru' then 'magic-pdf'), needs merge + redeploy
+5. **Testing**: upload real XLSX + PDF through Portal → verify soupis_praci + NKB compliance in response
+6. **IFC/DXF/PDF parsers**: stubs exist in universal_parser.py, need implementation when real files available
+7. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400), more rules from TKP chapters
+8. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
 
 **Current branch status:**
-- `claude/cross-service-cleanup-integration-7kY7b` — PR #723 open, 17 commits
-- Contains: v3.2→v5.0 parsers + OTSKP engine + MinerU microservice + Portal Soupis + infra fixes
+- `claude/universal-parser-railway-iYmQk` — active development, 7 commits (add-document + NKB + ingestion pipeline)
+- `claude/cross-service-cleanup-integration-7kY7b` — PR #723 (17 commits, v3.2→v5.0 parsers + OTSKP + MinerU)
 
 **Feature roadmap:**
-- Frontend rewrite (unified Analýza dokumentů)
+- Frontend rewrite (unified Analýza dokumentů with NKB tab)
+- NKB compliance visualization in Portal
 - project.json concept (in Portal DB, NOT concrete-agent)
 - OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
+- NKB PostgreSQL migration + admin UI for norm/rule management
 - Planner user documentation (help panel)
 - Deep Links
 - Vitest migration
