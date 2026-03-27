@@ -1,5 +1,5 @@
 """
-MinerU Service — standalone PDF parsing microservice.
+MinerU Service — standalone PDF/image parsing microservice.
 
 Cloud Run microservice wrapping magic-pdf CLI.
 Scale to zero, 4GB RAM, called by concrete-agent via HTTP.
@@ -14,7 +14,9 @@ import logging
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
-app = FastAPI(title="MinerU Service", version="1.0.0")
+app = FastAPI(title="MinerU Service", version="1.1.0")
+
+IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.gif', '.webp'}
 
 
 @app.get("/health")
@@ -94,6 +96,72 @@ async def parse_pdf(
             "text": md_text,
             "method_used": method,
             "pages_processed": md_text.count('\n\n'),
+            "chars": len(md_text),
+        })
+
+
+@app.post("/parse-image")
+async def parse_image(file: UploadFile):
+    """
+    Parse image (JPG/PNG/TIFF) by converting to PDF first, then running MinerU OCR.
+
+    Flow: Image → Pillow → temp PDF → MinerU OCR → markdown text
+    """
+    if not file.filename:
+        raise HTTPException(400, "No filename provided")
+
+    ext = Path(file.filename).suffix.lower()
+    if ext not in IMAGE_EXTENSIONS:
+        raise HTTPException(400, f"Unsupported image type: {ext}. Allowed: {sorted(IMAGE_EXTENSIONS)}")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Save uploaded image
+        img_path = os.path.join(tmpdir, f"input{ext}")
+        content = await file.read()
+        with open(img_path, 'wb') as f:
+            f.write(content)
+
+        # Convert to PDF via Pillow
+        pdf_path = os.path.join(tmpdir, "input.pdf")
+        try:
+            from PIL import Image
+            img = Image.open(img_path)
+            if img.mode in ("RGBA", "P", "LA"):
+                img = img.convert("RGB")
+            elif img.mode not in ("RGB", "L"):
+                img = img.convert("RGB")
+            img.save(pdf_path, "PDF", resolution=200.0)
+            img.close()
+        except ImportError:
+            raise HTTPException(500, "Pillow not installed — cannot convert images")
+        except Exception as e:
+            raise HTTPException(400, f"Failed to convert image to PDF: {e}")
+
+        # Run MinerU OCR on the converted PDF
+        out_dir = os.path.join(tmpdir, "output")
+        os.makedirs(out_dir)
+
+        cli_cmd = _detect_cli()
+        try:
+            result = subprocess.run(
+                [cli_cmd, "-p", pdf_path, "-o", out_dir, "--method", "ocr"],
+                capture_output=True,
+                timeout=180,
+                text=True,
+            )
+        except subprocess.TimeoutExpired:
+            raise HTTPException(504, "MinerU OCR timeout (>180s)")
+
+        if result.returncode != 0:
+            logger.error(f"MinerU stderr: {result.stderr}")
+            raise HTTPException(500, f"MinerU OCR failed: {result.stderr[:200]}")
+
+        md_text = _find_md_output(out_dir)
+
+        return JSONResponse({
+            "text": md_text,
+            "method_used": "ocr",
+            "source_format": ext.lstrip('.'),
             "chars": len(md_text),
         })
 
