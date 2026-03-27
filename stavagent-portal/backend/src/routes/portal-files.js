@@ -342,6 +342,7 @@ router.get('/:fileId/download', async (req, res) => {
 router.post('/:fileId/analyze', async (req, res) => {
   const pool = getPool();
   const client = await pool.connect();
+  let transactionStarted = false;
 
   try {
     const userId = req.user.userId;
@@ -374,11 +375,7 @@ router.post('/:fileId/analyze', async (req, res) => {
     }
 
     console.log(`[PortalFiles] Analyzing file ${fileId} with Workflow ${workflow || 'A'}`);
-    console.log(`[PortalFiles] Note: Multi-Role audit and AI enrichment are NOT part of file analysis workflow`);
 
-    // Call CORE based on workflow type
-    // WARNING: performAudit() and enrichWithAI() have been removed (2025-12-10)
-    // Multi-Role validation is not needed for file upload/analysis
     let coreResult;
     if (workflow === 'B') {
       coreResult = await concreteAgent.workflowBStart(file.file_path, {
@@ -386,7 +383,6 @@ router.post('/:fileId/analyze', async (req, res) => {
         objectType: file.project_type
       });
     } else {
-      // Default to Workflow A
       coreResult = await concreteAgent.workflowAStart(file.file_path, {
         projectId: file.portal_project_id,
         projectName: file.project_name,
@@ -394,7 +390,11 @@ router.post('/:fileId/analyze', async (req, res) => {
       });
     }
 
+    // CORE Workflow C returns project_id (not workflow_id)
+    const coreProjectId = coreResult.project_id || coreResult.workflow_id || file.portal_project_id;
+
     await client.query('BEGIN');
+    transactionStarted = true;
 
     // Update file with analysis result
     await client.query(
@@ -404,7 +404,7 @@ router.post('/:fileId/analyze', async (req, res) => {
            analysis_result = $2,
            processed_at = NOW()
        WHERE file_id = $3`,
-      [coreResult.workflow_id, JSON.stringify(coreResult), fileId]
+      [coreProjectId, JSON.stringify(coreResult), fileId]
     );
 
     // Update project with CORE info if not already set
@@ -415,22 +415,26 @@ router.post('/:fileId/analyze', async (req, res) => {
            core_last_sync = NOW(),
            updated_at = NOW()
        WHERE portal_project_id = $2`,
-      [coreResult.workflow_id, file.portal_project_id]
+      [coreProjectId, file.portal_project_id]
     );
 
     await client.query('COMMIT');
 
-    console.log(`[PortalFiles] Analysis complete. Workflow ID: ${coreResult.workflow_id}`);
+    console.log(`[PortalFiles] Analysis complete. Project ID: ${coreProjectId}`);
 
     res.json({
       success: true,
-      workflow_id: coreResult.workflow_id,
+      workflow_id: coreProjectId,
       result: coreResult
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[PortalFiles] Error analyzing file:', error);
+    if (transactionStarted) {
+      try { await client.query('ROLLBACK'); } catch (rollbackErr) {
+        console.error('[PortalFiles] Rollback failed:', rollbackErr.message);
+      }
+    }
+    console.error('[PortalFiles] Error analyzing file:', error.message || error);
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to analyze file'
