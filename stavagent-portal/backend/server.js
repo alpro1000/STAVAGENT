@@ -51,7 +51,7 @@ import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 // Middleware
 import { requireAuth } from './src/middleware/auth.js';
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter, connectionTestLimiter } from './src/middleware/rateLimiter.js';
-import { requireServiceKey } from './src/middleware/serviceAuth.js';
+import { requireServiceKey, requireAuthOrServiceKey } from './src/middleware/serviceAuth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -205,9 +205,8 @@ app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
 app.use('/api/kiosk-links', kioskLinksRoutes);
 
 // Portal documents (passports, summaries, kiosk outputs) — frontend + kiosk access
-// No requireServiceKey: frontend uses JWT (same pattern as portal-projects),
-// kiosks can still send X-Service-Key but it's not required here.
-app.use('/api/portal-documents', portalDocumentsRoutes);
+// requireAuthOrServiceKey: accepts EITHER JWT (frontend) OR X-Service-Key (kiosk)
+app.use('/api/portal-documents', requireAuthOrServiceKey, portalDocumentsRoutes);
 
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
