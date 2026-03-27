@@ -494,14 +494,59 @@ VITE_DISABLE_AUTH=true
 - `claude/universal-parser-railway-iYmQk` — merged (7 commits, add-document + NKB + ingestion pipeline)
 - `claude/cross-service-cleanup-integration-7kY7b` — PR #723 merged
 
+**Completed (2026-03-27, session 3 — PR #733):**
+- **Batch INSERT/UPDATE** in `integration.js`:
+  - import-from-monolit: 1 batch SELECT + batch INSERT (N/200 queries instead of 2N)
+  - import-from-registry: 1 batch SELECT + batch INSERT (N/200 queries instead of 2N)
+  - sync-tov: batch UPDATE via FROM VALUES (N/200 queries instead of N)
+  - UPSERT logic preserved: existing positions updated individually for position_instance_id stability
+- **Vertex AI ADC for all services** — all 4 Cloud Run services now use GCP $1000 bonus:
+  - Monolit-Planner: formwork-assistant.js switched to Vertex AI ADC (was API key → AI Studio)
+  - rozpocet-registry: gemini.ts + ai-agent.ts switched to Vertex AI ADC (was gated by USE_VERTEX)
+  - Auto-resolve project_id from Cloud Run metadata when env var not set
+- **Frontend cleanup** — removed 5718 lines of dead code:
+  - DocumentSummary.tsx (1690 LOC), ParsePreviewModal.tsx (860 LOC), ProjectDocuments.tsx (1453 LOC) — all replaced by DocumentAnalysis module
+  - DocumentAnalysis.tsx modal (625 LOC) — replaced by DocumentAnalysisPage (/portal/analysis)
+  - AI_MODELS/AI_MODEL_OPTIONS (83 LOC) — model auto-selected by backend
+- **URS Matcher package-lock.json** regenerated (npm ci was failing after @aws-sdk/client-bedrock-runtime addition)
+- **Redundant ternary fix** in DocumentAnalysisPage (analysis_mode always 'adaptive_extraction')
+- **Universal extraction pipeline v3.3** — extend existing services (NOT new pipeline/ module):
+  - `regex_extractor.py`: +87 LOC — _extract_norms() (9 regex: ČSN/zákon/vyhláška/TKP/Eurocode), _extract_identification() (stavba/investor/místo/projektant/datum), extract_referenced_documents() (6 regex: "viz příloha"/"dle posudku"), extract_pbrs() (10 regex: SPB/REI/CHÚC/EPS/SHZ/ZOKT/fire distance)
+  - `document_classifier.py`: +5 LOC — FVE/silnoproud/střídač/hromosvod added to pozemní_TZB markers
+  - `smart_parser.py`: +69 LOC — parse_docx() (python-docx → text+tables), parse_csv() (auto-detect separator)
+  - `document_processor.py`: +12 LOC — DOCX/CSV text fed to Layer 2 regex, PBRS extraction wired
+  - `passport_schema.py`: +5 LOC — norms, identification, referenced_documents fields in response
+- **Frontend results display** — DocumentAnalysisPage.tsx:
+  - Classification badge (doc type + confidence% + method) in orange
+  - Identification card (white background for readability: stavba, investor, místo, projektant)
+  - Norms pill list (compact, max 20 shown)
+  - Referenced documents section (orange warning: potentially missing docs)
+  - "0 pozic" no longer shown for TZ documents (only when > 0)
+- **Architecture decision**: deleted app/pipeline/ (1759 LOC unused duplication) — all functionality extends existing app/services/
+
+**Technical debt / TODO (next session):**
+1. **Project state persistence**: Wire `portal_documents` table (already exists in Portal DB) for saving passport results. Add save button to DocumentAnalysisPage. Currently passports are in-memory only (lost on restart).
+2. **Cross-validation wiring**: When uploading to existing project (project_id), compare new document against previously saved documents. so_merger.py already exists (496 LOC), needs per-document invocation via portal_documents lookup.
+3. **NKB Frontend**: Display norm compliance findings, advisor recommendations in Portal
+4. **Image/Photo OCR**: Wire MinerU client for .jpg/.png/.tiff uploads (client exists, routing missing)
+5. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
+6. **Testing**: Upload real XLSX + PDF through Portal → verify norms, identification, PBRS in response
+7. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
+8. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
+9. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+
+**Current branch status:**
+- `claude/merge-mineru-client-pr-Ot0ri` — PR #733, 8 commits (batch INSERT + Vertex AI + frontend cleanup + extraction pipeline v3.3)
+- PR #731 merged to main (thread-safe MinerU + Bedrock + portal cleanup)
+
 **Feature roadmap:**
-- Frontend rewrite (unified Analýza dokumentů with NKB tab)
+- Project state in Portal DB (project.json concept via portal_documents table)
+- Cross-validation between uploaded documents (fact matching + contradiction detection)
 - NKB compliance visualization in Portal
-- project.json concept (in Portal DB, NOT concrete-agent)
 - OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
+- DWG/IFC/BIM support (P3 — needs binaries)
 - NKB PostgreSQL migration + admin UI for norm/rule management
-- Planner user documentation (help panel)
 - Deep Links
 - Vitest migration
 - Bedrock quota increase + model upgrade to Claude 3.5+

@@ -155,7 +155,9 @@ class CzechConstructionExtractor:
             'dimensions': None,
             'special_requirements': [],
             'exposure_classes_found': set(),
-            'raw_facts': []
+            'raw_facts': [],
+            'norms': [],
+            'identification': {},
         }
 
         # Extract concrete specifications
@@ -179,6 +181,16 @@ class CzechConstructionExtractor:
 
         # Collect all exposure classes
         results['exposure_classes_found'] = self._find_all_exposure_classes(text)
+
+        # Extract norm references (ČSN, zákony, vyhlášky)
+        results['norms'] = self._extract_norms(text)
+        self.stats['norm_matches'] = len(results['norms'])
+
+        # Extract project identification
+        results['identification'] = self._extract_identification(text)
+
+        # Extract referenced documents (potentially missing)
+        results['referenced_documents'] = self.extract_referenced_documents(text)
 
         logger.info(f"Extraction complete: {self.stats}")
         return results
@@ -637,6 +649,65 @@ class CzechConstructionExtractor:
         return result
 
     # =============================================================================
+    # V3.3: PBŘS (FIRE SAFETY) EXTRACTION
+    # =============================================================================
+
+    PBRS_PATTERNS = {
+        'fire_compartment': r'požární\s+úsek\s+(\S+)',
+        'spb': r'SPB\s*[:=]?\s*([I]{1,3}V?)',
+        'fire_resistance': r'(REI?\s*\d+(?:/\d+)?)',
+        'escape_route': r'(CHÚC|NÚC|chráněná\s+úniková\s+cesta)',
+        'fire_load': r'požární\s+zatížení\s*[:=]?\s*(\d+[\.,]?\d*)\s*(kg/m[²2]|MJ/m[²2])',
+        'eps': r'(EPS|elektrická\s+požární\s+signalizace)',
+        'shz': r'(SHZ|stabilní\s+hasicí\s+zařízení|sprinkler)',
+        'zokt': r'(ZOKT|zařízení\s+pro\s+odvod\s+kouře\s+a\s+tepla)',
+        'fire_distance': r'odstupov[áé]\s+vzdálenost[i]?\s*[:=]?\s*(\d+[\.,]?\d*)\s*m',
+        'fire_water': r'požární\s+vod[ay]\s*[:=]?\s*(\d+[\.,]?\d*)\s*(l/s|m³/h)',
+    }
+
+    def extract_pbrs(self, text: str) -> Dict[str, Any]:
+        """Extract fire safety parameters from PBŘS document."""
+        result: Dict[str, Any] = {}
+
+        # Fire compartments
+        compartments = list(set(re.findall(self.PBRS_PATTERNS['fire_compartment'], text, re.IGNORECASE)))
+        if compartments:
+            result['fire_compartments'] = sorted(compartments)
+
+        # SPB (stupeň požární bezpečnosti)
+        spb_values = list(set(re.findall(self.PBRS_PATTERNS['spb'], text)))
+        if spb_values:
+            result['spb_values'] = spb_values
+
+        # Fire resistance
+        resistances = list(set(re.findall(self.PBRS_PATTERNS['fire_resistance'], text)))
+        if resistances:
+            result['fire_resistance_ratings'] = resistances
+
+        # Escape routes
+        routes = list(set(re.findall(self.PBRS_PATTERNS['escape_route'], text, re.IGNORECASE)))
+        if routes:
+            result['escape_routes'] = routes
+
+        # Fire detection/suppression systems
+        for key, pattern_key in [('has_eps', 'eps'), ('has_shz', 'shz'), ('has_zokt', 'zokt')]:
+            if re.search(self.PBRS_PATTERNS[pattern_key], text, re.IGNORECASE):
+                result[key] = True
+
+        # Fire distance
+        m = re.search(self.PBRS_PATTERNS['fire_distance'], text, re.IGNORECASE)
+        if m:
+            result['fire_distance_m'] = float(m.group(1).replace(',', '.'))
+
+        # Fire water supply
+        m = re.search(self.PBRS_PATTERNS['fire_water'], text, re.IGNORECASE)
+        if m:
+            result['fire_water_supply'] = f"{m.group(1)} {m.group(2)}"
+
+        logger.info(f"PBRS regex extraction: {len(result)} fields found")
+        return result
+
+    # =============================================================================
     # V3: BRIDGE DIMENSION EXTRACTION
     # =============================================================================
 
@@ -860,6 +931,85 @@ class CzechConstructionExtractor:
     def _normalize_diacritics(self, text: str) -> str:
         """Remove Czech diacritics for keyword matching"""
         return text.translate(self.DIACRITICS_MAP)
+
+    # =============================================================================
+    # MISSING DOCUMENT REFERENCES
+    # =============================================================================
+
+    MISSING_DOC_PATTERNS = [
+        r'viz\s+příloha\s+(.{5,60})',
+        r'dle\s+(?:posudku|výkresu|projektu|zprávy)\s+(.{5,60})',
+        r'(?:statický|geotechnický|geologický|radonový)\s+(?:posudek|průzkum|protokol)',
+        r'projekt\s+(?:hromosvodu|uzemn[ěe]n[ií]|požárně\s+bezpečnostní)',
+        r'(?:energetický|průkaz)\s+(?:štítek|PENB)',
+        r'protokol\s+o\s+(?:zkoušce|měření|autorizaci)',
+    ]
+
+    def extract_referenced_documents(self, text: str) -> List[str]:
+        """Scan text for mentions of other documents (potentially missing)."""
+        refs: List[str] = []
+        seen: set = set()
+        for pattern in self.MISSING_DOC_PATTERNS:
+            for m in re.finditer(pattern, text, re.IGNORECASE):
+                ref = m.group(0).strip().rstrip('.,;:')
+                if len(ref) > 10 and ref not in seen:
+                    seen.add(ref)
+                    refs.append(ref)
+        return refs[:20]
+
+    # =============================================================================
+    # NORM REFERENCES EXTRACTION
+    # =============================================================================
+
+    NORM_PATTERNS = [
+        r'(ČSN\s+(?:EN\s+)?(?:ISO\s+)?\d[\d\s\-]+\d)',
+        r'(zákon\s+č\.\s*\d+/\d+\s*Sb\.)',
+        r'(vyhláška\s+č\.\s*\d+/\d+\s*Sb\.)',
+        r'(nařízení\s+vlády\s+č\.\s*\d+/\d+\s*Sb\.)',
+        r'(TKP\s+\d+)',
+        r'(VTP\s+\w+/\d+)',
+        r'(TPG\s+\d[\d\s]+\d)',
+        r'(Eurocode\s+\d+)',
+        r'(EN\s+199\d[\-\d]*)',
+    ]
+
+    def _extract_norms(self, text: str) -> List[str]:
+        """Extract all referenced standards and norms from text."""
+        norms: List[str] = []
+        seen: set = set()
+        for pattern in self.NORM_PATTERNS:
+            for m in re.finditer(pattern, text, re.IGNORECASE):
+                code = re.sub(r'\s+', ' ', m.group(1).strip())
+                if code not in seen:
+                    seen.add(code)
+                    norms.append(code)
+        return norms
+
+    # =============================================================================
+    # PROJECT IDENTIFICATION EXTRACTION
+    # =============================================================================
+
+    IDENT_PATTERNS = {
+        'stavba': r'[Ss]tavba[:\s]+(.+?)(?:\n|Investor|Místo|Formát|Objednat)',
+        'investor': r'[Ii]nvestor[:\s]+(.+?)(?:\n|Tel|IČ|Stavba|Místo)',
+        'misto': r'[Mm]ísto\s+stavby[:\s]+(.+?)(?:\n|Kraj|Investor|Katastr)',
+        'kraj': r'[Kk]raj[:\s]+(.+?)(?:\n|Okres|Místo|Obec)',
+        'projektant': r'[Pp]rojektant[:\s]+(.+?)(?:\n|IČ|ČKAIT|Tel)',
+        'datum': r'[Dd]atum[:\s]+(\d{1,2}[\./]\d{1,2}[\./]\d{2,4})',
+        'stupen_pd': r'(?:stupeň|stupen)\s*(?:PD)?[:\s]*(D[ÚU]R|DSP|DPS|DVZ|DSPS|PDPS)',
+    }
+
+    def _extract_identification(self, text: str) -> Dict[str, str]:
+        """Extract project identification from first ~3000 chars."""
+        head = text[:3000]
+        result: Dict[str, str] = {}
+        for field, pattern in self.IDENT_PATTERNS.items():
+            m = re.search(pattern, head, re.IGNORECASE)
+            if m:
+                val = m.group(1).strip().rstrip(',.')
+                if val and len(val) < 200:
+                    result[field] = val
+        return result
 
     def get_stats(self) -> Dict[str, int]:
         """Get extraction statistics"""
