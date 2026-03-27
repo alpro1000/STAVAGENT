@@ -22,6 +22,8 @@ import type { ParseResult } from '../components/portal/DocumentAnalysis/SoupisTa
 import PassportTab from '../components/portal/DocumentAnalysis/PassportTab';
 import AuditTab from '../components/portal/DocumentAnalysis/AuditTab';
 import SummaryTab from '../components/portal/DocumentAnalysis/SummaryTab';
+import ComplianceTab from '../components/portal/DocumentAnalysis/ComplianceTab';
+import CrossValidationPanel from '../components/portal/DocumentAnalysis/CrossValidationPanel';
 import { API_URL } from '../services/api';
 
 const CORE_API_URL = `${API_URL}/api/core`;
@@ -40,7 +42,7 @@ const IDENT_LABELS: Record<string, string> = {
   ckait: 'ČKAIT',
 };
 
-type TabId = 'passport' | 'soupis' | 'audit' | 'summary' | 'project';
+type TabId = 'passport' | 'soupis' | 'audit' | 'summary' | 'compliance' | 'project';
 
 interface PortalProject {
   portal_project_id: string;
@@ -490,6 +492,7 @@ export default function DocumentAnalysisPage() {
     { id: 'soupis', label: 'Soupis prací', show: !!soupisData },
     { id: 'audit', label: 'AI Audit', show: true },
     { id: 'summary', label: 'Shrnutí', show: !!passportData },
+    { id: 'compliance', label: 'Normy (NKB)', show: !!passportData },
     { id: 'project', label: `Projektová analýza (${projectData?.merged_sos?.length || 0} SO)`, show: !!projectData },
   ];
   const visibleTabs = tabs.filter(t => t.show);
@@ -697,6 +700,7 @@ export default function DocumentAnalysisPage() {
               {activeTab === 'soupis' && <SoupisTab soupisData={soupisData} />}
               {activeTab === 'audit' && <AuditTab />}
               {activeTab === 'summary' && <SummaryTab data={passportData} />}
+              {activeTab === 'compliance' && <ComplianceTab data={passportData} />}
               {activeTab === 'project' && projectData && (
                 <ProjectAnalysis data={projectData} />
               )}
@@ -752,8 +756,10 @@ export default function DocumentAnalysisPage() {
                   {projects.map(proj => (
                     <button
                       key={proj.portal_project_id}
-                      onClick={() => handleSave(proj.portal_project_id)}
-                      className="da-picker-item"
+                      onClick={() => {
+                        setSelectedProjectId(proj.portal_project_id);
+                      }}
+                      className={`da-picker-item ${selectedProjectId === proj.portal_project_id ? 'da-picker-item--selected' : ''}`}
                       disabled={isSaving}
                     >
                       <span className="da-picker-item-name">{proj.project_name}</span>
@@ -763,6 +769,25 @@ export default function DocumentAnalysisPage() {
                     </button>
                   ))}
                 </div>
+
+                {/* Cross-validation + confirm when project selected */}
+                {selectedProjectId && (
+                  <div className="da-picker-confirm">
+                    <CrossValidationPanel
+                      projectId={selectedProjectId}
+                      currentData={passportData}
+                    />
+                    <button
+                      onClick={() => handleSave(selectedProjectId)}
+                      className="c-btn c-btn--primary"
+                      disabled={isSaving}
+                      style={{ marginTop: 12, width: '100%' }}
+                    >
+                      {isSaving ? <Loader2 size={14} className="da-spin" /> : <Save size={14} />}
+                      Uložit do vybraného projektu
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1385,9 +1410,16 @@ const documentAnalysisStyles = `
   border-color: var(--accent-orange, #FF9F1C);
   background: rgba(255, 159, 28, 0.03);
 }
+.da-picker-item--selected {
+  border-color: var(--accent-orange, #FF9F1C);
+  background: rgba(255, 159, 28, 0.06);
+}
 .da-picker-item:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.da-picker-confirm {
+  padding: 0 24px 20px;
 }
 
 .da-picker-item-top {
