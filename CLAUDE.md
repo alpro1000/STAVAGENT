@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.3.1
+**Version:** 3.3.2
 **Last Updated:** 2026-03-27
 **Repository:** STAVAGENT (Monorepo)
 
@@ -524,25 +524,42 @@ VITE_DISABLE_AUTH=true
   - "0 pozic" no longer shown for TZ documents (only when > 0)
 - **Architecture decision**: deleted app/pipeline/ (1759 LOC unused duplication) — all functionality extends existing app/services/
 
+**Completed (2026-03-27, session 4 — Project state persistence + NKB frontend):**
+- **Project state persistence (DocumentAnalysisPage):**
+  - Save button in meta bar → project picker overlay (create new / select existing)
+  - Saves full passport + soupis + project analysis as JSONB in `portal_documents` table
+  - Auto-versioning on re-save to same project
+  - Load saved analyses from upload zone → saved docs panel (sorted by date)
+  - Backend: removed `requireServiceKey` from portal-documents route (frontend access)
+- **NKB Compliance tab (`ComplianceTab.tsx`):**
+  - Auto-runs NKB advisor check when passport data available
+  - Builds context from passport (materials, norms, structure type) → `POST /api/core/nkb/advisor`
+  - Displays: compliance score ring (%), pass/warn/violation badges, expandable findings
+  - AI analysis section (Gemini) with Perplexity supplement, severity coloring
+  - Referenced norms pills, warning items
+- **Cross-validation panel (`CrossValidationPanel.tsx`):**
+  - Shows in project picker when saving to project that has previous documents
+  - Loads latest passport from selected project and compares field-by-field
+  - Compares: concrete classes, volumes (2% numeric tolerance), reinforcement, tonnage, structure type, norms
+  - Color-coded status: match (green), mismatch (red), new (blue), missing (yellow)
+  - Two-step save flow: select project → review cross-validation → confirm save
+- **New "Normy (NKB)" tab** in DocumentAnalysisPage (6th tab alongside Passport, Soupis, Audit, Shrnutí, Analýza)
+
 **Technical debt / TODO (next session):**
-1. **Project state persistence**: Wire `portal_documents` table (already exists in Portal DB) for saving passport results. Add save button to DocumentAnalysisPage. Currently passports are in-memory only (lost on restart).
-2. **Cross-validation wiring**: When uploading to existing project (project_id), compare new document against previously saved documents. so_merger.py already exists (496 LOC), needs per-document invocation via portal_documents lookup.
-3. **NKB Frontend**: Display norm compliance findings, advisor recommendations in Portal
-4. **Image/Photo OCR**: Wire MinerU client for .jpg/.png/.tiff uploads (client exists, routing missing)
-5. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
-6. **Testing**: Upload real XLSX + PDF through Portal → verify norms, identification, PBRS in response
-7. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
-8. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
-9. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+1. **Image/Photo OCR**: Wire MinerU client for .jpg/.png/.tiff uploads (client exists, routing missing)
+2. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
+3. **E2E testing**: Upload real XLSX + PDF through Portal → verify norms, identification, PBRS, NKB in response
+4. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
+5. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
+6. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+7. **Cross-validation via CORE**: currently frontend-only comparison, wire through `/api/v1/project/{id}/add-document` for server-side TZ↔Soupis cross-validation
+8. **Compliance auto-save**: save ComplianceReport alongside passport when saving to project
 
 **Current branch status:**
-- `claude/merge-mineru-client-pr-Ot0ri` — PR #733, 8 commits (batch INSERT + Vertex AI + frontend cleanup + extraction pipeline v3.3)
-- PR #731 merged to main (thread-safe MinerU + Bedrock + portal cleanup)
+- `claude/batch-insert-update-p4L8D` — 2 commits (project state persistence + NKB compliance + cross-validation)
+- PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
-- Project state in Portal DB (project.json concept via portal_documents table)
-- Cross-validation between uploaded documents (fact matching + contradiction detection)
-- NKB compliance visualization in Portal
 - OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
 - DWG/IFC/BIM support (P3 — needs binaries)
