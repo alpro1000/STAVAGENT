@@ -91,6 +91,7 @@ async def generate_passport(
     allowed_extensions = [
         '.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv',
         '.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.gif', '.webp',
+        '.dxf', '.dwg',
     ]
     file_ext = Path(file.filename).suffix.lower()
 
@@ -773,6 +774,7 @@ async def process_project(
     allowed_extensions = [
         '.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv',
         '.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.gif', '.webp',
+        '.dxf', '.dwg',
     ]
     temp_dir = tempfile.mkdtemp()
     saved_paths: list[str] = []

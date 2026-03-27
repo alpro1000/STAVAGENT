@@ -74,6 +74,8 @@ class SmartParser:
             return self.parse_csv(path)
         elif detected_type == "image":
             return self.parse_image(path)
+        elif detected_type == "dxf":
+            return self.parse_dxf(path)
         else:
             return self.parse_pdf(path)
 
@@ -198,6 +200,71 @@ class SmartParser:
             logger.error(f"SmartParser: Image failed: {e}")
             return {"positions": [], "text": "", "strategy": "image_error", "error": str(e)}
 
+    def parse_dxf(self, path: Path) -> Dict[str, Any]:
+        """
+        Parse DXF drawing file using ezdxf.
+
+        Extracts: text entities (MTEXT, TEXT), dimensions, block references,
+        layer names, and drawing metadata. Useful for construction drawings,
+        site plans, and technical details.
+        """
+        logger.info(f"SmartParser: DXF {path.name}")
+        try:
+            import ezdxf
+        except ImportError:
+            logger.warning("ezdxf not installed, cannot parse DXF files")
+            return {"positions": [], "text": "", "strategy": "dxf_no_ezdxf"}
+
+        try:
+            doc = ezdxf.readfile(str(path))
+            msp = doc.modelspace()
+
+            texts: list = []
+            dimensions: list = []
+            blocks: list = []
+            layers: set = set()
+
+            for entity in msp:
+                layers.add(entity.dxf.layer)
+
+                if entity.dxftype() == "TEXT":
+                    texts.append(entity.dxf.text)
+                elif entity.dxftype() == "MTEXT":
+                    texts.append(entity.text)
+                elif entity.dxftype() == "DIMENSION":
+                    try:
+                        val = entity.dxf.get("actual_measurement", None)
+                        if val is not None:
+                            dimensions.append(f"{val:.2f}")
+                    except Exception:
+                        pass
+                elif entity.dxftype() == "INSERT":
+                    blocks.append(entity.dxf.name)
+
+            full_text = "\n".join(texts)
+            logger.info(
+                f"SmartParser: DXF extracted {len(texts)} texts, "
+                f"{len(dimensions)} dims, {len(layers)} layers"
+            )
+
+            return {
+                "positions": [],
+                "text": full_text,
+                "tables": [],
+                "strategy": "dxf_ezdxf",
+                "dxf_metadata": {
+                    "layers": sorted(layers),
+                    "dimensions": dimensions[:100],
+                    "block_references": list(set(blocks))[:50],
+                    "text_count": len(texts),
+                    "total_entities": len(list(msp)),
+                },
+            }
+
+        except Exception as e:
+            logger.error(f"SmartParser: DXF failed: {e}")
+            return {"positions": [], "text": "", "strategy": "dxf_error", "error": str(e)}
+
     def parse_pdf(self, path: Path) -> Dict[str, Any]:
         """
         Sync PDF parsing — pdfplumber → MinerU HTTP → memory_pdf fallback.
@@ -298,6 +365,8 @@ class SmartParser:
             return "csv"
         elif ext in (".jpg", ".jpeg", ".png", ".tiff", ".tif", ".bmp", ".gif", ".webp"):
             return "image"
+        elif ext in (".dxf", ".dwg"):
+            return "dxf"
         else:
             return "pdf"
 
