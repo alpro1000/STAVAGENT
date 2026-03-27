@@ -87,18 +87,20 @@ router.post('/import-from-monolit', async (req, res) => {
     );
 
     // Check if Migration 005 columns exist (tov_labor, monolit_position_id, etc.)
+    // Use information_schema to avoid aborting the transaction on missing columns.
     let hasExtendedColumns = true;
     try {
-      await client.query('SELECT monolit_position_id, tov_labor FROM portal_positions LIMIT 0');
-    } catch (colErr) {
-      if (colErr.message && colErr.message.includes('column')) {
-        hasExtendedColumns = false;
+      const colCheck = await client.query(
+        `SELECT column_name FROM information_schema.columns
+         WHERE table_name = 'portal_positions' AND column_name = 'monolit_position_id'`
+      );
+      hasExtendedColumns = colCheck.rows.length > 0;
+      if (!hasExtendedColumns) {
         console.warn('[Integration] Migration 005 columns not yet applied — using basic INSERT for Monolit import');
-        await client.query('ROLLBACK');
-        await client.query('BEGIN');
-      } else {
-        throw colErr;
       }
+    } catch (colErr) {
+      hasExtendedColumns = false;
+      console.warn('[Integration] Could not check Migration 005 columns:', colErr.message);
     }
 
     // Import objects — collect positions for batch processing
@@ -581,41 +583,37 @@ router.post('/import-from-registry', async (req, res) => {
     };
 
     // Check if Migration 005 columns exist (registry_item_id, tov_labor, etc.)
-    // These are required for full registry sync. Fall back gracefully if not yet run.
+    // Use information_schema to avoid aborting the transaction on missing columns.
     let hasRegistrySyncColumns = true;
     try {
-      await client.query('SELECT registry_item_id, tov_labor FROM portal_positions LIMIT 0');
-    } catch (colErr) {
-      if (colErr.message && colErr.message.includes('column')) {
-        hasRegistrySyncColumns = false;
+      const colCheck = await client.query(
+        `SELECT column_name FROM information_schema.columns
+         WHERE table_name = 'portal_positions' AND column_name = 'registry_item_id'`
+      );
+      hasRegistrySyncColumns = colCheck.rows.length > 0;
+      if (!hasRegistrySyncColumns) {
         console.warn('[Integration] Migration 005 columns not yet applied — using basic INSERT (no TOV/registry_item_id)');
-        // ROLLBACK the failed statement to reset transaction state.
-        // Re-insert project rows afterwards since ROLLBACK discards all prior INSERTs.
-        await client.query('ROLLBACK');
-        await client.query('BEGIN');
-        await reEnsureProjectRows();
-      } else {
-        throw colErr;
       }
+    } catch (colErr) {
+      hasRegistrySyncColumns = false;
+      console.warn('[Integration] Could not check Migration 005 columns:', colErr.message);
     }
 
     // Check if Phase 8 columns exist (sheet_name, row_index, skupina, dov_payload, created_by)
     let hasPhase8Columns = hasRegistrySyncColumns;
     if (hasRegistrySyncColumns) {
       try {
-        await client.query('SELECT sheet_name FROM portal_positions LIMIT 0');
-      } catch (colErr) {
-        if (colErr.message && colErr.message.includes('column')) {
-          hasPhase8Columns = false;
+        const colCheck8 = await client.query(
+          `SELECT column_name FROM information_schema.columns
+           WHERE table_name = 'portal_positions' AND column_name = 'sheet_name'`
+        );
+        hasPhase8Columns = colCheck8.rows.length > 0;
+        if (!hasPhase8Columns) {
           console.warn('[Integration] Phase 8 columns (sheet_name) not yet applied — using fallback INSERT');
-          // Reset aborted transaction state.
-          // Re-insert project rows afterwards since ROLLBACK discards all prior INSERTs.
-          await client.query('ROLLBACK');
-          await client.query('BEGIN');
-          await reEnsureProjectRows();
-        } else {
-          throw colErr;
         }
+      } catch (colErr) {
+        hasPhase8Columns = false;
+        console.warn('[Integration] Could not check Phase 8 columns:', colErr.message);
       }
     }
 
