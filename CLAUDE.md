@@ -553,24 +553,32 @@ VITE_DISABLE_AUTH=true
 - **Enhanced document save:**
   - Saves norms, identification, referenced_documents, classification alongside passport content
   - Metadata includes has_norms and has_identification flags for quick filtering
+- **DXF parsing (`smart_parser.py`):**
+  - `parse_dxf()`: extracts TEXT/MTEXT entities, dimensions, block refs, layer names via ezdxf
+  - ezdxf>=1.1.0 added to requirements.txt
+  - Both `/generate` and `/process-project` endpoints accept .dxf/.dwg
+- **NKB seed data expansion (14→23 norms, 14→23 rules):**
+  - Norms: Eurocode 2 (EN 1992-1-1), EC1 (EN 1991-1-1), EC7 (EN 1997-1), PBS (ČSN 73 0810), hydroizolace (ČSN 73 0600), thermal (ČSN 73 0540-2), concrete control (ČSN 73 2400), rebar steel (EN 10080), building reqs (vyhláška 268/2009)
+  - Rules: min cover depth, max deflection L/250, max crack width 0.3mm, geotechnical survey, fire REI, thermal U-value, B500B 500MPa, concrete slump test
+- **MinerU /parse-image endpoint (v1.1.0):**
+  - `POST /parse-image`: accepts JPG/PNG/TIFF → Pillow → PDF → MinerU OCR → markdown
+  - Direct image OCR without going through concrete-agent
 
 **Technical debt / TODO (next session):**
-1. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
-2. **E2E testing**: Upload real XLSX + PDF + JPG through Portal → verify full pipeline
-3. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
-4. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
-5. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
-6. **Cross-validation via CORE**: currently frontend-only comparison, wire through `/api/v1/project/{id}/add-document` for server-side TZ↔Soupis cross-validation
-7. **MinerU image endpoint**: add `/parse-image` to mineru_service for direct OCR (currently goes through PDF conversion)
+1. **E2E testing**: Upload real XLSX + PDF + JPG + DXF through Portal → verify full pipeline
+2. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
+3. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+4. **Cross-validation via CORE**: frontend comparison works, wire `POST /api/core/project/{id}/add-document` for server-side TZ↔Soupis validation
+5. **MinerU client update**: wire `parse_image_with_mineru()` to call new `/parse-image` endpoint directly (bypass PDF conversion in smart_parser)
 
 **Current branch status:**
-- `claude/batch-insert-update-p4L8D` — 4 commits (project persistence + NKB compliance + cross-validation + image OCR)
+- `claude/batch-insert-update-p4L8D` — 7 commits (full session 4 work)
 - PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
 - OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
-- DWG/IFC/BIM support (P3 — needs binaries)
+- IFC/BIM support (P3 — needs binaries)
 - NKB PostgreSQL migration + admin UI for norm/rule management
 - Deep Links
 - Vitest migration
