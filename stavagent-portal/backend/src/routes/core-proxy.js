@@ -4,7 +4,7 @@
  * Proxies all requests to concrete-agent (CORE) through the portal backend.
  * Benefits:
  * - Centralizes CORE URL configuration (single env var)
- * - Server-side timeouts (120s vs browser's ~30s)
+ * - Server-side timeouts (300s vs browser's ~30s)
  * - Better error handling and logging
  * - Eliminates CORS issues for CORE calls
  *
@@ -19,7 +19,8 @@ import multer from 'multer';
 const router = express.Router();
 
 const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
-const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '120000');
+// 300s default — passport generation and price parsing need >120s for complex documents
+const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '300000');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 
