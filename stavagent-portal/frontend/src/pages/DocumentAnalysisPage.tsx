@@ -10,8 +10,9 @@
 import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Upload, CheckCircle, AlertTriangle, Loader2, Download,
-  ArrowLeft, FileSpreadsheet, Database, Cloud, RotateCcw, FileText, Search,
+  Upload, CheckCircle, AlertTriangle, Loader2, Download, Save, FolderOpen,
+  ArrowLeft, FileSpreadsheet, Database, RotateCcw, FileText, Search,
+  Clock, Plus, X,
 } from 'lucide-react';
 import type { PassportGenerationResponse } from '../types/passport';
 import type { ProjectAnalysisData } from '../components/portal/ProjectAnalysis';
@@ -40,6 +41,23 @@ const IDENT_LABELS: Record<string, string> = {
 };
 
 type TabId = 'passport' | 'soupis' | 'audit' | 'summary' | 'project';
+
+interface PortalProject {
+  portal_project_id: string;
+  project_name: string;
+  project_type: string;
+  created_at: string;
+}
+
+interface SavedDocument {
+  document_id: string;
+  project_id: string;
+  document_type: string;
+  title: string;
+  version: number;
+  created_at: string;
+  metadata: Record<string, unknown>;
+}
 
 function getFileExtension(filename: string): string {
   return filename.split('.').pop()?.toLowerCase() ?? '';
@@ -79,8 +97,21 @@ export default function DocumentAnalysisPage() {
   // Save to project
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [showProjectPicker, setShowProjectPicker] = useState(false);
+  const [projects, setProjects] = useState<PortalProject[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [newProjectName, setNewProjectName] = useState('');
+  const [isCreatingProject, setIsCreatingProject] = useState(false);
+
+  // Saved documents (load previous analyses)
+  const [savedDocs, setSavedDocs] = useState<SavedDocument[]>([]);
+  const [isLoadingDocs, setIsLoadingDocs] = useState(false);
+  const [showSavedDocs, setShowSavedDocs] = useState(false);
+  const [loadedDocId, setLoadedDocId] = useState<string | null>(null);
 
   const hasResults = !!(passportData || projectData || soupisData);
+  const authHeaders = { 'Authorization': `Bearer ${localStorage.getItem('auth_token')}` };
 
   /* ── Upload single file ── */
   const handleFileUpload = useCallback(async (file: File) => {
@@ -256,6 +287,188 @@ export default function DocumentAnalysisPage() {
     URL.revokeObjectURL(url);
   }, [passportData]);
 
+  /* ── Fetch projects for picker ── */
+  const fetchProjects = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/portal-projects`, {
+        headers: authHeaders,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setProjects(data.projects || []);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  /* ── Save analysis to project ── */
+  const handleSave = useCallback(async (projectId: string) => {
+    if (!passportData && !projectData && !soupisData) return;
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      const fileName = uploadedFile?.name || 'Analýza';
+      const title = fileName.replace(/\.[^/.]+$/, '');
+
+      // Build content object with all available data
+      const content: Record<string, unknown> = {};
+      if (passportData) content.passport = passportData;
+      if (soupisData) content.soupis_praci = soupisData;
+      if (projectData) content.project_analysis = projectData;
+
+      const metadata: Record<string, unknown> = {
+        file_name: uploadedFile?.name,
+        saved_at: new Date().toISOString(),
+        processing_time_seconds: passportData?.metadata?.processing_time_seconds,
+        parser_used: passportData?.metadata?.parser_used,
+      };
+
+      const res = await fetch(`${API_URL}/api/portal-documents/${projectId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
+        body: JSON.stringify({
+          document_type: projectData ? 'project_analysis' : 'passport',
+          title,
+          content,
+          metadata,
+          created_by: 'document_analysis_page',
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => null);
+        throw new Error(err?.error || `HTTP ${res.status}`);
+      }
+
+      const result = await res.json();
+      setSaveSuccess(true);
+      setLoadedDocId(result.document_id);
+      setShowProjectPicker(false);
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Uložení selhalo');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [passportData, projectData, soupisData, uploadedFile]);
+
+  /* ── Create project + save ── */
+  const handleCreateAndSave = useCallback(async () => {
+    if (!newProjectName.trim()) return;
+    setIsCreatingProject(true);
+    setSaveError(null);
+
+    try {
+      const res = await fetch(`${API_URL}/api/portal-projects`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeaders },
+        body: JSON.stringify({
+          project_name: newProjectName.trim(),
+          project_type: 'analysis',
+        }),
+      });
+
+      if (!res.ok) throw new Error('Vytvoření projektu selhalo');
+      const data = await res.json();
+      const newProjectId = data.project?.portal_project_id;
+      if (!newProjectId) throw new Error('Chybí ID projektu');
+
+      setSelectedProjectId(newProjectId);
+      await handleSave(newProjectId);
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Chyba');
+    } finally {
+      setIsCreatingProject(false);
+    }
+  }, [newProjectName, handleSave]);
+
+  /* ── Open save picker ── */
+  const openSavePicker = useCallback(() => {
+    setShowProjectPicker(true);
+    setSaveError(null);
+    setNewProjectName(uploadedFile?.name.replace(/\.[^/.]+$/, '') || '');
+    fetchProjects();
+  }, [fetchProjects, uploadedFile]);
+
+  /* ── Fetch saved documents ── */
+  const fetchSavedDocs = useCallback(async () => {
+    setIsLoadingDocs(true);
+    try {
+      // Fetch documents from all projects (latest only)
+      const projRes = await fetch(`${API_URL}/api/portal-projects`, {
+        headers: authHeaders,
+      });
+      if (!projRes.ok) return;
+      const projData = await projRes.json();
+      const allDocs: SavedDocument[] = [];
+
+      for (const proj of (projData.projects || []).slice(0, 20)) {
+        try {
+          const docsRes = await fetch(
+            `${API_URL}/api/portal-documents/${proj.portal_project_id}?latest=true`,
+            { headers: authHeaders }
+          );
+          if (docsRes.ok) {
+            const docsData = await docsRes.json();
+            for (const doc of docsData.documents || []) {
+              allDocs.push(doc);
+            }
+          }
+        } catch { /* skip */ }
+      }
+
+      // Sort by created_at desc
+      allDocs.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setSavedDocs(allDocs);
+    } catch { /* ignore */ } finally {
+      setIsLoadingDocs(false);
+    }
+  }, []);
+
+  /* ── Load a saved document ── */
+  const handleLoadDocument = useCallback(async (doc: SavedDocument) => {
+    setIsLoadingDocs(true);
+    setShowSavedDocs(false);
+
+    try {
+      const res = await fetch(
+        `${API_URL}/api/portal-documents/${doc.project_id}/${doc.document_id}`,
+        { headers: authHeaders }
+      );
+      if (!res.ok) throw new Error('Nepodařilo se načíst dokument');
+      const data = await res.json();
+      const content = data.document?.content;
+      if (!content) throw new Error('Dokument je prázdný');
+
+      // Restore state from saved content
+      if (content.passport) {
+        setPassportData(content.passport);
+        setActiveTab('passport');
+      }
+      if (content.soupis_praci) {
+        setSoupisData(content.soupis_praci);
+        if (!content.passport) setActiveTab('soupis');
+      }
+      if (content.project_analysis) {
+        setProjectData(content.project_analysis);
+        if (!content.passport && !content.soupis_praci) setActiveTab('project');
+      }
+
+      setLoadedDocId(doc.document_id);
+      setSaveSuccess(true);
+      setUploadedFile(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba při načítání');
+    } finally {
+      setIsLoadingDocs(false);
+    }
+  }, []);
+
+  /* ── Toggle saved docs panel ── */
+  const openSavedDocs = useCallback(() => {
+    setShowSavedDocs(true);
+    fetchSavedDocs();
+  }, [fetchSavedDocs]);
+
   /* ── Reset ── */
   const handleReset = () => {
     setPassportData(null);
@@ -264,6 +477,9 @@ export default function DocumentAnalysisPage() {
     setUploadedFile(null);
     setError(null);
     setSaveSuccess(false);
+    setSaveError(null);
+    setShowProjectPicker(false);
+    setLoadedDocId(null);
     setActiveTab('passport');
     setUploadProgress('');
   };
@@ -329,6 +545,12 @@ export default function DocumentAnalysisPage() {
             <p className="da-upload-hint">
               Více souborů najednou = projektová analýza s SO merge
             </p>
+            <button
+              onClick={(e) => { e.stopPropagation(); openSavedDocs(); }}
+              className="da-load-saved-btn"
+            >
+              <FolderOpen size={14} /> Načíst uloženou analýzu
+            </button>
           </div>
         )}
 
@@ -397,6 +619,20 @@ export default function DocumentAnalysisPage() {
                   <button onClick={exportToCsv} className="c-btn c-btn--ghost c-btn--sm">
                     <Download size={14} /> Export CSV
                   </button>
+                  {saveSuccess ? (
+                    <span className="da-save-badge">
+                      <CheckCircle size={14} /> Uloženo
+                    </span>
+                  ) : (
+                    <button
+                      onClick={openSavePicker}
+                      className="c-btn c-btn--primary c-btn--sm"
+                      disabled={isSaving}
+                    >
+                      {isSaving ? <Loader2 size={14} className="da-spin" /> : <Save size={14} />}
+                      {isSaving ? 'Ukládám...' : 'Uložit do projektu'}
+                    </button>
+                  )}
                 </div>
 
                 {/* Identification card — light background for readability */}
@@ -468,6 +704,123 @@ export default function DocumentAnalysisPage() {
           </div>
         )}
       </main>
+
+      {/* ── Project picker overlay ── */}
+      {showProjectPicker && (
+        <div className="da-overlay" onClick={() => setShowProjectPicker(false)}>
+          <div className="da-picker-card" onClick={e => e.stopPropagation()}>
+            <div className="da-picker-header">
+              <h3>Uložit do projektu</h3>
+              <button onClick={() => setShowProjectPicker(false)} className="da-picker-close">
+                <X size={18} />
+              </button>
+            </div>
+
+            {saveError && (
+              <div className="da-picker-error">
+                <AlertTriangle size={14} /> {saveError}
+              </div>
+            )}
+
+            {/* Create new project */}
+            <div className="da-picker-section">
+              <label className="da-picker-label">Nový projekt</label>
+              <div className="da-picker-create-row">
+                <input
+                  className="da-picker-input"
+                  value={newProjectName}
+                  onChange={e => setNewProjectName(e.target.value)}
+                  placeholder="Název projektu..."
+                  onKeyDown={e => e.key === 'Enter' && handleCreateAndSave()}
+                />
+                <button
+                  onClick={handleCreateAndSave}
+                  className="c-btn c-btn--primary c-btn--sm"
+                  disabled={!newProjectName.trim() || isCreatingProject}
+                >
+                  {isCreatingProject ? <Loader2 size={14} className="da-spin" /> : <Plus size={14} />}
+                  Vytvořit a uložit
+                </button>
+              </div>
+            </div>
+
+            {/* Existing projects */}
+            {projects.length > 0 && (
+              <div className="da-picker-section">
+                <label className="da-picker-label">Existující projekty</label>
+                <div className="da-picker-list">
+                  {projects.map(proj => (
+                    <button
+                      key={proj.portal_project_id}
+                      onClick={() => handleSave(proj.portal_project_id)}
+                      className="da-picker-item"
+                      disabled={isSaving}
+                    >
+                      <span className="da-picker-item-name">{proj.project_name}</span>
+                      <span className="da-picker-item-meta">
+                        {new Date(proj.created_at).toLocaleDateString('cs-CZ')}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── Saved documents panel ── */}
+      {showSavedDocs && (
+        <div className="da-overlay" onClick={() => setShowSavedDocs(false)}>
+          <div className="da-picker-card" onClick={e => e.stopPropagation()}>
+            <div className="da-picker-header">
+              <h3>Uložené analýzy</h3>
+              <button onClick={() => setShowSavedDocs(false)} className="da-picker-close">
+                <X size={18} />
+              </button>
+            </div>
+
+            {isLoadingDocs && (
+              <div className="da-picker-loading">
+                <Loader2 size={20} className="da-spin" /> Načítám...
+              </div>
+            )}
+
+            {!isLoadingDocs && savedDocs.length === 0 && (
+              <div className="da-picker-empty">
+                Žádné uložené analýzy. Nahrajte dokument a uložte ho do projektu.
+              </div>
+            )}
+
+            {!isLoadingDocs && savedDocs.length > 0 && (
+              <div className="da-picker-list">
+                {savedDocs.map(doc => (
+                  <button
+                    key={doc.document_id}
+                    onClick={() => handleLoadDocument(doc)}
+                    className="da-picker-item"
+                  >
+                    <div className="da-picker-item-top">
+                      <span className="da-picker-item-name">{doc.title}</span>
+                      <span className="da-picker-item-type">{doc.document_type}</span>
+                    </div>
+                    <div className="da-picker-item-bottom">
+                      <span className="da-picker-item-meta">
+                        <Clock size={12} />
+                        {new Date(doc.created_at).toLocaleDateString('cs-CZ')}{' '}
+                        {new Date(doc.created_at).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                      {doc.version > 1 && (
+                        <span className="da-picker-item-version">v{doc.version}</span>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Hidden file input */}
       <input
@@ -875,6 +1228,228 @@ const documentAnalysisStyles = `
   font-weight: 600;
 }
 
+/* ── Save badge ── */
+.da-save-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--status-success, #22c55e);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+/* ── Load saved button in upload zone ── */
+.da-load-saved-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-default, rgba(0,0,0,0.12));
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #6b7280);
+  transition: all 0.15s;
+}
+.da-load-saved-btn:hover {
+  border-color: var(--accent-orange, #FF9F1C);
+  color: var(--accent-orange, #FF9F1C);
+  background: rgba(255, 159, 28, 0.04);
+}
+
+/* ── Overlay (shared for picker + saved docs) ── */
+.da-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+}
+
+.da-picker-card {
+  background: var(--panel-clean, #eaebec);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.da-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border-default, rgba(0,0,0,0.06));
+}
+.da-picker-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.da-picker-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  color: var(--text-secondary, #6b7280);
+  transition: background 0.15s;
+}
+.da-picker-close:hover { background: rgba(0,0,0,0.06); }
+
+.da-picker-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 24px 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--status-error, #EF4444);
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.da-picker-section {
+  padding: 16px 24px;
+}
+.da-picker-section + .da-picker-section {
+  border-top: 1px solid var(--border-default, rgba(0,0,0,0.06));
+}
+
+.da-picker-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.da-picker-create-row {
+  display: flex;
+  gap: 8px;
+}
+
+.da-picker-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-default, rgba(0,0,0,0.12));
+  background: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.da-picker-input:focus {
+  border-color: var(--accent-orange, #FF9F1C);
+}
+
+.da-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.da-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 0.15s;
+}
+.da-picker-item:hover {
+  border-color: var(--accent-orange, #FF9F1C);
+  background: rgba(255, 159, 28, 0.03);
+}
+.da-picker-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.da-picker-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+.da-picker-item-bottom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.da-picker-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #1a1a1a);
+}
+
+.da-picker-item-meta {
+  font-size: 12px;
+  color: var(--text-muted, #9ca3af);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.da-picker-item-type {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 159, 28, 0.08);
+  color: var(--accent-orange, #FF9F1C);
+}
+
+.da-picker-item-version {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted, #9ca3af);
+}
+
+.da-picker-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px;
+  font-size: 14px;
+  color: var(--text-secondary, #6b7280);
+}
+
+.da-picker-empty {
+  padding: 40px 24px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted, #9ca3af);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .da-header { padding: 12px 16px; }
@@ -884,5 +1459,7 @@ const documentAnalysisStyles = `
   .da-meta-bar { gap: 8px; }
   .da-tabs { overflow-x: auto; }
   .da-ident-card { grid-template-columns: 1fr; }
+  .da-picker-card { margin: 16px; max-width: calc(100% - 32px); }
+  .da-picker-create-row { flex-direction: column; }
 }
 `;
