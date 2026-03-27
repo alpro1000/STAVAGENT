@@ -34,6 +34,7 @@ const OrgPage = lazy(() => import('./pages/OrgPage'));
 const OrgInvitePage = lazy(() => import('./pages/OrgInvitePage'));
 const ConnectionsPage = lazy(() => import('./pages/ConnectionsPage'));
 const ParsePreviewPage = lazy(() => import('./pages/ParsePreviewPage'));
+const DocumentAnalysisPage = lazy(() => import('./pages/DocumentAnalysisPage'));
 
 // ── Loading fallback ─────────────────────────────────────────────────────────
 function PageLoader() {
@@ -99,6 +100,9 @@ function App() {
               <Route path="/cabinet" element={<ProtectedRoute><CabinetPage /></ProtectedRoute>} />
               <Route path="/cabinet/orgs" element={<ProtectedRoute><CabinetOrgsPage /></ProtectedRoute>} />
               <Route path="/cabinet/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
+
+              {/* Document Analysis — full page (replaces modal) */}
+              <Route path="/portal/analysis" element={<ProtectedRoute><DocumentAnalysisPage /></ProtectedRoute>} />
 
               {/* Parse Preview — requires login */}
               <Route path="/parse-preview/:fileId" element={<ProtectedRoute><ParsePreviewPage /></ProtectedRoute>} />
