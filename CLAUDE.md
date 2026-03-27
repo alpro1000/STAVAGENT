@@ -590,21 +590,78 @@ VITE_DISABLE_AUTH=true
   - Uses `CONCRETE_DATABASE_URL` from Secret Manager
   - Non-blocking: skips gracefully if DB unavailable
 
-**Technical debt / TODO (next session):**
-1. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
-2. **Run E2E tests**: need live CORE server to execute test_e2e_pipeline.py
-3. **NKB rule editor**: add/edit rules from frontend (currently norms only)
-4. **Private DB connection**: Cloud SQL uses public IP, need VPC connector for security
+- **NKB rule editor (`NKBAdminPage.tsx`):**
+  - Add rule form: rule_id, norm_id (datalist autocomplete), rule_type selector
+  - Fields: title, description (textarea), parameter, value, min/max, unit
+  - Mandatory checkbox, priority, section_reference, tags
+  - Calls POST /api/core/nkb/rules/ingest
+
+---
+
+## ⚠️ РУЧНЫЕ ДЕЙСТВИЯ (требуют отчёта)
+
+> **Статус**: НЕ ВЫПОЛНЕНО. Каждый пункт нужно выполнить вручную и отчитаться.
+
+### 1. AWS Bedrock — увеличить квоту RPM
+- **Что**: Запросить увеличение RPM для Claude моделей в AWS Console
+- **Где**: AWS Console → Bedrock → Model access → Request quota increase
+- **Зачем**: ThrottlingException при текущих лимитах нового IAM user
+- **Как проверить**: `aws bedrock-runtime invoke-model --model-id anthropic.claude-3-haiku-20240307-v1:0 ...`
+- [ ] **Сделано?**
+
+### 2. E2E тесты — запустить на живом сервере
+- **Что**: Выполнить `CORE_URL=https://concrete-agent-1086027517695.europe-west3.run.app pytest tests/test_e2e_pipeline.py -v`
+- **Где**: Локально или в Cloud Shell (нужен доступ к CORE)
+- **Зачем**: 9 тестов (health, PDF/XLSX/JPG passport, norms, identification, NKB advisor, stats)
+- **Как проверить**: Все 9 тестов PASS
+- [ ] **Сделано?**
+
+### 3. VPC connector для Cloud SQL
+- **Что**: Создать VPC connector и подключить Cloud Run к приватной сети
+- **Где**: GCP Console → VPC → Serverless VPC Access
+- **Команды**:
+  ```bash
+  gcloud compute networks vpc-access connectors create stavagent-vpc \
+    --region=europe-west3 --range=10.8.0.0/28
+  ```
+  Затем в каждом Cloud Run сервисе добавить:
+  `--vpc-connector=stavagent-vpc --vpc-egress=private-ranges-only`
+  И отключить публичный IP на Cloud SQL.
+- **Зачем**: Безопасность — БД не должна быть доступна из интернета
+- [ ] **Сделано?**
+
+### 4. Merge PR → main → Cloud Build deploy
+- **Что**: Создать PR из `claude/batch-insert-update-p4L8D` → `main`, merge, дождаться Cloud Build
+- **Где**: GitHub → Pull Requests
+- **Зачем**: 13 коммитов (project persistence, NKB, image OCR, DXF, cross-validation, E2E tests, NKB admin)
+- **Как проверить**: Cloud Build зелёный, все сервисы /health OK
+- [ ] **Сделано?**
+
+### 5. NKB PostgreSQL миграция — проверить после деплоя
+- **Что**: После merge в main, Cloud Build запустит `004_nkb_tables.sql`. Проверить что таблицы создались.
+- **Как проверить**:
+  ```sql
+  SELECT COUNT(*) FROM nkb_norms;  -- должно быть >= 23
+  SELECT COUNT(*) FROM nkb_rules;  -- должно быть >= 23
+  ```
+- [ ] **Сделано?**
+
+### 6. MASTER_ENCRYPTION_KEY для Service Connections
+- **Что**: Сгенерировать ключ и добавить в Secret Manager
+- **Команда**: `openssl rand -hex 32` → GCP Secret Manager → `MASTER_ENCRYPTION_KEY`
+- **Зачем**: Sprint 2 Service Connections (AES-256-GCM шифрование API ключей)
+- [ ] **Сделано?**
+
+---
 
 **Current branch status:**
-- `claude/batch-insert-update-p4L8D` — 12 commits (full session 4 work)
+- `claude/batch-insert-update-p4L8D` — 13 commits (full session 4 work)
 - PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
 - OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
 - IFC/BIM support (P3 — needs binaries)
-- NKB PostgreSQL migration + admin UI for norm/rule management
 - Deep Links
 - Vitest migration
 - Bedrock quota increase + model upgrade to Claude 3.5+
