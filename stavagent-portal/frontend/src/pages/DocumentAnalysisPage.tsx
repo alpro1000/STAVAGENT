@@ -314,6 +314,11 @@ export default function DocumentAnalysisPage() {
       const fileName = uploadedFile?.name || 'Analýza';
       const title = fileName.replace(/\.[^/.]+$/, '');
 
+      // Compute content hash for deduplication (SHA-256 of JSON)
+      const contentStr = JSON.stringify({ passportData, soupisData, projectData });
+      const contentHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(contentStr))
+        .then(buf => Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''));
+
       // Build content object with all available data
       const content: Record<string, unknown> = {};
       if (passportData) content.passport = passportData;
@@ -325,8 +330,14 @@ export default function DocumentAnalysisPage() {
       if ((passportData as any)?.referenced_documents) content.referenced_documents = (passportData as any).referenced_documents;
       if ((passportData as any)?.classification) content.classification = (passportData as any).classification;
 
+      // Detect document type from classification or file extension
+      const classifiedType = (passportData as any)?.classification?.category;
+      const docType = classifiedType || (projectData ? 'project_analysis' : 'passport');
+
       const metadata: Record<string, unknown> = {
         file_name: uploadedFile?.name,
+        file_size: uploadedFile?.size,
+        content_hash: contentHash,
         saved_at: new Date().toISOString(),
         processing_time_seconds: passportData?.metadata?.processing_time_seconds,
         parser_used: passportData?.metadata?.parser_used,
@@ -338,9 +349,10 @@ export default function DocumentAnalysisPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...authHeaders },
         body: JSON.stringify({
-          document_type: projectData ? 'project_analysis' : 'passport',
+          document_type: docType,
           title,
           content,
+          source_file_id: fileName, // Used for version detection (same filename → new version)
           metadata,
           created_by: 'document_analysis_page',
         }),
