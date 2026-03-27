@@ -39,6 +39,7 @@ const ROUTE_MAP = {
   'upload': '/api/upload',
   'parse': '/api/v1/parse',
   'project': '/api/v1/project',
+  'nkb': '/api/v1/nkb',
 };
 
 /** Resolve CORE target URL from request */

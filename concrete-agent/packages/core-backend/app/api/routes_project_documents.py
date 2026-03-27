@@ -35,6 +35,7 @@ from app.models.document_schemas import (
     DocumentIdentity,
     DocumentSummary,
     MaterialEntry,
+    NormComplianceSummary,
     ProcessingStatus,
     VolumeEntry,
 )
@@ -448,6 +449,127 @@ def cross_validate_project(proj: Dict[str, Any]) -> Optional[CrossValidationResu
 
 
 # ===========================================================================
+# Perplexity standards verification (supplement AI enrichment)
+# ===========================================================================
+
+async def verify_standards_with_perplexity(summary: DocumentSummary) -> DocumentSummary:
+    """Use Perplexity to verify extracted standards are current and correct."""
+    if not settings.has_perplexity:
+        return summary
+    if not summary.standards:
+        return summary
+
+    try:
+        import httpx
+        standards_list = ", ".join(summary.standards[:10])
+        prompt = (
+            f"Ověř platnost těchto českých stavebních norem: {standards_list}. "
+            f"Pro každou normu: je stále platná? Byla nahrazena? "
+            f"Odpověz stručně česky, max 3 věty na normu."
+        )
+
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                "https://api.perplexity.ai/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {settings.PERPLEXITY_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": "sonar-pro",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.3,
+                    "max_tokens": 1024,
+                },
+            )
+
+        if response.status_code == 200:
+            data = response.json()
+            text = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+            if text:
+                summary.flags.append(DocumentFlag(
+                    severity="info",
+                    message=f"Perplexity ověření norem: {text[:500]}",
+                    source="perplexity",
+                ))
+                logger.info("[Perplexity] Standards verification: %d chars", len(text))
+        else:
+            logger.warning("[Perplexity] HTTP %d for standards verification", response.status_code)
+
+    except Exception as e:
+        logger.debug("[Perplexity] Standards verification failed: %s", e)
+
+    return summary
+
+
+# ===========================================================================
+# NKB Compliance check
+# ===========================================================================
+
+def run_norm_compliance(
+    project_id: str,
+    summary: DocumentSummary,
+    construction_type: Optional[str] = None,
+) -> Optional[NormComplianceSummary]:
+    """Run NKB compliance check on a document summary."""
+    try:
+        from app.services.norm_matcher import check_compliance
+
+        # Build document_data from summary
+        doc_data = {
+            "materials": [m.model_dump() for m in summary.materials + summary.ai_materials],
+            "standards": summary.standards,
+            "objects": [],
+            "searchable_text": summary.searchable_text or "",
+        }
+
+        # Auto-detect construction type from doc_type
+        if not construction_type:
+            dt = summary.doc_type.value
+            if "most" in dt:
+                construction_type = "mostní"
+            elif dt in ("tz_komunikace", "tz_zemni_prace"):
+                construction_type = "dopravní"
+            elif dt in ("tz_zti", "tz_vzt", "tz_ut", "tz_elektro"):
+                construction_type = "pozemní"
+
+        report = check_compliance(
+            project_id=project_id,
+            document_data=doc_data,
+            construction_type=construction_type,
+        )
+
+        if report.total_rules_checked == 0:
+            return None
+
+        # Convert to lightweight summary for response
+        top_findings = []
+        for f in report.findings[:5]:
+            top_findings.append({
+                "rule_id": f.rule_id,
+                "norm": f.norm_designation,
+                "title": f.rule_title,
+                "status": f.status.value,
+                "message": f.message,
+                "severity": f.severity,
+            })
+
+        return NormComplianceSummary(
+            score=report.score,
+            total_checked=report.total_rules_checked,
+            passed=report.passed,
+            warnings=report.warnings,
+            violations=report.violations,
+            norms_referenced=report.norms_referenced,
+            top_findings=top_findings,
+        )
+
+    except Exception as e:
+        logger.warning("NKB compliance check failed: %s", e)
+        return None
+
+
+# ===========================================================================
 # Diff computation
 # ===========================================================================
 
@@ -751,8 +873,19 @@ async def add_document(
         updated_proj = load_project_json(project_id)
         xval = cross_validate_project(updated_proj)
 
+        # -- 8. Perplexity standards verification (async, non-blocking) --
+        if ai_enabled and summary.standards:
+            try:
+                summary = await verify_standards_with_perplexity(summary)
+            except Exception as e:
+                logger.debug("Perplexity verification skipped: %s", e)
+
+        # -- 9. NKB norm compliance check --
+        norm_compliance = run_norm_compliance(project_id, summary)
+
         action = "aktualizován" if is_update else "přidán"
         ai_note = f", AI: {summary.ai_model_used}" if summary.ai_model_used else ""
+        nkb_note = f", NKB: {norm_compliance.score:.0%}" if norm_compliance else ""
         return AddDocumentResponse(
             project_id=project_id,
             status=ProcessingStatus.COMPLETE,
@@ -760,7 +893,8 @@ async def add_document(
             summary=summary,
             diff=diff,
             cross_validation=xval,
-            message=f"Dokument '{filename}' {action} ({doc_type.value}{ai_note}).",
+            norm_compliance=norm_compliance,
+            message=f"Dokument '{filename}' {action} ({doc_type.value}{ai_note}{nkb_note}).",
             version=new_version,
         )
 

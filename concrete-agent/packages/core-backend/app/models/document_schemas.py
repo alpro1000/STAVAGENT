@@ -175,6 +175,17 @@ class CrossValidationResult(BaseModel):
 # ---------------------------------------------------------------------------
 # API Request / Response
 # ---------------------------------------------------------------------------
+class NormComplianceSummary(BaseModel):
+    """Lightweight norm compliance summary for add-document response."""
+    score: float = 0.0                       # 0.0-1.0
+    total_checked: int = 0
+    passed: int = 0
+    warnings: int = 0
+    violations: int = 0
+    norms_referenced: List[str] = Field(default_factory=list)
+    top_findings: List[Dict[str, Any]] = Field(default_factory=list)  # Top 5 findings
+
+
 class AddDocumentResponse(BaseModel):
     success: bool = True
     project_id: str
@@ -183,5 +194,6 @@ class AddDocumentResponse(BaseModel):
     summary: Optional[DocumentSummary] = None
     diff: Optional[DocumentDiff] = None
     cross_validation: Optional[CrossValidationResult] = None
+    norm_compliance: Optional[NormComplianceSummary] = None
     message: str = ""
     version: int = 1                         # project.json version after update

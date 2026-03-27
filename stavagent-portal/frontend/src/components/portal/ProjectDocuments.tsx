@@ -34,6 +34,7 @@ import {
   FileSpreadsheet,
   FileType,
   GitCompare,
+  Shield,
 } from 'lucide-react';
 
 // Types
@@ -180,6 +181,15 @@ interface AddDocumentResult {
     tz_materials_count: number;
     soupis_materials_count: number;
     coverage_score: number;
+  };
+  norm_compliance?: {
+    score: number;
+    total_checked: number;
+    passed: number;
+    warnings: number;
+    violations: number;
+    norms_referenced: string[];
+    top_findings: Array<{ rule_id: string; norm: string; title: string; status: string; message: string; severity: string }>;
   };
   message: string;
   version: number;
@@ -1044,6 +1054,104 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
                       {xv.issues.length === 0 && (
                         <div style={{ fontSize: '12px', color: 'var(--status-success)' }}>
                           Všechny materiály z TZ nalezeny v soupisu prací.
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* NKB Norm Compliance */}
+            {lastResults.some(r => r.norm_compliance) && (
+              <div className="c-panel c-panel--inset" style={{
+                borderLeft: '3px solid',
+                borderLeftColor: (() => {
+                  const nc = lastResults.find(r => r.norm_compliance)?.norm_compliance;
+                  if (!nc) return 'var(--text-secondary)';
+                  if (nc.violations > 0) return 'var(--status-error)';
+                  if (nc.warnings > 0) return 'var(--status-warning)';
+                  return 'var(--status-success)';
+                })(),
+              }}>
+                <h5 style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Shield size={14} />
+                  NKB — Normativní kontrola
+                </h5>
+                {lastResults.filter(r => r.norm_compliance).map((r, idx) => {
+                  const nc = r.norm_compliance!;
+                  const scoreColor = nc.score >= 0.8 ? 'var(--status-success)' : nc.score >= 0.5 ? 'var(--status-warning)' : 'var(--status-error)';
+                  return (
+                    <div key={idx}>
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '8px', fontSize: '13px', flexWrap: 'wrap' }}>
+                        <div>
+                          <span style={{ fontWeight: 600 }}>Skóre:</span>{' '}
+                          <span style={{ color: scoreColor, fontWeight: 600 }}>
+                            {Math.round(nc.score * 100)}%
+                          </span>
+                        </div>
+                        <div>
+                          <span style={{ fontWeight: 600 }}>Kontrolováno:</span> {nc.total_checked} pravidel
+                        </div>
+                        <div style={{ color: 'var(--status-success)' }}>
+                          ✓ {nc.passed}
+                        </div>
+                        {nc.warnings > 0 && (
+                          <div style={{ color: 'var(--status-warning)' }}>
+                            ⚠ {nc.warnings}
+                          </div>
+                        )}
+                        {nc.violations > 0 && (
+                          <div style={{ color: 'var(--status-error)' }}>
+                            ✗ {nc.violations}
+                          </div>
+                        )}
+                      </div>
+
+                      {nc.norms_referenced.length > 0 && (
+                        <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                          Normy: {nc.norms_referenced.join(', ')}
+                        </div>
+                      )}
+
+                      {nc.top_findings.length > 0 && (
+                        <div style={{ maxHeight: '180px', overflow: 'auto' }}>
+                          {nc.top_findings.map((f, i) => (
+                            <div key={i} style={{
+                              fontSize: '12px',
+                              padding: '6px 8px',
+                              marginBottom: '4px',
+                              borderRadius: '4px',
+                              background: f.status === 'violation' ? 'rgba(239, 68, 68, 0.08)'
+                                : f.status === 'warning' ? 'rgba(255, 193, 7, 0.08)'
+                                : f.status === 'pass' ? 'rgba(34, 197, 94, 0.05)'
+                                : 'rgba(100, 116, 139, 0.05)',
+                            }}>
+                              <div style={{ fontWeight: 500, marginBottom: '2px' }}>
+                                <span style={{
+                                  display: 'inline-block',
+                                  width: '8px',
+                                  height: '8px',
+                                  borderRadius: '50%',
+                                  marginRight: '6px',
+                                  background: f.status === 'violation' ? 'var(--status-error)'
+                                    : f.status === 'warning' ? 'var(--status-warning)'
+                                    : f.status === 'pass' ? 'var(--status-success)'
+                                    : 'var(--text-secondary)',
+                                }} />
+                                [{f.norm}] {f.title}
+                              </div>
+                              <div style={{ color: 'var(--text-secondary)', paddingLeft: '14px' }}>
+                                {f.message}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {nc.top_findings.length === 0 && nc.total_checked > 0 && (
+                        <div style={{ fontSize: '12px', color: 'var(--status-success)' }}>
+                          Všechny kontroly splněny.
                         </div>
                       )}
                     </div>
