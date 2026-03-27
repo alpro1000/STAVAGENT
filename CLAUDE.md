@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.2.0
+**Version:** 3.3.0
 **Last Updated:** 2026-03-27
 **Repository:** STAVAGENT (Monorepo)
 
@@ -37,6 +37,13 @@ STAVAGENT/
 **GCP Project:** `project-947a512a-481d-49b5-81c` (ID: 1086027517695), SA: `1086027517695-compute@developer.gserviceaccount.com`
 
 **LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash` (default, fast), `gemini-2.5-pro` (heavy). Note: `gemini-2.5-flash-lite` returns 404 in europe-west3 despite docs (2026-03-23).
+
+**AWS Bedrock** (us-east-1, IAM user `stavagent-bedrock`, account 302222526850):
+- Confirmed models: `anthropic.claude-3-haiku-20240307-v1:0` ($0.25/1M), `claude-3-sonnet` ($3/1M), `claude-3-opus` ($15/1M)
+- Claude 3.5+ models need `us.` prefix for cross-region inference
+- Budget: $20 Bedrock bonus (exp 2027-02-09) + $84.28 Free Tier
+- Secrets in GCP SM: `aws-access-key-id`, `aws-secret-access-key`
+- Wired in: `cloudbuild-concrete.yaml`, `cloudbuild-urs.yaml`
 
 ---
 
@@ -429,19 +436,53 @@ VITE_DISABLE_AUTH=true
   - `_parse_pdf_async` uses full pipeline for TZ docs when AI enabled
 - **Type annotation fix:** `_call_gemini_advisor` return type corrected to `Tuple[Optional[Dict], Optional[str]]`
 
+**Completed (2026-03-27, session 2 — AWS Bedrock + Portal cleanup + Bug fixes):**
+- **AWS Bedrock multi-provider integration (concrete-agent + URS Matcher):**
+  - `bedrock_client.py` v2.0: full model catalog (Claude 3/3.5+, Nova, Llama, DeepSeek, Mistral)
+  - `_detect_provider()` auto-strips `us./eu./ap.` cross-region prefixes
+  - `_build_request_body()` / `_parse_response()` for each provider format
+  - `BedrockClient` class with `.call()` + `.acall()` (async)
+  - `config.py`: `us-east-1` region, `BEDROCK_FAST_MODEL`, `BEDROCK_HEAVY_MODEL`
+  - `provider_router.py` v2.0: Bedrock in all `TASK_PROVIDER_MAP` chains
+  - `detect_available_providers()` checks AWS credentials
+  - URS `llmConfig.js`: Bedrock = 9th provider, fallback chains updated, 5 Bedrock model pricings
+  - URS `llmClient.js`: `callBedrockAPIWithClient()` via `@aws-sdk/client-bedrock-runtime`
+  - Secrets in GCP Secret Manager: `aws-access-key-id`, `aws-secret-access-key`
+  - Wired in `cloudbuild-concrete.yaml` + `cloudbuild-urs.yaml`
+- **Portal cleanup — 5 duplicate service cards removed:**
+  - Removed: Audit projektu, Akumulace dokumentů, Shrnutí dokumentu, Náhled výkazu, Soupis prací
+  - Added: single "Analýza dokumentů" card (opens unified DocumentAnalysis modal)
+  - 15 cards → 12 cards (clean, grouped: Analýza / Kalkulace / Klasifikace / Připravujeme)
+  - Removed unused imports/state: ProjectDocuments, ParsePreviewModal, showDocumentsModal
+- **Critical bug fix — 40+ cascading 500 errors eliminated:**
+  - Root cause: `SELECT column FROM table LIMIT 0` aborts PostgreSQL transactions when column missing
+  - ROLLBACK/BEGIN cycles discarded all prior INSERTs → cascading failures
+  - Fix: replaced with `information_schema.columns` queries (never abort transactions)
+  - Fixed: `/api/integration/import-from-registry` (40+ errors) + `/api/integration/import-from-monolit` (5+)
+- **CORE proxy timeout increased 120s → 300s:**
+  - Fixes 504 timeouts on `/api/core/passport/process-project` and `/api/core/price-parser/parse`
+- **Security: DISABLE_AUTH=true → false in production:**
+  - `cloudbuild-portal.yaml`: auth was bypassed, all API ran as mock admin
+  - Added `SERVICE_TOKEN` secret to portal cloudbuild
+- **Added `/api/health` endpoint** (alias for `/health`)
+- **`.env` files created** for local dev (concrete-agent + URS Matcher) with AWS credentials
+
 **Technical debt / TODO (next session):**
-1. **FRONTEND REWRITE**: DocumentSummary.tsx is 1700+ lines of spaghetti (inline styles, `as any` casts). Plan: delete old modals (Audit, Accumulator, Summary, Soupis) → create ONE unified "Analýza dokumentů" module with tabs (Soupis, Passport, AI Audit, Shrnutí, NKB Compliance)
-2. **NKB Frontend**: Display norm compliance findings, advisor recommendations, ingestion pipeline results in Portal
-3. **Dead files cleanup**: `Monolit-Planner/frontend/src/components/SoupisTab.tsx`, `UrsClassifierDrawer.tsx` — unused, delete
-4. **MinerU CLI fix**: pushed `_detect_cli()` (tries 'mineru' then 'magic-pdf'), needs merge + redeploy
-5. **Testing**: upload real XLSX + PDF through Portal → verify soupis_praci + NKB compliance in response
-6. **IFC/DXF/PDF parsers**: stubs exist in universal_parser.py, need implementation when real files available
-7. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400), more rules from TKP chapters
-8. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
+1. **FRONTEND REWRITE**: DocumentSummary.tsx 1700+ lines → unified "Analýza dokumentů" module with NKB tab
+2. **NKB Frontend**: norm compliance findings, advisor recommendations, ingestion pipeline results
+3. **Batch INSERT refactor**: integration imports use per-row INSERT (1000 items = 1000 queries), need bulk inserts
+4. **Dead files cleanup**: SoupisTab.tsx, UrsClassifierDrawer.tsx, ProjectDocuments.tsx (now unused)
+5. **AWS Bedrock Service Quota**: request RPM increase for Claude models (ThrottlingException on new IAM user)
+6. **Private DB connection**: Cloud SQL uses public IP, need VPC connector for security
+7. **E2E testing**: upload real XLSX + PDF through Portal → verify full pipeline
+8. **MinerU CLI fix**: `_detect_cli()` needs merge + redeploy
+9. **NKB seed data expansion**: add more ČSN norms, TKP rules
+10. **PostgreSQL migration for NKB**: JSON storage → PostgreSQL tables
 
 **Current branch status:**
-- `claude/universal-parser-railway-iYmQk` — active development, 7 commits (add-document + NKB + ingestion pipeline)
-- `claude/cross-service-cleanup-integration-7kY7b` — PR #723 (17 commits, v3.2→v5.0 parsers + OTSKP + MinerU)
+- `claude/thread-safe-mineru-client-AnXHZ` — 8 commits (Bedrock + portal cleanup + bug fixes)
+- `claude/universal-parser-railway-iYmQk` — merged (7 commits, add-document + NKB + ingestion pipeline)
+- `claude/cross-service-cleanup-integration-7kY7b` — PR #723 merged
 
 **Feature roadmap:**
 - Frontend rewrite (unified Analýza dokumentů with NKB tab)
@@ -453,6 +494,7 @@ VITE_DISABLE_AUTH=true
 - Planner user documentation (help panel)
 - Deep Links
 - Vitest migration
+- Bedrock quota increase + model upgrade to Claude 3.5+
 
 ---
 
