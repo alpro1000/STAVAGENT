@@ -564,15 +564,28 @@ VITE_DISABLE_AUTH=true
   - `POST /parse-image`: accepts JPG/PNG/TIFF → Pillow → PDF → MinerU OCR → markdown
   - Direct image OCR without going through concrete-agent
 
+- **MinerU /parse-image client wiring:**
+  - `parse_image_with_mineru()` in mineru_client.py: calls `/parse-image` directly with MIME type mapping
+  - SmartParser.parse_image() now: Tier 1 MinerU /parse-image → Tier 2 Pillow→PDF fallback
+- **NKB PostgreSQL migration:**
+  - `migrations/004_nkb_tables.sql`: nkb_norms + nkb_rules tables, GIN indexes, FTS
+  - NormStore: PostgreSQL primary, JSON file fallback (auto-detect, auto-seed)
+  - `_load_from_pg()`, `_seed_to_pg()`, `_pg_upsert_norm/rule()` methods
+- **Cross-validation via CORE:**
+  - `sendToCoreAddDocument()`: fire-and-forget POST /api/core/project/{id}/add-document
+  - Server-side cross_validation + norm_compliance returned from CORE pipeline
+- **E2E test suite (`test_e2e_pipeline.py`):**
+  - 8 tests: health, PDF/XLSX/JPG passport, format rejection, norms/identification extraction, NKB advisor+stats
+  - Run with `CORE_URL=http://localhost:8000 pytest tests/test_e2e_pipeline.py -v`
+
 **Technical debt / TODO (next session):**
-1. **E2E testing**: Upload real XLSX + PDF + JPG + DXF through Portal → verify full pipeline
-2. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
-3. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
-4. **Cross-validation via CORE**: frontend comparison works, wire `POST /api/core/project/{id}/add-document` for server-side TZ↔Soupis validation
-5. **MinerU client update**: wire `parse_image_with_mineru()` to call new `/parse-image` endpoint directly (bypass PDF conversion in smart_parser)
+1. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+2. **Run E2E tests**: need live CORE server to execute test_e2e_pipeline.py
+3. **NKB admin UI**: web interface for norm/rule management (CRUD)
+4. **Cloud Build**: add NKB PostgreSQL migration step to cloudbuild-concrete.yaml
 
 **Current branch status:**
-- `claude/batch-insert-update-p4L8D` — 7 commits (full session 4 work)
+- `claude/batch-insert-update-p4L8D` — 9 commits (full session 4 work)
 - PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
