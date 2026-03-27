@@ -732,6 +732,7 @@ router.post('/:id/send-to-core', async (req, res) => {
     });
   }
   const client = await pool.connect();
+  let transactionStarted = false;
 
   try {
     const userId = req.user.userId;
@@ -768,21 +769,22 @@ router.post('/:id/send-to-core', async (req, res) => {
       });
     }
 
-    // Send first file to CORE for analysis (Workflow A)
+    // Send first file to CORE for analysis (Workflow C)
     const firstFile = filesResult.rows[0];
 
     console.log(`[PortalProjects] Sending project ${id} to CORE via file: ${firstFile.file_name}`);
-    console.log(`[PortalProjects] Note: Using Workflow A (document parsing only). Multi-Role audit disabled.`);
 
-    // WARNING: performAudit() and enrichWithAI() have been removed (2025-12-10)
-    // Multi-Role validation is not part of the send-to-core workflow
     const coreResult = await concreteAgent.workflowAStart(firstFile.file_path, {
       projectId: id,
       projectName: project.project_name,
       objectType: project.project_type
     });
 
+    // CORE Workflow C returns project_id (not workflow_id)
+    const coreProjectId = coreResult.project_id || coreResult.workflow_id || id;
+
     await client.query('BEGIN');
+    transactionStarted = true;
 
     // Update project with CORE info
     await client.query(
@@ -792,7 +794,7 @@ router.post('/:id/send-to-core', async (req, res) => {
            core_last_sync = NOW(),
            updated_at = NOW()
        WHERE portal_project_id = $2`,
-      [coreResult.workflow_id, id]
+      [coreProjectId, id]
     );
 
     // Update file with CORE workflow info
@@ -803,22 +805,26 @@ router.post('/:id/send-to-core', async (req, res) => {
            analysis_result = $2,
            processed_at = NOW()
        WHERE file_id = $3`,
-      [coreResult.workflow_id, JSON.stringify(coreResult), firstFile.file_id]
+      [coreProjectId, JSON.stringify(coreResult), firstFile.file_id]
     );
 
     await client.query('COMMIT');
 
-    console.log(`[PortalProjects] Successfully sent to CORE. Workflow ID: ${coreResult.workflow_id}`);
+    console.log(`[PortalProjects] Successfully sent to CORE. Project ID: ${coreProjectId}`);
 
     res.json({
       success: true,
-      core_project_id: coreResult.workflow_id,
+      core_project_id: coreProjectId,
       core_result: coreResult
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[PortalProjects] Error sending to CORE:', error);
+    if (transactionStarted) {
+      try { await client.query('ROLLBACK'); } catch (rollbackErr) {
+        console.error('[PortalProjects] Rollback failed:', rollbackErr.message);
+      }
+    }
+    console.error('[PortalProjects] Error sending to CORE:', error.message || error);
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to send to CORE'
