@@ -88,8 +88,8 @@ Vrať POUZE JSON: {"zduvodneni":"<2-3 věty česky>","upozorneni":["<upozorněn�
 
 async function fwGetGeminiEndpoint(): Promise<{ url: string; headers: Record<string, string> }> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-  // Try Vertex AI ADC (Cloud Run)
-  if (USE_VERTEX && VERTEX_PROJECT) {
+  // Try Vertex AI ADC (Cloud Run) — always attempt, uses GCP billing ($1000 bonus)
+  if (VERTEX_PROJECT || process.env.K_SERVICE) {
     try {
       const metaRes = await fetch(
         'http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token',
@@ -98,8 +98,19 @@ async function fwGetGeminiEndpoint(): Promise<{ url: string; headers: Record<str
       if (metaRes.ok) {
         const t = await metaRes.json();
         if (t.access_token) {
-          headers['Authorization'] = `Bearer ${t.access_token}`;
-          return { url: `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${VERTEX_PROJECT}/locations/${VERTEX_LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`, headers };
+          // Resolve project ID: env var or metadata
+          let projectId = VERTEX_PROJECT;
+          if (!projectId) {
+            const projRes = await fetch(
+              'http://metadata.google.internal/computeMetadata/v1/project/project-id',
+              { headers: { 'Metadata-Flavor': 'Google' }, signal: AbortSignal.timeout(2000) }
+            );
+            if (projRes.ok) projectId = (await projRes.text()).trim();
+          }
+          if (projectId) {
+            headers['Authorization'] = `Bearer ${t.access_token}`;
+            return { url: `https://${VERTEX_LOCATION}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${VERTEX_LOCATION}/publishers/google/models/${GEMINI_MODEL}:generateContent`, headers };
+          }
         }
       }
     } catch { /* not on Cloud Run */ }
