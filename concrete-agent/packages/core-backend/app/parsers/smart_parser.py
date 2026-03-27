@@ -72,6 +72,8 @@ class SmartParser:
             return self.parse_docx(path)
         elif detected_type == "csv":
             return self.parse_csv(path)
+        elif detected_type == "image":
+            return self.parse_image(path)
         else:
             return self.parse_pdf(path)
 
@@ -149,6 +151,52 @@ class SmartParser:
         except Exception as e:
             logger.error(f"SmartParser: CSV failed: {e}")
             return {"positions": [], "text": "", "strategy": "csv_error", "error": str(e)}
+
+    def parse_image(self, path: Path) -> Dict[str, Any]:
+        """
+        Parse image (JPG/PNG/TIFF) by converting to PDF, then using PDF pipeline.
+
+        Flow: Pillow → save as single-page PDF → parse_pdf() pipeline
+        This leverages pdfplumber → MinerU → memory_pdf fallback chain.
+        """
+        logger.info(f"SmartParser: Image {path.name}")
+        try:
+            from PIL import Image
+            img = Image.open(str(path))
+            # Convert to RGB if needed (RGBA/P modes can't save to PDF directly)
+            if img.mode in ("RGBA", "P", "LA"):
+                img = img.convert("RGB")
+            elif img.mode not in ("RGB", "L"):
+                img = img.convert("RGB")
+
+            # Save as temporary PDF
+            import tempfile
+            with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+                tmp_pdf = Path(tmp.name)
+                img.save(str(tmp_pdf), "PDF", resolution=200.0)
+                img.close()
+
+            logger.info(f"SmartParser: Image → PDF ({tmp_pdf.stat().st_size / 1024:.0f}KB)")
+
+            # Use the existing PDF pipeline (pdfplumber → MinerU → memory_pdf)
+            result = self.parse_pdf(tmp_pdf)
+            result["strategy"] = f"image_via_pdf ({result.get('strategy', 'unknown')})"
+            result["source_image"] = path.name
+
+            # Cleanup temp PDF
+            try:
+                tmp_pdf.unlink()
+            except OSError:
+                pass
+
+            return result
+
+        except ImportError:
+            logger.warning("Pillow not installed, cannot parse images")
+            return {"positions": [], "text": "", "strategy": "image_no_pillow"}
+        except Exception as e:
+            logger.error(f"SmartParser: Image failed: {e}")
+            return {"positions": [], "text": "", "strategy": "image_error", "error": str(e)}
 
     def parse_pdf(self, path: Path) -> Dict[str, Any]:
         """
@@ -248,6 +296,8 @@ class SmartParser:
             return "docx"
         elif ext in (".csv", ".tsv"):
             return "csv"
+        elif ext in (".jpg", ".jpeg", ".png", ".tiff", ".tif", ".bmp", ".gif", ".webp"):
+            return "image"
         else:
             return "pdf"
 

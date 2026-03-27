@@ -27,7 +27,7 @@ import CrossValidationPanel from '../components/portal/DocumentAnalysis/CrossVal
 import { API_URL } from '../services/api';
 
 const CORE_API_URL = `${API_URL}/api/core`;
-const ALLOWED_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml', 'docx', 'csv'];
+const ALLOWED_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml', 'docx', 'csv', 'jpg', 'jpeg', 'png', 'tiff', 'tif'];
 
 const IDENT_LABELS: Record<string, string> = {
   stavba: 'Stavba',
@@ -76,6 +76,8 @@ function detectFileIntent(file: File): { label: string; icon: typeof FileText } 
   }
   if (ext === 'xml') return { label: 'XML soupis (OTSKP/TSKP)', icon: Database };
   if (ext === 'pdf') return { label: 'PDF dokument', icon: FileText };
+  if (['jpg', 'jpeg', 'png', 'tiff', 'tif'].includes(ext))
+    return { label: 'Obrázek (OCR)', icon: FileText };
   return { label: file.name, icon: FileText };
 }
 
@@ -127,7 +129,7 @@ export default function DocumentAnalysisPage() {
 
     const ext = getFileExtension(file.name);
     if (!ALLOWED_EXTENSIONS.includes(ext)) {
-      setError(`Nepodporovaný formát .${ext}. Povolené: PDF, XLSX, XLS, XML, DOCX, CSV.`);
+      setError(`Nepodporovaný formát .${ext}. Povolené: PDF, XLSX, XLS, XML, DOCX, CSV, JPG, PNG, TIFF.`);
       setIsUploading(false);
       return;
     }
@@ -317,12 +319,19 @@ export default function DocumentAnalysisPage() {
       if (passportData) content.passport = passportData;
       if (soupisData) content.soupis_praci = soupisData;
       if (projectData) content.project_analysis = projectData;
+      // Include extracted metadata for future compliance checks
+      if ((passportData as any)?.norms) content.norms = (passportData as any).norms;
+      if ((passportData as any)?.identification) content.identification = (passportData as any).identification;
+      if ((passportData as any)?.referenced_documents) content.referenced_documents = (passportData as any).referenced_documents;
+      if ((passportData as any)?.classification) content.classification = (passportData as any).classification;
 
       const metadata: Record<string, unknown> = {
         file_name: uploadedFile?.name,
         saved_at: new Date().toISOString(),
         processing_time_seconds: passportData?.metadata?.processing_time_seconds,
         parser_used: passportData?.metadata?.parser_used,
+        has_norms: !!((passportData as any)?.norms?.length),
+        has_identification: !!((passportData as any)?.identification),
       };
 
       const res = await fetch(`${API_URL}/api/portal-documents/${projectId}`, {
@@ -544,6 +553,8 @@ export default function DocumentAnalysisPage() {
               <span className="da-format-tag">XML</span>
               <span className="da-format-tag">DOCX</span>
               <span className="da-format-tag">CSV</span>
+              <span className="da-format-tag">JPG</span>
+              <span className="da-format-tag">PNG</span>
             </div>
             <p className="da-upload-hint">
               Více souborů najednou = projektová analýza s SO merge
@@ -851,7 +862,7 @@ export default function DocumentAnalysisPage() {
       <input
         ref={fileInputRef as React.RefObject<HTMLInputElement>}
         type="file"
-        accept=".pdf,.xlsx,.xls,.xml,.docx,.csv"
+        accept=".pdf,.xlsx,.xls,.xml,.docx,.csv,.jpg,.jpeg,.png,.tiff,.tif"
         multiple
         onChange={handleFileSelect}
         style={{ display: 'none' }}
