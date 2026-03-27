@@ -545,18 +545,26 @@ VITE_DISABLE_AUTH=true
   - Two-step save flow: select project → review cross-validation → confirm save
 - **New "Normy (NKB)" tab** in DocumentAnalysisPage (6th tab alongside Passport, Soupis, Audit, Shrnutí, Analýza)
 
+- **Image/Photo OCR (`smart_parser.py` + `routes_passport.py`):**
+  - `parse_image()`: converts JPG/PNG/TIFF → PDF via Pillow, then uses existing PDF pipeline
+  - Flow: Image → Pillow RGB → temp PDF → pdfplumber → MinerU → memory_pdf fallback
+  - Both `/generate` and `/process-project` endpoints accept image extensions
+  - Frontend: accept .jpg/.jpeg/.png/.tiff uploads, "Obrázek (OCR)" label, format tags
+- **Enhanced document save:**
+  - Saves norms, identification, referenced_documents, classification alongside passport content
+  - Metadata includes has_norms and has_identification flags for quick filtering
+
 **Technical debt / TODO (next session):**
-1. **Image/Photo OCR**: Wire MinerU client for .jpg/.png/.tiff uploads (client exists, routing missing)
-2. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
-3. **E2E testing**: Upload real XLSX + PDF through Portal → verify norms, identification, PBRS, NKB in response
-4. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
-5. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
-6. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
-7. **Cross-validation via CORE**: currently frontend-only comparison, wire through `/api/v1/project/{id}/add-document` for server-side TZ↔Soupis cross-validation
-8. **Compliance auto-save**: save ComplianceReport alongside passport when saving to project
+1. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
+2. **E2E testing**: Upload real XLSX + PDF + JPG through Portal → verify full pipeline
+3. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
+4. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
+5. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+6. **Cross-validation via CORE**: currently frontend-only comparison, wire through `/api/v1/project/{id}/add-document` for server-side TZ↔Soupis cross-validation
+7. **MinerU image endpoint**: add `/parse-image` to mineru_service for direct OCR (currently goes through PDF conversion)
 
 **Current branch status:**
-- `claude/batch-insert-update-p4L8D` — 2 commits (project state persistence + NKB compliance + cross-validation)
+- `claude/batch-insert-update-p4L8D` — 4 commits (project persistence + NKB compliance + cross-validation + image OCR)
 - PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
