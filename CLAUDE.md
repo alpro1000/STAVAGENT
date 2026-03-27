@@ -578,14 +578,26 @@ VITE_DISABLE_AUTH=true
   - 8 tests: health, PDF/XLSX/JPG passport, format rejection, norms/identification extraction, NKB advisor+stats
   - Run with `CORE_URL=http://localhost:8000 pytest tests/test_e2e_pipeline.py -v`
 
+- **NKB admin page (`NKBAdminPage.tsx`):**
+  - Route: `/portal/nkb`, lazy-loaded in App.tsx
+  - Norms tab: search, priority badges, expandable details (scope, tags)
+  - Rules tab: type badges, mandatory markers, parameter values, section references
+  - Stats tab: total norms/rules, category/rule-type breakdown
+  - Add norm form: inline, with category selector, scope, tags
+- **Cloud Build NKB migration:**
+  - New `nkb-migration` step in `cloudbuild-concrete.yaml` (after deploy)
+  - Runs `004_nkb_tables.sql` via psql (CREATE TABLE IF NOT EXISTS — idempotent)
+  - Uses `CONCRETE_DATABASE_URL` from Secret Manager
+  - Non-blocking: skips gracefully if DB unavailable
+
 **Technical debt / TODO (next session):**
 1. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
 2. **Run E2E tests**: need live CORE server to execute test_e2e_pipeline.py
-3. **NKB admin UI**: web interface for norm/rule management (CRUD)
-4. **Cloud Build**: add NKB PostgreSQL migration step to cloudbuild-concrete.yaml
+3. **NKB rule editor**: add/edit rules from frontend (currently norms only)
+4. **Private DB connection**: Cloud SQL uses public IP, need VPC connector for security
 
 **Current branch status:**
-- `claude/batch-insert-update-p4L8D` — 9 commits (full session 4 work)
+- `claude/batch-insert-update-p4L8D` — 12 commits (full session 4 work)
 - PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
