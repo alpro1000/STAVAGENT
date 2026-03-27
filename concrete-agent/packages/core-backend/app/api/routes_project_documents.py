@@ -26,6 +26,8 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from app.core.config import settings
 from app.models.document_schemas import (
     AddDocumentResponse,
+    CrossValidationIssue,
+    CrossValidationResult,
     DiffEntry,
     DocType,
     DocumentDiff,
@@ -33,6 +35,7 @@ from app.models.document_schemas import (
     DocumentIdentity,
     DocumentSummary,
     MaterialEntry,
+    NormComplianceSummary,
     ProcessingStatus,
     VolumeEntry,
 )
@@ -219,6 +222,351 @@ def generate_summary_from_tz(
         flags=flags,
         searchable_text=text_content[:2000],
     )
+
+
+# ===========================================================================
+# Gemini AI enrichment for TZ documents
+# ===========================================================================
+
+_TZ_AI_PROMPT = """Analyzuj následující technickou zprávu (TZ) ze stavebního projektu.
+Vrať JSON s těmito poli:
+
+{{
+  "summary": "Stručný popis dokumentu (2-3 věty česky)",
+  "materials": [
+    {{"name": "Beton", "spec": "C30/37 XC4 XD1", "quantity": 150.0, "unit": "m³"}},
+    ...
+  ],
+  "volumes": [
+    {{"description": "Celkový objem betonu", "value": 150.0, "unit": "m³"}},
+    ...
+  ],
+  "risks": [
+    "Riziko: ...",
+    ...
+  ],
+  "standards": ["ČSN EN 206", "ČSN 73 6214", ...],
+  "key_requirements": ["Minimální teplota betonáže +5°C", ...]
+}}
+
+Pokud informace v textu není, nevymýšlej ji. Vrať prázdný seznam.
+Text dokumentu (první 4000 znaků):
+
+{text}
+"""
+
+
+async def enrich_summary_with_ai(
+    summary: DocumentSummary,
+    text_content: str,
+) -> DocumentSummary:
+    """Enrich DocumentSummary with Gemini AI analysis."""
+    try:
+        from app.core.gemini_client import GeminiClient, VertexGeminiClient
+
+        # Try Vertex AI first (free on Cloud Run), fallback to API key
+        client = None
+        model_name = "unknown"
+        try:
+            client = VertexGeminiClient()
+            model_name = getattr(client, 'model_name', 'vertex-gemini')
+        except Exception:
+            try:
+                client = GeminiClient()
+                model_name = getattr(client, 'model_name', 'gemini')
+            except Exception as e:
+                logger.debug("No Gemini client available: %s", e)
+                summary.flags.append(DocumentFlag(
+                    severity="info",
+                    message="AI enrichment nedostupný (chybí Gemini API)",
+                ))
+                return summary
+
+        prompt = _TZ_AI_PROMPT.format(text=text_content[:4000])
+        result = client.call(prompt, temperature=0.2)
+
+        if not isinstance(result, dict) or "raw_text" in result:
+            logger.warning("AI enrichment returned non-JSON: %s", str(result)[:200])
+            summary.flags.append(DocumentFlag(
+                severity="info",
+                message="AI vrátil nestrukturovanou odpověď",
+            ))
+            return summary
+
+        # Merge AI results into summary
+        summary.ai_summary = result.get("summary", "")
+        summary.ai_model_used = model_name
+        summary.ai_confidence = 0.7
+
+        # AI materials (supplement regex-extracted ones)
+        for mat_data in result.get("materials", [])[:20]:
+            if isinstance(mat_data, dict):
+                summary.ai_materials.append(MaterialEntry(
+                    name=mat_data.get("name", ""),
+                    spec=mat_data.get("spec"),
+                    quantity=mat_data.get("quantity"),
+                    unit=mat_data.get("unit"),
+                ))
+
+        # AI volumes
+        for vol_data in result.get("volumes", [])[:10]:
+            if isinstance(vol_data, dict):
+                summary.ai_volumes.append(VolumeEntry(
+                    description=vol_data.get("description", ""),
+                    value=float(vol_data.get("value", 0)),
+                    unit=vol_data.get("unit", ""),
+                ))
+
+        # AI risks
+        for risk in result.get("risks", [])[:10]:
+            if isinstance(risk, str) and risk.strip():
+                summary.ai_risks.append(risk.strip())
+
+        # Supplement regex results with AI results
+        ai_standards = result.get("standards", [])
+        existing = set(summary.standards)
+        for std in ai_standards:
+            if isinstance(std, str) and std not in existing:
+                summary.standards.append(std)
+
+        ai_reqs = result.get("key_requirements", [])
+        existing_reqs = set(summary.key_requirements)
+        for req in ai_reqs:
+            if isinstance(req, str) and req not in existing_reqs:
+                summary.key_requirements.append(req)
+
+        if summary.ai_summary:
+            summary.description = summary.ai_summary
+
+        logger.info("AI enrichment OK: model=%s, materials=%d, volumes=%d, risks=%d",
+                     model_name, len(summary.ai_materials), len(summary.ai_volumes), len(summary.ai_risks))
+
+    except Exception as e:
+        logger.warning("AI enrichment failed: %s", e)
+        summary.flags.append(DocumentFlag(
+            severity="info",
+            message=f"AI enrichment selhal: {str(e)[:100]}",
+        ))
+
+    return summary
+
+
+# ===========================================================================
+# TZ ↔ Soupis cross-validation
+# ===========================================================================
+
+def cross_validate_project(proj: Dict[str, Any]) -> Optional[CrossValidationResult]:
+    """
+    Cross-validate TZ documents against soupis prací.
+
+    Checks:
+    - Materials in TZ are covered by soupis positions
+    - Standards referenced in TZ have corresponding positions
+    - Key requirements have matching work items
+    """
+    tz_docs = []
+    soupis_docs = []
+
+    for key, doc_data in proj.get("documents", {}).items():
+        dt = doc_data.get("doc_type", "")
+        if dt.startswith("tz_"):
+            tz_docs.append(doc_data)
+        elif dt == "soupis_praci":
+            soupis_docs.append(doc_data)
+
+    if not tz_docs or not soupis_docs:
+        return None  # Need both TZ and soupis for validation
+
+    issues: List[CrossValidationIssue] = []
+
+    # Collect all materials from TZ (regex + AI)
+    tz_materials: List[Dict[str, str]] = []
+    for tz in tz_docs:
+        for mat in tz.get("materials", []):
+            tz_materials.append(mat)
+        for mat in tz.get("ai_materials", []):
+            tz_materials.append(mat)
+
+    # Collect searchable text from soupis
+    soupis_text = ""
+    soupis_positions = 0
+    for sp in soupis_docs:
+        soupis_text += (sp.get("searchable_text", "") + " ").lower()
+        soupis_positions += sp.get("positions_count", 0)
+
+    # Check each TZ material against soupis
+    matched = 0
+    for mat in tz_materials:
+        mat_name = (mat.get("name", "") or "").lower()
+        mat_spec = (mat.get("spec", "") or "").lower()
+
+        # Search in soupis text
+        found = False
+        if mat_spec and len(mat_spec) > 2:
+            if mat_spec in soupis_text:
+                found = True
+        if not found and mat_name and len(mat_name) > 3:
+            if mat_name in soupis_text:
+                found = True
+
+        if found:
+            matched += 1
+        else:
+            display = f"{mat.get('name', '')} {mat.get('spec', '')}".strip()
+            if display:
+                issues.append(CrossValidationIssue(
+                    severity="warning",
+                    category="material_mismatch",
+                    tz_reference=display,
+                    soupis_reference="chybí v soupisu prací",
+                    message=f"Materiál '{display}' z TZ nenalezen v soupisu prací",
+                ))
+
+    # Check TZ standards
+    tz_standards = set()
+    for tz in tz_docs:
+        for std in tz.get("standards", []):
+            tz_standards.add(std)
+
+    # Coverage score
+    total_tz = len(tz_materials)
+    coverage = matched / total_tz if total_tz > 0 else 1.0
+
+    if coverage < 0.5 and total_tz > 2:
+        issues.append(CrossValidationIssue(
+            severity="error",
+            category="low_coverage",
+            message=f"Pouze {matched}/{total_tz} materiálů z TZ nalezeno v soupisu ({coverage:.0%})",
+        ))
+
+    return CrossValidationResult(
+        validated=True,
+        issues=issues[:30],
+        tz_materials_count=total_tz,
+        soupis_materials_count=soupis_positions,
+        coverage_score=round(coverage, 2),
+    )
+
+
+# ===========================================================================
+# Perplexity standards verification (supplement AI enrichment)
+# ===========================================================================
+
+async def verify_standards_with_perplexity(summary: DocumentSummary) -> DocumentSummary:
+    """Use Perplexity to verify extracted standards are current and correct."""
+    if not settings.has_perplexity:
+        return summary
+    if not summary.standards:
+        return summary
+
+    try:
+        import httpx
+        standards_list = ", ".join(summary.standards[:10])
+        prompt = (
+            f"Ověř platnost těchto českých stavebních norem: {standards_list}. "
+            f"Pro každou normu: je stále platná? Byla nahrazena? "
+            f"Odpověz stručně česky, max 3 věty na normu."
+        )
+
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                "https://api.perplexity.ai/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {settings.PERPLEXITY_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": "sonar-pro",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.3,
+                    "max_tokens": 1024,
+                },
+            )
+
+        if response.status_code == 200:
+            data = response.json()
+            text = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+            if text:
+                summary.flags.append(DocumentFlag(
+                    severity="info",
+                    message=f"Perplexity ověření norem: {text[:500]}",
+                    source="perplexity",
+                ))
+                logger.info("[Perplexity] Standards verification: %d chars", len(text))
+        else:
+            logger.warning("[Perplexity] HTTP %d for standards verification", response.status_code)
+
+    except Exception as e:
+        logger.debug("[Perplexity] Standards verification failed: %s", e)
+
+    return summary
+
+
+# ===========================================================================
+# NKB Compliance check
+# ===========================================================================
+
+def run_norm_compliance(
+    project_id: str,
+    summary: DocumentSummary,
+    construction_type: Optional[str] = None,
+) -> Optional[NormComplianceSummary]:
+    """Run NKB compliance check on a document summary."""
+    try:
+        from app.services.norm_matcher import check_compliance
+
+        # Build document_data from summary
+        doc_data = {
+            "materials": [m.model_dump() for m in summary.materials + summary.ai_materials],
+            "standards": summary.standards,
+            "objects": [],
+            "searchable_text": summary.searchable_text or "",
+        }
+
+        # Auto-detect construction type from doc_type
+        if not construction_type:
+            dt = summary.doc_type.value
+            if "most" in dt:
+                construction_type = "mostní"
+            elif dt in ("tz_komunikace", "tz_zemni_prace"):
+                construction_type = "dopravní"
+            elif dt in ("tz_zti", "tz_vzt", "tz_ut", "tz_elektro"):
+                construction_type = "pozemní"
+
+        report = check_compliance(
+            project_id=project_id,
+            document_data=doc_data,
+            construction_type=construction_type,
+        )
+
+        if report.total_rules_checked == 0:
+            return None
+
+        # Convert to lightweight summary for response
+        top_findings = []
+        for f in report.findings[:5]:
+            top_findings.append({
+                "rule_id": f.rule_id,
+                "norm": f.norm_designation,
+                "title": f.rule_title,
+                "status": f.status.value,
+                "message": f.message,
+                "severity": f.severity,
+            })
+
+        return NormComplianceSummary(
+            score=report.score,
+            total_checked=report.total_rules_checked,
+            passed=report.passed,
+            warnings=report.warnings,
+            violations=report.violations,
+            norms_referenced=report.norms_referenced,
+            top_findings=top_findings,
+        )
+
+    except Exception as e:
+        logger.warning("NKB compliance check failed: %s", e)
+        return None
 
 
 # ===========================================================================
@@ -423,17 +771,18 @@ async def add_document(
     project_id: str,
     file: UploadFile = File(...),
     force_type: Optional[str] = Form(None),
+    enable_ai: Optional[str] = Form("true"),
 ):
     """
     Add a document to a project.
 
-    Flow: upload → detect type → parse (sync for Excel, async for PDF via MinerU)
-    → generate summary → compute diff → update project.json
+    Flow: upload → detect type → parse → AI enrich (Gemini) → diff → cross-validate → update project.json
 
     Args:
         project_id: UUID of the project
         file: The document file
         force_type: Optional override for doc_type (e.g. "tz_beton")
+        enable_ai: "true"/"false" — enable Gemini AI enrichment for TZ documents
     """
     filename = file.filename or "unknown"
     content = await file.read()
@@ -494,6 +843,7 @@ async def add_document(
             )
 
         # -- 4. Route to parser --
+        ai_enabled = enable_ai != "false"
         summary: Optional[DocumentSummary] = None
 
         if doc_type == DocType.SOUPIS_PRACI and ext in (".xlsx", ".xlsm", ".xls", ".xml"):
@@ -501,8 +851,8 @@ async def add_document(
             summary = _parse_soupis_sync(tmp_path, filename)
 
         elif ext == ".pdf":
-            # Sync PDF parsing via pdfplumber text extraction
-            summary = _parse_pdf_sync(tmp_path, filename, doc_type)
+            # Async PDF: pdfplumber → MinerU fallback → Gemini AI enrichment
+            summary = await _parse_pdf_async(tmp_path, filename, doc_type, enable_ai=ai_enabled)
 
         else:
             # Generic: try universal_parser, fallback to basic summary
@@ -519,14 +869,32 @@ async def add_document(
         # -- 6. Update project.json --
         new_version = update_project_with_document(project_id, identity, summary)
 
+        # -- 7. Cross-validate TZ ↔ Soupis if both present --
+        updated_proj = load_project_json(project_id)
+        xval = cross_validate_project(updated_proj)
+
+        # -- 8. Perplexity standards verification (async, non-blocking) --
+        if ai_enabled and summary.standards:
+            try:
+                summary = await verify_standards_with_perplexity(summary)
+            except Exception as e:
+                logger.debug("Perplexity verification skipped: %s", e)
+
+        # -- 9. NKB norm compliance check --
+        norm_compliance = run_norm_compliance(project_id, summary)
+
         action = "aktualizován" if is_update else "přidán"
+        ai_note = f", AI: {summary.ai_model_used}" if summary.ai_model_used else ""
+        nkb_note = f", NKB: {norm_compliance.score:.0%}" if norm_compliance else ""
         return AddDocumentResponse(
             project_id=project_id,
             status=ProcessingStatus.COMPLETE,
             identity=identity,
             summary=summary,
             diff=diff,
-            message=f"Dokument '{filename}' {action} ({doc_type.value}).",
+            cross_validation=xval,
+            norm_compliance=norm_compliance,
+            message=f"Dokument '{filename}' {action} ({doc_type.value}{ai_note}{nkb_note}).",
             version=new_version,
         )
 
@@ -560,15 +928,116 @@ def _parse_soupis_sync(file_path: str, filename: str) -> Optional[DocumentSummar
         )
 
 
-def _parse_pdf_sync(
-    file_path: str, filename: str, doc_type: DocType
+async def _parse_pdf_async(
+    file_path: str, filename: str, doc_type: DocType, enable_ai: bool = True,
 ) -> Optional[DocumentSummary]:
-    """Extract text from PDF and generate TZ summary."""
+    """
+    Extract text from PDF, generate TZ summary, enrich with full pipeline.
+
+    If enable_ai=True for TZ docs, uses NormIngestionPipeline:
+      L1 (pdfplumber/MinerU) → L2 (50+ regex, conf=1.0)
+      → L3a (Gemini with dedup, conf=0.7) → L3b (Perplexity verify+supplement)
+    """
+    # For TZ docs with AI, use the full ingestion pipeline
+    if enable_ai and doc_type.value.startswith("tz_"):
+        try:
+            from app.services.norm_ingestion_pipeline import NormIngestionPipeline
+            with open(file_path, "rb") as f:
+                file_bytes = f.read()
+            extraction = await NormIngestionPipeline.ingest(
+                file_path=file_path,
+                file_bytes=file_bytes,
+                filename=filename,
+                skip_perplexity=not settings.has_perplexity,
+            )
+
+            # Build DocumentSummary from ExtractionResult
+            text = ""
+            try:
+                import pdfplumber
+                with pdfplumber.open(file_path) as pdf:
+                    for page in pdf.pages[:30]:
+                        text += (page.extract_text() or "") + "\n"
+            except Exception:
+                pass
+
+            summary = generate_summary_from_tz(filename, doc_type, text or "")
+
+            # Enrich summary with pipeline results
+            if extraction.ai_summary:
+                summary.ai_summary = extraction.ai_summary
+                summary.description = extraction.ai_summary
+                summary.ai_model_used = "gemini-flash"
+                summary.ai_confidence = 0.7
+
+            # Add rich regex materials
+            for mat in extraction.materials:
+                if mat.value and str(mat.value) not in [m.spec for m in summary.materials]:
+                    summary.materials.append(MaterialEntry(
+                        name=str(mat.value), spec=str(mat.value),
+                    ))
+
+            # Add AI requirements
+            for req in extraction.ai_key_requirements:
+                req_text = req.get("requirement", "")
+                if req_text and req_text not in summary.key_requirements:
+                    summary.key_requirements.append(req_text)
+
+            # Add AI risks
+            for risk in extraction.ai_risks:
+                desc = risk.get("description", "")
+                if desc:
+                    summary.ai_risks.append(desc)
+
+            # Add AI volumes
+            for vol in extraction.ai_volumes:
+                summary.ai_volumes.append(VolumeEntry(
+                    description=vol.get("item", ""),
+                    value=float(vol.get("value", 0)),
+                    unit=vol.get("unit", ""),
+                ))
+
+            # Add norm references from rich regex
+            existing_stds = set(summary.standards)
+            for ref in extraction.norm_references:
+                ref_str = str(ref.value)
+                if ref_str not in existing_stds:
+                    summary.standards.append(ref_str)
+                    existing_stds.add(ref_str)
+
+            # Add Perplexity verification results as flags
+            for v in extraction.verified_norms:
+                norm = v.get("norm", "")
+                is_current = v.get("is_current", True)
+                if not is_current:
+                    replaced_by = v.get("replaced_by", "neznámo")
+                    summary.flags.append(DocumentFlag(
+                        severity="warning",
+                        message=f"Norma {norm} byla nahrazena: {replaced_by}",
+                        source="perplexity",
+                    ))
+
+            # Store extraction stats in raw_extraction
+            summary.raw_extraction["ingestion_stats"] = extraction.stats
+            summary.raw_extraction["extracted_rules_count"] = len(extraction.extracted_rules)
+
+            logger.info(
+                "Full pipeline for %s: %d norms, %d tolerances, %d rules",
+                filename, len(extraction.norm_references),
+                len(extraction.tolerances), len(extraction.extracted_rules),
+            )
+            return summary
+
+        except Exception as e:
+            logger.warning("Full pipeline failed for %s, falling back: %s", filename, e)
+            # Fall through to legacy path
+
+    # Legacy path: simple extraction
     text = ""
     try:
         import pdfplumber
         with pdfplumber.open(file_path) as pdf:
-            for page in pdf.pages[:30]:  # Max 30 pages
+            for page in pdf.pages[:30]:
                 page_text = page.extract_text() or ""
                 text += page_text + "\n"
     except Exception as e:
@@ -580,7 +1049,16 @@ def _parse_pdf_sync(
         )
 
     if not text.strip():
-        # Could queue MinerU here for OCR, but for now return empty summary with flag
+        try:
+            from app.parsers.mineru_client import parse_pdf_with_mineru
+            mineru_text = parse_pdf_with_mineru(file_path)
+            if mineru_text:
+                text = mineru_text
+                logger.info("MinerU OCR succeeded for %s: %d chars", filename, len(text))
+        except Exception as e:
+            logger.debug("MinerU unavailable: %s", e)
+
+    if not text.strip():
         return DocumentSummary(
             doc_type=doc_type,
             title=filename,
@@ -590,7 +1068,12 @@ def _parse_pdf_sync(
             )],
         )
 
-    return generate_summary_from_tz(filename, doc_type, text)
+    summary = generate_summary_from_tz(filename, doc_type, text)
+
+    if enable_ai and doc_type.value.startswith("tz_"):
+        summary = await enrich_summary_with_ai(summary, text)
+
+    return summary
 
 
 def _parse_generic(
