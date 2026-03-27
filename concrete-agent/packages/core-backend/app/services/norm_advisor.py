@@ -16,7 +16,7 @@ Date: 2026-03-27
 
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.config import settings
 from app.models.norm_schemas import (
@@ -79,7 +79,7 @@ Pokud norma neexistuje nebo ji neznáš, uveď to."""
 # ---------------------------------------------------------------------------
 # Gemini call
 # ---------------------------------------------------------------------------
-async def _call_gemini_advisor(prompt: str) -> Optional[Dict[str, Any]]:
+async def _call_gemini_advisor(prompt: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     """Call Gemini for norm advisory analysis."""
     try:
         # Try Vertex AI first (free on Cloud Run)
