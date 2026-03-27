@@ -155,6 +155,22 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Alias: /api/health → same as /health (some monitoring tools expect /api/health)
+app.get('/api/health', (req, res) => {
+  const dbMode = process.env.DATABASE_URL ? 'postgresql' : 'sqlite (no DATABASE_URL set!)';
+  const authMode = (process.env.DISABLE_AUTH === 'true' || (!!process.env.K_SERVICE && !process.env.JWT_SECRET))
+    ? 'disabled' : 'jwt';
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: '1.0.0',
+    db: dbMode,
+    auth: authMode,
+    env: process.env.K_SERVICE ? 'cloud-run' : (process.env.RENDER ? 'render' : 'local')
+  });
+});
+
 // Keep-Alive healthcheck (with secret key protection)
 app.get('/healthcheck', (req, res) => {
   const keepAliveKey = process.env.KEEP_ALIVE_KEY;
