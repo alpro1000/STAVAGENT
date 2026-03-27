@@ -479,7 +479,16 @@ VITE_DISABLE_AUTH=true
 9. **NKB seed data expansion**: add more ČSN norms, TKP rules
 10. **PostgreSQL migration for NKB**: JSON storage → PostgreSQL tables
 
+**Completed (2026-03-27, session 3 — send-to-core 500 fix):**
+- **FIX: send-to-core HTTP 500 (portal-projects.js + portal-files.js):**
+  - Root cause 1: CORE Workflow C returns `project_id`, portal read `coreResult.workflow_id` (undefined → NULL in DB)
+  - Fix: `coreResult.project_id || coreResult.workflow_id || id` fallback chain
+  - Root cause 2: `ROLLBACK` called without `BEGIN` when CORE HTTP call failed before transaction start
+  - Fix: `transactionStarted` boolean guard, safe ROLLBACK with try-catch
+  - Affected: `POST /:id/send-to-core` (portal-projects.js) + `POST /:fileId/analyze` (portal-files.js)
+
 **Current branch status:**
+- `claude/fix-send-to-core-500-mQ7Sf` — 1 commit (send-to-core 500 fix)
 - `claude/thread-safe-mineru-client-AnXHZ` — 8 commits (Bedrock + portal cleanup + bug fixes)
 - `claude/universal-parser-railway-iYmQk` — merged (7 commits, add-document + NKB + ingestion pipeline)
 - `claude/cross-service-cleanup-integration-7kY7b` — PR #723 merged
