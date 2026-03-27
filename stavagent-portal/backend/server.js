@@ -204,8 +204,10 @@ app.use('/api/portal-projects', portalProjectsRoutes);
 app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
 app.use('/api/kiosk-links', kioskLinksRoutes);
 
-// Portal documents (passports, summaries, kiosk outputs) - service key for kiosk writes
-app.use('/api/portal-documents', requireServiceKey, portalDocumentsRoutes);
+// Portal documents (passports, summaries, kiosk outputs) — frontend + kiosk access
+// No requireServiceKey: frontend uses JWT (same pattern as portal-projects),
+// kiosks can still send X-Service-Key but it's not required here.
+app.use('/api/portal-documents', portalDocumentsRoutes);
 
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);

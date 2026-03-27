@@ -88,7 +88,11 @@ async def generate_passport(
     logger.info(f"Generating passport: {project_name}, AI: {enable_ai_enrichment}, mode: {analysis_mode}")
 
     # Validate file type
-    allowed_extensions = ['.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv']
+    allowed_extensions = [
+        '.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv',
+        '.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.gif', '.webp',
+        '.dxf', '.dwg',
+    ]
     file_ext = Path(file.filename).suffix.lower()
 
     if file_ext not in allowed_extensions:
@@ -767,7 +771,11 @@ async def process_project(
     logger.info(f"Processing project: {project_name}, {len(files)} files")
 
     # Validate files
-    allowed_extensions = ['.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv']
+    allowed_extensions = [
+        '.pdf', '.xlsx', '.xls', '.xml', '.docx', '.csv',
+        '.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.gif', '.webp',
+        '.dxf', '.dwg',
+    ]
     temp_dir = tempfile.mkdtemp()
     saved_paths: list[str] = []
 

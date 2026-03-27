@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.3.1
+**Version:** 3.3.2
 **Last Updated:** 2026-03-27
 **Repository:** STAVAGENT (Monorepo)
 
@@ -524,29 +524,144 @@ VITE_DISABLE_AUTH=true
   - "0 pozic" no longer shown for TZ documents (only when > 0)
 - **Architecture decision**: deleted app/pipeline/ (1759 LOC unused duplication) — all functionality extends existing app/services/
 
-**Technical debt / TODO (next session):**
-1. **Project state persistence**: Wire `portal_documents` table (already exists in Portal DB) for saving passport results. Add save button to DocumentAnalysisPage. Currently passports are in-memory only (lost on restart).
-2. **Cross-validation wiring**: When uploading to existing project (project_id), compare new document against previously saved documents. so_merger.py already exists (496 LOC), needs per-document invocation via portal_documents lookup.
-3. **NKB Frontend**: Display norm compliance findings, advisor recommendations in Portal
-4. **Image/Photo OCR**: Wire MinerU client for .jpg/.png/.tiff uploads (client exists, routing missing)
-5. **DXF support**: Add ezdxf extraction to smart_parser.py (ezdxf not in requirements yet)
-6. **Testing**: Upload real XLSX + PDF through Portal → verify norms, identification, PBRS in response
-7. **NKB seed data expansion**: add more ČSN norms (EN 1992 Eurocode 2, ČSN 73 0210, ČSN 73 2400)
-8. **PostgreSQL migration for NKB**: current JSON storage → PostgreSQL tables for production scale
-9. **Bedrock testing**: AWS Bedrock integration written but not tested (ThrottlingException — need quota increase)
+**Completed (2026-03-27, session 4 — Project state persistence + NKB frontend):**
+- **Project state persistence (DocumentAnalysisPage):**
+  - Save button in meta bar → project picker overlay (create new / select existing)
+  - Saves full passport + soupis + project analysis as JSONB in `portal_documents` table
+  - Auto-versioning on re-save to same project
+  - Load saved analyses from upload zone → saved docs panel (sorted by date)
+  - Backend: removed `requireServiceKey` from portal-documents route (frontend access)
+- **NKB Compliance tab (`ComplianceTab.tsx`):**
+  - Auto-runs NKB advisor check when passport data available
+  - Builds context from passport (materials, norms, structure type) → `POST /api/core/nkb/advisor`
+  - Displays: compliance score ring (%), pass/warn/violation badges, expandable findings
+  - AI analysis section (Gemini) with Perplexity supplement, severity coloring
+  - Referenced norms pills, warning items
+- **Cross-validation panel (`CrossValidationPanel.tsx`):**
+  - Shows in project picker when saving to project that has previous documents
+  - Loads latest passport from selected project and compares field-by-field
+  - Compares: concrete classes, volumes (2% numeric tolerance), reinforcement, tonnage, structure type, norms
+  - Color-coded status: match (green), mismatch (red), new (blue), missing (yellow)
+  - Two-step save flow: select project → review cross-validation → confirm save
+- **New "Normy (NKB)" tab** in DocumentAnalysisPage (6th tab alongside Passport, Soupis, Audit, Shrnutí, Analýza)
+
+- **Image/Photo OCR (`smart_parser.py` + `routes_passport.py`):**
+  - `parse_image()`: converts JPG/PNG/TIFF → PDF via Pillow, then uses existing PDF pipeline
+  - Flow: Image → Pillow RGB → temp PDF → pdfplumber → MinerU → memory_pdf fallback
+  - Both `/generate` and `/process-project` endpoints accept image extensions
+  - Frontend: accept .jpg/.jpeg/.png/.tiff uploads, "Obrázek (OCR)" label, format tags
+- **Enhanced document save:**
+  - Saves norms, identification, referenced_documents, classification alongside passport content
+  - Metadata includes has_norms and has_identification flags for quick filtering
+- **DXF parsing (`smart_parser.py`):**
+  - `parse_dxf()`: extracts TEXT/MTEXT entities, dimensions, block refs, layer names via ezdxf
+  - ezdxf>=1.1.0 added to requirements.txt
+  - Both `/generate` and `/process-project` endpoints accept .dxf/.dwg
+- **NKB seed data expansion (14→23 norms, 14→23 rules):**
+  - Norms: Eurocode 2 (EN 1992-1-1), EC1 (EN 1991-1-1), EC7 (EN 1997-1), PBS (ČSN 73 0810), hydroizolace (ČSN 73 0600), thermal (ČSN 73 0540-2), concrete control (ČSN 73 2400), rebar steel (EN 10080), building reqs (vyhláška 268/2009)
+  - Rules: min cover depth, max deflection L/250, max crack width 0.3mm, geotechnical survey, fire REI, thermal U-value, B500B 500MPa, concrete slump test
+- **MinerU /parse-image endpoint (v1.1.0):**
+  - `POST /parse-image`: accepts JPG/PNG/TIFF → Pillow → PDF → MinerU OCR → markdown
+  - Direct image OCR without going through concrete-agent
+
+- **MinerU /parse-image client wiring:**
+  - `parse_image_with_mineru()` in mineru_client.py: calls `/parse-image` directly with MIME type mapping
+  - SmartParser.parse_image() now: Tier 1 MinerU /parse-image → Tier 2 Pillow→PDF fallback
+- **NKB PostgreSQL migration:**
+  - `migrations/004_nkb_tables.sql`: nkb_norms + nkb_rules tables, GIN indexes, FTS
+  - NormStore: PostgreSQL primary, JSON file fallback (auto-detect, auto-seed)
+  - `_load_from_pg()`, `_seed_to_pg()`, `_pg_upsert_norm/rule()` methods
+- **Cross-validation via CORE:**
+  - `sendToCoreAddDocument()`: fire-and-forget POST /api/core/project/{id}/add-document
+  - Server-side cross_validation + norm_compliance returned from CORE pipeline
+- **E2E test suite (`test_e2e_pipeline.py`):**
+  - 8 tests: health, PDF/XLSX/JPG passport, format rejection, norms/identification extraction, NKB advisor+stats
+  - Run with `CORE_URL=http://localhost:8000 pytest tests/test_e2e_pipeline.py -v`
+
+- **NKB admin page (`NKBAdminPage.tsx`):**
+  - Route: `/portal/nkb`, lazy-loaded in App.tsx
+  - Norms tab: search, priority badges, expandable details (scope, tags)
+  - Rules tab: type badges, mandatory markers, parameter values, section references
+  - Stats tab: total norms/rules, category/rule-type breakdown
+  - Add norm form: inline, with category selector, scope, tags
+- **Cloud Build NKB migration:**
+  - New `nkb-migration` step in `cloudbuild-concrete.yaml` (after deploy)
+  - Runs `004_nkb_tables.sql` via psql (CREATE TABLE IF NOT EXISTS — idempotent)
+  - Uses `CONCRETE_DATABASE_URL` from Secret Manager
+  - Non-blocking: skips gracefully if DB unavailable
+
+- **NKB rule editor (`NKBAdminPage.tsx`):**
+  - Add rule form: rule_id, norm_id (datalist autocomplete), rule_type selector
+  - Fields: title, description (textarea), parameter, value, min/max, unit
+  - Mandatory checkbox, priority, section_reference, tags
+  - Calls POST /api/core/nkb/rules/ingest
+
+---
+
+## ⚠️ РУЧНЫЕ ДЕЙСТВИЯ (требуют отчёта)
+
+> **Статус**: НЕ ВЫПОЛНЕНО. Каждый пункт нужно выполнить вручную и отчитаться.
+
+### 1. AWS Bedrock — увеличить квоту RPM
+- **Что**: Запросить увеличение RPM для Claude моделей в AWS Console
+- **Где**: AWS Console → Bedrock → Model access → Request quota increase
+- **Зачем**: ThrottlingException при текущих лимитах нового IAM user
+- **Как проверить**: `aws bedrock-runtime invoke-model --model-id anthropic.claude-3-haiku-20240307-v1:0 ...`
+- [ ] **Сделано?**
+
+### 2. E2E тесты — запустить на живом сервере
+- **Что**: Выполнить `CORE_URL=https://concrete-agent-1086027517695.europe-west3.run.app pytest tests/test_e2e_pipeline.py -v`
+- **Где**: Локально или в Cloud Shell (нужен доступ к CORE)
+- **Зачем**: 9 тестов (health, PDF/XLSX/JPG passport, norms, identification, NKB advisor, stats)
+- **Как проверить**: Все 9 тестов PASS
+- [ ] **Сделано?**
+
+### 3. VPC connector для Cloud SQL
+- **Что**: Создать VPC connector и подключить Cloud Run к приватной сети
+- **Где**: GCP Console → VPC → Serverless VPC Access
+- **Команды**:
+  ```bash
+  gcloud compute networks vpc-access connectors create stavagent-vpc \
+    --region=europe-west3 --range=10.8.0.0/28
+  ```
+  Затем в каждом Cloud Run сервисе добавить:
+  `--vpc-connector=stavagent-vpc --vpc-egress=private-ranges-only`
+  И отключить публичный IP на Cloud SQL.
+- **Зачем**: Безопасность — БД не должна быть доступна из интернета
+- [ ] **Сделано?**
+
+### 4. Merge PR → main → Cloud Build deploy
+- **Что**: Создать PR из `claude/batch-insert-update-p4L8D` → `main`, merge, дождаться Cloud Build
+- **Где**: GitHub → Pull Requests
+- **Зачем**: 13 коммитов (project persistence, NKB, image OCR, DXF, cross-validation, E2E tests, NKB admin)
+- **Как проверить**: Cloud Build зелёный, все сервисы /health OK
+- [ ] **Сделано?**
+
+### 5. NKB PostgreSQL миграция — проверить после деплоя
+- **Что**: После merge в main, Cloud Build запустит `004_nkb_tables.sql`. Проверить что таблицы создались.
+- **Как проверить**:
+  ```sql
+  SELECT COUNT(*) FROM nkb_norms;  -- должно быть >= 23
+  SELECT COUNT(*) FROM nkb_rules;  -- должно быть >= 23
+  ```
+- [ ] **Сделано?**
+
+### 6. MASTER_ENCRYPTION_KEY для Service Connections
+- **Что**: Сгенерировать ключ и добавить в Secret Manager
+- **Команда**: `openssl rand -hex 32` → GCP Secret Manager → `MASTER_ENCRYPTION_KEY`
+- **Зачем**: Sprint 2 Service Connections (AES-256-GCM шифрование API ключей)
+- [ ] **Сделано?**
+
+---
 
 **Current branch status:**
-- `claude/merge-mineru-client-pr-Ot0ri` — PR #733, 8 commits (batch INSERT + Vertex AI + frontend cleanup + extraction pipeline v3.3)
-- PR #731 merged to main (thread-safe MinerU + Bedrock + portal cleanup)
+- `claude/batch-insert-update-p4L8D` — 13 commits (full session 4 work)
+- PR #739 merged to main (PR #733 rebased)
 
 **Feature roadmap:**
-- Project state in Portal DB (project.json concept via portal_documents table)
-- Cross-validation between uploaded documents (fact matching + contradiction detection)
-- NKB compliance visualization in Portal
 - OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
-- DWG/IFC/BIM support (P3 — needs binaries)
-- NKB PostgreSQL migration + admin UI for norm/rule management
+- IFC/BIM support (P3 — needs binaries)
 - Deep Links
 - Vitest migration
 - Bedrock quota increase + model upgrade to Claude 3.5+
