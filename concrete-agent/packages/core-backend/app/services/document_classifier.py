@@ -81,9 +81,10 @@ CONSTRUCTION_TYPE_MARKERS: Dict[str, List[str]] = {
         "faktur", "objednávk",
     ],
     "pozemní_TZB": [
-        "D.1.4", "elektroinstalace", "slaboproud",
+        "D.1.4", "elektroinstalace", "slaboproud", "silnoproud",
         "vzduchotechnik", "zdravotechnik", "vytápění",
-        "měření a regulac",
+        "měření a regulac", "FVE", "fotovoltai", "střídač",
+        "rozvaděč", "hromosvod",
     ],
 }
 

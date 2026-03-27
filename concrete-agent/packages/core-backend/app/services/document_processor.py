@@ -319,6 +319,9 @@ class DocumentProcessor:
                 tender=type_extractions.get("tender"),
                 gtp=type_extractions.get("gtp"),
                 bridge_params=type_extractions.get("bridge_params"),
+                # v3.3: universal extraction fields
+                norms=extracted_facts.get("norms", []),
+                identification=extracted_facts.get("identification"),
             )
 
         except Exception as e:

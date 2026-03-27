@@ -155,7 +155,9 @@ class CzechConstructionExtractor:
             'dimensions': None,
             'special_requirements': [],
             'exposure_classes_found': set(),
-            'raw_facts': []
+            'raw_facts': [],
+            'norms': [],
+            'identification': {},
         }
 
         # Extract concrete specifications
@@ -179,6 +181,13 @@ class CzechConstructionExtractor:
 
         # Collect all exposure classes
         results['exposure_classes_found'] = self._find_all_exposure_classes(text)
+
+        # Extract norm references (ČSN, zákony, vyhlášky)
+        results['norms'] = self._extract_norms(text)
+        self.stats['norm_matches'] = len(results['norms'])
+
+        # Extract project identification
+        results['identification'] = self._extract_identification(text)
 
         logger.info(f"Extraction complete: {self.stats}")
         return results
@@ -860,6 +869,60 @@ class CzechConstructionExtractor:
     def _normalize_diacritics(self, text: str) -> str:
         """Remove Czech diacritics for keyword matching"""
         return text.translate(self.DIACRITICS_MAP)
+
+    # =============================================================================
+    # NORM REFERENCES EXTRACTION
+    # =============================================================================
+
+    NORM_PATTERNS = [
+        r'(ČSN\s+(?:EN\s+)?(?:ISO\s+)?\d[\d\s\-]+\d)',
+        r'(zákon\s+č\.\s*\d+/\d+\s*Sb\.)',
+        r'(vyhláška\s+č\.\s*\d+/\d+\s*Sb\.)',
+        r'(nařízení\s+vlády\s+č\.\s*\d+/\d+\s*Sb\.)',
+        r'(TKP\s+\d+)',
+        r'(VTP\s+\w+/\d+)',
+        r'(TPG\s+\d[\d\s]+\d)',
+        r'(Eurocode\s+\d+)',
+        r'(EN\s+199\d[\-\d]*)',
+    ]
+
+    def _extract_norms(self, text: str) -> List[str]:
+        """Extract all referenced standards and norms from text."""
+        norms: List[str] = []
+        seen: set = set()
+        for pattern in self.NORM_PATTERNS:
+            for m in re.finditer(pattern, text, re.IGNORECASE):
+                code = re.sub(r'\s+', ' ', m.group(1).strip())
+                if code not in seen:
+                    seen.add(code)
+                    norms.append(code)
+        return norms
+
+    # =============================================================================
+    # PROJECT IDENTIFICATION EXTRACTION
+    # =============================================================================
+
+    IDENT_PATTERNS = {
+        'stavba': r'[Ss]tavba[:\s]+(.+?)(?:\n|Investor|Místo|Formát|Objednat)',
+        'investor': r'[Ii]nvestor[:\s]+(.+?)(?:\n|Tel|IČ|Stavba|Místo)',
+        'misto': r'[Mm]ísto\s+stavby[:\s]+(.+?)(?:\n|Kraj|Investor|Katastr)',
+        'kraj': r'[Kk]raj[:\s]+(.+?)(?:\n|Okres|Místo|Obec)',
+        'projektant': r'[Pp]rojektant[:\s]+(.+?)(?:\n|IČ|ČKAIT|Tel)',
+        'datum': r'[Dd]atum[:\s]+(\d{1,2}[\./]\d{1,2}[\./]\d{2,4})',
+        'stupen_pd': r'(?:stupeň|stupen)\s*(?:PD)?[:\s]*(D[ÚU]R|DSP|DPS|DVZ|DSPS|PDPS)',
+    }
+
+    def _extract_identification(self, text: str) -> Dict[str, str]:
+        """Extract project identification from first ~3000 chars."""
+        head = text[:3000]
+        result: Dict[str, str] = {}
+        for field, pattern in self.IDENT_PATTERNS.items():
+            m = re.search(pattern, head, re.IGNORECASE)
+            if m:
+                val = m.group(1).strip().rstrip(',.')
+                if val and len(val) < 200:
+                    result[field] = val
+        return result
 
     def get_stats(self) -> Dict[str, int]:
         """Get extraction statistics"""

@@ -26,6 +26,19 @@ import { API_URL } from '../services/api';
 const CORE_API_URL = `${API_URL}/api/core`;
 const ALLOWED_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml', 'docx', 'csv'];
 
+const IDENT_LABELS: Record<string, string> = {
+  stavba: 'Stavba',
+  investor: 'Investor',
+  misto: 'Místo',
+  kraj: 'Kraj',
+  projektant: 'Projektant',
+  datum: 'Datum',
+  cislo_zakazky: 'Číslo zakázky',
+  stupen_pd: 'Stupeň PD',
+  ico: 'IČO',
+  ckait: 'ČKAIT',
+};
+
 type TabId = 'passport' | 'soupis' | 'audit' | 'summary' | 'project';
 
 function getFileExtension(filename: string): string {
@@ -94,7 +107,8 @@ export default function DocumentAnalysisPage() {
       formData.append('enable_ai_enrichment', 'true');
       formData.append('analysis_mode', 'adaptive_extraction');
 
-      setUploadProgress(isSoupis ? 'Parsování tabulky...' : 'Analyzuji dokument...');
+      const isSpreadsheet = ['xlsx', 'xls', 'xml'].includes(ext);
+      setUploadProgress(isSpreadsheet ? 'Parsování tabulky...' : 'Analyzuji dokument...');
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 300000);
@@ -351,36 +365,67 @@ export default function DocumentAnalysisPage() {
         {/* ── Results ── */}
         {hasResults && (
           <div className="da-results">
-            {/* Meta bar */}
+            {/* Classification badge + meta */}
             {passportData && (
-              <div className="da-meta-bar">
-                <div className="da-meta-item da-meta-item--success">
-                  <CheckCircle size={16} />
-                  <span>
-                    {typeof passportData?.metadata?.processing_time_seconds === 'number'
-                      ? `${passportData.metadata.processing_time_seconds.toFixed(1)}s`
-                      : '—'}
-                  </span>
+              <>
+                <div className="da-meta-bar">
+                  {/* Classification badge */}
+                  {(passportData as any)?.classification?.category && (
+                    <div className="da-class-badge">
+                      <span className="da-class-tag">{(passportData as any).classification.category}</span>
+                      <span className="da-class-conf">
+                        {((passportData as any).classification.confidence * 100).toFixed(0)}%
+                      </span>
+                      <span className="da-class-method">{(passportData as any).classification.method}</span>
+                    </div>
+                  )}
+                  <div className="da-meta-item da-meta-item--success">
+                    <CheckCircle size={16} />
+                    <span>
+                      {typeof passportData?.metadata?.processing_time_seconds === 'number'
+                        ? `${passportData.metadata.processing_time_seconds.toFixed(1)}s`
+                        : '—'}
+                    </span>
+                  </div>
+                  {soupisData && soupisData.positions_count > 0 && (
+                    <div className="da-meta-item">
+                      <span className="da-meta-label">Pozice</span>
+                      <span className="da-meta-value">{soupisData.positions_count}</span>
+                    </div>
+                  )}
+                  <div className="da-meta-spacer" />
+                  <button onClick={exportToCsv} className="c-btn c-btn--ghost c-btn--sm">
+                    <Download size={14} /> Export CSV
+                  </button>
                 </div>
-                <div className="da-meta-item">
-                  <span className="da-meta-label">Spolehlivost</span>
-                  <span className="da-meta-value">
-                    {typeof passportData?.metadata?.total_confidence === 'number'
-                      ? `${(passportData.metadata.total_confidence * 100).toFixed(0)}%`
-                      : '—'}
-                  </span>
-                </div>
-                {soupisData && (
-                  <div className="da-meta-item">
-                    <span className="da-meta-label">Pozice</span>
-                    <span className="da-meta-value">{soupisData.positions_count}</span>
+
+                {/* Identification card — light background for readability */}
+                {(passportData as any)?.identification && Object.keys((passportData as any).identification).length > 0 && (
+                  <div className="da-ident-card">
+                    {Object.entries((passportData as any).identification as Record<string, string>).map(([key, val]) => (
+                      <div key={key} className="da-ident-row">
+                        <span className="da-ident-label">{IDENT_LABELS[key] || key}</span>
+                        <span className="da-ident-value">{val}</span>
+                      </div>
+                    ))}
                   </div>
                 )}
-                <div className="da-meta-spacer" />
-                <button onClick={exportToCsv} className="c-btn c-btn--ghost c-btn--sm">
-                  <Download size={14} /> Export CSV
-                </button>
-              </div>
+
+                {/* Norms — compact pill list */}
+                {(passportData as any)?.norms?.length > 0 && (
+                  <div className="da-norms-bar">
+                    <span className="da-norms-label">Normy ({(passportData as any).norms.length})</span>
+                    <div className="da-norms-list">
+                      {((passportData as any).norms as string[]).slice(0, 20).map((n, i) => (
+                        <span key={i} className="da-norm-pill">{n}</span>
+                      ))}
+                      {(passportData as any).norms.length > 20 && (
+                        <span className="da-norm-pill da-norm-pill--more">+{(passportData as any).norms.length - 20}</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
 
             {/* Tab bar */}
@@ -691,6 +736,100 @@ const documentAnalysisStyles = `
   min-height: 300px;
 }
 
+/* ── Classification badge ── */
+.da-class-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: rgba(255, 159, 28, 0.08);
+  border: 1px solid rgba(255, 159, 28, 0.2);
+}
+.da-class-tag {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent-orange, #FF9F1C);
+  letter-spacing: 0.5px;
+}
+.da-class-conf {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #1a1a1a);
+}
+.da-class-method {
+  font-size: 11px;
+  color: var(--text-muted, #9ca3af);
+  padding-left: 6px;
+  border-left: 1px solid rgba(0,0,0,0.1);
+}
+
+/* ── Identification card (light for readability) ── */
+.da-ident-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px 24px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.da-ident-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+}
+.da-ident-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #9ca3af);
+  min-width: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.da-ident-value {
+  font-size: 14px;
+  color: var(--text-primary, #1a1a1a);
+  font-weight: 500;
+}
+
+/* ── Norms bar ── */
+.da-norms-bar {
+  margin-bottom: 16px;
+  padding: 12px 0;
+}
+.da-norms-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.da-norms-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.da-norm-pill {
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #fff;
+  color: var(--text-secondary, #6b7280);
+  border: 1px solid rgba(0,0,0,0.08);
+  white-space: nowrap;
+}
+.da-norm-pill--more {
+  background: rgba(255, 159, 28, 0.06);
+  color: var(--accent-orange, #FF9F1C);
+  font-weight: 600;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .da-header { padding: 12px 16px; }
@@ -699,5 +838,6 @@ const documentAnalysisStyles = `
   .da-results { padding: 16px; }
   .da-meta-bar { gap: 8px; }
   .da-tabs { overflow-x: auto; }
+  .da-ident-card { grid-template-columns: 1fr; }
 }
 `;
