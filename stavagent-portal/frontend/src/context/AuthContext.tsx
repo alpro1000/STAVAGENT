@@ -116,14 +116,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         name
       });
 
-      if (response.data.success) {
-        const { token: newToken, user: newUser } = response.data;
-        localStorage.setItem('auth_token', newToken);
-        setToken(newToken);
-        setUser(newUser);
-      } else {
+      if (!response.data.success) {
         throw new Error('Registration failed');
       }
+      // Don't set auth state — user must verify email first, then login
     } catch (error: any) {
       const message = error.response?.data?.error || 'Registration failed';
       throw new Error(message);

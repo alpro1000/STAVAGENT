@@ -82,20 +82,20 @@ const SERVICES: Service[] = [
   },
   // ===== KALKULACE =====
   {
-    id: 'monolit-planner',
-    name: 'Monolit Planner',
+    id: 'monolit-calculator',
+    name: 'Kalkulátor rozpočtu',
     description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
     icon: '🪨',
-    url: 'https://monolit-planner-frontend.vercel.app',
+    url: 'https://kalkulator.stavagent.cz',
     status: 'active',
     tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
   },
   {
-    id: 'element-planner',
-    name: 'Plánovač elementu',
+    id: 'element-calculator',
+    name: 'Kalkulátor betonáže',
     description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
     icon: '📐',
-    url: 'https://monolit-planner-frontend.vercel.app/planner',
+    url: 'https://kalkulator.stavagent.cz/planner',
     status: 'active',
     tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
   },
@@ -132,7 +132,7 @@ const SERVICES: Service[] = [
     name: 'Klasifikátor stavebních prací',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
     icon: '🔎',
-    url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
+    url: 'https://klasifikator.stavagent.cz',
     status: 'active',
     tags: ['Výkaz výměr', 'URS', 'AI párování']
   },
@@ -141,7 +141,7 @@ const SERVICES: Service[] = [
     name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
-    url: 'https://stavagent-backend-ktwx.vercel.app',
+    url: 'https://registry.stavagent.cz',
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },

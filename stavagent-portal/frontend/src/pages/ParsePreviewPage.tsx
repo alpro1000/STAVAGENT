@@ -113,7 +113,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; b
     color: '#6366f1',
     bg: '#eef2ff',
     buildUrl: (fileId, portalUrl) =>
-      `https://monolit-planner-frontend.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://kalkulator.stavagent.cz?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
   registry: {
     label: 'Registr Rozpočtů',
@@ -121,7 +121,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; b
     color: '#0ea5e9',
     bg: '#f0f9ff',
     buildUrl: (fileId, portalUrl) =>
-      `https://stavagent-backend-ktwx.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://registry.stavagent.cz?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
   urs_matcher: {
     label: 'Klasifikátor stavebních prací',
@@ -129,7 +129,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; b
     color: '#10b981',
     bg: '#ecfdf5',
     buildUrl: (fileId, portalUrl) =>
-      `https://urs-matcher-service-1086027517695.europe-west3.run.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://klasifikator.stavagent.cz?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
 };
 

@@ -489,6 +489,10 @@ export const authAPI = {
   createAdminIfFirst: async (email: string, password: string, name: string): Promise<any> => {
     const { data } = await api.post('/api/auth/create-admin-if-first', { email, password, name });
     return data;
+  },
+  resendVerification: async (email: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/resend-verification', { email });
+    return data;
   }
 };
 

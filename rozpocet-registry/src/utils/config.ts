@@ -16,4 +16,4 @@ export const PORTAL_API_URL =
 /** Monolit Planner frontend (cross-links) */
 export const MONOLIT_FRONTEND_URL =
   import.meta.env.VITE_MONOLIT_FRONTEND_URL ||
-  'https://monolit-planner-frontend.vercel.app';
+  'https://kalkulator.stavagent.cz';

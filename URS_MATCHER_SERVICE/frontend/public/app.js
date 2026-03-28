@@ -1303,7 +1303,7 @@ exportToRegistryBtn?.addEventListener('click', async () => {
     debugLog(`📤 Exporting ${positions.length} positions to Registry`);
 
     // Send to Registry
-    const response = await fetch('https://stavagent-backend-ktwx.vercel.app/api/sync?action=import-positions', {
+    const response = await fetch('https://registry.stavagent.cz/api/sync?action=import-positions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1338,7 +1338,7 @@ exportToRegistryBtn?.addEventListener('click', async () => {
     if (result.projectId) {
       const openRegistry = confirm(`Export úspěšný! Otevřít Registry s ${positions.length} položkami?`);
       if (openRegistry) {
-        window.open(`https://stavagent-backend-ktwx.vercel.app/?project=${result.projectId}`, '_blank');
+        window.open(`https://registry.stavagent.cz/?project=${result.projectId}`, '_blank');
       }
     }
 

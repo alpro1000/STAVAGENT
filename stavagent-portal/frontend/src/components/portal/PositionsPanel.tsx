@@ -29,8 +29,8 @@ interface PositionsPanelProps {
 }
 
 const KIOSK_URLS: Record<string, string> = {
-  monolit: 'https://monolit-planner-frontend.vercel.app',
-  registry: 'https://stavagent-backend-ktwx.vercel.app',
+  monolit: 'https://kalkulator.stavagent.cz',
+  registry: 'https://registry.stavagent.cz',
 };
 
 function buildKioskDeepLink(

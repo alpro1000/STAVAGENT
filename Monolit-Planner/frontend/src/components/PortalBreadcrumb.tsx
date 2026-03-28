@@ -1,11 +1,9 @@
 /**
- * Portal Breadcrumb — back-navigation to StavAgent Portal
+ * Portal Breadcrumb — always-visible back-navigation to StavAgent
  *
- * Detects portal context from:
- *   1. URL param: ?portal_project=<id>
- *   2. localStorage: monolit-portal-project (persisted from previous visit)
- *
- * Shows a sticky breadcrumb bar when active.
+ * Always shows "← StavAgent" link.
+ * When portal context is active (via URL param or localStorage),
+ * also shows project link.
  */
 
 import { useState, useEffect } from 'react';
@@ -17,21 +15,18 @@ export default function PortalBreadcrumb() {
   const [portalProjectId, setPortalProjectId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check URL params first
     const params = new URLSearchParams(window.location.search);
     const fromUrl = params.get('portal_project');
 
     if (fromUrl) {
       setPortalProjectId(fromUrl);
       localStorage.setItem(STORAGE_KEY, fromUrl);
-      // Clean the param from URL without page reload
       params.delete('portal_project');
       const newUrl = params.toString()
         ? `${window.location.pathname}?${params.toString()}`
         : window.location.pathname;
       window.history.replaceState({}, '', newUrl);
     } else {
-      // Check localStorage for previous portal context
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         setPortalProjectId(stored);
@@ -39,51 +34,66 @@ export default function PortalBreadcrumb() {
     }
   }, []);
 
-  if (!portalProjectId) return null;
-
-  const portalLink = `${PORTAL_URL}/?project=${portalProjectId}`;
+  const portalLink = portalProjectId
+    ? `${PORTAL_URL}/?project=${portalProjectId}`
+    : PORTAL_URL;
 
   return (
     <div style={{
-      background: 'var(--r0-slate-800, #1e293b)',
+      background: '#1e293b',
       padding: '6px 16px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       fontSize: 12,
       fontFamily: "'JetBrains Mono', monospace",
-      borderBottom: '1px solid var(--r0-slate-700, #334155)',
+      borderBottom: '1px solid #334155',
     }}>
-      <a
-        href={portalLink}
-        style={{
-          color: '#94a3b8',
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
-        onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
-      >
-        <span>←</span>
-        <span>StavAgent Portal</span>
-        <span style={{ color: '#475569' }}>/</span>
-        <span>Projekt</span>
-      </a>
-      <button
-        onClick={() => {
-          localStorage.removeItem(STORAGE_KEY);
-          setPortalProjectId(null);
-        }}
-        style={{
-          background: 'none', border: 'none', color: '#475569',
-          cursor: 'pointer', fontSize: 11, padding: '2px 6px',
-        }}
-        title="Odpojit od portálu"
-      >
-        ✕
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <a
+          href={PORTAL_URL}
+          style={{
+            color: '#94a3b8',
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+          }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
+        >
+          <span>←</span>
+          <span>StavAgent</span>
+        </a>
+        {portalProjectId && (
+          <>
+            <span style={{ color: '#475569' }}>/</span>
+            <a
+              href={portalLink}
+              style={{ color: '#64748b', textDecoration: 'none', fontSize: 11 }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
+              onMouseLeave={e => (e.currentTarget.style.color = '#64748b')}
+            >
+              Projekt
+            </a>
+          </>
+        )}
+      </div>
+      {portalProjectId && (
+        <button
+          onClick={() => {
+            localStorage.removeItem(STORAGE_KEY);
+            setPortalProjectId(null);
+          }}
+          style={{
+            background: 'none', border: 'none', color: '#475569',
+            cursor: 'pointer', fontSize: 11, padding: '2px 6px',
+          }}
+          title="Odpojit od portálu"
+        >
+          ✕
+        </button>
+      )}
     </div>
   );
 }

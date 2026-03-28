@@ -66,10 +66,12 @@ const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:5173',
   'http://localhost:3000',
   'https://monolit-planner-frontend.vercel.app',
+  'https://kalkulator.stavagent.cz',
   'https://www.stavagent.cz',
   'https://stavagent.cz',
   'https://stavagent-backend.vercel.app',
   'https://stavagent-backend-ktwx.vercel.app',
+  'https://registry.stavagent.cz',
   process.env.CORS_ORIGIN,
 ].filter(Boolean))];
 

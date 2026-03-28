@@ -291,7 +291,7 @@ router.post('/registry-tov/import', async (req, res) => {
       return res.status(400).json({ error: 'registry_project_id required' });
     }
 
-    const apiUrl = registry_api_url || process.env.REGISTRY_TOV_API_URL || 'https://stavagent-backend-ktwx.vercel.app';
+    const apiUrl = registry_api_url || process.env.REGISTRY_TOV_API_URL || 'https://registry.stavagent.cz';
     const summary = await RegistryTOVAdapter.importRegistryTOVProject(registry_project_id, apiUrl);
 
     res.json({

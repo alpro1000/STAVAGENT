@@ -542,7 +542,7 @@ vercel --prod
 ```
 
 **Konfigurace:** Auto-detect Vite
-**URL:** `stavagent-backend-ktwx.vercel.app`
+**URL:** `registry.stavagent.cz`
 
 ### Netlify
 
