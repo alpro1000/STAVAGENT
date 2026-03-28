@@ -37,6 +37,13 @@ STAVAGENT/
 **GCP Project:** `project-947a512a-481d-49b5-81c` (ID: 1086027517695), SA: `1086027517695-compute@developer.gserviceaccount.com`
 
 **LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash` (default, fast), `gemini-2.5-pro` (heavy). Note: `gemini-2.5-flash-lite` returns 404 in europe-west3 despite docs (2026-03-23).
+- Budget: **$1,000 GCP credits** (Vertex AI Gemini)
+
+**Perplexity AI** (sonar model, web-search):
+- Budget: **$5,000 Perplexity credits**
+- Used in: NKB advisor (verify + supplement), document classification (Tier 3b), URS code search (podminky.urs.cz)
+- Secrets in GCP SM: `PPLX_API_KEY`
+- Wired in: `cloudbuild-concrete.yaml`, `cloudbuild-urs.yaml`
 
 **AWS Bedrock** (us-east-1, IAM user `stavagent-bedrock`, account 302222526850):
 - Confirmed models: `anthropic.claude-3-haiku-20240307-v1:0` ($0.25/1M), `claude-3-sonnet` ($3/1M), `claude-3-opus` ($15/1M)
@@ -147,7 +154,21 @@ Structure: `shared/` (formulas + scheduler, 336 tests), `backend/` (Express, Pos
 Design: Slate Minimal — CSS variables (`--r0-*`), zero hardcoded hex colors in planner components
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
-Node.js/Express + SQLite. BOQ→URS code matching via AI. 4-phase: Norms Search → Multi-model LLM Routing → Knowledge Base → Learning System. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 8 LLM providers configured (Gemini primary via Vertex AI). 159 tests.
+Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 9 LLM providers (Gemini, Claude, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Perplexity). 159 tests.
+
+**Search pipeline (dual-mode):**
+- Old: `/api/jobs/text-match` → local SQLite (36 seed items) + OTSKP fallback (17,904 items) + LLM rerank
+- New: `/api/pipeline/match` → TSKP classify → OTSKP catalog (17,904) + Perplexity/Brave URS search → score/dedup
+- Frontend uses dual search: both endpoints called in parallel, results merged
+
+**DA→URS integration (via Portal):**
+- Portal proxies: `/api/core/urs-match/*` → URS Matcher `/api/pipeline/*`
+- SoupisTab "Podobrat kódy" button: batch-sends positions for OTSKP code matching
+- Results shown inline with confidence % and OTSKP prices
+
+**Rate limiting:** 300 req/15min global, 50 match/hr per IP. express-rate-limit.
+
+**OTSKP catalog:** 17,904 items from `2025_03_otskp.xml` (copied from concrete-agent at Docker build time). Word index + prefix index + fuzzy scoring.
 
 ### 5. rozpocet-registry (Kiosk)
 React 19 + TypeScript + Vite + Vercel serverless backend (`api/`). BOQ classification into 11 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison.
@@ -730,8 +751,33 @@ VITE_DISABLE_AUTH=true
 - Landing page has no screenshot/demo of analysis result
 - No session-only mode for Monolit Planner (external Vercel app)
 
+**Completed (2026-03-28, session 6 — DA→URS integration + URS Matcher fixes):**
+- **URS Matcher search fix (root cause):**
+  - Root cause: frontend called `/api/jobs/text-match` → `matchUrsItems()` → SQLite `urs_items` (36 seed items only)
+  - New pipeline at `/api/pipeline/match` with 17,904 OTSKP items existed but was never connected
+  - Fix: `ursMatcher.js` now auto-supplements with OTSKP catalog when local DB returns weak results (conf < 0.7)
+  - New `matchUrsItemsOTSKP()` function searches OTSKP via word index + fuzzy scoring
+- **Dual-mode frontend search (URS Matcher):**
+  - `app.js matchText()`: calls BOTH `/api/jobs/text-match` AND `/api/pipeline/match` in parallel
+  - Results merged, deduplicated by code, sorted by confidence
+  - TSKP classification badge shown above results
+  - Table: added Cena (price) and Zdroj (source) columns
+- **DA→URS pipeline integration (Portal):**
+  - `core-proxy.js`: `/api/core/urs-match/*` proxy routes to URS Matcher pipeline API
+  - Credit check (`urs_match` = 8 credits), auth forwarding, 120s timeout
+  - `SoupisTab.tsx`: "Podobrat kódy" button batch-sends positions (10/batch) to URS pipeline
+  - OTSKP column with matched codes, confidence %, prices shown inline
+  - Progress bar during matching
+- **URS Matcher rate limiting:**
+  - `express-rate-limit` added: 300 req/15min global, 50 match/hr per IP
+  - Applied to `/api/jobs`, `/api/batch`, `/api/pipeline`
+  - Portal backend CORS origin added
+- **CLAUDE.md updated:**
+  - Perplexity AI: $5,000 credits, sonar model, used in NKB/classification/URS search
+  - Vertex AI Gemini: $1,000 GCP credits
+  - URS Matcher section rewritten with dual pipeline, DA→URS integration, OTSKP catalog details
+
 **Feature roadmap:**
-- OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
 - IFC/BIM support (P3 — needs binaries)
 - Deep Links
@@ -740,6 +786,8 @@ VITE_DISABLE_AUTH=true
 - Landing: add analysis result screenshot/demo
 - Landing: add reCAPTCHA when traffic grows
 - Stripe: configure env vars when ready to accept payments
+- Full URS catalog import (36 seed → thousands of items)
+- URS Matcher auth middleware (service key for Portal→URS calls)
 
 ---
 

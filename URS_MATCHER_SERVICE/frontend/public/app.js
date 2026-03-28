@@ -519,33 +519,66 @@ async function matchText() {
   debugLog('🔍 Searching for:', payload);
 
   try {
-    const url = `${API_URL}/jobs/text-match`;
-    debugLog('🔍 Sending POST to:', url);
+    // Dual search: text-match (local DB + OTSKP + Perplexity) + pipeline (OTSKP + TSKP classification)
+    const textMatchUrl = `${API_URL}/jobs/text-match`;
+    const pipelineUrl = `${API_URL}/pipeline/match`;
+    debugLog('🔍 Sending dual search to:', textMatchUrl, 'and', pipelineUrl);
 
-    // Create abort controller for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout for LLM processing
+    const timeoutId = setTimeout(() => controller.abort(), 120000);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: controller.signal
-    });
+    const [textMatchRes, pipelineRes] = await Promise.allSettled([
+      fetch(textMatchUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      }),
+      fetch(pipelineUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, catalog: 'both', topN: 5, minConfidence: 0.25 }),
+        signal: controller.signal
+      })
+    ]);
 
     clearTimeout(timeoutId);
 
-    debugLog('🔍 Response status:', { status: response.status, ok: response.ok });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Chyba při hledání');
+    // Parse text-match response
+    let data = { candidates: [], related_items: [] };
+    if (textMatchRes.status === 'fulfilled' && textMatchRes.value.ok) {
+      data = await textMatchRes.value.json();
     }
 
-    const data = await response.json();
-    debugLog('🔍 ✓ Raw response data:', data);
-    debugLog('🔍 ✓ Candidates count:', data.candidates?.length || 0);
-    debugLog('🔍 ✓ Related items count:', data.related_items?.length || 0);
+    // Parse pipeline response and merge OTSKP candidates
+    if (pipelineRes.status === 'fulfilled' && pipelineRes.value.ok) {
+      const pipelineData = await pipelineRes.value.json();
+      const pipelineCandidates = (pipelineData.data?.candidates || []).map(c => ({
+        urs_code: c.code,
+        urs_name: c.name,
+        unit: c.unit || '',
+        confidence: c.confidence,
+        price: c.price || null,
+        source: c.source || 'otskp'
+      }));
+
+      // Merge: add pipeline candidates not already in text-match results
+      const existingCodes = new Set(data.candidates.map(c => c.urs_code));
+      for (const pc of pipelineCandidates) {
+        if (!existingCodes.has(pc.urs_code)) {
+          data.candidates.push(pc);
+          existingCodes.add(pc.urs_code);
+        }
+      }
+      // Re-sort by confidence
+      data.candidates.sort((a, b) => b.confidence - a.confidence);
+      // Add TSKP classification info
+      if (pipelineData.data?.classification) {
+        data.tskp_classification = pipelineData.data.classification;
+      }
+    }
+
+    debugLog('🔍 ✓ Merged candidates count:', data.candidates?.length || 0);
 
     if (data.candidates && data.candidates.length > 0) {
       debugLog('🔍 ✓ First candidate:', data.candidates[0]);
@@ -756,11 +789,20 @@ function displayTextMatchResults(data) {
 
   let html = '<div class="text-match-results">';
 
+  // TSKP classification badge
+  const tskp = data.tskp_classification;
+  if (tskp && tskp.sectionCode) {
+    html += `<div class="tskp-badge" style="margin-bottom:12px;padding:8px 12px;background:rgba(255,159,28,0.1);border-left:3px solid #FF9F1C;border-radius:4px;">
+      <strong>TSKP:</strong> ${tskp.sectionCode} — ${tskp.sectionName || ''}
+      <span style="color:#888;margin-left:8px;">(${(tskp.confidence * 100).toFixed(0)}%)</span>
+    </div>`;
+  }
+
   if (candidates.length > 0) {
     debugLog('📋 Building table for', candidates.length, 'candidates');
-    html += '<h3>🎯 Doporučené pozice ÚRS:</h3>';
+    html += '<h3>🎯 Doporučené pozice:</h3>';
     html += '<table class="results-table"><thead><tr>';
-    html += '<th>Kód</th><th>Název</th><th>MJ</th><th>Jistota</th>';
+    html += '<th>Kód</th><th>Název</th><th>MJ</th><th>Cena</th><th>Zdroj</th><th>Jistota</th>';
     html += '</tr></thead><tbody>';
 
     candidates.forEach((item, idx) => {
@@ -768,12 +810,16 @@ function displayTextMatchResults(data) {
       const confidenceClass = item.confidence > 0.8
         ? 'confidence-high'
         : 'confidence-medium';
+      const priceStr = item.price ? `${Number(item.price).toLocaleString('cs-CZ')} Kč` : '—';
+      const sourceLabel = item.source === 'otskp' ? 'OTSKP' : (item.source === 'perplexity' ? 'Perplexity' : (item.source || 'local'));
 
       html += `
         <tr>
           <td><strong>${item.urs_code}</strong></td>
           <td>${item.urs_name}</td>
           <td>${item.unit}</td>
+          <td>${priceStr}</td>
+          <td><span class="source-badge">${sourceLabel}</span></td>
           <td><span class="confidence-badge ${confidenceClass}">${(item.confidence * 100).toFixed(0)}%</span></td>
         </tr>
       `;
