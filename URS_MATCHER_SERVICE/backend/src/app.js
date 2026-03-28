@@ -42,6 +42,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Trust proxy (Cloud Run / Vercel proxy sets X-Forwarded-For)
+app.set('trust proxy', 1);
+
 // Log startup info
 logger.info('[APP] Initializing URS Matcher Service');
 logger.info(`[APP] Environment: ${process.env.NODE_ENV || 'development'}`);
