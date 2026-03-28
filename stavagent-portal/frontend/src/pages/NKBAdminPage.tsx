@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   ArrowLeft, BookOpen, Shield, Plus, Search,
@@ -131,9 +131,11 @@ function getPriorityColor(p: number): string {
 
 export default function NKBAdminPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
-  const [tab, setTab] = useState<Tab>('norms');
+  const initialTab = (searchParams.get('tab') as Tab) || 'norms';
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -677,17 +679,30 @@ export default function NKBAdminPage() {
         {/* ── Audit (Stav NKB) ── */}
         {tab === 'audit' && (
           <div className="nkb-audit">
-            {/* Action buttons */}
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-              <button className="c-btn c-btn--primary c-btn--sm" onClick={() => startAudit(false)}>
-                Spustit audit (všechny zdroje)
-              </button>
-              <button className="c-btn c-btn--sm" onClick={() => startAudit(true)}>
-                Jen ★★★ priorita
-              </button>
-              <button className="c-btn c-btn--sm" onClick={() => { fetchAuditStatus(); fetchAuditResult(); }}>
-                <RefreshCw size={14} /> Obnovit
-              </button>
+            {/* Header + description */}
+            <div style={{ marginBottom: 16, padding: 16, background: '#f8f9fa', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <h3 style={{ margin: '0 0 8px 0', fontSize: 15, fontWeight: 600 }}>Gap-analýza normativní báze</h3>
+              <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#6b7280' }}>
+                Audit projde všechny zdroje (SŽ, ŘSD/PJPK, MMR, ČAS, ÚNMZ...), stáhne seznam platných dokumentů
+                a porovná s tím co je v NKB databázi. Výsledek: co chybí, co je zastaralé, co je aktuální.
+              </p>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <button className="c-btn c-btn--primary c-btn--sm" onClick={() => startAudit(false)}
+                  disabled={auditStatus.status === 'running'}>
+                  {auditStatus.status === 'running' ? 'Audit běží...' : 'Spustit audit (všechny zdroje)'}
+                </button>
+                <button className="c-btn c-btn--sm" onClick={() => startAudit(true)}
+                  disabled={auditStatus.status === 'running'}>
+                  Jen ★★★ priorita
+                </button>
+                <button className="c-btn c-btn--sm" onClick={() => { fetchAuditStatus(); fetchAuditResult(); }}>
+                  <RefreshCw size={14} /> Obnovit
+                </button>
+              </div>
+              <div style={{ marginTop: 12, fontSize: 11, color: '#9ca3af' }}>
+                Zdroje: SŽ (TKP, VTP, Předpisy S), PJPK (TP, TKP PK, VL), ŘSD (směrnice, PPK, XC4, metodiky),
+                MMR (stavební právo, závazné ČSN), ČAS, ÚNMZ, ČKAIT, zákony pro lidi
+              </div>
             </div>
 
             {/* Running status */}
@@ -846,6 +861,74 @@ export default function NKBAdminPage() {
                 <div style={{ padding: 8, fontSize: 12, color: '#6b7280' }}>
                   Zobrazeno {auditEntries.length} dokumentů
                 </div>
+              </div>
+            )}
+
+            {/* Download missing section */}
+            {auditEntries.length > 0 && auditEntries.some(e => e.status === 'chybí' && e.url_ke_stazeni) && (
+              <div style={{ marginTop: 16, padding: 16, background: '#fef2f2', borderRadius: 8, border: '1px solid #fecaca' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: 14, fontWeight: 600, color: '#991b1b' }}>
+                  ❌ Chybějící dokumenty ke stažení
+                </h4>
+                <p style={{ margin: '0 0 12px 0', fontSize: 12, color: '#991b1b' }}>
+                  {auditEntries.filter(e => e.status === 'chybí' && e.url_ke_stazeni).length} dokumentů
+                  s dostupným URL ke stažení
+                  ({auditEntries.filter(e => e.status === 'chybí' && e.url_ke_stazeni && e.priorita >= 3).length} s prioritou ★★★)
+                </p>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <button className="c-btn c-btn--primary c-btn--sm"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`${CORE_API_URL}/nkb/audit/download-missing`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ min_priority: 3 }),
+                        });
+                        const data = await res.json();
+                        alert(`Nalezeno ${data.documents?.length || 0} dokumentů ke stažení (★★★).\n\nPro skutečné stažení je třeba implementovat download pipeline.`);
+                      } catch (err) { setError('Chyba při stahování'); }
+                    }}>
+                    Stáhnout chybějící ★★★
+                  </button>
+                  <button className="c-btn c-btn--sm"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`${CORE_API_URL}/nkb/audit/download-missing`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ min_priority: 1 }),
+                        });
+                        const data = await res.json();
+                        alert(`Nalezeno ${data.documents?.length || 0} dokumentů ke stažení (všechny priority).\n\nPro skutečné stažení je třeba implementovat download pipeline.`);
+                      } catch (err) { setError('Chyba při stahování'); }
+                    }}>
+                    Stáhnout vše chybějící
+                  </button>
+                </div>
+                {/* Quick links to missing ★★★ documents */}
+                <details style={{ marginTop: 12 }}>
+                  <summary style={{ cursor: 'pointer', fontSize: 12, color: '#991b1b' }}>
+                    Zobrazit URL ke stažení ({auditEntries.filter(e => e.status === 'chybí' && e.url_ke_stazeni && e.priorita >= 3).length} ★★★)
+                  </summary>
+                  <ul style={{ margin: '8px 0', paddingLeft: 20, fontSize: 12 }}>
+                    {auditEntries
+                      .filter(e => e.status === 'chybí' && e.url_ke_stazeni && e.priorita >= 3)
+                      .map((e, i) => (
+                        <li key={i} style={{ marginBottom: 4 }}>
+                          <strong>{e.oznaceni}</strong> — {e.nazev?.slice(0, 80)}
+                          <br />
+                          <a href={e.url_ke_stazeni!} target="_blank" rel="noopener noreferrer"
+                            style={{ color: '#2563eb', fontSize: 11, wordBreak: 'break-all' }}>
+                            {e.url_ke_stazeni}
+                          </a>
+                          <span style={{ marginLeft: 8, fontSize: 10, color: '#6b7280' }}>
+                            ({e.zdroje.join(', ')})
+                          </span>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </details>
               </div>
             )}
 
