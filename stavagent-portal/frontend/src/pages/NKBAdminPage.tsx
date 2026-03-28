@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   ArrowLeft, BookOpen, Shield, Plus, Search,
   Loader2, ChevronDown, ChevronUp, Edit3, Trash2,
@@ -58,7 +59,7 @@ interface NKBStats {
   rule_types: string[];
 }
 
-type Tab = 'norms' | 'rules' | 'stats';
+type Tab = 'norms' | 'rules' | 'stats' | 'harvest';
 
 const CATEGORY_LABELS: Record<string, string> = {
   zakon: 'Zákon', vyhlaska: 'Vyhláška', csn: 'ČSN', csn_en: 'ČSN EN',
@@ -85,6 +86,8 @@ function getPriorityColor(p: number): string {
 
 export default function NKBAdminPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [tab, setTab] = useState<Tab>('norms');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -95,6 +98,10 @@ export default function NKBAdminPage() {
   const [rules, setRules] = useState<NormativeRule[]>([]);
   const [stats, setStats] = useState<NKBStats | null>(null);
   const [expandedNorm, setExpandedNorm] = useState<string | null>(null);
+
+  // Harvest
+  const [harvestState, setHarvestState] = useState<any>(null);
+  const [harvestPolling, setHarvestPolling] = useState(false);
 
   // Add form
   const [showAddNorm, setShowAddNorm] = useState(false);
@@ -151,9 +158,61 @@ export default function NKBAdminPage() {
     } catch { /* ignore */ }
   }, []);
 
+  /* ── Harvest functions ── */
+  const URS_MATCHER_URL = 'https://urs-matcher-service-1086027517695.europe-west3.run.app';
+
+  const fetchHarvestStatus = useCallback(async () => {
+    try {
+      const res = await fetch(`${URS_MATCHER_URL}/api/urs-catalog/harvest/status`, { signal: AbortSignal.timeout(10000) });
+      if (res.ok) {
+        const data = await res.json();
+        setHarvestState(data);
+        return data;
+      }
+    } catch { /* ignore */ }
+    return null;
+  }, []);
+
+  const startHarvest = async (resume = false) => {
+    try {
+      const res = await fetch(`${URS_MATCHER_URL}/api/urs-catalog/harvest`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(resume ? { resume: true } : {}),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Chyba harvestu');
+        return;
+      }
+      setHarvestState(data.state);
+      setHarvestPolling(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba');
+    }
+  };
+
+  const cancelHarvest = async () => {
+    try {
+      await fetch(`${URS_MATCHER_URL}/api/urs-catalog/harvest/cancel`, { method: 'POST' });
+      fetchHarvestStatus();
+    } catch { /* ignore */ }
+  };
+
+  // Poll harvest status while running
+  useEffect(() => {
+    if (!harvestPolling) return;
+    const interval = setInterval(async () => {
+      const st = await fetchHarvestStatus();
+      if (st && st.status !== 'running') setHarvestPolling(false);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [harvestPolling, fetchHarvestStatus]);
+
   useEffect(() => {
     if (tab === 'norms') fetchNorms();
     else if (tab === 'rules') fetchRules();
+    else if (tab === 'harvest') fetchHarvestStatus();
     fetchStats();
   }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -270,20 +329,20 @@ export default function NKBAdminPage() {
 
       {/* Tab bar */}
       <div className="nkb-tabs">
-        {(['norms', 'rules', 'stats'] as Tab[]).map(t => (
+        {(['norms', 'rules', 'stats', ...(isAdmin ? ['harvest'] : [])] as Tab[]).map(t => (
           <button
             key={t}
             className={`nkb-tab ${tab === t ? 'nkb-tab--active' : ''}`}
             onClick={() => setTab(t)}
           >
-            {t === 'norms' ? 'Normy' : t === 'rules' ? 'Pravidla' : 'Statistiky'}
+            {t === 'norms' ? 'Normy' : t === 'rules' ? 'Pravidla' : t === 'stats' ? 'Statistiky' : 'URS Harvest'}
           </button>
         ))}
       </div>
 
       <main className="nkb-main">
         {/* Search + actions */}
-        {tab !== 'stats' && (
+        {tab !== 'stats' && tab !== 'harvest' && (
           <div className="nkb-toolbar">
             <form onSubmit={handleSearch} className="nkb-search-form">
               <Search size={16} />
@@ -488,6 +547,106 @@ export default function NKBAdminPage() {
             </div>
           </div>
         )}
+
+        {/* ── Harvest ── */}
+        {tab === 'harvest' && (
+          <div className="nkb-harvest">
+            <p style={{ color: 'var(--text-muted, #6b7280)', marginBottom: 16 }}>
+              Sběr URS kódů z podminky.urs.cz přes Perplexity AI (30 kategorií TSKP).
+              Vyžaduje PPLX_API_KEY na serveru (Cloud Run).
+            </p>
+
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+              <button className="c-btn c-btn--primary c-btn--sm" onClick={() => startHarvest(false)}>
+                Spustit harvest
+              </button>
+              <button className="c-btn c-btn--primary c-btn--sm" onClick={() => startHarvest(true)}>
+                Pokračovat (resume)
+              </button>
+              <button className="c-btn c-btn--sm" onClick={() => fetchHarvestStatus()}>
+                <RefreshCw size={14} /> Obnovit stav
+              </button>
+              <button className="c-btn c-btn--sm" onClick={cancelHarvest} style={{ color: '#ef4444' }}>
+                Zrušit
+              </button>
+            </div>
+
+            {harvestState && harvestState.status !== 'idle' && (
+              <div className="nkb-harvest-status">
+                <div className="nkb-harvest-row">
+                  <strong>Stav:</strong>{' '}
+                  <span className={`nkb-harvest-badge nkb-harvest-badge--${harvestState.status}`}>
+                    {harvestState.status}
+                  </span>
+                </div>
+                <div className="nkb-harvest-row">
+                  <strong>Kategorie:</strong> {harvestState.current_index || 0} / {harvestState.total_categories || 0}
+                </div>
+                {harvestState.current_category && (
+                  <div className="nkb-harvest-row"><strong>Aktuální:</strong> {harvestState.current_category}</div>
+                )}
+                <div className="nkb-harvest-row">
+                  <strong>Nalezeno:</strong> {harvestState.total_found || 0} |{' '}
+                  <strong>Uloženo:</strong> {harvestState.total_saved || 0}
+                </div>
+                {harvestState.db_total && (
+                  <div className="nkb-harvest-row"><strong>Celkem v DB:</strong> {harvestState.db_total}</div>
+                )}
+
+                {/* Progress bar */}
+                {harvestState.total_categories > 0 && (
+                  <div className="nkb-harvest-progress">
+                    <div
+                      className="nkb-harvest-progress-bar"
+                      style={{ width: `${Math.round(((harvestState.current_index || 0) / harvestState.total_categories) * 100)}%` }}
+                    />
+                  </div>
+                )}
+
+                {harvestState.errors?.length > 0 && (
+                  <div style={{ marginTop: 8 }}>
+                    <strong style={{ color: '#ef4444' }}>Chyby ({harvestState.errors.length}):</strong>
+                    <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
+                      {harvestState.errors.slice(-5).map((e: any, i: number) => (
+                        <li key={i} style={{ fontSize: 13 }}>{e.category}: {e.error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {harvestState.completed_categories?.length > 0 && (
+                  <details style={{ marginTop: 8 }}>
+                    <summary style={{ cursor: 'pointer', fontSize: 13 }}>
+                      Dokončené kategorie ({harvestState.completed_categories.length})
+                    </summary>
+                    <ul style={{ margin: '4px 0', paddingLeft: 20, fontSize: 13 }}>
+                      {harvestState.completed_categories.map((c: any, i: number) => (
+                        <li key={i}>{c.code} {c.name}: {c.found} nalezeno, {c.saved} uloženo</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+
+                {harvestState.by_source?.length > 0 && (
+                  <div style={{ marginTop: 8 }}>
+                    <strong>Zdroje:</strong>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
+                      {harvestState.by_source.map((s: any, i: number) => (
+                        <span key={i} className="nkb-stat-pill">{s.source}: {s.count}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {(!harvestState || harvestState.status === 'idle') && (
+              <div style={{ padding: 24, textAlign: 'center', color: 'var(--text-muted, #9ca3af)' }}>
+                Žádný harvest nebyl spuštěn. Klikněte "Spustit harvest" pro zahájení sběru.
+              </div>
+            )}
+          </div>
+        )}
       </main>
 
       <style>{nkbStyles}</style>
@@ -620,6 +779,28 @@ const nkbStyles = `
 .nkb-stat-pill {
   padding: 4px 12px; border-radius: 14px; font-size: 12px; font-weight: 500;
   background: rgba(0,0,0,0.04); color: var(--text-secondary, #6b7280);
+}
+
+.nkb-harvest-status {
+  background: #fff; border-radius: 10px; padding: 16px;
+  border: 1px solid rgba(0,0,0,0.08); font-size: 14px;
+}
+.nkb-harvest-row { margin-bottom: 6px; }
+.nkb-harvest-badge {
+  display: inline-block; padding: 2px 10px; border-radius: 12px;
+  font-size: 12px; font-weight: 600; color: #fff;
+}
+.nkb-harvest-badge--running { background: #3b82f6; }
+.nkb-harvest-badge--completed { background: #22c55e; }
+.nkb-harvest-badge--cancelled { background: #9ca3af; }
+.nkb-harvest-badge--error { background: #ef4444; }
+.nkb-harvest-badge--idle { background: #9ca3af; }
+.nkb-harvest-progress {
+  margin-top: 10px; background: #e5e7eb; border-radius: 4px; height: 20px; overflow: hidden;
+}
+.nkb-harvest-progress-bar {
+  height: 100%; background: var(--accent-orange, #FF9F1C); border-radius: 4px;
+  transition: width 0.3s; min-width: 0;
 }
 
 @media (max-width: 768px) {

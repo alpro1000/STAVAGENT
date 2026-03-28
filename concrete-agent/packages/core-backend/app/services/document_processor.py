@@ -620,6 +620,7 @@ class DocumentProcessor:
         passport.quantities = extracted_facts.get('quantities', [])
         passport.dimensions = extracted_facts.get('dimensions')
         passport.special_requirements = extracted_facts.get('special_requirements', [])
+        passport.tender_info = extracted_facts.get('tender_info')
 
         # Extract quantities from tables if available
         if tables:

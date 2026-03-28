@@ -37,6 +37,13 @@ STAVAGENT/
 **GCP Project:** `project-947a512a-481d-49b5-81c` (ID: 1086027517695), SA: `1086027517695-compute@developer.gserviceaccount.com`
 
 **LLM:** Vertex AI Gemini (ADC auth, no API keys on Cloud Run). Models: `gemini-2.5-flash` (default, fast), `gemini-2.5-pro` (heavy). Note: `gemini-2.5-flash-lite` returns 404 in europe-west3 despite docs (2026-03-23).
+- Budget: **$1,000 GCP credits** (Vertex AI Gemini)
+
+**Perplexity AI** (sonar model, web-search):
+- Budget: **$5,000 Perplexity credits**
+- Used in: NKB advisor (verify + supplement), document classification (Tier 3b), URS code search (podminky.urs.cz)
+- Secrets in GCP SM: `PPLX_API_KEY`
+- Wired in: `cloudbuild-concrete.yaml`, `cloudbuild-urs.yaml`
 
 **AWS Bedrock** (us-east-1, IAM user `stavagent-bedrock`, account 302222526850):
 - Confirmed models: `anthropic.claude-3-haiku-20240307-v1:0` ($0.25/1M), `claude-3-sonnet` ($3/1M), `claude-3-opus` ($15/1M)
@@ -149,7 +156,30 @@ Structure: `shared/` (formulas + scheduler, 336 tests), `backend/` (Express, Pos
 Design: Slate Minimal — CSS variables (`--r0-*`), zero hardcoded hex colors in planner components
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
-Node.js/Express + SQLite. BOQ→URS code matching via AI. 4-phase: File Parsing → Document Analysis → URS Matching (TSKP→Candidates→KB→LLM Re-ranking) → Composite Works Detection. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 9 LLM providers (Claude, Gemini, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Brave Search). Unified Pipeline, Batch Processing, Technology Calculations, Pricing endpoints. 159 tests.
+Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 4-phase: File Parsing → Document Analysis → URS Matching (TSKP→Candidates→KB→LLM Re-ranking) → Composite Works Detection. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 9 LLM providers (Claude, Gemini, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Brave Search). Unified Pipeline, Batch Processing, Technology Calculations, Pricing endpoints. 159 tests.
+
+**Search pipeline (dual-mode):**
+- Old: `/api/jobs/text-match` → local SQLite (36 seed items) + OTSKP fallback (17,904 items) + LLM rerank
+- New: `/api/pipeline/match` → TSKP classify → OTSKP catalog (17,904) + Perplexity/Brave URS search → score/dedup
+- Frontend uses dual search: both endpoints called in parallel, results merged
+
+**DA→URS integration (via Portal):**
+- Portal proxies: `/api/core/urs-match/*` → URS Matcher `/api/pipeline/*`
+- SoupisTab "Podobrat kódy" button: batch-sends positions for OTSKP code matching
+- Results shown inline with confidence % and OTSKP prices
+
+**Rate limiting:** 300 req/15min global, 50 match/hr per IP. express-rate-limit.
+
+**OTSKP catalog:** 17,904 items from `2025_03_otskp.xml` (copied from concrete-agent at Docker build time). Word index + prefix index + fuzzy scoring.
+
+**TSKP classification:** 11,991 items from `xmk_tskp_tridnik.xml`, imported at Docker build time into `tskp_items` table.
+
+**Perplexity URS Harvester:**
+- `POST /api/urs-catalog/harvest` — starts background harvest (30 TSKP categories → podminky.urs.cz)
+- `GET /api/urs-catalog/harvest/status` — poll progress
+- `POST /api/urs-catalog/harvest/cancel` — cancel running harvest
+- Runs on Cloud Run where `PPLX_API_KEY` is available via Secret Manager
+- Also available as CLI: `PPLX_API_KEY=... node scripts/harvest_urs_perplexity.mjs [--resume] [--category N]`
 
 ### 5. rozpocet-registry (Kiosk)
 React 19 + TypeScript + Vite + Vercel serverless backend (`api/`). BOQ classification into 11 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison.
@@ -732,6 +762,33 @@ VITE_DISABLE_AUTH=true
 - Landing page has no screenshot/demo of analysis result
 - No session-only mode for Monolit Planner (external Vercel app)
 
+**Completed (2026-03-28, session 6 — DA→URS integration + URS Matcher fixes):**
+- **URS Matcher search fix (root cause):**
+  - Root cause: frontend called `/api/jobs/text-match` → `matchUrsItems()` → SQLite `urs_items` (36 seed items only)
+  - New pipeline at `/api/pipeline/match` with 17,904 OTSKP items existed but was never connected
+  - Fix: `ursMatcher.js` now auto-supplements with OTSKP catalog when local DB returns weak results (conf < 0.7)
+  - New `matchUrsItemsOTSKP()` function searches OTSKP via word index + fuzzy scoring
+- **Dual-mode frontend search (URS Matcher):**
+  - `app.js matchText()`: calls BOTH `/api/jobs/text-match` AND `/api/pipeline/match` in parallel
+  - Results merged, deduplicated by code, sorted by confidence
+  - TSKP classification badge shown above results
+  - Table: added Cena (price) and Zdroj (source) columns
+- **DA→URS pipeline integration (Portal):**
+  - `core-proxy.js`: `/api/core/urs-match/*` proxy routes to URS Matcher pipeline API
+  - Credit check (`urs_match` = 8 credits), auth forwarding, 120s timeout
+  - `SoupisTab.tsx`: "Podobrat kódy" button batch-sends positions (10/batch) to URS pipeline
+  - OTSKP column with matched codes, confidence %, prices shown inline
+  - Progress bar during matching
+- **URS Matcher rate limiting:**
+  - `express-rate-limit` added: 300 req/15min global, 50 match/hr per IP
+  - Applied to `/api/jobs`, `/api/batch`, `/api/pipeline`
+  - Portal backend CORS origin added
+- **CLAUDE.md updated:**
+  - Perplexity AI: $5,000 credits, sonar model, used in NKB/classification/URS search
+  - Vertex AI Gemini: $1,000 GCP credits
+  - URS Matcher section rewritten with dual pipeline, DA→URS integration, OTSKP catalog details
+
+
 **Completed (2026-03-28 — Full Codebase Audit):**
 - **Full audit of all 5 services** — code vs documentation comparison
 - **Endpoint inventory**: ~384 total (concrete-agent 119, Portal ~80, Monolit 125, URS ~45, Registry 12)
@@ -743,7 +800,6 @@ VITE_DISABLE_AUTH=true
 - Full report: `docs/SESSION_2026-03-28_FULL_AUDIT.md`
 
 **Feature roadmap:**
-- OTSKP price visualization in soupis
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
 - IFC/BIM support (P3 — needs binaries)
 - Deep Links
@@ -752,6 +808,8 @@ VITE_DISABLE_AUTH=true
 - Landing: add analysis result screenshot/demo
 - Landing: add reCAPTCHA when traffic grows
 - Stripe: configure env vars when ready to accept payments
+- Full URS catalog import: OTSKP done (17,904), Perplexity harvest ready (trigger POST /api/urs-catalog/harvest after deploy)
+- URS Matcher auth middleware (service key for Portal→URS calls)
 
 ---
 

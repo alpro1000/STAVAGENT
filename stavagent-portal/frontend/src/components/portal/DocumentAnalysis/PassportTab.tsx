@@ -58,17 +58,17 @@ export default function PassportTab({ data }: PassportTabProps) {
 
       {/* Document header */}
       <h3 style={{ margin: '0 0 6px', fontSize: 20, fontWeight: 600 }}>{passport.project_name}</h3>
-      {(passport as any).document_type && (
+      {(passport as any).document_type && String((passport as any).document_type).length > 1 && (
         <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>{(passport as any).document_type}</div>
       )}
-      {passport.structure_type && (
+      {passport.structure_type && String(passport.structure_type).length > 1 && (
         <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
           Typ konstrukce: <strong>{passport.structure_type}</strong>
         </div>
       )}
 
       {/* Description */}
-      {passport.description && (
+      {passport.description && String(passport.description).length > 1 && (
         <p style={{ margin: '0 0 20px', lineHeight: 1.8, fontSize: 15 }}>{passport.description}</p>
       )}
 
@@ -156,8 +156,8 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
 
   return (
     <>
-      {/* Statistics */}
-      {(statistics?.total_concrete_m3 || statistics?.total_reinforcement_t || statistics?.unique_concrete_classes || statistics?.unique_steel_grades) && (
+      {/* Statistics — only if real values */}
+      {((statistics?.total_concrete_m3 ?? 0) > 0 || (statistics?.total_reinforcement_t ?? 0) > 0 || (statistics?.unique_concrete_classes ?? 0) > 0 || (statistics?.unique_steel_grades ?? 0) > 0) && (
         <table className={styles.dataTable}>
           <thead>
             <tr><th colSpan={2} style={{ borderBottom: '2px solid var(--accent-orange)' }}>Souhrnné údaje</th></tr>
@@ -231,22 +231,30 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
         </div>
       )}
 
-      {/* Dimensions */}
-      {passport.dimensions && (
-        <div style={{ marginBottom: 24 }}>
-          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #F59E0B' }}>Rozměry objektu</div>
-          <table className={styles.dataTable}>
-            <tbody>
-              {passport.dimensions.floors_above_ground !== null && <tr><td className={styles.label}>Nadzemní podlaží</td><td className={styles.value}>{passport.dimensions.floors_above_ground} NP</td></tr>}
-              {passport.dimensions.floors_underground !== null && <tr><td className={styles.label}>Podzemní podlaží</td><td className={styles.value}>{passport.dimensions.floors_underground} PP</td></tr>}
-              {passport.dimensions.height_m !== null && <tr><td className={styles.label}>Výška</td><td className={styles.value}>{formatNumber(passport.dimensions.height_m)} m</td></tr>}
-              {passport.dimensions.length_m !== null && <tr><td className={styles.label}>Délka</td><td className={styles.value}>{formatNumber(passport.dimensions.length_m)} m</td></tr>}
-              {passport.dimensions.width_m !== null && <tr><td className={styles.label}>Šířka</td><td className={styles.value}>{formatNumber(passport.dimensions.width_m)} m</td></tr>}
-              {passport.dimensions.built_up_area_m2 !== null && <tr><td className={styles.label}>Zastavěná plocha</td><td className={styles.value}>{formatNumber(passport.dimensions.built_up_area_m2)} m²</td></tr>}
-            </tbody>
-          </table>
-        </div>
-      )}
+      {/* Dimensions — only show if at least one meaningful value exists */}
+      {passport.dimensions && (() => {
+        const d = passport.dimensions;
+        const rows: [string, string][] = [];
+        if (d.floors_above_ground != null && d.floors_above_ground > 0) rows.push(['Nadzemní podlaží', `${d.floors_above_ground} NP`]);
+        if (d.floors_underground != null && d.floors_underground > 0) rows.push(['Podzemní podlaží', `${d.floors_underground} PP`]);
+        if (d.height_m != null && d.height_m > 0) rows.push(['Výška', `${formatNumber(d.height_m)} m`]);
+        if (d.length_m != null && d.length_m > 0) rows.push(['Délka', `${formatNumber(d.length_m)} m`]);
+        if (d.width_m != null && d.width_m > 0) rows.push(['Šířka', `${formatNumber(d.width_m)} m`]);
+        if (d.built_up_area_m2 != null && d.built_up_area_m2 > 0) rows.push(['Zastavěná plocha', `${formatNumber(d.built_up_area_m2)} m²`]);
+        if (rows.length === 0) return null;
+        return (
+          <div style={{ marginBottom: 24 }}>
+            <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #F59E0B' }}>Rozměry objektu</div>
+            <table className={styles.dataTable}>
+              <tbody>
+                {rows.map(([label, value], i) => (
+                  <tr key={i}><td className={styles.label}>{label}</td><td className={styles.value}>{value}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      })()}
 
       {/* Special requirements */}
       {passport.special_requirements.length > 0 && (
@@ -371,6 +379,8 @@ function TypeSpecificExtractions({ data }: { data: PassportGenerationResponse })
         }}
       />
 
+      <TenderInfoSection data={data} />
+
       <KeyValueSection
         data={(data as any).tender_conditions}
         title="Zadávací podmínky (AI extrakce)"
@@ -400,6 +410,122 @@ function TypeSpecificExtractions({ data }: { data: PassportGenerationResponse })
         }}
       />
     </>
+  );
+}
+
+/* ── Tender Info (Zadávací dokumentace) ── */
+function TenderInfoSection({ data }: { data: PassportGenerationResponse }) {
+  const tender = (data as any).passport?.tender_info || (data as any).tender_info;
+  if (!tender) return null;
+
+  const fmtCZK = (v: number | null | undefined) => {
+    if (v === null || v === undefined) return null;
+    return `${v.toLocaleString('cs-CZ', { maximumFractionDigits: 0 })} Kč`;
+  };
+
+  // Group fields into sections
+  const identification: [string, string][] = [];
+  if (tender.ico) identification.push(['IČO zadavatele', tender.ico]);
+  if (tender.isds) identification.push(['ISDS', tender.isds]);
+  if (tender.cpv_code) identification.push(['CPV kód', `${tender.cpv_code}${tender.cpv_name ? ' — ' + tender.cpv_name : ''}`]);
+  if (tender.zakon) identification.push(['Zákon', tender.zakon]);
+
+  const financials: [string, string][] = [];
+  if (fmtCZK(tender.predpokladana_hodnota_czk)) financials.push(['Předpokládaná hodnota (bez DPH)', fmtCZK(tender.predpokladana_hodnota_czk)!]);
+  if (fmtCZK(tender.hodnota_s_dph_czk)) financials.push(['Hodnota včetně DPH', fmtCZK(tender.hodnota_s_dph_czk)!]);
+  if (fmtCZK(tender.hodnota_zmena_zavazku_czk)) financials.push(['Hodnota vč. změny závazku', fmtCZK(tender.hodnota_zmena_zavazku_czk)!]);
+  if (fmtCZK(tender.vyhrazena_zmena_czk)) financials.push(['Vyhrazená změna závazku (max)', fmtCZK(tender.vyhrazena_zmena_czk)!]);
+  if (tender.vyhrazena_zmena_pct) financials.push(['Vyhrazená změna závazku', `${tender.vyhrazena_zmena_pct} %`]);
+
+  const deposit: [string, string][] = [];
+  if (fmtCZK(tender.jistota_czk)) deposit.push(['Požadovaná jistota', fmtCZK(tender.jistota_czk)!]);
+  if (tender.cislo_uctu) deposit.push(['Číslo účtu', tender.cislo_uctu]);
+  if (tender.kod_banky) deposit.push(['Kód banky', tender.kod_banky]);
+  if (tender.nazev_banky) deposit.push(['Název banky', tender.nazev_banky]);
+
+  const deadlines: [string, string][] = [];
+  if (tender.lhuta_podani) deadlines.push(['Lhůta pro podání nabídek', tender.lhuta_podani]);
+  if (tender.zadavaci_lhuta_dnu) deadlines.push(['Zadávací lhůta', `${tender.zadavaci_lhuta_dnu} dní`]);
+  if (tender.prohlidka_mista) deadlines.push(['Prohlídka místa plnění', tender.prohlidka_mista]);
+
+  const evaluation: [string, string][] = [];
+  if (tender.hodnotici_kriterium) evaluation.push(['Hodnotící kritérium', tender.hodnotici_kriterium]);
+  if (tender.hodnotici_vaha_pct) evaluation.push(['Váha kritéria', `${tender.hodnotici_vaha_pct} %`]);
+  if (tender.tender_url) evaluation.push(['Elektronický nástroj', tender.tender_url]);
+  if (tender.max_velikost_nabidky_mb) evaluation.push(['Max velikost nabídky', `${tender.max_velikost_nabidky_mb} MB`]);
+
+  const allEmpty = [identification, financials, deposit, deadlines, evaluation].every(s => s.length === 0) && (!tender.prilohy || tender.prilohy.length === 0);
+  if (allEmpty) return null;
+
+  const renderTable = (rows: [string, string][], accent?: string) => {
+    if (rows.length === 0) return null;
+    return (
+      <table className={styles.dataTable}>
+        <tbody>
+          {rows.map(([label, value], i) => (
+            <tr key={i}>
+              <td className={styles.label}>{label}</td>
+              <td className={styles.value} style={accent ? { color: accent, fontWeight: 600 } : undefined}>{value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  return (
+    <div style={{ marginTop: 24 }}>
+      <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #8B5CF6', display: 'flex', alignItems: 'center', gap: 8 }}>
+        Zadávací dokumentace
+        <span style={{ fontSize: 11, background: '#8B5CF6', color: '#fff', padding: '1px 8px', borderRadius: 10, fontWeight: 500 }}>
+          Tender
+        </span>
+      </div>
+
+      {identification.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#8B5CF6', textTransform: 'uppercase', marginBottom: 4 }}>Identifikace</div>
+          {renderTable(identification)}
+        </div>
+      )}
+
+      {financials.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#FF9F1C', textTransform: 'uppercase', marginBottom: 4 }}>Finanční údaje</div>
+          {renderTable(financials, '#FF9F1C')}
+        </div>
+      )}
+
+      {deposit.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#EF4444', textTransform: 'uppercase', marginBottom: 4 }}>Jistota</div>
+          {renderTable(deposit)}
+        </div>
+      )}
+
+      {deadlines.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#3B82F6', textTransform: 'uppercase', marginBottom: 4 }}>Lhůty</div>
+          {renderTable(deadlines)}
+        </div>
+      )}
+
+      {evaluation.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#10B981', textTransform: 'uppercase', marginBottom: 4 }}>Hodnocení nabídek</div>
+          {renderTable(evaluation)}
+        </div>
+      )}
+
+      {tender.prilohy && tender.prilohy.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#6366F1', textTransform: 'uppercase', marginBottom: 4 }}>Přílohy ZD ({tender.prilohy.length})</div>
+          <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13 }}>
+            {tender.prilohy.map((p: string, i: number) => <li key={i} style={{ marginBottom: 2 }}>{p}</li>)}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -3,7 +3,7 @@
  * Upload file → execute audit → display GREEN/AMBER/RED classification.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   Upload,
   FileText,
@@ -30,11 +30,15 @@ const STAGE_LABELS: Record<string, string> = {
   completed: 'Dokončeno',
 };
 
-export default function AuditTab() {
-  const [stage, setStage] = useState<AuditStage>('upload');
+interface AuditTabProps {
+  uploadedFile?: File | null;
+}
+
+export default function AuditTab({ uploadedFile: externalFile }: AuditTabProps = {}) {
+  const [stage, setStage] = useState<AuditStage>(externalFile ? 'upload' : 'upload');
   const [isDragging, setIsDragging] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
-  const [projectName, setProjectName] = useState('');
+  const [file, setFile] = useState<File | null>(externalFile || null);
+  const [projectName, setProjectName] = useState(externalFile ? externalFile.name.replace(/\.[^/.]+$/, '') : '');
   const [language, setLanguage] = useState<'cs' | 'en' | 'sk'>('cs');
   const [currentStep, setCurrentStep] = useState('');
   const [progress, setProgress] = useState(0);
@@ -42,6 +46,14 @@ export default function AuditTab() {
   const [error, setError] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); }, []);
   const handleDragLeave = useCallback(() => { setIsDragging(false); }, []);
@@ -74,9 +86,12 @@ export default function AuditTab() {
   };
 
   const handleStartAudit = async () => {
-    if (!file || !projectName.trim()) {
-      setError('Prosím vyberte soubor a zadejte název projektu.');
+    if (!file) {
+      setError('Prosím vyberte soubor.');
       return;
+    }
+    if (!projectName.trim()) {
+      setProjectName(file.name.replace(/\.[^/.]+$/, ''));
     }
 
     try {
@@ -87,7 +102,7 @@ export default function AuditTab() {
 
       const projectId = `audit-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
-      const progressInterval = setInterval(() => {
+      progressIntervalRef.current = setInterval(() => {
         setProgress(prev => prev >= 95 ? prev : prev + Math.random() * 15);
         const elapsed = Date.now() - now;
         if (elapsed < 3000) setCurrentStep('parsing');
@@ -103,13 +118,15 @@ export default function AuditTab() {
         language,
       });
 
-      clearInterval(progressInterval);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
       setProgress(100);
       setCurrentStep('completed');
       setResult(auditResult);
       setStage('complete');
     } catch (err) {
-      clearInterval(progressInterval);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
       setStage('error');
       const msg = err instanceof Error ? err.message : '';
       // Never show raw technical errors to users
@@ -164,58 +181,39 @@ export default function AuditTab() {
   if (stage === 'upload') {
     return (
       <div>
-        {/* Project name */}
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: 'block', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Název projektu *</label>
-          <input
-            type="text"
-            value={projectName}
-            onChange={e => setProjectName(e.target.value)}
-            placeholder="např. Most SO-101, Bytový dům A1"
-            className="c-input"
-            style={{ width: '100%' }}
-          />
-        </div>
-
-        {/* Language */}
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ display: 'block', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Jazyk výstupu</label>
-          <div style={{ display: 'flex', gap: 8 }}>
-            {(['cs', 'en', 'sk'] as const).map(lang => (
-              <button key={lang} onClick={() => setLanguage(lang)} className={`c-btn c-btn--sm ${language === lang ? 'c-btn--primary' : ''}`}>
-                {lang === 'cs' ? '\ud83c\udde8\ud83c\uddff Čeština' : lang === 'en' ? '\ud83c\uddec\ud83c\udde7 English' : '\ud83c\uddf8\ud83c\uddf0 Slovenčina'}
-              </button>
-            ))}
+        {/* When file is pre-loaded from document analysis, show compact ready state */}
+        {file && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px', background: 'var(--data-surface)', borderRadius: 8, marginBottom: 16 }}>
+            <FileText size={24} style={{ color: 'var(--accent-orange)', flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <p style={{ fontWeight: 600, margin: 0, fontSize: 14 }}>{file.name}</p>
+              <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0 }}>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+            </div>
+            {!externalFile && (
+              <button onClick={() => setFile(null)} className="c-btn c-btn--sm c-btn--ghost">Změnit</button>
+            )}
           </div>
-        </div>
+        )}
 
-        {/* File upload */}
-        <div
-          className={styles.uploadZone}
-          data-active={isDragging}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          {file ? (
-            <>
-              <FileText size={48} style={{ color: 'var(--accent-orange)', marginBottom: 12 }} />
-              <p style={{ fontWeight: 600, marginBottom: 4 }}>{file.name}</p>
-              <p style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</p>
-              <button onClick={e => { e.stopPropagation(); setFile(null); }} className="c-btn c-btn--sm" style={{ marginTop: 12 }}>
-                Změnit soubor
-              </button>
-            </>
-          ) : (
-            <>
-              <Upload size={48} style={{ color: 'var(--text-secondary)', marginBottom: 12 }} />
-              <p style={{ fontWeight: 600, marginBottom: 8 }}>{isDragging ? 'Pusťte soubor zde' : 'Přetáhněte soubor nebo klikněte'}</p>
-              <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 16 }}>Excel (.xlsx), PDF, XML &bull; Max 50 MB</p>
-              <input type="file" id="audit-file-input" onChange={handleFileSelect} style={{ display: 'none' }} accept=".xlsx,.xls,.pdf,.xml" />
-              <label htmlFor="audit-file-input" className="c-btn c-btn--primary">Vybrat soubor</label>
-            </>
-          )}
-        </div>
+        {/* Upload zone only when no file */}
+        {!file && (
+          <div
+            className={styles.uploadZone}
+            data-active={isDragging}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <Upload size={48} style={{ color: 'var(--text-secondary)', marginBottom: 12 }} />
+            <p style={{ fontWeight: 600, marginBottom: 8 }}>{isDragging ? 'Pusťte soubor zde' : 'Přetáhněte soubor nebo klikněte'}</p>
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 16 }}>Excel (.xlsx), PDF, XML &bull; Max 50 MB</p>
+            <input type="file" id="audit-file-input" onChange={handleFileSelect} style={{ display: 'none' }} accept=".xlsx,.xls,.pdf,.xml" />
+            <label htmlFor="audit-file-input" className="c-btn c-btn--primary">Vybrat soubor</label>
+          </div>
+        )}
+
+        {/* Project name — hidden input, auto-filled from filename */}
+        <input type="hidden" value={projectName} />
 
         {error && (
           <div className={styles.errorBox}>
@@ -224,11 +222,11 @@ export default function AuditTab() {
         )}
 
         {/* Info */}
-        <div style={{ padding: '12px 16px', background: 'var(--data-surface)', borderRadius: 8, margin: '20px 0', fontSize: 14, color: 'var(--text-secondary)' }}>
-          <strong>Jak to funguje:</strong> Nahrajete soubor s výkazem výměr → AI analyzuje všechny pozice → Multi-Role audit (6 specialistů) → Výsledek: GREEN/AMBER/RED + doporučení
+        <div style={{ padding: '12px 16px', background: 'var(--data-surface)', borderRadius: 8, margin: '16px 0', fontSize: 14, color: 'var(--text-secondary)' }}>
+          <strong>Jak to funguje:</strong> AI analyzuje pozice → Multi-Role audit (4 specialisté) → Výsledek: GREEN/AMBER/RED + doporučení
         </div>
 
-        <button onClick={handleStartAudit} disabled={!file || !projectName.trim()} className="c-btn c-btn--primary c-btn--lg" style={{ width: '100%' }}>
+        <button onClick={handleStartAudit} disabled={!file} className="c-btn c-btn--primary c-btn--lg" style={{ width: '100%' }}>
           <Zap size={20} /> Spustit audit
         </button>
       </div>

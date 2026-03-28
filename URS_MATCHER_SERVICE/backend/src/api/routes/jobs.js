@@ -443,7 +443,9 @@ router.post('/text-match', async (req, res) => {
       urs_name: m.urs_name,
       unit: m.unit,
       confidence: m.confidence,
-      match_type: m.match_type || 'local'
+      match_type: m.match_type || m.source || 'local',
+      price: m.price || null,
+      source: m.source || 'local'
     }));
 
     // Generate explanation for best match

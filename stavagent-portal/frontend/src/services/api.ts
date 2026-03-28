@@ -710,11 +710,13 @@ export const workflowCAPI = {
    * Execute Workflow C with pre-parsed positions
    */
   execute: async (request: WorkflowCRequest): Promise<WorkflowCResult> => {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    const token = localStorage.getItem('auth_token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     const response = await fetch(`${CORE_API_URL}/workflow-c/execute`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
         project_id: request.project_id,
         project_name: request.project_name,
@@ -757,12 +759,17 @@ export const workflowCAPI = {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 120_000);
 
+    const headers: Record<string, string> = {};
+    const token = localStorage.getItem('auth_token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     let response: Response;
     try {
       response = await fetch(`${CORE_API_URL}/workflow-c/upload`, {
         method: 'POST',
         body: formData,
         signal: controller.signal,
+        headers,
       });
     } catch (err: any) {
       clearTimeout(timeoutId);

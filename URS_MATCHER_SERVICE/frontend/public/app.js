@@ -519,33 +519,66 @@ async function matchText() {
   debugLog('🔍 Searching for:', payload);
 
   try {
-    const url = `${API_URL}/jobs/text-match`;
-    debugLog('🔍 Sending POST to:', url);
+    // Dual search: text-match (local DB + OTSKP + Perplexity) + pipeline (OTSKP + TSKP classification)
+    const textMatchUrl = `${API_URL}/jobs/text-match`;
+    const pipelineUrl = `${API_URL}/pipeline/match`;
+    debugLog('🔍 Sending dual search to:', textMatchUrl, 'and', pipelineUrl);
 
-    // Create abort controller for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout for LLM processing
+    const timeoutId = setTimeout(() => controller.abort(), 120000);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: controller.signal
-    });
+    const [textMatchRes, pipelineRes] = await Promise.allSettled([
+      fetch(textMatchUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      }),
+      fetch(pipelineUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, catalog: 'both', topN: 5, minConfidence: 0.25 }),
+        signal: controller.signal
+      })
+    ]);
 
     clearTimeout(timeoutId);
 
-    debugLog('🔍 Response status:', { status: response.status, ok: response.ok });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Chyba při hledání');
+    // Parse text-match response
+    let data = { candidates: [], related_items: [] };
+    if (textMatchRes.status === 'fulfilled' && textMatchRes.value.ok) {
+      data = await textMatchRes.value.json();
     }
 
-    const data = await response.json();
-    debugLog('🔍 ✓ Raw response data:', data);
-    debugLog('🔍 ✓ Candidates count:', data.candidates?.length || 0);
-    debugLog('🔍 ✓ Related items count:', data.related_items?.length || 0);
+    // Parse pipeline response and merge OTSKP candidates
+    if (pipelineRes.status === 'fulfilled' && pipelineRes.value.ok) {
+      const pipelineData = await pipelineRes.value.json();
+      const pipelineCandidates = (pipelineData.data?.candidates || []).map(c => ({
+        urs_code: c.code,
+        urs_name: c.name,
+        unit: c.unit || '',
+        confidence: c.confidence,
+        price: c.price || null,
+        source: c.source || 'otskp'
+      }));
+
+      // Merge: add pipeline candidates not already in text-match results
+      const existingCodes = new Set(data.candidates.map(c => c.urs_code));
+      for (const pc of pipelineCandidates) {
+        if (!existingCodes.has(pc.urs_code)) {
+          data.candidates.push(pc);
+          existingCodes.add(pc.urs_code);
+        }
+      }
+      // Re-sort by confidence
+      data.candidates.sort((a, b) => b.confidence - a.confidence);
+      // Add TSKP classification info
+      if (pipelineData.data?.classification) {
+        data.tskp_classification = pipelineData.data.classification;
+      }
+    }
+
+    debugLog('🔍 ✓ Merged candidates count:', data.candidates?.length || 0);
 
     if (data.candidates && data.candidates.length > 0) {
       debugLog('🔍 ✓ First candidate:', data.candidates[0]);
@@ -756,11 +789,20 @@ function displayTextMatchResults(data) {
 
   let html = '<div class="text-match-results">';
 
+  // TSKP classification badge
+  const tskp = data.tskp_classification;
+  if (tskp && tskp.sectionCode) {
+    html += `<div class="tskp-badge" style="margin-bottom:12px;padding:8px 12px;background:rgba(255,159,28,0.1);border-left:3px solid #FF9F1C;border-radius:4px;">
+      <strong>TSKP:</strong> ${tskp.sectionCode} — ${tskp.sectionName || ''}
+      <span style="color:#888;margin-left:8px;">(${(tskp.confidence * 100).toFixed(0)}%)</span>
+    </div>`;
+  }
+
   if (candidates.length > 0) {
     debugLog('📋 Building table for', candidates.length, 'candidates');
-    html += '<h3>🎯 Doporučené pozice ÚRS:</h3>';
+    html += '<h3>🎯 Doporučené pozice:</h3>';
     html += '<table class="results-table"><thead><tr>';
-    html += '<th>Kód</th><th>Název</th><th>MJ</th><th>Jistota</th>';
+    html += '<th>Kód</th><th>Název</th><th>MJ</th><th>Cena</th><th>Zdroj</th><th>Jistota</th>';
     html += '</tr></thead><tbody>';
 
     candidates.forEach((item, idx) => {
@@ -768,12 +810,16 @@ function displayTextMatchResults(data) {
       const confidenceClass = item.confidence > 0.8
         ? 'confidence-high'
         : 'confidence-medium';
+      const priceStr = item.price ? `${Number(item.price).toLocaleString('cs-CZ')} Kč` : '—';
+      const sourceLabel = item.source === 'otskp' ? 'OTSKP' : (item.source === 'perplexity' ? 'Perplexity' : (item.source || 'local'));
 
       html += `
         <tr>
           <td><strong>${item.urs_code}</strong></td>
           <td>${item.urs_name}</td>
           <td>${item.unit}</td>
+          <td>${priceStr}</td>
+          <td><span class="source-badge">${sourceLabel}</span></td>
           <td><span class="confidence-badge ${confidenceClass}">${(item.confidence * 100).toFixed(0)}%</span></td>
         </tr>
       `;
@@ -2365,3 +2411,126 @@ window.addEventListener('unhandledrejection', (event) => {
     reason: event.reason?.toString()
   });
 });
+
+// ============================================================================
+// HARVEST ADMIN PANEL
+// ============================================================================
+
+let harvestPollTimer = null;
+
+function renderHarvestStatus(state) {
+  const el = document.getElementById('harvestStatusContent');
+  const wrap = document.getElementById('harvestStatus');
+  const progressWrap = document.getElementById('harvestProgressWrap');
+  const progressBar = document.getElementById('harvestProgressBar');
+  if (!el || !wrap) return;
+
+  wrap.style.display = 'block';
+
+  if (!state || state.status === 'idle') {
+    el.innerHTML = '<p>Žádný harvest nebyl spuštěn.</p>';
+    progressWrap.style.display = 'none';
+    return;
+  }
+
+  const pct = state.total_categories > 0
+    ? Math.round((state.current_index / state.total_categories) * 100) : 0;
+
+  let statusIcon = '⏳';
+  if (state.status === 'completed') statusIcon = '✅';
+  else if (state.status === 'cancelled') statusIcon = '⏹';
+  else if (state.status === 'error') statusIcon = '❌';
+
+  let html = `<p><strong>${statusIcon} Stav:</strong> ${state.status}</p>`;
+  html += `<p><strong>Model:</strong> ${state.model || 'sonar'}</p>`;
+  html += `<p><strong>Kategorie:</strong> ${state.current_index || 0} / ${state.total_categories || 0}</p>`;
+  if (state.current_category) html += `<p><strong>Aktuální:</strong> ${state.current_category}</p>`;
+  html += `<p><strong>Nalezeno:</strong> ${state.total_found || 0} | <strong>Uloženo:</strong> ${state.total_saved || 0}</p>`;
+  if (state.db_total) html += `<p><strong>Celkem v DB:</strong> ${state.db_total}</p>`;
+  if (state.started_at) html += `<p><strong>Začátek:</strong> ${new Date(state.started_at).toLocaleString('cs')}</p>`;
+  if (state.finished_at) html += `<p><strong>Konec:</strong> ${new Date(state.finished_at).toLocaleString('cs')}</p>`;
+
+  if (state.errors && state.errors.length > 0) {
+    html += `<p style="color:#e74c3c;"><strong>Chyby (${state.errors.length}):</strong></p><ul>`;
+    state.errors.slice(-5).forEach(e => {
+      html += `<li>${e.category}: ${e.error}</li>`;
+    });
+    html += '</ul>';
+  }
+
+  if (state.completed_categories && state.completed_categories.length > 0) {
+    html += `<details style="margin-top:0.5rem;"><summary>Dokončené kategorie (${state.completed_categories.length})</summary><ul>`;
+    state.completed_categories.forEach(c => {
+      html += `<li>${c.code} ${c.name}: ${c.found} nalezeno, ${c.saved} uloženo</li>`;
+    });
+    html += '</ul></details>';
+  }
+
+  el.innerHTML = html;
+
+  // Progress bar
+  if (state.status === 'running') {
+    progressWrap.style.display = 'block';
+    progressBar.style.width = `${pct}%`;
+    progressBar.textContent = `${pct}%`;
+  } else {
+    progressWrap.style.display = pct > 0 ? 'block' : 'none';
+    progressBar.style.width = `${pct}%`;
+    progressBar.textContent = `${pct}%`;
+  }
+
+  // Auto-poll while running
+  if (state.status === 'running' && !harvestPollTimer) {
+    harvestPollTimer = setInterval(checkHarvestStatus, 5000);
+  } else if (state.status !== 'running' && harvestPollTimer) {
+    clearInterval(harvestPollTimer);
+    harvestPollTimer = null;
+  }
+}
+
+async function startHarvest(resume = false) {
+  try {
+    const res = await fetch(`${API_URL}/urs-catalog/harvest`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(resume ? { resume: true } : {}),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || 'Chyba při spuštění harvestu');
+      renderHarvestStatus(data.state || null);
+      return;
+    }
+    renderHarvestStatus(data.state);
+  } catch (err) {
+    alert('Chyba: ' + err.message);
+  }
+}
+
+async function checkHarvestStatus() {
+  try {
+    const res = await fetch(`${API_URL}/urs-catalog/harvest/status`);
+    const data = await res.json();
+    renderHarvestStatus(data);
+  } catch (err) {
+    debugError('Harvest status check failed', err);
+  }
+}
+
+async function cancelHarvest() {
+  try {
+    const res = await fetch(`${API_URL}/urs-catalog/harvest/cancel`, { method: 'POST' });
+    const data = await res.json();
+    if (data.state) renderHarvestStatus(data.state);
+    else checkHarvestStatus();
+  } catch (err) {
+    alert('Chyba: ' + err.message);
+  }
+}
+
+// Show harvest panel only for admins (?admin=1 in URL)
+if (new URLSearchParams(window.location.search).get('admin') === '1') {
+  const harvestSection = document.getElementById('harvestSection');
+  if (harvestSection) harvestSection.style.display = '';
+  checkHarvestStatus();
+}

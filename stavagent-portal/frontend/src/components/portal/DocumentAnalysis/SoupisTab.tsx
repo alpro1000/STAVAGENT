@@ -5,11 +5,20 @@
  */
 
 import { useState, useRef } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Search, AlertCircle } from 'lucide-react';
 import { API_URL } from '../../../services/api';
 import styles from './DocumentAnalysis.module.css';
 
 const CORE_API_URL = `${API_URL}/api/core`;
+
+interface UrsCandidate {
+  code: string;
+  name: string;
+  unit?: string;
+  price?: number;
+  confidence: number;
+  source: string;
+}
 
 interface ParsedPosition {
   pc?: string;
@@ -24,6 +33,9 @@ interface ParsedPosition {
   url?: string;
   vv_lines_count?: number;
   source_row?: number;
+  /** URS matching results (populated after "Podobrat kódy") */
+  ursMatches?: UrsCandidate[];
+  ursMatchStatus?: 'pending' | 'loading' | 'done' | 'error';
 }
 
 interface ParsedChapter {
@@ -70,6 +82,8 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
   const [selectedSO, setSelectedSO] = useState<string | null>(
     soupisData?.stavebni_objekty?.[0]?.so_id ?? null
   );
+  const [isMatching, setIsMatching] = useState(false);
+  const [matchProgress, setMatchProgress] = useState({ done: 0, total: 0 });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (file: File) => {
@@ -126,6 +140,72 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
   };
 
   const activeSO = result?.stavebni_objekty?.find(so => so.so_id === selectedSO);
+
+  /** Send all positions from current SO to URS Matcher pipeline */
+  const handleMatchCodes = async () => {
+    if (!result || !activeSO) return;
+
+    const allPositions = activeSO.chapters.flatMap(ch => ch.positions);
+    const positionsToMatch = allPositions.filter(
+      p => p.description && p.description.length >= 5 && !p.ursMatches
+    );
+
+    if (positionsToMatch.length === 0) return;
+
+    setIsMatching(true);
+    setMatchProgress({ done: 0, total: positionsToMatch.length });
+
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    const token = localStorage.getItem('auth_token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    // Match in batches of 10
+    const batchSize = 10;
+    for (let i = 0; i < positionsToMatch.length; i += batchSize) {
+      const batch = positionsToMatch.slice(i, i + batchSize);
+
+      try {
+        const response = await fetch(`${CORE_API_URL}/urs-match/match-batch`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            items: batch.map(p => ({
+              text: `${p.description}${p.specification ? ' ' + p.specification : ''}`,
+              unit: p.unit,
+            })),
+            catalog: 'otskp',
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const batchResults = data.data?.results || [];
+
+          // Map results back to positions
+          batch.forEach((pos, idx) => {
+            const matchResult = batchResults[idx];
+            pos.ursMatches = matchResult?.candidates || [];
+            pos.ursMatchStatus = 'done';
+          });
+        } else {
+          batch.forEach(pos => { pos.ursMatchStatus = 'error'; });
+        }
+      } catch {
+        batch.forEach(pos => { pos.ursMatchStatus = 'error'; });
+      }
+
+      setMatchProgress({ done: Math.min(i + batchSize, positionsToMatch.length), total: positionsToMatch.length });
+      // Force re-render with updated positions
+      setResult({ ...result });
+    }
+
+    setIsMatching(false);
+  };
+
+  /** Check if any position has URS match data (to show/hide OTSKP column) */
+  const hasAnyMatches = activeSO?.chapters.some(
+    ch => ch.positions.some(p => p.ursMatches || p.ursMatchStatus)
+  ) ?? false;
 
   /* If no data yet, show upload zone */
   if (!result) {
@@ -188,9 +268,26 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
         <span><strong>Pokrytí:</strong> {result.coverage_pct}%</span>
         {result.project_name && <span><strong>Projekt:</strong> {result.project_name}</span>}
         <button
+          onClick={handleMatchCodes}
+          className="c-btn c-btn--sm c-btn--primary"
+          disabled={isMatching || !activeSO}
+          style={{ marginLeft: 'auto' }}
+        >
+          {isMatching ? (
+            <>
+              <Loader2 size={14} className={styles.spin} style={{ marginRight: 4 }} />
+              Párování {matchProgress.done}/{matchProgress.total}
+            </>
+          ) : (
+            <>
+              <Search size={14} style={{ marginRight: 4 }} />
+              Podobrat kódy
+            </>
+          )}
+        </button>
+        <button
           onClick={() => { setResult(null); setError(null); setSelectedSO(null); }}
           className="c-btn c-btn--sm c-btn--ghost"
-          style={{ marginLeft: 'auto' }}
         >
           Nový soubor
         </button>
@@ -229,6 +326,7 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
                     <th style={{ width: 80, textAlign: 'right' }}>Množství</th>
                     <th style={{ width: 80, textAlign: 'right' }}>Jed.cena</th>
                     <th style={{ width: 90, textAlign: 'right' }}>Celkem</th>
+                    {hasAnyMatches && <th style={{ width: 160 }}>OTSKP</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -252,6 +350,38 @@ export default function SoupisTab({ soupisData }: SoupisTabProps) {
                       <td style={{ textAlign: 'right', fontFamily: 'monospace' }}>{formatNum(p.quantity)}</td>
                       <td style={{ textAlign: 'right', fontFamily: 'monospace' }}>{formatNum(p.unit_price)}</td>
                       <td style={{ textAlign: 'right', fontFamily: 'monospace', fontWeight: 500 }}>{formatNum(p.total_price)}</td>
+                      {hasAnyMatches && (
+                        <td style={{ fontSize: '0.75rem' }}>
+                          {p.ursMatchStatus === 'loading' && (
+                            <Loader2 size={12} className={styles.spin} />
+                          )}
+                          {p.ursMatchStatus === 'error' && (
+                            <span style={{ color: '#e53935' }}>
+                              <AlertCircle size={12} style={{ verticalAlign: 'middle' }} /> Chyba
+                            </span>
+                          )}
+                          {p.ursMatches && p.ursMatches.length > 0 && (
+                            <div>
+                              {p.ursMatches.slice(0, 2).map((m, mi) => (
+                                <div key={mi} style={{
+                                  padding: '2px 4px',
+                                  marginBottom: 2,
+                                  background: m.confidence >= 0.7 ? 'rgba(76,175,80,0.08)' : 'rgba(255,152,0,0.08)',
+                                  borderRadius: 3,
+                                  borderLeft: `2px solid ${m.confidence >= 0.7 ? '#4caf50' : '#ff9800'}`,
+                                }}>
+                                  <span style={{ fontFamily: 'monospace', fontWeight: 600 }}>{m.code}</span>
+                                  <span style={{ color: '#888', marginLeft: 4 }}>{Math.round(m.confidence * 100)}%</span>
+                                  {m.price ? <span style={{ color: '#666', marginLeft: 4 }}>{formatNum(m.price)} Kč</span> : null}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          {p.ursMatches && p.ursMatches.length === 0 && p.ursMatchStatus === 'done' && (
+                            <span style={{ color: '#999' }}>—</span>
+                          )}
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

@@ -265,6 +265,47 @@ export default function ComplianceTab({ data }: ComplianceTabProps) {
     : compliance.summary_status === 'conditionally_compliant' ? '#f59e0b'
     : '#ef4444';
 
+  /* When no rules were matched — show informative message instead of misleading 100% */
+  if (compliance.total_rules_checked === 0 && compliance.findings.length === 0) {
+    return (
+      <div className="ct-root">
+        <div className="ct-empty">
+          <Shield size={32} />
+          <p style={{ fontWeight: 600, marginBottom: 4 }}>Žádná normativní pravidla pro tento typ dokumentu</p>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+            NKB databáze obsahuje pravidla pro betonové konstrukce, mosty a pozemní stavby.
+            Pro tento dokument nebyla nalezena relevantní pravidla ke kontrole.
+          </p>
+          <button onClick={runCheck} className="c-btn c-btn--sm c-btn--ghost" style={{ marginTop: 12 }}>
+            <RefreshCw size={14} /> Zkontrolovat znovu
+          </button>
+        </div>
+        {/* Still show AI analysis if available */}
+        {advisor?.ai_analysis && (
+          <div className="ct-ai-section" style={{ marginTop: 16 }}>
+            <button className="ct-ai-toggle" onClick={() => setShowAiAnalysis(!showAiAnalysis)}>
+              <Zap size={14} /> AI Analýza
+              {advisor.ai_model_used && <span className="ct-ai-model">{advisor.ai_model_used}</span>}
+              {showAiAnalysis ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+            {showAiAnalysis && (
+              <div className="ct-ai-content">
+                <p>{advisor.ai_analysis}</p>
+                {advisor.perplexity_supplement && (
+                  <div className="ct-ai-supplement">
+                    <strong>Doplnění (web-search):</strong>
+                    <p>{advisor.perplexity_supplement}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        <style>{complianceStyles}</style>
+      </div>
+    );
+  }
+
   return (
     <div className="ct-root">
       {/* Score header */}
@@ -281,9 +322,11 @@ export default function ComplianceTab({ data }: ComplianceTabProps) {
             )}
           </p>
           <div className="ct-score-badges">
-            <span className="ct-badge ct-badge--pass">
-              <CheckCircle size={12} /> {compliance.passed} splněno
-            </span>
+            {compliance.passed > 0 && (
+              <span className="ct-badge ct-badge--pass">
+                <CheckCircle size={12} /> {compliance.passed} splněno
+              </span>
+            )}
             {compliance.warnings > 0 && (
               <span className="ct-badge ct-badge--warn">
                 <AlertTriangle size={12} /> {compliance.warnings} varování

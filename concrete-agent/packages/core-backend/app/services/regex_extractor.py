@@ -31,7 +31,8 @@ from app.models.passport_schema import (
     ExposureClass,
     SteelGrade,
     ConcreteType,
-    ExposedConcreteClass
+    ExposedConcreteClass,
+    TenderInfo,
 )
 
 logger = logging.getLogger(__name__)
@@ -116,6 +117,63 @@ class CzechConstructionExtractor:
         'max_wc_ratio': r'w/c\s*(?:[≤<]|max\.?)\s*(\d[,.]?\d+)',
     }
 
+    # Tender / procurement patterns (Zadávací dokumentace)
+    TENDER_PATTERNS = {
+        # IČO: 00075370, IČ: 12345678
+        'ico': r'I[ČC](?:O|O\s+zadavatele)?[:\s]+(\d{8})',
+
+        # ISDS: 2dibh62
+        'isds': r'(?:ISDS|datov[aáé]\s+schr[aá]nk[ay])[:\s]+([a-zA-Z0-9]{7})',
+
+        # CPV: 45311000-1, 45000000-7
+        'cpv_code': r'CPV[:\s]*(\d{8}-\d)',
+
+        # Předpokládaná hodnota: 6 310 000,00 Kč, 6310000 Kč
+        'predpokladana_hodnota': r'[Pp]ředpokl[aá]dan[aá]\s+hodnot[ay].*?(?:činí|celkem|je)?\s*(\d[\d\s]*[\d,]+)\s*(?:,-\s*)?K[čc]',
+
+        # Hodnota včetně/vč. změny závazku: 8 203 000,00 Kč
+        'hodnota_zmena_zavazku': r'(?:včetně|vč\.)\s+(?:vyhrazené?\s+)?změny\s+závazku.*?(\d[\d\s]*[\d,]+)\s*(?:,-\s*)?K[čc]',
+
+        # Vyhrazená změna závazku max: 1 893 000 Kč, max. 30 %
+        'vyhrazena_zmena_czk': r'(?:maximáln[eě]|max\.?|tj\.?)\s+(?:do\s+)?(\d[\d\s]*[\d,]+)\s*(?:,-\s*)?K[čc]',
+        'vyhrazena_zmena_pct': r'(?:až\s+do\s+výše|max\.?|nepřevýší)\s+(\d+)\s*%',
+
+        # Jistota: 120 000 Kč, jistota ve výši 120 000,00 Kč
+        'jistota': r'[Jj]istot[ay]\s+(?:ve\s+výši\s+)?(\d[\d\s]*[\d,]+)\s*(?:,-\s*)?K[čc]',
+
+        # Číslo účtu: 4842100217, kód banky: 0100
+        'cislo_uctu': r'[Čč][íi]slo\s+[úu][čc]tu[:\s]+(\d+)',
+        'kod_banky': r'[Kk][óo]d\s+bank[yY][:\s]+(\d{4})',
+        'nazev_banky': r'[Nn][áa]zev\s+bank[yY][:\s]+(.+?)(?:\n|$)',
+
+        # Lhůta pro podání: 24. 1. 2024 v 14:00, do 15.02.2024 do 12:00
+        'lhuta_podani': r'(?:končí|lhůta.*?končí|podání\s+nabídek.*?(?:do|končí))\s+(\d{1,2}\.\s*\d{1,2}\.\s*\d{4})\s*(?:v|do|ve)?\s*(\d{1,2}[.:]\d{2})?',
+
+        # Zadávací lhůta: 90 dnů, 60 dní
+        'zadavaci_lhuta': r'(?:zadávací|vázanosti)\s+lh[uů]t[auy]\s+(?:činí\s+|je\s+|stanovuje\s+)?(\d+)\s*dn[ůuí]',
+
+        # Prohlídka místa: 7. 12. 2023 v 10:00
+        'prohlidka_mista': r'[Pp]rohl[íi]dk[ay]\s+m[íi]st[ay].*?(\d{1,2}\.\s*\d{1,2}\.\s*\d{4})\s*(?:v|ve|od)?\s*(\d{1,2}[.:]\d{2})?',
+
+        # Hodnotící kritérium: ekonomická výhodnost, nejnižší cena
+        'hodnotici_kriterium': r'(?:hodnotící|hodnocení)\s+krit[ée]ri(?:um|em)\s+.*?(?:je\s+)?(.+?)(?:\.|$)',
+
+        # Váha: 100 %, váha 80%
+        'hodnotici_vaha': r'v[áa]ha\s+(\d+)\s*%',
+
+        # Tender URL: tenderarena.cz, e-zak.cz, nen.nipez.cz
+        'tender_url': r'(https?://(?:tenderarena|e-zak|nen\.nipez|zakazky|ezak|vhodne-uverejneni)[^\s<>"]+)',
+
+        # Max velikost nabídky: 200 MB
+        'max_velikost_mb': r'(?:nepřesáhnout|max\.?)\s+(?:objem\s+dat\s+)?(\d+)\s*MB',
+
+        # Zákon: 134/2016 Sb., zákon č. 134/2016
+        'zakon_vz': r'z[aá]kon[auy]?\s+(?:č\.?\s*)?(\d+/\d{4})\s*Sb\.',
+
+        # Přílohy: Příloha č. 1 — Návrh smlouvy o dílo
+        'prilohy': r'[Pp]říloha\s+č\.\s*(\d+)\s*[-–—]\s*(.+?)(?:\n|$)',
+    }
+
     # Czech diacritics normalization table
     DIACRITICS_MAP = str.maketrans({
         'á': 'a', 'č': 'c', 'ď': 'd', 'é': 'e', 'ě': 'e',
@@ -191,6 +249,11 @@ class CzechConstructionExtractor:
 
         # Extract referenced documents (potentially missing)
         results['referenced_documents'] = self.extract_referenced_documents(text)
+
+        # Extract tender / procurement data (Zadávací dokumentace)
+        results['tender_info'] = self._extract_tender_info(text)
+        if results['tender_info']:
+            self.stats['tender_fields'] = sum(1 for v in results['tender_info'].dict().values() if v is not None and v != [] and v != 0.9)
 
         logger.info(f"Extraction complete: {self.stats}")
         return results
@@ -1010,6 +1073,144 @@ class CzechConstructionExtractor:
                 if val and len(val) < 200:
                     result[field] = val
         return result
+
+    # =============================================================================
+    # TENDER / PROCUREMENT EXTRACTION
+    # =============================================================================
+
+    def _parse_czk_amount(self, text: str) -> Optional[float]:
+        """Parse Czech currency amount: '6 310 000,00' → 6310000.0"""
+        if not text:
+            return None
+        cleaned = text.replace('\xa0', '').replace(' ', '').replace('.', '').strip()
+        cleaned = cleaned.replace(',', '.')
+        try:
+            return float(cleaned)
+        except ValueError:
+            return None
+
+    def _extract_tender_info(self, text: str) -> Optional[TenderInfo]:
+        """Extract public procurement / tender data from Zadávací dokumentace."""
+        # Quick check: is this a tender document?
+        tender_keywords = ['zadávací dokumentac', 'veřejn', 'zakázk', 'nabídek', 'zadavatel']
+        text_lower = text.lower()
+        keyword_hits = sum(1 for kw in tender_keywords if kw in text_lower)
+        if keyword_hits < 2:
+            return None
+
+        logger.info("Detected tender document, extracting procurement data")
+        tp = self.TENDER_PATTERNS
+        data: Dict[str, Any] = {}
+
+        # IČO
+        m = re.search(tp['ico'], text)
+        if m:
+            data['ico'] = m.group(1)
+
+        # ISDS
+        m = re.search(tp['isds'], text, re.IGNORECASE)
+        if m:
+            data['isds'] = m.group(1)
+
+        # CPV
+        m = re.search(tp['cpv_code'], text)
+        if m:
+            data['cpv_code'] = m.group(1)
+            # Try to get CPV name from same line
+            cpv_line = re.search(r'(\S.*?)\s+' + re.escape(m.group(1)), text)
+            if cpv_line:
+                data['cpv_name'] = cpv_line.group(1).strip()
+
+        # Zákon
+        m = re.search(tp['zakon_vz'], text, re.IGNORECASE)
+        if m:
+            data['zakon'] = f"{m.group(1)} Sb."
+
+        # Předpokládaná hodnota
+        m = re.search(tp['predpokladana_hodnota'], text, re.IGNORECASE)
+        if m:
+            data['predpokladana_hodnota_czk'] = self._parse_czk_amount(m.group(1))
+
+        # Hodnota včetně změny závazku
+        m = re.search(tp['hodnota_zmena_zavazku'], text, re.IGNORECASE)
+        if m:
+            data['hodnota_zmena_zavazku_czk'] = self._parse_czk_amount(m.group(1))
+
+        # Vyhrazená změna — CZK
+        m = re.search(tp['vyhrazena_zmena_czk'], text, re.IGNORECASE)
+        if m:
+            data['vyhrazena_zmena_czk'] = self._parse_czk_amount(m.group(1))
+
+        # Vyhrazená změna — %
+        m = re.search(tp['vyhrazena_zmena_pct'], text, re.IGNORECASE)
+        if m:
+            data['vyhrazena_zmena_pct'] = float(m.group(1))
+
+        # Jistota
+        m = re.search(tp['jistota'], text, re.IGNORECASE)
+        if m:
+            data['jistota_czk'] = self._parse_czk_amount(m.group(1))
+
+        # Bank details
+        m = re.search(tp['cislo_uctu'], text, re.IGNORECASE)
+        if m:
+            data['cislo_uctu'] = m.group(1)
+        m = re.search(tp['kod_banky'], text, re.IGNORECASE)
+        if m:
+            data['kod_banky'] = m.group(1)
+        m = re.search(tp['nazev_banky'], text, re.IGNORECASE)
+        if m:
+            data['nazev_banky'] = m.group(1).strip()
+
+        # Lhůta podání
+        m = re.search(tp['lhuta_podani'], text, re.IGNORECASE)
+        if m:
+            date_str = m.group(1).strip()
+            time_str = m.group(2).strip() if m.group(2) else ''
+            data['lhuta_podani'] = f"{date_str} {time_str}".strip()
+
+        # Zadávací lhůta
+        m = re.search(tp['zadavaci_lhuta'], text, re.IGNORECASE)
+        if m:
+            data['zadavaci_lhuta_dnu'] = int(m.group(1))
+
+        # Prohlídka místa
+        m = re.search(tp['prohlidka_mista'], text, re.IGNORECASE)
+        if m:
+            date_str = m.group(1).strip()
+            time_str = m.group(2).strip() if m.group(2) else ''
+            data['prohlidka_mista'] = f"{date_str} {time_str}".strip()
+
+        # Hodnotící kritérium
+        m = re.search(tp['hodnotici_kriterium'], text, re.IGNORECASE)
+        if m:
+            data['hodnotici_kriterium'] = m.group(1).strip()
+
+        # Váha
+        m = re.search(tp['hodnotici_vaha'], text, re.IGNORECASE)
+        if m:
+            data['hodnotici_vaha_pct'] = float(m.group(1))
+
+        # Tender URL
+        m = re.search(tp['tender_url'], text, re.IGNORECASE)
+        if m:
+            data['tender_url'] = m.group(1)
+
+        # Max velikost
+        m = re.search(tp['max_velikost_mb'], text, re.IGNORECASE)
+        if m:
+            data['max_velikost_nabidky_mb'] = int(m.group(1))
+
+        # Přílohy
+        prilohy = re.findall(tp['prilohy'], text)
+        if prilohy:
+            data['prilohy'] = [f"Příloha č. {num} – {name.strip()}" for num, name in prilohy]
+
+        if not data:
+            return None
+
+        logger.info(f"Extracted {len(data)} tender fields")
+        return TenderInfo(**data)
 
     def get_stats(self) -> Dict[str, int]:
         """Get extraction statistics"""
