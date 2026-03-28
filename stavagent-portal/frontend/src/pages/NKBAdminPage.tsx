@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   ArrowLeft, BookOpen, Shield, Plus, Search,
@@ -59,7 +59,52 @@ interface NKBStats {
   rule_types: string[];
 }
 
-type Tab = 'norms' | 'rules' | 'stats' | 'harvest';
+type Tab = 'norms' | 'rules' | 'stats' | 'harvest' | 'audit';
+
+/* ── Audit types ── */
+interface SourceSummary {
+  source_code: string;
+  source_name: string;
+  total: number;
+  aktualni: number;
+  zastaraly: number;
+  chybi: number;
+  nedostupny: number;
+  kalibracni: number;
+  last_scraped?: string;
+  error?: string;
+}
+
+interface GapEntry {
+  oznaceni: string;
+  nazev: string;
+  doc_type: string;
+  status: string;
+  datum_ucinnosti?: string;
+  oblast?: string;
+  zdroje: string[];
+  priorita: number;
+  url_ke_stazeni?: string;
+  norm_id_in_db?: string;
+}
+
+interface AuditStatus {
+  audit_id?: string;
+  status: string;
+  progress: number;
+  current_source?: string;
+  sources_checked: string[];
+  total_unique_documents: number;
+  error?: string;
+}
+
+const STATUS_ICONS: Record<string, string> = {
+  'aktuální': '✅', 'zastaralý': '⚠️', 'chybí': '❌', 'nedostupný': '🔒', 'kalibrační': '📊',
+};
+const STATUS_COLORS: Record<string, string> = {
+  'aktuální': '#22c55e', 'zastaralý': '#f59e0b', 'chybí': '#ef4444', 'nedostupný': '#6b7280', 'kalibrační': '#3b82f6',
+};
+const PRIORITY_STARS: Record<number, string> = { 3: '★★★', 2: '★★', 1: '★' };
 
 const CATEGORY_LABELS: Record<string, string> = {
   zakon: 'Zákon', vyhlaska: 'Vyhláška', csn: 'ČSN', csn_en: 'ČSN EN',
@@ -86,9 +131,11 @@ function getPriorityColor(p: number): string {
 
 export default function NKBAdminPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
-  const [tab, setTab] = useState<Tab>('norms');
+  const initialTab = (searchParams.get('tab') as Tab) || 'norms';
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -102,6 +149,16 @@ export default function NKBAdminPage() {
   // Harvest
   const [harvestState, setHarvestState] = useState<any>(null);
   const [harvestPolling, setHarvestPolling] = useState(false);
+
+  // Audit
+  const [auditStatus, setAuditStatus] = useState<AuditStatus>({ status: 'idle', progress: 0, sources_checked: [], total_unique_documents: 0 });
+  const [auditSummaries, setAuditSummaries] = useState<SourceSummary[]>([]);
+  const [auditEntries, setAuditEntries] = useState<GapEntry[]>([]);
+  const [auditStatusFilter, setAuditStatusFilter] = useState<string>('');
+  const [auditSourceFilter, setAuditSourceFilter] = useState<string>('');
+  const [auditOblastFilter, setAuditOblastFilter] = useState<string>('');
+  const [auditPriorityFilter, setAuditPriorityFilter] = useState<number>(0);
+  const [auditPolling, setAuditPolling] = useState(false);
 
   // Add form
   const [showAddNorm, setShowAddNorm] = useState(false);
@@ -209,10 +266,81 @@ export default function NKBAdminPage() {
     return () => clearInterval(interval);
   }, [harvestPolling, fetchHarvestStatus]);
 
+  // ── Audit functions ──
+  const fetchAuditStatus = useCallback(async () => {
+    try {
+      const res = await fetch(`${CORE_API_URL}/nkb/audit/status`, { signal: AbortSignal.timeout(10000) });
+      if (res.ok) {
+        const data = await res.json();
+        setAuditStatus(data);
+        return data;
+      }
+    } catch { /* ignore */ }
+    return null;
+  }, []);
+
+  const fetchAuditResult = useCallback(async () => {
+    try {
+      const params = new URLSearchParams();
+      if (auditStatusFilter) params.set('status_filter', auditStatusFilter);
+      if (auditSourceFilter) params.set('source_filter', auditSourceFilter);
+      if (auditOblastFilter) params.set('oblast_filter', auditOblastFilter);
+      if (auditPriorityFilter) params.set('priority_filter', String(auditPriorityFilter));
+      params.set('limit', '500');
+
+      const res = await fetch(`${CORE_API_URL}/nkb/audit/result?${params}`, { signal: AbortSignal.timeout(30000) });
+      if (res.ok) {
+        const data = await res.json();
+        setAuditSummaries(data.source_summaries || []);
+        setAuditEntries(data.gap_entries || []);
+      }
+    } catch { /* ignore */ }
+  }, [auditStatusFilter, auditSourceFilter, auditOblastFilter, auditPriorityFilter]);
+
+  const startAudit = async (priorityOnly: boolean) => {
+    try {
+      const body: any = {};
+      if (priorityOnly) body.priority_filter = 3;
+      const res = await fetch(`${CORE_API_URL}/nkb/audit/start`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        setAuditPolling(true);
+        setAuditStatus({ status: 'running', progress: 0, sources_checked: [], total_unique_documents: 0 });
+      } else {
+        const data = await res.json();
+        setError(data.detail || 'Chyba při spuštění auditu');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba');
+    }
+  };
+
+  // Poll audit while running
+  useEffect(() => {
+    if (!auditPolling) return;
+    const interval = setInterval(async () => {
+      const st = await fetchAuditStatus();
+      if (st && st.status !== 'running') {
+        setAuditPolling(false);
+        fetchAuditResult();
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [auditPolling, fetchAuditStatus, fetchAuditResult]);
+
+  // Load audit result when filters change
+  useEffect(() => {
+    if (auditStatus.status === 'completed') fetchAuditResult();
+  }, [auditStatusFilter, auditSourceFilter, auditOblastFilter, auditPriorityFilter]); // eslint-disable-line
+
   useEffect(() => {
     if (tab === 'norms') fetchNorms();
     else if (tab === 'rules') fetchRules();
     else if (tab === 'harvest') fetchHarvestStatus();
+    else if (tab === 'audit') { fetchAuditStatus(); fetchAuditResult(); }
     fetchStats();
   }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -329,20 +457,20 @@ export default function NKBAdminPage() {
 
       {/* Tab bar */}
       <div className="nkb-tabs">
-        {(['norms', 'rules', 'stats', ...(isAdmin ? ['harvest'] : [])] as Tab[]).map(t => (
+        {(['norms', 'rules', 'stats', ...(isAdmin ? ['audit', 'harvest'] : [])] as Tab[]).map(t => (
           <button
             key={t}
             className={`nkb-tab ${tab === t ? 'nkb-tab--active' : ''}`}
             onClick={() => setTab(t)}
           >
-            {t === 'norms' ? 'Normy' : t === 'rules' ? 'Pravidla' : t === 'stats' ? 'Statistiky' : 'URS Harvest'}
+            {t === 'norms' ? 'Normy' : t === 'rules' ? 'Pravidla' : t === 'stats' ? 'Statistiky' : t === 'audit' ? 'Stav NKB' : 'URS Harvest'}
           </button>
         ))}
       </div>
 
       <main className="nkb-main">
         {/* Search + actions */}
-        {tab !== 'stats' && tab !== 'harvest' && (
+        {tab !== 'stats' && tab !== 'harvest' && tab !== 'audit' && (
           <div className="nkb-toolbar">
             <form onSubmit={handleSearch} className="nkb-search-form">
               <Search size={16} />
@@ -545,6 +673,270 @@ export default function NKBAdminPage() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ── Audit (Stav NKB) ── */}
+        {tab === 'audit' && (
+          <div className="nkb-audit">
+            {/* Header + description */}
+            <div style={{ marginBottom: 16, padding: 16, background: '#f8f9fa', borderRadius: 8, border: '1px solid #e2e8f0' }}>
+              <h3 style={{ margin: '0 0 8px 0', fontSize: 15, fontWeight: 600 }}>Gap-analýza normativní báze</h3>
+              <p style={{ margin: '0 0 12px 0', fontSize: 13, color: '#6b7280' }}>
+                Audit projde všechny zdroje (SŽ, ŘSD/PJPK, MMR, ČAS, ÚNMZ...), stáhne seznam platných dokumentů
+                a porovná s tím co je v NKB databázi. Výsledek: co chybí, co je zastaralé, co je aktuální.
+              </p>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <button className="c-btn c-btn--primary c-btn--sm" onClick={() => startAudit(false)}
+                  disabled={auditStatus.status === 'running'}>
+                  {auditStatus.status === 'running' ? 'Audit běží...' : 'Spustit audit (všechny zdroje)'}
+                </button>
+                <button className="c-btn c-btn--sm" onClick={() => startAudit(true)}
+                  disabled={auditStatus.status === 'running'}>
+                  Jen ★★★ priorita
+                </button>
+                <button className="c-btn c-btn--sm" onClick={() => { fetchAuditStatus(); fetchAuditResult(); }}>
+                  <RefreshCw size={14} /> Obnovit
+                </button>
+              </div>
+              <div style={{ marginTop: 12, fontSize: 11, color: '#9ca3af' }}>
+                Zdroje: SŽ (TKP, VTP, Předpisy S), PJPK (TP, TKP PK, VL), ŘSD (směrnice, PPK, XC4, metodiky),
+                MMR (stavební právo, závazné ČSN), ČAS, ÚNMZ, ČKAIT, zákony pro lidi
+              </div>
+            </div>
+
+            {/* Running status */}
+            {auditStatus.status === 'running' && (
+              <div style={{ padding: 16, background: '#fef3c7', borderRadius: 8, marginBottom: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  <Loader2 size={16} className="spin" />
+                  <strong>Audit běží... {auditStatus.progress}%</strong>
+                  {auditStatus.current_source && <span style={{ color: '#92400e' }}>({auditStatus.current_source})</span>}
+                </div>
+                <div className="nkb-harvest-progress" style={{ height: 6 }}>
+                  <div className="nkb-harvest-progress-bar" style={{ width: `${auditStatus.progress}%`, background: '#f59e0b' }} />
+                </div>
+                <div style={{ fontSize: 12, color: '#92400e', marginTop: 4 }}>
+                  Zkontrolováno: {auditStatus.sources_checked.join(', ') || 'žádné'}
+                </div>
+              </div>
+            )}
+
+            {auditStatus.error && (
+              <div style={{ padding: 12, background: '#fef2f2', borderRadius: 8, color: '#991b1b', marginBottom: 16 }}>
+                Chyba: {auditStatus.error}
+              </div>
+            )}
+
+            {/* Source summary table */}
+            {auditSummaries.length > 0 && (
+              <div style={{ marginBottom: 24 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 8 }}>Přehled zdrojů</h3>
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                    <thead>
+                      <tr style={{ background: '#f3f4f6', textAlign: 'left' }}>
+                        <th style={{ padding: '8px 12px', fontWeight: 600 }}>Zdroj</th>
+                        <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 600 }}>Celkem</th>
+                        <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 600 }}>✅</th>
+                        <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 600 }}>⚠️</th>
+                        <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 600 }}>❌</th>
+                        <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 600 }}>🔒</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {auditSummaries.map(s => (
+                        <tr key={s.source_code} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                          <td style={{ padding: '8px 12px' }}>
+                            <strong>{s.source_name}</strong>
+                            <span style={{ color: '#9ca3af', fontSize: 11, marginLeft: 6 }}>({s.source_code})</span>
+                            {s.error && <span style={{ color: '#ef4444', fontSize: 11, marginLeft: 6 }}>⚠ {s.error}</span>}
+                          </td>
+                          <td style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 600 }}>{s.total}</td>
+                          <td style={{ padding: '8px 6px', textAlign: 'center', color: '#22c55e' }}>{s.aktualni || '-'}</td>
+                          <td style={{ padding: '8px 6px', textAlign: 'center', color: '#f59e0b' }}>{s.zastaraly || '-'}</td>
+                          <td style={{ padding: '8px 6px', textAlign: 'center', color: '#ef4444', fontWeight: s.chybi ? 600 : 400 }}>{s.chybi || '-'}</td>
+                          <td style={{ padding: '8px 6px', textAlign: 'center', color: '#6b7280' }}>{s.nedostupny || '-'}</td>
+                        </tr>
+                      ))}
+                      {/* Total row */}
+                      <tr style={{ background: '#f9fafb', fontWeight: 600 }}>
+                        <td style={{ padding: '8px 12px' }}>CELKEM (unique)</td>
+                        <td style={{ padding: '8px 6px', textAlign: 'center' }}>{auditStatus.total_unique_documents}</td>
+                        <td style={{ padding: '8px 6px', textAlign: 'center', color: '#22c55e' }}>{auditEntries.filter(e => e.status === 'aktuální').length}</td>
+                        <td style={{ padding: '8px 6px', textAlign: 'center', color: '#f59e0b' }}>{auditEntries.filter(e => e.status === 'zastaralý').length}</td>
+                        <td style={{ padding: '8px 6px', textAlign: 'center', color: '#ef4444' }}>{auditEntries.filter(e => e.status === 'chybí').length}</td>
+                        <td style={{ padding: '8px 6px', textAlign: 'center', color: '#6b7280' }}>{auditEntries.filter(e => e.status === 'nedostupný').length}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Filters */}
+            {auditEntries.length > 0 && (
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12, alignItems: 'center' }}>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>Filtry:</span>
+                <select value={auditStatusFilter} onChange={e => setAuditStatusFilter(e.target.value)}
+                  style={{ fontSize: 12, padding: '4px 8px', borderRadius: 4, border: '1px solid #d1d5db' }}>
+                  <option value="">Všechny stavy</option>
+                  <option value="chybí">❌ Chybí</option>
+                  <option value="zastaralý">⚠️ Zastaralý</option>
+                  <option value="aktuální">✅ Aktuální</option>
+                  <option value="nedostupný">🔒 Nedostupný</option>
+                </select>
+                <select value={auditSourceFilter} onChange={e => setAuditSourceFilter(e.target.value)}
+                  style={{ fontSize: 12, padding: '4px 8px', borderRadius: 4, border: '1px solid #d1d5db' }}>
+                  <option value="">Všechny zdroje</option>
+                  {auditSummaries.map(s => <option key={s.source_code} value={s.source_code}>{s.source_code}</option>)}
+                </select>
+                <select value={auditPriorityFilter} onChange={e => setAuditPriorityFilter(Number(e.target.value))}
+                  style={{ fontSize: 12, padding: '4px 8px', borderRadius: 4, border: '1px solid #d1d5db' }}>
+                  <option value={0}>Všechny priority</option>
+                  <option value={3}>★★★ pouze</option>
+                  <option value={2}>★★ a výše</option>
+                </select>
+                <select value={auditOblastFilter} onChange={e => setAuditOblastFilter(e.target.value)}
+                  style={{ fontSize: 12, padding: '4px 8px', borderRadius: 4, border: '1px solid #d1d5db' }}>
+                  <option value="">Všechny oblasti</option>
+                  {['mosty', 'koleje', 'silnice', 'beton', 'tunely', 'občanská', 'zákony'].map(o =>
+                    <option key={o} value={o}>{o}</option>
+                  )}
+                </select>
+              </div>
+            )}
+
+            {/* Document table */}
+            {auditEntries.length > 0 && (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                  <thead>
+                    <tr style={{ background: '#f3f4f6', textAlign: 'left' }}>
+                      <th style={{ padding: '6px 10px', fontWeight: 600 }}>Stav</th>
+                      <th style={{ padding: '6px 10px', fontWeight: 600 }}>Označení</th>
+                      <th style={{ padding: '6px 10px', fontWeight: 600 }}>Název</th>
+                      <th style={{ padding: '6px 8px', fontWeight: 600 }}>Typ</th>
+                      <th style={{ padding: '6px 8px', fontWeight: 600 }}>Oblast</th>
+                      <th style={{ padding: '6px 8px', fontWeight: 600 }}>Zdroje</th>
+                      <th style={{ padding: '6px 6px', fontWeight: 600, textAlign: 'center' }}>Prior.</th>
+                      <th style={{ padding: '6px 6px', fontWeight: 600 }}>Datum</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {auditEntries.map((e, i) => (
+                      <tr key={i} style={{
+                        borderBottom: '1px solid #e5e7eb',
+                        background: e.status === 'chybí' && e.priorita >= 3 ? '#fef2f2' : undefined,
+                      }}>
+                        <td style={{ padding: '6px 10px' }}>
+                          <span style={{ color: STATUS_COLORS[e.status] || '#6b7280' }}>
+                            {STATUS_ICONS[e.status] || '?'} {e.status}
+                          </span>
+                        </td>
+                        <td style={{ padding: '6px 10px', fontWeight: 500 }}>
+                          {e.url_ke_stazeni
+                            ? <a href={e.url_ke_stazeni} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb' }}>{e.oznaceni}</a>
+                            : e.oznaceni
+                          }
+                        </td>
+                        <td style={{ padding: '6px 10px', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {e.nazev}
+                        </td>
+                        <td style={{ padding: '6px 8px' }}>
+                          <span className="nkb-stat-pill" style={{ fontSize: 10 }}>{e.doc_type}</span>
+                        </td>
+                        <td style={{ padding: '6px 8px', fontSize: 11 }}>{e.oblast || '-'}</td>
+                        <td style={{ padding: '6px 8px', fontSize: 10 }}>
+                          {e.zdroje.map(z => <span key={z} className="nkb-stat-pill" style={{ marginRight: 2, fontSize: 9 }}>{z}</span>)}
+                        </td>
+                        <td style={{ padding: '6px 6px', textAlign: 'center', color: e.priorita >= 3 ? '#f59e0b' : '#9ca3af' }}>
+                          {PRIORITY_STARS[e.priorita] || '★'}
+                        </td>
+                        <td style={{ padding: '6px 6px', fontSize: 11 }}>{e.datum_ucinnosti || '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{ padding: 8, fontSize: 12, color: '#6b7280' }}>
+                  Zobrazeno {auditEntries.length} dokumentů
+                </div>
+              </div>
+            )}
+
+            {/* Download missing section */}
+            {auditEntries.length > 0 && auditEntries.some(e => e.status === 'chybí' && e.url_ke_stazeni) && (
+              <div style={{ marginTop: 16, padding: 16, background: '#fef2f2', borderRadius: 8, border: '1px solid #fecaca' }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: 14, fontWeight: 600, color: '#991b1b' }}>
+                  ❌ Chybějící dokumenty ke stažení
+                </h4>
+                <p style={{ margin: '0 0 12px 0', fontSize: 12, color: '#991b1b' }}>
+                  {auditEntries.filter(e => e.status === 'chybí' && e.url_ke_stazeni).length} dokumentů
+                  s dostupným URL ke stažení
+                  ({auditEntries.filter(e => e.status === 'chybí' && e.url_ke_stazeni && e.priorita >= 3).length} s prioritou ★★★)
+                </p>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <button className="c-btn c-btn--primary c-btn--sm"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`${CORE_API_URL}/nkb/audit/download-missing`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ min_priority: 3 }),
+                        });
+                        const data = await res.json();
+                        alert(`Nalezeno ${data.documents?.length || 0} dokumentů ke stažení (★★★).\n\nPro skutečné stažení je třeba implementovat download pipeline.`);
+                      } catch (err) { setError('Chyba při stahování'); }
+                    }}>
+                    Stáhnout chybějící ★★★
+                  </button>
+                  <button className="c-btn c-btn--sm"
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`${CORE_API_URL}/nkb/audit/download-missing`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ min_priority: 1 }),
+                        });
+                        const data = await res.json();
+                        alert(`Nalezeno ${data.documents?.length || 0} dokumentů ke stažení (všechny priority).\n\nPro skutečné stažení je třeba implementovat download pipeline.`);
+                      } catch (err) { setError('Chyba při stahování'); }
+                    }}>
+                    Stáhnout vše chybějící
+                  </button>
+                </div>
+                {/* Quick links to missing ★★★ documents */}
+                <details style={{ marginTop: 12 }}>
+                  <summary style={{ cursor: 'pointer', fontSize: 12, color: '#991b1b' }}>
+                    Zobrazit URL ke stažení ({auditEntries.filter(e => e.status === 'chybí' && e.url_ke_stazeni && e.priorita >= 3).length} ★★★)
+                  </summary>
+                  <ul style={{ margin: '8px 0', paddingLeft: 20, fontSize: 12 }}>
+                    {auditEntries
+                      .filter(e => e.status === 'chybí' && e.url_ke_stazeni && e.priorita >= 3)
+                      .map((e, i) => (
+                        <li key={i} style={{ marginBottom: 4 }}>
+                          <strong>{e.oznaceni}</strong> — {e.nazev?.slice(0, 80)}
+                          <br />
+                          <a href={e.url_ke_stazeni!} target="_blank" rel="noopener noreferrer"
+                            style={{ color: '#2563eb', fontSize: 11, wordBreak: 'break-all' }}>
+                            {e.url_ke_stazeni}
+                          </a>
+                          <span style={{ marginLeft: 8, fontSize: 10, color: '#6b7280' }}>
+                            ({e.zdroje.join(', ')})
+                          </span>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </details>
+              </div>
+            )}
+
+            {auditStatus.status === 'idle' && auditEntries.length === 0 && (
+              <div style={{ padding: 32, textAlign: 'center', color: '#9ca3af' }}>
+                Žádný audit nebyl spuštěn. Klikněte "Spustit audit" pro analýzu zdrojů.
+              </div>
+            )}
           </div>
         )}
 

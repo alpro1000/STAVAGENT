@@ -15,7 +15,7 @@ import AntifraudPanel from '../components/admin/AntifraudPanel';
 import CreditManagement from '../components/admin/CreditManagement';
 import { adminAPI } from '../services/api';
 
-type Tab = 'overview' | 'users' | 'credits' | 'usage' | 'flags' | 'antifraud' | 'audit-logs';
+type Tab = 'overview' | 'users' | 'credits' | 'usage' | 'flags' | 'antifraud' | 'audit-logs' | 'nkb';
 
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'overview', label: 'Přehled' },
@@ -25,6 +25,7 @@ const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'flags', label: 'Funkce & služby' },
   { id: 'antifraud', label: 'Antifraud' },
   { id: 'audit-logs', label: 'Audit logy' },
+  { id: 'nkb', label: 'Normy (NKB)' },
 ];
 
 export default function AdminDashboard() {
@@ -125,6 +126,43 @@ export default function AdminDashboard() {
         )}
         {activeTab === 'audit-logs' && (
           <AuditLogs />
+        )}
+        {activeTab === 'nkb' && (
+          <div>
+            <div style={{ marginBottom: 16 }}>
+              <p style={{ color: '#718096', marginBottom: 12 }}>
+                Správa normativní znalostní báze — normy, pravidla, audit zdrojů, URS harvest.
+              </p>
+              <button
+                onClick={() => navigate('/portal/nkb')}
+                style={{
+                  padding: '12px 24px', background: '#FF9F1C', color: '#fff', border: 'none',
+                  borderRadius: 8, cursor: 'pointer', fontSize: 15, fontWeight: 600,
+                }}
+              >
+                Otevřít NKB správce →
+              </button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+              {[
+                { label: 'Normy & pravidla', desc: 'Procházet a přidávat ČSN, TKP, VTP...', tab: 'norms' },
+                { label: 'Stav NKB (audit)', desc: 'Gap-analýza — co chybí, co je zastaralé', tab: 'audit' },
+                { label: 'URS Harvest', desc: 'Sběr OTSKP kódů z podminky.urs.cz', tab: 'harvest' },
+              ].map(item => (
+                <div key={item.tab} onClick={() => navigate(`/portal/nkb?tab=${item.tab}`)}
+                  style={{
+                    padding: 16, background: '#f7f7f8', borderRadius: 8, cursor: 'pointer',
+                    border: '1px solid #e2e8f0', transition: 'all 0.15s',
+                  }}
+                  onMouseOver={e => (e.currentTarget.style.borderColor = '#FF9F1C')}
+                  onMouseOut={e => (e.currentTarget.style.borderColor = '#e2e8f0')}
+                >
+                  <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 4 }}>{item.label}</div>
+                  <div style={{ fontSize: 12, color: '#718096' }}>{item.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>
