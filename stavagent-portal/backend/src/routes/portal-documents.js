@@ -14,6 +14,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { getPool } from '../db/postgres.js';
+import { canAfford, deductCredits } from '../services/creditService.js';
 
 const router = express.Router();
 
@@ -63,6 +64,22 @@ router.post('/:projectId', async (req, res) => {
         success: false,
         error: 'document_type, title, and content are required'
       });
+    }
+
+    // Credit check: saving to project requires credits
+    const userId = req.user?.userId;
+    if (userId) {
+      const creditCheck = await canAfford(userId, 'save_to_project');
+      if (!creditCheck.allowed) {
+        return res.status(402).json({
+          success: false,
+          error: 'Insufficient credits',
+          message: 'Pro uložení do projektu jsou potřeba kredity. Výsledky jsou dostupné v prohlížeči.',
+          session_only: true,
+          balance: creditCheck.balance,
+          cost: creditCheck.cost,
+        });
+      }
     }
 
     // Verify project exists
@@ -115,6 +132,11 @@ router.post('/:projectId', async (req, res) => {
     );
 
     console.log(`[PortalDocuments] Saved ${document_type} v${version} for project ${projectId}`);
+
+    // Deduct credits after successful save
+    if (userId) {
+      deductCredits(userId, 'save_to_project', `Uložení ${document_type} v${version}`).catch(() => {});
+    }
 
     res.json({
       success: true,

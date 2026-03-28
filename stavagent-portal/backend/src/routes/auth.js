@@ -779,13 +779,18 @@ router.post('/verify-phone', requireAuth, async (req, res) => {
 router.get('/usage', requireAuth, async (req, res) => {
   try {
     const { getUserUsage } = await import('../services/usageTracker.js');
+    const { getBalance, isSessionOnly } = await import('../services/creditService.js');
     const usage = await getUserUsage(req.user.userId);
 
     if (!usage) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json({ success: true, data: usage });
+    // Enrich with credit balance
+    const creditBalance = await getBalance(req.user.userId);
+    const sessionOnly = await isSessionOnly(req.user.userId);
+
+    res.json({ success: true, data: { ...usage, credit_balance: creditBalance, session_only: sessionOnly } });
   } catch (error) {
     logger.error('Get usage error:', error);
     res.status(500).json({ error: 'Server error' });

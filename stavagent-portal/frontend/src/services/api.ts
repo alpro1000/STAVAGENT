@@ -105,6 +105,14 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
+    // Handle 402 Insufficient Credits
+    if (status === 402) {
+      const data = error.response?.data;
+      console.warn(`[API] 402 Insufficient credits: balance=${data?.balance}, cost=${data?.cost}`);
+      // Don't redirect — let the caller handle it with a user-friendly message
+      return Promise.reject(error);
+    }
+
     // Retry on 429 (Too Many Requests) with exponential backoff
     if (status === 429 && config && !config.__retryCount) {
       config.__retryCount = 0;
@@ -578,6 +586,43 @@ export const usageAPI = {
   },
   getMyFeatures: async (): Promise<any> => {
     const { data } = await api.get('/api/auth/features');
+    return data;
+  },
+};
+
+// Credits — pay-as-you-go billing
+export const creditsAPI = {
+  getBalance: async (): Promise<any> => {
+    const { data } = await api.get('/api/credits/balance');
+    return data;
+  },
+  getPrices: async (): Promise<any> => {
+    const { data } = await api.get('/api/credits/prices');
+    return data;
+  },
+  getHistory: async (limit = 50, offset = 0): Promise<any> => {
+    const { data } = await api.get('/api/credits/history', { params: { limit, offset } });
+    return data;
+  },
+  // Admin
+  getAdminStats: async (): Promise<any> => {
+    const { data } = await api.get('/api/credits/admin/stats');
+    return data;
+  },
+  getAdminPrices: async (): Promise<any> => {
+    const { data } = await api.get('/api/credits/admin/prices');
+    return data;
+  },
+  updatePrice: async (key: string, updates: any): Promise<any> => {
+    const { data } = await api.put(`/api/credits/admin/prices/${key}`, updates);
+    return data;
+  },
+  topupUser: async (userId: number, amount: number, description?: string): Promise<any> => {
+    const { data } = await api.post('/api/credits/admin/topup', { user_id: userId, amount, description });
+    return data;
+  },
+  getAdminUser: async (userId: number): Promise<any> => {
+    const { data } = await api.get(`/api/credits/admin/user/${userId}`);
     return data;
   },
 };

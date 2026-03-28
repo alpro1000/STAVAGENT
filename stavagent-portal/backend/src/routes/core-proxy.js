@@ -15,6 +15,7 @@
 
 import express from 'express';
 import multer from 'multer';
+import { canAfford, deductCredits } from '../services/creditService.js';
 
 const router = express.Router();
 
@@ -23,6 +24,15 @@ const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-10860
 const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '300000');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
+
+/** Map proxy prefixes to credit operation keys (AI operations that cost credits) */
+const CREDIT_MAP = {
+  'passport': 'passport_generate',
+  'workflow-c': 'workflow_c_audit',
+  'price-parser': 'price_parser',
+  'nkb': 'nkb_advisor',
+  'multi-role': 'chat_message',
+};
 
 /** Route mapping: proxy prefix → CORE path prefix */
 const ROUTE_MAP = {
@@ -142,6 +152,23 @@ async function proxyRequest(req, res, prefix, subPath) {
     });
   }
 
+  // Credit check for AI operations (POST only — GET is free)
+  const operationKey = CREDIT_MAP[prefix];
+  const userId = req.user?.userId;
+  if (operationKey && userId && req.method === 'POST') {
+    const creditCheck = await canAfford(userId, operationKey);
+    if (!creditCheck.allowed) {
+      return res.status(402).json({
+        success: false,
+        error: 'Insufficient credits',
+        message: creditCheck.reason,
+        balance: creditCheck.balance,
+        cost: creditCheck.cost,
+        operation: operationKey,
+      });
+    }
+  }
+
   console.log(`[CoreProxy] ${req.method} ${req.originalUrl} → ${targetUrl}`);
 
   try {
@@ -174,6 +201,12 @@ async function proxyRequest(req, res, prefix, subPath) {
     }
 
     const coreResponse = await fetch(targetUrl, fetchOpts);
+
+    // Deduct credits after successful CORE response (2xx)
+    if (operationKey && userId && coreResponse.ok) {
+      deductCredits(userId, operationKey).catch(() => {});
+    }
+
     await sendCoreResponse(coreResponse, res);
 
   } catch (err) {

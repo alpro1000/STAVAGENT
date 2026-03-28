@@ -7,7 +7,7 @@
  * Route: /portal/analysis
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Upload, CheckCircle, AlertTriangle, Loader2, Download, Save, FolderOpen,
@@ -24,7 +24,7 @@ import AuditTab from '../components/portal/DocumentAnalysis/AuditTab';
 import SummaryTab from '../components/portal/DocumentAnalysis/SummaryTab';
 import ComplianceTab from '../components/portal/DocumentAnalysis/ComplianceTab';
 import CrossValidationPanel from '../components/portal/DocumentAnalysis/CrossValidationPanel';
-import { API_URL } from '../services/api';
+import { API_URL, creditsAPI } from '../services/api';
 
 const CORE_API_URL = `${API_URL}/api/core`;
 const ALLOWED_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml', 'docx', 'csv', 'jpg', 'jpeg', 'png', 'tiff', 'tif'];
@@ -98,6 +98,10 @@ export default function DocumentAnalysisPage() {
   const [soupisData, setSoupisData] = useState<ParseResult | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>('passport');
 
+  // Credits / session-only mode
+  const [sessionOnly, setSessionOnly] = useState(false);
+  const [creditBalance, setCreditBalance] = useState<number | null>(null);
+
   // Save to project
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -116,6 +120,16 @@ export default function DocumentAnalysisPage() {
 
   const hasResults = !!(passportData || projectData || soupisData);
   const authHeaders = { 'Authorization': `Bearer ${localStorage.getItem('auth_token')}` };
+
+  // Load credit balance on mount
+  useEffect(() => {
+    creditsAPI.getBalance()
+      .then(res => {
+        setCreditBalance(res.balance ?? 0);
+        setSessionOnly(res.session_only ?? false);
+      })
+      .catch(() => { /* ignore — will work without credits */ });
+  }, []);
 
   /* ── Upload single file ── */
   const handleFileUpload = useCallback(async (file: File) => {
@@ -677,6 +691,10 @@ export default function DocumentAnalysisPage() {
                   {saveSuccess ? (
                     <span className="da-save-badge">
                       <CheckCircle size={14} /> Uloženo
+                    </span>
+                  ) : sessionOnly ? (
+                    <span className="da-session-badge" title="Dobijte kredity pro uložení do projektu">
+                      Pouze v prohlížeči
                     </span>
                   ) : (
                     <button
@@ -1316,6 +1334,21 @@ const documentAnalysisStyles = `
   font-weight: 600;
   color: var(--status-success, #22c55e);
   background: rgba(34, 197, 94, 0.08);
+}
+
+/* ── Session-only badge ── */
+.da-session-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #C2410C;
+  background: #FFF7ED;
+  border: 1px solid #FB923C;
+  cursor: help;
 }
 
 /* ── Load saved button in upload zone ── */

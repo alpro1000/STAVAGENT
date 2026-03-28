@@ -41,6 +41,7 @@ import cabinetRoutes from './src/routes/cabinet.js';
 import orgsRoutes from './src/routes/orgs.js';
 import connectionsRoutes from './src/routes/connections.js';
 import pumpRoutes from './src/routes/pump.js';
+import creditsRoutes from './src/routes/credits.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -237,6 +238,9 @@ app.use('/api/connections', connectionsRoutes);
 
 // Unified Pump Calculator — suppliers, models, calculate, compare (Phase 9)
 app.use('/api/pump', pumpRoutes);
+
+// Credits — pay-as-you-go billing (balance, prices, history, admin)
+app.use('/api/credits', creditsRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);
