@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import {
   ArrowLeft, BookOpen, Shield, Plus, Search,
   Loader2, ChevronDown, ChevronUp, Edit3, Trash2,
@@ -85,6 +86,8 @@ function getPriorityColor(p: number): string {
 
 export default function NKBAdminPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const [tab, setTab] = useState<Tab>('norms');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -326,7 +329,7 @@ export default function NKBAdminPage() {
 
       {/* Tab bar */}
       <div className="nkb-tabs">
-        {(['norms', 'rules', 'stats', 'harvest'] as Tab[]).map(t => (
+        {(['norms', 'rules', 'stats', ...(isAdmin ? ['harvest'] : [])] as Tab[]).map(t => (
           <button
             key={t}
             className={`nkb-tab ${tab === t ? 'nkb-tab--active' : ''}`}

@@ -2528,5 +2528,9 @@ async function cancelHarvest() {
   }
 }
 
-// Check harvest status on load (in case one is running)
-checkHarvestStatus();
+// Show harvest panel only for admins (?admin=1 in URL)
+if (new URLSearchParams(window.location.search).get('admin') === '1') {
+  const harvestSection = document.getElementById('harvestSection');
+  if (harvestSection) harvestSection.style.display = '';
+  checkHarvestStatus();
+}
