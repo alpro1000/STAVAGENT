@@ -58,17 +58,17 @@ export default function PassportTab({ data }: PassportTabProps) {
 
       {/* Document header */}
       <h3 style={{ margin: '0 0 6px', fontSize: 20, fontWeight: 600 }}>{passport.project_name}</h3>
-      {(passport as any).document_type && (
+      {(passport as any).document_type && String((passport as any).document_type).length > 1 && (
         <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>{(passport as any).document_type}</div>
       )}
-      {passport.structure_type && (
+      {passport.structure_type && String(passport.structure_type).length > 1 && (
         <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
           Typ konstrukce: <strong>{passport.structure_type}</strong>
         </div>
       )}
 
       {/* Description */}
-      {passport.description && (
+      {passport.description && String(passport.description).length > 1 && (
         <p style={{ margin: '0 0 20px', lineHeight: 1.8, fontSize: 15 }}>{passport.description}</p>
       )}
 
@@ -156,8 +156,8 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
 
   return (
     <>
-      {/* Statistics */}
-      {(statistics?.total_concrete_m3 || statistics?.total_reinforcement_t || statistics?.unique_concrete_classes || statistics?.unique_steel_grades) && (
+      {/* Statistics — only if real values */}
+      {((statistics?.total_concrete_m3 ?? 0) > 0 || (statistics?.total_reinforcement_t ?? 0) > 0 || (statistics?.unique_concrete_classes ?? 0) > 0 || (statistics?.unique_steel_grades ?? 0) > 0) && (
         <table className={styles.dataTable}>
           <thead>
             <tr><th colSpan={2} style={{ borderBottom: '2px solid var(--accent-orange)' }}>Souhrnné údaje</th></tr>
@@ -231,22 +231,30 @@ function StructuredPassport({ data }: { data: PassportGenerationResponse }) {
         </div>
       )}
 
-      {/* Dimensions */}
-      {passport.dimensions && (
-        <div style={{ marginBottom: 24 }}>
-          <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #F59E0B' }}>Rozměry objektu</div>
-          <table className={styles.dataTable}>
-            <tbody>
-              {passport.dimensions.floors_above_ground !== null && <tr><td className={styles.label}>Nadzemní podlaží</td><td className={styles.value}>{passport.dimensions.floors_above_ground} NP</td></tr>}
-              {passport.dimensions.floors_underground !== null && <tr><td className={styles.label}>Podzemní podlaží</td><td className={styles.value}>{passport.dimensions.floors_underground} PP</td></tr>}
-              {passport.dimensions.height_m !== null && <tr><td className={styles.label}>Výška</td><td className={styles.value}>{formatNumber(passport.dimensions.height_m)} m</td></tr>}
-              {passport.dimensions.length_m !== null && <tr><td className={styles.label}>Délka</td><td className={styles.value}>{formatNumber(passport.dimensions.length_m)} m</td></tr>}
-              {passport.dimensions.width_m !== null && <tr><td className={styles.label}>Šířka</td><td className={styles.value}>{formatNumber(passport.dimensions.width_m)} m</td></tr>}
-              {passport.dimensions.built_up_area_m2 !== null && <tr><td className={styles.label}>Zastavěná plocha</td><td className={styles.value}>{formatNumber(passport.dimensions.built_up_area_m2)} m²</td></tr>}
-            </tbody>
-          </table>
-        </div>
-      )}
+      {/* Dimensions — only show if at least one meaningful value exists */}
+      {passport.dimensions && (() => {
+        const d = passport.dimensions;
+        const rows: [string, string][] = [];
+        if (d.floors_above_ground != null && d.floors_above_ground > 0) rows.push(['Nadzemní podlaží', `${d.floors_above_ground} NP`]);
+        if (d.floors_underground != null && d.floors_underground > 0) rows.push(['Podzemní podlaží', `${d.floors_underground} PP`]);
+        if (d.height_m != null && d.height_m > 0) rows.push(['Výška', `${formatNumber(d.height_m)} m`]);
+        if (d.length_m != null && d.length_m > 0) rows.push(['Délka', `${formatNumber(d.length_m)} m`]);
+        if (d.width_m != null && d.width_m > 0) rows.push(['Šířka', `${formatNumber(d.width_m)} m`]);
+        if (d.built_up_area_m2 != null && d.built_up_area_m2 > 0) rows.push(['Zastavěná plocha', `${formatNumber(d.built_up_area_m2)} m²`]);
+        if (rows.length === 0) return null;
+        return (
+          <div style={{ marginBottom: 24 }}>
+            <div className={styles.sectionHeader} style={{ borderBottom: '2px solid #F59E0B' }}>Rozměry objektu</div>
+            <table className={styles.dataTable}>
+              <tbody>
+                {rows.map(([label, value], i) => (
+                  <tr key={i}><td className={styles.label}>{label}</td><td className={styles.value}>{value}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      })()}
 
       {/* Special requirements */}
       {passport.special_requirements.length > 0 && (

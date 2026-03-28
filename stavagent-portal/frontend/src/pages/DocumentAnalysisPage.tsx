@@ -301,20 +301,143 @@ export default function DocumentAnalysisPage() {
     e.target.value = '';
   }, [handleFileUpload, handleProjectUpload]);
 
-  /* ── CSV export ── */
+  /* ── CSV export — universal (all available data) ── */
   const exportToCsv = useCallback(() => {
     if (!passportData) return;
-    const { passport } = passportData;
+    const { passport, statistics } = passportData;
     const rows: string[][] = [];
-    rows.push(['=== SPECIFIKACE BETONU ===']);
-    passport.concrete_specifications.forEach(spec => {
-      rows.push([spec.concrete_class, spec.exposure_classes.join(' '), spec.volume_m3?.toString() || '-', spec.special_properties.join(', ')]);
-    });
-    rows.push([], ['=== VÝZTUŽ ===']);
-    passport.reinforcement.forEach(steel => {
-      rows.push([steel.steel_grade, `${steel.tonnage_t || '-'} t`, steel.bar_diameters.join(', ')]);
-    });
-    const csv = rows.map(row => row.join(';')).join('\n');
+
+    // Header
+    rows.push(['=== PASSPORT DOKUMENTU ===']);
+    rows.push(['Název', passport.project_name || '']);
+    if (passport.description && String(passport.description).length > 1) rows.push(['Popis', passport.description]);
+    if (passport.structure_type) rows.push(['Typ konstrukce', passport.structure_type]);
+
+    // Identification
+    const ident = (passportData as any)?.identification;
+    if (ident && Object.keys(ident).length > 0) {
+      rows.push([], ['=== IDENTIFIKACE ===']);
+      Object.entries(ident).forEach(([key, val]) => {
+        if (val) rows.push([key, String(val)]);
+      });
+    }
+
+    // Statistics
+    if (statistics && ((statistics.total_concrete_m3 ?? 0) > 0 || (statistics.total_reinforcement_t ?? 0) > 0)) {
+      rows.push([], ['=== SOUHRNNÉ ÚDAJE ===']);
+      if ((statistics.total_concrete_m3 ?? 0) > 0) rows.push(['Beton celkem (m³)', String(statistics.total_concrete_m3)]);
+      if ((statistics.total_reinforcement_t ?? 0) > 0) rows.push(['Výztuž celkem (t)', String(statistics.total_reinforcement_t)]);
+    }
+
+    // Concrete specifications
+    if (passport.concrete_specifications?.length > 0) {
+      rows.push([], ['=== SPECIFIKACE BETONU ===']);
+      rows.push(['Třída', 'Expozice', 'Objem (m³)', 'Vlastnosti']);
+      passport.concrete_specifications.forEach(spec => {
+        rows.push([spec.concrete_class, spec.exposure_classes?.join(' ') || '', spec.volume_m3?.toString() || '', spec.special_properties?.join(', ') || '']);
+      });
+    }
+
+    // Reinforcement
+    if (passport.reinforcement?.length > 0) {
+      rows.push([], ['=== VÝZTUŽ ===']);
+      rows.push(['Třída oceli', 'Hmotnost (t)', 'Průměry']);
+      passport.reinforcement.forEach(steel => {
+        rows.push([steel.steel_grade, steel.tonnage_t?.toString() || '', steel.bar_diameters?.join(', ') || '']);
+      });
+    }
+
+    // Dimensions
+    const dims = passport.dimensions;
+    if (dims) {
+      const dimRows: string[][] = [];
+      if (dims.floors_above_ground != null && dims.floors_above_ground > 0) dimRows.push(['Nadzemní podlaží', String(dims.floors_above_ground)]);
+      if (dims.floors_underground != null && dims.floors_underground > 0) dimRows.push(['Podzemní podlaží', String(dims.floors_underground)]);
+      if (dims.height_m != null && dims.height_m > 0) dimRows.push(['Výška (m)', String(dims.height_m)]);
+      if (dims.length_m != null && dims.length_m > 0) dimRows.push(['Délka (m)', String(dims.length_m)]);
+      if (dims.width_m != null && dims.width_m > 0) dimRows.push(['Šířka (m)', String(dims.width_m)]);
+      if (dims.built_up_area_m2 != null && dims.built_up_area_m2 > 0) dimRows.push(['Zastavěná plocha (m²)', String(dims.built_up_area_m2)]);
+      if (dimRows.length > 0) {
+        rows.push([], ['=== ROZMĚRY ===']);
+        dimRows.forEach(r => rows.push(r));
+      }
+    }
+
+    // Special requirements
+    if (passport.special_requirements?.length > 0) {
+      rows.push([], ['=== SPECIÁLNÍ POŽADAVKY ===']);
+      passport.special_requirements.forEach(req => {
+        rows.push([req.requirement_type, req.description, req.standard || '']);
+      });
+    }
+
+    // Technical highlights
+    if (passport.technical_highlights?.length > 0) {
+      rows.push([], ['=== TECHNICKÉ HLAVNÍ BODY ===']);
+      passport.technical_highlights.forEach(hl => rows.push([hl]));
+    }
+
+    // Risks
+    if (passport.risks?.length > 0) {
+      rows.push([], ['=== RIZIKA ===']);
+      rows.push(['Kategorie', 'Závažnost', 'Popis', 'Zmírnění']);
+      passport.risks.forEach(risk => {
+        rows.push([risk.risk_category, risk.severity, risk.description, risk.mitigation]);
+      });
+    }
+
+    // Norms
+    const norms = (passportData as any)?.norms;
+    if (norms?.length > 0) {
+      rows.push([], ['=== NORMY ===']);
+      norms.forEach((n: string) => rows.push([n]));
+    }
+
+    // Tender info
+    const tender = (passport as any)?.tender_info;
+    if (tender) {
+      rows.push([], ['=== ZADÁVACÍ DOKUMENTACE ===']);
+      const tenderFields: [string, any][] = [
+        ['IČO', tender.ico], ['ISDS', tender.isds], ['CPV', tender.cpv_code],
+        ['Zákon', tender.zakon], ['Předpokládaná hodnota (Kč)', tender.predpokladana_hodnota_czk],
+        ['Hodnota s DPH (Kč)', tender.hodnota_s_dph_czk],
+        ['Jistota (Kč)', tender.jistota_czk], ['Číslo účtu', tender.cislo_uctu],
+        ['Lhůta podání', tender.lhuta_podani], ['Zadávací lhůta (dní)', tender.zadavaci_lhuta_dnu],
+        ['Hodnotící kritérium', tender.hodnotici_kriterium], ['URL', tender.tender_url],
+      ];
+      tenderFields.forEach(([label, val]) => {
+        if (val != null && val !== '') rows.push([label, String(val)]);
+      });
+      if (tender.prilohy?.length > 0) {
+        rows.push([], ['=== PŘÍLOHY ZD ===']);
+        tender.prilohy.forEach((p: string) => rows.push([p]));
+      }
+    }
+
+    // Location + stakeholders
+    if (passport.location?.city || passport.location?.address) {
+      rows.push([], ['=== LOKALITA ===']);
+      if (passport.location?.city) rows.push(['Město', passport.location.city]);
+      if (passport.location?.region) rows.push(['Kraj', passport.location.region]);
+      if (passport.location?.address) rows.push(['Adresa', passport.location.address]);
+    }
+    if (passport.stakeholders?.length > 0) {
+      rows.push([], ['=== ÚČASTNÍCI ===']);
+      passport.stakeholders.forEach(s => rows.push([s.role, s.name]));
+    }
+
+    // Type-specific extractions (technical, bill_of_quantities, etc.)
+    const technical = (passportData as any)?.technical;
+    if (technical) {
+      rows.push([], ['=== TECHNICKÉ PARAMETRY ===']);
+      Object.entries(technical).forEach(([key, val]) => {
+        if (val != null && val !== '' && val !== 0 && !(Array.isArray(val) && val.length === 0)) {
+          rows.push([key, Array.isArray(val) ? val.join(', ') : String(val)]);
+        }
+      });
+    }
+
+    const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(';')).join('\n');
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -805,7 +928,7 @@ export default function DocumentAnalysisPage() {
             <div className="da-tab-content">
               {activeTab === 'passport' && passportData && <PassportTab data={passportData} />}
               {activeTab === 'soupis' && <SoupisTab soupisData={soupisData} />}
-              {activeTab === 'audit' && <AuditTab />}
+              {activeTab === 'audit' && <AuditTab uploadedFile={uploadedFile} />}
               {activeTab === 'summary' && <SummaryTab data={passportData} />}
               {activeTab === 'compliance' && <ComplianceTab data={passportData} />}
               {activeTab === 'project' && projectData && (
