@@ -39,6 +39,23 @@ router.post('/register', checkRegistrationIP, async (req, res) => {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
+    // Disposable email detection — block temp-mail services
+    const emailDomain = email.split('@')[1].toLowerCase();
+    try {
+      const bannedDomain = await db.prepare(
+        'SELECT domain FROM banned_email_domains WHERE domain = ?'
+      ).get(emailDomain);
+      if (bannedDomain) {
+        logger.warn(`[REGISTER] Disposable email blocked: ${email}`);
+        return res.status(400).json({
+          error: 'Disposable email not allowed',
+          message: 'Registrace z dočasných e-mailových služeb není povolena. Použijte svůj běžný e-mail.'
+        });
+      }
+    } catch (e) {
+      // Table may not exist yet (dev/SQLite) — skip silently
+    }
+
     // Check if user already exists
     const existingUser = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
     if (existingUser) {
@@ -133,6 +150,17 @@ router.post('/login', async (req, res) => {
     if (!user) {
       logger.warn(`[LOGIN FAIL] User not found: ${email}`);
       return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Check if user is banned
+    if (user.banned) {
+      logger.warn(`[LOGIN FAIL] Banned user attempted login: ${email}`);
+      return res.status(403).json({
+        error: 'Account banned',
+        message: user.banned_reason
+          ? `Váš účet byl zablokován: ${user.banned_reason}`
+          : 'Váš účet byl zablokován. Kontaktujte podporu.'
+      });
     }
 
     // Check if email is verified

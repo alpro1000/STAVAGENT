@@ -52,6 +52,9 @@ router.get('/users', requireAuth, adminOnly, async (req, res) => {
         plan,
         free_pipeline_runs_used,
         registration_ip,
+        banned,
+        banned_at,
+        banned_reason,
         created_at,
         updated_at
       FROM users
@@ -138,7 +141,7 @@ router.get('/users/:id', requireAuth, adminOnly, async (req, res) => {
 router.put('/users/:id', requireAuth, adminOnly, async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
-    const { role, email_verified } = req.body;
+    const { role, email_verified, banned, banned_reason } = req.body;
 
     if (isNaN(userId)) {
       return res.status(400).json({
@@ -183,6 +186,22 @@ router.put('/users/:id', requireAuth, adminOnly, async (req, res) => {
       values.push(role);
     }
 
+    if (banned !== undefined) {
+      updates.push('banned = ?');
+      values.push(banned ? true : false);
+      if (banned) {
+        updates.push('banned_at = ?');
+        values.push(new Date().toISOString());
+        if (banned_reason) {
+          updates.push('banned_reason = ?');
+          values.push(banned_reason);
+        }
+      } else {
+        updates.push('banned_at = NULL');
+        updates.push('banned_reason = NULL');
+      }
+    }
+
     if (email_verified !== undefined) {
       updates.push('email_verified = ?');
       values.push(email_verified ? true : false);
@@ -209,6 +228,8 @@ router.put('/users/:id', requireAuth, adminOnly, async (req, res) => {
     const changes = {};
     if (role !== undefined) changes.role = role;
     if (email_verified !== undefined) changes.email_verified = email_verified;
+    if (banned !== undefined) changes.banned = banned;
+    if (banned_reason) changes.banned_reason = banned_reason;
 
     await logAdminAction(req.user.userId, 'UPDATE_USER', {
       target_user_id: userId,
@@ -217,7 +238,7 @@ router.put('/users/:id', requireAuth, adminOnly, async (req, res) => {
 
     // Fetch updated user
     const updatedUser = await db.prepare(`
-      SELECT id, email, name, role, email_verified, email_verified_at, created_at, updated_at
+      SELECT id, email, name, role, email_verified, email_verified_at, banned, banned_at, banned_reason, created_at, updated_at
       FROM users
       WHERE id = ?
     `).get(userId);
@@ -773,6 +794,56 @@ router.put('/users/:id/quota-reset', requireAuth, adminOnly, async (req, res) =>
   } catch (error) {
     logger.error('[ADMIN] Error resetting quota:', error);
     res.status(500).json({ error: 'Failed to reset quota' });
+  }
+});
+
+// ── Banned Email Domains ──────────────────────────────────────────────────────
+
+/**
+ * GET /api/admin/banned-domains — list all banned email domains
+ */
+router.get('/banned-domains', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const domains = await db.prepare(
+      'SELECT domain, created_at FROM banned_email_domains ORDER BY domain'
+    ).all();
+    res.json({ success: true, data: domains });
+  } catch (error) {
+    // Table may not exist yet
+    res.json({ success: true, data: [] });
+  }
+});
+
+/**
+ * POST /api/admin/banned-domains — add domain to blacklist
+ */
+router.post('/banned-domains', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const { domain } = req.body;
+    if (!domain || !domain.includes('.')) {
+      return res.status(400).json({ error: 'Invalid domain' });
+    }
+    const clean = domain.toLowerCase().trim();
+    await db.prepare(
+      'INSERT INTO banned_email_domains (domain, added_by) VALUES (?, ?) ON CONFLICT (domain) DO NOTHING'
+    ).run(clean, req.user.userId);
+    await logAdminAction(req.user.userId, 'ADD_BANNED_DOMAIN', { domain: clean });
+    res.json({ success: true, domain: clean });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add domain' });
+  }
+});
+
+/**
+ * DELETE /api/admin/banned-domains/:domain — remove domain from blacklist
+ */
+router.delete('/banned-domains/:domain', requireAuth, adminOnly, async (req, res) => {
+  try {
+    await db.prepare('DELETE FROM banned_email_domains WHERE domain = ?').run(req.params.domain);
+    await logAdminAction(req.user.userId, 'REMOVE_BANNED_DOMAIN', { domain: req.params.domain });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to remove domain' });
   }
 });
 
