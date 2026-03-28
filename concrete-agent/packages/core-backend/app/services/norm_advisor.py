@@ -81,28 +81,52 @@ Pokud norma neexistuje nebo ji neznáš, uveď to."""
 # ---------------------------------------------------------------------------
 async def _call_gemini_advisor(prompt: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     """Call Gemini for norm advisory analysis."""
+    import time as _time
+    logger.info(f"[NKB Advisor] _call_gemini_advisor: prompt={len(prompt)}ch")
     try:
         # Try Vertex AI first (free on Cloud Run)
         try:
+            t0 = _time.time()
             from app.core.gemini_client import VertexGeminiClient
+            logger.info("[NKB Advisor] Trying Vertex AI Gemini...")
             client = VertexGeminiClient()
-            response = await client.call(prompt)
+            response = client.call(prompt)
+            elapsed_ms = int((_time.time() - t0) * 1000)
             if response:
-                return _parse_json_response(response), "vertex-ai-gemini"
+                parsed = _parse_json_response(response)
+                if parsed:
+                    logger.info(f"[NKB Advisor] ✅ Vertex AI OK: {elapsed_ms}ms, keys={list(parsed.keys()) if isinstance(parsed, dict) else '?'}")
+                    return parsed, "vertex-ai-gemini"
+                else:
+                    logger.warning(f"[NKB Advisor] Vertex AI returned non-JSON: {elapsed_ms}ms")
+            else:
+                logger.warning(f"[NKB Advisor] Vertex AI returned None: {elapsed_ms}ms")
         except Exception as e:
-            logger.debug(f"[NKB Advisor] Vertex AI failed: {e}")
+            logger.warning(f"[NKB Advisor] Vertex AI FAILED: {type(e).__name__}: {e}")
 
         # Fallback to Gemini API key
         if settings.GOOGLE_API_KEY:
-            from app.core.gemini_client import GeminiClient
-            client = GeminiClient()
-            response = await client.call(prompt)
-            if response:
-                return _parse_json_response(response), "gemini-api"
+            try:
+                t0 = _time.time()
+                from app.core.gemini_client import GeminiClient
+                logger.info("[NKB Advisor] Falling back to Gemini API key...")
+                client = GeminiClient()
+                response = client.call(prompt)
+                elapsed_ms = int((_time.time() - t0) * 1000)
+                if response:
+                    parsed = _parse_json_response(response)
+                    if parsed:
+                        logger.info(f"[NKB Advisor] ✅ Gemini API OK: {elapsed_ms}ms")
+                        return parsed, "gemini-api"
+            except Exception as e:
+                logger.warning(f"[NKB Advisor] Gemini API FAILED: {type(e).__name__}: {e}")
+        else:
+            logger.warning("[NKB Advisor] No GOOGLE_API_KEY set, cannot fall back to Gemini API")
 
+        logger.error("[NKB Advisor] ❌ No Gemini provider succeeded")
         return None, None
     except Exception as e:
-        logger.warning(f"[NKB Advisor] Gemini call failed: {e}")
+        logger.error(f"[NKB Advisor] Gemini call FAILED: {type(e).__name__}: {e}")
         return None, None
 
 
@@ -186,6 +210,12 @@ async def get_advisor_recommendations(
       4. Call Perplexity for supplement (optional)
       5. Return structured response
     """
+    logger.info(
+        f"[NKB Advisor] get_advisor_recommendations: "
+        f"construction_type={context.construction_type!r}, phase={context.phase!r}, "
+        f"materials={context.materials}, question={context.question[:80] if context.question else 'none'}..."
+    )
+
     # Step 1: Match norms and rules
     matched_norms = match_norms(
         construction_type=context.construction_type,
