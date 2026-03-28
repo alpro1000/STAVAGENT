@@ -745,3 +745,32 @@ INSERT INTO feature_flags (id, flag_key, display_name, description, category, de
   (gen_random_uuid(), 'session_only_mode',    'Session-only režim',           'Bez kreditů = výsledky jen v prohlížeči',        'module',  true)
 ON CONFLICT (flag_key) DO NOTHING;
 
+-- Add banned status to users table
+ALTER TABLE users ADD COLUMN IF NOT EXISTS banned BOOLEAN DEFAULT false;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_at TIMESTAMP;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS banned_reason VARCHAR(500);
+
+-- Banned email domains (disposable email blacklist)
+CREATE TABLE IF NOT EXISTS banned_email_domains (
+  domain VARCHAR(255) PRIMARY KEY,
+  added_by INTEGER REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Seed common disposable email domains
+INSERT INTO banned_email_domains (domain) VALUES
+  ('tempmail.com'), ('temp-mail.org'), ('guerrillamail.com'), ('guerrillamail.de'),
+  ('mailinator.com'), ('yopmail.com'), ('throwaway.email'), ('tempail.com'),
+  ('trashmail.com'), ('trashmail.me'), ('10minutemail.com'), ('10minute.email'),
+  ('minutemail.com'), ('dispostable.com'), ('maildrop.cc'), ('mailnesia.com'),
+  ('sharklasers.com'), ('guerrillamailblock.com'), ('grr.la'), ('discard.email'),
+  ('discardmail.com'), ('discardmail.de'), ('fakeinbox.com'), ('emailondeck.com'),
+  ('tempr.email'), ('temp-mail.io'), ('mohmal.com'), ('getnada.com'),
+  ('tmpmail.net'), ('tmpmail.org'), ('burnermail.io'), ('mailsac.com'),
+  ('harakirimail.com'), ('crazymailing.com'), ('tmail.ws'), ('tempinbox.com'),
+  ('binkmail.com'), ('safetymail.info'), ('filzmail.com'), ('mailcatch.com'),
+  ('meltmail.com'), ('spamgourmet.com'), ('mytemp.email'), ('throwam.com'),
+  ('mailnull.com'), ('spamfree24.org'), ('jetable.org'), ('trash-mail.com'),
+  ('wegwerfmail.de'), ('wegwerfmail.net'), ('einrot.com'), ('sogetthis.com')
+ON CONFLICT (domain) DO NOTHING;
+

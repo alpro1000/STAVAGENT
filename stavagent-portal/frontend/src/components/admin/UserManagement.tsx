@@ -18,6 +18,9 @@ interface User {
   plan?: string;
   free_pipeline_runs_used?: number;
   registration_ip?: string;
+  banned?: boolean;
+  banned_at?: string;
+  banned_reason?: string;
   created_at: string;
 }
 
@@ -57,6 +60,25 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
     setEditingPlan(user.plan || 'free');
     setVerifyEmail(user.email_verified);
     setError('');
+  };
+
+  const handleBanToggle = async () => {
+    if (!selectedUser) return;
+    const newBanned = !selectedUser.banned;
+    const reason = newBanned
+      ? window.prompt('Důvod zablokování (volitelné):') || ''
+      : undefined;
+    try {
+      await adminAPI.updateUser(selectedUser.id, {
+        banned: newBanned,
+        ...(reason ? { banned_reason: reason } : {}),
+      });
+      loadUsers();
+      setSelectedUser(null);
+      onUserUpdated();
+    } catch (err: any) {
+      setError(err.message || 'Chyba');
+    }
   };
 
   const handleSaveUser = async () => {
@@ -172,6 +194,10 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
                     color: user.role === 'admin' ? '#742a2a' : '#22543d',
                   }}>{user.role}</span>
                   {planBadge(user.plan || 'free')}
+                  {user.banned && <span style={{
+                    padding: '1px 6px', borderRadius: 3,
+                    background: '#e53e3e', color: '#fff',
+                  }}>BANNED</span>}
                   {user.email_verified && <span style={{ color: '#38a169' }}>email</span>}
                   {user.phone_verified && <span style={{ color: '#38a169' }}>tel</span>}
                   {(user.free_pipeline_runs_used || 0) > 0 && (
@@ -215,6 +241,22 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
                 {selectedUser.email}
               </div>
             </div>
+
+            {/* Banned warning */}
+            {selectedUser.banned && (
+              <div style={{
+                padding: 12, background: '#fee2e2', border: '1px solid #fca5a5',
+                borderRadius: 4, marginBottom: 12, fontSize: 13, color: '#991b1b',
+              }}>
+                <strong>Zablokováno</strong>
+                {selectedUser.banned_reason && <span> — {selectedUser.banned_reason}</span>}
+                {selectedUser.banned_at && (
+                  <div style={{ fontSize: 11, marginTop: 4, color: '#b91c1c' }}>
+                    {new Date(selectedUser.banned_at).toLocaleString('cs-CZ')}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Role */}
             <div style={{ marginBottom: 12 }}>
@@ -279,6 +321,15 @@ export default function UserManagement({ onUserUpdated }: UserManagementProps) {
                 }}
                 title="Vynulovat pocitadlo bezplatnych pipeline runs"
               >Reset kvoty</button>
+              <button
+                onClick={handleBanToggle}
+                style={{
+                  padding: '10px 16px',
+                  background: selectedUser.banned ? '#48bb78' : '#f59e0b',
+                  color: '#fff',
+                  border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13,
+                }}
+              >{selectedUser.banned ? 'Odblokovat' : 'Zablokovat'}</button>
               <button
                 onClick={() => handleDeleteUser(selectedUser.id, selectedUser.email)}
                 style={{
