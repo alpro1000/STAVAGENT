@@ -101,7 +101,7 @@ const KIOSK_META = {
     color: '#3b82f6',
     bg: '#eff6ff',
     buildUrl: (fileId: string, portalUrl: string, _portalProjectId: string) =>
-      `https://monolit-planner-frontend.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://kalkulator.stavagent.cz?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
   registry: {
     label: 'Registr Rozpočtů',
@@ -109,7 +109,7 @@ const KIOSK_META = {
     color: '#8b5cf6',
     bg: '#f5f3ff',
     buildUrl: (fileId: string, portalUrl: string, portalProjectId: string) =>
-      `https://stavagent-backend-ktwx.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}&portal_project=${portalProjectId}`,
+      `https://registry.stavagent.cz?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}&portal_project=${portalProjectId}`,
   },
   urs_matcher: {
     label: 'Klasifikátor stavebních prací',

@@ -23,7 +23,7 @@ const HERO_PRODUCTS = [
     name: 'Kalkulátor monolitních prací',
     desc: 'Spočítejte náklady na beton, bednění a výztuž. 20 typů elementů, Gantt harmonogram, Excel export.',
     cta: 'Spočítat',
-    route: 'https://monolit-planner-frontend.vercel.app/planner',
+    route: 'https://kalkulator.stavagent.cz/planner',
     tags: ['Kč/m³', 'Bednění', 'Výztuž', 'Gantt'],
   },
 ];

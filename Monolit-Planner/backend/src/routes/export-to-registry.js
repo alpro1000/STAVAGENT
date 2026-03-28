@@ -12,7 +12,7 @@ const router = express.Router();
 // Environment URLs — Cloud Run (europe-west3)
 const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
 const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
-const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
+const REGISTRY_URL = process.env.REGISTRY_URL || 'https://registry.stavagent.cz';
 
 /**
  * Authentication middleware for export endpoints.
@@ -130,7 +130,7 @@ router.post('/:bridge_id', requireExportAuth, async (req, res) => {
     }, {});
 
     // 5. Map to Portal format with full TOV data, prices, monolith_payload for deep-linking
-    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://monolit-planner-frontend.vercel.app';
+    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://kalkulator.stavagent.cz';
 
     const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
       code: partName,
@@ -468,7 +468,7 @@ router.get('/:bridge_id', requireExportAuth, async (req, res) => {
       return acc;
     }, {});
 
-    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://monolit-planner-frontend.vercel.app';
+    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://kalkulator.stavagent.cz';
 
     const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
       code: partName,

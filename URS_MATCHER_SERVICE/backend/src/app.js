@@ -59,6 +59,7 @@ const DEFAULT_CORS_ORIGINS = [
   'https://www.stavagent.cz',
   'https://stavagent.cz',
   'https://stavagent-backend-ktwx.vercel.app',
+  'https://registry.stavagent.cz',
   'https://stavagent-portal-backend-1086027517695.europe-west3.run.app',
 ];
 const corsOrigins = process.env.CORS_ORIGIN

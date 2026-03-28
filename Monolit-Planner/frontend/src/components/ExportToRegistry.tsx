@@ -24,7 +24,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const queryClient = useQueryClient();
 
   const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
-  const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
+  const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://registry.stavagent.cz';
   const MONOLIT_URL = import.meta.env.VITE_MONOLIT_URL || window.location.origin;
   const EXPORT_API_KEY = import.meta.env.VITE_EXPORT_API_KEY || '';
 

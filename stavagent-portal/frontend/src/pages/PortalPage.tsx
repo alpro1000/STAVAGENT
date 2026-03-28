@@ -86,7 +86,7 @@ const SERVICES: Service[] = [
     name: 'Kalkulátor rozpočtu',
     description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
     icon: '🪨',
-    url: 'https://monolit-planner-frontend.vercel.app',
+    url: 'https://kalkulator.stavagent.cz',
     status: 'active',
     tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
   },
@@ -95,7 +95,7 @@ const SERVICES: Service[] = [
     name: 'Kalkulátor betonáže',
     description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
     icon: '📐',
-    url: 'https://monolit-planner-frontend.vercel.app/planner',
+    url: 'https://kalkulator.stavagent.cz/planner',
     status: 'active',
     tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
   },
@@ -141,7 +141,7 @@ const SERVICES: Service[] = [
     name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
-    url: 'https://stavagent-backend-ktwx.vercel.app',
+    url: 'https://registry.stavagent.cz',
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },

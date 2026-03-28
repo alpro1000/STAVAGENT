@@ -59,6 +59,7 @@ const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:3000',
   // Monolit-Planner frontend (Vercel)
   'https://monolit-planner-frontend.vercel.app',
+  'https://kalkulator.stavagent.cz',
   // StavAgent Portal
   'https://www.stavagent.cz',
   // Custom origin from environment

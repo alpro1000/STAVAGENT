@@ -42,13 +42,13 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
     label: 'Monolit Planner',
     icon: '🪨',
     buildUrl: (link, portalId) =>
-      `https://monolit-planner-frontend.vercel.app/?project=${link.kiosk_project_id}&portal_project=${portalId}`,
+      `https://kalkulator.stavagent.cz/?project=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
   registry: {
     label: 'Registr Rozpočtů',
     icon: '📊',
     buildUrl: (link, portalId) =>
-      `https://stavagent-backend-ktwx.vercel.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
+      `https://registry.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
   urs_matcher: {
     label: 'Klasifikátor stavebních prací',
