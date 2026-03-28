@@ -21,6 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
 import { USE_POSTGRES } from '../db/index.js';
+import { canAfford, deductCredits } from '../services/creditService.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 
 /**
@@ -738,6 +739,19 @@ router.post('/:id/send-to-core', async (req, res) => {
     const userId = req.user.userId;
     const { id } = req.params;
 
+    // Credit check: sending to CORE is an AI audit operation
+    const creditCheck = await canAfford(userId, 'workflow_c_audit');
+    if (!creditCheck.allowed) {
+      client.release();
+      return res.status(402).json({
+        success: false,
+        error: 'Insufficient credits',
+        message: creditCheck.reason,
+        balance: creditCheck.balance,
+        cost: creditCheck.cost,
+      });
+    }
+
     // Get project
     const projectResult = await client.query(
       `SELECT * FROM portal_projects
@@ -811,6 +825,9 @@ router.post('/:id/send-to-core', async (req, res) => {
     await client.query('COMMIT');
 
     console.log(`[PortalProjects] Successfully sent to CORE. Project ID: ${coreProjectId}`);
+
+    // Deduct credits after successful CORE audit
+    deductCredits(userId, 'workflow_c_audit', `Audit projektu ${id}`).catch(() => {});
 
     res.json({
       success: true,

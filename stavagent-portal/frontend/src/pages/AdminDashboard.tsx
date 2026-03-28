@@ -1,6 +1,6 @@
 /**
  * Admin Dashboard
- * Main admin panel: user management, usage stats, feature flags, audit logs, anti-fraud
+ * Main admin panel: user management, usage stats, feature flags, credits, audit logs, anti-fraud
  */
 
 import { useState, useEffect } from 'react';
@@ -12,15 +12,17 @@ import AdminStats from '../components/admin/AdminStats';
 import UsageStats from '../components/admin/UsageStats';
 import FeatureFlags from '../components/admin/FeatureFlags';
 import AntifraudPanel from '../components/admin/AntifraudPanel';
+import CreditManagement from '../components/admin/CreditManagement';
 import { adminAPI } from '../services/api';
 
-type Tab = 'overview' | 'users' | 'usage' | 'flags' | 'antifraud' | 'audit-logs';
+type Tab = 'overview' | 'users' | 'credits' | 'usage' | 'flags' | 'antifraud' | 'audit-logs';
 
 const TABS: Array<{ id: Tab; label: string }> = [
-  { id: 'overview', label: 'Prehled' },
-  { id: 'users', label: 'Uzivatele' },
-  { id: 'usage', label: 'Pouziti & tokeny' },
-  { id: 'flags', label: 'Funkce & sluzby' },
+  { id: 'overview', label: 'Přehled' },
+  { id: 'users', label: 'Uživatelé' },
+  { id: 'credits', label: 'Kredity' },
+  { id: 'usage', label: 'Použití & tokeny' },
+  { id: 'flags', label: 'Funkce & služby' },
   { id: 'antifraud', label: 'Antifraud' },
   { id: 'audit-logs', label: 'Audit logy' },
 ];
@@ -48,7 +50,7 @@ export default function AdminDashboard() {
       setStats(response.data);
       setError('');
     } catch (err: any) {
-      setError(err.message || 'Chyba pri nacitani statistik');
+      setError(err.message || 'Chyba při načítání statistik');
     } finally {
       setLoading(false);
     }
@@ -57,7 +59,7 @@ export default function AdminDashboard() {
   if (!user || user.role !== 'admin') {
     return (
       <div style={{ padding: 20, textAlign: 'center' }}>
-        <p style={{ color: '#e53e3e' }}>Nemate opravneni pro pristup k admin panelu</p>
+        <p style={{ color: '#e53e3e' }}>Nemáte oprávnění pro přístup k admin panelu</p>
       </div>
     );
   }
@@ -108,6 +110,9 @@ export default function AdminDashboard() {
         )}
         {activeTab === 'users' && (
           <UserManagement onUserUpdated={loadStats} />
+        )}
+        {activeTab === 'credits' && (
+          <CreditManagement />
         )}
         {activeTab === 'usage' && (
           <UsageStats />

@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import {
-  GitCompareArrows, CheckCircle, AlertTriangle, XCircle,
+  GitCompare, CheckCircle, AlertTriangle, XCircle,
   Loader2, FileText,
 } from 'lucide-react';
 import { API_URL } from '../../../services/api';
@@ -176,7 +176,7 @@ export default function CrossValidationPanel({ projectId, currentData }: CrossVa
   return (
     <div className="cv-panel">
       <div className="cv-header">
-        <GitCompareArrows size={16} />
+        <GitCompare size={16} />
         <span className="cv-title">
           Porovnání s <strong>{prevDocTitle}</strong>
         </span>

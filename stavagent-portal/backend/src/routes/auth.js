@@ -87,6 +87,14 @@ router.post('/register', checkRegistrationIP, async (req, res) => {
       await recordRegistrationIP(req.registrationIP, userId, req.registrationUA);
     }
 
+    // Welcome bonus: 200 free credits for new users
+    try {
+      const { addCredits } = await import('../services/creditService.js');
+      await addCredits(userId, 200, { description: 'Uvítací bonus: 200 kreditů zdarma' });
+    } catch (e) {
+      logger.warn(`Failed to add welcome credits for user ${userId}: ${e.message}`);
+    }
+
     logger.info(`User registered: ${email} (ID: ${userId}) - awaiting email verification`);
 
     res.status(201).json({
@@ -779,13 +787,18 @@ router.post('/verify-phone', requireAuth, async (req, res) => {
 router.get('/usage', requireAuth, async (req, res) => {
   try {
     const { getUserUsage } = await import('../services/usageTracker.js');
+    const { getBalance, isSessionOnly } = await import('../services/creditService.js');
     const usage = await getUserUsage(req.user.userId);
 
     if (!usage) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json({ success: true, data: usage });
+    // Enrich with credit balance
+    const creditBalance = await getBalance(req.user.userId);
+    const sessionOnly = await isSessionOnly(req.user.userId);
+
+    res.json({ success: true, data: { ...usage, credit_balance: creditBalance, session_only: sessionOnly } });
   } catch (error) {
     logger.error('Get usage error:', error);
     res.status(500).json({ error: 'Server error' });

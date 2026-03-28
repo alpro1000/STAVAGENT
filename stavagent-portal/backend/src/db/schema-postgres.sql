@@ -680,3 +680,68 @@ INSERT INTO feature_flags (id, flag_key, display_name, description, category, de
   (gen_random_uuid(), 'google_drive',        'Google Drive',             'Připojení Google Drive',                          'module',  false)
 ON CONFLICT (flag_key) DO NOTHING;
 
+-- ============================================================================
+-- MIGRATION 011: Credits System (Pay-as-you-go)
+-- Users top up balance, operations deduct credits. No classic subscription.
+-- Free tier = session-only (no DB storage), results only in browser.
+-- ============================================================================
+
+-- Operation pricing catalog: what each operation costs in credits
+CREATE TABLE IF NOT EXISTS operation_prices (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  operation_key     VARCHAR(100) NOT NULL UNIQUE,  -- e.g. 'document_analyze', 'monolit_calculate'
+  display_name      VARCHAR(255) NOT NULL,
+  description       TEXT,
+  credits_cost      INTEGER NOT NULL DEFAULT 1,     -- cost in credits
+  is_ai             BOOLEAN DEFAULT false,          -- AI operations (for UI grouping)
+  is_active         BOOLEAN DEFAULT true,
+  sort_order        INTEGER DEFAULT 0,
+  created_at        TIMESTAMP DEFAULT NOW(),
+  updated_at        TIMESTAMP DEFAULT NOW()
+);
+
+-- Credit transactions: every top-up and deduction
+CREATE TABLE IF NOT EXISTS credit_transactions (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id           INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  amount            INTEGER NOT NULL,               -- positive = top-up, negative = deduction
+  balance_after     INTEGER NOT NULL,               -- balance after this transaction
+  operation_key     VARCHAR(100),                   -- NULL for top-ups, operation_key for deductions
+  description       VARCHAR(500),                   -- human-readable description
+  reference_id      VARCHAR(255),                   -- external ref (Stripe payment_id, admin action, etc.)
+  created_at        TIMESTAMP DEFAULT NOW()
+);
+
+-- Add credit_balance to users table
+ALTER TABLE users ADD COLUMN IF NOT EXISTS credit_balance INTEGER DEFAULT 0;
+
+CREATE INDEX IF NOT EXISTS idx_credit_transactions_user ON credit_transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_credit_transactions_created ON credit_transactions(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_credit_transactions_operation ON credit_transactions(operation_key);
+CREATE INDEX IF NOT EXISTS idx_operation_prices_key ON operation_prices(operation_key);
+
+-- Seed default operation prices
+INSERT INTO operation_prices (id, operation_key, display_name, description, credits_cost, is_ai, sort_order) VALUES
+  (gen_random_uuid(), 'document_parse',       'Parsování dokumentu',          'Extrakce dat z PDF/Excel/XML (bez AI)',          2,  false, 1),
+  (gen_random_uuid(), 'document_analyze',     'AI analýza dokumentu',         'Kompletní AI analýza s pasportem',              10, true,  2),
+  (gen_random_uuid(), 'passport_generate',    'Generování pasportu',          'AI pasport s normami a identifikací',           15, true,  3),
+  (gen_random_uuid(), 'nkb_check',            'Kontrola norem (NKB)',         'Kontrola souladu s ČSN/EN normami',              5, true,  4),
+  (gen_random_uuid(), 'nkb_advisor',          'NKB poradce',                  'AI poradce pro normativní dotazy',               8, true,  5),
+  (gen_random_uuid(), 'workflow_c_audit',     'Audit rozpočtu',               'Multi-role AI validace rozpočtu',                20, true,  6),
+  (gen_random_uuid(), 'urs_match',            'URS párování',                 'AI párování položek na URS kódy',                8, true,  7),
+  (gen_random_uuid(), 'registry_classify',    'Klasifikace položek',          'AI klasifikace do skupin prací',                 5, true,  8),
+  (gen_random_uuid(), 'monolit_calculate',    'Kalkulace monolitu',           'Výpočet ceny betonových prací',                  1, false, 9),
+  (gen_random_uuid(), 'pump_calculate',       'Kalkulace čerpadla',           'Výpočet nákladů na čerpadlo',                    1, false, 10),
+  (gen_random_uuid(), 'export_xlsx',          'Export do Excel',              'Stažení výsledků jako XLSX',                     1, false, 11),
+  (gen_random_uuid(), 'export_csv',           'Export do CSV',                'Stažení výsledků jako CSV',                      1, false, 12),
+  (gen_random_uuid(), 'save_to_project',      'Uložení do projektu',          'Trvalé uložení výsledků do databáze',            2, false, 13),
+  (gen_random_uuid(), 'chat_message',         'Chat zpráva',                  'AI odpověď v chatu projektu',                    3, true,  14),
+  (gen_random_uuid(), 'price_parser',         'Parsování ceníku',             'Extrakce cen z PDF ceníku betonárny',            5, true,  15)
+ON CONFLICT (operation_key) DO NOTHING;
+
+-- Seed new feature flags for credits
+INSERT INTO feature_flags (id, flag_key, display_name, description, category, default_enabled) VALUES
+  (gen_random_uuid(), 'credits_system',       'Kreditní systém',              'Pay-as-you-go kreditní systém',                  'module',  true),
+  (gen_random_uuid(), 'session_only_mode',    'Session-only režim',           'Bez kreditů = výsledky jen v prohlížeči',        'module',  true)
+ON CONFLICT (flag_key) DO NOTHING;
+
