@@ -19,6 +19,7 @@ import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
+import { canAfford, deductCredits } from '../services/creditService.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 import { parseFile } from '../services/universalParser.js';
 
@@ -349,6 +350,19 @@ router.post('/:fileId/analyze', async (req, res) => {
     const { fileId } = req.params;
     const { workflow } = req.body;
 
+    // Credit check: file analysis is an AI operation
+    const creditCheck = await canAfford(userId, 'document_analyze');
+    if (!creditCheck.allowed) {
+      client.release();
+      return res.status(402).json({
+        success: false,
+        error: 'Insufficient credits',
+        message: creditCheck.reason,
+        balance: creditCheck.balance,
+        cost: creditCheck.cost,
+      });
+    }
+
     // Get file with project info (with ownership check)
     const fileResult = await client.query(
       `SELECT pf.*, pp.project_name, pp.project_type
@@ -421,6 +435,9 @@ router.post('/:fileId/analyze', async (req, res) => {
     await client.query('COMMIT');
 
     console.log(`[PortalFiles] Analysis complete. Project ID: ${coreProjectId}`);
+
+    // Deduct credits after successful analysis
+    deductCredits(userId, 'document_analyze', `Analýza souboru ${file.file_name}`).catch(() => {});
 
     res.json({
       success: true,
