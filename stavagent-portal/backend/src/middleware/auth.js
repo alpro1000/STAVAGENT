@@ -89,8 +89,8 @@ export function requireAuth(req, res, next) {
  */
 export function optionalAuth(req, res, next) {
   const authHeader = req.headers.authorization;
-  if (authHeader) {
-    const token = authHeader.split(' ')[1];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7).trim();
     if (token) {
       try {
         req.user = jwt.verify(token, JWT_SECRET);

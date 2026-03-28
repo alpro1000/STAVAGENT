@@ -225,9 +225,14 @@ router.post('/urs-match/:action', async (req, res) => {
     return res.status(404).json({ error: `Unknown URS action: ${action}` });
   }
 
-  // Credit check for matching operations
+  // Require authentication for AI-powered matching operations
   const userId = req.user?.userId;
-  if (userId && action.startsWith('match')) {
+  if (!userId) {
+    return res.status(401).json({ error: 'Authentication required', message: 'Pro použití URS párování je nutné přihlášení.' });
+  }
+
+  // Credit check for matching operations
+  if (action.startsWith('match')) {
     const creditCheck = await canAfford(userId, 'urs_match');
     if (!creditCheck.allowed) {
       return res.status(402).json({
@@ -241,20 +246,20 @@ router.post('/urs-match/:action', async (req, res) => {
   }
 
   const targetUrl = `${URS_MATCHER_URL}/api/pipeline/${action}`;
-  console.log(`[UrsProxy] POST /urs-match/${action} → ${targetUrl}`);
+  console.log(`[UrsProxy] POST /urs-match/${action} → ${targetUrl} (user=${userId})`);
 
   try {
+    // Deduct credits before external call to prevent free usage on errors
+    if (action.startsWith('match')) {
+      await deductCredits(userId, 'urs_match');
+    }
+
     const ursResponse = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body),
       signal: AbortSignal.timeout(120000),
     });
-
-    // Deduct credits after success
-    if (userId && action.startsWith('match') && ursResponse.ok) {
-      deductCredits(userId, 'urs_match').catch(() => {});
-    }
 
     const data = await ursResponse.text();
     res.set('Content-Type', ursResponse.headers.get('content-type') || 'application/json');

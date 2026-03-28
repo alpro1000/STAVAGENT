@@ -100,6 +100,10 @@ export const connectionTestLimiter = rateLimit({
  * CORE AI rate limiter — stricter for anonymous users
  * Anonymous: 5 AI requests per hour per IP (session-only demo)
  * Authenticated: 100 AI requests per hour per IP (credit-gated)
+ *
+ * IMPORTANT: This middleware MUST be applied AFTER optionalAuth so that
+ * req.user is populated before keyGenerator runs.
+ * See server.js: app.use('/api/core', optionalAuth, coreAiLimiter, coreProxyRoutes)
  */
 export const coreAiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
