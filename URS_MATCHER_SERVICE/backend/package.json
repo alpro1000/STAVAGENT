@@ -10,6 +10,10 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --watch",
     "init-db": "node src/db/init.js",
+    "import-otskp": "node scripts/import_otskp_to_sqlite.mjs --truncate",
+    "import-tskp": "node scripts/import_tskp_to_sqlite.mjs --truncate",
+    "import-all": "npm run import-otskp && npm run import-tskp",
+    "harvest-urs": "node scripts/harvest_urs_perplexity.mjs",
     "lint": "eslint src --fix",
     "format": "prettier --write \"src/**/*.js\""
   },
