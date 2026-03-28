@@ -381,6 +381,47 @@ router.post('/verify', async (req, res) => {
   }
 });
 
+// POST /api/auth/resend-verification - Resend verification email
+router.post('/resend-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    const user = await db.prepare('SELECT id, email, email_verified FROM users WHERE email = ?').get(email);
+
+    // Always return success to prevent email enumeration
+    if (!user || user.email_verified) {
+      return res.json({ success: true, message: 'If the email exists, a verification link has been sent.' });
+    }
+
+    // Delete old tokens for this user
+    await db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').run(user.id);
+
+    // Generate new verification token
+    const tokenString = randomUUID();
+    const tokenHash = createHash('sha256').update(tokenString).digest('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+    await db.prepare(`
+      INSERT INTO email_verification_tokens (id, user_id, token_hash, expires_at)
+      VALUES (?, ?, ?, ?)
+    `).run(randomUUID(), user.id, tokenHash, expiresAt);
+
+    const emailResult = await sendVerificationEmail(email, tokenString);
+    if (!emailResult.success) {
+      logger.warn(`Failed to resend verification email to ${email}: ${emailResult.error}`);
+    }
+
+    logger.info(`Verification email resent to: ${email} (ID: ${user.id})`);
+    res.json({ success: true, message: 'Verification email sent.' });
+  } catch (error) {
+    logger.error('Resend verification error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // POST /api/auth/logout - Logout (client-side only, token invalidation)
 router.post('/logout', requireAuth, (req, res) => {
   // JWT is stateless, so logout is handled client-side by removing token
