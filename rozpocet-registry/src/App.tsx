@@ -771,6 +771,25 @@ function App() {
     <div className="min-h-screen bg-bg-primary overflow-x-hidden">
       {/* Header */}
       <header className="border-b border-border-color bg-bg-secondary">
+        {/* Back to StavAgent bar */}
+        <div style={{
+          background: '#1e293b', padding: '6px 16px',
+          display: 'flex', alignItems: 'center', fontSize: 12,
+          borderBottom: '1px solid #334155',
+        }}>
+          <a
+            href="https://www.stavagent.cz"
+            style={{
+              color: '#94a3b8', textDecoration: 'none',
+              display: 'flex', alignItems: 'center', gap: 4,
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
+            onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
+          >
+            <span>←</span>
+            <span>StavAgent</span>
+          </a>
+        </div>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">

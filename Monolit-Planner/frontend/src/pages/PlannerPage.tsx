@@ -562,10 +562,10 @@ export default function PlannerPage() {
       {/* Header */}
       <header className="r0-header">
         <div className="r0-header-left">
-          <a href="/" className="r0-back-link">← Zpět na Monolit</a>
+          <a href="/" className="r0-back-link">← Kalkulátor rozpočtu</a>
           <h1 className="r0-title">
             <span className="r0-icon">📐</span>
-            Plánovač elementu
+            Kalkulátor betonáže
           </h1>
         </div>
         <div className="r0-header-right">
