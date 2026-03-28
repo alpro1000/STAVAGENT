@@ -91,15 +91,15 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. Central AI: Multi-Role validation (6 roles), document parsing (PDF/Excel/XML), Knowledge Base (KROS/RTS/ČSN), Workflows A/B/C, Document Accumulator, Google Drive OAuth2, PDF Price Parser, Vertex AI Search.
+Python FastAPI. Central AI: Multi-Role validation (4 roles: SME, ARCH, ENG, SUP), document parsing (PDF/Excel/XML), Knowledge Base (KROS/RTS/ČSN), Workflows A/B/C, Document Accumulator, Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents system.
 
 Key endpoints: `/api/v1/multi-role/ask`, `/workflow/a/import`, `/api/v1/workflow/c/execute`, `/api/v1/accumulator/*`, `/api/v1/price-parser/parse`, `/api/v1/vertex/search`, `/api/v1/project/{id}/add-document`, `/api/v1/nkb/*`, `/health`
 
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`, tests in `packages/core-backend/tests/`
 
 **NKB (Normative Knowledge Base):** 3-layer system for Czech construction norms.
-- Layer 1: Registry — 14 norms (ČSN, VTP, TKP, zákon, vyhláška), JSON storage, priority hierarchy (zákon=100 > vyhláška=90 > ČSN=70 > TKP=60 > VTP=50)
-- Layer 2: Rules — 14 seed rules (10 RuleTypes: tolerance, formula, deadline, procedure, requirement, recommendation, limit, classification, pricing, format)
+- Layer 1: Registry — 23 norms (ČSN, VTP, TKP, zákon, vyhláška, Eurocode), JSON/PostgreSQL storage, priority hierarchy (zákon=100 > vyhláška=90 > ČSN=70 > TKP=60 > VTP=50)
+- Layer 2: Rules — 23 rules (10 RuleTypes: tolerance, formula, deadline, procedure, requirement, recommendation, limit, classification, pricing, format)
 - Layer 3: Advisor — AI engine (Gemini + Perplexity), deterministic rule matching → LLM analysis → web-search supplement
 - Files: `models/norm_schemas.py`, `services/{norm_storage.py, norm_matcher.py, norm_advisor.py}`, `api/routes_nkb.py`
 - Endpoints: `GET /norms/search`, `POST /norms/ingest`, `POST /norms/ingest-pdf`, `POST /norms/rules`, `POST /project/{id}/check-compliance`, `POST /advisor`, `GET /stats`
@@ -132,11 +132,13 @@ Node.js/Express + React. Main entry point: JWT auth, project management, file up
 
 **Auth + SaaS (complete):** JWT auth enabled on all routes, seed admin, login/cabinet UI. SaaS admin panel: usage tracking, feature flags, quotas, anti-fraud. ParsePreviewPage for Excel import preview.
 
-**Sprint 2 Service Connections (schema only):** `service_connections` table exists (AES-256-GCM encrypted credentials), needs API endpoints + frontend UI + MASTER_ENCRYPTION_KEY.
+**Sprint 2 Service Connections (complete):** `service_connections` table + 8 API endpoints + AES-256-GCM encryption. Needs MASTER_ENCRYPTION_KEY in Secret Manager for production.
 
 DB tables: `users, organizations, org_members, portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, position_instances, position_templates, position_audit_log, service_connections`
 
-Key routes: `backend/src/routes/{portal-projects,auth,orgs,cabinet}.js`, `backend/src/middleware/orgRole.js`
+**Additional subsystems:** Pump Calculator (15 endpoints), OTSKP codes (4 endpoints), Phone verification, IP anti-fraud detection.
+
+Key routes: `backend/src/routes/{portal-projects,auth,orgs,cabinet,connections,pump-calculator,otskp}.js`, `backend/src/middleware/orgRole.js`
 
 Design: Digital Concrete / Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM (`.c-btn`, `.c-panel`, `.c-card`)
 
@@ -154,7 +156,7 @@ Structure: `shared/` (formulas + scheduler, 336 tests), `backend/` (Express, Pos
 Design: Slate Minimal — CSS variables (`--r0-*`), zero hardcoded hex colors in planner components
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
-Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 9 LLM providers (Gemini, Claude, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Perplexity). 159 tests.
+Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 4-phase: File Parsing → Document Analysis → URS Matching (TSKP→Candidates→KB→LLM Re-ranking) → Composite Works Detection. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 9 LLM providers (Claude, Gemini, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Brave Search). Unified Pipeline, Batch Processing, Technology Calculations, Pricing endpoints. 159 tests.
 
 **Search pipeline (dual-mode):**
 - Old: `/api/jobs/text-match` → local SQLite (36 seed items) + OTSKP fallback (17,904 items) + LLM rerank
@@ -786,6 +788,17 @@ VITE_DISABLE_AUTH=true
   - Vertex AI Gemini: $1,000 GCP credits
   - URS Matcher section rewritten with dual pipeline, DA→URS integration, OTSKP catalog details
 
+
+**Completed (2026-03-28 — Full Codebase Audit):**
+- **Full audit of all 5 services** — code vs documentation comparison
+- **Endpoint inventory**: ~384 total (concrete-agent 119, Portal ~80, Monolit 125, URS ~45, Registry 12)
+- **Test inventory**: 590+ total (Monolit 402, URS 159, concrete-agent 28 files, Registry 0)
+- **LOC**: ~137K total across all services
+- **CLAUDE.md discrepancy fixes**: Multi-Role 6→4 roles, URS 8→9 LLM providers, Service Connections schema→complete, NKB 14→23 norms/rules
+- **Missing features documented**: Betonárny Discovery, Norms Scraper, Agents, Pump Calculator, OTSKP, Unified Pipeline, Batch Processing
+- **Documentation inventory**: 95 .md files, 42 KB JSON files (~40MB), 21 AI prompts, 22 SQL schemas
+- Full report: `docs/SESSION_2026-03-28_FULL_AUDIT.md`
+
 **Feature roadmap:**
 - D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
 - IFC/BIM support (P3 — needs binaries)
@@ -808,3 +821,4 @@ Each service has its own `CLAUDE.md`/`CLAUDE.MD` with detailed docs. See also:
 - `docs/STAVAGENT_CONTRACT.md` — API contracts
 - `Monolit-Planner/CLAUDE.MD` — Monolit detailed docs (v4.3.8)
 - `concrete-agent/CLAUDE.md` — CORE detailed docs (v2.4.1)
+- `docs/SESSION_2026-03-28_FULL_AUDIT.md` — Full codebase audit (all services, endpoints, discrepancies)
