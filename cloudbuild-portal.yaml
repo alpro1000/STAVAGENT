@@ -67,7 +67,7 @@ steps:
       - --port=3001
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
       - --set-env-vars=DISABLE_AUTH=false
-      - --update-secrets=DATABASE_URL=PORTAL_DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest
+      - --update-secrets=DATABASE_URL=PORTAL_DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest,SERVICE_TOKEN=SERVICE_TOKEN:latest,RESEND_API_KEY=RESEND_API_KEY:latest
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:${_TAG}

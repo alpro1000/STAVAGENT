@@ -7,8 +7,8 @@
 import { logger } from '../utils/logger.js';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@stavagent.com';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'StavAgent <onboarding@resend.dev>';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://www.stavagent.cz';
 
 /**
  * Send email via Resend API
@@ -89,7 +89,7 @@ export async function sendVerificationEmail(email, token) {
             <h1>Ověřit e-mail</h1>
           </div>
           <div class="content">
-            <p>Děkujeme za registraci na Monolit-Planner!</p>
+            <p>Děkujeme za registraci na StavAgent!</p>
             <p>Klikněte na tlačítko níže a ověřte svou e-mailovou adresu:</p>
             <a href="${verificationUrl}" class="button">Ověřit e-mail</a>
             <p>Nebo zkopírujte tento odkaz do prohlížeče:</p>
@@ -99,7 +99,7 @@ export async function sendVerificationEmail(email, token) {
             <p class="expires">Tento odkaz vyprší za 24 hodin.</p>
           </div>
           <div class="footer">
-            <p>&copy; 2025 Monolit-Planner. Všechna práva vyhrazena.</p>
+            <p>&copy; 2025 StavAgent. Všechna práva vyhrazena.</p>
           </div>
         </div>
       </body>
@@ -108,7 +108,7 @@ export async function sendVerificationEmail(email, token) {
 
   return sendEmail({
     to: email,
-    subject: 'Ověřte svou e-mailovou adresu - Monolit-Planner',
+    subject: 'Ověřte svou e-mailovou adresu - StavAgent',
     html
   });
 }
@@ -157,7 +157,7 @@ export async function sendPasswordResetEmail(email, token) {
             <p class="expires">Tento odkaz vyprší za 1 hodinu.</p>
           </div>
           <div class="footer">
-            <p>&copy; 2025 Monolit-Planner. Všechna práva vyhrazena.</p>
+            <p>&copy; 2025 StavAgent. Všechna práva vyhrazena.</p>
           </div>
         </div>
       </body>
@@ -166,7 +166,7 @@ export async function sendPasswordResetEmail(email, token) {
 
   return sendEmail({
     to: email,
-    subject: 'Resetovat heslo - Monolit-Planner',
+    subject: 'Resetovat heslo - StavAgent',
     html
   });
 }
