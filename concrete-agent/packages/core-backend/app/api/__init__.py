@@ -30,6 +30,7 @@ from app.api.routes_llm_status import router as llm_status_router
 from app.api.routes_project_documents import router as project_documents_router
 from app.api.routes_nkb import router as nkb_router
 from app.api.routes_norm_audit import router as norm_audit_router
+from app.api.routes_items import router as items_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -58,5 +59,6 @@ api_router.include_router(llm_status_router)     # /api/v1/llm/status (LLM healt
 api_router.include_router(project_documents_router)  # /api/v1/project/{id}/add-document, documents, status
 api_router.include_router(nkb_router)                  # /api/v1/nkb/* (Normative Knowledge Base)
 api_router.include_router(norm_audit_router)           # /api/v1/nkb/audit/* (NKB Audit & Gap Analysis)
+api_router.include_router(items_router)                # /api/v1/items/* (Unified Item Layer)
 
 __all__ = ["api_router"]
