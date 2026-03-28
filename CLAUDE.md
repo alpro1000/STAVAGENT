@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.5.0
+**Version:** 3.6.0
 **Last Updated:** 2026-03-28
 **Repository:** STAVAGENT (Monorepo)
 
@@ -21,16 +21,16 @@ STAVAGENT/
 
 **Infrastructure:** Backends on **Google Cloud Run** (europe-west3), frontends on **Vercel**, CI/CD via **Cloud Build**. No Render — всё на GC + Vercel.
 
-| Service | URL |
-|---------|-----|
-| concrete-agent (CORE) | https://concrete-agent-1086027517695.europe-west3.run.app |
-| portal backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
-| portal frontend | https://www.stavagent.cz |
-| Monolit backend | https://monolit-planner-api-1086027517695.europe-west3.run.app |
-| Monolit frontend | https://monolit-planner-frontend.vercel.app |
-| URS Matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app |
-| Registry backend | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
-| Registry frontend | https://stavagent-backend-ktwx.vercel.app |
+| Service | URL | Custom Domain |
+|---------|-----|---------------|
+| concrete-agent (CORE) | https://concrete-agent-1086027517695.europe-west3.run.app | — |
+| portal backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | — |
+| portal frontend | https://www.stavagent.cz | www.stavagent.cz |
+| Monolit backend | https://monolit-planner-api-1086027517695.europe-west3.run.app | — |
+| Monolit frontend | https://monolit-planner-frontend.vercel.app | **kalkulator.stavagent.cz** |
+| URS Matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app | **klasifikator.stavagent.cz** (Vercel proxy) |
+| Registry backend | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app | — |
+| Registry frontend | https://stavagent-backend-ktwx.vercel.app | **registry.stavagent.cz** |
 
 **DB:** Cloud SQL PostgreSQL 15 (`stavagent-db`): databases `stavagent_portal`, `monolit_planner`, `rozpocet_registry`
 
@@ -926,17 +926,77 @@ VITE_DISABLE_AUTH=true
 - **Documentation inventory**: 95 .md files, 42 KB JSON files (~40MB), 21 AI prompts, 22 SQL schemas
 - Full report: `docs/SESSION_2026-03-28_FULL_AUDIT.md`
 
-**Feature roadmap:**
-- D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
-- IFC/BIM support (P3 — needs binaries)
-- Deep Links
-- Vitest migration
+**Completed (2026-03-28, session 7 — Custom subdomains + Registration UX + Kiosk navigation):**
+- **Custom subdomains (DNS + Vercel):**
+  - `kalkulator.stavagent.cz` → Monolit Kalkulátor (Vercel, separate project)
+  - `registry.stavagent.cz` → Rozpočet Registry (Vercel, separate project)
+  - `klasifikator.stavagent.cz` → URS Matcher (Vercel proxy rewrite → Cloud Run, bypasses europe-west3 domain mapping limitation)
+  - DNS CNAME records at czechia.com/Zoner, SSL via Vercel Let's Encrypt
+  - URL migration: 20+ code files updated from Cloud Run/Vercel URLs to custom subdomains
+  - CORS: both old and new origins kept for transition period
+- **Registration UX flow (complete rewrite):**
+  - Post-registration: full instructional screen (3 numbered steps, email shown, spam hint)
+  - "Resend email" button + backend endpoint `POST /api/auth/resend-verification` (deletes old tokens, generates new, prevents email enumeration)
+  - Post-verification: auto-redirect to login with 5s countdown, "what awaits you" benefits card
+  - `register()` no longer sets auth state — user must verify email first
+  - Login page: brand "Monolit Planner" → "StavAgent", dark gradient background
+  - Registration note: "200 kreditů zdarma" + back-to-landing link
+- **Kiosk navigation — "← StavAgent" back buttons:**
+  - Monolit: `PortalBreadcrumb` always visible (was conditional on portal_project context)
+  - URS Matcher: back link in header controls (vanilla HTML)
+  - Registry: dark back-bar above header (React)
+- **Naming cleanup:**
+  - "Monolit Planner" → "Kalkulátor rozpočtu" (Header.tsx)
+  - "Plánovač elementu" → "Kalkulátor betonáže" (PlannerPage.tsx)
+  - Landing: Kalkulátor links to `/planner` directly (not root)
+  - Portal: service cards renamed accordingly
+- **Resend email service:**
+  - `RESEND_API_KEY` in GCP Secret Manager, wired in `cloudbuild-portal.yaml`
+  - FROM: `StavAgent <onboarding@resend.dev>` (free tier), FRONTEND_URL: `https://www.stavagent.cz`
+  - DNS records for stavagent.cz domain verification (DKIM, SPF, DMARC) — set up in Resend dashboard
+  - After domain verified: update to `noreply@stavagent.cz`
+- **URS Matcher trust proxy fix:**
+  - `app.set('trust proxy', 1)` — fixes `ERR_ERL_UNEXPECTED_X_FORWARDED_FOR` and `ERR_ERL_FORWARDED_HEADER`
+  - Portal and Monolit already had this setting
+- **Vercel project naming:** user renamed `stavagent-backend` → `stavagent-portal`, `stavagent-backend-ktwx` → `stavagent-registry`
+- **CLAUDE.md v3.5.0 → v3.6.0:** URL table with custom domains, session 7 notes
+
+**PR #752:** `claude/credit-system-landing-vvnxV` → main (9 commits, 34 files, +769/-535 lines) — ready to merge
+
+---
+
+## ЗАДАНИЕ НА СЛЕДУЮЩУЮ СЕССИЮ
+
+### Приоритет 1 — Критичные задачи
+1. **Merge PR #752** → main → дождаться Cloud Build deploy всех сервисов
+2. **Проверить все 3 субдомена** после deploy: kalkulator.stavagent.cz, registry.stavagent.cz, klasifikator.stavagent.cz
+3. **Проверить регистрацию** end-to-end: register → email → verify → login → portal
+4. **Resend domain verification**: если stavagent.cz подтверждён в Resend, обновить FROM email на `noreply@stavagent.cz` (env var `RESEND_FROM_EMAIL` в Cloud Run)
+
+### Приоритет 2 — Функциональные улучшения
+5. **Stripe интеграция**: настроить `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` в GCP Secret Manager → включить оплату кредитов
+6. **DocumentAnalysisPage** для неавторизованных: sessionOnly режим должен работать без API (сейчас кнопка есть, но может не работать полностью)
+7. **Landing page**: добавить скриншот/демо результата AI анализа (повышает конверсию)
+8. **Удалить мёртвый код**: проверить что SoupisTab.tsx, UrsClassifierDrawer.tsx удалены (были помечены как dead в session 4)
+
+### Приоритет 3 — Инфраструктура
+9. **VPC connector** для Cloud SQL — убрать публичный IP базы данных
+10. **Redis для URS Matcher** — опционально, если будет высокая нагрузка
+11. **reCAPTCHA на регистрации** — когда пойдёт трафик
+12. **AWS Bedrock quota** — запросить увеличение RPM для Claude моделей
+
+### Приоритет 4 — Развитие продукта
+13. **D.1.4 frontend renderers** (SilnoproudCard, SlaboproudCard и др.)
+14. **Full URS catalog harvest**: `POST /api/urs-catalog/harvest` после deploy (Perplexity + podminky.urs.cz)
+15. **IFC/BIM support** (нужны бинарные зависимости)
+16. **Vitest migration** (Jest → Vitest для фронтендов)
+
+**Feature roadmap (long-term):**
+- Deep Links between kiosks
 - Bedrock quota increase + model upgrade to Claude 3.5+
-- Landing: add analysis result screenshot/demo
-- Landing: add reCAPTCHA when traffic grows
-- Stripe: configure env vars when ready to accept payments
-- Full URS catalog import: OTSKP done (17,904), Perplexity harvest ready (trigger POST /api/urs-catalog/harvest after deploy)
 - URS Matcher auth middleware (service key for Portal→URS calls)
+- Session-only mode for Monolit Kalkulátor (external Vercel app)
+- No CAPTCHA on registration yet (add when traffic grows)
 
 ---
 
