@@ -9,20 +9,22 @@ import { ArrowRight, Zap, Shield, BarChart3, Layers, LogIn, User } from 'lucide-
 import { useAuth } from '../context/AuthContext';
 
 const SERVICES = [
+  // ===== ANALÝZA =====
   {
-    icon: '🔍',
-    name: 'Audit projektu',
-    desc: 'AI audit s 6 specialisty. GREEN/AMBER/RED klasifikace dokumentů.',
-  },
-  {
-    icon: '🪨',
-    name: 'Monolit Planner',
-    desc: 'Rozpočet betonových konstrukcí. Kč/m³, KROS zaokrouhlení, Excel export.',
+    icon: '📊',
+    name: 'Analýza dokumentů',
+    desc: 'Nahrajte PDF/XLSX → AI passport, soupis prací, audit, shrnutí. Multi-SO merge s detekcí rozporů.',
   },
   {
     icon: '📐',
-    name: 'Plánovač elementu',
-    desc: '20 typů prvků, Gantt harmonogram, RCPSP + Monte Carlo simulace.',
+    name: 'Analýza výkresů',
+    desc: 'AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice z PDF výkresů.',
+  },
+  // ===== KALKULACE =====
+  {
+    icon: '🪨',
+    name: 'Kalkulátor monolitních prací',
+    desc: 'Rychlý odhad nákladů na beton, bednění a výztuž. Kč/m³, KROS zaokrouhlení, Excel export. Plánovač betonáže s Gantt harmonogramem.',
   },
   {
     icon: '🏗️',
@@ -39,6 +41,7 @@ const SERVICES = [
     name: 'Ceníky dodavatelů',
     desc: 'Upload PDF ceníků → strukturovaná data. Batch srovnání dodavatelů.',
   },
+  // ===== KLASIFIKACE =====
   {
     icon: '🔎',
     name: 'Klasifikátor stavebních prací',
@@ -47,17 +50,13 @@ const SERVICES = [
   {
     icon: '📊',
     name: 'Registr Rozpočtů',
-    desc: '10 skupin prací, fuzzy search, AI klasifikace, Excel export.',
+    desc: '11 skupin prací, fuzzy search, AI klasifikace, Excel export.',
   },
+  // ===== PŘIPRAVUJEME =====
   {
-    icon: '📁',
-    name: 'Akumulace dokumentů',
-    desc: 'Postupné nahrávání souborů, hash-cache, automatický LLM souhrn.',
-  },
-  {
-    icon: '📋',
-    name: 'Shrnutí dokumentu',
-    desc: 'Adaptivní extrakce + shrnutí z PDF/Excel s volbou AI modelu.',
+    icon: '📦',
+    name: 'Kalkulačka bednění',
+    desc: 'Optimalizace spotřeby bednícího materiálu a nákladů. Připravujeme.',
   },
 ];
 
@@ -79,8 +78,8 @@ const FEATURES = [
   },
   {
     icon: <Layers size={28} />,
-    title: '10 modulů',
-    desc: 'Od auditu po čerpadla. Každý modul řeší konkrétní stavební úkol.',
+    title: '9 modulů',
+    desc: 'Od AI analýzy po kalkulátor monolitu. Každý modul řeší konkrétní stavební úkol.',
   },
 ];
 
@@ -208,8 +207,8 @@ export default function LandingPage() {
           maxWidth: '600px',
           margin: '0 auto 36px',
         }}>
-          Audit rozpočtů, kalkulace betonu, harmonogramy betonáže, objednávky čerpadel
-          a&nbsp;export do Excelu. 10&nbsp;modulů na jednom místě.
+          AI analýza dokumentů, kalkulátor monolitních prací, objednávky betonu
+          a&nbsp;export do Excelu. 9&nbsp;modulů na jednom místě.
         </p>
         <button
           onClick={() => navigate('/portal')}
@@ -283,7 +282,7 @@ export default function LandingPage() {
           marginBottom: '32px',
           fontSize: '15px',
         }}>
-          10 specializovaných modulů pro stavební profesionály
+          9 specializovaných modulů pro stavební profesionály
         </p>
 
         <div style={{
