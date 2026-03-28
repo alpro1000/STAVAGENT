@@ -5,59 +5,37 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap, Shield, BarChart3, Layers, LogIn, User } from 'lucide-react';
+import { ArrowRight, Zap, Shield, BarChart3, Lock, LogIn, User, Gift } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-const SERVICES = [
-  // ===== ANALÝZA =====
+// ── Two hero products — available WITHOUT registration (session-only) ────────
+const HERO_PRODUCTS = [
   {
     icon: '📊',
-    name: 'Analýza dokumentů',
-    desc: 'Nahrajte PDF/XLSX → AI passport, soupis prací, audit, shrnutí. Multi-SO merge s detekcí rozporů.',
+    name: 'AI Analýza dokumentů',
+    desc: 'Nahrajte PDF nebo Excel → AI vytvoří passport stavby, soupis prací, audit a shrnutí za 30 sekund.',
+    cta: 'Vyzkoušet zdarma',
+    route: '/portal/analysis',
+    tags: ['PDF/XLSX', 'AI Audit', 'Passport', 'Soupis prací'],
   },
-  {
-    icon: '📐',
-    name: 'Analýza výkresů',
-    desc: 'AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice z PDF výkresů.',
-  },
-  // ===== KALKULACE =====
   {
     icon: '🪨',
     name: 'Kalkulátor monolitních prací',
-    desc: 'Rychlý odhad nákladů na beton, bednění a výztuž. Kč/m³, KROS zaokrouhlení, Excel export. Plánovač betonáže s Gantt harmonogramem.',
+    desc: 'Spočítejte náklady na beton, bednění a výztuž. Kč/m³, Gantt harmonogram betonáže, Excel export.',
+    cta: 'Spočítat',
+    route: 'https://monolit-planner-frontend.vercel.app',
+    tags: ['Kč/m³', 'Bednění', 'Výztuž', 'Gantt'],
   },
-  {
-    icon: '🏗️',
-    name: 'Objednávka betonu',
-    desc: 'Vyhledání betonáren, porovnání cen: beton + doprava + čerpadlo.',
-  },
-  {
-    icon: '⚙️',
-    name: 'Kalkulačka čerpadel',
-    desc: '3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář.',
-  },
-  {
-    icon: '📄',
-    name: 'Ceníky dodavatelů',
-    desc: 'Upload PDF ceníků → strukturovaná data. Batch srovnání dodavatelů.',
-  },
-  // ===== KLASIFIKACE =====
-  {
-    icon: '🔎',
-    name: 'Klasifikátor stavebních prací',
-    desc: 'AI párování položek rozpočtu s kódy URS. 4fázový matching.',
-  },
-  {
-    icon: '📊',
-    name: 'Registr Rozpočtů',
-    desc: '11 skupin prací, fuzzy search, AI klasifikace, Excel export.',
-  },
-  // ===== PŘIPRAVUJEME =====
-  {
-    icon: '📦',
-    name: 'Kalkulačka bednění',
-    desc: 'Optimalizace spotřeby bednícího materiálu a nákladů. Připravujeme.',
-  },
+];
+
+// ── Additional tools — require registration ──────────────────────────────────
+const MORE_TOOLS = [
+  { icon: '📐', name: 'Analýza výkresů', desc: 'AI Vision + OCR extrakce z PDF výkresů' },
+  { icon: '🏗️', name: 'Objednávka betonu', desc: 'Betonárny, porovnání cen, čerpadlo' },
+  { icon: '⚙️', name: 'Kalkulačka čerpadel', desc: '3 dodavatelé, příplatky, kalendář' },
+  { icon: '📄', name: 'Ceníky dodavatelů', desc: 'PDF ceníky → strukturovaná data' },
+  { icon: '🔎', name: 'Klasifikátor URS', desc: 'AI párování položek s kódy URS' },
+  { icon: '📊', name: 'Registr Rozpočtů', desc: 'Fuzzy search, AI klasifikace, export' },
 ];
 
 const FEATURES = [
@@ -77,9 +55,9 @@ const FEATURES = [
     desc: 'Profesionální výstupy: harmonogramy, rozpočty a ceníky s exportem do Excelu.',
   },
   {
-    icon: <Layers size={28} />,
-    title: '9 modulů',
-    desc: 'Od AI analýzy po kalkulátor monolitu. Každý modul řeší konkrétní stavební úkol.',
+    icon: <Gift size={28} />,
+    title: '200 kreditů zdarma',
+    desc: 'Zaregistrujte se a získejte 200 kreditů. AI analýza od 10 kreditů za dokument.',
   },
 ];
 
@@ -156,7 +134,7 @@ export default function LandingPage() {
             </button>
           )}
           <button
-            onClick={() => navigate('/portal')}
+            onClick={() => navigate(isAuthenticated ? '/portal' : '/portal/analysis')}
             style={{
               padding: '8px 20px',
               background: 'var(--accent-orange)',
@@ -171,64 +149,120 @@ export default function LandingPage() {
               gap: '6px',
             }}
           >
-            Vstoupit <ArrowRight size={16} />
+            {isAuthenticated ? 'Portál' : 'Vyzkoušet'} <ArrowRight size={16} />
           </button>
         </div>
       </nav>
 
       {/* ── HERO ── */}
       <section style={{
-        padding: '80px 24px 60px',
+        padding: '64px 24px 40px',
         textAlign: 'center',
         maxWidth: '800px',
         margin: '0 auto',
       }}>
-        <img
-          src="/assets/logo.svg"
-          alt="StavAgent Logo"
-          style={{ width: '90px', height: '90px', marginBottom: '24px' }}
-        />
         <h1 style={{
-          fontSize: 'clamp(32px, 5vw, 48px)',
+          fontSize: 'clamp(28px, 5vw, 44px)',
           fontWeight: 700,
           color: 'var(--text-primary)',
           lineHeight: 1.15,
           marginBottom: '16px',
         }}>
-          Stavební platforma
+          Nahrajte dokument
           <br />
-          <span style={{ color: 'var(--accent-orange)' }}>s&nbsp;AI&nbsp;uvnitř</span>
+          <span style={{ color: 'var(--accent-orange)' }}>AI&nbsp;udělá&nbsp;zbytek</span>
         </h1>
         <p style={{
-          fontSize: 'clamp(16px, 2.5vw, 20px)',
+          fontSize: 'clamp(15px, 2.5vw, 18px)',
           color: 'var(--text-secondary)',
           lineHeight: 1.6,
-          marginBottom: '36px',
-          maxWidth: '600px',
-          margin: '0 auto 36px',
+          maxWidth: '540px',
+          margin: '0 auto 0',
         }}>
-          AI analýza dokumentů, kalkulátor monolitních prací, objednávky betonu
-          a&nbsp;export do Excelu. 9&nbsp;modulů na jednom místě.
+          Stavební platforma s AI analýzou dokumentů a kalkulátorem monolitních prací.
+          Bez registrace — výsledek rovnou v prohlížeči.
         </p>
-        <button
-          onClick={() => navigate('/portal')}
-          style={{
-            padding: '14px 36px',
-            background: 'var(--accent-orange)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '10px',
-            fontWeight: 600,
-            fontSize: '16px',
-            cursor: 'pointer',
-            boxShadow: '0 4px 20px var(--accent-orange-glow)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          Otevřít portál <ArrowRight size={20} />
-        </button>
+      </section>
+
+      {/* ── TWO HERO PRODUCTS — no registration needed ── */}
+      <section style={{
+        padding: '0 24px 48px',
+        maxWidth: '900px',
+        margin: '0 auto',
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '20px',
+        }}>
+          {HERO_PRODUCTS.map((p) => (
+            <div
+              key={p.name}
+              onClick={() => {
+                if (p.route.startsWith('http')) {
+                  window.open(p.route, '_blank', 'noopener,noreferrer');
+                } else {
+                  navigate(p.route);
+                }
+              }}
+              style={{
+                background: 'var(--panel-clean)',
+                borderRadius: '14px',
+                padding: '28px 24px',
+                boxShadow: 'var(--shadow-panel)',
+                cursor: 'pointer',
+                transition: 'transform 0.15s, box-shadow 0.15s',
+                border: '2px solid transparent',
+                position: 'relative',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.borderColor = 'var(--accent-orange)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = '';
+                e.currentTarget.style.borderColor = 'transparent';
+              }}
+            >
+              <span style={{ fontSize: '36px', display: 'block', marginBottom: '12px' }}>{p.icon}</span>
+              <h3 style={{
+                fontSize: '20px', fontWeight: 700, marginBottom: '8px',
+                color: 'var(--text-primary)',
+              }}>
+                {p.name}
+              </h3>
+              <p style={{
+                fontSize: '14px', color: 'var(--text-secondary)',
+                lineHeight: 1.55, margin: '0 0 16px',
+              }}>
+                {p.desc}
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
+                {p.tags.map(t => (
+                  <span key={t} style={{
+                    fontSize: '11px', padding: '2px 8px', borderRadius: '4px',
+                    background: 'rgba(255,159,28,0.1)', color: '#b45309',
+                  }}>{t}</span>
+                ))}
+              </div>
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                padding: '10px 24px', borderRadius: '8px',
+                background: 'var(--accent-orange)', color: '#fff',
+                fontWeight: 600, fontSize: '14px',
+              }}>
+                {p.cta} <ArrowRight size={16} />
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          textAlign: 'center', fontSize: '13px', color: 'var(--text-muted)',
+          marginTop: '12px',
+        }}>
+          Bez registrace. Výsledek v prohlížeči. Pro uložení zaregistrujte se a získejte 200 kreditů zdarma.
+        </p>
       </section>
 
       {/* ── FEATURES ── */}
@@ -261,59 +295,107 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SERVICES GRID ── */}
+      {/* ── MORE TOOLS — require registration ── */}
       <section style={{
-        padding: '48px 24px 64px',
-        maxWidth: '1000px',
+        padding: '32px 24px 64px',
+        maxWidth: '900px',
         margin: '0 auto',
       }}>
         <h2 style={{
           textAlign: 'center',
-          fontSize: '24px',
+          fontSize: '20px',
           fontWeight: 700,
           color: 'var(--text-primary)',
-          marginBottom: '8px',
+          marginBottom: '6px',
         }}>
-          Dostupné služby
+          Další nástroje v platformě
         </h2>
         <p style={{
           textAlign: 'center',
-          color: 'var(--text-secondary)',
-          marginBottom: '32px',
-          fontSize: '15px',
+          color: 'var(--text-muted)',
+          marginBottom: '20px',
+          fontSize: '13px',
         }}>
-          9 specializovaných modulů pro stavební profesionály
+          Dostupné po bezplatné registraci
         </p>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-          gap: '16px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+          gap: '12px',
         }}>
-          {SERVICES.map((s) => (
+          {MORE_TOOLS.map((s) => (
             <div
               key={s.name}
-              onClick={() => navigate('/portal')}
+              onClick={() => navigate('/login')}
               style={{
                 background: 'var(--panel-clean)',
-                borderRadius: '10px',
-                padding: '20px',
+                borderRadius: '8px',
+                padding: '14px 16px',
                 boxShadow: 'var(--shadow-panel)',
                 cursor: 'pointer',
-                transition: 'transform 0.15s',
+                opacity: 0.75,
+                transition: 'opacity 0.15s, transform 0.15s',
+                position: 'relative',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '0.75';
+                e.currentTarget.style.transform = '';
+              }}
             >
-              <span style={{ fontSize: '28px', display: 'block', marginBottom: '10px' }}>{s.icon}</span>
-              <h4 style={{ fontSize: '15px', fontWeight: 600, marginBottom: '6px', color: 'var(--text-primary)' }}>
-                {s.name}
-              </h4>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.45 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <span style={{ fontSize: '20px' }}>{s.icon}</span>
+                <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                  {s.name}
+                </h4>
+              </div>
+              <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: 0, lineHeight: 1.4 }}>
                 {s.desc}
               </p>
+              <div style={{
+                position: 'absolute', top: '8px', right: '8px',
+                display: 'flex', alignItems: 'center', gap: '3px',
+                fontSize: '10px', color: 'var(--text-muted)',
+              }}>
+                <Lock size={10} />
+              </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── PRICING HINT ── */}
+      <section style={{
+        padding: '0 24px 48px',
+        maxWidth: '600px',
+        margin: '0 auto',
+        textAlign: 'center',
+      }}>
+        <div style={{
+          background: 'var(--panel-clean)',
+          borderRadius: '12px',
+          padding: '24px',
+          boxShadow: 'var(--shadow-panel)',
+        }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '8px' }}>
+            Kolik to stojí?
+          </h3>
+          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '0 0 12px', lineHeight: 1.5 }}>
+            Registrace zdarma + 200 kreditů na vyzkoušení.
+            <br />
+            AI analýza dokumentu = 10 kreditů. Dobití od 125&nbsp;Kč.
+          </p>
+          <div style={{
+            display: 'inline-flex', gap: '16px', fontSize: '12px', color: 'var(--text-muted)',
+          }}>
+            <span>250 Kč → 287 kr (+15%)</span>
+            <span>500 Kč → 600 kr (+20%)</span>
+            <span>1000 Kč → 1250 kr (+25%)</span>
+          </div>
         </div>
       </section>
 
