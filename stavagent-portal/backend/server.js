@@ -50,8 +50,8 @@ import { logger } from './src/utils/logger.js';
 import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 
 // Middleware
-import { requireAuth } from './src/middleware/auth.js';
-import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter, connectionTestLimiter } from './src/middleware/rateLimiter.js';
+import { requireAuth, optionalAuth } from './src/middleware/auth.js';
+import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter, connectionTestLimiter, coreAiLimiter } from './src/middleware/rateLimiter.js';
 import { requireServiceKey, requireAuthOrServiceKey } from './src/middleware/serviceAuth.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -232,7 +232,9 @@ app.use('/api/kb/research', kbResearchRoutes);
 app.use('/api/parse-preview', uploadLimiter, parsePreviewRoutes);
 
 // CORE proxy — forwards all /api/core/* to concrete-agent with server-side timeouts
-app.use('/api/core', coreProxyRoutes);
+// optionalAuth: populates req.user if JWT present (for credit deduction), allows anonymous (session-only)
+// coreAiLimiter: anonymous=5/hour, authenticated=100/hour (credit-gated beyond that)
+app.use('/api/core', optionalAuth, coreAiLimiter, coreProxyRoutes);
 
 // Cabinet — personal dashboard stats (Sprint 1)
 app.use('/api/cabinet', cabinetRoutes);

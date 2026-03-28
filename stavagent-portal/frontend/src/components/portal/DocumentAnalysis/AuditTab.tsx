@@ -3,7 +3,7 @@
  * Upload file → execute audit → display GREEN/AMBER/RED classification.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   Upload,
   FileText,
@@ -42,6 +42,14 @@ export default function AuditTab() {
   const [error, setError] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const progressIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+    };
+  }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); }, []);
   const handleDragLeave = useCallback(() => { setIsDragging(false); }, []);
@@ -87,7 +95,7 @@ export default function AuditTab() {
 
       const projectId = `audit-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
-      const progressInterval = setInterval(() => {
+      progressIntervalRef.current = setInterval(() => {
         setProgress(prev => prev >= 95 ? prev : prev + Math.random() * 15);
         const elapsed = Date.now() - now;
         if (elapsed < 3000) setCurrentStep('parsing');
@@ -103,13 +111,15 @@ export default function AuditTab() {
         language,
       });
 
-      clearInterval(progressInterval);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
       setProgress(100);
       setCurrentStep('completed');
       setResult(auditResult);
       setStage('complete');
     } catch (err) {
-      clearInterval(progressInterval);
+      if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
       setStage('error');
       const msg = err instanceof Error ? err.message : '';
       // Never show raw technical errors to users

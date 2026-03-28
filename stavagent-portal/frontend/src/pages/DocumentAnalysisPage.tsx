@@ -171,10 +171,15 @@ export default function DocumentAnalysisPage() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 300000);
 
+      const headers: Record<string, string> = {};
+      const token = localStorage.getItem('auth_token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const response = await fetch(`${CORE_API_URL}/passport/generate`, {
         method: 'POST',
         body: formData,
         signal: controller.signal,
+        headers,
       });
       clearTimeout(timeoutId);
 
@@ -239,10 +244,15 @@ export default function DocumentAnalysisPage() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 600000);
 
+      const headers: Record<string, string> = {};
+      const token = localStorage.getItem('auth_token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       const response = await fetch(`${CORE_API_URL}/passport/process-project`, {
         method: 'POST',
         body: formData,
         signal: controller.signal,
+        headers,
       });
       clearTimeout(timeoutId);
 
