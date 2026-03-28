@@ -604,6 +604,14 @@ export const creditsAPI = {
     const { data } = await api.get('/api/credits/history', { params: { limit, offset } });
     return data;
   },
+  getPackages: async (): Promise<any> => {
+    const { data } = await api.get('/api/credits/packages');
+    return data;
+  },
+  checkout: async (packageId: string): Promise<any> => {
+    const { data } = await api.post('/api/credits/checkout', { package_id: packageId });
+    return data;
+  },
   // Admin
   getAdminStats: async (): Promise<any> => {
     const { data } = await api.get('/api/credits/admin/stats');

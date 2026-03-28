@@ -1,14 +1,27 @@
 /**
  * Quota Display Component
- * Shows user's credit balance, session-only status, and usage info
+ * Shows user's credit balance, session-only status, and topup packages
  */
 
 import { useState, useEffect } from 'react';
-import { usageAPI } from '../../services/api';
+import { usageAPI, creditsAPI } from '../../services/api';
+
+interface TopupPackage {
+  id: string;
+  credits: number;
+  price_czk: number;
+  label: string;
+  description: string;
+  popular?: boolean;
+}
 
 export default function QuotaDisplay() {
   const [usage, setUsage] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [packages, setPackages] = useState<TopupPackage[]>([]);
+  const [showTopup, setShowTopup] = useState(false);
+  const [checkingOut, setCheckingOut] = useState<string | null>(null);
+  const [topupSuccess, setTopupSuccess] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -18,7 +31,42 @@ export default function QuotaDisplay() {
       } catch { /* ignore */ }
       finally { setLoading(false); }
     })();
+
+    // Check URL for topup success
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('topup') === 'success') {
+      setTopupSuccess(true);
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
   }, []);
+
+  const loadPackages = async () => {
+    try {
+      const res = await creditsAPI.getPackages();
+      setPackages(res.packages || []);
+    } catch { /* ignore */ }
+  };
+
+  const handleTopup = async (packageId: string) => {
+    setCheckingOut(packageId);
+    try {
+      const res = await creditsAPI.checkout(packageId);
+      if (res.checkout_url) {
+        window.location.href = res.checkout_url;
+      }
+    } catch (e: any) {
+      const msg = e.response?.data?.error || e.response?.data?.hint || 'Chyba při vytváření platby';
+      alert(msg);
+    } finally {
+      setCheckingOut(null);
+    }
+  };
+
+  const openTopup = () => {
+    if (packages.length === 0) loadPackages();
+    setShowTopup(true);
+  };
 
   if (loading) return <div style={{ padding: 12, color: '#9ca3af', fontSize: 13 }}>Načítám...</div>;
   if (!usage) return null;
@@ -40,6 +88,20 @@ export default function QuotaDisplay() {
     <div style={{
       background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 16,
     }}>
+      {/* Topup success banner */}
+      {topupSuccess && (
+        <div style={{
+          background: '#ECFDF5', border: '1px solid #34D399', borderRadius: 6,
+          padding: '8px 12px', marginBottom: 12, fontSize: 12, color: '#065F46',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        }}>
+          <span>Kredity byly úspěšně připsány na váš účet!</span>
+          <button onClick={() => setTopupSuccess(false)} style={{
+            background: 'none', border: 'none', cursor: 'pointer', color: '#065F46', fontSize: 14,
+          }}>x</button>
+        </div>
+      )}
+
       {/* Credit Balance — main metric */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -52,12 +114,28 @@ export default function QuotaDisplay() {
             <span style={{ fontSize: 14, fontWeight: 400, color: '#9ca3af', marginLeft: 4 }}>kreditů</span>
           </div>
         </div>
-        {usage.is_admin && (
-          <span style={{
-            padding: '2px 8px', borderRadius: 4, fontSize: 11,
-            background: '#e53e3e', color: '#fff',
-          }}>Admin</span>
-        )}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {usage.is_admin && (
+            <span style={{
+              padding: '2px 8px', borderRadius: 4, fontSize: 11,
+              background: '#e53e3e', color: '#fff',
+            }}>Admin</span>
+          )}
+          {!usage.is_admin && (
+            <button
+              onClick={openTopup}
+              style={{
+                padding: '6px 16px', borderRadius: 6, border: 'none',
+                background: '#FF9F1C', color: '#fff', fontSize: 13, fontWeight: 600,
+                cursor: 'pointer', transition: 'background 0.2s',
+              }}
+              onMouseOver={e => (e.currentTarget.style.background = '#E8900A')}
+              onMouseOut={e => (e.currentTarget.style.background = '#FF9F1C')}
+            >
+              Dobít kredity
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Session-only warning */}
@@ -76,8 +154,70 @@ export default function QuotaDisplay() {
         </div>
       )}
 
+      {/* Topup packages */}
+      {showTopup && (
+        <div style={{
+          background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 8,
+          padding: 16, marginBottom: 12,
+        }}>
+          <div style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12,
+          }}>
+            <span style={{ fontSize: 14, fontWeight: 600 }}>Vyberte balíček</span>
+            <button onClick={() => setShowTopup(false)} style={{
+              background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', fontSize: 16,
+            }}>x</button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+            {packages.map(pkg => (
+              <div key={pkg.id} style={{
+                background: '#fff', border: pkg.popular ? '2px solid #FF9F1C' : '1px solid #E5E7EB',
+                borderRadius: 8, padding: 12, textAlign: 'center',
+                position: 'relative', cursor: 'pointer',
+                transition: 'box-shadow 0.2s',
+              }}
+                onMouseOver={e => (e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)')}
+                onMouseOut={e => (e.currentTarget.style.boxShadow = 'none')}
+                onClick={() => handleTopup(pkg.id)}
+              >
+                {pkg.popular && (
+                  <span style={{
+                    position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)',
+                    padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 600,
+                    background: '#FF9F1C', color: '#fff',
+                  }}>Oblíbené</span>
+                )}
+                <div style={{ fontSize: 20, fontWeight: 700, color: '#1a1a1a', marginBottom: 2 }}>
+                  {pkg.credits}
+                </div>
+                <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>kreditů</div>
+                <div style={{ fontSize: 18, fontWeight: 600, color: '#1a1a1a' }}>
+                  {pkg.price_czk} Kč
+                </div>
+                <div style={{ fontSize: 11, color: '#9CA3AF', marginBottom: 8 }}>
+                  {pkg.description}
+                </div>
+                <button
+                  disabled={checkingOut === pkg.id}
+                  style={{
+                    width: '100%', padding: '6px 0', borderRadius: 4, border: 'none',
+                    background: checkingOut === pkg.id ? '#D1D5DB' : '#FF9F1C',
+                    color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                  }}
+                >
+                  {checkingOut === pkg.id ? 'Přesměrování...' : 'Koupit'}
+                </button>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: 11, color: '#9CA3AF', marginTop: 8, textAlign: 'center' }}>
+            Platba kartou přes Stripe. Faktura bude odeslána na váš e-mail.
+          </div>
+        </div>
+      )}
+
       {/* Balance visual bar */}
-      {!usage.is_admin && (
+      {!usage.is_admin && !showTopup && (
         <div style={{ marginBottom: 12 }}>
           <div style={{
             height: 6, background: '#e5e7eb', borderRadius: 3, overflow: 'hidden',

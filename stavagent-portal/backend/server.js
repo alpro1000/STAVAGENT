@@ -128,7 +128,14 @@ app.use(morgan('combined', {
 app.use(apiLimiter);
 
 // Body parsing
-app.use(express.json({ limit: '10mb' }));
+// Stripe webhook needs raw body for signature verification — exclude from JSON parsing
+app.use((req, res, next) => {
+  if (req.path === '/api/credits/webhook') {
+    express.raw({ type: 'application/json', limit: '1mb' })(req, res, next);
+  } else {
+    express.json({ limit: '10mb' })(req, res, next);
+  }
+});
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Create necessary directories
