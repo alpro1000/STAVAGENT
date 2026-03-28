@@ -40,7 +40,11 @@ router.post('/register', checkRegistrationIP, async (req, res) => {
     }
 
     // Disposable email detection — block temp-mail services
-    const emailDomain = email.split('@')[1].toLowerCase();
+    const emailParts = email.split('@');
+    if (emailParts.length !== 2) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+    const emailDomain = emailParts[1].toLowerCase();
     try {
       const bannedDomain = await db.prepare(
         'SELECT domain FROM banned_email_domains WHERE domain = ?'
