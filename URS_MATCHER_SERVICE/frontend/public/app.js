@@ -2411,3 +2411,122 @@ window.addEventListener('unhandledrejection', (event) => {
     reason: event.reason?.toString()
   });
 });
+
+// ============================================================================
+// HARVEST ADMIN PANEL
+// ============================================================================
+
+let harvestPollTimer = null;
+
+function renderHarvestStatus(state) {
+  const el = document.getElementById('harvestStatusContent');
+  const wrap = document.getElementById('harvestStatus');
+  const progressWrap = document.getElementById('harvestProgressWrap');
+  const progressBar = document.getElementById('harvestProgressBar');
+  if (!el || !wrap) return;
+
+  wrap.style.display = 'block';
+
+  if (!state || state.status === 'idle') {
+    el.innerHTML = '<p>Žádný harvest nebyl spuštěn.</p>';
+    progressWrap.style.display = 'none';
+    return;
+  }
+
+  const pct = state.total_categories > 0
+    ? Math.round((state.current_index / state.total_categories) * 100) : 0;
+
+  let statusIcon = '⏳';
+  if (state.status === 'completed') statusIcon = '✅';
+  else if (state.status === 'cancelled') statusIcon = '⏹';
+  else if (state.status === 'error') statusIcon = '❌';
+
+  let html = `<p><strong>${statusIcon} Stav:</strong> ${state.status}</p>`;
+  html += `<p><strong>Model:</strong> ${state.model || 'sonar'}</p>`;
+  html += `<p><strong>Kategorie:</strong> ${state.current_index || 0} / ${state.total_categories || 0}</p>`;
+  if (state.current_category) html += `<p><strong>Aktuální:</strong> ${state.current_category}</p>`;
+  html += `<p><strong>Nalezeno:</strong> ${state.total_found || 0} | <strong>Uloženo:</strong> ${state.total_saved || 0}</p>`;
+  if (state.db_total) html += `<p><strong>Celkem v DB:</strong> ${state.db_total}</p>`;
+  if (state.started_at) html += `<p><strong>Začátek:</strong> ${new Date(state.started_at).toLocaleString('cs')}</p>`;
+  if (state.finished_at) html += `<p><strong>Konec:</strong> ${new Date(state.finished_at).toLocaleString('cs')}</p>`;
+
+  if (state.errors && state.errors.length > 0) {
+    html += `<p style="color:#e74c3c;"><strong>Chyby (${state.errors.length}):</strong></p><ul>`;
+    state.errors.slice(-5).forEach(e => {
+      html += `<li>${e.category}: ${e.error}</li>`;
+    });
+    html += '</ul>';
+  }
+
+  if (state.completed_categories && state.completed_categories.length > 0) {
+    html += `<details style="margin-top:0.5rem;"><summary>Dokončené kategorie (${state.completed_categories.length})</summary><ul>`;
+    state.completed_categories.forEach(c => {
+      html += `<li>${c.code} ${c.name}: ${c.found} nalezeno, ${c.saved} uloženo</li>`;
+    });
+    html += '</ul></details>';
+  }
+
+  el.innerHTML = html;
+
+  // Progress bar
+  if (state.status === 'running') {
+    progressWrap.style.display = 'block';
+    progressBar.style.width = `${pct}%`;
+    progressBar.textContent = `${pct}%`;
+  } else {
+    progressWrap.style.display = pct > 0 ? 'block' : 'none';
+    progressBar.style.width = `${pct}%`;
+    progressBar.textContent = `${pct}%`;
+  }
+
+  // Auto-poll while running
+  if (state.status === 'running' && !harvestPollTimer) {
+    harvestPollTimer = setInterval(checkHarvestStatus, 5000);
+  } else if (state.status !== 'running' && harvestPollTimer) {
+    clearInterval(harvestPollTimer);
+    harvestPollTimer = null;
+  }
+}
+
+async function startHarvest(resume = false) {
+  try {
+    const res = await fetch(`${API_URL}/urs-catalog/harvest`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(resume ? { resume: true } : {}),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || 'Chyba při spuštění harvestu');
+      renderHarvestStatus(data.state || null);
+      return;
+    }
+    renderHarvestStatus(data.state);
+  } catch (err) {
+    alert('Chyba: ' + err.message);
+  }
+}
+
+async function checkHarvestStatus() {
+  try {
+    const res = await fetch(`${API_URL}/urs-catalog/harvest/status`);
+    const data = await res.json();
+    renderHarvestStatus(data);
+  } catch (err) {
+    debugError('Harvest status check failed', err);
+  }
+}
+
+async function cancelHarvest() {
+  try {
+    const res = await fetch(`${API_URL}/urs-catalog/harvest/cancel`, { method: 'POST' });
+    const data = await res.json();
+    if (data.state) renderHarvestStatus(data.state);
+    else checkHarvestStatus();
+  } catch (err) {
+    alert('Chyba: ' + err.message);
+  }
+}
+
+// Check harvest status on load (in case one is running)
+checkHarvestStatus();
