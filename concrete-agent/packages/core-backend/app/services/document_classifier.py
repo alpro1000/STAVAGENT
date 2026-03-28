@@ -107,11 +107,21 @@ FILENAME_PATTERNS: Dict[DocCategory, List[str]] = {
         "kvalifikace", "kvalifikační", "tender",
     ],
     DocCategory.VY: [
-        "vykres", "výkres", "drawing", "plan_", "schema",
+        "vykres", "výkres", "drawing", "plan_", "schema", "schéma",
         "situace", "rez_", "řez", "pohled", "pudorys", "půdorys",
+        # Drawings of structural elements (mosty, pozemní stavby)
+        "tvar_nosn", "nosna_konstrukce", "nosné_konstrukce",
+        "tvar_oper", "tvar_pilir", "tvar_opery",
+        # Common drawing subtypes
+        "dispozice", "axonometrie", "perspektiva",
+        "vedeni_", "rozvody_", "trasa_",
+        "detail_", "detalj",
+        # Railway / road profile drawings
+        "podelny_profil", "podélný_profil", "vzorovy_pricny",
+        "vzorový_příčný",
     ],
     DocCategory.SM: [
-        "smlouva", "navrh_smlouvy", "návrh", "contract",
+        "smlouva", "navrh_smlouvy", "návrh_smlouvy", "contract",
         "sod_", "smluvni", "smluvní", "objednavka",
     ],
     DocCategory.HA: [
@@ -166,9 +176,30 @@ CONTENT_KEYWORDS: Dict[DocCategory, List[str]] = {
         "radon", "propustnost",
     ],
     DocCategory.SM: [
-        "smluvní strany", "objednatel", "zhotovitel",
-        "předmět smlouvy", "cena díla", "záruční doba",
-        "smluvní pokuta", "odstoupení",
+        "smluvní strany", "předmět smlouvy", "cena díla",
+        "záruční doba", "smluvní pokuta", "odstoupení od smlouvy",
+        "smluvní podmínky", "platební podmínky",
+    ],
+    DocCategory.VY: [
+        # Scale indicators — almost always present on drawings
+        "měřítko", "1:50", "1:75", "1:100", "1:150", "1:200", "1:500",
+        # Cross-sections and plan views
+        "příčný řez", "podélný řez", "řez a-a", "řez b-b",
+        "půdorys", "axonometrie",
+        # Drawing format stamps
+        "formát a4", "formát a3", "formát a2", "formát a1",
+        "počet formátů", "příloha č.", "číslo přílohy", "paré",
+        # Dimension annotations (many numbers in mm/m)
+        "zkosení ostrých hran", "krytí výztuže",
+        # Bridge drawings
+        "nosná konstrukce", "spodní stavba", "opěra", "pilíř",
+        "nosník", "mostovka", "rozpětí", "světlost",
+        "ložiska", "závěry", "odvodňovače", "římsa",
+        # Building drawings
+        "základy", "stropy", "příčky", "fasáda", "střecha",
+        # TZB drawings
+        "schéma zapojení", "jednopólové schéma", "rozvaděč",
+        "potrubní trasa", "vzduchotechnické schéma",
     ],
 }
 
@@ -214,16 +245,21 @@ def classify_document(filename: str, text: str = "") -> ClassificationInfo:
 
 AI_CLASSIFY_PROMPT = """Klasifikuj tento dokument do JEDNÉ z těchto kategorií:
 
-TZ — Technická zpráva (konstrukční řešení, materiály, statika)
-RO — Rozpočet / Výkaz výměr (položky, ceny, množství)
+TZ — Technická zpráva (konstrukční řešení, materiály, statika, popis stavby)
+RO — Rozpočet / Výkaz výměr (položky, ceny, množství, rekapitulace)
 PD — Podmínky / Zadávací dokumentace (tender, kvalifikace, lhůty)
-VY — Výkresy (výkresová dokumentace, situace, řezy)
-SM — Smlouva / Návrh (smluvní strany, předmět díla)
+VY — Výkresy (měřítko, řezy, půdorysy, kóty, rozměry, razítko s přílohou č.)
+SM — Smlouva / Návrh (smluvní strany, předmět smlouvy, cena díla, záruční doba)
 HA — Harmonogram (etapy, milníky, termíny)
 GE — Geologický průzkum (vrty, zemina, hladina vody)
 ZP — BOZP / Životní prostředí (bezpečnost, EIA)
 TI — Titulní list / Obsah
 OT — Ostatní
+
+DŮLEŽITÉ: Slova "objednatel", "zhotovitel", "investor" v razítku dokumentu NEZNAMENAJÍ,
+že je to smlouva (SM). Tato slova jsou na KAŽDÉM výkresu a technické zprávě.
+Smlouva se pozná podle: "smluvní strany", "předmět smlouvy", "cena díla",
+"záruční doba", "smluvní pokuta", "odstoupení od smlouvy".
 
 Název souboru: {filename}
 

@@ -754,14 +754,41 @@ export const workflowCAPI = {
     formData.append('use_parallel', String(options?.use_parallel ?? true));
     formData.append('language', options?.language ?? 'cs');
 
-    const response = await fetch(`${CORE_API_URL}/workflow-c/upload`, {
-      method: 'POST',
-      body: formData,
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 120_000);
+
+    let response: Response;
+    try {
+      response = await fetch(`${CORE_API_URL}/workflow-c/upload`, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+      });
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      if (err?.name === 'AbortError') {
+        throw new Error('Analýza trvá déle než obvykle. Zkuste to prosím znovu.');
+      }
+      throw new Error('AI služba je dočasně nedostupná. Zkuste to prosím za chvíli.');
+    }
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
-      throw new Error(error.detail || `Workflow C upload failed: ${response.status}`);
+      const error = await response.json().catch(() => ({ detail: '' }));
+      const detail = error.detail || '';
+      if (response.status === 413) {
+        throw new Error('Dokument je příliš velký pro AI audit. Maximum je 50 MB.');
+      }
+      if (response.status === 502 || response.status === 503) {
+        throw new Error('AI služba je dočasně nedostupná. Zkuste to prosím za chvíli.');
+      }
+      if (response.status === 504) {
+        throw new Error('Analýza trvá déle než obvykle. Zkuste to prosím znovu.');
+      }
+      if (response.status === 422 || (detail && detail.includes('pozic'))) {
+        throw new Error('V dokumentu nebylo nalezeno dostatek dat pro provedení auditu. Zkontrolujte záložku Passport.');
+      }
+      throw new Error(detail || `Audit selhal (HTTP ${response.status}). Zkuste to prosím znovu.`);
     }
 
     return response.json();

@@ -551,12 +551,17 @@ export default function DocumentAnalysisPage() {
     setSoupisData(null);
     setUploadedFile(null);
     setError(null);
+    setIsUploading(false);
     setSaveSuccess(false);
     setSaveError(null);
     setShowProjectPicker(false);
     setLoadedDocId(null);
     setActiveTab('passport');
     setUploadProgress('');
+    // Clear the file input so re-selecting the same file triggers onChange
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    // Scroll to top for mobile
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   /* ── Tab config ── */
@@ -796,6 +801,14 @@ export default function DocumentAnalysisPage() {
               {activeTab === 'project' && projectData && (
                 <ProjectAnalysis data={projectData} />
               )}
+            </div>
+
+            {/* Bottom action bar — always visible in results */}
+            <div className="da-bottom-bar">
+              <button onClick={handleReset} className="c-btn c-btn--primary">
+                <RotateCcw size={16} />
+                Analyzovat další dokument
+              </button>
             </div>
           </div>
         )}
@@ -1165,6 +1178,14 @@ const documentAnalysisStyles = `
   background: var(--panel-clean, #eaebec);
   border-radius: 12px;
   padding: 24px 28px;
+}
+
+.da-bottom-bar {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-default, rgba(0,0,0,0.08));
+  display: flex;
+  justify-content: center;
 }
 
 .da-meta-bar {

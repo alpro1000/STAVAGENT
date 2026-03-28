@@ -109,8 +109,15 @@ export default function AuditTab() {
       setResult(auditResult);
       setStage('complete');
     } catch (err) {
+      clearInterval(progressInterval);
       setStage('error');
-      setError(err instanceof Error ? err.message : 'Audit selhal');
+      const msg = err instanceof Error ? err.message : '';
+      // Never show raw technical errors to users
+      if (msg && !msg.includes('Load failed') && !msg.includes('Failed to fetch') && !msg.includes('NetworkError')) {
+        setError(msg);
+      } else {
+        setError('AI služba je dočasně nedostupná. Zkuste to prosím za chvíli.');
+      }
     }
   };
 
@@ -250,11 +257,14 @@ export default function AuditTab() {
   if (stage === 'error') {
     return (
       <div className={styles.auditStageCenter}>
-        <XCircle size={64} style={{ color: 'var(--status-error)', marginBottom: 24 }} />
-        <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>Audit selhal</h3>
-        <p style={{ fontSize: 14, color: 'var(--status-error)', marginBottom: 24 }}>{error || 'Neznámá chyba'}</p>
+        <AlertTriangle size={64} style={{ color: 'var(--status-warning)', marginBottom: 24 }} />
+        <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>Nepodařilo se provést audit</h3>
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24, maxWidth: 420, textAlign: 'center' }}>
+          {error || 'AI služba je dočasně nedostupná. Zkuste to prosím za chvíli.'}
+        </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-          <button onClick={resetAudit} className="c-btn c-btn--primary">Zkusit znovu</button>
+          <button onClick={handleStartAudit} className="c-btn c-btn--primary">Zkusit znovu</button>
+          <button onClick={resetAudit} className="c-btn c-btn--ghost">Nahrát jiný soubor</button>
         </div>
       </div>
     );
