@@ -102,8 +102,8 @@ function App() {
               <Route path="/cabinet/orgs" element={<ProtectedRoute><CabinetOrgsPage /></ProtectedRoute>} />
               <Route path="/cabinet/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
 
-              {/* Document Analysis — full page (replaces modal) */}
-              <Route path="/portal/analysis" element={<ProtectedRoute><DocumentAnalysisPage /></ProtectedRoute>} />
+              {/* Document Analysis — public access (session-only for anonymous users) */}
+              <Route path="/portal/analysis" element={<DocumentAnalysisPage />} />
 
               {/* NKB Admin — norm/rule management */}
               <Route path="/portal/nkb" element={<ProtectedRoute><NKBAdminPage /></ProtectedRoute>} />

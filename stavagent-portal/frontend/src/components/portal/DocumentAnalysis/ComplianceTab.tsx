@@ -10,7 +10,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import {
-  Shield, ShieldCheck, ShieldAlert, ShieldBan,
+  Shield, ShieldCheck, ShieldAlert, ShieldClose,
   Loader2, AlertTriangle, CheckCircle, Info, ChevronDown, ChevronUp,
   BookOpen, Zap, RefreshCw,
 } from 'lucide-react';
@@ -73,7 +73,7 @@ interface ComplianceTabProps {
 const STATUS_CONFIG: Record<string, { icon: typeof ShieldCheck; color: string; label: string }> = {
   pass: { icon: CheckCircle, color: '#22c55e', label: 'Splněno' },
   warning: { icon: AlertTriangle, color: '#f59e0b', label: 'Varování' },
-  violation: { icon: ShieldBan, color: '#ef4444', label: 'Porušení' },
+  violation: { icon: ShieldClose, color: '#ef4444', label: 'Porušení' },
   not_checked: { icon: Info, color: '#9ca3af', label: 'Nekontrolováno' },
 };
 
@@ -291,7 +291,7 @@ export default function ComplianceTab({ data }: ComplianceTabProps) {
             )}
             {compliance.violations > 0 && (
               <span className="ct-badge ct-badge--violation">
-                <ShieldBan size={12} /> {compliance.violations} porušení
+                <ShieldClose size={12} /> {compliance.violations} porušení
               </span>
             )}
           </div>

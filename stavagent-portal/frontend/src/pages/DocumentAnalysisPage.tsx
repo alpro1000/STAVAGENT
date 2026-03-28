@@ -121,15 +121,24 @@ export default function DocumentAnalysisPage() {
   const hasResults = !!(passportData || projectData || soupisData);
   const authHeaders = { 'Authorization': `Bearer ${localStorage.getItem('auth_token')}` };
 
-  // Load credit balance on mount
+  // Load credit balance on mount (anonymous users → session-only)
+  const isAnonymous = !localStorage.getItem('auth_token');
   useEffect(() => {
+    if (isAnonymous) {
+      setSessionOnly(true);
+      setCreditBalance(0);
+      return;
+    }
     creditsAPI.getBalance()
       .then(res => {
         setCreditBalance(res.balance ?? 0);
         setSessionOnly(res.session_only ?? false);
       })
-      .catch(() => { /* ignore — will work without credits */ });
-  }, []);
+      .catch(() => {
+        setSessionOnly(true);
+        setCreditBalance(0);
+      });
+  }, [isAnonymous]);
 
   /* ── Upload single file ── */
   const handleFileUpload = useCallback(async (file: File) => {
@@ -566,7 +575,7 @@ export default function DocumentAnalysisPage() {
     <div className="da-page">
       {/* Page header */}
       <header className="da-header">
-        <button onClick={() => navigate('/portal')} className="da-back-btn">
+        <button onClick={() => navigate(isAnonymous ? '/' : '/portal')} className="da-back-btn">
           <ArrowLeft size={18} />
           <span>Portal</span>
         </button>
@@ -693,9 +702,22 @@ export default function DocumentAnalysisPage() {
                       <CheckCircle size={14} /> Uloženo
                     </span>
                   ) : sessionOnly ? (
-                    <span className="da-session-badge" title="Dobijte kredity pro uložení do projektu">
-                      Pouze v prohlížeči
-                    </span>
+                    isAnonymous ? (
+                      <button
+                        onClick={() => navigate('/login')}
+                        className="c-btn c-btn--sm"
+                        style={{
+                          background: '#FF9F1C', color: '#fff', border: 'none',
+                          fontWeight: 600, fontSize: '12px',
+                        }}
+                      >
+                        Registrace → 200 kreditů zdarma
+                      </button>
+                    ) : (
+                      <span className="da-session-badge" title="Dobijte kredity pro uložení do projektu">
+                        Pouze v prohlížeči
+                      </span>
+                    )
                   ) : (
                     <button
                       onClick={openSavePicker}
