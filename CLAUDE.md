@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.4.0
+**Version:** 3.5.0
 **Last Updated:** 2026-03-28
 **Repository:** STAVAGENT (Monorepo)
 
@@ -91,11 +91,26 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. Central AI: Multi-Role validation (4 roles: SME, ARCH, ENG, SUP), document parsing (PDF/Excel/XML), Knowledge Base (KROS/RTS/ČSN), Workflows A/B/C, Document Accumulator, Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents system.
+Python FastAPI. Central AI: Multi-Role validation (4 roles: SME, ARCH, ENG, SUP), document parsing (PDF/Excel/XML), Knowledge Base (KROS/RTS/ČSN), Workflows A/B/C, Document Accumulator, Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents system. **119 API endpoints**, **28 test files**, **~57K LOC**.
 
 Key endpoints: `/api/v1/multi-role/ask`, `/workflow/a/import`, `/api/v1/workflow/c/execute`, `/api/v1/accumulator/*`, `/api/v1/price-parser/parse`, `/api/v1/vertex/search`, `/api/v1/project/{id}/add-document`, `/api/v1/nkb/*`, `/health`
 
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`, tests in `packages/core-backend/tests/`
+
+**Subsystems (full list):**
+- **Multi-Role Expert System:** 4 roles (SME, ARCH, ENG, SUP), parallel validation, consensus scoring
+- **Workflows:** A (import/audit), B (drawings), C (hybrid audit+summary)
+- **Document Accumulator:** 20 endpoints — multi-document project accumulation, merge, diff
+- **Google Drive OAuth2:** 7 endpoints — file listing, import, folder management
+- **PDF Price Parser:** 7 sub-parsers (betony, malty, doprava, čerpadla, příplatky, laboratorní, source)
+- **Vertex AI Search:** multi-endpoint search across indexed construction data
+- **Betonárny Discovery:** 3 endpoints — concrete supplier search by location
+- **Norms Scraper:** 6 endpoints — web scraping ÚRS/OTSKP/ČSN catalogs
+- **Agents system:** 3 endpoints — agent lifecycle management
+- **Chat system:** message management, project-scoped conversations
+- **LLM Status:** `/api/v1/llm/status` — provider availability check
+- **LLM providers:** Vertex AI (primary) → Bedrock → Gemini API → Claude API → OpenAI
+- **Feature flags:** 8 configurable flags in `config.py`
 
 **NKB (Normative Knowledge Base):** 3-layer system for Czech construction norms.
 - Layer 1: Registry — 23 norms (ČSN, VTP, TKP, zákon, vyhláška, Eurocode), JSON/PostgreSQL storage, priority hierarchy (zákon=100 > vyhláška=90 > ČSN=70 > TKP=60 > VTP=50)
@@ -126,24 +141,36 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 - Files: `parsers/{universal_parser.py, format_detector.py, xlsx_komplet_parser.py, xlsx_rtsrozp_parser.py}`
 
 ### 2. stavagent-portal (Dispatcher)
-Node.js/Express + React. Main entry point: JWT auth, project management, file upload, kiosk routing, chat assistant.
+Node.js/Express + React. Main entry point: JWT auth, project management, file upload, kiosk routing, chat assistant. **~80+ API endpoints**, **20 pages/routes**, **40+ components**.
 
-**Sprint 1 Cabinets+Roles (complete):** Organizations + org_members tables, 5 roles (admin/manager/estimator/viewer/api_client), orgRole.js middleware, cabinet.js + orgs.js (12 endpoints), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage + cabinet/ and org/ components.
+**Route groups (full list):**
+- **Auth:** 15 endpoints (register, login, verify email, forgot/reset password, phone verify, PATCH /me)
+- **Portal Projects:** 10 endpoints (CRUD + send-to-core + file upload)
+- **Portal Files:** 9 endpoints (upload 50MB max, parse, analyze)
+- **Portal Documents:** 4 endpoints (save/load document analyses as JSONB)
+- **Admin panel:** 17 endpoints (users, feature flags, usage tracking, audit logs, anti-fraud, banned domains)
+- **Organizations:** 10 endpoints (CRUD + invites + role assignment)
+- **Service Connections:** 8 endpoints (AES-256-GCM encrypted API keys)
+- **Pump Calculator:** 15 endpoints (suppliers, models, accessories, calculate)
+- **OTSKP codes:** 4 endpoints (search, lookup by code)
+- **Position Instances:** 8 endpoints (unified position identity across kiosks)
+- **Integration:** 3 endpoints (batch sync Monolit ↔ Registry, bulk INSERT/UPDATE)
+- **CORE Proxy:** 3 routes (passport, price-parser, urs-match → 300s timeout)
+- **Credits:** checkout (Stripe), balance, history, pricing, volume discount tiers
+- **Debug:** 4 endpoints (dev only, disabled in prod)
 
-**Auth + SaaS (complete):** JWT auth enabled on all routes, seed admin, login/cabinet UI. SaaS admin panel: usage tracking, feature flags, quotas, anti-fraud. ParsePreviewPage for Excel import preview.
+**Auth:** JWT (24h expiry), 5 org roles (admin/manager/estimator/viewer/api_client), email verification mandatory, phone verification optional, IP anti-fraud (max 3 reg/IP/24h), disposable email blocking (50+ domains), user ban system.
 
-**Sprint 2 Service Connections (complete):** `service_connections` table + 8 API endpoints + AES-256-GCM encryption. Needs MASTER_ENCRYPTION_KEY in Secret Manager for production.
+**Pay-as-you-go credits:** `creditService.js` (atomic deduction), Stripe Checkout, volume discounts (250+ Kč = +15%, 500+ = +20%, 1000+ = +25%), welcome bonus 200 credits, fail-open billing.
 
-DB tables: `users, organizations, org_members, portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, position_instances, position_templates, position_audit_log, service_connections`
+DB tables: `users, organizations, org_members, portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, position_instances, position_templates, position_audit_log, service_connections, operation_prices, credit_transactions, banned_email_domains`
 
-**Additional subsystems:** Pump Calculator (15 endpoints), OTSKP codes (4 endpoints), Phone verification, IP anti-fraud detection.
-
-Key routes: `backend/src/routes/{portal-projects,auth,orgs,cabinet,connections,pump-calculator,otskp}.js`, `backend/src/middleware/orgRole.js`
+Key routes: `backend/src/routes/{portal-projects,auth,orgs,cabinet,connections,pump-calculator,otskp,credits,portal-documents,integration,core-proxy}.js`
 
 Design: Digital Concrete / Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM (`.c-btn`, `.c-panel`, `.c-card`)
 
 ### 3. Monolit-Planner (Kiosk)
-Node.js/Express + React. Concrete cost calculator: CZK/m³ metric, Excel import, OTSKP codes, AI days suggestion, Unified Registry, Relink algorithm, **336 shared tests**.
+Node.js/Express + React. Concrete cost calculator: CZK/m³ metric, Excel import, OTSKP codes, AI days suggestion, Unified Registry, Relink algorithm. **125 API endpoints**, **402 tests** (342 shared + 60 backend), **~30K LOC**.
 
 Critical formulas: `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x / 50) * 50`
 
@@ -151,12 +178,41 @@ Work types: beton (m³), bednění (m²), výztuž (kg), jiné
 
 **Element Planner** (`/planner`): Universal tool for ALL monolithic concrete works (20 element types: 9 bridge + 11 building). 7-engine pipeline: Element Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler (DAG) → PERT Monte Carlo. Visual Gantt chart + XLSX export. Design system: CSS variables in `r0.css` (Slate Minimal palette). **Mobile responsive:** sidebar/results stack vertically (≤768px), grids collapse via `.r0-grid-2/3/4` classes.
 
-Structure: `shared/` (formulas + scheduler, 336 tests), `backend/` (Express, PostgreSQL/SQLite), `frontend/` (React)
+**Supporting engines:** Maturity, Props, Calendar, Pump, Tariff Versioning
+
+**Snapshot system:** SHA-256 versioning + delta tracking for scenario comparison (side-by-side).
+
+**R0 Deterministic Core** (Phase 6): Pure deterministic calculation routes, no AI dependency.
+
+**Normsets:** 4 defined — ÚRS 2024, RTS 2023, KROS 2024, Internal. Used for price comparison and validation.
+
+**Resource Optimization:** Grid search across crew/set combinations (up to 4 crews, 6 sets), deadline-aware variants.
+
+Structure: `shared/` (formulas + scheduler, 342 tests), `backend/` (Express, PostgreSQL/SQLite, 60 tests), `frontend/` (React)
 
 Design: Slate Minimal — CSS variables (`--r0-*`), zero hardcoded hex colors in planner components
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
-Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 4-phase: File Parsing → Document Analysis → URS Matching (TSKP→Candidates→KB→LLM Re-ranking) → Composite Works Detection. Document extraction pipeline (PDF/DOCX). LLM fallback chain with per-request AbortController. 9 LLM providers (Claude, Gemini, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Brave Search). Unified Pipeline, Batch Processing, Technology Calculations, Pricing endpoints. 159 tests.
+Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. **~45 API endpoints**, **159 tests**, **~10K LOC**, **12 SQLite tables**.
+
+**4-phase matching pipeline:**
+1. File Parsing & Text Matching (Excel/ODS/CSV)
+2. Document Analysis (PDF/DOCX via concrete-agent)
+3. URS Matching: TSKP Classification → Candidate Generation → KB Lookup → LLM Re-ranking
+4. Composite Works Detection & Technology Rules
+
+**9 LLM Providers:** Claude, Gemini, OpenAI, Bedrock, DeepSeek, Grok, Qwen, GLM, Brave Search. Per-request AbortController, fallback chains per task type.
+
+**Endpoint groups (full list):**
+- **Jobs/Text Match:** `/api/jobs/text-match` — local SQLite (36 seed) + OTSKP fallback (17,904) + LLM rerank
+- **Unified Pipeline:** 7 endpoints (`/api/pipeline/*`) — match, match-batch, classify, classify-batch, catalogs, match-by-otskp
+- **Batch Processing:** 6 endpoints — create, start, pause, resume, status, export (Excel)
+- **Technology Calculations:** 3 endpoints — concrete volume, reinforcement estimation, formwork calculation
+- **Pricing:** 3 endpoints — price lookup, price comparison, price sources
+- **Project Analysis:** 3 endpoints — Multi-Role BOQ analysis (SME/ARCH/ENG roles)
+- **Catalog management:** 7 endpoints — OTSKP/TSKP catalogs, versioning, import, stats
+- **Settings:** runtime LLM provider switching, model selection
+- **URS Catalog Harvest:** 3 endpoints (harvest, status, cancel)
 
 **Search pipeline (dual-mode):**
 - Old: `/api/jobs/text-match` → local SQLite (36 seed items) + OTSKP fallback (17,904 items) + LLM rerank
@@ -182,7 +238,78 @@ Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 4-phase: File Pa
 - Also available as CLI: `PPLX_API_KEY=... node scripts/harvest_urs_perplexity.mjs [--resume] [--category N]`
 
 ### 5. rozpocet-registry (Kiosk)
-React 19 + TypeScript + Vite + Vercel serverless backend (`api/`). BOQ classification into 11 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison.
+React 19 + TypeScript + Vite + Vercel serverless backend (`api/`). BOQ classification into 11 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison. **12 serverless endpoints**, **0 tests**, **~15K LOC**.
+
+**7-step Import Modal:** Excel upload → sheet selection → column mapping → preview → validation → classification → confirm import.
+
+**AI Classification Pipeline (4-tier):**
+1. Cache: Exact match from previous classifications (instant)
+2. Rules: 50+ classification rules, priority 200→50 (`classificationRules.ts`)
+3. Memory: User-corrected mappings, learning system for corrections
+4. Gemini: AI fallback via Vertex AI ADC
+
+**TOV Modal:** 3 tabs (Labor/Machinery/Materials), resource breakdown per position, profession mapping (Betonář/Tesař/Železář).
+
+**Formwork Rental Calculator:** 35KB component, ČSN EN 13670 curing by element type, multi-supplier (DOKA/PERI/ULMA/NOE).
+
+**Pump Rental Calculator:** 39KB component, real supplier data, multi-supplier comparison.
+
+**Monolit Integration:** Price comparison with variance thresholds (5%/15%/30%), polling service (30s foreground, 2min background), DOV write-back to Portal.
+
+**Portal Integration:** Deep-linking via query params (`?projectId=...&positionId=...`), auto-sync (debounced 5s).
+
+---
+
+## Knowledge Base & AI Prompts
+
+**Knowledge Base (42 JSON files, ~40MB)** in `concrete-agent/knowledge_base/`:
+```
+B1_otskp_codes/          — OTSKP classification codes
+B1_rts_codes/            — RTS price database
+B1_urs_codes/            — URS construction codes (3 files)
+B2_csn_standards/        — ČSN/TKP standards (6 files: EN 206, TKP 03/17/18/22/24)
+B3_current_prices/       — Market prices (14 files: DOKA, PERI, Berger, Frischbeton)
+B4_production_benchmarks/ — Productivity rates (8 files: norms, tariffs, formwork)
+B5_tech_cards/           — Technical procedures (~300 cards)
+B6_research_papers/      — Academic research
+B7_regulations/          — Legal/regulatory docs
+B8_company_specific/     — Company rules
+B9_Equipment_Specs/      — Equipment specs (3 files: cranes, pumps, excavators)
+all_pdf_knowledge.json   — 4.3MB consolidated KB from all parsed PDFs
+```
+
+**AI Prompts (21 files)** in `concrete-agent/prompts/`:
+```
+claude/assistant/        — construction_expert.txt, stav_expert_v2.txt
+claude/analysis/         — quick_preview.txt
+claude/audit/            — audit_position.txt
+claude/generation/       — generate_from_drawings.txt
+claude/parsing/          — parse_kros_table_xml.txt, parse_vykaz_vymer.txt, parse_kros_unixml.txt
+claude/vision/           — analyze_construction_drawing.txt
+gpt4/vision/             — analyze_technical_drawings.txt
+gpt4/ocr/                — scan_construction_drawings.txt
+resource_calculation/    — master_framework.txt, concrete_work.txt, masonry_work.txt
+```
+
+**SQL Schemas (22 files):**
+- concrete-agent: 2 migrations (google_drive_tables, nkb_tables)
+- Portal: 4 files (schema-postgres 33KB, position-instance, unified-project, pump-suppliers)
+- Monolit: 12 files (schema-postgres 14KB, migrations 004-011, r0 core 21KB)
+- URS: 1 file (schema.sql 13KB)
+- Registry: 1 file (schema.sql 2.4KB)
+- GCP prod init: 3 files (Portal 16KB, Monolit 32KB, Registry 2.6KB)
+
+## Endpoint & Test Totals
+
+| Service | Endpoints | Tests | LOC (approx) |
+|---------|-----------|-------|--------------|
+| concrete-agent | 119 | 28 files | ~57K Python |
+| stavagent-portal | ~80 | 1 file | ~15K JS + ~10K TSX |
+| Monolit-Planner | 125 | 402 (342+60) | ~20K TS + ~10K JS |
+| URS_MATCHER_SERVICE | ~45 | 159 | ~10K JS |
+| rozpocet-registry | 12 (serverless) | 0 | ~15K TSX |
+| MinerU | 3 | 0 | ~500 Python |
+| **TOTAL** | **~384** | **590+** | **~137K** |
 
 ---
 
