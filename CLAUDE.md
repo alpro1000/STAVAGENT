@@ -170,6 +170,15 @@ Node.js/Express + SQLite. BOQ→URS/OTSKP code matching via AI. 9 LLM providers 
 
 **OTSKP catalog:** 17,904 items from `2025_03_otskp.xml` (copied from concrete-agent at Docker build time). Word index + prefix index + fuzzy scoring.
 
+**TSKP classification:** 11,991 items from `xmk_tskp_tridnik.xml`, imported at Docker build time into `tskp_items` table.
+
+**Perplexity URS Harvester:**
+- `POST /api/urs-catalog/harvest` — starts background harvest (30 TSKP categories → podminky.urs.cz)
+- `GET /api/urs-catalog/harvest/status` — poll progress
+- `POST /api/urs-catalog/harvest/cancel` — cancel running harvest
+- Runs on Cloud Run where `PPLX_API_KEY` is available via Secret Manager
+- Also available as CLI: `PPLX_API_KEY=... node scripts/harvest_urs_perplexity.mjs [--resume] [--category N]`
+
 ### 5. rozpocet-registry (Kiosk)
 React 19 + TypeScript + Vite + Vercel serverless backend (`api/`). BOQ classification into 11 work groups, Excel import/export, AI classification (Cache→Rules→Memory→Gemini), fuzzy search (Fuse.js), pump calculator, Monolit price comparison.
 
@@ -786,7 +795,7 @@ VITE_DISABLE_AUTH=true
 - Landing: add analysis result screenshot/demo
 - Landing: add reCAPTCHA when traffic grows
 - Stripe: configure env vars when ready to accept payments
-- Full URS catalog import (36 seed → thousands of items)
+- Full URS catalog import: OTSKP done (17,904), Perplexity harvest ready (trigger POST /api/urs-catalog/harvest after deploy)
 - URS Matcher auth middleware (service key for Portal→URS calls)
 
 ---
