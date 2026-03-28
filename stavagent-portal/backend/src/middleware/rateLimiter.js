@@ -96,6 +96,36 @@ export const connectionTestLimiter = rateLimit({
  * OTSKP search rate limiter
  * 50 searches per 15 minutes per IP
  */
+/**
+ * CORE AI rate limiter — stricter for anonymous users
+ * Anonymous: 5 AI requests per hour per IP (session-only demo)
+ * Authenticated: 100 AI requests per hour per IP (credit-gated)
+ *
+ * IMPORTANT: This middleware MUST be applied AFTER optionalAuth so that
+ * req.user is populated before keyGenerator runs.
+ * See server.js: app.use('/api/core', optionalAuth, coreAiLimiter, coreProxyRoutes)
+ */
+export const coreAiLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: (req) => req.user?.userId ? 100 : 5,
+  message: 'Příliš mnoho AI požadavků. Zaregistrujte se pro vyšší limity.',
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
+  keyGenerator: (req) => req.user?.userId ? `user-${req.user.userId}` : req.ip,
+  handler: (req, res) => {
+    const isAnon = !req.user?.userId;
+    logger.warn(`CORE AI rate limit exceeded for ${isAnon ? 'anonymous IP' : 'user'}: ${isAnon ? req.ip : req.user.userId}`);
+    res.status(429).json({
+      error: 'Too Many Requests',
+      message: isAnon
+        ? 'Dosáhli jste limitu 5 analýz za hodinu. Zaregistrujte se pro 200 kreditů zdarma.'
+        : 'Příliš mnoho AI požadavků, zkuste to znovu později.',
+      register_hint: isAnon,
+    });
+  }
+});
+
 export const otskpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 50,

@@ -26,8 +26,9 @@ COPY URS_MATCHER_SERVICE/backend/package*.json ./
 # Install dependencies
 RUN npm ci --only=production
 
-# Copy source code
+# Copy source code + import scripts
 COPY URS_MATCHER_SERVICE/backend/src ./src
+COPY URS_MATCHER_SERVICE/backend/scripts ./scripts
 COPY URS_MATCHER_SERVICE/backend/.env.example ./.env
 
 # Copy frontend static files
@@ -43,8 +44,10 @@ COPY concrete-agent/packages/core-backend/app /app/concrete-agent/packages/core-
 # Create data directory
 RUN mkdir -p ./data
 
-# Initialize database
+# Initialize database + import OTSKP catalog (17,904 items) + TSKP (11,991 items)
 RUN npm run init-db || true
+RUN node scripts/import_otskp_to_sqlite.mjs --truncate || true
+RUN node scripts/import_tskp_to_sqlite.mjs --truncate || true
 
 # Expose port
 EXPOSE 3001

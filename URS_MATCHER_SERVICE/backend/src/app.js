@@ -5,6 +5,7 @@
 
 import express from 'express';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -56,7 +57,9 @@ const DEFAULT_CORS_ORIGINS = [
   'http://localhost:3000',
   'http://localhost:5173',
   'https://www.stavagent.cz',
+  'https://stavagent.cz',
   'https://stavagent-backend-ktwx.vercel.app',
+  'https://stavagent-portal-backend-1086027517695.europe-west3.run.app',
 ];
 const corsOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
@@ -81,6 +84,32 @@ logger.info(`[APP] Serving static files from: ${staticPath}`);
 app.use(express.static(staticPath));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+// Rate limiting — protect AI endpoints from abuse
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => req.path === '/health' || req.path === '/api/health',
+  handler: (req, res) => {
+    logger.warn(`[RATE] Limit exceeded for IP: ${req.ip}, path: ${req.path}`);
+    res.status(429).json({ error: 'Too Many Requests', message: 'Příliš mnoho požadavků' });
+  }
+});
+
+const matchLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 50, // 50 match requests per hour per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    logger.warn(`[RATE] Match limit exceeded for IP: ${req.ip}`);
+    res.status(429).json({ error: 'Too Many Requests', message: 'Příliš mnoho požadavků na párování' });
+  }
+});
+
+app.use(apiLimiter);
+
 // Log all incoming requests
 app.use((req, res, next) => {
   logger.info(`[HTTP] ${req.method} ${req.path} - ${req.ip}`);
@@ -104,12 +133,12 @@ app.use(performanceMonitoringMiddleware);
 app.use('/health', healthRouter);
 app.use('/api/health', healthRouter);
 
-// API routes
-app.use('/api/jobs', jobsRouter);
+// API routes (match endpoints have stricter rate limits)
+app.use('/api/jobs', matchLimiter, jobsRouter);
 app.use('/api/urs-catalog', catalogRouter);
 app.use('/api/tridnik', tridnikRouter);
-app.use('/api/batch', batchRouter);
-app.use('/api/pipeline', pipelineRouter);
+app.use('/api/batch', matchLimiter, batchRouter);
+app.use('/api/pipeline', matchLimiter, pipelineRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/project-analysis', projectAnalysisRouter);
 app.use('/api/norms', normsRouter);

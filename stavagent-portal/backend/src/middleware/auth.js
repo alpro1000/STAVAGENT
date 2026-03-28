@@ -84,6 +84,25 @@ export function requireAuth(req, res, next) {
 }
 
 /**
+ * Optional auth middleware — populates req.user if valid token present, but does NOT block.
+ * Use on routes that work for both anonymous and authenticated users (e.g. /api/core).
+ */
+export function optionalAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7).trim();
+    if (token) {
+      try {
+        req.user = jwt.verify(token, JWT_SECRET);
+      } catch {
+        // Invalid/expired token — continue as anonymous
+      }
+    }
+  }
+  next();
+}
+
+/**
  * Generate JWT token for user
  * @param {Object} payload - User data to encode
  * @returns {string} JWT token
