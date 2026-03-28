@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.3.2
-**Last Updated:** 2026-03-27
+**Version:** 3.4.0
+**Last Updated:** 2026-03-28
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -670,6 +670,65 @@ VITE_DISABLE_AUTH=true
 **Current branch status:**
 - `claude/batch-insert-update-p4L8D` — 16 commits (full session 4 work)
 - PR #739 merged to main (PR #733 rebased)
+- `claude/internationalize-service-y5Ocd` — PR #745 (10 commits, credit system + landing redesign + anti-fraud)
+
+**Completed (2026-03-28, session 5 — Pay-as-you-go + Landing redesign + Anti-fraud):**
+- **Pay-as-you-go credit system (full stack):**
+  - `creditService.js`: getBalance, canAfford, deductCredits (atomic WHERE credit_balance >= ?), addCredits, getTransactionHistory
+  - `credits.js`: volume discount tiers (250+ Kč = +15%, 500+ = +20%, 1000+ = +25%), minimum topup 125 Kč (5 EUR)
+  - Stripe Checkout integration (direct API, no SDK), webhook with HMAC-SHA256 signature verification
+  - Raw body parsing exception for Stripe webhook path in server.js
+  - `quotaCheck.js` rewritten: feature flag → credit check → legacy quota chain, 402 on insufficient credits
+  - Credit deduction wired into: core-proxy.js, portal-documents.js, portal-files.js, portal-projects.js
+  - Fail-open: billing failures don't block users; charge after success, not before
+  - Welcome bonus: 200 credits on registration
+  - Frontend: QuotaDisplay (free amount input, live preview, quick buttons 125-5000 Kč, tiers table)
+  - Frontend: CreditHistory (paginated transactions), OperationPrices (pricing catalog)
+  - Frontend: CreditManagement admin tab (stats, pricing editor, user topup)
+  - Schema: operation_prices (15 operations seeded), credit_transactions, credit_balance on users
+  - `creditsAPI` in api.ts: getBalance, getPrices, getHistory, getTiers, calculate, checkout
+- **Landing page redesign (Variant C):**
+  - Two hero product cards: AI Analýza dokumentů + Kalkulátor monolitních prací
+  - Both accessible WITHOUT registration (session-only results in browser)
+  - "Další nástroje v platformě" section: 5 smaller cards with lock icon → /login
+  - Pricing hint section: "200 kreditů zdarma, AI analýza od 10 kr, dobití od 125 Kč"
+  - Hero: "Nahrajte dokument — AI udělá zbytek" (concrete value prop)
+  - Nav: anonymous → "Vyzkoušet" button → /portal/analysis; authenticated → "Portál"
+  - `/portal/analysis` route made public (removed ProtectedRoute wrapper)
+  - DocumentAnalysisPage: anonymous users → sessionOnly=true, no API calls, registration CTA button
+  - URS references removed from landing (internal term, not user-facing)
+  - "Generování seznamu prací" replaces Klasifikátor URS + Registr Rozpočtů on landing
+- **User ban system:**
+  - Schema: `banned`, `banned_at`, `banned_reason` columns on users table
+  - Login: banned users → 403 with reason message
+  - Admin PUT /users/:id accepts `banned` + `banned_reason` fields
+  - UserManagement.tsx: ban/unban toggle with reason prompt, red BANNED badge, detail panel
+- **Disposable email detection:**
+  - `banned_email_domains` table with 50 seeded domains (tempmail, guerrillamail, yopmail, mailinator, etc.)
+  - Registration blocks emails from banned domains → 400 "Registrace z dočasných e-mailových služeb není povolena"
+  - Admin: GET/POST/DELETE /api/admin/banned-domains endpoints
+  - AntifraudPanel.tsx: domain management UI (add/remove, pill list)
+  - Null safety for email domain extraction (CWE-476 fix)
+  - Graceful fallback: if table missing (dev/SQLite), check skipped
+- **Build fixes:**
+  - ShieldX → ShieldClose (lucide-react ^0.263.1 compat)
+  - GitCompareArrows → GitCompare (same)
+  - r.category → r.requirement_type (SpecialRequirement type)
+
+**Anti-fraud layers (complete):**
+1. IP limit: max 3 registrations per IP per 24h (ipAntifraud.js)
+2. Email verification: mandatory before login
+3. Disposable email: 50+ domains blocked at registration
+4. User ban: admin can block accounts with reason
+5. Rate limiting: 5 login attempts/15min, 500 req/15min global
+6. Credit system: operations cost credits, session-only mode without credits
+
+**NOT done (next session):**
+- Stripe env vars not configured (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET) — payments disabled until ready
+- No CAPTCHA on registration (add when traffic grows)
+- PR #745 not merged to main yet (pending review approval)
+- Landing page has no screenshot/demo of analysis result
+- No session-only mode for Monolit Planner (external Vercel app)
 
 **Feature roadmap:**
 - OTSKP price visualization in soupis
@@ -678,6 +737,9 @@ VITE_DISABLE_AUTH=true
 - Deep Links
 - Vitest migration
 - Bedrock quota increase + model upgrade to Claude 3.5+
+- Landing: add analysis result screenshot/demo
+- Landing: add reCAPTCHA when traffic grows
+- Stripe: configure env vars when ready to accept payments
 
 ---
 
