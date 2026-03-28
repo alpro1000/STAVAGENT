@@ -11,6 +11,7 @@ import { calculateSimilarity } from '../utils/similarity.js';
 import { CATALOG_MODE } from '../config/llmConfig.js';
 import { searchUrsSite } from './perplexityClient.js';
 import { lookupLearnedMapping, learnMapping } from './concreteAgentKB.js';
+import otskpCatalogService from './otskpCatalogService.js';
 
 const CONFIDENCE_THRESHOLDS = {
   EXACT: 0.95,
@@ -43,6 +44,27 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
       results = await matchUrsItemsPerplexity(text);
     } else {
       results = await matchUrsItemsLocal(text);
+    }
+
+    // Supplement with OTSKP catalog if local results are weak or empty
+    const bestLocalConf = results.length > 0 ? results[0].confidence : 0;
+    if (bestLocalConf < 0.7) {
+      const otskpResults = await matchUrsItemsOTSKP(text);
+      if (otskpResults.length > 0) {
+        logger.info(`[URSMatcher] OTSKP supplement: ${otskpResults.length} items (best conf: ${otskpResults[0].confidence.toFixed(2)})`);
+        // Merge: deduplicate by code, keep higher confidence
+        const seen = new Map();
+        for (const r of [...results, ...otskpResults]) {
+          const key = r.urs_code || r.code;
+          const existing = seen.get(key);
+          if (!existing || r.confidence > existing.confidence) {
+            seen.set(key, r);
+          }
+        }
+        results = Array.from(seen.values())
+          .sort((a, b) => b.confidence - a.confidence)
+          .slice(0, 5);
+      }
     }
 
     // Auto-learn high-confidence matches
@@ -181,6 +203,39 @@ async function matchUrsItemsPerplexity(text) {
 
   } catch (error) {
     logger.error(`[URSMatcher] Perplexity matching error: ${error.message}`);
+    return [];
+  }
+}
+
+/**
+ * Match URS items using OTSKP catalog (17,904 items, local XML)
+ * Used as supplement when local DB returns weak results
+ * @private
+ */
+async function matchUrsItemsOTSKP(text) {
+  try {
+    await otskpCatalogService.load();
+    if (!otskpCatalogService.loaded || otskpCatalogService.items.size === 0) {
+      logger.warn('[URSMatcher] OTSKP catalog not available');
+      return [];
+    }
+
+    const results = otskpCatalogService.search(text, {
+      limit: 5,
+      minConfidence: 0.3
+    });
+
+    return results.map(r => ({
+      urs_code: r.code,
+      urs_name: r.name,
+      unit: r.unit,
+      description: `OTSKP: ${r.name}`,
+      confidence: r.confidence,
+      price: r.price,
+      source: 'otskp'
+    }));
+  } catch (error) {
+    logger.error(`[URSMatcher] OTSKP matching error: ${error.message}`);
     return [];
   }
 }

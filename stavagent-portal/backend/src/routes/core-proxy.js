@@ -214,6 +214,56 @@ async function proxyRequest(req, res, prefix, subPath) {
   }
 }
 
+// ── URS Matcher proxy ─────────────────────────────────────────────────
+// Proxies /api/core/urs-match/* → URS Matcher pipeline API
+const URS_MATCHER_URL = process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service-1086027517695.europe-west3.run.app';
+
+router.post('/urs-match/:action', async (req, res) => {
+  const action = req.params.action; // 'match', 'match-batch', 'classify'
+  const allowed = ['match', 'match-batch', 'classify', 'classify-batch', 'catalogs'];
+  if (!allowed.includes(action)) {
+    return res.status(404).json({ error: `Unknown URS action: ${action}` });
+  }
+
+  // Credit check for matching operations
+  const userId = req.user?.userId;
+  if (userId && action.startsWith('match')) {
+    const creditCheck = await canAfford(userId, 'urs_match');
+    if (!creditCheck.allowed) {
+      return res.status(402).json({
+        success: false,
+        error: 'Insufficient credits',
+        message: creditCheck.reason,
+        balance: creditCheck.balance,
+        cost: creditCheck.cost,
+      });
+    }
+  }
+
+  const targetUrl = `${URS_MATCHER_URL}/api/pipeline/${action}`;
+  console.log(`[UrsProxy] POST /urs-match/${action} → ${targetUrl}`);
+
+  try {
+    const ursResponse = await fetch(targetUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(req.body),
+      signal: AbortSignal.timeout(120000),
+    });
+
+    // Deduct credits after success
+    if (userId && action.startsWith('match') && ursResponse.ok) {
+      deductCredits(userId, 'urs_match').catch(() => {});
+    }
+
+    const data = await ursResponse.text();
+    res.set('Content-Type', ursResponse.headers.get('content-type') || 'application/json');
+    res.status(ursResponse.status).send(data);
+  } catch (err) {
+    handleProxyError(err, res, targetUrl);
+  }
+});
+
 // Route with sub-path:  /api/core/:prefix/sub/path
 router.all('/:prefix/*', (req, res) => {
   proxyRequest(req, res, req.params.prefix, req.params[0] || '');
