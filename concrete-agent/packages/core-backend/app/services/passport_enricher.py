@@ -154,7 +154,26 @@ VRAŤ JSON:
     "technical_highlights": [
       "Technicky zajímavý aspekt 1",
       "Technicky zajímavý aspekt 2"
-    ]
+    ],
+
+    "tender_info": {{
+      "ico": "IČO zadavatele (8 číslic) nebo null",
+      "cpv_code": "CPV kód (45311000-1) nebo null",
+      "cpv_name": "CPV název nebo null",
+      "zakon": "Zákon (134/2016 Sb.) nebo null",
+      "predpokladana_hodnota_czk": číslo bez DPH nebo null,
+      "hodnota_zmena_zavazku_czk": číslo nebo null,
+      "vyhrazena_zmena_czk": číslo (max změna závazku) nebo null,
+      "vyhrazena_zmena_pct": číslo (%) nebo null,
+      "jistota_czk": číslo nebo null,
+      "lhuta_podani": "datum a čas nebo null",
+      "zadavaci_lhuta_dnu": číslo nebo null,
+      "prohlidka_mista": "datum a čas nebo null",
+      "hodnotici_kriterium": "popis kritéria nebo null",
+      "hodnotici_vaha_pct": číslo nebo null,
+      "tender_url": "URL elektronického nástroje nebo null",
+      "prilohy": ["Příloha č. 1 – název", "..."] nebo []
+    }}
   }},
 
   "confidence_scores": {{
@@ -165,7 +184,8 @@ VRAŤ JSON:
     "timeline": 0.5,
     "stakeholders": 0.7,
     "risks": 0.6,
-    "technical_highlights": 0.7
+    "technical_highlights": 0.7,
+    "tender_info": 0.85
   }}
 }}
 
@@ -968,6 +988,22 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # Technical highlights
         if enrich_data.get('technical_highlights'):
             passport.technical_highlights = enrich_data['technical_highlights']
+
+        # Tender info (AI supplement — only fill fields not already from regex)
+        if enrich_data.get('tender_info'):
+            from app.models.passport_schema import TenderInfo
+            ai_tender = enrich_data['tender_info']
+            if passport.tender_info:
+                # Merge: only fill None fields from AI
+                existing = passport.tender_info.dict()
+                for key, val in ai_tender.items():
+                    if key in existing and existing[key] is None and val is not None:
+                        setattr(passport.tender_info, key, val)
+            else:
+                try:
+                    passport.tender_info = TenderInfo(**ai_tender)
+                except Exception:
+                    logger.warning("Failed to parse AI tender_info")
 
         # Structure objects (bridges, buildings, sub-structures)
         if enrich_data.get('objects'):

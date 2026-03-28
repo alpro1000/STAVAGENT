@@ -272,6 +272,47 @@ class ProjectStakeholder(BaseModel):
     confidence: float = Field(0.7, description="Extraction confidence")
 
 
+class TenderInfo(BaseModel):
+    """Public procurement / tender information extracted from Zadávací dokumentace"""
+    # Identification
+    ico: Optional[str] = Field(None, description="IČO zadavatele")
+    isds: Optional[str] = Field(None, description="ISDS datová schránka")
+    cpv_code: Optional[str] = Field(None, description="CPV kód (např. 45311000-1)")
+    cpv_name: Optional[str] = Field(None, description="CPV název")
+    zakon: Optional[str] = Field(None, description="Zákon (např. 134/2016 Sb.)")
+
+    # Financial
+    predpokladana_hodnota_czk: Optional[float] = Field(None, description="Předpokládaná hodnota bez DPH (Kč)")
+    hodnota_s_dph_czk: Optional[float] = Field(None, description="Hodnota včetně DPH (Kč)")
+    hodnota_zmena_zavazku_czk: Optional[float] = Field(None, description="Hodnota včetně změny závazku (Kč)")
+    vyhrazena_zmena_czk: Optional[float] = Field(None, description="Vyhrazená změna závazku max (Kč)")
+    vyhrazena_zmena_pct: Optional[float] = Field(None, description="Vyhrazená změna závazku (%)")
+    jistota_czk: Optional[float] = Field(None, description="Požadovaná jistota (Kč)")
+
+    # Bank details
+    cislo_uctu: Optional[str] = Field(None, description="Číslo účtu pro jistotu")
+    kod_banky: Optional[str] = Field(None, description="Kód banky")
+    nazev_banky: Optional[str] = Field(None, description="Název banky")
+
+    # Deadlines
+    lhuta_podani: Optional[str] = Field(None, description="Lhůta pro podání nabídek (datum + čas)")
+    zadavaci_lhuta_dnu: Optional[int] = Field(None, description="Zadávací lhůta (dny)")
+    prohlidka_mista: Optional[str] = Field(None, description="Prohlídka místa plnění (datum + čas)")
+
+    # Evaluation
+    hodnotici_kriterium: Optional[str] = Field(None, description="Hodnotící kritérium (např. nejnižší cena)")
+    hodnotici_vaha_pct: Optional[float] = Field(None, description="Váha hodnotícího kritéria (%)")
+
+    # Electronic submission
+    tender_url: Optional[str] = Field(None, description="URL elektronického nástroje (Tender arena, E-ZAK, ...)")
+    max_velikost_nabidky_mb: Optional[int] = Field(None, description="Max velikost nabídky (MB)")
+
+    # Attachments
+    prilohy: List[str] = Field(default_factory=list, description="Seznam příloh ZD")
+
+    confidence: float = Field(0.9, description="Extraction confidence")
+
+
 class StructureObject(BaseModel):
     """
     Sub-object within a project (e.g., a single bridge in a multi-bridge highway project).
@@ -680,6 +721,12 @@ class ProjectPassport(BaseModel):
     technical_highlights: List[str] = Field(
         default_factory=list,
         description="Key technical aspects (AI-extracted)"
+    )
+
+    # Tender / procurement info (Zadávací dokumentace)
+    tender_info: Optional[TenderInfo] = Field(
+        None,
+        description="Public procurement data (IČO, CPV, cena, lhůty, jistota)"
     )
 
     # === QUALITY METADATA ===
