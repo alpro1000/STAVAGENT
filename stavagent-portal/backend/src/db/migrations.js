@@ -158,6 +158,9 @@ async function initPostgresSchema() {
   // Run Phase 9 migrations (Unified Pump Calculator)
   await runPhase9Migrations();
 
+  // Run Phase 10 migrations (Credit System + Anti-fraud)
+  await runPhase10Migrations();
+
   // Seed admin user if no admin exists yet
   await seedAdminIfNeeded();
 
@@ -734,6 +737,54 @@ async function runPhase9Migrations() {
     console.log('[PostgreSQL Migrations] ✅ Phase 9 migrations completed successfully');
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 9 migrations:', error);
+  }
+}
+
+/**
+ * Phase 10: Credit System + Anti-fraud
+ * Creates operation_prices, credit_transactions, banned_email_domains tables
+ * Adds credit_balance, banned columns to users
+ */
+async function runPhase10Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 10 migrations (Credit System + Anti-fraud)...');
+
+    if (!USE_POSTGRES) {
+      console.log('[Migration] Skipping Phase 10 - SQLite not supported for this migration');
+      return;
+    }
+
+    const migrationPath = join(__dirname, 'migrations', 'add-credit-system.sql');
+
+    if (!fs.existsSync(migrationPath)) {
+      console.log('[Migration] ⚠️  Phase 10 migration file not found, skipping');
+      return;
+    }
+
+    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+
+    const statements = migrationSQL
+      .split(';')
+      .map(s => s.trim())
+      .filter(s => s.length > 0 && !s.startsWith('--'));
+
+    for (const statement of statements) {
+      try {
+        await db.exec(statement + ';');
+      } catch (error) {
+        const safeErrors = ['already exists', 'duplicate column', 'duplicate key', 'multiple primary', 'violates unique'];
+        const isSafe = safeErrors.some(msg => error.message?.toLowerCase().includes(msg));
+        if (!isSafe) {
+          console.error('[Migration Phase 10] Statement error:', error.message);
+          console.error('[Migration Phase 10] Statement:', statement.substring(0, 100));
+        }
+      }
+    }
+
+    console.log('[Migration] ✓ operation_prices, credit_transactions, banned_email_domains, credit_balance');
+    console.log('[PostgreSQL Migrations] ✅ Phase 10 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 10 migrations:', error);
   }
 }
 
