@@ -212,7 +212,13 @@ class DocumentProcessor:
             # === LAYER 3: AI ENRICHMENT (Context, risks, relationships) ===
             layer3_time = 0
             if enable_ai_enrichment:
-                logger.info("LAYER 3: AI enrichment")
+                logger.info(
+                    f"LAYER 3: AI enrichment — model={self.enricher.preferred_model!r}, "
+                    f"vertex={self.enricher.vertex_gemini_model is not None}, "
+                    f"gemini={self.enricher.gemini_model is not None}, "
+                    f"claude={self.enricher.claude_client is not None}, "
+                    f"text_len={len(document_text)}ch"
+                )
                 layer3_start = time.time()
 
                 passport = await self.enricher.enrich_passport(
@@ -222,7 +228,11 @@ class DocumentProcessor:
                 )
 
                 layer3_time = int((time.time() - layer3_start) * 1000)
-                logger.info(f"Layer 3 complete: {layer3_time}ms")
+                logger.info(
+                    f"Layer 3 complete: {layer3_time}ms, "
+                    f"risks={len(passport.risks)}, stakeholders={len(passport.stakeholders)}, "
+                    f"description={'yes' if passport.description else 'no'}"
+                )
 
                 passport.layer_breakdown['layer3_ai'] = {
                     'time_ms': layer3_time,

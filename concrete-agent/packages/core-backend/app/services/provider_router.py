@@ -95,20 +95,27 @@ def get_preferred_provider(
     """
     candidates = TASK_PROVIDER_MAP.get(task, [])
     if not candidates:
-        logger.warning(f"No providers configured for task {task}")
+        logger.warning(f"[ROUTER] No providers configured for task={task}")
         return ("vertex-ai-gemini", "gemini-2.5-flash")
 
     if available_providers is None:
-        return candidates[0]
+        selected = candidates[0]
+        logger.info(f"[ROUTER] task={task.value} → {selected[0]}:{selected[1]} (no availability check)")
+        return selected
+
+    # Log the full candidate chain and which are available
+    chain_str = " → ".join(f"{p}:{m}" for p, m in candidates)
+    logger.info(f"[ROUTER] task={task.value} chain: [{chain_str}], available={sorted(available_providers)}")
 
     for provider, model in candidates:
         if provider in available_providers:
+            logger.info(f"[ROUTER] task={task.value} → SELECTED {provider}:{model}")
             return (provider, model)
 
     # Fallback: return first candidate anyway
     logger.warning(
-        f"No available provider for task {task}, "
-        f"falling back to {candidates[0][0]}"
+        f"[ROUTER] task={task.value} → NO available provider! "
+        f"Falling back to {candidates[0][0]}:{candidates[0][1]}"
     )
     return candidates[0]
 
@@ -119,35 +126,60 @@ def detect_available_providers() -> set:
     Checks API keys / ADC / AWS credentials.
     """
     available = set()
+    reasons = []
 
     try:
         from app.core.config import settings
+        import os
 
         # Vertex AI Gemini (ADC — no key needed on Cloud Run)
+        is_cloud_run = bool(os.getenv("K_SERVICE"))
+        has_gcp_project = bool(os.getenv("GOOGLE_PROJECT_ID") or os.getenv("GOOGLE_CLOUD_PROJECT"))
         available.add("vertex-ai-gemini")
-        available.add("gemini")
+        reasons.append(f"vertex-ai-gemini=YES (CloudRun={is_cloud_run}, project_env={has_gcp_project})")
+
+        if settings.GOOGLE_API_KEY:
+            available.add("gemini")
+            reasons.append("gemini=YES (GOOGLE_API_KEY set)")
+        else:
+            # Still add gemini as available since we can try Vertex path
+            available.add("gemini")
+            reasons.append("gemini=YES (via Vertex ADC fallback, no GOOGLE_API_KEY)")
 
         if settings.ANTHROPIC_API_KEY:
             available.add("claude")
+            reasons.append("claude=YES (ANTHROPIC_API_KEY set)")
+        else:
+            reasons.append("claude=NO (ANTHROPIC_API_KEY missing)")
 
         if settings.PERPLEXITY_API_KEY:
             available.add("perplexity")
+            reasons.append("perplexity=YES")
+        else:
+            reasons.append("perplexity=NO (PERPLEXITY_API_KEY missing)")
 
         if getattr(settings, "OPENAI_API_KEY", ""):
             available.add("openai")
+            reasons.append("openai=YES")
+        else:
+            reasons.append("openai=NO")
 
         # AWS Bedrock (uses AWS credentials)
-        if (
-            getattr(settings, "AWS_ACCESS_KEY_ID", "")
-            and getattr(settings, "AWS_SECRET_ACCESS_KEY", "")
-            and getattr(settings, "BEDROCK_ENABLED", True)
-        ):
+        has_aws_key = bool(getattr(settings, "AWS_ACCESS_KEY_ID", ""))
+        has_aws_secret = bool(getattr(settings, "AWS_SECRET_ACCESS_KEY", ""))
+        bedrock_enabled = getattr(settings, "BEDROCK_ENABLED", True)
+        if has_aws_key and has_aws_secret and bedrock_enabled:
             available.add("bedrock")
+            reasons.append("bedrock=YES (AWS creds + enabled)")
+        else:
+            reasons.append(f"bedrock=NO (key={has_aws_key}, secret={has_aws_secret}, enabled={bedrock_enabled})")
 
     except Exception as e:
-        logger.warning(f"Error detecting providers: {e}")
+        logger.warning(f"[ROUTER] Error detecting providers: {e}")
         available.add("vertex-ai-gemini")
+        reasons.append(f"ERROR: {e}, defaulting to vertex-ai-gemini")
 
+    logger.info(f"[ROUTER] Available providers: {sorted(available)} | Details: {'; '.join(reasons)}")
     return available
 
 
@@ -157,4 +189,6 @@ def get_task_provider(task: TaskType) -> tuple:
     Returns (provider_name, model_name).
     """
     available = detect_available_providers()
-    return get_preferred_provider(task, available)
+    result = get_preferred_provider(task, available)
+    logger.info(f"[ROUTER] get_task_provider({task.value}) → {result[0]}:{result[1]}")
+    return result

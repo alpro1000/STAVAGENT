@@ -26,6 +26,7 @@ Date: 2026-02-10
 import json
 import logging
 import os
+import time
 from typing import Dict, Any, List, Optional
 from anthropic import Anthropic
 import google.generativeai as genai
@@ -208,6 +209,12 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         self.preferred_model = preferred_model or settings.MULTI_ROLE_LLM or "gemini"
         self.vertex_service_account = vertex_service_account
 
+        logger.info(
+            f"[ENRICHER] Initializing PassportEnricher: preferred_model={self.preferred_model!r}, "
+            f"MULTI_ROLE_LLM={getattr(settings, 'MULTI_ROLE_LLM', 'not set')!r}, "
+            f"K_SERVICE={os.getenv('K_SERVICE', 'not set')!r}"
+        )
+
         # Initialize all available clients
         self.gemini_model = None
         self.claude_client = None
@@ -377,10 +384,17 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             Enriched passport
         """
         if not enable_ai:
-            logger.info("AI enrichment disabled, returning passport as-is")
+            logger.info("[ENRICHER] AI enrichment disabled, returning passport as-is")
             return passport
 
-        logger.info("Starting AI enrichment (Layer 3)")
+        logger.info(
+            f"[ENRICHER] Starting AI enrichment (Layer 3): "
+            f"preferred_model={self.preferred_model!r}, "
+            f"vertex={self.vertex_gemini_model is not None}, "
+            f"gemini={self.gemini_model is not None}, "
+            f"claude={self.claude_client is not None}, "
+            f"text_len={len(document_text)}ch"
+        )
 
         # Check if enrichment is needed
         if not self._needs_enrichment(passport):
@@ -449,10 +463,39 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         """
         # Determine call order based on preference
         call_order = self._get_call_order()
+        prompt_chars = len(prompt)
+        prompt_tokens_est = prompt_chars // 4
 
-        for provider_name in call_order:
+        logger.info(
+            f"[LLM] _call_llm START: preferred_model={self.preferred_model!r}, "
+            f"prompt={prompt_chars}ch (~{prompt_tokens_est}tok), "
+            f"call_order={call_order}"
+        )
+        logger.info(
+            f"[LLM] Providers status: vertex={self.vertex_gemini_model is not None}, "
+            f"gemini={self.gemini_model is not None}, claude={self.claude_client is not None}, "
+            f"openai={self.openai_client is not None}, perplexity={self.perplexity_available}"
+        )
+
+        for idx, provider_name in enumerate(call_order):
+            t0 = time.time()
             try:
-                logger.info(f"Calling {provider_name} for enrichment")
+                # Check if provider is actually available
+                provider_available = (
+                    (provider_name == "Vertex Gemini" and self.vertex_gemini_model) or
+                    (provider_name == "Vertex Search") or
+                    (provider_name == "Gemini" and self.gemini_model) or
+                    (provider_name == "Claude Sonnet" and self.claude_client) or
+                    (provider_name == "Claude Haiku" and self.claude_client) or
+                    (provider_name == "OpenAI" and self.openai_client) or
+                    (provider_name == "OpenAI Mini" and self.openai_client) or
+                    (provider_name == "Perplexity" and self.perplexity_available)
+                )
+                if not provider_available:
+                    logger.info(f"[LLM] [{idx+1}/{len(call_order)}] {provider_name} — SKIPPED (not initialized)")
+                    continue
+
+                logger.info(f"[LLM] [{idx+1}/{len(call_order)}] {provider_name} — calling...")
                 result = None
 
                 if provider_name == "Vertex Gemini" and self.vertex_gemini_model:
@@ -472,15 +515,27 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 elif provider_name == "Perplexity" and self.perplexity_available:
                     result = await self._call_perplexity(prompt)
 
+                elapsed_ms = int((time.time() - t0) * 1000)
+
                 if result:
-                    logger.info(f"✅ {provider_name} enrichment successful")
+                    result_keys = list(result.keys()) if isinstance(result, dict) else type(result).__name__
+                    logger.info(
+                        f"[LLM] ✅ {provider_name} OK: {elapsed_ms}ms, "
+                        f"result_keys={result_keys}"
+                    )
                     return result
+                else:
+                    logger.warning(f"[LLM] ⚠️ {provider_name} returned None/empty ({elapsed_ms}ms)")
 
             except Exception as e:
-                logger.warning(f"{provider_name} enrichment failed: {e}")
+                elapsed_ms = int((time.time() - t0) * 1000)
+                logger.warning(
+                    f"[LLM] ❌ {provider_name} FAILED ({elapsed_ms}ms): "
+                    f"{type(e).__name__}: {e}"
+                )
                 continue
 
-        logger.error("All LLM providers failed")
+        logger.error("[LLM] ❌ ALL providers failed — no enrichment possible")
         return None
 
     async def call_llm_for_task(
@@ -497,6 +552,9 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             task_type: One of "classify", "extract", "contradiction",
                        "verify", "summarize", "heavy"
         """
+        t0 = time.time()
+        logger.info(f"[ENRICHER] call_llm_for_task: task_type={task_type!r}, prompt={len(prompt)}ch")
+
         try:
             from app.services.provider_router import TaskType, get_task_provider
 
@@ -522,20 +580,28 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
 
             preferred = router_to_internal.get(provider)
             if preferred:
-                logger.info(f"Task-based routing: {task_type} → {preferred} ({model})")
+                logger.info(f"[ENRICHER] Task routing: {task_type} → {preferred} ({model})")
 
                 # Try the routed provider first
                 result = await self._try_provider(preferred, prompt)
                 if result:
+                    elapsed_ms = int((time.time() - t0) * 1000)
+                    logger.info(f"[ENRICHER] ✅ Task {task_type} completed via {preferred} in {elapsed_ms}ms")
                     return result
 
-                logger.info(f"Routed provider {preferred} failed, falling back to chain")
+                logger.warning(f"[ENRICHER] Routed provider {preferred} failed, falling back to chain")
 
         except Exception as e:
-            logger.warning(f"Provider routing failed: {e}")
+            logger.warning(f"[ENRICHER] Provider routing failed: {type(e).__name__}: {e}")
 
         # Fallback to standard chain
-        return await self._call_llm(prompt)
+        result = await self._call_llm(prompt)
+        elapsed_ms = int((time.time() - t0) * 1000)
+        if result:
+            logger.info(f"[ENRICHER] ✅ Task {task_type} completed via fallback chain in {elapsed_ms}ms")
+        else:
+            logger.error(f"[ENRICHER] ❌ Task {task_type} FAILED after {elapsed_ms}ms (all providers)")
+        return result
 
     async def _try_provider(
         self, provider_name: str, prompt: str
@@ -578,6 +644,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
     async def _call_gemini(self, prompt: str) -> Optional[Dict[str, Any]]:
         """Call Gemini API (sync → async via to_thread)"""
         import asyncio
+        t0 = time.time()
+        logger.info(f"[LLM:Gemini] calling model={self.GEMINI_MODEL}, prompt={len(prompt)}ch")
 
         def _sync_call():
             return self.gemini_model.generate_content(
@@ -589,14 +657,19 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             )
 
         response = await asyncio.to_thread(_sync_call)
+        elapsed_ms = int((time.time() - t0) * 1000)
 
         if response and response.text:
+            logger.info(f"[LLM:Gemini] ✅ response={len(response.text)}ch, {elapsed_ms}ms")
             return self._parse_json_response(response.text)
+        logger.warning(f"[LLM:Gemini] ⚠️ empty response, {elapsed_ms}ms")
         return None
 
     async def _call_claude(self, prompt: str, model: str) -> Optional[Dict[str, Any]]:
         """Call Claude API (sync → async via to_thread)"""
         import asyncio
+        t0 = time.time()
+        logger.info(f"[LLM:Claude] calling model={model}, prompt={len(prompt)}ch")
 
         def _sync_call():
             return self.claude_client.messages.create(
@@ -607,14 +680,23 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             )
 
         response = await asyncio.to_thread(_sync_call)
+        elapsed_ms = int((time.time() - t0) * 1000)
 
         if response and response.content:
-            return self._parse_json_response(response.content[0].text)
+            resp_text = response.content[0].text
+            logger.info(
+                f"[LLM:Claude] ✅ model={model}, response={len(resp_text)}ch, {elapsed_ms}ms, "
+                f"usage=in:{response.usage.input_tokens}/out:{response.usage.output_tokens}"
+            )
+            return self._parse_json_response(resp_text)
+        logger.warning(f"[LLM:Claude] ⚠️ empty response, model={model}, {elapsed_ms}ms")
         return None
 
     async def _call_openai(self, prompt: str, model: str) -> Optional[Dict[str, Any]]:
         """Call OpenAI API (sync → async via to_thread)"""
         import asyncio
+        t0 = time.time()
+        logger.info(f"[LLM:OpenAI] calling model={model}, prompt={len(prompt)}ch")
 
         def _sync_call():
             return self.openai_client.chat.completions.create(
@@ -626,17 +708,28 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             )
 
         response = await asyncio.to_thread(_sync_call)
+        elapsed_ms = int((time.time() - t0) * 1000)
 
         if response and response.choices:
             text = response.choices[0].message.content
+            usage = response.usage
+            logger.info(
+                f"[LLM:OpenAI] ✅ model={model}, response={len(text)}ch, {elapsed_ms}ms, "
+                f"usage=in:{usage.prompt_tokens}/out:{usage.completion_tokens}"
+            )
             return self._parse_json_response(text)
+        logger.warning(f"[LLM:OpenAI] ⚠️ empty response, model={model}, {elapsed_ms}ms")
         return None
 
     async def _call_perplexity(self, prompt: str) -> Optional[Dict[str, Any]]:
         """Call Perplexity API (with web search capabilities)"""
         perplexity_key = getattr(settings, 'PERPLEXITY_API_KEY', None)
         if not perplexity_key:
+            logger.warning("[LLM:Perplexity] no API key, skipping")
             return None
+
+        t0 = time.time()
+        logger.info(f"[LLM:Perplexity] calling model={self.PERPLEXITY_MODEL}, prompt={len(prompt)}ch")
 
         async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
@@ -652,20 +745,27 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                     "max_tokens": 2048
                 }
             )
+            elapsed_ms = int((time.time() - t0) * 1000)
 
             if response.status_code == 200:
                 data = response.json()
                 if data.get("choices"):
                     text = data["choices"][0]["message"]["content"]
+                    logger.info(f"[LLM:Perplexity] ✅ response={len(text)}ch, {elapsed_ms}ms")
                     return self._parse_json_response(text)
+            logger.warning(f"[LLM:Perplexity] ⚠️ HTTP {response.status_code}, {elapsed_ms}ms")
 
         return None
 
     async def _call_vertex_gemini(self, prompt: str) -> Optional[Dict[str, Any]]:
         """Call Gemini via Vertex AI SDK (uses Google Cloud billing / credits)"""
         if not self.vertex_gemini_model:
+            logger.warning("[LLM:VertexGemini] model not initialized, skipping")
             return None
         import asyncio
+        t0 = time.time()
+        model_name = getattr(self.vertex_gemini_model, '_model_name', 'unknown')
+        logger.info(f"[LLM:VertexGemini] calling model={model_name}, prompt={len(prompt)}ch")
 
         def _sync_call():
             return self.vertex_gemini_model.generate_content(
@@ -674,8 +774,15 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             )
 
         response = await asyncio.to_thread(_sync_call)
+        elapsed_ms = int((time.time() - t0) * 1000)
+
         if response and response.text:
+            logger.info(f"[LLM:VertexGemini] ✅ response={len(response.text)}ch, {elapsed_ms}ms")
             return self._parse_json_response(response.text)
+        logger.warning(
+            f"[LLM:VertexGemini] ⚠️ empty response, {elapsed_ms}ms, "
+            f"finish_reason={getattr(response, 'prompt_feedback', 'n/a')}"
+        )
         return None
 
     async def _call_vertex_search(self, prompt: str) -> Optional[Dict[str, Any]]:

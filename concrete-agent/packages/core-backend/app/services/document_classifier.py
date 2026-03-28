@@ -288,13 +288,23 @@ async def classify_document_async(
     # Try tiers 1-2 first
     result = classify_document(filename, text)
     if result.confidence >= 0.5:
+        logger.info(
+            f"[CLASSIFY] '{filename}' → {result.category.value} "
+            f"(tier1-2, confidence={result.confidence:.2f}, method={result.method})"
+        )
         return result
+
+    logger.info(
+        f"[CLASSIFY] '{filename}' low confidence from tiers 1-2: "
+        f"{result.category.value} ({result.confidence:.2f}), trying AI (Tier 3)..."
+    )
 
     # Tier 3a: Standard AI classification (Gemini Flash / Claude)
     if llm_call and text:
         try:
             snippet = text[:3000]
             prompt = AI_CLASSIFY_PROMPT.format(filename=filename, text_snippet=snippet)
+            logger.info(f"[CLASSIFY] Tier 3a: calling LLM for '{filename}' (snippet={len(snippet)}ch)")
             ai_result = await llm_call(prompt)
 
             if ai_result and isinstance(ai_result, dict):
