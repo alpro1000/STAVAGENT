@@ -34,8 +34,7 @@ const MORE_TOOLS = [
   { icon: '🏗️', name: 'Objednávka betonu', desc: 'Betonárny, porovnání cen, čerpadlo' },
   { icon: '⚙️', name: 'Kalkulačka čerpadel', desc: '3 dodavatelé, příplatky, kalendář' },
   { icon: '📄', name: 'Ceníky dodavatelů', desc: 'PDF ceníky → strukturovaná data' },
-  { icon: '🔎', name: 'Klasifikátor URS', desc: 'AI párování položek s kódy URS' },
-  { icon: '📊', name: 'Registr Rozpočtů', desc: 'Fuzzy search, AI klasifikace, export' },
+  { icon: '📋', name: 'Generování seznamu prací', desc: 'AI vytvoří strukturovaný seznam stavebních prací z dokumentů' },
 ];
 
 const FEATURES = [
