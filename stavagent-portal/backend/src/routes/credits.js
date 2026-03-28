@@ -44,11 +44,11 @@ const router = express.Router();
 const DISCOUNT_TIERS = [
   { min_czk: 1000, discount: 0.25, label: '25% bonus' },
   { min_czk: 500,  discount: 0.20, label: '20% bonus' },
-  { min_czk: 100,  discount: 0.15, label: '15% bonus' },
-  { min_czk: 10,   discount: 0,    label: '' },
+  { min_czk: 250,  discount: 0.15, label: '15% bonus' },
+  { min_czk: 125,  discount: 0,    label: '' },
 ];
 
-const MIN_TOPUP_CZK = 10;
+const MIN_TOPUP_CZK = 125;
 const MAX_TOPUP_CZK = 50000;
 
 /**

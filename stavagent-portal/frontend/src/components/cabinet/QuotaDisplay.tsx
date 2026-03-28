@@ -52,7 +52,7 @@ export default function QuotaDisplay() {
   // Debounced preview calculation
   const updatePreview = useCallback(async (val: string) => {
     const amount = parseInt(val);
-    if (!amount || amount < 10) {
+    if (!amount || amount < 125) {
       setPreview(null);
       return;
     }
@@ -71,7 +71,7 @@ export default function QuotaDisplay() {
 
   const handleCheckout = async () => {
     const amount = parseInt(amountInput);
-    if (!amount || amount < 10) return;
+    if (!amount || amount < 125) return;
     setCheckingOut(true);
     try {
       const res = await creditsAPI.checkout(amount);
@@ -202,7 +202,7 @@ export default function QuotaDisplay() {
               </label>
               <input
                 type="number"
-                min={10}
+                min={125}
                 max={50000}
                 value={amountInput}
                 onChange={e => setAmountInput(e.target.value)}
@@ -233,15 +233,15 @@ export default function QuotaDisplay() {
                     </div>
                   )}
                 </>
-              ) : amountNum > 0 && amountNum < 10 ? (
-                <div style={{ fontSize: 12, color: '#DC2626' }}>Min. 10 Kč</div>
+              ) : amountNum > 0 && amountNum < 125 ? (
+                <div style={{ fontSize: 12, color: '#DC2626' }}>Min. 125 Kč (5 €)</div>
               ) : null}
             </div>
           </div>
 
           {/* Quick amount buttons */}
           <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-            {[50, 100, 200, 500, 1000, 2000].map(amt => (
+            {[125, 250, 500, 1000, 2000, 5000].map(amt => (
               <button
                 key={amt}
                 onClick={() => setAmountInput(String(amt))}
