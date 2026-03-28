@@ -159,7 +159,7 @@ export default function NKBAdminPage() {
   }, []);
 
   /* ── Harvest functions ── */
-  const URS_MATCHER_URL = 'https://urs-matcher-service-1086027517695.europe-west3.run.app';
+  const URS_MATCHER_URL = 'https://klasifikator.stavagent.cz';
 
   const fetchHarvestStatus = useCallback(async () => {
     try {

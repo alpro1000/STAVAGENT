@@ -132,7 +132,7 @@ const SERVICES: Service[] = [
     name: 'Klasifikátor stavebních prací',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
     icon: '🔎',
-    url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
+    url: 'https://klasifikator.stavagent.cz',
     status: 'active',
     tags: ['Výkaz výměr', 'URS', 'AI párování']
   },

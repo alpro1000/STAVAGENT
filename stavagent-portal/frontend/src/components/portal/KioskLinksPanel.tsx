@@ -33,7 +33,7 @@ interface KioskLinksPanelProps {
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; url: string }> = {
   monolit: { label: 'Monolit Planner', icon: '\u{1FAA8}', color: '#6366f1', url: 'https://kalkulator.stavagent.cz' },
   registry: { label: 'Registr Rozpočtů', icon: '\u{1F4CA}', color: '#f59e0b', url: 'https://registry.stavagent.cz' },
-  urs_matcher: { label: 'Klasifikátor stavebních prací', icon: '\u{1F50E}', color: '#22c55e', url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app' },
+  urs_matcher: { label: 'Klasifikátor stavebních prací', icon: '\u{1F50E}', color: '#22c55e', url: 'https://klasifikator.stavagent.cz' },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

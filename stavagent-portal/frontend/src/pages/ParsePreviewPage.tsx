@@ -129,7 +129,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; b
     color: '#10b981',
     bg: '#ecfdf5',
     buildUrl: (fileId, portalUrl) =>
-      `https://urs-matcher-service-1086027517695.europe-west3.run.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://klasifikator.stavagent.cz?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
 };
 
