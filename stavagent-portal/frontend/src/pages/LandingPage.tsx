@@ -21,9 +21,9 @@ const HERO_PRODUCTS = [
   {
     icon: '🪨',
     name: 'Kalkulátor monolitních prací',
-    desc: 'Spočítejte náklady na beton, bednění a výztuž. Kč/m³, Gantt harmonogram betonáže, Excel export.',
+    desc: 'Spočítejte náklady na beton, bednění a výztuž. 20 typů elementů, Gantt harmonogram, Excel export.',
     cta: 'Spočítat',
-    route: 'https://monolit-planner-frontend.vercel.app',
+    route: 'https://monolit-planner-frontend.vercel.app/planner',
     tags: ['Kč/m³', 'Bednění', 'Výztuž', 'Gantt'],
   },
 ];
@@ -178,7 +178,7 @@ export default function LandingPage() {
           maxWidth: '540px',
           margin: '0 auto 0',
         }}>
-          Stavební platforma s AI analýzou dokumentů a kalkulátorem monolitních prací.
+          AI analýza stavebních dokumentů a kalkulátor monolitních prací.
           Bez registrace — výsledek rovnou v prohlížeči.
         </p>
       </section>

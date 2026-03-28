@@ -82,8 +82,8 @@ const SERVICES: Service[] = [
   },
   // ===== KALKULACE =====
   {
-    id: 'monolit-planner',
-    name: 'Monolit Planner',
+    id: 'monolit-calculator',
+    name: 'Kalkulátor rozpočtu',
     description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
     icon: '🪨',
     url: 'https://monolit-planner-frontend.vercel.app',
@@ -91,8 +91,8 @@ const SERVICES: Service[] = [
     tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
   },
   {
-    id: 'element-planner',
-    name: 'Plánovač elementu',
+    id: 'element-calculator',
+    name: 'Kalkulátor betonáže',
     description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
     icon: '📐',
     url: 'https://monolit-planner-frontend.vercel.app/planner',
