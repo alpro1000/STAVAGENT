@@ -87,10 +87,10 @@ router.post('/register', checkRegistrationIP, async (req, res) => {
       await recordRegistrationIP(req.registrationIP, userId, req.registrationUA);
     }
 
-    // Welcome bonus: 20 free credits for new users
+    // Welcome bonus: 200 free credits for new users
     try {
       const { addCredits } = await import('../services/creditService.js');
-      await addCredits(userId, 20, { description: 'Uvítací bonus: 20 kreditů zdarma' });
+      await addCredits(userId, 200, { description: 'Uvítací bonus: 200 kreditů zdarma' });
     } catch (e) {
       logger.warn(`Failed to add welcome credits for user ${userId}: ${e.message}`);
     }

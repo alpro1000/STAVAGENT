@@ -604,12 +604,16 @@ export const creditsAPI = {
     const { data } = await api.get('/api/credits/history', { params: { limit, offset } });
     return data;
   },
-  getPackages: async (): Promise<any> => {
-    const { data } = await api.get('/api/credits/packages');
+  getTiers: async (): Promise<any> => {
+    const { data } = await api.get('/api/credits/tiers');
     return data;
   },
-  checkout: async (packageId: string): Promise<any> => {
-    const { data } = await api.post('/api/credits/checkout', { package_id: packageId });
+  calculate: async (amountCzk: number): Promise<any> => {
+    const { data } = await api.get('/api/credits/calculate', { params: { amount: amountCzk } });
+    return data;
+  },
+  checkout: async (amountCzk: number): Promise<any> => {
+    const { data } = await api.post('/api/credits/checkout', { amount_czk: amountCzk });
     return data;
   },
   // Admin

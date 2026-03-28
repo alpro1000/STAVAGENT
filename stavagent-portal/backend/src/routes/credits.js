@@ -37,15 +37,35 @@ import {
 const router = express.Router();
 
 // ============================================================================
-// TOPUP PACKAGES — predefined credit packages for purchase
+// VOLUME DISCOUNT — the more you pay, the cheaper each credit
+// Base rate: 1 CZK = 1 credit (for amounts 10-99 CZK)
 // ============================================================================
 
-const TOPUP_PACKAGES = [
-  { id: 'starter',    credits: 50,   price_czk: 99,   price_eur: 4,   label: 'Starter',      description: '~5 AI analýz' },
-  { id: 'standard',   credits: 200,  price_czk: 349,  price_eur: 14,  label: 'Standard',     description: '~20 AI analýz', popular: true },
-  { id: 'pro',        credits: 500,  price_czk: 749,  price_eur: 30,  label: 'Professional', description: '~50 AI analýz' },
-  { id: 'enterprise', credits: 2000, price_czk: 2490, price_eur: 99,  label: 'Enterprise',   description: '~200 AI analýz' },
+const DISCOUNT_TIERS = [
+  { min_czk: 1000, discount: 0.25, label: '25% bonus' },
+  { min_czk: 500,  discount: 0.20, label: '20% bonus' },
+  { min_czk: 100,  discount: 0.15, label: '15% bonus' },
+  { min_czk: 10,   discount: 0,    label: '' },
 ];
+
+const MIN_TOPUP_CZK = 10;
+const MAX_TOPUP_CZK = 50000;
+
+/**
+ * Calculate credits for a given CZK amount (with volume discount)
+ */
+function calculateCredits(amountCzk) {
+  const tier = DISCOUNT_TIERS.find(t => amountCzk >= t.min_czk) || { discount: 0, label: '' };
+  const bonusMultiplier = 1 + tier.discount;
+  const credits = Math.floor(amountCzk * bonusMultiplier);
+  return {
+    amount_czk: amountCzk,
+    credits,
+    discount_percent: Math.round(tier.discount * 100),
+    discount_label: tier.label,
+    rate: (amountCzk / credits).toFixed(2),  // CZK per credit
+  };
+}
 
 // ============================================================================
 // USER ROUTES
@@ -107,15 +127,39 @@ router.get('/history', requireAuth, async (req, res) => {
 // ============================================================================
 
 /**
- * GET /api/credits/packages — available topup packages
+ * GET /api/credits/calculate?amount=500 — preview credits for a given CZK amount
  */
-router.get('/packages', (req, res) => {
-  res.json({ success: true, packages: TOPUP_PACKAGES });
+router.get('/calculate', (req, res) => {
+  const amount = parseInt(req.query.amount);
+  if (!amount || amount < MIN_TOPUP_CZK || amount > MAX_TOPUP_CZK) {
+    return res.status(400).json({
+      error: `Částka musí být ${MIN_TOPUP_CZK}–${MAX_TOPUP_CZK} Kč`,
+    });
+  }
+  res.json({ success: true, ...calculateCredits(amount) });
+});
+
+/**
+ * GET /api/credits/tiers — discount tiers info
+ */
+router.get('/tiers', (req, res) => {
+  res.json({
+    success: true,
+    base_rate: '1 Kč = 1 kredit',
+    min_czk: MIN_TOPUP_CZK,
+    max_czk: MAX_TOPUP_CZK,
+    tiers: DISCOUNT_TIERS.map(t => ({
+      min_czk: t.min_czk,
+      discount_percent: Math.round(t.discount * 100),
+      label: t.label,
+      example_credits: calculateCredits(t.min_czk).credits,
+    })),
+  });
 });
 
 /**
  * POST /api/credits/checkout — create Stripe Checkout Session
- * Body: { package_id: 'starter' | 'standard' | 'pro' | 'enterprise' }
+ * Body: { amount_czk: number (10–50000) }
  *
  * Requires STRIPE_SECRET_KEY env var. Returns checkout URL.
  */
@@ -129,12 +173,14 @@ router.post('/checkout', requireAuth, async (req, res) => {
       });
     }
 
-    const { package_id } = req.body;
-    const pkg = TOPUP_PACKAGES.find(p => p.id === package_id);
-    if (!pkg) {
-      return res.status(400).json({ error: 'Neplatný balíček', available: TOPUP_PACKAGES.map(p => p.id) });
+    const amountCzk = parseInt(req.body.amount_czk);
+    if (!amountCzk || amountCzk < MIN_TOPUP_CZK || amountCzk > MAX_TOPUP_CZK) {
+      return res.status(400).json({
+        error: `Částka musí být ${MIN_TOPUP_CZK}–${MAX_TOPUP_CZK} Kč`,
+      });
     }
 
+    const calc = calculateCredits(amountCzk);
     const userId = req.user.userId;
     const userEmail = req.user.email;
 
@@ -146,16 +192,21 @@ router.post('/checkout', requireAuth, async (req, res) => {
     params.append('mode', 'payment');
     params.append('currency', 'czk');
     params.append('line_items[0][price_data][currency]', 'czk');
-    params.append('line_items[0][price_data][unit_amount]', String(pkg.price_czk * 100)); // Stripe uses smallest unit (haléře)
-    params.append('line_items[0][price_data][product_data][name]', `STAVAGENT: ${pkg.credits} kreditů`);
-    params.append('line_items[0][price_data][product_data][description]', pkg.description);
+    params.append('line_items[0][price_data][unit_amount]', String(amountCzk * 100)); // haléře
+    params.append('line_items[0][price_data][product_data][name]', `STAVAGENT: ${calc.credits} kreditů`);
+    params.append('line_items[0][price_data][product_data][description]',
+      calc.discount_percent > 0
+        ? `${amountCzk} Kč + ${calc.discount_label} = ${calc.credits} kreditů`
+        : `${calc.credits} kreditů`
+    );
     params.append('line_items[0][quantity]', '1');
-    params.append('success_url', `${portalUrl}/cabinet?topup=success&credits=${pkg.credits}`);
+    params.append('success_url', `${portalUrl}/cabinet?topup=success&credits=${calc.credits}`);
     params.append('cancel_url', `${portalUrl}/cabinet?topup=cancelled`);
     params.append('customer_email', userEmail);
     params.append('metadata[user_id]', String(userId));
-    params.append('metadata[package_id]', pkg.id);
-    params.append('metadata[credits]', String(pkg.credits));
+    params.append('metadata[amount_czk]', String(amountCzk));
+    params.append('metadata[credits]', String(calc.credits));
+    params.append('metadata[discount_percent]', String(calc.discount_percent));
 
     const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
@@ -176,7 +227,7 @@ router.post('/checkout', requireAuth, async (req, res) => {
       });
     }
 
-    logger.info(`[STRIPE] Checkout session created: ${session.id} for user ${userId}, ${pkg.credits} credits`);
+    logger.info(`[STRIPE] Checkout: user=${userId}, ${amountCzk} CZK → ${calc.credits} credits (${calc.discount_percent}% bonus)`);
 
     res.json({
       success: true,
@@ -248,7 +299,8 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
       const session = event.data.object;
       const userId = parseInt(session.metadata?.user_id);
       const credits = parseInt(session.metadata?.credits);
-      const packageId = session.metadata?.package_id;
+      const amountCzk = session.metadata?.amount_czk || '?';
+      const discountPercent = session.metadata?.discount_percent || '0';
 
       if (!userId || !credits) {
         logger.warn('[STRIPE] Webhook missing metadata:', session.metadata);
@@ -257,11 +309,11 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
 
       // Add credits to user
       await addCredits(userId, credits, {
-        description: `Stripe dobití: ${packageId} (${credits} kreditů)`,
+        description: `Dobití: ${amountCzk} Kč → ${credits} kreditů${discountPercent > 0 ? ` (+${discountPercent}% bonus)` : ''}`,
         referenceId: session.payment_intent || session.id,
       });
 
-      logger.info(`[STRIPE] Credits added: user=${userId}, credits=${credits}, payment=${session.payment_intent}`);
+      logger.info(`[STRIPE] Credits added: user=${userId}, ${amountCzk} CZK → ${credits} credits, payment=${session.payment_intent}`);
     }
 
     // Always return 200 to Stripe (even for unhandled events)
