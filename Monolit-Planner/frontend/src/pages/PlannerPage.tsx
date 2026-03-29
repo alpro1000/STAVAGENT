@@ -15,6 +15,7 @@
  */
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   planElement,
   addWorkDays,
@@ -318,12 +319,42 @@ function loadFromLS<T>(key: string, fallback: T): T {
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function PlannerPage() {
-  const [form, setForm] = useState<FormState>(() => loadFromLS(LS_FORM_KEY, DEFAULT_FORM));
+  const [searchParams] = useSearchParams();
+
+  // Position context — when opened from PositionsTable with position params
+  const positionContext = useMemo(() => {
+    const itemId = searchParams.get('item_id');
+    const projectId = searchParams.get('project_id');
+    const bridgeId = searchParams.get('bridge_id');
+    if (!itemId && !projectId && !bridgeId) return null;
+    return {
+      item_id: itemId,
+      project_id: projectId,
+      bridge_id: bridgeId,
+      position_id: searchParams.get('position_id'),
+      part_name: searchParams.get('part_name'),
+      subtype: searchParams.get('subtype'),
+      volume_m3: searchParams.get('volume_m3') ? parseFloat(searchParams.get('volume_m3')!) : undefined,
+      concrete_class: searchParams.get('concrete_class') as ConcreteClass | undefined,
+    };
+  }, [searchParams]);
+
+  // If position context, prefill form
+  const initialForm = useMemo(() => {
+    if (!positionContext) return loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
+    const f = { ...DEFAULT_FORM };
+    if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
+    if (positionContext.concrete_class) f.concrete_class = positionContext.concrete_class;
+    return f;
+  }, [positionContext]);
+
+  const [form, setForm] = useState<FormState>(initialForm);
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [applyStatus, setApplyStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [comparison, setComparison] = useState<Array<{
@@ -1708,7 +1739,51 @@ export default function PlannerPage() {
         {/* RIGHT: Results */}
         <main className="r0-planner-main">
           {plan ? (
-            <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} scenarios={scenarios} />
+            <PlanResult
+              plan={plan}
+              startDate={positionContext ? '' : form.start_date}
+              showLog={showLog}
+              onToggleLog={() => setShowLog(!showLog)}
+              scenarios={scenarios}
+              applyStatus={applyStatus}
+              onApplyToPosition={positionContext ? async () => {
+                setApplyStatus('saving');
+                try {
+                  const monolit_data = {
+                    part_name: positionContext.part_name || '',
+                    subtype: positionContext.subtype || plan.element.label_cs,
+                    concrete_m3: form.volume_m3,
+                    crew_size: form.crew_size,
+                    wage_czk_ph: form.wage_czk_h,
+                    shift_hours: form.shift_h,
+                    days: plan.schedule.total_days,
+                    labor_hours: plan.costs.total_labor_czk / form.wage_czk_h,
+                    cost_czk: plan.costs.total_labor_czk,
+                    unit_cost_on_m3: form.volume_m3 > 0 ? plan.costs.total_labor_czk / form.volume_m3 : 0,
+                    kros_unit_czk: plan.costs.formwork_rental_czk + plan.costs.total_labor_czk,
+                    kros_total_czk: plan.costs.formwork_rental_czk + plan.costs.total_labor_czk,
+                    curing_days: plan.formwork.curing_days,
+                    monolit_position_id: positionContext.position_id || undefined,
+                    monolit_project_id: positionContext.bridge_id || positionContext.project_id || undefined,
+                    calculated_at: new Date().toISOString(),
+                  };
+                  // Write to position via Monolit backend
+                  if (positionContext.position_id) {
+                    const res = await fetch(`${API_URL}/api/positions`, {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ positions: [{ id: positionContext.position_id, days: plan.schedule.total_days }] }),
+                    });
+                    if (!res.ok) throw new Error('Chyba při ukládání');
+                  }
+                  setApplyStatus('saved');
+                  setTimeout(() => setApplyStatus('idle'), 3000);
+                } catch (err) {
+                  setApplyStatus('error');
+                  setTimeout(() => setApplyStatus('idle'), 3000);
+                }
+              } : undefined}
+            />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
               <div style={{ fontSize: 48 }}>📐</div>
@@ -1990,12 +2065,14 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
   onToggleLog: () => void;
   scenarios?: any[];
+  applyStatus?: 'idle' | 'saving' | 'saved' | 'error';
+  onApplyToPosition?: () => void;
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -2036,6 +2113,24 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios }: {
         >
           Stáhnout CSV
         </button>
+        {onApplyToPosition && (
+          <button
+            onClick={onApplyToPosition}
+            disabled={applyStatus === 'saving'}
+            style={{
+              padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
+              borderRadius: 6, fontFamily: 'inherit',
+              background: applyStatus === 'saved' ? '#22c55e' : applyStatus === 'error' ? '#ef4444' : '#FF9F1C',
+              color: 'white',
+              opacity: applyStatus === 'saving' ? 0.6 : 1,
+            }}
+          >
+            {applyStatus === 'saving' ? '⏳ Ukládám...' :
+             applyStatus === 'saved' ? '✅ Uloženo' :
+             applyStatus === 'error' ? '❌ Chyba' :
+             '📋 Aplikovat do pozice'}
+          </button>
+        )}
         <button
           onClick={() => {
             navigator.clipboard.writeText(plan.schedule.gantt || '');

@@ -321,16 +321,16 @@ export default function PartHeader({
           </div>
         </div>
 
-        {/* Formwork calculator button */}
+        {/* Planner calculator button (replaces old formwork calculator) */}
         {onOpenFormworkCalculator && (
           <div className="concrete-param">
             <label>&nbsp;</label>
             <button
               onClick={onOpenFormworkCalculator}
               disabled={isLocked}
-              title="Otevřít kalkulátor bednění (pronájem)"
+              title="Otevřít kalkulátor — prodolžitelnost, brigáda, opałubka, Gantt"
               style={{
-                background: '#1565c0',
+                background: '#FF9F1C',
                 color: 'white',
                 border: 'none',
                 borderRadius: 'var(--radius-sm)',
@@ -342,7 +342,7 @@ export default function PartHeader({
                 whiteSpace: 'nowrap'
               }}
             >
-              Kalkulátor bednění
+              Rассчитать
             </button>
           </div>
         )}

@@ -17,8 +17,8 @@ import PartHeader from './PartHeader';
 import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
 import CustomWorkModal from './CustomWorkModal';
-import FormworkCalculatorModal from './FormworkCalculatorModal';
-import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
+// FormworkCalculatorModal removed — replaced by /planner route
+// import FormworkCalculatorModal from './FormworkCalculatorModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
@@ -31,9 +31,7 @@ export default function PositionsTable() {
   const [showNewPartModal, setShowNewPartModal] = useState(false);
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
-  const [showFormworkCalc, setShowFormworkCalc] = useState(false);
-  const [formworkCalcPartName, setFormworkCalcPartName] = useState<string | null>(null);
-  const [formworkCalcElementDays, setFormworkCalcElementDays] = useState<number>(0);
+  // FormworkCalculatorModal state removed — replaced by /planner navigation
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -311,93 +309,7 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
-  // Handle formwork calculator transfer - create bednění positions + update beton curing days
-  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
-    if (!selectedBridge) return;
-
-    if (!targetPartName) {
-      const partNames = Object.keys(groupedPositions);
-      if (partNames.length === 0) {
-        alert('Nejprve vytvořte část konstrukce');
-        return;
-      }
-      targetPartName = partNames[0];
-    }
-
-    try {
-      const newPositions: Partial<Position>[] = [];
-
-      calcRows.forEach(row => {
-        newPositions.push({
-          id: uuidv4(),
-          bridge_id: selectedBridge,
-          part_name: targetPartName,
-          item_name: `Bednění + ${row.construction_name} - Montáž`,
-          subtype: 'bednění' as Subtype,
-          unit: 'm2',
-          qty: row.total_area_m2,
-          crew_size: 4,
-          wage_czk_ph: 398,
-          shift_hours: 10,
-          days: row.assembly_days_per_tact * row.num_tacts
-        });
-
-        newPositions.push({
-          id: uuidv4(),
-          bridge_id: selectedBridge,
-          part_name: targetPartName,
-          item_name: `Bednění + ${row.construction_name} - Demontáž`,
-          subtype: 'bednění' as Subtype,
-          unit: 'm2',
-          qty: row.total_area_m2,
-          crew_size: 4,
-          wage_czk_ph: 398,
-          shift_hours: 10,
-          days: row.disassembly_days_per_tact * row.num_tacts
-        });
-      });
-
-      const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
-
-      if (result.positions) {
-        setPositions(result.positions);
-        if (result.header_kpi) {
-          setHeaderKPI(result.header_kpi);
-        }
-      }
-
-      // Transfer curing days from MaturityConfigPanel → beton row's curing_days
-      // Use result.positions (fresh from API) instead of stale component state
-      const maturityDays = (calcRows[0] as any)?._maturity_curing_days;
-      if (maturityDays && maturityDays > 0 && targetPartName && result.positions) {
-        const betonPosition = result.positions.find(
-          (p: Position) => p.part_name === targetPartName && p.subtype === 'beton'
-        );
-        if (betonPosition?.id) {
-          updatePositions([{ id: betonPosition.id, curing_days: maturityDays }]);
-        }
-      }
-
-      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      setShowFormworkCalc(false);
-      setFormworkCalcPartName(null);
-
-      const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
-      const totalArea = calcRows.reduce((acc, r) => acc + r.total_area_m2, 0);
-      const curingInfo = maturityDays ? `\n   Zrání betonu: ${maturityDays} dní (přeneseno do tabulky)` : '';
-
-      alert(
-        `Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"${curingInfo}\n\n` +
-        `NÁJEM BEDNĚNÍ - přidejte do Registry TOV:\n` +
-        `Parametry pro kalkulátor:\n` +
-        `   Plocha: ${totalArea.toFixed(1)} m²\n` +
-        `   Termín nájmu: ${totalRentalDays} dní\n` +
-        `   Systém: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n`
-      );
-    } catch (error) {
-      alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
-    }
-  };
+  // handleFormworkTransfer removed — FormworkCalculatorModal replaced by /planner navigation
 
   // Handle new part creation from OTSKP search
   const handleNewPartSelected = async (otskpCode: string, partName: string) => {
@@ -553,9 +465,17 @@ export default function PositionsTable() {
                     handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
                   onOpenFormworkCalculator={() => {
-                    setFormworkCalcPartName(partName);
-                    setFormworkCalcElementDays(calculateElementTotalDays(partPositions));
-                    setShowFormworkCalc(true);
+                    // Navigate to Planner with position context
+                    const betonPos = partPositions.find(p => p.subtype?.toLowerCase().includes('beton') || p.subtype?.toLowerCase().includes('železo'));
+                    const params = new URLSearchParams();
+                    params.set('bridge_id', selectedBridge || '');
+                    params.set('part_name', partName);
+                    if (betonPos) {
+                      if (betonPos.id) params.set('position_id', betonPos.id);
+                      params.set('volume_m3', String(betonPos.qty || 0));
+                      if (betonPos.subtype) params.set('subtype', betonPos.subtype);
+                    }
+                    window.location.href = `/planner?${params.toString()}`;
                   }}
                   isLocked={isLocked}
                   projectId={selectedBridge || undefined}
@@ -705,21 +625,7 @@ export default function PositionsTable() {
         />
       )}
 
-      {/* Formwork Calculator Modal */}
-      {showFormworkCalc && selectedBridge && formworkCalcPartName && (
-        <FormworkCalculatorModal
-          bridgeId={selectedBridge}
-          partNames={Object.keys(groupedPositions)}
-          currentPartName={formworkCalcPartName}
-          elementTotalDays={formworkCalcElementDays}
-          onTransfer={(rows) => handleFormworkTransfer(rows, formworkCalcPartName)}
-          onClose={() => {
-            setShowFormworkCalc(false);
-            setFormworkCalcPartName(null);
-            setFormworkCalcElementDays(0);
-          }}
-        />
-      )}
+      {/* FormworkCalculatorModal removed — replaced by /planner route */}
     </div>
   );
 }

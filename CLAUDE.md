@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
 **Version:** 3.6.0
-**Last Updated:** 2026-03-28
+**Last Updated:** 2026-03-29
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -925,6 +925,65 @@ VITE_DISABLE_AUTH=true
 - **Missing features documented**: Betonárny Discovery, Norms Scraper, Agents, Pump Calculator, OTSKP, Unified Pipeline, Batch Processing
 - **Documentation inventory**: 95 .md files, 42 KB JSON files (~40MB), 21 AI prompts, 22 SQL schemas
 - Full report: `docs/SESSION_2026-03-28_FULL_AUDIT.md`
+
+**Completed (2026-03-29, session 9 — Unified Item Layer + NKB Audit + Monolit Refactor):**
+- **Cleanup:** Deleted 54 stale .md files (-13,045 LOC). Root .md: 68 → 10 files.
+- **NKB Audit System:**
+  - `audit_schemas.py` — DocStatus (5 statuses), DocType (9 types), FoundDocument, GapEntry, SourceSummary, AuditResult
+  - `norm_source_catalog.py` — 15 external sources (SŽ, PJPK TP/TKP/VL, MMR právo/ČSN, ŘSD data/směrnice/PPK/metodiky, ČAS, ÚNMZ, ČKAIT, PSP, zákony pro lidi) with priorities ★/★★/★★★
+  - `norm_audit_service.py` — httpx+BS4 scrapers for pjpk.rsd.cz/rsd.cz, Perplexity API for SŽ/MMR/ČAS/ÚNMZ, gap analysis vs NKB DB
+  - `routes_norm_audit.py` — 5 endpoints: start, status, result (with filters), sources, download-missing
+  - `005_norm_audit_tables.sql` — nkb_audit_runs, nkb_found_documents, zdroje[] on nkb_norms
+  - Admin UI: "Stav NKB" tab in NKBAdminPage with source summary table, document table (4 filters), download missing section
+  - AdminDashboard: new "Normy (NKB)" tab with quick links to NKB pages
+- **Unified Item Layer (Core Engine):**
+  - `item_schemas.py` — ProjectItem with 4 namespace blocks (estimate, monolit, classification, core), CodeSystem enum (OTSKP/ÚRS/RTS), BulkImportRequest/Response, ItemFilterRequest, UpdateBlockRequest
+  - `code_detector.py` — 5-step detection: OTSKP DB lookup (1.0) → regex structure (0.95) → letter prefix (0.90) → price_source hint (0.85) → fallback. Lazy-loads 17,904 OTSKP items from XML.
+  - `item_store.py` — 3 operations: bulk_import (atomic, idempotent, identity triple matching, version history), read_items (filters: skupina, code_system, has_monolit, keyword, so_id), update_block (namespace-isolated, core=read-only)
+  - `routes_items.py` — POST /api/v1/items/import, GET /{project_id}, PATCH /{item_id}/{namespace}, GET /{item_id}/versions, POST /detect-codes, GET /{project_id}/grouped
+  - `006_project_items.sql` — project_items + item_versions tables with JSONB namespace blocks, identity triple UNIQUE, GIN indexes, FTS
+  - 23 unit tests (items) — ALL PASS
+- **Position Grouper:**
+  - `position_grouper.py` — deterministic beton+armatura+opalubka linking: concrete detection (m³ + C?/? regex), inclusion markers (vč. výztuže/bednění), forward scan 3-5 positions, keyword matching
+  - CoreMetadata extended: group_role, group_leader_id, group_members, armatura_included, opalubka_included
+  - Wired into bulk_import → group_positions() runs automatically
+  - 15 unit tests (grouper) — ALL PASS
+- **Monolit Planner Refactor:**
+  - PlannerPage.tsx: useSearchParams for position context (item_id, bridge_id, part_name, volume_m3, concrete_class), "Aplikovat do pozice" button with save status
+  - PartHeader.tsx: "Kalkulátor bednění" → "Rассчитать" (orange #FF9F1C)
+  - PositionsTable.tsx: FormworkCalculatorModal removed, button navigates to /planner?bridge_id=X&part_name=Y&position_id=Z&volume_m3=V
+  - Gantt date-free when in position context (startDate='' → days only)
+
+**Unified Item Layer Architecture:**
+```
+POST /api/v1/items/import → bulk import with dedup + code detection + grouping
+GET  /api/v1/items/{project} → read with 6 filters (skupina, code_system, has_monolit, keyword, so_id, has_classification)
+PATCH /api/v1/items/{id}/{namespace} → namespace-isolated block update (estimate|monolit|classification|core=readonly)
+GET  /api/v1/items/{project}/grouped → construction cards (beton + armatura[] + opalubka[])
+```
+
+**Namespace blocks:** estimate (Registry), monolit (Monolit), classification (shared), core (read-only, auto-managed)
+**Identity triple:** code_system + kod + mj (dedup on reimport)
+**Code detection:** OTSKP DB → regex → prefix → price_source → fallback
+
+**Current branch:** `claude/registration-landing-updates-ClXq0` — 9 commits (session 9)
+
+**Next session plan (P3-P7):**
+- P3: TOV предзаполнение из калькулятора (PlannerOutput.costs → TOV sections)
+- P4: Общий Гантт проекта (all positions with planner data → project timeline)
+- P5: Мини-калькуляторы (бетононасос refactor, кран new, доставка new)
+- P6: Публичный калькулятор в Portal (/portal/calculator, no auth, dates, download)
+- P7: Сценарий Б (ТЗ → состав конструкций → объёмы с чертежей → výkaz výměr)
+
+**Feature roadmap (lower priority):**
+- D.1.4 frontend renderers (SilnoproudCard, SlaboproudCard, etc.)
+- IFC/BIM support (needs binaries)
+- Vitest migration
+- Bedrock quota increase + model upgrade to Claude 3.5+
+- Landing: add analysis result screenshot/demo
+- Landing: add reCAPTCHA when traffic grows
+- Stripe: configure env vars when ready to accept payments
+- Full URS catalog import: OTSKP done (17,904), Perplexity harvest ready
 
 **Completed (2026-03-28, session 7 — Custom subdomains + Registration UX + Kiosk navigation):**
 - **Custom subdomains (DNS + Vercel):**

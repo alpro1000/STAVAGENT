@@ -1,154 +1,131 @@
-# NEXT SESSION — после 2026-03-28 (Session 8)
+# NEXT SESSION — после 2026-03-29 (Session 9)
 
 ## Как начать следующий сеанс
 
 ```
 Продолжи работу над STAVAGENT. Прочитай CLAUDE.md и NEXT_SESSION.md.
-[описание задачи]
+Ветка: claude/registration-landing-updates-ClXq0
+Продолжай план P3-P7 из этого файла.
 ```
 
 ---
 
-## Что сделано (сессии 1-8, 2026-03-22 — 2026-03-28)
+## Что сделано в сессии 9 (2026-03-29) — 8 коммитов
 
-### Сессия 8 (текущая)
-- **Удалено ~54 устаревших .md файлов** (PR descriptions, week reports, old session summaries)
-- **Глубокий аудит проектной архитектуры** — 5 параллельных агентов проверили все сервисы
-- **NEXT_SESSION.md и BACKLOG.md** обновлены до актуального состояния
+### Коммит 1: Cleanup — удалено 54 устаревших .md файлов (-13,045 LOC)
+- Root .md: 68 → 10 файлов
+- Обновлены NEXT_SESSION.md и BACKLOG.md
 
-### Сессия 7 (PR #752 + #753, merged)
-- CLAUDE.md v3.5.0 — полный аудит
-- Resend email для регистрации
-- Registration UX — 3 шага, resend, auto-redirect
-- Landing — Kalkulátor rename + /planner
-- "← StavAgent" кнопки во всех киосках
-- URL миграция на субдомены (kalkulator/klasifikator/rozpocet.stavagent.cz)
-- trust proxy fix для URS Matcher
+### Коммит 2: NKB Audit System (+1,546 LOC)
+- `audit_schemas.py` — DocStatus, DocType, FoundDocument, GapEntry, SourceSummary, AuditResult
+- `norm_source_catalog.py` — 15 источников (SŽ, PJPK, MMR, ČAS, ÚNMZ, ČKAIT, etc.)
+- `norm_audit_service.py` — httpx+BS4 scrapers + Perplexity для сложных сайтов + gap analysis
+- `routes_norm_audit.py` — 5 endpoints: start, status, result, sources, download-missing
+- `005_norm_audit_tables.sql` — nkb_audit_runs, nkb_found_documents, zdroje[] на nkb_norms
 
-### Сессии 1-6 (подробности в CLAUDE.md → Backlog/Completed)
-- Pay-as-you-go credits + Stripe Checkout (code ready, env vars pending)
-- Landing redesign (Variant C — 2 hero products without registration)
-- Anti-fraud (IP limit, disposable email, user ban, rate limiting)
-- DA→URS integration + URS Matcher dual search fix
-- Full codebase audit (384 endpoints, 590+ tests, ~137K LOC)
-- NKB v1.0, NormIngestionPipeline, E2E tests
-- Universal Parser v5.0, Bedrock integration, batch INSERT
-- Project state persistence, cross-validation, image OCR, DXF parsing
+### Коммит 3: Admin NKB access (+135 LOC)
+- AdminDashboard.tsx — новый таб "Normy (NKB)" с карточками-ссылками
+- NKBAdminPage.tsx — поддержка ?tab=xxx query param, улучшенный audit UI с download секцией
 
----
+### Коммит 4: Unified Item Layer (+1,802 LOC, 23/23 тестов)
+- `item_schemas.py` — ProjectItem с 4 namespace блоками (estimate, monolit, classification, core)
+- `code_detector.py` — 5-step pipeline: OTSKP DB(1.0) → regex(0.95) → prefix(0.90) → hint(0.85) → fallback
+- `item_store.py` — 3 операции: bulk_import (atomic, idempotent, versioned), read_items (6 filters), update_block (namespace-isolated)
+- `routes_items.py` — POST /import, GET /{project}, PATCH /{id}/{namespace}, GET /versions, POST /detect-codes
+- `006_project_items.sql` — project_items + item_versions tables
 
-## Архитектура проектов (результат глубокого аудита)
+### Коммит 5: Monolit Planner Refactor (+119 LOC)
+- PlannerPage.tsx — useSearchParams для position context, "Aplikovat do pozice" кнопка
+- PartHeader.tsx — "Kalkulátor bednění" → "Rассчитать" (оранжевая, #FF9F1C)
+- PositionsTable.tsx — навигация на /planner?bridge_id=X&part_name=Y вместо FormworkCalculatorModal
 
-### Где создаются проекты
+### Коммит 6: Position Grouper (+422 LOC, 15/15 тестов)
+- `position_grouper.py` — детерминированная группировка бетон+арматура+опалубка
+- Regex detection: concrete class (C30/37), inclusion markers (vč. výztuže/bednění)
+- Scan window: 3-5 позиций после бетона для поиска арматуры (t/kg) и опалубки (m²)
+- CoreMetadata расширена: group_role, group_leader_id, group_members, armatura_included, opalubka_included
+- Wired into bulk_import → group_positions() вызывается автоматически
 
-| Путь | Сервис | Как | Auth |
-|------|--------|-----|------|
-| **Portal "+ Nový projekt"** | Portal | POST /api/portal-projects | JWT ✅ |
-| **Portal "Analýza dokumentů"** | Portal | POST /api/portal-documents/:id (save to project) | JWT ✅ |
-| **Kiosk → Portal** | All kiosks | POST /api/portal-projects/create-from-kiosk | ❌ None (owner_id=1) |
-| **Monolit "Přidat objekt"** | Monolit | POST /api/monolith-projects + fire-and-forget Portal sync | ❌ None |
-| **Registry Import** | Registry | Zustand store + auto-sync POST /api/integration/import-from-registry | ❌ None |
-| **URS Matcher job** | URS | POST /api/jobs/upload or /text-match | ❌ None |
+### Коммит 7: Grouped Items API (+56 LOC)
+- GET /api/v1/items/{project_id}/grouped — карточки конструкций для Monolit
+- Каждая карточка: beton (leader) + armatura[] + opalubka[] + is_complete flag
 
-### Поток данных между сервисами
-
-```
-Portal (Hub)
-  ├─→ CORE: POST /workflow/a/import (files) → project_id + audit results
-  ├─→ CORE: POST /api/v1/passport/generate (file) → passport JSON
-  ├─→ CORE: POST /api/v1/nkb/advisor → compliance check
-  │
-  ├─←→ Monolit:
-  │    OUT: GET /api/portal-files/{id}/parsed-data/for-kiosk/monolit
-  │    IN:  POST /api/integration/import-from-monolit (positions + MonolithPayload)
-  │    IN:  POST /api/positions/{instanceId}/monolith (live write-back)
-  │
-  ├─←→ Registry:
-  │    OUT: GET /api/integration/for-registry/{portalProjectId}
-  │    IN:  POST /api/integration/import-from-registry (sheets + items + TOV)
-  │    IN:  POST /api/positions/{instanceId}/dov (DOV write-back)
-  │    IN:  POST /api/integration/sync-tov (batch TOV update)
-  │
-  └─←→ URS Matcher:
-       OUT: POST /api/core/urs-match/* (proxy to URS pipeline)
-       IN:  Results displayed inline in Portal SoupisTab
-```
-
-### Ключевые identity
-
-| ID | Формат | Scope | Источник |
-|----|--------|-------|----------|
-| portal_project_id | `proj_<uuid>` | Portal DB | Portal |
-| position_instance_id | UUID | Cross-kiosk | Portal (returned to kiosks) |
-| project_id (Monolit) | user input (SO201) | Monolit DB | User |
-| bridge_id | = project_id | Monolit (FK compat) | Legacy |
-| passport_id | `ppt_<uuid>` | CORE in-memory | CORE |
-
-### ⚠️ Gaps найденные аудитом
-
-1. **CORE stateless** — проекты в in-memory dict, теряются при рестарте Cloud Run
-2. **No auth on integration endpoints** — /api/integration/* публичные
-3. **No conflict resolution** — если Monolit + Registry одновременно редактируют позицию → last-write-wins
-4. **Portal project ≠ CORE project** — Portal хранит portal_project_id, CORE генерирует свой proj_xxx
-5. **URS Matcher не отправляет результаты назад в Portal** — только через SoupisTab proxy
+### Итого сессия 9:
+- **+6,000 LOC** новых, **-13,045 LOC** удалённых
+- **38 unit tests** (23 items + 15 grouper), все PASS
+- **15 normативных источников** в NKB audit catalog
+- **5 новых API endpoints** (items) + **5 endpoints** (NKB audit)
 
 ---
 
-## 🟠 Задачи (по приоритету)
+## План на следующую сессию — P3-P7
 
-### 1. Stripe — настройка платежей
-**Приоритет:** ВЫСОКИЙ
-**Код готов:** credits.js, creditService.js, quotaCheck.js, QuotaDisplay, CreditManagement
-**Нужно:**
-- Создать Stripe аккаунт (dashboard.stripe.com)
-- Добавить STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET в GCP Secret Manager
-- Добавить в cloudbuild-portal.yaml
-- Протестировать Checkout flow
+### P3: TOV предзаполнение из калькулятора (СЛЕДУЮЩИЙ)
+**Что:** Когда Planner results записаны через "Aplikovat do pozice", TOV автоматически получает секции "Работы" и "Аренда опалубки" с суммами из калькулятора.
+**Файлы:** rozpocet-registry/src/components/tov/TOVModal.tsx, dovWriteBack.ts
+**Зависит от:** PlannerOutput.costs + PlannerOutput.resources → monolit_data block
 
-### 2. Verify deploy — проверить все субдомены
-**Приоритет:** ВЫСОКИЙ
-**Проверить:**
-- www.stavagent.cz — landing + registration
-- kalkulator.stavagent.cz — Monolit Planner
-- klasifikator.stavagent.cz — URS Matcher
-- rozpocet.stavagent.cz — Registry
-- Кнопки "← StavAgent" во всех киосках
+### P4: Общий Гантт проекта
+**Что:** Вкладка "Гантт проекта" в Monolit — диаграмма всех позиций с данными из калькулятора. Ось — дни, типовой порядок для мостов/зданий, drag-and-drop перестановка.
+**Файлы:** Monolit-Planner/frontend/src/components/ProjectGantt.tsx (новый)
+**Зависит от:** GET /api/v1/items/{project}/grouped + monolit_data с schedule
 
-### 3. Test registration flow
-**Приоритет:** ВЫСОКИЙ
-- 3-step form (email → verify → profile)
-- Resend email button
-- Auto-redirect after verification
-- Welcome bonus 200 credits
+### P5: Мини-калькуляторы (бетононасос, кран, доставка)
+**Что:** Три мини-калькулятора в TOV: бетононасос (PumpRentalSection уже есть — рефактор), кран (новый), доставка бетона (новый). Справочник поставщиков (pump_knowledge.json, formwork_knowledge.json уже есть).
+**Файлы:** rozpocet-registry/src/components/tov/ — новые секции
 
-### 4. Node.js 20.x / 22.x обновление
-**Приоритет:** СРЕДНИЙ
-- Node.js 18.x EOL
+### P6: Публичный калькулятор в Portal
+**Что:** /portal/calculator — публичная страница (без auth) с полным Planner. Гантт с датами, "Скачать результат", баннер регистрации. Без "Aplikovat do pozice".
+**Файлы:** stavagent-portal/frontend/src/pages/CalculatorPage.tsx (новый)
 
-### 5. CORE persistence → PostgreSQL
-**Приоритет:** СРЕДНИЙ
-- project_store (in-memory dict) → PostgreSQL tables
-- Artifacts → GCS or PostgreSQL JSONB
+### P7: Сценарий Б (генерация из ТЗ/чертежей)
+**Что:** Загрузка PDF/DWG → анализ ТЗ (состав конструкций) → снятие объёмов с чертежей → генерация výkaz výměr. Объёмы ТОЛЬКО из текущего проекта.
+**Файлы:** concrete-agent — новые services для ТЗ и чертежей
+
+---
+
+## Архитектура (текущее состояние после сессии 9)
+
+```
+Portal (Hub) ──→ Core Engine (Items API + NKB + Passport)
+    │
+    ├──→ Registry (Excel import → Core items → classification → TOV → export)
+    │       └── TOV: Работы, Аренда, Бетон, Механизмы, Материалы
+    │
+    ├──→ Monolit (Карточки конструкций → Калькулятор → "Aplikovat" → Core)
+    │       └── Planner: 7-engine pipeline → PlannerOutput → monolit_data block
+    │
+    └──→ URS Matcher (code matching pipeline)
+
+Core Engine (Python FastAPI):
+  /api/v1/items/import          — bulk import with dedup + grouping
+  /api/v1/items/{project}       — read with 6 filters
+  /api/v1/items/{id}/{ns}       — namespace block update
+  /api/v1/items/{project}/grouped — construction cards
+  /api/v1/nkb/audit/*           — normative source audit
+```
+
+### Ключевые модели данных
+
+**ProjectItem** (4 namespace блока):
+- `estimate` — сметные данные из Excel (Registry owns)
+- `monolit` — данные калькулятора (Monolit owns)
+- `classification` — группа работ, OTSKP/ÚRS/RTS (shared)
+- `core` — метаданные, версия, группировка (read-only)
+
+**Position Grouping** (CoreMetadata):
+- `group_role` — "beton" | "armatura" | "opalubka" | null
+- `group_leader_id` — item_id родительской бетонной позиции
+- `group_members` — список item_id связанных позиций
+- `armatura_included` / `opalubka_included` — "vč." маркеры
 
 ---
 
 ## ⏳ Ожидает действий пользователя
 
-| Задача | Что нужно | Статус |
-|--------|-----------|--------|
-| Stripe аккаунт | dashboard.stripe.com → keys → Secret Manager | Блокирует платежи |
-| MASTER_ENCRYPTION_KEY | `openssl rand -hex 32` → Secret Manager | Для Service Connections |
-| AWS Bedrock квота | AWS Console → Bedrock → Request RPM increase | ThrottlingException |
-| VPC connector | gcloud VPC connector → Cloud SQL private IP | Безопасность |
-
----
-
-## Контекст
-
-- **5 сервисов** на GCP Cloud Run + Vercel
-- **LLM:** Vertex AI Gemini (ADC, $1000 credits) + Bedrock + Perplexity ($5000)
-- **CI/CD:** Cloud Build (5 triggers) + GitHub Actions
-- **Тесты:** 402 (Monolit) + 159 (URS) + 28 files (CORE) + 26 offline
-- **Auth:** JWT + email verification + anti-fraud (6 layers)
-- **Credits:** Pay-as-you-go, 200 welcome bonus, volume discounts
-- **Design:** Digital Concrete (Portal), Slate Minimal (Planner)
+| Задача | Статус |
+|--------|--------|
+| Merge PR ветки claude/registration-landing-updates-ClXq0 → main | Блокирует deploy |
+| Stripe ключи → Secret Manager | Блокирует платежи |
+| MASTER_ENCRYPTION_KEY → Secret Manager | Для Service Connections |
+| AWS Bedrock RPM increase | ThrottlingException |
