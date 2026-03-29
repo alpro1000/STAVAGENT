@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight } from 'lucide-react';
+import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight, Zap } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow, PumpRentalData } from '../../types/unified';
 import { LaborTab } from './LaborTab';
@@ -21,6 +21,7 @@ import { MachineryTab } from './MachineryTab';
 import { MaterialsTab } from './MaterialsTab';
 import { TOVSummary } from './TOVSummary';
 import { MONOLIT_FRONTEND_URL } from '../../utils/config.js';
+import { hasExtendedCosts, prefillTOVFromMonolit } from '../../services/tovPrefill';
 
 interface TOVModalProps {
   isOpen: boolean;
@@ -261,6 +262,30 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
             )}
           </div>
         </div>
+
+        {/* Pre-fill banner from Monolit Planner */}
+        {hasExtendedCosts(item.monolith_payload) && localData.labor.length === 0 && (
+          <div className="mx-4 mt-3 p-3 bg-orange-50 border border-orange-200 rounded-lg flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm">
+              <Zap size={16} className="text-orange-500" />
+              <span className="text-orange-800">
+                <strong>Kalkulátor Monolit</strong> — data z výpočtu jsou k dispozici.
+                Předvyplnit práce, bednění a materiály?
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                const prefilled = prefillTOVFromMonolit(item.monolith_payload!);
+                if (prefilled) {
+                  setLocalData(prefilled);
+                }
+              }}
+              className="px-3 py-1.5 text-sm font-medium bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors whitespace-nowrap"
+            >
+              Předvyplnit TOV
+            </button>
+          </div>
+        )}
 
         {/* Tab Content */}
         <div className="flex-1 overflow-y-auto p-4 scrollbar-thin">

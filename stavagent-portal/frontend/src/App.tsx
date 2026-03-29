@@ -36,6 +36,7 @@ const ConnectionsPage = lazy(() => import('./pages/ConnectionsPage'));
 const ParsePreviewPage = lazy(() => import('./pages/ParsePreviewPage'));
 const DocumentAnalysisPage = lazy(() => import('./pages/DocumentAnalysisPage'));
 const NKBAdminPage = lazy(() => import('./pages/NKBAdminPage'));
+const CalculatorPage = lazy(() => import('./pages/CalculatorPage'));
 
 // ── Loading fallback ─────────────────────────────────────────────────────────
 function PageLoader() {
@@ -104,6 +105,9 @@ function App() {
 
               {/* Document Analysis — public access (session-only for anonymous users) */}
               <Route path="/portal/analysis" element={<DocumentAnalysisPage />} />
+
+              {/* Public calculator — no auth, embeds Monolit Planner */}
+              <Route path="/portal/calculator" element={<CalculatorPage />} />
 
               {/* NKB Admin — norm/rule management */}
               <Route path="/portal/nkb" element={<ProtectedRoute><NKBAdminPage /></ProtectedRoute>} />

@@ -10,6 +10,8 @@ import { Plus, Trash2, Truck, Zap } from 'lucide-react';
 import type { MachineryResource, PumpRentalData } from '../../types/unified';
 import { v4 as uuidv4 } from 'uuid';
 import { PumpRentalSection } from './PumpRentalSection';
+import { CraneRentalSection, type CraneCalcData } from './CraneRentalSection';
+import { DeliveryCalcSection, type DeliveryCalcData } from './DeliveryCalcSection';
 
 // Work groups where the concrete pump calculator is relevant
 const PUMP_SKUPINY = new Set(['BETON_MONOLIT', 'BETON_PREFAB', 'PILOTY']);
@@ -350,6 +352,19 @@ export function MachineryTab({
           itemLabel={itemLabel}
         />
       )}
+
+      {/* Mini-calculators: Crane + Delivery */}
+      <div className="space-y-3 mt-4">
+        <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider">Mini-kalkulátory</h4>
+        <CraneRentalSection
+          data={undefined}
+          onChange={() => {}}
+        />
+        <DeliveryCalcSection
+          data={undefined}
+          onChange={() => {}}
+        />
+      </div>
     </div>
   );
 }

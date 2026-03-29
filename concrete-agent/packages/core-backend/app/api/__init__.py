@@ -31,6 +31,7 @@ from app.api.routes_project_documents import router as project_documents_router
 from app.api.routes_nkb import router as nkb_router
 from app.api.routes_norm_audit import router as norm_audit_router
 from app.api.routes_items import router as items_router
+from app.api.routes_scenario_b import router as scenario_b_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -60,5 +61,6 @@ api_router.include_router(project_documents_router)  # /api/v1/project/{id}/add-
 api_router.include_router(nkb_router)                  # /api/v1/nkb/* (Normative Knowledge Base)
 api_router.include_router(norm_audit_router)           # /api/v1/nkb/audit/* (NKB Audit & Gap Analysis)
 api_router.include_router(items_router)                # /api/v1/items/* (Unified Item Layer)
+api_router.include_router(scenario_b_router)           # /api/v1/scenario-b/* (TZ → Výkaz výměr)
 
 __all__ = ["api_router"]

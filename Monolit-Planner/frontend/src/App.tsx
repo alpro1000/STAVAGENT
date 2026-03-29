@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppProvider } from './context/AppContext';
 import MainApp from './components/MainApp';
 import PlannerPage from './pages/PlannerPage';
+import ProjectGantt from './components/ProjectGantt';
 import RegistryView from './pages/RegistryView';
 import TariffPage from './pages/TariffPage';
 import './styles/components.css';
@@ -50,6 +51,15 @@ function App() {
           <Route
             path="/planner"
             element={<PlannerPage />}
+          />
+          {/* Project Gantt - All positions timeline */}
+          <Route
+            path="/project-gantt"
+            element={
+              <AppProvider>
+                <ProjectGantt />
+              </AppProvider>
+            }
           />
           {/* Tariff Management */}
           <Route
