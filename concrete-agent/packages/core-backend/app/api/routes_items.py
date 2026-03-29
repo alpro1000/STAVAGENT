@@ -137,6 +137,62 @@ async def api_update_block(item_id: str, namespace: str, request: UpdateBlockReq
         raise HTTPException(500, f"Update failed: {str(e)}")
 
 
+# ── Grouped Items (Construction Cards for Monolit) ───────────────────────────
+
+@router.get("/{project_id}/grouped")
+async def api_grouped_items(project_id: str):
+    """
+    Get construction cards — concrete positions with linked rebar and formwork.
+
+    Returns groups where each has a beton leader + optional armatura/opalubka members.
+    Used by Monolit to show card-based UI instead of flat list.
+    """
+    try:
+        all_items = await item_store.read_items(project_id)
+
+        # Build lookup
+        by_id = {it.item_id: it for it in all_items}
+
+        cards = []
+        for item in all_items:
+            if item.core.group_role != "beton":
+                continue
+
+            members_rebar = []
+            members_formwork = []
+            for mid in (item.core.group_members or []):
+                member = by_id.get(mid)
+                if not member:
+                    continue
+                if member.core.group_role == "armatura":
+                    members_rebar.append(member)
+                elif member.core.group_role == "opalubka":
+                    members_formwork.append(member)
+
+            cards.append({
+                "beton": item.model_dump(),
+                "armatura": [m.model_dump() for m in members_rebar],
+                "opalubka": [m.model_dump() for m in members_formwork],
+                "armatura_included": item.core.armatura_included,
+                "opalubka_included": item.core.opalubka_included,
+                "is_complete": (
+                    (item.core.armatura_included or len(members_rebar) > 0) and
+                    (item.core.opalubka_included or len(members_formwork) > 0)
+                ),
+            })
+
+        # Also return ungrouped concrete items (group_role=None but might be concrete by unit)
+        return {
+            "project_id": project_id,
+            "cards": cards,
+            "total_cards": len(cards),
+            "total_items": len(all_items),
+        }
+    except Exception as e:
+        logger.error(f"[Items] Grouped error: {e}")
+        raise HTTPException(500, f"Failed: {str(e)}")
+
+
 # ── Version History ───────────────────────────────────────────────────────────
 
 @router.get("/{item_id}/versions")
