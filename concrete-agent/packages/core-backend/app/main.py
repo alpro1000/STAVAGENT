@@ -157,21 +157,14 @@ async def keep_alive_healthcheck(request: Request):
     Validates X-Keep-Alive-Key header to prevent unauthorized access.
     This endpoint is designed to prevent server sleep on free-tier hosting (Render/Fly.io).
     """
-    # Get the Keep-Alive key from environment
+    # If X-Keep-Alive-Key header present, validate it
     keep_alive_key = os.getenv("KEEP_ALIVE_KEY")
-
-    # If no key is configured, disable this endpoint
-    if not keep_alive_key:
-        raise HTTPException(status_code=404, detail="Not found")
-
-    # Validate the X-Keep-Alive-Key header
     provided_key = request.headers.get("X-Keep-Alive-Key")
 
-    if provided_key != keep_alive_key:
-        # Return 404 instead of 403 to hide endpoint existence
+    if keep_alive_key and provided_key and provided_key != keep_alive_key:
         raise HTTPException(status_code=404, detail="Not found")
 
-    # Return minimal response (no DB queries, no heavy processing)
+    # Return minimal response (Cloud Run health probe + Keep-Alive compatible)
     return {"status": "alive", "service": "concrete-agent"}
 
 
