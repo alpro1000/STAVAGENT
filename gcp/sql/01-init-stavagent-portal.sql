@@ -368,7 +368,8 @@ CREATE INDEX IF NOT EXISTS idx_position_audit_log_instance ON position_audit_log
 CREATE INDEX IF NOT EXISTS idx_position_audit_log_event ON position_audit_log(event);
 CREATE INDEX IF NOT EXISTS idx_position_audit_log_timestamp ON position_audit_log(timestamp DESC);
 
--- Seed default user (auth disabled in production)
-INSERT INTO users (email, password_hash, name, role, email_verified)
-VALUES ('admin@stavagent.cz', '$2b$10$placeholder', 'Admin', 'admin', true)
+-- Seed default admin user (placeholder hash — app seedAdminIfNeeded() will
+-- detect the invalid hash and replace it with bcrypt('123456') on first boot)
+INSERT INTO users (email, password_hash, name, role, email_verified, email_verified_at)
+VALUES ('admin@stavagent.cz', '$2b$10$placeholder_will_be_fixed_by_seed', 'Admin', 'admin', true, NOW())
 ON CONFLICT (email) DO NOTHING;
