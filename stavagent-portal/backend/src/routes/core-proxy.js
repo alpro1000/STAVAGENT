@@ -251,17 +251,17 @@ router.post('/urs-match/:action', async (req, res) => {
   console.log(`[UrsProxy] POST /urs-match/${action} → ${targetUrl} (user=${userId})`);
 
   try {
-    // Deduct credits before external call to prevent free usage on errors
-    if (action.startsWith('match')) {
-      await deductCredits(userId, 'urs_match');
-    }
-
     const ursResponse = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body),
       signal: AbortSignal.timeout(120000),
     });
+
+    // Deduct credits after successful response (fail-open: don't charge for failed ops)
+    if (action.startsWith('match') && ursResponse.ok) {
+      deductCredits(userId, 'urs_match').catch(() => {});
+    }
 
     const data = await ursResponse.text();
     res.set('Content-Type', ursResponse.headers.get('content-type') || 'application/json');

@@ -761,12 +761,14 @@ export default function DocumentAnalysisPage() {
             <p className="da-upload-hint">
               Více souborů najednou = projektová analýza s SO merge
             </p>
-            <button
-              onClick={(e) => { e.stopPropagation(); openSavedDocs(); }}
-              className="da-load-saved-btn"
-            >
-              <FolderOpen size={14} /> Načíst uloženou analýzu
-            </button>
+            {!isAnonymous && (
+              <button
+                onClick={(e) => { e.stopPropagation(); openSavedDocs(); }}
+                className="da-load-saved-btn"
+              >
+                <FolderOpen size={14} /> Načíst uloženou analýzu
+              </button>
+            )}
           </div>
         )}
 
