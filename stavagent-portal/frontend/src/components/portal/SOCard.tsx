@@ -11,6 +11,8 @@ import type {
   MergedSO, BridgeSOParams, GTPExtraction, TechnicalExtraction,
   RoadSOParams, TrafficDIOParams, WaterSOParams, VegetationSOParams,
   ElectroSOParams, PipelineSOParams, SignageSOParams,
+  SilnoproudParams, SlaboproudParams, VZTParams, ZTIParams, UTParams, MaRParams,
+  ZelSvrsekParams, ZelSpodekParams, IGPParams,
   ConstructionPhase, RoadClosure, DetourRoute, PlantSpecies,
   GenericSummary,
 } from '../../types/passport';
@@ -202,6 +204,158 @@ const SIGNAGE_LABELS: Record<string, string> = {
   horizontal_standard: 'Norma VDZ',
   sign_standards: 'Normy SDZ',
   roads_signed: 'Značené komunikace',
+};
+
+// ===== D.1.4 Profession label maps =====
+
+const SILNOPROUD_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  pd_level: 'Stupeň PD',
+  building_name: 'Budova',
+  building_type: 'Typ budovy',
+  voltage_3phase: 'Napětí 3f',
+  voltage_1phase: 'Napětí 1f',
+  current_system: 'Soustava',
+  max_concurrent_power_kw: 'Max. soudobý příkon (kW)',
+  total_installed_kw: 'Instalovaný příkon (kW)',
+  total_concurrent_kw: 'Soudobý příkon (kW)',
+  concurrency_factor: 'Součinitel soudobosti',
+  annual_consumption_mwh: 'Roční spotřeba (MWh)',
+  supply_source: 'Zdroj napájení',
+  supply_cable: 'Přívodní kabel',
+  lighting_control: 'Řízení osvětlení',
+  emergency_lighting: 'Nouzové osvětlení',
+  emergency_duration_min: 'Doba nouzového osvětlení (min)',
+  outlet_cable: 'Kabel zásuvek',
+  outlet_ip_rating: 'IP zásuvek',
+  surge_protection_type: 'Přepěťová ochrana',
+  revision_standard: 'Norma revize',
+  protection_methods: 'Ochranná opatření',
+  cable_types_main: 'Hlavní typy kabelů',
+  installation_methods: 'Způsoby instalace',
+};
+
+const SLABOPROUD_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  pd_level: 'Stupeň PD',
+  subsystems: 'Podsystémy',
+};
+
+const VZT_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  pd_level: 'Stupeň PD',
+  building_name: 'Budova',
+  ventilation_strategy: 'Strategie větrání',
+  total_supply_m3h: 'Přívod celkem (m³/h)',
+  total_exhaust_m3h: 'Odvod celkem (m³/h)',
+  ahu_count: 'VZT jednotky',
+  split_cooling_count: 'Split/chlazení',
+  exhaust_fan_count: 'Odtahové ventilátory',
+  fire_damper_count: 'Požární klapky',
+  total_heating_kw: 'Topný výkon (kW)',
+  total_cooling_kw: 'Chladící výkon (kW)',
+  duct_material: 'Materiál potrubí',
+  duct_insulation: 'Izolace',
+  control_system: 'Řídící systém',
+  bms_integration: 'Integrace BMS',
+  noise_limit_db: 'Limit hluku (dB)',
+  design_outdoor_temp_winter: 'Výp. teplota zima (°C)',
+  design_outdoor_temp_summer: 'Výp. teplota léto (°C)',
+  design_indoor_temp: 'Vnitřní teplota (°C)',
+  regulations_used: 'Použité předpisy',
+};
+
+const ZTI_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  pd_level: 'Stupeň PD',
+  building_name: 'Budova',
+  building_type: 'Typ budovy',
+  floors_above: 'Nadzemní podlaží',
+  floors_below: 'Podzemní podlaží',
+  occupants: 'Počet osob',
+  design_flow_qww_ls: 'Návrhový průtok Qww (l/s)',
+  main_branch_dn: 'Hlavní potrubí DN',
+  water_demand_m3_year: 'Potřeba vody (m³/rok)',
+  fire_hydrants: 'Požární hydranty',
+  fire_hydrant_dn: 'DN hydrantu',
+};
+
+const UT_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  pd_level: 'Stupeň PD',
+  building_name: 'Budova',
+  heat_loss_total_kw: 'Tepelná ztráta (kW)',
+  design_outdoor_temp_c: 'Výp. venkovní teplota (°C)',
+  design_indoor_temp_c: 'Výp. vnitřní teplota (°C)',
+  u_mean_wm2k: 'Průměr. U (W/m²K)',
+  specific_heat_demand_kwh_m2: 'Měrná potřeba tepla (kWh/m²)',
+  energy_class: 'Energetická třída',
+  dhw_source: 'Zdroj TUV',
+  dhw_storage_volume_l: 'Objem zásobníku TUV (l)',
+};
+
+const MAR_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  pd_level: 'Stupeň PD',
+  control_system_brand: 'Výrobce ŘS',
+  control_system_type: 'Typ ŘS',
+  plc_type: 'Typ PLC',
+  io_points_count: 'Počet I/O bodů',
+  bus_protocol: 'Sběrnice',
+  bms_integration: 'Integrace BMS',
+  visualization: 'Vizualizace',
+  remote_access: 'Vzdálený přístup',
+  controlled_professions: 'Řízené profese',
+  controlled_equipment: 'Řízená zařízení',
+  temperature_sensors_count: 'Teplotní čidla',
+  humidity_sensors_count: 'Vlhkostní čidla',
+  pressure_sensors_count: 'Tlaková čidla',
+};
+
+// ===== Railway label maps =====
+
+const ZEL_SVRSEK_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  so_id: 'SO',
+  pd_level: 'Stupeň PD',
+  project_name: 'Stavba',
+  track_section: 'Traťový úsek',
+  track_category: 'Kategorie trati',
+  max_speed_kmh: 'Traťová rychlost (km/h)',
+  axle_load_t: 'Nápravové zatížení (t)',
+  load_class: 'Třída zatížení',
+  track_position: 'Poloha koleje',
+  traction_system: 'Trakční soustava',
+  safety_device: 'Zabezpečovací zařízení',
+  track_count: 'Počet kolejí',
+  start_km: 'Začátek (km)',
+  end_km: 'Konec (km)',
+  total_length_m: 'Celková délka (m)',
+  reconstruction_length_m: 'Délka rekonstrukce (m)',
+  walkway_width_m: 'Šířka stezky (m)',
+  walkway_renewal: 'Obnova stezky',
+};
+
+const ZEL_SPODEK_LABELS: Record<string, string> = {
+  section_id: 'Oddíl PD',
+  so_id: 'SO',
+  pd_level: 'Stupeň PD',
+  e_min_zp_mpa: 'Emin ZP (MPa)',
+  e_min_pl_mpa: 'Emin PL (MPa)',
+};
+
+const IGP_LABELS: Record<string, string> = {
+  project_name: 'Stavba',
+  contractor: 'Zhotovitel průzkumu',
+  client: 'Objednatel',
+  report_date: 'Datum zprávy',
+  location_municipality: 'Obec',
+  elevation_range_m: 'Nadmořská výška',
+  track_vmax_kmh: 'Traťová rychlost (km/h)',
+  track_load_class: 'Třída zatížení',
+  required_e_min_zp_mpa: 'Požadovaný Emin ZP (MPa)',
+  required_e_min_pl_pp_mpa: 'Požadovaný Emin PL PP (MPa)',
+  conclusion_summary: 'Závěr',
 };
 
 const STRUCTURE_TYPE_LABELS: Record<string, string> = {
@@ -425,6 +579,245 @@ export default function SOCard({ so }: SOCardProps) {
       {so.signage_params && (
         <Section title="Dopravní značení">
           {renderFieldGrid(so.signage_params as any, SIGNAGE_LABELS, so.sources)}
+        </Section>
+      )}
+
+      {/* ===== D.1.4 Profession sections (pozemní TZB) ===== */}
+
+      {/* Silnoproud — power electrics */}
+      {so.silnoproud_params && (
+        <Section title="Silnoproud (elektroinstalace)">
+          {renderFieldGrid(so.silnoproud_params as any, SILNOPROUD_LABELS, so.silnoproud_params.sources)}
+          {so.silnoproud_params.switchboards && so.silnoproud_params.switchboards.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>Rozvaděče ({so.silnoproud_params.switchboards.length})</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                {so.silnoproud_params.switchboards.map((sw: any, i: number) => (
+                  <span key={i} style={{ fontSize: 12, padding: '2px 8px', background: 'rgba(59,130,246,0.1)', borderRadius: 4, color: '#3b82f6' }}>
+                    {sw.name || sw.label || `Rozvaděč ${i + 1}`}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Slaboproud — low-voltage systems */}
+      {so.slaboproud_params && (
+        <Section title="Slaboproud (ELV systémy)">
+          {renderFieldGrid(so.slaboproud_params as any, SLABOPROUD_LABELS, so.slaboproud_params.sources)}
+          {so.slaboproud_params.subsystems && so.slaboproud_params.subsystems.length > 0 && (
+            <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              {so.slaboproud_params.subsystems.map((ss: string, i: number) => (
+                <span key={i} style={{ fontSize: 12, padding: '2px 8px', background: 'rgba(139,92,246,0.1)', borderRadius: 4, color: '#8b5cf6', fontWeight: 500 }}>
+                  {ss}
+                </span>
+              ))}
+            </div>
+          )}
+          {/* Render each subsystem detail block if present */}
+          {(['scs', 'pzts', 'skv', 'cctv', 'eps', 'avt', 'intercom'] as const).map(key => {
+            const sub = (so.slaboproud_params as any)?.[key];
+            if (!sub || typeof sub !== 'object') return null;
+            const subLabels: Record<string, string> = {
+              scs: 'SCS (strukturovaná kabeláž)', pzts: 'PZTS (zabezpečení)', skv: 'SKV (přístup)',
+              cctv: 'CCTV (kamerový systém)', eps: 'EPS (požární signalizace)', avt: 'AVT (audiovizuální)',
+              intercom: 'Domovní telefon',
+            };
+            return (
+              <div key={key} style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>
+                  {subLabels[key]}
+                </div>
+                {renderFieldGrid(sub, {}, undefined)}
+              </div>
+            );
+          })}
+        </Section>
+      )}
+
+      {/* VZT — ventilation / HVAC */}
+      {so.vzt_params && (
+        <Section title="Vzduchotechnika a klimatizace (VZT)">
+          {renderFieldGrid(so.vzt_params as any, VZT_LABELS, so.vzt_params.sources)}
+          {so.vzt_params.devices && so.vzt_params.devices.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>
+                Zařízení ({so.vzt_params.devices.length})
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 6 }}>
+                {so.vzt_params.devices.map((dev: any, i: number) => (
+                  <div key={i} style={{ padding: '6px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6, fontSize: 12 }}>
+                    <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{dev.label || dev.name || dev.device_type || `Zařízení ${i + 1}`}</div>
+                    {dev.airflow_supply_m3h && <div style={{ color: 'var(--text-secondary)' }}>Přívod: {dev.airflow_supply_m3h} m³/h</div>}
+                    {dev.airflow_exhaust_m3h && <div style={{ color: 'var(--text-secondary)' }}>Odvod: {dev.airflow_exhaust_m3h} m³/h</div>}
+                    {dev.heating_kw && <div style={{ color: 'var(--text-secondary)' }}>Topení: {dev.heating_kw} kW</div>}
+                    {dev.cooling_kw && <div style={{ color: 'var(--text-secondary)' }}>Chlazení: {dev.cooling_kw} kW</div>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* ZTI — plumbing */}
+      {so.zti_params && (
+        <Section title="Zdravotně technické instalace (ZTI)">
+          {renderFieldGrid(so.zti_params as any, ZTI_LABELS, so.zti_params.sources)}
+          {/* Subsystem details */}
+          {(['sewage', 'rainwater', 'cold_water', 'hot_water'] as const).map(key => {
+            const sub = (so.zti_params as any)?.[key];
+            if (!sub || typeof sub !== 'object') return null;
+            const subLabels: Record<string, string> = {
+              sewage: 'Splašková kanalizace', rainwater: 'Dešťová kanalizace',
+              cold_water: 'Studená voda', hot_water: 'Teplá voda',
+            };
+            return (
+              <div key={key} style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>
+                  {subLabels[key]}
+                </div>
+                {renderFieldGrid(sub, {}, undefined)}
+              </div>
+            );
+          })}
+          {/* Fixtures */}
+          {so.zti_params.fixtures && so.zti_params.fixtures.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>
+                Zařizovací předměty ({so.zti_params.fixtures.length})
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                {so.zti_params.fixtures.map((f: any, i: number) => (
+                  <span key={i} style={{ fontSize: 12, padding: '2px 8px', background: 'rgba(16,185,129,0.1)', borderRadius: 4, color: '#10b981' }}>
+                    {f.name || f.type || `Předmět ${i + 1}`}{f.count ? ` ×${f.count}` : ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* UT — heating */}
+      {so.ut_params && (
+        <Section title="Ústřední vytápění (ÚT)">
+          {renderFieldGrid(so.ut_params as any, UT_LABELS, so.ut_params.sources)}
+          {/* Heat source detail */}
+          {so.ut_params.heat_source && (
+            <div style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(239,68,68,0.04)', borderRadius: 6 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>Zdroj tepla</div>
+              {renderFieldGrid(so.ut_params.heat_source as any, {
+                type: 'Typ', brand: 'Výrobce', model: 'Model', fuel: 'Palivo',
+                output_kw: 'Výkon (kW)', efficiency_pct: 'Účinnost (%)', cascade_count: 'Kaskáda',
+              }, undefined)}
+            </div>
+          )}
+          {so.ut_params.heating_system && (
+            <div style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>Otopná soustava</div>
+              {renderFieldGrid(so.ut_params.heating_system as any, {
+                system_type: 'Typ soustavy', medium: 'Teplonosná látka',
+                supply_temp_c: 'Přívodní teplota (°C)', return_temp_c: 'Vratná teplota (°C)',
+                pipe_material: 'Materiál potrubí', insulation: 'Izolace',
+              }, undefined)}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* MaR — automation */}
+      {so.mar_params && (
+        <Section title="Měření a regulace (MaR)">
+          {renderFieldGrid(so.mar_params as any, MAR_LABELS, so.mar_params.sources)}
+        </Section>
+      )}
+
+      {/* ===== Railway sections ===== */}
+
+      {/* Železniční svršek */}
+      {so.zel_svrsek_params && (
+        <Section title="Železniční svršek">
+          {renderFieldGrid(so.zel_svrsek_params as any, ZEL_SVRSEK_LABELS, so.zel_svrsek_params.sources)}
+          {so.zel_svrsek_params.gpk && (
+            <div style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>GPK (geometrické parametry koleje)</div>
+              {renderFieldGrid(so.zel_svrsek_params.gpk as any, {
+                gauge_mm: 'Rozchod (mm)', cant_mm: 'Převýšení (mm)',
+                twist_max_mm_m: 'Max. zborcení (mm/m)', alignment_max_mm: 'Max. směr (mm)',
+                level_max_mm: 'Max. výška (mm)', quality_number: 'Číslo kvality',
+              }, undefined)}
+            </div>
+          )}
+          {so.zel_svrsek_params.track_frame && (
+            <div style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>Kolejový rošt</div>
+              {renderFieldGrid(so.zel_svrsek_params.track_frame as any, {
+                rail_type: 'Typ kolejnice', rail_steel: 'Ocel kolejnice',
+                sleeper_type: 'Typ pražce', sleeper_spacing_mm: 'Rozdělení (mm)',
+                fastening_type: 'Upevnění', ballast_type: 'Štěrkové lože',
+                ballast_thickness_mm: 'Tloušťka lože (mm)',
+              }, undefined)}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Železniční spodek */}
+      {so.zel_spodek_params && (
+        <Section title="Železniční spodek">
+          {renderFieldGrid(so.zel_spodek_params as any, ZEL_SPODEK_LABELS, so.zel_spodek_params.sources)}
+          {so.zel_spodek_params.kpp_zones && so.zel_spodek_params.kpp_zones.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>
+                KPP zóny ({so.zel_spodek_params.kpp_zones.length})
+              </div>
+              {so.zel_spodek_params.kpp_zones.map((zone: any, i: number) => (
+                <div key={i} style={{ padding: '4px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 4, marginBottom: 4, fontSize: 12 }}>
+                  <span style={{ fontWeight: 600 }}>{zone.zone_name || zone.label || `Zóna ${i + 1}`}</span>
+                  {zone.start_km != null && <span style={{ color: 'var(--text-secondary)', marginLeft: 8 }}>km {zone.start_km}–{zone.end_km}</span>}
+                  {zone.material && <span style={{ color: 'var(--text-secondary)', marginLeft: 8 }}>{zone.material}</span>}
+                  {zone.thickness_mm && <span style={{ color: 'var(--text-secondary)', marginLeft: 8 }}>{zone.thickness_mm} mm</span>}
+                </div>
+              ))}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* IGP — inženýrsko-geologický průzkum */}
+      {so.igp_params && (
+        <Section title="Inženýrsko-geologický průzkum (IGP)">
+          {renderFieldGrid(so.igp_params as any, IGP_LABELS, so.igp_params.sources)}
+          {so.igp_params.probes && so.igp_params.probes.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>
+                Sondy ({so.igp_params.probes.length})
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 6 }}>
+                {so.igp_params.probes.map((probe: any, i: number) => (
+                  <div key={i} style={{ padding: '6px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6, fontSize: 12 }}>
+                    <div style={{ fontWeight: 600 }}>{probe.probe_id || probe.name || `Sonda ${i + 1}`}</div>
+                    {probe.depth_m && <div style={{ color: 'var(--text-secondary)' }}>Hloubka: {probe.depth_m} m</div>}
+                    {probe.type && <div style={{ color: 'var(--text-secondary)' }}>{probe.type}</div>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {so.igp_params.geology && (
+            <div style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.02)', borderRadius: 6 }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>Geologie</div>
+              {renderFieldGrid(so.igp_params.geology as any, {}, undefined)}
+            </div>
+          )}
+          {so.igp_params.conclusion_summary && (
+            <div style={{ marginTop: 8, padding: 10, background: 'rgba(59,130,246,0.05)', borderRadius: 6, fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>
+              {so.igp_params.conclusion_summary}
+            </div>
+          )}
         </Section>
       )}
 
