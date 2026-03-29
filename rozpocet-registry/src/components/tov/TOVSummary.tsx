@@ -18,14 +18,18 @@ export function TOVSummary({ data }: TOVSummaryProps) {
   const materialsCost = data.materialsSummary.totalCost;
   const formworkCost = (data.formworkRental ?? []).reduce((sum, r) => sum + r.konecny_najem, 0);
   const pumpCost = data.pumpRental?.konecna_cena ?? 0;
-  const totalCost = laborCost + machineryCost + materialsCost + formworkCost + pumpCost;
+  const craneCost = data.craneRental?.total_czk ?? 0;
+  const deliveryCost = data.deliveryCalc?.total_czk ?? 0;
+  const totalCost = laborCost + machineryCost + materialsCost + formworkCost + pumpCost + craneCost + deliveryCost;
 
   const hasData =
     data.labor.length > 0 ||
     data.machinery.length > 0 ||
     data.materials.length > 0 ||
     formworkCost > 0 ||
-    pumpCost > 0;
+    pumpCost > 0 ||
+    craneCost > 0 ||
+    deliveryCost > 0;
 
   if (!hasData) {
     return null;
@@ -98,6 +102,30 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums text-blue-600">
                 {pumpCost.toLocaleString('cs-CZ')} Kč
+              </span>
+            </div>
+          )}
+
+          {/* Crane rental */}
+          {craneCost > 0 && (
+            <div className="flex items-center gap-2">
+              <Truck size={16} className="text-amber-600" />
+              <span className="text-text-secondary">jeřáb</span>
+              <span className="text-text-muted">|</span>
+              <span className="font-medium tabular-nums text-amber-600">
+                {craneCost.toLocaleString('cs-CZ')} Kč
+              </span>
+            </div>
+          )}
+
+          {/* Delivery */}
+          {deliveryCost > 0 && (
+            <div className="flex items-center gap-2">
+              <Truck size={16} className="text-emerald-600" />
+              <span className="text-text-secondary">doprava</span>
+              <span className="text-text-muted">|</span>
+              <span className="font-medium tabular-nums text-emerald-600">
+                {deliveryCost.toLocaleString('cs-CZ')} Kč
               </span>
             </div>
           )}

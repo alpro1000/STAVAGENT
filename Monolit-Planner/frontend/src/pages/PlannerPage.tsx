@@ -1766,13 +1766,63 @@ export default function PlannerPage() {
                     monolit_position_id: positionContext.position_id || undefined,
                     monolit_project_id: positionContext.bridge_id || positionContext.project_id || undefined,
                     calculated_at: new Date().toISOString(),
+                    // Extended cost breakdown for TOV pre-fill (P3)
+                    costs: {
+                      formwork_labor_czk: plan.costs.formwork_labor_czk,
+                      rebar_labor_czk: plan.costs.rebar_labor_czk,
+                      pour_labor_czk: plan.costs.pour_labor_czk,
+                      pour_night_premium_czk: plan.costs.pour_night_premium_czk,
+                      total_labor_czk: plan.costs.total_labor_czk,
+                      formwork_rental_czk: plan.costs.formwork_rental_czk,
+                      props_labor_czk: plan.costs.props_labor_czk,
+                      props_rental_czk: plan.costs.props_rental_czk,
+                    },
+                    resources: {
+                      total_formwork_workers: plan.resources.total_formwork_workers,
+                      total_rebar_workers: plan.resources.total_rebar_workers,
+                      crew_size_formwork: plan.resources.crew_size_formwork,
+                      crew_size_rebar: plan.resources.crew_size_rebar,
+                      shift_h: plan.resources.shift_h,
+                      wage_formwork_czk_h: plan.resources.wage_formwork_czk_h,
+                      wage_rebar_czk_h: plan.resources.wage_rebar_czk_h,
+                      wage_pour_czk_h: plan.resources.wage_pour_czk_h,
+                      pour_shifts: plan.resources.pour_shifts,
+                    },
+                    formwork_info: {
+                      system_name: plan.formwork.system.name,
+                      manufacturer: plan.formwork.system.manufacturer,
+                      rental_czk_m2_month: plan.formwork.system.rental_czk_m2_month,
+                      assembly_days: plan.formwork.assembly_days,
+                      disassembly_days: plan.formwork.disassembly_days,
+                      curing_days: plan.formwork.curing_days,
+                      formwork_area_m2: parseFloat(form.formwork_area_m2) || 0,
+                      num_tacts: plan.pour_decision.num_tacts,
+                      num_sets: form.num_sets,
+                    },
+                    schedule_info: {
+                      total_days: plan.schedule.total_days,
+                      tact_count: plan.pour_decision.num_tacts,
+                    },
                   };
-                  // Write to position via Monolit backend
+                  // Write to position via Monolit backend (days + full metadata for TOV pre-fill)
                   if (positionContext.position_id) {
                     const res = await fetch(`${API_URL}/api/positions`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ positions: [{ id: positionContext.position_id, days: plan.schedule.total_days }] }),
+                      body: JSON.stringify({ positions: [{
+                        id: positionContext.position_id,
+                        days: plan.schedule.total_days,
+                        cost_czk: plan.costs.total_labor_czk,
+                        concrete_m3: form.volume_m3,
+                        curing_days: plan.formwork.curing_days,
+                        metadata: JSON.stringify({
+                          costs: monolit_data.costs,
+                          resources: monolit_data.resources,
+                          formwork_info: monolit_data.formwork_info,
+                          schedule_info: monolit_data.schedule_info,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      }] }),
                     });
                     if (!res.ok) throw new Error('Chyba při ukládání');
                   }

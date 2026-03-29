@@ -785,6 +785,17 @@ export interface MergedSO {
   electro_params?: ElectroSOParams;
   pipeline_params?: PipelineSOParams;
   signage_params?: SignageSOParams;
+  // v4.1: D.1.4 profession params (pozemní TZB)
+  silnoproud_params?: SilnoproudParams;
+  slaboproud_params?: SlaboproudParams;
+  vzt_params?: VZTParams;
+  zti_params?: ZTIParams;
+  ut_params?: UTParams;
+  mar_params?: MaRParams;
+  // v4.3: Railway params
+  zel_svrsek_params?: ZelSvrsekParams;
+  zel_spodek_params?: ZelSpodekParams;
+  igp_params?: IGPParams;
   // v3.1.1: Enhanced classification
   construction_type?: string;
   section_ids?: Array<{ type: string; id: string }>;
@@ -809,6 +820,218 @@ export interface GenericSummary {
   language?: string;
   page_count?: number;
   confidence?: number;
+}
+
+// ============================================================================
+// D.1.4 Profession Params (Building Systems / TZB)
+// ============================================================================
+
+/** Silnoproud — high-voltage electrical installations */
+export interface SilnoproudParams {
+  section_id?: string;
+  pd_level?: string;
+  building_name?: string;
+  building_type?: string;
+  voltage_3phase?: string;
+  voltage_1phase?: string;
+  current_system?: string;
+  max_concurrent_power_kw?: number;
+  total_installed_kw?: number;
+  total_concurrent_kw?: number;
+  concurrency_factor?: number;
+  annual_consumption_mwh?: number;
+  supply_source?: string;
+  supply_cable?: string;
+  lighting_control?: string;
+  emergency_lighting?: boolean;
+  emergency_duration_min?: number;
+  outlet_cable?: string;
+  outlet_ip_rating?: string;
+  surge_protection_type?: string;
+  revision_standard?: string;
+  protection_methods?: string[];
+  cable_types_main?: string[];
+  installation_methods?: string[];
+  switchboards?: Record<string, unknown>[];
+  power_balance?: Record<string, unknown>[];
+  tzb_connections?: Record<string, unknown>[];
+  sources?: Record<string, string>;
+}
+
+/** Slaboproud — low-voltage systems (SCS, PZTS, CCTV, EPS, etc.) */
+export interface SlaboproudParams {
+  section_id?: string;
+  pd_level?: string;
+  subsystems?: string[];
+  scs?: Record<string, unknown>;
+  pzts?: Record<string, unknown>;
+  skv?: Record<string, unknown>;
+  cctv?: Record<string, unknown>;
+  eps?: Record<string, unknown>;
+  avt?: Record<string, unknown>;
+  intercom?: Record<string, unknown>;
+  sources?: Record<string, string>;
+}
+
+/** VZT — ventilation and air conditioning */
+export interface VZTParams {
+  section_id?: string;
+  pd_level?: string;
+  building_name?: string;
+  building_type?: string;
+  ventilation_strategy?: string;
+  total_supply_m3h?: number;
+  total_exhaust_m3h?: number;
+  ahu_count?: number;
+  split_cooling_count?: number;
+  exhaust_fan_count?: number;
+  fire_damper_count?: number;
+  total_heating_kw?: number;
+  total_cooling_kw?: number;
+  duct_material?: string;
+  duct_insulation?: string;
+  control_system?: string;
+  bms_integration?: boolean;
+  noise_limit_db?: number;
+  design_outdoor_temp_winter?: number;
+  design_outdoor_temp_summer?: number;
+  design_indoor_temp?: number;
+  regulations_used?: string[];
+  devices?: Record<string, unknown>[];
+  sources?: Record<string, string>;
+}
+
+/** ZTI — plumbing (water supply + sewerage + rainwater) */
+export interface ZTIParams {
+  section_id?: string;
+  pd_level?: string;
+  building_name?: string;
+  building_type?: string;
+  floors_above?: number;
+  floors_below?: number;
+  occupants?: number;
+  design_flow_qww_ls?: number;
+  main_branch_dn?: number;
+  water_demand_m3_year?: number;
+  fire_hydrants?: boolean;
+  fire_hydrant_dn?: number;
+  sewage?: Record<string, unknown>;
+  rainwater?: Record<string, unknown>;
+  cold_water?: Record<string, unknown>;
+  hot_water?: Record<string, unknown>;
+  fixtures?: Record<string, unknown>[];
+  connections?: Record<string, unknown>[];
+  sources?: Record<string, string>;
+}
+
+/** UT — central heating */
+export interface UTParams {
+  section_id?: string;
+  pd_level?: string;
+  building_name?: string;
+  building_type?: string;
+  heat_loss_total_kw?: number;
+  design_outdoor_temp_c?: number;
+  design_indoor_temp_c?: number;
+  u_mean_wm2k?: number;
+  specific_heat_demand_kwh_m2?: number;
+  energy_class?: string;
+  dhw_source?: string;
+  dhw_storage_volume_l?: number;
+  heat_source?: Record<string, unknown>;
+  secondary_heat_source?: Record<string, unknown>;
+  heating_system?: Record<string, unknown>;
+  chimney?: Record<string, unknown>;
+  garage_heating?: Record<string, unknown>;
+  sources?: Record<string, string>;
+}
+
+/** MaR — measurement and regulation (BMS/automation) */
+export interface MaRParams {
+  section_id?: string;
+  pd_level?: string;
+  control_system_brand?: string;
+  control_system_type?: string;
+  plc_type?: string;
+  io_points_count?: number;
+  bus_protocol?: string;
+  bms_integration?: boolean;
+  visualization?: string;
+  remote_access?: boolean;
+  controlled_professions?: string[];
+  controlled_equipment?: string[];
+  temperature_sensors_count?: number;
+  humidity_sensors_count?: number;
+  pressure_sensors_count?: number;
+  other_sensors?: string[];
+  sources?: Record<string, string>;
+}
+
+// ============================================================================
+// Railway Params (železniční stavby)
+// ============================================================================
+
+/** Železniční svršek — railway superstructure */
+export interface ZelSvrsekParams {
+  section_id?: string;
+  so_id?: string;
+  pd_level?: string;
+  project_name?: string;
+  track_section?: string;
+  track_category?: string;
+  max_speed_kmh?: number;
+  axle_load_t?: number;
+  load_class?: string;
+  track_position?: string;
+  traction_system?: string;
+  safety_device?: string;
+  track_count?: number;
+  start_km?: number;
+  end_km?: number;
+  total_length_m?: number;
+  reconstruction_length_m?: number;
+  walkway_width_m?: number;
+  walkway_renewal?: boolean;
+  gpk?: Record<string, unknown>;
+  track_frame?: Record<string, unknown>;
+  continuous_welded?: Record<string, unknown>;
+  sources?: Record<string, string>;
+}
+
+/** Železniční spodek — railway substructure */
+export interface ZelSpodekParams {
+  section_id?: string;
+  so_id?: string;
+  pd_level?: string;
+  e_min_zp_mpa?: number;
+  e_min_pl_mpa?: number;
+  kpp_zones?: Record<string, unknown>[];
+  subgrade?: Record<string, unknown>;
+  formation_level?: Record<string, unknown>;
+  drainage?: Record<string, unknown>;
+  slope_stability?: Record<string, unknown>;
+  sources?: Record<string, string>;
+}
+
+/** IGP — engineering-geological survey */
+export interface IGPParams {
+  project_name?: string;
+  contractor?: string;
+  client?: string;
+  report_date?: string;
+  location_municipality?: string;
+  elevation_range_m?: string;
+  track_vmax_kmh?: number;
+  track_load_class?: string;
+  required_e_min_zp_mpa?: number;
+  required_e_min_pl_pp_mpa?: number;
+  conclusion_summary?: string;
+  probes?: Record<string, unknown>[];
+  load_tests?: Record<string, unknown>[];
+  geology?: Record<string, unknown>;
+  hydrogeology?: Record<string, unknown>;
+  lab_results?: Record<string, unknown>[];
+  sources?: Record<string, string>;
 }
 
 // AI model type — backend auto-selects (Vertex AI on Cloud Run, Gemini fallback)

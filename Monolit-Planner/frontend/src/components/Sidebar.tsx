@@ -677,14 +677,25 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
             <h3 className="c-section-title">
               <span>📐</span> Plánovač
             </h3>
-            <button
-              className="c-btn c-btn--sm"
-              onClick={() => window.location.href = '/planner'}
-              style={{ width: '100%' }}
-              title="Plánování elementu: bednění, výztuž, betonáž, harmonogram"
-            >
-              📐 Plánovač elementu
-            </button>
+            <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
+              <button
+                className="c-btn c-btn--sm"
+                onClick={() => window.location.href = '/planner'}
+                style={{ flex: 1 }}
+                title="Plánování elementu: bednění, výztuž, betonáž, harmonogram"
+              >
+                📐 Plánovač elementu
+              </button>
+              <button
+                className="c-btn c-btn--sm"
+                onClick={() => window.location.href = `/project-gantt${selectedBridge ? `?bridge_id=${encodeURIComponent(selectedBridge)}` : ''}`}
+                style={{ flex: 1 }}
+                disabled={!selectedBridge}
+                title={selectedBridge ? 'Gantt diagram celého projektu' : 'Nejprve vyberte objekt'}
+              >
+                📊 Gantt projektu
+              </button>
+            </div>
           </div>
 
           <div className="sidebar-section u-mt-lg">

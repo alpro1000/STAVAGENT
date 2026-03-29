@@ -71,4 +71,42 @@ export interface MonolithPayload {
   source_tag: string;
   confidence: number;
   calculated_at: string;
+
+  // Extended cost breakdown from PlannerOutput (P3: TOV pre-fill)
+  costs?: {
+    formwork_labor_czk: number;
+    rebar_labor_czk: number;
+    pour_labor_czk: number;
+    pour_night_premium_czk: number;
+    total_labor_czk: number;
+    formwork_rental_czk: number;
+    props_labor_czk: number;
+    props_rental_czk: number;
+  };
+  resources?: {
+    total_formwork_workers: number;
+    total_rebar_workers: number;
+    crew_size_formwork: number;
+    crew_size_rebar: number;
+    shift_h: number;
+    wage_formwork_czk_h: number;
+    wage_rebar_czk_h: number;
+    wage_pour_czk_h: number;
+    pour_shifts: number;
+  };
+  formwork_info?: {
+    system_name: string;
+    manufacturer: string;
+    rental_czk_m2_month: number;
+    assembly_days: number;
+    disassembly_days: number;
+    curing_days: number;
+    formwork_area_m2: number;
+    num_tacts: number;
+    num_sets: number;
+  };
+  schedule_info?: {
+    total_days: number;
+    tact_count: number;
+  };
 }

@@ -35,6 +35,7 @@ const MORE_TOOLS = [
   { icon: '⚙️', name: 'Kalkulačka čerpadel', desc: '3 dodavatelé, příplatky, kalendář' },
   { icon: '📄', name: 'Ceníky dodavatelů', desc: 'PDF ceníky → strukturovaná data' },
   { icon: '📋', name: 'Generování seznamu prací', desc: 'AI vytvoří strukturovaný seznam stavebních prací z dokumentů' },
+  { icon: '📐', name: 'Generátor výkazu výměr', desc: 'TZ → AI extrakce konstrukcí a objemů → výkaz výměr' },
 ];
 
 const FEATURES = [
