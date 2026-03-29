@@ -1795,7 +1795,7 @@ export default function PlannerPage() {
                       assembly_days: plan.formwork.assembly_days,
                       disassembly_days: plan.formwork.disassembly_days,
                       curing_days: plan.formwork.curing_days,
-                      formwork_area_m2: parseFloat(form.formwork_area_m2) || plan.rebar?.formwork_area_m2 || 0,
+                      formwork_area_m2: parseFloat(form.formwork_area_m2) || 0,
                       num_tacts: plan.pour_decision.num_tacts,
                       num_sets: form.num_sets,
                     },
