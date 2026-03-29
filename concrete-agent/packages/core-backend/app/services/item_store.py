@@ -597,10 +597,16 @@ async def _update_block_pg(item_id: str, request: UpdateBlockRequest, pool) -> U
         raise ValueError(f"Unknown namespace: {ns}")
 
     async with pool.acquire() as conn:
-        result = await conn.execute(
-            f"UPDATE project_items SET {column} = $1, updated_at = $2 WHERE item_id = $3",
-            data_json, now, item_id,
-        )
+        # Use CASE-based query to avoid f-string SQL interpolation (CWE-89)
+        query = """
+            UPDATE project_items
+            SET estimate_data = CASE WHEN $4 = 'estimate_data' THEN $1 ELSE estimate_data END,
+                monolit_data = CASE WHEN $4 = 'monolit_data' THEN $1 ELSE monolit_data END,
+                classification_data = CASE WHEN $4 = 'classification_data' THEN $1 ELSE classification_data END,
+                updated_at = $2
+            WHERE item_id = $3
+        """
+        result = await conn.execute(query, data_json, now, item_id, column)
         if result == "UPDATE 0":
             raise ValueError(f"Item {item_id} not found")
 
