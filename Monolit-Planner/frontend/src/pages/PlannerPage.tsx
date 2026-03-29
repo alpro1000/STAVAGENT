@@ -1745,7 +1745,6 @@ export default function PlannerPage() {
               showLog={showLog}
               onToggleLog={() => setShowLog(!showLog)}
               scenarios={scenarios}
-              positionContext={positionContext}
               applyStatus={applyStatus}
               onApplyToPosition={positionContext ? async () => {
                 setApplyStatus('saving');
@@ -2066,13 +2065,12 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, positionContext, applyStatus, onApplyToPosition }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
   onToggleLog: () => void;
   scenarios?: any[];
-  positionContext?: { item_id?: string | null; position_id?: string | null; part_name?: string | null } | null;
   applyStatus?: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
 }) {

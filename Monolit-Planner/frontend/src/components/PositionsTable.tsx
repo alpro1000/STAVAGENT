@@ -309,93 +309,7 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
-  // Handle formwork calculator transfer - create bednění positions + update beton curing days
-  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
-    if (!selectedBridge) return;
-
-    if (!targetPartName) {
-      const partNames = Object.keys(groupedPositions);
-      if (partNames.length === 0) {
-        alert('Nejprve vytvořte část konstrukce');
-        return;
-      }
-      targetPartName = partNames[0];
-    }
-
-    try {
-      const newPositions: Partial<Position>[] = [];
-
-      calcRows.forEach(row => {
-        newPositions.push({
-          id: uuidv4(),
-          bridge_id: selectedBridge,
-          part_name: targetPartName,
-          item_name: `Bednění + ${row.construction_name} - Montáž`,
-          subtype: 'bednění' as Subtype,
-          unit: 'm2',
-          qty: row.total_area_m2,
-          crew_size: 4,
-          wage_czk_ph: 398,
-          shift_hours: 10,
-          days: row.assembly_days_per_tact * row.num_tacts
-        });
-
-        newPositions.push({
-          id: uuidv4(),
-          bridge_id: selectedBridge,
-          part_name: targetPartName,
-          item_name: `Bednění + ${row.construction_name} - Demontáž`,
-          subtype: 'bednění' as Subtype,
-          unit: 'm2',
-          qty: row.total_area_m2,
-          crew_size: 4,
-          wage_czk_ph: 398,
-          shift_hours: 10,
-          days: row.disassembly_days_per_tact * row.num_tacts
-        });
-      });
-
-      const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
-
-      if (result.positions) {
-        setPositions(result.positions);
-        if (result.header_kpi) {
-          setHeaderKPI(result.header_kpi);
-        }
-      }
-
-      // Transfer curing days from MaturityConfigPanel → beton row's curing_days
-      // Use result.positions (fresh from API) instead of stale component state
-      const maturityDays = (calcRows[0] as any)?._maturity_curing_days;
-      if (maturityDays && maturityDays > 0 && targetPartName && result.positions) {
-        const betonPosition = result.positions.find(
-          (p: Position) => p.part_name === targetPartName && p.subtype === 'beton'
-        );
-        if (betonPosition?.id) {
-          updatePositions([{ id: betonPosition.id, curing_days: maturityDays }]);
-        }
-      }
-
-      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      setShowFormworkCalc(false);
-      setFormworkCalcPartName(null);
-
-      const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
-      const totalArea = calcRows.reduce((acc, r) => acc + r.total_area_m2, 0);
-      const curingInfo = maturityDays ? `\n   Zrání betonu: ${maturityDays} dní (přeneseno do tabulky)` : '';
-
-      alert(
-        `Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"${curingInfo}\n\n` +
-        `NÁJEM BEDNĚNÍ - přidejte do Registry TOV:\n` +
-        `Parametry pro kalkulátor:\n` +
-        `   Plocha: ${totalArea.toFixed(1)} m²\n` +
-        `   Termín nájmu: ${totalRentalDays} dní\n` +
-        `   Systém: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n`
-      );
-    } catch (error) {
-      alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
-    }
-  };
+  // handleFormworkTransfer removed — FormworkCalculatorModal replaced by /planner navigation
 
   // Handle new part creation from OTSKP search
   const handleNewPartSelected = async (otskpCode: string, partName: string) => {
@@ -554,7 +468,7 @@ export default function PositionsTable() {
                     // Navigate to Planner with position context
                     const betonPos = partPositions.find(p => p.subtype?.toLowerCase().includes('beton') || p.subtype?.toLowerCase().includes('železo'));
                     const params = new URLSearchParams();
-                    params.set('bridge_id', bridgeId);
+                    params.set('bridge_id', selectedBridge || '');
                     params.set('part_name', partName);
                     if (betonPos) {
                       params.set('position_id', betonPos.id);
