@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.6.0
+**Version:** 3.7.0
 **Last Updated:** 2026-03-29
 **Repository:** STAVAGENT (Monorepo)
 
@@ -1022,40 +1022,89 @@ GET  /api/v1/items/{project}/grouped → construction cards (beton + armatura[] 
 
 **PR #752:** `claude/credit-system-landing-vvnxV` → main (9 commits, 34 files, +769/-535 lines) — ready to merge
 
+**Completed (2026-03-29, session 10 — P3-P7 + SO Cards + Fixes):**
+- **P3: TOV предзаполнение из калькулятора:**
+  - PlannerOutput.costs → TOV sections (labor/machinery/materials)
+  - PlannerPage: "Aplikovat do pozice" button writes planner metadata to position
+  - Position context via useSearchParams (item_id, bridge_id, part_name, volume_m3, concrete_class)
+- **P4: Общий Гантт проекта (ProjectGantt.tsx):**
+  - All positions with planner data → unified project timeline
+  - Gantt date-free when in position context (days only)
+  - Fix: `bridgeInfo?.name` → `bridgeInfo?.object_name` (TS2339)
+- **P5: Мини-калькуляторы (кран + доставка):**
+  - `CraneCalcData` + `DeliveryCalcData` interfaces in unified.ts
+  - CraneRentalSection + DeliveryCalcSection wired into MachineryTab with real data
+  - Auto-persist pattern (same as pump/formwork): `isAutoSaving.current = true; onSave(updatedData)`
+  - TOVModal: total cost includes all 5 sources (labor + machinery + materials + formwork + pump + crane + delivery)
+  - TOVSummary: shows crane (amber) + delivery (green) cost rows
+  - dovWriteBack: crane_rental + delivery_calc in DOV payload
+- **P6: Публичный калькулятор в Portal:**
+  - `/portal/calculator` route (ProtectedRoute)
+  - Service card on PortalPage + LandingPage
+- **P7: Сценарий Б (ТЗ → элементы → объёмы):**
+  - `routes_scenario_b.py` backend: upload → parse → extract elements → generate positions
+  - `ScenarioBPage.tsx` frontend: drag-and-drop upload, AI progress, summary cards, elements table, positions table, CSV export
+  - Portal core-proxy: `'scenario-b' → '/api/v1/scenario-b'`
+  - Service card "Generátor výkazu výměr" on PortalPage + LandingPage
+- **9 SO Card Renderers (D.1.4 + Railway + IGP):**
+  - `passport.ts`: 9 TypeScript interfaces (SilnoproudParams, SlaboproudParams, VZTParams, ZTIParams, UTParams, MaRParams, ZelSvrsekParams, ZelSpodekParams, IGPParams)
+  - `MergedSO` extended with 9 optional typed params fields
+  - `SOCard.tsx`: 9 rendering sections with Czech labels + specialized sub-renderers:
+    - Silnoproud: switchboard badges, cable specs
+    - Slaboproud: subsystem tags (SCS, PZTS, SKV, CCTV, EPS, AVT) + detail blocks
+    - VZT: device grid cards (airflow, heating/cooling kW)
+    - ZTI: sewage/rainwater/water sub-blocks + fixtures badges
+    - UT: heat source + heating system detail blocks
+    - MaR: flat field grid
+    - Zel svršek: GPK params + track frame blocks
+    - Zel spodek: KPP zones list
+    - IGP: probes grid + geology + conclusion
+- **Bug fixes:**
+  - TS2339 `formwork_area_m2` not on `RebarLiteResult` → use form input only
+  - CWE-22 Path Traversal in `routes_scenario_b.py` → extract ext from `safe_name`
+  - lucide-react icon imports (CraneIcon/TruckIcon → Truck)
+
+**Branch:** `claude/stavagent-tov-gantt-updates-UL8mV` — 6 commits:
+- `01f1c4d` — P3-P7 implementation (15 files, +1790 lines)
+- `a401c09` — Fix: Bridge.object_name TS error
+- `f3ae823` — Mini-calculator persistence + Scenario B frontend (12 files, +621 lines)
+- `2415bd0` — 9 SO card renderers (+616 lines)
+- `2851edf` — Fix: TS2339 formwork_area_m2
+- `ec0afbe` — Fix: CWE-22 path traversal
+
+**PR #758:** `claude/stavagent-tov-gantt-updates-UL8mV` → main — reviewed by Amazon Q, security fix applied
+
 ---
 
 ## ЗАДАНИЕ НА СЛЕДУЮЩУЮ СЕССИЮ
 
-### Приоритет 1 — Критичные задачи
-1. **Merge PR #752** → main → дождаться Cloud Build deploy всех сервисов
-2. **Проверить все 3 субдомена** после deploy: kalkulator.stavagent.cz, registry.stavagent.cz, klasifikator.stavagent.cz
-3. **Проверить регистрацию** end-to-end: register → email → verify → login → portal
-4. **Resend domain verification**: если stavagent.cz подтверждён в Resend, обновить FROM email на `noreply@stavagent.cz` (env var `RESEND_FROM_EMAIL` в Cloud Run)
+### Приоритет 1 — Merge и deploy
+1. **Merge PR #758** → main → дождаться Cloud Build deploy
+2. **Merge PR #752** (если ещё не смержен) → credit system + landing + anti-fraud
+3. **Проверить все 3 субдомена** после deploy: kalkulator.stavagent.cz, registry.stavagent.cz, klasifikator.stavagent.cz
+4. **Проверить регистрацию** end-to-end: register → email → verify → login → portal
 
-### Приоритет 2 — Функциональные улучшения
-5. **Stripe интеграция**: настроить `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` в GCP Secret Manager → включить оплату кредитов
-6. **DocumentAnalysisPage** для неавторизованных: sessionOnly режим должен работать без API (сейчас кнопка есть, но может не работать полностью)
-7. **Landing page**: добавить скриншот/демо результата AI анализа (повышает конверсию)
-8. **Удалить мёртвый код**: проверить что SoupisTab.tsx, UrsClassifierDrawer.tsx удалены (были помечены как dead в session 4)
+### Приоритет 2 — Инфраструктура (ручные действия)
+5. **Resend domain verification**: обновить FROM email на `noreply@stavagent.cz`
+6. **Stripe интеграция**: настроить `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` в GCP Secret Manager
+7. **VPC connector** для Cloud SQL — убрать публичный IP базы данных
+8. **AWS Bedrock quota** — запросить увеличение RPM для Claude моделей
+9. **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → Secret Manager
 
-### Приоритет 3 — Инфраструктура
-9. **VPC connector** для Cloud SQL — убрать публичный IP базы данных
-10. **Redis для URS Matcher** — опционально, если будет высокая нагрузка
-11. **reCAPTCHA на регистрации** — когда пойдёт трафик
-12. **AWS Bedrock quota** — запросить увеличение RPM для Claude моделей
+### Приоритет 3 — Функциональные улучшения
+10. **URS catalog harvest** — запустить `POST /api/urs-catalog/harvest` на Cloud Run (разовый сбор, строит локальную базу URS из podminky.urs.cz через Perplexity)
+11. **DocumentAnalysisPage sessionOnly** — проверить что анонимный режим работает без API
+12. **Landing page** — добавить скриншот/демо результата AI-анализа (конверсия)
+13. **URS Matcher credit deduction** — исправить порядок: сначала вызов API, потом списание кредитов (Amazon Q review finding)
+14. **Удалить мёртвый код** — проверить SoupisTab.tsx, UrsClassifierDrawer.tsx
 
-### Приоритет 4 — Развитие продукта
-13. **D.1.4 frontend renderers** (SilnoproudCard, SlaboproudCard и др.)
-14. **Full URS catalog harvest**: `POST /api/urs-catalog/harvest` после deploy (Perplexity + podminky.urs.cz)
-15. **IFC/BIM support** (нужны бинарные зависимости)
-16. **Vitest migration** (Jest → Vitest для фронтендов)
-
-**Feature roadmap (long-term):**
-- Deep Links between kiosks
-- Bedrock quota increase + model upgrade to Claude 3.5+
-- URS Matcher auth middleware (service key for Portal→URS calls)
-- Session-only mode for Monolit Kalkulátor (external Vercel app)
-- No CAPTCHA on registration yet (add when traffic grows)
+### Приоритет 4 — Развитие продукта (долгосрочно)
+15. **Миграция на Vitest** (Jest → Vitest для фронтендов)
+16. **IFC/BIM support** (нужны бинарные зависимости)
+17. **reCAPTCHA на регистрации** (когда пойдёт трафик)
+18. **Deep Links** между кисками (Registry ↔ Monolit ↔ URS)
+19. **Session-only mode** для Monolit Kalkulátor (external Vercel app)
+20. **Redis для URS Matcher** — кеширование при высокой нагрузке
 
 ---
 
