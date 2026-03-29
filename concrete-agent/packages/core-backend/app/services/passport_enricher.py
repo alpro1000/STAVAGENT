@@ -26,6 +26,7 @@ Date: 2026-02-10
 import json
 import logging
 import os
+import re
 import time
 from typing import Dict, Any, List, Optional
 from anthropic import Anthropic
@@ -837,7 +838,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         return await self._call_vertex_gemini(augmented_prompt)
 
     def _parse_json_response(self, text: str) -> Optional[Dict[str, Any]]:
-        """Parse JSON from LLM response, handling markdown code blocks"""
+        """Parse JSON from LLM response, handling markdown code blocks and truncated output"""
         try:
             # Remove markdown code blocks if present
             text = text.strip()
@@ -851,9 +852,63 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             return json.loads(text)
 
         except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse JSON response: {e}")
+            logger.warning(f"JSON parse failed, attempting repair: {e}")
+            # Try to repair truncated JSON by closing open braces/brackets
+            repaired = self._repair_truncated_json(text)
+            if repaired:
+                try:
+                    result = json.loads(repaired)
+                    logger.info("JSON repair successful")
+                    return result
+                except json.JSONDecodeError:
+                    pass
+            logger.error(f"Failed to parse JSON response (repair also failed): {e}")
             logger.debug(f"Response text: {text[:500]}")
             return None
+
+    @staticmethod
+    def _repair_truncated_json(text: str) -> Optional[str]:
+        """Attempt to repair truncated JSON by closing open brackets/braces."""
+        text = text.strip()
+        # Find start of JSON
+        start = text.find('{')
+        if start == -1:
+            return None
+        text = text[start:]
+
+        # Remove trailing comma before closing
+        text = re.sub(r',\s*$', '', text)
+
+        # Count open/close braces and brackets
+        stack = []
+        in_string = False
+        escape = False
+        for ch in text:
+            if escape:
+                escape = False
+                continue
+            if ch == '\\' and in_string:
+                escape = True
+                continue
+            if ch == '"' and not escape:
+                in_string = not in_string
+                continue
+            if in_string:
+                continue
+            if ch in ('{', '['):
+                stack.append(ch)
+            elif ch == '}' and stack and stack[-1] == '{':
+                stack.pop()
+            elif ch == ']' and stack and stack[-1] == '[':
+                stack.pop()
+
+        if not stack:
+            return text  # Already balanced
+
+        # Close unclosed brackets/braces in reverse order
+        closers = {'[': ']', '{': '}'}
+        suffix = ''.join(closers[ch] for ch in reversed(stack))
+        return text + suffix
 
     # =============================================================================
     # FACTS PREPARATION
