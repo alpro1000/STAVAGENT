@@ -197,7 +197,7 @@ async function seedAdminIfNeeded() {
       // Fix: if password_hash is invalid (e.g. '$2b$10$placeholder' from GCP init), reset it
       const hashLooksInvalid = !existingUser.password_hash ||
         existingUser.password_hash.includes('placeholder') ||
-        existingUser.password_hash.length < 50;
+        existingUser.password_hash.length !== 60;
       const updates = hashLooksInvalid
         ? { hash: await bcrypt.hash(password, 10), msg: 'Promoted + password reset' }
         : { hash: null, msg: 'Promoted existing user' };
