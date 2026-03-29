@@ -17,8 +17,8 @@ import PartHeader from './PartHeader';
 import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
 import CustomWorkModal from './CustomWorkModal';
-import FormworkCalculatorModal from './FormworkCalculatorModal';
-import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
+// FormworkCalculatorModal removed — replaced by /planner route
+// import FormworkCalculatorModal from './FormworkCalculatorModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
@@ -31,9 +31,7 @@ export default function PositionsTable() {
   const [showNewPartModal, setShowNewPartModal] = useState(false);
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
-  const [showFormworkCalc, setShowFormworkCalc] = useState(false);
-  const [formworkCalcPartName, setFormworkCalcPartName] = useState<string | null>(null);
-  const [formworkCalcElementDays, setFormworkCalcElementDays] = useState<number>(0);
+  // FormworkCalculatorModal state removed — replaced by /planner navigation
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -553,9 +551,17 @@ export default function PositionsTable() {
                     handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
                   onOpenFormworkCalculator={() => {
-                    setFormworkCalcPartName(partName);
-                    setFormworkCalcElementDays(calculateElementTotalDays(partPositions));
-                    setShowFormworkCalc(true);
+                    // Navigate to Planner with position context
+                    const betonPos = partPositions.find(p => p.subtype?.toLowerCase().includes('beton') || p.subtype?.toLowerCase().includes('železo'));
+                    const params = new URLSearchParams();
+                    params.set('bridge_id', bridgeId);
+                    params.set('part_name', partName);
+                    if (betonPos) {
+                      params.set('position_id', betonPos.id);
+                      params.set('volume_m3', String(betonPos.qty || 0));
+                      if (betonPos.subtype) params.set('subtype', betonPos.subtype);
+                    }
+                    window.location.href = `/planner?${params.toString()}`;
                   }}
                   isLocked={isLocked}
                   projectId={selectedBridge || undefined}
@@ -705,21 +711,7 @@ export default function PositionsTable() {
         />
       )}
 
-      {/* Formwork Calculator Modal */}
-      {showFormworkCalc && selectedBridge && formworkCalcPartName && (
-        <FormworkCalculatorModal
-          bridgeId={selectedBridge}
-          partNames={Object.keys(groupedPositions)}
-          currentPartName={formworkCalcPartName}
-          elementTotalDays={formworkCalcElementDays}
-          onTransfer={(rows) => handleFormworkTransfer(rows, formworkCalcPartName)}
-          onClose={() => {
-            setShowFormworkCalc(false);
-            setFormworkCalcPartName(null);
-            setFormworkCalcElementDays(0);
-          }}
-        />
-      )}
+      {/* FormworkCalculatorModal removed — replaced by /planner route */}
     </div>
   );
 }
