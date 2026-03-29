@@ -209,6 +209,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
     OPENAI_MODEL = "gpt-4.1"  # Smartest without reasoning
     OPENAI_MINI_MODEL = "gpt-4.1-mini"  # Smaller, faster
     PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
+    GROK_MODEL = "grok-3-mini"  # xAI Grok, OpenAI-compatible API
+    DEEPSEEK_MODEL = "deepseek-chat"  # DeepSeek V3, OpenAI-compatible API
 
     def __init__(self, preferred_model: Optional[str] = None, vertex_service_account: Optional[str] = None):
         """
@@ -222,6 +224,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 - "openai" (GPT-4 Turbo)
                 - "openai-mini" (GPT-4o Mini, cheap)
                 - "perplexity" (with web search)
+                - "grok" (xAI Grok)
+                - "deepseek" (DeepSeek)
                 - "vertex-ai-gemini" (Gemini via Vertex AI / Google Cloud billing)
                 - "vertex-ai-search" (Vertex AI Search + Gemini enrichment)
                 - "auto" (fallback chain)
@@ -242,6 +246,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         self.openai_client = None
         self.perplexity_available = False
         self.vertex_gemini_model = None
+        self.grok_client = None
+        self.deepseek_client = None
 
         # Gemini (FREE)
         if settings.GOOGLE_API_KEY:
@@ -307,6 +313,24 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         if hasattr(settings, 'PERPLEXITY_API_KEY') and settings.PERPLEXITY_API_KEY:
             self.perplexity_available = True
             logger.info(f"✅ Perplexity initialized: {self.PERPLEXITY_MODEL}")
+
+        # Grok (xAI) — OpenAI-compatible API
+        xai_key = getattr(settings, 'XAI_API_KEY', '')
+        if xai_key:
+            try:
+                self.grok_client = OpenAI(api_key=xai_key, base_url="https://api.x.ai/v1")
+                logger.info(f"✅ Grok (xAI) initialized: {self.GROK_MODEL}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Grok: {e}")
+
+        # DeepSeek — OpenAI-compatible API
+        deepseek_key = getattr(settings, 'DEEPSEEK_API_KEY', '')
+        if deepseek_key:
+            try:
+                self.deepseek_client = OpenAI(api_key=deepseek_key, base_url="https://api.deepseek.com")
+                logger.info(f"✅ DeepSeek initialized: {self.DEEPSEEK_MODEL}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize DeepSeek: {e}")
 
         # Vertex AI (Google Cloud billing — uses ADC or GOOGLE_APPLICATION_CREDENTIALS)
         # Auto-activates on Cloud Run (K_SERVICE present) or when preferred_model starts with "vertex"
@@ -379,6 +403,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         if self.claude_client: available.append("Claude")
         if self.openai_client: available.append("OpenAI")
         if self.perplexity_available: available.append("Perplexity")
+        if self.grok_client: available.append("Grok")
+        if self.deepseek_client: available.append("DeepSeek")
         if self.vertex_gemini_model: available.append("Vertex AI")
 
         logger.info(f"Available LLM providers: {', '.join(available) if available else 'None'}")
@@ -495,7 +521,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         logger.info(
             f"[LLM] Providers status: vertex={self.vertex_gemini_model is not None}, "
             f"gemini={self.gemini_model is not None}, claude={self.claude_client is not None}, "
-            f"openai={self.openai_client is not None}, perplexity={self.perplexity_available}"
+            f"openai={self.openai_client is not None}, perplexity={self.perplexity_available}, "
+            f"grok={self.grok_client is not None}, deepseek={self.deepseek_client is not None}"
         )
 
         for idx, provider_name in enumerate(call_order):
@@ -510,7 +537,9 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                     (provider_name == "Claude Haiku" and self.claude_client) or
                     (provider_name == "OpenAI" and self.openai_client) or
                     (provider_name == "OpenAI Mini" and self.openai_client) or
-                    (provider_name == "Perplexity" and self.perplexity_available)
+                    (provider_name == "Perplexity" and self.perplexity_available) or
+                    (provider_name == "Grok" and self.grok_client) or
+                    (provider_name == "DeepSeek" and self.deepseek_client)
                 )
                 if not provider_available:
                     logger.info(f"[LLM] [{idx+1}/{len(call_order)}] {provider_name} — SKIPPED (not initialized)")
@@ -535,6 +564,10 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                     result = await self._call_openai(prompt, self.OPENAI_MINI_MODEL)
                 elif provider_name == "Perplexity" and self.perplexity_available:
                     result = await self._call_perplexity(prompt)
+                elif provider_name == "Grok" and self.grok_client:
+                    result = await self._call_grok(prompt)
+                elif provider_name == "DeepSeek" and self.deepseek_client:
+                    result = await self._call_deepseek(prompt)
 
                 elapsed_ms = int((time.time() - t0) * 1000)
 
@@ -597,6 +630,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 "claude": "Claude Sonnet" if "sonnet" in model else "Claude Haiku",
                 "perplexity": "Perplexity",
                 "openai": "OpenAI",
+                "grok": "Grok",
+                "deepseek": "DeepSeek",
             }
 
             preferred = router_to_internal.get(provider)
@@ -641,6 +676,10 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 return await self._call_openai(prompt, self.OPENAI_MODEL)
             elif provider_name == "Perplexity" and self.perplexity_available:
                 return await self._call_perplexity(prompt)
+            elif provider_name == "Grok" and self.grok_client:
+                return await self._call_grok(prompt)
+            elif provider_name == "DeepSeek" and self.deepseek_client:
+                return await self._call_deepseek(prompt)
         except Exception as e:
             logger.warning(f"Provider {provider_name} failed: {e}")
         return None
@@ -649,15 +688,17 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         """Get LLM call order based on preferred model"""
         # Map preference to call order
         orders = {
-            "gemini": ["Gemini", "Claude Haiku", "OpenAI Mini", "Claude Sonnet", "OpenAI"],
-            "claude-sonnet": ["Claude Sonnet", "Gemini", "OpenAI", "Claude Haiku"],
-            "claude-haiku": ["Claude Haiku", "Gemini", "OpenAI Mini", "Claude Sonnet"],
-            "openai": ["OpenAI", "Gemini", "Claude Sonnet", "Claude Haiku"],
-            "openai-mini": ["OpenAI Mini", "Gemini", "Claude Haiku", "OpenAI"],
-            "perplexity": ["Perplexity", "Gemini", "Claude Sonnet", "OpenAI"],
-            "vertex-ai-gemini": ["Vertex Gemini", "Gemini", "Claude Haiku", "OpenAI Mini"],
-            "vertex-ai-search": ["Vertex Search", "Vertex Gemini", "Gemini", "Claude Haiku"],
-            "auto": ["Gemini", "Claude Haiku", "OpenAI Mini", "Claude Sonnet", "OpenAI", "Perplexity"]
+            "gemini": ["Gemini", "Claude Haiku", "OpenAI Mini", "Grok", "DeepSeek", "Claude Sonnet", "OpenAI"],
+            "claude-sonnet": ["Claude Sonnet", "Gemini", "OpenAI", "Grok", "DeepSeek", "Claude Haiku"],
+            "claude-haiku": ["Claude Haiku", "Gemini", "OpenAI Mini", "Grok", "DeepSeek", "Claude Sonnet"],
+            "openai": ["OpenAI", "Gemini", "Claude Sonnet", "Grok", "DeepSeek", "Claude Haiku"],
+            "openai-mini": ["OpenAI Mini", "Gemini", "Claude Haiku", "Grok", "DeepSeek", "OpenAI"],
+            "perplexity": ["Perplexity", "Gemini", "Claude Sonnet", "Grok", "DeepSeek", "OpenAI"],
+            "grok": ["Grok", "Gemini", "DeepSeek", "Claude Haiku", "OpenAI Mini"],
+            "deepseek": ["DeepSeek", "Gemini", "Grok", "Claude Haiku", "OpenAI Mini"],
+            "vertex-ai-gemini": ["Vertex Gemini", "Gemini", "Claude Haiku", "Grok", "DeepSeek", "OpenAI Mini"],
+            "vertex-ai-search": ["Vertex Search", "Vertex Gemini", "Gemini", "Grok", "DeepSeek", "Claude Haiku"],
+            "auto": ["Gemini", "Claude Haiku", "OpenAI Mini", "Grok", "DeepSeek", "Claude Sonnet", "OpenAI", "Perplexity"]
         }
 
         return orders.get(self.preferred_model, orders["gemini"])
@@ -776,6 +817,66 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                     return self._parse_json_response(text)
             logger.warning(f"[LLM:Perplexity] ⚠️ HTTP {response.status_code}, {elapsed_ms}ms")
 
+        return None
+
+    async def _call_grok(self, prompt: str) -> Optional[Dict[str, Any]]:
+        """Call xAI Grok API (OpenAI-compatible, sync → async via to_thread)"""
+        if not self.grok_client:
+            return None
+        import asyncio
+        t0 = time.time()
+        logger.info(f"[LLM:Grok] calling model={self.GROK_MODEL}, prompt={len(prompt)}ch")
+
+        def _sync_call():
+            return self.grok_client.chat.completions.create(
+                model=self.GROK_MODEL,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.3,
+                max_tokens=2048,
+            )
+
+        response = await asyncio.to_thread(_sync_call)
+        elapsed_ms = int((time.time() - t0) * 1000)
+
+        if response and response.choices:
+            text = response.choices[0].message.content
+            usage = response.usage
+            logger.info(
+                f"[LLM:Grok] ✅ model={self.GROK_MODEL}, response={len(text)}ch, {elapsed_ms}ms, "
+                f"usage=in:{usage.prompt_tokens}/out:{usage.completion_tokens}"
+            )
+            return self._parse_json_response(text)
+        logger.warning(f"[LLM:Grok] ⚠️ empty response, {elapsed_ms}ms")
+        return None
+
+    async def _call_deepseek(self, prompt: str) -> Optional[Dict[str, Any]]:
+        """Call DeepSeek API (OpenAI-compatible, sync → async via to_thread)"""
+        if not self.deepseek_client:
+            return None
+        import asyncio
+        t0 = time.time()
+        logger.info(f"[LLM:DeepSeek] calling model={self.DEEPSEEK_MODEL}, prompt={len(prompt)}ch")
+
+        def _sync_call():
+            return self.deepseek_client.chat.completions.create(
+                model=self.DEEPSEEK_MODEL,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.3,
+                max_tokens=2048,
+            )
+
+        response = await asyncio.to_thread(_sync_call)
+        elapsed_ms = int((time.time() - t0) * 1000)
+
+        if response and response.choices:
+            text = response.choices[0].message.content
+            usage = response.usage
+            logger.info(
+                f"[LLM:DeepSeek] ✅ model={self.DEEPSEEK_MODEL}, response={len(text)}ch, {elapsed_ms}ms, "
+                f"usage=in:{usage.prompt_tokens}/out:{usage.completion_tokens}"
+            )
+            return self._parse_json_response(text)
+        logger.warning(f"[LLM:DeepSeek] ⚠️ empty response, {elapsed_ms}ms")
         return None
 
     async def _call_vertex_gemini(self, prompt: str) -> Optional[Dict[str, Any]]:

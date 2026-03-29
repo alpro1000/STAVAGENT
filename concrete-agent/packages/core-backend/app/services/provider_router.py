@@ -48,32 +48,44 @@ TASK_PROVIDER_MAP: Dict[TaskType, list] = {
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # $0.25/1M, confirmed
         ("gemini", "gemini-2.5-flash"),
+        ("grok", "grok-3-mini"),
+        ("deepseek", "deepseek-chat"),
     ],
     TaskType.EXTRACT: [
         ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),  # AWS credits, confirmed
         ("claude", "claude-sonnet-4-6"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
+        ("deepseek", "deepseek-chat"),
+        ("grok", "grok-3-mini"),
     ],
     TaskType.CONTRADICTION: [
         ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # AWS credits, fast
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("gemini", "gemini-2.5-flash"),
+        ("grok", "grok-3-mini"),
+        ("deepseek", "deepseek-chat"),
     ],
     TaskType.VERIFY_UNKNOWN: [
         ("perplexity", "sonar-pro"),
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),
+        ("grok", "grok-3-mini"),
+        ("deepseek", "deepseek-chat"),
     ],
     TaskType.SUMMARIZE: [
         ("vertex-ai-gemini", "gemini-2.5-flash"),
         ("bedrock", "anthropic.claude-3-haiku-20240307-v1:0"),  # Cheap
         ("gemini", "gemini-2.5-flash"),
+        ("deepseek", "deepseek-chat"),
+        ("grok", "grok-3-mini"),
     ],
     TaskType.HEAVY_ANALYSIS: [
         ("vertex-ai-gemini", "gemini-2.5-pro"),
         ("bedrock", "anthropic.claude-3-sonnet-20240229-v1:0"),  # AWS credits
         ("claude", "claude-sonnet-4-6"),
+        ("deepseek", "deepseek-chat"),
+        ("grok", "grok-3-mini"),
     ],
 }
 
@@ -163,6 +175,20 @@ def detect_available_providers() -> set:
             reasons.append("openai=YES")
         else:
             reasons.append("openai=NO")
+
+        # Grok (xAI)
+        if getattr(settings, "XAI_API_KEY", ""):
+            available.add("grok")
+            reasons.append("grok=YES (XAI_API_KEY set)")
+        else:
+            reasons.append("grok=NO (XAI_API_KEY missing)")
+
+        # DeepSeek
+        if getattr(settings, "DEEPSEEK_API_KEY", ""):
+            available.add("deepseek")
+            reasons.append("deepseek=YES (DEEPSEEK_API_KEY set)")
+        else:
+            reasons.append("deepseek=NO (DEEPSEEK_API_KEY missing)")
 
         # AWS Bedrock (uses AWS credentials)
         has_aws_key = bool(getattr(settings, "AWS_ACCESS_KEY_ID", ""))
