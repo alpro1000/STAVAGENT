@@ -101,8 +101,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch (error: any) {
       // Handle both error and message fields from backend
-      const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Login failed';
-      console.error('[AUTH] Login error:', errorMsg);
+      let errorMsg: string;
+      if (error.response?.data) {
+        errorMsg = error.response.data.message || error.response.data.error || 'Login failed';
+      } else if (error.request) {
+        // Request was made but no response received (network/CORS issue)
+        errorMsg = 'Server nedostupný. Zkontrolujte připojení k internetu.';
+      } else {
+        errorMsg = error.message || 'Login failed';
+      }
+      console.error('[AUTH] Login error:', errorMsg, error.response?.status);
       throw new Error(errorMsg);
     }
   };
