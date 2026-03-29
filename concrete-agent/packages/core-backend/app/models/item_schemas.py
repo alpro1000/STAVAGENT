@@ -141,6 +141,12 @@ class CoreMetadata(BaseModel):
     classification_filled: bool = False
     deleted_in_reimport: bool = False        # Missing from new version of file
     source_file: Optional[str] = None
+    # Grouping: linked positions (beton + armatura + opalubka)
+    group_leader_id: Optional[str] = None    # If this is rebar/formwork, points to parent beton
+    group_role: Optional[str] = None         # "beton", "armatura", "opalubka", None
+    group_members: Optional[List[str]] = None  # If this is beton, list of linked item_ids
+    armatura_included: bool = False          # "vč. výztuže" detected in description
+    opalubka_included: bool = False          # "vč. bednění" detected in description
 
 
 # ---------------------------------------------------------------------------

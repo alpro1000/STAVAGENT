@@ -34,6 +34,7 @@ from app.models.item_schemas import (
     UpdateBlockResponse,
 )
 from app.services.code_detector import detect_code_system
+from app.services.position_grouper import group_positions
 
 logger = logging.getLogger(__name__)
 
@@ -84,6 +85,11 @@ def _item_to_project_item(row: dict) -> ProjectItem:
             classification_filled=classification_data is not None,
             deleted_in_reimport=row.get("deleted_in_reimport", False),
             source_file=row.get("source_file"),
+            group_role=row.get("group_role"),
+            group_leader_id=row.get("group_leader_id"),
+            group_members=row.get("group_members"),
+            armatura_included=row.get("armatura_included", False),
+            opalubka_included=row.get("opalubka_included", False),
         ),
     )
 
@@ -234,6 +240,19 @@ async def bulk_import(request: BulkImportRequest, pool=None) -> BulkImportRespon
     for iid, row in _items_store.items():
         if row["project_id"] == project_id and iid not in seen_ids:
             row["deleted_in_reimport"] = True
+
+    # Run position grouping (beton + armatura + opalubka)
+    result_items = group_positions(result_items)
+
+    # Persist grouping back to store
+    for item in result_items:
+        if item.item_id in _items_store:
+            row = _items_store[item.item_id]
+            row["group_role"] = item.core.group_role
+            row["group_leader_id"] = item.core.group_leader_id
+            row["group_members"] = item.core.group_members
+            row["armatura_included"] = item.core.armatura_included
+            row["opalubka_included"] = item.core.opalubka_included
 
     return BulkImportResponse(
         project_id=project_id,
