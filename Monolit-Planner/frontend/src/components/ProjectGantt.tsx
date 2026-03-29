@@ -215,7 +215,7 @@ export default function ProjectGantt() {
             Gantt projektu
           </h1>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--r0-slate-500)' }}>
-            {bridgeInfo?.name || activeBridgeId} — {rows.length} pozic, {totalDays} prac. dní
+            {bridgeInfo?.object_name || activeBridgeId} — {rows.length} pozic, {totalDays} prac. dní
           </p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
