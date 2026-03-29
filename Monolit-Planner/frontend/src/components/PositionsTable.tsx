@@ -471,7 +471,7 @@ export default function PositionsTable() {
                     params.set('bridge_id', selectedBridge || '');
                     params.set('part_name', partName);
                     if (betonPos) {
-                      params.set('position_id', betonPos.id);
+                      if (betonPos.id) params.set('position_id', betonPos.id);
                       params.set('volume_m3', String(betonPos.qty || 0));
                       if (betonPos.subtype) params.set('subtype', betonPos.subtype);
                     }
