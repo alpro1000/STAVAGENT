@@ -93,8 +93,8 @@ async def _parse_file_to_text(content: bytes, filename: str) -> str:
     import tempfile
     from pathlib import Path
 
-    ext = Path(filename).suffix.lower()
     safe_name = Path(filename).name  # prevent path traversal
+    ext = Path(safe_name).suffix.lower()
 
     with tempfile.NamedTemporaryFile(suffix=ext, delete=True) as tmp:
         tmp.write(content)
