@@ -69,9 +69,12 @@ const ALLOWED_ORIGINS = [...new Set([
   'https://kalkulator.stavagent.cz',
   'https://www.stavagent.cz',
   'https://stavagent.cz',
+  'https://stavagent-portal.vercel.app',
   'https://stavagent-backend.vercel.app',
   'https://stavagent-backend-ktwx.vercel.app',
   'https://registry.stavagent.cz',
+  'https://klasifikator.stavagent.cz',
+  'https://stavagent-registry.vercel.app',
   process.env.CORS_ORIGIN,
 ].filter(Boolean))];
 

@@ -192,13 +192,26 @@ async function seedAdminIfNeeded() {
     const name = 'Admin';
 
     // Check if user with this email already exists
-    const existingUser = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    const existingUser = await db.prepare('SELECT id, password_hash FROM users WHERE email = ?').get(email);
     if (existingUser) {
-      // User exists but is not admin — promote to admin
-      await db.prepare(
-        "UPDATE users SET role = 'admin', email_verified = true, email_verified_at = ? WHERE email = ?"
-      ).run(new Date().toISOString(), email);
-      console.log(`[Seed Admin] Promoted existing user ${email} to admin`);
+      // Fix: if password_hash is invalid (e.g. '$2b$10$placeholder' from GCP init), reset it
+      const hashLooksInvalid = !existingUser.password_hash ||
+        existingUser.password_hash.includes('placeholder') ||
+        existingUser.password_hash.length < 50;
+      const updates = hashLooksInvalid
+        ? { hash: await bcrypt.hash(password, 10), msg: 'Promoted + password reset' }
+        : { hash: null, msg: 'Promoted existing user' };
+
+      if (updates.hash) {
+        await db.prepare(
+          "UPDATE users SET role = 'admin', email_verified = true, email_verified_at = ?, password_hash = ? WHERE email = ?"
+        ).run(new Date().toISOString(), updates.hash, email);
+      } else {
+        await db.prepare(
+          "UPDATE users SET role = 'admin', email_verified = true, email_verified_at = ? WHERE email = ?"
+        ).run(new Date().toISOString(), email);
+      }
+      console.log(`[Seed Admin] ${updates.msg} ${email} to admin`);
       return;
     }
 
