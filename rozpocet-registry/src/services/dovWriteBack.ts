@@ -88,6 +88,12 @@ export function buildDOVPayload(tov: TOVData): Record<string, unknown> {
       total_czk: tov.pumpRental.konecna_cena || 0,
     } : null,
 
+    // Crane rental (mini-calculator)
+    crane_rental: tov.craneRental || null,
+
+    // Delivery calc (mini-calculator)
+    delivery_calc: tov.deliveryCalc || null,
+
     // Grand total
     grand_total: {
       labor_czk: (tov.labor || []).reduce((s, l) => s + (l.totalCost || 0), 0),
@@ -95,13 +101,17 @@ export function buildDOVPayload(tov: TOVData): Record<string, unknown> {
       materials_czk: tov.materialsSummary?.totalCost || 0,
       rental_czk:
         ((tov.formworkRental || []).reduce((s, r) => s + (r.konecny_najem || 0), 0)) +
-        (tov.pumpRental?.konecna_cena || 0),
+        (tov.pumpRental?.konecna_cena || 0) +
+        (tov.craneRental?.total_czk || 0),
+      delivery_czk: tov.deliveryCalc?.total_czk || 0,
       total_czk:
         (tov.labor || []).reduce((s, l) => s + (l.totalCost || 0), 0) +
         (tov.machinery || []).reduce((s, m) => s + (m.totalCost || 0), 0) +
         (tov.materialsSummary?.totalCost || 0) +
         ((tov.formworkRental || []).reduce((s, r) => s + (r.konecny_najem || 0), 0)) +
-        (tov.pumpRental?.konecna_cena || 0),
+        (tov.pumpRental?.konecna_cena || 0) +
+        (tov.craneRental?.total_czk || 0) +
+        (tov.deliveryCalc?.total_czk || 0),
       currency: 'CZK' as const,
     },
 

@@ -7,11 +7,11 @@
 
 import { useState } from 'react';
 import { Plus, Trash2, Truck, Zap } from 'lucide-react';
-import type { MachineryResource, PumpRentalData } from '../../types/unified';
+import type { MachineryResource, PumpRentalData, CraneCalcData, DeliveryCalcData } from '../../types/unified';
 import { v4 as uuidv4 } from 'uuid';
 import { PumpRentalSection } from './PumpRentalSection';
-import { CraneRentalSection, type CraneCalcData } from './CraneRentalSection';
-import { DeliveryCalcSection, type DeliveryCalcData } from './DeliveryCalcSection';
+import { CraneRentalSection } from './CraneRentalSection';
+import { DeliveryCalcSection } from './DeliveryCalcSection';
 
 // Work groups where the concrete pump calculator is relevant
 const PUMP_SKUPINY = new Set(['BETON_MONOLIT', 'BETON_PREFAB', 'PILOTY']);
@@ -24,6 +24,12 @@ interface MachineryTabProps {
   itemLabel?: string;           // "kod - popis" for PumpRentalSection nazev pre-fill
   pumpRental?: PumpRentalData;
   onPumpRentalChange?: (data: PumpRentalData) => void;
+  craneRental?: CraneCalcData;
+  onCraneRentalChange?: (data: CraneCalcData) => void;
+  deliveryCalc?: DeliveryCalcData;
+  onDeliveryCalcChange?: (data: DeliveryCalcData) => void;
+  defaultVolume?: number;
+  defaultConcreteClass?: string;
 }
 
 const COMMON_MACHINERY = [
@@ -60,6 +66,12 @@ export function MachineryTab({
   itemLabel,
   pumpRental,
   onPumpRentalChange,
+  craneRental,
+  onCraneRentalChange,
+  deliveryCalc,
+  onDeliveryCalcChange,
+  defaultVolume,
+  defaultConcreteClass,
 }: MachineryTabProps) {
   const showPumpCalc = !!itemSkupina && PUMP_SKUPINY.has(itemSkupina);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -357,12 +369,14 @@ export function MachineryTab({
       <div className="space-y-3 mt-4">
         <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider">Mini-kalkulátory</h4>
         <CraneRentalSection
-          data={undefined}
-          onChange={() => {}}
+          data={craneRental}
+          onChange={onCraneRentalChange || (() => {})}
         />
         <DeliveryCalcSection
-          data={undefined}
-          onChange={() => {}}
+          data={deliveryCalc}
+          onChange={onDeliveryCalcChange || (() => {})}
+          defaultVolume={defaultVolume}
+          defaultClass={defaultConcreteClass}
         />
       </div>
     </div>

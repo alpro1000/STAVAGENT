@@ -33,23 +33,9 @@ const CONCRETE_PRICES: Record<string, number> = {
   'C50/60': 4600,
 };
 
-export interface DeliveryCalcData {
-  mixer_id: string;
-  concrete_class: string;
-  volume_m3: number;
-  distance_km: number;
-  concrete_price_m3: number;
-  weekend_surcharge: boolean;
-  small_qty_surcharge: boolean;  // < 3 m³
-  waiting_hours: number;
-  waiting_czk_h: number;
-  // Computed
-  num_deliveries: number;
-  transport_czk: number;
-  concrete_czk: number;
-  surcharges_czk: number;
-  total_czk: number;
-}
+// Re-export from unified types for backwards compat
+export type { DeliveryCalcData } from '../../types/unified';
+import type { DeliveryCalcData } from '../../types/unified';
 
 interface Props {
   data: DeliveryCalcData | undefined;

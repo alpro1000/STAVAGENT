@@ -19,16 +19,9 @@ const CRANES = [
   { id: 'terex_ac45', model: 'AC 45 City', manufacturer: 'Terex', type: 'mobile_compact', capacity_t: 45, radius_m: 38, height_m: 48, day_czk: 6500, hour_czk: 900, note: 'Kompaktní, městské stavby' },
 ];
 
-export interface CraneCalcData {
-  crane_id: string;
-  billing_mode: 'hourly' | 'daily' | 'monthly';
-  hours: number;
-  days: number;
-  months: number;
-  mobilizations: number;
-  mobilization_czk: number;
-  total_czk: number;
-}
+// Re-export from unified types for backwards compat
+export type { CraneCalcData } from '../../types/unified';
+import type { CraneCalcData } from '../../types/unified';
 
 interface Props {
   data: CraneCalcData | undefined;

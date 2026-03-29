@@ -37,6 +37,7 @@ const ParsePreviewPage = lazy(() => import('./pages/ParsePreviewPage'));
 const DocumentAnalysisPage = lazy(() => import('./pages/DocumentAnalysisPage'));
 const NKBAdminPage = lazy(() => import('./pages/NKBAdminPage'));
 const CalculatorPage = lazy(() => import('./pages/CalculatorPage'));
+const ScenarioBPage = lazy(() => import('./pages/ScenarioBPage'));
 
 // ── Loading fallback ─────────────────────────────────────────────────────────
 function PageLoader() {
@@ -108,6 +109,9 @@ function App() {
 
               {/* Public calculator — no auth, embeds Monolit Planner */}
               <Route path="/portal/calculator" element={<CalculatorPage />} />
+
+              {/* Scenario B — TZ → Výkaz výměr (requires login) */}
+              <Route path="/portal/scenario-b" element={<ProtectedRoute><ScenarioBPage /></ProtectedRoute>} />
 
               {/* NKB Admin — norm/rule management */}
               <Route path="/portal/nkb" element={<ProtectedRoute><NKBAdminPage /></ProtectedRoute>} />

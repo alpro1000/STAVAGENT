@@ -351,6 +351,10 @@ export interface TOVData {
   // === KALKULÁTOR BETONOČERPADLA (only for BETON_MONOLIT / BETON_PREFAB) ===
   pumpRental?: PumpRentalData;
 
+  // === MINI-KALKULÁTORY (optional, any position) ===
+  craneRental?: CraneCalcData;
+  deliveryCalc?: DeliveryCalcData;
+
   // === MONOLIT DEEP-LINK METADATA (set during Monolit → Registry export) ===
   monolitMetadata?: {
     /** Monolit project/bridge ID */
@@ -460,4 +464,37 @@ export interface KioskMessage {
   portalProjectId: string;
   payload: unknown;
   timestamp: string;
+}
+
+// ============================================================================
+// MINI-KALKULÁTORY (Crane + Delivery)
+// ============================================================================
+
+export interface CraneCalcData {
+  crane_id: string;
+  billing_mode: 'hourly' | 'daily' | 'monthly';
+  hours: number;
+  days: number;
+  months: number;
+  mobilizations: number;
+  mobilization_czk: number;
+  total_czk: number;
+}
+
+export interface DeliveryCalcData {
+  mixer_id: string;
+  concrete_class: string;
+  volume_m3: number;
+  distance_km: number;
+  concrete_price_m3: number;
+  weekend_surcharge: boolean;
+  small_qty_surcharge: boolean;
+  waiting_hours: number;
+  waiting_czk_h: number;
+  // Computed
+  num_deliveries: number;
+  transport_czk: number;
+  concrete_czk: number;
+  surcharges_czk: number;
+  total_czk: number;
 }

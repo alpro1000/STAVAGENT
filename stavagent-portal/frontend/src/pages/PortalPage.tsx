@@ -145,6 +145,16 @@ const SERVICES: Service[] = [
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
+  // ===== GENEROVÁNÍ =====
+  {
+    id: 'scenario-b',
+    name: 'Generátor výkazu výměr',
+    description: 'Nahraje TZ (PDF/DOCX) → AI extrahuje konstrukce a objemy → vygeneruje výkaz výměr (beton + výztuž + bednění). Objemy pouze z dokumentu.',
+    icon: '📐',
+    url: '/portal/scenario-b',
+    status: 'active' as const,
+    tags: ['TZ', 'Výkaz výměr', 'AI', 'Konstrukce']
+  },
   // ===== PŘIPRAVUJEME =====
   {
     id: 'formwork-calculator',

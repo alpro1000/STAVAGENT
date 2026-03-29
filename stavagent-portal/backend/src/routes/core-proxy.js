@@ -32,6 +32,7 @@ const CREDIT_MAP = {
   'price-parser': 'price_parser',
   'nkb': 'nkb_advisor',
   'multi-role': 'chat_message',
+  'scenario-b': 'passport_generate',
 };
 
 /** Route mapping: proxy prefix → CORE path prefix */
@@ -51,6 +52,7 @@ const ROUTE_MAP = {
   'parse': '/api/v1/parse',
   'project': '/api/v1/project',
   'nkb': '/api/v1/nkb',
+  'scenario-b': '/api/v1/scenario-b',
 };
 
 /** Resolve CORE target URL from request */
