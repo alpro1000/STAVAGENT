@@ -173,9 +173,10 @@ function loadTSKPHierarchy() {
     }
     parts.push(current.trim());
 
+    if (parts.length <= Math.max(kodIdx, popisIdx)) continue;
+
     const kod = parts[kodIdx] || '';
     const popisFull = parts[popisIdx] || '';
-    const popisShort = parts[popisShortIdx] || '';
 
     if (kod && popisFull) {
       tskpMap.set(kod, popisFull);
@@ -258,12 +259,21 @@ async function main() {
   // 2. Parse KROS CSV files
   log('');
   log('Parsing URS201801.csv...');
+  if (!fs.existsSync(URS_CSV)) {
+    log(`⚠ ${URS_CSV} not found — skipping URS import`);
+    process.exit(0);
+  }
   const ursItems = parseSemicolonCSV(URS_CSV);
   log(`✓ Parsed ${ursItems.length} URS codes`);
 
   log('Parsing CENEKON201801.csv...');
-  const cenekonItems = parseSemicolonCSV(CENEKON_CSV);
-  log(`✓ Parsed ${cenekonItems.length} CENEKON entries`);
+  let cenekonItems = [];
+  if (fs.existsSync(CENEKON_CSV)) {
+    cenekonItems = parseSemicolonCSV(CENEKON_CSV);
+    log(`✓ Parsed ${cenekonItems.length} CENEKON entries`);
+  } else {
+    log(`⚠ ${CENEKON_CSV} not found — skipping CENEKON enrichment`);
+  }
 
   // Build CENEKON lookup (code → keywords for supplementary data)
   const cenekonMap = new Map();
