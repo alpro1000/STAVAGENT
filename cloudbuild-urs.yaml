@@ -65,7 +65,7 @@ steps:
       - --allow-unauthenticated
       - --port=3001
       - --remove-env-vars=PPLX_API_KEY,ANTHROPIC_API_KEY,GOOGLE_API_KEY,OPENAI_API_KEY
-      - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_API_KEY=GOOGLE_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEP_SEEK:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,HLIDAC_API_TOKEN=HLIDAC_API_TOKEN:latest
+      - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_API_KEY=GOOGLE_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,DEEPSEEK_API_KEY=DEEPSEEK_API_KEY:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,HLIDAC_API_TOKEN=HLIDAC_API_TOKEN:latest
       - --update-env-vars=GOOGLE_GENAI_USE_VERTEXAI=true,LLM_PROVIDER=gemini,GEMINI_MODEL=gemini-2.5-flash,GOOGLE_CLOUD_PROJECT=project-947a512a-481d-49b5-81c,VERTEX_LOCATION=europe-west3,AWS_REGION=us-east-1,BEDROCK_MODEL_ID=anthropic.claude-3-haiku-20240307-v1:0
 
 images:
