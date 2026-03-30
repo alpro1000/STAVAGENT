@@ -5,7 +5,7 @@
  * Route: /portal/nkb
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -208,11 +208,18 @@ export default function NKBAdminPage() {
     }
   }, []);
 
-  const fetchStats = useCallback(async () => {
+  const statsLoadedRef = useRef(false);
+  const fetchStats = useCallback(async (force = false) => {
+    // Prevent duplicate fetches on mount / StrictMode double-render
+    if (statsLoadedRef.current && !force) return;
     try {
       const res = await fetch(`${CORE_API_URL}/nkb/stats`, { signal: AbortSignal.timeout(10000) });
-      if (res.ok) setStats(await res.json());
-    } catch { /* ignore */ }
+      if (res.status === 429) return; // Rate limited — skip silently
+      if (res.ok) {
+        setStats(await res.json());
+        statsLoadedRef.current = true;
+      }
+    } catch { /* ignore network errors */ }
   }, []);
 
   /* ── Harvest functions ── */
@@ -341,7 +348,7 @@ export default function NKBAdminPage() {
     else if (tab === 'rules') fetchRules();
     else if (tab === 'harvest') fetchHarvestStatus();
     else if (tab === 'audit') { fetchAuditStatus(); fetchAuditResult(); }
-    fetchStats();
+    fetchStats(); // Uses ref guard — only fetches once unless forced
   }, [tab]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* ── Search handler ── */
@@ -378,7 +385,7 @@ export default function NKBAdminPage() {
       setShowAddNorm(false);
       setNewNorm({ norm_id: '', category: 'csn', designation: '', title: '', priority: 70, construction_types: '', objects: '', tags: '' });
       fetchNorms();
-      fetchStats();
+      fetchStats(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při ukládání');
     } finally {
@@ -421,7 +428,7 @@ export default function NKBAdminPage() {
         unit: '', is_mandatory: true, priority: 70, section_reference: '', tags: '',
       });
       fetchRules();
-      fetchStats();
+      fetchStats(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při ukládání pravidla');
     } finally {
