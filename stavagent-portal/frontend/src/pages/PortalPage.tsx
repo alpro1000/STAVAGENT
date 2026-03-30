@@ -82,7 +82,7 @@ const SERVICES: Service[] = [
   // ===== KALKULACE =====
   {
     id: 'monolit-calculator',
-    name: 'Kalkulátor rozpočtu',
+    name: 'Monolit Planner',
     description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
     icon: '🪨',
     url: 'https://kalkulator.stavagent.cz',
