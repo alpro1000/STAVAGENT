@@ -148,7 +148,9 @@ export async function buildWorkPackages({
     wp.cpv_correlation = await getCpvCorrelation(db, wp.typical_dily || []);
   }
 
-  // Save to DB
+  // Save to DB (atomic: delete + insert in transaction)
+  await db.run('BEGIN TRANSACTION');
+  try {
   await db.run('DELETE FROM work_packages');
   for (const wp of packages) {
     await db.run(
@@ -174,6 +176,11 @@ export async function buildWorkPackages({
       ]
     );
   }
+  await db.run('COMMIT');
+  } catch (err) {
+    await db.run('ROLLBACK').catch(() => {});
+    throw err;
+  }
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
   logger.info(`[WP] Built ${packages.length} work packages in ${elapsed}s`);
@@ -186,14 +193,18 @@ export async function buildWorkPackages({
 // ============================================================================
 
 async function enrichCluster(db, clusterCodes, index) {
+  // Validate input — only allow alphanumeric code prefixes
+  const safeCodes = clusterCodes.filter(c => /^[a-zA-Z0-9]{1,10}$/.test(c));
+  if (safeCodes.length === 0) return null;
+
   // Get sample positions for these code prefixes
-  const placeholders = clusterCodes.map(() => '?').join(',');
+  const placeholders = safeCodes.map(() => '?').join(',');
   const positions = await db.all(
     `SELECT kod_norm, kod_prefix, popis, mj, typ_prace, dil_6
      FROM rozpocet_polozky
      WHERE kod_prefix IN (${placeholders})
      LIMIT 200`,
-    clusterCodes
+    safeCodes
   );
 
   if (positions.length === 0) return null;
@@ -548,12 +559,16 @@ function deserializeWP(row) {
 async function getCpvCorrelation(db, codePrefixes) {
   if (!codePrefixes.length) return [];
 
+  // Validate input — only alphanumeric prefixes
+  const safePrefixes = codePrefixes.filter(c => /^[a-zA-Z0-9]{1,10}$/.test(c));
+  if (safePrefixes.length === 0) return [];
+
   try {
     // Check if cpv_hlavni column exists
     const columns = await db.all("PRAGMA table_info(rozpocet_source)");
     if (!columns.some(c => c.name === 'cpv_hlavni')) return [];
 
-    const placeholders = codePrefixes.map(() => '?').join(',');
+    const placeholders = safePrefixes.map(() => '?').join(',');
     const cpvRows = await db.all(
       `SELECT DISTINCT s.cpv_hlavni, COUNT(*) as count
        FROM rozpocet_polozky p
@@ -563,7 +578,7 @@ async function getCpvCorrelation(db, codePrefixes) {
        GROUP BY s.cpv_hlavni
        ORDER BY count DESC
        LIMIT 5`,
-      codePrefixes
+      safePrefixes
     );
     return cpvRows.map(r => r.cpv_hlavni).filter(Boolean);
   } catch {
@@ -572,7 +587,11 @@ async function getCpvCorrelation(db, codePrefixes) {
 }
 
 function safeJSON(str) {
-  try { return JSON.parse(str); } catch { return str; }
+  if (!str || str === 'null') return null;
+  try { return JSON.parse(str); } catch (err) {
+    logger.warn(`[WP] Failed to parse JSON field: ${String(str).substring(0, 50)}`);
+    return null;
+  }
 }
 
 export { ensureWPSchema };
