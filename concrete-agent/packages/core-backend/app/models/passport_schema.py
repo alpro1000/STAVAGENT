@@ -614,6 +614,75 @@ class MergedSO(BaseModel):
 
 
 # =============================================================================
+# DRAWING-SPECIFIC MODELS (Výkresy)
+# =============================================================================
+
+class ConcreteByElement(BaseModel):
+    """Concrete specification per structural element, as found on drawings.
+
+    Example from drawing legend:
+    ZÁKLADY: C30/37 – XF2, XC2, XA1 – CI 0,4 – Dmax 22
+    """
+    element: str = Field(..., description="Element name (ZÁKLADY, STĚNY, STROPY, PILÍŘE, NK...)")
+    concrete_class: str = Field(..., description="e.g. C30/37")
+    exposure_classes: List[ExposureClass] = Field(default_factory=list)
+    max_wc_ratio: Optional[float] = Field(None, description="CI (w/c ratio), e.g. 0.4")
+    dmax_mm: Optional[int] = Field(None, description="Max aggregate size, e.g. 22 mm")
+    consistency_class: Optional[str] = Field(None, description="e.g. S3, S4, F5")
+    scc: bool = Field(False, description="Self-compacting concrete (SCC/samozhutnitelný)")
+    cover_min_mm: Optional[int] = Field(None, description="Krytí minimální (mm)")
+    cover_nom_mm: Optional[int] = Field(None, description="Krytí jmenovité (mm)")
+    max_penetration_mm: Optional[int] = Field(None, description="Max průsak (mm)")
+    raw_text: str = Field("", description="Original text from drawing")
+    confidence: float = Field(1.0)
+
+
+class DrawingNote(BaseModel):
+    """Technology note from drawing (PZ/01–PZ/10 or POZNÁMKY section)."""
+    note_id: str = Field(..., description="e.g. PZ/01, PZ/02, POZN. 1")
+    text: str = Field(..., description="Full note text")
+    work_type: Optional[str] = Field(None, description="Detected work type (BETON, ETICS, IZOLACE...)")
+    confidence: float = Field(1.0)
+
+
+class TitleBlock(BaseModel):
+    """Title block (razítko / štampové pole) data from drawing."""
+    stavba: Optional[str] = Field(None, description="Project name")
+    objekt: Optional[str] = Field(None, description="Object / SO name")
+    obsah: Optional[str] = Field(None, description="Drawing content description")
+    stupen_pd: Optional[str] = Field(None, description="PD level (DÚR, DSP, DPS, PDPS, DSPS)")
+    meritko: Optional[str] = Field(None, description="Scale (1:50, 1:100)")
+    format: Optional[str] = Field(None, description="Paper format (A1, A2, A3)")
+    cislo_vykresu: Optional[str] = Field(None, description="Drawing number (D.1.1.01)")
+    datum: Optional[str] = Field(None, description="Date")
+    revize: Optional[str] = Field(None, description="Revision (A, B, C, 01, 02)")
+    projektant: Optional[str] = Field(None, description="Designer name")
+    zodpovedny_projektant: Optional[str] = Field(None, description="Responsible designer (autorizovaný inženýr)")
+    confidence: float = Field(1.0)
+
+
+class DrawingData(BaseModel):
+    """Structured data extracted from construction drawings (výkresy)."""
+    concrete_by_element: List[ConcreteByElement] = Field(
+        default_factory=list,
+        description="Concrete specs per structural element"
+    )
+    notes: List[DrawingNote] = Field(
+        default_factory=list,
+        description="Technology notes (PZ/01–PZ/10)"
+    )
+    title_block: Optional[TitleBlock] = Field(
+        None,
+        description="Title block / razítko data"
+    )
+    etics_notes: List[str] = Field(
+        default_factory=list,
+        description="ETICS/KZS facade insulation notes"
+    )
+    has_scc: bool = Field(False, description="SCC / samozhutnitelný beton detected")
+
+
+# =============================================================================
 # MAIN PASSPORT MODEL
 # =============================================================================
 
@@ -670,6 +739,13 @@ class ProjectPassport(BaseModel):
     special_requirements: List[SpecialRequirement] = Field(
         default_factory=list,
         description="Special construction requirements"
+    )
+
+    # === DRAWING DATA (Výkresy) ===
+
+    drawing_data: Optional[DrawingData] = Field(
+        None,
+        description="Structured data extracted from construction drawings"
     )
 
     # === SUB-OBJECTS (Bridges, Buildings, etc.) ===

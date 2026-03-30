@@ -33,6 +33,10 @@ from app.models.passport_schema import (
     ConcreteType,
     ExposedConcreteClass,
     TenderInfo,
+    ConcreteByElement,
+    DrawingNote,
+    TitleBlock,
+    DrawingData,
 )
 
 logger = logging.getLogger(__name__)
@@ -249,6 +253,11 @@ class CzechConstructionExtractor:
 
         # Extract referenced documents (potentially missing)
         results['referenced_documents'] = self.extract_referenced_documents(text)
+
+        # Extract drawing-specific data (výkresy)
+        results['drawing_data'] = self.extract_drawing(text)
+        if results['drawing_data']:
+            self.stats['drawing_elements'] = len(results['drawing_data'].concrete_by_element)
 
         # Extract tender / procurement data (Zadávací dokumentace)
         results['tender_info'] = self._extract_tender_info(text)
@@ -1211,6 +1220,249 @@ class CzechConstructionExtractor:
 
         logger.info(f"Extracted {len(data)} tender fields")
         return TenderInfo(**data)
+
+    # =============================================================================
+    # V4: DRAWING (VÝKRES) EXTRACTION
+    # =============================================================================
+
+    # Concrete per element: "ZÁKLADY: C30/37 – XF2, XC2, XA1 – CI 0,4 – Dmax 22"
+    # Also: "NK: C35/45-XC4,XF3,XD1-Cl 0,2-Dmax 16-S4"
+    DRAWING_CONCRETE_ELEMENT_RE = re.compile(
+        r'(?P<element>[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽa-záčďéěíňóřšťúůýž\s/]{2,30}?)'
+        r'\s*[:–\-]\s*'
+        r'(?P<class>C\s?\d{2,3}/\d{2,3})'
+        r'(?P<rest>[^;\n]{0,200})',
+        re.MULTILINE
+    )
+
+    # Cover: "KRYTÍ MINIMÁLNÍ 40 mm", "KRYTÍ JMENOVITÉ 50 mm", "krytí min./jmen. 40/50 mm"
+    COVER_PATTERNS = {
+        'cover_min': re.compile(r'kryt[íi]\s+min(?:imáln[íi])?\s*[:.]?\s*(\d+)\s*mm', re.IGNORECASE),
+        'cover_nom': re.compile(r'kryt[íi]\s+jmenovit[ée]\s*[:.]?\s*(\d+)\s*mm', re.IGNORECASE),
+        'cover_combined': re.compile(r'kryt[íi]\s+(?:min\.?\s*/\s*jmen\.?|minimální\s*/\s*jmenovité)\s*[:.]?\s*(\d+)\s*/\s*(\d+)\s*mm', re.IGNORECASE),
+    }
+
+    # Penetration: "MAX. PRŮSAK 20 mm", "průsak max 20mm dle ČSN EN 12390-8"
+    PENETRATION_RE = re.compile(
+        r'(?:max\.?\s+)?průsak\s+(?:max\.?\s+)?(\d+)\s*mm',
+        re.IGNORECASE
+    )
+
+    # SCC / samozhutnitelný beton
+    SCC_RE = re.compile(r'SCC|samozhutn[ěi]teln[ýé]\s+beton', re.IGNORECASE)
+
+    # Dmax: "Dmax 22", "D_max 16 mm", "Dmax=32"
+    DMAX_RE = re.compile(r'[Dd]\s*max\s*[=:\s]\s*(\d+)', re.IGNORECASE)
+
+    # CI (w/c): "CI 0,4", "Cl 0.45", "w/c 0,55"
+    CI_RE = re.compile(r'(?:CI|Cl|w/c)\s*[=:\s]\s*(\d[,.]?\d+)', re.IGNORECASE)
+
+    # ETICS / KZS notes
+    ETICS_RE = re.compile(
+        r'((?:ZATEPLEN[ÍI]|KZS|ETICS|kontaktn[íi]\s+zateplovac[íi])'
+        r'[^.;\n]{10,200})',
+        re.IGNORECASE
+    )
+
+    # Drawing notes: PZ/01, PZ/02, POZN. 1, POZNÁMKA 2
+    # Excludes bare section headers like "POZNÁMKY:" with no number
+    NOTE_HEADER_RE = re.compile(
+        r'(?P<id>PZ\s*/\s*\d{1,2}|POZN(?:\.|ÁMKA)?\s*\.?\s*\d{1,2})'
+        r'\s*[:–\-]?\s*'
+        r'(?P<text>[^\n]{10,500})',
+        re.IGNORECASE
+    )
+
+    # Title block patterns
+    TITLE_BLOCK_PATTERNS = {
+        'stavba': re.compile(r'(?:STAVBA|AKCE)\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
+        'objekt': re.compile(r'(?:OBJEKT|SO)\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
+        'obsah': re.compile(r'OBSAH\s+(?:VÝKRESU)?\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
+        'stupen_pd': re.compile(r'(?:STUPEŇ|STUPEN)\s*(?:PD)?\s*[:]\s*(D[ÚU]R|DSP|DPS|DVZ|DSPS|PDPS)', re.IGNORECASE),
+        'meritko': re.compile(r'(?:MĚŘÍTKO|MERITKO|M)\s*[:]\s*(1\s*:\s*\d+)', re.IGNORECASE),
+        'format': re.compile(r'FORMÁT\s*[:]\s*(A[0-4])', re.IGNORECASE),
+        'cislo_vykresu': re.compile(r'(?:ČÍSLO\s+VÝKRESU|Č\.\s*VÝK(?:R\.?)?|VÝKRES\s+Č\.)\s*[:]\s*(\S+)', re.IGNORECASE),
+        'datum': re.compile(r'DATUM\s*[:]\s*(\d{1,2}[\./]\d{1,2}[\./]\d{2,4})', re.IGNORECASE),
+        'revize': re.compile(r'REVIZE\s*[:]\s*(\S+)', re.IGNORECASE),
+        'projektant': re.compile(r'(?:VYPRACOVAL|ZPRACOVAL)\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
+        'zodpovedny_projektant': re.compile(
+            r'(?:ZODPOVĚDNÝ\s+PROJEKTANT|HLAVNÍ\s+(?:INŽENÝR|PROJEKTANT)|HIP)\s*[:]\s*(.+?)(?:\n|$)',
+            re.IGNORECASE
+        ),
+    }
+
+    # Work type keywords for note classification
+    NOTE_WORK_TYPES = {
+        'BETON': ['beton', 'betonáž', 'betonov', 'monolitick'],
+        'ETICS': ['etics', 'kzs', 'zateplen', 'polystyr', 'minerální vat'],
+        'IZOLACE': ['izolac', 'hydroizolac', 'těsn', 'parozábran'],
+        'BEDNĚNÍ': ['bednění', 'bedneni', 'opalubn', 'formwork'],
+        'VÝZTUŽ': ['výztuž', 'vyztuz', 'armatura', 'armování'],
+        'PODLAHY': ['podlah', 'anhydrit', 'nivelační', 'litý potěr'],
+        'STŘECHA': ['střech', 'strech', 'krytina', 'klempíř'],
+    }
+
+    def extract_drawing(self, text: str) -> Optional[DrawingData]:
+        """
+        Extract drawing-specific data: concrete by element, notes, title block.
+
+        Returns DrawingData if any drawing-specific content is detected, else None.
+        All confidence = 1.0 (deterministic regex).
+        """
+        concrete_by_element = self._extract_concrete_by_element(text)
+        notes = self._extract_drawing_notes(text)
+        title_block = self._extract_title_block(text)
+        etics_notes = [m.group(1).strip() for m in self.ETICS_RE.finditer(text)]
+        has_scc = bool(self.SCC_RE.search(text))
+
+        # Only return if we found something drawing-specific
+        if not concrete_by_element and not notes and not title_block and not etics_notes and not has_scc:
+            return None
+
+        self.stats['drawing_concrete_elements'] = len(concrete_by_element)
+        self.stats['drawing_notes'] = len(notes)
+        self.stats['drawing_etics'] = len(etics_notes)
+        self.stats['drawing_has_scc'] = has_scc
+
+        return DrawingData(
+            concrete_by_element=concrete_by_element,
+            notes=notes,
+            title_block=title_block,
+            etics_notes=etics_notes[:10],  # Limit to 10
+            has_scc=has_scc,
+        )
+
+    def _extract_concrete_by_element(self, text: str) -> List[ConcreteByElement]:
+        """Extract concrete specs assigned to specific structural elements."""
+        results: List[ConcreteByElement] = []
+        seen_elements: set = set()
+
+        for m in self.DRAWING_CONCRETE_ELEMENT_RE.finditer(text):
+            element = m.group('element').strip().rstrip(':–- ')
+            concrete_class = m.group('class').replace(' ', '')
+            rest = m.group('rest') or ''
+
+            # Normalize element name
+            element_upper = element.upper().strip()
+            if element_upper in seen_elements:
+                continue
+            seen_elements.add(element_upper)
+
+            # Parse exposure classes from rest
+            exposure_classes: List[ExposureClass] = []
+            for exp_m in re.finditer(r'X[CADFMS]\d', rest):
+                try:
+                    exposure_classes.append(ExposureClass(exp_m.group(0).upper()))
+                except ValueError:
+                    pass
+
+            # CI / w/c
+            ci_m = self.CI_RE.search(rest)
+            max_wc = float(ci_m.group(1).replace(',', '.')) if ci_m else None
+
+            # Dmax
+            dmax_m = self.DMAX_RE.search(rest)
+            dmax = int(dmax_m.group(1)) if dmax_m else None
+
+            # Consistency
+            cons_m = re.search(r'(?:^|\s)([SF]\d)(?:\s|$|,)', rest)
+            consistency = cons_m.group(1).upper() if cons_m else None
+
+            # SCC in this element context
+            scc = bool(self.SCC_RE.search(rest))
+
+            # Cover: search near this match position
+            line_start = max(0, m.start() - 300)
+            line_end = min(len(text), m.end() + 300)
+            nearby = text[line_start:line_end]
+
+            cover_min = None
+            cover_nom = None
+            penetration = None
+
+            # Combined cover
+            cc_m = self.COVER_PATTERNS['cover_combined'].search(nearby)
+            if cc_m:
+                cover_min = int(cc_m.group(1))
+                cover_nom = int(cc_m.group(2))
+            else:
+                cm_m = self.COVER_PATTERNS['cover_min'].search(nearby)
+                if cm_m:
+                    cover_min = int(cm_m.group(1))
+                cn_m = self.COVER_PATTERNS['cover_nom'].search(nearby)
+                if cn_m:
+                    cover_nom = int(cn_m.group(1))
+
+            # Penetration
+            pen_m = self.PENETRATION_RE.search(nearby)
+            if pen_m:
+                penetration = int(pen_m.group(1))
+
+            results.append(ConcreteByElement(
+                element=element_upper,
+                concrete_class=concrete_class,
+                exposure_classes=exposure_classes,
+                max_wc_ratio=max_wc,
+                dmax_mm=dmax,
+                consistency_class=consistency,
+                scc=scc,
+                cover_min_mm=cover_min,
+                cover_nom_mm=cover_nom,
+                max_penetration_mm=penetration,
+                raw_text=m.group(0).strip()[:200],
+            ))
+
+        return results
+
+    def _extract_drawing_notes(self, text: str) -> List[DrawingNote]:
+        """Extract PZ/01-style technology notes from drawing."""
+        notes: List[DrawingNote] = []
+        seen_ids: set = set()
+
+        for m in self.NOTE_HEADER_RE.finditer(text):
+            note_id = re.sub(r'\s+', '', m.group('id')).upper()
+            note_text = m.group('text').strip()
+
+            if note_id in seen_ids:
+                continue
+            seen_ids.add(note_id)
+
+            # Classify work type
+            work_type = self._classify_note_work_type(note_text)
+
+            notes.append(DrawingNote(
+                note_id=note_id,
+                text=note_text,
+                work_type=work_type,
+            ))
+
+        return notes[:20]  # Limit
+
+    def _classify_note_work_type(self, text: str) -> Optional[str]:
+        """Classify a drawing note into a work type."""
+        text_lower = self._normalize_diacritics(text.lower())
+        for wtype, keywords in self.NOTE_WORK_TYPES.items():
+            for kw in keywords:
+                kw_norm = self._normalize_diacritics(kw.lower())
+                if kw_norm in text_lower:
+                    return wtype
+        return None
+
+    def _extract_title_block(self, text: str) -> Optional[TitleBlock]:
+        """Extract title block (razítko) data from drawing."""
+        data: Dict[str, str] = {}
+
+        for field, pattern in self.TITLE_BLOCK_PATTERNS.items():
+            m = pattern.search(text)
+            if m:
+                val = m.group(1).strip().rstrip(',.')
+                if val and len(val) < 200:
+                    data[field] = val
+
+        if not data:
+            return None
+
+        return TitleBlock(**data)
 
     def get_stats(self) -> Dict[str, int]:
         """Get extraction statistics"""
