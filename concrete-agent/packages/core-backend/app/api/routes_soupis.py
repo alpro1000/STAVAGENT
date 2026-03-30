@@ -156,6 +156,41 @@ async def generate_soupis(
     }
 
 
+@router.post("/export-xlsx")
+async def export_soupis_xlsx_endpoint(
+    text: str = Form(None),
+    file: Optional[UploadFile] = File(None),
+    use_ai: bool = Form(True),
+    use_work_packages: bool = Form(True),
+    use_urs_lookup: bool = Form(True),
+):
+    """
+    Full pipeline + xlsx export.
+    TZ document → extract → assemble → KROS-compatible xlsx download.
+    """
+    from fastapi.responses import StreamingResponse
+    from io import BytesIO
+
+    tz_text = text if text else (await _parse_file(file) if file else None)
+    if not tz_text or len(tz_text) < 50:
+        raise HTTPException(status_code=400, detail="Either 'text' or 'file' must be provided (min 50 chars)")
+
+    # Pipeline
+    requirements = await extract_work_requirements(tz_text, use_ai=use_ai)
+    result = await assemble_soupis(requirements, use_work_packages=use_work_packages, use_urs_lookup=use_urs_lookup)
+
+    # Export xlsx
+    from app.utils.soupis_exporter import export_soupis_xlsx
+    xlsx_bytes = export_soupis_xlsx(soupis_to_dict(result))
+
+    filename = f"soupis_praci_{len(result.positions)}pol.xlsx"
+    return StreamingResponse(
+        BytesIO(xlsx_bytes),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
 # ============================================================================
 # File parsing helper
 # ============================================================================

@@ -343,6 +343,203 @@ class TestSoupisAssembly:
 # Integration: Extract + Assemble (offline)
 # ============================================================================
 
+# ============================================================================
+# VV formula generation (Task 34)
+# ============================================================================
+
+class TestVVFormula:
+    def test_volume_param(self):
+        from app.utils.soupis_exporter import generate_vv_formula
+        pos = {'params': [{'type': 'volume', 'normalized': '45.5 m³', 'value': '45.5 m³'}]}
+        assert generate_vv_formula(pos) == '45.5 m³'
+
+    def test_area_param(self):
+        from app.utils.soupis_exporter import generate_vv_formula
+        pos = {'params': [{'type': 'area', 'normalized': '120 m²', 'value': '120 m²'}]}
+        assert generate_vv_formula(pos) == '120 m²'
+
+    def test_thickness_mm(self):
+        from app.utils.soupis_exporter import generate_vv_formula
+        pos = {'params': [
+            {'type': 'thickness', 'normalized': '300 mm', 'value': '300 mm'},
+            {'type': 'thickness', 'normalized': '200 mm', 'value': '200 mm'},
+        ]}
+        result = generate_vv_formula(pos)
+        assert result is not None
+        assert '*' in result  # Should be multiplication
+
+    def test_no_params(self):
+        from app.utils.soupis_exporter import generate_vv_formula
+        assert generate_vv_formula({'params': []}) is None
+        assert generate_vv_formula({}) is None
+
+
+# ============================================================================
+# XLSX export (Task 35)
+# ============================================================================
+
+class TestXlsxExport:
+    def test_export_returns_bytes(self):
+        from app.utils.soupis_exporter import export_soupis_xlsx
+        data = {
+            'positions': [
+                {'poradi': 1, 'typ': 'HSV', 'kod': '274313611', 'popis': 'Beton C30/37',
+                 'mj': 'm3', 'mnozstvi': 45, 'source': 'urs_match', 'confidence': 0.9},
+            ],
+            'stats': {'total_positions': 1, 'hsv_count': 1, 'psv_count': 0,
+                      'with_code': 1, 'without_code': 0},
+            'warnings': [],
+            'attribution': 'Test export',
+        }
+        result = export_soupis_xlsx(data)
+        assert isinstance(result, bytes)
+        assert len(result) > 0
+        # Check xlsx magic bytes (PK zip header)
+        assert result[:2] == b'PK'
+
+    def test_export_multiple_sections(self):
+        from app.utils.soupis_exporter import export_soupis_xlsx
+        data = {
+            'positions': [
+                {'poradi': 1, 'typ': 'HSV', 'section': '2', 'kod': '274313611',
+                 'popis': 'Beton', 'mj': 'm3', 'source': 'urs_match', 'confidence': 0.9},
+                {'poradi': 2, 'typ': 'PSV', 'section': '711', 'kod': '711111001',
+                 'popis': 'Izolace', 'mj': 'm2', 'source': 'ai_fallback', 'confidence': 0.5},
+                {'poradi': 3, 'typ': 'HSV', 'section': '9',
+                 'popis': 'Přesun hmot', 'mj': 't', 'source': 'companion', 'confidence': 0.95},
+            ],
+            'stats': {'total_positions': 3, 'hsv_count': 2, 'psv_count': 1,
+                      'with_code': 2, 'without_code': 1},
+            'warnings': ['Test warning'],
+            'attribution': 'Test',
+        }
+        result = export_soupis_xlsx(data)
+        assert isinstance(result, bytes)
+        assert len(result) > 1000  # Non-trivial xlsx
+
+
+# ============================================================================
+# 5 TZ types test (Task 37)
+# ============================================================================
+
+SAMPLE_TZ_SDK = """
+Technická zpráva - Sádrokartonové konstrukce
+
+Příčky budou provedeny ze sádrokartonových desek Knauf tl. 12,5 mm
+na ocelových profilech CW/UW 75. Celková plocha příček: 340 m².
+
+Podhledy: sádrokartonový podhled Rigips tl. 12,5 mm na CD profilech.
+Plocha podhledů: 180 m².
+
+Obklad instalačních šachet: SDK desky tl. 15 mm, požární odolnost EI 30.
+"""
+
+SAMPLE_TZ_KOMUNIKACE = """
+Technická zpráva - Komunikace a zpevněné plochy
+
+Vozovka bude provedena z asfaltového betonu ACO 11+ tl. 50 mm
+na podkladní vrstvě ze štěrkodrtě ŠD 0-32 tl. 200 mm.
+
+Chodníky: betonová dlažba 60 mm na pískovém loži tl. 40 mm.
+Plocha chodníků: 520 m². Obrubníky betonové 100/250 mm: 185 bm.
+
+Odvodnění: liniový žlab ACO třídy C250, délka 45 m.
+"""
+
+
+class TestFiveTZTypes:
+    """Task 37: Test extraction from 5 different TZ types."""
+
+    @pytest.mark.asyncio
+    async def test_fasada_tz(self):
+        from app.services.tz_work_extractor import extract_work_requirements
+        reqs = await extract_work_requirements(SAMPLE_TZ_FASADA, use_ai=False)
+        assert len(reqs) > 0
+        work_types = set(r.work_type for r in reqs if r.work_type)
+        assert 'ZATEPLENÍ' in work_types or 'OMÍTKY' in work_types
+
+    @pytest.mark.asyncio
+    async def test_beton_tz(self):
+        from app.services.tz_work_extractor import extract_work_requirements
+        reqs = await extract_work_requirements(SAMPLE_TZ_BETON, use_ai=False)
+        assert len(reqs) > 0
+        types = set(r.work_type for r in reqs if r.work_type)
+        assert 'BETON' in types or 'ZÁKLADY' in types
+
+    @pytest.mark.asyncio
+    async def test_sdk_tz(self):
+        from app.services.tz_work_extractor import extract_work_requirements
+        reqs = await extract_work_requirements(SAMPLE_TZ_SDK, use_ai=False)
+        assert len(reqs) > 0
+
+    @pytest.mark.asyncio
+    async def test_zti_tz(self):
+        from app.services.tz_work_extractor import extract_work_requirements
+        reqs = await extract_work_requirements(SAMPLE_TZ_ZTI, use_ai=False)
+        assert len(reqs) > 0
+        # Should detect ZTI or pipes
+        params = [p for r in reqs for p in r.params]
+        dn_params = [p for p in params if p.type == 'dn']
+        assert len(dn_params) > 0
+
+    @pytest.mark.asyncio
+    async def test_komunikace_tz(self):
+        from app.services.tz_work_extractor import extract_work_requirements
+        reqs = await extract_work_requirements(SAMPLE_TZ_KOMUNIKACE, use_ai=False)
+        assert len(reqs) > 0
+
+
+# ============================================================================
+# E2E test (Task 38)
+# ============================================================================
+
+class TestE2EPipeline:
+    """Task 38: End-to-end TZ → Work Packages → soupis."""
+
+    @pytest.mark.asyncio
+    async def test_full_e2e_beton(self):
+        """Complete pipeline: TZ text → extract → assemble → xlsx export."""
+        from app.services.tz_work_extractor import extract_work_requirements
+        from app.utils.soupis_exporter import export_soupis_xlsx
+
+        # Step 1: Extract
+        reqs = await extract_work_requirements(SAMPLE_TZ_BETON, use_ai=False)
+        assert len(reqs) > 0
+
+        # Step 2: Assemble (offline)
+        result = await assemble_soupis(reqs, use_work_packages=False, use_urs_lookup=False)
+        assert len(result.positions) > 0
+
+        # Step 3: Export xlsx
+        data = soupis_to_dict(result)
+        xlsx_bytes = export_soupis_xlsx(data)
+        assert isinstance(xlsx_bytes, bytes)
+        assert len(xlsx_bytes) > 1000
+
+    @pytest.mark.asyncio
+    async def test_unknown_type_not_empty(self):
+        """Unknown TZ type should still produce results via AI fallback positions."""
+        unknown_tz = """
+        Technická zpráva - Speciální technologie
+
+        Pro realizaci bude použit beton třídy C40/50 XC4+XD2 s přísadou
+        plastifikátoru Sika ViscoCrete. Tloušťka stěn tl. 400 mm.
+        Celkový objem betonáže: V = 125 m³.
+        Výztuž z oceli B500B, předpokládaný podíl 120 kg/m³.
+        """
+        from app.services.tz_work_extractor import extract_work_requirements
+
+        reqs = await extract_work_requirements(unknown_tz, use_ai=False)
+        # Should still extract parameters even for unknown type
+        assert len(reqs) > 0
+        params = [p for r in reqs for p in r.params]
+        assert len(params) > 0
+
+
+# ============================================================================
+# Integration: Extract + Assemble (offline)
+# ============================================================================
+
 class TestPipelineIntegration:
     @pytest.mark.asyncio
     async def test_full_pipeline_beton(self):
