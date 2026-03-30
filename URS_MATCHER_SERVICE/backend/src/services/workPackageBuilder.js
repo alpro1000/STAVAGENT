@@ -140,6 +140,9 @@ export async function buildWorkPackages({
     if (wp) packages.push(wp);
   }
 
+  // AI naming (Task 20) — try to generate better names
+  await aiNamePackages(packages);
+
   // Enrich with CPV correlation from VZ metadata
   for (const wp of packages) {
     wp.cpv_correlation = await getCpvCorrelation(db, wp.typical_dily || []);
@@ -151,8 +154,9 @@ export async function buildWorkPackages({
     await db.run(
       `INSERT INTO work_packages
         (package_id, name, description, work_type, source_stats, confidence,
-         trigger_keywords, items, companion_packages, typical_mj, typical_dily, cpv_correlation)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         trigger_keywords, items, companion_packages, alternative_variant,
+         typical_mj, typical_dily, cpv_correlation)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         wp.package_id,
         wp.name,
@@ -163,6 +167,7 @@ export async function buildWorkPackages({
         JSON.stringify(wp.trigger_keywords),
         JSON.stringify(wp.items),
         JSON.stringify(wp.companion_packages),
+        JSON.stringify(wp.alternative_variant),
         wp.typical_mj,
         JSON.stringify(wp.typical_dily),
         JSON.stringify(wp.cpv_correlation || []),
@@ -239,11 +244,17 @@ async function enrichCluster(db, clusterCodes, index) {
     }
   }
 
-  // Build name from top keywords
+  // Build name from top keywords (fallback — may be replaced by AI naming)
   const name = topKeywords.slice(0, 3).join(' + ') || `Balíček ${index}`;
 
   // Detect companion packages
   const companions = detectCompanions(primaryWorkType, clusterCodes);
+
+  // Assign roles to items (Task 17)
+  const itemsWithRoles = assignItemRoles([...itemMap.values()], primaryWorkType);
+
+  // Detect alternative variants: detailed URS items vs souhrnná R-položka (Task 19)
+  const alternativeVariant = detectAlternativeVariant(itemsWithRoles);
 
   return {
     package_id: `wp_${primaryWorkType || 'mix'}_${index}`.toLowerCase(),
@@ -257,11 +268,152 @@ async function enrichCluster(db, clusterCodes, index) {
     },
     confidence: Math.min(0.95, 0.5 + clusterCodes.length * 0.05 + positions.length * 0.001),
     trigger_keywords: topKeywords,
-    items: [...itemMap.values()].slice(0, 50),
+    items: itemsWithRoles.slice(0, 50),
     companion_packages: companions,
+    alternative_variant: alternativeVariant,
     typical_mj: typicalMJ,
     typical_dily: clusterCodes,
   };
+}
+
+// ============================================================================
+// Item role assignment (Task 17)
+// ============================================================================
+
+/**
+ * Assign roles to items in a work package:
+ * - anchor: primary work item that defines the package (e.g. beton for ŽB package)
+ * - companion: always accompanies the anchor (e.g. bednění, výztuž for beton)
+ * - conditional: depends on parameters (e.g. hydroizolace only for certain exposure classes)
+ */
+function assignItemRoles(items, primaryWorkType) {
+  if (items.length === 0) return items;
+
+  // Anchor: items matching the primary work type, or the most frequent code prefix
+  const anchorType = primaryWorkType;
+
+  return items.map(item => {
+    let role = 'anchor';
+
+    // Companion detection by work type relationship
+    if (item.work_type !== anchorType && item.work_type) {
+      // Known companion relationships
+      const companionOf = {
+        'BEDNĚNÍ': ['BETON', 'ZÁKLADY'],
+        'VYZTUŽ': ['BETON', 'ZÁKLADY'],
+        'PŘESUNY': null, // companion to everything
+        'LEŠENÍ': ['ZATEPLENÍ', 'OMÍTKY', 'KLEMPÍŘSKÉ', 'MALBY_NÁTĚRY'],
+        'LIKVIDACE': ['BOURÁNÍ'],
+      };
+
+      if (companionOf[item.work_type] === null) {
+        role = 'companion';
+      } else if (companionOf[item.work_type]?.includes(anchorType)) {
+        role = 'companion';
+      }
+    }
+
+    // Conditional: items that appear in < 50% of sources (when we have that data)
+    // or items with specific material/parameter conditions
+    if (item.description) {
+      const conditionalMarkers = /hydroizolac|dilatac|injektáž|chemick|speciáln|dočasn/i;
+      if (conditionalMarkers.test(item.description)) {
+        role = 'conditional';
+      }
+    }
+
+    return { ...item, role };
+  });
+}
+
+// ============================================================================
+// Alternative variant detection (Task 19)
+// ============================================================================
+
+/**
+ * Detect if items can be replaced by a souhrnná R-položka (aggregate item).
+ * Returns alternative variant info or null.
+ *
+ * Logic: if a WP has 3+ detailed URS items of the same work type,
+ * they could potentially be replaced by a single R-code (company-specific aggregate).
+ */
+function detectAlternativeVariant(items) {
+  // Count detailed URS items by work type
+  const ursItemsByType = {};
+  for (const item of items) {
+    if (item.code && item.code.length >= 9 && item.role === 'anchor') {
+      const wt = item.work_type || 'unknown';
+      if (!ursItemsByType[wt]) ursItemsByType[wt] = [];
+      ursItemsByType[wt].push(item);
+    }
+  }
+
+  // Find types with 3+ detailed items → candidate for R-code replacement
+  const candidates = [];
+  for (const [wt, wtItems] of Object.entries(ursItemsByType)) {
+    if (wtItems.length >= 3) {
+      candidates.push({
+        work_type: wt,
+        detailed_items_count: wtItems.length,
+        suggestion: `R-položka: souhrnná ${wt.toLowerCase()} (${wtItems.length} detailních položek)`,
+        detailed_codes: wtItems.map(i => i.code),
+      });
+    }
+  }
+
+  if (candidates.length === 0) return null;
+
+  return {
+    type: 'souhrnna_r_polozka',
+    description: 'Možnost nahradit detailní ÚRS položky souhrnnou R-položkou',
+    candidates,
+  };
+}
+
+// ============================================================================
+// AI naming (Task 20) — Gemini Flash for human-readable WP names
+// ============================================================================
+
+/**
+ * Generate human-readable Czech names for work packages using AI.
+ * Falls back to keyword-based names if AI unavailable.
+ *
+ * @param {Array} packages - Work packages with keyword-based names
+ * @returns {Promise<Array>} Same packages with improved names
+ */
+export async function aiNamePackages(packages) {
+  if (packages.length === 0) return packages;
+
+  // Try Gemini Flash via URS Matcher LLM client
+  try {
+    const { callLLM } = await import('./llmClient.js');
+
+    const prompt = `Jsi expert na české stavební rozpočty. Pro každý balíček prací (work package) vygeneruj krátký, výstižný český název (max 5 slov).
+
+Balíčky (klíčová slova → název):
+${packages.map((wp, i) => `${i + 1}. [${wp.work_type || 'mix'}] ${wp.trigger_keywords?.join(', ') || wp.name}`).join('\n')}
+
+Odpověz POUZE jako JSON pole názvů (bez vysvětlení):
+["Název balíčku 1", "Název balíčku 2", ...]`;
+
+    const response = await callLLM(prompt, { timeoutMs: 15000 });
+    if (response) {
+      const jsonMatch = response.match(/\[[\s\S]*\]/);
+      if (jsonMatch) {
+        const names = JSON.parse(jsonMatch[0]);
+        for (let i = 0; i < Math.min(names.length, packages.length); i++) {
+          if (names[i] && typeof names[i] === 'string') {
+            packages[i].name = names[i];
+          }
+        }
+        logger.info(`[WP] AI named ${names.length} packages`);
+      }
+    }
+  } catch (err) {
+    logger.debug(`[WP] AI naming failed (using keyword names): ${err.message}`);
+  }
+
+  return packages;
 }
 
 // ============================================================================
@@ -379,6 +531,7 @@ function deserializeWP(row) {
     trigger_keywords: safeJSON(row.trigger_keywords),
     items: safeJSON(row.items),
     companion_packages: safeJSON(row.companion_packages),
+    alternative_variant: safeJSON(row.alternative_variant),
     typical_dily: safeJSON(row.typical_dily),
     cpv_correlation: safeJSON(row.cpv_correlation),
   };
