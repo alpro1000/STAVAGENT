@@ -19,6 +19,9 @@ build/
 *.sqlite
 *.sqlite3
 data/
+# Allow catalog CSV/XML files in data/
+!data/*.csv
+!data/*.xml
 
 # IDE
 .vscode/
