@@ -255,4 +255,74 @@ router.get('/search', async (req, res) => {
   }
 });
 
+// ============================================================================
+// VZ Enrichment (Stage 2.5 — CPV metadata from vvz.nipez.cz)
+// ============================================================================
+
+import { startVzCollection, getVzEnrichmentStatus, getVzStats } from '../../services/vzEnrichment.js';
+import VvzClient from '../../services/vvzClient.js';
+
+/**
+ * POST /api/smlouvy/vz/collect
+ * Start VZ metadata collection from vvz.nipez.cz.
+ * Body: { cpv?: string, maxPages?: number }
+ */
+router.post('/vz/collect', async (req, res) => {
+  try {
+    const { cpv, maxPages } = req.body || {};
+    const result = await startVzCollection({ cpv, maxPages });
+    res.json(result);
+  } catch (err) {
+    logger.error(`[SMLOUVY] /vz/collect error: ${err.message}`);
+    if (err.message.includes('already in progress')) {
+      return res.status(409).json({ error: err.message });
+    }
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * GET /api/smlouvy/vz/status
+ * VZ enrichment status.
+ */
+router.get('/vz/status', (req, res) => {
+  res.json(getVzEnrichmentStatus());
+});
+
+/**
+ * GET /api/smlouvy/vz/stats
+ * VZ enrichment statistics.
+ */
+router.get('/vz/stats', async (req, res) => {
+  try {
+    const stats = await getVzStats();
+    res.json(stats);
+  } catch (err) {
+    logger.error(`[SMLOUVY] /vz/stats error: ${err.message}`);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * GET /api/smlouvy/vz/search
+ * Proxy search to vvz.nipez.cz for testing.
+ * Query: cpv (default: 45), page, limit, formType
+ */
+router.get('/vz/search', async (req, res) => {
+  try {
+    const { cpv = '45', page = 1, limit = 20, formType = 'result' } = req.query;
+    const client = new VvzClient();
+    const result = await client.search({
+      cpv,
+      formType,
+      page: parseInt(page),
+      limit: parseInt(limit),
+    });
+    res.json(result);
+  } catch (err) {
+    logger.error(`[SMLOUVY] /vz/search error: ${err.message}`);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

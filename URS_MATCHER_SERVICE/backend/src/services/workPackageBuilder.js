@@ -140,14 +140,19 @@ export async function buildWorkPackages({
     if (wp) packages.push(wp);
   }
 
+  // Enrich with CPV correlation from VZ metadata
+  for (const wp of packages) {
+    wp.cpv_correlation = await getCpvCorrelation(db, wp.typical_dily || []);
+  }
+
   // Save to DB
   await db.run('DELETE FROM work_packages');
   for (const wp of packages) {
     await db.run(
       `INSERT INTO work_packages
         (package_id, name, description, work_type, source_stats, confidence,
-         trigger_keywords, items, companion_packages, typical_mj, typical_dily)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         trigger_keywords, items, companion_packages, typical_mj, typical_dily, cpv_correlation)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         wp.package_id,
         wp.name,
@@ -160,6 +165,7 @@ export async function buildWorkPackages({
         JSON.stringify(wp.companion_packages),
         wp.typical_mj,
         JSON.stringify(wp.typical_dily),
+        JSON.stringify(wp.cpv_correlation || []),
       ]
     );
   }
@@ -374,7 +380,42 @@ function deserializeWP(row) {
     items: safeJSON(row.items),
     companion_packages: safeJSON(row.companion_packages),
     typical_dily: safeJSON(row.typical_dily),
+    cpv_correlation: safeJSON(row.cpv_correlation),
   };
+}
+
+// ============================================================================
+// CPV correlation from VZ-enriched sources
+// ============================================================================
+
+/**
+ * Find CPV codes that correlate with a set of code prefixes.
+ * Looks at rozpocet_source.cpv_hlavni for sources containing these codes.
+ */
+async function getCpvCorrelation(db, codePrefixes) {
+  if (!codePrefixes.length) return [];
+
+  try {
+    // Check if cpv_hlavni column exists
+    const columns = await db.all("PRAGMA table_info(rozpocet_source)");
+    if (!columns.some(c => c.name === 'cpv_hlavni')) return [];
+
+    const placeholders = codePrefixes.map(() => '?').join(',');
+    const cpvRows = await db.all(
+      `SELECT DISTINCT s.cpv_hlavni, COUNT(*) as count
+       FROM rozpocet_polozky p
+       JOIN rozpocet_source s ON p.source_id = s.id
+       WHERE p.kod_prefix IN (${placeholders})
+         AND s.cpv_hlavni IS NOT NULL
+       GROUP BY s.cpv_hlavni
+       ORDER BY count DESC
+       LIMIT 5`,
+      codePrefixes
+    );
+    return cpvRows.map(r => r.cpv_hlavni).filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 function safeJSON(str) {
