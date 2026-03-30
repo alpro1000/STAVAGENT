@@ -21,7 +21,6 @@ import ServiceCard from '../components/portal/ServiceCard';
 
 import PoradnaWidget from '../components/portal/PoradnaWidget';
 import DrawingAnalysis from '../components/portal/DrawingAnalysis';
-import AdminModelAudit from '../components/portal/AdminModelAudit';
 import ThemeToggle from '../components/ThemeToggle';
 import { useAuth } from '../context/AuthContext';
 
@@ -521,22 +520,22 @@ export default function PortalPage() {
           </button>
           {isAdmin && (
             <button
-              onClick={() => setActiveTab('admin')}
+              onClick={() => navigate('/admin')}
               style={{
                 padding: '12px 24px',
                 fontSize: '16px',
                 fontWeight: 600,
-                color: activeTab === 'admin' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+                color: 'var(--text-secondary)',
                 background: 'transparent',
                 border: 'none',
-                borderBottom: activeTab === 'admin' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+                borderBottom: '3px solid transparent',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 marginBottom: '-2px',
                 whiteSpace: 'nowrap'
               }}
             >
-              🛡️ Admin audit
+              Administrace
             </button>
           )}
         </div>
@@ -814,9 +813,6 @@ export default function PortalPage() {
           </>
         )}
 
-        {activeTab === 'admin' && isAdmin && (
-          <AdminModelAudit />
-        )}
       </div>
 
 
