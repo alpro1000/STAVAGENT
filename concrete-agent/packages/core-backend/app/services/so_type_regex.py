@@ -593,6 +593,129 @@ SLABOPROUD_REGISTRY: Dict[str, Dict[str, re.Pattern]] = {
 
 
 # =============================================================================
+# SILNOPROUD REGISTRY (v5.0) — per-subsystem pattern extraction
+# =============================================================================
+
+SILNOPROUD_REGISTRY: Dict[str, Dict[str, re.Pattern]] = {
+    # ── napájení (power supply) ──────────────────────────────────────────
+    "napajeni": {
+        "voltage_system": re.compile(
+            r"(\d\s*NPE\s*AC\s*50\s*Hz\s*\d+\s*V\s*/\s*TN-[SC][-S]?)", re.IGNORECASE
+        ),
+        "current_system": re.compile(
+            r"[Pp]roudová\s+soustava\s*:?\s*(TN[-–][A-Z-]+)"
+        ),
+        "max_power_kw": re.compile(
+            r"[Mm]aximální\s+soudobý\s+příkon\s*:?\s*([\d,]+)\s*kW", re.IGNORECASE
+        ),
+        "annual_consumption_mwh": re.compile(
+            r"([\d,]+)\s*MWh\s*/\s*rok", re.IGNORECASE
+        ),
+        "main_fuse_a": re.compile(
+            r"hlavní\s+jistič\s*[:.]?\s*(\d+)\s*A", re.IGNORECASE
+        ),
+        "supply_cable_type": re.compile(
+            r"přívodn[íi]\s+kabel\s*[:.]?\s*(CYKY\s*\d+x[\d,]+)", re.IGNORECASE
+        ),
+    },
+    # ── rozvaděče (switchboards) ─────────────────────────────────────────
+    "rozvadece": {
+        "switchboard": re.compile(
+            r"rozvaděč[eěi]?\s+(R[A-Z]?-?[A-Z0-9]+)", re.IGNORECASE
+        ),
+        "switchboard_type": re.compile(
+            r"(zapuštěn[ýé]|nástěnn[ýé]|stojanov[ýé]|oceloplechov[ýé])\s+rozvaděč",
+            re.IGNORECASE,
+        ),
+        "ip_rating": re.compile(r"(IP\s*[X\d]{2,4})"),
+    },
+    # ── ochrana (protection) ─────────────────────────────────────────────
+    "ochrana": {
+        "rcd_current_ma": re.compile(
+            r"[Cc]hrání[čc]\w*.*?(\d+)\s*mA"
+        ),
+        "spd_type": re.compile(
+            r"[Ss]vodič\w*\s+(?:třídy\s+)?(T\d\+?T?\d?)"
+        ),
+        "earth_resistance_ohm": re.compile(
+            r"uzemnění\s*[:.]?\s*(?:max\.?\s*)?(\d+[,.]?\d*)\s*Ω", re.IGNORECASE
+        ),
+        "equipotential_bonding": re.compile(
+            r"(hlavní\s+(?:pospojování|ochranné\s+pospojení)|HOP)", re.IGNORECASE
+        ),
+    },
+    # ── kabeláž (cabling) ────────────────────────────────────────────────
+    "kabelaz": {
+        "cable_type": re.compile(
+            r"((?:\d+-)?C[YX]K[HBYE]-[JRVEO]\s*\d+x[\d,]+(?:\s*mm²)?)"
+        ),
+        "fire_cable": re.compile(
+            r"((?:\d+-)?(?:JE-H|JHSH|CHKE|1-CXKH)-?\w*\s*\d+x[\d,]+)", re.IGNORECASE
+        ),
+        "cable_tray_type": re.compile(
+            r"(žlab|lišta|trubka|žlábek)\s+(?:kabelov[ýé]\s+)?(\w+)", re.IGNORECASE
+        ),
+    },
+    # ── osvětlení (lighting) ─────────────────────────────────────────────
+    "osvetleni": {
+        "lighting_control": re.compile(r"(DALI|KNX|Loxone|1-10V)"),
+        "emergency_lighting": re.compile(
+            r"(nouzov[ée]\s+osvětlení|bezpečnostní\s+značení)", re.IGNORECASE
+        ),
+        "lighting_class": re.compile(
+            r"(ČSN\s+EN\s+12464)", re.IGNORECASE
+        ),
+        "lux_level": re.compile(
+            r"(\d+)\s*(?:lx|lux)", re.IGNORECASE
+        ),
+    },
+    # ── zásuvky a instalace (outlets) ────────────────────────────────────
+    "zasuvky": {
+        "floor_box_count": re.compile(
+            r"(\d+)\s*(?:ks\s+)?podlahov\w+\s+krabic", re.IGNORECASE
+        ),
+        "outlet_230v_count": re.compile(
+            r"(\d+)\s*(?:ks\s+)?(?:zásuvek\s+230|jednofáz)", re.IGNORECASE
+        ),
+        "outlet_400v_count": re.compile(
+            r"(\d+)\s*(?:ks\s+)?(?:zásuvek\s+400|třífáz)", re.IGNORECASE
+        ),
+    },
+    # ── hromosvod (lightning protection) ──────────────────────────────────
+    "hromosvod": {
+        "lps_class": re.compile(
+            r"(?:třída\s+)?LPS\s*[:.]?\s*([I]{1,4}V?)", re.IGNORECASE
+        ),
+        "lps_method": re.compile(
+            r"(mřížová\s+soustava|jímací\s+tyč[ei]|jímací\s+vedení)", re.IGNORECASE
+        ),
+        "earth_type": re.compile(
+            r"(základov[ýé]\s+zemni[čc]|obvodov[ýé]\s+zemni[čc]|hloubkov[ýé]\s+zemni[čc])",
+            re.IGNORECASE,
+        ),
+    },
+    # ── FVE (fotovoltaika) ───────────────────────────────────────────────
+    "fve": {
+        "panel_count": re.compile(
+            r"(\d+)\s*(?:ks\s+)?(?:panel[ůy]|FV\s+modul)", re.IGNORECASE
+        ),
+        "panel_wp": re.compile(
+            r"(\d+)\s*Wp", re.IGNORECASE
+        ),
+        "total_kwp": re.compile(
+            r"([\d,]+)\s*kWp", re.IGNORECASE
+        ),
+        "inverter_brand": re.compile(
+            r"(?:střídač|inverter|měnič)\s+([\w]+(?:\s+[\w]+)?)", re.IGNORECASE
+        ),
+        "battery_kwh": re.compile(
+            r"(?:baterie|akumulátor|úložiště)\s*[:.]?\s*([\d,]+)\s*kWh", re.IGNORECASE
+        ),
+    },
+}
+
+
+# =============================================================================
 # D.1.4 VZT REGEX — v4.1 (17 patterns)
 # =============================================================================
 
@@ -1161,38 +1284,70 @@ def extract_igp_params(text: str) -> Dict[str, Any]:
 # =============================================================================
 
 def extract_silnoproud_params(text: str) -> Dict[str, Any]:
-    """Extract silnoproud (strong-current) parameters from document text."""
-    result = {}
+    """
+    Extract silnoproud (strong-current) parameters using SILNOPROUD_REGISTRY.
 
-    for field, pattern in ELEKTRO_D14_PATTERNS.items():
-        m = pattern.search(text)
-        if m:
-            val = m.group(1).strip()
-            if field == "max_power_kw":
-                parsed = _parse_czech_number(val)
-                if parsed is not None:
-                    result["max_concurrent_power_kw"] = parsed
-            elif field == "annual_consumption_mwh":
-                parsed = _parse_czech_number(val)
-                if parsed is not None:
-                    result[field] = parsed
-            elif field == "floor_box_count":
-                result["floor_box_count"] = int(val)
-            elif field == "rcd_current_ma":
-                result[field] = int(val)
-            elif field in ("voltage_3phase", "current_system", "cable_type",
-                          "ip_rating", "spd_type", "lighting_control",
-                          "switchboard", "d14_section", "pd_level"):
-                result[field] = val
+    Same registry pattern as SLABOPROUD_REGISTRY.
+    Adding a new subsystem = adding a dict to SILNOPROUD_REGISTRY.
+    """
+    result: Dict[str, Any] = {}
 
-    # Extract switchboard designations (may be multiple)
-    switchboards = []
-    for m in ELEKTRO_D14_PATTERNS["switchboard"].finditer(text):
-        sw = m.group(1).strip()
-        if sw not in switchboards:
-            switchboards.append(sw)
-    if switchboards:
-        result["switchboard_designations"] = switchboards
+    # Section ID and PD level
+    m = ELEKTRO_D14_PATTERNS["d14_section"].search(text)
+    if m:
+        result["section_id"] = m.group(1)
+    m = ELEKTRO_D14_PATTERNS["pd_level"].search(text)
+    if m:
+        result["pd_level"] = m.group(1)
+
+    # Registry-driven extraction
+    for subsys_id, patterns in SILNOPROUD_REGISTRY.items():
+        subsys_result: Dict[str, Any] = {}
+
+        for field, pattern in patterns.items():
+            if field == "switchboard":
+                # Special: collect ALL switchboard designations
+                switchboards = []
+                for sm in pattern.finditer(text):
+                    sw = sm.group(1).strip()
+                    if sw not in switchboards:
+                        switchboards.append(sw)
+                if switchboards:
+                    subsys_result["switchboard_designations"] = switchboards
+                continue
+
+            m = pattern.search(text)
+            if not m:
+                continue
+
+            if not m.groups() or m.lastindex is None:
+                subsys_result[field] = m.group(0).strip()
+                continue
+
+            raw = m.group(1)
+            if raw is None:
+                continue
+
+            # Parse by suffix
+            if field.endswith("_count") or field.endswith("_a"):
+                try:
+                    subsys_result[field] = int(raw)
+                except ValueError:
+                    subsys_result[field] = raw
+            elif field.endswith("_kw") or field.endswith("_mwh") or \
+                 field.endswith("_kwp") or field.endswith("_kwh") or \
+                 field.endswith("_ohm") or field.endswith("_wp"):
+                parsed = _parse_czech_number(raw)
+                if parsed is not None:
+                    subsys_result[field] = parsed
+                else:
+                    subsys_result[field] = raw
+            else:
+                groups = [g for g in m.groups() if g]
+                subsys_result[field] = " ".join(groups) if len(groups) > 1 else raw
+
+        if subsys_result:
+            result[subsys_id] = subsys_result
 
     return result
 
@@ -1208,7 +1363,7 @@ def extract_slaboproud_params(text: str) -> Dict[str, Any]:
     result: Dict[str, Any] = {}
 
     # Detect present subsystems
-    text_upper = text[:30000].upper()
+    text_upper = text.upper()
     subsystems = []
     for suffix in ["SCS", "PZTS", "SKV", "CCTV", "EPS", "AVT", "INT", "EZS", "ACS"]:
         if suffix in text_upper:

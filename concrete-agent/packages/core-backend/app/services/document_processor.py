@@ -1531,8 +1531,15 @@ Vrať POUZE validní JSON matching IGPParams."""
         if not prompt_template or not model_cls:
             return results
 
-        # Limit text to avoid token overflow (use first 30K chars)
-        text_for_extraction = document_text[:30_000]
+        # Use full text — Gemini 2.5 handles 1M tokens, Claude 200K tokens.
+        # Adaptive limit: Gemini=200K chars, Claude=150K, fallback=80K
+        if hasattr(self.enricher, 'vertex_gemini_model') and self.enricher.vertex_gemini_model:
+            max_chars = 200_000
+        elif hasattr(self.enricher, 'claude_client') and self.enricher.claude_client:
+            max_chars = 150_000
+        else:
+            max_chars = 80_000
+        text_for_extraction = document_text[:max_chars]
         prompt = prompt_template.format(text=text_for_extraction)
 
         try:
