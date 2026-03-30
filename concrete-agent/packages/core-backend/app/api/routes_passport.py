@@ -148,7 +148,7 @@ async def generate_passport(
                                                 "unit_price": float(p.unit_price) if p.unit_price else None,
                                                 "total_price": float(p.total_price) if p.total_price else None,
                                                 "price_source": p.price_source,
-                                                "specification": p.specification[:200] if p.specification else None,
+                                                "specification": p.specification if p.specification else None,
                                                 "vv_lines_count": len(p.vv_lines),
                                                 "url": p.url,
                                             }
@@ -160,7 +160,7 @@ async def generate_passport(
                             }
                             for so in parsed_doc.stavebni_objekty
                         ],
-                        "warnings": parsed_doc.parser_warnings[:10],
+                        "warnings": parsed_doc.parser_warnings,
                     }
                     logger.info(
                         f"Universal parser: {parsed_doc.positions_count} positions, "
@@ -444,7 +444,7 @@ async def summarize_document_brief(
             try:
                 import pdfplumber
                 with pdfplumber.open(temp_file_path) as pdf:
-                    for page in pdf.pages[:5]:  # First 5 pages only
+                    for page in pdf.pages:  # All pages
                         page_text = page.extract_text()
                         if page_text:
                             document_text += page_text + "\n"

@@ -714,7 +714,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 prompt,
                 generation_config={
                     'temperature': 0.3,
-                    'max_output_tokens': 2048,
+                    'max_output_tokens': 16384,
                 }
             )
 
@@ -736,7 +736,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         def _sync_call():
             return self.claude_client.messages.create(
                 model=model,
-                max_tokens=2048,
+                max_tokens=8192,
                 temperature=0.3,
                 messages=[{"role": "user", "content": prompt}]
             )
@@ -765,7 +765,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
-                max_tokens=2048,
+                max_tokens=8192,
                 response_format={"type": "json_object"}
             )
 
@@ -804,7 +804,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                     "model": self.PERPLEXITY_MODEL,
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.3,
-                    "max_tokens": 2048
+                    "max_tokens": 8192
                 }
             )
             elapsed_ms = int((time.time() - t0) * 1000)
@@ -832,7 +832,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 model=self.GROK_MODEL,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
-                max_tokens=2048,
+                max_tokens=8192,
             )
 
         response = await asyncio.to_thread(_sync_call)
@@ -862,7 +862,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 model=self.DEEPSEEK_MODEL,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
-                max_tokens=2048,
+                max_tokens=8192,
             )
 
         response = await asyncio.to_thread(_sync_call)
@@ -892,7 +892,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         def _sync_call():
             return self.vertex_gemini_model.generate_content(
                 prompt,
-                generation_config={"temperature": 0.3, "max_output_tokens": 2048},
+                generation_config={"temperature": 0.3, "max_output_tokens": 16384},
             )
 
         response = await asyncio.to_thread(_sync_call)
@@ -1036,7 +1036,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # Quantities
         if passport.quantities:
             lines.append("\nOBJEMY:")
-            for qty in passport.quantities[:10]:  # Top 10
+            for qty in passport.quantities:
                 if qty.volume_m3:
                     lines.append(f"  - {qty.element_type}: {qty.volume_m3} m³")
                 elif qty.area_m2:
