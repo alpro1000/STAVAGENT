@@ -847,4 +847,67 @@ router.delete('/banned-domains/:domain', requireAuth, adminOnly, async (req, res
   }
 });
 
+// ============================================================================
+// DATA PIPELINE — Proxy to URS Matcher Service (admin only)
+// ============================================================================
+
+const URS_PIPELINE_URL = process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service-1086027517695.europe-west3.run.app';
+
+/**
+ * Generic pipeline proxy — forwards request to URS Matcher, returns response.
+ */
+async function pipelineProxy(req, res, method, ursPath) {
+  const targetUrl = `${URS_PIPELINE_URL}${ursPath}`;
+  logger.info(`[Pipeline] ${method} ${ursPath} → ${targetUrl}`);
+
+  try {
+    const fetchOpts = {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(300000), // 5 min (collection can be long)
+    };
+    if (method === 'POST' && req.body) {
+      fetchOpts.body = JSON.stringify(req.body);
+    }
+
+    const resp = await fetch(targetUrl, fetchOpts);
+    const data = await resp.text();
+    res.set('Content-Type', resp.headers.get('content-type') || 'application/json');
+    res.status(resp.status).send(data);
+  } catch (err) {
+    logger.error(`[Pipeline] Error: ${err.message}`);
+    if (err.name === 'TimeoutError' || err.name === 'AbortError') {
+      return res.status(504).json({ error: 'URS Matcher timeout (5 min)' });
+    }
+    res.status(502).json({ error: `URS Matcher unavailable: ${err.message}` });
+  }
+}
+
+// Smlouvy collection
+router.post('/pipeline/smlouvy/collect', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'POST', '/api/smlouvy/collect');
+});
+router.get('/pipeline/smlouvy/collect/status', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'GET', '/api/smlouvy/collect/status');
+});
+router.get('/pipeline/smlouvy/stats', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'GET', '/api/smlouvy/stats');
+});
+
+// VZ enrichment
+router.post('/pipeline/vz/collect', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'POST', '/api/smlouvy/vz/collect');
+});
+router.get('/pipeline/vz/status', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'GET', '/api/smlouvy/vz/status');
+});
+router.get('/pipeline/vz/stats', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'GET', '/api/smlouvy/vz/stats');
+});
+
+// Work Packages build
+router.post('/pipeline/work-packages/build', requireAuth, adminOnly, (req, res) => {
+  pipelineProxy(req, res, 'POST', '/api/v1/work-packages/build');
+});
+
 export default router;

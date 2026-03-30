@@ -14,7 +14,7 @@
 - **32K** with "CS ÚRS"
 - **1K** with "Export Komplet"
 - PlainTextContent of přílohy already contains structured data (codes, MJ, quantities, VV)
-- API Token: `a2053f381a87460f826f67e7654534e1`
+- API Token: env `HLIDAC_API_TOKEN` (stored in GCP Secret Manager)
 - License: CC BY 3.0 CZ — must attribute "Zdroj: Hlídač státu (hlidacstatu.cz)"
 - Rate limit: 1 request / 10 seconds
 

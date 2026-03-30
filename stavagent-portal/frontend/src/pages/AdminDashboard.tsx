@@ -13,9 +13,10 @@ import UsageStats from '../components/admin/UsageStats';
 import FeatureFlags from '../components/admin/FeatureFlags';
 import AntifraudPanel from '../components/admin/AntifraudPanel';
 import CreditManagement from '../components/admin/CreditManagement';
+import DataPipeline from '../components/admin/DataPipeline';
 import { adminAPI } from '../services/api';
 
-type Tab = 'overview' | 'users' | 'credits' | 'usage' | 'flags' | 'antifraud' | 'audit-logs' | 'nkb';
+type Tab = 'overview' | 'users' | 'credits' | 'usage' | 'flags' | 'antifraud' | 'audit-logs' | 'nkb' | 'pipeline';
 
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'overview', label: 'Přehled' },
@@ -26,6 +27,7 @@ const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'antifraud', label: 'Antifraud' },
   { id: 'audit-logs', label: 'Audit logy' },
   { id: 'nkb', label: 'Normy (NKB)' },
+  { id: 'pipeline', label: 'Data Pipeline' },
 ];
 
 export default function AdminDashboard() {
@@ -126,6 +128,9 @@ export default function AdminDashboard() {
         )}
         {activeTab === 'audit-logs' && (
           <AuditLogs />
+        )}
+        {activeTab === 'pipeline' && (
+          <DataPipeline />
         )}
         {activeTab === 'nkb' && (
           <div>
