@@ -413,11 +413,11 @@ router.get('/audit-logs/stats', requireAuth, adminOnly, async (req, res) => {
         GROUP BY al.admin_id, u.email, u.name
         ORDER BY action_count DESC
       `).all();
-      last24h = await db.prepare(`
-        SELECT COUNT(*) as count
-        FROM audit_logs
-        WHERE created_at > NOW() - INTERVAL '1 day'
-      `).get();
+      // Use $1 parameter with JS-computed timestamp (works on both PostgreSQL and SQLite)
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      last24h = await db.prepare(
+        'SELECT COUNT(*) as count FROM audit_logs WHERE created_at > $1'
+      ).get(oneDayAgo);
     } catch (tableErr) {
       // audit_logs table may not exist yet — return empty stats
       logger.warn(`[ADMIN] audit_logs query failed (table may not exist): ${tableErr.message}`);
