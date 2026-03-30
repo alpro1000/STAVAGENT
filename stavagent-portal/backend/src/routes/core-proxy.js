@@ -53,6 +53,7 @@ const ROUTE_MAP = {
   'project': '/api/v1/project',
   'nkb': '/api/v1/nkb',
   'scenario-b': '/api/v1/scenario-b',
+  'soupis': '/api/v1/soupis',
 };
 
 /** Resolve CORE target URL from request */
