@@ -58,7 +58,7 @@ class GeminiClient:
         ]
 
         # Generation config
-        self.max_tokens = getattr(settings, 'CLAUDE_MAX_TOKENS', 4096)  # Reuse Claude config
+        self.max_tokens = 16384  # Gemini 2.5 supports up to 65K output tokens
 
         logger.info(f"✅ Gemini client initialized with model: {self.model_name}")
 
@@ -460,7 +460,7 @@ class VertexGeminiClient:
                 logger.error(f"❌ [5/5] no model available (tried: {models_to_try}) — check IAM role roles/aiplatform.user or Vertex AI API enabled")
                 raise ValueError(f"No Vertex AI model available (tried: {models_to_try})")
 
-        self.max_tokens = 4096
+        self.max_tokens = 16384
         self._project_id = project_id
         self._location = location
         logger.info(f"✅ VertexGeminiClient READY: model={self.model_name!r} project={project_id!r} location={location!r}")

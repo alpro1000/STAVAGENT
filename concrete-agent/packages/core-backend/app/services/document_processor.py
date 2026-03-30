@@ -31,6 +31,7 @@ Date: 2026-02-10
 """
 
 import logging
+import re
 import time
 import uuid
 import asyncio
@@ -1426,6 +1427,101 @@ Vrať POUZE validní JSON matching IGPParams."""
         "igp_params": IGP_PROMPT,
     }
 
+    # =============================================================================
+    # v5.0: Section-based extraction (map-reduce) for large TZ documents
+    # =============================================================================
+
+    # Section header patterns for splitting documents
+    SECTION_SPLIT_PATTERNS = [
+        # Numbered sections: "3.1 Strukturovaná kabeláž (SCS)"
+        re.compile(r'^(\d+\.\d+(?:\.\d+)?)\s+(.{5,80})$', re.MULTILINE),
+        # Subsystem headers: "SCS — Strukturovaná kabeláž"
+        re.compile(r'^(SCS|PZTS|SKV|CCTV|EPS|AVT|INT|EZS|MaR)\s*[–—:-]\s*(.+)$',
+                   re.MULTILINE | re.IGNORECASE),
+        # Uppercase headers: "VZDUCHOTECHNIKA A KLIMATIZACE"
+        re.compile(r'^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ\s]{5,60})$', re.MULTILINE),
+    ]
+
+    async def _extract_by_sections(
+        self, text: str, prompt_template: str, profession: str
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Split document into sections and extract each separately.
+        Merges results into one dict. For D.1.4 professions with 15K+ chars.
+        """
+        sections = self._split_into_sections(text)
+
+        if len(sections) < 2:
+            # Not enough sections found — fall back to single call
+            return None
+
+        logger.info(f"Section-based extraction: {len(sections)} sections for {profession}")
+
+        merged: Dict[str, Any] = {}
+        for section_title, section_text in sections:
+            if len(section_text.strip()) < 100:
+                continue  # Skip very short sections
+
+            # Build focused prompt with just this section
+            section_prompt = prompt_template.format(
+                text=f"[Sekce: {section_title}]\n\n{section_text}"
+            )
+
+            try:
+                section_result = await self.enricher.call_llm_for_task(
+                    section_prompt, task_type="extract"
+                )
+                if section_result and isinstance(section_result, dict):
+                    # Deep merge: section results don't overwrite existing
+                    for k, v in section_result.items():
+                        if v is None:
+                            continue
+                        if k not in merged or merged[k] is None:
+                            merged[k] = v
+                        elif isinstance(merged[k], list) and isinstance(v, list):
+                            merged[k].extend(v)
+                        elif isinstance(merged[k], dict) and isinstance(v, dict):
+                            merged[k].update({
+                                sk: sv for sk, sv in v.items()
+                                if sv is not None and (sk not in merged[k] or merged[k][sk] is None)
+                            })
+                    logger.info(f"  Section '{section_title[:40]}': {len(section_result)} fields")
+            except Exception as e:
+                logger.warning(f"  Section '{section_title[:40]}' extraction failed: {e}")
+                continue
+
+        if merged:
+            logger.info(f"Section-based extraction complete: {len(merged)} total fields")
+        return merged if merged else None
+
+    def _split_into_sections(self, text: str) -> list:
+        """Split document text into (title, content) sections using header patterns."""
+        # Find all section headers with positions
+        headers = []
+        for pattern in self.SECTION_SPLIT_PATTERNS:
+            for m in pattern.finditer(text):
+                title = m.group(0).strip()
+                headers.append((m.start(), title))
+
+        if not headers:
+            return []
+
+        # Sort by position, deduplicate nearby headers
+        headers.sort(key=lambda x: x[0])
+        filtered = [headers[0]]
+        for pos, title in headers[1:]:
+            if pos - filtered[-1][0] > 200:  # At least 200 chars apart
+                filtered.append((pos, title))
+
+        # Extract text between headers
+        sections = []
+        for i, (pos, title) in enumerate(filtered):
+            end = filtered[i + 1][0] if i + 1 < len(filtered) else len(text)
+            section_text = text[pos:end]
+            sections.append((title, section_text))
+
+        return sections
+
     async def _extract_type_specific(
         self,
         classification: ClassificationInfo,
@@ -1540,11 +1636,25 @@ Vrať POUZE validní JSON matching IGPParams."""
         else:
             max_chars = 80_000
         text_for_extraction = document_text[:max_chars]
-        prompt = prompt_template.format(text=text_for_extraction)
+
+        # v5.0: Section-based extraction for large documents
+        # If document > 15K chars AND is a D.1.4 profession, split into sections
+        # and extract each section separately (map-reduce pattern)
+        ai_result = None
+        if len(text_for_extraction) > 15_000 and d14_profession:
+            ai_result = await self._extract_by_sections(
+                text_for_extraction, prompt_template, d14_profession
+            )
+
+        if not ai_result:
+            # Standard single-call extraction
+            prompt = prompt_template.format(text=text_for_extraction)
+            try:
+                ai_result = await self.enricher.call_llm_for_task(prompt, task_type="extract")
+            except Exception as e:
+                logger.warning(f"Single-call extraction failed: {e}")
 
         try:
-            # v3.1.1: Use task-based routing for extraction
-            ai_result = await self.enricher.call_llm_for_task(prompt, task_type="extract")
             if not ai_result or not isinstance(ai_result, dict):
                 return results
 

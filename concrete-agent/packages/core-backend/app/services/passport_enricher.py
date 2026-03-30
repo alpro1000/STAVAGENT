@@ -714,7 +714,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 prompt,
                 generation_config={
                     'temperature': 0.3,
-                    'max_output_tokens': 2048,
+                    'max_output_tokens': 16384,
                 }
             )
 
@@ -892,7 +892,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         def _sync_call():
             return self.vertex_gemini_model.generate_content(
                 prompt,
-                generation_config={"temperature": 0.3, "max_output_tokens": 2048},
+                generation_config={"temperature": 0.3, "max_output_tokens": 16384},
             )
 
         response = await asyncio.to_thread(_sync_call)
