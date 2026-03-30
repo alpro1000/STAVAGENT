@@ -389,46 +389,47 @@ router.get('/audit-logs', requireAuth, adminOnly, async (req, res) => {
  */
 router.get('/audit-logs/stats', requireAuth, adminOnly, async (req, res) => {
   try {
-    // Get total logs count
-    const totalLogs = await db.prepare('SELECT COUNT(*) as count FROM audit_logs').get();
+    let totalLogs = { count: 0 };
+    let actionStats = [];
+    let adminStats = [];
+    let last24h = { count: 0 };
 
-    // Get actions breakdown
-    const actionStats = await db.prepare(`
-      SELECT action, COUNT(*) as count
-      FROM audit_logs
-      GROUP BY action
-      ORDER BY count DESC
-    `).all();
-
-    // Get admin activity
-    const adminStats = await db.prepare(`
-      SELECT
-        al.admin_id,
-        u.email,
-        u.name,
-        COUNT(*) as action_count
-      FROM audit_logs al
-      JOIN users u ON al.admin_id = u.id
-      GROUP BY al.admin_id, u.email, u.name
-      ORDER BY action_count DESC
-    `).all();
-
-    // Get logs from last 24 hours
-    const last24h = await db.prepare(`
-      SELECT COUNT(*) as count
-      FROM audit_logs
-      WHERE created_at > datetime('now', '-1 day')
-    `).get();
-
-    logger.info(`[ADMIN] Audit log statistics requested by admin ${req.user.userId}`);
+    try {
+      totalLogs = await db.prepare('SELECT COUNT(*) as count FROM audit_logs').get();
+      actionStats = await db.prepare(`
+        SELECT action, COUNT(*) as count
+        FROM audit_logs
+        GROUP BY action
+        ORDER BY count DESC
+      `).all();
+      adminStats = await db.prepare(`
+        SELECT
+          al.admin_id,
+          u.email,
+          u.name,
+          COUNT(*) as action_count
+        FROM audit_logs al
+        JOIN users u ON al.admin_id = u.id
+        GROUP BY al.admin_id, u.email, u.name
+        ORDER BY action_count DESC
+      `).all();
+      // Use $1 parameter with JS-computed timestamp (works on both PostgreSQL and SQLite)
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      last24h = await db.prepare(
+        'SELECT COUNT(*) as count FROM audit_logs WHERE created_at > $1'
+      ).get(oneDayAgo);
+    } catch (tableErr) {
+      // audit_logs table may not exist yet — return empty stats
+      logger.warn(`[ADMIN] audit_logs query failed (table may not exist): ${tableErr.message}`);
+    }
 
     res.json({
       success: true,
       data: {
-        total_logs: totalLogs.count,
-        actions_breakdown: actionStats,
-        admin_activity: adminStats,
-        last_24h_count: last24h.count
+        total_logs: totalLogs?.count || 0,
+        actions_breakdown: actionStats || [],
+        admin_activity: adminStats || [],
+        last_24h_count: last24h?.count || 0
       }
     });
   } catch (error) {
@@ -448,16 +449,20 @@ router.get('/stats', requireAuth, adminOnly, async (req, res) => {
   try {
     // Get user statistics
     const totalUsers = await db.prepare('SELECT COUNT(*) as count FROM users').get();
-    const adminUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE role = "admin"').get();
+    const adminUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE role = \'admin\'').get();
     const verifiedUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE email_verified = 1 OR email_verified = true').get();
 
-    // Get project statistics
-    const totalProjects = await db.prepare('SELECT COUNT(*) as count FROM monolith_projects').get();
-    const projectsByType = await db.prepare(`
-      SELECT object_type, COUNT(*) as count
-      FROM monolith_projects
-      GROUP BY object_type
-    `).all();
+    // Get project statistics (portal_projects, not monolith_projects)
+    let totalProjects = { count: 0 };
+    let projectsByStatus = [];
+    try {
+      totalProjects = await db.prepare('SELECT COUNT(*) as count FROM portal_projects').get();
+      projectsByStatus = await db.prepare(`
+        SELECT status, COUNT(*) as count
+        FROM portal_projects
+        GROUP BY status
+      `).all();
+    } catch { /* table may not exist yet */ }
 
     // Get recent activity
     const recentUsers = await db.prepare(`
@@ -479,7 +484,7 @@ router.get('/stats', requireAuth, adminOnly, async (req, res) => {
         },
         projects: {
           total: totalProjects.count,
-          by_type: projectsByType
+          by_status: projectsByStatus
         },
         recent_users: recentUsers
       }

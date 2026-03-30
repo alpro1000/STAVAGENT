@@ -185,6 +185,7 @@ async function _runVzCollection(db, client, cpv, maxPages) {
       );
       activeEnrichment.stored++;
     } catch (err) {
+      logger.warn(`[VZ-ENRICH] Failed to store VZ item ${item.id}: ${err.message}`);
       activeEnrichment.errors++;
     }
   }
