@@ -13,6 +13,7 @@ import { getDatabase } from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import HlidacSmlouvyClient from './hlidacSmlouvyClient.js';
 import { parseSmlouva } from './smlouvyParser.js';
+import { processPrilohyXlsx } from './prilohaDownloader.js';
 
 // ============================================================================
 // DB Schema bootstrap (migration-safe)
@@ -284,16 +285,42 @@ async function processSmlouva(db, smlouva, skipExisting) {
   );
   const sourceId = sourceResult.lastID;
 
+  // Collect all positions: PlainTextContent + xlsx download fallback
+  let allPositions = parsed.all_positions;
+
+  // If PlainTextContent yielded few results, try downloading xlsx přílohy
+  if (allPositions.length < 5) {
+    const prilohy = smlouva.prilohy || smlouva.Prilohy || [];
+    try {
+      const xlsxPositions = await processPrilohyXlsx(prilohy, 3);
+      if (xlsxPositions.length > 0) {
+        allPositions = [...allPositions, ...xlsxPositions];
+        logger.info(`[COLLECTOR] xlsx download added ${xlsxPositions.length} positions for ${hlidacId}`);
+      }
+    } catch (err) {
+      logger.debug(`[COLLECTOR] xlsx download failed for ${hlidacId}: ${err.message}`);
+    }
+  }
+
+  // Update source with final position count
+  const finalFormat = allPositions.some(p => p.parseMethod === 'xlsx_download')
+    ? [...parsed.format_hints, 'xlsx_download']
+    : parsed.format_hints;
+  await db.run(
+    'UPDATE rozpocet_source SET parse_status = ?, polozek_count = ?, format_hints = ? WHERE id = ?',
+    [allPositions.length > 0 ? 'parsed' : 'empty', allPositions.length, JSON.stringify(finalFormat), sourceId]
+  );
+
   // Insert positions
-  if (parsed.all_positions.length > 0) {
+  if (allPositions.length > 0) {
     activeCollection.withData++;
 
     // Batch insert positions (200 per batch)
     const BATCH_SIZE = 200;
-    for (let i = 0; i < parsed.all_positions.length; i += BATCH_SIZE) {
-      const batch = parsed.all_positions.slice(i, i + BATCH_SIZE);
-      const placeholders = batch.map(() => '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').join(',');
-      const values = batch.flatMap((pos, idx) => [
+    for (let i = 0; i < allPositions.length; i += BATCH_SIZE) {
+      const batch = allPositions.slice(i, i + BATCH_SIZE);
+      const placeholders = batch.map(() => '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').join(',');
+      const values = batch.flatMap((pos) => [
         sourceId,
         pos.code_raw,
         pos.description,
@@ -306,17 +333,18 @@ async function processSmlouva(db, smlouva, skipExisting) {
         pos.code_confidence,
         pos.code?.substring(0, 6) || null,
         pos.work_type,
+        pos.source_file || null,
       ]);
 
       await db.run(
         `INSERT INTO rozpocet_polozky
-          (source_id, kod_raw, popis, mj, mnozstvi, jednotkova_cena, kod_norm, kod_prefix, kod_system, kod_system_conf, dil_6, typ_prace)
+          (source_id, kod_raw, popis, mj, mnozstvi, jednotkova_cena, kod_norm, kod_prefix, kod_system, kod_system_conf, dil_6, typ_prace, source_file)
         VALUES ${placeholders}`,
         values
       );
     }
 
-    activeCollection.positions += parsed.all_positions.length;
+    activeCollection.positions += allPositions.length;
   }
 }
 

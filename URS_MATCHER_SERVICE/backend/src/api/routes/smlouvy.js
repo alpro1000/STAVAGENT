@@ -8,11 +8,29 @@
  */
 
 import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 import { logger } from '../../utils/logger.js';
 import { startCollection, getCollectionStatus, cancelCollection, getCollectionStats, ensureSchema } from '../../services/smlouvyCollector.js';
-import { parsePlainTextContent } from '../../services/smlouvyParser.js';
+import { parsePlainTextContent, detectCodeSystem, classifyWorkType, normalizeMJ } from '../../services/smlouvyParser.js';
+import { parseExcelFile } from '../../services/fileParser.js';
 import HlidacSmlouvyClient from '../../services/hlidacSmlouvyClient.js';
 import { getDatabase } from '../../db/init.js';
+
+// Multer for xlsx upload (Task 6: local import)
+const upload = multer({
+  dest: 'data/uploads/',
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (['.xlsx', '.xls', '.ods', '.csv'].includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Nepodporovaný formát: ${ext}. Povolené: xlsx, xls, ods, csv.`));
+    }
+  },
+});
 
 const router = express.Router();
 
@@ -252,6 +270,80 @@ router.get('/search', async (req, res) => {
   } catch (err) {
     logger.error(`[SMLOUVY] /search error: ${err.message}`);
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================================
+// Local xlsx import (Task 6 — import local BOQ files)
+// ============================================================================
+
+/**
+ * POST /api/smlouvy/import-xlsx
+ * Import a local xlsx/xls/ods/csv file into rozpocet_source + rozpocet_polozky.
+ * Multipart form-data: file (required), nazev (optional), rok (optional)
+ */
+router.post('/import-xlsx', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Soubor (file) je povinný' });
+  }
+
+  try {
+    await ensureSchema();
+    const db = await getDatabase();
+
+    // Parse the uploaded file using existing fileParser
+    const rows = await parseExcelFile(req.file.path);
+    if (!rows || rows.length === 0) {
+      return res.json({ success: false, positions: 0, reason: 'Soubor neobsahuje žádné položky' });
+    }
+
+    // Insert source
+    const nazev = req.body?.nazev || req.file.originalname;
+    const rok = req.body?.rok ? parseInt(req.body.rok) : new Date().getFullYear();
+
+    const sourceResult = await db.run(
+      `INSERT INTO rozpocet_source
+        (source_type, nazev, predmet, rok, parse_status, polozek_count, format_hints)
+       VALUES (?, ?, ?, ?, 'parsed', ?, ?)`,
+      ['local', nazev, nazev, rok, rows.length, JSON.stringify(['local_import'])]
+    );
+    const sourceId = sourceResult.lastID;
+
+    // Insert positions
+    for (const row of rows) {
+      const codeMatch = row.description?.match(/^(\d{6,9})\s/);
+      const code = codeMatch ? codeMatch[1] : null;
+      const { system: codeSystem, confidence: codeConf } = code
+        ? detectCodeSystem(code) : { system: 'unknown', confidence: 0 };
+
+      await db.run(
+        `INSERT INTO rozpocet_polozky
+          (source_id, kod_raw, popis, mj, mnozstvi, kod_norm, kod_prefix, kod_system, kod_system_conf, dil_6, typ_prace, source_file)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          sourceId, code, row.description,
+          normalizeMJ(row.unit) || row.unit, row.quantity,
+          code, code?.substring(0, 3) || null,
+          codeSystem, codeConf,
+          code?.substring(0, 6) || null,
+          classifyWorkType(row.description),
+          req.file.originalname,
+        ]
+      );
+    }
+
+    res.json({
+      success: true,
+      source_id: sourceId,
+      positions: rows.length,
+      filename: req.file.originalname,
+    });
+  } catch (err) {
+    logger.error(`[SMLOUVY] /import-xlsx error: ${err.message}`);
+    res.status(500).json({ error: err.message });
+  } finally {
+    // Clean up uploaded file
+    try { if (req.file?.path) fs.unlinkSync(req.file.path); } catch {}
   }
 });
 
