@@ -127,7 +127,8 @@ function shouldSkipText(text) {
 }
 
 /**
- * Match URS items using local SQLite database
+ * Match URS items using local SQLite database (39K+ items).
+ * Uses SQL LIKE pre-filtering to avoid scoring all items in JS.
  * @private
  */
 async function matchUrsItemsLocal(text) {
@@ -135,15 +136,58 @@ async function matchUrsItemsLocal(text) {
     const normalized = normalizeText(text);
     const db = await getDatabase();
 
-    // Get all URS items from local database
-    const items = await db.all('SELECT * FROM urs_items');
+    // Extract meaningful words (>2 chars) for SQL pre-filtering
+    const words = normalized.split(/\s+/).filter(w => w.length > 2);
 
-    if (items.length === 0) {
-      logger.warn('[URSMatcher] No URS items in local database');
+    let items;
+    if (words.length > 0) {
+      // Build WHERE clause: urs_name or description LIKE %word%
+      // Use top 4 longest words for best selectivity
+      const searchWords = words
+        .sort((a, b) => b.length - a.length)
+        .slice(0, 4);
+
+      const conditions = searchWords.map(
+        () => '(LOWER(urs_name) LIKE ? OR LOWER(COALESCE(description, \'\')) LIKE ?)'
+      );
+      const params = searchWords.flatMap(w => [`%${w}%`, `%${w}%`]);
+
+      // Match items containing ANY of the search words, limit to 500 candidates
+      items = await db.all(
+        `SELECT * FROM urs_items WHERE ${conditions.join(' OR ')} LIMIT 500`,
+        params
+      );
+
+      // If too few results, try broader search with shorter words
+      if (items.length < 5 && words.length > 1) {
+        const shortWords = words.slice(0, 2);
+        const cond2 = shortWords.map(
+          () => 'LOWER(urs_name) LIKE ?'
+        );
+        const params2 = shortWords.map(w => `%${w}%`);
+        const extra = await db.all(
+          `SELECT * FROM urs_items WHERE ${cond2.join(' OR ')} LIMIT 200`,
+          params2
+        );
+        const seen = new Set(items.map(i => i.urs_code));
+        for (const e of extra) {
+          if (!seen.has(e.urs_code)) items.push(e);
+        }
+      }
+    } else {
+      // No meaningful words — return empty (skip full scan of 39K items)
+      logger.debug('[URSMatcher] No searchable words in query');
       return [];
     }
 
-    // Score each item using Levenshtein distance
+    if (items.length === 0) {
+      logger.debug(`[URSMatcher] No candidates from SQL pre-filter for: "${text.substring(0, 40)}"`);
+      return [];
+    }
+
+    logger.debug(`[URSMatcher] SQL pre-filter: ${items.length} candidates for "${text.substring(0, 40)}"`);
+
+    // Score candidates using Levenshtein distance
     const scored = items.map(item => {
       const normalizedItem = normalizeText(item.urs_name);
       const score = calculateSimilarity(normalized, normalizedItem);
@@ -165,6 +209,7 @@ async function matchUrsItemsLocal(text) {
       unit: item.unit,
       description: item.description,
       confidence: item.confidence,
+      price: item.price || 0,
       source: item.source
     }));
 
@@ -264,9 +309,19 @@ export async function generateRelatedItems(items) {
     // Import tech-rules here to avoid circular dependency
     const { applyTechRules } = await import('./techRules.js');
 
-    // Get all available URS items from DB for validation
+    // Get URS items from same sections as input items for tech-rule validation
     const db = await getDatabase();
-    const allCandidates = await db.all('SELECT urs_code, urs_name FROM urs_items');
+    const sectionCodes = [...new Set(items.map(i => (i.urs_code || '').substring(0, 2)).filter(Boolean))];
+    let allCandidates;
+    if (sectionCodes.length > 0) {
+      const placeholders = sectionCodes.map(() => '?').join(',');
+      allCandidates = await db.all(
+        `SELECT urs_code, urs_name FROM urs_items WHERE section_code IN (${placeholders})`,
+        sectionCodes
+      );
+    } else {
+      allCandidates = await db.all('SELECT urs_code, urs_name FROM urs_items LIMIT 5000');
+    }
 
     // Apply tech-rules
     const relatedItems = applyTechRules(items, allCandidates);
