@@ -10,7 +10,7 @@ import { logger } from '../../utils/logger.js';
 const router = express.Router();
 
 // URS detail page URL pattern
-const URS_DETAIL_URL = 'https://podminky.urs.cz/item/CS_URS_2025_02';
+const URS_DETAIL_URL = process.env.URS_BASE_URL || 'https://podminky.urs.cz/item/CS_URS_2026_01';
 
 /**
  * Fetch full description from podminky.urs.cz for a given URS code.
