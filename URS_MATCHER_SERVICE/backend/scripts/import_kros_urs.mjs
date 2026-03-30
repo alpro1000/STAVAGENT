@@ -34,6 +34,7 @@ const DATA_DIR = path.join(__dirname, '../data');
 const URS_CSV = path.join(DATA_DIR, 'URS201801.csv');
 const CENEKON_CSV = path.join(DATA_DIR, 'CENEKON201801.csv');
 const TSP_CSV = path.join(DATA_DIR, 'TSP201801.csv');
+const TSKP_FULL_CSV = path.join(DATA_DIR, 'TSKP_KROS_full.csv');
 const OTSKP_XML = (() => {
   // Docker path (copied at build time)
   const dockerPath = '/app/concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml';
@@ -129,6 +130,77 @@ function getUnitFromType(type) {
 }
 
 // ============================================================================
+// LOAD TSKP HIERARCHY (full Czech descriptions from KROS.MDB export)
+// ============================================================================
+
+function loadTSKPHierarchy() {
+  if (!fs.existsSync(TSKP_FULL_CSV)) {
+    log(`⚠ TSKP_KROS_full.csv not found — run: mdb-export KROS.MDB TSKP > TSKP_KROS_full.csv`);
+    return new Map();
+  }
+
+  log(`Loading TSKP hierarchy from KROS.MDB export...`);
+  const content = fs.readFileSync(TSKP_FULL_CSV, 'utf-8');
+  const lines = content.split('\n');
+
+  // Parse CSV header
+  const header = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+  const kodIdx = header.indexOf('Kod');
+  const popisIdx = header.indexOf('PopisSkrateny'); // Full hierarchical description
+  const popisShortIdx = header.indexOf('Popis');     // Short name
+  const urovenIdx = header.indexOf('Uroven');
+
+  if (kodIdx === -1 || popisIdx === -1) {
+    log(`⚠ TSKP CSV missing Kod or PopisSkrateny columns`);
+    return new Map();
+  }
+
+  const tskpMap = new Map(); // code prefix → full description
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    // Simple CSV parse (TSKP has no commas in values, so split works)
+    // But values may be quoted
+    const parts = [];
+    let current = '';
+    let inQuotes = false;
+    for (const ch of line) {
+      if (ch === '"') { inQuotes = !inQuotes; continue; }
+      if (ch === ',' && !inQuotes) { parts.push(current.trim()); current = ''; continue; }
+      current += ch;
+    }
+    parts.push(current.trim());
+
+    const kod = parts[kodIdx] || '';
+    const popisFull = parts[popisIdx] || '';
+    const popisShort = parts[popisShortIdx] || '';
+
+    if (kod && popisFull) {
+      tskpMap.set(kod, popisFull);
+    }
+  }
+
+  log(`✓ Loaded ${tskpMap.size} TSKP entries with full descriptions`);
+  return tskpMap;
+}
+
+/**
+ * Build a human-readable description for a URS code using TSKP hierarchy.
+ * E.g., code 274313811 → tries 27431, 2743, 274, 27 → finds best TSKP match.
+ */
+function buildDescriptionFromTSKP(code, tskpMap) {
+  // Try longest prefix first (most specific)
+  for (let len = Math.min(code.length, 6); len >= 2; len--) {
+    const prefix = code.substring(0, len);
+    const desc = tskpMap.get(prefix);
+    if (desc) return desc;
+  }
+  return null;
+}
+
+// ============================================================================
 // LOAD OTSKP XML (for full descriptions + prices)
 // ============================================================================
 
@@ -179,8 +251,9 @@ async function main() {
   log('KROS URS Catalog Import');
   log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
-  // 1. Load OTSKP for cross-reference
+  // 1. Load reference data
   const otskp = loadOTSKPXml();
+  const tskpMap = loadTSKPHierarchy();
 
   // 2. Parse KROS CSV files
   log('');
@@ -206,6 +279,7 @@ async function main() {
 
   const merged = [];
   let otskpMatches = 0;
+  let tskpMatches = 0;
   let keywordsOnly = 0;
 
   for (const urs of ursItems) {
@@ -214,19 +288,26 @@ async function main() {
     let name, unit, price, description;
 
     if (otskpItem) {
-      // Full OTSKP data available
+      // Full OTSKP data available (best quality)
       name = otskpItem.name;
       unit = otskpItem.unit || '';
       price = otskpItem.price;
       description = otskpItem.spec || null;
       otskpMatches++;
     } else {
-      // Only KROS keywords available — expand abbreviations
-      name = urs.keywords;
+      // Try TSKP hierarchy for a meaningful description
+      const tskpDesc = buildDescriptionFromTSKP(urs.code, tskpMap);
+      if (tskpDesc) {
+        name = tskpDesc;
+        tskpMatches++;
+      } else {
+        // Fallback: KROS search keywords
+        name = urs.keywords;
+        keywordsOnly++;
+      }
       unit = '';
       price = 0;
       description = null;
-      keywordsOnly++;
     }
 
     // Add CENEKON keywords as extra search terms
@@ -244,7 +325,8 @@ async function main() {
     });
   }
 
-  log(`✓ ${otskpMatches} items with full OTSKP descriptions`);
+  log(`✓ ${otskpMatches} items with full OTSKP descriptions + prices`);
+  log(`✓ ${tskpMatches} items with TSKP hierarchy descriptions`);
   log(`✓ ${keywordsOnly} items with KROS keywords only`);
   log(`✓ ${merged.length} total items ready for import`);
 
