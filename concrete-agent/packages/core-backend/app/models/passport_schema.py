@@ -661,6 +661,15 @@ class TitleBlock(BaseModel):
     confidence: float = Field(1.0)
 
 
+class DrawingNormFinding(BaseModel):
+    """A single norm compliance finding for a drawing element."""
+    element: str = Field(..., description="Element name (ZÁKLADY, PILÍŘE...)")
+    status: str = Field(..., description="pass / warning / violation")
+    rule: str = Field(..., description="Rule code (e.g. CSN_EN_206_MIN_CLASS)")
+    message: str = Field(..., description="Human-readable message (Czech)")
+    norm: str = Field("ČSN EN 206", description="Referenced norm")
+
+
 class DrawingData(BaseModel):
     """Structured data extracted from construction drawings (výkresy)."""
     concrete_by_element: List[ConcreteByElement] = Field(
@@ -680,6 +689,10 @@ class DrawingData(BaseModel):
         description="ETICS/KZS facade insulation notes"
     )
     has_scc: bool = Field(False, description="SCC / samozhutnitelný beton detected")
+    norm_findings: List[DrawingNormFinding] = Field(
+        default_factory=list,
+        description="Norm compliance findings from KB validation"
+    )
 
 
 # =============================================================================

@@ -361,6 +361,94 @@ class TestTitleBlock:
 
 
 # =============================================================================
+# Tests: Norm Validation (ČSN EN 206 + ČSN EN 1992-1-1)
+# =============================================================================
+
+class TestNormValidation:
+    """Test deterministic norm compliance checks on drawing concrete specs."""
+
+    def test_bridge_findings_present(self, extractor):
+        result = extractor.extract_drawing(BRIDGE_DRAWING_LEGEND)
+        assert len(result.norm_findings) > 0
+
+    def test_bridge_zaklady_pass(self, extractor):
+        """C30/37 with XF2 (min C25) → should pass."""
+        result = extractor.extract_drawing(BRIDGE_DRAWING_LEGEND)
+        zaklady_class = [f for f in result.norm_findings
+                         if 'ZÁKLAD' in f.element and f.rule == 'CSN_EN_206_MIN_CLASS']
+        # Should have at least one pass finding for XF2 (C30 >= C25)
+        passes = [f for f in zaklady_class if f.status == 'pass']
+        assert len(passes) >= 1
+
+    def test_wc_ratio_pass(self, extractor):
+        """w/c = 0.4 with XF2 (max 0.55) → should pass."""
+        result = extractor.extract_drawing(BRIDGE_DRAWING_LEGEND)
+        wc_findings = [f for f in result.norm_findings
+                       if f.rule == 'CSN_EN_206_MAX_WC' and 'ZÁKLAD' in f.element]
+        passes = [f for f in wc_findings if f.status == 'pass']
+        assert len(passes) >= 1
+
+    def test_cover_pass(self, extractor):
+        """Cover min 40mm with XF2 (req 30mm) → should pass."""
+        result = extractor.extract_drawing(BRIDGE_DRAWING_LEGEND)
+        cover_findings = [f for f in result.norm_findings
+                          if f.rule == 'CSN_EN_1992_MIN_COVER']
+        passes = [f for f in cover_findings if f.status == 'pass']
+        assert len(passes) >= 1
+
+    def test_violation_low_class(self, extractor):
+        """C20/25 with XD3 (min C35) → should be violation."""
+        text = "STĚNY: C20/25 – XD3 – CI 0,5 – Dmax 16"
+        result = extractor.extract_drawing(text)
+        violations = [f for f in result.norm_findings
+                      if f.status == 'violation' and f.rule == 'CSN_EN_206_MIN_CLASS']
+        assert len(violations) == 1
+        assert 'min. C35' in violations[0].message
+
+    def test_violation_high_wc(self, extractor):
+        """w/c = 0.60 with XC4 (max 0.50) → should be violation."""
+        text = "DESKA: C30/37 – XC4 – CI 0,60 – Dmax 22"
+        result = extractor.extract_drawing(text)
+        wc_violations = [f for f in result.norm_findings
+                         if f.status == 'violation' and f.rule == 'CSN_EN_206_MAX_WC']
+        assert len(wc_violations) == 1
+        assert '0.60' in wc_violations[0].message or '0,60' in wc_violations[0].message
+
+    def test_violation_low_cover(self, extractor):
+        """Cover 20mm with XD2 (req 40mm) → should be violation."""
+        text = "OPĚRY: C30/37 – XD2\nKRYTÍ MINIMÁLNÍ 20 mm"
+        result = extractor.extract_drawing(text)
+        cover_v = [f for f in result.norm_findings
+                   if f.status == 'violation' and f.rule == 'CSN_EN_1992_MIN_COVER']
+        assert len(cover_v) == 1
+        assert '40' in cover_v[0].message  # Required 40mm
+
+    def test_warning_no_exposure(self, extractor):
+        """No exposure classes → should warn."""
+        text = "PŘECHODOVÁ DESKA: C25/30 – Dmax 22"
+        result = extractor.extract_drawing(text)
+        warnings = [f for f in result.norm_findings
+                    if f.status == 'warning' and f.rule == 'CSN_EN_206_EXPOSURE_MISSING']
+        assert len(warnings) == 1
+
+    def test_finding_has_norm_ref(self, extractor):
+        """All findings should reference a norm."""
+        result = extractor.extract_drawing(BRIDGE_DRAWING_LEGEND)
+        for f in result.norm_findings:
+            assert f.norm, f"Finding {f.rule} missing norm reference"
+            assert 'ČSN' in f.norm
+
+    def test_multiple_exposure_strictest(self, extractor):
+        """XA3 requires C40 — C35/45 with XA3 should pass (35 < 40 → violation)."""
+        text = "Nosná konstrukce: C35/45 – XA3, XC4"
+        result = extractor.extract_drawing(text)
+        xa3_findings = [f for f in result.norm_findings
+                        if f.rule == 'CSN_EN_206_MIN_CLASS' and 'XA3' in f.message]
+        assert len(xa3_findings) == 1
+        assert xa3_findings[0].status == 'violation'  # 35 < 40
+
+
+# =============================================================================
 # Tests: extract_all integration
 # =============================================================================
 

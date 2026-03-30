@@ -35,6 +35,7 @@ from app.models.passport_schema import (
     TenderInfo,
     ConcreteByElement,
     DrawingNote,
+    DrawingNormFinding,
     TitleBlock,
     DrawingData,
 )
@@ -1324,12 +1325,17 @@ class CzechConstructionExtractor:
         self.stats['drawing_etics'] = len(etics_notes)
         self.stats['drawing_has_scc'] = has_scc
 
+        # Validate concrete specs against ČSN EN 206 norms
+        norm_findings = self._validate_drawing_concrete(concrete_by_element)
+        self.stats['drawing_norm_findings'] = len(norm_findings)
+
         return DrawingData(
             concrete_by_element=concrete_by_element,
             notes=notes,
             title_block=title_block,
             etics_notes=etics_notes[:10],  # Limit to 10
             has_scc=has_scc,
+            norm_findings=norm_findings,
         )
 
     def _extract_concrete_by_element(self, text: str) -> List[ConcreteByElement]:
@@ -1447,6 +1453,141 @@ class CzechConstructionExtractor:
                 if kw_norm in text_lower:
                     return wtype
         return None
+
+    # =============================================================================
+    # NORM VALIDATION FOR DRAWING CONCRETE (ČSN EN 206 + ČSN EN 1992-1-1)
+    # =============================================================================
+
+    # ČSN EN 206 Table 2: min concrete class by exposure (50-year lifespan)
+    EXPOSURE_MIN_CLASS: Dict[str, int] = {
+        'XC1': 20, 'XC2': 25, 'XC3': 30, 'XC4': 30,
+        'XD1': 30, 'XD2': 30, 'XD3': 35,
+        'XS1': 30, 'XS2': 35, 'XS3': 35,
+        'XF1': 25, 'XF2': 25, 'XF3': 25, 'XF4': 30,
+        'XA1': 30, 'XA2': 35, 'XA3': 40,
+        'XM1': 30, 'XM2': 30, 'XM3': 35,
+    }
+
+    # ČSN EN 206 Table 2: max w/c ratio by exposure
+    EXPOSURE_MAX_WC: Dict[str, float] = {
+        'XC1': 0.65, 'XC2': 0.60, 'XC3': 0.55, 'XC4': 0.50,
+        'XD1': 0.55, 'XD2': 0.55, 'XD3': 0.45,
+        'XS1': 0.50, 'XS2': 0.45, 'XS3': 0.45,
+        'XF1': 0.55, 'XF2': 0.55, 'XF3': 0.50, 'XF4': 0.45,
+        'XA1': 0.55, 'XA2': 0.50, 'XA3': 0.45,
+    }
+
+    # ČSN EN 1992-1-1 Table 4.4N: min cover by exposure (structural class S4)
+    EXPOSURE_MIN_COVER_MM: Dict[str, int] = {
+        'XC1': 15, 'XC2': 25, 'XC3': 25, 'XC4': 30,
+        'XD1': 35, 'XD2': 40, 'XD3': 45,
+        'XS1': 35, 'XS2': 40, 'XS3': 45,
+        'XF1': 25, 'XF2': 30, 'XF3': 30, 'XF4': 30,
+        'XA1': 25, 'XA2': 30, 'XA3': 35,
+    }
+
+    def _validate_drawing_concrete(self, elements: List[ConcreteByElement]) -> List[DrawingNormFinding]:
+        """Validate drawing concrete specs against ČSN EN 206 and ČSN EN 1992-1-1."""
+        findings: List[DrawingNormFinding] = []
+
+        for elem in elements:
+            # Parse concrete class number: C30/37 → 30
+            class_match = re.match(r'C(\d{2,3})/\d{2,3}', elem.concrete_class)
+            if not class_match:
+                continue
+            fck = int(class_match.group(1))
+
+            # --- Check 1: Concrete class vs exposure class requirements ---
+            for exp in elem.exposure_classes:
+                exp_code = exp.value
+                min_class = self.EXPOSURE_MIN_CLASS.get(exp_code)
+                if min_class and fck < min_class:
+                    findings.append(DrawingNormFinding(
+                        element=elem.element,
+                        status='violation',
+                        rule='CSN_EN_206_MIN_CLASS',
+                        message=f'{elem.element}: {elem.concrete_class} nesplňuje {exp_code} '
+                                f'(min. C{min_class}, skutečnost C{fck})',
+                        norm='ČSN EN 206, Tab. F.1',
+                    ))
+                elif min_class and fck >= min_class:
+                    findings.append(DrawingNormFinding(
+                        element=elem.element,
+                        status='pass',
+                        rule='CSN_EN_206_MIN_CLASS',
+                        message=f'{elem.element}: {elem.concrete_class} vyhovuje {exp_code} '
+                                f'(min. C{min_class})',
+                        norm='ČSN EN 206, Tab. F.1',
+                    ))
+
+            # --- Check 2: w/c ratio vs exposure ---
+            if elem.max_wc_ratio is not None:
+                for exp in elem.exposure_classes:
+                    exp_code = exp.value
+                    max_wc = self.EXPOSURE_MAX_WC.get(exp_code)
+                    if max_wc and elem.max_wc_ratio > max_wc:
+                        findings.append(DrawingNormFinding(
+                            element=elem.element,
+                            status='violation',
+                            rule='CSN_EN_206_MAX_WC',
+                            message=f'{elem.element}: w/c={elem.max_wc_ratio:.2f} překračuje '
+                                    f'limit {exp_code} (max. {max_wc:.2f})',
+                            norm='ČSN EN 206, Tab. F.1',
+                        ))
+                        break  # One violation is enough
+                    elif max_wc and elem.max_wc_ratio <= max_wc:
+                        findings.append(DrawingNormFinding(
+                            element=elem.element,
+                            status='pass',
+                            rule='CSN_EN_206_MAX_WC',
+                            message=f'{elem.element}: w/c={elem.max_wc_ratio:.2f} vyhovuje '
+                                    f'{exp_code} (max. {max_wc:.2f})',
+                            norm='ČSN EN 206, Tab. F.1',
+                        ))
+                        break
+
+            # --- Check 3: Cover vs exposure (ČSN EN 1992-1-1) ---
+            if elem.cover_min_mm is not None:
+                worst_required = 0
+                worst_exp = ''
+                for exp in elem.exposure_classes:
+                    exp_code = exp.value
+                    req = self.EXPOSURE_MIN_COVER_MM.get(exp_code, 0)
+                    if req > worst_required:
+                        worst_required = req
+                        worst_exp = exp_code
+
+                if worst_required > 0:
+                    if elem.cover_min_mm < worst_required:
+                        findings.append(DrawingNormFinding(
+                            element=elem.element,
+                            status='violation',
+                            rule='CSN_EN_1992_MIN_COVER',
+                            message=f'{elem.element}: krytí min. {elem.cover_min_mm} mm < '
+                                    f'požadavek {worst_exp} ({worst_required} mm)',
+                            norm='ČSN EN 1992-1-1, Tab. 4.4N',
+                        ))
+                    else:
+                        findings.append(DrawingNormFinding(
+                            element=elem.element,
+                            status='pass',
+                            rule='CSN_EN_1992_MIN_COVER',
+                            message=f'{elem.element}: krytí min. {elem.cover_min_mm} mm vyhovuje '
+                                    f'{worst_exp} ({worst_required} mm)',
+                            norm='ČSN EN 1992-1-1, Tab. 4.4N',
+                        ))
+
+            # --- Check 4: No exposure classes at all → warning ---
+            if not elem.exposure_classes:
+                findings.append(DrawingNormFinding(
+                    element=elem.element,
+                    status='warning',
+                    rule='CSN_EN_206_EXPOSURE_MISSING',
+                    message=f'{elem.element}: chybí stupeň vlivu prostředí (XC/XD/XF/XA/XS)',
+                    norm='ČSN EN 206',
+                ))
+
+        return findings
 
     def _extract_title_block(self, text: str) -> Optional[TitleBlock]:
         """Extract title block (razítko) data from drawing."""
