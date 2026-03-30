@@ -200,7 +200,28 @@ export async function universalMatch(input) {
       methodologyNotes: normsData.methodology_notes
     });
 
-    const llmResponse = await callUniversalLLM(llmPrompt);
+    let llmResponse;
+    try {
+      llmResponse = await callUniversalLLM(llmPrompt);
+    } catch (llmError) {
+      logger.warn(`[UniversalMatcher] LLM failed, using candidate-only fallback: ${llmError.message}`);
+      // Fallback: return candidates sorted by simple text similarity (no LLM reranking)
+      const fallbackMatches = candidates.slice(0, 5).map((c, i) => ({
+        urs_code: c.urs_code || c.code || '',
+        urs_name: c.urs_name || c.name || '',
+        unit: c.unit || c.mj || '',
+        confidence: Math.max(0.3, 0.7 - i * 0.1),
+        role: i === 0 ? 'primary' : 'alternative',
+        source: 'fallback_no_llm'
+      }));
+      llmResponse = {
+        matches: fallbackMatches,
+        related_items: [],
+        explanation_cs: 'LLM nedostupné — výsledky pouze na základě textové shody.',
+        status: 'ok',
+        notes_cs: 'Fallback bez LLM přehodnocení.'
+      };
+    }
 
     // Ensure query object exists with detected language
     if (!llmResponse.query) {
@@ -333,11 +354,13 @@ async function callUniversalLLM(prompt) {
     const MAX_MATCH_TEXT_LENGTH = 500;  // Max length for urs_name, reason, etc.
 
     // Use callLLMForTask for URS_SELECTION task (routes to best model for this task)
+    // Shorter timeout in test environment to avoid CI hangs
+    const llmTimeout = process.env.NODE_ENV === 'test' ? 10000 : 90000;
     let response = await callLLMForTask(
       'URS_SELECTION',
       'You are a Czech construction ÚRS code matching expert. Return valid JSON only.',
       prompt,
-      90000
+      llmTimeout
     );
 
     // Handle string responses
