@@ -1223,186 +1223,295 @@ class CzechConstructionExtractor:
         return TenderInfo(**data)
 
     # =============================================================================
-    # V4: DRAWING (VÝKRES) EXTRACTION
+    # V5: REGISTRY-BASED DRAWING EXTRACTION FRAMEWORK
+    # =============================================================================
+    #
+    # Adding a new extraction type = adding a record to DRAWING_REGISTRY.
+    # The framework iterates over ALL entries and runs each extractor.
+    #
+    # Modes:
+    #   "element_value"  — ELEMENT: value params (concrete, reinforcement)
+    #   "header_text"    — HEADER: text (notes)
+    #   "field_patterns" — each field has its own pattern (title block)
+    #   "collect_all"    — collect all matches (ETICS, skladba)
+    #   "boolean"        — does pattern exist? (SCC)
     # =============================================================================
 
-    # Concrete per element: "ZÁKLADY: C30/37 – XF2, XC2, XA1 – CI 0,4 – Dmax 22"
-    # Also: "NK: C35/45-XC4,XF3,XD1-Cl 0,2-Dmax 16-S4"
-    DRAWING_CONCRETE_ELEMENT_RE = re.compile(
-        r'(?P<element>[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽa-záčďéěíňóřšťúůýž\s/]{2,30}?)'
-        r'\s*[:–\-]\s*'
-        r'(?P<class>C\s?\d{2,3}/\d{2,3})'
-        r'(?P<rest>[^;\n]{0,200})',
-        re.MULTILINE
-    )
-
-    # Cover: "KRYTÍ MINIMÁLNÍ 40 mm", "KRYTÍ JMENOVITÉ 50 mm", "krytí min./jmen. 40/50 mm"
-    COVER_PATTERNS = {
-        'cover_min': re.compile(r'kryt[íi]\s+min(?:imáln[íi])?\s*[:.]?\s*(\d+)\s*mm', re.IGNORECASE),
-        'cover_nom': re.compile(r'kryt[íi]\s+jmenovit[ée]\s*[:.]?\s*(\d+)\s*mm', re.IGNORECASE),
-        'cover_combined': re.compile(r'kryt[íi]\s+(?:min\.?\s*/\s*jmen\.?|minimální\s*/\s*jmenovité)\s*[:.]?\s*(\d+)\s*/\s*(\d+)\s*mm', re.IGNORECASE),
+    # Known element abbreviations → full name
+    ELEMENT_ALIASES: Dict[str, str] = {
+        'NK': 'NOSNÁ KONSTRUKCE',
+        'ŽB': 'ŽELEZOBETON',
+        'OP': 'OPĚRA',
+        'PD': 'PŘECHODOVÁ DESKA',
+        'ZD': 'ZÁKLADOVÁ DESKA',
+        'ÚD': 'ÚLOŽNÝ PRÁH',
+        'MK': 'MOSTOVKA',
+        'KČ': 'KRAJNÍ ČÁST',
     }
 
-    # Penetration: "MAX. PRŮSAK 20 mm", "průsak max 20mm dle ČSN EN 12390-8"
-    PENETRATION_RE = re.compile(
-        r'(?:max\.?\s+)?průsak\s+(?:max\.?\s+)?(\d+)\s*mm',
-        re.IGNORECASE
+    # Element name pattern — accepts abbreviations (2+ chars) and full names
+    _ELEMENT_RE = (
+        r'(?P<element>'
+        r'(?:NK|ŽB|OP|PD|ZD|ÚD|MK|KČ)'          # known 2-char abbreviations
+        r'|'
+        r'[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]'                    # first uppercase
+        r'[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽa-záčďéěíňóřšťúůýž\s/]{2,30}?'  # 2-30 more
+        r')'
     )
 
-    # SCC / samozhutnitelný beton
-    SCC_RE = re.compile(r'SCC|samozhutn[ěi]teln[ýé]\s+beton', re.IGNORECASE)
+    # ── DRAWING REGISTRY ─────────────────────────────────────────────────────
+    # Each entry: mode, patterns/config, output_field in DrawingData
+    # To add a new extraction type → add a dict here. No new methods needed.
 
-    # Dmax: "Dmax 22", "D_max 16 mm", "Dmax=32"
-    DMAX_RE = re.compile(r'[Dd]\s*max\s*[=:\s]\s*(\d+)', re.IGNORECASE)
+    DRAWING_REGISTRY: List[Dict[str, Any]] = [
+        # ── concrete per element ──────────────────────────────────────────
+        {
+            'id': 'concrete_by_element',
+            'mode': 'element_value',
+            'output_field': 'concrete_by_element',
+            'main_pattern': (
+                _ELEMENT_RE
+                + r'\s*[:–\-]\s*'
+                r'(?P<class>C\s?\d{2,3}/\d{2,3})'
+                r'(?P<rest>[^;\n]{0,200})'
+            ),
+            'sub_patterns': {
+                'exposure':    r'X[CADFMS]\d',
+                'wc_ratio':    r'(?:CI|Cl|w/c)\s*[=:\s]\s*(\d[,.]?\d+)',
+                'dmax':        r'[Dd]\s*max\s*[=:\s]\s*(\d+)',
+                'consistency': r'(?:^|\s)([SF]\d)(?:\s|$|,)',
+                'scc':         r'SCC|samozhutn[ěi]teln[ýé]\s+beton',
+            },
+            'context_patterns': {
+                'cover_combined': r'kryt[íi]\s+(?:min\.?\s*/\s*jmen\.?|minimální\s*/\s*jmenovité)\s*[:.]?\s*(\d+)\s*/\s*(\d+)\s*mm',
+                'cover_min':      r'kryt[íi]\s+min(?:imáln[íi])?\s*[:.]?\s*(\d+)\s*mm',
+                'cover_nom':      r'kryt[íi]\s+jmenovit[ée]\s*[:.]?\s*(\d+)\s*mm',
+                'penetration':    r'(?:max\.?\s+)?průsak\s+(?:max\.?\s+)?(\d+)\s*mm',
+            },
+            'context_radius': 300,
+            'norm_tables': {
+                'min_class': {
+                    'XC1': 20, 'XC2': 25, 'XC3': 30, 'XC4': 30,
+                    'XD1': 30, 'XD2': 30, 'XD3': 35,
+                    'XS1': 30, 'XS2': 35, 'XS3': 35,
+                    'XF1': 25, 'XF2': 25, 'XF3': 25, 'XF4': 30,
+                    'XA1': 30, 'XA2': 35, 'XA3': 40,
+                    'XM1': 30, 'XM2': 30, 'XM3': 35,
+                },
+                'max_wc': {
+                    'XC1': 0.65, 'XC2': 0.60, 'XC3': 0.55, 'XC4': 0.50,
+                    'XD1': 0.55, 'XD2': 0.55, 'XD3': 0.45,
+                    'XS1': 0.50, 'XS2': 0.45, 'XS3': 0.45,
+                    'XF1': 0.55, 'XF2': 0.55, 'XF3': 0.50, 'XF4': 0.45,
+                    'XA1': 0.55, 'XA2': 0.50, 'XA3': 0.45,
+                },
+                'min_cover_mm': {
+                    'XC1': 15, 'XC2': 25, 'XC3': 25, 'XC4': 30,
+                    'XD1': 35, 'XD2': 40, 'XD3': 45,
+                    'XS1': 35, 'XS2': 40, 'XS3': 45,
+                    'XF1': 25, 'XF2': 30, 'XF3': 30, 'XF4': 30,
+                    'XA1': 25, 'XA2': 30, 'XA3': 35,
+                },
+            },
+        },
+        # ── drawing notes (PZ/01–PZ/10) ──────────────────────────────────
+        {
+            'id': 'notes',
+            'mode': 'header_text',
+            'output_field': 'notes',
+            'main_pattern': (
+                r'(?P<id>PZ\s*/\s*\d{1,2}|POZN(?:\.|ÁMKA)?\s*\.?\s*\d{1,2})'
+                r'\s*[:–\-]?\s*'
+                r'(?P<text>[^\n]{10,500})'
+            ),
+            'classify_keywords': {
+                'BETON':    ['beton', 'betonáž', 'betonov', 'monolitick'],
+                'ETICS':    ['etics', 'kzs', 'zateplen', 'polystyr', 'minerální vat'],
+                'IZOLACE':  ['izolac', 'hydroizolac', 'těsn', 'parozábran'],
+                'BEDNĚNÍ':  ['bednění', 'bedneni', 'opalubn', 'formwork'],
+                'VÝZTUŽ':   ['výztuž', 'vyztuz', 'armatura', 'armování'],
+                'PODLAHY':  ['podlah', 'anhydrit', 'nivelační', 'litý potěr'],
+                'STŘECHA':  ['střech', 'strech', 'krytina', 'klempíř'],
+                'ELEKTRO':  ['elektro', 'kabel', 'rozvodna', 'silnoproud', 'slaboproud'],
+                'ZTI':      ['kanalizac', 'vodovod', 'potrub', 'zti', 'splašk'],
+                'VZT':      ['vzduchotech', 'vzt', 'klimatizac', 'ventilac'],
+                'ÚT':       ['vytápěn', 'topení', 'kotel', 'radiátor', 'podlahov'],
+            },
+            'max_items': 20,
+        },
+        # ── title block (razítko) ────────────────────────────────────────
+        {
+            'id': 'title_block',
+            'mode': 'field_patterns',
+            'output_field': 'title_block',
+            'field_patterns': {
+                'stavba':     r'(?:STAVBA|AKCE)\s*[:]\s*(.+?)(?:\n|$)',
+                'objekt':     r'(?:OBJEKT|SO)\s*[:]\s*(.+?)(?:\n|$)',
+                'obsah':      r'OBSAH\s+(?:VÝKRESU)?\s*[:]\s*(.+?)(?:\n|$)',
+                'stupen_pd':  r'(?:STUPEŇ|STUPEN)\s*(?:PD)?\s*[:]\s*(D[ÚU]R|DSP|DPS|DVZ|DSPS|PDPS)',
+                'meritko':    r'(?:MĚŘÍTKO|MERITKO|M)\s*[:]\s*(1\s*:\s*\d+)',
+                'format':     r'FORMÁT\s*[:]\s*(A[0-4])',
+                'cislo_vykresu': r'(?:ČÍSLO\s+VÝKRESU|Č\.\s*VÝK(?:R\.?)?|VÝKRES\s+Č\.)\s*[:]\s*(\S+)',
+                'datum':      r'DATUM\s*[:]\s*(\d{1,2}[\./]\d{1,2}[\./]\d{2,4})',
+                'revize':     r'REVIZE\s*[:]\s*(\S+)',
+                'projektant': r'(?:VYPRACOVAL|ZPRACOVAL)\s*[:]\s*(.+?)(?:\n|$)',
+                'zodpovedny_projektant': r'(?:ZODPOVĚDNÝ\s+PROJEKTANT|HLAVNÍ\s+(?:INŽENÝR|PROJEKTANT)|HIP)\s*[:]\s*(.+?)(?:\n|$)',
+            },
+        },
+        # ── ETICS / KZS ─────────────────────────────────────────────────
+        {
+            'id': 'etics',
+            'mode': 'collect_all',
+            'output_field': 'etics_notes',
+            'main_pattern': (
+                r'((?:ZATEPLEN[ÍI]|KZS|ETICS|kontaktn[íi]\s+zateplovac[íi])'
+                r'[^.;\n]{10,200})'
+            ),
+            'max_items': 10,
+        },
+        # ── SCC detection ────────────────────────────────────────────────
+        {
+            'id': 'scc',
+            'mode': 'boolean',
+            'output_field': 'has_scc',
+            'main_pattern': r'SCC|samozhutn[ěi]teln[ýé]\s+beton',
+        },
+        # ── To add new types, add records here: ──────────────────────────
+        # {
+        #     'id': 'skladba_vrstev',
+        #     'mode': 'collect_all',
+        #     'output_field': 'skladba_vrstev',  # add field to DrawingData first
+        #     'main_pattern': r'(SKLADBA\s*[:–].{10,200})',
+        #     'max_items': 20,
+        # },
+    ]
 
-    # CI (w/c): "CI 0,4", "Cl 0.45", "w/c 0,55"
-    CI_RE = re.compile(r'(?:CI|Cl|w/c)\s*[=:\s]\s*(\d[,.]?\d+)', re.IGNORECASE)
-
-    # ETICS / KZS notes
-    ETICS_RE = re.compile(
-        r'((?:ZATEPLEN[ÍI]|KZS|ETICS|kontaktn[íi]\s+zateplovac[íi])'
-        r'[^.;\n]{10,200})',
-        re.IGNORECASE
-    )
-
-    # Drawing notes: PZ/01, PZ/02, POZN. 1, POZNÁMKA 2
-    # Excludes bare section headers like "POZNÁMKY:" with no number
-    NOTE_HEADER_RE = re.compile(
-        r'(?P<id>PZ\s*/\s*\d{1,2}|POZN(?:\.|ÁMKA)?\s*\.?\s*\d{1,2})'
-        r'\s*[:–\-]?\s*'
-        r'(?P<text>[^\n]{10,500})',
-        re.IGNORECASE
-    )
-
-    # Title block patterns
-    TITLE_BLOCK_PATTERNS = {
-        'stavba': re.compile(r'(?:STAVBA|AKCE)\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
-        'objekt': re.compile(r'(?:OBJEKT|SO)\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
-        'obsah': re.compile(r'OBSAH\s+(?:VÝKRESU)?\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
-        'stupen_pd': re.compile(r'(?:STUPEŇ|STUPEN)\s*(?:PD)?\s*[:]\s*(D[ÚU]R|DSP|DPS|DVZ|DSPS|PDPS)', re.IGNORECASE),
-        'meritko': re.compile(r'(?:MĚŘÍTKO|MERITKO|M)\s*[:]\s*(1\s*:\s*\d+)', re.IGNORECASE),
-        'format': re.compile(r'FORMÁT\s*[:]\s*(A[0-4])', re.IGNORECASE),
-        'cislo_vykresu': re.compile(r'(?:ČÍSLO\s+VÝKRESU|Č\.\s*VÝK(?:R\.?)?|VÝKRES\s+Č\.)\s*[:]\s*(\S+)', re.IGNORECASE),
-        'datum': re.compile(r'DATUM\s*[:]\s*(\d{1,2}[\./]\d{1,2}[\./]\d{2,4})', re.IGNORECASE),
-        'revize': re.compile(r'REVIZE\s*[:]\s*(\S+)', re.IGNORECASE),
-        'projektant': re.compile(r'(?:VYPRACOVAL|ZPRACOVAL)\s*[:]\s*(.+?)(?:\n|$)', re.IGNORECASE),
-        'zodpovedny_projektant': re.compile(
-            r'(?:ZODPOVĚDNÝ\s+PROJEKTANT|HLAVNÍ\s+(?:INŽENÝR|PROJEKTANT)|HIP)\s*[:]\s*(.+?)(?:\n|$)',
-            re.IGNORECASE
-        ),
-    }
-
-    # Work type keywords for note classification
-    NOTE_WORK_TYPES = {
-        'BETON': ['beton', 'betonáž', 'betonov', 'monolitick'],
-        'ETICS': ['etics', 'kzs', 'zateplen', 'polystyr', 'minerální vat'],
-        'IZOLACE': ['izolac', 'hydroizolac', 'těsn', 'parozábran'],
-        'BEDNĚNÍ': ['bednění', 'bedneni', 'opalubn', 'formwork'],
-        'VÝZTUŽ': ['výztuž', 'vyztuz', 'armatura', 'armování'],
-        'PODLAHY': ['podlah', 'anhydrit', 'nivelační', 'litý potěr'],
-        'STŘECHA': ['střech', 'strech', 'krytina', 'klempíř'],
-    }
+    # ── FRAMEWORK: iterate over registry ─────────────────────────────────
 
     def extract_drawing(self, text: str) -> Optional[DrawingData]:
         """
-        Extract drawing-specific data: concrete by element, notes, title block.
-
-        Returns DrawingData if any drawing-specific content is detected, else None.
-        All confidence = 1.0 (deterministic regex).
+        Registry-driven extraction. Iterates over DRAWING_REGISTRY,
+        runs the appropriate handler per mode, collects results into DrawingData.
         """
-        concrete_by_element = self._extract_concrete_by_element(text)
-        notes = self._extract_drawing_notes(text)
-        title_block = self._extract_title_block(text)
-        etics_notes = [m.group(1).strip() for m in self.ETICS_RE.finditer(text)]
-        has_scc = bool(self.SCC_RE.search(text))
+        results: Dict[str, Any] = {}
 
-        # Only return if we found something drawing-specific
-        if not concrete_by_element and not notes and not title_block and not etics_notes and not has_scc:
+        for entry in self.DRAWING_REGISTRY:
+            mode = entry['mode']
+            field = entry['output_field']
+
+            if mode == 'boolean':
+                results[field] = bool(re.search(entry['main_pattern'], text, re.IGNORECASE))
+            elif mode == 'collect_all':
+                matches = [m.group(1).strip()
+                           for m in re.finditer(entry['main_pattern'], text, re.IGNORECASE)]
+                results[field] = matches[:entry.get('max_items', 50)]
+            elif mode == 'field_patterns':
+                results[field] = self._run_field_patterns(text, entry['field_patterns'])
+            elif mode == 'header_text':
+                results[field] = self._run_header_text(text, entry)
+            elif mode == 'element_value':
+                elements = self._run_element_value(text, entry)
+                results[field] = elements
+                # Norm validation for concrete elements
+                if entry.get('norm_tables'):
+                    results.setdefault('norm_findings', []).extend(
+                        self._run_norm_validation(elements, entry['norm_tables'])
+                    )
+
+        # Check if anything was found
+        has_content = any([
+            results.get('concrete_by_element'),
+            results.get('notes'),
+            results.get('title_block'),
+            results.get('etics_notes'),
+            results.get('has_scc'),
+        ])
+        if not has_content:
             return None
 
-        self.stats['drawing_concrete_elements'] = len(concrete_by_element)
-        self.stats['drawing_notes'] = len(notes)
-        self.stats['drawing_etics'] = len(etics_notes)
-        self.stats['drawing_has_scc'] = has_scc
-
-        # Validate concrete specs against ČSN EN 206 norms
-        norm_findings = self._validate_drawing_concrete(concrete_by_element)
-        self.stats['drawing_norm_findings'] = len(norm_findings)
+        # Stats
+        self.stats['drawing_concrete_elements'] = len(results.get('concrete_by_element', []))
+        self.stats['drawing_notes'] = len(results.get('notes', []))
+        self.stats['drawing_etics'] = len(results.get('etics_notes', []))
+        self.stats['drawing_has_scc'] = results.get('has_scc', False)
+        self.stats['drawing_norm_findings'] = len(results.get('norm_findings', []))
 
         return DrawingData(
-            concrete_by_element=concrete_by_element,
-            notes=notes,
-            title_block=title_block,
-            etics_notes=etics_notes[:10],  # Limit to 10
-            has_scc=has_scc,
-            norm_findings=norm_findings,
+            concrete_by_element=results.get('concrete_by_element', []),
+            notes=results.get('notes', []),
+            title_block=results.get('title_block'),
+            etics_notes=results.get('etics_notes', []),
+            has_scc=results.get('has_scc', False),
+            norm_findings=results.get('norm_findings', []),
         )
 
-    def _extract_concrete_by_element(self, text: str) -> List[ConcreteByElement]:
-        """Extract concrete specs assigned to specific structural elements."""
-        results: List[ConcreteByElement] = []
-        seen_elements: set = set()
+    # ── Mode handlers ────────────────────────────────────────────────────
 
-        for m in self.DRAWING_CONCRETE_ELEMENT_RE.finditer(text):
-            element = m.group('element').strip().rstrip(':–- ')
+    def _run_element_value(self, text: str, entry: Dict) -> List[ConcreteByElement]:
+        """Mode 'element_value': ELEMENT: C30/37 – XF2, XC2 – CI 0,4 – Dmax 22"""
+        pattern = re.compile(entry['main_pattern'], re.MULTILINE | re.IGNORECASE)
+        sub = entry.get('sub_patterns', {})
+        ctx = entry.get('context_patterns', {})
+        radius = entry.get('context_radius', 300)
+
+        results: List[ConcreteByElement] = []
+        seen: set = set()
+
+        for m in pattern.finditer(text):
+            raw_element = m.group('element').strip().rstrip(':–- ')
             concrete_class = m.group('class').replace(' ', '')
             rest = m.group('rest') or ''
 
-            # Normalize element name
-            element_upper = element.upper().strip()
-            if element_upper in seen_elements:
+            # Expand abbreviations, normalize
+            element_upper = raw_element.upper().strip()
+            element_upper = self.ELEMENT_ALIASES.get(element_upper, element_upper)
+            if element_upper in seen:
                 continue
-            seen_elements.add(element_upper)
+            seen.add(element_upper)
 
-            # Parse exposure classes from rest
+            # Sub-pattern extraction from "rest"
             exposure_classes: List[ExposureClass] = []
-            for exp_m in re.finditer(r'X[CADFMS]\d', rest):
-                try:
-                    exposure_classes.append(ExposureClass(exp_m.group(0).upper()))
-                except ValueError:
-                    pass
+            if sub.get('exposure'):
+                for exp_m in re.finditer(sub['exposure'], rest):
+                    try:
+                        exposure_classes.append(ExposureClass(exp_m.group(0).upper()))
+                    except ValueError:
+                        pass
 
-            # CI / w/c
-            ci_m = self.CI_RE.search(rest)
-            max_wc = float(ci_m.group(1).replace(',', '.')) if ci_m else None
+            wc_m = re.search(sub['wc_ratio'], rest, re.IGNORECASE) if sub.get('wc_ratio') else None
+            max_wc = float(wc_m.group(1).replace(',', '.')) if wc_m else None
 
-            # Dmax
-            dmax_m = self.DMAX_RE.search(rest)
+            dmax_m = re.search(sub['dmax'], rest, re.IGNORECASE) if sub.get('dmax') else None
             dmax = int(dmax_m.group(1)) if dmax_m else None
 
-            # Consistency
-            cons_m = re.search(r'(?:^|\s)([SF]\d)(?:\s|$|,)', rest)
+            cons_m = re.search(sub['consistency'], rest) if sub.get('consistency') else None
             consistency = cons_m.group(1).upper() if cons_m else None
 
-            # SCC in this element context
-            scc = bool(self.SCC_RE.search(rest))
+            scc = bool(re.search(sub['scc'], rest, re.IGNORECASE)) if sub.get('scc') else False
 
-            # Cover: search near this match position
-            line_start = max(0, m.start() - 300)
-            line_end = min(len(text), m.end() + 300)
-            nearby = text[line_start:line_end]
+            # Context patterns (search nearby text)
+            nearby = text[max(0, m.start() - radius):min(len(text), m.end() + radius)]
+            cover_min = cover_nom = penetration = None
 
-            cover_min = None
-            cover_nom = None
-            penetration = None
+            if ctx.get('cover_combined'):
+                cc_m = re.search(ctx['cover_combined'], nearby, re.IGNORECASE)
+                if cc_m:
+                    cover_min = int(cc_m.group(1))
+                    cover_nom = int(cc_m.group(2))
 
-            # Combined cover
-            cc_m = self.COVER_PATTERNS['cover_combined'].search(nearby)
-            if cc_m:
-                cover_min = int(cc_m.group(1))
-                cover_nom = int(cc_m.group(2))
-            else:
-                cm_m = self.COVER_PATTERNS['cover_min'].search(nearby)
+            if cover_min is None and ctx.get('cover_min'):
+                cm_m = re.search(ctx['cover_min'], nearby, re.IGNORECASE)
                 if cm_m:
                     cover_min = int(cm_m.group(1))
-                cn_m = self.COVER_PATTERNS['cover_nom'].search(nearby)
+            if cover_nom is None and ctx.get('cover_nom'):
+                cn_m = re.search(ctx['cover_nom'], nearby, re.IGNORECASE)
                 if cn_m:
                     cover_nom = int(cn_m.group(1))
 
-            # Penetration
-            pen_m = self.PENETRATION_RE.search(nearby)
-            if pen_m:
-                penetration = int(pen_m.group(1))
+            if ctx.get('penetration'):
+                pen_m = re.search(ctx['penetration'], nearby, re.IGNORECASE)
+                if pen_m:
+                    penetration = int(pen_m.group(1))
 
             results.append(ConcreteByElement(
                 element=element_upper,
@@ -1420,190 +1529,124 @@ class CzechConstructionExtractor:
 
         return results
 
-    def _extract_drawing_notes(self, text: str) -> List[DrawingNote]:
-        """Extract PZ/01-style technology notes from drawing."""
-        notes: List[DrawingNote] = []
-        seen_ids: set = set()
+    def _run_header_text(self, text: str, entry: Dict) -> List[DrawingNote]:
+        """Mode 'header_text': PZ/01: Betonáž základových patek..."""
+        pattern = re.compile(entry['main_pattern'], re.IGNORECASE)
+        keywords = entry.get('classify_keywords', {})
+        max_items = entry.get('max_items', 50)
 
-        for m in self.NOTE_HEADER_RE.finditer(text):
+        notes: List[DrawingNote] = []
+        seen: set = set()
+
+        for m in pattern.finditer(text):
             note_id = re.sub(r'\s+', '', m.group('id')).upper()
             note_text = m.group('text').strip()
 
-            if note_id in seen_ids:
+            if note_id in seen:
                 continue
-            seen_ids.add(note_id)
+            seen.add(note_id)
 
-            # Classify work type
-            work_type = self._classify_note_work_type(note_text)
+            # Classify work type via keywords
+            work_type = None
+            text_norm = self._normalize_diacritics(note_text.lower())
+            for wtype, kws in keywords.items():
+                for kw in kws:
+                    if self._normalize_diacritics(kw.lower()) in text_norm:
+                        work_type = wtype
+                        break
+                if work_type:
+                    break
 
-            notes.append(DrawingNote(
-                note_id=note_id,
-                text=note_text,
-                work_type=work_type,
-            ))
+            notes.append(DrawingNote(note_id=note_id, text=note_text, work_type=work_type))
 
-        return notes[:20]  # Limit
+        return notes[:max_items]
 
-    def _classify_note_work_type(self, text: str) -> Optional[str]:
-        """Classify a drawing note into a work type."""
-        text_lower = self._normalize_diacritics(text.lower())
-        for wtype, keywords in self.NOTE_WORK_TYPES.items():
-            for kw in keywords:
-                kw_norm = self._normalize_diacritics(kw.lower())
-                if kw_norm in text_lower:
-                    return wtype
-        return None
+    def _run_field_patterns(self, text: str, field_patterns: Dict[str, str]) -> Optional[TitleBlock]:
+        """Mode 'field_patterns': each field matched independently."""
+        data: Dict[str, str] = {}
+        for field, pat in field_patterns.items():
+            m = re.search(pat, text, re.IGNORECASE)
+            if m:
+                val = m.group(1).strip().rstrip(',.')
+                if val and len(val) < 200:
+                    data[field] = val
+        return TitleBlock(**data) if data else None
 
-    # =============================================================================
-    # NORM VALIDATION FOR DRAWING CONCRETE (ČSN EN 206 + ČSN EN 1992-1-1)
-    # =============================================================================
-
-    # ČSN EN 206 Table 2: min concrete class by exposure (50-year lifespan)
-    EXPOSURE_MIN_CLASS: Dict[str, int] = {
-        'XC1': 20, 'XC2': 25, 'XC3': 30, 'XC4': 30,
-        'XD1': 30, 'XD2': 30, 'XD3': 35,
-        'XS1': 30, 'XS2': 35, 'XS3': 35,
-        'XF1': 25, 'XF2': 25, 'XF3': 25, 'XF4': 30,
-        'XA1': 30, 'XA2': 35, 'XA3': 40,
-        'XM1': 30, 'XM2': 30, 'XM3': 35,
-    }
-
-    # ČSN EN 206 Table 2: max w/c ratio by exposure
-    EXPOSURE_MAX_WC: Dict[str, float] = {
-        'XC1': 0.65, 'XC2': 0.60, 'XC3': 0.55, 'XC4': 0.50,
-        'XD1': 0.55, 'XD2': 0.55, 'XD3': 0.45,
-        'XS1': 0.50, 'XS2': 0.45, 'XS3': 0.45,
-        'XF1': 0.55, 'XF2': 0.55, 'XF3': 0.50, 'XF4': 0.45,
-        'XA1': 0.55, 'XA2': 0.50, 'XA3': 0.45,
-    }
-
-    # ČSN EN 1992-1-1 Table 4.4N: min cover by exposure (structural class S4)
-    EXPOSURE_MIN_COVER_MM: Dict[str, int] = {
-        'XC1': 15, 'XC2': 25, 'XC3': 25, 'XC4': 30,
-        'XD1': 35, 'XD2': 40, 'XD3': 45,
-        'XS1': 35, 'XS2': 40, 'XS3': 45,
-        'XF1': 25, 'XF2': 30, 'XF3': 30, 'XF4': 30,
-        'XA1': 25, 'XA2': 30, 'XA3': 35,
-    }
-
-    def _validate_drawing_concrete(self, elements: List[ConcreteByElement]) -> List[DrawingNormFinding]:
-        """Validate drawing concrete specs against ČSN EN 206 and ČSN EN 1992-1-1."""
+    def _run_norm_validation(
+        self, elements: List[ConcreteByElement], tables: Dict
+    ) -> List[DrawingNormFinding]:
+        """Validate concrete elements against norm tables from registry."""
         findings: List[DrawingNormFinding] = []
+        min_class_tbl = tables.get('min_class', {})
+        max_wc_tbl = tables.get('max_wc', {})
+        min_cover_tbl = tables.get('min_cover_mm', {})
 
         for elem in elements:
-            # Parse concrete class number: C30/37 → 30
-            class_match = re.match(r'C(\d{2,3})/\d{2,3}', elem.concrete_class)
-            if not class_match:
+            class_m = re.match(r'C(\d{2,3})/\d{2,3}', elem.concrete_class)
+            if not class_m:
                 continue
-            fck = int(class_match.group(1))
+            fck = int(class_m.group(1))
 
-            # --- Check 1: Concrete class vs exposure class requirements ---
+            # Check 1: min concrete class per exposure
             for exp in elem.exposure_classes:
-                exp_code = exp.value
-                min_class = self.EXPOSURE_MIN_CLASS.get(exp_code)
-                if min_class and fck < min_class:
+                ec = exp.value
+                req = min_class_tbl.get(ec)
+                if req:
+                    ok = fck >= req
                     findings.append(DrawingNormFinding(
-                        element=elem.element,
-                        status='violation',
+                        element=elem.element, status='pass' if ok else 'violation',
                         rule='CSN_EN_206_MIN_CLASS',
-                        message=f'{elem.element}: {elem.concrete_class} nesplňuje {exp_code} '
-                                f'(min. C{min_class}, skutečnost C{fck})',
-                        norm='ČSN EN 206, Tab. F.1',
-                    ))
-                elif min_class and fck >= min_class:
-                    findings.append(DrawingNormFinding(
-                        element=elem.element,
-                        status='pass',
-                        rule='CSN_EN_206_MIN_CLASS',
-                        message=f'{elem.element}: {elem.concrete_class} vyhovuje {exp_code} '
-                                f'(min. C{min_class})',
+                        message=(f'{elem.element}: {elem.concrete_class} '
+                                 f'{"vyhovuje" if ok else "nesplňuje"} {ec} '
+                                 f'(min. C{req}{"" if ok else f", skutečnost C{fck}"})'),
                         norm='ČSN EN 206, Tab. F.1',
                     ))
 
-            # --- Check 2: w/c ratio vs exposure ---
+            # Check 2: max w/c ratio
             if elem.max_wc_ratio is not None:
                 for exp in elem.exposure_classes:
-                    exp_code = exp.value
-                    max_wc = self.EXPOSURE_MAX_WC.get(exp_code)
-                    if max_wc and elem.max_wc_ratio > max_wc:
+                    ec = exp.value
+                    limit = max_wc_tbl.get(ec)
+                    if limit:
+                        ok = elem.max_wc_ratio <= limit
                         findings.append(DrawingNormFinding(
-                            element=elem.element,
-                            status='violation',
+                            element=elem.element, status='pass' if ok else 'violation',
                             rule='CSN_EN_206_MAX_WC',
-                            message=f'{elem.element}: w/c={elem.max_wc_ratio:.2f} překračuje '
-                                    f'limit {exp_code} (max. {max_wc:.2f})',
+                            message=(f'{elem.element}: w/c={elem.max_wc_ratio:.2f} '
+                                     f'{"vyhovuje" if ok else "překračuje limit"} '
+                                     f'{ec} (max. {limit:.2f})'),
                             norm='ČSN EN 206, Tab. F.1',
                         ))
-                        break  # One violation is enough
-                    elif max_wc and elem.max_wc_ratio <= max_wc:
-                        findings.append(DrawingNormFinding(
-                            element=elem.element,
-                            status='pass',
-                            rule='CSN_EN_206_MAX_WC',
-                            message=f'{elem.element}: w/c={elem.max_wc_ratio:.2f} vyhovuje '
-                                    f'{exp_code} (max. {max_wc:.2f})',
-                            norm='ČSN EN 206, Tab. F.1',
-                        ))
-                        break
+                        break  # one check per element is enough
 
-            # --- Check 3: Cover vs exposure (ČSN EN 1992-1-1) ---
+            # Check 3: min cover
             if elem.cover_min_mm is not None:
-                worst_required = 0
-                worst_exp = ''
+                worst_req, worst_ec = 0, ''
                 for exp in elem.exposure_classes:
-                    exp_code = exp.value
-                    req = self.EXPOSURE_MIN_COVER_MM.get(exp_code, 0)
-                    if req > worst_required:
-                        worst_required = req
-                        worst_exp = exp_code
+                    r = min_cover_tbl.get(exp.value, 0)
+                    if r > worst_req:
+                        worst_req, worst_ec = r, exp.value
+                if worst_req > 0:
+                    ok = elem.cover_min_mm >= worst_req
+                    findings.append(DrawingNormFinding(
+                        element=elem.element, status='pass' if ok else 'violation',
+                        rule='CSN_EN_1992_MIN_COVER',
+                        message=(f'{elem.element}: krytí min. {elem.cover_min_mm} mm '
+                                 f'{"vyhovuje" if ok else "<"} '
+                                 f'{"" if ok else "požadavek "}{worst_ec} ({worst_req} mm)'),
+                        norm='ČSN EN 1992-1-1, Tab. 4.4N',
+                    ))
 
-                if worst_required > 0:
-                    if elem.cover_min_mm < worst_required:
-                        findings.append(DrawingNormFinding(
-                            element=elem.element,
-                            status='violation',
-                            rule='CSN_EN_1992_MIN_COVER',
-                            message=f'{elem.element}: krytí min. {elem.cover_min_mm} mm < '
-                                    f'požadavek {worst_exp} ({worst_required} mm)',
-                            norm='ČSN EN 1992-1-1, Tab. 4.4N',
-                        ))
-                    else:
-                        findings.append(DrawingNormFinding(
-                            element=elem.element,
-                            status='pass',
-                            rule='CSN_EN_1992_MIN_COVER',
-                            message=f'{elem.element}: krytí min. {elem.cover_min_mm} mm vyhovuje '
-                                    f'{worst_exp} ({worst_required} mm)',
-                            norm='ČSN EN 1992-1-1, Tab. 4.4N',
-                        ))
-
-            # --- Check 4: No exposure classes at all → warning ---
+            # Check 4: missing exposure
             if not elem.exposure_classes:
                 findings.append(DrawingNormFinding(
-                    element=elem.element,
-                    status='warning',
+                    element=elem.element, status='warning',
                     rule='CSN_EN_206_EXPOSURE_MISSING',
                     message=f'{elem.element}: chybí stupeň vlivu prostředí (XC/XD/XF/XA/XS)',
                     norm='ČSN EN 206',
                 ))
 
         return findings
-
-    def _extract_title_block(self, text: str) -> Optional[TitleBlock]:
-        """Extract title block (razítko) data from drawing."""
-        data: Dict[str, str] = {}
-
-        for field, pattern in self.TITLE_BLOCK_PATTERNS.items():
-            m = pattern.search(text)
-            if m:
-                val = m.group(1).strip().rstrip(',.')
-                if val and len(val) < 200:
-                    data[field] = val
-
-        if not data:
-            return None
-
-        return TitleBlock(**data)
 
     def get_stats(self) -> Dict[str, int]:
         """Get extraction statistics"""

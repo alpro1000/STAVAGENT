@@ -161,6 +161,17 @@ class TestConcreteByElement:
         assert len(sloupy) == 1
         assert sloupy[0].scc is True
 
+    def test_nk_abbreviation(self, extractor):
+        """NK = Nosná konstrukce — must be recognized."""
+        text = "NK: C45/55 – XF2, XC4, XD1 – Cl 0,2 – Dmax 22 – S3"
+        result = extractor.extract_drawing(text)
+        assert result is not None
+        assert len(result.concrete_by_element) == 1
+        nk = result.concrete_by_element[0]
+        assert nk.element == 'NOSNÁ KONSTRUKCE'
+        assert nk.concrete_class == 'C45/55'
+        assert nk.consistency_class == 'S3'
+
     def test_element_dedup(self, extractor):
         """Same element name should not appear twice."""
         text = """
