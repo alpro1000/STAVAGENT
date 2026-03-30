@@ -1,6 +1,6 @@
 /**
  * Catalog Routes
- * Access to URS items catalog + Perplexity URS harvester
+ * Access to URS items catalog + Perplexity URS harvester + detail fetching
  */
 
 import express from 'express';
@@ -8,6 +8,84 @@ import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 
 const router = express.Router();
+
+// URS detail page URL pattern
+const URS_DETAIL_URL = process.env.URS_BASE_URL || 'https://podminky.urs.cz/item/CS_URS_2026_01';
+
+/**
+ * Fetch full description from podminky.urs.cz for a given URS code.
+ * Parses the HTML page to extract the full description (PP).
+ * Caches result in SQLite to avoid repeated fetches.
+ */
+async function fetchUrsDetail(code) {
+  const url = `${URS_DETAIL_URL}/${code}`;
+  logger.info(`[CATALOG] Fetching URS detail from ${url}`);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'StavAgent/1.0 (construction cost estimator)',
+        'Accept': 'text/html',
+        'Accept-Language': 'cs'
+      }
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      logger.warn(`[CATALOG] podminky.urs.cz returned ${response.status} for ${code}`);
+      return null;
+    }
+
+    const html = await response.text();
+
+    // Extract item name from <h1> or <title>
+    const titleMatch = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+    const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : null;
+
+    // Extract full description (PP) — usually in a <div> or <p> with class containing "description" or "detail"
+    // Pattern 1: look for "Popis" section
+    const descMatch = html.match(/(?:Popis|Podmínky)[^<]*<\/[^>]+>\s*(?:<[^>]+>)*([\s\S]*?)(?:<\/(?:div|section|p)>)/i);
+    // Pattern 2: look for long text blocks that look like descriptions
+    const longTextMatch = html.match(/<(?:p|div)[^>]*class="[^"]*(?:desc|detail|content)[^"]*"[^>]*>([\s\S]*?)<\/(?:p|div)>/i);
+    // Pattern 3: any paragraph with substantial text
+    const paraMatch = html.match(/<p[^>]*>([\s\S]{50,500}?)<\/p>/i);
+
+    let fullDescription = null;
+    for (const match of [descMatch, longTextMatch, paraMatch]) {
+      if (match) {
+        const text = match[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        if (text.length > 20) {
+          fullDescription = text;
+          break;
+        }
+      }
+    }
+
+    // Extract unit (MJ)
+    const unitMatch = html.match(/(?:Měrná jednotka|MJ)[^<]*<\/[^>]+>\s*(?:<[^>]+>)*\s*([^<]{1,10})/i);
+    const unit = unitMatch ? unitMatch[1].trim() : null;
+
+    return {
+      title: title || null,
+      full_description: fullDescription || null,
+      unit: unit || null,
+      url,
+      fetched_at: new Date().toISOString()
+    };
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error.name === 'AbortError') {
+      logger.warn(`[CATALOG] Timeout fetching ${url}`);
+    } else {
+      logger.error(`[CATALOG] Error fetching ${url}: ${error.message}`);
+    }
+    return null;
+  }
+}
 
 // ============================================================================
 // PERPLEXITY URS HARVESTER (runs on Cloud Run where PPLX_API_KEY is available)
@@ -348,7 +426,96 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/urs-catalog/:code - Get specific URS item
+// GET /api/urs-catalog/:code/detail - Get full URS item detail (fetches from podminky.urs.cz if needed)
+router.get('/:code/detail', async (req, res) => {
+  try {
+    const { code } = req.params;
+    if (!/^\d{6,9}$/.test(code)) {
+      return res.status(400).json({ error: 'Invalid URS code format' });
+    }
+
+    const db = await getDatabase();
+
+    // Check if we already have the full description cached
+    const item = await db.get(
+      'SELECT * FROM urs_items WHERE urs_code = ?',
+      [code]
+    );
+
+    // If description is already long enough (>50 chars), return cached
+    if (item && item.description && item.description.length > 50) {
+      return res.json({
+        urs_code: item.urs_code,
+        urs_name: item.urs_name,
+        unit: item.unit,
+        description: item.description,
+        url: `${URS_DETAIL_URL}/${code}`,
+        source: 'cache'
+      });
+    }
+
+    // Fetch from podminky.urs.cz
+    const detail = await fetchUrsDetail(code);
+
+    if (detail) {
+      // Update database with fetched data
+      const newName = detail.title && detail.title.length > (item?.urs_name?.length || 0)
+        ? detail.title : (item?.urs_name || '');
+      const newDesc = detail.full_description || item?.description || '';
+      const newUnit = detail.unit || item?.unit || '';
+
+      if (item) {
+        await db.run(
+          `UPDATE urs_items SET
+            urs_name = CASE WHEN length(?) > length(urs_name) THEN ? ELSE urs_name END,
+            description = CASE WHEN length(?) > length(COALESCE(description, '')) THEN ? ELSE description END,
+            unit = CASE WHEN ? != '' AND unit = '' THEN ? ELSE unit END,
+            updated_at = datetime('now')
+          WHERE urs_code = ?`,
+          [newName, newName, newDesc, newDesc, newUnit, newUnit, code]
+        );
+      } else {
+        await db.run(
+          `INSERT INTO urs_items (urs_code, urs_name, unit, description, is_imported, source, updated_at)
+           VALUES (?, ?, ?, ?, 1, 'podminky_urs_cz', datetime('now'))`,
+          [code, newName, newUnit, newDesc]
+        );
+      }
+
+      return res.json({
+        urs_code: code,
+        urs_name: newName || detail.title,
+        unit: newUnit || detail.unit,
+        description: newDesc || detail.full_description,
+        url: detail.url,
+        source: 'podminky.urs.cz'
+      });
+    }
+
+    // Fallback: return what we have (or 404)
+    if (item) {
+      return res.json({
+        urs_code: item.urs_code,
+        urs_name: item.urs_name,
+        unit: item.unit,
+        description: item.description,
+        url: `${URS_DETAIL_URL}/${code}`,
+        source: 'local'
+      });
+    }
+
+    return res.status(404).json({
+      error: 'URS item not found',
+      url: `${URS_DETAIL_URL}/${code}`
+    });
+
+  } catch (error) {
+    logger.error(`[CATALOG] Detail error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/urs-catalog/:code - Get specific URS item (local DB only)
 router.get('/:code', async (req, res) => {
   try {
     const { code } = req.params;
@@ -367,7 +534,8 @@ router.get('/:code', async (req, res) => {
       urs_code: item.urs_code,
       urs_name: item.urs_name,
       unit: item.unit,
-      description: item.description
+      description: item.description,
+      url: `${URS_DETAIL_URL}/${code}`
     });
 
   } catch (error) {
