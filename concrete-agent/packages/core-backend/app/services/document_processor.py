@@ -1428,31 +1428,55 @@ Vrať POUZE validní JSON matching IGPParams."""
     }
 
     # =============================================================================
-    # v5.0: Section-based extraction (map-reduce) for large TZ documents
+    # v5.1: Section-based extraction (map-reduce) for ANY large document
     # =============================================================================
+    #
+    # Problem: AI output truncated at 8-16K tokens → loses data from large TZ.
+    # Solution: Split doc into sections → extract each → deep merge.
+    # Triggers for ANY document > 15K chars (not just D.1.4).
+    #
+    # Priority: section headers → numbered chapters → fixed-size chunks (fallback)
 
     # Section header patterns for splitting documents
     SECTION_SPLIT_PATTERNS = [
-        # Numbered sections: "3.1 Strukturovaná kabeláž (SCS)"
+        # D.1.4 subsystem headers: "SCS — Strukturovaná kabeláž"
+        re.compile(
+            r'^(SCS|PZTS|SKV|CCTV|EPS|AVT|INT|EZS|MaR|ZTI|VZT|ÚT|UT)'
+            r'\s*[–—:\-]\s*(.+)$',
+            re.MULTILINE | re.IGNORECASE,
+        ),
+        # Numbered sections: "3.1 Strukturovaná kabeláž (SCS)", "4.2.1 Kanalizace"
         re.compile(r'^(\d+\.\d+(?:\.\d+)?)\s+(.{5,80})$', re.MULTILINE),
-        # Subsystem headers: "SCS — Strukturovaná kabeláž"
-        re.compile(r'^(SCS|PZTS|SKV|CCTV|EPS|AVT|INT|EZS|MaR)\s*[–—:-]\s*(.+)$',
-                   re.MULTILINE | re.IGNORECASE),
-        # Uppercase headers: "VZDUCHOTECHNIKA A KLIMATIZACE"
-        re.compile(r'^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ\s]{5,60})$', re.MULTILINE),
+        # D.x.x sections: "D.1.4.2 Silnoproudé instalace"
+        re.compile(r'^(D\.\d+\.\d+(?:\.\d+)?)\s+(.{5,80})$', re.MULTILINE),
+        # Uppercase headers (>8 chars to avoid noise): "VZDUCHOTECHNIKA A KLIMATIZACE"
+        re.compile(r'^([A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ\s]{8,60})$', re.MULTILINE),
     ]
+
+    # Max chars per section sent to AI (to fit output in token budget)
+    SECTION_MAX_CHARS = 20_000
 
     async def _extract_by_sections(
         self, text: str, prompt_template: str, profession: str
     ) -> Optional[Dict[str, Any]]:
         """
         Split document into sections and extract each separately.
-        Merges results into one dict. For D.1.4 professions with 15K+ chars.
+        Deep-merges results. Works for ANY large document.
+
+        Strategy:
+        1. Try section headers (numbered, subsystem, uppercase)
+        2. If <2 sections → chunk by SECTION_MAX_CHARS with overlap
+        3. Each chunk/section → separate AI call
+        4. Deep merge: lists extend, dicts update, scalars first-wins
         """
         sections = self._split_into_sections(text)
 
+        # Fallback: if no headers found, chunk by fixed size
+        if len(sections) < 2 and len(text) > self.SECTION_MAX_CHARS:
+            sections = self._chunk_text(text, self.SECTION_MAX_CHARS, overlap=500)
+            logger.info(f"No section headers — chunked into {len(sections)} parts")
+
         if len(sections) < 2:
-            # Not enough sections found — fall back to single call
             return None
 
         logger.info(f"Section-based extraction: {len(sections)} sections for {profession}")
@@ -1460,9 +1484,11 @@ Vrať POUZE validní JSON matching IGPParams."""
         merged: Dict[str, Any] = {}
         for section_title, section_text in sections:
             if len(section_text.strip()) < 100:
-                continue  # Skip very short sections
+                continue
 
-            # Build focused prompt with just this section
+            # Trim oversized sections
+            section_text = section_text[:self.SECTION_MAX_CHARS]
+
             section_prompt = prompt_template.format(
                 text=f"[Sekce: {section_title}]\n\n{section_text}"
             )
@@ -1472,20 +1498,8 @@ Vrať POUZE validní JSON matching IGPParams."""
                     section_prompt, task_type="extract"
                 )
                 if section_result and isinstance(section_result, dict):
-                    # Deep merge: section results don't overwrite existing
-                    for k, v in section_result.items():
-                        if v is None:
-                            continue
-                        if k not in merged or merged[k] is None:
-                            merged[k] = v
-                        elif isinstance(merged[k], list) and isinstance(v, list):
-                            merged[k].extend(v)
-                        elif isinstance(merged[k], dict) and isinstance(v, dict):
-                            merged[k].update({
-                                sk: sv for sk, sv in v.items()
-                                if sv is not None and (sk not in merged[k] or merged[k][sk] is None)
-                            })
-                    logger.info(f"  Section '{section_title[:40]}': {len(section_result)} fields")
+                    self._deep_merge(merged, section_result)
+                    logger.info(f"  Section '{section_title[:50]}': {len(section_result)} fields")
             except Exception as e:
                 logger.warning(f"  Section '{section_title[:40]}' extraction failed: {e}")
                 continue
@@ -1521,6 +1535,46 @@ Vrať POUZE validní JSON matching IGPParams."""
             sections.append((title, section_text))
 
         return sections
+
+    @staticmethod
+    def _chunk_text(text: str, chunk_size: int, overlap: int = 500) -> list:
+        """Split text into fixed-size chunks with overlap. Returns (title, content) pairs."""
+        chunks = []
+        pos = 0
+        part = 1
+        while pos < len(text):
+            end = min(pos + chunk_size, len(text))
+            # Try to break at paragraph boundary
+            if end < len(text):
+                newline_pos = text.rfind('\n\n', pos + chunk_size - 2000, end)
+                if newline_pos > pos:
+                    end = newline_pos
+            chunk = text[pos:end]
+            chunks.append((f"Část {part}/{(len(text) // chunk_size) + 1}", chunk))
+            pos = end - overlap if end < len(text) else end
+            part += 1
+        return chunks
+
+    @staticmethod
+    def _deep_merge(target: Dict, source: Dict) -> None:
+        """Deep merge source into target. Lists extend, dicts update, scalars first-wins."""
+        for k, v in source.items():
+            if v is None:
+                continue
+            if k not in target or target[k] is None:
+                target[k] = v
+            elif isinstance(target[k], list) and isinstance(v, list):
+                # Extend lists, avoiding exact duplicates
+                existing = {str(x) for x in target[k]}
+                for item in v:
+                    if str(item) not in existing:
+                        target[k].append(item)
+                        existing.add(str(item))
+            elif isinstance(target[k], dict) and isinstance(v, dict):
+                # Recursive merge for nested dicts
+                for sk, sv in v.items():
+                    if sv is not None and (sk not in target[k] or target[k][sk] is None):
+                        target[k][sk] = sv
 
     async def _extract_type_specific(
         self,
@@ -1637,13 +1691,14 @@ Vrať POUZE validní JSON matching IGPParams."""
             max_chars = 80_000
         text_for_extraction = document_text[:max_chars]
 
-        # v5.0: Section-based extraction for large documents
-        # If document > 15K chars AND is a D.1.4 profession, split into sections
-        # and extract each section separately (map-reduce pattern)
+        # v5.1: Section-based extraction for ANY large document
+        # If document > 15K chars, split into sections and extract each separately.
+        # Works for D.1.4 professions, SO types, and any TZ document.
         ai_result = None
-        if len(text_for_extraction) > 15_000 and d14_profession:
+        doc_label = d14_profession or so_params_key or category.value
+        if len(text_for_extraction) > 15_000:
             ai_result = await self._extract_by_sections(
-                text_for_extraction, prompt_template, d14_profession
+                text_for_extraction, prompt_template, doc_label
             )
 
         if not ai_result:
