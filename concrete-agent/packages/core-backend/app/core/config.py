@@ -47,6 +47,8 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: str = Field(default="", description="Google AI API key (Gemini)")
     OPENAI_API_KEY: str = Field(default="", description="OpenAI API key (optional)")
     PERPLEXITY_API_KEY: str = Field(default="", description="Perplexity API key for live KB")
+    XAI_API_KEY: str = Field(default="", description="xAI Grok API key")
+    DEEPSEEK_API_KEY: str = Field(default="", description="DeepSeek API key")
     NANONETS_API_KEY: str = Field(default="", description="Nanonets API key for document processing")
     
     # ==========================================

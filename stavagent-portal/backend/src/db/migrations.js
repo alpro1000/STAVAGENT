@@ -211,6 +211,16 @@ async function seedAdminIfNeeded() {
           "UPDATE users SET role = 'admin', email_verified = true, email_verified_at = ? WHERE email = ?"
         ).run(new Date().toISOString(), email);
       }
+      // Ensure admin has credits (welcome bonus if balance is 0)
+      try {
+        const balRow = await db.prepare('SELECT credit_balance FROM users WHERE email = ?').get(email);
+        if (balRow && (balRow.credit_balance === 0 || balRow.credit_balance === null)) {
+          await db.prepare('UPDATE users SET credit_balance = 200 WHERE email = ?').run(email);
+          console.log(`[Seed Admin] Added 200 welcome credits to ${email}`);
+        }
+      } catch (e) {
+        // credit_balance column may not exist yet
+      }
       console.log(`[Seed Admin] ${updates.msg} ${email} to admin`);
       return;
     }
@@ -218,11 +228,11 @@ async function seedAdminIfNeeded() {
     const passwordHash = await bcrypt.hash(password, 10);
 
     await db.prepare(`
-      INSERT INTO users (email, password_hash, name, role, email_verified, email_verified_at)
-      VALUES (?, ?, ?, 'admin', true, ?)
+      INSERT INTO users (email, password_hash, name, role, email_verified, email_verified_at, credit_balance)
+      VALUES (?, ?, ?, 'admin', true, ?, 200)
     `).run(email, passwordHash, name, new Date().toISOString());
 
-    console.log(`[Seed Admin] ✅ Created default admin: ${email} / 123456`);
+    console.log(`[Seed Admin] ✅ Created default admin: ${email} / 123456 (200 credits)`);
     console.log('[Seed Admin] ⚠️  CHANGE THE PASSWORD after first login!');
   } catch (error) {
     console.error('[Seed Admin] Error seeding admin:', error.message);

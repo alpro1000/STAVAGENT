@@ -15,6 +15,7 @@ Pipeline:
 Note: All volumes come strictly from the uploaded TZ document.
 """
 
+import asyncio
 import logging
 import json
 from typing import Dict, Any, List, Optional
@@ -190,7 +191,7 @@ class ScenarioBGenerator:
         prompt = EXTRACT_ELEMENTS_PROMPT.replace("{text}", truncated)
 
         try:
-            response = await gemini.acall(prompt)
+            response = await asyncio.to_thread(gemini.call, prompt)
             # Parse JSON from response
             json_str = response.strip()
             if json_str.startswith("```"):
@@ -200,9 +201,14 @@ class ScenarioBGenerator:
             elements = json.loads(json_str)
             if not isinstance(elements, list):
                 elements = [elements]
+            logger.info(f"ScenarioB: Extracted {len(elements)} elements from TZ")
             return elements
-        except (json.JSONDecodeError, Exception) as e:
-            logger.warning(f"ScenarioB: Element extraction failed: {e}")
+        except json.JSONDecodeError as e:
+            logger.warning(f"ScenarioB: JSON parse failed: {e}")
+            logger.debug(f"ScenarioB: Raw response: {response[:500] if response else 'empty'}")
+            return []
+        except Exception as e:
+            logger.error(f"ScenarioB: Element extraction failed: {type(e).__name__}: {e}")
             return []
 
     async def _generate_positions(self, elements: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -212,7 +218,7 @@ class ScenarioBGenerator:
         prompt = GENERATE_VYKAZ_PROMPT.replace("{elements}", json.dumps(elements, ensure_ascii=False, indent=2))
 
         try:
-            response = await gemini.acall(prompt)
+            response = await asyncio.to_thread(gemini.call, prompt)
             json_str = response.strip()
             if json_str.startswith("```"):
                 json_str = json_str.split("```")[1]
@@ -222,8 +228,8 @@ class ScenarioBGenerator:
             if not isinstance(positions, list):
                 positions = [positions]
             return positions
-        except (json.JSONDecodeError, Exception) as e:
-            logger.warning(f"ScenarioB: Position generation failed: {e}")
+        except Exception as e:
+            logger.warning(f"ScenarioB: Position generation failed: {type(e).__name__}: {e}")
             # Fallback: generate basic positions from elements
             return self._fallback_positions(elements)
 
