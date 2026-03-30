@@ -327,7 +327,7 @@ export default function LandingPage() {
           {MORE_TOOLS.map((s) => (
             <div
               key={s.name}
-              onClick={() => navigate('/login')}
+              onClick={() => navigate(isAuthenticated ? '/portal' : '/login')}
               style={{
                 background: 'var(--panel-clean)',
                 borderRadius: '8px',

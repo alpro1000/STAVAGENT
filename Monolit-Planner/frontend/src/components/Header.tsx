@@ -201,7 +201,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
           title="Obnovit aplikaci (F5)"
         >
           <span style={{ fontSize: '28px' }}>🏗️</span>
-          <h1 className="c-header__title" style={{ fontSize: '20px' }}>Kalkulátor rozpočtu</h1>
+          <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
         </div>
 
         <div className="u-flex u-gap-sm header-controls" style={{ flexWrap: 'wrap', alignItems: 'center', gap: '6px' }}>
