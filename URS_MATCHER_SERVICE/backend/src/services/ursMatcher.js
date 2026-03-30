@@ -210,6 +210,7 @@ async function matchUrsItemsLocal(text) {
       description: item.description,
       confidence: item.confidence,
       price: item.price || 0,
+      url: `https://podminky.urs.cz/item/CS_URS_2025_02/${item.urs_code}`,
       source: item.source
     }));
 
