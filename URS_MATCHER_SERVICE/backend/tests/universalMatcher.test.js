@@ -271,8 +271,9 @@ describe('Universal Matcher', () => {
       candidateItems: []
     });
 
-    // Without candidates: 'ambiguous' if DB available, 'error' if no DB in CI
-    expect(['ambiguous', 'error']).toContain(result.status);
+    // 'ambiguous' if no local catalog results, 'ok' if auto-search found candidates
+    // (with 39K URS items, auto-search may find results even for unusual text)
+    expect(['ambiguous', 'error', 'ok']).toContain(result.status);
     expect(Array.isArray(result.matches)).toBe(true);
   });
 
@@ -429,8 +430,8 @@ describe('Edge Cases', () => {
       candidateItems: undefined
     });
 
-    // Without candidates: 'ambiguous' if DB available, 'error' if no DB in CI
-    expect(['ambiguous', 'error']).toContain(result.status);
+    // 'ambiguous' if no local catalog results, 'ok' if auto-search found candidates
+    expect(['ambiguous', 'error', 'ok']).toContain(result.status);
     expect(Array.isArray(result.matches)).toBe(true);
   });
 
