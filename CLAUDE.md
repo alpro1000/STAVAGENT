@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.7.0
-**Last Updated:** 2026-03-29
+**Version:** 3.8.0
+**Last Updated:** 2026-03-30
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -1076,35 +1076,114 @@ GET  /api/v1/items/{project}/grouped → construction cards (beton + armatura[] 
 
 ---
 
+**Completed (2026-03-30, session 11 — VZ Scraper + TZ→Soupis full pipeline):**
+- **Hlídač státu Smlouvy API client** (`hlidacSmlouvyClient.js`):
+  - HTTP client, rate limiting (1req/10s), retries with backoff, pagination
+  - `HLIDAC_API_TOKEN` in GCP Secret Manager, wired in `cloudbuild-urs.yaml`
+- **PlainTextContent parser** (`smlouvyParser.js`):
+  - 3 parse strategies: tab-separated, space-separated, code-only
+  - 30+ work type classifiers (BETON, VYZTUŽ, BEDNĚNÍ, ZATEPLENÍ, OMÍTKY...)
+  - 4 code system detectors (URS 9-digit, OTSKP 6-digit, RTS 7-digit, R-codes)
+  - Format detection (KRYCÍ LIST, CS ÚRS, Export Komplet, RTSROZP)
+- **Smlouvy Collector** (`smlouvyCollector.js`):
+  - Search → parse → store pipeline, SQLite tables: rozpocet_source, rozpocet_polozky, collection_runs
+  - Batch insert (200/batch), dedup by hlidac_id, progress tracking
+  - xlsx download fallback: when PlainTextContent yields <5 positions, downloads xlsx přílohy
+- **Příloha Downloader** (`prilohaDownloader.js`):
+  - Downloads xlsx/ods/csv from Hlídač státu přílohy URLs
+  - Reuses existing `fileParser.js` (no new xlsx parser)
+  - Filename-based rozpočet detection (positive/negative keyword filters)
+- **Local xlsx import**: `POST /api/smlouvy/import-xlsx` (multer, 50MB max)
+- **VVZ API client** (`vvzClient.js`):
+  - REST client for api.vvz.nipez.cz (Věstník veřejných zakázek)
+  - No auth, 14 CPV subcategories for construction (45*)
+  - Search with pagination, item normalization, CPV extraction
+- **VZ Enrichment** (`vzEnrichment.js`):
+  - Schema migration: CPV/VZ fields on rozpocet_source + vz_metadata table
+  - VZ→Smlouva JOIN: by zadavatel IČO or fuzzy name match
+  - CPV tagging: enriches collected smlouvy with CPV codes
+- **Co-occurrence matrix** (`cooccurrenceBuilder.js`):
+  - 4 granularity levels: dil_3, dil_6, full code, work_type
+  - Counts pairs per source, calculates frequency
+- **Work Package builder** (`workPackageBuilder.js`):
+  - Greedy clustering from co-occurrence → Work Packages
+  - Item roles: anchor/companion/conditional (Task 17)
+  - Alternative variant detection: 3+ detailed URS → souhrnná R-položka (Task 19)
+  - AI naming via Gemini Flash (Task 20), graceful fallback
+  - CPV correlation from VZ-enriched sources
+  - Transaction-safe DB writes (BEGIN/COMMIT/ROLLBACK)
+  - Input validation for IN() queries
+- **TZ → WorkRequirements extractor** (`tz_work_extractor.py`):
+  - L1 regex (conf=1.0): concrete classes, steel, thickness, norms, DN, power, volumes, areas
+  - L2 AI (conf=0.70): Gemini Flash paragraph decomposition
+  - 28 work type classifiers, paragraph splitter
+- **Soupis Assembler** (`soupis_assembler.py`):
+  - WP DB lookup → URS code lookup → manual fallback
+  - Companion packages: přesuny (all), lešení (facade), odvoz (demolition)
+  - HSV/PSV classification, section sorting
+- **KROS-compatible xlsx export** (`soupis_exporter.py`):
+  - VV formula generation from extracted params
+  - 2 sheets: Soupis prací + Rekapitulace
+  - 10 columns: P.č.|Typ|Kód|Popis|MJ|Množství|VV vzorec|Cen.soustava|Zdroj|Důvěra
+- **API routes**:
+  - URS Matcher: 7 smlouvy endpoints + 4 VZ endpoints + 5 WP endpoints = 16 new
+  - CORE: 4 soupis endpoints (extract, assemble, generate, export-xlsx)
+  - Portal: 7 admin pipeline proxy routes + soupis core-proxy route
+- **Data Pipeline admin tab** (`DataPipeline.tsx`):
+  - 3-step UI: Collect Smlouvy → CPV Enrichment → Build Work Packages
+  - Real-time polling, stats panel, fun Czech waiting messages
+  - Admin-only access
+- **Bug fixes**:
+  - Admin stats 500: `monolith_projects` → `portal_projects`
+  - Audit logs 500: try/catch + PostgreSQL datetime syntax
+  - NKBAdminPage 429: useRef guard, single fetch on mount
+  - ComplianceTab 429: useRef guard, 429 status handling
+  - Hardcoded API token removed from docs + .env.example (CWE-798)
+  - Amazon Q review: transactions, input validation, error logging, safeJSON
+  - Mantra: repo name `alpro1000/concrete-agent` → `alpro1000/STAVAGENT`
+- **Tests**: 46 (smlouvyParser) + 13 (workPackages) + 14 (vzEnrichment) + 53 (tz_extraction) = **126 new tests**
+- **Docs**: `STAVAGENT_ClaudeCode_Session_Mantra.md`, `SUPPLEMENT_VZ_Sources_vvz_nipez.md`
+
+**Branch:** `claude/urs-import-search-optimization-YFZFF` — 15 commits, PR open
+
+**VZ Scraper task status (38 items):** 35/38 done, 3 deferred:
+- ⬜ Export WP → PostgreSQL (сейчас SQLite, миграция после deploy)
+- ⬜ Výkresy → textové poznámky (Task 26 — нужен улучшенный PDF extraction)
+- ⬜ Строгая MJ валидация (Task 30)
+
 ## ЗАДАНИЕ НА СЛЕДУЮЩУЮ СЕССИЮ
 
 ### Приоритет 1 — Merge и deploy
-1. **Merge PR #758** → main → дождаться Cloud Build deploy
-2. **Merge PR #752** (если ещё не смержен) → credit system + landing + anti-fraud
-3. **Проверить все 3 субдомена** после deploy: kalkulator.stavagent.cz, registry.stavagent.cz, klasifikator.stavagent.cz
-4. **Проверить регистрацию** end-to-end: register → email → verify → login → portal
+1. **Merge PR** `claude/urs-import-search-optimization-YFZFF` → main
+2. **Cloud Build deploy** — проверить все сервисы /health
+3. **Активация Data Pipeline** (Admin Panel → Data Pipeline tab):
+   - Кнопка 1: "Sběr smluv" → собрать 1000+ smluv
+   - Кнопка 2: "CPV obohacení" → VZ metadata + CPV
+   - Кнопка 3: "Tvorba balíčků" → Work Packages из данных
+4. **Проверить TZ → Soupis**: загрузить TZ PDF → /api/v1/soupis/generate → xlsx
 
-### Приоритет 2 — Инфраструктура (ручные действия)
-5. **Resend domain verification**: обновить FROM email на `noreply@stavagent.cz`
-6. **Stripe интеграция**: настроить `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` в GCP Secret Manager
-7. **VPC connector** для Cloud SQL — убрать публичный IP базы данных
-8. **AWS Bedrock quota** — запросить увеличение RPM для Claude моделей
-9. **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → Secret Manager
+### Приоритет 2 — Výkresy extraction (улучшение AI Passport для чертежей)
+5. **Расширить regex_extractor.py для výkresů:**
+   - Бетон по конструкциям: "ZÁKLADY: C30/37 – XF2, XC2, XA1 – CI 0,4 – Dmax 22"
+   - ETICS/KZS poznámky: "ZATEPLENÍ KZS Z PĚNOVÉHO POLYSTYRÉNU O TL. 80MM"
+   - Krytí: "KRYTÍ MINIMÁLNÍ 40 mm / JMENOVITÉ 50 mm"
+   - Průsak: "MAX. PRŮSAK 20 mm PODLE ČSN EN 12390-8"
+   - SCC/samozhutnitelný beton marker
+   - Poznámky (PZ/01-PZ/10): celé odstavce technologie
+   - Štampové pole: revize, datum, stupeň PD, měřítko, formát
+6. **Структурированный výkres passport**: concrete_by_element[], poznámky[], razítko{}
+7. **Тесты на reálných výkresech** (most + fasáda + půdorys)
 
-### Приоритет 3 — Функциональные улучшения
-10. **URS catalog harvest** — запустить `POST /api/urs-catalog/harvest` на Cloud Run (разовый сбор, строит локальную базу URS из podminky.urs.cz через Perplexity)
-11. **DocumentAnalysisPage sessionOnly** — проверить что анонимный режим работает без API
-12. **Landing page** — добавить скриншот/демо результата AI-анализа (конверсия)
-13. **URS Matcher credit deduction** — исправить порядок: сначала вызов API, потом списание кредитов (Amazon Q review finding)
-14. **Удалить мёртвый код** — проверить SoupisTab.tsx, UrsClassifierDrawer.tsx
+### Приоритет 3 — Инфраструктура
+8. **Stripe**: настроить env vars в Secret Manager
+9. **VPC connector** для Cloud SQL
+10. **Landing page** — скриншот/демо AI-анализа
 
-### Приоритет 4 — Развитие продукта (долгосрочно)
-15. **Миграция на Vitest** (Jest → Vitest для фронтендов)
-16. **IFC/BIM support** (нужны бинарные зависимости)
-17. **reCAPTCHA на регистрации** (когда пойдёт трафик)
-18. **Deep Links** между кисками (Registry ↔ Monolit ↔ URS)
-19. **Session-only mode** для Monolit Kalkulátor (external Vercel app)
-20. **Redis для URS Matcher** — кеширование при высокой нагрузке
+### Приоритет 4 — Продукт
+11. **Export WP → PostgreSQL** (миграция из SQLite)
+12. **ISVZ Open Data ZIP** — годовые дампы VZ (дополнительный источник)
+13. **Deep Links** между кисками
+14. **Výkresová poznámka → soupis**: PZ odstavce как vstup pro TZ→Soupis pipeline
 
 ---
 

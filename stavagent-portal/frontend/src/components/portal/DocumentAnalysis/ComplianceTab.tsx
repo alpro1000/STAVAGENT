@@ -8,7 +8,7 @@
  * - POST /api/core/nkb/advisor (AI recommendations based on extracted data)
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import {
   Shield, ShieldCheck, ShieldAlert, ShieldClose,
   Loader2, AlertTriangle, CheckCircle, Info, ChevronDown, ChevronUp,
@@ -92,6 +92,7 @@ export default function ComplianceTab({ data }: ComplianceTabProps) {
   const [error, setError] = useState<string | null>(null);
   const [expandedFindings, setExpandedFindings] = useState<Set<number>>(new Set());
   const [showAiAnalysis, setShowAiAnalysis] = useState(false);
+  const hasRunRef = useRef(false);
 
   /* ── Build context from passport data ── */
   const buildContext = useCallback(() => {
@@ -156,6 +157,12 @@ export default function ComplianceTab({ data }: ComplianceTabProps) {
         signal: AbortSignal.timeout(120000),
       });
 
+      if (res.status === 429) {
+        setError('Příliš mnoho požadavků. Zkuste to za chvíli.');
+        setIsLoading(false);
+        return;
+      }
+
       if (!res.ok) {
         const errData = await res.json().catch(() => null);
         throw new Error(errData?.detail || `HTTP ${res.status}`);
@@ -207,9 +214,10 @@ export default function ComplianceTab({ data }: ComplianceTabProps) {
     }
   }, [buildContext]);
 
-  /* ── Auto-run on mount when data available ── */
+  /* ── Auto-run on mount when data available (once only) ── */
   useEffect(() => {
-    if (data?.passport && !compliance && !isLoading && !error) {
+    if (data?.passport && !hasRunRef.current && !isLoading) {
+      hasRunRef.current = true;
       runCheck();
     }
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
