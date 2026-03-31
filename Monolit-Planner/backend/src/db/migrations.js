@@ -989,6 +989,22 @@ async function runPhase7PortalIntegration() {
       }
     }
 
+    // Add portal_user_id column (links anonymous projects to Portal users)
+    try {
+      console.log('[Migration 012] Adding portal_user_id to monolith_projects...');
+      await db.exec(`
+        ALTER TABLE monolith_projects
+        ADD COLUMN IF NOT EXISTS portal_user_id TEXT;
+      `);
+      console.log('[Migration 012] ✓ portal_user_id column added');
+    } catch (error) {
+      if (!error.message.includes('already exists') && !error.message.includes('column')) {
+        console.error('[Migration 012] Error adding portal_user_id:', error);
+      } else {
+        console.log('[Migration 012] ✓ portal_user_id column already exists');
+      }
+    }
+
     // Create index for portal_project_id
     try {
       console.log('[Migration 007] Creating index for portal_project_id...');
