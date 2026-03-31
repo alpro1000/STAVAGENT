@@ -49,6 +49,7 @@ from app.services.document_classifier import (
 )
 from app.services.so_type_regex import extract_so_type_params
 from app.models.so_type_schemas import detect_so_params_key, SO_PARAMS_CLASSES, D14_PARAMS_CLASSES, RAILWAY_PARAMS_CLASSES, ALL_PARAMS_CLASSES
+from app.services.section_extraction_engine import extract_all_from_document
 from app.services.d14_profession_detector import is_d14_document, detect_d14_profession
 from app.core.config import settings
 from app.models.passport_schema import (
@@ -190,6 +191,14 @@ class DocumentProcessor:
             layer2_time = int((time.time() - layer2_start) * 1000)
             logger.info(f"Layer 2 complete: {layer2_time}ms, {self.extractor.get_stats()}")
 
+            # === LAYER 2b: UNIVERSAL MAP-REDUCE ENGINE ===
+            engine_start = time.time()
+            engine_results = extract_all_from_document(document_text)
+            engine_time = int((time.time() - engine_start) * 1000)
+            logger.info(f"Layer 2b (engine) complete: {engine_time}ms, "
+                         f"{len(engine_results)} domains, "
+                         f"{sum(len(v) for v in engine_results.values())} fields")
+
             # === BUILD PASSPORT (from Layer 2 facts) ===
             passport = self._build_passport(
                 passport_id=passport_id,
@@ -208,6 +217,11 @@ class DocumentProcessor:
             passport.layer_breakdown['layer2_regex'] = {
                 'time_ms': layer2_time,
                 'stats': self.extractor.get_stats()
+            }
+            passport.layer_breakdown['layer2b_engine'] = {
+                'time_ms': engine_time,
+                'domains_matched': len(engine_results),
+                'total_fields': sum(len(v) for v in engine_results.values()),
             }
 
             # === LAYER 3: AI ENRICHMENT (Context, risks, relationships) ===
@@ -334,6 +348,8 @@ class DocumentProcessor:
                 norms=extracted_facts.get("norms", []),
                 identification=extracted_facts.get("identification"),
                 referenced_documents=extracted_facts.get("referenced_documents", []),
+                # v6.0: universal map-reduce engine
+                engine_extractions=engine_results,
             )
 
         except Exception as e:
