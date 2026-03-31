@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 3.8.0
+**Version:** 3.9.0
 **Last Updated:** 2026-03-30
 **Repository:** STAVAGENT (Monorepo)
 
@@ -1151,39 +1151,134 @@ GET  /api/v1/items/{project}/grouped → construction cards (beton + armatura[] 
 - ⬜ Výkresy → textové poznámky (Task 26 — нужен улучшенный PDF extraction)
 - ⬜ Строгая MJ валидация (Task 30)
 
+**Completed (2026-03-30, session 12 — Drawing extraction + Universal registry + Output limits fix):**
+- **Drawing (výkres) extraction — Layer 2 regex:**
+  - ConcreteByElement: per-element specs from drawing legends (ZÁKLADY: C30/37 – XF2, XC2 – CI 0,4 – Dmax 22)
+  - Cover extraction (krytí min/jmen), penetration (průsak), SCC, ETICS/KZS
+  - Drawing notes PZ/01–PZ/10 with work type classification (7 types)
+  - Title block (razítko): stavba, objekt, stupeň PD, měřítko, formát, datum, revize, projektant
+  - Norm validation: ČSN EN 206 (min class, max w/c per exposure) + ČSN EN 1992-1-1 (min cover)
+  - NK abbreviation → NOSNÁ KONSTRUKCE (+ 7 more aliases: ŽB, OP, PD, ZD, ÚD, MK, KČ)
+  - 53 tests — ALL PASS
+- **DRAWING_REGISTRY refactor** — data-driven framework:
+  - 5 extraction modes: element_value, header_text, field_patterns, collect_all, boolean
+  - Adding new extraction type = adding a dict to registry, no new code
+- **Portal fixes:**
+  - klasifikator.stavagent.cz Vercel proxy: fixed Cloud Run URL (-3uxelthc4q-ey → -1086027517695.europe-west3)
+  - LandingPage MORE_TOOLS: logged-in users → /portal (not /login)
+  - "Kalkulátor rozpočtu" → "Monolit Planner" (3 files)
+- **SLABOPROUD_REGISTRY** — 7 subsystems, 80+ patterns:
+  - SCS (10): cable category, frequency, type, rack, fiber, ports
+  - PZTS (14): brand+model, keypads, concentrators, PIR, battery, backup, monitoring
+  - SKV (7): reader tech, count, doors, EPS integration, locks
+  - CCTV (9): cameras, resolution, type, features, VMS, storage, NVR
+  - EPS (13): brand+model, bus, 5 detector types, signaling, cable, integrity
+  - INT (3): count, type, power
+  - AVT (2): scope, preparation type
+- **SILNOPROUD_REGISTRY** — 8 subsystems, 35+ patterns:
+  - napajeni, rozvadece, ochrana, kabelaz, osvetleni, zasuvky, hromosvod, fve
+- **Output limits removed:**
+  - AI extraction input: 30K → 200K (Gemini) / 150K (Claude) / 80K (fallback)
+  - AI output tokens: 2048/4096 → 16384 (Gemini), 8192 (Claude)
+  - PDF pages: first 5 → all pages
+  - Regex text: 30K → full text
+  - Quantities, warnings, specification — no truncation
+- **Section-based map-reduce extraction:**
+  - Any document >15K chars → split into sections → separate AI call per section → deep merge
+  - Section detection: numbered headers, subsystem labels, CAPS headers, D.x.x sections
+  - Fallback: fixed-size chunks (20K + 500 overlap) at paragraph boundaries
+  - Deep merge: lists deduplicate, dicts recurse, scalars first-wins
+- **Cloud Build fixes:**
+  - XAI_API_KEY + DEEPSEEK_API_KEY: removed → restored after secrets added to SM
+  - URS: DEEP_SEEK → DEEPSEEK_API_KEY (match SM name)
+
+**Branch:** `claude/urs-import-search-optimization-v2MCi` — 10 commits, 96 tests (53 drawing + 43 slaboproud)
+
 ## ЗАДАНИЕ НА СЛЕДУЮЩУЮ СЕССИЮ
 
+### ‼️ ПРИОРИТЕТ 0 — Универсальный extraction engine (НЕ ЗАВЕРШЁН)
+
+**КРИТИЧЕСКАЯ ЗАДАЧА. Начать с этого. Не писать ни строки другого кода пока не готово.**
+
+Создать два файла:
+
+**1. `app/services/extraction_registry.py`** — один словарь ВСЕ типов extraction:
+```python
+EXTRACTION_REGISTRY = {
+    "concrete": {"category": "konstrukce", "patterns": {...}},
+    "reinforcement": {"category": "konstrukce", "patterns": {...}},
+    "masonry": {"category": "konstrukce", "patterns": {...}},
+    "roofing": {"category": "konstrukce", "patterns": {...}},
+    "flooring": {"category": "konstrukce", "patterns": {...}},
+    "etics": {"category": "izolace", "patterns": {...}},
+    "windows_doors": {"category": "konstrukce", "patterns": {...}},
+    "sdk": {"category": "konstrukce", "patterns": {...}},
+    "waterproofing": {"category": "izolace", "patterns": {...}},
+    "zti_kanalizace": {"category": "zti", "patterns": {...}},
+    "zti_vodovod": {"category": "zti", "patterns": {...}},
+    "vzt": {"category": "vzt", "patterns": {...}},
+    "ut": {"category": "ut", "patterns": {...}},
+    "silnoproud_*": {"category": "elektro", "patterns": {...}},
+    "slaboproud_*": {"category": "elektro", "patterns": {...}},
+    "mar": {"category": "mar", "patterns": {...}},
+    "gas": {"category": "plyn", "patterns": {...}},
+    "fire_safety": {"category": "pbrs", "patterns": {...}},
+    "roads": {"category": "doprava", "patterns": {...}},
+    "bridges": {"category": "mosty", "patterns": {...}},
+    # ... десятки типов
+}
+```
+Consolidate из: SLABOPROUD_REGISTRY, SILNOPROUD_REGISTRY, VZT_PATTERNS, ZTI_PATTERNS,
+UT_PATTERNS, ELEKTRO_D14_PATTERNS, PBRS_PATTERNS, BRIDGE_PATTERNS, GTP_PATTERNS,
+regex_extractor.py PATTERNS, DRAWING_REGISTRY. Добавить: zdivo, střecha, podlahy,
+okna/dveře, SDK, hydroizolace, plynovod, dopravní stavby.
+
+**2. `app/services/extraction_engine.py`** — document-agnostic map-reduce:
+```python
+class ExtractionEngine:
+    def extract(self, text: str) -> Dict:
+        sections = self.split_sections(text)  # universal splitter
+        for section in sections:
+            for extractor_id, config in REGISTRY.items():
+                matches = self.run_patterns(section, config["patterns"])
+                # merge into results
+        return results
+```
+
+**Требования к движку:**
+- НЕ знает тип документа
+- Итерирует ВСЕ extractors на КАЖДУЮ секцию
+- Если extractor не matchнул — null, это OK
+- Секции: любая нумерация (1., 1.1, a), A., I., II.), CAPS, "короткая строка без точки = заголовок"
+- Fallback: чанки 4000-6000 символов с overlap 500
+- Merge: confidence tracking, conflict detection, lists concatenate
+- Engine ИМПОРТИРУЕТ registry, не наоборот
+- Добавление нового типа = запись в registry, engine НЕ МЕНЯЕТСЯ
+
+**3.** Wire engine в `document_processor.py`:
+- Layer 2: `engine.extract(text)` вместо хардкод extract_all()
+- Результат → в passport + type-specific fields
+- Existing 96 tests MUST pass
+
+**Прочитай перед началом:**
+- `STAVAGENT_ClaudeCode_Session_Mantra.md` — обязательно
+- `app/services/so_type_regex.py` — все существующие паттерны (не дублировать)
+- `app/services/regex_extractor.py` — DRAWING_REGISTRY + PATTERNS
+- `app/services/document_processor.py` — как wired сейчас
+
 ### Приоритет 1 — Merge и deploy
-1. **Merge PR** `claude/urs-import-search-optimization-YFZFF` → main
-2. **Cloud Build deploy** — проверить все сервисы /health
-3. **Активация Data Pipeline** (Admin Panel → Data Pipeline tab):
-   - Кнопка 1: "Sběr smluv" → собрать 1000+ smluv
-   - Кнопка 2: "CPV obohacení" → VZ metadata + CPV
-   - Кнопка 3: "Tvorba balíčků" → Work Packages из данных
-4. **Проверить TZ → Soupis**: загрузить TZ PDF → /api/v1/soupis/generate → xlsx
+1. Merge `claude/urs-import-search-optimization-v2MCi` → main
+2. Cloud Build deploy — проверить /health всех сервисов
+3. Проверить slaboproud TZ → загрузить реальный PDF → убедиться что 7 подсистем извлечены
 
-### Приоритет 2 — Výkresy extraction (улучшение AI Passport для чертежей)
-5. **Расширить regex_extractor.py для výkresů:**
-   - Бетон по конструкциям: "ZÁKLADY: C30/37 – XF2, XC2, XA1 – CI 0,4 – Dmax 22"
-   - ETICS/KZS poznámky: "ZATEPLENÍ KZS Z PĚNOVÉHO POLYSTYRÉNU O TL. 80MM"
-   - Krytí: "KRYTÍ MINIMÁLNÍ 40 mm / JMENOVITÉ 50 mm"
-   - Průsak: "MAX. PRŮSAK 20 mm PODLE ČSN EN 12390-8"
-   - SCC/samozhutnitelný beton marker
-   - Poznámky (PZ/01-PZ/10): celé odstavce technologie
-   - Štampové pole: revize, datum, stupeň PD, měřítko, formát
-6. **Структурированный výkres passport**: concrete_by_element[], poznámky[], razítko{}
-7. **Тесты на reálných výkresech** (most + fasáda + půdorys)
+### Приоритет 2 — Инфраструктура
+4. Stripe: env vars в Secret Manager
+5. VPC connector для Cloud SQL
+6. Landing page — скриншот/демо AI-анализа
 
-### Приоритет 3 — Инфраструктура
-8. **Stripe**: настроить env vars в Secret Manager
-9. **VPC connector** для Cloud SQL
-10. **Landing page** — скриншот/демо AI-анализа
-
-### Приоритет 4 — Продукт
-11. **Export WP → PostgreSQL** (миграция из SQLite)
-12. **ISVZ Open Data ZIP** — годовые дампы VZ (дополнительный источник)
-13. **Deep Links** между кисками
-14. **Výkresová poznámka → soupis**: PZ odstavce как vstup pro TZ→Soupis pipeline
+### Приоритет 3 — Продукт
+7. Export WP → PostgreSQL (миграция из SQLite)
+8. Deep Links между кисками
 
 ---
 
