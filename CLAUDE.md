@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.2
+**Version:** 4.0.3
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -61,6 +61,7 @@ STAVAGENT/
 ├── Monolit-Planner/       ← Kiosk: Concrete Calculator (Node.js/React, port 3001/5173)
 ├── URS_MATCHER_SERVICE/   ← Kiosk: URS Matching (Node.js, port 3001/3000)
 ├── rozpocet-registry/     ← Kiosk: BOQ Registry (React/Vite + Vercel serverless, port 5173)
+├── mineru_service/        ← MinerU PDF parser (Python FastAPI, Cloud Run europe-west1, port 8080)
 ├── docs/                  ← System-level documentation
 └── .github/workflows/     ← CI/CD
 ```
@@ -117,7 +118,7 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. **119 endpoints**, **29 test files (52 engine tests)**, **~58K LOC**.
+Python FastAPI. **119 endpoints**, **29 test files (49 engine tests)**, **~58K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 
 **Subsystems:**
@@ -132,7 +133,7 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 - **Unified Item Layer** — ProjectItem with 4 namespace blocks (estimate/monolit/classification/core), code detection, position grouping
 - **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export
 - **Scenario B** — TZ upload → element extraction → position generation → CSV export
-- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry, AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), type-agnostic, 10-pattern section splitter
+- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), type-agnostic
 - **Other** — Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents, Chat
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 
@@ -286,8 +287,9 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 
 ## CI/CD
 
-**Cloud Build** (per-service): `cloudbuild-{concrete,monolit,portal,urs,registry}.yaml` + `triggers/*.yaml`
+**Cloud Build** (per-service): `cloudbuild-{concrete,monolit,portal,urs,registry,mineru}.yaml` + `triggers/*.yaml`
 - Guard step (git diff), Docker build → Artifact Registry, Cloud Run deploy with secrets
+- `cloudbuild-mineru.yaml` — MinerU PDF parser, `includedFiles: mineru_service/**` (europe-west1)
 - `cloudbuild.yaml` — deploy-all (manual, approval required)
 - Region: `europe-west3`, setup: `./gcp/setup-gcp.sh`
 
@@ -306,6 +308,8 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 
 ### Product
 - [ ] Verify Cloud Run deploy after monolit_adapter.py fix (/health → 200)
+- [ ] Engine AI Layer: test on real TZ documents, tune prompt, measure extraction quality vs regex-only
+- [ ] Frontend: EngineExtractionsPanel styling polish, add field-level confidence indicators
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
 - [ ] Landing page: screenshot/demo of AI analysis result
 - [ ] Deep links between kiosks
