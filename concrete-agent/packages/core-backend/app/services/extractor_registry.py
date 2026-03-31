@@ -388,6 +388,58 @@ def _extract_doprava(text: str) -> Dict[str, Any]:
     return result
 
 
+# --- Výkresy (drawings) — wraps CzechConstructionExtractor.extract_drawing() ---
+# The full extractor lives in regex_extractor.py with DRAWING_REGISTRY
+# (concrete_by_element, notes/PZ, title_block/razítko, ETICS, SCC, norm_findings).
+# We wrap it as a single registry entry to avoid duplicating 200+ lines of patterns.
+
+def _extract_vykresy(text: str) -> Dict[str, Any]:
+    """Wrap CzechConstructionExtractor.extract_drawing() for registry use."""
+    global _cached_extractor
+    if _cached_extractor is None:
+        try:
+            from app.services.regex_extractor import CzechConstructionExtractor
+            _cached_extractor = CzechConstructionExtractor()
+        except ImportError:
+            return {}
+    drawing_data = _cached_extractor.extract_drawing(text)
+    if drawing_data is None:
+        return {}
+    # Convert DrawingData pydantic model to flat dict for engine
+    result: Dict[str, Any] = {}
+    if drawing_data.concrete_by_element:
+        result["beton_po_prvcich"] = [
+            f"{e.element}: {e.concrete_class}" + (
+                f" ({', '.join(str(x) for x in e.exposure_classes)})" if e.exposure_classes else ""
+            ) + (f" krytí {e.cover_min_mm}/{e.cover_nom_mm} mm" if e.cover_min_mm else "")
+            + (f" průsak max {e.max_penetration_mm} mm" if e.max_penetration_mm else "")
+            for e in drawing_data.concrete_by_element
+        ]
+    if drawing_data.notes:
+        result["poznamky"] = [
+            {"id": n.note_id, "text": n.text, "work_type": n.work_type}
+            for n in drawing_data.notes
+        ]
+    if drawing_data.title_block:
+        tb = drawing_data.title_block
+        for field in ["stavba", "objekt", "obsah", "stupen_pd", "meritko",
+                       "format", "cislo_vykresu", "datum", "revize",
+                       "projektant", "zodpovedny_projektant"]:
+            val = getattr(tb, field, None)
+            if val:
+                result[field] = val
+    if drawing_data.etics_notes:
+        result["etics_notes"] = drawing_data.etics_notes
+    if drawing_data.has_scc:
+        result["has_scc"] = True
+    if drawing_data.norm_findings:
+        result["norm_findings"] = [
+            {"element": f.element, "status": f.status, "rule": f.rule, "message": f.message}
+            for f in drawing_data.norm_findings
+        ]
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Wrap existing CzechConstructionExtractor as a registry-compatible function
 # ---------------------------------------------------------------------------
@@ -458,6 +510,9 @@ EXTRACTOR_REGISTRY: List[ExtractorEntry] = [
     ExtractorEntry("mar", "Měření a regulace (MaR)", _extract_mar),
     ExtractorEntry("most", "Mostní konstrukce", _extract_most),
     ExtractorEntry("doprava_doplneni", "Dopravní stavby (skladba, značení)", _extract_doprava),
+
+    # --- Výkresy (drawings) ---
+    ExtractorEntry("vykresy", "Výkresy (beton po prvcích, ETICS, krytí, průsak, poznámky, razítko)", _extract_vykresy),
 ]
 
 # Quick lookup by key

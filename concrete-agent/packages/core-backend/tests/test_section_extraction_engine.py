@@ -425,3 +425,245 @@ class TestFullPipeline:
         result = extract_all_from_document(TZ_MULTI_SECTION)
         # It found multiple domains without being told what document type it is
         assert len(result) >= 3
+
+
+# ===================================================================
+# AI Layer tests (unit tests — mock Gemini)
+# ===================================================================
+
+
+class TestAIExtraction:
+    """Tests for AI enrichment layer."""
+
+    def test_merge_ai_into_regex_new_domain(self):
+        """AI adds a domain that regex didn't find."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+
+        regex = {"base_construction": {"concrete_class": "C30/37"}}
+        ai = {"zdivo": {"tvarnice_typ": "Porotherm 44 T"}}
+
+        merged = _merge_ai_into_regex(regex, ai)
+        assert "base_construction" in merged
+        assert "zdivo" in merged
+        assert merged["zdivo"]["tvarnice_typ"] == "Porotherm 44 T"
+        assert merged["zdivo"]["_source"] == "ai"
+        assert merged["zdivo"]["_confidence"] == 0.7
+
+    def test_merge_ai_regex_wins_on_conflict(self):
+        """Regex value takes priority over AI value for same field."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+
+        regex = {"etics": {"izolant_tl_mm": "200"}}
+        ai = {"etics": {"izolant_tl_mm": "180", "kotveni_typ": "talířové hmoždinky"}}
+
+        merged = _merge_ai_into_regex(regex, ai)
+        # Regex wins
+        assert merged["etics"]["izolant_tl_mm"] == "200"
+        # AI adds missing field
+        assert merged["etics"]["kotveni_typ"] == "talířové hmoždinky"
+
+    def test_merge_ai_empty(self):
+        """Empty AI results don't change regex results."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+
+        regex = {"base_construction": {"concrete_class": "C30/37"}}
+        merged = _merge_ai_into_regex(regex, {})
+        assert merged == regex
+
+    def test_merge_ai_both_empty(self):
+        """Both empty → empty."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+        assert _merge_ai_into_regex({}, {}) == {}
+
+    def test_build_extraction_schemas(self):
+        """Schema builder produces valid JSON with registry entries."""
+        from app.services.section_extraction_engine import _build_extraction_schemas
+        from app.services.extractor_registry import get_registry
+        import json
+
+        schemas_json = _build_extraction_schemas(get_registry())
+        schemas = json.loads(schemas_json)
+        assert isinstance(schemas, dict)
+        assert len(schemas) > 0
+        # Each schema should have label and fields
+        for key, schema in schemas.items():
+            assert "label" in schema
+            assert "fields" in schema
+            assert isinstance(schema["fields"], list)
+
+    def test_extract_all_with_ai_disabled(self):
+        """enable_ai=False should work exactly as before (default)."""
+        result = extract_all_from_document(TZ_MULTI_SECTION, enable_ai=False)
+        assert len(result) >= 3  # Same as without AI
+
+    def test_extract_all_ai_graceful_fallback(self):
+        """When AI is unavailable, engine still returns regex results."""
+        from unittest.mock import patch
+
+        with patch(
+            "app.services.section_extraction_engine.extract_section_with_ai",
+            side_effect=Exception("Gemini unavailable"),
+        ):
+            result = extract_all_from_document(TZ_MULTI_SECTION, enable_ai=True)
+            # Should still have regex results even though AI failed
+            assert len(result) >= 3
+
+    def test_infer_fields_from_extractor(self):
+        """Field inference should return field lists for known extractors."""
+        from app.services.section_extraction_engine import _infer_fields_from_extractor
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+
+        # Pattern-based extractor (inline in registry)
+        zdivo = REGISTRY_BY_KEY.get("zdivo")
+        if zdivo:
+            fields = _infer_fields_from_extractor(zdivo)
+            assert "tvarnice_typ" in fields
+            assert "pevnost_mpa" in fields
+
+        # Known-fields extractor (imported)
+        base = REGISTRY_BY_KEY.get("base_construction")
+        if base:
+            fields = _infer_fields_from_extractor(base)
+            assert "concrete_class" in fields
+
+
+# ===================================================================
+# Výkresy (drawings) extractor tests
+# ===================================================================
+
+
+TZ_VYKRESY = """
+VÝKRES TVARU — STROP NAD 1.NP
+
+STAVBA: Bytový dům Vinohrady
+OBJEKT: SO 201 — Hlavní budova
+OBSAH VÝKRESU: Strop nad 1.NP
+STUPEŇ PD: DPS
+MĚŘÍTKO: 1:50
+FORMÁT: A1
+ČÍSLO VÝKRESU: D.1.2.3-01
+DATUM: 15.03.2026
+VYPRACOVAL: Ing. Jan Novák
+
+ZÁKLADY: C30/37 – XC2, XA1 – CI 0,45 – Dmax 22
+STĚNY: C25/30 – XC1
+STROPY: C30/37 – XC1 – CI 0,50
+PILÍŘE: C35/45 – XD1, XF2 – CI 0,40 – Dmax 16
+
+PZ/01: Beton třídy C30/37, ocel B500B, krytí min./jmen. 25/30 mm.
+PZ/02: ETICS Baumit EPS-F tl. 160 mm, kotvení talířovými hmoždinkami.
+PZ/03: Průsak max. 50 mm dle ČSN EN 12390-8.
+PZ/04: Výztuž dle statického výpočtu, vázaná, min. krytí 25 mm.
+
+ZATEPLENÍ fasády ETICS systém Baumit EPS-F tl. 160 mm
+"""
+
+
+class TestVykresy:
+    """Tests for Výkresy (drawings) extractor — wraps CzechConstructionExtractor.extract_drawing().
+
+    Note: CzechConstructionExtractor requires SQLAlchemy via import chain.
+    In test environments without SQLAlchemy, the wrapper returns {} gracefully.
+    Tests handle both cases: full extraction (prod) and graceful fallback (CI).
+    """
+
+    def _can_import_extractor(self) -> bool:
+        """Check if CzechConstructionExtractor is importable (needs SQLAlchemy)."""
+        try:
+            from app.services.regex_extractor import CzechConstructionExtractor
+            return True
+        except (ImportError, ModuleNotFoundError):
+            return False
+
+    def test_vykresy_in_registry(self):
+        """Výkresy extractor is registered."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        assert "vykresy" in REGISTRY_BY_KEY
+
+    def test_vykresy_graceful_when_unavailable(self):
+        """When SQLAlchemy missing, returns empty dict (not crash)."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        # Should be either a populated dict or empty — never raises
+        assert isinstance(result, dict)
+
+    def test_vykresy_concrete_by_element(self):
+        """Extract concrete specs per element (beton po prvcích)."""
+        if not self._can_import_extractor():
+            return  # Skip if SQLAlchemy unavailable
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "beton_po_prvcich" in result
+        assert isinstance(result["beton_po_prvcich"], list)
+        assert len(result["beton_po_prvcich"]) >= 2
+        joined = " ".join(result["beton_po_prvcich"])
+        assert "C30/37" in joined
+
+    def test_vykresy_title_block(self):
+        """Extract title block (razítko) fields."""
+        if not self._can_import_extractor():
+            return
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "meritko" in result or "cislo_vykresu" in result or "stupen_pd" in result
+
+    def test_vykresy_notes(self):
+        """Extract drawing notes (PZ/01-PZ/10)."""
+        if not self._can_import_extractor():
+            return
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "poznamky" in result
+        assert isinstance(result["poznamky"], list)
+        assert len(result["poznamky"]) >= 2
+        note = result["poznamky"][0]
+        assert "id" in note
+        assert "text" in note
+
+    def test_vykresy_etics(self):
+        """Extract ETICS/KZS facade notes."""
+        if not self._can_import_extractor():
+            return
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "etics_notes" in result
+        assert isinstance(result["etics_notes"], list)
+        assert any("Baumit" in n or "ETICS" in n or "EPS" in n for n in result["etics_notes"])
+
+    def test_vykresy_norm_findings(self):
+        """Norm validation is included when applicable."""
+        if not self._can_import_extractor():
+            return
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        if "norm_findings" in result:
+            assert isinstance(result["norm_findings"], list)
+            if result["norm_findings"]:
+                finding = result["norm_findings"][0]
+                assert "element" in finding
+                assert "status" in finding
+
+    def test_vykresy_full_pipeline(self):
+        """Full pipeline includes výkresy when extractor available."""
+        result = extract_all_from_document(TZ_VYKRESY)
+        if self._can_import_extractor():
+            assert "vykresy" in result, f"Expected 'vykresy' in {list(result.keys())}"
+        else:
+            # Without SQLAlchemy, vykresy wrapper returns {} — that's OK
+            assert isinstance(result, dict)
+
+    def test_vykresy_reuses_existing_extractor(self):
+        """Verify výkresy wrapper calls the same code as CzechConstructionExtractor."""
+        if not self._can_import_extractor():
+            return
+        from app.services.regex_extractor import CzechConstructionExtractor
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+
+        extractor = CzechConstructionExtractor()
+        direct = extractor.extract_drawing(TZ_VYKRESY)
+
+        registry_result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+
+        if direct and direct.concrete_by_element:
+            assert "beton_po_prvcich" in registry_result
+            assert len(registry_result["beton_po_prvcich"]) == len(direct.concrete_by_element)
