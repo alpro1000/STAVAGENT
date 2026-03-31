@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.4
+**Version:** 4.0.5
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -133,7 +133,7 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 - **Unified Item Layer** — ProjectItem with 4 namespace blocks (estimate/monolit/classification/core), code detection, position grouping
 - **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export, drawing notes as input source
 - **Scenario B** — TZ upload → element extraction → position generation → CSV export
-- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), type-agnostic
+- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), AI merge metrics (added/rejected/new_domains), type-agnostic
 - **Other** — Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents, Chat
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 
@@ -242,8 +242,9 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 - URS Matcher: per-request LLM fallback, SQLite
 - concrete-agent: Vertex AI Gemini primary, stateless (projects in Portal DB)
 - Portal: central registry linking all kiosks via `portal_project_id`
-- Confidence scoring: regex=1.0, OTSKP DB=1.0, URS matcher=0.80, AI=0.70
+- Confidence scoring: regex=1.0, OTSKP DB=1.0, drawing_note=0.90, URS matcher=0.80, AI=0.70
 - Determinism > AI: if regex can do it, don't use LLM
+- Drawing notes = input source into TZ→Soupis pipeline (not standalone feature)
 
 ---
 
@@ -275,13 +276,10 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 |---------|-------|
 | URS empty results | LLM timeout (90s), AbortController per-provider |
 | Monolit wrong calc | `concrete_m3`, `unit_cost_on_m3`, KROS rounding `Math.ceil(x/50)*50` |
-| Registry classification | `constants.ts` 11 groups, `classificationRules.ts`, diacritics |
 | CORE unavailable | Cloud Run status, `/health`, Secret Manager |
-| DB connection | Cloud SQL instance, `--add-cloudsql-instances` in cloudbuild |
-| LLM 401 | Vertex AI: SA role `aiplatform.user`, ADC auth |
-| LLM 404 | `gemini-2.5-flash-lite` → use `gemini-2.5-flash` |
+| LLM 401/404 | SA role `aiplatform.user`; use `gemini-2.5-flash` (not -lite) |
 | send-to-core 500 | CORE returns `project_id` not `workflow_id`; `transactionStarted` guard |
-| CORE Cloud Run crash | Check `monolit_adapter.py` module-level singletons — lazy-init services with required args |
+| CORE Cloud Run crash | `monolit_adapter.py` singletons — lazy-init services with required args |
 
 ---
 
@@ -306,14 +304,17 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] **Stripe env vars**: configure `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` in Secret Manager
 - [ ] **E2E tests on live**: `CORE_URL=https://concrete-agent-...run.app pytest tests/test_e2e_pipeline.py -v`
 
-### Product
-- [ ] Verify Cloud Run deploy after monolit_adapter.py fix (/health → 200)
-- [ ] Engine AI Layer: test on real TZ documents, tune prompt, measure extraction quality vs regex-only
-- [ ] Frontend: EngineExtractionsPanel styling polish, add field-level confidence indicators
+### Next Session (P1→P4)
+- [ ] **P1: Cloud Run deploy** — verify /health → 200, enable_ai=True works with Vertex AI ADC
+- [ ] **P2: Engine AI quality** — test 3-5 real TZ docs, compare regex-only vs regex+AI, tune prompt
+- [ ] **P2b: AI metrics dashboard** — expose `_ai_metrics` in frontend EngineExtractionsPanel
+- [ ] **P3: Frontend polish** — field-level confidence indicators, per-field `_source` (ai/regex), CSV export
+- [ ] **P4: Drawing notes E2E** — test výkresové poznámky → soupis on real drawings, tune conf=0.90
+
+### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
 - [ ] Landing page: screenshot/demo of AI analysis result
 - [ ] Deep links between kiosks
-- [ ] Výkresové poznámky pipeline: test on real documents, tune confidence thresholds
 - [ ] Session-only mode for Monolit Planner (no auth)
 - [ ] reCAPTCHA on registration (when traffic grows)
 - [ ] IFC/BIM support (needs binaries)
