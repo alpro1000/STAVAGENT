@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.5
+**Version:** 4.0.6
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -118,7 +118,7 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. **119 endpoints**, **30 test files (65 engine tests)**, **~58K LOC**.
+Python FastAPI. **119 endpoints**, **31 test files (81 engine tests)**, **~58K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 
 **Subsystems:**
@@ -146,6 +146,7 @@ Node.js/Express + React. **~80+ endpoints**, **20 pages**, **40+ components**.
 - JWT auth (24h), 5 org roles, email verification, IP anti-fraud, disposable email blocking, user bans
 - Pay-as-you-go credits: Stripe Checkout, volume discounts, welcome bonus 200 credits, fail-open billing
 - Data Pipeline admin tab: Smlouvy collection → CPV enrichment → Work Package building
+- EngineExtractionsPanel: AI metrics bar, field-level `_source`/`_confidence`, CSV export
 - Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM
 
 ### 3. Monolit-Planner (Kiosk)
@@ -198,7 +199,7 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 
 | Service | Endpoints | Tests | LOC |
 |---------|-----------|-------|-----|
-| concrete-agent | 119 | 30 files | ~58K |
+| concrete-agent | 119 | 31 files | ~58K |
 | stavagent-portal | ~80 | 1 file | ~25K |
 | Monolit-Planner | 125 | 402 | ~30K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
@@ -304,12 +305,10 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] **Stripe env vars**: configure `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` in Secret Manager
 - [ ] **E2E tests on live**: `CORE_URL=https://concrete-agent-...run.app pytest tests/test_e2e_pipeline.py -v`
 
-### Next Session (P1→P4)
+### Next Session (P1→P2)
 - [ ] **P1: Cloud Run deploy** — verify /health → 200, enable_ai=True works with Vertex AI ADC
 - [ ] **P2: Engine AI quality** — test 3-5 real TZ docs, compare regex-only vs regex+AI, tune prompt
-- [ ] **P2b: AI metrics dashboard** — expose `_ai_metrics` in frontend EngineExtractionsPanel
-- [ ] **P3: Frontend polish** — field-level confidence indicators, per-field `_source` (ai/regex), CSV export
-- [ ] **P4: Drawing notes E2E** — test výkresové poznámky → soupis on real drawings, tune conf=0.90
+- [ ] **P4b: Drawing notes E2E on real data** — test výkresové poznámky → soupis on real drawings, verify conf=0.90
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)

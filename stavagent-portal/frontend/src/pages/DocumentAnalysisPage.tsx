@@ -74,8 +74,14 @@ const DOMAIN_LABELS: Record<string, string> = {
   vykresy: 'Výkresy',
 };
 
-/** Engine Extractions Panel — displays domain cards with extracted fields and confidence badges */
-function EngineExtractionsPanel({ extractions }: { extractions: Record<string, Record<string, unknown>> }) {
+/** Engine Extractions Panel — displays domain cards with extracted fields, confidence badges, AI metrics */
+function EngineExtractionsPanel({
+  extractions,
+  aiMetrics,
+}: {
+  extractions: Record<string, Record<string, unknown>>;
+  aiMetrics?: { ai_fields_added?: number; ai_fields_rejected?: number; ai_domains_new?: number } | null;
+}) {
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
   const domains = Object.entries(extractions).filter(
@@ -90,33 +96,103 @@ function EngineExtractionsPanel({ extractions }: { extractions: Record<string, R
     setCollapsed(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // Count totals
+  const regexDomains = domains.filter(([, f]) => (f as any)?._source !== 'ai').length;
+  const aiDomains = domains.filter(([, f]) => (f as any)?._source === 'ai').length;
+  const totalFields = domains.reduce((sum, [, f]) =>
+    sum + Object.keys(f).filter(k => !k.startsWith('_')).length, 0
+  );
+
+  // CSV export for engine extractions
+  const exportExtractionsCsv = () => {
+    const rows: string[][] = [];
+    rows.push(['Doména', 'Pole', 'Hodnota', 'Zdroj', 'Důvěra']);
+    domains.forEach(([domainKey, fields]) => {
+      const isAI = (fields as any)?._source === 'ai';
+      const conf = (fields as any)?._confidence;
+      const source = isAI ? 'AI' : 'regex';
+      const confStr = conf != null ? `${(conf * 100).toFixed(0)}%` : isAI ? '70%' : '100%';
+      const domainLabel = DOMAIN_LABELS[domainKey] || domainKey;
+      Object.entries(fields).filter(([k]) => !k.startsWith('_')).forEach(([fieldKey, value]) => {
+        const valStr = Array.isArray(value) ? value.join(', ')
+          : typeof value === 'object' && value !== null ? JSON.stringify(value)
+          : String(value);
+        rows.push([domainLabel, fieldKey, valStr, source, confStr]);
+      });
+    });
+
+    const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'engine_extractions.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="da-extractions">
       <div className="da-extractions__header">
-        <h3>Extrahované domény ({domains.length})</h3>
+        <div className="da-extractions__header-row">
+          <h3>Extrahované domény ({domains.length})</h3>
+          <button onClick={exportExtractionsCsv} className="c-btn c-btn--ghost c-btn--sm">
+            <Download size={14} /> CSV
+          </button>
+        </div>
         <p className="da-extractions__subtitle">
           Strukturovaná data extrahovaná z dokumentu — regex (zelená) a AI (oranžová)
         </p>
       </div>
+
+      {/* AI Metrics summary bar */}
+      {aiMetrics && (aiMetrics.ai_fields_added || aiMetrics.ai_fields_rejected || aiMetrics.ai_domains_new) ? (
+        <div className="da-ai-metrics">
+          <span className="da-ai-metrics__label">AI obohacení:</span>
+          <span className="da-ai-metrics__stat da-ai-metrics__stat--added">
+            +{aiMetrics.ai_fields_added ?? 0} polí přidáno
+          </span>
+          <span className="da-ai-metrics__stat da-ai-metrics__stat--rejected">
+            −{aiMetrics.ai_fields_rejected ?? 0} zamítnuto (regex wins)
+          </span>
+          <span className="da-ai-metrics__stat da-ai-metrics__stat--new">
+            {aiMetrics.ai_domains_new ?? 0} nových domén
+          </span>
+        </div>
+      ) : null}
+
+      {/* Stats row */}
+      <div className="da-extractions__stats">
+        <span className="da-extractions__stat">
+          <span className="da-extractions__stat-dot da-extractions__stat-dot--regex" />
+          {regexDomains} regex
+        </span>
+        <span className="da-extractions__stat">
+          <span className="da-extractions__stat-dot da-extractions__stat-dot--ai" />
+          {aiDomains} AI
+        </span>
+        <span className="da-extractions__stat">{totalFields} polí celkem</span>
+      </div>
+
       <div className="da-extractions__grid">
         {domains.map(([domainKey, fields]) => {
-          const isAI = (fields as any)?._source === 'ai';
-          const confidence = (fields as any)?._confidence;
+          const isDomainAI = (fields as any)?._source === 'ai';
+          const domainConfidence = (fields as any)?._confidence;
           const isCollapsed = collapsed[domainKey] ?? false;
           const displayFields = Object.entries(fields).filter(([k]) => !k.startsWith('_'));
 
           return (
             <div
               key={domainKey}
-              className={`da-domain-card ${isAI ? 'da-domain-card--ai' : 'da-domain-card--regex'}`}
+              className={`da-domain-card ${isDomainAI ? 'da-domain-card--ai' : 'da-domain-card--regex'}`}
             >
               <div className="da-domain-card__header" onClick={() => toggleDomain(domainKey)}>
                 <div className="da-domain-card__title">
                   <span className="da-domain-card__name">
                     {DOMAIN_LABELS[domainKey] || domainKey}
                   </span>
-                  <span className={`da-domain-card__badge ${isAI ? 'da-domain-card__badge--ai' : 'da-domain-card__badge--regex'}`}>
-                    {isAI ? `AI ${confidence ? `(${(confidence * 100).toFixed(0)}%)` : ''}` : 'regex'}
+                  <span className={`da-domain-card__badge ${isDomainAI ? 'da-domain-card__badge--ai' : 'da-domain-card__badge--regex'}`}>
+                    {isDomainAI ? `AI ${domainConfidence ? `(${(domainConfidence * 100).toFixed(0)}%)` : ''}` : 'regex'}
                   </span>
                   <span className="da-domain-card__count">{displayFields.length} polí</span>
                 </div>
@@ -126,18 +202,41 @@ function EngineExtractionsPanel({ extractions }: { extractions: Record<string, R
               </div>
               {!isCollapsed && (
                 <div className="da-domain-card__body">
-                  {displayFields.map(([fieldKey, value]) => (
-                    <div key={fieldKey} className="da-domain-card__field">
-                      <span className="da-domain-card__field-key">{fieldKey}</span>
-                      <span className="da-domain-card__field-value">
-                        {Array.isArray(value)
-                          ? value.join(', ')
-                          : typeof value === 'object' && value !== null
-                            ? JSON.stringify(value)
-                            : String(value)}
-                      </span>
-                    </div>
-                  ))}
+                  {displayFields.map(([fieldKey, value]) => {
+                    // Field-level source detection: if value is an object with _source/_confidence
+                    const isFieldObj = typeof value === 'object' && value !== null && !Array.isArray(value);
+                    const fieldSource = isFieldObj ? (value as any)?._source : undefined;
+                    const fieldConf = isFieldObj ? (value as any)?._confidence : undefined;
+                    // Display value — unwrap if wrapped in {value, _source, _confidence}
+                    const displayValue = isFieldObj && 'value' in (value as any)
+                      ? (value as any).value
+                      : value;
+
+                    return (
+                      <div key={fieldKey} className="da-domain-card__field">
+                        <span className="da-domain-card__field-key">
+                          {fieldKey}
+                          {fieldSource && (
+                            <span className={`da-field-src da-field-src--${fieldSource === 'ai' ? 'ai' : 'regex'}`}>
+                              {fieldSource}
+                            </span>
+                          )}
+                        </span>
+                        <span className="da-domain-card__field-value">
+                          {Array.isArray(displayValue)
+                            ? displayValue.join(', ')
+                            : typeof displayValue === 'object' && displayValue !== null
+                              ? JSON.stringify(displayValue)
+                              : String(displayValue)}
+                          {fieldConf != null && (
+                            <span className="da-field-conf" title={`Důvěra: ${(fieldConf * 100).toFixed(0)}%`}>
+                              {(fieldConf * 100).toFixed(0)}%
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -541,6 +640,32 @@ export default function DocumentAnalysisPage() {
           rows.push([key, Array.isArray(val) ? val.join(', ') : String(val)]);
         }
       });
+    }
+
+    // Engine extractions
+    const engineExtractions = (passportData as any)?.engine_extractions;
+    if (engineExtractions && typeof engineExtractions === 'object') {
+      const eDomains = Object.entries(engineExtractions).filter(
+        ([k, v]) => !k.startsWith('_') && v && typeof v === 'object'
+      );
+      if (eDomains.length > 0) {
+        rows.push([], ['=== EXTRAKCE (ENGINE) ===']);
+        rows.push(['Doména', 'Pole', 'Hodnota', 'Zdroj', 'Důvěra']);
+        eDomains.forEach(([domainKey, fields]) => {
+          const f = fields as Record<string, unknown>;
+          const isAI = (f as any)?._source === 'ai';
+          const conf = (f as any)?._confidence;
+          const source = isAI ? 'AI' : 'regex';
+          const confStr = conf != null ? `${(Number(conf) * 100).toFixed(0)}%` : isAI ? '70%' : '100%';
+          const label = DOMAIN_LABELS[domainKey] || domainKey;
+          Object.entries(f).filter(([k]) => !k.startsWith('_')).forEach(([fieldKey, value]) => {
+            const valStr = Array.isArray(value) ? value.join(', ')
+              : typeof value === 'object' && value !== null ? JSON.stringify(value)
+              : String(value);
+            rows.push([label, fieldKey, valStr, source, confStr]);
+          });
+        });
+      }
     }
 
     const csv = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(';')).join('\n');
@@ -1041,7 +1166,10 @@ export default function DocumentAnalysisPage() {
               {activeTab === 'summary' && <SummaryTab data={passportData} />}
               {activeTab === 'compliance' && <ComplianceTab data={passportData} />}
               {activeTab === 'extractions' && passportData && (
-                <EngineExtractionsPanel extractions={(passportData as any)?.engine_extractions || {}} />
+                <EngineExtractionsPanel
+                  extractions={(passportData as any)?.engine_extractions || {}}
+                  aiMetrics={(passportData as any)?.passport?.layer_breakdown?.layer2b_engine?.ai_metrics}
+                />
               )}
               {activeTab === 'project' && projectData && (
                 <ProjectAnalysis data={projectData} />
@@ -1860,7 +1988,13 @@ const documentAnalysisStyles = `
   padding: 0;
 }
 .da-extractions__header {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+}
+.da-extractions__header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 .da-extractions__header h3 {
   font-size: 18px;
@@ -1873,6 +2007,83 @@ const documentAnalysisStyles = `
   color: var(--text-muted, #9ca3af);
   margin: 0;
 }
+
+/* AI Metrics bar */
+.da-ai-metrics {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 8px;
+  font-size: 13px;
+}
+.da-ai-metrics__label {
+  font-weight: 600;
+  color: var(--text-primary, #111);
+}
+.da-ai-metrics__stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+.da-ai-metrics__stat--added { color: #16a34a; }
+.da-ai-metrics__stat--rejected { color: #dc2626; }
+.da-ai-metrics__stat--new { color: #f59e0b; }
+
+/* Stats row */
+.da-extractions__stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--text-muted, #9ca3af);
+}
+.da-extractions__stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.da-extractions__stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.da-extractions__stat-dot--regex { background: #22c55e; }
+.da-extractions__stat-dot--ai { background: #f59e0b; }
+
+/* Field-level source tag */
+.da-field-src {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 0 4px;
+  border-radius: 3px;
+  margin-left: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+.da-field-src--regex { background: #dcfce7; color: #166534; }
+.da-field-src--ai { background: #fef3c7; color: #92400e; }
+
+/* Field-level confidence */
+.da-field-conf {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted, #9ca3af);
+  margin-left: 6px;
+  padding: 0 4px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
 .da-extractions__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
