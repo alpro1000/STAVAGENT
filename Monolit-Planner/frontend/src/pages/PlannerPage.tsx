@@ -398,6 +398,54 @@ export default function PlannerPage() {
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [applyStatus, setApplyStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+
+  // Plan variants (Monolit mode — save & compare)
+  interface SavedVariant {
+    id: string;
+    label: string;
+    total_days: number;
+    total_cost_czk: number;
+    num_tacts: number;
+    system_name: string;
+    saved_at: string;
+    plan: PlannerOutput;
+    form: FormState;
+  }
+  const variantsKey = positionContext?.position_id ? `planner_variants_${positionContext.position_id}` : null;
+  const [savedVariants, setSavedVariants] = useState<SavedVariant[]>(() => {
+    if (!variantsKey) return [];
+    try { return JSON.parse(localStorage.getItem(variantsKey) || '[]'); } catch { return []; }
+  });
+
+  const saveVariant = (plan: PlannerOutput) => {
+    if (!variantsKey) return;
+    const variant: SavedVariant = {
+      id: Date.now().toString(36),
+      label: `V${savedVariants.length + 1}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`,
+      total_days: plan.schedule.total_days,
+      total_cost_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
+      num_tacts: plan.pour_decision.num_tacts,
+      system_name: plan.formwork.system.name,
+      saved_at: new Date().toISOString(),
+      plan,
+      form: { ...form },
+    };
+    const updated = [...savedVariants, variant];
+    setSavedVariants(updated);
+    localStorage.setItem(variantsKey, JSON.stringify(updated));
+  };
+
+  const removeVariant = (id: string) => {
+    if (!variantsKey) return;
+    const updated = savedVariants.filter(v => v.id !== id);
+    setSavedVariants(updated);
+    localStorage.setItem(variantsKey, JSON.stringify(updated));
+  };
+
+  const loadVariant = (variant: SavedVariant) => {
+    setForm(variant.form);
+    setResult(variant.plan);
+  };
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [comparison, setComparison] = useState<Array<{
@@ -2342,7 +2390,62 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
         >
           Kopírovat Gantt
         </button>
+        {variantsKey && (
+          <button
+            onClick={() => saveVariant(plan)}
+            style={{
+              padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-indigo)',
+              cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
+              background: 'white', color: 'var(--r0-indigo)',
+            }}
+          >
+            💾 Uložit plán
+          </button>
+        )}
       </div>
+
+      {/* Saved variants comparison (Monolit mode only) */}
+      {variantsKey && savedVariants.length > 0 && (
+        <div style={{
+          marginBottom: 16, padding: 12, background: 'var(--r0-slate-50)',
+          borderRadius: 8, border: '1px solid var(--r0-slate-200)',
+        }}>
+          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: 'var(--r0-slate-700)' }}>
+            Uložené varianty ({savedVariants.length})
+          </div>
+          <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--r0-slate-200)' }}>
+                <th style={{ textAlign: 'left', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>#</th>
+                <th style={{ textAlign: 'left', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Konfigurace</th>
+                <th style={{ textAlign: 'right', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Dní</th>
+                <th style={{ textAlign: 'right', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Náklady</th>
+                <th style={{ textAlign: 'center', padding: '4px 8px' }}></th>
+              </tr>
+            </thead>
+            <tbody>
+              {savedVariants.map((v, i) => (
+                <tr key={v.id} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                  <td style={{ padding: '6px 8px', color: 'var(--r0-slate-400)' }}>{i + 1}</td>
+                  <td style={{ padding: '6px 8px', fontWeight: 500 }}>{v.label}</td>
+                  <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{v.total_days}</td>
+                  <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{Math.round(v.total_cost_czk).toLocaleString('cs')} Kč</td>
+                  <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                    <button onClick={() => loadVariant(v)} style={{
+                      fontSize: 11, padding: '2px 8px', border: '1px solid var(--r0-slate-300)',
+                      borderRadius: 4, cursor: 'pointer', background: 'white', fontFamily: 'inherit', marginRight: 4,
+                    }}>Načíst</button>
+                    <button onClick={() => removeVariant(v.id)} style={{
+                      fontSize: 11, padding: '2px 6px', border: '1px solid var(--r0-slate-200)',
+                      borderRadius: 4, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-400)', fontFamily: 'inherit',
+                    }}>✕</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* KPI Cards */}
       <div className="r0-grid-4" style={{ marginBottom: 20 }}>
