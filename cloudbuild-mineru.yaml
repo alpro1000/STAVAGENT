@@ -1,11 +1,33 @@
 ###############################################################
 # mineru-service — standalone MinerU PDF parser
-# Triggered ONLY on changes in mineru_service/**
+#
+# Trigger: triggers/mineru.yaml (includedFiles: mineru_service/**)
+# Guard step skips build if mineru_service/ unchanged vs HEAD~1
 ###############################################################
 
 steps:
+  # ─── Guard: skip if no MinerU changes ─────────────────────
+  - name: 'gcr.io/cloud-builders/git'
+    id: 'check-mineru-diff'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if [ "${_FORCE_DEPLOY}" = "true" ]; then
+          echo "=== FORCE_DEPLOY=true — skipping guard ==="
+          exit 0
+        fi
+        CHANGED=$(git diff --name-only HEAD~1 HEAD -- mineru_service/ cloudbuild-mineru.yaml 2>/dev/null || echo "mineru_service/")
+        if [ -z "$CHANGED" ]; then
+          echo "=== No changes in mineru_service/ — SKIPPING BUILD ==="
+          exit 1
+        fi
+        echo "=== MinerU changes detected ==="
+        echo "$CHANGED"
+
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-mineru'
+    waitFor: ['check-mineru-diff']
     args:
       - 'build'
       - '-t'
@@ -51,6 +73,9 @@ steps:
       - '--concurrency'
       - '1'
       - '--no-allow-unauthenticated'
+
+substitutions:
+  _FORCE_DEPLOY: 'false'
 
 timeout: 3900s
 

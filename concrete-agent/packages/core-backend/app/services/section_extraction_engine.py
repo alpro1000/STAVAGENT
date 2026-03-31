@@ -487,13 +487,19 @@ def extract_all_from_document(
         try:
             loop = asyncio.get_event_loop()
             if loop.is_running():
-                # We're inside an async context (FastAPI) — create task
+                # Inside async context (FastAPI) — run in a thread with a fresh loop
                 import concurrent.futures
+                def _run_in_new_loop():
+                    new_loop = asyncio.new_event_loop()
+                    try:
+                        return new_loop.run_until_complete(
+                            _run_ai_extraction(sections, registry)
+                        )
+                    finally:
+                        new_loop.close()
+
                 with concurrent.futures.ThreadPoolExecutor() as pool:
-                    ai_merged = pool.submit(
-                        asyncio.run,
-                        _run_ai_extraction(sections, registry)
-                    ).result(timeout=120)
+                    ai_merged = pool.submit(_run_in_new_loop).result(timeout=120)
             else:
                 ai_merged = loop.run_until_complete(
                     _run_ai_extraction(sections, registry)
