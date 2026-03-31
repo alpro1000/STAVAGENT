@@ -1253,6 +1253,9 @@ class PassportGenerationResponse(BaseModel):
     identification: Optional[Dict[str, str]] = Field(None, description="Project identification (stavba, investor, místo)")
     referenced_documents: List[str] = Field(default_factory=list, description="Documents mentioned in text (potentially missing)")
 
+    # v6.0: Universal map-reduce engine results (all domains, type-agnostic)
+    engine_extractions: Dict[str, Any] = Field(default_factory=dict, description="Map-reduce engine output: {domain_key: {field: value}}")
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
