@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.0
+**Version:** 4.0.1
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -117,7 +117,7 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. **119 endpoints**, **28 test files**, **~57K LOC**.
+Python FastAPI. **119 endpoints**, **29 test files**, **~58K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 
 **Subsystems:**
@@ -132,6 +132,7 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 - **Unified Item Layer** — ProjectItem with 4 namespace blocks (estimate/monolit/classification/core), code detection, position grouping
 - **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export
 - **Scenario B** — TZ upload → element extraction → position generation → CSV export
+- **Section Extraction Engine** — universal map-reduce: 27 extractors in registry, type-agnostic, 10-pattern section splitter
 - **Other** — Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents, Chat
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 
@@ -196,7 +197,7 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 
 | Service | Endpoints | Tests | LOC |
 |---------|-----------|-------|-----|
-| concrete-agent | 119 | 28 files | ~57K |
+| concrete-agent | 119 | 29 files | ~58K |
 | stavagent-portal | ~80 | 1 file | ~25K |
 | Monolit-Planner | 125 | 402 | ~30K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
@@ -279,6 +280,7 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 | LLM 401 | Vertex AI: SA role `aiplatform.user`, ADC auth |
 | LLM 404 | `gemini-2.5-flash-lite` → use `gemini-2.5-flash` |
 | send-to-core 500 | CORE returns `project_id` not `workflow_id`; `transactionStarted` guard |
+| CORE Cloud Run crash | Check `monolit_adapter.py` module-level singletons — lazy-init services with required args |
 
 ---
 
@@ -303,6 +305,8 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] **E2E tests on live**: `CORE_URL=https://concrete-agent-...run.app pytest tests/test_e2e_pipeline.py -v`
 
 ### Product
+- [ ] Engine AI layer: add per-section AI call with all registry schemas as extraction hints
+- [ ] Engine frontend: display `engine_extractions` in DocumentAnalysisPage (domain cards)
 - [ ] Výkresy extraction: regex for concrete by element, ETICS/KZS, krytí, průsak, poznámky, štampové pole
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
 - [ ] Landing page: screenshot/demo of AI analysis result
