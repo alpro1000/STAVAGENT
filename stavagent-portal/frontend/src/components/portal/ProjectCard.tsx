@@ -37,24 +37,31 @@ interface ProjectCardProps {
 }
 
 // Kiosk metadata: label, icon, URL builder
+// Helper: append auth_token to kiosk URL for account isolation
+function withAuth(url: string): string {
+  const token = localStorage.getItem('auth_token');
+  if (token) return `${url}&auth_token=${encodeURIComponent(token)}`;
+  return url;
+}
+
 const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link: KioskLink, portalId: string) => string }> = {
   monolit: {
     label: 'Monolit Planner',
     icon: '🪨',
     buildUrl: (link, portalId) =>
-      `https://kalkulator.stavagent.cz/?project=${link.kiosk_project_id}&portal_project=${portalId}`,
+      withAuth(`https://kalkulator.stavagent.cz/?project=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
   registry: {
     label: 'Registr Rozpočtů',
     icon: '📊',
     buildUrl: (link, portalId) =>
-      `https://registry.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
+      withAuth(`https://registry.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
   urs_matcher: {
     label: 'Klasifikátor stavebních prací',
     icon: '🔎',
     buildUrl: (link, portalId) =>
-      `https://klasifikator.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
+      withAuth(`https://klasifikator.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
 };
 
