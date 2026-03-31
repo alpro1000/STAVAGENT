@@ -17,10 +17,17 @@ interface TactDetail {
   stripping: [number, number];
 }
 
+/** Gantt display mode */
+export type GanttMode = 'relative' | 'calendar';
+
 interface PlannerGanttProps {
   tact_details: TactDetail[];
   total_days: number;
   ganttText?: string;
+  /** 'relative' = Den 1, Den 2... (Monolit mode), 'calendar' = dates (Portal mode). Default: 'relative' */
+  mode?: GanttMode;
+  /** Start date ISO string (required for calendar mode) */
+  startDate?: string;
 }
 
 const PHASES = [
@@ -33,7 +40,7 @@ const PHASES = [
 
 type PhaseKey = typeof PHASES[number]['key'];
 
-export default function PlannerGantt({ tact_details, total_days, ganttText }: PlannerGanttProps) {
+export default function PlannerGantt({ tact_details, total_days, ganttText, mode = 'relative', startDate }: PlannerGanttProps) {
   const days = Math.ceil(total_days);
   const dayWidth = Math.max(18, Math.min(36, 700 / Math.max(days, 1)));
 
@@ -46,6 +53,23 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
     }
     return [...groups.entries()].sort((a, b) => a[0] - b[0]);
   }, [tact_details]);
+
+  // Calendar date calculation (for calendar mode)
+  const calendarStart = useMemo(() => {
+    if (mode !== 'calendar' || !startDate) return null;
+    const d = new Date(startDate + 'T00:00:00');
+    return isNaN(d.getTime()) ? null : d;
+  }, [mode, startDate]);
+
+  /** Format day label based on mode */
+  const formatDay = (dayIndex: number): string => {
+    if (mode === 'calendar' && calendarStart) {
+      const date = new Date(calendarStart);
+      date.setDate(date.getDate() + dayIndex);
+      return `${date.getDate()}.${date.getMonth() + 1}.`;
+    }
+    return String(dayIndex + 1); // Den 1, Den 2, ...  (1-based)
+  };
 
   const [showText, setShowText] = useState(false);
 
@@ -62,7 +86,7 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
                 style={{
                   width: dayWidth,
                   textAlign: 'center',
-                  fontSize: 10,
+                  fontSize: mode === 'calendar' ? 9 : 10,
                   color: d % 5 === 0 ? 'var(--r0-slate-700)' : 'var(--r0-slate-400)',
                   fontWeight: d % 5 === 0 ? 700 : 400,
                   fontFamily: 'var(--r0-font-mono)',
@@ -70,7 +94,7 @@ export default function PlannerGantt({ tact_details, total_days, ganttText }: Pl
                   paddingBottom: 4,
                 }}
               >
-                {d % 5 === 0 || days <= 20 ? d : ''}
+                {d % 5 === 0 || days <= 20 ? formatDay(d) : ''}
               </div>
             ))}
           </div>
