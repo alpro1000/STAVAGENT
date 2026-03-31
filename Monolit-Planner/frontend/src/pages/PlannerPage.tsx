@@ -1268,7 +1268,7 @@ export default function PlannerPage() {
               <NumInput style={inputStyle} value={form.volume_m3} min={0.1} fallback={1}
                 onChange={v => update('volume_m3', v as number)} />
             </Field>
-            <Field label="Plocha bednění (m²)" hint="prázdné = odhad">
+            <Field label="Plocha bednění (m²)" hint="prázdné = automatický odhad z objemu a výšky">
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
