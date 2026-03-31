@@ -406,4 +406,109 @@ describe('Planner Orchestrator', () => {
       expect(plan.decision_log.some(l => l.includes('Schedule:'))).toBe(true);
     });
   });
+
+  // ─── Shape Correction ──────────────────────────────────────────────────────
+
+  describe('planElement — shape correction (P3)', () => {
+    it('default shape_correction is 1.0', () => {
+      const plan = planElement(wallInput);
+      expect(plan.formwork.shape_correction).toBe(1.0);
+    });
+
+    it('circular shape (1.5) increases assembly time by 50%', () => {
+      const base = planElement({ ...wallInput });
+      const circular = planElement({ ...wallInput, formwork_shape_correction: 1.5 });
+
+      // Assembly days should be ~50% longer
+      expect(circular.formwork.assembly_days).toBeCloseTo(base.formwork.assembly_days * 1.5, 1);
+      expect(circular.formwork.shape_correction).toBe(1.5);
+    });
+
+    it('shape correction logged in decision_log', () => {
+      const plan = planElement({ ...wallInput, formwork_shape_correction: 1.3 });
+      expect(plan.decision_log.some(l => l.includes('Shape correction'))).toBe(true);
+    });
+
+    it('shape_correction = 1.0 does not add log entry', () => {
+      const plan = planElement({ ...wallInput, formwork_shape_correction: 1.0 });
+      expect(plan.decision_log.some(l => l.includes('Shape correction'))).toBe(false);
+    });
+
+    it('does NOT affect rebar duration', () => {
+      const base = planElement({ ...wallInput });
+      const irregular = planElement({ ...wallInput, formwork_shape_correction: 1.8 });
+
+      // Rebar should be identical regardless of shape
+      expect(irregular.rebar.duration_days).toBe(base.rebar.duration_days);
+    });
+
+    it('increases formwork labor cost', () => {
+      const base = planElement({ ...wallInput });
+      const circular = planElement({ ...wallInput, formwork_shape_correction: 1.5 });
+      expect(circular.costs.formwork_labor_czk).toBeGreaterThan(base.costs.formwork_labor_czk);
+    });
+  });
+
+  // ─── Obrátkovost (repetitive elements) ──────────────────────────────────────
+
+  describe('planElement — obrátkovost (P4)', () => {
+    const patkaInput: PlannerInput = {
+      element_type: 'zakladova_patka',
+      volume_m3: 3,
+      formwork_area_m2: 8,
+      has_dilatacni_spary: false,
+    };
+
+    it('single element → no obratkovost', () => {
+      const plan = planElement(patkaInput);
+      expect(plan.obratkovost).toBeUndefined();
+    });
+
+    it('20 identical elements / 2 sets → obratkovost 10', () => {
+      const plan = planElement({
+        ...patkaInput,
+        num_identical_elements: 20,
+        formwork_sets_count: 2,
+      });
+      expect(plan.obratkovost).toBeDefined();
+      expect(plan.obratkovost!.obratkovost).toBe(10);
+      expect(plan.obratkovost!.num_identical_elements).toBe(20);
+      expect(plan.obratkovost!.formwork_sets_count).toBe(2);
+    });
+
+    it('rental per element = total / count', () => {
+      const plan = planElement({
+        ...patkaInput,
+        num_identical_elements: 10,
+        formwork_sets_count: 1,
+      });
+      if (plan.obratkovost && plan.costs.formwork_rental_czk > 0) {
+        expect(plan.obratkovost.rental_per_element_czk).toBeCloseTo(
+          plan.costs.formwork_rental_czk / 10, 0
+        );
+      }
+    });
+
+    it('total_duration includes transfer time', () => {
+      const plan = planElement({
+        ...patkaInput,
+        num_identical_elements: 4,
+        formwork_sets_count: 2,
+      });
+      expect(plan.obratkovost).toBeDefined();
+      const ob = plan.obratkovost!;
+      expect(ob.transfer_time_days).toBe(0.5);
+      // 2 obrátek × (schedule + 0.5)
+      expect(ob.total_duration_days).toBeGreaterThan(0);
+    });
+
+    it('obrátkovost warning generated', () => {
+      const plan = planElement({
+        ...patkaInput,
+        num_identical_elements: 20,
+        formwork_sets_count: 2,
+      });
+      expect(plan.warnings.some(w => w.includes('Obrátkovost'))).toBe(true);
+    });
+  });
 });

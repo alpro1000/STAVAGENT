@@ -117,6 +117,17 @@ export interface PlannerInput {
   formwork_system_name?: string;
   /** Override rental price (Kč/m²/month or Kč/bm/month). If set, replaces catalog value. */
   rental_czk_override?: number;
+  /** Cross-section shape correction for formwork assembly/disassembly.
+   *  1.0 = straight (default), 1.3 = angled, 1.5 = circular, 1.8 = irregular.
+   *  Multiplies assembly_h_m2 and disassembly_h_m2 (not rebar/pour). */
+  formwork_shape_correction?: number;
+
+  // --- Repetitive elements (obrátkovost) ---
+  /** Number of identical elements (e.g. 20 pad foundations). Default: 1 */
+  num_identical_elements?: number;
+  /** Formwork sets available for rotation among identical elements.
+   *  Default: num_sets. Only relevant when num_identical_elements > 1. */
+  formwork_sets_count?: number;
 
   // --- Tact override ---
   /** Direct number of tacts (overrides auto-calculation from spáry).
@@ -173,6 +184,18 @@ export interface PlannerOutput {
     curing_days: number;
     three_phase: ThreePhaseCostResult;
     strategies: ReturnType<typeof calculateStrategiesDetailed>;
+    /** Shape correction applied (1.0 if none) */
+    shape_correction: number;
+  };
+
+  // --- Obrátkovost (repetitive elements) ---
+  obratkovost?: {
+    num_identical_elements: number;
+    formwork_sets_count: number;
+    obratkovost: number;
+    rental_per_element_czk: number;
+    total_duration_days: number;
+    transfer_time_days: number;
   };
 
   // --- Rebar ---
@@ -599,11 +622,19 @@ export function planElement(input: PlannerInput): PlannerOutput {
     }
   }
 
+  // Apply shape correction to formwork norms (geometry-based multiplier)
+  const shapeCorrection = input.formwork_shape_correction ?? 1.0;
+  const shapedAssemblyNorm = roundTo(adjustedNorms.assembly_h_m2 * shapeCorrection, 3);
+  const shapedDisassemblyNorm = roundTo(adjustedNorms.disassembly_h_m2 * shapeCorrection, 3);
+  if (shapeCorrection !== 1.0) {
+    log.push(`Shape correction: ×${shapeCorrection} → assembly ${shapedAssemblyNorm} h/m², strike ${shapedDisassemblyNorm} h/m²`);
+  }
+
   // Use formwork calculator for base durations
   const fwBase = calculateFormwork({
     area_m2: fwArea,
-    norm_assembly_h_m2: adjustedNorms.assembly_h_m2,
-    norm_disassembly_h_m2: adjustedNorms.disassembly_h_m2,
+    norm_assembly_h_m2: shapedAssemblyNorm,
+    norm_disassembly_h_m2: shapedDisassemblyNorm,
     crew_size: crew,
     shift_h: shift,
     k,
@@ -616,11 +647,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const disassemblyDays = fwBase.disassembly_days;
   const curingDays = fwBase.wait_days; // now correct: max(maturity, skruž_min)
 
-  // 3-phase cost model
+  // 3-phase cost model (with shape correction applied)
   const threePhase = calculateThreePhaseFormwork(
     fwArea,
-    adjustedNorms.assembly_h_m2,
-    adjustedNorms.disassembly_h_m2,
+    shapedAssemblyNorm,
+    shapedDisassemblyNorm,
     crew, shift, k, wageFormwork,
     pourDecision.num_tacts,
   );
@@ -865,6 +896,41 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   const totalLaborCZK = roundTo(formworkLaborCZK + rebarLaborCZK + pourLaborCZK + propsLaborCZK, 2);
 
+  // ─── 8b. Obrátkovost (repetitive elements) ────────────────────────────
+
+  const numIdentical = input.num_identical_elements ?? 1;
+  const fwSetsCount = input.formwork_sets_count ?? numSets;
+  const TRANSFER_TIME_DAYS = 0.5; // demontáž + přesun + montáž na novém místě
+
+  let obratkovostResult: PlannerOutput['obratkovost'] = undefined;
+
+  if (numIdentical > 1) {
+    const obratkovost = Math.ceil(numIdentical / fwSetsCount);
+    const totalDuration = obratkovost * (scheduleResult.total_days + TRANSFER_TIME_DAYS);
+    const rentalPerElement = formworkRentalCZK > 0
+      ? roundTo(formworkRentalCZK / numIdentical, 2)
+      : 0;
+
+    obratkovostResult = {
+      num_identical_elements: numIdentical,
+      formwork_sets_count: fwSetsCount,
+      obratkovost,
+      rental_per_element_czk: rentalPerElement,
+      total_duration_days: roundTo(totalDuration, 1),
+      transfer_time_days: TRANSFER_TIME_DAYS,
+    };
+
+    log.push(
+      `Obrátkovost: ${numIdentical} identických × ${fwSetsCount} sad → ${obratkovost}× obrátka, ` +
+      `doba ${totalDuration.toFixed(1)} dní (vč. přesunu ${TRANSFER_TIME_DAYS}d)`
+    );
+    warnings.push(
+      `Obrátkovost: ${numIdentical} identických elementů, ${fwSetsCount} sad bednění → ` +
+      `${obratkovost}× obrátka. Pronájem na element: ${rentalPerElement.toLocaleString('cs')} Kč. ` +
+      `Celková doba: ${totalDuration.toFixed(1)} dní.`
+    );
+  }
+
   // ─── 9. Assemble Output ───────────────────────────────────────────────
 
   return {
@@ -882,7 +948,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
       curing_days: curingDays,
       three_phase: threePhase,
       strategies: strategiesWithRebar,
+      shape_correction: shapeCorrection,
     },
+    obratkovost: obratkovostResult,
     rebar: rebarResult,
     pour: pourResult,
     schedule: scheduleResult,

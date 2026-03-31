@@ -152,6 +152,9 @@ interface FormState {
   wage_pour_czk_h: string;     // empty = use wage_czk_h
   formwork_system_name: string; // empty = auto
   rental_czk_override: string; // empty = catalog price, number = user override
+  formwork_shape_correction: string; // '1.0' | '1.3' | '1.5' | '1.8'
+  num_identical_elements: number; // default 1
+  formwork_sets_count: string; // empty = use num_sets
   enable_monte_carlo: boolean;
   start_date: string; // ISO date string for calendar mapping
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
@@ -192,6 +195,9 @@ const DEFAULT_FORM: FormState = {
   wage_pour_czk_h: '',
   formwork_system_name: '',
   rental_czk_override: '',
+  formwork_shape_correction: '1.0',
+  num_identical_elements: 1,
+  formwork_sets_count: '',
   enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
@@ -523,6 +529,12 @@ export default function PlannerPage() {
     if (form.height_m) input.height_m = parseFloat(form.height_m);
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
+    const sc = parseFloat(form.formwork_shape_correction);
+    if (sc && sc !== 1.0) input.formwork_shape_correction = sc;
+    if (form.num_identical_elements > 1) {
+      input.num_identical_elements = form.num_identical_elements;
+      if (form.formwork_sets_count) input.formwork_sets_count = parseInt(form.formwork_sets_count);
+    }
     return input;
   };
 
@@ -1263,6 +1275,19 @@ export default function PlannerPage() {
                           : 'výška elementu'} />
                     </Field>
                   )}
+                  {/* Shape correction dropdown (only for vertical elements with height) */}
+                  {hint.has_height && (
+                    <Field label="Tvar průřezu" hint="korekce pracnosti bednění za geometrii">
+                      <select style={inputStyle} value={form.formwork_shape_correction}
+                        onChange={e => update('formwork_shape_correction', e.target.value)}>
+                        <option value="1.0">Přímý — rovné plochy (×1.0)</option>
+                        <option value="1.3">Zalomený — úhly, šikminy (×1.3)</option>
+                        <option value="1.5">Kruhový — segmenty (×1.5)</option>
+                        <option value="1.8">Nepravidelný — atypický (×1.8)</option>
+                      </select>
+                    </Field>
+                  )}
+
                   <div style={{
                     padding: '6px 10px', marginBottom: 8,
                     background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
@@ -1273,6 +1298,19 @@ export default function PlannerPage() {
                 </>
               );
             })()}
+
+            {/* ─── Obrátkovost (repetitive elements) ─── */}
+            <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů">
+              <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
+                onChange={v => update('num_identical_elements', Math.max(1, Math.round(v)))} placeholder="1" />
+            </Field>
+            {form.num_identical_elements > 1 && (
+              <Field label="Počet sad bednění" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost`}>
+                <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
+                  onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(v))))}
+                  placeholder={String(form.num_sets)} />
+              </Field>
+            )}
           </Section>
 
           {/* ─── Záběry (Tacts) ─── */}
