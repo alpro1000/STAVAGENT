@@ -1337,12 +1337,12 @@ export default function PlannerPage() {
             {/* ─── Obrátkovost (repetitive elements) ─── */}
             <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů">
               <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
-                onChange={v => update('num_identical_elements', Math.max(1, Math.round(v)))} placeholder="1" />
+                onChange={v => update('num_identical_elements', Math.max(1, Math.round(Number(v))))} placeholder="1" />
             </Field>
             {form.num_identical_elements > 1 && (
               <Field label="Počet sad bednění" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost`}>
                 <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
-                  onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(v))))}
+                  onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(Number(v)))))}
                   placeholder={String(form.num_sets)} />
               </Field>
             )}
