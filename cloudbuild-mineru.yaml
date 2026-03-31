@@ -3,10 +3,12 @@
 #
 # Trigger: triggers/mineru.yaml (includedFiles: mineru_service/**)
 # Guard step skips build if mineru_service/ unchanged vs HEAD~1
+#
+# Note: $$ escapes $ in Cloud Build YAML (prevents substitution parsing)
 ###############################################################
 
 steps:
-  # ─── Guard: skip if no MinerU changes ─────────────────────
+  # ─── Guard: check if MinerU files changed ─────────────────
   - name: 'gcr.io/cloud-builders/git'
     id: 'check-mineru-diff'
     entrypoint: 'bash'
@@ -17,62 +19,59 @@ steps:
           echo "=== FORCE_DEPLOY=true — skipping guard ==="
           exit 0
         fi
-        CHANGED=$(git diff --name-only HEAD~1 HEAD -- mineru_service/ cloudbuild-mineru.yaml 2>/dev/null || echo "mineru_service/")
-        if [ -z "$CHANGED" ]; then
-          echo "=== No changes in mineru_service/ — SKIPPING BUILD ==="
-          exit 1
+        DIFF_FILES=$$(git diff --name-only HEAD~1 HEAD -- mineru_service/ cloudbuild-mineru.yaml 2>/dev/null || echo "mineru_service/")
+        if [ -z "$$DIFF_FILES" ]; then
+          echo "=== No changes in mineru_service/ — skipping build ==="
+          touch /workspace/.skip-build
+        else
+          echo "=== MinerU changes detected ==="
+          echo "$$DIFF_FILES"
         fi
-        echo "=== MinerU changes detected ==="
-        echo "$CHANGED"
 
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-mineru'
     waitFor: ['check-mineru-diff']
+    entrypoint: 'bash'
     args:
-      - 'build'
-      - '-t'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service:$COMMIT_SHA'
-      - '-t'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service:latest'
-      - '-f'
-      - 'mineru_service/Dockerfile'
-      - 'mineru_service/'
+      - '-c'
+      - |
+        if [ -f /workspace/.skip-build ]; then echo "SKIP"; exit 0; fi
+        docker build \
+          -t europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service:$COMMIT_SHA \
+          -t europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service:latest \
+          -f mineru_service/Dockerfile \
+          mineru_service/
     timeout: '3600s'
 
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-mineru'
     waitFor: ['build-mineru']
+    entrypoint: 'bash'
     args:
-      - 'push'
-      - '--all-tags'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service'
+      - '-c'
+      - |
+        if [ -f /workspace/.skip-build ]; then echo "SKIP"; exit 0; fi
+        docker push --all-tags europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deploy-mineru'
     waitFor: ['push-mineru']
+    entrypoint: 'bash'
     args:
-      - 'run'
-      - 'deploy'
-      - 'mineru-service'
-      - '--image'
-      - 'europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service:$COMMIT_SHA'
-      - '--region'
-      - 'europe-west1'
-      - '--platform'
-      - 'managed'
-      - '--memory'
-      - '4Gi'
-      - '--cpu'
-      - '2'
-      - '--min-instances'
-      - '0'
-      - '--max-instances'
-      - '2'
-      - '--timeout'
-      - '200'
-      - '--concurrency'
-      - '1'
-      - '--no-allow-unauthenticated'
+      - '-c'
+      - |
+        if [ -f /workspace/.skip-build ]; then echo "SKIP"; exit 0; fi
+        gcloud run deploy mineru-service \
+          --image=europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/mineru-service:$COMMIT_SHA \
+          --region=europe-west1 \
+          --platform=managed \
+          --memory=4Gi \
+          --cpu=2 \
+          --min-instances=0 \
+          --max-instances=2 \
+          --timeout=200 \
+          --concurrency=1 \
+          --no-allow-unauthenticated
 
 substitutions:
   _FORCE_DEPLOY: 'false'
