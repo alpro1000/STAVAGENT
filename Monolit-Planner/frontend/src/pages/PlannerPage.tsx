@@ -354,6 +354,11 @@ export default function PlannerPage() {
       volume_m3: searchParams.get('volume_m3') ? parseFloat(searchParams.get('volume_m3')!) : undefined,
       concrete_class: (searchParams.get('concrete_class') || extractedConcreteClass) as ConcreteClass | undefined,
       exposure_class: extractedExposure,
+      // Sibling position IDs for TOV mapping (bednění, výztuž)
+      bedneni_position_id: searchParams.get('bedneni_position_id'),
+      bedneni_m2: searchParams.get('bedneni_m2') ? parseFloat(searchParams.get('bedneni_m2')!) : undefined,
+      vyzuz_position_id: searchParams.get('vyzuz_position_id'),
+      vyzuz_qty: searchParams.get('vyzuz_qty') ? parseFloat(searchParams.get('vyzuz_qty')!) : undefined,
     };
   }, [searchParams]);
 
@@ -376,6 +381,8 @@ export default function PlannerPage() {
 
     if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
     if (positionContext.concrete_class) f.concrete_class = positionContext.concrete_class;
+    if (positionContext.bedneni_m2) f.formwork_area_m2 = String(positionContext.bedneni_m2);
+    if (positionContext.vyzuz_qty) f.rebar_mass_kg = String(positionContext.vyzuz_qty);
 
     // Clear start_date in Monolit mode (ordinal days only)
     f.start_date = '';
@@ -1888,27 +1895,77 @@ export default function PlannerPage() {
                       tact_count: plan.pour_decision.num_tacts,
                     },
                   };
-                  // Write to position via Monolit backend (days + full metadata for TOV pre-fill)
-                  if (positionContext.position_id) {
-                    const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
+                  // Write to positions via Monolit backend (TOV mapping)
+                  const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
+                  if (positionContext.position_id && bridgeId) {
+                    const updates: Array<Record<string, unknown>> = [];
+
+                    // 1. Beton position — days, crew, curing, full metadata
+                    updates.push({
+                      id: positionContext.position_id,
+                      days: plan.schedule.total_days,
+                      crew_size: plan.resources.crew_size_formwork,
+                      wage_czk_ph: plan.resources.wage_pour_czk_h,
+                      shift_hours: plan.resources.shift_h,
+                      curing_days: plan.formwork.curing_days,
+                      metadata: JSON.stringify({
+                        costs: monolit_data.costs,
+                        resources: monolit_data.resources,
+                        formwork_info: monolit_data.formwork_info,
+                        schedule_info: monolit_data.schedule_info,
+                        calculated_at: monolit_data.calculated_at,
+                      }),
+                    });
+
+                    // 2. Bednění position — formwork days, crew, area
+                    if (positionContext.bedneni_position_id) {
+                      const fwDays = plan.formwork.assembly_days + plan.formwork.disassembly_days;
+                      updates.push({
+                        id: positionContext.bedneni_position_id,
+                        days: Math.ceil(fwDays * 10) / 10,
+                        crew_size: plan.resources.crew_size_formwork,
+                        wage_czk_ph: plan.resources.wage_formwork_czk_h,
+                        shift_hours: plan.resources.shift_h,
+                        qty: parseFloat(form.formwork_area_m2) || undefined,
+                        metadata: JSON.stringify({
+                          formwork_system: plan.formwork.system.name,
+                          assembly_days: plan.formwork.assembly_days,
+                          disassembly_days: plan.formwork.disassembly_days,
+                          rental_czk: plan.costs.formwork_rental_czk,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      });
+                    }
+
+                    // 3. Výztuž position — rebar days, crew
+                    if (positionContext.vyzuz_position_id) {
+                      updates.push({
+                        id: positionContext.vyzuz_position_id,
+                        days: Math.ceil(plan.rebar.duration_days * 10) / 10,
+                        crew_size: plan.resources.crew_size_rebar,
+                        wage_czk_ph: plan.resources.wage_rebar_czk_h,
+                        shift_hours: plan.resources.shift_h,
+                        metadata: JSON.stringify({
+                          rebar_mass_kg: plan.rebar.mass_kg,
+                          norm_h_per_t: plan.rebar.norm_h_per_t,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      });
+                    }
+
+                    // Filter out undefined values from updates
+                    const cleanUpdates = updates.map(u => {
+                      const clean: Record<string, unknown> = {};
+                      for (const [k, v] of Object.entries(u)) {
+                        if (v !== undefined) clean[k] = v;
+                      }
+                      return clean;
+                    });
+
                     const res = await fetch(`${API_URL}/api/positions`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        bridge_id: bridgeId,
-                        updates: [{
-                          id: positionContext.position_id,
-                          days: plan.schedule.total_days,
-                          curing_days: plan.formwork.curing_days,
-                          metadata: JSON.stringify({
-                            costs: monolit_data.costs,
-                            resources: monolit_data.resources,
-                            formwork_info: monolit_data.formwork_info,
-                            schedule_info: monolit_data.schedule_info,
-                            calculated_at: monolit_data.calculated_at,
-                          }),
-                        }],
-                      }),
+                      body: JSON.stringify({ bridge_id: bridgeId, updates: cleanUpdates }),
                     });
                     if (!res.ok) {
                       const errData = await res.json().catch(() => null);
