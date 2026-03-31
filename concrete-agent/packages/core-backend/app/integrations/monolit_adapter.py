@@ -134,7 +134,7 @@ class MonolitAdapter:
     def __init__(self):
         """Initialize adapter services"""
         self.enricher = PositionEnricher()
-        self.auditor = AuditService()
+        self.auditor = None  # Lazy init — AuditService needs claude_client
         self.cache = None
 
     async def enrich_batch(
@@ -309,7 +309,10 @@ class MonolitAdapter:
             "price_recommendation": enrichment.price_recommendation,
         }
 
-        # Run audit
+        # Run audit (lazy init — AuditService needs claude_client at runtime)
+        if self.auditor is None:
+            from app.core.claude_client import ClaudeClient
+            self.auditor = AuditService(claude_client=ClaudeClient())
         audit_result = await self.auditor.run_audit(pos_dict, roles=roles)
 
         return MonolitAuditResult(
