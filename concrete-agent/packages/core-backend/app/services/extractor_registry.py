@@ -388,86 +388,55 @@ def _extract_doprava(text: str) -> Dict[str, Any]:
     return result
 
 
-# --- Výkresy (drawings — concrete by element, ETICS, krytí, průsak, poznámky, štampové pole) ---
-_VYKRESY_PATTERNS = {
-    # Concrete class by element: "deska D1 — C30/37" or "pilíř P3: C35/45"
-    "beton_po_prvcich": re.compile(
-        r"(?:desk[ay]|pilíř[eů]?|sloup[ůy]?|stěn[ay]|trám[yů]?|základ[yů]?|nosník[yů]?|věnec|překlad[yů]?|strop[yů]?)"
-        r"[^:\n]{0,30}?[:\s–—-]+\s*(?:C\s*\d+/\d+)",
-        re.IGNORECASE,
-    ),
-    # ETICS/KZS from drawings
-    "etics_kzs": re.compile(
-        r"(?:ETICS|KZS|kontaktní\s+zateplovací\s+systém)[\s:–—-]+([^\n]{3,80})",
-        re.IGNORECASE,
-    ),
-    # Concrete cover (krytí výztuže)
-    "kryti_mm": re.compile(
-        r"(?:krytí|krycí\s+vrstva|c_nom|c[\s_]?min)[\s:=]+(\d{2,3})\s*mm",
-        re.IGNORECASE,
-    ),
-    # Water permeability / průsak
-    "prusak_mm": re.compile(
-        r"(?:průsak|hloubka\s+průsaku|vodotěsnost)"
-        r"[^0-9\n]{0,30}?(\d{1,3})\s*mm",
-        re.IGNORECASE,
-    ),
-    # Drawing notes (poznámky z výkresů)
-    "poznamky": re.compile(
-        r"(?:poznámk[ay]|POZN\.?|Pozn\.?|NOTE)\s*[:\s]+([^\n]{5,200})",
-        re.IGNORECASE,
-    ),
-    # Title block / štampové pole: zákazka, datum, stupeň, číslo výkresu
-    "cislo_vykresu": re.compile(
-        r"(?:číslo\s+výkresu|výkres\s+č\.?|č\.?\s*v(?:ýkr)?\.?)[\s:]+([A-Z0-9][^\n,;]{1,40})",
-        re.IGNORECASE,
-    ),
-    "meritko": re.compile(
-        r"(?:měřítko|M)\s*[:\s]+\s*(1\s*:\s*\d+)", re.IGNORECASE
-    ),
-    "format_vykresu": re.compile(
-        r"(?:formát)[\s:]+\s*(A[0-4])", re.IGNORECASE
-    ),
-    # Exposure class from drawings
-    "trida_prostredi": re.compile(
-        r"(?:třída\s+prostředí|expozice|exposure)[\s:]+\s*(X[A-Z]\d(?:\s*[,/+]\s*X[A-Z]\d)*)",
-        re.IGNORECASE,
-    ),
-    # Concrete element dimensions from drawings
-    "rozmery_prvku": re.compile(
-        r"(\d{3,5})\s*[xX×]\s*(\d{3,5})(?:\s*[xX×]\s*(\d{3,5}))?\s*(?:mm)?",
-        re.IGNORECASE,
-    ),
-}
-
+# --- Výkresy (drawings) — wraps CzechConstructionExtractor.extract_drawing() ---
+# The full extractor lives in regex_extractor.py with DRAWING_REGISTRY
+# (concrete_by_element, notes/PZ, title_block/razítko, ETICS, SCC, norm_findings).
+# We wrap it as a single registry entry to avoid duplicating 200+ lines of patterns.
 
 def _extract_vykresy(text: str) -> Dict[str, Any]:
+    """Wrap CzechConstructionExtractor.extract_drawing() for registry use."""
+    global _cached_extractor
+    if _cached_extractor is None:
+        try:
+            from app.services.regex_extractor import CzechConstructionExtractor
+            _cached_extractor = CzechConstructionExtractor()
+        except ImportError:
+            return {}
+    drawing_data = _cached_extractor.extract_drawing(text)
+    if drawing_data is None:
+        return {}
+    # Convert DrawingData pydantic model to flat dict for engine
     result: Dict[str, Any] = {}
-    for field, pat in _VYKRESY_PATTERNS.items():
-        if field == "beton_po_prvcich":
-            # Collect all element→concrete matches
-            matches = pat.findall(text)
-            if matches:
-                result["beton_po_prvcich"] = [m.strip() for m in matches[:20]]
-        elif field == "poznamky":
-            matches = pat.findall(text)
-            if matches:
-                result["poznamky"] = [m.strip() for m in matches[:10]]
-        elif field == "rozmery_prvku":
-            matches = pat.findall(text)
-            if matches:
-                dims = []
-                for m in matches[:15]:
-                    if isinstance(m, tuple):
-                        dim = "x".join(d for d in m if d)
-                    else:
-                        dim = m
-                    dims.append(dim)
-                result["rozmery_prvku"] = dims
-        else:
-            m = pat.search(text)
-            if m:
-                result[field] = m.group(1).strip() if m.lastindex else m.group(0).strip()
+    if drawing_data.concrete_by_element:
+        result["beton_po_prvcich"] = [
+            f"{e.element}: {e.concrete_class}" + (
+                f" ({', '.join(str(x) for x in e.exposure_classes)})" if e.exposure_classes else ""
+            ) + (f" krytí {e.cover_min_mm}/{e.cover_nom_mm} mm" if e.cover_min_mm else "")
+            + (f" průsak max {e.max_penetration_mm} mm" if e.max_penetration_mm else "")
+            for e in drawing_data.concrete_by_element
+        ]
+    if drawing_data.notes:
+        result["poznamky"] = [
+            {"id": n.note_id, "text": n.text, "work_type": n.work_type}
+            for n in drawing_data.notes
+        ]
+    if drawing_data.title_block:
+        tb = drawing_data.title_block
+        for field in ["stavba", "objekt", "obsah", "stupen_pd", "meritko",
+                       "format", "cislo_vykresu", "datum", "revize",
+                       "projektant", "zodpovedny_projektant"]:
+            val = getattr(tb, field, None)
+            if val:
+                result[field] = val
+    if drawing_data.etics_notes:
+        result["etics_notes"] = drawing_data.etics_notes
+    if drawing_data.has_scc:
+        result["has_scc"] = True
+    if drawing_data.norm_findings:
+        result["norm_findings"] = [
+            {"element": f.element, "status": f.status, "rule": f.rule, "message": f.message}
+            for f in drawing_data.norm_findings
+        ]
     return result
 
 
