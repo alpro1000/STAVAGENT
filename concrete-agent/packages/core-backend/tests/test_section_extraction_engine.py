@@ -425,3 +425,220 @@ class TestFullPipeline:
         result = extract_all_from_document(TZ_MULTI_SECTION)
         # It found multiple domains without being told what document type it is
         assert len(result) >= 3
+
+
+# ===================================================================
+# AI Layer tests (unit tests — mock Gemini)
+# ===================================================================
+
+
+class TestAIExtraction:
+    """Tests for AI enrichment layer."""
+
+    def test_merge_ai_into_regex_new_domain(self):
+        """AI adds a domain that regex didn't find."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+
+        regex = {"base_construction": {"concrete_class": "C30/37"}}
+        ai = {"zdivo": {"tvarnice_typ": "Porotherm 44 T"}}
+
+        merged = _merge_ai_into_regex(regex, ai)
+        assert "base_construction" in merged
+        assert "zdivo" in merged
+        assert merged["zdivo"]["tvarnice_typ"] == "Porotherm 44 T"
+        assert merged["zdivo"]["_source"] == "ai"
+        assert merged["zdivo"]["_confidence"] == 0.7
+
+    def test_merge_ai_regex_wins_on_conflict(self):
+        """Regex value takes priority over AI value for same field."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+
+        regex = {"etics": {"izolant_tl_mm": "200"}}
+        ai = {"etics": {"izolant_tl_mm": "180", "kotveni_typ": "talířové hmoždinky"}}
+
+        merged = _merge_ai_into_regex(regex, ai)
+        # Regex wins
+        assert merged["etics"]["izolant_tl_mm"] == "200"
+        # AI adds missing field
+        assert merged["etics"]["kotveni_typ"] == "talířové hmoždinky"
+
+    def test_merge_ai_empty(self):
+        """Empty AI results don't change regex results."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+
+        regex = {"base_construction": {"concrete_class": "C30/37"}}
+        merged = _merge_ai_into_regex(regex, {})
+        assert merged == regex
+
+    def test_merge_ai_both_empty(self):
+        """Both empty → empty."""
+        from app.services.section_extraction_engine import _merge_ai_into_regex
+        assert _merge_ai_into_regex({}, {}) == {}
+
+    def test_build_extraction_schemas(self):
+        """Schema builder produces valid JSON with registry entries."""
+        from app.services.section_extraction_engine import _build_extraction_schemas
+        from app.services.extractor_registry import get_registry
+        import json
+
+        schemas_json = _build_extraction_schemas(get_registry())
+        schemas = json.loads(schemas_json)
+        assert isinstance(schemas, dict)
+        assert len(schemas) > 0
+        # Each schema should have label and fields
+        for key, schema in schemas.items():
+            assert "label" in schema
+            assert "fields" in schema
+            assert isinstance(schema["fields"], list)
+
+    def test_extract_all_with_ai_disabled(self):
+        """enable_ai=False should work exactly as before (default)."""
+        result = extract_all_from_document(TZ_MULTI_SECTION, enable_ai=False)
+        assert len(result) >= 3  # Same as without AI
+
+    def test_extract_all_ai_graceful_fallback(self):
+        """When AI is unavailable, engine still returns regex results."""
+        from unittest.mock import patch
+
+        with patch(
+            "app.services.section_extraction_engine.extract_section_with_ai",
+            side_effect=Exception("Gemini unavailable"),
+        ):
+            result = extract_all_from_document(TZ_MULTI_SECTION, enable_ai=True)
+            # Should still have regex results even though AI failed
+            assert len(result) >= 3
+
+    def test_infer_fields_from_extractor(self):
+        """Field inference should return field lists for known extractors."""
+        from app.services.section_extraction_engine import _infer_fields_from_extractor
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+
+        # Pattern-based extractor (inline in registry)
+        zdivo = REGISTRY_BY_KEY.get("zdivo")
+        if zdivo:
+            fields = _infer_fields_from_extractor(zdivo)
+            assert "tvarnice_typ" in fields
+            assert "pevnost_mpa" in fields
+
+        # Known-fields extractor (imported)
+        base = REGISTRY_BY_KEY.get("base_construction")
+        if base:
+            fields = _infer_fields_from_extractor(base)
+            assert "concrete_class" in fields
+
+
+# ===================================================================
+# Výkresy (drawings) extractor tests
+# ===================================================================
+
+
+TZ_VYKRESY = """
+VÝKRES TVARU — STROP NAD 1.NP
+
+Poznámka: Výkres tvaru stropu nad 1.NP, beton třídy C30/37, ocel B500B.
+Měřítko: 1:50
+Formát: A1
+Číslo výkresu: D.1.2.3-01
+
+Deska D1 — C30/37
+Deska D2: C25/30
+Sloup S1 — C35/45
+Stěna ST1: C30/37
+Trám T1 — C30/37
+
+Třída prostředí: XC1, XC3
+Krytí výztuže: c_nom = 25 mm
+Průsak vody max.: 50 mm
+
+ETICS — Baumit EPS-F tl. 160 mm
+
+Pozn.: Rozměry v mm, kóty v metrech.
+Poznámka: Výztuž dle statického výpočtu, krytí c_min = 20 mm.
+
+Rozměry prvků: 300x500 mm, 250x400x200 mm
+"""
+
+
+class TestVykresy:
+    """Tests for Výkresy (drawings) extractor."""
+
+    def test_vykresy_in_registry(self):
+        """Výkresy extractor is registered."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        assert "vykresy" in REGISTRY_BY_KEY
+
+    def test_vykresy_basic_extraction(self):
+        """Extract basic drawing data."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert result, "Expected non-empty result from výkresy extractor"
+
+    def test_vykresy_kryti(self):
+        """Extract concrete cover."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "kryti_mm" in result
+        assert "25" in result["kryti_mm"]
+
+    def test_vykresy_prusak(self):
+        """Extract water permeability."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "prusak_mm" in result
+        assert "50" in result["prusak_mm"]
+
+    def test_vykresy_cislo(self):
+        """Extract drawing number."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "cislo_vykresu" in result
+        assert "D.1.2.3-01" in result["cislo_vykresu"]
+
+    def test_vykresy_meritko(self):
+        """Extract scale."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "meritko" in result
+        assert "1" in result["meritko"] and "50" in result["meritko"]
+
+    def test_vykresy_format(self):
+        """Extract format."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "format_vykresu" in result
+        assert result["format_vykresu"] == "A1"
+
+    def test_vykresy_etics(self):
+        """Extract ETICS/KZS info."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "etics_kzs" in result
+        assert "Baumit" in result["etics_kzs"]
+
+    def test_vykresy_trida_prostredi(self):
+        """Extract exposure class."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "trida_prostredi" in result
+        assert "XC1" in result["trida_prostredi"]
+
+    def test_vykresy_poznamky(self):
+        """Extract drawing notes."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "poznamky" in result
+        assert isinstance(result["poznamky"], list)
+        assert len(result["poznamky"]) >= 2
+
+    def test_vykresy_rozmery(self):
+        """Extract element dimensions."""
+        from app.services.extractor_registry import REGISTRY_BY_KEY
+        result = REGISTRY_BY_KEY["vykresy"].parse(TZ_VYKRESY)
+        assert "rozmery_prvku" in result
+        assert isinstance(result["rozmery_prvku"], list)
+
+    def test_vykresy_full_pipeline(self):
+        """Full pipeline finds výkresy data."""
+        result = extract_all_from_document(TZ_VYKRESY)
+        assert "vykresy" in result, f"Expected 'vykresy' in {list(result.keys())}"
+        assert "kryti_mm" in result["vykresy"]

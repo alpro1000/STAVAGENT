@@ -388,6 +388,89 @@ def _extract_doprava(text: str) -> Dict[str, Any]:
     return result
 
 
+# --- Výkresy (drawings — concrete by element, ETICS, krytí, průsak, poznámky, štampové pole) ---
+_VYKRESY_PATTERNS = {
+    # Concrete class by element: "deska D1 — C30/37" or "pilíř P3: C35/45"
+    "beton_po_prvcich": re.compile(
+        r"(?:desk[ay]|pilíř[eů]?|sloup[ůy]?|stěn[ay]|trám[yů]?|základ[yů]?|nosník[yů]?|věnec|překlad[yů]?|strop[yů]?)"
+        r"[^:\n]{0,30}?[:\s–—-]+\s*(?:C\s*\d+/\d+)",
+        re.IGNORECASE,
+    ),
+    # ETICS/KZS from drawings
+    "etics_kzs": re.compile(
+        r"(?:ETICS|KZS|kontaktní\s+zateplovací\s+systém)[\s:–—-]+([^\n]{3,80})",
+        re.IGNORECASE,
+    ),
+    # Concrete cover (krytí výztuže)
+    "kryti_mm": re.compile(
+        r"(?:krytí|krycí\s+vrstva|c_nom|c[\s_]?min)[\s:=]+(\d{2,3})\s*mm",
+        re.IGNORECASE,
+    ),
+    # Water permeability / průsak
+    "prusak_mm": re.compile(
+        r"(?:průsak|hloubka\s+průsaku|vodotěsnost)"
+        r"[^0-9\n]{0,30}?(\d{1,3})\s*mm",
+        re.IGNORECASE,
+    ),
+    # Drawing notes (poznámky z výkresů)
+    "poznamky": re.compile(
+        r"(?:poznámk[ay]|POZN\.?|Pozn\.?|NOTE)\s*[:\s]+([^\n]{5,200})",
+        re.IGNORECASE,
+    ),
+    # Title block / štampové pole: zákazka, datum, stupeň, číslo výkresu
+    "cislo_vykresu": re.compile(
+        r"(?:číslo\s+výkresu|výkres\s+č\.?|č\.?\s*v(?:ýkr)?\.?)[\s:]+([A-Z0-9][^\n,;]{1,40})",
+        re.IGNORECASE,
+    ),
+    "meritko": re.compile(
+        r"(?:měřítko|M)\s*[:\s]+\s*(1\s*:\s*\d+)", re.IGNORECASE
+    ),
+    "format_vykresu": re.compile(
+        r"(?:formát)[\s:]+\s*(A[0-4])", re.IGNORECASE
+    ),
+    # Exposure class from drawings
+    "trida_prostredi": re.compile(
+        r"(?:třída\s+prostředí|expozice|exposure)[\s:]+\s*(X[A-Z]\d(?:\s*[,/+]\s*X[A-Z]\d)*)",
+        re.IGNORECASE,
+    ),
+    # Concrete element dimensions from drawings
+    "rozmery_prvku": re.compile(
+        r"(\d{3,5})\s*[xX×]\s*(\d{3,5})(?:\s*[xX×]\s*(\d{3,5}))?\s*(?:mm)?",
+        re.IGNORECASE,
+    ),
+}
+
+
+def _extract_vykresy(text: str) -> Dict[str, Any]:
+    result: Dict[str, Any] = {}
+    for field, pat in _VYKRESY_PATTERNS.items():
+        if field == "beton_po_prvcich":
+            # Collect all element→concrete matches
+            matches = pat.findall(text)
+            if matches:
+                result["beton_po_prvcich"] = [m.strip() for m in matches[:20]]
+        elif field == "poznamky":
+            matches = pat.findall(text)
+            if matches:
+                result["poznamky"] = [m.strip() for m in matches[:10]]
+        elif field == "rozmery_prvku":
+            matches = pat.findall(text)
+            if matches:
+                dims = []
+                for m in matches[:15]:
+                    if isinstance(m, tuple):
+                        dim = "x".join(d for d in m if d)
+                    else:
+                        dim = m
+                    dims.append(dim)
+                result["rozmery_prvku"] = dims
+        else:
+            m = pat.search(text)
+            if m:
+                result[field] = m.group(1).strip() if m.lastindex else m.group(0).strip()
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Wrap existing CzechConstructionExtractor as a registry-compatible function
 # ---------------------------------------------------------------------------
@@ -458,6 +541,9 @@ EXTRACTOR_REGISTRY: List[ExtractorEntry] = [
     ExtractorEntry("mar", "Měření a regulace (MaR)", _extract_mar),
     ExtractorEntry("most", "Mostní konstrukce", _extract_most),
     ExtractorEntry("doprava_doplneni", "Dopravní stavby (skladba, značení)", _extract_doprava),
+
+    # --- Výkresy (drawings) ---
+    ExtractorEntry("vykresy", "Výkresy (beton po prvcích, ETICS, krytí, průsak, poznámky, razítko)", _extract_vykresy),
 ]
 
 # Quick lookup by key

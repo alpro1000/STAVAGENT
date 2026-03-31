@@ -42,7 +42,113 @@ const IDENT_LABELS: Record<string, string> = {
   ckait: 'ČKAIT',
 };
 
-type TabId = 'passport' | 'soupis' | 'audit' | 'summary' | 'compliance' | 'project';
+/** Domain labels for engine extraction domains */
+const DOMAIN_LABELS: Record<string, string> = {
+  base_construction: 'Beton, výztuž, rozměry',
+  norms: 'Normy a standardy',
+  road_params: 'Pozemní komunikace',
+  traffic_params: 'DIO',
+  water_params: 'Vodohospodářské stavby',
+  vegetation_params: 'Vegetační úpravy',
+  electro_params: 'Elektro přeložky',
+  pipeline_params: 'Plynovody / produktovody',
+  silnoproud_params: 'Silnoproud',
+  slaboproud_params: 'Slaboproud',
+  vzt_params: 'VZT a klimatizace',
+  zti_params: 'ZTI',
+  ut_params: 'Ústřední topení',
+  zel_svrsek_params: 'Železniční svršek',
+  zel_spodek_params: 'Železniční spodek',
+  igp_params: 'IGP',
+  zdivo: 'Zdivo',
+  strecha: 'Střecha',
+  podlahy: 'Podlahy',
+  etics: 'ETICS / KZS',
+  okna_dvere: 'Okna a dveře',
+  sdk: 'Sádrokarton',
+  hydroizolace: 'Hydroizolace',
+  plynovod: 'Plynovod',
+  mar: 'MaR',
+  most: 'Most',
+  doprava_doplneni: 'Dopravní stavby',
+  vykresy: 'Výkresy',
+};
+
+/** Engine Extractions Panel — displays domain cards with extracted fields and confidence badges */
+function EngineExtractionsPanel({ extractions }: { extractions: Record<string, Record<string, unknown>> }) {
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+
+  const domains = Object.entries(extractions).filter(
+    ([, fields]) => fields && typeof fields === 'object' && Object.keys(fields).length > 0
+  );
+
+  if (domains.length === 0) {
+    return <div className="da-empty">Žádné extrakce nenalezeny.</div>;
+  }
+
+  const toggleDomain = (key: string) => {
+    setCollapsed(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  return (
+    <div className="da-extractions">
+      <div className="da-extractions__header">
+        <h3>Extrahované domény ({domains.length})</h3>
+        <p className="da-extractions__subtitle">
+          Strukturovaná data extrahovaná z dokumentu — regex (zelená) a AI (oranžová)
+        </p>
+      </div>
+      <div className="da-extractions__grid">
+        {domains.map(([domainKey, fields]) => {
+          const isAI = (fields as any)?._source === 'ai';
+          const confidence = (fields as any)?._confidence;
+          const isCollapsed = collapsed[domainKey] ?? false;
+          const displayFields = Object.entries(fields).filter(([k]) => !k.startsWith('_'));
+
+          return (
+            <div
+              key={domainKey}
+              className={`da-domain-card ${isAI ? 'da-domain-card--ai' : 'da-domain-card--regex'}`}
+            >
+              <div className="da-domain-card__header" onClick={() => toggleDomain(domainKey)}>
+                <div className="da-domain-card__title">
+                  <span className="da-domain-card__name">
+                    {DOMAIN_LABELS[domainKey] || domainKey}
+                  </span>
+                  <span className={`da-domain-card__badge ${isAI ? 'da-domain-card__badge--ai' : 'da-domain-card__badge--regex'}`}>
+                    {isAI ? `AI ${confidence ? `(${(confidence * 100).toFixed(0)}%)` : ''}` : 'regex'}
+                  </span>
+                  <span className="da-domain-card__count">{displayFields.length} polí</span>
+                </div>
+                <span className={`da-domain-card__chevron ${isCollapsed ? '' : 'da-domain-card__chevron--open'}`}>
+                  ▸
+                </span>
+              </div>
+              {!isCollapsed && (
+                <div className="da-domain-card__body">
+                  {displayFields.map(([fieldKey, value]) => (
+                    <div key={fieldKey} className="da-domain-card__field">
+                      <span className="da-domain-card__field-key">{fieldKey}</span>
+                      <span className="da-domain-card__field-value">
+                        {Array.isArray(value)
+                          ? value.join(', ')
+                          : typeof value === 'object' && value !== null
+                            ? JSON.stringify(value)
+                            : String(value)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+type TabId = 'passport' | 'soupis' | 'audit' | 'summary' | 'compliance' | 'project' | 'extractions';
 
 interface PortalProject {
   portal_project_id: string;
@@ -704,6 +810,7 @@ export default function DocumentAnalysisPage() {
     { id: 'audit', label: 'AI Audit', show: true },
     { id: 'summary', label: 'Shrnutí', show: !!passportData },
     { id: 'compliance', label: 'Normy (NKB)', show: !!passportData },
+    { id: 'extractions', label: `Extrakce (${Object.keys((passportData as any)?.engine_extractions || {}).length})`, show: !!((passportData as any)?.engine_extractions && Object.keys((passportData as any).engine_extractions).length > 0) },
     { id: 'project', label: `Projektová analýza (${projectData?.merged_sos?.length || 0} SO)`, show: !!projectData },
   ];
   const visibleTabs = tabs.filter(t => t.show);
@@ -933,6 +1040,9 @@ export default function DocumentAnalysisPage() {
               {activeTab === 'audit' && <AuditTab uploadedFile={uploadedFile} />}
               {activeTab === 'summary' && <SummaryTab data={passportData} />}
               {activeTab === 'compliance' && <ComplianceTab data={passportData} />}
+              {activeTab === 'extractions' && passportData && (
+                <EngineExtractionsPanel extractions={(passportData as any)?.engine_extractions || {}} />
+              )}
               {activeTab === 'project' && projectData && (
                 <ProjectAnalysis data={projectData} />
               )}
@@ -1745,6 +1855,128 @@ const documentAnalysisStyles = `
   color: var(--text-muted, #9ca3af);
 }
 
+/* === Engine Extractions Panel === */
+.da-extractions {
+  padding: 0;
+}
+.da-extractions__header {
+  margin-bottom: 20px;
+}
+.da-extractions__header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--text-primary, #111);
+}
+.da-extractions__subtitle {
+  font-size: 13px;
+  color: var(--text-muted, #9ca3af);
+  margin: 0;
+}
+.da-extractions__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+.da-domain-card {
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--bg-card, #fff);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.da-domain-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.da-domain-card--regex {
+  border-left: 3px solid #22c55e;
+}
+.da-domain-card--ai {
+  border-left: 3px solid #f59e0b;
+}
+.da-domain-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.da-domain-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.da-domain-card__name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary, #111);
+}
+.da-domain-card__badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.da-domain-card__badge--regex {
+  background: #dcfce7;
+  color: #166534;
+}
+.da-domain-card__badge--ai {
+  background: #fef3c7;
+  color: #92400e;
+}
+.da-domain-card__count {
+  font-size: 12px;
+  color: var(--text-muted, #9ca3af);
+}
+.da-domain-card__chevron {
+  font-size: 14px;
+  color: var(--text-muted, #9ca3af);
+  transition: transform 0.15s;
+}
+.da-domain-card__chevron--open {
+  transform: rotate(90deg);
+}
+.da-domain-card__body {
+  padding: 0 14px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.da-domain-card__field {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border-light, #f3f4f6);
+  font-size: 13px;
+}
+.da-domain-card__field:last-child {
+  border-bottom: none;
+}
+.da-domain-card__field-key {
+  color: var(--text-muted, #6b7280);
+  white-space: nowrap;
+  min-width: 100px;
+}
+.da-domain-card__field-value {
+  color: var(--text-primary, #111);
+  font-weight: 500;
+  text-align: right;
+  word-break: break-word;
+}
+.da-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted, #9ca3af);
+  font-size: 14px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .da-header { padding: 12px 16px; }
@@ -1756,5 +1988,6 @@ const documentAnalysisStyles = `
   .da-ident-card { grid-template-columns: 1fr; }
   .da-picker-card { margin: 16px; max-width: calc(100% - 32px); }
   .da-picker-create-row { flex-direction: column; }
+  .da-extractions__grid { grid-template-columns: 1fr; }
 }
 `;

@@ -191,9 +191,12 @@ class DocumentProcessor:
             layer2_time = int((time.time() - layer2_start) * 1000)
             logger.info(f"Layer 2 complete: {layer2_time}ms, {self.extractor.get_stats()}")
 
-            # === LAYER 2b: UNIVERSAL MAP-REDUCE ENGINE ===
+            # === LAYER 2b: UNIVERSAL MAP-REDUCE ENGINE (+ optional AI per section) ===
             engine_start = time.time()
-            engine_results = extract_all_from_document(document_text)
+            engine_results = extract_all_from_document(
+                document_text,
+                enable_ai=enable_ai_enrichment,
+            )
             engine_time = int((time.time() - engine_start) * 1000)
             logger.info(f"Layer 2b (engine) complete: {engine_time}ms, "
                          f"{len(engine_results)} domains, "
