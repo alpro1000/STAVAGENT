@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.7
+**Version:** 4.0.8
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -158,9 +158,13 @@ Concrete cost calculator: CZK/m³, Excel import, OTSKP codes, AI days suggestion
 
 **Element Planner** (`/planner`): 20 element types (9 bridge + 11 building). 7-engine pipeline: Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler → PERT Monte Carlo. Gantt + XLSX export.
 
+**Lateral Pressure** — `lateral-pressure.ts`: p = ρ×g×h×k (ČSN EN 12812), auto-filter formwork by pressure, záběrová betonáž (pour stages by height), shape correction (×1.0–1.8), obrátkovost for repetitive elements.
+
+**Planner UX** — Two modes: Monolit (ordinal days, auto-classify from part_name, TOV mapping to beton+bednění+výztuž) / Portal (calendar dates, manual input). Bridge context classifier (pilíř vs sloup). Plan variants save/compare.
+
 **Other:** Snapshot system (SHA-256), Resource Optimization (grid search), Maturity/Props/Calendar/Pump engines, Normsets (ÚRS/RTS/KROS/Internal), mini-calculators (crane, delivery), TOV prefill from planner.
 
-Structure: `shared/` (342 tests), `backend/` (60 tests), `frontend/`. Design: Slate Minimal (`--r0-*` CSS vars).
+Structure: `shared/` (384 tests), `backend/` (60 tests), `frontend/`. Design: Slate Minimal (`--r0-*` CSS vars).
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
 Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 SQLite tables**.
@@ -201,10 +205,10 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 |---------|-----------|-------|-----|
 | concrete-agent | 119 | 31 files | ~58K |
 | stavagent-portal | ~80 | 1 file | ~25K |
-| Monolit-Planner | 125 | 402 | ~30K |
+| Monolit-Planner | 125 | 444 | ~31K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~15K |
-| **TOTAL** | **~384** | **590+** | **~137K** |
+| **TOTAL** | **~384** | **635+** | **~138K** |
 
 ---
 
@@ -246,6 +250,9 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 - Confidence scoring: regex=1.0, OTSKP DB=1.0, drawing_note=0.90, URS matcher=0.80, AI=0.70
 - Determinism > AI: if regex can do it, don't use LLM
 - Drawing notes = input source into TZ→Soupis pipeline (not standalone feature)
+- Lateral pressure: p = ρ×g×h×k (ČSN EN 12812), formwork auto-filter by pressure_kn_m2
+- Shape correction: přímý=1.0, zalomený=1.3, kruhový=1.5, nepravidelný=1.8 (independent from difficulty_factor)
+- Planner two modes: Monolit (position_id in URL → ordinal days, auto-classify) / Portal (no context → calendar)
 
 ---
 
@@ -305,10 +312,13 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] **Stripe env vars**: configure `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` in Secret Manager
 - [ ] **E2E tests on live**: `CORE_URL=https://concrete-agent-...run.app pytest tests/test_e2e_pipeline.py -v`
 
-### Next Session (P1→P2)
+### Next Session
 - [ ] **P1: Cloud Run deploy** — verify /health → 200, enable_ai=True works with Vertex AI ADC
-- [ ] **P2: Engine AI quality** — test 3-5 real TZ docs, compare regex-only vs regex+AI, tune prompt
-- [ ] **P4b: Drawing notes E2E on real data** — test výkresové poznámky → soupis on real drawings, verify conf=0.90
+- [ ] **P1: Verify portal_user_id migration** — deploy Monolit, confirm "Vytvořit nový objekt" works without 500
+- [ ] **P2: Planner E2E test** — test lateral pressure + záběry on real SO-203 data, verify Aplikovat writes TOV
+- [ ] **P2: Čerpadlo betonu** — skrýt/odstranit z TOV (duplikuje sekci Mechanizmy)
+- [ ] **P3: GeometryCalculator** — SHAPE_CATALOG (7 shapes), SubElementInput, calcVolume/calcFormwork
+- [ ] **P3: Gantt calendar mode** — PlannerGantt calendar axis (dates) when startDate given
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
