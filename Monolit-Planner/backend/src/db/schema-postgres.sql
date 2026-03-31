@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS monolith_projects (
   project_name VARCHAR(255),
   object_name VARCHAR(255) NOT NULL DEFAULT '',
   owner_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  portal_user_id TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   element_count INTEGER DEFAULT 0,
