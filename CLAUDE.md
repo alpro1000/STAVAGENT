@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.6
+**Version:** 4.0.7
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -140,12 +140,12 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 ### 2. stavagent-portal (Dispatcher)
 Node.js/Express + React. **~80+ endpoints**, **20 pages**, **40+ components**.
 
-**Route groups:** Auth (15), Portal Projects (10), Portal Files (9), Portal Documents (4), Admin (17), Organizations (10), Service Connections (8), Pump Calculator (15), OTSKP (4), Position Instances (8), Integration (3), CORE Proxy (3), Credits (6), Data Pipeline admin (7), Debug (4)
+**Route groups:** Auth (15), Portal Projects (10), Portal Files (9), Portal Documents (4), Admin (17), Organizations (10), Service Connections (8), Pump Calculator (15), OTSKP (4), Position Instances (8), Integration (3), CORE Proxy (4), Credits (6), Data Pipeline admin (7), Debug (4)
 
 **Key features:**
 - JWT auth (24h), 5 org roles, email verification, IP anti-fraud, disposable email blocking, user bans
 - Pay-as-you-go credits: Stripe Checkout, volume discounts, welcome bonus 200 credits, fail-open billing
-- Data Pipeline admin tab: Smlouvy collection → CPV enrichment → Work Package building
+- Data Pipeline admin tab: Smlouvy → CPV enrichment → Work Packages → Methvin norms scraper
 - EngineExtractionsPanel: AI metrics bar, field-level `_source`/`_confidence`, CSV export
 - Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM
 

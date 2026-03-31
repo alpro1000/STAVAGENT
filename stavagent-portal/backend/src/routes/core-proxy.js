@@ -52,6 +52,7 @@ const ROUTE_MAP = {
   'parse': '/api/v1/parse',
   'project': '/api/v1/project',
   'nkb': '/api/v1/nkb',
+  'norms': '/api/v1/norms',
   'scenario-b': '/api/v1/scenario-b',
   'soupis': '/api/v1/soupis',
 };
