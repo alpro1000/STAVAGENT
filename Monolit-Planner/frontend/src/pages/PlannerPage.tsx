@@ -22,7 +22,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -333,24 +333,53 @@ export default function PlannerPage() {
     const projectId = searchParams.get('project_id');
     const bridgeId = searchParams.get('bridge_id');
     if (!itemId && !projectId && !bridgeId) return null;
+
+    const partName = searchParams.get('part_name') || '';
+
+    // Extract concrete class from part_name: C20/25, C30/37, etc.
+    const concreteMatch = partName.match(/C(\d{2})\/(\d{2,3})/i);
+    const extractedConcreteClass = concreteMatch ? `C${concreteMatch[1]}/${concreteMatch[2]}` : undefined;
+
+    // Extract exposure class from part_name: XC1, XD2, XF2, etc.
+    const exposureMatch = partName.match(/X[CDFASM]\d/i);
+    const extractedExposure = exposureMatch ? exposureMatch[0].toUpperCase() : undefined;
+
     return {
       item_id: itemId,
       project_id: projectId,
       bridge_id: bridgeId,
       position_id: searchParams.get('position_id'),
-      part_name: searchParams.get('part_name'),
+      part_name: partName,
       subtype: searchParams.get('subtype'),
       volume_m3: searchParams.get('volume_m3') ? parseFloat(searchParams.get('volume_m3')!) : undefined,
-      concrete_class: searchParams.get('concrete_class') as ConcreteClass | undefined,
+      concrete_class: (searchParams.get('concrete_class') || extractedConcreteClass) as ConcreteClass | undefined,
+      exposure_class: extractedExposure,
     };
   }, [searchParams]);
 
-  // If position context, prefill form
+  /** Mode A = opened from Monolit position (ordinal days, no date picker) */
+  const isMonolitMode = !!positionContext?.position_id || !!positionContext?.part_name;
+
+  // If position context, prefill form with auto-classification
   const initialForm = useMemo(() => {
     if (!positionContext) return loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
     const f = { ...DEFAULT_FORM };
+
+    // Auto-classify element_type from part_name
+    if (positionContext.part_name) {
+      const classified = classifyElement(positionContext.part_name);
+      if (classified.element_type !== 'other' || classified.confidence > 0.5) {
+        f.element_type = classified.element_type;
+      }
+      // Don't enable name classification — we already resolved the type
+    }
+
     if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
     if (positionContext.concrete_class) f.concrete_class = positionContext.concrete_class;
+
+    // Clear start_date in Monolit mode (ordinal days only)
+    f.start_date = '';
+
     return f;
   }, [positionContext]);
 
@@ -610,6 +639,12 @@ export default function PlannerPage() {
             <span className="r0-icon">📐</span>
             Kalkulátor betonáže
           </h1>
+          {isMonolitMode && positionContext?.part_name && (
+            <div style={{ fontSize: 12, color: 'var(--r0-slate-500)', marginLeft: 8, fontWeight: 400 }}>
+              {positionContext.part_name}
+              {positionContext.volume_m3 ? ` — ${positionContext.volume_m3} m³` : ''}
+            </div>
+          )}
         </div>
         <div className="r0-header-right">
           <button
@@ -1424,14 +1459,25 @@ export default function PlannerPage() {
 
           {/* ─── Environment ─── */}
           <Section title="Podmínky">
-            <Field label="Datum zahájení" hint="pro kalendářní Gantt">
-              <input
-                type="date"
-                style={inputStyle}
-                value={form.start_date}
-                onChange={e => update('start_date', e.target.value)}
-              />
-            </Field>
+            {!isMonolitMode && (
+              <Field label="Datum zahájení" hint="pro kalendářní Gantt">
+                <input
+                  type="date"
+                  style={inputStyle}
+                  value={form.start_date}
+                  onChange={e => update('start_date', e.target.value)}
+                />
+              </Field>
+            )}
+            {isMonolitMode && (
+              <div style={{
+                padding: '6px 10px', marginBottom: 8,
+                background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
+                fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
+              }}>
+                Režim Monolit: Gantt zobrazuje pořadové dny (Den 1, Den 2…), ne kalendářní data.
+              </div>
+            )}
             <Field label="Termín investora (prac. dní)" hint="požadovaný deadline — systém varuje při překročení">
               <input
                 type="number"
@@ -1844,25 +1890,30 @@ export default function PlannerPage() {
                   };
                   // Write to position via Monolit backend (days + full metadata for TOV pre-fill)
                   if (positionContext.position_id) {
+                    const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
                     const res = await fetch(`${API_URL}/api/positions`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ positions: [{
-                        id: positionContext.position_id,
-                        days: plan.schedule.total_days,
-                        cost_czk: plan.costs.total_labor_czk,
-                        concrete_m3: form.volume_m3,
-                        curing_days: plan.formwork.curing_days,
-                        metadata: JSON.stringify({
-                          costs: monolit_data.costs,
-                          resources: monolit_data.resources,
-                          formwork_info: monolit_data.formwork_info,
-                          schedule_info: monolit_data.schedule_info,
-                          calculated_at: monolit_data.calculated_at,
-                        }),
-                      }] }),
+                      body: JSON.stringify({
+                        bridge_id: bridgeId,
+                        updates: [{
+                          id: positionContext.position_id,
+                          days: plan.schedule.total_days,
+                          curing_days: plan.formwork.curing_days,
+                          metadata: JSON.stringify({
+                            costs: monolit_data.costs,
+                            resources: monolit_data.resources,
+                            formwork_info: monolit_data.formwork_info,
+                            schedule_info: monolit_data.schedule_info,
+                            calculated_at: monolit_data.calculated_at,
+                          }),
+                        }],
+                      }),
                     });
-                    if (!res.ok) throw new Error('Chyba při ukládání');
+                    if (!res.ok) {
+                      const errData = await res.json().catch(() => null);
+                      throw new Error(errData?.error || `HTTP ${res.status}`);
+                    }
                   }
                   setApplyStatus('saved');
                   setTimeout(() => setApplyStatus('idle'), 3000);

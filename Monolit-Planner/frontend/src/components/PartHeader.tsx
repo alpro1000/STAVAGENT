@@ -328,7 +328,7 @@ export default function PartHeader({
             <button
               onClick={onOpenFormworkCalculator}
               disabled={isLocked}
-              title="Otevřít kalkulátor — prodolžitelnost, brigáda, opałubka, Gantt"
+              title="Otevřít kalkulátor — délka prací, brigáda, bednění, Gantt"
               style={{
                 background: '#FF9F1C',
                 color: 'white',
@@ -342,7 +342,7 @@ export default function PartHeader({
                 whiteSpace: 'nowrap'
               }}
             >
-              Rассчитать
+              Vypočítat
             </button>
           </div>
         )}
