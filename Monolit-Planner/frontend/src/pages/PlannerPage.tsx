@@ -22,7 +22,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -152,6 +152,9 @@ interface FormState {
   wage_pour_czk_h: string;     // empty = use wage_czk_h
   formwork_system_name: string; // empty = auto
   rental_czk_override: string; // empty = catalog price, number = user override
+  formwork_shape_correction: string; // '1.0' | '1.3' | '1.5' | '1.8'
+  num_identical_elements: number; // default 1
+  formwork_sets_count: string; // empty = use num_sets
   enable_monte_carlo: boolean;
   start_date: string; // ISO date string for calendar mapping
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
@@ -192,6 +195,9 @@ const DEFAULT_FORM: FormState = {
   wage_pour_czk_h: '',
   formwork_system_name: '',
   rental_czk_override: '',
+  formwork_shape_correction: '1.0',
+  num_identical_elements: 1,
+  formwork_sets_count: '',
   enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
@@ -327,24 +333,53 @@ export default function PlannerPage() {
     const projectId = searchParams.get('project_id');
     const bridgeId = searchParams.get('bridge_id');
     if (!itemId && !projectId && !bridgeId) return null;
+
+    const partName = searchParams.get('part_name') || '';
+
+    // Extract concrete class from part_name: C20/25, C30/37, etc.
+    const concreteMatch = partName.match(/C(\d{2})\/(\d{2,3})/i);
+    const extractedConcreteClass = concreteMatch ? `C${concreteMatch[1]}/${concreteMatch[2]}` : undefined;
+
+    // Extract exposure class from part_name: XC1, XD2, XF2, etc.
+    const exposureMatch = partName.match(/X[CDFASM]\d/i);
+    const extractedExposure = exposureMatch ? exposureMatch[0].toUpperCase() : undefined;
+
     return {
       item_id: itemId,
       project_id: projectId,
       bridge_id: bridgeId,
       position_id: searchParams.get('position_id'),
-      part_name: searchParams.get('part_name'),
+      part_name: partName,
       subtype: searchParams.get('subtype'),
       volume_m3: searchParams.get('volume_m3') ? parseFloat(searchParams.get('volume_m3')!) : undefined,
-      concrete_class: searchParams.get('concrete_class') as ConcreteClass | undefined,
+      concrete_class: (searchParams.get('concrete_class') || extractedConcreteClass) as ConcreteClass | undefined,
+      exposure_class: extractedExposure,
     };
   }, [searchParams]);
 
-  // If position context, prefill form
+  /** Mode A = opened from Monolit position (ordinal days, no date picker) */
+  const isMonolitMode = !!positionContext?.position_id || !!positionContext?.part_name;
+
+  // If position context, prefill form with auto-classification
   const initialForm = useMemo(() => {
     if (!positionContext) return loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
     const f = { ...DEFAULT_FORM };
+
+    // Auto-classify element_type from part_name
+    if (positionContext.part_name) {
+      const classified = classifyElement(positionContext.part_name);
+      if (classified.element_type !== 'other' || classified.confidence > 0.5) {
+        f.element_type = classified.element_type;
+      }
+      // Don't enable name classification — we already resolved the type
+    }
+
     if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
     if (positionContext.concrete_class) f.concrete_class = positionContext.concrete_class;
+
+    // Clear start_date in Monolit mode (ordinal days only)
+    f.start_date = '';
+
     return f;
   }, [positionContext]);
 
@@ -523,6 +558,12 @@ export default function PlannerPage() {
     if (form.height_m) input.height_m = parseFloat(form.height_m);
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
+    const sc = parseFloat(form.formwork_shape_correction);
+    if (sc && sc !== 1.0) input.formwork_shape_correction = sc;
+    if (form.num_identical_elements > 1) {
+      input.num_identical_elements = form.num_identical_elements;
+      if (form.formwork_sets_count) input.formwork_sets_count = parseInt(form.formwork_sets_count);
+    }
     return input;
   };
 
@@ -598,6 +639,12 @@ export default function PlannerPage() {
             <span className="r0-icon">📐</span>
             Kalkulátor betonáže
           </h1>
+          {isMonolitMode && positionContext?.part_name && (
+            <div style={{ fontSize: 12, color: 'var(--r0-slate-500)', marginLeft: 8, fontWeight: 400 }}>
+              {positionContext.part_name}
+              {positionContext.volume_m3 ? ` — ${positionContext.volume_m3} m³` : ''}
+            </div>
+          )}
         </div>
         <div className="r0-header-right">
           <button
@@ -1263,6 +1310,19 @@ export default function PlannerPage() {
                           : 'výška elementu'} />
                     </Field>
                   )}
+                  {/* Shape correction dropdown (only for vertical elements with height) */}
+                  {hint.has_height && (
+                    <Field label="Tvar průřezu" hint="korekce pracnosti bednění za geometrii">
+                      <select style={inputStyle} value={form.formwork_shape_correction}
+                        onChange={e => update('formwork_shape_correction', e.target.value)}>
+                        <option value="1.0">Přímý — rovné plochy (×1.0)</option>
+                        <option value="1.3">Zalomený — úhly, šikminy (×1.3)</option>
+                        <option value="1.5">Kruhový — segmenty (×1.5)</option>
+                        <option value="1.8">Nepravidelný — atypický (×1.8)</option>
+                      </select>
+                    </Field>
+                  )}
+
                   <div style={{
                     padding: '6px 10px', marginBottom: 8,
                     background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
@@ -1273,6 +1333,19 @@ export default function PlannerPage() {
                 </>
               );
             })()}
+
+            {/* ─── Obrátkovost (repetitive elements) ─── */}
+            <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů">
+              <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
+                onChange={v => update('num_identical_elements', Math.max(1, Math.round(v)))} placeholder="1" />
+            </Field>
+            {form.num_identical_elements > 1 && (
+              <Field label="Počet sad bednění" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost`}>
+                <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
+                  onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(v))))}
+                  placeholder={String(form.num_sets)} />
+              </Field>
+            )}
           </Section>
 
           {/* ─── Záběry (Tacts) ─── */}
@@ -1386,14 +1459,25 @@ export default function PlannerPage() {
 
           {/* ─── Environment ─── */}
           <Section title="Podmínky">
-            <Field label="Datum zahájení" hint="pro kalendářní Gantt">
-              <input
-                type="date"
-                style={inputStyle}
-                value={form.start_date}
-                onChange={e => update('start_date', e.target.value)}
-              />
-            </Field>
+            {!isMonolitMode && (
+              <Field label="Datum zahájení" hint="pro kalendářní Gantt">
+                <input
+                  type="date"
+                  style={inputStyle}
+                  value={form.start_date}
+                  onChange={e => update('start_date', e.target.value)}
+                />
+              </Field>
+            )}
+            {isMonolitMode && (
+              <div style={{
+                padding: '6px 10px', marginBottom: 8,
+                background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
+                fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
+              }}>
+                Režim Monolit: Gantt zobrazuje pořadové dny (Den 1, Den 2…), ne kalendářní data.
+              </div>
+            )}
             <Field label="Termín investora (prac. dní)" hint="požadovaný deadline — systém varuje při překročení">
               <input
                 type="number"
@@ -1806,25 +1890,30 @@ export default function PlannerPage() {
                   };
                   // Write to position via Monolit backend (days + full metadata for TOV pre-fill)
                   if (positionContext.position_id) {
+                    const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
                     const res = await fetch(`${API_URL}/api/positions`, {
                       method: 'PUT',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ positions: [{
-                        id: positionContext.position_id,
-                        days: plan.schedule.total_days,
-                        cost_czk: plan.costs.total_labor_czk,
-                        concrete_m3: form.volume_m3,
-                        curing_days: plan.formwork.curing_days,
-                        metadata: JSON.stringify({
-                          costs: monolit_data.costs,
-                          resources: monolit_data.resources,
-                          formwork_info: monolit_data.formwork_info,
-                          schedule_info: monolit_data.schedule_info,
-                          calculated_at: monolit_data.calculated_at,
-                        }),
-                      }] }),
+                      body: JSON.stringify({
+                        bridge_id: bridgeId,
+                        updates: [{
+                          id: positionContext.position_id,
+                          days: plan.schedule.total_days,
+                          curing_days: plan.formwork.curing_days,
+                          metadata: JSON.stringify({
+                            costs: monolit_data.costs,
+                            resources: monolit_data.resources,
+                            formwork_info: monolit_data.formwork_info,
+                            schedule_info: monolit_data.schedule_info,
+                            calculated_at: monolit_data.calculated_at,
+                          }),
+                        }],
+                      }),
                     });
-                    if (!res.ok) throw new Error('Chyba při ukládání');
+                    if (!res.ok) {
+                      const errData = await res.json().catch(() => null);
+                      throw new Error(errData?.error || `HTTP ${res.status}`);
+                    }
                   }
                   setApplyStatus('saved');
                   setTimeout(() => setApplyStatus('idle'), 3000);
