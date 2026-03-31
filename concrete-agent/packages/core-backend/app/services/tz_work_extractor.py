@@ -42,6 +42,7 @@ class WorkRequirement:
     source_line_end: Optional[int] = None
     confidence: float = 1.0
     extraction_method: str = "regex"  # regex | ai | mixed
+    source_type: str = "tz_text"     # tz_text | drawing_note | engine_extraction
 
 
 # ============================================================================
@@ -444,6 +445,86 @@ def requirements_to_dict(requirements: List[WorkRequirement]) -> List[Dict[str, 
             'source_paragraph': r.source_paragraph[:200] if r.source_paragraph else None,
             'confidence': r.confidence,
             'extraction_method': r.extraction_method,
+            'source_type': r.source_type,
         }
         for r in requirements
     ]
+
+
+# ============================================================================
+# Drawing notes → WorkRequirements (výkresové poznámky jako vstup do pipeline)
+# ============================================================================
+
+def convert_drawing_notes_to_requirements(
+    notes: List[Dict[str, Any]],
+) -> List[WorkRequirement]:
+    """
+    Convert drawing notes (poznámky z výkresů) into WorkRequirements.
+
+    Drawing notes come from engine_extractions.vykresy.poznamky (any format —
+    PZ/XX, POZN., free text). Each note has:
+      - text: the note content
+      - work_type: optional classification from the extractor
+      - id: optional note identifier
+
+    Each note becomes a WorkRequirement that feeds into the soupis pipeline
+    alongside TZ text requirements. This is NOT a standalone feature — it's
+    an additional input source into the unified TZ→Soupis pipeline.
+    """
+    requirements: List[WorkRequirement] = []
+
+    for note in notes:
+        text = note.get('text', '').strip()
+        if not text or len(text) < 10:
+            continue
+
+        # Use pre-classified work_type from extractor, or detect from text
+        work_type = note.get('work_type') or detect_work_type(text)
+
+        # Extract parameters from note text (same regex as TZ text)
+        params = extract_params_regex(text)
+
+        note_id = note.get('id') or note.get('note_id', '')
+        source_label = f"výkres pozn. {note_id}" if note_id else "výkres pozn."
+
+        req = WorkRequirement(
+            description=text[:300],
+            work_type=work_type,
+            params=params,
+            source_paragraph=text,
+            confidence=0.90,  # Drawing notes are explicit — high confidence
+            extraction_method='regex',
+            source_type='drawing_note',
+        )
+        requirements.append(req)
+
+    logger.info(f"[DRAWING] Converted {len(requirements)} drawing notes to work requirements")
+    return requirements
+
+
+def extract_requirements_from_engine(
+    engine_extractions: Dict[str, Any],
+) -> List[WorkRequirement]:
+    """
+    Extract WorkRequirements from engine_extractions output.
+
+    Currently supports:
+      - vykresy.poznamky — drawing notes with work_type classification
+
+    Future sources can be added here (e.g., etics details, norm requirements).
+    """
+    requirements: List[WorkRequirement] = []
+
+    # Source 1: Drawing notes (výkresové poznámky)
+    vykresy = engine_extractions.get('vykresy', {})
+    poznamky = vykresy.get('poznamky', [])
+    if poznamky:
+        requirements.extend(convert_drawing_notes_to_requirements(poznamky))
+
+    if requirements:
+        logger.info(
+            f"[ENGINE→SOUPIS] {len(requirements)} work requirements from engine extractions "
+            f"(drawing_notes={len(poznamky)})"
+        )
+
+    return requirements

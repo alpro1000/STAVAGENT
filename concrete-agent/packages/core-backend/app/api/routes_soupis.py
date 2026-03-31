@@ -15,6 +15,7 @@ from typing import Optional
 from app.services.tz_work_extractor import (
     extract_work_requirements,
     extract_work_requirements_regex,
+    extract_requirements_from_engine,
     requirements_to_dict,
 )
 from app.services.soupis_assembler import (
@@ -62,6 +63,10 @@ async def extract_requirements(
         "extraction_methods": {
             "regex": sum(1 for r in requirements if r.extraction_method == 'regex'),
             "ai": sum(1 for r in requirements if r.extraction_method == 'ai'),
+        },
+        "sources": {
+            "tz_text": sum(1 for r in requirements if r.source_type == 'tz_text'),
+            "drawing_note": sum(1 for r in requirements if r.source_type == 'drawing_note'),
         },
         "work_types": list(set(r.work_type for r in requirements if r.work_type)),
     }
@@ -113,6 +118,7 @@ async def assemble_from_requirements(
 async def generate_soupis(
     text: str = Form(None),
     file: Optional[UploadFile] = File(None),
+    engine_extractions_json: Optional[str] = Form(None),
     use_ai: bool = Form(True),
     use_work_packages: bool = Form(True),
     use_urs_lookup: bool = Form(True),
@@ -121,6 +127,10 @@ async def generate_soupis(
     Stage 5+6: Full pipeline — TZ → WorkRequirements → Soupis prací.
 
     One-shot endpoint: upload TZ document → get complete soupis.
+
+    Optionally accepts engine_extractions_json (JSON string) to include
+    drawing notes (výkresové poznámky) and other engine-extracted data
+    as additional work requirement sources alongside the TZ text.
     """
     tz_text = None
 
@@ -134,8 +144,19 @@ async def generate_soupis(
     if len(tz_text) < 50:
         raise HTTPException(status_code=400, detail="Text too short for extraction")
 
-    # Stage 5: Extract
+    # Stage 5: Extract from TZ text
     requirements = await extract_work_requirements(tz_text, use_ai=use_ai)
+
+    # Stage 5b: Extract from engine_extractions (drawing notes, etc.)
+    engine_requirements = []
+    if engine_extractions_json:
+        import json as _json
+        try:
+            engine_data = _json.loads(engine_extractions_json)
+            engine_requirements = extract_requirements_from_engine(engine_data)
+            requirements.extend(engine_requirements)
+        except Exception as e:
+            logger.warning(f"Failed to parse engine_extractions: {e}")
 
     # Stage 6: Assemble
     result = await assemble_soupis(
@@ -152,6 +173,11 @@ async def generate_soupis(
                 "regex": sum(1 for r in requirements if r.extraction_method == 'regex'),
                 "ai": sum(1 for r in requirements if r.extraction_method == 'ai'),
             },
+            "sources": {
+                "tz_text": sum(1 for r in requirements if r.source_type == 'tz_text'),
+                "drawing_note": sum(1 for r in requirements if r.source_type == 'drawing_note'),
+                "engine_extraction": sum(1 for r in requirements if r.source_type == 'engine_extraction'),
+            },
         },
     }
 
@@ -160,6 +186,7 @@ async def generate_soupis(
 async def export_soupis_xlsx_endpoint(
     text: str = Form(None),
     file: Optional[UploadFile] = File(None),
+    engine_extractions_json: Optional[str] = Form(None),
     use_ai: bool = Form(True),
     use_work_packages: bool = Form(True),
     use_urs_lookup: bool = Form(True),
@@ -167,6 +194,7 @@ async def export_soupis_xlsx_endpoint(
     """
     Full pipeline + xlsx export.
     TZ document → extract → assemble → KROS-compatible xlsx download.
+    Accepts optional engine_extractions_json for drawing notes input.
     """
     from fastapi.responses import StreamingResponse
     from io import BytesIO
@@ -177,6 +205,17 @@ async def export_soupis_xlsx_endpoint(
 
     # Pipeline
     requirements = await extract_work_requirements(tz_text, use_ai=use_ai)
+
+    # Add engine extraction sources (drawing notes, etc.)
+    if engine_extractions_json:
+        import json as _json
+        try:
+            engine_data = _json.loads(engine_extractions_json)
+            engine_reqs = extract_requirements_from_engine(engine_data)
+            requirements.extend(engine_reqs)
+        except Exception as e:
+            logger.warning(f"Failed to parse engine_extractions for xlsx: {e}")
+
     result = await assemble_soupis(requirements, use_work_packages=use_work_packages, use_urs_lookup=use_urs_lookup)
 
     # Export xlsx

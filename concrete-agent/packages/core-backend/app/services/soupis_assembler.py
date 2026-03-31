@@ -309,11 +309,17 @@ async def assemble_soupis(
         'with_code': sum(1 for p in result.positions if p.kod),
         'without_code': sum(1 for p in result.positions if not p.kod),
         'by_source': {},
+        'by_requirement_source': {},
         'work_types': list(work_types_seen),
         'work_packages_used': result.work_packages_used,
     }
     for p in result.positions:
         result.stats['by_source'][p.source] = result.stats['by_source'].get(p.source, 0) + 1
+
+    # Track how many requirements came from each source type
+    for req in requirements:
+        st = getattr(req, 'source_type', 'tz_text')
+        result.stats['by_requirement_source'][st] = result.stats['by_requirement_source'].get(st, 0) + 1
 
     return result
 

@@ -442,12 +442,13 @@ class TestAIExtraction:
         regex = {"base_construction": {"concrete_class": "C30/37"}}
         ai = {"zdivo": {"tvarnice_typ": "Porotherm 44 T"}}
 
-        merged = _merge_ai_into_regex(regex, ai)
+        merged, metrics = _merge_ai_into_regex(regex, ai)
         assert "base_construction" in merged
         assert "zdivo" in merged
         assert merged["zdivo"]["tvarnice_typ"] == "Porotherm 44 T"
         assert merged["zdivo"]["_source"] == "ai"
         assert merged["zdivo"]["_confidence"] == 0.7
+        assert metrics["ai_domains_new"] == 1
 
     def test_merge_ai_regex_wins_on_conflict(self):
         """Regex value takes priority over AI value for same field."""
@@ -456,24 +457,27 @@ class TestAIExtraction:
         regex = {"etics": {"izolant_tl_mm": "200"}}
         ai = {"etics": {"izolant_tl_mm": "180", "kotveni_typ": "talířové hmoždinky"}}
 
-        merged = _merge_ai_into_regex(regex, ai)
+        merged, metrics = _merge_ai_into_regex(regex, ai)
         # Regex wins
         assert merged["etics"]["izolant_tl_mm"] == "200"
         # AI adds missing field
         assert merged["etics"]["kotveni_typ"] == "talířové hmoždinky"
+        assert metrics["ai_fields_rejected"] == 1
+        assert metrics["ai_fields_added"] == 1
 
     def test_merge_ai_empty(self):
         """Empty AI results don't change regex results."""
         from app.services.section_extraction_engine import _merge_ai_into_regex
 
         regex = {"base_construction": {"concrete_class": "C30/37"}}
-        merged = _merge_ai_into_regex(regex, {})
+        merged, metrics = _merge_ai_into_regex(regex, {})
         assert merged == regex
 
     def test_merge_ai_both_empty(self):
         """Both empty → empty."""
         from app.services.section_extraction_engine import _merge_ai_into_regex
-        assert _merge_ai_into_regex({}, {}) == {}
+        merged, metrics = _merge_ai_into_regex({}, {})
+        assert merged == {}
 
     def test_build_extraction_schemas(self):
         """Schema builder produces valid JSON with registry entries."""
