@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.3
+**Version:** 4.0.4
 **Last Updated:** 2026-03-31
 **Repository:** STAVAGENT (Monorepo)
 
@@ -118,7 +118,7 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 ## Services
 
 ### 1. concrete-agent (CORE)
-Python FastAPI. **119 endpoints**, **29 test files (49 engine tests)**, **~58K LOC**.
+Python FastAPI. **119 endpoints**, **30 test files (65 engine tests)**, **~58K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 
 **Subsystems:**
@@ -131,7 +131,7 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 - **NormIngestionPipeline** — L1 PDF→Text → L2 Regex (50+ patterns, conf=1.0) → L3a Gemini (conf=0.7) → L3b Perplexity (conf=0.85)
 - **NKB Audit** — 15 external sources (SŽ, PJPK, MMR, ŘSD, ČAS, ÚNMZ), scraping + gap analysis
 - **Unified Item Layer** — ProjectItem with 4 namespace blocks (estimate/monolit/classification/core), code detection, position grouping
-- **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export
+- **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export, drawing notes as input source
 - **Scenario B** — TZ upload → element extraction → position generation → CSV export
 - **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), type-agnostic
 - **Other** — Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents, Chat
@@ -198,7 +198,7 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 
 | Service | Endpoints | Tests | LOC |
 |---------|-----------|-------|-----|
-| concrete-agent | 119 | 29 files | ~58K |
+| concrete-agent | 119 | 30 files | ~58K |
 | stavagent-portal | ~80 | 1 file | ~25K |
 | Monolit-Planner | 125 | 402 | ~30K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
@@ -313,7 +313,7 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
 - [ ] Landing page: screenshot/demo of AI analysis result
 - [ ] Deep links between kiosks
-- [ ] Výkresová poznámka → soupis pipeline
+- [ ] Výkresové poznámky pipeline: test on real documents, tune confidence thresholds
 - [ ] Session-only mode for Monolit Planner (no auth)
 - [ ] reCAPTCHA on registration (when traffic grows)
 - [ ] IFC/BIM support (needs binaries)
