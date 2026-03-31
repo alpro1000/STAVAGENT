@@ -32,6 +32,7 @@ import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 const IS_ADMIN = (import.meta as any).env?.VITE_ADMIN_MODE === 'true';
+const PORTAL_URL = 'https://www.stavagent.cz';
 
 // ─── AI Advisor types ──────────────────────────────────────────────────────
 
@@ -360,6 +361,9 @@ export default function PlannerPage() {
   /** Mode A = opened from Monolit position (ordinal days, no date picker) */
   const isMonolitMode = !!positionContext?.position_id || !!positionContext?.part_name;
 
+  /** Portal mode: opened from Portal (back-link → Portal, not Monolit) */
+  const isPortalMode = !!localStorage.getItem('monolit-portal-project');
+
   // If position context, prefill form with auto-classification
   const initialForm = useMemo(() => {
     if (!positionContext) return loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
@@ -634,7 +638,12 @@ export default function PlannerPage() {
       {/* Header */}
       <header className="r0-header">
         <div className="r0-header-left">
-          <a href="/" className="r0-back-link">← Monolit Planner</a>
+          <a
+            href={isPortalMode ? PORTAL_URL : '/'}
+            className="r0-back-link"
+          >
+            {isPortalMode ? '← Portál' : '← Monolit Planner'}
+          </a>
           <h1 className="r0-title">
             <span className="r0-icon">📐</span>
             Kalkulátor betonáže

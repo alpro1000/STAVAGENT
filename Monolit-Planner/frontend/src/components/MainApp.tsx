@@ -51,12 +51,18 @@ export default function MainApp() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Deep-link: read ?project=X&part=Y&position_instance_id=Z URL params
+  // Deep-link: read ?project=X&part=Y&position_instance_id=Z&auth_token=T URL params
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const deepLinkProject = params.get('project') || params.get('project_id');
     const deepLinkPart = params.get('part');
     const deepLinkInstanceId = params.get('position_instance_id');
+
+    // Store auth_token from Portal (for account isolation)
+    const authToken = params.get('auth_token');
+    if (authToken) {
+      localStorage.setItem('auth_token', authToken);
+    }
 
     if (!deepLinkProject) return;
 

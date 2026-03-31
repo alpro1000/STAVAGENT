@@ -17,21 +17,26 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
+import { optionalAuth } from '../middleware/auth.js';
 // NOTE: createDefaultPositions removed - templates only used during Excel import (parser-driven)
 
 const router = express.Router();
 
-// NO AUTH REQUIRED - This is a public kiosk application
-// Authentication is handled at the portal level (stavagent-portal)
+// Optional auth: if Portal JWT is present, extract user for account isolation.
+// Unauthenticated requests still work (kiosk mode) but see only legacy projects.
+router.use(optionalAuth);
 
 /**
  * GET /api/monolith-projects
- * List all projects (no auth filtering - kiosk mode)
+ * List projects filtered by account.
+ * - Authenticated (Portal JWT): only projects with matching portal_user_id
+ * - Unauthenticated (kiosk mode): only legacy projects (portal_user_id IS NULL)
  * Query params: status (optional)
  */
 router.get('/', async (req, res) => {
   try {
     const { status } = req.query;
+    const portalUserId = req.user?.userId || null;
 
     let query = `
       SELECT
@@ -51,11 +56,25 @@ router.get('/', async (req, res) => {
       LEFT JOIN parts p ON mp.project_id = p.project_id
     `;
 
+    const conditions = [];
     const params = [];
 
+    // Account isolation: filter by portal_user_id
+    if (portalUserId) {
+      conditions.push('mp.portal_user_id = ?');
+      params.push(portalUserId);
+    } else {
+      // Kiosk mode: only show legacy projects without owner
+      conditions.push('mp.portal_user_id IS NULL');
+    }
+
     if (status) {
-      query += ` WHERE mp.status = ?`;
+      conditions.push('mp.status = ?');
       params.push(status);
+    }
+
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(' AND ')}`;
     }
 
     query += ` GROUP BY mp.project_id ORDER BY mp.status DESC, mp.created_at DESC`;
@@ -85,8 +104,8 @@ router.get('/', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    // No auth - use default owner_id (kiosk mode)
     const ownerId = req.user?.userId || 1;
+    const portalUserId = req.user?.userId || null;
     const {
       project_id,
       project_name,
@@ -95,7 +114,7 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     logger.info(`[CREATE PROJECT] Starting creation for project_id: ${project_id}`);
-    logger.info(`[CREATE PROJECT] Owner ID: ${ownerId} (kiosk mode)`);
+    logger.info(`[CREATE PROJECT] Owner ID: ${ownerId}, Portal User ID: ${portalUserId}`);
 
     // Validation
     if (!project_id) {
@@ -112,11 +131,11 @@ router.post('/', async (req, res) => {
     // ===== CREATE EMPTY PROJECT (no templates) =====
     logger.info(`[CREATE PROJECT] Creating empty project (no templates)...`);
 
-    // Create project
+    // Create project with portal_user_id for account isolation
     const insertProjectSql = `
       INSERT INTO monolith_projects (
-        project_id, project_name, object_name, owner_id, description
-      ) VALUES (?, ?, ?, ?, ?)
+        project_id, project_name, object_name, owner_id, description, portal_user_id
+      ) VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     await db.prepare(insertProjectSql).run(
@@ -124,7 +143,8 @@ router.post('/', async (req, res) => {
       project_name || '',
       object_name || '',
       ownerId,
-      description || ''
+      description || '',
+      portalUserId
     );
     logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
 
@@ -133,10 +153,10 @@ router.post('/', async (req, res) => {
     logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
     try {
       await db.prepare(`
-        INSERT INTO bridges (bridge_id, object_name, status, project_name)
-        VALUES (?, ?, 'active', ?)
+        INSERT INTO bridges (bridge_id, object_name, status, project_name, portal_user_id)
+        VALUES (?, ?, 'active', ?, ?)
         ON CONFLICT (bridge_id) DO NOTHING
-      `).run(project_id, object_name || project_id, project_name || 'Manual');
+      `).run(project_id, object_name || project_id, project_name || 'Manual', portalUserId);
       logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
     } catch (bridgeError) {
       // Non-fatal: bridge entry creation failed but project was created
@@ -177,6 +197,7 @@ router.put('/rename-project/:projectName', async (req, res) => {
   try {
     const oldName = decodeURIComponent(req.params.projectName);
     const { new_name } = req.body;
+    const portalUserId = req.user?.userId || null;
 
     if (!new_name || !new_name.trim()) {
       return res.status(400).json({ error: 'new_name is required' });
@@ -188,42 +209,48 @@ router.put('/rename-project/:projectName', async (req, res) => {
     // Special handling: "Bez projektu" in UI means NULL in DB
     const isNullProject = oldName === 'Bez projektu';
 
-    // Count affected objects
+    // Build ownership condition
+    const ownerCondition = portalUserId
+      ? 'AND portal_user_id = ?'
+      : 'AND portal_user_id IS NULL';
+    const ownerParam = portalUserId ? [portalUserId] : [];
+
+    // Count affected objects (scoped to current account)
     let affectedObjects;
     if (isNullProject) {
       affectedObjects = await db.prepare(
-        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name IS NULL`
-      ).get();
+        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name IS NULL ${ownerCondition}`
+      ).get(...ownerParam);
     } else {
       affectedObjects = await db.prepare(
-        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name = ?`
-      ).get(oldName);
+        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name = ? ${ownerCondition}`
+      ).get(oldName, ...ownerParam);
     }
 
     if (affectedObjects.count === 0) {
       return res.status(404).json({ error: 'No objects found with this project name' });
     }
 
-    // Update monolith_projects
+    // Update monolith_projects (scoped to current account)
     if (isNullProject) {
       await db.prepare(
-        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name IS NULL`
-      ).run(newName);
+        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name IS NULL ${ownerCondition}`
+      ).run(newName, ...ownerParam);
     } else {
       await db.prepare(
-        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name = ?`
-      ).run(newName, oldName);
+        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name = ? ${ownerCondition}`
+      ).run(newName, oldName, ...ownerParam);
     }
 
-    // Update bridges table too (for consistency)
+    // Update bridges table too (for consistency, scoped to current account)
     if (isNullProject) {
       await db.prepare(
-        `UPDATE bridges SET project_name = ? WHERE project_name IS NULL`
-      ).run(newName);
+        `UPDATE bridges SET project_name = ? WHERE project_name IS NULL ${ownerCondition}`
+      ).run(newName, ...ownerParam);
     } else {
       await db.prepare(
-        `UPDATE bridges SET project_name = ? WHERE project_name = ?`
-      ).run(newName, oldName);
+        `UPDATE bridges SET project_name = ? WHERE project_name = ? ${ownerCondition}`
+      ).run(newName, oldName, ...ownerParam);
     }
 
     logger.info(`[RENAME PROJECT] ✅ Renamed ${affectedObjects.count} objects: "${oldName}" → "${newName}"`);
@@ -248,6 +275,7 @@ router.put('/rename-project/:projectName', async (req, res) => {
 router.post('/bulk-delete', async (req, res) => {
   try {
     const { project_ids } = req.body;
+    const portalUserId = req.user?.userId || null;
 
     if (!Array.isArray(project_ids) || project_ids.length === 0) {
       return res.status(400).json({ error: 'project_ids array is required' });
@@ -259,6 +287,18 @@ router.post('/bulk-delete', async (req, res) => {
 
     for (const id of project_ids) {
       try {
+        // Account isolation: verify ownership before deleting
+        const project = await db.prepare('SELECT portal_user_id FROM monolith_projects WHERE project_id = ?').get(id);
+        if (project) {
+          if (portalUserId && project.portal_user_id && project.portal_user_id !== portalUserId) {
+            logger.warn(`[BULK DELETE] Skipped ${id}: owned by user ${project.portal_user_id}`);
+            continue;
+          }
+          if (!portalUserId && project.portal_user_id) {
+            logger.warn(`[BULK DELETE] Skipped ${id}: owned project, no auth`);
+            continue;
+          }
+        }
         // Delete from bridges (CASCADE deletes positions)
         await db.prepare('DELETE FROM bridges WHERE bridge_id = ?').run(id);
         // Delete from monolith_projects (CASCADE deletes parts)
@@ -294,27 +334,33 @@ router.post('/bulk-delete', async (req, res) => {
 router.delete('/by-project-name/:projectName', async (req, res) => {
   try {
     const projectName = decodeURIComponent(req.params.projectName);
+    const portalUserId = req.user?.userId || null;
 
     logger.info(`[DELETE PROJECT] Deleting all objects with project_name: "${projectName}"`);
 
     // Special handling: "Bez projektu" in UI means NULL in DB
     const isNullProject = projectName === 'Bez projektu';
 
-    // Find all projects with this project_name (or NULL if "Bez projektu")
+    // Build ownership condition
+    const ownerCondition = portalUserId
+      ? 'AND portal_user_id = ?'
+      : 'AND portal_user_id IS NULL';
+    const ownerParam = portalUserId ? [portalUserId] : [];
+
+    // Find all projects with this project_name (scoped to current account)
     let projectsToDelete;
     if (isNullProject) {
       projectsToDelete = await db.prepare(`
-        SELECT project_id FROM monolith_projects WHERE project_name IS NULL
-      `).all();
+        SELECT project_id FROM monolith_projects WHERE project_name IS NULL ${ownerCondition}
+      `).all(...ownerParam);
     } else {
       projectsToDelete = await db.prepare(`
-        SELECT project_id FROM monolith_projects WHERE project_name = ?
-      `).all(projectName);
+        SELECT project_id FROM monolith_projects WHERE project_name = ? ${ownerCondition}
+      `).all(projectName, ...ownerParam);
     }
 
     if (projectsToDelete.length === 0) {
       logger.warn(`[DELETE PROJECT] No projects found with project_name: "${projectName}"`);
-      // Return success with 0 deleted instead of 404 (project might have been deleted already)
       return res.json({
         success: true,
         message: `No objects found with project_name "${projectName}" (already deleted or never existed)`,
@@ -326,28 +372,28 @@ router.delete('/by-project-name/:projectName', async (req, res) => {
     const projectIds = projectsToDelete.map(p => p.project_id);
     logger.info(`[DELETE PROJECT] Found ${projectIds.length} objects to delete: ${projectIds.join(', ')}`);
 
-    // Delete from monolith_projects (positions will be deleted by CASCADE)
+    // Delete from monolith_projects (scoped to current account)
     let deleteProjectsResult;
     if (isNullProject) {
       deleteProjectsResult = await db.prepare(`
-        DELETE FROM monolith_projects WHERE project_name IS NULL
-      `).run();
+        DELETE FROM monolith_projects WHERE project_name IS NULL ${ownerCondition}
+      `).run(...ownerParam);
     } else {
       deleteProjectsResult = await db.prepare(`
-        DELETE FROM monolith_projects WHERE project_name = ?
-      `).run(projectName);
+        DELETE FROM monolith_projects WHERE project_name = ? ${ownerCondition}
+      `).run(projectName, ...ownerParam);
     }
 
-    // Also delete from bridges table (for FK compatibility)
+    // Also delete from bridges table (scoped to current account)
     let deleteBridgesResult;
     if (isNullProject) {
       deleteBridgesResult = await db.prepare(`
-        DELETE FROM bridges WHERE project_name IS NULL
-      `).run();
+        DELETE FROM bridges WHERE project_name IS NULL ${ownerCondition}
+      `).run(...ownerParam);
     } else {
       deleteBridgesResult = await db.prepare(`
-        DELETE FROM bridges WHERE project_name = ?
-      `).run(projectName);
+        DELETE FROM bridges WHERE project_name = ? ${ownerCondition}
+      `).run(projectName, ...ownerParam);
     }
 
     logger.info(`[DELETE PROJECT] ✓ Deleted ${deleteProjectsResult.changes} from monolith_projects, ${deleteBridgesResult.changes} from bridges`);
@@ -366,26 +412,32 @@ router.delete('/by-project-name/:projectName', async (req, res) => {
 
 /**
  * GET /api/monolith-projects/:id
- * Get project details with all parts (no auth - kiosk mode)
+ * Get project details with all parts.
+ * Ownership check: authenticated users can only access their own projects.
  */
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    logger.info(`[GET PROJECT] Requesting project with ID: "${id}"`);
+    const portalUserId = req.user?.userId || null;
+    logger.info(`[GET PROJECT] Requesting project with ID: "${id}", portal_user: ${portalUserId}`);
 
-    // Get project (no ownership check - kiosk mode)
     const project = await db.prepare(`
       SELECT * FROM monolith_projects WHERE project_id = ?
     `).get(id);
 
     if (!project) {
       logger.warn(`[GET PROJECT] Project not found with ID: "${id}"`);
-      // Log all existing project IDs for debugging
-      const allProjects = await db.prepare(`
-        SELECT project_id FROM monolith_projects LIMIT 20
-      `).all();
-      logger.info(`[GET PROJECT] Existing projects: ${allProjects.map(p => p.project_id).join(', ')}`);
       return res.status(404).json({ error: 'Project not found' });
+    }
+
+    // Account isolation: check ownership
+    if (portalUserId && project.portal_user_id && project.portal_user_id !== portalUserId) {
+      logger.warn(`[GET PROJECT] Access denied: user ${portalUserId} tried to access project owned by ${project.portal_user_id}`);
+      return res.status(403).json({ error: 'Forbidden', message: 'Nemáte přístup k tomuto projektu' });
+    }
+    if (!portalUserId && project.portal_user_id) {
+      // Unauthenticated user trying to access an owned project
+      return res.status(403).json({ error: 'Forbidden', message: 'Nemáte přístup k tomuto projektu' });
     }
 
     // Get all parts for this project
@@ -406,27 +458,31 @@ router.get('/:id', async (req, res) => {
 
 /**
  * PUT /api/monolith-projects/:id
- * Update project (no auth - kiosk mode)
+ * Update project with ownership check.
  */
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const portalUserId = req.user?.userId || null;
     logger.info(`[PUT PROJECT] Updating project with ID: "${id}"`);
     logger.info(`[PUT PROJECT] Update payload:`, req.body);
 
-    // Check project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
       SELECT * FROM monolith_projects WHERE project_id = ?
     `).get(id);
 
     if (!project) {
       logger.warn(`[PUT PROJECT] Project not found with ID: "${id}"`);
-      // Log all existing project IDs for debugging
-      const allProjects = await db.prepare(`
-        SELECT project_id FROM monolith_projects LIMIT 20
-      `).all();
-      logger.info(`[PUT PROJECT] Existing projects: ${allProjects.map(p => p.project_id).join(', ')}`);
       return res.status(404).json({ error: 'Project not found' });
+    }
+
+    // Account isolation: check ownership
+    if (portalUserId && project.portal_user_id && project.portal_user_id !== portalUserId) {
+      logger.warn(`[PUT PROJECT] Access denied: user ${portalUserId} tried to update project owned by ${project.portal_user_id}`);
+      return res.status(403).json({ error: 'Forbidden', message: 'Nemáte přístup k tomuto projektu' });
+    }
+    if (!portalUserId && project.portal_user_id) {
+      return res.status(403).json({ error: 'Forbidden', message: 'Nemáte přístup k tomuto projektu' });
     }
 
     logger.info(`[PUT PROJECT] Found project: ${project.project_id}, current status: ${project.status}`);
@@ -643,7 +699,7 @@ router.delete('/:id/link-portal', async (req, res) => {
 
 /**
  * DELETE /api/monolith-projects/:id
- * Delete project (and all related parts) - no auth (kiosk mode)
+ * Delete project (and all related parts) with ownership check.
  *
  * IMPORTANT: Deletes from BOTH tables (bridges + monolith_projects)
  * because positions are still FK-linked to bridges table
@@ -651,6 +707,7 @@ router.delete('/:id/link-portal', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const portalUserId = req.user?.userId || null;
 
     logger.info(`[DELETE PROJECT] Deleting project: ${id}`);
 
@@ -667,6 +724,17 @@ router.delete('/:id', async (req, res) => {
     if (!project && !bridge) {
       logger.warn(`[DELETE PROJECT] Project not found: ${id}`);
       return res.status(404).json({ error: 'Project not found' });
+    }
+
+    // Account isolation: check ownership
+    if (project) {
+      if (portalUserId && project.portal_user_id && project.portal_user_id !== portalUserId) {
+        logger.warn(`[DELETE PROJECT] Access denied: user ${portalUserId} tried to delete project owned by ${project.portal_user_id}`);
+        return res.status(403).json({ error: 'Forbidden', message: 'Nemáte přístup k tomuto projektu' });
+      }
+      if (!portalUserId && project.portal_user_id) {
+        return res.status(403).json({ error: 'Forbidden', message: 'Nemáte přístup k tomuto projektu' });
+      }
     }
 
     // Count positions that will be deleted

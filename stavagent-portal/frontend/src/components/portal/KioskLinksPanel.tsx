@@ -191,21 +191,31 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
     const meta = KIOSK_META[link.kiosk_type];
     if (!meta) return;
 
+    // Pass Portal auth token so kiosks can enforce account isolation
+    const token = localStorage.getItem('auth_token');
+
     // Build deep-link URL with kiosk-specific routing
     if (link.kiosk_type === 'monolit') {
-      // Monolit reads ?project=X&portal_project=Y on root path
+      // Monolit reads ?project=X&portal_project=Y&auth_token=Z on root path
       const url = new URL(meta.url);
       url.searchParams.set('project', link.kiosk_project_id);
       url.searchParams.set('portal_project', projectId);
+      if (token) url.searchParams.set('auth_token', token);
       window.open(url.toString(), '_blank');
     } else if (link.kiosk_type === 'registry') {
       // Registry uses /registry/:projectId route (react-router)
-      window.open(`${meta.url}/?project_id=${link.kiosk_project_id}&portal_project=${projectId}`, '_blank');
+      const params = new URLSearchParams({
+        project_id: link.kiosk_project_id,
+        portal_project: projectId,
+        ...(token ? { auth_token: token } : {}),
+      });
+      window.open(`${meta.url}/?${params.toString()}`, '_blank');
     } else {
       // Default: query params
       const url = new URL(meta.url);
       url.searchParams.set('project_id', link.kiosk_project_id);
       url.searchParams.set('portal_project', projectId);
+      if (token) url.searchParams.set('auth_token', token);
       window.open(url.toString(), '_blank');
     }
   };

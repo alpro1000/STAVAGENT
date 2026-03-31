@@ -4,6 +4,9 @@
  * Always shows "← StavAgent" link.
  * When portal context is active (via URL param or localStorage),
  * also shows project link.
+ *
+ * Also handles auth_token from URL: Portal passes JWT token when opening
+ * Monolit so the backend can enforce account isolation.
  */
 
 import { useState, useEffect } from 'react';
@@ -18,6 +21,13 @@ export default function PortalBreadcrumb() {
     const params = new URLSearchParams(window.location.search);
     const fromUrl = params.get('portal_project');
 
+    // Read auth_token from URL (passed by Portal for account isolation)
+    const authToken = params.get('auth_token');
+    if (authToken) {
+      localStorage.setItem('auth_token', authToken);
+      params.delete('auth_token');
+    }
+
     if (fromUrl) {
       setPortalProjectId(fromUrl);
       localStorage.setItem(STORAGE_KEY, fromUrl);
@@ -30,6 +40,13 @@ export default function PortalBreadcrumb() {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         setPortalProjectId(stored);
+      }
+      // Clean auth_token from URL even without portal_project
+      if (authToken) {
+        const newUrl = params.toString()
+          ? `${window.location.pathname}?${params.toString()}`
+          : window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
       }
     }
   }, []);
@@ -83,6 +100,7 @@ export default function PortalBreadcrumb() {
         <button
           onClick={() => {
             localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem('auth_token');
             setPortalProjectId(null);
           }}
           style={{
