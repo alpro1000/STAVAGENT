@@ -1342,18 +1342,6 @@ export default function PlannerPage() {
               );
             })()}
 
-            {/* ─── Obrátkovost (repetitive elements) ─── */}
-            <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů">
-              <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
-                onChange={v => update('num_identical_elements', Math.max(1, Math.round(Number(v))))} placeholder="1" />
-            </Field>
-            {form.num_identical_elements > 1 && (
-              <Field label="Počet sad bednění" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost`}>
-                <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
-                  onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(Number(v)))))}
-                  placeholder={String(form.num_sets)} />
-              </Field>
-            )}
           </Section>
 
           {/* ─── Záběry (Tacts) ─── */}
@@ -1552,6 +1540,19 @@ export default function PlannerPage() {
           {showAdvanced && (
             <>
               <Section title="Zdroje">
+                {/* Obrátkovost (repetitive elements) — logically belongs with resources */}
+                <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů — ovlivňuje obrátkovost bednění">
+                  <NumInput style={inputStyle} value={form.num_identical_elements} min={1} step={1}
+                    onChange={v => update('num_identical_elements', Math.max(1, Math.round(Number(v))))} placeholder="1" />
+                </Field>
+                {form.num_identical_elements > 1 && (
+                  <Field label="Sad bednění pro obrátky" hint={`${form.num_identical_elements} elementů ÷ sady = obrátkovost (${Math.ceil(form.num_identical_elements / (parseInt(form.formwork_sets_count) || form.num_sets))}×)`}>
+                    <NumInput style={inputStyle} value={form.formwork_sets_count} min={1} step={1}
+                      onChange={v => update('formwork_sets_count', String(Math.max(1, Math.round(Number(v)))))}
+                      placeholder={String(form.num_sets)} />
+                  </Field>
+                )}
+
                 {/* Sady bednění — separate row */}
                 <Field label="Sady bednění (kompletní soupravy)">
                   <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
