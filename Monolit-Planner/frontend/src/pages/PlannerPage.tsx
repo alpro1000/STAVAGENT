@@ -370,9 +370,10 @@ export default function PlannerPage() {
     if (!positionContext) return loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
     const f = { ...DEFAULT_FORM };
 
-    // Auto-classify element_type from part_name
+    // Auto-classify element_type from part_name (with bridge context)
     if (positionContext.part_name) {
-      const classified = classifyElement(positionContext.part_name);
+      const isBridge = !!(positionContext.bridge_id && /^SO[-\s]?\d/i.test(positionContext.bridge_id));
+      const classified = classifyElement(positionContext.part_name, { is_bridge: isBridge });
       if (classified.element_type !== 'other' || classified.confidence > 0.5) {
         f.element_type = classified.element_type;
       }
