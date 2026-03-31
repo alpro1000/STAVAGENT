@@ -406,14 +406,24 @@ Extrahuj strukturovaná data ze sekce podle schémat výše. Vrať JSON."""
 def _merge_ai_into_regex(
     regex_results: Dict[str, Dict[str, Any]],
     ai_results: Dict[str, Dict[str, Any]],
-) -> Dict[str, Dict[str, Any]]:
+) -> Tuple[Dict[str, Dict[str, Any]], Dict[str, int]]:
     """
     Merge AI results into regex results. Regex wins on conflicts (conf=1.0 > 0.7).
 
     - If regex already has a field, keep it (deterministic > probabilistic)
     - If AI has a field regex doesn't, add it with _source marker
+
+    Returns:
+        (merged_results, ai_metrics) where ai_metrics has:
+          - ai_fields_added: fields accepted from AI (not in regex)
+          - ai_fields_rejected: fields AI found but regex already had (regex wins)
+          - ai_domains_new: entire domains only from AI
     """
     merged = {}
+    ai_fields_added = 0
+    ai_fields_rejected = 0
+    ai_domains_new = 0
+
     # Start with all regex results
     for key, fields in regex_results.items():
         merged[key] = dict(fields)
@@ -425,6 +435,8 @@ def _merge_ai_into_regex(
             merged[key] = dict(ai_fields)
             merged[key]["_source"] = "ai"
             merged[key]["_confidence"] = AI_CONFIDENCE
+            ai_domains_new += 1
+            ai_fields_added += sum(1 for f in ai_fields if not f.startswith("_"))
         else:
             # Domain exists from regex — add only missing fields
             for field, value in ai_fields.items():
@@ -432,8 +444,17 @@ def _merge_ai_into_regex(
                     continue
                 if field not in merged[key] or merged[key][field] is None:
                     merged[key][field] = value
+                    ai_fields_added += 1
+                else:
+                    ai_fields_rejected += 1
 
-    return merged
+    metrics = {
+        'ai_fields_added': ai_fields_added,
+        'ai_fields_rejected': ai_fields_rejected,
+        'ai_domains_new': ai_domains_new,
+    }
+
+    return merged, metrics
 
 
 # ---------------------------------------------------------------------------
@@ -514,15 +535,20 @@ def extract_all_from_document(
                 ai_merged = {}
 
         if ai_merged:
-            merged = _merge_ai_into_regex(merged, ai_merged)
-            ai_fields = sum(len(v) for v in ai_merged.values())
-            logger.info(f"AI enrichment: {len(ai_merged)} domains, {ai_fields} fields added/merged")
+            merged, ai_metrics = _merge_ai_into_regex(merged, ai_merged)
+            logger.info(
+                f"AI enrichment: {len(ai_merged)} domains, "
+                f"added={ai_metrics['ai_fields_added']}, "
+                f"rejected={ai_metrics['ai_fields_rejected']}, "
+                f"new_domains={ai_metrics['ai_domains_new']}"
+            )
+            # Store metrics in a special key for downstream consumers
+            merged["_ai_metrics"] = ai_metrics
 
     # Log summary
-    total_fields = sum(len(v) for v in merged.values())
-    logger.info(
-        f"Engine complete: {len(merged)} domains matched, {total_fields} total fields"
-    )
+    domain_count = sum(1 for k in merged if not k.startswith("_"))
+    total_fields = sum(len(v) for k, v in merged.items() if not k.startswith("_") and isinstance(v, dict))
+    logger.info(f"Engine complete: {domain_count} domains matched, {total_fields} total fields")
 
     return merged
 
@@ -560,12 +586,18 @@ async def extract_all_from_document_async(
     if enable_ai:
         ai_merged = await _run_ai_extraction(sections, registry)
         if ai_merged:
-            merged = _merge_ai_into_regex(merged, ai_merged)
-            ai_fields = sum(len(v) for v in ai_merged.values())
-            logger.info(f"AI enrichment: {len(ai_merged)} domains, {ai_fields} fields added/merged")
+            merged, ai_metrics = _merge_ai_into_regex(merged, ai_merged)
+            logger.info(
+                f"AI enrichment: {len(ai_merged)} domains, "
+                f"added={ai_metrics['ai_fields_added']}, "
+                f"rejected={ai_metrics['ai_fields_rejected']}, "
+                f"new_domains={ai_metrics['ai_domains_new']}"
+            )
+            merged["_ai_metrics"] = ai_metrics
 
-    total_fields = sum(len(v) for v in merged.values())
-    logger.info(f"Engine complete: {len(merged)} domains matched, {total_fields} total fields")
+    domain_count = sum(1 for k in merged if not k.startswith("_"))
+    total_fields = sum(len(v) for k, v in merged.items() if not k.startswith("_") and isinstance(v, dict))
+    logger.info(f"Engine complete: {domain_count} domains matched, {total_fields} total fields")
     return merged
 
 

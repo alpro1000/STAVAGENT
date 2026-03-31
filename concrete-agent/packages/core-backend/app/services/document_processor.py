@@ -221,11 +221,17 @@ class DocumentProcessor:
                 'time_ms': layer2_time,
                 'stats': self.extractor.get_stats()
             }
+            ai_metrics = engine_results.pop('_ai_metrics', None)
             passport.layer_breakdown['layer2b_engine'] = {
                 'time_ms': engine_time,
-                'domains_matched': len(engine_results),
-                'total_fields': sum(len(v) for v in engine_results.values()),
+                'domains_matched': sum(1 for k in engine_results if not k.startswith("_")),
+                'total_fields': sum(
+                    len(v) for k, v in engine_results.items()
+                    if not k.startswith("_") and isinstance(v, dict)
+                ),
             }
+            if ai_metrics:
+                passport.layer_breakdown['layer2b_engine']['ai_metrics'] = ai_metrics
 
             # === LAYER 3: AI ENRICHMENT (Context, risks, relationships) ===
             layer3_time = 0
