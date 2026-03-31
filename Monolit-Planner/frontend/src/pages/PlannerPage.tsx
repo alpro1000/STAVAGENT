@@ -2029,6 +2029,10 @@ export default function PlannerPage() {
                   setTimeout(() => setApplyStatus('idle'), 3000);
                 }
               } : undefined}
+              savedVariants={variantsKey ? savedVariants : undefined}
+              onSaveVariant={variantsKey ? () => saveVariant(plan) : undefined}
+              onLoadVariant={variantsKey ? loadVariant : undefined}
+              onRemoveVariant={variantsKey ? removeVariant : undefined}
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
@@ -2311,14 +2315,18 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
   onToggleLog: () => void;
   scenarios?: any[];
-  applyStatus?: 'idle' | 'saving' | 'saved' | 'error';
+  applyStatus: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
+  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number }>;
+  onSaveVariant?: () => void;
+  onLoadVariant?: (variant: any) => void;
+  onRemoveVariant?: (id: string) => void;
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -2390,9 +2398,9 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
         >
           Kopírovat Gantt
         </button>
-        {variantsKey && (
+        {onSaveVariant && (
           <button
-            onClick={() => saveVariant(plan)}
+            onClick={onSaveVariant}
             style={{
               padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-indigo)',
               cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
@@ -2405,7 +2413,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
       </div>
 
       {/* Saved variants comparison (Monolit mode only) */}
-      {variantsKey && savedVariants.length > 0 && (
+      {savedVariants && savedVariants.length > 0 && (
         <div style={{
           marginBottom: 16, padding: 12, background: 'var(--r0-slate-50)',
           borderRadius: 8, border: '1px solid var(--r0-slate-200)',
@@ -2424,21 +2432,21 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               </tr>
             </thead>
             <tbody>
-              {savedVariants.map((v, i) => (
+              {savedVariants.map((v: any, i: number) => (
                 <tr key={v.id} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
                   <td style={{ padding: '6px 8px', color: 'var(--r0-slate-400)' }}>{i + 1}</td>
                   <td style={{ padding: '6px 8px', fontWeight: 500 }}>{v.label}</td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{v.total_days}</td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{Math.round(v.total_cost_czk).toLocaleString('cs')} Kč</td>
                   <td style={{ padding: '6px 8px', textAlign: 'center' }}>
-                    <button onClick={() => loadVariant(v)} style={{
+                    {onLoadVariant && <button onClick={() => onLoadVariant(v)} style={{
                       fontSize: 11, padding: '2px 8px', border: '1px solid var(--r0-slate-300)',
                       borderRadius: 4, cursor: 'pointer', background: 'white', fontFamily: 'inherit', marginRight: 4,
-                    }}>Načíst</button>
-                    <button onClick={() => removeVariant(v.id)} style={{
+                    }}>Načíst</button>}
+                    {onRemoveVariant && <button onClick={() => onRemoveVariant(v.id)} style={{
                       fontSize: 11, padding: '2px 6px', border: '1px solid var(--r0-slate-200)',
                       borderRadius: 4, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-400)', fontFamily: 'inherit',
-                    }}>✕</button>
+                    }}>✕</button>}
                   </td>
                 </tr>
               ))}
