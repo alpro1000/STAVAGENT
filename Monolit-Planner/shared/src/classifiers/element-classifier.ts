@@ -15,6 +15,8 @@
 import type { StructuralElementType } from '../calculators/pour-decision.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
+import type { PourMethod, FormworkFilterResult } from '../calculators/lateral-pressure.js';
+import { calculateLateralPressure, filterFormworkByPressure, inferPourMethod } from '../calculators/lateral-pressure.js';
 
 // ─── Element Profile ─────────────────────────────────────────────────────────
 
@@ -509,12 +511,81 @@ export function getElementProfile(type: StructuralElementType): ElementProfile {
 
 /**
  * Get recommended FormworkSystemSpec for an element type.
- * Returns the best-matching system from the catalog.
+ *
+ * When height_m is provided, applies pressure-based filtering:
+ *   1. Calculate lateral pressure from height and pour method
+ *   2. Get category-compatible systems (from getSuitableSystemsForElement)
+ *   3. Filter by pressure capacity
+ *   4. Return cheapest suitable system
+ *
+ * Without height_m, falls back to static recommendation (backward compatible).
+ *
+ * @param type - Element type
+ * @param height_m - Element/pour height (m). Enables pressure-based selection.
+ * @param pour_method - Concrete delivery method. Auto-inferred if not given.
  */
-export function recommendFormwork(type: StructuralElementType): FormworkSystemSpec {
+export function recommendFormwork(
+  type: StructuralElementType,
+  height_m?: number,
+  pour_method?: PourMethod,
+): FormworkSystemSpec {
   const profile = ELEMENT_CATALOG[type];
+
+  // No height → static recommendation (original behavior)
+  if (height_m == null || height_m <= 0) {
+    const systemName = profile.recommended_formwork[0];
+    return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
+  }
+
+  // Infer pour method if not given
+  const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
+
+  // Calculate lateral pressure
+  const pressure = calculateLateralPressure(height_m, method);
+
+  // Get category-compatible systems
+  const { all: compatibleSystems } = getSuitableSystemsForElement(type);
+
+  // Filter by pressure
+  const filtered = filterFormworkByPressure(
+    pressure.pressure_kn_m2,
+    compatibleSystems,
+    profile.orientation,
+  );
+
+  if (filtered.suitable.length > 0) {
+    return filtered.suitable[0]; // Cheapest suitable
+  }
+
+  // Fallback: static recommendation (should rarely happen — tradiční is always available)
   const systemName = profile.recommended_formwork[0];
   return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
+}
+
+/**
+ * Get pressure-filtered formwork systems for an element type.
+ * Returns the full filter result (suitable, rejected, pressure).
+ * Used by orchestrator for warnings and UI display.
+ */
+export function getFilteredFormworkSystems(
+  type: StructuralElementType,
+  height_m: number,
+  pour_method?: PourMethod,
+): FormworkFilterResult & { pour_method: PourMethod; pressure_formula: string } {
+  const profile = ELEMENT_CATALOG[type];
+  const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
+  const pressure = calculateLateralPressure(height_m, method);
+  const { all: compatibleSystems } = getSuitableSystemsForElement(type);
+  const filtered = filterFormworkByPressure(
+    pressure.pressure_kn_m2,
+    compatibleSystems,
+    profile.orientation,
+  );
+  return {
+    ...filtered,
+    pour_method: method,
+    pressure_formula: pressure.formula,
+  };
 }
 
 /**

@@ -32,13 +32,15 @@ import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
 
-import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm } from '../classifiers/element-classifier.js';
+import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm, getFilteredFormworkSystems, getSuitableSystemsForElement } from '../classifiers/element-classifier.js';
 import { decidePourMode } from './pour-decision.js';
 import { calculateFormwork, calculateThreePhaseFormwork, calculateStrategiesDetailed } from './formwork.js';
 import { calculateRebarLite } from './rebar-lite.js';
 import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
 import { findFormworkSystem } from '../constants-data/formwork-systems.js';
+import { calculateLateralPressure, suggestPourStages, inferPourMethod } from './lateral-pressure.js';
+import type { LateralPressureResult, PourStagesSuggestion, PourMethod } from './lateral-pressure.js';
 
 // ─── Input ──────────────────────────────────────────────────────────────────
 
@@ -74,6 +76,10 @@ export interface PlannerInput {
   // --- Environment ---
   season?: SeasonMode;
   use_retarder?: boolean;
+
+  // --- Pour method (for lateral pressure) ---
+  /** Concrete delivery method. If not given, inferred from element profile and height. */
+  pour_method?: PourMethod;
 
   // --- Maturity (optional, auto-calculates curing) ---
   concrete_class?: ConcreteClass;
@@ -218,6 +224,10 @@ export interface PlannerOutput {
     pour_shifts: number;
   };
 
+  // --- Lateral pressure & pour stages (záběrová betonáž) ---
+  lateral_pressure?: LateralPressureResult;
+  pour_stages?: PourStagesSuggestion;
+
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
 
@@ -351,19 +361,48 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   const elementType = profile.element_type;
 
-  // ─── 2. Formwork System Selection ───────────────────────────────────────
+  // ─── 2. Lateral Pressure & Formwork System Selection ─────────────────
 
+  // 2a. Calculate lateral pressure if height is known and element is vertical
+  let lateralPressure: LateralPressureResult | undefined;
+  let pourStages: PourStagesSuggestion | undefined;
+  const heightForPressure = input.height_m;
+  const isVertical = profile.orientation === 'vertical';
+
+  if (heightForPressure && heightForPressure > 0 && isVertical) {
+    const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
+    lateralPressure = calculateLateralPressure(heightForPressure, pourMethod);
+    log.push(`Lateral pressure: ${lateralPressure.pressure_kn_m2} kN/m² (h=${heightForPressure}m, k=${lateralPressure.k}, method=${pourMethod})`);
+
+    // Check if pressure-based filtering changes recommendation
+    const filterResult = getFilteredFormworkSystems(elementType, heightForPressure, pourMethod);
+    if (filterResult.rejected.length > 0) {
+      const rejectedNames = filterResult.rejected.map(s => s.name).join(', ');
+      log.push(`Pressure filter: rejected ${filterResult.rejected.length} systems (${rejectedNames})`);
+    }
+  }
+
+  // 2c. Select formwork system (pressure-aware when height given)
   let fwSystem: FormworkSystemSpec;
   if (input.formwork_system_name) {
     const found = findFormworkSystem(input.formwork_system_name);
     if (!found) {
       warnings.push(`Systém bednění "${input.formwork_system_name}" nenalezen — použit doporučený.`);
-      fwSystem = recommendFormwork(elementType);
+      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method);
     } else {
       fwSystem = found;
+      // Warn if manually selected system can't handle the pressure
+      if (lateralPressure && fwSystem.pressure_kn_m2 != null &&
+          fwSystem.pressure_kn_m2 < lateralPressure.pressure_kn_m2) {
+        warnings.push(
+          `⚠️ Vybraný systém "${fwSystem.name}" má max. tlak ${fwSystem.pressure_kn_m2} kN/m², ` +
+          `ale boční tlak betonu je ${lateralPressure.pressure_kn_m2} kN/m² (h=${heightForPressure}m). ` +
+          `Zvažte záběrovou betonáž nebo jiný systém.`
+        );
+      }
     }
   } else {
-    fwSystem = recommendFormwork(elementType);
+    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method);
   }
 
   const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
@@ -394,6 +433,45 @@ export function planElement(input: PlannerInput): PlannerOutput {
   if (input.scheduling_mode_override) {
     pourDecision.scheduling_mode = input.scheduling_mode_override;
     log.push(`Scheduling mode: MANUAL → ${input.scheduling_mode_override}`);
+  }
+
+  // 3b. Apply height-based záběry (pour stages) for vertical elements
+  if (heightForPressure && heightForPressure > 0 && isVertical && !input.num_tacts_override) {
+    const { all: allCompatible } = getSuitableSystemsForElement(elementType);
+    const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
+    pourStages = suggestPourStages(heightForPressure, pourMethod, allCompatible);
+
+    if (pourStages.needs_staging && pourStages.num_stages > pourDecision.num_tacts) {
+      // Height-based staging produces more tacts than spára-based → use staging
+      const prevTacts = pourDecision.num_tacts;
+      pourDecision.num_tacts = pourStages.num_stages;
+      pourDecision.tact_volume_m3 = Math.round((input.volume_m3 / pourStages.num_stages) * 100) / 100;
+      pourDecision.num_sections = pourStages.num_stages;
+      pourDecision.section_volume_m3 = pourDecision.tact_volume_m3;
+      pourDecision.pour_mode = 'sectional';
+      pourDecision.sub_mode = 'vertical_layers';
+      pourDecision.scheduling_mode = 'linear';
+      pourDecision.cure_between_neighbors_h = pourStages.cure_between_stages_h;
+
+      log.push(
+        `Záběrová betonáž: ${pourStages.num_stages} záběrů po ${pourStages.stage_height_m}m ` +
+        `(boční tlak ${pourStages.stage_pressure_kn_m2} kN/m² ≤ ${pourStages.max_system_pressure_kn_m2} kN/m²)`
+      );
+      warnings.push(
+        `Záběrová betonáž: výška ${heightForPressure}m vyžaduje ${pourStages.num_stages} záběrů po ~${pourStages.stage_height_m}m ` +
+        `(plný tlak ${lateralPressure?.pressure_kn_m2} kN/m² překračuje ${pourStages.max_system_pressure_kn_m2} kN/m²). ` +
+        `Pauza mezi záběry: ${pourStages.cure_between_stages_h}h. ` +
+        `Bednění se přesouvá nahoru (${pourStages.num_stages}× obrátka).`
+      );
+
+      if (prevTacts > 1) {
+        log.push(`Note: height-based staging (${pourStages.num_stages}) overrides spára-based tacts (${prevTacts})`);
+      }
+    } else if (pourStages.needs_staging) {
+      // Spára-based already has enough tacts
+      log.push(`Height staging suggested ${pourStages.num_stages} stages, but spára-based already has ${pourDecision.num_tacts} tacts — keeping spára-based`);
+    }
+    log.push(...pourStages.decision_log.map(l => `  [staging] ${l}`));
   }
 
   log.push(`Pour: ${pourDecision.pour_mode}/${pourDecision.sub_mode}, ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
@@ -821,6 +899,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
       wage_pour_czk_h: wagePour,
       pour_shifts: numPourShifts,
     },
+    lateral_pressure: lateralPressure,
+    pour_stages: pourStages,
     props: propsResult,
     costs: {
       formwork_labor_czk: formworkLaborCZK,
