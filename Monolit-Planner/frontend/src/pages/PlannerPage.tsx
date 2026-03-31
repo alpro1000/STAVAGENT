@@ -2641,6 +2641,8 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
             tact_details={plan.schedule.tact_details}
             total_days={plan.schedule.total_days}
             ganttText={plan.schedule.gantt}
+            mode={startDate ? 'calendar' : 'relative'}
+            startDate={startDate}
           />
         )}
 
