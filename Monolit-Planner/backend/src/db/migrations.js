@@ -1486,6 +1486,7 @@ async function initSqliteSchema() {
       concrete_m3 REAL DEFAULT 0,
       sum_kros_czk REAL DEFAULT 0,
       description TEXT,
+      portal_user_id TEXT,
       status TEXT DEFAULT 'active',
       FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
     );
@@ -1719,6 +1720,12 @@ async function applySqliteMigrations() {
   if (!hasPortalLinkedAt) {
     db.exec("ALTER TABLE monolith_projects ADD COLUMN portal_linked_at TEXT");
     console.log('[MIGRATION] Added portal_linked_at column to monolith_projects table');
+  }
+
+  const hasPortalUserId = mpColumns.some(col => col.name === 'portal_user_id');
+  if (!hasPortalUserId) {
+    db.exec("ALTER TABLE monolith_projects ADD COLUMN portal_user_id TEXT");
+    console.log('[MIGRATION] Added portal_user_id column to monolith_projects table');
   }
 }
 
