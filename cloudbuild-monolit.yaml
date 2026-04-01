@@ -53,6 +53,10 @@ steps:
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api
       - --all-tags
 
+  # Note: DB migrations run automatically on server startup via
+  # initDatabase() → runPhase7PortalIntegration() in migrations.js.
+  # No separate Cloud Build migration step needed.
+
   - name: gcr.io/cloud-builders/gcloud
     id: deploy-monolit
     waitFor: [push-monolit]

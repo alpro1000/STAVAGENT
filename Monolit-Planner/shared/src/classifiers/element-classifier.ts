@@ -456,14 +456,33 @@ function normalize(text: string): string {
 
 // ─── Main API ────────────────────────────────────────────────────────────────
 
+/** Bridge element types — get priority boost in bridge context */
+const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
+  'zaklady_piliru', 'driky_piliru', 'rimsa', 'operne_zdi',
+  'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'mostni_zavirne_zidky',
+]);
+
+/** Building element types that have bridge equivalents */
+const BRIDGE_EQUIVALENT: Partial<Record<StructuralElementType, StructuralElementType>> = {
+  sloup: 'driky_piliru',  // "pilíř" in bridge context = dříky pilířů, not sloup
+};
+
+/** Classification context — optional hints to improve accuracy */
+export interface ClassificationContext {
+  /** Is this element part of a bridge/mostní objekt? (SO-xxx prefix, bridge_id present) */
+  is_bridge?: boolean;
+}
+
 /**
  * Classify a construction element by name/description.
  *
  * @param name - Part name or description (Czech), e.g. "ZÁKLADY PILÍŘŮ", "Mostovková deska"
+ * @param context - Optional context (is_bridge) to resolve ambiguities like pilíř vs sloup
  * @returns ElementProfile with all defaults and recommendations
  */
-export function classifyElement(name: string): ElementProfile {
+export function classifyElement(name: string, context?: ClassificationContext): ElementProfile {
   const normalized = normalize(name);
+  const isBridge = context?.is_bridge ?? false;
 
   // Score each rule
   let bestType: StructuralElementType = 'other';
@@ -478,13 +497,20 @@ export function classifyElement(name: string): ElementProfile {
       }
     }
     if (matchCount > 0) {
-      const score = matchCount * 10 + rule.priority;
-      if (score > bestScore || (score === bestScore && rule.priority > bestPriority)) {
+      // Bridge context: boost bridge element types by +5 priority
+      const contextBoost = isBridge && BRIDGE_ELEMENT_TYPES.has(rule.element_type) ? 5 : 0;
+      const score = matchCount * 10 + rule.priority + contextBoost;
+      if (score > bestScore || (score === bestScore && (rule.priority + contextBoost) > bestPriority)) {
         bestScore = score;
         bestType = rule.element_type;
-        bestPriority = rule.priority;
+        bestPriority = rule.priority + contextBoost;
       }
     }
+  }
+
+  // Bridge context: remap building types to bridge equivalents
+  if (isBridge && BRIDGE_EQUIVALENT[bestType]) {
+    bestType = BRIDGE_EQUIVALENT[bestType]!;
   }
 
   const confidence = bestType === 'other' ? 0.3 : Math.min(1.0, 0.6 + bestScore * 0.04);

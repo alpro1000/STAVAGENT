@@ -468,6 +468,8 @@ export default function PositionsTable() {
                   onOpenFormworkCalculator={() => {
                     // Navigate to Planner with position context
                     const betonPos = partPositions.find(p => p.subtype?.toLowerCase().includes('beton') || p.subtype?.toLowerCase().includes('železo'));
+                    const bedneniPos = partPositions.find(p => p.subtype?.toLowerCase().includes('bedněn') || p.subtype?.toLowerCase().includes('bednen'));
+                    const vyzuzPos = partPositions.find(p => p.subtype?.toLowerCase().includes('výztuž') || p.subtype?.toLowerCase().includes('vyztu'));
                     const params = new URLSearchParams();
                     params.set('bridge_id', selectedBridge || '');
                     params.set('part_name', partName);
@@ -475,6 +477,14 @@ export default function PositionsTable() {
                       if (betonPos.id) params.set('position_id', betonPos.id);
                       params.set('volume_m3', String(betonPos.qty || 0));
                       if (betonPos.subtype) params.set('subtype', betonPos.subtype);
+                    }
+                    if (bedneniPos?.id) {
+                      params.set('bedneni_position_id', bedneniPos.id);
+                      if (bedneniPos.qty) params.set('bedneni_m2', String(bedneniPos.qty));
+                    }
+                    if (vyzuzPos?.id) {
+                      params.set('vyzuz_position_id', vyzuzPos.id);
+                      if (vyzuzPos.qty) params.set('vyzuz_qty', String(vyzuzPos.qty));
                     }
                     window.location.href = `/planner?${params.toString()}`;
                   }}

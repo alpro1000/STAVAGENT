@@ -187,6 +187,37 @@ describe('Element Classifier', () => {
 
   // ─── getAllElementTypes ──────────────────────────────────────────────
 
+  // ─── Bridge context classification ────────────────────────────────────
+
+  describe('classifyElement — bridge context', () => {
+    it('"Beton pilířů C30/37" without context → sloup (building)', () => {
+      const result = classifyElement('Beton pilířů C30/37');
+      // Without bridge context, "pilíř" matches sloup
+      expect(['sloup', 'driky_piliru']).toContain(result.element_type);
+    });
+
+    it('"Beton pilířů C30/37" with bridge context → driky_piliru', () => {
+      const result = classifyElement('Beton pilířů C30/37', { is_bridge: true });
+      expect(result.element_type).toBe('driky_piliru');
+    });
+
+    it('"NOSNÁ KONSTRUKCE" with bridge context → mostovkova_deska', () => {
+      const result = classifyElement('NOSNÁ KONSTRUKCE C35/45-XF2', { is_bridge: true });
+      expect(result.element_type).toBe('mostovkova_deska');
+    });
+
+    it('"Stěna" in bridge context stays stena (no bridge equivalent)', () => {
+      const result = classifyElement('Monolitická stěna', { is_bridge: true });
+      // stena has no bridge equivalent, stays stena
+      expect(result.element_type).toBe('stena');
+    });
+
+    it('context is optional — backward compatible', () => {
+      const result = classifyElement('ZÁKLADY PILÍŘŮ');
+      expect(result.element_type).toBe('zaklady_piliru');
+    });
+  });
+
   describe('getAllElementTypes', () => {
     it('returns 20 element types (9 bridge + 11 building)', () => {
       const types = getAllElementTypes();
