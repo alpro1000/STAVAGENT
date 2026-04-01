@@ -573,10 +573,16 @@ def _generate_warnings(
 # ─── In-memory project facts store (seed data + runtime) ─────────────────────
 
 _PROJECT_FACTS: Dict[str, List[Dict[str, Any]]] = {}
+_MAX_PROJECTS = 500  # Evict oldest when exceeded
 
 
 def store_project_facts(portal_project_id: str, facts: List[Dict[str, Any]]):
     """Store extraction results for a project (for seed data or after document processing)."""
+    # Simple eviction: remove oldest entries when cache is full
+    if len(_PROJECT_FACTS) >= _MAX_PROJECTS and portal_project_id not in _PROJECT_FACTS:
+        oldest_key = next(iter(_PROJECT_FACTS))
+        del _PROJECT_FACTS[oldest_key]
+        logger.debug("Evicted project facts for %s (cache full)", oldest_key)
     _PROJECT_FACTS[portal_project_id] = facts
     logger.info(f"Stored {len(facts)} extraction results for project {portal_project_id}")
 

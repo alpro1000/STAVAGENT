@@ -158,11 +158,14 @@ def _detect_so_from_fact(
 
     # Check chunk title
     if fact.chunk_id:
-        for chunk in extraction.chunk_details:
-            if chunk.chunk_id == fact.chunk_id and chunk.section_title:
-                m = _SO_RE.search(chunk.section_title)
-                if m:
-                    return f"SO-{m.group(1)}"
+        chunk = next(
+            (c for c in extraction.chunk_details if c.chunk_id == fact.chunk_id),
+            None,
+        )
+        if chunk and chunk.section_title:
+            m = _SO_RE.search(chunk.section_title)
+            if m:
+                return f"SO-{m.group(1)}"
 
     return None
 
