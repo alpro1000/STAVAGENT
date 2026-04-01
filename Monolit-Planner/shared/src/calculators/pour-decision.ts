@@ -49,6 +49,7 @@ export type StructuralElementType =
   | 'rigel'               // Příčník / ригель
   | 'opery_ulozne_prahy'  // Opěry, úložné prahy
   | 'mostni_zavirne_zidky'// Mostní závěrné zídky
+  | 'prechodova_deska'   // Přechodová deska mostních opěr
   // ─── Building elements (pozemní stavby) ───
   | 'zakladova_deska'     // Základová deska (foundation slab)
   | 'zakladovy_pas'       // Základový pás (strip foundation)
@@ -185,6 +186,12 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
     typical_sub_mode: null,
     typical_spara_spacing_m: null,
     description_cs: 'Závěrné zídky — malý monolit, bez švů',
+  },
+  prechodova_deska: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Přechodová deska — jednoduchá geometrie, monolit za opěrou, bez švů',
   },
   // ─── Building elements ───
   zakladova_deska: {

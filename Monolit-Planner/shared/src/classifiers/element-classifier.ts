@@ -184,6 +184,21 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     max_pour_rate_m3_h: 30,
     pump_typical: false,
   },
+  prechodova_deska: {
+    label_cs: 'Přechodová deska',
+    recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
+    difficulty_factor: 0.9,
+    needs_supports: false,
+    needs_platforms: false,
+    needs_crane: false,
+    rebar_ratio_kg_m3: 90,
+    rebar_ratio_range: [80, 100],
+    rebar_norm_h_per_t: 40,
+    strip_strength_pct: 50,
+    orientation: 'horizontal',
+    max_pour_rate_m3_h: 35,
+    pump_typical: true,
+  },
   // ─── Building elements (pozemní stavby) ────────────────────────────────────
 
   zakladova_deska: {
@@ -384,21 +399,34 @@ const KEYWORD_RULES: KeywordRule[] = [
     keywords: [
       'mostovka', 'mostovkov', 'mostova deska', 'mostní deska', 'mostni deska',
       'deska mostu', 'nosna konstrukce', 'nosná konstrukce', 'bridge deck',
+      'nosne tram', 'nosné trám', 'nosna konstr', 'nosná konstr',
+      'predpj bet', 'předpj bet', 'predpjat', 'předpjat',
       'мостов', 'мостовая плита', 'пролетное строение',
     ],
     priority: 10,
   },
   { element_type: 'rimsa', keywords: ['rimsa', 'říms', 'rimsov', 'римс', 'карниз'], priority: 10 },
+  { element_type: 'prechodova_deska', keywords: [
+    'prechodova deska', 'přechodová deska', 'prechodove desky', 'přechodové desky',
+    'prechodov', 'přechodov',
+  ], priority: 11 },
   { element_type: 'mostni_zavirne_zidky', keywords: ['zavirn', 'závěrn', 'zidka', 'zídka'], priority: 9 },
   { element_type: 'rigel', keywords: ['pricnik', 'příčník', 'pricni', 'příčn', 'rigel', 'ригель'], priority: 9 },
-  { element_type: 'zaklady_piliru', keywords: ['zaklad pilir', 'základ pilíř', 'zaklady piliru', 'základy pilířů', 'pilotov zaklad', 'фундамент опор'], priority: 8 },
-  { element_type: 'driky_piliru', keywords: ['drik', 'dřík', 'pilir most', 'pilíř most', 'тело опор'], priority: 8 },
-  { element_type: 'operne_zdi', keywords: ['opern', 'opěrn', 'kridl', 'křídl', 'подпорн стен', 'operna zed', 'opěrná zeď'], priority: 8 },
-  { element_type: 'opery_ulozne_prahy', keywords: ['opera', 'opěra', 'ulozn', 'úložn', 'prah', 'sedlo'], priority: 7 },
+  { element_type: 'zaklady_piliru', keywords: ['zaklad pilir', 'základ pilíř', 'zaklady piliru', 'základy pilířů', 'zaklady', 'pilotov zaklad', 'фундамент опор'], priority: 10 },
+  { element_type: 'driky_piliru', keywords: [
+    'drik', 'dřík', 'pilir most', 'pilíř most',
+    'mostni pilir', 'mostní pilíř', 'mostni pilire', 'mostní pilíře',
+    'stativ', 'тело опор',
+  ], priority: 8 },
+  { element_type: 'operne_zdi', keywords: ['opern', 'opěrn', 'подпорн стен', 'operna zed', 'opěrná zeď'], priority: 8 },
+  { element_type: 'opery_ulozne_prahy', keywords: [
+    'opera', 'opěra', 'ulozn', 'úložn', 'prah', 'sedlo',
+    'mostni oper', 'mostní opěr', 'kridl', 'křídl',
+  ], priority: 7 },
 
   // ─── Building elements ───
   { element_type: 'stropni_deska', keywords: [
-    'stropni', 'stropní', 'strop', 'podlah', 'podlažní', 'floor slab', 'deska',
+    'stropni', 'stropní', 'strop', 'podlah', 'podlažní', 'floor slab',
     'перекрыт', 'плита перекрыт', 'монолитн перекрыт',
   ], priority: 7 },
   { element_type: 'zakladova_deska', keywords: [
@@ -407,10 +435,11 @@ const KEYWORD_RULES: KeywordRule[] = [
   ], priority: 9 },
   { element_type: 'zakladovy_pas', keywords: [
     'zakladovy pas', 'základový pás', 'zakladove pasy', 'základové pásy',
+    'zaklady', 'základy',
     'strip found', 'ленточн фундамент',
   ], priority: 9 },
   { element_type: 'zakladova_patka', keywords: [
-    'patka', 'zakladova patka', 'základová patka', 'pad found',
+    'patka', 'patky', 'zakladova patka', 'základová patka', 'pad found',
     'столбчат фундамент',
   ], priority: 8 },
   { element_type: 'stena', keywords: [
@@ -426,7 +455,7 @@ const KEYWORD_RULES: KeywordRule[] = [
     'балк', 'прогон', 'ригель здан',
   ], priority: 6 },
   { element_type: 'schodiste', keywords: [
-    'schodist', 'schodiště', 'schody', 'staircase', 'stairs',
+    'schodist', 'schodiště', 'schody', 'staircase', 'stairs', 'stupne', 'stupně',
     'лестниц',
   ], priority: 8 },
   { element_type: 'nadrz', keywords: [
@@ -460,11 +489,15 @@ function normalize(text: string): string {
 const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
   'zaklady_piliru', 'driky_piliru', 'rimsa', 'operne_zdi',
   'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'mostni_zavirne_zidky',
+  'prechodova_deska',
 ]);
 
 /** Building element types that have bridge equivalents */
 const BRIDGE_EQUIVALENT: Partial<Record<StructuralElementType, StructuralElementType>> = {
-  sloup: 'driky_piliru',  // "pilíř" in bridge context = dříky pilířů, not sloup
+  sloup: 'driky_piliru',         // "pilíř" in bridge context = dříky pilířů, not sloup
+  zakladova_deska: 'zaklady_piliru',  // "základy" in bridge context = základy pilířů
+  zakladovy_pas: 'zaklady_piliru',
+  stropni_deska: 'mostovkova_deska',  // "deska" in bridge context = mostovková deska
 };
 
 /** Classification context — optional hints to improve accuracy */
@@ -483,6 +516,16 @@ export interface ClassificationContext {
 export function classifyElement(name: string, context?: ClassificationContext): ElementProfile {
   const normalized = normalize(name);
   const isBridge = context?.is_bridge ?? false;
+
+  // ─── Early-exit rules: special materials → always 'other' ───
+  // PODKLADNÍ/VÝPLŇOVÉ = plain concrete, simplified calculation
+  if (/podkladn|podkl\b|vyplnov|výplňov/.test(normalized)) {
+    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  }
+  // STŘÍKANÝ = shotcrete, special technology
+  if (/strikan|stříkan|torkret|nastrik|nástřik/.test(normalized)) {
+    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  }
 
   // Score each rule
   let bestType: StructuralElementType = 'other';
