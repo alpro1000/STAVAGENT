@@ -9,7 +9,8 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { ChevronDown, ChevronUp, ExternalLink, Unlink, Loader, Download } from 'lucide-react';
+import { ChevronDown, ChevronUp, ExternalLink, Unlink, Loader, Download, Link } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { API_URL } from '../../services/api';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -31,9 +32,9 @@ interface KioskLinksPanelProps {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; url: string }> = {
-  monolit: { label: 'Monolit Planner', icon: '\u{1FAA8}', color: '#6366f1', url: 'https://kalkulator.stavagent.cz' },
-  registry: { label: 'Registr Rozpočtů', icon: '\u{1F4CA}', color: '#f59e0b', url: 'https://registry.stavagent.cz' },
-  urs_matcher: { label: 'Klasifikátor stavebních prací', icon: '\u{1F50E}', color: '#22c55e', url: 'https://klasifikator.stavagent.cz' },
+  monolit: { label: 'Monolit Planner', icon: 'Hexagon', color: '#6366f1', url: 'https://kalkulator.stavagent.cz' },
+  registry: { label: 'Registr Rozpočtů', icon: 'BarChart3', color: '#f59e0b', url: 'https://registry.stavagent.cz' },
+  urs_matcher: { label: 'Klasifikátor stavebních prací', icon: 'Search', color: '#22c55e', url: 'https://klasifikator.stavagent.cz' },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -243,7 +244,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
         }}
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '16px' }}>{'\u{1F517}'}</span>
+          <Link size={16} />
           Propojene kiosky
           {!loading && links.length > 0 && (
             <span
@@ -354,7 +355,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
               {links.map((link) => {
                 const meta = KIOSK_META[link.kiosk_type] || {
                   label: link.kiosk_type,
-                  icon: '\u{1F4E6}',
+                  icon: 'Package',
                   color: '#6b7280',
                   url: '#',
                 };
@@ -394,7 +395,12 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
                           gap: '10px',
                         }}
                       >
-                        <span style={{ fontSize: '22px' }}>{meta.icon}</span>
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
+                          {(() => {
+                            const IconComp = (LucideIcons as any)[meta.icon];
+                            return IconComp ? <IconComp size={22} /> : null;
+                          })()}
+                        </span>
                         <div>
                           <p
                             style={{

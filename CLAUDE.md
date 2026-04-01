@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
 **Version:** 4.0.8
-**Last Updated:** 2026-03-31
+**Last Updated:** 2026-04-01
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -61,6 +61,7 @@ STAVAGENT/
 ├── Monolit-Planner/       ← Kiosk: Concrete Calculator (Node.js/React, port 3001/5173)
 ├── URS_MATCHER_SERVICE/   ← Kiosk: URS Matching (Node.js, port 3001/3000)
 ├── rozpocet-registry/     ← Kiosk: BOQ Registry (React/Vite + Vercel serverless, port 5173)
+├── shared/                ← Cross-kiosk shared code (icon-registry.ts)
 ├── mineru_service/        ← MinerU PDF parser (Python FastAPI, Cloud Run europe-west1, port 8080)
 ├── docs/                  ← System-level documentation
 └── .github/workflows/     ← CI/CD
@@ -163,6 +164,7 @@ Concrete cost calculator: CZK/m³, Excel import, OTSKP codes, AI days suggestion
 **Planner UX** — Two modes: Monolit (ordinal days, auto-classify from part_name, TOV mapping to beton+bednění+výztuž) / Portal (calendar dates, manual input). Bridge context classifier (pilíř vs sloup). Plan variants save/compare.
 
 **Other:** Snapshot system (SHA-256), Resource Optimization (grid search), Maturity/Props/Calendar/Pump engines, Normsets (ÚRS/RTS/KROS/Internal), mini-calculators (crane, delivery), TOV prefill from planner.
+- **Account Isolation** — `portal_user_id` on projects, optionalAuth middleware (Portal JWT), 403 on cross-account access
 
 Structure: `shared/` (384 tests), `backend/` (60 tests), `frontend/`. Design: Slate Minimal (`--r0-*` CSS vars).
 
@@ -197,7 +199,7 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 
 **AI Prompts (21 files)** in `concrete-agent/prompts/`: assistant, analysis, audit, generation, parsing, vision, OCR, resource_calculation
 
-**SQL Schemas (22 files):** concrete-agent (2), Portal (4), Monolit (12), URS (1), Registry (1), GCP prod init (3)
+**SQL Schemas (23 files):** concrete-agent (2), Portal (4), Monolit (13), URS (1), Registry (1), GCP prod init (3)
 
 ## Totals
 
@@ -253,6 +255,8 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 - Lateral pressure: p = ρ×g×h×k (ČSN EN 12812), formwork auto-filter by pressure_kn_m2
 - Shape correction: přímý=1.0, zalomený=1.3, kruhový=1.5, nepravidelný=1.8 (independent from difficulty_factor)
 - Planner two modes: Monolit (position_id in URL → ordinal days, auto-classify) / Portal (no context → calendar)
+- Icons: `lucide-react` only, no emojis in JSX; registry in `shared/icon-registry.ts` (13 categories, ~130 icons)
+- Monolit account isolation: Portal JWT shared via `JWT_SECRET` env var, `portal_user_id` column
 
 ---
 
@@ -267,6 +271,7 @@ GEMINI_MODEL=gemini-2.5-flash
 # Monolit-Planner
 VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
+JWT_SECRET=<same as Portal, for account isolation>
 
 # URS_MATCHER_SERVICE
 STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
@@ -288,6 +293,7 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 | LLM 401/404 | SA role `aiplatform.user`; use `gemini-2.5-flash` (not -lite) |
 | send-to-core 500 | CORE returns `project_id` not `workflow_id`; `transactionStarted` guard |
 | CORE Cloud Run crash | `monolit_adapter.py` singletons — lazy-init services with required args |
+| Monolit 403 on projects | `portal_user_id` mismatch; check JWT_SECRET matches Portal; migration 012 |
 
 ---
 
@@ -323,8 +329,7 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
 - [ ] Landing page: screenshot/demo of AI analysis result
-- [ ] Deep links between kiosks
-- [ ] Session-only mode for Monolit Planner (no auth)
+- [ ] **JWT_SECRET** for Monolit: set same value as Portal in GCP Secret Manager
 - [ ] reCAPTCHA on registration (when traffic grows)
 - [ ] IFC/BIM support (needs binaries)
 

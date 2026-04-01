@@ -2,6 +2,7 @@
  * KPIPanel - Modern Floating KPI Card with Glassmorphism
  */
 
+import { BarChart3, Building2, Timer } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
@@ -16,7 +17,7 @@ export default function KPIPanel() {
   if (!selectedBridge || !headerKPI) {
     return (
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
-        <div style={{ fontSize: '48px', opacity: 0.6 }}>📊</div>
+        <div style={{ fontSize: '48px', opacity: 0.6 }}><BarChart3 size={48} /></div>
         <p className="u-text-muted">Vyberte objekt pro zobrazení KPI</p>
       </div>
     );
@@ -35,7 +36,7 @@ export default function KPIPanel() {
       <div className="u-flex-between u-mb-md" style={{ flexWrap: 'wrap', gap: 'var(--space-md)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
           <h2 className="u-text-orange u-text-bold" style={{ fontSize: 'var(--font-size-xl)', margin: 0 }}>
-            🏗️ {selectedBridge}
+            <Building2 size={18} className="inline" /> {selectedBridge}
           </h2>
           {currentBridge && (
             <span className="u-text-bold" style={{ fontSize: 'var(--font-size-base)', color: 'var(--text-primary)' }}>
@@ -95,7 +96,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card kpi-card-success">
           <div className="kpi-card-label">
-            <span>⏱️</span> Měsíce
+            <Timer size={16} className="inline" /> Měsíce
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.estimated_months, 1)}

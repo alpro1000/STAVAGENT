@@ -3,14 +3,16 @@
  * Display overall system statistics
  */
 
+import { Users, Shield, CheckCircle2, FolderOpen, RefreshCw } from 'lucide-react';
+
 interface StatCardProps {
   title: string;
   value: string | number;
-  icon: string;
+  icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   color: string;
 }
 
-function StatCard({ title, value, icon, color }: StatCardProps) {
+function StatCard({ title, value, icon: Icon, color }: StatCardProps) {
   return (
     <div style={{
       background: 'white',
@@ -20,10 +22,11 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
       textAlign: 'center'
     }}>
       <div style={{
-        fontSize: '32px',
+        display: 'flex',
+        justifyContent: 'center',
         marginBottom: '8px'
       }}>
-        {icon}
+        <Icon size={32} style={{ color }} />
       </div>
       <div style={{
         fontSize: '12px',
@@ -80,25 +83,25 @@ export default function AdminStats({ stats, loading, onRefresh }: AdminStatsProp
         <StatCard
           title="Celkem uživatelů"
           value={users?.total || 0}
-          icon="👥"
+          icon={Users}
           color="#667eea"
         />
         <StatCard
           title="Admin uživatelé"
           value={users?.admins || 0}
-          icon="👑"
+          icon={Shield}
           color="#f6ad55"
         />
         <StatCard
           title="Ověření email"
           value={users?.verified || 0}
-          icon="✅"
+          icon={CheckCircle2}
           color="#48bb78"
         />
         <StatCard
           title="Celkem projektů"
           value={projects?.total || 0}
-          icon="📁"
+          icon={FolderOpen}
           color="#38b2ac"
         />
       </div>
@@ -225,7 +228,7 @@ export default function AdminStats({ stats, loading, onRefresh }: AdminStatsProp
             e.currentTarget.style.background = '#667eea';
           }}
         >
-          🔄 Obnovit
+          <RefreshCw size={14} className="inline" /> Obnovit
         </button>
       </div>
     </div>

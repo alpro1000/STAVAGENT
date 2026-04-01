@@ -11,7 +11,7 @@
  */
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Truck } from 'lucide-react';
 
 // Mixer truck types (autodomíchávač)
 const MIXER_TYPES = [
@@ -120,7 +120,7 @@ export function DeliveryCalcSection({ data, onChange, defaultVolume, defaultClas
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-3 py-2 bg-green-50 text-sm font-medium text-green-800"
       >
-        <span>🚛 Doprava betonu: {calc.volume_m3} m³ {calc.concrete_class}</span>
+        <span><Truck size={14} className="inline" /> Doprava betonu: {calc.volume_m3} m³ {calc.concrete_class}</span>
         <div className="flex items-center gap-2">
           <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ')} Kč</span>
           {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

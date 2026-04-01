@@ -3,6 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Trash2, Info, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
@@ -119,7 +120,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
       <div className="modal-content history-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">Historie Snapshots</h2>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button className="modal-close" onClick={onClose}><X size={18} /></button>
         </div>
 
         <div className="modal-body">
@@ -198,7 +199,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
                             onClick={() => handleDelete(snapshot.snapshot_id, snapshot.snapshot_name)}
                             title="Smazat tento snapshot"
                           >
-                            🗑️ Smazat
+                            <Trash2 size={14} className="inline" /> Smazat
                           </button>
                         )}
 
@@ -207,7 +208,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
                           onClick={() => alert(JSON.stringify(snapshot, null, 2))}
                           title="Zobrazit detaily"
                         >
-                          ℹ️ Info
+                          <Info size={14} className="inline" /> Info
                         </button>
                       </div>
                     </div>

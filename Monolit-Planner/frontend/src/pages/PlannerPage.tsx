@@ -15,6 +15,7 @@
  */
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import { Calculator, TriangleAlert } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import {
   planElement,
@@ -701,7 +702,7 @@ export default function PlannerPage() {
             {isPortalMode ? '← Portál' : '← Monolit Planner'}
           </a>
           <h1 className="r0-title">
-            <span className="r0-icon">📐</span>
+            <span className="r0-icon"><Calculator size={20} /></span>
             Kalkulátor betonáže
           </h1>
           {isMonolitMode && positionContext?.part_name && (
@@ -2045,7 +2046,7 @@ export default function PlannerPage() {
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
-              <div style={{ fontSize: 48 }}>📐</div>
+              <div style={{ fontSize: 48 }}><Calculator size={48} /></div>
               <p style={{ fontSize: 16, marginTop: 16 }}>Nastavte parametry a klikněte "Vypočítat plán"</p>
             </div>
           )}
@@ -2600,7 +2601,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
 
       {/* Warnings */}
       {plan.warnings.length > 0 && (
-        <Card title="Varování" icon="⚠️" borderColor="var(--r0-orange)">
+        <Card title="Varování" icon={<TriangleAlert size={16} className="inline" />} borderColor="var(--r0-orange)">
           <ul style={{ margin: 0, paddingLeft: 20, fontSize: 13, color: 'var(--r0-warn-text)' }}>
             {plan.warnings.map((w, i) => <li key={i} style={{ marginBottom: 4 }}>{w}</li>)}
           </ul>
@@ -2680,7 +2681,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
                       background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 6,
                       padding: '4px 8px', marginTop: 4,
                     }}>
-                      <Row label="⚠️ Doporučeno" value={`${plan.rebar.recommended_crew} pracovníků`} bold />
+                      <Row label={<><TriangleAlert size={14} className="inline" /> Doporučeno</>} value={`${plan.rebar.recommended_crew} pracovníků`} bold />
                     </div>
                   )}
                   <Row label="Norma" value={`${plan.rebar.norm_h_per_t} h/t`} />
@@ -2917,7 +2918,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 }
 
 function Card({ title, icon, children, borderColor }: {
-  title: string; icon: string; children: React.ReactNode; borderColor?: string;
+  title: string; icon: React.ReactNode; children: React.ReactNode; borderColor?: string;
 }) {
   return (
     <div style={{
@@ -2950,7 +2951,7 @@ function KPICard({ label, value, unit, color }: {
   );
 }
 
-function Row({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
+function Row({ label, value, bold }: { label: React.ReactNode; value: string; bold?: boolean }) {
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'center',

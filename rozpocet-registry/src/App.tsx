@@ -22,7 +22,7 @@ import { searchProjects, type SearchResultItem, type SearchFilters } from './ser
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
-import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows, Building2, ClipboardList } from 'lucide-react';
 import { PORTAL_API_URL } from './utils/config.js';
 
 /**
@@ -793,7 +793,7 @@ function App() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="text-2xl">🏗️</div>
+              <div className="text-2xl"><Building2 size={28} className="inline" /></div>
               <div>
                 <h1 className="text-xl font-bold text-text-primary font-mono">
                   REGISTR ROZPOČTŮ
@@ -1263,7 +1263,7 @@ function App() {
                     />
                     <label htmlFor="show-only-work" className="flex-1 cursor-pointer select-none">
                       <div className="text-sm font-medium text-text-primary">
-                        📋 Zobrazit pouze pracovní položky
+                        <ClipboardList size={16} className="inline" /> Zobrazit pouze pracovní položky
                       </div>
                       <div className="text-xs text-text-secondary">
                         Skrýt popisné řádky (zobrazí se pouze položky s kódem a množstvím)

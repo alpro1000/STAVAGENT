@@ -9,6 +9,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Building2, LoaderCircle, CircleCheckBig, ClipboardList, FolderOpen, Pencil, PlusCircle, Trash2, Search, TriangleAlert, BarChart3, Grid3x3, Settings, Banknote, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
@@ -419,13 +420,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
           fontWeight: 'bold'
         }}
       >
-        {isOpen ? '◀' : '▶'}
+        {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
       </button>
 
       {/* Collapsed state indicator */}
       {!isOpen && bridgeCount > 0 && (
         <div className="sidebar-collapsed-indicator">
-          <div className="collapsed-icon">🏗️</div>
+          <div className="collapsed-icon"><Building2 size={20} /></div>
           <div className="c-badge c-badge--orange">{bridgeCount}</div>
         </div>
       )}
@@ -434,7 +435,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)', overflowX: 'hidden', overflowY: 'auto' }}>
           <div className="sidebar-section">
             <h3 className="c-section-title">
-              <span>🏗️</span> Objekty
+              <Building2 size={18} className="inline" /> Objekty
             </h3>
 
             {/* Status Filter Tabs */}
@@ -444,21 +445,21 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 onClick={() => setStatusFilter('active')}
                 title="Zobrazit aktivní objekty"
               >
-                🚧 Aktivní
+                <LoaderCircle size={14} className="inline" /> Aktivní
               </button>
               <button
                 className={`c-tab ${statusFilter === 'completed' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('completed')}
                 title="Zobrazit dokončené objekty"
               >
-                ✅ Hotové
+                <CircleCheckBig size={14} className="inline" /> Hotové
               </button>
               <button
                 className={`c-tab ${statusFilter === 'all' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('all')}
                 title="Zobrazit všechny objekty"
               >
-                📋 Vše
+                <ClipboardList size={14} className="inline" /> Vše
               </button>
             </div>
 
@@ -526,8 +527,8 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                           style={{ width: '14px', height: '14px', cursor: 'pointer', flexShrink: 0 }}
                           title={allSelected ? 'Zrušit výběr všech' : 'Vybrat všechny objekty'}
                         />
-                        <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
-                        <span className="project-icon">📁</span>
+                        <span className="project-toggle">{isExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}</span>
+                        <span className="project-icon"><FolderOpen size={14} /></span>
                         <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
                         <button
@@ -537,7 +538,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                           disabled={isLoading}
                           style={{ marginLeft: '4px' }}
                         >
-                          ✏️
+                          <Pencil size={12} />
                         </button>
                         <button
                           className="bridge-action-btn btn-add"
@@ -546,7 +547,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                           disabled={isLoading}
                           style={{ marginLeft: '2px' }}
                         >
-                          ➕
+                          <PlusCircle size={12} />
                         </button>
                         <button
                           className="bridge-action-btn btn-delete"
@@ -555,7 +556,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                           disabled={isLoading}
                           style={{ marginLeft: '2px' }}
                         >
-                          🗑️
+                          <Trash2 size={12} />
                         </button>
                       </div>
 
@@ -593,7 +594,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                                     title="Označit jako dokončený"
                                     disabled={isLoading}
                                   >
-                                    ✅
+                                    <CircleCheckBig size={12} />
                                   </button>
                                 )}
                                 <button
@@ -602,7 +603,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                                   title="Smazat objekt"
                                   disabled={isLoading}
                                 >
-                                  🗑️
+                                  <Trash2 size={12} />
                                 </button>
                               </div>
                             </li>
@@ -644,7 +645,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
           <div className="sidebar-section u-mt-lg">
             <h3 className="c-section-title">
-              <span>🔍</span> Filtry
+              <Search size={18} className="inline" /> Filtry
             </h3>
 
             <label className="u-flex u-gap-sm" style={{ cursor: 'pointer', alignItems: 'center' }} title="Zobrazit pouze řádky s problémy (varovná oznámení)">
@@ -654,13 +655,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 onChange={(e) => setShowOnlyRFI(e.target.checked)}
                 style={{ width: '18px', height: '18px' }}
               />
-              <span style={{ color: 'var(--text-secondary)' }}>⚠️ Jen problémy</span>
+              <span style={{ color: 'var(--text-secondary)' }}><TriangleAlert size={14} className="inline" /> Jen problémy</span>
             </label>
           </div>
 
           <div className="sidebar-section u-mt-lg">
             <h3 className="c-section-title">
-              <span>📊</span> Registry
+              <BarChart3 size={18} className="inline" /> Registry
             </h3>
             <button
               className="c-btn c-btn--sm"
@@ -669,13 +670,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
               title={selectedBridge ? 'Zobrazit unified registry' : 'Nejprve vyberte objekt'}
               style={{ width: '100%' }}
             >
-              📋 Zobrazit pozice
+              <ClipboardList size={14} className="inline" /> Zobrazit pozice
             </button>
           </div>
 
           <div className="sidebar-section u-mt-lg">
             <h3 className="c-section-title">
-              <span>📐</span> Plánovač
+              <Grid3x3 size={18} className="inline" /> Plánovač
             </h3>
             <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
               <button
@@ -684,7 +685,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 style={{ flex: 1 }}
                 title="Plánování elementu: bednění, výztuž, betonáž, harmonogram"
               >
-                📐 Plánovač elementu
+                <Grid3x3 size={14} className="inline" /> Plánovač elementu
               </button>
               <button
                 className="c-btn c-btn--sm"
@@ -693,14 +694,14 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 disabled={!selectedBridge}
                 title={selectedBridge ? 'Gantt diagram celého projektu' : 'Nejprve vyberte objekt'}
               >
-                📊 Gantt projektu
+                <BarChart3 size={14} className="inline" /> Gantt projektu
               </button>
             </div>
           </div>
 
           <div className="sidebar-section u-mt-lg">
             <h3 className="c-section-title">
-              <span>🔧</span> Nástroje
+              <Settings size={18} className="inline" /> Nástroje
             </h3>
             <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
               <button
@@ -709,14 +710,14 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 disabled={!selectedBridge}
                 title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte objekt'}
               >
-                📊 Historie
+                <BarChart3 size={14} className="inline" /> Historie
               </button>
               <button
                 className="c-btn c-btn--sm"
                 onClick={() => window.location.href = '/tariffs'}
                 title="Správa tarifů dodavatelů (čerpadla, beton, bednění)"
               >
-                💰 Tarify
+                <Banknote size={14} className="inline" /> Tarify
               </button>
             </div>
           </div>

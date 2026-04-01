@@ -4,6 +4,7 @@
  */
 
 import { useEffect } from 'react';
+import { TriangleAlert, Trash2, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
 interface Bridge {
@@ -36,8 +37,8 @@ export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel,
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Smazat objekt">
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
-          <h2>⚠️ Smazat objekt?</h2>
-          <button className="btn-close" onClick={onCancel} title="Zavřít">✕</button>
+          <h2><TriangleAlert size={18} className="inline" /> Smazat objekt?</h2>
+          <button className="btn-close" onClick={onCancel} title="Zavřít"><X size={16} /></button>
         </div>
 
         <div className="modal-body">
@@ -65,7 +66,7 @@ export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel,
           </div>
 
           <div className="delete-final-warning">
-            ⚠️ <strong>Tuto akci nelze vrátit!</strong>
+            <TriangleAlert size={14} className="inline" /> <strong>Tuto akci nelze vrátit!</strong>
           </div>
         </div>
 
@@ -82,7 +83,7 @@ export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel,
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? '🗑️ Mažu...' : '🗑️ Smazat natrvalo'}
+            {isDeleting ? <><Trash2 size={14} className="inline" /> Mažu...</> : <><Trash2 size={14} className="inline" /> Smazat natrvalo</>}
           </button>
         </div>
       </div>

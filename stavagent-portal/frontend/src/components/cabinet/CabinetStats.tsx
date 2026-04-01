@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FolderOpen, FileText, HardDrive, Building2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Organization } from '../../types/org';
 import OrgRoleBadge from '../org/OrgRoleBadge';
@@ -34,10 +35,10 @@ export default function CabinetStats() {
   if (!stats) return null;
 
   const tiles = [
-    { label: 'Projekty', value: stats.projects.total, icon: '📁' },
-    { label: 'Soubory', value: stats.files.total, icon: '📄' },
-    { label: 'Úložiště', value: formatBytes(stats.files.total_bytes), icon: '💾' },
-    { label: 'Organizace', value: stats.orgs.member_of.length, icon: '🏢' },
+    { label: 'Projekty', value: stats.projects.total, icon: <FolderOpen size={24} /> },
+    { label: 'Soubory', value: stats.files.total, icon: <FileText size={24} /> },
+    { label: 'Úložiště', value: formatBytes(stats.files.total_bytes), icon: <HardDrive size={24} /> },
+    { label: 'Organizace', value: stats.orgs.member_of.length, icon: <Building2 size={24} /> },
   ];
 
   return (
@@ -49,7 +50,7 @@ export default function CabinetStats() {
             background: '#fff', border: '1px solid #e5e7eb', borderRadius: 8,
             padding: '16px 20px', textAlign: 'center'
           }}>
-            <div style={{ fontSize: 24, marginBottom: 4 }}>{t.icon}</div>
+            <div style={{ marginBottom: 4, display: 'flex', justifyContent: 'center' }}>{t.icon}</div>
             <div style={{ fontSize: 22, fontWeight: 700, color: '#111827' }}>{t.value}</div>
             <div style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>{t.label}</div>
           </div>

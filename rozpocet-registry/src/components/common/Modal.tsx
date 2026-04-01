@@ -3,7 +3,7 @@
  * Модальное окно с непрозрачным фоном
  */
 
-import { X } from 'lucide-react';
+import { X, MessageCircle, CheckCircle, AlertTriangle, XCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 interface ModalProps {
@@ -101,16 +101,16 @@ export function AlertModal({
   };
 
   const variantIcons = {
-    info: '💬',
-    success: '✅',
-    warning: '⚠️',
-    error: '❌',
+    info: <MessageCircle size={40} className="inline" />,
+    success: <CheckCircle size={40} className="inline" />,
+    warning: <AlertTriangle size={40} className="inline" />,
+    error: <XCircle size={40} className="inline" />,
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
       <div className="text-center space-y-4">
-        <div className="text-4xl">{variantIcons[variant]}</div>
+        <div>{variantIcons[variant]}</div>
         <h3 className={`text-lg font-semibold ${variantStyles[variant]}`}>
           {title}
         </h3>

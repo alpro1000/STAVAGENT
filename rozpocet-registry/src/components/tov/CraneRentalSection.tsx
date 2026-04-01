@@ -7,7 +7,7 @@
  */
 
 import { useState, useMemo } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Building2 } from 'lucide-react';
 
 // Inline crane KB (from concrete-agent/knowledge_base/B9_Equipment_Specs/cranes.json)
 const CRANES = [
@@ -81,7 +81,7 @@ export function CraneRentalSection({ data, onChange }: Props) {
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-3 py-2 bg-blue-50 text-sm font-medium text-blue-800"
       >
-        <span>🏗️ Jeřáb: {crane.manufacturer} {crane.model} ({crane.capacity_t}t)</span>
+        <span><Building2 size={14} className="inline" /> Jeřáb: {crane.manufacturer} {crane.model} ({crane.capacity_t}t)</span>
         <div className="flex items-center gap-2">
           <span className="font-mono">{calc.total_czk.toLocaleString('cs-CZ')} Kč</span>
           {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}

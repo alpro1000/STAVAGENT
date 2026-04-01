@@ -5,13 +5,14 @@
  */
 
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Zap, Shield, BarChart3, Lock, LogIn, User, Gift } from 'lucide-react';
+import { ArrowRight, Zap, Shield, BarChart3, Lock, LogIn, User, Gift, Ruler, Hexagon, Building2, Settings, FileText, ClipboardList } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 // ── Two hero products — available WITHOUT registration (session-only) ────────
 const HERO_PRODUCTS = [
   {
-    icon: '📊',
+    icon: 'BarChart3',
     name: 'AI Analýza dokumentů',
     desc: 'Nahrajte PDF nebo Excel → AI vytvoří passport stavby, soupis prací, audit a shrnutí za 30 sekund.',
     cta: 'Vyzkoušet zdarma',
@@ -19,7 +20,7 @@ const HERO_PRODUCTS = [
     tags: ['PDF/XLSX', 'AI Audit', 'Passport', 'Soupis prací'],
   },
   {
-    icon: '🪨',
+    icon: 'Hexagon',
     name: 'Kalkulátor monolitních prací',
     desc: 'Spočítejte náklady na beton, bednění a výztuž. 20 typů elementů, Gantt harmonogram, Excel export.',
     cta: 'Spočítat',
@@ -30,12 +31,12 @@ const HERO_PRODUCTS = [
 
 // ── Additional tools — require registration ──────────────────────────────────
 const MORE_TOOLS = [
-  { icon: '📐', name: 'Analýza výkresů', desc: 'AI Vision + OCR extrakce z PDF výkresů' },
-  { icon: '🏗️', name: 'Objednávka betonu', desc: 'Betonárny, porovnání cen, čerpadlo' },
-  { icon: '⚙️', name: 'Kalkulačka čerpadel', desc: '3 dodavatelé, příplatky, kalendář' },
-  { icon: '📄', name: 'Ceníky dodavatelů', desc: 'PDF ceníky → strukturovaná data' },
-  { icon: '📋', name: 'Generování seznamu prací', desc: 'AI vytvoří strukturovaný seznam stavebních prací z dokumentů' },
-  { icon: '📐', name: 'Generátor výkazu výměr', desc: 'TZ → AI extrakce konstrukcí a objemů → výkaz výměr' },
+  { icon: 'Ruler', name: 'Analýza výkresů', desc: 'AI Vision + OCR extrakce z PDF výkresů' },
+  { icon: 'Building2', name: 'Objednávka betonu', desc: 'Betonárny, porovnání cen, čerpadlo' },
+  { icon: 'Settings', name: 'Kalkulačka čerpadel', desc: '3 dodavatelé, příplatky, kalendář' },
+  { icon: 'FileText', name: 'Ceníky dodavatelů', desc: 'PDF ceníky → strukturovaná data' },
+  { icon: 'ClipboardList', name: 'Generování seznamu prací', desc: 'AI vytvoří strukturovaný seznam stavebních prací z dokumentů' },
+  { icon: 'Ruler', name: 'Generátor výkazu výměr', desc: 'TZ → AI extrakce konstrukcí a objemů → výkaz výměr' },
 ];
 
 const FEATURES = [
@@ -224,7 +225,12 @@ export default function LandingPage() {
                 e.currentTarget.style.borderColor = 'transparent';
               }}
             >
-              <span style={{ fontSize: '36px', display: 'block', marginBottom: '12px' }}>{p.icon}</span>
+              <span style={{ display: 'block', marginBottom: '12px' }}>
+                {(() => {
+                  const IconComp = (LucideIcons as any)[p.icon];
+                  return IconComp ? <IconComp size={36} /> : null;
+                })()}
+              </span>
               <h3 style={{
                 fontSize: '20px', fontWeight: 700, marginBottom: '8px',
                 color: 'var(--text-primary)',
@@ -348,7 +354,12 @@ export default function LandingPage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '20px' }}>{s.icon}</span>
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  {(() => {
+                    const IconComp = (LucideIcons as any)[s.icon];
+                    return IconComp ? <IconComp size={20} /> : null;
+                  })()}
+                </span>
                 <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   {s.name}
                 </h4>

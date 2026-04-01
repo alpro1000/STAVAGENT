@@ -23,6 +23,7 @@ import {
   AlertTriangle, XCircle, ExternalLink,
   RefreshCw, Filter,
 } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { API_URL } from '../services/api';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -109,7 +110,7 @@ interface FullParsedData {
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; bg: string; buildUrl: (fileId: string, portalUrl: string) => string }> = {
   monolit: {
     label: 'Monolit Planner',
-    icon: '\u{1FAA8}',
+    icon: 'Hexagon',
     color: '#6366f1',
     bg: '#eef2ff',
     buildUrl: (fileId, portalUrl) =>
@@ -117,7 +118,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; b
   },
   registry: {
     label: 'Registr Rozpočtů',
-    icon: '\u{1F4CA}',
+    icon: 'BarChart3',
     color: '#0ea5e9',
     bg: '#f0f9ff',
     buildUrl: (fileId, portalUrl) =>
@@ -125,7 +126,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; color: string; b
   },
   urs_matcher: {
     label: 'Klasifikátor stavebních prací',
-    icon: '\u{1F50E}',
+    icon: 'Search',
     color: '#10b981',
     bg: '#ecfdf5',
     buildUrl: (fileId, portalUrl) =>
@@ -438,7 +439,12 @@ export default function ParsePreviewPage() {
                     onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '18px' }}>{meta.icon}</span>
+                      <span style={{ display: 'flex', alignItems: 'center' }}>
+                        {(() => {
+                          const IconComp = (LucideIcons as any)[meta.icon];
+                          return IconComp ? <IconComp size={18} /> : null;
+                        })()}
+                      </span>
                       <div style={{ textAlign: 'left' }}>
                         <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary, #1e293b)' }}>{meta.label}</div>
                         <div style={{ fontSize: '11px', color: 'var(--text-secondary, #6b7280)' }}>

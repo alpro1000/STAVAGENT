@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles, Send } from 'lucide-react';
+import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Settings, Trash2, Loader2, X } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -397,7 +397,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
                   cursor: 'pointer'
                 }}
               >
-                ✕
+                <X size={12} />
               </button>
             </div>
           ) : (
@@ -432,7 +432,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
                     e.currentTarget.style.background = 'transparent';
                   }}
                 >
-                  ✏️
+                  <Pencil size={11} />
                 </button>
               )}
             </div>
@@ -588,7 +588,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
             >
               <div style={{ marginBottom: '8px' }}>
                 <strong style={{ color: suggestion.success ? '#4CAF50' : '#ff9800', fontSize: '14px' }}>
-                  {suggestion.success ? '✅ AI návrh' : '⚠️ Empirický odhad'}:{' '}
+                  {suggestion.success ? <><CircleCheckBig size={14} className="inline" /> AI návrh</> : <><TriangleAlert size={14} className="inline" /> Empirický odhad</>}:{' '}
                   {suggestion.suggested_days} dní
                 </strong>
               </div>
@@ -599,7 +599,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
                 {suggestion.crew_size_recommendation &&
                  suggestion.crew_size_recommendation !== position.crew_size && (
                   <div style={{ color: '#ff9800', marginTop: '4px' }}>
-                    💡 Doporučená parta: {suggestion.crew_size_recommendation} lidí
+                    <Lightbulb size={14} className="inline" /> Doporučená parta: {suggestion.crew_size_recommendation} lidí
                   </div>
                 )}
               </div>
@@ -619,7 +619,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
 
               {suggestion.error && (
                 <div style={{ marginTop: '8px', color: '#f44336', fontSize: '11px' }}>
-                  ⚠️ {suggestion.error}
+                  <TriangleAlert size={11} className="inline" /> {suggestion.error}
                 </div>
               )}
             </div>
@@ -738,7 +738,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
       <td className="cell-rfi col-rfi">
         {position.has_rfi && (
           <div className="rfi-badge" title={position.rfi_message || 'Request For Information'}>
-            ⚠️
+            <TriangleAlert size={14} />
           </div>
         )}
       </td>
@@ -758,14 +758,14 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
             }
             disabled={isLocked || position.subtype === 'beton'}
           >
-            ❌
+            <Trash2 size={13} />
           </button>
           <button
             className="icon-btn btn-info"
-            title="ℹ️ Zobrazit detaily\n\nVidět všechny výpočty,\nformule a surová data"
+            title="Zobrazit detaily\n\nVidět všechny výpočty,\nformule a surová data"
             onClick={() => setIsDetailsOpen(true)}
           >
-            ℹ️
+            <Info size={13} />
           </button>
           {/* Portal TOV sync — only visible when position is linked to Portal */}
           {position.position_instance_id && (
@@ -786,11 +786,11 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               }}
             >
               {syncingToPortal ? (
-                <span style={{ fontSize: '11px' }}>⏳</span>
+                <Loader2 size={13} />
               ) : syncStatus === 'ok' ? (
-                <span style={{ fontSize: '13px' }}>✅</span>
+                <CircleCheckBig size={13} />
               ) : syncStatus === 'error' ? (
-                <span style={{ fontSize: '13px' }}>⚠️</span>
+                <TriangleAlert size={13} />
               ) : (
                 <Send size={13} />
               )}
@@ -809,7 +809,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
         {isLocked && <td></td>}
         <td colSpan={2} style={{ padding: '4px 12px', fontSize: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '14px' }}>⏳</span>
+            <Loader2 size={14} />
             <span style={{ fontWeight: 600, color: '#e65100' }}>Zrání betonu</span>
           </div>
         </td>
@@ -860,7 +860,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
         {isLocked && <td></td>}
         <td colSpan={2} style={{ padding: '4px 12px', fontSize: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '14px' }}>🔧</span>
+            <Settings size={14} />
             <span style={{ fontWeight: 600, color: '#1565c0' }}>Čerpadlo betonu</span>
           </div>
         </td>

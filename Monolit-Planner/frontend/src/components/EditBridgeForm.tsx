@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Pencil, Save } from 'lucide-react';
 import { bridgesAPI } from '../services/api';
 import type { Bridge } from '../../../shared/src/types';
 
@@ -59,7 +60,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
 
   return (
     <div className="edit-bridge-form">
-      <h2>✏️ Upravit objekt: {bridge.bridge_id}</h2>
+      <h2><Pencil size={18} className="inline" /> Upravit objekt: {bridge.bridge_id}</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-row">
@@ -166,7 +167,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
             className="btn-primary"
             title="Uložit změny v názvu a parametrech objektu"
           >
-            {isSubmitting ? 'Ukládání...' : '💾 Uložit změny'}
+            {isSubmitting ? 'Ukládání...' : <><Save size={14} className="inline" /> Uložit změny</>}
           </button>
           <button
             type="button"

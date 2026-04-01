@@ -9,6 +9,7 @@
  */
 
 import { FileText, Trash2, Upload, ExternalLink, CheckCircle, Clock, XCircle, Settings } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
 interface KioskLink {
   link_id: string;
@@ -47,35 +48,35 @@ function withAuth(url: string): string {
 const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link: KioskLink, portalId: string) => string }> = {
   monolit: {
     label: 'Monolit Planner',
-    icon: '🪨',
+    icon: 'Hexagon',
     buildUrl: (link, portalId) =>
       withAuth(`https://kalkulator.stavagent.cz/?project=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
   registry: {
     label: 'Registr Rozpočtů',
-    icon: '📊',
+    icon: 'BarChart3',
     buildUrl: (link, portalId) =>
       withAuth(`https://registry.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
   urs_matcher: {
     label: 'Klasifikátor stavebních prací',
-    icon: '🔎',
+    icon: 'Search',
     buildUrl: (link, portalId) =>
       withAuth(`https://klasifikator.stavagent.cz/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`),
   },
 };
 
 const PROJECT_TYPE_META: Record<string, { label: string; icon: string }> = {
-  bridge:   { label: 'Most',            icon: '🌉' },
-  building: { label: 'Budova',          icon: '🏢' },
-  road:     { label: 'Komunikace',      icon: '🛣️' },
-  parking:  { label: 'Parkoviště',      icon: '🅿️' },
-  monolit:  { label: 'Monolit Planner', icon: '🪨' },
-  custom:   { label: 'Vlastní',         icon: '📋' },
+  bridge:   { label: 'Most',            icon: 'Waypoints' },
+  building: { label: 'Budova',          icon: 'Building2' },
+  road:     { label: 'Komunikace',      icon: 'Milestone' },
+  parking:  { label: 'Parkoviště',      icon: 'SquareParking' },
+  monolit:  { label: 'Monolit Planner', icon: 'Hexagon' },
+  custom:   { label: 'Vlastní',         icon: 'ClipboardList' },
 };
 
 export default function ProjectCard({ project, onOpen, onDelete }: ProjectCardProps) {
-  const typeMeta = PROJECT_TYPE_META[project.project_type] ?? { label: project.project_type, icon: '📋' };
+  const typeMeta = PROJECT_TYPE_META[project.project_type] ?? { label: project.project_type, icon: 'ClipboardList' };
   const kiosks = project.kiosks ?? [];
   const primaryKiosk = kiosks[0];
 
@@ -109,7 +110,12 @@ export default function ProjectCard({ project, onOpen, onDelete }: ProjectCardPr
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-xl flex-shrink-0">{typeMeta.icon}</span>
+              <span className="text-xl flex-shrink-0">
+                {(() => {
+                  const IconComp = (LucideIcons as any)[typeMeta.icon];
+                  return IconComp ? <IconComp size={20} /> : null;
+                })()}
+              </span>
               <h3 className="text-base font-semibold text-gray-900 truncate" title={project.project_name}>
                 {project.project_name}
               </h3>
@@ -159,7 +165,12 @@ export default function ProjectCard({ project, onOpen, onDelete }: ProjectCardPr
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
                 >
-                  <span className="text-base leading-none">{meta.icon}</span>
+                  <span className="text-base leading-none">
+                    {(() => {
+                      const IconComp = (LucideIcons as any)[meta.icon];
+                      return IconComp ? <IconComp size={16} /> : null;
+                    })()}
+                  </span>
                   <span className="flex-1 text-sm">{meta.label}</span>
                   <ExternalLink className="h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                 </a>
