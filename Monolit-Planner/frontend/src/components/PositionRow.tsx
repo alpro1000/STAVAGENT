@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Settings, Trash2, Loader2, X } from 'lucide-react';
+import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Trash2, Loader2, X } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -45,15 +45,6 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
   // Speed (MJ/h) manual input state - allows user to type speed and recalculate days
   const [speedInput, setSpeedInput] = useState<string>('');
   const [isEditingSpeed, setIsEditingSpeed] = useState(false);
-
-  // Pump cost state (stored in metadata.pump_cost_czk)
-  const parsedMeta = (() => {
-    try { return position.metadata ? JSON.parse(position.metadata) : {}; } catch { return {}; }
-  })();
-  const defaultPumpCost = Math.ceil((position.qty || 0) / 20) * 2500;
-  const [pumpCost, setPumpCost] = useState<number>(
-    typeof parsedMeta.pump_cost_czk === 'number' ? parsedMeta.pump_cost_czk : defaultPumpCost
-  );
 
   // Work name editing state
   const [isEditingWorkName, setIsEditingWorkName] = useState(false);
@@ -331,15 +322,6 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
   const handleCancelEditWorkName = () => {
     setIsEditingWorkName(false);
     setWorkNameInput('');
-  };
-
-  // Save pump rental cost to metadata.pump_cost_czk
-  const handlePumpRentalChange = (cost: number) => {
-    if (isLocked) return;
-    let meta: Record<string, unknown> = {};
-    try { if (position.metadata) meta = JSON.parse(position.metadata); } catch { /* ignore */ }
-    meta.pump_cost_czk = cost;
-    updatePositions([{ id: position.id, metadata: JSON.stringify(meta) }]);
   };
 
   return (
@@ -845,55 +827,6 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               );
             }
             return <span>Technologická pauza • {curingDays} dní zrání betonu</span>;
-          })()}
-        </td>
-        <td></td>
-      </tr>
-    )}
-
-    {/* Pump sub-row - only for beton positions */}
-    {position.subtype === 'beton' && (
-      <tr className="pump-sub-row" style={{
-        background: 'var(--status-info-bg, #e3f2fd)',
-        borderBottom: '1px solid var(--border-default, #eee)'
-      }}>
-        {isLocked && <td></td>}
-        <td colSpan={2} style={{ padding: '4px 12px', fontSize: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Settings size={14} />
-            <span style={{ fontWeight: 600, color: '#1565c0' }}>Čerpadlo betonu</span>
-          </div>
-        </td>
-        <td colSpan={7}></td>
-        <td style={{ padding: '4px 6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <input
-              type="number"
-              min={0}
-              step={500}
-              className="input-cell"
-              value={pumpCost}
-              onChange={(e) => setPumpCost(Math.max(0, parseFloat(e.target.value) || 0))}
-              onBlur={(e) => handlePumpRentalChange(Math.max(0, parseFloat(e.target.value) || 0))}
-              disabled={isLocked}
-              title="Celkové náklady na čerpadlo betonu (Kč). Uloží se do TOV export."
-              style={{ width: '80px', textAlign: 'right', fontWeight: 600, fontSize: '13px' }}
-            />
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Kč</span>
-          </div>
-        </td>
-        <td colSpan={4} style={{ padding: '4px 12px', fontSize: '11px', color: 'var(--text-secondary)' }}>
-          {(() => {
-            const estimateHours = Math.ceil((position.qty || 0) / 20);
-            const estimate = estimateHours * 2500;
-            return (
-              <span>
-                Odhad: {position.qty || 0} m³ ÷ 20 m³/h × 2 500 Kč/h = <b style={{ color: '#1565c0' }}>{estimate.toLocaleString('cs-CZ')} Kč</b>
-                {pumpCost !== estimate && pumpCost !== defaultPumpCost && (
-                  <span style={{ marginLeft: '8px', color: '#4caf50' }}>✓ vlastní</span>
-                )}
-              </span>
-            );
           })()}
         </td>
         <td></td>
