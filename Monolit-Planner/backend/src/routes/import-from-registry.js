@@ -1,27 +1,26 @@
 /**
- * Import from Registry routes
- * POST /api/import-from-registry
+ * Import from Registry via Portal
  *
- * Fetches positions from Rozpočet Registry backend and saves them
- * as Monolit positions (same result as XLSX upload).
+ * GET  /api/import-from-registry/projects — list available Portal projects with Registry data
+ * POST /api/import-from-registry           — fetch positions from Portal and save as Monolit positions
  *
- * Flow: Registry Backend → fetch sheets+items → convert to positions → save to DB
+ * Flow: User uploads XLSX → Registry → portalAutoSync → Portal (portal_positions)
+ *       Monolit calls Portal GET /api/integration/for-registry/:id → gets sheets+items → saves
  */
 
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { findPairedRows } from '../services/concreteExtractor.js';
 
 const router = express.Router();
 
-const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
+const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
 
 // Default values for new positions
 const DEFAULTS = { crew_size: 4, wage_czk_ph: 398, shift_hours: 10, days: 0 };
 
 /**
- * Determine Monolit subtype from Registry item
+ * Determine Monolit subtype from item fields
  */
 function determineSubtype(item) {
   const desc = (item.popis || '').toLowerCase();
@@ -39,75 +38,107 @@ function determineSubtype(item) {
 }
 
 /**
+ * GET /api/import-from-registry/projects
+ * Returns list of Portal projects that have Registry data (for dropdown selector)
+ */
+router.get('/projects', async (req, res) => {
+  try {
+    logger.info('[ImportRegistry] Fetching available projects from Portal...');
+
+    const response = await fetch(`${PORTAL_API}/api/portal-projects/registry`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (!response.ok) {
+      logger.warn(`[ImportRegistry] Portal returned ${response.status}`);
+      return res.json({ success: true, projects: [] });
+    }
+
+    const data = await response.json();
+    const portalProjects = data.projects || [];
+
+    // Filter to projects that have Registry data
+    const withRegistry = portalProjects
+      .filter(p => p.has_registry || (p.position_stats?.has_registry_id > 0))
+      .map(p => ({
+        portal_project_id: p.portal_project_id,
+        project_name: p.project_name,
+        positions_total: p.position_stats?.total_positions || 0,
+        registry_linked: p.position_stats?.registry_linked || 0,
+        monolit_linked: p.position_stats?.monolit_linked || 0,
+      }));
+
+    logger.info(`[ImportRegistry] Found ${withRegistry.length} projects with Registry data`);
+
+    res.json({ success: true, projects: withRegistry });
+  } catch (error) {
+    logger.error('[ImportRegistry] Error fetching projects:', error);
+    res.json({ success: true, projects: [] });
+  }
+});
+
+/**
  * POST /api/import-from-registry
- * Body: { registry_project_id: string, project_name?: string }
+ * Body: { portal_project_id: string, project_name?: string }
+ *
+ * Fetches positions from Portal integration API and saves as Monolit positions.
  */
 router.post('/', async (req, res) => {
   try {
-    const { registry_project_id, project_name } = req.body;
+    const { portal_project_id, project_name } = req.body;
     const portalUserId = req.user?.userId || null;
 
-    if (!registry_project_id) {
-      return res.status(400).json({ error: 'registry_project_id is required' });
+    if (!portal_project_id) {
+      return res.status(400).json({ error: 'portal_project_id is required' });
     }
 
-    logger.info(`[ImportRegistry] Fetching project ${registry_project_id} from Registry backend...`);
+    logger.info(`[ImportRegistry] Fetching project ${portal_project_id} from Portal...`);
 
-    // 1. Fetch project metadata
-    const projectRes = await fetch(`${REGISTRY_API}/api/registry/projects/${registry_project_id}`);
-    if (!projectRes.ok) {
-      return res.status(404).json({ error: `Registry project not found: ${projectRes.status}` });
-    }
-    const { project } = await projectRes.json();
-    const projectName = project_name || project.project_name || 'Import z Rozpočtu';
+    // 1. Fetch project data from Portal integration API
+    const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portal_project_id}`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    // 2. Fetch sheets
-    const sheetsRes = await fetch(`${REGISTRY_API}/api/registry/projects/${registry_project_id}/sheets`);
-    if (!sheetsRes.ok) {
-      return res.status(500).json({ error: `Failed to fetch sheets: ${sheetsRes.status}` });
-    }
-    const { sheets } = await sheetsRes.json();
-
-    if (!sheets || sheets.length === 0) {
-      return res.status(404).json({ error: 'Registry project has no sheets' });
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: `Portal project not found or unavailable: ${response.status}`,
+      });
     }
 
+    const data = await response.json();
+    const projectData = data.project;
+
+    if (!projectData || !projectData.sheets || projectData.sheets.length === 0) {
+      return res.status(404).json({ error: 'Project has no sheets/positions in Portal' });
+    }
+
+    const projectName = project_name || projectData.name || 'Import z Rozpočtu';
     const importedBridges = [];
 
-    // 3. Process each sheet as a separate bridge/object
-    for (const sheet of sheets) {
-      // Fetch items for this sheet
-      const itemsRes = await fetch(`${REGISTRY_API}/api/registry/sheets/${sheet.sheet_id || sheet.id}/items`);
-      if (!itemsRes.ok) {
-        logger.warn(`[ImportRegistry] Failed to fetch items for sheet ${sheet.sheet_name}: ${itemsRes.status}`);
-        continue;
-      }
-      const { items } = await itemsRes.json();
+    // 2. Process each sheet as a separate bridge/object
+    for (const sheet of projectData.sheets) {
+      const items = sheet.items || [];
+      if (items.length === 0) continue;
 
-      if (!items || items.length === 0) {
-        logger.info(`[ImportRegistry] Sheet "${sheet.sheet_name}" has no items, skipping`);
-        continue;
-      }
+      // Generate bridge_id
+      const bridgeId = `PRT_${portal_project_id.replace(/[^a-zA-Z0-9_-]/g, '')}_${importedBridges.length + 1}`;
+      const objectName = sheet.name || 'Objekt';
 
-      // Generate bridge_id from sheet name
-      const bridgeId = `REG_${registry_project_id}_${sheet.sheet_id || sheet.id}`;
-      const objectName = sheet.sheet_name || 'Objekt';
-
-      // Convert Registry items → Monolit positions
+      // Convert Portal items → Monolit positions
       const positions = [];
       for (const item of items) {
         const subtype = determineSubtype(item);
         const qty = parseFloat(item.mnozstvi) || 0;
         if (qty <= 0) continue;
 
-        // Extract concrete grade from description
+        // Extract concrete grade
         let concreteGrade = null;
         const gradeMatch = (item.popis || '').match(/C\s*(\d{1,3})\s*\/\s*(\d{1,3})/i);
         if (gradeMatch) concreteGrade = `C${gradeMatch[1]}/${gradeMatch[2]}`;
 
         positions.push({
           part_name: item.popis ? item.popis.substring(0, 60) : 'Položka',
-          item_name: item.popisFull || item.popis || 'Položka',
+          item_name: item.popis || 'Položka',
           subtype,
           unit: item.mj || (subtype === 'beton' ? 'M3' : subtype === 'výztuž' ? 'T' : 'M2'),
           qty,
@@ -117,19 +148,17 @@ router.post('/', async (req, res) => {
           total_price: parseFloat(item.cenaCelkem) || 0,
           concrete_grade: concreteGrade,
           position_instance_id: item.position_instance_id || null,
-          source: 'REGISTRY_IMPORT',
+          source: 'REGISTRY_VIA_PORTAL',
         });
       }
 
       if (positions.length === 0) continue;
 
-      // Calculate totals
       const totalConcreteM3 = positions
         .filter(p => p.subtype === 'beton')
         .reduce((sum, p) => sum + (p.qty || 0), 0);
 
-      // 4. Save to DB — create bridge + monolith_project + positions
-      // Create/update bridge
+      // 3. Save to DB
       await db.prepare(`
         INSERT INTO bridges (bridge_id, object_name, concrete_m3, status, project_name)
         VALUES (?, ?, ?, 'active', ?)
@@ -139,7 +168,6 @@ router.post('/', async (req, res) => {
           project_name = COALESCE(excluded.project_name, bridges.project_name)
       `).run(bridgeId, objectName, totalConcreteM3, projectName);
 
-      // Create/update monolith_project
       await db.prepare(`
         INSERT INTO monolith_projects
         (project_id, project_name, object_name, description, concrete_m3, element_count, owner_id, portal_user_id, status)
@@ -149,9 +177,9 @@ router.post('/', async (req, res) => {
           element_count = excluded.element_count,
           project_name = COALESCE(excluded.project_name, monolith_projects.project_name),
           portal_user_id = COALESCE(excluded.portal_user_id, monolith_projects.portal_user_id)
-      `).run(bridgeId, projectName, objectName, `Imported from Registry: ${sheet.sheet_name}`, totalConcreteM3, positions.length, portalUserId);
+      `).run(bridgeId, projectName, objectName, `Import from Registry via Portal`, totalConcreteM3, positions.length, portalUserId);
 
-      // Delete old positions and insert new
+      // Batch insert positions
       if (db.isPostgres) {
         const pool = db.getPool();
         const client = await pool.connect();
@@ -210,7 +238,7 @@ router.post('/', async (req, res) => {
         tx();
       }
 
-      logger.info(`[ImportRegistry] Saved ${positions.length} positions for bridge ${bridgeId} (${totalConcreteM3.toFixed(2)} m³)`);
+      logger.info(`[ImportRegistry] Saved ${positions.length} positions for bridge ${bridgeId}`);
 
       importedBridges.push({
         bridge_id: bridgeId,
@@ -222,7 +250,7 @@ router.post('/', async (req, res) => {
     }
 
     if (importedBridges.length === 0) {
-      return res.status(404).json({ error: 'No items found in Registry project' });
+      return res.status(404).json({ error: 'No concrete-related items found in project' });
     }
 
     const totalPositions = importedBridges.reduce((s, b) => s + b.positions_count, 0);

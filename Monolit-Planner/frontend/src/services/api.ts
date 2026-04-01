@@ -328,11 +328,15 @@ export const uploadAPI = {
     });
     return data;
   },
-  importFromRegistry: async (registryProjectId: string, projectName?: string) => {
+  importFromRegistry: async (portalProjectId: string, projectName?: string) => {
     const { data } = await api.post('/api/import-from-registry', {
-      registry_project_id: registryProjectId,
+      portal_project_id: portalProjectId,
       project_name: projectName,
     });
+    return data;
+  },
+  getRegistryProjects: async () => {
+    const { data } = await api.get('/api/import-from-registry/projects');
     return data;
   },
 };
