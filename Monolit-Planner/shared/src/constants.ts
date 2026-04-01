@@ -64,9 +64,7 @@ export const COLORS = {
 export const SUBTYPE_ICONS = {
   'beton': '🪨',
   'bednění': '📦',
-  'oboustranné (opěry)': '🏗️',
-  'oboustranné (křídla)': '🪽',
-  'oboustranné (závěrné zídky)': '🧱',
+  'odbednění': '📤',
   'výztuž': '🛠️',
   'jiné': '📋'
 };
@@ -79,9 +77,7 @@ export const SUBTYPE_ICONS = {
 export const SUBTYPE_LABELS = {
   'beton': 'Betonování',
   'bednění': 'Bednění',
-  'oboustranné (opěry)': 'Oboustranné (opěry)',
-  'oboustranné (křídla)': 'Oboustranné (křídla)',
-  'oboustranné (závěrné zídky)': 'Oboustranné (závěrné zídky)',
+  'odbednění': 'Odbednění',
   'výztuž': 'Výztuž',
   'jiné': 'Jiné'
 };

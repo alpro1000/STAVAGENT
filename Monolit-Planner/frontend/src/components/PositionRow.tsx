@@ -62,7 +62,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
 
     const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
     const professionMap: Record<string, string> = {
-      beton: 'Betonář', 'bednění': 'Tesař / Bednář', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
+      beton: 'Betonář', 'bednění': 'Tesař', 'odbednění': 'Tesař', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
     };
     const profession = professionMap[position.subtype] || 'Stavební dělník';
     const crewSize = position.crew_size || 0;

@@ -352,10 +352,8 @@ function mapPositionToLabor(pos) {
 
   const professionMap = {
     'beton': 'Betonář',
-    'bednění': 'Tesař / Bednář',
-    'oboustranné (opěry)': 'Tesař / Bednář',
-    'oboustranné (křídla)': 'Tesař / Bednář',
-    'oboustranné (závěrné zídky)': 'Tesař / Bednář',
+    'bednění': 'Tesař',
+    'odbednění': 'Tesař',
     'výztuž': 'Železář / Armovač',
     'jiné': 'Stavební dělník'
   };

@@ -6,9 +6,7 @@
 export type Subtype =
   | 'beton'
   | 'bednění'
-  | 'oboustranné (opěry)'
-  | 'oboustranné (křídla)'
-  | 'oboustranné (závěrné zídky)'
+  | 'odbednění'
   | 'výztuž'
   | 'jiné';
 

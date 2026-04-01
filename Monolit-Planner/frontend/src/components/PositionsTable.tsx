@@ -313,30 +313,32 @@ export default function PositionsTable() {
   // handleFormworkTransfer removed — FormworkCalculatorModal replaced by /planner navigation
 
   // Handle new part creation from OTSKP search
+  // Auto-creates 4 standard positions: Betonování, Bednění, Odbednění, Výztuž
   const handleNewPartSelected = async (otskpCode: string, partName: string) => {
     if (!selectedBridge) return;
 
     try {
       setShowNewPartModal(false);
 
-      // Create first position (beton) for the new part
-      const newPosition: Partial<Position> = {
-        id: uuidv4(),
+      const baseFields = {
         bridge_id: selectedBridge,
         part_name: partName,
-        item_name: SUBTYPE_LABELS['beton'] || 'Betonování', // Use subtype name, not part name
         otskp_code: otskpCode,
-        subtype: 'beton', // First position is always beton (concrete volume)
-        unit: 'M3',
-        qty: 0,
         crew_size: 4,
         wage_czk_ph: 398,
         shift_hours: 10,
-        days: 0
+        days: 0,
       };
 
-      // Create position via API
-      const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
+      const newPositions: Partial<Position>[] = [
+        { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['beton'] || 'Betonování', subtype: 'beton', unit: 'M3', qty: 0 },
+        { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['bednění'] || 'Bednění', subtype: 'bednění', unit: 'm2', qty: 0 },
+        { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['odbednění'] || 'Odbednění', subtype: 'odbednění', unit: 'm2', qty: 0 },
+        { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['výztuž'] || 'Výztuž', subtype: 'výztuž', unit: 't', qty: 0 },
+      ];
+
+      // Create all positions via API
+      const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
 
       // Update context with new positions
       if (result.positions) {
@@ -346,7 +348,6 @@ export default function PositionsTable() {
         }
       }
 
-      // 🔄 Invalidate React Query cache to ensure UI syncs immediately
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
     } catch (error) {
       alert(`Chyba při vytváření části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
@@ -512,7 +513,7 @@ export default function PositionsTable() {
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen"><Lock size={14} /></th>}
                       <th
                         className="col-podtyp"
-                        title="Typ práce: beton, bednění, výztuž, oboustranné, jiné"
+                        title="Typ práce: beton, bednění, odbednění, výztuž, jiné"
                         style={{
                           width: `${workColumnWidth}px`,
                           minWidth: `${workColumnWidth}px`,

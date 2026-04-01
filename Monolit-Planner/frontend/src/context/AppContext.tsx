@@ -38,7 +38,10 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [selectedBridge, setSelectedBridge] = useState<string | null>(null);
+  const [selectedBridge, setSelectedBridge] = useState<string | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('bridge') || null;
+  });
   const [positions, setPositions] = useState<Position[]>([]);
   const [headerKPI, setHeaderKPI] = useState<HeaderKPI | null>(null);
   const [bridges, setBridges] = useState<Bridge[]>([]);

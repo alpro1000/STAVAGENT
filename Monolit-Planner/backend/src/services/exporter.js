@@ -84,9 +84,7 @@ const formatCurrency = (num, decimals = 2) => {
 const SUBTYPE_LABELS = {
   'beton': 'Betonování',
   'bednění': 'Bednění',
-  'oboustranné (opěry)': 'Oboustranné (opěry)',
-  'oboustranné (křídla)': 'Oboustranné (křídla)',
-  'oboustranné (závěrné zídky)': 'Oboustranné (závěrné zídky)',
+  'odbednění': 'Odbednění',
   'výztuž': 'Výztuž',
   'jiné': 'Jiné'
 };
