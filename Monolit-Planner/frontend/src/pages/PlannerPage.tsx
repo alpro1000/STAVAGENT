@@ -96,6 +96,7 @@ const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: strin
   { value: 'rigel', label: 'Příčník (ригель)', group: 'Mostní prvky' },
   { value: 'opery_ulozne_prahy', label: 'Opěry, úložné prahy', group: 'Mostní prvky' },
   { value: 'mostni_zavirne_zidky', label: 'Závěrné zídky', group: 'Mostní prvky' },
+  { value: 'prechodova_deska', label: 'Přechodová deska', group: 'Mostní prvky' },
   { value: 'other', label: 'Jiný typ', group: '' },
 ];
 
