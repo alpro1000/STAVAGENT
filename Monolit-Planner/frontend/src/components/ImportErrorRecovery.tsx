@@ -5,6 +5,7 @@
  */
 
 import React, { useState } from 'react';
+import { TriangleAlert, Lightbulb, Pencil, X } from 'lucide-react';
 import './ImportErrorRecovery.css';
 
 interface ParseResult {
@@ -76,8 +77,8 @@ export default function ImportErrorRecovery({
     <div className="import-error-recovery-overlay">
       <div className="import-error-recovery-modal">
         <div className="recovery-header">
-          <h2>⚠️ Import Error</h2>
-          <button className="close-btn" onClick={onCancel}>✕</button>
+          <h2><TriangleAlert size={18} className="inline" /> Import Error</h2>
+          <button className="close-btn" onClick={onCancel}><X size={16} /></button>
         </div>
 
         <div className="recovery-content">
@@ -114,7 +115,7 @@ export default function ImportErrorRecovery({
                       <div className="fallback-note">✅ Local parser (keyword-based)</div>
                     )}
                     {result.source === 'TEMPLATE' && (
-                      <div className="fallback-note">⚠️ Default template</div>
+                      <div className="fallback-note"><TriangleAlert size={14} className="inline" /> Default template</div>
                     )}
                   </div>
                 ))}
@@ -163,7 +164,7 @@ export default function ImportErrorRecovery({
 
           {/* Suggestions */}
           <section className="suggestions">
-            <h3>💡 Suggestions</h3>
+            <h3><Lightbulb size={18} className="inline" /> Suggestions</h3>
             <ul>
               {getSuggestions().map((suggestion, idx) => (
                 <li key={idx}>{suggestion}</li>
@@ -173,7 +174,7 @@ export default function ImportErrorRecovery({
 
           {/* Manual Correction */}
           <section className="manual-correction">
-            <h3>✏️ Manual Data Entry</h3>
+            <h3><Pencil size={18} className="inline" /> Manual Data Entry</h3>
             <p className="manual-note">
               Paste CSV data (description, quantity, unit) one line per position:
             </p>

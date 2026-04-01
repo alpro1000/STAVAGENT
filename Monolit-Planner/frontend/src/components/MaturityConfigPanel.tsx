@@ -6,6 +6,7 @@
  */
 
 import { useState, useMemo } from 'react';
+import { TriangleAlert } from 'lucide-react';
 import {
   calculateCuring,
   getStripWaitHours,
@@ -155,7 +156,7 @@ export default function MaturityConfigPanel({ config, onChange }: Props) {
 
       {/* Summary (always shown) */}
       <span style={{ fontWeight: 600, color: '#2e7d32' }}>
-        {result.min_curing_days === Infinity ? '⚠️ N/A' : `${result.min_curing_days} dní`}
+        {result.min_curing_days === Infinity ? <><TriangleAlert size={14} className="inline" /> N/A</> : `${result.min_curing_days} dní`}
       </span>
       <span style={{ color: '#666' }}>
         ({config.concrete_class}, {config.temperature_c}°C, {
@@ -171,7 +172,7 @@ export default function MaturityConfigPanel({ config, onChange }: Props) {
       {/* Warning */}
       {result.warning && (
         <span style={{ color: '#e65100', fontSize: '11px', fontWeight: 600 }}>
-          ⚠ {result.warning.split('.')[0]}
+          <TriangleAlert size={11} className="inline" /> {result.warning.split('.')[0]}
         </span>
       )}
 

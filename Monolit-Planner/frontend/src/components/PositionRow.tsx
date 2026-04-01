@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Settings, Trash2, Loader2 } from 'lucide-react';
+import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Settings, Trash2, Loader2, X } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -397,7 +397,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
                   cursor: 'pointer'
                 }}
               >
-                ✕
+                <X size={12} />
               </button>
             </div>
           ) : (

@@ -163,7 +163,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
           {/* RFI Status */}
           {position.has_rfi && (
             <div className="details-section rfi-section">
-              <h3>⚠️ Request For Information (RFI)</h3>
+              <h3><TriangleAlert size={18} className="inline" /> Request For Information (RFI)</h3>
               <p className="rfi-message">{position.rfi_message || 'Tato položka vyžaduje upřesnění'}</p>
             </div>
           )}

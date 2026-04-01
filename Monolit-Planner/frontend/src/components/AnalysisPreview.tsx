@@ -5,6 +5,7 @@
  */
 
 import { useState } from 'react';
+import { Ruler } from 'lucide-react';
 
 interface Position {
   name: string;
@@ -113,7 +114,7 @@ export default function AnalysisPreview({
           >
             {tab === 'positions' && `📋 Positions (${analysis.parsed_positions.length})`}
             {tab === 'materials' && `📦 Materials (${analysis.materials.length})`}
-            {tab === 'dimensions' && `📐 Dimensions`}
+            {tab === 'dimensions' && <><Ruler size={14} className="inline" /> Dimensions</>}
           </button>
         ))}
       </div>

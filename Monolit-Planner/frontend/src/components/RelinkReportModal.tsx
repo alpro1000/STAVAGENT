@@ -3,6 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Settings, TriangleAlert, Trash2 } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
 interface RelinkMatch {
@@ -271,7 +272,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                 {activeTab === 'conflicts' && (
                   <div className="conflicts-container">
                     <div style={{ marginBottom: '16px' }}>
-                      <h3 style={{ fontSize: '16px', marginBottom: '8px' }}>🔧 Manual Conflict Resolution</h3>
+                      <h3 style={{ fontSize: '16px', marginBottom: '8px' }}><Settings size={16} className="inline" /> Manual Conflict Resolution</h3>
                       <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Review AMBER/RED matches and create manual links if needed</p>
                     </div>
                     
@@ -284,7 +285,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                             </span>
                             <span className="match-type">{match.match_type}</span>
                             {Math.abs(match.qty_change) > 20 && (
-                              <span style={{ fontSize: '12px', color: '#ef4444' }}>⚠️ Qty {match.qty_change > 0 ? '+' : ''}{match.qty_change}%</span>
+                              <span style={{ fontSize: '12px', color: '#ef4444' }}><TriangleAlert size={12} className="inline" /> Qty {match.qty_change > 0 ? '+' : ''}{match.qty_change}%</span>
                             )}
                           </div>
                           <div style={{ fontSize: '13px', marginTop: '8px' }}>
@@ -352,7 +353,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                   <div className="orphaned-list">
                     {report.details.orphaned.map((item, idx) => (
                       <div key={idx} className="orphaned-item">
-                        <span className="orphaned-icon">🗑️</span>
+                        <span className="orphaned-icon"><Trash2 size={14} /></span>
                         <span className="orphaned-description">{item.position_name}</span>
                       </div>
                     ))}
