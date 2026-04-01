@@ -134,9 +134,9 @@ export default function QuotaDisplay() {
       }}>
         <div>
           <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 2 }}>Váš zůstatek</div>
-          <div style={{ fontSize: 28, fontWeight: 700, color: balance > 0 ? '#1a1a1a' : '#e53e3e' }}>
-            {balance.toLocaleString('cs-CZ')}
-            <span style={{ fontSize: 14, fontWeight: 400, color: '#9ca3af', marginLeft: 4 }}>kreditů</span>
+          <div style={{ fontSize: 28, fontWeight: 700, color: usage.is_admin ? '#1a1a1a' : balance > 0 ? '#1a1a1a' : '#e53e3e' }}>
+            {usage.is_admin ? 'Neomezeno' : balance.toLocaleString('cs-CZ')}
+            {!usage.is_admin && <span style={{ fontSize: 14, fontWeight: 400, color: '#9ca3af', marginLeft: 4 }}>kreditů</span>}
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

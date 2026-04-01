@@ -867,11 +867,16 @@ router.get('/usage', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Enrich with credit balance
+    // Enrich with credit balance (admins get unlimited)
     const creditBalance = await getBalance(req.user.userId);
     const sessionOnly = await isSessionOnly(req.user.userId);
+    const isAdmin = usage.is_admin === true;
 
-    res.json({ success: true, data: { ...usage, credit_balance: creditBalance, session_only: sessionOnly } });
+    res.json({ success: true, data: {
+      ...usage,
+      credit_balance: isAdmin ? 999999 : creditBalance,
+      session_only: isAdmin ? false : sessionOnly,
+    } });
   } catch (error) {
     logger.error('Get usage error:', error);
     res.status(500).json({ error: 'Server error' });

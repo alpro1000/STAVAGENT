@@ -99,7 +99,11 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error: any) {
-      alert(`Chyba při exportu: ${error.message}`);
+      if (error.response?.status === 404) {
+        alert('Objekt nemá žádné pozice. Přidejte pozice před exportem.');
+      } else {
+        alert(`Chyba při exportu: ${error.message}`);
+      }
     }
   };
 
