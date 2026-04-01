@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.9
+**Version:** 4.1.0
 **Last Updated:** 2026-04-01
 **Repository:** STAVAGENT (Monorepo)
 
@@ -122,20 +122,7 @@ Kiosk → CORE:   POST /api/v1/multi-role/ask (JSON: role, question, context)
 Python FastAPI. **119 endpoints**, **31 test files (81 engine tests)**, **~58K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 
-**Subsystems:**
-- **Multi-Role Expert** — 4 roles (SME, ARCH, ENG, SUP), parallel validation, consensus
-- **Workflows** — A (import/audit), B (drawings), C (hybrid audit+summary)
-- **Document Accumulator** — 20 endpoints, multi-document project accumulation
-- **Multi-Format Parser v5.0** — `parse_any()`: XLSX Komplet/RTSROZP, XML OTSKP/TSKP, PDF, DXF, images (OCR)
-- **Add-Document Pipeline** — 14 auto-detected doc types, versioning, cross-validation, NKB compliance
-- **NKB (Normative Knowledge Base)** — 3-layer: Registry (23 norms) → Rules (23 rules) → Advisor (Gemini+Perplexity)
-- **NormIngestionPipeline** — L1 PDF→Text → L2 Regex (50+ patterns, conf=1.0) → L3a Gemini (conf=0.7) → L3b Perplexity (conf=0.85)
-- **NKB Audit** — 15 external sources (SŽ, PJPK, MMR, ŘSD, ČAS, ÚNMZ), scraping + gap analysis
-- **Unified Item Layer** — ProjectItem with 4 namespace blocks (estimate/monolit/classification/core), code detection, position grouping
-- **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export, drawing notes as input source
-- **Scenario B** — TZ upload → element extraction → position generation → CSV export
-- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), AI merge metrics, negative-context filter (`_safe_search` skips demolition/existing-state matches)
-- **Other** — Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents, Chat
+**Subsystems:** Multi-Role Expert (4 roles), Workflows A/B/C, Document Accumulator (20 ep), Multi-Format Parser v5.0 (XLSX/XML/PDF/DXF/OCR), Add-Document Pipeline (14 doc types), NKB 3-layer (Registry→Rules→Advisor), NormIngestionPipeline (L1→L2→L3), NKB Audit (15 sources), Unified Item Layer, Soupis Assembler (TZ→WP→XLSX), Scenario B, Section Extraction Engine v2 (28 extractors, AI enrichment, negative-context filter), Drive OAuth2, Agents, Chat.
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 
 ### 2. stavagent-portal (Dispatcher)
@@ -158,16 +145,20 @@ Concrete cost calculator: CZK/m³, Excel import, OTSKP codes, AI days suggestion
 
 **Key formulas:** `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x / 50) * 50`
 
-**Element Planner** (`/planner`): 20 element types (9 bridge + 11 building). 7-engine pipeline: Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler → PERT Monte Carlo. Gantt + XLSX export. Back-nav preserves bridge context via `?bridge=` URL param.
+**Element Planner** (`/planner`): 21 element types (10 bridge + 11 building, incl. `prechodova_deska`). 7-engine pipeline: Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler → PERT Monte Carlo. Gantt + XLSX export. Back-nav preserves bridge context via `?bridge=` URL param.
 
 **Lateral Pressure** — `lateral-pressure.ts`: p = ρ×g×h×k (ČSN EN 12812), auto-filter formwork by pressure, záběrová betonáž (pour stages by height), shape correction (×1.0–1.8), obrátkovost for repetitive elements.
 
 **Planner UX** — Two modes: Monolit (ordinal days, auto-classify from part_name, TOV mapping to beton+bednění+odbednění+výztuž) / Portal (calendar dates, manual input). Bridge context classifier (pilíř vs sloup). Plan variants save/compare. New part auto-creates 4 positions.
 
+**Import from Registry** — "Načíst z Rozpočtu" button: Registry→portalAutoSync→Portal→Monolit. Project selector dropdown via `GET /api/import-from-registry/projects`. Paired row scanner (`findPairedRows`) auto-detects výztuž/bednění adjacent to beton in XLSX.
+
+**Per-position TOV sync** — "Přenést do TOV" sends labor-only payload to Portal DOV. Three composition variants auto-detected: A (all-in-one), B (beton+bednění / výztuž separate), C (all separate). Formwork rental for bednění positions.
+
 **Other:** Snapshot system (SHA-256), Resource Optimization (grid search), Maturity/Props/Calendar/Pump engines, Normsets (ÚRS/RTS/KROS/Internal), mini-calculators (crane, delivery), TOV prefill from planner.
 - **Account Isolation** — `portal_user_id` on projects, optionalAuth middleware (Portal JWT), 403 on cross-account access
 
-Structure: `shared/` (384 tests), `backend/` (60 tests), `frontend/`. Design: Slate Minimal (`--r0-*` CSS vars).
+Structure: `shared/` (404 tests), `backend/` (60 tests), `frontend/`. Design: Slate Minimal (`--r0-*` CSS vars).
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
 Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 SQLite tables**.
@@ -196,10 +187,10 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 |---------|-----------|-------|-----|
 | concrete-agent | 119 | 31 files | ~58K |
 | stavagent-portal | ~80 | 1 file | ~25K |
-| Monolit-Planner | 125 | 444 | ~31K |
+| Monolit-Planner | 128 | 458 | ~32K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~15K |
-| **TOTAL** | **~384** | **635+** | **~138K** |
+| **TOTAL** | **~387** | **649+** | **~139K** |
 
 ---
 
@@ -249,6 +240,10 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 - Monolit subtypes: beton, bednění, odbednění (Tesař), výztuž, jiné — oboustranné removed
 - Passport tab = structured tables only; Shrnutí tab = narrative + topics + risks with mitigation
 - Negative context filter: `_safe_search()` in extractor_registry.py, skips stávající/demolition matches
+- Element classifier v2: 21 types, bridge context (`is_bridge`), early-exit (PODKLADNÍ/STŘÍKANÝ→other, PŘEDPJATÝ→mostovkova_deska)
+- TOV sync: Monolit sends ONLY labor + formwork rental; materials/machinery filled in Registry TOV
+- TOV composition: 3 variants (A=all-in-beton, B=beton+bednění/výztuž separate, C=all separate) auto-detected from siblings
+- Import flow: Registry→portalAutoSync(3s)→Portal→Monolit via `portal_project_id` (not registry_project_id)
 
 ---
 
@@ -289,6 +284,10 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 | Monolit PUT 500 | Missing `metadata`/`position_number` columns; migration 013 adds them |
 | Portal "Failed to fetch" | `ERR_CONNECTION_CLOSED` = Node.js headersTimeout (60s default); server.js sets 310s |
 | Wrong izolant_tl_mm | Negative context: `_safe_search()` skips stávající/odstraněno; check extractor_registry.py |
+| Portal admin/stats 500 | `email_verified = 1` invalid for PG BOOLEAN; use `= true` |
+| Monolit delete project 500 | `bridges` table has no `portal_user_id`; filter by `project_name` only |
+| OTSKP popup on page load | `userTyping` flag in OtskpAutocomplete — search only on keyboard input |
+| Vertex AI empty response | `response.text` raises ValueError when blocked; wrap in try/except |
 
 ---
 
@@ -311,10 +310,12 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] **Stripe env vars**: configure `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` in Secret Manager
 
 ### TODO
-- [ ] **P1: Deploy** Monolit (migration 013), Portal (timeout), CORE (negative context filter)
-- [ ] **P1: Verify prod** — PUT /api/positions → 200, passport no timeout, izolant_tl_mm=180
-- [ ] **P2: prechodova_deska** — 21st element type + PODKLADNÍ/STŘÍKANÝ/PŘEDPJATÝ rules
-- [ ] **P2: NKB polling backoff** — exponential backoff in NKBAdminPage (3s→6s→12s→30s)
+- [ ] **P1: Deploy** all services (classifier v2, paired rows, TOV sync, Registry import, admin/stats fix, OTSKP popup fix)
+- [ ] **P1: Verify prod** — admin/stats→200, project delete→200, OTSKP no popup, prechodova_deska in Planner
+- [ ] **P1: Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
+- [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
+- [ ] **P2: Načíst z Rozpočtu E2E** — upload XLSX→Registry→auto-sync→Portal→Monolit import→verify subtypes
+- [ ] **P2: TOV sync E2E** — test all 3 composition variants (A/B/C) with real bridge project
 - [ ] **P2: TariffPage → TOV/Portal** — migrate tariff management into Rozpis zdrojů + Portal
 - [ ] **P3: Planner E2E** — lateral pressure + záběry on SO-203, Aplikovat → TOV
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
