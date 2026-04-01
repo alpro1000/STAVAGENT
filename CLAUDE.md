@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.0.8
+**Version:** 4.0.9
 **Last Updated:** 2026-04-01
 **Repository:** STAVAGENT (Monorepo)
 
@@ -134,7 +134,7 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 - **Unified Item Layer** — ProjectItem with 4 namespace blocks (estimate/monolit/classification/core), code detection, position grouping
 - **Soupis Assembler** — TZ→work requirements extraction, WP lookup, KROS-compatible XLSX export, drawing notes as input source
 - **Scenario B** — TZ upload → element extraction → position generation → CSV export
-- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), AI merge metrics (added/rejected/new_domains), type-agnostic
+- **Section Extraction Engine v2** — universal map-reduce: 28 extractors in registry (including výkresy wrapper), AI enrichment per section (Gemini Flash, conf=0.7 < regex conf=1.0), AI merge metrics, negative-context filter (`_safe_search` skips demolition/existing-state matches)
 - **Other** — Google Drive OAuth2, PDF Price Parser, Vertex AI Search, Betonárny Discovery, Norms Scraper, Agents, Chat
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 
@@ -147,7 +147,8 @@ Node.js/Express + React. **~80+ endpoints**, **20 pages**, **40+ components**.
 - JWT auth (24h), 5 org roles, email verification, IP anti-fraud, disposable email blocking, user bans
 - Pay-as-you-go credits: Stripe Checkout, volume discounts, welcome bonus 200 credits, fail-open billing
 - Data Pipeline admin tab: Smlouvy → CPV enrichment → Work Packages → Methvin norms scraper
-- EngineExtractionsPanel: AI metrics bar, field-level `_source`/`_confidence`, CSV export
+- EngineExtractionsPanel: AI metrics bar, field-level `_source`/`_confidence`, CSV export, empty-domain filter
+- CORE proxy: 300s timeout with `headersTimeout=310s`, `requestTimeout=305s`, `keepAliveTimeout=65s`
 - Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM
 
 ### 3. Monolit-Planner (Kiosk)
@@ -157,11 +158,11 @@ Concrete cost calculator: CZK/m³, Excel import, OTSKP codes, AI days suggestion
 
 **Key formulas:** `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x / 50) * 50`
 
-**Element Planner** (`/planner`): 20 element types (9 bridge + 11 building). 7-engine pipeline: Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler → PERT Monte Carlo. Gantt + XLSX export.
+**Element Planner** (`/planner`): 20 element types (9 bridge + 11 building). 7-engine pipeline: Classifier → Pour Decision → Formwork 3-Phase → Rebar Lite → Pour Task → RCPSP Scheduler → PERT Monte Carlo. Gantt + XLSX export. Back-nav preserves bridge context via `?bridge=` URL param.
 
 **Lateral Pressure** — `lateral-pressure.ts`: p = ρ×g×h×k (ČSN EN 12812), auto-filter formwork by pressure, záběrová betonáž (pour stages by height), shape correction (×1.0–1.8), obrátkovost for repetitive elements.
 
-**Planner UX** — Two modes: Monolit (ordinal days, auto-classify from part_name, TOV mapping to beton+bednění+výztuž) / Portal (calendar dates, manual input). Bridge context classifier (pilíř vs sloup). Plan variants save/compare.
+**Planner UX** — Two modes: Monolit (ordinal days, auto-classify from part_name, TOV mapping to beton+bednění+odbednění+výztuž) / Portal (calendar dates, manual input). Bridge context classifier (pilíř vs sloup). Plan variants save/compare. New part auto-creates 4 positions.
 
 **Other:** Snapshot system (SHA-256), Resource Optimization (grid search), Maturity/Props/Calendar/Pump engines, Normsets (ÚRS/RTS/KROS/Internal), mini-calculators (crane, delivery), TOV prefill from planner.
 - **Account Isolation** — `portal_user_id` on projects, optionalAuth middleware (Portal JWT), 403 on cross-account access
@@ -173,11 +174,9 @@ Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 S
 
 **4-phase matching:** File Parsing → Document Analysis → URS Matching (TSKP→OTSKP→LLM) → Composite Works Detection.
 
-**Dual search:** Old (`/api/jobs/text-match`, 36 seed + OTSKP fallback) + New (`/api/pipeline/match`, 17,904 OTSKP + Perplexity). Frontend calls both in parallel.
+**Dual search:** Old (`/api/jobs/text-match`, 36 seed + OTSKP fallback) + New (`/api/pipeline/match`, 17,904 OTSKP + Perplexity).
 
-**VZ Scraper:** Hlídač státu smlouvy API → PlainTextContent parser → SQLite storage. VVZ API (vvz.nipez.cz). Co-occurrence matrix → Work Package builder with AI naming.
-
-**Other:** 9 LLM providers, URS Catalog Harvest (Perplexity), rate limiting (300/15min, 50 match/hr).
+**Other:** VZ Scraper (Hlídač státu), 9 LLM providers, URS Catalog Harvest (Perplexity), rate limiting.
 
 ### 5. rozpocet-registry (Kiosk)
 React 19 + Vite + Vercel serverless (`api/`). **12 endpoints**, **0 tests**, **~15K LOC**.
@@ -188,18 +187,8 @@ BOQ classification (11 groups), 7-step Import Modal, AI Classification (Cache→
 
 ## Knowledge Base & AI Prompts
 
-**Knowledge Base (42 JSON files, ~40MB)** in `concrete-agent/knowledge_base/`:
-- `B1_*` — OTSKP/RTS/URS codes
-- `B2_csn_standards/` — ČSN/TKP standards (6 files)
-- `B3_current_prices/` — Market prices (14 files: DOKA, PERI, Berger, Frischbeton)
-- `B4_production_benchmarks/` — Productivity rates (8 files)
-- `B5_tech_cards/` — ~300 technical procedures
-- `B6`–`B9` — Research, regulations, company rules, equipment specs
-- `all_pdf_knowledge.json` — 4.3MB consolidated KB
-
-**AI Prompts (21 files)** in `concrete-agent/prompts/`: assistant, analysis, audit, generation, parsing, vision, OCR, resource_calculation
-
-**SQL Schemas (23 files):** concrete-agent (2), Portal (4), Monolit (13), URS (1), Registry (1), GCP prod init (3)
+**Knowledge Base:** 42 JSON files (~40MB) in `concrete-agent/knowledge_base/` (B1-B9: codes, standards, prices, benchmarks, tech cards)
+**AI Prompts:** 21 files in `concrete-agent/prompts/`. **SQL Schemas:** 23 files across all services.
 
 ## Totals
 
@@ -257,6 +246,9 @@ cd rozpocet-registry && npm install && npm run dev  # Vite :5173
 - Planner two modes: Monolit (position_id in URL → ordinal days, auto-classify) / Portal (no context → calendar)
 - Icons: `lucide-react` only, no emojis in JSX; registry in `shared/icon-registry.ts` (13 categories, ~130 icons)
 - Monolit account isolation: Portal JWT shared via `JWT_SECRET` env var, `portal_user_id` column
+- Monolit subtypes: beton, bednění, odbednění (Tesař), výztuž, jiné — oboustranné removed
+- Passport tab = structured tables only; Shrnutí tab = narrative + topics + risks with mitigation
+- Negative context filter: `_safe_search()` in extractor_registry.py, skips stávající/demolition matches
 
 ---
 
@@ -294,6 +286,9 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 | send-to-core 500 | CORE returns `project_id` not `workflow_id`; `transactionStarted` guard |
 | CORE Cloud Run crash | `monolit_adapter.py` singletons — lazy-init services with required args |
 | Monolit 403 on projects | `portal_user_id` mismatch; check JWT_SECRET matches Portal; migration 012 |
+| Monolit PUT 500 | Missing `metadata`/`position_number` columns; migration 013 adds them |
+| Portal "Failed to fetch" | `ERR_CONNECTION_CLOSED` = Node.js headersTimeout (60s default); server.js sets 310s |
+| Wrong izolant_tl_mm | Negative context: `_safe_search()` skips stávající/odstraněno; check extractor_registry.py |
 
 ---
 
@@ -319,28 +314,21 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 - [ ] **E2E tests on live**: `CORE_URL=https://concrete-agent-...run.app pytest tests/test_e2e_pipeline.py -v`
 
 ### Next Session
-- [ ] **P1: Cloud Run deploy** — verify /health → 200, enable_ai=True works with Vertex AI ADC
-- [ ] **P1: Verify portal_user_id migration** — deploy Monolit, confirm "Vytvořit nový objekt" works without 500
-- [ ] **P2: Planner E2E test** — test lateral pressure + záběry on real SO-203 data, verify Aplikovat writes TOV
-- [ ] **P2: Čerpadlo betonu** — skrýt/odstranit z TOV (duplikuje sekci Mechanizmy)
-- [ ] **P3: GeometryCalculator** — SHAPE_CATALOG (7 shapes), SubElementInput, calcVolume/calcFormwork
+- [ ] **P1: Deploy all 3 services** — Monolit (migration 013 fix), Portal (timeout fix), CORE (negative context filter)
+- [ ] **P1: Verify prod fixes** — PUT /api/positions → 200, passport generation no ERR_CONNECTION_CLOSED, izolant_tl_mm=180
+- [ ] **P2: prechodova_deska** — add 21st element type to classifier, add PODKLADNÍ/STŘÍKANÝ/PŘEDPJATÝ keyword rules
+- [ ] **P2: NKB polling backoff** — add exponential backoff to setInterval in NKBAdminPage (3s→6s→12s→30s cap)
+- [ ] **P2: TariffPage → TOV/Portal** — plan migration of tariff management into Rozpis zdrojů + Portal central tariff registry
+- [ ] **P3: Planner E2E test** — test lateral pressure + záběry on real SO-203 data, verify Aplikovat writes TOV
 - [ ] **P3: Gantt calendar mode** — PlannerGantt calendar axis (dates) when startDate given
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
-- [ ] Landing page: screenshot/demo of AI analysis result
 - [ ] **JWT_SECRET** for Monolit: set same value as Portal in GCP Secret Manager
-- [ ] reCAPTCHA on registration (when traffic grows)
 - [ ] IFC/BIM support (needs binaries)
 
 ---
 
 ## Documentation
 
-Each service has its own `CLAUDE.md` with detailed docs:
-- `concrete-agent/CLAUDE.md` — CORE v2.4.1
-- `Monolit-Planner/CLAUDE.MD` — Monolit v4.3.8
-- `docs/STAVAGENT_CONTRACT.md` — API contracts
-- `docs/POSITION_INSTANCE_ARCHITECTURE.ts` — Position identity model
-- `docs/SESSION_2026-03-28_FULL_AUDIT.md` — Full codebase audit
-- `STAVAGENT_ClaudeCode_Session_Mantra.md` — Session principles
+Per-service docs: `concrete-agent/CLAUDE.md`, `Monolit-Planner/CLAUDE.MD`, `docs/STAVAGENT_CONTRACT.md`
