@@ -488,6 +488,18 @@ def _generate_warnings(
                         rule="CSN_EN_206_T2",
                     ))
 
+    # ── XF4 → air-entraining admixture required ──
+    if exposure:
+        exp_vals = exposure.value if isinstance(exposure.value, list) else [exposure.value]
+        if any(str(e).upper() == "XF4" for e in exp_vals):
+            warnings.append(Warning(
+                severity="recommended",
+                message="Stupeň prostředí XF4 — požadavek na provzdušnění betonu "
+                        "(air-entraining admixture). Ověřte specifikaci čerstvého betonu.",
+                param="exposure_class",
+                rule="CSN_EN_206_XF4",
+            ))
+
     # ── Prestressed concrete → no construction joints ──
     if is_prestressed and is_prestressed.value:
         warnings.append(Warning(
