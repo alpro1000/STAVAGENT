@@ -81,7 +81,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseAllSheets, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
-import { extractConcretePositions, convertRawRowsToPositions, extractConcreteOnlyM3, extractAllConstructionItems } from '../services/concreteExtractor.js';
+import { extractConcretePositions, convertRawRowsToPositions, extractConcreteOnlyM3, extractAllConstructionItems, findPairedRows } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge, validatePositions, enrichPosition } from '../services/coreAPI.js';
 import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
 import DataPreprocessor from '../services/dataPreprocessor.js';
@@ -260,6 +260,15 @@ router.post('/', upload.single('file'), async (req, res) => {
           logger.info(`[Upload] No concrete grades found in "${sheet.sheetName}", trying full extraction...`);
           concretePositions = extractAllConstructionItems(sheet.rawRows);
           extractionMethod = 'all_items_search';
+        }
+
+        // Scan for paired výztuž/bednění rows adjacent to beton positions
+        if (concretePositions.length > 0) {
+          const pairedRows = findPairedRows(sheet.rawRows, concretePositions);
+          if (pairedRows.length > 0) {
+            concretePositions = concretePositions.concat(pairedRows);
+            logger.info(`[Upload] Added ${pairedRows.length} paired rows (výztuž/bednění) for sheet "${sheet.sheetName}"`);
+          }
         }
 
         // Calculate total concrete volume (only M3 beton items)
