@@ -11,8 +11,8 @@ Principle: each layer ADDS to previous results,
 never overwrites data with higher confidence.
 
 Author: STAVAGENT Team
-Version: 1.0.0
-Date: 2026-03-27
+Version: 2.0.0
+Date: 2026-04-01
 """
 
 from datetime import datetime
@@ -47,6 +47,54 @@ class ExtractedValue(BaseModel):
     source_detail: str = ""
     page: Optional[int] = None
     context: Optional[str] = None
+    chunk_id: Optional[str] = None
+
+
+# ── Chunked extraction models ────────────────────────────────
+
+
+class ChunkInfo(BaseModel):
+    """Metadata about a single document chunk."""
+    chunk_id: str
+    chunk_index: int
+    page_start: int
+    page_end: int
+    section_title: Optional[str] = None
+    char_count: int = 0
+    strategy: str = "pages"  # "sections" | "pages" | "metadata" | "excel_dil"
+
+
+class FactConflict(BaseModel):
+    """Two facts from different chunks that disagree on the same parameter."""
+    parameter: str
+    fact_a: ExtractedValue
+    fact_b: ExtractedValue
+    resolution: str = "unresolved"  # "unresolved" | "a_wins" | "b_wins" | "both_kept"
+
+
+class DomainImplication(BaseModel):
+    """Logical consequence derived from an extracted fact (ČSN EN 206, etc.)."""
+    trigger_fact: str
+    implication: str
+    rule_source: str
+    confidence: float = 0.9
+
+
+class ChunkExtractionResult(BaseModel):
+    """Extraction result for a single chunk (L2 regex + L3a AI)."""
+    chunk: ChunkInfo
+    norm_references: List[ExtractedValue] = Field(default_factory=list)
+    tolerances: List[ExtractedValue] = Field(default_factory=list)
+    deadlines: List[ExtractedValue] = Field(default_factory=list)
+    formulas: List[ExtractedValue] = Field(default_factory=list)
+    materials: List[ExtractedValue] = Field(default_factory=list)
+    dimensions: List[ExtractedValue] = Field(default_factory=list)
+    document_meta: Dict[str, ExtractedValue] = Field(default_factory=dict)
+    ai_key_requirements: List[Dict[str, Any]] = Field(default_factory=list)
+    ai_risks: List[Dict[str, Any]] = Field(default_factory=list)
+    ai_volumes: List[Dict[str, Any]] = Field(default_factory=list)
+    ai_cross_references: List[Dict[str, Any]] = Field(default_factory=list)
+    ai_summary: Optional[str] = None
 
 
 class ExtractionResult(BaseModel):
@@ -83,6 +131,12 @@ class ExtractionResult(BaseModel):
     # Compiled rules ready for NKB
     extracted_rules: List[Dict[str, Any]] = Field(default_factory=list)
 
+    # Chunked extraction metadata
+    chunks_processed: int = 0
+    chunk_details: List[ChunkInfo] = Field(default_factory=list)
+    conflicts: List[FactConflict] = Field(default_factory=list)
+    domain_implications: List[DomainImplication] = Field(default_factory=list)
+
     @property
     def stats(self) -> Dict[str, int]:
         return {
@@ -97,4 +151,7 @@ class ExtractionResult(BaseModel):
             "ai_risks": len(self.ai_risks),
             "verified_norms": len(self.verified_norms),
             "total_rules": len(self.extracted_rules),
+            "chunks_processed": self.chunks_processed,
+            "conflicts": len(self.conflicts),
+            "implications": len(self.domain_implications),
         }

@@ -848,11 +848,12 @@ async def add_document(
 
         if doc_type == DocType.SOUPIS_PRACI and ext in (".xlsx", ".xlsm", ".xls", ".xml"):
             # Sync: Excel/XML → universal_parser
-            summary = _parse_soupis_sync(tmp_path, filename)
+            summary = _parse_soupis_sync(tmp_path, filename, portal_project_id=project_id)
 
         elif ext == ".pdf":
             # Async PDF: pdfplumber → MinerU fallback → Gemini AI enrichment
-            summary = await _parse_pdf_async(tmp_path, filename, doc_type, enable_ai=ai_enabled)
+            summary = await _parse_pdf_async(tmp_path, filename, doc_type, enable_ai=ai_enabled,
+                                              portal_project_id=project_id)
 
         else:
             # Generic: try universal_parser, fallback to basic summary
@@ -912,13 +913,45 @@ async def add_document(
 # Parser wrappers
 # ===========================================================================
 
-def _parse_soupis_sync(file_path: str, filename: str) -> Optional[DocumentSummary]:
-    """Parse Excel/XML soupis prací via universal_parser."""
+def _parse_soupis_sync(
+    file_path: str, filename: str, portal_project_id: Optional[str] = None,
+) -> Optional[DocumentSummary]:
+    """Parse Excel/XML soupis prací via universal_parser + extract facts."""
     try:
         from app.parsers.universal_parser import parse_any
         doc = parse_any(file_path)
         doc.source_file = filename
-        return generate_summary_from_soupis(doc)
+        summary = generate_summary_from_soupis(doc)
+
+        # Also extract structured facts via adapter
+        try:
+            from app.services.parsed_document_adapter import parsed_document_to_facts
+            with open(file_path, "rb") as f:
+                file_bytes = f.read()
+            extraction = parsed_document_to_facts(doc, file_bytes)
+            summary.raw_extraction["extraction_facts"] = extraction.stats
+            summary.raw_extraction["chunks"] = [c.model_dump() for c in extraction.chunk_details]
+            # Add materials found in position descriptions
+            for mat in extraction.materials:
+                mat_str = str(mat.value)
+                if mat_str and mat_str not in [m.spec for m in summary.materials]:
+                    summary.materials.append(MaterialEntry(name=mat_str, spec=mat_str))
+
+            # Store facts for calculator suggestions
+            if portal_project_id and extraction.materials:
+                try:
+                    from app.services.extraction_to_facts_bridge import extraction_result_to_facts
+                    from app.services.calculator_suggestions import store_project_facts, get_project_facts
+                    new_facts = extraction_result_to_facts(extraction, doc_name=filename, document_type="soupis")
+                    if new_facts:
+                        existing = get_project_facts(portal_project_id)
+                        store_project_facts(portal_project_id, existing + new_facts)
+                except Exception as bridge_err:
+                    logger.debug("Soupis calculator bridge skipped: %s", bridge_err)
+        except Exception as e:
+            logger.debug("Soupis fact extraction skipped: %s", e)
+
+        return summary
     except Exception as e:
         logger.warning("Soupis parse failed for %s: %s", filename, e)
         return DocumentSummary(
@@ -930,6 +963,7 @@ def _parse_soupis_sync(file_path: str, filename: str) -> Optional[DocumentSummar
 
 async def _parse_pdf_async(
     file_path: str, filename: str, doc_type: DocType, enable_ai: bool = True,
+    portal_project_id: Optional[str] = None,
 ) -> Optional[DocumentSummary]:
     """
     Extract text from PDF, generate TZ summary, enrich with full pipeline.
@@ -949,6 +983,7 @@ async def _parse_pdf_async(
                 file_bytes=file_bytes,
                 filename=filename,
                 skip_perplexity=not settings.has_perplexity,
+                doc_type=doc_type.value.replace("tz_", "") if doc_type.value.startswith("tz_") else "tz",
             )
 
             # Build DocumentSummary from ExtractionResult
@@ -1020,6 +1055,24 @@ async def _parse_pdf_async(
             # Store extraction stats in raw_extraction
             summary.raw_extraction["ingestion_stats"] = extraction.stats
             summary.raw_extraction["extracted_rules_count"] = len(extraction.extracted_rules)
+            summary.raw_extraction["chunks"] = [c.model_dump() for c in extraction.chunk_details]
+            summary.raw_extraction["conflicts"] = [c.model_dump() for c in extraction.conflicts]
+            summary.raw_extraction["domain_implications"] = [
+                d.model_dump() for d in extraction.domain_implications
+            ]
+
+            # ── Store facts for calculator suggestions ──
+            if portal_project_id:
+                try:
+                    from app.services.extraction_to_facts_bridge import extraction_result_to_facts
+                    from app.services.calculator_suggestions import store_project_facts, get_project_facts
+                    new_facts = extraction_result_to_facts(extraction, doc_name=filename, document_type=doc_type.value)
+                    if new_facts:
+                        existing = get_project_facts(portal_project_id)
+                        store_project_facts(portal_project_id, existing + new_facts)
+                        logger.info("Stored %d fact groups for project %s", len(new_facts), portal_project_id)
+                except Exception as e:
+                    logger.debug("Calculator suggestions bridge skipped: %s", e)
 
             logger.info(
                 "Full pipeline for %s: %d norms, %d tolerances, %d rules",
