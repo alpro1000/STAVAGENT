@@ -450,7 +450,7 @@ router.get('/stats', requireAuth, adminOnly, async (req, res) => {
     // Get user statistics
     const totalUsers = await db.prepare('SELECT COUNT(*) as count FROM users').get();
     const adminUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE role = \'admin\'').get();
-    const verifiedUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE email_verified = 1 OR email_verified = true').get();
+    const verifiedUsers = await db.prepare('SELECT COUNT(*) as count FROM users WHERE email_verified = true').get();
 
     // Get project statistics (portal_projects, not monolith_projects)
     let totalProjects = { count: 0 };

@@ -184,6 +184,11 @@ export const ELEMENT_DIMENSION_HINTS: Record<StructuralElementType, DimensionHin
     typical_height_range: [0.5, 1.5],
     has_height: true,
   },
+  prechodova_deska: {
+    required_dimensions: ['thickness_m'],
+    hint_cs: 'Tloušťka přechodové desky (m). Na terénu za opěrou — bez podpěr.',
+    has_height: false,
+  },
   // ─── Building: horizontal with supports ────
   stropni_deska: {
     required_dimensions: ['height_m', 'thickness_m'],

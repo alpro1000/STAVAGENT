@@ -750,6 +750,201 @@ export function extractConcreteOnlyM3(rawRows) {
 }
 
 /**
+ * Scan raw rows for výztuž/bednění rows paired with beton positions.
+ *
+ * Real BOQ pattern:
+ *   334326  MOSTNÍ PILÍŘE... C40/50     M3   136.086   ← beton (already extracted)
+ *   334365  VÝZTUŽ MOSTNÍCH PILÍŘŮ...   T     19.052   ← výztuž (paired)
+ *   317325  ŘÍMSY... C30/37             M3   204.646   ← beton
+ *   317365  VÝZTUŽ ŘÍMS... B500B        T     32.743   ← výztuž (paired)
+ *
+ * Also extracts rebar ratio from description: "hmotnost 140 kg/m3" → 140
+ * And detects whether formwork is included in beton description: "vč. bednění"
+ *
+ * @param {Array} rawRows - All raw rows from Excel sheet
+ * @param {Array} betonPositions - Already extracted beton positions (from extractConcreteOnlyM3)
+ * @returns {Array} Additional positions (výztuž, bednění) to append
+ */
+export function findPairedRows(rawRows, betonPositions) {
+  if (!Array.isArray(rawRows) || rawRows.length === 0 || betonPositions.length === 0) {
+    return [];
+  }
+
+  const pairedPositions = [];
+
+  // Build a map of beton OTSKP codes → positions for linking
+  const betonByOtskp = new Map();
+  for (const bp of betonPositions) {
+    if (bp.otskp_code) betonByOtskp.set(bp.otskp_code, bp);
+  }
+
+  // Regex patterns for paired rows
+  const vyzuzPattern = /výztuž|vyztuž|ocel\s*105|b500|bst\s*500/i;
+  const bedneniPattern = /bednění|bedneni|bedná|obedňov/i;
+  const rebarRatioPattern = /hmotnost\s+(\d+)\s*kg\s*\/?\s*m3/i;
+
+  logger.info(`[PairedRows] Scanning ${rawRows.length} rows for výztuž/bednění paired with ${betonPositions.length} beton positions...`);
+
+  for (let i = 0; i < rawRows.length; i++) {
+    const row = rawRows[i];
+    try {
+      const entries = Object.entries(row);
+      const rowText = entries.map(([, v]) => String(v || '')).join(' ');
+
+      // Skip rows already captured as beton
+      if (/C\s*\d{1,3}\s*\/\s*\d{1,3}/i.test(rowText) && /m3|m³/i.test(rowText)) continue;
+
+      // Check if this is a výztuž or bednění row
+      const isVyzuz = vyzuzPattern.test(rowText);
+      const isBedneni = !isVyzuz && bedneniPattern.test(rowText);
+
+      if (!isVyzuz && !isBedneni) continue;
+
+      // Determine subtype and expected unit
+      const subtype = isVyzuz ? 'výztuž' : 'bednění';
+      const expectedUnits = isVyzuz ? ['t', 'kg'] : ['m2', 'm²'];
+
+      // Find description cell (longest text cell)
+      let descriptionCell = '';
+      let otskpCode = null;
+      for (const [key, value] of entries) {
+        if (value === null || value === undefined) continue;
+        const cellStr = String(value).trim();
+
+        // OTSKP code
+        if (/^\d{5,6}$/.test(cellStr)) {
+          const num = parseInt(cellStr, 10);
+          if (num >= 10000 && num <= 999999) otskpCode = cellStr;
+        }
+
+        // Description = longest text
+        if (cellStr.length > descriptionCell.length && cellStr.length > 10) {
+          descriptionCell = cellStr;
+        }
+      }
+
+      if (!descriptionCell) continue;
+
+      // Find unit cell to confirm subtype
+      let foundUnit = null;
+      for (const [, value] of entries) {
+        const cellStr = String(value || '').trim().toLowerCase();
+        if (expectedUnits.some(u => cellStr === u || cellStr === u.replace('²', '2'))) {
+          foundUnit = cellStr;
+          break;
+        }
+      }
+
+      // Find quantity (reuse column detection from main extractor)
+      let qty = 0;
+      const columnKeys = entries.map(e => e[0]);
+      for (let colIdx = 0; colIdx < entries.length; colIdx++) {
+        const [key, value] = entries[colIdx];
+        if (value === null || value === undefined) continue;
+        const keyLower = key.toLowerCase();
+
+        if (keyLower.includes('množství') || keyLower.includes('mnozstvi') ||
+            keyLower.includes('qty') || keyLower.includes('quantity')) {
+          const num = parseNumber(value);
+          if (num > 0) { qty = num; break; }
+        }
+      }
+
+      // Fallback: find unit cell and take value from column before it
+      if (qty <= 0 && foundUnit) {
+        for (let colIdx = 0; colIdx < entries.length; colIdx++) {
+          const cellStr = String(entries[colIdx][1] || '').trim().toLowerCase();
+          if (cellStr === foundUnit && colIdx > 0) {
+            const prevVal = entries[colIdx - 1][1];
+            const num = parseNumber(prevVal);
+            if (num > 0 && num <= 50000) { qty = num; break; }
+          }
+        }
+      }
+
+      if (qty <= 0) continue;
+
+      // Extract rebar ratio from description if výztuž
+      let rebarRatio = null;
+      if (isVyzuz) {
+        const ratioMatch = rowText.match(rebarRatioPattern);
+        if (ratioMatch) rebarRatio = parseInt(ratioMatch[1], 10);
+      }
+
+      // Try to find parent beton position by element name overlap
+      let parentBeton = null;
+      const descNorm = descriptionCell.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      for (const bp of betonPositions) {
+        const bpNorm = (bp.item_name || bp.part_name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        // Check if they share a significant element name (e.g., "piliru", "rims", "nosne tram")
+        const bpWords = bpNorm.split(/\s+/).filter(w => w.length > 4);
+        const matchCount = bpWords.filter(w => descNorm.includes(w)).length;
+        if (matchCount >= 2 || (bp.otskp_code && otskpCode && bp.otskp_code.substring(0, 4) === otskpCode.substring(0, 4))) {
+          parentBeton = bp;
+          break;
+        }
+      }
+
+      // Build part_name to match parent beton's part_name (for grouping in UI)
+      const partName = parentBeton ? parentBeton.part_name : descriptionCell.substring(0, 57);
+
+      // Extract prices
+      let unitPrice = 0;
+      let totalPrice = 0;
+      const priceEntries = entries.filter(([key]) => {
+        const kl = key.toLowerCase();
+        return kl.includes('cena') || kl.includes('price');
+      });
+      if (priceEntries.length >= 1) unitPrice = parseNumber(priceEntries[0][1]) || 0;
+      if (priceEntries.length >= 2) totalPrice = parseNumber(priceEntries[1][1]) || 0;
+      if (unitPrice > 0 && totalPrice <= 0) totalPrice = unitPrice * qty;
+      if (totalPrice > 0 && unitPrice <= 0 && qty > 0) unitPrice = totalPrice / qty;
+
+      const position = {
+        part_name: partName,
+        item_name: descriptionCell.trim(),
+        subtype,
+        unit: isVyzuz ? 'T' : 'M2',
+        qty,
+        crew_size: isVyzuz ? 4 : 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0,
+        otskp_code: otskpCode,
+        unit_price: unitPrice,
+        total_price: totalPrice,
+        rebar_ratio_kg_m3: rebarRatio,
+        parent_otskp: parentBeton?.otskp_code || null,
+        source: 'PAIRED_ROW_SCAN',
+      };
+
+      pairedPositions.push(position);
+      const parentInfo = parentBeton ? ` → paired with "${parentBeton.part_name?.substring(0, 30)}"` : '';
+      const ratioInfo = rebarRatio ? ` (${rebarRatio} kg/m³)` : '';
+      logger.info(`[PairedRows] Found ${subtype}: ${qty} ${position.unit} | "${descriptionCell.substring(0, 50)}"${ratioInfo}${parentInfo}`);
+
+    } catch (error) {
+      logger.debug(`[PairedRows] Error processing row ${i}: ${error.message}`);
+    }
+  }
+
+  // Also scan beton descriptions for "vč. bednění" → mark formwork as included
+  for (const bp of betonPositions) {
+    const desc = (bp.item_name || '').toLowerCase();
+    bp.formwork_included = desc.includes('bednění') || desc.includes('bedná');
+    bp.rebar_included = !desc.includes('nezahrnuje') || !desc.includes('výztuž');
+    // More precise: "Položka nezahrnuje: dodání a osazení výztuže" → rebar NOT included
+    if (desc.includes('nezahrnuje') && desc.includes('výztuž')) {
+      bp.rebar_included = false;
+    }
+  }
+
+  logger.info(`[PairedRows] Found ${pairedPositions.length} paired rows (${pairedPositions.filter(p => p.subtype === 'výztuž').length} výztuž, ${pairedPositions.filter(p => p.subtype === 'bednění').length} bednění)`);
+
+  return pairedPositions;
+}
+
+/**
  * Extract ALL construction items from BOQ rows (beton, výztuž, bednění, jiné).
  *
  * Unlike extractConcreteOnlyM3 which only finds M3 items with concrete grade,

@@ -965,7 +965,7 @@ class CzechConstructionExtractor:
         """Parse Czech-formatted number: '1 279 250 000' or '1.279.250.000' or '15,5'."""
         if not text:
             return None
-        cleaned = text.strip().replace('\xa0', '').replace(' ', '')
+        cleaned = text.strip().replace('\xa0', '').replace(' ', '').replace('\n', '').replace('\r', '')
         # Handle "1.279.250.000" (thousands dots) vs "15,5" (decimal comma)
         if ',' in cleaned and '.' in cleaned:
             cleaned = cleaned.replace('.', '').replace(',', '.')
@@ -1092,7 +1092,7 @@ class CzechConstructionExtractor:
         """Parse Czech currency amount: '6 310 000,00' → 6310000.0"""
         if not text:
             return None
-        cleaned = text.replace('\xa0', '').replace(' ', '').replace('.', '').strip()
+        cleaned = text.replace('\xa0', '').replace(' ', '').replace('\n', '').replace('\r', '').replace('.', '').strip()
         cleaned = cleaned.replace(',', '.')
         try:
             return float(cleaned)

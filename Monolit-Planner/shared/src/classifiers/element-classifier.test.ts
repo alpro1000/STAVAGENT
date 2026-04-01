@@ -187,20 +187,9 @@ describe('Element Classifier', () => {
 
   // ─── getAllElementTypes ──────────────────────────────────────────────
 
-  // ─── Bridge context classification ────────────────────────────────────
+  // ─── Bridge context classification (legacy tests) ─────────────────────
 
-  describe('classifyElement — bridge context', () => {
-    it('"Beton pilířů C30/37" without context → sloup (building)', () => {
-      const result = classifyElement('Beton pilířů C30/37');
-      // Without bridge context, "pilíř" matches sloup
-      expect(['sloup', 'driky_piliru']).toContain(result.element_type);
-    });
-
-    it('"Beton pilířů C30/37" with bridge context → driky_piliru', () => {
-      const result = classifyElement('Beton pilířů C30/37', { is_bridge: true });
-      expect(result.element_type).toBe('driky_piliru');
-    });
-
+  describe('classifyElement — bridge context (legacy)', () => {
     it('"NOSNÁ KONSTRUKCE" with bridge context → mostovkova_deska', () => {
       const result = classifyElement('NOSNÁ KONSTRUKCE C35/45-XF2', { is_bridge: true });
       expect(result.element_type).toBe('mostovkova_deska');
@@ -208,7 +197,6 @@ describe('Element Classifier', () => {
 
     it('"Stěna" in bridge context stays stena (no bridge equivalent)', () => {
       const result = classifyElement('Monolitická stěna', { is_bridge: true });
-      // stena has no bridge equivalent, stays stena
       expect(result.element_type).toBe('stena');
     });
 
@@ -218,10 +206,132 @@ describe('Element Classifier', () => {
     });
   });
 
+  // ─── Real bridge project positions (15 test cases) ──────────────────
+
+  describe('classifyElement — real bridge project mapping', () => {
+    // Bridge elements
+    it('MOSTNÍ PILÍŘE A STATIVA → driky_piliru', () => {
+      expect(classifyElement('MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C40/50').element_type)
+        .toBe('driky_piliru');
+    });
+
+    it('PILOTY ZE ŽELEZOBETONU → pilota', () => {
+      expect(classifyElement('PILOTY ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('pilota');
+    });
+
+    it('ŘÍMSY ZE ŽELEZOBETONU → rimsa', () => {
+      expect(classifyElement('ŘÍMSY ZE ŽELEZOBETONU DO C30/37').element_type)
+        .toBe('rimsa');
+    });
+
+    it('PŘECHODOVÉ DESKY MOSTNÍCH OPĚR → prechodova_deska (21st type)', () => {
+      expect(classifyElement('PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30').element_type)
+        .toBe('prechodova_deska');
+    });
+
+    it('MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET → mostovkova_deska', () => {
+      expect(classifyElement('MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET DO C40/50').element_type)
+        .toBe('mostovkova_deska');
+    });
+
+    it('MOSTNÍ OPĚRY A KŘÍDLA → opery_ulozne_prahy', () => {
+      expect(classifyElement('MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37').element_type)
+        .toBe('opery_ulozne_prahy');
+    });
+
+    it('ZÁKLADY + bridge context → zaklady_piliru', () => {
+      expect(classifyElement('ZÁKLADY ZE ŽELEZOBETONU DO C25/30', { is_bridge: true }).element_type)
+        .toBe('zaklady_piliru');
+    });
+
+    // Building elements in a bridge project
+    it('SCHODIŠŤOVÉ STUPNĚ → schodiste', () => {
+      expect(classifyElement('SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37').element_type)
+        .toBe('schodiste');
+    });
+
+    it('PATKY Z PROSTÉHO BETONU C25/30 → zakladova_patka', () => {
+      expect(classifyElement('PATKY Z PROSTÉHO BETONU C25/30').element_type)
+        .toBe('zakladova_patka');
+    });
+
+    it('PATKY Z PROSTÉHO BETONU C20/25 → zakladova_patka', () => {
+      expect(classifyElement('PATKY Z PROSTÉHO BETONU C20/25').element_type)
+        .toBe('zakladova_patka');
+    });
+
+    // PODKLADNÍ = always other
+    it('PODKLADNÍ A VÝPLŇOVÉ VRSTVY → other', () => {
+      expect(classifyElement('PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15').element_type)
+        .toBe('other');
+    });
+
+    it('PODKLADNÍ Z PROSTÉHO BETONU C25/30 → other', () => {
+      expect(classifyElement('PODKLADNÍ VRSTVY Z PROSTÉHO BETONU C25/30').element_type)
+        .toBe('other');
+    });
+
+    it('PODKLADNÍ Z PROSTÉHO BETONU C20/25 → other', () => {
+      expect(classifyElement('PODKLADNÍ VRSTVY Z PROSTÉHO BETONU C20/25').element_type)
+        .toBe('other');
+    });
+
+    it('PODKL VRSTVY ZE ŽELEZOBET → other', () => {
+      expect(classifyElement('PODKL VRSTVY ZE ŽELEZOBET DO C16/20 VČET VÝZTUŽE').element_type)
+        .toBe('other');
+    });
+
+    // STŘÍKANÝ = always other
+    it('STŘÍKANÝ ŽELEZOBETON → other', () => {
+      expect(classifyElement('STŘÍKANÝ ŽELEZOBETON DO C25/30').element_type)
+        .toBe('other');
+    });
+  });
+
+  // ─── Bridge context disambiguation ────────────────────────────────────
+
+  describe('classifyElement — bridge context disambiguation', () => {
+    it('"Beton pilířů C30/37" without context → sloup', () => {
+      expect(classifyElement('Beton pilířů C30/37').element_type).toBe('sloup');
+    });
+
+    it('"Beton pilířů C30/37" WITH bridge context → driky_piliru', () => {
+      expect(classifyElement('Beton pilířů C30/37', { is_bridge: true }).element_type)
+        .toBe('driky_piliru');
+    });
+
+    it('"ZÁKLADY ZE ŽELEZOBETONU" without context → zakladovy_pas', () => {
+      const result = classifyElement('ZÁKLADY ZE ŽELEZOBETONU DO C25/30');
+      // Without bridge context: generic "základy" → zakladovy_pas or zakladova_deska
+      expect(['zakladovy_pas', 'zakladova_deska', 'zaklady_piliru']).toContain(result.element_type);
+    });
+
+    it('"ZÁKLADY ZE ŽELEZOBETONU" WITH bridge context → zaklady_piliru', () => {
+      expect(classifyElement('ZÁKLADY ZE ŽELEZOBETONU DO C25/30', { is_bridge: true }).element_type)
+        .toBe('zaklady_piliru');
+    });
+
+    it('PŘEDPJATÝ always → mostovkova_deska regardless of context', () => {
+      expect(classifyElement('PŘEDPJATÝ BETON C40/50').element_type)
+        .toBe('mostovkova_deska');
+    });
+
+    it('PODKLADNÍ not affected by bridge context', () => {
+      expect(classifyElement('PODKLADNÍ VRSTVY Z PROSTÉHO BETONU C12/15', { is_bridge: true }).element_type)
+        .toBe('other');
+    });
+  });
+
   describe('getAllElementTypes', () => {
-    it('returns 20 element types (9 bridge + 11 building)', () => {
+    it('returns 21 element types (10 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(20);
+      expect(types).toHaveLength(21);
+    });
+
+    it('includes prechodova_deska', () => {
+      const types = getAllElementTypes();
+      expect(types.find(t => t.type === 'prechodova_deska')).toBeTruthy();
     });
 
     it('each type has Czech label', () => {

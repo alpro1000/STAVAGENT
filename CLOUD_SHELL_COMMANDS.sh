@@ -110,9 +110,9 @@ AWS_HEAVY="amazon.nova-pro-v1:0"     # 🔴 $0.80 input
 # 🔑 API КЛЮЧИ — ЗАПОЛНИ СВОИ (пустые "" оставь если не используешь)
 # ================================================================
 
-# --- БД (уже заполнены) ---
-DB_PG_ASYNC='postgresql+asyncpg://stavagent_portal:StavagentPortal2026!@34.185.183.36/stavagent_portal'
-DB_PG='postgresql://stavagent_portal:StavagentPortal2026!@34.185.183.36/stavagent_portal'
+# --- БД (используй GCP Secret Manager, НЕ хардкодь пароли!) ---
+DB_PG_ASYNC='postgresql+asyncpg://stavagent_portal:<PASSWORD_FROM_SECRET_MANAGER>@<CLOUD_SQL_IP>/stavagent_portal'
+DB_PG='postgresql://stavagent_portal:<PASSWORD_FROM_SECRET_MANAGER>@<CLOUD_SQL_IP>/stavagent_portal'
 
 # --- Google / Gemini ---         https://aistudio.google.com/app/apikey
 GOOGLE_API_KEY=""

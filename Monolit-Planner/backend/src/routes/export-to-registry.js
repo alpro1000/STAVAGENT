@@ -522,4 +522,240 @@ router.get('/:bridge_id', requireExportAuth, async (req, res) => {
   }
 });
 
+/**
+ * POST /api/export-to-registry/position/:position_id/tov
+ * Sync a single position's TOV data to Portal DOV endpoint.
+ *
+ * Monolit sends ONLY:
+ *   - Labor (práce) — the core output of Monolit Planner
+ *   - Formwork rental info (for bednění positions)
+ *
+ * Monolit does NOT send:
+ *   - Materials (beton price, ocel price → chosen in Registry TOV)
+ *   - Machinery (čerpadlo, jeřáb → filled in Registry TOV)
+ *
+ * Three composition variants (auto-detected from sibling positions):
+ *   A. All-in-one: beton only (vč. bednění, výztuže) → labor = Betonář + Tesař + Železář
+ *   B. Beton+bednění together, výztuž separate → beton labor = Betonář + Tesař
+ *   C. All separate: beton + bednění + odbednění + výztuž → each gets own profession
+ */
+router.post('/position/:position_id/tov', async (req, res) => {
+  const { position_id } = req.params;
+
+  try {
+    // Fetch the target position
+    const position = await db.prepare(
+      'SELECT * FROM positions WHERE id = ?'
+    ).get(position_id);
+
+    if (!position) {
+      return res.status(404).json({ error: 'Position not found' });
+    }
+
+    if (!position.position_instance_id) {
+      return res.status(400).json({
+        error: 'Position not linked to Portal (no position_instance_id). Export to Registry first.',
+      });
+    }
+
+    // Fetch all sibling positions (same part_name in same bridge) to detect composition
+    const siblings = await db.prepare(
+      'SELECT * FROM positions WHERE bridge_id = ? AND part_name = ?'
+    ).all(position.bridge_id, position.part_name);
+
+    const hasVyzuzSibling = siblings.some(s => s.subtype === 'výztuž' && s.id !== position.id);
+    const hasBedneniSibling = siblings.some(s => (s.subtype === 'bednění' || s.subtype === 'odbednění') && s.id !== position.id);
+
+    // Build labor array for THIS position
+    const labor = [];
+    const crewSize = position.crew_size || 0;
+    const shiftHours = position.shift_hours || 0;
+    const totalDays = position.days || 0;
+    const hourlyRate = position.wage_czk_ph || 0;
+    const normHours = position.labor_hours || (crewSize * shiftHours * totalDays);
+    const totalCost = position.cost_czk || 0;
+
+    const professionMap = {
+      'beton': 'Betonář',
+      'bednění': 'Tesař',
+      'odbednění': 'Tesař',
+      'výztuž': 'Železář / Armovač',
+      'jiné': 'Stavební dělník',
+    };
+
+    // Own labor — always present
+    labor.push({
+      id: `labor_${position.id}`,
+      name: professionMap[position.subtype] || 'Stavební dělník',
+      count: crewSize,
+      hours: shiftHours,
+      days: totalDays,
+      normHours,
+      hourlyRate,
+      totalCost,
+    });
+
+    // For beton positions: add missing professions if no separate sibling exists
+    if (position.subtype === 'beton') {
+      // Check description for "vč. bednění" hints
+      const desc = (position.item_name || '').toLowerCase();
+      const formworkIncluded = desc.includes('bednění') || desc.includes('bedná') || desc.includes('lešení');
+      const rebarExcluded = desc.includes('nezahrnuje') && (desc.includes('výztuž') || desc.includes('osazení'));
+
+      // If no separate výztuž sibling and rebar is NOT excluded → add Železář labor
+      if (!hasVyzuzSibling && !rebarExcluded) {
+        labor.push({
+          id: `labor_${position.id}_rebar`,
+          name: 'Železář / Armovač',
+          count: crewSize,
+          hours: shiftHours,
+          days: Math.max(1, Math.round(totalDays * 0.3)), // estimate: ~30% of beton days
+          normHours: Math.round(normHours * 0.3),
+          hourlyRate,
+          totalCost: Math.round(totalCost * 0.3),
+          note: 'Included in beton position (no separate výztuž)',
+        });
+      }
+
+      // If no separate bednění sibling and formwork is included → add Tesař labor
+      if (!hasBedneniSibling && formworkIncluded) {
+        labor.push({
+          id: `labor_${position.id}_formwork`,
+          name: 'Tesař',
+          count: crewSize,
+          hours: shiftHours,
+          days: Math.max(1, Math.round(totalDays * 0.4)), // estimate: ~40% of beton days
+          normHours: Math.round(normHours * 0.4),
+          hourlyRate,
+          totalCost: Math.round(totalCost * 0.4),
+          note: 'Included in beton position (vč. bednění)',
+        });
+      }
+    }
+
+    // Formwork rental — only for bednění/odbednění positions
+    let formworkRental = null;
+    if (position.subtype === 'bednění' || position.subtype === 'odbednění') {
+      // Try to get formwork info from metadata
+      let meta = {};
+      try { meta = position.metadata ? JSON.parse(position.metadata) : {}; } catch { /* */ }
+
+      const betonSibling = siblings.find(s => s.subtype === 'beton');
+      const curingDays = betonSibling?.curing_days || 7;
+      const rentalDays = totalDays + curingDays + (siblings.find(s => s.subtype === 'odbednění')?.days || 0);
+
+      formworkRental = {
+        system_name: meta.formwork_system || null,
+        rental_days: rentalDays,
+        rental_czk_m2_month: meta.formwork_rental_czk_m2_month || null,
+        area_m2: position.qty || 0,
+        note: 'Rental period = montáž + curing + demontáž',
+      };
+    }
+
+    // Also attach formwork rental to beton if bednění is included (no separate sibling)
+    if (position.subtype === 'beton' && !hasBedneniSibling) {
+      const desc = (position.item_name || '').toLowerCase();
+      if (desc.includes('bednění') || desc.includes('bedná')) {
+        let meta = {};
+        try { meta = position.metadata ? JSON.parse(position.metadata) : {}; } catch { /* */ }
+        formworkRental = {
+          system_name: meta.formwork_system || null,
+          rental_days: totalDays + (position.curing_days || 7),
+          rental_czk_m2_month: meta.formwork_rental_czk_m2_month || null,
+          area_m2: null, // unknown — bednění area not in beton position
+          note: 'Formwork included in beton position (vč. bednění)',
+        };
+      }
+    }
+
+    const totalLaborCost = labor.reduce((s, l) => s + (l.totalCost || 0), 0);
+    const totalLaborHours = labor.reduce((s, l) => s + (l.normHours || 0), 0);
+
+    const dovPayload = {
+      labor,
+      labor_summary: {
+        total_norm_hours: totalLaborHours,
+        total_workers: labor.reduce((s, l) => s + (l.count || 0), 0),
+        total_cost_czk: totalLaborCost,
+      },
+      // Machinery and materials are filled in Registry TOV, not by Monolit
+      machinery: [],
+      machinery_summary: { total_machine_hours: 0, total_units: 0, total_cost_czk: 0 },
+      materials: [],
+      materials_summary: { total_cost_czk: 0, item_count: 0 },
+      formwork_rental: formworkRental,
+      pump_rental: null,
+      // Composition variant info (for Registry UI)
+      composition: {
+        variant: !hasVyzuzSibling && !hasBedneniSibling ? 'A_all_in_one'
+               : hasVyzuzSibling && !hasBedneniSibling ? 'B_beton_bedneni_together'
+               : 'C_all_separate',
+        has_vyzuz_sibling: hasVyzuzSibling,
+        has_bedneni_sibling: hasBedneniSibling,
+        siblings_count: siblings.length,
+      },
+      monolith_payload: {
+        monolit_position_id: position.id,
+        monolit_project_id: position.bridge_id,
+        part_name: position.part_name,
+        subtype: position.subtype,
+        otskp_code: position.otskp_code || null,
+        item_name: position.item_name || null,
+        crew_size: crewSize,
+        wage_czk_ph: hourlyRate,
+        shift_hours: shiftHours,
+        days: totalDays,
+        labor_hours: normHours,
+        cost_czk: totalCost,
+        concrete_m3: position.concrete_m3 || null,
+        unit_cost_on_m3: position.unit_cost_on_m3 || null,
+        kros_unit_czk: position.kros_unit_czk || null,
+        kros_total_czk: position.kros_total_czk || null,
+      },
+      source_tag: 'MONOLIT_TOV_SYNC',
+      synced_at: new Date().toISOString(),
+    };
+
+    // Send to Portal DOV endpoint
+    const portalRes = await fetch(
+      `${PORTAL_API}/api/positions/${position.position_instance_id}/dov`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ payload: dovPayload }),
+        signal: AbortSignal.timeout(10000),
+      }
+    );
+
+    if (!portalRes.ok) {
+      const errText = await portalRes.text().catch(() => '');
+      console.error(`[TOV Sync] Portal returned ${portalRes.status}: ${errText}`);
+      return res.status(portalRes.status).json({
+        error: `Portal DOV sync failed: ${portalRes.status}`,
+      });
+    }
+
+    const variant = dovPayload.composition.variant;
+    console.log(`[TOV Sync] ✅ ${position.subtype} "${position.part_name}" → Portal DOV (${variant}, ${labor.length} labor entries${formworkRental ? ', +rental' : ''})`);
+
+    res.json({
+      success: true,
+      position_id,
+      position_instance_id: position.position_instance_id,
+      composition: dovPayload.composition,
+      tov: {
+        labor_count: labor.length,
+        labor_professions: labor.map(l => l.name),
+        formwork_rental: !!formworkRental,
+        total_labor_cost_czk: totalLaborCost,
+      },
+    });
+
+  } catch (error) {
+    console.error('[TOV Sync] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;

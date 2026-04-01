@@ -8,7 +8,7 @@ import { Users, Shield, CheckCircle2, FolderOpen, RefreshCw } from 'lucide-react
 interface StatCardProps {
   title: string;
   value: string | number;
-  icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
+  icon: React.ComponentType<{ size?: number | string; style?: React.CSSProperties }>;
   color: string;
 }
 

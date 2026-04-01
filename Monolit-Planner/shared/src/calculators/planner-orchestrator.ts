@@ -140,6 +140,10 @@ export interface PlannerInput {
   scheduling_mode_override?: 'linear' | 'chess';
 
   // --- Bridge configuration ---
+  /** Is this element part of a bridge (mostní objekt)?
+   *  Auto-detected from bridge_id "SO-xxx" if not set explicitly.
+   *  Affects classifier: pilíř→driky_piliru, základy→zaklady_piliru, etc. */
+  is_bridge?: boolean;
   /**
    * Number of parallel bridges.
    *   1 = single bridge (default)
@@ -373,7 +377,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
     profile = getElementProfile(input.element_type);
     log.push(`Element: ${input.element_type} (explicit)`);
   } else if (input.element_name) {
-    profile = classifyElement(input.element_name);
+    const bridgeCtx = input.is_bridge ? { is_bridge: true } : undefined;
+    profile = classifyElement(input.element_name, bridgeCtx);
     log.push(`Element: "${input.element_name}" → ${profile.element_type} (confidence ${profile.confidence})`);
     if (profile.confidence < 0.6) {
       warnings.push(`Nízká jistota klasifikace: ${profile.element_type} (${(profile.confidence * 100).toFixed(0)}%). Zvažte ruční zadání.`);

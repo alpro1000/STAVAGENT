@@ -263,14 +263,24 @@ export default function NKBAdminPage() {
     } catch { /* ignore */ }
   };
 
-  // Poll harvest status while running
+  // Poll harvest status while running (exponential backoff: 5s → 10s → 20s → 30s max)
   useEffect(() => {
     if (!harvestPolling) return;
-    const interval = setInterval(async () => {
+    let cancelled = false;
+    let delay = 5000;
+    const poll = async () => {
+      if (cancelled) return;
       const st = await fetchHarvestStatus();
-      if (st && st.status !== 'running') setHarvestPolling(false);
-    }, 5000);
-    return () => clearInterval(interval);
+      if (cancelled) return;
+      if (st && st.status !== 'running') {
+        setHarvestPolling(false);
+      } else {
+        delay = Math.min(delay * 2, 30000);
+        setTimeout(poll, delay);
+      }
+    };
+    const timer = setTimeout(poll, delay);
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [harvestPolling, fetchHarvestStatus]);
 
   // ── Audit functions ──
@@ -325,17 +335,25 @@ export default function NKBAdminPage() {
     }
   };
 
-  // Poll audit while running
+  // Poll audit while running (exponential backoff: 3s → 6s → 12s → 30s max)
   useEffect(() => {
     if (!auditPolling) return;
-    const interval = setInterval(async () => {
+    let cancelled = false;
+    let delay = 3000;
+    const poll = async () => {
+      if (cancelled) return;
       const st = await fetchAuditStatus();
+      if (cancelled) return;
       if (st && st.status !== 'running') {
         setAuditPolling(false);
         fetchAuditResult();
+      } else {
+        delay = Math.min(delay * 2, 30000);
+        setTimeout(poll, delay);
       }
-    }, 3000);
-    return () => clearInterval(interval);
+    };
+    const timer = setTimeout(poll, delay);
+    return () => { cancelled = true; clearTimeout(timer); };
   }, [auditPolling, fetchAuditStatus, fetchAuditResult]);
 
   // Load audit result when filters change

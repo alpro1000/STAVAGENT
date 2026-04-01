@@ -11,7 +11,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { FileText, Landmark, Package, Ruler, CheckCircle2, XCircle } from 'lucide-react';
+import { FileText, Landmark, Package, Ruler, CheckCircle2, XCircle, type LucideIcon } from 'lucide-react';
 import api from '../../services/api';
 
 // ============================================================================

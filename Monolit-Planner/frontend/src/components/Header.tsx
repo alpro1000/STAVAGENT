@@ -31,6 +31,11 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
   const [showExportHistory, setShowExportHistory] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isExportingToRegistry, setIsExportingToRegistry] = useState(false);
+  const [isImportingFromRegistry, setIsImportingFromRegistry] = useState(false);
+  const [showRegistryImport, setShowRegistryImport] = useState(false);
+  const [registryProjects, setRegistryProjects] = useState<any[]>([]);
+  const [selectedRegistryProject, setSelectedRegistryProject] = useState('');
+  const [loadingProjects, setLoadingProjects] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -99,7 +104,11 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error: any) {
-      alert(`Chyba při exportu: ${error.message}`);
+      if (error.response?.status === 404) {
+        alert('Objekt nemá žádné pozice. Přidejte pozice před exportem.');
+      } else {
+        alert(`Chyba při exportu: ${error.message}`);
+      }
     }
   };
 
@@ -157,6 +166,47 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
       alert(`❌ Export do Registry selhal: ${error.message}`);
     } finally {
       setIsExportingToRegistry(false);
+    }
+  };
+
+  const handleToggleRegistryImport = async () => {
+    if (showRegistryImport) {
+      setShowRegistryImport(false);
+      return;
+    }
+    setShowRegistryImport(true);
+    setLoadingProjects(true);
+    try {
+      const data = await uploadAPI.getRegistryProjects();
+      setRegistryProjects(data.projects || []);
+    } catch { setRegistryProjects([]); }
+    finally { setLoadingProjects(false); }
+  };
+
+  const handleImportFromRegistry = async () => {
+    if (!selectedRegistryProject) {
+      alert('Vyberte projekt z Rozpočtu');
+      return;
+    }
+
+    setIsImportingFromRegistry(true);
+    try {
+      const proj = registryProjects.find(p => p.portal_project_id === selectedRegistryProject);
+      const result = await uploadAPI.importFromRegistry(selectedRegistryProject, proj?.project_name);
+
+      await refetchBridges();
+      if (result.bridges?.length > 0) {
+        setSelectedBridge(result.bridges[0].bridge_id);
+      }
+      queryClient.invalidateQueries({ queryKey: ['positions'] });
+
+      setShowRegistryImport(false);
+      setSelectedRegistryProject('');
+      alert(`Import z Rozpočtu úspěšný!\n\nObjektů: ${result.bridges?.length || 0}\nPozic: ${result.total_positions || 0}`);
+    } catch (error: any) {
+      alert(`Import z Rozpočtu selhal: ${error.response?.data?.error || error.message}`);
+    } finally {
+      setIsImportingFromRegistry(false);
     }
   };
 
@@ -260,18 +310,29 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
 
           <button
             className="c-btn"
-            onClick={handleUploadClick}
-            disabled={isUploading}
-            title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
+            onClick={handleToggleRegistryImport}
+            disabled={isImportingFromRegistry}
+            title="Načíst pozice z Rozpočet Registry"
             style={{ padding: '6px 10px' }}
           >
-            {isUploading ? (
-              <>
-                <span className="upload-spinner"></span>
-                Načítání...
-              </>
+            {isImportingFromRegistry ? (
+              <><Loader2 size={14} className="inline animate-spin" /> Načítání...</>
             ) : (
-              <><Save size={14} className="inline" /> Nahrát XLSX</>
+              <><Download size={14} className="inline" /> Načíst z Rozpočtu</>
+            )}
+          </button>
+
+          <button
+            className="c-btn"
+            onClick={handleUploadClick}
+            disabled={isUploading}
+            title="Nahrát Excel soubor s pozicemi objektů (alternativní import)"
+            style={{ padding: '6px 8px', opacity: 0.8 }}
+          >
+            {isUploading ? (
+              <><Loader2 size={14} className="inline animate-spin" /> Načítání...</>
+            ) : (
+              <><Upload size={14} className="inline" /> XLSX</>
             )}
           </button>
 
@@ -324,6 +385,54 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
 
         </div>
       </div>
+
+      {/* Inline form: Import from Registry */}
+      {showRegistryImport && (
+        <div style={{
+          padding: '8px 16px', background: 'var(--r0-bg-secondary, #f8f9fa)',
+          borderTop: '1px solid var(--r0-border, #e2e8f0)',
+          display: 'flex', alignItems: 'center', gap: 8, fontSize: 13,
+        }}>
+          <span style={{ color: 'var(--r0-text-secondary, #6b7280)', whiteSpace: 'nowrap' }}>Projekt z Rozpočtu:</span>
+          {loadingProjects ? (
+            <span style={{ color: '#9ca3af' }}>Načítání projektů...</span>
+          ) : registryProjects.length === 0 ? (
+            <span style={{ color: '#e53e3e' }}>Žádné projekty s daty z Rozpočtu. Nejdříve importujte soubor do Rozpočet Registry.</span>
+          ) : (
+            <select
+              value={selectedRegistryProject}
+              onChange={(e) => setSelectedRegistryProject(e.target.value)}
+              style={{
+                padding: '4px 8px', border: '1px solid var(--r0-border, #d1d5db)',
+                borderRadius: 4, fontSize: 13, minWidth: 250,
+                background: 'var(--r0-bg, #fff)', color: 'var(--r0-text, #1a1a1a)',
+              }}
+            >
+              <option value="">-- vyberte projekt --</option>
+              {registryProjects.map(p => (
+                <option key={p.portal_project_id} value={p.portal_project_id}>
+                  {p.project_name} ({p.positions_total} pozic)
+                </option>
+              ))}
+            </select>
+          )}
+          <button
+            className="c-btn c-btn--success"
+            onClick={handleImportFromRegistry}
+            disabled={isImportingFromRegistry || !selectedRegistryProject}
+            style={{ padding: '4px 10px', fontSize: 12 }}
+          >
+            {isImportingFromRegistry ? 'Načítání...' : 'Importovat'}
+          </button>
+          <button
+            className="c-btn"
+            onClick={() => { setShowRegistryImport(false); setSelectedRegistryProject(''); }}
+            style={{ padding: '4px 8px', fontSize: 12 }}
+          >
+            Zrušit
+          </button>
+        </div>
+      )}
 
       {/* Modal for Create Monolith Form */}
       {showCreateForm && (

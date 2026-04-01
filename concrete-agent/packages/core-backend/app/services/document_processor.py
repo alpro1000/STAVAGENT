@@ -640,7 +640,10 @@ class DocumentProcessor:
             source_documents=source_files
         )
 
-        # Populate from extracted facts
+        # Populate from extracted facts (guard against non-dict input)
+        if not isinstance(extracted_facts, dict):
+            logger.warning(f"extracted_facts is {type(extracted_facts).__name__}, expected dict — using empty")
+            extracted_facts = {}
         passport.concrete_specifications = extracted_facts.get('concrete_specifications', [])
         passport.reinforcement = extracted_facts.get('reinforcement', [])
         passport.quantities = extracted_facts.get('quantities', [])

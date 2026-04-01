@@ -20,12 +20,14 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [userTyping, setUserTyping] = useState(false);  // Only search on user input, not prop init
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize searchQuery when value prop changes
+  // Initialize searchQuery when value prop changes (without triggering search)
   useEffect(() => {
     if (value && value !== searchQuery) {
+      setUserTyping(false);
       setSearchQuery(value);
     }
   }, [value]);
@@ -42,9 +44,9 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Debounced search
+  // Debounced search — only when user is actively typing
   useEffect(() => {
-    if (searchQuery.length < 2) {
+    if (!userTyping || searchQuery.length < 2) {
       setResults([]);
       setIsOpen(false);
       return;
@@ -67,11 +69,12 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, userTyping]);
 
   const handleSelect = (item: OtskpCode) => {
+    setUserTyping(false);
     onSelect(item.code, item.name, item.unit_price, item.unit);
-    setSearchQuery(item.code); // Show the selected code in the input
+    setSearchQuery(item.code);
     setIsOpen(false);
     setResults([]);
   };
@@ -114,7 +117,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
           type="text"
           className="otskp-search-input"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => { setUserTyping(true); setSearchQuery(e.target.value); }}
           onFocus={() => {
             if (results.length > 0) setIsOpen(true);
           }}
