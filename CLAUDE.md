@@ -306,25 +306,21 @@ VITE_DISABLE_AUTH=true  # local dev only; prod = false
 
 ## TODO / Backlog
 
-### Manual Actions (pending)
+### Manual Actions
 - [ ] **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → GCP Secret Manager
-- [ ] **AWS Bedrock RPM quota**: request increase in AWS Console → Bedrock → Model access
-- [ ] **VPC connector**: `gcloud compute networks vpc-access connectors create stavagent-vpc --region=europe-west3 --range=10.8.0.0/28`, then add to Cloud Run services
 - [ ] **Stripe env vars**: configure `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` in Secret Manager
-- [ ] **E2E tests on live**: `CORE_URL=https://concrete-agent-...run.app pytest tests/test_e2e_pipeline.py -v`
 
-### Next Session
-- [ ] **P1: Deploy all 3 services** — Monolit (migration 013 fix), Portal (timeout fix), CORE (negative context filter)
-- [ ] **P1: Verify prod fixes** — PUT /api/positions → 200, passport generation no ERR_CONNECTION_CLOSED, izolant_tl_mm=180
-- [ ] **P2: prechodova_deska** — add 21st element type to classifier, add PODKLADNÍ/STŘÍKANÝ/PŘEDPJATÝ keyword rules
-- [ ] **P2: NKB polling backoff** — add exponential backoff to setInterval in NKBAdminPage (3s→6s→12s→30s cap)
-- [ ] **P2: TariffPage → TOV/Portal** — plan migration of tariff management into Rozpis zdrojů + Portal central tariff registry
-- [ ] **P3: Planner E2E test** — test lateral pressure + záběry on real SO-203 data, verify Aplikovat writes TOV
-- [ ] **P3: Gantt calendar mode** — PlannerGantt calendar axis (dates) when startDate given
+### TODO
+- [ ] **P1: Deploy** Monolit (migration 013), Portal (timeout), CORE (negative context filter)
+- [ ] **P1: Verify prod** — PUT /api/positions → 200, passport no timeout, izolant_tl_mm=180
+- [ ] **P2: prechodova_deska** — 21st element type + PODKLADNÍ/STŘÍKANÝ/PŘEDPJATÝ rules
+- [ ] **P2: NKB polling backoff** — exponential backoff in NKBAdminPage (3s→6s→12s→30s)
+- [ ] **P2: TariffPage → TOV/Portal** — migrate tariff management into Rozpis zdrojů + Portal
+- [ ] **P3: Planner E2E** — lateral pressure + záběry on SO-203, Aplikovat → TOV
+- [ ] **P3: Gantt calendar** — date axis in Portal mode
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
-- [ ] **JWT_SECRET** for Monolit: set same value as Portal in GCP Secret Manager
 - [ ] IFC/BIM support (needs binaries)
 
 ---
