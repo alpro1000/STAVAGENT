@@ -31,6 +31,9 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
   const [showExportHistory, setShowExportHistory] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isExportingToRegistry, setIsExportingToRegistry] = useState(false);
+  const [isImportingFromRegistry, setIsImportingFromRegistry] = useState(false);
+  const [showRegistryImport, setShowRegistryImport] = useState(false);
+  const [registryProjectId, setRegistryProjectId] = useState('');
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -164,6 +167,32 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
     }
   };
 
+  const handleImportFromRegistry = async () => {
+    if (!registryProjectId.trim()) {
+      alert('Zadejte ID projektu z Rozpočtu');
+      return;
+    }
+
+    setIsImportingFromRegistry(true);
+    try {
+      const result = await uploadAPI.importFromRegistry(registryProjectId.trim());
+
+      await refetchBridges();
+      if (result.bridges?.length > 0) {
+        setSelectedBridge(result.bridges[0].bridge_id);
+      }
+      queryClient.invalidateQueries({ queryKey: ['positions'] });
+
+      setShowRegistryImport(false);
+      setRegistryProjectId('');
+      alert(`Import z Rozpočtu úspěšný!\n\nObjektů: ${result.bridges?.length || 0}\nPozic: ${result.total_positions || 0}`);
+    } catch (error: any) {
+      alert(`Import z Rozpočtu selhal: ${error.response?.data?.error || error.message}`);
+    } finally {
+      setIsImportingFromRegistry(false);
+    }
+  };
+
   const handleCreateSuccess = async (bridge_id: string) => {
     setShowCreateForm(false);
 
@@ -264,18 +293,29 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
 
           <button
             className="c-btn"
-            onClick={handleUploadClick}
-            disabled={isUploading}
-            title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
+            onClick={() => setShowRegistryImport(!showRegistryImport)}
+            disabled={isImportingFromRegistry}
+            title="Načíst pozice z Rozpočet Registry"
             style={{ padding: '6px 10px' }}
           >
-            {isUploading ? (
-              <>
-                <span className="upload-spinner"></span>
-                Načítání...
-              </>
+            {isImportingFromRegistry ? (
+              <><Loader2 size={14} className="inline animate-spin" /> Načítání...</>
             ) : (
-              <><Save size={14} className="inline" /> Nahrát XLSX</>
+              <><Download size={14} className="inline" /> Načíst z Rozpočtu</>
+            )}
+          </button>
+
+          <button
+            className="c-btn"
+            onClick={handleUploadClick}
+            disabled={isUploading}
+            title="Nahrát Excel soubor s pozicemi objektů (alternativní import)"
+            style={{ padding: '6px 8px', opacity: 0.8 }}
+          >
+            {isUploading ? (
+              <><Loader2 size={14} className="inline animate-spin" /> Načítání...</>
+            ) : (
+              <><Upload size={14} className="inline" /> XLSX</>
             )}
           </button>
 
@@ -328,6 +368,44 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
 
         </div>
       </div>
+
+      {/* Inline form: Import from Registry */}
+      {showRegistryImport && (
+        <div style={{
+          padding: '8px 16px', background: 'var(--r0-bg-secondary, #f8f9fa)',
+          borderTop: '1px solid var(--r0-border, #e2e8f0)',
+          display: 'flex', alignItems: 'center', gap: 8, fontSize: 13,
+        }}>
+          <span style={{ color: 'var(--r0-text-secondary, #6b7280)' }}>ID projektu z Rozpočtu:</span>
+          <input
+            type="text"
+            value={registryProjectId}
+            onChange={(e) => setRegistryProjectId(e.target.value)}
+            placeholder="např. proj_abc123"
+            style={{
+              padding: '4px 8px', border: '1px solid var(--r0-border, #d1d5db)',
+              borderRadius: 4, fontSize: 13, width: 200,
+              background: 'var(--r0-bg, #fff)', color: 'var(--r0-text, #1a1a1a)',
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && handleImportFromRegistry()}
+          />
+          <button
+            className="c-btn c-btn--success"
+            onClick={handleImportFromRegistry}
+            disabled={isImportingFromRegistry || !registryProjectId.trim()}
+            style={{ padding: '4px 10px', fontSize: 12 }}
+          >
+            {isImportingFromRegistry ? 'Načítání...' : 'Importovat'}
+          </button>
+          <button
+            className="c-btn"
+            onClick={() => { setShowRegistryImport(false); setRegistryProjectId(''); }}
+            style={{ padding: '4px 8px', fontSize: 12 }}
+          >
+            Zrušit
+          </button>
+        </div>
+      )}
 
       {/* Modal for Create Monolith Form */}
       {showCreateForm && (

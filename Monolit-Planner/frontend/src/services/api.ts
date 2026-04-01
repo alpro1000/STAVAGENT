@@ -327,7 +327,14 @@ export const uploadAPI = {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     return data;
-  }
+  },
+  importFromRegistry: async (registryProjectId: string, projectName?: string) => {
+    const { data } = await api.post('/api/import-from-registry', {
+      registry_project_id: registryProjectId,
+      project_name: projectName,
+    });
+    return data;
+  },
 };
 
 // Export
