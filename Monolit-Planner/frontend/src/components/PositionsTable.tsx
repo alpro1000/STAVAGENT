@@ -2,7 +2,7 @@
  * PositionsTable - Main table with editable fields
  */
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Building2, FileText, Trash2, PlusCircle, ChevronDown, ChevronRight, Lock } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useQueryClient } from '@tanstack/react-query';
@@ -11,7 +11,7 @@ import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
 import type { Position, Subtype, Unit } from '@stavagent/monolit-shared';
-import { SUBTYPE_LABELS, calculateElementTotalDays } from '@stavagent/monolit-shared';
+import { SUBTYPE_LABELS, calculateElementTotalDays, sortPartsBySequence } from '@stavagent/monolit-shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
@@ -33,6 +33,10 @@ export default function PositionsTable() {
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
   // FormworkCalculatorModal state removed — replaced by /planner navigation
+
+  // ── Scroll restoration after returning from Planner ──
+  const [highlightedPart, setHighlightedPart] = useState<string | null>(null);
+  const scrollRestoredRef = useRef(false);
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -365,6 +369,27 @@ export default function PositionsTable() {
     setExpandedParts(new Set(allParts));
   }, [groupedPositions]);
 
+  // ── Restore scroll position after returning from Planner page ──
+  useEffect(() => {
+    if (scrollRestoredRef.current) return;
+    const savedPart = sessionStorage.getItem('monolit-planner-return-part');
+    if (!savedPart) return;
+    // Clear it so it doesn't fire again
+    sessionStorage.removeItem('monolit-planner-return-part');
+    scrollRestoredRef.current = true;
+
+    // Wait for DOM to render positions
+    setTimeout(() => {
+      const partEl = document.getElementById(`part-${savedPart}`);
+      if (partEl) {
+        partEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setHighlightedPart(savedPart);
+        // Clear highlight after 3 seconds
+        setTimeout(() => setHighlightedPart(null), 3000);
+      }
+    }, 300);
+  }, [positions]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!selectedBridge) {
     return (
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-lg)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
@@ -386,7 +411,14 @@ export default function PositionsTable() {
 
   // If no positions exist, show empty table with ability to add rows
   const hasPositions = positions.length > 0;
-  const displayGroups = hasPositions ? groupedPositions : { 'NOVÁ ČÁST': [] };
+
+  // Sort parts by construction sequence (bridge: foundations→superstructure→rimsa)
+  const sortedDisplayGroups = useMemo(() => {
+    if (!hasPositions) return [['NOVÁ ČÁST', [] as Position[]] as const];
+    const partNames = Object.keys(groupedPositions);
+    const sorted = sortPartsBySequence(partNames);
+    return sorted.map(name => [name, groupedPositions[name]] as const);
+  }, [groupedPositions, hasPositions]);
 
   return (
     <div className="positions-container">
@@ -418,12 +450,24 @@ export default function PositionsTable() {
         </div>
       )}
 
-      {Object.entries(displayGroups)
+      {sortedDisplayGroups
         .map(([partName, partPositions]) => {
         const isExpanded = expandedParts.has(partName);
 
         return (
-          <div key={partName} id={`part-${partName}`} className="c-panel u-mb-md" style={{ padding: 0 }}>
+          <div
+            key={partName}
+            id={`part-${partName}`}
+            className="c-panel u-mb-md"
+            style={{
+              padding: 0,
+              ...(highlightedPart === partName ? {
+                outline: '3px solid var(--accent-orange, #FF9F1C)',
+                outlineOffset: '2px',
+                transition: 'outline 0.3s ease',
+              } : {}),
+            }}
+          >
             <div
               className="u-flex-between u-p-md"
               onClick={() => togglePart(partName)}
@@ -487,6 +531,8 @@ export default function PositionsTable() {
                       params.set('vyzuz_position_id', vyzuzPos.id);
                       if (vyzuzPos.qty) params.set('vyzuz_qty', String(vyzuzPos.qty));
                     }
+                    // Save part name for scroll restoration on return
+                    sessionStorage.setItem('monolit-planner-return-part', partName);
                     window.location.href = `/planner?${params.toString()}`;
                   }}
                   isLocked={isLocked}
