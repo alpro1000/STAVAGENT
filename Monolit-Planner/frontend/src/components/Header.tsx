@@ -334,7 +334,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
               onClick={() => setShowCreateForm(false)}
               title="Zavřít"
             >
-              ✕
+              <X size={18} />
             </button>
             <CreateMonolithForm
               onSuccess={handleCreateSuccess}
@@ -353,7 +353,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
               onClick={() => setShowExportHistory(false)}
               title="Zavřít"
             >
-              ✕
+              <X size={18} />
             </button>
             <ExportHistory onClose={() => setShowExportHistory(false)} />
           </div>
@@ -369,7 +369,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
               onClick={() => setShowEditForm(false)}
               title="Zavřít"
             >
-              ✕
+              <X size={18} />
             </button>
             <EditBridgeForm
               bridge={bridges.find(b => b.bridge_id === selectedBridge)!}

@@ -659,7 +659,7 @@ export default function PortalPage() {
                 }}>
                   <div>
                     <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                      📁 Projekty
+                      <FolderOpen size={16} className="inline" /> Projekty
                     </h3>
                     <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
                       <span style={{ display: 'inline' }}>{projects.length}</span> {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
@@ -670,7 +670,7 @@ export default function PortalPage() {
                     className="c-btn c-btn--sm c-btn--primary"
                     style={{ padding: '6px 12px', fontSize: '12px', whiteSpace: 'nowrap' }}
                   >
-                    <Plus size={14} /> Nový 📋
+                    <Plus size={14} /> Nový <ClipboardList size={14} className="inline" />
                   </button>
                 </div>
 

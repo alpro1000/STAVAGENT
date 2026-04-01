@@ -6,6 +6,7 @@
  */
 
 import { ExternalLink } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 
 interface Service {
   id: string;
@@ -71,7 +72,12 @@ export default function ServiceCard({ service, onClick }: ServiceCardProps) {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <span style={{ fontSize: '32px' }}>{service.icon}</span>
+          <span style={{ display: 'flex', alignItems: 'center' }}>
+            {(() => {
+              const IconComp = (LucideIcons as any)[service.icon];
+              return IconComp ? <IconComp size={32} /> : <span style={{ fontSize: '32px' }}>{service.icon}</span>;
+            })()}
+          </span>
           <div>
             <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)' }}>
               {service.name}
