@@ -49,7 +49,7 @@ export default function CustomWorkModal({ onSelect, onCancel }: Props) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
         <div className="modal-header">
           <h2>Přidat vlastní práci</h2>
-          <button className="btn-close" onClick={onCancel} title="Zavřít">✕</button>
+          <button className="btn-close" onClick={onCancel} title="Zavřít">&times;</button>
         </div>
 
         <div className="modal-body">

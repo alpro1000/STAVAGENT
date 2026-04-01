@@ -11,6 +11,7 @@
 
 import { createPortal } from 'react-dom';
 import { useEffect } from 'react';
+import { Download } from 'lucide-react';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -109,7 +110,7 @@ export default function PortalImportModal({ data, onConfirm, onCancel, importing
           borderBottom: '1px solid var(--r0-border, #e2e8f0)',
           display: 'flex', alignItems: 'center', gap: '10px',
         }}>
-          <span style={{ fontSize: '20px' }}>📥</span>
+          <Download size={20} />
           <div>
             <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0, color: 'var(--r0-text, #1e293b)' }}>
               Import z Portal

@@ -8,7 +8,7 @@
  * Data source: positions from the active bridge via API.
  */
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { GanttChart } from 'lucide-react';
+import { GanttChart, ArrowLeft } from 'lucide-react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
@@ -228,7 +228,7 @@ export default function ProjectGantt() {
               textDecoration: 'none', color: 'var(--r0-slate-700)', background: 'white',
             }}
           >
-            ← Kalkulátor
+            <ArrowLeft size={14} /> Kalkulátor
           </Link>
         </div>
       </div>

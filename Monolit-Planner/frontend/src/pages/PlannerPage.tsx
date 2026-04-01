@@ -15,7 +15,7 @@
  */
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { Calculator, TriangleAlert } from 'lucide-react';
+import { Calculator, TriangleAlert, ArrowLeft, Download, Hourglass, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import {
   planElement,
@@ -699,7 +699,7 @@ export default function PlannerPage() {
             href={isPortalMode ? PORTAL_URL : '/'}
             className="r0-back-link"
           >
-            {isPortalMode ? '← Portál' : '← Monolit Planner'}
+            {isPortalMode ? <><ArrowLeft size={14} className="inline" /> Portál</> : <><ArrowLeft size={14} className="inline" /> Monolit Planner</>}
           </a>
           <h1 className="r0-title">
             <span className="r0-icon"><Calculator size={20} /></span>
@@ -1259,7 +1259,7 @@ export default function PlannerPage() {
                         fontFamily: 'inherit', fontWeight: 500,
                       }}
                     >
-                      {normsScraping ? '⏳ Stahuji všechny normy...' : '📥 Stáhnout všechny normy z methvin.co'}
+                      {normsScraping ? <><Hourglass size={14} className="inline" /> Stahuji všechny normy...</> : <><Download size={14} className="inline" /> Stáhnout všechny normy z methvin.co</>}
                     </button>
                   )}
                 </div>
@@ -2390,7 +2390,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
             }}
           >
             {applyStatus === 'saving' ? '⏳ Ukládám...' :
-             applyStatus === 'saved' ? '✅ Uloženo' :
+             applyStatus === 'saved' ? 'Uloženo' :
              applyStatus === 'error' ? '❌ Chyba' :
              '📋 Aplikovat do pozice'}
           </button>
@@ -2486,7 +2486,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
           : hasSuggestions
             ? 'Optimalizace zdrojů'
             : 'Optimalizace zdrojů — aktuální nastavení je optimální';
-        const icon = deadlineExceeded ? '🚨' : hasSuggestions ? '⚡' : '✅';
+        const icon = deadlineExceeded ? <Siren size={16} /> : hasSuggestions ? <Zap size={16} /> : <CircleCheckBig size={16} />;
         const borderColor = deadlineExceeded ? '#ef4444' : hasSuggestions ? 'var(--r0-blue)' : 'var(--r0-green)';
 
         return (
@@ -2527,7 +2527,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
                             background: isBestDeadline ? '#f0fdf4' : i === 0 ? '#eff6ff' : 'transparent',
                             fontWeight: isBestDeadline || i === 0 ? 600 : 400,
                           }}>
-                            <td style={{ padding: '5px 6px' }}>{isBestDeadline ? '⭐' : i + 1}</td>
+                            <td style={{ padding: '5px 6px' }}>{isBestDeadline ? <Star size={14} /> : i + 1}</td>
                             <td style={{ padding: '5px 6px' }}>{s.label}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.total_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right', color: '#16a34a' }}>
@@ -2610,7 +2610,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
 
       {/* Element + Pour */}
       <div className="r0-grid-2">
-        <Card title="Element" icon="🧱">
+        <Card title="Element" icon={<Blocks size={16} />}>
           <Row label="Typ" value={plan.element.label_cs} />
           <Row label="Klasifikace" value={`${(plan.element.classification_confidence * 100).toFixed(0)}%`} />
           <Row label="Orientace" value={plan.element.profile.orientation === 'horizontal' ? 'Horizontální' : 'Vertikální'} />
@@ -2731,7 +2731,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
       )}
 
       {/* Schedule / Gantt */}
-      <Card title="Harmonogram" icon="📅">
+      <Card title="Harmonogram" icon={<CalendarDays size={16} />}>
         <div className={calendarInfo ? 'r0-grid-4' : 'r0-grid-3'} style={{ marginBottom: 12 }}>
           <Row label="Celkem (prac.)" value={`${plan.schedule.total_days} dní`} bold />
           <Row label="Sekvenčně" value={`${plan.schedule.sequential_days} dní`} />
@@ -2829,7 +2829,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
       )}
 
       {/* Costs Summary */}
-      <Card title="Souhrn nákladů" icon="💰">
+      <Card title="Souhrn nákladů" icon={<DollarSign size={16} />}>
         {(() => {
           const propsLabor = plan.costs.props_labor_czk || 0;
           const propsRental = plan.costs.props_rental_czk || 0;

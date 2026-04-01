@@ -11,7 +11,7 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X, BookOpen, Database, Globe, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X, BookOpen, Database, Globe, ChevronDown, ChevronUp, DollarSign, Star, ChevronLeft } from 'lucide-react';
 import { API_URL } from '../services/api';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -771,9 +771,9 @@ function StrategyTable({ strategies, recommendedCost, recommendedTime, onApply }
               <td style={{ padding: '6px 0', textAlign: 'center', fontWeight: 700, fontFamily: 'monospace' }}>{s.total_days} d</td>
               <td style={{ padding: '6px 0', textAlign: 'right', fontFamily: 'monospace' }}>{s.rental_cost > 0 ? s.rental_cost.toLocaleString('cs') + ' Kč' : '—'}</td>
               <td style={{ padding: '6px 4px', textAlign: 'center' }}>
-                {isCost && <span title="Nejlevnější" style={{ fontSize: '14px' }}>💰</span>}
-                {isTime && !isCost && <span title="Nejrychlejší" style={{ fontSize: '14px' }}>⚡</span>}
-                {isCost && isTime && <span title="Optimum" style={{ fontSize: '14px' }}>⭐</span>}
+                {isCost && <span title="Nejlevnější"><DollarSign size={14} /></span>}
+                {isTime && !isCost && <span title="Nejrychlejší"><Zap size={14} /></span>}
+                {isCost && isTime && <span title="Optimum"><Star size={14} /></span>}
               </td>
               <td style={{ padding: '4px 0', textAlign: 'center' }}>
                 <button onClick={() => onApply(s)} style={{
@@ -842,8 +842,8 @@ function CrewOptTable({ options, hasRebar, efficientCrew }: {
               }}>
                 <td style={{ padding: '5px 0', fontWeight: opt.is_current ? 700 : 400 }}>
                   {opt.label}
-                  {opt.is_current && <span style={{ color: '#7c3aed', fontSize: '10px', marginLeft: '4px' }}>◀</span>}
-                  {isBest && !opt.is_current && <span style={{ color: '#16a34a', fontSize: '10px', marginLeft: '4px' }}>★</span>}
+                  {opt.is_current && <span style={{ color: '#7c3aed', marginLeft: '4px' }}><ChevronLeft size={10} /></span>}
+                  {isBest && !opt.is_current && <span style={{ color: '#16a34a', marginLeft: '4px' }}><Star size={10} /></span>}
                 </td>
                 <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-secondary)' }}>{opt.shift}h</td>
                 <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace' }}>{opt.assembly_days}d</td>

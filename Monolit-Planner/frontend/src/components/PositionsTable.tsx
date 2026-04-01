@@ -3,7 +3,7 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
-import { Building2, FileText, Trash2, PlusCircle, ChevronDown, ChevronRight } from 'lucide-react';
+import { Building2, FileText, Trash2, PlusCircle, ChevronDown, ChevronRight, Lock } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
@@ -509,7 +509,7 @@ export default function PositionsTable() {
                   <table className="c-table positions-table">
                     <thead>
                     <tr>
-                      {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
+                      {isLocked && <th className="lock-col" title="Snapshot je zamčen"><Lock size={14} /></th>}
                       <th
                         className="col-podtyp"
                         title="Typ práce: beton, bednění, výztuž, oboustranné, jiné"
@@ -550,8 +550,8 @@ export default function PositionsTable() {
                       <th className="col-rychlost" title="Norma rychlosti v MJ/hod (EDITABLE). Zadejte normu → přepočítá dny. Nebo zadejte dny → norma se vypočítá zpětně.">MJ/h</th>
                       <th className="col-hod-celkem" title="Celkový počet hodin = Počet × Hod./den × Dny">Celk.hod.</th>
                       <th className="col-kc-celkem" title="Celková cena v CZK = Celk.hod. × Kč/h">Celk.Kč</th>
-                      <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
-                        Kč/m³ ⭐
+                      <th className="col-kc-m3" title="KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
+                        Kč/m³
                       </th>
                       <th className="col-kros-jc" title="KROS jednotková cena = zaokrouhleno nahoru na nejbližších 50 CZK">KROS j.</th>
                       <th className="col-kros-celkem" title="KROS celkem = KROS j. × Objem betonu">KROS Σ</th>
@@ -588,7 +588,7 @@ export default function PositionsTable() {
                             color: 'var(--text-secondary)',
                             fontStyle: 'italic'
                           }}>
-                            Zatím žádné řádky. Klikněte na „➕ Přidat řádek" níže.
+                            Zatím žádné řádky. Klikněte na „Přidat řádek" níže.
                           </td>
                         </tr>
                       )}

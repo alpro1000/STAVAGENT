@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { TriangleAlert, Lightbulb, Pencil, X } from 'lucide-react';
+import { TriangleAlert, Lightbulb, Pencil, X, RefreshCw } from 'lucide-react';
 import './ImportErrorRecovery.css';
 
 interface ParseResult {
@@ -112,7 +112,7 @@ export default function ImportErrorRecovery({
                       </span>
                     </div>
                     {result.source === 'LOCAL' && (
-                      <div className="fallback-note">✅ Local parser (keyword-based)</div>
+                      <div className="fallback-note">Local parser (keyword-based)</div>
                     )}
                     {result.source === 'TEMPLATE' && (
                       <div className="fallback-note"><TriangleAlert size={14} className="inline" /> Default template</div>
@@ -198,7 +198,7 @@ export default function ImportErrorRecovery({
               onClick={onRetry}
               disabled={error.includes('timeout')}
             >
-              🔄 Retry Upload
+              <RefreshCw size={14} /> Retry Upload
             </button>
 
             {selectedFallback && (
@@ -206,7 +206,7 @@ export default function ImportErrorRecovery({
                 className="action-btn btn-accept"
                 onClick={() => onManualCorrection(selectedFallback)}
               >
-                ✅ Accept Fallback ({selectedFallback.positions.length} items)
+                Accept Fallback ({selectedFallback.positions.length} items)
               </button>
             )}
 

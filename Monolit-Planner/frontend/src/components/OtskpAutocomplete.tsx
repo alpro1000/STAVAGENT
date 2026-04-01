@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { Search } from 'lucide-react';
 import { otskpAPI } from '../services/api';
 import type { OtskpCode } from '../../../shared/src/types';
 
@@ -122,7 +123,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
           disabled={disabled}
           title="Začněte psát pro vyhledání v katalogu OTSKP"
         />
-        {isLoading && <span className="otskp-loading">🔍</span>}
+        {isLoading && <span className="otskp-loading"><Search size={14} /></span>}
       </div>
 
       {isOpen && results.length > 0 && (

@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Trash2, Loader2, X } from 'lucide-react';
+import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Trash2, Loader2, X, Lock } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -328,7 +328,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
     <>
     <tr data-position-id={position.id} data-position-instance-id={position.position_instance_id || undefined} className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''} ${Object.keys(editedFields).length > 0 ? 'editing' : ''} ${isUpdating ? 'saving' : ''}`}>
       {/* Locked indicator */}
-      {isLocked && <td className="lock-indicator col-lock">🔒</td>}
+      {isLocked && <td className="lock-indicator col-lock"><Lock size={14} /></td>}
 
       {/* Subtype with icon - EDITABLE NAME */}
       <td className="cell-subtype col-podtyp">
@@ -690,7 +690,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
       <td className="cell-kros-key col-kc-m3">
         <div
           className={`kros-cell kros-key ${position.has_rfi ? 'warning' : ''}`}
-          title={`${formatNumber(computedUnitCostOnM3, 2)} CZK/m³ ⭐ (= ${formatNumber(computedCostCzk, 2)} / ${concreteM3})`}
+          title={`${formatNumber(computedUnitCostOnM3, 2)} CZK/m³ (= ${formatNumber(computedCostCzk, 2)} / ${concreteM3})`}
         >
           {formatNumber(computedUnitCostOnM3, 2)}
         </div>
@@ -757,7 +757,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               disabled={syncingToPortal}
               title={
                 syncStatus === 'ok'
-                  ? '✅ Přeneseno do Portal TOV'
+                  ? 'Přeneseno do Portal TOV'
                   : syncStatus === 'error'
                   ? '⚠️ Přenos selhal – zkuste znovu'
                   : '📤 Přenést do TOV\n\nOdešle výpočet (normohodiny, náklady)\npřímo do TOV tohoto záznamu v Registru'

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { ArrowLeft, Search } from 'lucide-react';
 import { getProjectPositions, PositionInstance } from '../api/registryApi';
 import UnifiedPositionModal from '../components/UnifiedPositionModal';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -70,7 +71,7 @@ export default function RegistryView() {
     <PortalBreadcrumb />
     <div className="c-panel" style={{ margin: 'clamp(8px, 2vw, 24px)', padding: 'clamp(10px, 2vw, 24px)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
-        <Link to="/" className="c-btn c-btn--sm" style={{ textDecoration: 'none' }}>← Zpět</Link>
+        <Link to="/" className="c-btn c-btn--sm" style={{ textDecoration: 'none' }}><ArrowLeft size={14} /> Zpět</Link>
         <h1 style={{ margin: 0, fontSize: 'clamp(16px, 4vw, 24px)', fontWeight: 700 }}>Registry pozic</h1>
         <span className="c-badge c-badge--orange">{filtered.length}</span>
       </div>
@@ -78,7 +79,7 @@ export default function RegistryView() {
       <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
           type="text"
-          placeholder="🔍 Hledat podle popisu nebo kódu..."
+          placeholder="Hledat podle popisu nebo kódu..."
           value={filter.search}
           onChange={e => setFilter({ ...filter, search: e.target.value })}
           className="c-input"

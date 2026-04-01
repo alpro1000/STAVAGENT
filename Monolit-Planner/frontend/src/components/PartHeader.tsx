@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { TriangleAlert, Upload, CircleCheckBig, Loader2 } from 'lucide-react';
+import { TriangleAlert, Upload, CircleCheckBig, Loader2, Star } from 'lucide-react';
 import OtskpAutocomplete from './OtskpAutocomplete';
 import { otskpAPI, API_URL } from '../services/api';
 import { calculateElementTotalDays } from '@stavagent/monolit-shared';
@@ -270,7 +270,7 @@ export default function PartHeader({
 
         {/* Calculated Kč/m³ for this part (for comparison) */}
         <div className="concrete-param">
-          <label>⭐ Kč/m³ (výpočet):</label>
+          <label><Star size={14} className="inline" /> Kč/m³ (výpočet):</label>
           <div className="calculated-price-display" style={{
             display: 'flex',
             alignItems: 'center',
