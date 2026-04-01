@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft, LogIn, User, LogOut, BarChart3, FolderOpen, ClipboardList, Ruler, Hexagon, Building2, Search, Package, SquareParking, Waypoints, Milestone, Shovel, Wrench } from 'lucide-react';
+import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft, LogIn, User, LogOut, BarChart3, FolderOpen, ClipboardList } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';

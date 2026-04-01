@@ -3,13 +3,12 @@
  * Display overall system statistics
  */
 
-import { Users, Crown, CircleCheckBig, FolderOpen, RefreshCw } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { Users, Shield, CheckCircle2, FolderOpen, RefreshCw } from 'lucide-react';
 
 interface StatCardProps {
   title: string;
   value: string | number;
-  icon: LucideIcon;
+  icon: React.ComponentType<{ size?: number; style?: React.CSSProperties }>;
   color: string;
 }
 
@@ -90,13 +89,13 @@ export default function AdminStats({ stats, loading, onRefresh }: AdminStatsProp
         <StatCard
           title="Admin uživatelé"
           value={users?.admins || 0}
-          icon={Crown}
+          icon={Shield}
           color="#f6ad55"
         />
         <StatCard
           title="Ověření email"
           value={users?.verified || 0}
-          icon={CircleCheckBig}
+          icon={CheckCircle2}
           color="#48bb78"
         />
         <StatCard

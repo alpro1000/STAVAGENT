@@ -4,22 +4,23 @@
  */
 
 import { useState } from 'react';
+import { SquareDashed, GripHorizontal, Grid3x3, PlusCircle } from 'lucide-react';
 import type { Subtype, Unit } from '@stavagent/monolit-shared';
 
 interface WorkType {
   value: Subtype;
   label: string;
   unit: Unit;
-  icon: string;
+  icon: React.ReactNode;
 }
 
 const WORK_TYPES: WorkType[] = [
   // 'beton' is hidden from selector - it's auto-created with each part
-  // { value: 'beton', label: 'Betonování', unit: 'M3', icon: '🪨' },
-  { value: 'bednění', label: 'Bednění', unit: 'm2', icon: '🪵' },
-  { value: 'výztuž', label: 'Výztuž', unit: 't', icon: '⚙️' },
-  { value: 'oboustranné (opěry)', label: 'Oboustranné bednění', unit: 'm2', icon: '📐' },
-  { value: 'jiné', label: 'Jiné (vlastní práce)', unit: 'ks', icon: '➕' }
+  // { value: 'beton', label: 'Betonování', unit: 'M3', icon: <Hexagon size={40} /> },
+  { value: 'bednění', label: 'Bednění', unit: 'm2', icon: <SquareDashed size={40} /> },
+  { value: 'výztuž', label: 'Výztuž', unit: 't', icon: <GripHorizontal size={40} /> },
+  { value: 'oboustranné (opěry)', label: 'Oboustranné bednění', unit: 'm2', icon: <Grid3x3 size={40} /> },
+  { value: 'jiné', label: 'Jiné (vlastní práce)', unit: 'ks', icon: <PlusCircle size={40} /> }
 ];
 
 interface Props {

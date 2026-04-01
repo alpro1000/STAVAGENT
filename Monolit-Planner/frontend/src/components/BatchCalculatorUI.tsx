@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Calculator } from 'lucide-react';
 import { calculateBatchPlan, BatchPlan, DilationJoint } from '@stavagent/monolit-shared';
 
 interface BatchCalculatorUIProps {
@@ -209,7 +210,7 @@ export const BatchCalculatorUI: React.FC<BatchCalculatorUIProps> = ({
       `}</style>
 
       <div className="batch-header">
-        📊 Калькулятор тактов заливки
+        <Calculator size={18} className="inline" /> Калькулятор тактов заливки
       </div>
 
       <div className="batch-grid">

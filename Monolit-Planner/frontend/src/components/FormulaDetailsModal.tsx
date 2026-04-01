@@ -3,6 +3,7 @@
  */
 
 import { useEffect } from 'react';
+import { TriangleAlert } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { Position } from '@stavagent/monolit-shared';
 

@@ -2,6 +2,7 @@
  * ExportHistory component - Display and manage saved exports
  */
 
+import { ArrowDown, Trash2, ClipboardList, X } from 'lucide-react';
 import { useExports } from '../hooks/useExports';
 import './ExportHistory.css';
 
@@ -36,8 +37,8 @@ export default function ExportHistory({ onClose }: ExportHistoryProps) {
     <div className="export-history-modal">
       <div className="export-history-content">
         <div className="export-history-header">
-          <h2>📋 Historie exportů</h2>
-          <button className="btn-close" onClick={onClose}>✕</button>
+          <h2><ClipboardList size={18} className="inline" /> Historie exportů</h2>
+          <button className="btn-close" onClick={onClose}><X size={16} /></button>
         </div>
 
         <div className="export-history-body">
@@ -71,7 +72,7 @@ export default function ExportHistory({ onClose }: ExportHistoryProps) {
                         disabled={isDownloading}
                         title="Stáhnout soubor"
                       >
-                        ⬇️ Stáhnout
+                        <ArrowDown size={14} className="inline" /> Stáhnout
                       </button>
                       <button
                         className="btn-small btn-danger"
@@ -79,7 +80,7 @@ export default function ExportHistory({ onClose }: ExportHistoryProps) {
                         disabled={isDeleting}
                         title="Smazat soubor"
                       >
-                        🗑️ Smazat
+                        <Trash2 size={14} className="inline" /> Smazat
                       </button>
                     </td>
                   </tr>

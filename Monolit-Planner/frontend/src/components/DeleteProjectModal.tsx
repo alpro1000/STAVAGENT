@@ -4,6 +4,7 @@
  */
 
 import { useEffect } from 'react';
+import { TriangleAlert, Trash2, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
 interface Props {
@@ -37,8 +38,8 @@ export default function DeleteProjectModal({
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Smazat projekt">
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
-          <h2>⚠️ Smazat celý projekt?</h2>
-          <button className="btn-close" onClick={onCancel} title="Zavřít">✕</button>
+          <h2><TriangleAlert size={18} className="inline" /> Smazat celý projekt?</h2>
+          <button className="btn-close" onClick={onCancel} title="Zavřít"><X size={16} /></button>
         </div>
 
         <div className="modal-body">
@@ -62,7 +63,7 @@ export default function DeleteProjectModal({
           </div>
 
           <div className="delete-final-warning">
-            ⚠️ <strong>Tuto akci nelze vrátit!</strong>
+            <TriangleAlert size={14} className="inline" /> <strong>Tuto akci nelze vrátit!</strong>
           </div>
         </div>
 
@@ -79,7 +80,7 @@ export default function DeleteProjectModal({
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? '🗑️ Mažu...' : '🗑️ Smazat celý projekt'}
+            {isDeleting ? <><Trash2 size={14} className="inline" /> Mažu...</> : <><Trash2 size={14} className="inline" /> Smazat celý projekt</>}
           </button>
         </div>
       </div>

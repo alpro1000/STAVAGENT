@@ -11,8 +11,7 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { FileText, Landmark, Package, Ruler, CircleCheckBig, XCircle } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { FileText, Landmark, Package, Ruler, CheckCircle2, XCircle } from 'lucide-react';
 import api from '../../services/api';
 
 // ============================================================================
@@ -221,7 +220,7 @@ function PipelineStep({
           background: '#c6f6d5', borderRadius: 8, padding: 12,
           fontSize: 14, color: '#22543d',
         }}>
-          <CircleCheckBig size={16} className="inline" /> {resultSummary(status)}
+          <CheckCircle2 size={16} className="inline" /> {resultSummary(status)}
         </div>
       )}
 
@@ -533,7 +532,7 @@ export default function DataPipeline() {
 
       {/* Step 4: Methvin Norms */}
       <PipelineStep
-        icon="📐"
+        icon={Ruler}
         title="4. Normy trудозатрат (methvin.co)"
         description="Sběr produktivních norem: man-hours/m², m³, tonne. 40+ kategorií přes Perplexity API."
         status={methvinStatus}
@@ -604,7 +603,7 @@ export default function DataPipeline() {
               >
                 <div style={{ fontWeight: 600, color: '#2d3748', marginBottom: 2 }}>{cat.label}</div>
                 <div style={{ color: cat.complete ? '#38a169' : '#a0aec0' }}>
-                  {cat.complete ? '✅ Kompletní' : `${cat.scraped_files}/${cat.expected_queries} dotazů`}
+                  {cat.complete ? <><CheckCircle2 size={14} className="inline" /> Kompletní</> : `${cat.scraped_files}/${cat.expected_queries} dotazů`}
                 </div>
               </div>
             ))}

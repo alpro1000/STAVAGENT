@@ -24,6 +24,8 @@ import {
   X,
   ChevronDown,
   ChevronUp,
+  Search,
+  ClipboardList,
 } from 'lucide-react';
 import { workflowCAPI, WorkflowCResult } from '../../services/api';
 
@@ -252,7 +254,7 @@ export default function ProjectAudit({ onClose }: ProjectAuditProps) {
         >
           <div>
             <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-              🔍 Audit projektu
+              <Search size={20} className="inline" /> Audit projektu
             </h2>
             <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginTop: '4px' }}>
               Multi-Role AI analýza výkazu výměr
@@ -518,7 +520,7 @@ export default function ProjectAudit({ onClose }: ProjectAuditProps) {
             {result.critical_issues.length > 0 && (
               <div style={{ marginBottom: '20px' }}>
                 <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--status-error)', marginBottom: '8px' }}>
-                  ⚠️ Kritické problémy ({result.critical_issues.length})
+                  <AlertTriangle size={16} className="inline" /> Kritické problémy ({result.critical_issues.length})
                 </h4>
                 <ul style={{ margin: 0, paddingLeft: '20px' }}>
                   {result.critical_issues.map((issue, i) => (
@@ -534,7 +536,7 @@ export default function ProjectAudit({ onClose }: ProjectAuditProps) {
             {result.warnings.length > 0 && (
               <div style={{ marginBottom: '20px' }}>
                 <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--status-warning)', marginBottom: '8px' }}>
-                  ⚡ Varování ({result.warnings.length})
+                  <Zap size={16} className="inline" /> Varování ({result.warnings.length})
                 </h4>
                 <ul style={{ margin: 0, paddingLeft: '20px' }}>
                   {result.warnings.slice(0, 5).map((warning, i) => (
@@ -555,7 +557,7 @@ export default function ProjectAudit({ onClose }: ProjectAuditProps) {
             {result.summary && (
               <div style={{ marginBottom: '20px' }}>
                 <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                  📋 Shrnutí projektu
+                  <ClipboardList size={16} className="inline" /> Shrnutí projektu
                 </h4>
                 {result.summary.executive_summary && (
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '12px' }}>

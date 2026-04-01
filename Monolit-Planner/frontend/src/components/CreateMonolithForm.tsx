@@ -9,6 +9,7 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
+import { Building2, PlusCircle, FolderOpen } from 'lucide-react';
 import { useBridges } from '../hooks/useBridges';
 
 interface CreateMonolithFormProps {
@@ -106,7 +107,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
   return (
     <div className="c-panel" style={{ maxWidth: '600px', margin: '0 auto' }}>
       <h2 className="u-text-orange u-mb-lg" style={{ fontSize: 'var(--font-size-xl)' }}>
-        ➕ {preselectedProject ? 'Přidat objekt do projektu' : 'Vytvořit nový objekt'}
+        <PlusCircle size={18} className="inline" /> {preselectedProject ? 'Přidat objekt do projektu' : 'Vytvořit nový objekt'}
       </h2>
 
       {error && (
@@ -119,7 +120,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
         {/* 1. Stavba (Project) - Select existing or create new - FIRST */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            📁 Stavba (Project)
+            <FolderOpen size={14} className="inline" /> Stavba (Project)
           </label>
 
           {preselectedProject ? (
@@ -135,7 +136,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
                 gap: '8px'
               }}
             >
-              📁 {preselectedProject}
+              <FolderOpen size={14} className="inline" /> {preselectedProject}
             </div>
           ) : existingProjects.length > 0 ? (
             <>
@@ -190,7 +191,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
         {/* 2. Číslo objektu (Bridge ID) - SECOND */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            🏗️ Číslo objektu *
+            <Building2 size={14} className="inline" /> Číslo objektu *
           </label>
           <input
             type="text"

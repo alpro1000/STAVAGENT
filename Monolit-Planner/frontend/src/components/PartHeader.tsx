@@ -5,6 +5,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
+import { TriangleAlert, Upload, CircleCheckBig, Loader2 } from 'lucide-react';
 import OtskpAutocomplete from './OtskpAutocomplete';
 import { otskpAPI, API_URL } from '../services/api';
 import { calculateElementTotalDays } from '@stavagent/monolit-shared';
@@ -354,7 +355,7 @@ export default function PartHeader({
               {allRegistered && !hasDrift && (
                 <span title={`Všechny pozice registrovány${regMessage ? ` (${regMessage})` : ''}`}
                   style={{ color: '#22c55e', fontSize: '13px' }}>
-                  ✅ {registeredCount}/{totalCount}
+                  <CircleCheckBig size={13} className="inline" /> {registeredCount}/{totalCount}
                 </span>
               )}
               {partiallyRegistered && !hasDrift && (
@@ -366,7 +367,7 @@ export default function PartHeader({
               {hasDrift && (
                 <span title="Výpočet se změnil od posledního přenosu — klikněte Registrovat znovu"
                   style={{ color: '#ef4444', fontSize: '13px', fontWeight: 700 }}>
-                  ⚠️ změněno
+                  <TriangleAlert size={13} className="inline" /> změněno
                 </span>
               )}
               {registeredCount === 0 && regStatus === 'idle' && (
@@ -403,7 +404,7 @@ export default function PartHeader({
                 gap: '5px',
               }}
             >
-              {registering ? '⏳ Registruji...' : regStatus === 'ok' ? `✅ Hotovo (${regMessage})` : regStatus === 'error' ? `⚠️ Chyba` : registeredCount > 0 ? '📤 Aktualizovat TOV' : '📤 Registrovat část'}
+              {registering ? <><Loader2 size={12} className="inline" /> Registruji...</> : regStatus === 'ok' ? <><CircleCheckBig size={12} className="inline" /> Hotovo ({regMessage})</> : regStatus === 'error' ? <><TriangleAlert size={12} className="inline" /> Chyba</> : registeredCount > 0 ? <><Upload size={12} className="inline" /> Aktualizovat TOV</> : <><Upload size={12} className="inline" /> Registrovat část</>}
             </button>
             {regStatus === 'error' && regMessage && (
               <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px' }}>{regMessage}</span>

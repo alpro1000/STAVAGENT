@@ -8,6 +8,7 @@
  * Data source: positions from the active bridge via API.
  */
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { GanttChart } from 'lucide-react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
@@ -234,7 +235,7 @@ export default function ProjectGantt() {
 
       {rows.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 60, color: 'var(--r0-slate-400)' }}>
-          <div style={{ fontSize: 48 }}>📊</div>
+          <div style={{ fontSize: 48 }}><GanttChart size={48} /></div>
           <p style={{ fontSize: 14, marginTop: 12 }}>
             Žádné pozice s výpočtem (dny {'>'} 0). Spusťte kalkulátor pro jednotlivé pozice.
           </p>

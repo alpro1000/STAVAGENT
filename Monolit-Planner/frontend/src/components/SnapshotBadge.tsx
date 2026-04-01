@@ -2,6 +2,7 @@
  * SnapshotBadge - Display active snapshot info
  */
 
+import { Info } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
 
@@ -84,7 +85,7 @@ export default function SnapshotBadge() {
       </div>
 
       <div className="snapshot-message">
-        ℹ️ Data jsou zafixována a nelze je upravovat. Pro editaci odemkněte snapshot.
+        <Info size={14} className="inline" /> Data jsou zafixována a nelze je upravovat. Pro editaci odemkněte snapshot.
       </div>
     </div>
   );

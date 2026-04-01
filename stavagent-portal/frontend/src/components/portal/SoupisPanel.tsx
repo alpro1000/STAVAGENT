@@ -8,6 +8,7 @@
  */
 
 import { useState, useRef } from 'react';
+import { Loader2, ClipboardList, AlertTriangle } from 'lucide-react';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 const CORE_API_URL = `${API_URL}/api/core`;
@@ -174,12 +175,12 @@ export default function SoupisPanel({ onClose }: SoupisPanelProps) {
 
           {isUploading ? (
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '8px' }}>⏳</div>
+              <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center' }}><Loader2 size={32} style={{ animation: 'spin 1s linear infinite' }} /></div>
               <p style={{ color: '#666' }}>Zpracovavam dokument...</p>
             </div>
           ) : (
             <div>
-              <div style={{ fontSize: '2rem', marginBottom: '8px' }}>📋</div>
+              <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'center' }}><ClipboardList size={32} /></div>
               <p style={{ fontWeight: 500, marginBottom: '8px' }}>
                 Pretahnete soubor sem nebo kliknete
               </p>
@@ -309,7 +310,7 @@ export default function SoupisPanel({ onClose }: SoupisPanelProps) {
           {result.warnings?.length > 0 && (
             <div style={{ marginTop: '12px', padding: '8px 12px', background: '#fffde7',
               border: '1px solid #fff9c4', borderRadius: '6px', fontSize: '0.8rem' }}>
-              {result.warnings.map((w, i) => <div key={i}>⚠️ {w}</div>)}
+              {result.warnings.map((w, i) => <div key={i}><AlertTriangle size={14} className="inline" /> {w}</div>)}
             </div>
           )}
         </div>
