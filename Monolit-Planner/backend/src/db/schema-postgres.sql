@@ -76,6 +76,8 @@ CREATE TABLE IF NOT EXISTS positions (
   rfi_message TEXT,
   item_name VARCHAR(255),
   otskp_code VARCHAR(50),
+  metadata TEXT,
+  position_number INTEGER,
   position_instance_id VARCHAR(255) UNIQUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
