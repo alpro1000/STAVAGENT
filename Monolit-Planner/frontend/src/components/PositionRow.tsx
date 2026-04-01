@@ -56,47 +56,16 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
 
   // Push this position's calculated data as DOV payload to Portal
   const handleSyncToPortal = async () => {
-    if (!position.position_instance_id || syncingToPortal) return;
+    if (!position.position_instance_id || !position.id || syncingToPortal) return;
     setSyncingToPortal(true);
     setSyncStatus('idle');
 
-    const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
-    const professionMap: Record<string, string> = {
-      beton: 'Betonář', 'bednění': 'Tesař', 'odbednění': 'Tesař', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
-    };
-    const profession = professionMap[position.subtype] || 'Stavební dělník';
-    const crewSize = position.crew_size || 0;
-    const shiftHours = position.shift_hours || 0;
-    const days = position.days || 0;
-
-    const dovPayload = {
-      labor: [{
-        id: `lab_${position.id}`,
-        profession,
-        count: crewSize,
-        hours: shiftHours,
-        norm_hours: position.labor_hours || crewSize * shiftHours * days,
-        hourly_rate: position.wage_czk_ph || 0,
-        total_cost_czk: position.cost_czk || 0,
-      }],
-      labor_summary: {
-        total_norm_hours: position.labor_hours || crewSize * shiftHours * days,
-        total_workers: crewSize,
-        total_cost_czk: position.cost_czk || 0,
-      },
-      machinery: [],
-      machinery_summary: { total_machine_hours: 0, total_units: 0, total_cost_czk: 0 },
-      materials: [],
-      materials_summary: { total_cost_czk: 0, item_count: 0 },
-      formwork_rental: null,
-      pump_rental: null,
-      source_tag: 'MONOLIT_LIVE',
-    };
-
     try {
+      // Call backend which builds full TOV (labor + machinery + materials)
+      // and sends to Portal DOV endpoint
       const res = await fetch(
-        `${PORTAL_API}/api/positions/${position.position_instance_id}/dov`,
-        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ payload: dovPayload }), signal: AbortSignal.timeout(5000) }
+        `/api/export-to-registry/position/${position.id}/tov`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: AbortSignal.timeout(15000) }
       );
       setSyncStatus(res.ok ? 'ok' : 'error');
     } catch {

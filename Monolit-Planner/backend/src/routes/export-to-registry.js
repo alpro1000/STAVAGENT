@@ -522,4 +522,123 @@ router.get('/:bridge_id', requireExportAuth, async (req, res) => {
   }
 });
 
+/**
+ * POST /api/export-to-registry/position/:position_id/tov
+ * Sync a single position's full TOV data to Portal DOV endpoint.
+ *
+ * Builds complete TOV payload (labor + machinery + materials) using
+ * the same mapping functions as the full bridge export, then sends
+ * to Portal POST /api/positions/:position_instance_id/dov
+ */
+router.post('/position/:position_id/tov', async (req, res) => {
+  const { position_id } = req.params;
+
+  try {
+    // Fetch position from DB
+    const position = await db.prepare(
+      'SELECT * FROM positions WHERE id = ?'
+    ).get(position_id);
+
+    if (!position) {
+      return res.status(404).json({ error: 'Position not found' });
+    }
+
+    if (!position.position_instance_id) {
+      return res.status(400).json({
+        error: 'Position not linked to Portal (no position_instance_id). Export to Registry first.',
+      });
+    }
+
+    // Build full TOV payload using the same functions as bridge-level export
+    const labor = mapPositionToLabor(position);
+    const machinery = mapPositionToMachinery(position);
+    const materials = mapPositionToMaterials(position.part_name, position);
+
+    const crewSize = position.crew_size || 0;
+    const shiftHours = position.shift_hours || 0;
+    const totalDays = position.days || 0;
+    const normHours = position.labor_hours || (crewSize * shiftHours * totalDays);
+
+    const dovPayload = {
+      labor,
+      labor_summary: {
+        total_norm_hours: normHours,
+        total_workers: crewSize,
+        total_cost_czk: position.cost_czk || 0,
+      },
+      machinery,
+      machinery_summary: {
+        total_machine_hours: machinery.reduce((s, m) => s + (m.hours || 0), 0),
+        total_units: machinery.length,
+        total_cost_czk: machinery.reduce((s, m) => s + (m.totalCost || 0), 0),
+      },
+      materials,
+      materials_summary: {
+        total_cost_czk: materials.reduce((s, m) => s + (m.totalCost || 0), 0),
+        item_count: materials.length,
+      },
+      formwork_rental: null,
+      pump_rental: null,
+      // Monolith position metadata for deep-linking
+      monolith_payload: {
+        monolit_position_id: position.id,
+        monolit_project_id: position.bridge_id,
+        part_name: position.part_name,
+        subtype: position.subtype,
+        otskp_code: position.otskp_code || null,
+        item_name: position.item_name || null,
+        crew_size: crewSize,
+        wage_czk_ph: position.wage_czk_ph || 0,
+        shift_hours: shiftHours,
+        days: totalDays,
+        labor_hours: normHours,
+        cost_czk: position.cost_czk || 0,
+        concrete_m3: position.concrete_m3 || null,
+        unit_cost_on_m3: position.unit_cost_on_m3 || null,
+        kros_unit_czk: position.kros_unit_czk || null,
+        kros_total_czk: position.kros_total_czk || null,
+      },
+      source_tag: 'MONOLIT_TOV_SYNC',
+      synced_at: new Date().toISOString(),
+    };
+
+    // Send to Portal DOV endpoint
+    const portalRes = await fetch(
+      `${PORTAL_API}/api/positions/${position.position_instance_id}/dov`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ payload: dovPayload }),
+        signal: AbortSignal.timeout(10000),
+      }
+    );
+
+    if (!portalRes.ok) {
+      const errText = await portalRes.text().catch(() => '');
+      console.error(`[TOV Sync] Portal returned ${portalRes.status}: ${errText}`);
+      return res.status(portalRes.status).json({
+        error: `Portal DOV sync failed: ${portalRes.status}`,
+      });
+    }
+
+    console.log(`[TOV Sync] ✅ Position ${position_id} → Portal DOV (labor: ${labor.length}, machinery: ${machinery.length}, materials: ${materials.length})`);
+
+    res.json({
+      success: true,
+      position_id,
+      position_instance_id: position.position_instance_id,
+      tov: {
+        labor_count: labor.length,
+        machinery_count: machinery.length,
+        materials_count: materials.length,
+        total_cost_czk: (position.cost_czk || 0) + machinery.reduce((s, m) => s + (m.totalCost || 0), 0),
+      },
+    });
+
+  } catch (error) {
+    console.error('[TOV Sync] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
