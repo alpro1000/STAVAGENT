@@ -123,14 +123,14 @@ describe('Element Classifier', () => {
   // ─── recommendFormwork ───────────────────────────────────────────────
 
   describe('recommendFormwork', () => {
-    it('recommends SL-1 for pier shafts', () => {
+    it('recommends VARIO GT 24 for pier shafts', () => {
       const system = recommendFormwork('driky_piliru');
-      expect(system.name).toBe('SL-1 Sloupové');
+      expect(system.name).toBe('VARIO GT 24');
     });
 
-    it('recommends Top 50 for bridge deck', () => {
+    it('recommends MULTIFLEX for bridge deck', () => {
       const system = recommendFormwork('mostovkova_deska');
-      expect(system.name).toBe('Top 50');
+      expect(system.name).toBe('MULTIFLEX');
     });
 
     it('recommends Frami for foundations', () => {
@@ -150,8 +150,8 @@ describe('Element Classifier', () => {
     it('applies difficulty factor to assembly norm', () => {
       const system = recommendFormwork('mostovkova_deska');
       const adjusted = getAdjustedAssemblyNorm('mostovkova_deska', system);
-      // mostovka difficulty = 1.2, Top 50 base = 0.60
-      expect(adjusted.assembly_h_m2).toBeCloseTo(0.72, 2);
+      // mostovka difficulty = 1.2, MULTIFLEX base = 0.50
+      expect(adjusted.assembly_h_m2).toBeCloseTo(0.60, 2);
       expect(adjusted.difficulty_factor).toBe(1.2);
     });
 
@@ -195,9 +195,9 @@ describe('Element Classifier', () => {
       expect(result.element_type).toBe('mostovkova_deska');
     });
 
-    it('"Stěna" in bridge context stays stena (no bridge equivalent)', () => {
+    it('"Stěna" in bridge context → operne_zdi (bridge equivalent)', () => {
       const result = classifyElement('Monolitická stěna', { is_bridge: true });
-      expect(result.element_type).toBe('stena');
+      expect(result.element_type).toBe('operne_zdi');
     });
 
     it('context is optional — backward compatible', () => {
@@ -289,6 +289,102 @@ describe('Element Classifier', () => {
     });
   });
 
+  // ─── Extended bridge position names (KROS/ÚRS style BOQ) ────────────
+
+  describe('classifyElement — extended bridge positions', () => {
+    // Superstructure variants
+    it('NOSNÁ KONSTRUKCE MOSTU → mostovkova_deska', () => {
+      expect(classifyElement('NOSNÁ KONSTRUKCE MOSTU ZE ŽELEZOBETONU C40/50').element_type)
+        .toBe('mostovkova_deska');
+    });
+
+    it('MOSTNÍ SVRŠEK → mostovkova_deska', () => {
+      expect(classifyElement('MOSTNÍ SVRŠEK Z BETONU C35/45').element_type)
+        .toBe('mostovkova_deska');
+    });
+
+    it('KOMOROVÝ NOSNÍK → mostovkova_deska', () => {
+      expect(classifyElement('KOMOROVÝ NOSNÍK MOSTU C40/50').element_type)
+        .toBe('mostovkova_deska');
+    });
+
+    it('PODÉLNÝ NOSNÍK MOSTU → mostovkova_deska', () => {
+      expect(classifyElement('PODÉLNÝ NOSNÍK MOSTU').element_type)
+        .toBe('mostovkova_deska');
+    });
+
+    // Pier caps / crossbeams
+    it('HLAVICE PILÍŘŮ → rigel', () => {
+      expect(classifyElement('HLAVICE PILÍŘŮ ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('rigel');
+    });
+
+    it('PŘÍČNÍK MOSTU → rigel', () => {
+      expect(classifyElement('PŘÍČNÍK MOSTU ZE ŽELEZOBETONU C35/45').element_type)
+        .toBe('rigel');
+    });
+
+    // Pier stem variants
+    it('DŘÍKY PILÍŘŮ → driky_piliru', () => {
+      expect(classifyElement('DŘÍKY PILÍŘŮ ZE ŽELEZOBETONU C35/45').element_type)
+        .toBe('driky_piliru');
+    });
+
+    it('TĚLO PILÍŘŮ → driky_piliru', () => {
+      expect(classifyElement('TĚLO PILÍŘŮ MOSTU ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('driky_piliru');
+    });
+
+    // Abutment / wings
+    it('MOSTNÍ OPĚRY A KŘÍDLA (v2) → opery_ulozne_prahy', () => {
+      expect(classifyElement('OPĚRY MOSTU A KŘÍDLA ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('opery_ulozne_prahy');
+    });
+
+    it('ÚLOŽNÉ PRAHY → opery_ulozne_prahy', () => {
+      expect(classifyElement('ÚLOŽNÉ PRAHY ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('opery_ulozne_prahy');
+    });
+
+    // Foundation block
+    it('ZÁKLADOVÝ BLOK OPĚR → zaklady_piliru', () => {
+      expect(classifyElement('ZÁKLADOVÝ BLOK OPĚR ZE ŽELEZOBETONU C25/30').element_type)
+        .toBe('zaklady_piliru');
+    });
+
+    // Parapet / railing walls → rimsa
+    it('ZÁBRADELNÍ ZÍDKY → rimsa', () => {
+      expect(classifyElement('ZÁBRADELNÍ ZÍDKY ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('rimsa');
+    });
+
+    it('ŘÍMSOVÁ DESKA → rimsa', () => {
+      expect(classifyElement('ŘÍMSOVÁ DESKA ZE ŽELEZOBETONU C30/37').element_type)
+        .toBe('rimsa');
+    });
+
+    // Non-structural early-exit
+    it('IZOLAČNÍ VRSTVY MOSTU → other', () => {
+      expect(classifyElement('IZOLAČNÍ VRSTVY MOSTU Z BETONU C16/20').element_type)
+        .toBe('other');
+    });
+
+    it('ZÁLIVKA SPÁR → other', () => {
+      expect(classifyElement('ZÁLIVKA SPÁR BETONU C25/30').element_type)
+        .toBe('other');
+    });
+
+    it('MONOLITICKÁ VOZOVKA → other', () => {
+      expect(classifyElement('MONOLITICKÁ VOZOVKA Z BETONU C30/37').element_type)
+        .toBe('other');
+    });
+
+    it('BETONOVÝ KRYT VOZOVKY → other', () => {
+      expect(classifyElement('BETONOVÝ KRYT VOZOVKY C30/37').element_type)
+        .toBe('other');
+    });
+  });
+
   // ─── Bridge context disambiguation ────────────────────────────────────
 
   describe('classifyElement — bridge context disambiguation', () => {
@@ -309,6 +405,24 @@ describe('Element Classifier', () => {
 
     it('"ZÁKLADY ZE ŽELEZOBETONU" WITH bridge context → zaklady_piliru', () => {
       expect(classifyElement('ZÁKLADY ZE ŽELEZOBETONU DO C25/30', { is_bridge: true }).element_type)
+        .toBe('zaklady_piliru');
+    });
+
+    // New: pruvlak → rigel in bridge context
+    it('"TRÁM ZE ŽELEZOBETONU" WITH bridge context → rigel', () => {
+      expect(classifyElement('TRÁM ZE ŽELEZOBETONU C30/37', { is_bridge: true }).element_type)
+        .toBe('rigel');
+    });
+
+    // New: stena → operne_zdi in bridge context
+    it('"STĚNA ZE ŽELEZOBETONU" WITH bridge context → operne_zdi', () => {
+      expect(classifyElement('STĚNA ZE ŽELEZOBETONU C25/30', { is_bridge: true }).element_type)
+        .toBe('operne_zdi');
+    });
+
+    // New: patky → zaklady_piliru in bridge context
+    it('"PATKY Z BETONU" WITH bridge context → zaklady_piliru', () => {
+      expect(classifyElement('PATKY Z PROSTÉHO BETONU C25/30', { is_bridge: true }).element_type)
         .toBe('zaklady_piliru');
     });
 

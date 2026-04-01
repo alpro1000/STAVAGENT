@@ -81,7 +81,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   driky_piliru: {
     label_cs: 'Dříky pilířů / sloupy',
-    recommended_formwork: ['SL-1 Sloupové', 'VARIO', 'Framax Xlife'],
+    recommended_formwork: ['VARIO GT 24', 'TRIO', 'QUATTRO', 'SL-1 Sloupové', 'Framax Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
     needs_platforms: true,
@@ -111,7 +111,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   operne_zdi: {
     label_cs: 'Opěrné zdi',
-    recommended_formwork: ['Framax Xlife', 'Frami Xlife', 'TRIO'],
+    recommended_formwork: ['TRIO', 'Framax Xlife', 'MAXIMO', 'Frami Xlife'],
     difficulty_factor: 1.0,
     needs_supports: false,
     needs_platforms: true,
@@ -126,7 +126,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   mostovkova_deska: {
     label_cs: 'Mostovková deska',
-    recommended_formwork: ['Top 50', 'MULTIFLEX', 'Dokaflex'],
+    recommended_formwork: ['MULTIFLEX', 'Top 50', 'SKYDECK', 'Dokaflex'],
     difficulty_factor: 1.2,
     needs_supports: true,
     needs_platforms: true,
@@ -140,8 +140,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     pump_typical: true,
   },
   rigel: {
-    label_cs: 'Příčník / ригель',
-    recommended_formwork: ['Framax Xlife', 'VARIO GT 24', 'Tradiční tesařské'],
+    label_cs: 'Příčník / hlavice pilíře',
+    recommended_formwork: ['VARIO GT 24', 'Framax Xlife', 'TRIO', 'Tradiční tesařské'],
     difficulty_factor: 1.1,
     needs_supports: true,
     needs_platforms: true,
@@ -155,8 +155,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     pump_typical: true,
   },
   opery_ulozne_prahy: {
-    label_cs: 'Opěry, úložné prahy',
-    recommended_formwork: ['Framax Xlife', 'TRIO', 'DOMINO', 'Frami Xlife'],
+    label_cs: 'Opěry, úložné prahy, křídla',
+    recommended_formwork: ['TRIO', 'Framax Xlife', 'DOMINO', 'Frami Xlife'],
     difficulty_factor: 1.0,
     needs_supports: false,
     needs_platforms: true,
@@ -401,27 +401,67 @@ const KEYWORD_RULES: KeywordRule[] = [
       'deska mostu', 'nosna konstrukce', 'nosná konstrukce', 'bridge deck',
       'nosne tram', 'nosné trám', 'nosna konstr', 'nosná konstr',
       'predpj bet', 'předpj bet', 'predpjat', 'předpjat',
+      'nosnik most', 'nosník most', 'podelny nosnik', 'podélný nosník',
+      'mostni svrsek', 'mostní svršek', 'superstructure',
+      'hlavni nosnik', 'hlavní nosník', 'komorovy nosnik', 'komorový nosník',
+      'deska nosne', 'deska nosné', 'nosna deska', 'nosná deska',
       'мостов', 'мостовая плита', 'пролетное строение',
     ],
     priority: 10,
   },
-  { element_type: 'rimsa', keywords: ['rimsa', 'říms', 'rimsov', 'римс', 'карниз'], priority: 10 },
+  { element_type: 'rimsa', keywords: [
+    'rimsa', 'říms', 'rimsov', 'rimsova deska', 'římsová deska',
+    'zabradeln zid', 'zábradelní zíd', 'zabradel', 'zábradel',
+    'parapet', 'cornice', 'coping',
+    'римс', 'карниз',
+  ], priority: 10 },
   { element_type: 'prechodova_deska', keywords: [
     'prechodova deska', 'přechodová deska', 'prechodove desky', 'přechodové desky',
-    'prechodov', 'přechodov',
+    'prechodov', 'přechodov', 'transition slab', 'approach slab',
   ], priority: 11 },
-  { element_type: 'mostni_zavirne_zidky', keywords: ['zavirn', 'závěrn', 'zidka', 'zídka'], priority: 9 },
-  { element_type: 'rigel', keywords: ['pricnik', 'příčník', 'pricni', 'příčn', 'rigel', 'ригель'], priority: 9 },
-  { element_type: 'zaklady_piliru', keywords: ['zaklad pilir', 'základ pilíř', 'zaklady piliru', 'základy pilířů', 'zaklady', 'pilotov zaklad', 'фундамент опор'], priority: 10 },
+  { element_type: 'mostni_zavirne_zidky', keywords: [
+    'zavirn', 'závěrn', 'zavirne zidky', 'závěrné zídky',
+    'zidka most', 'zídka most',
+    'closure wall', 'end wall',
+  ], priority: 9 },
+  { element_type: 'rigel', keywords: [
+    'pricnik', 'příčník', 'pricni', 'příčn',
+    'pricnik most', 'příčník most',
+    'rigel', 'ригель',
+    'hlavice pilir', 'hlavice pilíř', 'hlavic', 'pier cap', 'crossbeam',
+    'diafragm', 'diaphragm',
+  ], priority: 9 },
+  { element_type: 'zaklady_piliru', keywords: [
+    'zaklad pilir', 'základ pilíř', 'zaklady piliru', 'základy pilířů',
+    'zaklady', 'základy',
+    'pilotov zaklad', 'pilotový základ',
+    'zakladovy blok', 'základový blok', 'blok oper', 'blok opěr',
+    'plosny zaklad most', 'plošný základ most',
+    'фундамент опор', 'фундамент пилон',
+  ], priority: 10 },
   { element_type: 'driky_piliru', keywords: [
-    'drik', 'dřík', 'pilir most', 'pilíř most',
+    'drik', 'dřík', 'driky pilir', 'dříky pilíř',
+    'pilir most', 'pilíř most',
     'mostni pilir', 'mostní pilíř', 'mostni pilire', 'mostní pilíře',
-    'stativ', 'тело опор',
+    'stativ', 'stativa',
+    'telo pilir', 'tělo pilíř', 'telo oper', 'tělo opěr',
+    'pier stem', 'pier shaft', 'pylon',
+    'тело опор', 'столб моста',
   ], priority: 8 },
-  { element_type: 'operne_zdi', keywords: ['opern', 'opěrn', 'подпорн стен', 'operna zed', 'opěrná zeď'], priority: 8 },
+  { element_type: 'operne_zdi', keywords: [
+    'opern', 'opěrn', 'operna zed', 'opěrná zeď',
+    'operne zdi most', 'opěrné zdi most',
+    'gabionov', 'gabion',
+    'retaining wall',
+    'подпорн стен',
+  ], priority: 8 },
   { element_type: 'opery_ulozne_prahy', keywords: [
-    'opera', 'opěra', 'ulozn', 'úložn', 'prah', 'sedlo',
-    'mostni oper', 'mostní opěr', 'kridl', 'křídl',
+    'opera', 'opěra', 'opery', 'opěry',
+    'ulozn', 'úložn', 'ulozne prah', 'úložné prah',
+    'prah', 'sedlo',
+    'mostni oper', 'mostní opěr', 'mostni opery', 'mostní opěry',
+    'kridl', 'křídl', 'kridla', 'křídla',
+    'abutment', 'bearing seat',
   ], priority: 7 },
 
   // ─── Building elements ───
@@ -452,6 +492,7 @@ const KEYWORD_RULES: KeywordRule[] = [
   ], priority: 6 },
   { element_type: 'pruvlak', keywords: [
     'pruvlak', 'průvlak', 'tram', 'trám', 'beam', 'girder', 'preklad', 'překlad',
+    'nosnik', 'nosník',
     'балк', 'прогон', 'ригель здан',
   ], priority: 6 },
   { element_type: 'schodiste', keywords: [
@@ -494,10 +535,13 @@ const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
 
 /** Building element types that have bridge equivalents */
 const BRIDGE_EQUIVALENT: Partial<Record<StructuralElementType, StructuralElementType>> = {
-  sloup: 'driky_piliru',         // "pilíř" in bridge context = dříky pilířů, not sloup
+  sloup: 'driky_piliru',              // "pilíř" in bridge context = dříky pilířů, not sloup
   zakladova_deska: 'zaklady_piliru',  // "základy" in bridge context = základy pilířů
   zakladovy_pas: 'zaklady_piliru',
+  zakladova_patka: 'zaklady_piliru',  // "patky" in bridge context = základy pilířů
   stropni_deska: 'mostovkova_deska',  // "deska" in bridge context = mostovková deska
+  pruvlak: 'rigel',                   // "trám/nosník" in bridge context = příčník
+  stena: 'operne_zdi',                // "stěna" in bridge context = opěrná zeď
 };
 
 /** Classification context — optional hints to improve accuracy */
@@ -517,13 +561,25 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   const normalized = normalize(name);
   const isBridge = context?.is_bridge ?? false;
 
-  // ─── Early-exit rules: special materials → always 'other' ───
+  // ─── Early-exit rules: special materials/non-structural → always 'other' ───
   // PODKLADNÍ/VÝPLŇOVÉ = plain concrete, simplified calculation
   if (/podkladn|podkl\b|vyplnov|výplňov/.test(normalized)) {
     return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
   }
   // STŘÍKANÝ = shotcrete, special technology
   if (/strikan|stříkan|torkret|nastrik|nástřik/.test(normalized)) {
+    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  }
+  // IZOLAČNÍ VRSTVY = insulation layers, no structural formwork
+  if (/izolacn\s*vrst|izolační\s*vrst/.test(normalized)) {
+    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  }
+  // ZÁLIVKA SPÁR = joint grouting, no formwork
+  if (/zalivk\s*spar|zálivk\s*spár|zalivkov|zálivkov/.test(normalized)) {
+    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  }
+  // MONOLITICKÁ VOZOVKA = road surface, not structural element
+  if (/monolitick\S*\s*vozovk|betonov\S*\s*vozovk|betonový\s*kryt/.test(normalized)) {
     return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
   }
 
