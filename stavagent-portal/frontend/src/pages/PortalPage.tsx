@@ -13,7 +13,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft, LogIn, User, LogOut } from 'lucide-react';
+import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft, LogIn, User, LogOut, BarChart3, FolderOpen, ClipboardList, Ruler, Hexagon, Building2, Search, Package, SquareParking, Waypoints, Milestone, Shovel, Wrench } from 'lucide-react';
+import * as LucideIcons from 'lucide-react';
 import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
@@ -65,7 +66,7 @@ const SERVICES: Service[] = [
     id: 'document-analysis',
     name: 'Analýza dokumentů',
     description: 'Nahrajte PDF/XLSX → automatický passport, soupis prací, AI audit, shrnutí. Univerzální modul: 4 taby (Soupis, Passport, AI Audit, Shrnutí). Multi-SO merge s detekcí rozporů.',
-    icon: '📊',
+    icon: 'BarChart3',
     url: '#document-analysis',
     status: 'active',
     tags: ['Soupis prací', 'Passport', 'AI Audit', 'Shrnutí', 'Multi-SO']
@@ -74,7 +75,7 @@ const SERVICES: Service[] = [
     id: 'drawing-analysis',
     name: 'Analýza výkresů',
     description: 'Nahrajte PDF výkres → AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice. Automatická klasifikace prací.',
-    icon: '📐',
+    icon: 'Ruler',
     url: '#drawing-analysis',
     status: 'active',
     tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
@@ -84,7 +85,7 @@ const SERVICES: Service[] = [
     id: 'monolit-calculator',
     name: 'Monolit Planner',
     description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
-    icon: '🪨',
+    icon: 'Hexagon',
     url: 'https://kalkulator.stavagent.cz',
     status: 'active',
     tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
@@ -93,7 +94,7 @@ const SERVICES: Service[] = [
     id: 'element-calculator',
     name: 'Kalkulátor betonáže',
     description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
-    icon: '📐',
+    icon: 'Ruler',
     url: 'https://kalkulator.stavagent.cz/planner',
     status: 'active',
     tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
@@ -102,7 +103,7 @@ const SERVICES: Service[] = [
     id: 'objednavka-betonu',
     name: 'Objednávka betonu',
     description: 'Najít betonárny → spočítat cenu (beton + doprava + čerpadlo) → porovnat dodavatele. Ruční zadání cen od prořaba. Jeden flow pro objednávku.',
-    icon: '🏗️',
+    icon: 'Building2',
     url: '/objednavka-betonu',
     status: 'active',
     tags: ['Betonárny', 'Kalkulačka', 'Porovnání', 'Prořab']
@@ -111,7 +112,7 @@ const SERVICES: Service[] = [
     id: 'pump-module',
     name: 'Kalkulačka čerpadel',
     description: 'Detailní porovnání čerpadel: 3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář. Mobilní verze.',
-    icon: '⚙️',
+    icon: 'Settings',
     url: '/pump',
     status: 'active',
     tags: ['Čerpadlo', 'Mobilní', 'Příplatky', 'Kalendář']
@@ -120,7 +121,7 @@ const SERVICES: Service[] = [
     id: 'price-parser',
     name: 'Ceníky dodavatelů',
     description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
-    icon: '📄',
+    icon: 'FileText',
     url: '/price-parser',
     status: 'active' as const,
     tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
@@ -130,7 +131,7 @@ const SERVICES: Service[] = [
     id: 'urs-matcher',
     name: 'Klasifikátor stavebních prací',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
-    icon: '🔎',
+    icon: 'Search',
     url: 'https://klasifikator.stavagent.cz',
     status: 'active',
     tags: ['Výkaz výměr', 'URS', 'AI párování']
@@ -139,7 +140,7 @@ const SERVICES: Service[] = [
     id: 'rozpocet-registry',
     name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
-    icon: '📊',
+    icon: 'BarChart3',
     url: 'https://registry.stavagent.cz',
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
@@ -149,7 +150,7 @@ const SERVICES: Service[] = [
     id: 'scenario-b',
     name: 'Generátor výkazu výměr',
     description: 'Nahraje TZ (PDF/DOCX) → AI extrahuje konstrukce a objemy → vygeneruje výkaz výměr (beton + výztuž + bednění). Objemy pouze z dokumentu.',
-    icon: '📐',
+    icon: 'Ruler',
     url: '/portal/scenario-b',
     status: 'active' as const,
     tags: ['TZ', 'Výkaz výměr', 'AI', 'Konstrukce']
@@ -159,7 +160,7 @@ const SERVICES: Service[] = [
     id: 'formwork-calculator',
     name: 'Kalkulačka bednění',
     description: 'Specializovaná kalkulačka pro bednící systémy. Optimalizace spotřeby materiálu a nákladů.',
-    icon: '📦',
+    icon: 'Package',
     url: '#',
     status: 'coming_soon',
     tags: ['Bednění', 'Optimalizace']
@@ -168,7 +169,7 @@ const SERVICES: Service[] = [
     id: 'earthwork-planner',
     name: 'Plánovač zemních prací',
     description: 'Plánování a odhad zemních prací. Výpočet objemů a potřeby techniky.',
-    icon: '🚜',
+    icon: 'Shovel',
     url: '#',
     status: 'coming_soon',
     tags: ['Zemní práce', 'Výkopy']
@@ -177,7 +178,7 @@ const SERVICES: Service[] = [
     id: 'rebar-optimizer',
     name: 'Optimalizátor výztuže',
     description: 'Optimalizace rozmístění výztuže a výpočet řezných plánů pro minimalizaci odpadu.',
-    icon: '🛠️',
+    icon: 'Wrench',
     url: '#',
     status: 'coming_soon',
     tags: ['Výztuž', 'Optimalizace']
@@ -498,7 +499,7 @@ export default function PortalPage() {
               marginBottom: '-2px'
             }}
           >
-            📊 Služby
+            <BarChart3 size={16} className="inline" /> Služby
           </button>
           <button
             onClick={() => setActiveTab('projects')}
@@ -516,7 +517,7 @@ export default function PortalPage() {
               whiteSpace: 'nowrap'
             }}
           >
-            📁 Projekty ({projects.length})
+            <FolderOpen size={16} className="inline" /> Projekty ({projects.length})
           </button>
           {isAdmin && (
             <button
@@ -558,7 +559,7 @@ export default function PortalPage() {
               color: 'var(--text-primary)',
               marginBottom: '8px'
             }}>
-              📊 Dostupné služby
+              <BarChart3 size={20} className="inline" /> Dostupné služby
             </h2>
             <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
               Vyberte službu pro zahájení práce. Každý kiosek je specializovaný pro konkrétní stavební úkoly.
@@ -706,9 +707,9 @@ export default function PortalPage() {
                       bridge: '#f97316', building: '#3b82f6', road: '#8b5cf6',
                       parking: '#10b981', monolit: '#f59e0b', custom: '#6b7280',
                     };
-                    const typeIcons: Record<string, string> = {
-                      bridge: '🌉', building: '🏢', road: '🛣️',
-                      parking: '🅿️', monolit: '🪨', custom: '📋',
+                    const typeIconNames: Record<string, string> = {
+                      bridge: 'Waypoints', building: 'Building2', road: 'Milestone',
+                      parking: 'SquareParking', monolit: 'Hexagon', custom: 'ClipboardList',
                     };
                     const typeLabels: Record<string, string> = {
                       bridge: 'Most', building: 'Budova', road: 'Komunikace',
@@ -746,8 +747,12 @@ export default function PortalPage() {
                           if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent';
                         }}
                       >
-                        <span style={{ fontSize: '18px', flexShrink: 0 }}>
-                          {typeIcons[project.project_type] || '📋'}
+                        <span style={{ flexShrink: 0 }}>
+                          {(() => {
+                            const iconName = typeIconNames[project.project_type] || 'ClipboardList';
+                            const IconComp = (LucideIcons as any)[iconName];
+                            return IconComp ? <IconComp size={18} /> : null;
+                          })()}
                         </span>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <p style={{

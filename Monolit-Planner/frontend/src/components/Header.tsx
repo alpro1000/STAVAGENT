@@ -3,6 +3,7 @@
  */
 
 import { useState, useRef } from 'react';
+import { Building2, Sun, Moon, PlusCircle, Pencil, Save, Download, Upload, ClipboardList, X, Loader2, Menu } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
@@ -200,7 +201,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
           style={{ cursor: 'pointer', alignItems: 'center' }}
           title="Obnovit aplikaci (F5)"
         >
-          <span style={{ fontSize: '28px' }}>🏗️</span>
+          <Building2 size={24} />
           <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
         </div>
 
@@ -212,7 +213,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title={sidebarOpen ? 'Zavřít panel' : 'Otevřít panel'}
             style={{ minWidth: '36px', padding: '6px', fontSize: '20px', lineHeight: 1 }}
           >
-            {sidebarOpen ? '✕' : '☰'}
+            {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
 
           <button
@@ -221,7 +222,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
             style={{ minWidth: '36px', padding: '6px' }}
           >
-            {isDark ? '☀️' : '🌙'}
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
           <button
@@ -230,7 +231,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title="Vytvořit nový objekt s prázdnými pozicemi"
             style={{ padding: '6px 10px' }}
           >
-            ➕ Nový objekt
+            <PlusCircle size={14} className="inline" /> Nový objekt
           </button>
 
           <select
@@ -254,7 +255,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title="Upravit název a metadata objektu"
             style={{ padding: '6px 8px' }}
           >
-            ✏️ Upravit
+            <Pencil size={14} className="inline" /> Upravit
           </button>
 
           <button
@@ -270,7 +271,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
                 Načítání...
               </>
             ) : (
-              <>💾 Nahrát XLSX</>
+              <><Save size={14} className="inline" /> Nahrát XLSX</>
             )}
           </button>
 
@@ -289,7 +290,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title="Exportovat aktuální pozice do Excel souboru"
             style={{ padding: '6px 8px' }}
           >
-            📥 Export XLSX
+            <Download size={14} className="inline" /> Export XLSX
           </button>
 
           <button
@@ -299,7 +300,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title="Exportovat pozice do Rozpočet Registry"
             style={{ padding: '6px 8px', background: 'var(--color-info, #3b82f6)' }}
           >
-            {isExportingToRegistry ? '⏳ Exportuji...' : '📤 → Registry'}
+            {isExportingToRegistry ? <><Loader2 size={14} className="inline" /> Exportuji...</> : <><Upload size={14} className="inline" /> → Registry</>}
           </button>
 
           <button
@@ -309,7 +310,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title="Uložit export na server"
             style={{ padding: '6px 10px' }}
           >
-            💾 {isSaving ? 'Ukládám...' : 'Uložit'}
+            <Save size={14} className="inline" /> {isSaving ? 'Ukládám...' : 'Uložit'}
           </button>
 
           <button
@@ -318,7 +319,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             title="Zobrazit historii exportů"
             style={{ padding: '6px 8px' }}
           >
-            📋 Historie
+            <ClipboardList size={14} className="inline" /> Historie
           </button>
 
         </div>

@@ -11,7 +11,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { MoveUp, MoveDown, Link2, X, GripVertical } from 'lucide-react';
+import { MoveUp, MoveDown, Link2, X, GripVertical, ClipboardList, FileText, CircleHelp } from 'lucide-react';
 import type { ParsedItem } from '../../types/item';
 import { useRegistryStore } from '../../stores/registryStore';
 
@@ -31,11 +31,11 @@ const ROLE_LABELS: Record<RowRole, string> = {
   unknown: 'Neznámý',
 };
 
-const ROLE_ICONS: Record<RowRole, string> = {
-  main: '📋',
+const ROLE_ICONS: Record<RowRole, React.ReactNode> = {
+  main: <ClipboardList size={12} className="inline" />,
   subordinate: '↳',
-  section: '📑',
-  unknown: '❓',
+  section: <FileText size={12} className="inline" />,
+  unknown: <CircleHelp size={12} className="inline" />,
 };
 
 // Light theme colors
