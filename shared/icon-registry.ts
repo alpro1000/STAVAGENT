@@ -236,7 +236,10 @@ export const ICONS = {
 // ─── Type Helpers ───────────────────────────────────────────────────────────
 
 /** All valid Lucide component names used in this registry */
-export type IconName = typeof ICONS[keyof typeof ICONS][keyof any];
+type IconMap = typeof ICONS;
+export type IconName = {
+  [C in keyof IconMap]: IconMap[C][keyof IconMap[C]];
+}[keyof IconMap];
 
 /** Category keys */
 export type IconCategory = keyof typeof ICONS;
