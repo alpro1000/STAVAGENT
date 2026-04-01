@@ -570,26 +570,68 @@ def _generate_warnings(
     return warnings
 
 
-# ─── In-memory project facts store (seed data + runtime) ─────────────────────
+# ─── Project facts store (write-through: memory + project cache JSON) ──────────
 
 _PROJECT_FACTS: Dict[str, List[Dict[str, Any]]] = {}
-_MAX_PROJECTS = 500  # Evict oldest when exceeded
+_MAX_MEMORY_PROJECTS = 200  # In-memory LRU cap; disk is source of truth
+
+_CACHE_KEY = "calculator_facts"
 
 
 def store_project_facts(portal_project_id: str, facts: List[Dict[str, Any]]):
-    """Store extraction results for a project (for seed data or after document processing)."""
-    # Simple eviction: remove oldest entries when cache is full
-    if len(_PROJECT_FACTS) >= _MAX_PROJECTS and portal_project_id not in _PROJECT_FACTS:
+    """
+    Store extraction results for a project.
+
+    Write-through: saves to both in-memory cache and project cache JSON on disk.
+    On Cloud Run restart, data survives via disk (project cache JSON).
+    """
+    # ── Memory cache with simple eviction ──
+    if len(_PROJECT_FACTS) >= _MAX_MEMORY_PROJECTS and portal_project_id not in _PROJECT_FACTS:
         oldest_key = next(iter(_PROJECT_FACTS))
         del _PROJECT_FACTS[oldest_key]
-        logger.debug("Evicted project facts for %s (cache full)", oldest_key)
     _PROJECT_FACTS[portal_project_id] = facts
-    logger.info(f"Stored {len(facts)} extraction results for project {portal_project_id}")
+
+    # ── Persist to project cache JSON (survives restarts) ──
+    try:
+        from app.services.project_cache import load_project_cache, save_project_cache
+        cache_data, _ = load_project_cache(portal_project_id)
+        if cache_data is None:
+            cache_data = {"project_id": portal_project_id}
+        cache_data[_CACHE_KEY] = facts
+        save_project_cache(portal_project_id, cache_data)
+    except Exception as e:
+        logger.debug("Could not persist calculator facts to disk: %s", e)
+
+    logger.info("Stored %d extraction results for project %s", len(facts), portal_project_id)
 
 
 def get_project_facts(portal_project_id: str) -> List[Dict[str, Any]]:
-    """Retrieve stored extraction results for a project."""
-    return _PROJECT_FACTS.get(portal_project_id, [])
+    """
+    Retrieve stored extraction results for a project.
+
+    Checks in-memory cache first, then falls back to project cache JSON on disk.
+    """
+    # ── Try memory first ──
+    if portal_project_id in _PROJECT_FACTS:
+        return _PROJECT_FACTS[portal_project_id]
+
+    # ── Lazy-load from disk ──
+    try:
+        from app.services.project_cache import load_project_cache
+        cache_data, _ = load_project_cache(portal_project_id)
+        if cache_data and _CACHE_KEY in cache_data:
+            facts = cache_data[_CACHE_KEY]
+            # Warm up memory cache
+            if len(_PROJECT_FACTS) >= _MAX_MEMORY_PROJECTS:
+                oldest_key = next(iter(_PROJECT_FACTS))
+                del _PROJECT_FACTS[oldest_key]
+            _PROJECT_FACTS[portal_project_id] = facts
+            logger.info("Loaded %d calculator facts from disk for %s", len(facts), portal_project_id)
+            return facts
+    except Exception as e:
+        logger.debug("Could not load calculator facts from disk: %s", e)
+
+    return []
 
 
 def get_calculator_suggestions(
