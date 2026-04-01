@@ -2,7 +2,7 @@
  * DaysPerMonthToggle - Switch between 30 and 22 days/month
  */
 
-
+import { CalendarDays } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useConfig } from '../hooks/useConfig';
 
@@ -16,7 +16,7 @@ export default function DaysPerMonthToggle() {
 
   return (
     <div className="duration-toggle">
-      <span className="toggle-icon">📅</span>
+      <span className="toggle-icon"><CalendarDays size={14} /></span>
       <button
         className={daysPerMonth === 30 ? 'active' : ''}
         onClick={() => handleToggle(30)}

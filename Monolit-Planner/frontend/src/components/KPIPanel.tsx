@@ -2,7 +2,7 @@
  * KPIPanel - Modern Floating KPI Card with Glassmorphism
  */
 
-import { BarChart3, Building2, Timer } from 'lucide-react';
+import { BarChart3, Building2, Timer, FolderOpen, Blocks, Lock, Unlock, RefreshCw, DollarSign, Ruler, Calendar, Users, Banknote, Clock, CalendarDays, Zap } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
@@ -45,12 +45,12 @@ export default function KPIPanel() {
           )}
           {currentBridge?.project_name && (
             <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-secondary)' }}>
-              | 📁 {currentBridge.project_name}
+              | <FolderOpen size={14} className="inline" /> {currentBridge.project_name}
             </span>
           )}
           {headerKPI.sum_concrete_m3 > 0 && (
             <span className="u-text-muted" style={{ fontSize: 'var(--font-size-sm)' }}>
-              | 🧱 {formatNumber(headerKPI.sum_concrete_m3)} m³
+              | <Blocks size={14} className="inline" /> {formatNumber(headerKPI.sum_concrete_m3)} m³
             </span>
           )}
         </div>
@@ -64,9 +64,9 @@ export default function KPIPanel() {
             title={isLocked ? "Data jsou zafixována (snapshot vytvořen)" : "Zafixovat aktuální stav (vytvořit snapshot)"}
           >
             {isLocked ? (
-              <>🔒 Zafixováno</>
+              <><Lock size={14} className="inline" /> Zafixováno</>
             ) : (
-              <>{isCreating ? '🔄 Fixuji...' : '🔓 Zafixovat'}</>
+              <>{isCreating ? <><RefreshCw size={14} className="inline" /> Fixuji...</> : <><Unlock size={14} className="inline" /> Zafixovat</>}</>
             )}
           </button>
         </div>
@@ -76,7 +76,7 @@ export default function KPIPanel() {
         {/* ROW 1: Main metrics */}
         <div className="kpi-card kpi-card-primary">
           <div className="kpi-card-label">
-            <span>💰</span> Celková cena (KROS)
+            <DollarSign size={16} /> Celková cena (KROS)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.sum_kros_total_czk, 2)}
@@ -86,7 +86,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card kpi-card-accent">
           <div className="kpi-card-label">
-            <span>📏</span> Kč/m³ (projekt)
+            <Ruler size={16} /> Kč/m³ (projekt)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.project_unit_cost_czk_per_m3, 2)}
@@ -106,7 +106,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>📆</span> Týdny
+            <Calendar size={16} /> Týdny
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.estimated_weeks, 1)}
@@ -117,7 +117,7 @@ export default function KPIPanel() {
         {/* ROW 2: Averages */}
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>👥</span> Lidé (Ø)
+            <Users size={16} /> Lidé (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_crew_size, 1)}
@@ -127,7 +127,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>💵</span> Kč/hod (Ø)
+            <Banknote size={16} /> Kč/hod (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_wage_czk_ph, 0)}
@@ -137,7 +137,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>⏰</span> Hod/den (Ø)
+            <Clock size={16} /> Hod/den (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_shift_hours, 1)}
@@ -147,7 +147,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>📅</span> Režim práce
+            <CalendarDays size={16} /> Režim práce
           </div>
           <div className="kpi-card-value kpi-mode-value">
             {daysPerMonth === 30 ? '30 dní/měsíc' : '22 dní/měsíc'}
@@ -156,7 +156,7 @@ export default function KPIPanel() {
       </div>
 
       <div className="kpi-formula">
-        <span className="formula-label">⚡ Vzorec měsíců:</span>
+        <span className="formula-label"><Zap size={14} className="inline" /> Vzorec měsíců:</span>
         <span className="formula-content">
           {formatNumber(headerKPI.sum_kros_total_czk)} / (
           {formatNumber(headerKPI.avg_crew_size, 1)} × {formatNumber(headerKPI.avg_wage_czk_ph, 0)} × {formatNumber(headerKPI.avg_shift_hours, 1)} × {daysPerMonth}

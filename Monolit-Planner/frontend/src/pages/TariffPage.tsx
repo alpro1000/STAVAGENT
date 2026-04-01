@@ -13,6 +13,7 @@
  */
 
 import { useState, useMemo, useCallback } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import {
   addTariff,
   comparePrices,
@@ -578,7 +579,7 @@ export default function TariffPage() {
             style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', color: '#546e7a', padding: '0 4px' }}
             title="Zpět"
           >
-            ←
+            <ArrowLeft size={20} />
           </button>
           <h1 style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>Tarify dodavatelů</h1>
           {saved && (

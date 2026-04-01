@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Trash2, Info, X } from 'lucide-react';
+import { Trash2, Info, X, RefreshCw, Lock, Unlock } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
@@ -42,7 +42,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
 
   const handleRestore = async (snapshotId: string, snapshotName?: string) => {
     const confirmed = window.confirm(
-      `🔄 Obnovit snapshot?\n\n` +
+      `Obnovit snapshot?\n\n` +
       `Snapshot: ${snapshotName || snapshotId}\n\n` +
       `Všechna aktuální data budou nahrazena daty z tohoto snapshotu.\n` +
       `Pokračovat?`
@@ -133,14 +133,14 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
             <div className="history-empty">
               <div className="history-empty-icon">📭</div>
               <p>Žádné snapshots</p>
-              <p className="text-muted">Vytvořte první snapshot tlačítkem "🔒 Zafixovat"</p>
+              <p className="text-muted">Vytvořte první snapshot tlačítkem "Zafixovat"</p>
             </div>
           ) : (
             <div className="history-timeline">
               {snapshots.map((snapshot, index) => (
                 <div key={snapshot.snapshot_id} className="timeline-item">
                   <div className="timeline-marker">
-                    {snapshot.is_locked ? '🔒' : '🔓'}
+                    {snapshot.is_locked ? <Lock size={14} /> : <Unlock size={14} />}
                   </div>
 
                   <div className="timeline-content">
@@ -190,7 +190,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
                           onClick={() => handleRestore(snapshot.snapshot_id, snapshot.snapshot_name)}
                           title="Obnovit data z tohoto snapshotu"
                         >
-                          🔄 Obnovit
+                          <RefreshCw size={14} /> Obnovit
                         </button>
 
                         {!snapshot.is_locked && (

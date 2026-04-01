@@ -149,6 +149,9 @@ async function initPostgresSchema() {
   // Run Phase 9 migration (Position Instance ID for Portal write-back)
   await runPhase9PositionInstanceId();
 
+  // Run Phase 10 migration (Add metadata + position_number to positions)
+  await runPhase10PositionsMetadata();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -1743,6 +1746,34 @@ async function applySqliteMigrations() {
     db.exec("ALTER TABLE monolith_projects ADD COLUMN portal_user_id TEXT");
     console.log('[MIGRATION] Added portal_user_id column to monolith_projects table');
   }
+}
+
+/**
+ * Phase 10: Add metadata and position_number columns to positions table
+ * These columns are in ALLOWED_UPDATE_FIELDS but were missing from PostgreSQL schema.
+ */
+async function runPhase10PositionsMetadata() {
+  const cols = ['metadata', 'position_number'];
+  for (const col of cols) {
+    try {
+      if (db.isPostgres) {
+        await db.exec(`ALTER TABLE positions ADD COLUMN IF NOT EXISTS ${col} ${col === 'position_number' ? 'INTEGER' : 'TEXT'}`);
+      } else {
+        // SQLite: no IF NOT EXISTS — check via PRAGMA
+        const posColumns = db.prepare('PRAGMA table_info(positions)').all();
+        if (!posColumns.some(c => c.name === col)) {
+          db.exec(`ALTER TABLE positions ADD COLUMN ${col} ${col === 'position_number' ? 'INTEGER' : 'TEXT'}`);
+        }
+      }
+    } catch (error) {
+      if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
+        // OK
+      } else {
+        console.error(`[Migration] Phase 10 error adding ${col}:`, error.message);
+      }
+    }
+  }
+  console.log('[Migration] Phase 10: positions.metadata + position_number OK');
 }
 
 /**

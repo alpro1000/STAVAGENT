@@ -1,10 +1,10 @@
 /**
  * WorkTypeSelector - Select work type when adding a new position row
- * Types: beton, bednění, výztuž, oboustranné (opěry), jiné (custom)
+ * Types: bednění, odbednění, výztuž, jiné (beton is auto-created with each part)
  */
 
 import { useState } from 'react';
-import { SquareDashed, GripHorizontal, Grid3x3, PlusCircle } from 'lucide-react';
+import { SquareDashed, GripHorizontal, PackageOpen, PlusCircle } from 'lucide-react';
 import type { Subtype, Unit } from '@stavagent/monolit-shared';
 
 interface WorkType {
@@ -16,10 +16,9 @@ interface WorkType {
 
 const WORK_TYPES: WorkType[] = [
   // 'beton' is hidden from selector - it's auto-created with each part
-  // { value: 'beton', label: 'Betonování', unit: 'M3', icon: <Hexagon size={40} /> },
   { value: 'bednění', label: 'Bednění', unit: 'm2', icon: <SquareDashed size={40} /> },
+  { value: 'odbednění', label: 'Odbednění', unit: 'm2', icon: <PackageOpen size={40} /> },
   { value: 'výztuž', label: 'Výztuž', unit: 't', icon: <GripHorizontal size={40} /> },
-  { value: 'oboustranné (opěry)', label: 'Oboustranné bednění', unit: 'm2', icon: <Grid3x3 size={40} /> },
   { value: 'jiné', label: 'Jiné (vlastní práce)', unit: 'ks', icon: <PlusCircle size={40} /> }
 ];
 

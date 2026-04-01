@@ -2,7 +2,7 @@
  * SnapshotBadge - Display active snapshot info
  */
 
-import { Info } from 'lucide-react';
+import { Info, Unlock, Lock } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
 
@@ -15,7 +15,7 @@ export default function SnapshotBadge() {
     if (!selectedBridge || !activeSnapshot) return;
 
     const confirmed = window.confirm(
-      `🔓 Odemknout snapshot?\n\n` +
+      `Odemknout snapshot?\n\n` +
       `Snapshot: ${activeSnapshot.snapshot_name || activeSnapshot.id}\n` +
       `Vytvořen: ${new Date(activeSnapshot.created_at).toLocaleString('cs-CZ')}\n\n` +
       `Data budou znovu editovatelná. Pokračovat?`
@@ -64,7 +64,7 @@ export default function SnapshotBadge() {
   return (
     <div className="snapshot-badge-container">
       <div className="snapshot-badge">
-        <div className="snapshot-icon">🔒</div>
+        <div className="snapshot-icon"><Lock size={16} /></div>
 
         <div className="snapshot-info">
           <div className="snapshot-title">
@@ -80,7 +80,7 @@ export default function SnapshotBadge() {
           onClick={handleUnlock}
           title="Odemknout snapshot a povolit úpravy"
         >
-          🔓 Odemknout
+          <Unlock size={14} /> Odemknout
         </button>
       </div>
 

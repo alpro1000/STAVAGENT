@@ -10,6 +10,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 const PORTAL_URL = 'https://www.stavagent.cz';
 const STORAGE_KEY = 'monolit-portal-project';
@@ -79,7 +80,7 @@ export default function PortalBreadcrumb() {
           onMouseEnter={e => (e.currentTarget.style.color = '#f97316')}
           onMouseLeave={e => (e.currentTarget.style.color = '#94a3b8')}
         >
-          <span>←</span>
+          <ArrowLeft size={12} />
           <span>StavAgent</span>
         </a>
         {portalProjectId && (

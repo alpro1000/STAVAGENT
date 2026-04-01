@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Settings, Trash2, Loader2, X } from 'lucide-react';
+import { Sparkles, Send, TriangleAlert, Pencil, CircleCheckBig, Lightbulb, Upload, Info, Trash2, Loader2, X, Lock } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -46,15 +46,6 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
   const [speedInput, setSpeedInput] = useState<string>('');
   const [isEditingSpeed, setIsEditingSpeed] = useState(false);
 
-  // Pump cost state (stored in metadata.pump_cost_czk)
-  const parsedMeta = (() => {
-    try { return position.metadata ? JSON.parse(position.metadata) : {}; } catch { return {}; }
-  })();
-  const defaultPumpCost = Math.ceil((position.qty || 0) / 20) * 2500;
-  const [pumpCost, setPumpCost] = useState<number>(
-    typeof parsedMeta.pump_cost_czk === 'number' ? parsedMeta.pump_cost_czk : defaultPumpCost
-  );
-
   // Work name editing state
   const [isEditingWorkName, setIsEditingWorkName] = useState(false);
   const [workNameInput, setWorkNameInput] = useState('');
@@ -71,7 +62,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
 
     const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
     const professionMap: Record<string, string> = {
-      beton: 'Betonář', 'bednění': 'Tesař / Bednář', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
+      beton: 'Betonář', 'bednění': 'Tesař', 'odbednění': 'Tesař', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
     };
     const profession = professionMap[position.subtype] || 'Stavební dělník';
     const crewSize = position.crew_size || 0;
@@ -333,20 +324,11 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
     setWorkNameInput('');
   };
 
-  // Save pump rental cost to metadata.pump_cost_czk
-  const handlePumpRentalChange = (cost: number) => {
-    if (isLocked) return;
-    let meta: Record<string, unknown> = {};
-    try { if (position.metadata) meta = JSON.parse(position.metadata); } catch { /* ignore */ }
-    meta.pump_cost_czk = cost;
-    updatePositions([{ id: position.id, metadata: JSON.stringify(meta) }]);
-  };
-
   return (
     <>
     <tr data-position-id={position.id} data-position-instance-id={position.position_instance_id || undefined} className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''} ${Object.keys(editedFields).length > 0 ? 'editing' : ''} ${isUpdating ? 'saving' : ''}`}>
       {/* Locked indicator */}
-      {isLocked && <td className="lock-indicator col-lock">🔒</td>}
+      {isLocked && <td className="lock-indicator col-lock"><Lock size={14} /></td>}
 
       {/* Subtype with icon - EDITABLE NAME */}
       <td className="cell-subtype col-podtyp">
@@ -708,7 +690,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
       <td className="cell-kros-key col-kc-m3">
         <div
           className={`kros-cell kros-key ${position.has_rfi ? 'warning' : ''}`}
-          title={`${formatNumber(computedUnitCostOnM3, 2)} CZK/m³ ⭐ (= ${formatNumber(computedCostCzk, 2)} / ${concreteM3})`}
+          title={`${formatNumber(computedUnitCostOnM3, 2)} CZK/m³ (= ${formatNumber(computedCostCzk, 2)} / ${concreteM3})`}
         >
           {formatNumber(computedUnitCostOnM3, 2)}
         </div>
@@ -775,7 +757,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               disabled={syncingToPortal}
               title={
                 syncStatus === 'ok'
-                  ? '✅ Přeneseno do Portal TOV'
+                  ? 'Přeneseno do Portal TOV'
                   : syncStatus === 'error'
                   ? '⚠️ Přenos selhal – zkuste znovu'
                   : '📤 Přenést do TOV\n\nOdešle výpočet (normohodiny, náklady)\npřímo do TOV tohoto záznamu v Registru'
@@ -845,55 +827,6 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               );
             }
             return <span>Technologická pauza • {curingDays} dní zrání betonu</span>;
-          })()}
-        </td>
-        <td></td>
-      </tr>
-    )}
-
-    {/* Pump sub-row - only for beton positions */}
-    {position.subtype === 'beton' && (
-      <tr className="pump-sub-row" style={{
-        background: 'var(--status-info-bg, #e3f2fd)',
-        borderBottom: '1px solid var(--border-default, #eee)'
-      }}>
-        {isLocked && <td></td>}
-        <td colSpan={2} style={{ padding: '4px 12px', fontSize: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Settings size={14} />
-            <span style={{ fontWeight: 600, color: '#1565c0' }}>Čerpadlo betonu</span>
-          </div>
-        </td>
-        <td colSpan={7}></td>
-        <td style={{ padding: '4px 6px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <input
-              type="number"
-              min={0}
-              step={500}
-              className="input-cell"
-              value={pumpCost}
-              onChange={(e) => setPumpCost(Math.max(0, parseFloat(e.target.value) || 0))}
-              onBlur={(e) => handlePumpRentalChange(Math.max(0, parseFloat(e.target.value) || 0))}
-              disabled={isLocked}
-              title="Celkové náklady na čerpadlo betonu (Kč). Uloží se do TOV export."
-              style={{ width: '80px', textAlign: 'right', fontWeight: 600, fontSize: '13px' }}
-            />
-            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Kč</span>
-          </div>
-        </td>
-        <td colSpan={4} style={{ padding: '4px 12px', fontSize: '11px', color: 'var(--text-secondary)' }}>
-          {(() => {
-            const estimateHours = Math.ceil((position.qty || 0) / 20);
-            const estimate = estimateHours * 2500;
-            return (
-              <span>
-                Odhad: {position.qty || 0} m³ ÷ 20 m³/h × 2 500 Kč/h = <b style={{ color: '#1565c0' }}>{estimate.toLocaleString('cs-CZ')} Kč</b>
-                {pumpCost !== estimate && pumpCost !== defaultPumpCost && (
-                  <span style={{ marginLeft: '8px', color: '#4caf50' }}>✓ vlastní</span>
-                )}
-              </span>
-            );
           })()}
         </td>
         <td></td>

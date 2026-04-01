@@ -384,7 +384,7 @@ export function calculateElementTotalDays(
     const days = pos.days || 0;
     const subtype = pos.subtype;
 
-    if (subtype === 'bednění' || subtype?.startsWith('oboustranné')) {
+    if (subtype === 'bednění' || subtype === 'odbednění') {
       bedneniDays += days;
     } else if (subtype === 'výztuž') {
       vyztuzDays += days;

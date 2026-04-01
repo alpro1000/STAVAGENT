@@ -150,10 +150,10 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
                 <option value="">-- Vyberte stavbu nebo vytvořte novou --</option>
                 {existingProjects.map(project => (
                   <option key={project} value={project}>
-                    📁 {project}
+                    {project}
                   </option>
                 ))}
-                <option value="__new__">➕ Nová stavba...</option>
+                <option value="__new__">+ Nová stavba...</option>
               </select>
 
               {selectedProject === '__new__' && (
@@ -250,7 +250,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
             className="c-btn c-btn--success"
             style={{ flex: 1 }}
           >
-            {isSubmitting ? 'Vytváření...' : '✅ Vytvořit objekt'}
+            {isSubmitting ? 'Vytváření...' : 'Vytvořit objekt'}
           </button>
           {onCancel && (
             <button

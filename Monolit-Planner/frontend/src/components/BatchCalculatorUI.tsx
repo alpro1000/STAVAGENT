@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calculator } from 'lucide-react';
+import { Calculator, Link, X } from 'lucide-react';
 import { calculateBatchPlan, BatchPlan, DilationJoint } from '@stavagent/monolit-shared';
 
 interface BatchCalculatorUIProps {
@@ -280,7 +280,7 @@ export const BatchCalculatorUI: React.FC<BatchCalculatorUIProps> = ({
       <div className="batch-joints">
         <div className="batch-joints-header">
           <span style={{ fontWeight: 600, fontSize: 14 }}>
-            🔗 Дилатационные швы ({joints.length})
+            <Link size={14} /> Дилатационные швы ({joints.length})
           </span>
           <button className="batch-btn batch-btn-secondary" onClick={addJoint}>
             + Добавить шов
@@ -318,14 +318,14 @@ export const BatchCalculatorUI: React.FC<BatchCalculatorUIProps> = ({
               className="batch-btn batch-btn-danger"
               onClick={() => removeJoint(index)}
             >
-              ✕
+              <X size={12} />
             </button>
           </div>
         ))}
       </div>
 
       <button className="batch-btn batch-btn-primary" onClick={calculate}>
-        🧮 Рассчитать такты
+        <Calculator size={14} /> Рассчитать такты
       </button>
 
       {plan && (

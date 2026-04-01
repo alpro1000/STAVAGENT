@@ -172,10 +172,8 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const mapLabor = (pos: any) => {
     const professionMap: Record<string, string> = {
       'beton': 'Betonář',
-      'bednění': 'Tesař / Bednář',
-      'oboustranné (opěry)': 'Tesař / Bednář',
-      'oboustranné (křídla)': 'Tesař / Bednář',
-      'oboustranné (závěrné zídky)': 'Tesař / Bednář',
+      'bednění': 'Tesař',
+      'odbednění': 'Tesař',
       'výztuž': 'Železář / Armovač',
       'jiné': 'Stavební dělník'
     };

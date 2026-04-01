@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Settings, TriangleAlert, Trash2 } from 'lucide-react';
+import { Settings, TriangleAlert, Trash2, Link, X as XIcon, Circle } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
 interface RelinkMatch {
@@ -78,7 +78,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
   const handleApply = async () => {
     const matched = (report?.summary.matched_exact || 0) + (report?.summary.matched_fallback || 0) + (report?.summary.matched_fuzzy || 0);
     const confirmed = window.confirm(
-      `🔄 Aplikovat relink?\n\n` +
+      `Aplikovat relink?\n\n` +
       `Matched: ${matched}\n` +
       `Orphaned: ${report?.summary.orphaned || 0}\n` +
       `New: ${report?.summary.new_positions || 0}\n\n` +
@@ -150,10 +150,10 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
 
   const getConfidenceIcon = (confidence: string) => {
     switch (confidence) {
-      case 'GREEN': return '🟢';
-      case 'AMBER': return '🟡';
-      case 'RED': return '🔴';
-      default: return '⚪';
+      case 'GREEN': return <Circle size={12} fill="#4caf50" color="#4caf50" />;
+      case 'AMBER': return <Circle size={12} fill="#ff9800" color="#ff9800" />;
+      case 'RED': return <Circle size={12} fill="#f44336" color="#f44336" />;
+      default: return <Circle size={12} fill="#9e9e9e" color="#9e9e9e" />;
     }
   };
 
@@ -172,8 +172,8 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
     <div className="modal-overlay">
       <div className="modal-content relink-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="modal-title">🔗 Relink Report</h2>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <h2 className="modal-title"><Link size={16} className="inline" /> Relink Report</h2>
+          <button className="modal-close" onClick={onClose}><XIcon size={16} /></button>
         </div>
 
         <div className="modal-body">
@@ -195,15 +195,15 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                   <span className="stat-value">{report.summary.match_rate}%</span>
                 </div>
                 <div className="summary-stat">
-                  <span className="stat-label">🟢 Green:</span>
+                  <span className="stat-label"><Circle size={12} fill="#4caf50" color="#4caf50" /> Green:</span>
                   <span className="stat-value">{report.summary.confidence_green}</span>
                 </div>
                 <div className="summary-stat">
-                  <span className="stat-label">🟡 Amber:</span>
+                  <span className="stat-label"><Circle size={12} fill="#ff9800" color="#ff9800" /> Amber:</span>
                   <span className="stat-value">{report.summary.confidence_amber}</span>
                 </div>
                 <div className="summary-stat">
-                  <span className="stat-label">🔴 Red:</span>
+                  <span className="stat-label"><Circle size={12} fill="#f44336" color="#f44336" /> Red:</span>
                   <span className="stat-value">{report.summary.confidence_red}</span>
                 </div>
                 <div className="summary-stat">
@@ -228,7 +228,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                   className={`tab-btn ${activeTab === 'conflicts' ? 'active' : ''}`}
                   onClick={() => setActiveTab('conflicts')}
                 >
-                  🟡🔴 Conflicts ({report.details.matches.filter(m => m.confidence !== 'GREEN').length})
+                  <Circle size={10} fill="#ff9800" color="#ff9800" /><Circle size={10} fill="#f44336" color="#f44336" /> Conflicts ({report.details.matches.filter(m => m.confidence !== 'GREEN').length})
                 </button>
                 <button
                   className={`tab-btn ${activeTab === 'orphaned' ? 'active' : ''}`}
@@ -383,7 +383,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
             Zavřít
           </button>
           <button className="btn-primary" onClick={handleApply}>
-            ✅ Aplikovat
+            Aplikovat
           </button>
         </div>
       </div>
