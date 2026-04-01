@@ -38,11 +38,11 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
   const [error, setError] = useState<string | null>(null);
 
   const projectTypes = [
-    { value: 'bridge', label: 'Most 🌉' },
-    { value: 'building', label: 'Budova 🏢' },
-    { value: 'road', label: 'Silnice 🛣️' },
-    { value: 'parking', label: 'Parkoviště 🅿️' },
-    { value: 'custom', label: 'Jiné 📋' }
+    { value: 'bridge', label: 'Most' },
+    { value: 'building', label: 'Budova' },
+    { value: 'road', label: 'Silnice' },
+    { value: 'parking', label: 'Parkoviště' },
+    { value: 'custom', label: 'Jiné' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

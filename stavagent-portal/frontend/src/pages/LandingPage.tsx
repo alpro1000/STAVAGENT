@@ -354,7 +354,12 @@ export default function LandingPage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <span style={{ fontSize: '20px' }}>{s.icon}</span>
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  {(() => {
+                    const IconComp = (LucideIcons as any)[s.icon];
+                    return IconComp ? <IconComp size={20} /> : null;
+                  })()}
+                </span>
                 <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
                   {s.name}
                 </h4>

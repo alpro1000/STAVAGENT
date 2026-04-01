@@ -11,6 +11,8 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
+import { FileText, Landmark, Package, Ruler, CircleCheckBig, XCircle } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import api from '../../services/api';
 
 // ============================================================================
@@ -94,7 +96,7 @@ interface MethvinCategory {
 interface PipelineStepProps {
   title: string;
   description: string;
-  icon: string;
+  icon: LucideIcon;
   status: StepStatus;
   onStart: () => void;
   waitingMessages: string[];
@@ -103,7 +105,7 @@ interface PipelineStepProps {
 }
 
 function PipelineStep({
-  title, description, icon, status, onStart, waitingMessages, disabled, resultSummary,
+  title, description, icon: Icon, status, onStart, waitingMessages, disabled, resultSummary,
 }: PipelineStepProps) {
   const [message, setMessage] = useState('');
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -136,7 +138,7 @@ function PipelineStep({
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 28 }}>{icon}</span>
+          <Icon size={28} />
           <div>
             <div style={{ fontWeight: 700, fontSize: 16 }}>{title}</div>
             <div style={{ fontSize: 13, color: '#718096' }}>{description}</div>
@@ -219,7 +221,7 @@ function PipelineStep({
           background: '#c6f6d5', borderRadius: 8, padding: 12,
           fontSize: 14, color: '#22543d',
         }}>
-          ✅ {resultSummary(status)}
+          <CircleCheckBig size={16} className="inline" /> {resultSummary(status)}
         </div>
       )}
 
@@ -229,7 +231,7 @@ function PipelineStep({
           background: '#fed7d7', borderRadius: 8, padding: 12,
           fontSize: 14, color: '#742a2a',
         }}>
-          ❌ Chyba: {status.error || 'Neznámá chyba'}
+          <XCircle size={16} className="inline" /> Chyba: {status.error || 'Neznámá chyba'}
         </div>
       )}
     </div>
@@ -492,7 +494,7 @@ export default function DataPipeline() {
 
       {/* Step 1 */}
       <PipelineStep
-        icon="📄"
+        icon={FileText}
         title="1. Sběr smluv"
         description="Stahuje smlouvy o dílo z Hlídače státu. Parsuje přílohy (krycí listy, rozpočty)."
         status={collectStatus}
@@ -505,7 +507,7 @@ export default function DataPipeline() {
 
       {/* Step 2 */}
       <PipelineStep
-        icon="🏛️"
+        icon={Landmark}
         title="2. CPV obohacení"
         description="Stahuje metadata z Věstníku VZ (vvz.nipez.cz). Přiřazuje CPV kódy ke smlouvám."
         status={vzStatus}
@@ -518,7 +520,7 @@ export default function DataPipeline() {
 
       {/* Step 3 */}
       <PipelineStep
-        icon="📦"
+        icon={Package}
         title="3. Tvorba pracovních balíčků"
         description="Analyzuje co-occurrence položek. Vytváří balíčky prací s CPV kontextem."
         status={buildStatus}

@@ -1,17 +1,19 @@
 import { ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { User, Building2, Link, Lock } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface NavItem {
   label: string;
   path: string;
-  icon: string;
+  icon: LucideIcon;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Profil', path: '/cabinet', icon: '👤' },
-  { label: 'Organizace', path: '/cabinet/orgs', icon: '🏢' },
-  { label: 'Pripojeni', path: '/cabinet/connections', icon: '🔑' },
-  { label: 'Zabezpečení', path: '/change-password', icon: '🔐' },
+  { label: 'Profil', path: '/cabinet', icon: User },
+  { label: 'Organizace', path: '/cabinet/orgs', icon: Building2 },
+  { label: 'Pripojeni', path: '/cabinet/connections', icon: Link },
+  { label: 'Zabezpečení', path: '/change-password', icon: Lock },
 ];
 
 interface CabinetLayoutProps {
@@ -65,7 +67,7 @@ export default function CabinetLayout({ children, title }: CabinetLayoutProps) {
                     transition: 'background 0.1s',
                   }}
                 >
-                  <span>{item.icon}</span>
+                  <item.icon size={16} />
                   {item.label}
                 </button>
               );

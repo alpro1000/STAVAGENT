@@ -3,6 +3,7 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
+import { Building2, FileText, Trash2, PlusCircle, ChevronDown, ChevronRight } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
@@ -366,7 +367,7 @@ export default function PositionsTable() {
   if (!selectedBridge) {
     return (
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-lg)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
-        <div style={{ fontSize: '64px', opacity: 0.5 }}>🏗️</div>
+        <div style={{ fontSize: '64px', opacity: 0.5 }}><Building2 size={64} /></div>
         <h3 className="u-text-bold" style={{ margin: 0, fontSize: 'var(--font-size-xl)' }}>Vyberte objekt</h3>
         <p className="u-text-muted">Vyberte objekt ze seznamu vlevo nebo nahrajte XLSX soubor</p>
       </div>
@@ -404,14 +405,14 @@ export default function PositionsTable() {
             border: 'none'
           }}
         >
-          🏗️ Přidat část konstrukce
+          <Building2 size={14} className="inline" /> Přidat část konstrukce
         </button>
       </div>
 
       {!hasPositions && (
         <div className="empty-positions-container">
           <p className="empty-positions-message">
-            📝 Žádné pozice. Vytvořte první část konstrukce kliknutím na "🏗️ Přidat část konstrukce" výše.
+            <FileText size={14} className="inline" /> Žádné pozice. Vytvořte první část konstrukce kliknutím na "Přidat část konstrukce" výše.
           </p>
         </div>
       )}
@@ -429,7 +430,7 @@ export default function PositionsTable() {
             >
               <span className="u-text-bold">{partPositions[0]?.item_name || partName}</span>
               <div className="u-flex u-gap-md" style={{ alignItems: 'center' }}>
-                <span className="u-text-muted">{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+                <span className="u-text-muted">{isExpanded ? <ChevronDown size={14} className="inline" /> : <ChevronRight size={14} className="inline" />} {partPositions.length} pozic</span>
                 {!isLocked && (
                   <button
                     className="c-btn c-btn--sm c-btn--danger"
@@ -439,7 +440,7 @@ export default function PositionsTable() {
                     }}
                     title={`Smazat část "${partName}" (${partPositions.length} pozic)`}
                   >
-                    🗑️ Smazat
+                    <Trash2 size={14} className="inline" /> Smazat
                   </button>
                 )}
               </div>
@@ -592,7 +593,7 @@ export default function PositionsTable() {
                     disabled={isLocked}
                     title={isLocked ? 'Nelze přidat řádek - snapshot je zamčen' : 'Přidat nový řádek'}
                   >
-                    ➕ Přidat řádek
+                    <PlusCircle size={14} className="inline" /> Přidat řádek
                   </button>
                 </div>
               </>
