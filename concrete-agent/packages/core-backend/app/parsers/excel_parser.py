@@ -32,6 +32,7 @@ class ExcelParser:
             }
         """
         project_prefix = f"[project={project_id}] " if project_id else ""
+        file_path = Path(file_path) if not isinstance(file_path, Path) else file_path
 
         logger.info("%s📊 Parsing Excel: %s", project_prefix, file_path.name)
         

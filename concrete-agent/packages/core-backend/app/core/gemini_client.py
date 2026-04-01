@@ -106,11 +106,15 @@ class GeminiClient:
             # Call Gemini
             response = model.generate_content(full_prompt)
 
-            # Extract text
-            if not response.parts:
-                raise ValueError("Gemini returned empty response")
-
-            result_text = response.text
+            # Extract text — .text property raises ValueError when blocked/empty
+            try:
+                if not response.parts:
+                    raise ValueError("Gemini returned empty response")
+                result_text = response.text
+            except ValueError as ve:
+                feedback = getattr(response, 'prompt_feedback', None)
+                logger.error(f"Gemini response blocked or empty: {ve} (feedback={feedback})")
+                raise ValueError(f"Gemini returned no usable text: {ve}") from ve
 
             # Remove markdown code blocks if present (same as Claude)
             code_block_match = re.search(r'```(?:json)?\s*(.*?)\s*```', result_text, re.DOTALL)
@@ -502,11 +506,19 @@ class VertexGeminiClient:
 
             elapsed_ms = int((time.monotonic() - t0) * 1000)
 
-            if not response.text:
+            # .text property raises ValueError when response is blocked/empty
+            try:
+                text = response.text
+            except ValueError as ve:
+                feedback = getattr(response, 'prompt_feedback', None)
+                logger.error(f"❌ Vertex Gemini blocked/empty ({elapsed_ms}ms): {ve} (feedback={feedback})")
+                raise ValueError(f"Vertex Gemini returned no usable text: {ve}") from ve
+
+            if not text:
                 logger.error(f"❌ Vertex Gemini empty response ({elapsed_ms}ms) — finish_reason={getattr(response, 'prompt_feedback', 'n/a')}")
                 raise ValueError("Vertex Gemini returned empty response")
 
-            result_text = response.text.strip()
+            result_text = text.strip()
             response_chars = len(result_text)
 
             # Remove markdown code blocks
@@ -596,7 +608,12 @@ class VertexGeminiClient:
             generation_config={"temperature": 0.3, "max_output_tokens": self.max_tokens},
         )
 
-        result_text = response.text.strip()
+        try:
+            result_text = response.text.strip()
+        except ValueError as ve:
+            feedback = getattr(response, 'prompt_feedback', None)
+            logger.error(f"❌ Vertex Gemini PDF parse blocked/empty: {ve} (feedback={feedback})")
+            raise ValueError(f"Vertex Gemini returned no usable text for PDF: {ve}") from ve
         result_text = result_text.replace("```json\n", "").replace("```json", "").replace("```\n", "").replace("```", "").strip()
 
         try:
