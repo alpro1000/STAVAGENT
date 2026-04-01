@@ -4,3 +4,4 @@
  */
 
 export * from './formwork-systems.js';
+export * from './construction-sequence.js';

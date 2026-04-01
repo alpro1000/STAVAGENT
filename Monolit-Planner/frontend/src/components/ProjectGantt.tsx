@@ -13,22 +13,14 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import type { Position } from '@stavagent/monolit-shared';
+import {
+  BRIDGE_PART_SEQUENCE,
+  BUILDING_PART_SEQUENCE,
+  getPartSequenceIndex,
+  detectProjectSequence,
+} from '@stavagent/monolit-shared';
 import PortalBreadcrumb from './PortalBreadcrumb';
 import '../styles/r0.css';
-
-// Typical construction sequence for bridges
-const BRIDGE_SEQUENCE = [
-  'PILOTY', 'ZÁKLADY', 'ZÁKLADY PILÍŘŮ', 'DŘÍKY PILÍŘŮ', 'PILÍŘE',
-  'OPĚRY', 'ÚLOŽNÉ PRAHY', 'OPĚRNÉ ZDI', 'MOSTOVKA', 'MOSTOVKOVÁ DESKA',
-  'PŘÍČNÍKY', 'ZÁVĚRNÉ ZÍDKY', 'ŘÍMSY', 'IZOLACE', 'ZÁBRADLÍ',
-];
-
-// Typical construction sequence for buildings
-const BUILDING_SEQUENCE = [
-  'ZEMNÍ PRÁCE', 'PILOTY', 'ZÁKLADY', 'ZÁKLADOVÁ DESKA', 'ZÁKLADOVÝ PAS',
-  'SUTERÉN', 'STĚNY', 'SLOUPY', 'PRŮVLAKY', 'STROPNÍ DESKA', 'SCHODIŠTĚ',
-  'STŘECHA', 'IZOLACE', 'FASÁDA',
-];
 
 interface GanttRow {
   id: string;
@@ -53,13 +45,7 @@ function getSubtypeColor(subtype: string): string {
   return SUBTYPE_COLORS[subtype] || SUBTYPE_COLORS.jiné;
 }
 
-function sequenceIndex(partName: string, sequence: string[]): number {
-  const upper = partName.toUpperCase().trim();
-  for (let i = 0; i < sequence.length; i++) {
-    if (upper.includes(sequence[i]) || sequence[i].includes(upper)) return i;
-  }
-  return 999;
-}
+// sequenceIndex moved to shared: getPartSequenceIndex()
 
 export default function ProjectGantt() {
   const [searchParams] = useSearchParams();
@@ -94,9 +80,7 @@ export default function ProjectGantt() {
 
     // Sort parts by construction sequence (detect bridge vs building)
     const partNames = [...grouped.keys()];
-    const bridgeScore = partNames.reduce((s, n) => s + (sequenceIndex(n, BRIDGE_SEQUENCE) < 999 ? 1 : 0), 0);
-    const buildingScore = partNames.reduce((s, n) => s + (sequenceIndex(n, BUILDING_SEQUENCE) < 999 ? 1 : 0), 0);
-    const sequence = bridgeScore >= buildingScore ? BRIDGE_SEQUENCE : BUILDING_SEQUENCE;
+    const sequence = detectProjectSequence(partNames);
 
     let orderedParts: string[];
     if (customOrder) {
@@ -107,7 +91,7 @@ export default function ProjectGantt() {
       }
     } else {
       orderedParts = partNames.sort((a, b) =>
-        sequenceIndex(a, sequence) - sequenceIndex(b, sequence)
+        getPartSequenceIndex(a, sequence) - getPartSequenceIndex(b, sequence)
       );
     }
 
