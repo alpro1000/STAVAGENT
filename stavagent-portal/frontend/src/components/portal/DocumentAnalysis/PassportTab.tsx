@@ -72,16 +72,6 @@ export default function PassportTab({ data }: PassportTabProps) {
         <p style={{ margin: '0 0 20px', lineHeight: 1.8, fontSize: 15 }}>{passport.description}</p>
       )}
 
-      {/* Technical highlights */}
-      {passport.technical_highlights?.length > 0 && (
-        <div style={{ marginBottom: 20 }}>
-          <div className={styles.sectionHeader}>Technické hlavní body</div>
-          <ul style={{ margin: 0, paddingLeft: 18 }}>
-            {passport.technical_highlights.map((hl, i) => <li key={i} style={{ marginBottom: 2 }}>{hl}</li>)}
-          </ul>
-        </div>
-      )}
-
       {/* Warnings */}
       {((passport as any).warnings || []).length > 0 && (
         <div className={styles.warningStrip}>
@@ -95,12 +85,8 @@ export default function PassportTab({ data }: PassportTabProps) {
         </div>
       )}
 
-      {/* Adaptive summary (topics) */}
-      {isAdaptive ? (
-        <AdaptiveTopics topics={(passport as any).topics || []} />
-      ) : (
-        <StructuredPassport data={data} />
-      )}
+      {/* Always show structured data tables in Passport tab (narrative lives in Shrnutí) */}
+      <StructuredPassport data={data} />
 
       {/* Type-specific extractions */}
       <TypeSpecificExtractions data={data} />

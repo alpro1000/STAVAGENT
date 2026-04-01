@@ -85,7 +85,12 @@ function EngineExtractionsPanel({
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
   const domains = Object.entries(extractions).filter(
-    ([, fields]) => fields && typeof fields === 'object' && Object.keys(fields).length > 0
+    ([, fields]) => {
+      if (!fields || typeof fields !== 'object') return false;
+      // Only show domains that have at least one real (non-metadata) field
+      const realFields = Object.keys(fields).filter(k => !k.startsWith('_'));
+      return realFields.length > 0;
+    }
   );
 
   if (domains.length === 0) {

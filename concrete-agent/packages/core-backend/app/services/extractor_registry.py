@@ -27,6 +27,50 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
+# Universal negative-context filter for demolition / existing-state mentions
+# ---------------------------------------------------------------------------
+
+_NEGATIVE_CONTEXT_RE = re.compile(
+    r"(?:stávající|odstraněn[aoéý]|kompletně\s+odstraněn|demontáž|demontován[aoéý]|"
+    r"bourán[ií]|snesení?|likvidac[eí]|vybourán[ií]|odpad|stávající\s+KZS|"
+    r"původní|bude\s+odstraněn|bude\s+sneseno|bude\s+zlikvidován)",
+    re.IGNORECASE,
+)
+
+_CONTEXT_WINDOW = 200  # chars before match to scan for negative context
+
+
+def _in_demolition_context(text: str, match: re.Match) -> bool:
+    """Return True if regex match is surrounded by demolition/existing-state words.
+
+    Scans up to _CONTEXT_WINDOW characters before the match start for
+    negative-context keywords.  This prevents extracting values from
+    sentences describing OLD / to-be-demolished structures.
+    """
+    start = max(0, match.start() - _CONTEXT_WINDOW)
+    preceding = text[start : match.start()]
+    return bool(_NEGATIVE_CONTEXT_RE.search(preceding))
+
+
+def _safe_search(pattern: re.Pattern, text: str) -> Optional[re.Match]:
+    """Search for pattern, skipping matches inside demolition context.
+
+    If the first match is in a negative context, continue searching
+    from after that match to find a valid (project-design) occurrence.
+    """
+    pos = 0
+    while pos < len(text):
+        m = pattern.search(text, pos)
+        if m is None:
+            return None
+        if not _in_demolition_context(text, m):
+            return m
+        # Skip this match, continue searching after it
+        pos = m.end()
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Registry entry type
 # ---------------------------------------------------------------------------
 
@@ -93,7 +137,7 @@ _ZDIVO_PATTERNS = {
 def _extract_zdivo(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _ZDIVO_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -120,7 +164,7 @@ _STRECHA_PATTERNS = {
 def _extract_strecha(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _STRECHA_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -148,7 +192,7 @@ _PODLAHY_PATTERNS = {
 def _extract_podlahy(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _PODLAHY_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -182,7 +226,7 @@ _ETICS_PATTERNS = {
 def _extract_etics(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _ETICS_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             val = (m.group(1) or "").strip()
             if val:
@@ -245,7 +289,7 @@ _SDK_PATTERNS = {
 def _extract_sdk(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _SDK_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -271,7 +315,7 @@ _HYDRO_PATTERNS = {
 def _extract_hydro(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _HYDRO_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip() if m.lastindex else m.group(0).strip()
     return result
@@ -300,7 +344,7 @@ _PLYN_PATTERNS = {
 def _extract_plyn(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _PLYN_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -326,7 +370,7 @@ _MAR_PATTERNS = {
 def _extract_mar(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _MAR_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -355,7 +399,7 @@ _MOST_PATTERNS = {
 def _extract_most(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _MOST_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result
@@ -382,7 +426,7 @@ _DOPRAVA_PATTERNS = {
 def _extract_doprava(text: str) -> Dict[str, Any]:
     result = {}
     for field, pat in _DOPRAVA_PATTERNS.items():
-        m = pat.search(text)
+        m = _safe_search(pat, text)
         if m:
             result[field] = m.group(1).strip()
     return result

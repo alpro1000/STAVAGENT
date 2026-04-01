@@ -61,48 +61,47 @@ export default function SummaryTab({ data }: SummaryTabProps) {
         </div>
       ))}
 
-      {/* Fallback: technical highlights + stakeholders */}
-      {!hasTopics && (
-        <>
-          {passport.technical_highlights?.length > 0 && (
-            <div style={{ marginBottom: 20 }}>
-              <div className={styles.sectionHeader}>Technické hlavní body</div>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                {passport.technical_highlights.map((hl, i) => <li key={i} style={{ marginBottom: 2 }}>{hl}</li>)}
-              </ul>
-            </div>
-          )}
+      {/* Technical highlights (always shown in Shrnutí) */}
+      {passport.technical_highlights?.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div className={styles.sectionHeader}>Technické hlavní body</div>
+          <ul style={{ margin: 0, paddingLeft: 18 }}>
+            {passport.technical_highlights.map((hl, i) => <li key={i} style={{ marginBottom: 2 }}>{hl}</li>)}
+          </ul>
+        </div>
+      )}
 
-          {passport.stakeholders?.length > 0 && (
-            <div style={{ marginBottom: 20 }}>
-              <div className={styles.sectionHeader}>Účastníci</div>
-              <table className={styles.dataTable}>
-                <tbody>
-                  {passport.stakeholders.map((s, i) => (
-                    <tr key={i}><td className={styles.label}>{s.role}</td><td className={styles.value}>{s.name}</td></tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+      {/* Risks (always shown in Shrnutí) */}
+      {passport.risks?.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div className={styles.sectionHeader}>Rizika</div>
+          <ul style={{ margin: 0, paddingLeft: 18 }}>
+            {passport.risks.map((r, i) => (
+              <li key={i} style={{ marginBottom: 4, fontSize: 14 }}>
+                <span style={{
+                  display: 'inline-block', width: 8, height: 8, borderRadius: '50%', marginRight: 6,
+                  backgroundColor: r.severity === 'High' ? '#EF4444' : r.severity === 'Medium' ? '#F59E0B' : '#10B981',
+                }} />
+                <strong>{r.risk_category}</strong>: {r.description}
+                {r.mitigation && <span style={{ color: 'var(--text-secondary)', fontSize: 12, marginLeft: 6 }}>Zmírnění: {r.mitigation}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-          {passport.risks?.length > 0 && (
-            <div style={{ marginBottom: 20 }}>
-              <div className={styles.sectionHeader}>Rizika</div>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                {passport.risks.map((r, i) => (
-                  <li key={i} style={{ marginBottom: 4, fontSize: 14 }}>
-                    <span style={{
-                      display: 'inline-block', width: 8, height: 8, borderRadius: '50%', marginRight: 6,
-                      backgroundColor: r.severity === 'High' ? '#EF4444' : r.severity === 'Medium' ? '#F59E0B' : '#10B981',
-                    }} />
-                    <strong>{r.risk_category}</strong>: {r.description}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </>
+      {/* Stakeholders */}
+      {passport.stakeholders?.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div className={styles.sectionHeader}>Účastníci</div>
+          <table className={styles.dataTable}>
+            <tbody>
+              {passport.stakeholders.map((s, i) => (
+                <tr key={i}><td className={styles.label}>{s.role}</td><td className={styles.value}>{s.name}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Metadata */}
