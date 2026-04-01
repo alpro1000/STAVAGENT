@@ -17,7 +17,7 @@ Version: 3.0.0
 import logging
 import hashlib
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from datetime import datetime
 
 from app.models.passport_schema import (
@@ -169,8 +169,6 @@ def get_coverage_report(groups: List[SOFileGroup]) -> Dict[str, Any]:
             }
         }
     """
-    from typing import Any
-
     report: Dict[str, Any] = {
         "total_files": sum(len(g.files) for g in groups),
         "total_groups": len(groups),
