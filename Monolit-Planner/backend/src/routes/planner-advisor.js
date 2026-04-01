@@ -357,4 +357,70 @@ router.post('/norms/scrape-all', async (req, res) => {
   }
 });
 
+// ── Calculator Suggestions: proxy to Core extraction engine ─────────────────
+
+/**
+ * POST /api/planner-advisor/calculator-suggestions
+ * Body: { portal_project_id, building_object?, element_description? }
+ * Returns: { suggestions[], warnings[], conflicts[], facts_count, documents_used[] }
+ *
+ * Proxies to Core: POST /api/v1/extraction/calculator-suggestions
+ * Used by PlannerPage to show inline suggestions from extracted documents.
+ */
+router.post('/calculator-suggestions', async (req, res) => {
+  const { portal_project_id, building_object, element_description } = req.body;
+
+  if (!portal_project_id) {
+    return res.status(400).json({ error: 'portal_project_id je povinný' });
+  }
+
+  try {
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 15_000); // 15s timeout
+
+    const coreRes = await fetchWithRetry(`${CORE_API_URL}/api/v1/extraction/calculator-suggestions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        portal_project_id,
+        building_object: building_object || undefined,
+        element_description: element_description || undefined,
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(tid);
+
+    if (coreRes.ok) {
+      const data = await coreRes.json();
+      res.json(data);
+    } else {
+      const text = await coreRes.text().catch(() => '');
+      logger.warn(`[PlannerAdvisor] calculator-suggestions: Core returned ${coreRes.status}: ${text}`);
+      // Return empty response so calculator works without suggestions
+      res.json({
+        project_id: portal_project_id,
+        building_object: building_object || '',
+        suggestions: [],
+        warnings: [],
+        conflicts: [],
+        facts_count: 0,
+        documents_used: [],
+      });
+    }
+  } catch (err) {
+    logger.warn(`[PlannerAdvisor] calculator-suggestions error: ${err.message}`);
+    // Graceful degradation: return empty so calculator works normally
+    res.json({
+      project_id: portal_project_id,
+      building_object: building_object || '',
+      suggestions: [],
+      warnings: [],
+      conflicts: [],
+      facts_count: 0,
+      documents_used: [],
+    });
+  }
+});
+
 export default router;

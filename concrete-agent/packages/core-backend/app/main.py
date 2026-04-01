@@ -124,6 +124,14 @@ async def startup_event():
     except Exception as e:
         logger.error(f"⚠️  KB loading failed: {str(e)}")
     
+    # Seed calculator suggestions test data
+    try:
+        from app.services.calculator_suggestions_seed import seed_test_data
+        seed_test_data()
+        logger.info("✅ Calculator suggestions test data seeded")
+    except Exception as e:
+        logger.warning(f"⚠️  Calculator suggestions seed failed: {e}")
+
     logger.info("=" * 80)
     logger.info("✅ System ready! Listening on 0.0.0.0:%s", os.getenv('PORT', '8000'))
     logger.info("=" * 80)

@@ -72,6 +72,47 @@ interface AIAdvisorResult {
   warnings: string[];
 }
 
+// ─── Document Suggestion types ──────────────────────────────────────────────
+
+interface DocFactSource {
+  document: string;
+  page: number | null;
+  confidence: number;
+  source_type: string;
+}
+
+interface DocSuggestion {
+  param: string;
+  value: any;
+  label: string;
+  source: DocFactSource;
+  accepted: boolean;
+}
+
+interface DocWarning {
+  severity: 'blocking' | 'recommended' | 'info';
+  message: string;
+  param: string | null;
+  rule: string;
+}
+
+interface DocConflict {
+  param: string;
+  values: Array<{ value: any; source: DocFactSource }>;
+  recommended_value: any;
+  recommendation_reason: string;
+}
+
+interface DocSuggestionsResponse {
+  project_id: string;
+  building_object: string;
+  suggestions: DocSuggestion[];
+  warnings: DocWarning[];
+  conflicts: DocConflict[];
+  facts_count: number;
+  documents_used: string[];
+}
+
 // ─── Element type labels ────────────────────────────────────────────────────
 
 const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: string }[] = [
@@ -454,6 +495,11 @@ export default function PlannerPage() {
   };
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
+
+  // ── Document-based suggestions ──────────────────────────────────────────
+  const [docSuggestions, setDocSuggestions] = useState<DocSuggestionsResponse | null>(null);
+  const [docSugLoading, setDocSugLoading] = useState(false);
+  const [acceptedParams, setAcceptedParams] = useState<Set<string>>(new Set());
   const [comparison, setComparison] = useState<Array<{
     system: string;
     manufacturer: string;
@@ -483,6 +529,56 @@ export default function PlannerPage() {
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
+
+  // ── Document suggestions fetch (once on mount, when portal_project_id is known) ──
+  useEffect(() => {
+    const portalProjectId = positionContext?.project_id
+      || searchParams.get('portal_project_id');
+    if (!portalProjectId) return;
+
+    const bridgeId = positionContext?.bridge_id || searchParams.get('bridge_id') || '';
+    // Extract SO-xxx from bridge_id
+    const soMatch = bridgeId.match(/SO[-\s]?\d{3}/i);
+    const buildingObject = soMatch ? soMatch[0].replace(/\s/g, '-').toUpperCase() : undefined;
+
+    setDocSugLoading(true);
+    fetch(`${API_URL}/api/planner-advisor/calculator-suggestions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        portal_project_id: portalProjectId,
+        building_object: buildingObject,
+      }),
+    })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data && data.facts_count > 0) setDocSuggestions(data); })
+      .catch(() => {})  // graceful: no suggestions = calculator works as before
+      .finally(() => setDocSugLoading(false));
+  }, [positionContext?.project_id, positionContext?.bridge_id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /** Accept a document suggestion: apply value to form + mark as accepted */
+  const acceptSuggestion = useCallback((param: string, value: any) => {
+    // Map suggestion params to form fields
+    const paramMap: Record<string, (v: any) => void> = {
+      concrete_class: v => update('concrete_class', v),
+      volume_m3: v => update('volume_m3', v),
+      // exposure_class has no direct form field — shown as info
+    };
+    const handler = paramMap[param];
+    if (handler) handler(value);
+    setAcceptedParams(prev => new Set(prev).add(param));
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  /** Dismiss a suggestion */
+  const dismissSuggestion = useCallback((param: string) => {
+    setAcceptedParams(prev => new Set(prev).add(param));
+  }, []);
+
+  /** Get suggestion for a specific param */
+  const getSuggestion = useCallback((param: string): DocSuggestion | undefined => {
+    if (!docSuggestions || acceptedParams.has(param)) return undefined;
+    return docSuggestions.suggestions.find(s => s.param === param);
+  }, [docSuggestions, acceptedParams]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
   const fetchAdvisor = useCallback(async () => {
@@ -958,6 +1054,14 @@ export default function PlannerPage() {
             Vstupní parametry
           </h2>
 
+          {/* ─── Document suggestions banner ─── */}
+          {docSugLoading && (
+            <div style={{ padding: '6px 10px', marginBottom: 8, fontSize: 11, color: 'var(--r0-slate-500)' }}>
+              Nacitani doporuceni z dokumentu projektu...
+            </div>
+          )}
+          <DocWarningsBanner response={docSuggestions} />
+
           {/* ─── Element ─── */}
           <Section title="Element">
             <label style={labelStyle}>
@@ -1324,8 +1428,15 @@ export default function PlannerPage() {
           {/* ─── Volumes ─── */}
           <Section title="Objemy">
             <Field label="Objem betonu (m³)">
-              <NumInput style={inputStyle} value={form.volume_m3} min={0.1} fallback={1}
-                onChange={v => update('volume_m3', v as number)} />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <NumInput style={{ ...inputStyle, flex: 1 }} value={form.volume_m3} min={0.1} fallback={1}
+                  onChange={v => update('volume_m3', v as number)} />
+                <SuggestionBadge
+                  suggestion={getSuggestion('volume_m3')}
+                  onAccept={acceptSuggestion}
+                  onDismiss={dismissSuggestion}
+                />
+              </div>
             </Field>
             <Field label="Plocha bednění (m²)" hint="prázdné = automatický odhad z objemu a výšky">
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
@@ -1568,12 +1679,37 @@ export default function PlannerPage() {
           {/* ─── Concrete / Maturity ─── */}
           <Section title="Beton / Zrání">
             <Field label="Třída betonu">
-              <select style={inputStyle} value={form.concrete_class}
-                onChange={e => update('concrete_class', e.target.value as ConcreteClass)}>
-                {CONCRETE_CLASSES.map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <select style={{ ...inputStyle, flex: 1 }} value={form.concrete_class}
+                  onChange={e => update('concrete_class', e.target.value as ConcreteClass)}>
+                  {CONCRETE_CLASSES.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                <SuggestionBadge
+                  suggestion={getSuggestion('concrete_class')}
+                  onAccept={acceptSuggestion}
+                  onDismiss={dismissSuggestion}
+                />
+              </div>
+              {/* Show exposure class info badge (no direct form field) */}
+              {getSuggestion('exposure_class') && (
+                <div style={{
+                  marginTop: 4, padding: '3px 8px',
+                  background: 'var(--r0-info-bg, #e8f4fd)', border: '1px solid var(--r0-info-border, #b3d9f2)',
+                  borderRadius: 4, fontSize: 10, color: 'var(--r0-info-text, #1a73e8)',
+                }}>
+                  Stupen prostredí: <strong>
+                    {Array.isArray(getSuggestion('exposure_class')!.value)
+                      ? getSuggestion('exposure_class')!.value.join(', ')
+                      : getSuggestion('exposure_class')!.value}
+                  </strong>
+                  <span style={{ opacity: 0.7, marginLeft: 4 }}>
+                    ({getSuggestion('exposure_class')!.source.document}
+                    {getSuggestion('exposure_class')!.source.page && `, str. ${getSuggestion('exposure_class')!.source.page}`})
+                  </span>
+                </div>
+              )}
             </Field>
             <Field label="Typ cementu">
               <select style={inputStyle} value={form.cement_type}
@@ -1583,6 +1719,40 @@ export default function PlannerPage() {
                 ))}
               </select>
             </Field>
+
+            {/* ─── Special concrete flags from documents ─── */}
+            {docSuggestions && (() => {
+              const flags = docSuggestions.suggestions.filter(s =>
+                ['is_scc', 'is_prestressed', 'is_winter', 'is_massive', 'is_architectural', 'consistency'].includes(s.param)
+              );
+              if (flags.length === 0) return null;
+              return (
+                <div style={{
+                  padding: '8px 10px', marginTop: 4,
+                  background: 'var(--r0-info-bg, #e8f4fd)', border: '1px solid var(--r0-info-border, #b3d9f2)',
+                  borderRadius: 6, fontSize: 11, lineHeight: 1.7,
+                }}>
+                  <div style={{ fontWeight: 600, marginBottom: 2, color: 'var(--r0-info-text, #1a73e8)', fontSize: 10, textTransform: 'uppercase' }}>
+                    Z dokumentu projektu
+                  </div>
+                  {flags.map(f => (
+                    <div key={f.param} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ color: f.param.startsWith('is_') ? '#d97706' : 'var(--r0-info-text, #1a73e8)' }}>
+                        {f.param === 'is_scc' && 'Samozhutnitelny beton (SCC)'}
+                        {f.param === 'is_prestressed' && 'Predpjaty beton'}
+                        {f.param === 'is_winter' && 'Zimni betonaz'}
+                        {f.param === 'is_massive' && 'Masivni beton'}
+                        {f.param === 'is_architectural' && 'Pohledovy beton'}
+                        {f.param === 'consistency' && `Konzistence: ${f.value}`}
+                      </span>
+                      <span style={{ opacity: 0.5, fontSize: 9 }}>
+                        ({f.source.document}{f.source.page ? `, str. ${f.source.page}` : ''})
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </Section>
 
           {/* ─── Advanced ─── */}
@@ -2891,6 +3061,116 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
 }
 
 // ─── UI Primitives ──────────────────────────────────────────────────────────
+
+// ─── SuggestionBadge: inline badge next to form field ──────────────────────
+
+function SuggestionBadge({ suggestion, onAccept, onDismiss }: {
+  suggestion: DocSuggestion | undefined;
+  onAccept: (param: string, value: any) => void;
+  onDismiss: (param: string) => void;
+}) {
+  if (!suggestion) return null;
+
+  const confPct = Math.round(suggestion.source.confidence * 100);
+  const displayValue = Array.isArray(suggestion.value)
+    ? suggestion.value.join(', ')
+    : String(suggestion.value);
+
+  return (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 4,
+      padding: '2px 6px', marginLeft: 6,
+      background: 'var(--r0-info-bg, #e8f4fd)', border: '1px solid var(--r0-info-border, #b3d9f2)',
+      borderRadius: 4, fontSize: 10, lineHeight: '16px', whiteSpace: 'nowrap',
+    }}>
+      <span style={{ color: 'var(--r0-info-text, #1a73e8)' }} title={
+        `Zdroj: ${suggestion.source.document}${suggestion.source.page ? `, str. ${suggestion.source.page}` : ''} (${confPct}%)`
+      }>
+        {suggestion.label}: <strong>{displayValue}</strong>
+      </span>
+      <button
+        onClick={() => onAccept(suggestion.param, suggestion.value)}
+        title="Přijmout doporučení"
+        style={{
+          background: 'var(--r0-green, #34a853)', color: 'white', border: 'none',
+          borderRadius: 3, padding: '0 4px', fontSize: 10, cursor: 'pointer',
+          fontFamily: 'inherit', lineHeight: '14px',
+        }}
+      >
+        Prijmout
+      </button>
+      <button
+        onClick={() => onDismiss(suggestion.param)}
+        title="Odmítnout"
+        style={{
+          background: 'none', color: 'var(--r0-slate-400, #999)', border: 'none',
+          padding: '0 2px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
+          lineHeight: '14px',
+        }}
+      >
+        ×
+      </button>
+    </div>
+  );
+}
+
+// ─── DocWarningsBanner: blocking + recommended warnings from documents ──────
+
+function DocWarningsBanner({ response }: {
+  response: DocSuggestionsResponse | null;
+}) {
+  if (!response || response.warnings.length === 0) return null;
+
+  const blocking = response.warnings.filter(w => w.severity === 'blocking');
+  const recommended = response.warnings.filter(w => w.severity === 'recommended');
+  const info = response.warnings.filter(w => w.severity === 'info');
+
+  // Don't show info-only if user has accepted all suggestions
+  const hasActionable = blocking.length > 0 || recommended.length > 0;
+
+  return (
+    <div style={{ marginBottom: 12 }}>
+      {/* Blocking warnings */}
+      {blocking.map((w, i) => (
+        <div key={`b-${i}`} style={{
+          padding: '8px 10px', marginBottom: 4,
+          background: '#fde8e8', border: '1px solid #f5c6c6',
+          borderRadius: 6, fontSize: 11, color: '#c53030', lineHeight: 1.5,
+        }}>
+          <strong>Chyba:</strong> {w.message}
+          {w.rule && <span style={{ opacity: 0.7, marginLeft: 4 }}>({w.rule})</span>}
+        </div>
+      ))}
+
+      {/* Recommended warnings */}
+      {recommended.map((w, i) => (
+        <div key={`r-${i}`} style={{
+          padding: '8px 10px', marginBottom: 4,
+          background: '#fef9e7', border: '1px solid #f5e6a3',
+          borderRadius: 6, fontSize: 11, color: '#7c6a0a', lineHeight: 1.5,
+        }}>
+          <strong>Doporuceni:</strong> {w.message}
+        </div>
+      ))}
+
+      {/* Info: documents used */}
+      {info.length > 0 && !hasActionable && (
+        <div style={{
+          padding: '6px 10px', marginBottom: 4,
+          background: 'var(--r0-info-bg, #e8f4fd)', border: '1px solid var(--r0-info-border, #b3d9f2)',
+          borderRadius: 6, fontSize: 10, color: 'var(--r0-info-text, #1a73e8)',
+        }}>
+          {info[0].message}
+          {response.documents_used.length > 0 && (
+            <span style={{ marginLeft: 4, opacity: 0.7 }}>
+              ({response.documents_used.join(', ')})
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
