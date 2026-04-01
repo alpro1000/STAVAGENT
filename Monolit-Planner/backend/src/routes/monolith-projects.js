@@ -153,10 +153,10 @@ router.post('/', async (req, res) => {
     logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
     try {
       await db.prepare(`
-        INSERT INTO bridges (bridge_id, object_name, status, project_name, portal_user_id)
-        VALUES (?, ?, 'active', ?, ?)
+        INSERT INTO bridges (bridge_id, object_name, status, project_name)
+        VALUES (?, ?, 'active', ?)
         ON CONFLICT (bridge_id) DO NOTHING
-      `).run(project_id, object_name || project_id, project_name || 'Manual', portalUserId);
+      `).run(project_id, object_name || project_id, project_name || 'Manual');
       logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
     } catch (bridgeError) {
       // Non-fatal: bridge entry creation failed but project was created
@@ -384,16 +384,18 @@ router.delete('/by-project-name/:projectName', async (req, res) => {
       `).run(projectName, ...ownerParam);
     }
 
-    // Also delete from bridges table (scoped to current account)
+    // Also delete from bridges table
+    // Note: bridges table does not have portal_user_id column.
+    // Ownership is already verified via monolith_projects query above.
     let deleteBridgesResult;
     if (isNullProject) {
       deleteBridgesResult = await db.prepare(`
-        DELETE FROM bridges WHERE project_name IS NULL ${ownerCondition}
-      `).run(...ownerParam);
+        DELETE FROM bridges WHERE project_name IS NULL
+      `).run();
     } else {
       deleteBridgesResult = await db.prepare(`
-        DELETE FROM bridges WHERE project_name = ? ${ownerCondition}
-      `).run(projectName, ...ownerParam);
+        DELETE FROM bridges WHERE project_name = ?
+      `).run(projectName);
     }
 
     logger.info(`[DELETE PROJECT] ✓ Deleted ${deleteProjectsResult.changes} from monolith_projects, ${deleteBridgesResult.changes} from bridges`);

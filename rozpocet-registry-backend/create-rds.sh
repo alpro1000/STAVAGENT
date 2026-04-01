@@ -10,7 +10,7 @@ echo "🚀 Creating AWS RDS PostgreSQL for Registry Backend..."
 DB_INSTANCE_ID="stavagent-registry-db"
 DB_NAME="registry"
 DB_USERNAME="postgres"
-DB_PASSWORD="StavAgent2024!Secure"  # Change this!
+DB_PASSWORD="${DB_PASSWORD:?Set DB_PASSWORD env var}"  # Never hardcode!
 DB_CLASS="db.t3.micro"
 STORAGE_SIZE=20
 REGION="eu-central-1"  # Frankfurt (change if needed)
