@@ -20,8 +20,8 @@ import { canAfford, deductCredits } from '../services/creditService.js';
 const router = express.Router();
 
 const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
-// 300s default — passport generation and price parsing need >120s for complex documents
-const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '300000');
+// 600s default — passport generation can exceed 300s for large PDFs with AI enrichment
+const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '600000');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });
 

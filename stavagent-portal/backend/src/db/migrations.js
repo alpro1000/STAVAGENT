@@ -161,6 +161,9 @@ async function initPostgresSchema() {
   // Run Phase 10 migrations (Credit System + Anti-fraud)
   await runPhase10Migrations();
 
+  // Run Phase 11 migrations (Safety: ensure missing columns on existing tables)
+  await runPhase11SafetyMigrations();
+
   // Seed admin user if no admin exists yet
   await seedAdminIfNeeded();
 
@@ -809,6 +812,35 @@ async function runPhase10Migrations() {
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 10 migrations:', error);
   }
+}
+
+/**
+ * Phase 11: Safety migrations — ensure columns exist on tables that may have
+ * been created by an earlier schema version (CREATE TABLE IF NOT EXISTS won't
+ * add new columns to an existing table).
+ */
+async function runPhase11SafetyMigrations() {
+  if (!USE_POSTGRES) return;
+
+  const safeAlters = [
+    // position_templates — unit column used by ORDER BY in position-instances.js
+    `ALTER TABLE position_templates ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT ''`,
+    // otskp_codes — unit column used by /api/otskp routes
+    `ALTER TABLE otskp_codes ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT ''`,
+  ];
+
+  for (const sql of safeAlters) {
+    try {
+      await db.exec(sql + ';');
+    } catch (error) {
+      // Table may not exist yet (created later by schema) — skip silently
+      if (!error.message?.includes('does not exist')) {
+        console.error('[Migration Phase 11]', error.message);
+      }
+    }
+  }
+
+  console.log('[Migration] ✓ Phase 11 safety columns verified');
 }
 
 /**

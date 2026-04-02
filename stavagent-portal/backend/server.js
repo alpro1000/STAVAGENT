@@ -281,9 +281,9 @@ async function bootstrap() {
     logger.info(`🏛️  Portal API: Auth, Admin, Projects, Files, Kiosk Links`);
   });
 
-  // Increase server timeouts for long-running CORE proxy requests (passport ~97s, workflow-c ~120s)
-  server.headersTimeout = 310000;  // 310s — must be > requestTimeout
-  server.requestTimeout = 305000;  // 305s — matches CORE proxy timeout (300s) + margin
+  // Increase server timeouts for long-running CORE proxy requests (passport can take >300s for large PDFs)
+  server.headersTimeout = 620000;  // 620s — must be > requestTimeout
+  server.requestTimeout = 610000;  // 610s — matches CORE proxy timeout (600s) + margin
   server.keepAliveTimeout = 65000; // 65s — slightly above Cloud Run LB default (60s)
 
   // Initialize database in background (routes will fail gracefully until ready)
