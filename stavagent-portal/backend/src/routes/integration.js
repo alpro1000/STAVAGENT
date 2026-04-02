@@ -500,8 +500,6 @@ router.post('/import-from-registry', async (req, res) => {
   let client;
   try {
     client = await pool.connect();
-    // Clear any stale aborted transaction on this pooled connection (Render free tier DB restarts)
-    await client.query('ROLLBACK').catch(() => {});
 
     const { registry_project_id, project_name, portal_project_id, sheets, tovData } = req.body;
 

@@ -228,6 +228,13 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Safety: ensure columns exist on tables that may predate current schema
+-- (CREATE TABLE IF NOT EXISTS does not add new columns to existing tables)
+ALTER TABLE bridges ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'active';
+ALTER TABLE monolith_projects ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'active';
+ALTER TABLE positions ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT '';
+ALTER TABLE otskp_codes ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT '';
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_bridges_owner ON bridges(owner_id);
 CREATE INDEX IF NOT EXISTS idx_bridges_status ON bridges(status);
@@ -431,6 +438,9 @@ CREATE TABLE IF NOT EXISTS position_audit_log (
   details             JSONB,
   created_at          TIMESTAMP DEFAULT NOW()
 );
+
+-- Safety: ensure position_templates.unit exists (may predate column addition)
+ALTER TABLE position_templates ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT '';
 
 CREATE INDEX IF NOT EXISTS idx_portal_objects_project ON portal_objects(portal_project_id);
 CREATE INDEX IF NOT EXISTS idx_portal_positions_object ON portal_positions(object_id);
