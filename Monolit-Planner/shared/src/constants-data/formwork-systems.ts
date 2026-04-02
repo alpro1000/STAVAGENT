@@ -173,6 +173,33 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     formwork_category: 'special',
   },
+  // ── Bridge support towers (podpěrné věže) ──────────────────────────
+  {
+    name: 'Staxo 100',
+    manufacturer: 'DOKA',
+    heights: ['5.00', '10.00', '15.00', '20.00'],
+    assembly_h_m2: 0.90,
+    disassembly_h_m2: 0.30,
+    disassembly_ratio: 0.33,
+    rental_czk_m2_month: 380.00,
+    unit: 'm2',
+    description: 'Podpěrné věže Staxo 100 — mosty výška 5–20 m, raster 1.25×1.25 m',
+    needs_crane: true,
+    formwork_category: 'slab',
+  },
+  {
+    name: 'UP Rosett Flex',
+    manufacturer: 'PERI',
+    heights: ['5.00', '10.00', '15.00', '20.00', '25.00'],
+    assembly_h_m2: 1.10,
+    disassembly_h_m2: 0.35,
+    disassembly_ratio: 0.32,
+    rental_czk_m2_month: 420.00,
+    unit: 'm2',
+    description: 'Modulární lešení/podpěrné věže UP Rosett — výška do 25 m, variabilní geometrie',
+    needs_crane: true,
+    formwork_category: 'slab',
+  },
   // ── PERI ─────────────────────────────────────────────────────────────
   {
     name: 'TRIO',

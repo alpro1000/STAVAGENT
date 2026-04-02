@@ -44,6 +44,8 @@ export interface ElementScheduleInput {
   concrete_days: number;      // betonáž per tact (usually 1)
   curing_days: number;        // zrání before stripping per tact
   stripping_days: number;     // demontáž per tact
+  /** Prestressing duration (days). 0 or undefined = no prestressing. Added between CUR and STR. */
+  prestress_days?: number;
   num_formwork_crews?: number; // default 1 (does ASM + STR)
   num_rebar_crews?: number;   // default 1
   rebar_lag_pct?: number;     // 0 = full overlap (rebar starts with assembly)
@@ -75,6 +77,8 @@ export interface TactDetail {
   rebar: [number, number];
   concrete: [number, number];
   curing: [number, number];
+  /** Prestressing [start, finish]. Only present when prestress_days > 0. */
+  prestress?: [number, number];
   stripping: [number, number];
 }
 
@@ -107,7 +111,7 @@ export interface ElementScheduleOutput {
 interface Node {
   id: string;
   tact: number;
-  type: 'assembly' | 'rebar' | 'concrete' | 'curing' | 'stripping';
+  type: 'assembly' | 'rebar' | 'concrete' | 'curing' | 'prestress' | 'stripping';
   duration: number;
   crew: 'formwork' | 'rebar' | null;
   fs_preds: string[];        // finish-to-start predecessors
@@ -134,6 +138,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
     concrete_days,
     curing_days,
     stripping_days,
+    prestress_days = 0,
     num_formwork_crews = 1,
     num_rebar_crews = 1,
     rebar_lag_pct = 50,
@@ -248,10 +253,19 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
       crew: null, fs_preds: [`T${t}_CON`], set,
     });
 
-    // STR: after CUR, needs formwork crew
+    // PRESTRESS: after CUR, before STR (only for prestressed elements)
+    if (prestress_days > 0) {
+      nodes.push({
+        id: `T${t}_PRE`, tact: t, type: 'prestress', duration: prestress_days,
+        crew: null, fs_preds: [`T${t}_CUR`], set,
+      });
+    }
+
+    // STR: after CUR (or PRESTRESS if present), needs formwork crew
+    const strPred = prestress_days > 0 ? `T${t}_PRE` : `T${t}_CUR`;
     nodes.push({
       id: `T${t}_STR`, tact: t, type: 'stripping', duration: stripping_days,
-      crew: 'formwork', fs_preds: [`T${t}_CUR`], set,
+      crew: 'formwork', fs_preds: [strPred], set,
     });
   }
 
@@ -331,7 +345,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
 
   const total_days = round(Math.max(...Array.from(sched.values()).map(s => s.finish)));
 
-  const cycle = assembly_days + rebar_days + concrete_days + effectiveCuringDays + stripping_days;
+  const cycle = assembly_days + rebar_days + concrete_days + effectiveCuringDays + prestress_days + stripping_days;
   const sequential_days = round(num_tacts * cycle);
   const savings_days = round(sequential_days - total_days);
   const savings_pct = sequential_days > 0 ? Math.round(savings_days / sequential_days * 100) : 0;
@@ -350,6 +364,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
       rebar: g(`T${t}_REB`),
       concrete: g(`T${t}_CON`),
       curing: g(`T${t}_CUR`),
+      ...(prestress_days > 0 ? { prestress: g(`T${t}_PRE`) } : {}),
       stripping: g(`T${t}_STR`),
     });
   }

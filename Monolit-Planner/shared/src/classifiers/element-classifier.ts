@@ -126,7 +126,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   mostovkova_deska: {
     label_cs: 'Mostovková deska',
-    recommended_formwork: ['MULTIFLEX', 'Top 50', 'SKYDECK', 'Dokaflex'],
+    recommended_formwork: ['Staxo 100', 'UP Rosett Flex', 'MULTIFLEX', 'Top 50', 'Dokaflex'],
     difficulty_factor: 1.2,
     needs_supports: true,
     needs_platforms: true,
@@ -667,6 +667,15 @@ export function recommendFormwork(
     }
     return FORMWORK_SYSTEMS.find(s => s.name === systemName)
       ?? FORMWORK_SYSTEMS.find(s => s.name === 'Římsové bednění T')
+      ?? FORMWORK_SYSTEMS[0];
+  }
+
+  // Mostovka: prefer support towers for heights > 5m
+  if (type === 'mostovkova_deska' && height_m != null && height_m > 5) {
+    const systemName = 'Staxo 100';
+    return FORMWORK_SYSTEMS.find(s => s.name === systemName)
+      ?? FORMWORK_SYSTEMS.find(s => s.name === 'UP Rosett Flex')
+      ?? FORMWORK_SYSTEMS.find(s => s.name === profile.recommended_formwork[0])
       ?? FORMWORK_SYSTEMS[0];
   }
 
