@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.3.0
-**Last Updated:** 2026-04-01
+**Version:** 4.4.0
+**Last Updated:** 2026-04-02
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -112,8 +112,12 @@ Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 t
 4-phase matching, dual search (36 seed + 17,904 OTSKP + Perplexity), VZ Scraper, 9 LLM providers.
 
 ### 5. rozpocet-registry (Kiosk)
-React 19 + Vite + Vercel serverless. **12 endpoints**, **0 tests**, **~15K LOC**.
+React 19 + Vite + Vercel serverless. **12 endpoints**, **0 tests**, **~16K LOC**.
 BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemini), TOV Modal, Formwork/Pump Calculators.
+- **Import:** Fuzzy auto-detect (header keywords + normalize), per-sheet dataStartRow detection (code+MJ heuristic), reimport with skupiny preservation
+- **Export:** "Vrátit do původního (ceny + skupiny)" — ZIP/XML patch, inline strings, autoFilter + sheetProtection patch
+- **Virtualization:** @tanstack/react-virtual for 2000+ row tables, overscan=20
+- **UI:** Dropdown flip (viewport edge), resizable GroupManager (min 480px, localStorage persist)
 
 ## Totals
 
@@ -123,8 +127,8 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 | stavagent-portal | ~80 | 1 file | ~25K |
 | Monolit-Planner | 128 | 484 | ~33K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
-| rozpocet-registry | 12 | 0 | ~15K |
-| **TOTAL** | **~388** | **678+** | **~144K** |
+| rozpocet-registry | 12 | 0 | ~16K |
+| **TOTAL** | **~388** | **678+** | **~145K** |
 
 ---
 
@@ -158,6 +162,10 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Construction sequence: bridge (pilota→římsa), building (pilota→schodiště)
 - Scroll restoration: `sessionStorage('monolit-planner-return-part')` + 3s highlight
 - Calculator suggestions: write-through `_PROJECT_FACTS` (memory + `calculator_facts` in project cache JSON)
+
+- Registry export ZIP/XML: JSZip + DOMParser, inline strings (`t="inlineStr"`), autoFilter via string replace after serialization
+- Portal INSERTs: always explicit `gen_random_uuid()` for `position_instance_id` (Phase 8 NOT NULL constraint)
+- Registry import: per-sheet `dataStartRow` via code+MJ heuristic; reimport via `replaceProjectSheets()` preserves manual skupiny by kod
 
 **Stack decisions:** rozpocet-registry=Vercel+Zustand, Monolit=PostgreSQL prod/SQLite dev, URS=SQLite+per-request LLM fallback, CORE=Vertex AI primary+stateless, Portal=central `portal_project_id` linking.
 
@@ -196,6 +204,10 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Portal "Failed to fetch" | headersTimeout=310s in server.js |
 | Wrong izolant_tl_mm | `_safe_search()` skips stávající/odstraněno |
 | Vertex AI empty | `response.text` raises ValueError when blocked; wrap in try/except |
+| Vertex AI 429 | Exponential backoff 3 attempts in `gemini_client.py` |
+| position_instance_id NULL | All portal_positions INSERTs must use `gen_random_uuid()` explicitly |
+| Registry auto-detect 0% | Keywords in `structureDetector.ts` FIELD_PATTERNS; normalize removes [CZK] |
+| klasifikator.stavagent.cz → Portal | Vercel Edge Middleware in `frontend/middleware.js` proxies by hostname |
 
 ---
 
@@ -215,9 +227,11 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
-- [ ] **P1: Deploy** all services (classifier v3, paired rows, TOV sync, Registry import, chunked extraction, calculator bridge)
-- [ ] **P1: Verify prod** — admin/stats→200, project delete→200, OTSKP no popup, prechodova_deska
+- [ ] **P1: Merge + deploy** PR #808 (prod bugs + registry features + klasifikator middleware)
+- [ ] **P1: Verify prod after deploy** — position_instance_id sync OK, klasifikator shows URS, VZ stats 200, passport retry works
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
+- [ ] **P2: Test reimport** — import multi-sheet, edit mapping, reimport → skupiny preserved
+- [ ] **P2: Test auto-detect** — Komplet/OTSKP/AspeEsticon formats → ≥4/6 fields found
 - [ ] **P2: Calculator suggestions E2E** — upload TZ→Core extraction→Planner→suggestions appear for correct SO
 - [ ] **P2: Načíst z Rozpočtu E2E** — XLSX→Registry→auto-sync→Portal→Monolit→verify subtypes
 - [ ] **P2: TOV sync E2E** — 3 composition variants (A/B/C) with real bridge project
