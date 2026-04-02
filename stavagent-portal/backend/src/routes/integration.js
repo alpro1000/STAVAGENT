@@ -806,8 +806,9 @@ router.post('/import-from-registry', async (req, res) => {
               cena_jednotkova, cena_celkem,
               tov_labor, tov_machinery, tov_materials,
               dov_payload,
-              registry_item_id, last_sync_from, last_sync_at,
+              registry_item_id,
               sheet_name, row_index, skupina,
+              last_sync_from, last_sync_at,
               created_by, updated_by,
               created_at, updated_at
             ) VALUES ${valuesClauses.join(', ')}
