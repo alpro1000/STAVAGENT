@@ -11,6 +11,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { MoveUp, MoveDown, Link2, X, GripVertical, ClipboardList, FileText, CircleHelp } from 'lucide-react';
 import type { ParsedItem } from '../../types/item';
 import { useRegistryStore } from '../../stores/registryStore';
@@ -60,7 +61,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
-  const [dropdownFlip, setDropdownFlip] = useState(false); // true = open upward
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; flip: boolean } | null>(null);
   const roleMenuRef = useRef<HTMLDivElement>(null);
   const roleButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -106,17 +107,31 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
     };
   }, [isResizing]);
 
-  // Close role menu on outside click
+  // Close role menu on outside click or scroll
   useEffect(() => {
+    if (!showRoleMenu) return;
+
     const handleClickOutside = (e: MouseEvent) => {
-      if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
+      if (
+        roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node) &&
+        roleButtonRef.current && !roleButtonRef.current.contains(e.target as Node)
+      ) {
         setShowRoleMenu(false);
       }
     };
 
+    const handleScroll = () => {
+      setShowRoleMenu(false);
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    // Close on any scroll (capture phase to catch scrollable containers)
+    document.addEventListener('scroll', handleScroll, true);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [showRoleMenu]);
 
   const currentRole = (item.rowRole || 'unknown') as RowRole;
 
@@ -161,15 +176,20 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
         <MoveDown size={11} />
       </button>
 
-      {/* Role dropdown - compact, LIGHT theme */}
-      <div className="relative" ref={roleMenuRef}>
+      {/* Role dropdown - compact, LIGHT theme, rendered via Portal */}
+      <div className="relative">
         <button
           ref={roleButtonRef}
           onClick={() => {
             if (!showRoleMenu && roleButtonRef.current) {
               const rect = roleButtonRef.current.getBoundingClientRect();
               const spaceBelow = window.innerHeight - rect.bottom;
-              setDropdownFlip(spaceBelow < 130); // ~120px for 3 options + padding
+              const flip = spaceBelow < 130;
+              setDropdownPos({
+                top: flip ? rect.top : rect.bottom + 4,
+                left: rect.left,
+                flip,
+              });
             }
             setShowRoleMenu(!showRoleMenu);
           }}
@@ -182,43 +202,51 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
         >
           <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>
         </button>
-
-        {showRoleMenu && (
-          <div
-            className={`absolute left-0 py-1 min-w-[120px] border rounded-lg z-50 ${dropdownFlip ? 'bottom-full mb-1' : 'top-full mt-1'}`}
-            style={{
-              backgroundColor: LIGHT.panelBg,
-              borderColor: LIGHT.border,
-              boxShadow: LIGHT.shadow,
-            }}
-          >
-            {(['main', 'subordinate', 'section'] as RowRole[]).map((role) => (
-              <button
-                key={role}
-                onClick={() => handleChangeRole(role)}
-                className="w-full px-3 py-1.5 text-left text-xs font-medium flex items-center gap-2 transition-colors"
-                style={{
-                  backgroundColor: currentRole === role ? LIGHT.accent : 'transparent',
-                  color: currentRole === role ? '#ffffff' : LIGHT.text,
-                }}
-                onMouseEnter={(e) => {
-                  if (currentRole !== role) {
-                    e.currentTarget.style.backgroundColor = LIGHT.panelBgAlt;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (currentRole !== role) {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }
-                }}
-              >
-                <span>{ROLE_ICONS[role]}</span>
-                <span>{ROLE_LABELS[role]}</span>
-              </button>
-            ))}
-          </div>
-        )}
       </div>
+
+      {/* Portal dropdown for role selection */}
+      {showRoleMenu && dropdownPos && createPortal(
+        <div
+          ref={roleMenuRef}
+          className="py-1 min-w-[120px] border rounded-lg"
+          style={{
+            position: 'fixed',
+            top: dropdownPos.flip ? undefined : dropdownPos.top,
+            bottom: dropdownPos.flip ? (window.innerHeight - dropdownPos.top + 4) : undefined,
+            left: dropdownPos.left,
+            zIndex: 9999,
+            backgroundColor: LIGHT.panelBg,
+            borderColor: LIGHT.border,
+            boxShadow: LIGHT.shadow,
+          }}
+        >
+          {(['main', 'subordinate', 'section'] as RowRole[]).map((role) => (
+            <button
+              key={role}
+              onClick={() => handleChangeRole(role)}
+              className="w-full px-3 py-1.5 text-left text-xs font-medium flex items-center gap-2 transition-colors"
+              style={{
+                backgroundColor: currentRole === role ? LIGHT.accent : 'transparent',
+                color: currentRole === role ? '#ffffff' : LIGHT.text,
+              }}
+              onMouseEnter={(e) => {
+                if (currentRole !== role) {
+                  e.currentTarget.style.backgroundColor = LIGHT.panelBgAlt;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (currentRole !== role) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}
+            >
+              <span>{ROLE_ICONS[role]}</span>
+              <span>{ROLE_LABELS[role]}</span>
+            </button>
+          ))}
+        </div>,
+        document.body
+      )}
 
       {/* Attach to parent button (only for subordinate rows) - compact */}
       {currentRole === 'subordinate' && (
