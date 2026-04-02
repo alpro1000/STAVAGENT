@@ -324,13 +324,21 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     }
   };
 
-  // Toggle project expansion
+  // Toggle project expansion + auto-select if single bridge
   const toggleProject = (projectName: string) => {
     const newExpanded = new Set(expandedProjects);
-    if (newExpanded.has(projectName)) {
+    const wasExpanded = newExpanded.has(projectName);
+
+    if (wasExpanded) {
       newExpanded.delete(projectName);
     } else {
       newExpanded.add(projectName);
+
+      // Auto-select the bridge if this project has exactly one object
+      const projectBridges = bridgesByProject[projectName];
+      if (projectBridges?.length === 1) {
+        setSelectedBridge(projectBridges[0].bridge_id);
+      }
     }
     setExpandedProjects(newExpanded);
   };
