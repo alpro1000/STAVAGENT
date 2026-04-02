@@ -962,6 +962,44 @@ export function ItemsTable({
   return (
     <div className="w-full overflow-hidden">
       <div className="card">
+        {/* Toolbar: Undo/Redo */}
+        <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={undo}
+              disabled={undoStack.length === 0}
+              className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1"
+              title={undoStack.length > 0
+                ? `Zpět: ${undoStack[undoStack.length - 1].description} (Ctrl+Z)`
+                : 'Nic k vrácení (Ctrl+Z)'
+              }
+            >
+              <Undo2 size={16} className="text-text-secondary" />
+              <span className="text-xs text-text-muted hidden sm:inline">Zpět</span>
+            </button>
+            <button
+              onClick={redo}
+              disabled={redoStack.length === 0}
+              className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1"
+              title={redoStack.length > 0
+                ? `Znovu: ${redoStack[redoStack.length - 1].description} (Ctrl+Shift+Z)`
+                : 'Nic k opakování (Ctrl+Shift+Z)'
+              }
+            >
+              <Redo2 size={16} className="text-text-secondary" />
+              <span className="text-xs text-text-muted hidden sm:inline">Znovu</span>
+            </button>
+            {undoStack.length > 0 && (
+              <span className="text-xs text-text-muted tabular-nums">{undoStack.length}/{MAX_UNDO}</span>
+            )}
+          </div>
+          {selectedIds.size > 0 && (
+            <p className="text-sm font-medium text-accent-primary">
+              Vybráno: {selectedIds.size}
+            </p>
+          )}
+        </div>
+
         <div
           ref={tableContainerRef}
           className="overflow-auto scrollbar-thin"
@@ -1046,54 +1084,18 @@ export function ItemsTable({
       </div>
 
       {/* Footer */}
-      <div className="border-t border-border-color px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <p className="text-sm text-text-secondary">
-            {isFilterActive
-              ? `Zobrazeno ${visibleItems.length} z ${items.length} položek (filtr aktivní)`
-              : `Zobrazeno ${visibleItems.length} z ${items.length} položek`
-            }
-            {hiddenSubordinateCount > 0 && (
-              <span className="text-text-muted ml-1">
-                ({hiddenSubordinateCount} podřízených skryto)
-              </span>
-            )}
-          </p>
-          {selectedIds.size > 0 && (
-            <p className="text-sm font-medium text-accent-primary">
-              Vybráno: {selectedIds.size}
-            </p>
+      <div className="border-t border-border-color px-4 py-3">
+        <p className="text-sm text-text-secondary">
+          {isFilterActive
+            ? `Zobrazeno ${visibleItems.length} z ${items.length} položek (filtr aktivní)`
+            : `Zobrazeno ${visibleItems.length} z ${items.length} položek`
+          }
+          {hiddenSubordinateCount > 0 && (
+            <span className="text-text-muted ml-1">
+              ({hiddenSubordinateCount} podřízených skryto)
+            </span>
           )}
-        </div>
-
-        {/* Undo / Redo */}
-        <div className="flex items-center gap-1">
-          <button
-            onClick={undo}
-            disabled={undoStack.length === 0}
-            className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title={undoStack.length > 0
-              ? `Zpět: ${undoStack[undoStack.length - 1].description} (Ctrl+Z)`
-              : 'Nic k vrácení'
-            }
-          >
-            <Undo2 size={16} className="text-text-secondary" />
-          </button>
-          <button
-            onClick={redo}
-            disabled={redoStack.length === 0}
-            className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            title={redoStack.length > 0
-              ? `Znovu: ${redoStack[redoStack.length - 1].description} (Ctrl+Shift+Z)`
-              : 'Nic k opakování'
-            }
-          >
-            <Redo2 size={16} className="text-text-secondary" />
-          </button>
-          {undoStack.length > 0 && (
-            <span className="text-xs text-text-muted ml-1 tabular-nums">{undoStack.length}/{MAX_UNDO}</span>
-          )}
-        </div>
+        </p>
       </div>
 
       {/* Alert Modal */}

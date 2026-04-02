@@ -2,12 +2,34 @@
  * KPIPanel - Modern Floating KPI Card with Glassmorphism
  */
 
+import { Component } from 'react';
+import type { ReactNode } from 'react';
 import { BarChart3, Building2, Timer, FolderOpen, Blocks, Lock, Unlock, RefreshCw, DollarSign, Ruler, Calendar, Users, Banknote, Clock, CalendarDays, Zap } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 
+/** Error boundary to prevent white screen crashes */
+class KPIPanelErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null };
+  static getDerivedStateFromError(error: Error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
+          <p className="u-text-muted" style={{ fontFamily: 'monospace', fontSize: '12px' }}>KPI: {this.state.error.message}</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function KPIPanel() {
+  return <KPIPanelErrorBoundary><KPIPanelInner /></KPIPanelErrorBoundary>;
+}
+
+function KPIPanelInner() {
   const { headerKPI, selectedBridge, bridges, daysPerMonth, activeSnapshot } = useAppContext();
   const { handleCreateSnapshot, isCreating } = useCreateSnapshot();
 
