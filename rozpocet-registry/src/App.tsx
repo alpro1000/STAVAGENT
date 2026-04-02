@@ -1242,7 +1242,7 @@ function App() {
 
               {/* Selected Sheet Items */}
               {selectedProject && selectedSheet && (
-                <div className="space-y-4">
+                <div className="space-y-4 min-w-0 overflow-hidden">
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-1">
                       <h2 className="text-lg font-semibold">

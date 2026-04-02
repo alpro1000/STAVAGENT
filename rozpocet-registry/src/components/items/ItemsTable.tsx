@@ -942,7 +942,7 @@ export function ItemsTable({
           <table className="table" style={{ tableLayout: 'fixed' }}>
           <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--bg-secondary, #f8f9fa)' }}>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
+              <tr key={headerGroup.id} style={{ display: 'flex', width: '100%' }}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
@@ -952,7 +952,7 @@ export function ItemsTable({
                         ? 'cursor-pointer select-none hover:bg-bg-secondary transition-colors'
                         : ''
                     }`}
-                    style={{ width: header.getSize(), position: 'relative' }}
+                    style={{ width: header.getSize(), position: 'relative', flexShrink: 0, overflow: 'hidden' }}
                     title={header.column.getCanSort() ? 'Klikněte pro seřazení' : undefined}
                   >
                     <div className="flex items-center gap-1">
@@ -995,6 +995,7 @@ export function ItemsTable({
                   data-position-instance-id={row.original.position_instance_id || undefined}
                   className={row.original.rowRole === 'subordinate' ? 'opacity-70' : ''}
                   style={{
+                    display: 'flex',
                     position: 'absolute',
                     top: 0,
                     left: 0,
@@ -1005,7 +1006,7 @@ export function ItemsTable({
                   data-index={virtualRow.index}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
+                    <td key={cell.id} style={{ width: cell.column.getSize(), flexShrink: 0, overflow: 'hidden' }}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
