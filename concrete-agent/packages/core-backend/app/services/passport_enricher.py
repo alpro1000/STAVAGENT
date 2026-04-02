@@ -547,27 +547,28 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
 
                 logger.info(f"[LLM] [{idx+1}/{len(call_order)}] {provider_name} — calling...")
                 result = None
+                LLM_TIMEOUT = 120  # seconds — hard limit per provider call
 
                 if provider_name == "Vertex Gemini" and self.vertex_gemini_model:
-                    result = await self._call_vertex_gemini(prompt)
+                    result = await asyncio.wait_for(self._call_vertex_gemini(prompt), timeout=LLM_TIMEOUT)
                 elif provider_name == "Vertex Search":
-                    result = await self._call_vertex_search(prompt)
+                    result = await asyncio.wait_for(self._call_vertex_search(prompt), timeout=LLM_TIMEOUT)
                 elif provider_name == "Gemini" and self.gemini_model:
-                    result = await self._call_gemini(prompt)
+                    result = await asyncio.wait_for(self._call_gemini(prompt), timeout=LLM_TIMEOUT)
                 elif provider_name == "Claude Sonnet" and self.claude_client:
-                    result = await self._call_claude(prompt, self.CLAUDE_MODEL)
+                    result = await asyncio.wait_for(self._call_claude(prompt, self.CLAUDE_MODEL), timeout=LLM_TIMEOUT)
                 elif provider_name == "Claude Haiku" and self.claude_client:
-                    result = await self._call_claude(prompt, self.CLAUDE_HAIKU_MODEL)
+                    result = await asyncio.wait_for(self._call_claude(prompt, self.CLAUDE_HAIKU_MODEL), timeout=LLM_TIMEOUT)
                 elif provider_name == "OpenAI" and self.openai_client:
-                    result = await self._call_openai(prompt, self.OPENAI_MODEL)
+                    result = await asyncio.wait_for(self._call_openai(prompt, self.OPENAI_MODEL), timeout=LLM_TIMEOUT)
                 elif provider_name == "OpenAI Mini" and self.openai_client:
-                    result = await self._call_openai(prompt, self.OPENAI_MINI_MODEL)
+                    result = await asyncio.wait_for(self._call_openai(prompt, self.OPENAI_MINI_MODEL), timeout=LLM_TIMEOUT)
                 elif provider_name == "Perplexity" and self.perplexity_available:
-                    result = await self._call_perplexity(prompt)
+                    result = await asyncio.wait_for(self._call_perplexity(prompt), timeout=LLM_TIMEOUT)
                 elif provider_name == "Grok" and self.grok_client:
-                    result = await self._call_grok(prompt)
+                    result = await asyncio.wait_for(self._call_grok(prompt), timeout=LLM_TIMEOUT)
                 elif provider_name == "DeepSeek" and self.deepseek_client:
-                    result = await self._call_deepseek(prompt)
+                    result = await asyncio.wait_for(self._call_deepseek(prompt), timeout=LLM_TIMEOUT)
 
                 elapsed_ms = int((time.time() - t0) * 1000)
 
