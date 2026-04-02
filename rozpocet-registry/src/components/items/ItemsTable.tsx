@@ -572,12 +572,12 @@ export function ItemsTable({
       columnHelper.accessor('kod', {
         header: 'Kód',
         cell: (info) => (
-          <div className="cell-scrollable-kod font-mono text-sm font-semibold">
+          <div className="font-mono text-sm font-semibold whitespace-nowrap">
             {info.getValue()}
           </div>
         ),
-        size: 90,
-        minSize: 60,
+        size: 110,
+        minSize: 90,
         maxSize: 200,
         enableSorting: true,
       }),
