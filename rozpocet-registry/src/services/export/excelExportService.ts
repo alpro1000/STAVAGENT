@@ -1094,7 +1094,32 @@ export async function exportToOriginalFileWithSkupiny(
       // Update dimension to include new column
       updateDimension(doc, skupinaColLetter);
 
-      const patchedXml = serializer.serializeToString(doc);
+      let patchedXml = serializer.serializeToString(doc);
+
+      // --- Patch A: autoFilter including Skupina column ---
+      const autoFilterRef = `A${headerRow}:${skupinaColLetter}${headerRow}`;
+      if (patchedXml.includes('<autoFilter')) {
+        // Replace existing autoFilter ref to extend to skupinaCol
+        patchedXml = patchedXml.replace(
+          /<autoFilter\s+ref="[^"]*"/,
+          `<autoFilter ref="${autoFilterRef}"`
+        );
+      } else {
+        // Insert autoFilter after </sheetData>
+        patchedXml = patchedXml.replace(
+          '</sheetData>',
+          `</sheetData><autoFilter ref="${autoFilterRef}"/>`
+        );
+      }
+
+      // --- Patch B: allow autoFilter on protected sheets ---
+      if (patchedXml.includes('<sheetProtection') && !patchedXml.includes('autoFilter="0"')) {
+        patchedXml = patchedXml.replace(
+          '<sheetProtection ',
+          '<sheetProtection autoFilter="0" '
+        );
+      }
+
       zip.file(fullPath, patchedXml);
     }
 
