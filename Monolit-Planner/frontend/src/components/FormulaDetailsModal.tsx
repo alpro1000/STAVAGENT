@@ -49,7 +49,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
                 </tr>
                 <tr>
                   <td className="label">Položka:</td>
-                  <td className="value">{position.item_name || '—'}</td>
+                  <td className="value">{typeof position.item_name === 'string' ? position.item_name : '—'}</td>
                 </tr>
                 <tr>
                   <td className="label">Měrná jednotka:</td>
@@ -164,7 +164,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
           {position.has_rfi && (
             <div className="details-section rfi-section">
               <h3><TriangleAlert size={18} className="inline" /> Request For Information (RFI)</h3>
-              <p className="rfi-message">{position.rfi_message || 'Tato položka vyžaduje upřesnění'}</p>
+              <p className="rfi-message">{typeof position.rfi_message === 'string' ? position.rfi_message : 'Tato položka vyžaduje upřesnění'}</p>
             </div>
           )}
 
