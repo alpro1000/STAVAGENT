@@ -133,6 +133,11 @@ dirs.forEach(dir => {
   }
 });
 
+// Root — Cloud Run startup probe hits GET /
+app.get('/', (req, res) => {
+  res.json({ status: 'OK', service: 'monolit-planner-api' });
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({
