@@ -84,11 +84,11 @@ const SERVICES: Service[] = [
   {
     id: 'monolit-calculator',
     name: 'Monolit Planner',
-    description: 'Rozpočet monolitických betonových konstrukcí. Import pozic z Excelu, výpočet nákladů na beton/bednění/výztuž, metrika Kč/m³, zaokrouhlení KROS. Unified Registry + Relink.',
+    description: 'Plánování monolitických konstrukcí. Import pozic, TOV, Gantt projektu.',
     icon: 'Hexagon',
     url: 'https://kalkulator.stavagent.cz',
     status: 'active',
-    tags: ['Rozpočet', 'Kč/m³', 'KROS', 'Excel Import']
+    tags: ['Plánování', 'TOV', 'Gantt', 'Import']
   },
   {
     id: 'element-calculator',

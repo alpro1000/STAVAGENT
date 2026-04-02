@@ -146,7 +146,7 @@ export default function VerifyEmailPage() {
               </div>
               <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
                 <span style={{ color: '#38a169', fontWeight: 700, fontSize: 14, flexShrink: 0 }}>→</span>
-                <span style={{ fontSize: 13, color: '#276749' }}>Kalkulátor monolitních prací, URS klasifikace</span>
+                <span style={{ fontSize: 13, color: '#276749' }}>Kalkulátor betonáže, URS klasifikace</span>
               </div>
             </div>
 

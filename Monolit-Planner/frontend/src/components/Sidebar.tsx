@@ -684,16 +684,16 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
           <div className="sidebar-section u-mt-lg">
             <h3 className="c-section-title">
-              <Grid3x3 size={18} className="inline" /> Plánovač
+              <Grid3x3 size={18} className="inline" /> Kalkulátor
             </h3>
             <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
               <button
                 className="c-btn c-btn--sm"
                 onClick={() => window.location.href = '/planner'}
                 style={{ flex: 1 }}
-                title="Plánování elementu: bednění, výztuž, betonáž, harmonogram"
+                title="Kalkulátor betonáže: bednění, výztuž, betonáž, harmonogram"
               >
-                <Grid3x3 size={14} className="inline" /> Plánovač elementu
+                <Grid3x3 size={14} className="inline" /> Kalkulátor betonáže
               </button>
               <button
                 className="c-btn c-btn--sm"

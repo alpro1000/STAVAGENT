@@ -21,11 +21,11 @@ const HERO_PRODUCTS = [
   },
   {
     icon: 'Hexagon',
-    name: 'Kalkulátor monolitních prací',
-    desc: 'Spočítejte náklady na beton, bednění a výztuž. 20 typů elementů, Gantt harmonogram, Excel export.',
+    name: 'Kalkulátor betonáže',
+    desc: 'Deterministický výpočet betonáže monolitických konstrukcí. 20 typů elementů, RCPSP + PERT Monte Carlo, P50/P80/P90.',
     cta: 'Spočítat',
     route: 'https://kalkulator.stavagent.cz/planner',
-    tags: ['Kč/m³', 'Bednění', 'Výztuž', 'Gantt'],
+    tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt'],
   },
 ];
 
@@ -180,7 +180,7 @@ export default function LandingPage() {
           maxWidth: '540px',
           margin: '0 auto 0',
         }}>
-          AI analýza stavebních dokumentů a kalkulátor monolitních prací.
+          AI analýza stavebních dokumentů a kalkulátor betonáže.
           Bez registrace — výsledek rovnou v prohlížeči.
         </p>
       </section>
