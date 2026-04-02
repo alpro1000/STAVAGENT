@@ -131,7 +131,7 @@ router.post('/import-from-monolit', async (req, res) => {
         for (let j = 0; j < batch.length; j++) {
           const { pos, dbObjectId } = batch[j];
           const b = j * 9;
-          valuesClauses.push(`($${b+1}, $${b+2}, $${b+3}, $${b+4}, $${b+5}, $${b+6}, $${b+7}, $${b+8}, $${b+9}, NOW(), NOW())`);
+          valuesClauses.push(`(gen_random_uuid(), $${b+1}, $${b+2}, $${b+3}, $${b+4}, $${b+5}, $${b+6}, $${b+7}, $${b+8}, $${b+9}, NOW(), NOW())`);
           params.push(
             `pos_${uuidv4()}`, dbObjectId,
             pos.kod || '', pos.popis || '', pos.mnozstvi || 0, pos.mj || '',
@@ -141,7 +141,7 @@ router.post('/import-from-monolit', async (req, res) => {
         }
         await client.query(
           `INSERT INTO portal_positions (
-            position_id, object_id, kod, popis, mnozstvi, mj,
+            position_instance_id, position_id, object_id, kod, popis, mnozstvi, mj,
             cena_jednotkova, cena_celkem, monolith_payload,
             created_at, updated_at
           ) VALUES ${valuesClauses.join(', ')}`,
@@ -220,7 +220,7 @@ router.post('/import-from-monolit', async (req, res) => {
         for (let j = 0; j < batch.length; j++) {
           const { pos, dbObjectId, objCode, posIdx } = batch[j];
           const b = j * colCount;
-          valuesClauses.push(`(${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'monolit', NOW(), 'monolit_import', 'monolit_import', NOW(), NOW())`);
+          valuesClauses.push(`(gen_random_uuid(), ${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'monolit', NOW(), 'monolit_import', 'monolit_import', NOW(), NOW())`);
           params.push(
             `pos_${uuidv4()}`, dbObjectId,
             pos.kod || '', pos.popis || '', pos.mnozstvi || 0, pos.mj || '',
@@ -235,6 +235,7 @@ router.post('/import-from-monolit', async (req, res) => {
         }
         const result = await client.query(
           `INSERT INTO portal_positions (
+            position_instance_id,
             position_id, object_id, kod, popis, mnozstvi, mj,
             cena_jednotkova, cena_celkem,
             tov_labor, tov_machinery, tov_materials,
@@ -665,7 +666,7 @@ router.post('/import-from-registry', async (req, res) => {
         for (let j = 0; j < batch.length; j++) {
           const { item, dbObjectId } = batch[j];
           const b = j * 8;
-          valuesClauses.push(`($${b+1}, $${b+2}, $${b+3}, $${b+4}, $${b+5}, $${b+6}, $${b+7}, $${b+8}, NOW(), NOW())`);
+          valuesClauses.push(`(gen_random_uuid(), $${b+1}, $${b+2}, $${b+3}, $${b+4}, $${b+5}, $${b+6}, $${b+7}, $${b+8}, NOW(), NOW())`);
           params.push(
             `pos_${uuidv4()}`, dbObjectId,
             item.kod || '', item.popis || '',
@@ -675,7 +676,7 @@ router.post('/import-from-registry', async (req, res) => {
         }
         await client.query(
           `INSERT INTO portal_positions (
-            position_id, object_id, kod, popis, mnozstvi, mj,
+            position_instance_id, position_id, object_id, kod, popis, mnozstvi, mj,
             cena_jednotkova, cena_celkem,
             created_at, updated_at
           ) VALUES ${valuesClauses.join(', ')}`,
@@ -786,7 +787,7 @@ router.post('/import-from-registry', async (req, res) => {
           for (let j = 0; j < batch.length; j++) {
             const { item, itemTov, dovPayload, dbObjectId, sheetName, itemIdx, registryItemId } = batch[j];
             const b = j * colCount;
-            valuesClauses.push(`(${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())`);
+            valuesClauses.push(`(gen_random_uuid(), ${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())`);
             params.push(
               `pos_${uuidv4()}`, dbObjectId,
               item.kod || '', item.popis || '',
@@ -802,6 +803,7 @@ router.post('/import-from-registry', async (req, res) => {
           }
           const result = await client.query(
             `INSERT INTO portal_positions (
+              position_instance_id,
               position_id, object_id, kod, popis, mnozstvi, mj,
               cena_jednotkova, cena_celkem,
               tov_labor, tov_machinery, tov_materials,
@@ -835,7 +837,7 @@ router.post('/import-from-registry', async (req, res) => {
           for (let j = 0; j < batch.length; j++) {
             const { item, itemTov, dbObjectId, registryItemId } = batch[j];
             const b = j * colCount;
-            valuesClauses.push(`(${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'registry', NOW(), NOW(), NOW())`);
+            valuesClauses.push(`(gen_random_uuid(), ${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'registry', NOW(), NOW(), NOW())`);
             params.push(
               `pos_${uuidv4()}`, dbObjectId,
               item.kod || '', item.popis || '',
@@ -849,13 +851,14 @@ router.post('/import-from-registry', async (req, res) => {
           }
           const result = await client.query(
             `INSERT INTO portal_positions (
+              position_instance_id,
               position_id, object_id, kod, popis, mnozstvi, mj,
               cena_jednotkova, cena_celkem,
               tov_labor, tov_machinery, tov_materials,
               registry_item_id, last_sync_from, last_sync_at,
               created_at, updated_at
             ) VALUES ${valuesClauses.join(', ')}
-            RETURNING position_id AS position_instance_id`,
+            RETURNING position_instance_id`,
             params
           );
           for (let j = 0; j < batch.length; j++) {
