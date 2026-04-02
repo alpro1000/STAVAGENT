@@ -493,63 +493,92 @@ class VertexGeminiClient:
             f"prompt={prompt_chars}ch (~{prompt_tokens_est}tok) temperature={temperature}"
         )
 
-        try:
-            generation_config = {
-                "temperature": temperature,
-                "max_output_tokens": self.max_tokens,
-            }
+        # Retry loop for transient errors (429 Resource Exhausted)
+        max_attempts = 3
+        backoff_delays = [2, 4, 8]  # seconds
 
-            response = self._model_cls.generate_content(
-                full_prompt,
-                generation_config=generation_config,
-            )
-
-            elapsed_ms = int((time.monotonic() - t0) * 1000)
-
-            # .text property raises ValueError when response is blocked/empty
+        for attempt in range(1, max_attempts + 1):
             try:
-                text = response.text
-            except ValueError as ve:
-                feedback = getattr(response, 'prompt_feedback', None)
-                logger.error(f"❌ Vertex Gemini blocked/empty ({elapsed_ms}ms): {ve} (feedback={feedback})")
-                raise ValueError(f"Vertex Gemini returned no usable text: {ve}") from ve
+                generation_config = {
+                    "temperature": temperature,
+                    "max_output_tokens": self.max_tokens,
+                }
 
-            if not text:
-                logger.error(f"❌ Vertex Gemini empty response ({elapsed_ms}ms) — finish_reason={getattr(response, 'prompt_feedback', 'n/a')}")
-                raise ValueError("Vertex Gemini returned empty response")
-
-            result_text = text.strip()
-            response_chars = len(result_text)
-
-            # Remove markdown code blocks
-            code_block_match = re.search(r'```(?:json)?\s*(.*?)\s*```', result_text, re.DOTALL)
-            if code_block_match:
-                result_text = code_block_match.group(1).strip()
-                logger.debug("      stripped markdown code block from response")
-
-            try:
-                parsed = json.loads(result_text)
-                logger.info(
-                    f"✅ Vertex Gemini OK: {elapsed_ms}ms, "
-                    f"response={response_chars}ch (~{response_chars//4}tok), "
-                    f"json keys={list(parsed.keys()) if isinstance(parsed, dict) else type(parsed).__name__}"
+                response = self._model_cls.generate_content(
+                    full_prompt,
+                    generation_config=generation_config,
                 )
-                return parsed
-            except json.JSONDecodeError as json_err:
-                logger.warning(
-                    f"⚠️  Vertex Gemini response is not valid JSON ({elapsed_ms}ms): {json_err} — "
-                    f"returning raw_text ({response_chars}ch). Preview: {result_text[:120]!r}"
-                )
-                return {"raw_text": result_text}
 
-        except Exception as e:
-            elapsed_ms = int((time.monotonic() - t0) * 1000)
-            logger.error(
-                f"❌ Vertex Gemini call FAILED ({elapsed_ms}ms): {type(e).__name__}: {e}. "
-                f"model={self.model_name!r} project={self._project_id!r} location={self._location!r}"
-            )
-            logger.exception("Vertex Gemini full traceback:")
-            raise
+                elapsed_ms = int((time.monotonic() - t0) * 1000)
+
+                # .text property raises ValueError when response is blocked/empty
+                try:
+                    text = response.text
+                except ValueError as ve:
+                    feedback = getattr(response, 'prompt_feedback', None)
+                    logger.error(f"❌ Vertex Gemini blocked/empty ({elapsed_ms}ms): {ve} (feedback={feedback})")
+                    return {"raw_text": "[SAFETY_FILTER] Content was blocked by Vertex AI safety filters"}
+
+                if not text:
+                    logger.error(f"❌ Vertex Gemini empty response ({elapsed_ms}ms) — finish_reason={getattr(response, 'prompt_feedback', 'n/a')}")
+                    raise ValueError("Vertex Gemini returned empty response")
+
+                result_text = text.strip()
+                response_chars = len(result_text)
+
+                # Remove markdown code blocks
+                code_block_match = re.search(r'```(?:json)?\s*(.*?)\s*```', result_text, re.DOTALL)
+                if code_block_match:
+                    result_text = code_block_match.group(1).strip()
+                    logger.debug("      stripped markdown code block from response")
+
+                try:
+                    parsed = json.loads(result_text)
+                    logger.info(
+                        f"✅ Vertex Gemini OK: {elapsed_ms}ms, "
+                        f"response={response_chars}ch (~{response_chars//4}tok), "
+                        f"json keys={list(parsed.keys()) if isinstance(parsed, dict) else type(parsed).__name__}"
+                    )
+                    return parsed
+                except json.JSONDecodeError as json_err:
+                    logger.warning(
+                        f"⚠️  Vertex Gemini response is not valid JSON ({elapsed_ms}ms): {json_err} — "
+                        f"returning raw_text ({response_chars}ch). Preview: {result_text[:120]!r}"
+                    )
+                    return {"raw_text": result_text}
+
+            except Exception as e:
+                elapsed_ms = int((time.monotonic() - t0) * 1000)
+
+                # Retry on 429 Resource Exhausted
+                _is_resource_exhausted = False
+                try:
+                    from google.api_core.exceptions import ResourceExhausted
+                    _is_resource_exhausted = isinstance(e, ResourceExhausted)
+                except ImportError:
+                    # Fallback: check by class name or message
+                    _is_resource_exhausted = (
+                        "ResourceExhausted" in type(e).__name__
+                        or "429" in str(e)
+                        or "resource exhausted" in str(e).lower()
+                    )
+
+                if _is_resource_exhausted and attempt < max_attempts:
+                    delay = backoff_delays[attempt - 1]
+                    logger.warning(
+                        f"⚠️  Vertex Gemini 429 Resource Exhausted ({elapsed_ms}ms), "
+                        f"retry {attempt}/{max_attempts} after {delay}s..."
+                    )
+                    time.sleep(delay)
+                    t0 = time.monotonic()  # reset timer for next attempt
+                    continue
+
+                logger.error(
+                    f"❌ Vertex Gemini call FAILED ({elapsed_ms}ms): {type(e).__name__}: {e}. "
+                    f"model={self.model_name!r} project={self._project_id!r} location={self._location!r}"
+                )
+                logger.exception("Vertex Gemini full traceback:")
+                raise
 
     def parse_excel(self, file_path: Path, prompt_name: str = "parsing/parse_vykaz_vymer") -> Dict[str, Any]:
         """Parse Excel — delegates to call() with same logic as GeminiClient"""
