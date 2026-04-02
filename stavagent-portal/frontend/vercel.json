@@ -3,11 +3,6 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
-    {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "klasifikator.stavagent.cz" }],
-      "destination": "https://urs-matcher-service-1086027517695.europe-west3.run.app/:path*"
-    },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
