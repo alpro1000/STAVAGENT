@@ -540,7 +540,7 @@ function PositionsTableInner() {
             {isExpanded && (
               <>
                 <PartHeader
-                  partName={partPositions[0]?.part_name || ''}
+                  partName={String(partPositions[0]?.part_name || '')}
                   betonQuantity={partPositions
                     .filter(p => p.subtype === 'beton')
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}

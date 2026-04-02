@@ -87,12 +87,34 @@ router.get('/', async (req, res) => {
       ORDER BY part_name, subtype
     `).all(bridge_id);
 
-    // Get bridge metadata
-    const bridge = await db.prepare(`
+    // Get bridge metadata (auto-heal: create bridge entry from monolith_projects if missing)
+    let bridge = await db.prepare(`
       SELECT span_length_m, deck_width_m, pd_weeks
       FROM bridges
       WHERE bridge_id = ?
     `).get(bridge_id);
+
+    if (!bridge) {
+      // FK auto-heal: bridge entry missing but project may exist in monolith_projects
+      const mp = await db.prepare(
+        'SELECT project_id, object_name, project_name, concrete_m3 FROM monolith_projects WHERE project_id = ?'
+      ).get(bridge_id);
+      if (mp) {
+        try {
+          await db.prepare(`
+            INSERT INTO bridges (bridge_id, object_name, project_name, concrete_m3, status)
+            VALUES (?, ?, ?, ?, 'active')
+            ON CONFLICT (bridge_id) DO NOTHING
+          `).run(mp.project_id, mp.object_name || mp.project_id, mp.project_name || '', mp.concrete_m3 || 0);
+          logger.info(`[FK auto-heal] Created missing bridge entry for ${bridge_id}`);
+          bridge = await db.prepare(
+            'SELECT span_length_m, deck_width_m, pd_weeks FROM bridges WHERE bridge_id = ?'
+          ).get(bridge_id);
+        } catch (healErr) {
+          logger.warn(`[FK auto-heal] Could not create bridge entry for ${bridge_id}:`, healErr.message);
+        }
+      }
+    }
 
     // Get config
     const configRow = await db.prepare(`
@@ -189,10 +211,16 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // Ensure bridge exists
+    // Ensure bridge exists (FK constraint: positions.bridge_id -> bridges.bridge_id)
     const bridgeExists = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
     if (!bridgeExists) {
-      await db.prepare('INSERT INTO bridges (bridge_id) VALUES (?)').run(bridge_id);
+      // Try to get metadata from monolith_projects for a richer bridge entry
+      const mp = await db.prepare(
+        'SELECT object_name, project_name, concrete_m3 FROM monolith_projects WHERE project_id = ?'
+      ).get(bridge_id);
+      await db.prepare(
+        `INSERT INTO bridges (bridge_id, object_name, project_name, concrete_m3, status) VALUES (?, ?, ?, ?, 'active')`
+      ).run(bridge_id, mp?.object_name || bridge_id, mp?.project_name || '', mp?.concrete_m3 || 0);
     }
 
     const insertMany = db.transaction(async (client, positions) => {

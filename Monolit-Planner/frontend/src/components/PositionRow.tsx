@@ -235,9 +235,11 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
 
   // For 'beton' always show default label (ignore item_name from Excel import)
   // For other subtypes, display custom name if set, otherwise show default
-  const displayLabel = position.subtype === 'beton'
+  // Safety: ensure displayLabel is always a string (prevents React #310 if item_name is object)
+  const rawLabel = position.subtype === 'beton'
     ? defaultLabel
     : (position.item_name || defaultLabel);
+  const displayLabel = typeof rawLabel === 'string' ? rawLabel : String(rawLabel);
 
   // Start editing work name
   const handleStartEditWorkName = () => {
@@ -545,7 +547,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               </div>
 
               <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
-                <div><strong>Zdroj:</strong> {suggestion.norm_source}</div>
+                <div><strong>Zdroj:</strong> {String(suggestion.norm_source ?? '')}</div>
                 <div><strong>Jistota:</strong> {Math.round(suggestion.confidence * 100)}%</div>
                 {suggestion.crew_size_recommendation &&
                  suggestion.crew_size_recommendation !== position.crew_size && (
@@ -565,12 +567,12 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
                   overflowY: 'auto'
                 }}
               >
-                {suggestion.reasoning}
+                {String(suggestion.reasoning ?? '')}
               </div>
 
               {suggestion.error && (
                 <div style={{ marginTop: '8px', color: '#f44336', fontSize: '11px' }}>
-                  <TriangleAlert size={11} className="inline" /> {suggestion.error}
+                  <TriangleAlert size={11} className="inline" /> {String(suggestion.error)}
                 </div>
               )}
             </div>
