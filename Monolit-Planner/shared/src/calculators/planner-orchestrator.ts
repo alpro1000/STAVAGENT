@@ -154,6 +154,20 @@ export interface PlannerInput {
    */
   num_bridges?: number;
 
+  // --- Prestressed concrete ---
+  /** Is the element prestressed (předpjatý beton)? Adds PRESTRESS step to schedule. */
+  is_prestressed?: boolean;
+  /** Prestressing duration override (days). Auto-calculated from bridge length if not given. */
+  prestress_days_override?: number;
+
+  // --- Bridge deck subtype ---
+  /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
+  bridge_deck_subtype?: 'deskovy' | 'dvoutram' | 'komora';
+
+  // --- Exposure class ---
+  /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). For validation warnings. */
+  exposure_class?: string;
+
   // --- Options ---
   /** Run Monte Carlo simulation. Default: false */
   enable_monte_carlo?: boolean;
@@ -254,6 +268,13 @@ export interface PlannerOutput {
   // --- Lateral pressure & pour stages (záběrová betonáž) ---
   lateral_pressure?: LateralPressureResult;
   pour_stages?: PourStagesSuggestion;
+
+  // --- Prestressing (only when is_prestressed = true) ---
+  prestress?: {
+    days: number;
+    crew_size: number;
+    skruz_total_days: number;  // curing + prestress
+  };
 
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
@@ -357,8 +378,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const warnings: string[] = [];
 
   // Unpack defaults
-  const crew = input.crew_size ?? DEFAULTS.crew_size;
-  const crewRebar = input.crew_size_rebar ?? input.crew_size ?? DEFAULTS.crew_size_rebar;
+  let crew = input.crew_size ?? DEFAULTS.crew_size;
+  let crewRebar = input.crew_size_rebar ?? input.crew_size ?? DEFAULTS.crew_size_rebar;
   const shift = input.shift_h ?? DEFAULTS.shift_h;
   const k = input.k ?? DEFAULTS.k;
   const wage = input.wage_czk_h ?? DEFAULTS.wage_czk_h;
@@ -388,6 +409,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   const elementType = profile.element_type;
+  const isPrestressed = input.is_prestressed === true;
+
+  // Rimsa crew sizing: 6 formwork+concrete (tesaři+betonáři) + 3 rebar (železáři) = 9 per side
+  if (elementType === 'rimsa' && !input.crew_size) {
+    crew = 6;
+    if (!input.crew_size_rebar) crewRebar = 3;
+  }
 
   // ─── 2. Lateral Pressure & Formwork System Selection ─────────────────
 
@@ -416,7 +444,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     const found = findFormworkSystem(input.formwork_system_name);
     if (!found) {
       warnings.push(`Systém bednění "${input.formwork_system_name}" nenalezen — použit doporučený.`);
-      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method);
+      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m);
     } else {
       fwSystem = found;
       // Warn if manually selected system can't handle the pressure
@@ -430,7 +458,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       }
     }
   } else {
-    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method);
+    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m);
   }
 
   const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
@@ -504,6 +532,80 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   log.push(`Pour: ${pourDecision.pour_mode}/${pourDecision.sub_mode}, ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
   warnings.push(...pourDecision.warnings);
+
+  // ─── 3a. Rimsa-specific warnings ───────────────────────────────────────
+  if (elementType === 'rimsa') {
+    // Info: záběry summary
+    const spacing = input.spara_spacing_m ?? 20;
+    warnings.push(
+      `Římsa: záběr ${spacing} m, celkem ${pourDecision.num_tacts} záběrů, ` +
+      `objem/záběr ${pourDecision.tact_volume_m3} m³`
+    );
+
+    // Info: construction sequence — rimsa comes AFTER bridge deck + prestressing
+    warnings.push(
+      `Římsa se betonuje PO dokončení mostovky a PO vnesení předpětí (pokud NK předpjatá).`
+    );
+
+    // Warning: formwork system for long bridges
+    if (!input.total_length_m) {
+      warnings.push(
+        `⚠️ Římsa: délka mostu nezadána — použito konzolové bednění T. ` +
+        `Zadejte délku mostu (>150 m → římsový vozík TU/T) pro správný výběr systému.`
+      );
+    }
+  }
+
+  // ─── 3a2. Mostovka-specific warnings ──────────────────────────────────
+  if (elementType === 'mostovkova_deska') {
+    // Construction sequence
+    warnings.push(
+      `Nosná konstrukce se betonuje PO dokončení spodní stavby (opěry, pilíře, úložné prahy). ` +
+      `Ověřte že spodní stavba je hotová.`
+    );
+
+    // Bridge deck subtype warnings
+    const subtype = input.bridge_deck_subtype;
+    if (subtype === 'dvoutram') {
+      warnings.push(
+        `Dvoutrámový nosník: 2 fáze betonáže — nejdřív trámy, pak deska (pracovní spára mezi trámy a deskou).`
+      );
+    } else if (subtype === 'komora') {
+      warnings.push(
+        `Komorový nosník: vnitřní bednění dutin — speciální prvek, ověřte s dodavatelem bednění. ` +
+        `3 fáze betonáže: dno → stěny → horní deska.`
+      );
+    }
+
+    // Adjust difficulty_factor based on subtype (override profile default)
+    if (subtype === 'deskovy' && profile.difficulty_factor > 1.0) {
+      profile.difficulty_factor = 1.0;
+      log.push(`Subtype deskový: difficulty_factor → 1.0 (simple slab deck)`);
+    } else if (subtype === 'komora' && profile.difficulty_factor < 1.5) {
+      profile.difficulty_factor = 1.5;
+      log.push(`Subtype komorový: difficulty_factor → 1.5 (box girder, internal formwork)`);
+    }
+  }
+
+  // ─── 3a3. Exposure class validation ─────────────────────────────────────
+  if (input.exposure_class) {
+    const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
+      mostovkova_deska: ['XF2', 'XD1', 'XD3', 'XC4'],
+      rimsa: ['XF4', 'XD3'],
+      driky_piliru: ['XC4', 'XD3', 'XF4'],
+      zaklady_piliru: ['XC2', 'XA1', 'XA2'],
+      opery_ulozne_prahy: ['XC4', 'XD1', 'XF2'],
+      operne_zdi: ['XC4', 'XD1'],
+      prechodova_deska: ['XC4', 'XD1'],
+    };
+    const recommended = RECOMMENDED_EXPOSURE[elementType];
+    if (recommended && !recommended.includes(input.exposure_class)) {
+      warnings.push(
+        `⚠️ Třída prostředí ${input.exposure_class} je neobvyklá pro ${profile.label_cs}. ` +
+        `Doporučeno: ${recommended.join(', ')}. Ověřte s projektem.`
+      );
+    }
+  }
 
   // ─── 3b. Bridge-specific advice (mostovkova_deska) ──────────────────────
 
@@ -663,17 +765,42 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 5. Rebar Calculation ──────────────────────────────────────────────
 
+  // For prestressed elements: B500B rebar ratio is lower (100 kg/m³ instead of 150)
+  // because part of the structural capacity comes from prestressing tendons
+  const rebarMassOverride = input.rebar_mass_kg
+    ? input.rebar_mass_kg / pourDecision.num_tacts
+    : (isPrestressed && elementType === 'mostovkova_deska' && !input.rebar_mass_kg)
+      ? (pourDecision.tact_volume_m3 * 100) // B500B: 100 kg/m³ for prestressed NK
+      : undefined;
+
   const rebarResult = calculateRebarLite({
     element_type: elementType,
     volume_m3: pourDecision.tact_volume_m3,
-    mass_kg: input.rebar_mass_kg
-      ? input.rebar_mass_kg / pourDecision.num_tacts // Distribute across tacts
-      : undefined,
-    crew_size: crewRebar, // per-crew size; parallelism across tacts via RCPSP num_rebar_crews
+    mass_kg: rebarMassOverride,
+    crew_size: crewRebar,
     shift_h: shift,
     k,
     wage_czk_h: wageRebar,
   });
+
+  // Prestressing tendons Y1860 — separate calculation (not included in rebarResult)
+  let prestressRebarInfo: { mass_kg_per_tact: number; mass_t_total: number; cost_czk_per_kg: number } | undefined;
+  if (isPrestressed) {
+    const y1860_kg_m3 = 30; // typical Y1860S7 ratio
+    const y1860_per_tact = pourDecision.tact_volume_m3 * y1860_kg_m3;
+    const y1860_total_t = roundTo((y1860_per_tact * pourDecision.num_tacts) / 1000, 2);
+    prestressRebarInfo = {
+      mass_kg_per_tact: roundTo(y1860_per_tact, 1),
+      mass_t_total: y1860_total_t,
+      cost_czk_per_kg: 100, // ~80–120 Kč/kg for Y1860S7
+    };
+    log.push(`Prestress rebar Y1860: ${y1860_per_tact.toFixed(0)}kg/tact, ${y1860_total_t}t total (30 kg/m³ × ${input.volume_m3}m³)`);
+    warnings.push(
+      `Výztuž rozdělit: B500B (${rebarResult.mass_source === 'user' ? 'zadáno' : '~100 kg/m³'}) + ` +
+      `předpínací Y1860S7 (~30 kg/m³, ${y1860_total_t} t, ~100 Kč/kg). ` +
+      `Různí dodavatelé: armovna (B500B) + specializovaná firma (Y1860).`
+    );
+  }
 
   log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews} čet×${crewRebar} prac.=${numRBCrews * crewRebar} železářů, RCPSP parallel=${numRBCrews})`);
 
@@ -765,6 +892,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
     num_captures: pourDecision.num_tacts,
   });
 
+  // ─── 6b. Prestressing (předpětí) — only for prestressed elements ──────
+  let prestressDays = 0;
+  if (isPrestressed) {
+    const bridgeLength = input.total_length_m ?? 0;
+    prestressDays = input.prestress_days_override ??
+      (bridgeLength > 200 ? 7 : bridgeLength > 50 ? 5 : 3);
+    log.push(`Prestress: ${prestressDays}d (bridge ${bridgeLength}m, is_prestressed=true)`);
+  }
+
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
 
   const scheduleResult = scheduleElement({
@@ -775,6 +911,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     concrete_days: concreteDays,
     curing_days: curingDays,
     stripping_days: disassemblyDays,
+    prestress_days: prestressDays,
     num_formwork_crews: numFWCrews,
     num_rebar_crews: numRBCrews, // parallel rebar crews across tacts (RCPSP)
     rebar_lag_pct: 50,
@@ -793,8 +930,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings.push(scheduleResult.bottleneck);
   }
 
+  // ─── 7a. Prestressing warnings ──────────────────────────────────────────
+  const skruzTotalDays = isPrestressed ? curingDays + prestressDays : curingDays;
+  if (isPrestressed) {
+    warnings.push(
+      `Předpjatá NK: předpětí a injektáž kanálků PŘED odbedněním skruže. ` +
+      `Min. ${prestressDays} dní. Skruž stojí celkem ${skruzTotalDays} dní (zrání ${curingDays}d + předpětí ${prestressDays}d).`
+    );
+  }
+
   // ─── 7b. Skruž (podpěrná konstrukce / stojky) for horizontal elements ────
-  // Applies to ALL elements with needs_supports: mostovka, stropní deska, průvlak, schodiště, římsa, rigel
+  // Applies to ALL elements with needs_supports: mostovka, stropní deska, průvlak, schodiště, rigel
   // skruzMinDays and curingDays already computed above (includes seasonal + maturity).
   // curingDays is enforced per-tact by the scheduler.
   // Here we check if the last tact's hold extends beyond the schedule end.
@@ -974,6 +1120,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
     },
     lateral_pressure: lateralPressure,
     pour_stages: pourStages,
+    ...(isPrestressed ? {
+      prestress: {
+        days: prestressDays,
+        crew_size: 5,
+        skruz_total_days: skruzTotalDays,
+      },
+    } : {}),
     props: propsResult,
     costs: {
       formwork_labor_czk: formworkLaborCZK,

@@ -154,8 +154,8 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
   rimsa: {
     typical_has_spary: true,
     typical_sub_mode: 'adjacent_chess',
-    typical_spara_spacing_m: 5,
-    description_cs: 'Římsová deska — spáry VŽDY (4-6 m), šachovnicový pořadí povinné',
+    typical_spara_spacing_m: 20,
+    description_cs: 'Římsová deska — spáry VŽDY (20-30 m), šachovnicový postup povinný',
   },
   operne_zdi: {
     typical_has_spary: true,

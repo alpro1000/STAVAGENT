@@ -128,9 +128,9 @@ describe('Element Classifier', () => {
       expect(system.name).toBe('VARIO GT 24');
     });
 
-    it('recommends MULTIFLEX for bridge deck', () => {
+    it('recommends Staxo 100 for bridge deck (primary support tower)', () => {
       const system = recommendFormwork('mostovkova_deska');
-      expect(system.name).toBe('MULTIFLEX');
+      expect(system.name).toBe('Staxo 100');
     });
 
     it('recommends Frami for foundations', () => {
@@ -150,8 +150,8 @@ describe('Element Classifier', () => {
     it('applies difficulty factor to assembly norm', () => {
       const system = recommendFormwork('mostovkova_deska');
       const adjusted = getAdjustedAssemblyNorm('mostovkova_deska', system);
-      // mostovka difficulty = 1.2, MULTIFLEX base = 0.50
-      expect(adjusted.assembly_h_m2).toBeCloseTo(0.60, 2);
+      // mostovka difficulty = 1.2, Staxo 100 base = 0.90
+      expect(adjusted.assembly_h_m2).toBeCloseTo(1.08, 2);
       expect(adjusted.difficulty_factor).toBe(1.2);
     });
 

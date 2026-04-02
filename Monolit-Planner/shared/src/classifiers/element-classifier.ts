@@ -96,13 +96,13 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   rimsa: {
     label_cs: 'Římsa',
-    recommended_formwork: ['Římsové bednění T', 'Tradiční tesařské'],
+    recommended_formwork: ['Římsové bednění T', 'Římsový vozík TU', 'Římsový vozík T'],
     difficulty_factor: 1.15,
-    needs_supports: true,
+    needs_supports: false,
     needs_platforms: true,
     needs_crane: true,
     rebar_ratio_kg_m3: 120,
-    rebar_ratio_range: [100, 150],
+    rebar_ratio_range: [100, 180],
     rebar_norm_h_per_t: 50,
     strip_strength_pct: 70,
     orientation: 'horizontal',
@@ -126,7 +126,7 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   mostovkova_deska: {
     label_cs: 'Mostovková deska',
-    recommended_formwork: ['MULTIFLEX', 'Top 50', 'SKYDECK', 'Dokaflex'],
+    recommended_formwork: ['Staxo 100', 'UP Rosett Flex', 'MULTIFLEX', 'Top 50', 'Dokaflex'],
     difficulty_factor: 1.2,
     needs_supports: true,
     needs_platforms: true,
@@ -653,8 +653,31 @@ export function recommendFormwork(
   type: StructuralElementType,
   height_m?: number,
   pour_method?: PourMethod,
+  total_length_m?: number,
 ): FormworkSystemSpec {
   const profile = ELEMENT_CATALOG[type];
+
+  // Rimsa: select formwork based on bridge length (konzoly vs. vozík)
+  if (type === 'rimsa') {
+    let systemName: string;
+    if (total_length_m && total_length_m > 150) {
+      systemName = 'Římsový vozík TU'; // long bridges → travelling carriage
+    } else {
+      systemName = 'Římsové bednění T'; // short bridges → bracket formwork
+    }
+    return FORMWORK_SYSTEMS.find(s => s.name === systemName)
+      ?? FORMWORK_SYSTEMS.find(s => s.name === 'Římsové bednění T')
+      ?? FORMWORK_SYSTEMS[0];
+  }
+
+  // Mostovka: prefer support towers for heights > 5m
+  if (type === 'mostovkova_deska' && height_m != null && height_m > 5) {
+    const systemName = 'Staxo 100';
+    return FORMWORK_SYSTEMS.find(s => s.name === systemName)
+      ?? FORMWORK_SYSTEMS.find(s => s.name === 'UP Rosett Flex')
+      ?? FORMWORK_SYSTEMS.find(s => s.name === profile.recommended_formwork[0])
+      ?? FORMWORK_SYSTEMS[0];
+  }
 
   // No height → static recommendation (original behavior)
   if (height_m == null || height_m <= 0) {

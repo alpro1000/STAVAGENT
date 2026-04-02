@@ -827,6 +827,19 @@ async function runPhase11SafetyMigrations() {
     `ALTER TABLE position_templates ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT ''`,
     // otskp_codes — unit column used by /api/otskp routes
     `ALTER TABLE otskp_codes ADD COLUMN IF NOT EXISTS unit VARCHAR(50) NOT NULL DEFAULT ''`,
+    // portal_positions — position-instance-architecture columns (monolith_payload, dov_payload, etc.)
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS position_instance_id UUID DEFAULT gen_random_uuid()`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS sheet_name VARCHAR(255)`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS row_index INTEGER DEFAULT 0`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS skupina VARCHAR(50)`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS row_role VARCHAR(20) DEFAULT 'unknown'`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS template_id UUID`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS template_confidence VARCHAR(10)`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS monolith_payload JSONB`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS dov_payload JSONB`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS overrides JSONB`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS created_by VARCHAR(100) DEFAULT 'legacy'`,
+    `ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS updated_by VARCHAR(100) DEFAULT 'legacy'`,
   ];
 
   for (const sql of safeAlters) {
