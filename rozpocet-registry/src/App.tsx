@@ -147,6 +147,7 @@ function buildTOVFromPortalItem(item: Record<string, unknown>): TOVData | null {
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [reimportProject, setReimportProject] = useState<typeof projects[0] | undefined>(undefined);
   const [isPriceRequestOpen, setIsPriceRequestOpen] = useState(false);
   const {
     projects,
@@ -1249,6 +1250,18 @@ function App() {
                       </h2>
                       {/* Portal Link Badge (full mode) */}
                       <PortalLinkBadge project={selectedProject} />
+                      {/* Reimport button */}
+                      <button
+                        onClick={() => {
+                          setReimportProject(selectedProject);
+                          setIsImportModalOpen(true);
+                        }}
+                        className="text-xs px-2 py-1 rounded border border-border-color text-text-muted hover:text-text-primary hover:border-accent-primary transition-colors"
+                        title="Upravit mapování a reimportovat soubor"
+                      >
+                        <RotateCcw size={12} className="inline mr-1" />
+                        Upravit mapování
+                      </button>
                     </div>
                     <p className="text-sm text-text-secondary">
                       List: {selectedSheet.name}
@@ -1333,7 +1346,8 @@ function App() {
       {/* Import Modal */}
       <ImportModal
         isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
+        onClose={() => { setIsImportModalOpen(false); setReimportProject(undefined); }}
+        reimportProject={reimportProject}
       />
 
       {/* Price Request Panel */}
