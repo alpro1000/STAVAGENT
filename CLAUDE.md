@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.4.0
+**Version:** 4.5.0
 **Last Updated:** 2026-04-02
 **Repository:** STAVAGENT (Monorepo)
 
@@ -106,6 +106,8 @@ Structure: `shared/` (424 tests), `backend/` (60 tests), `frontend/`. Design: Sl
 - **Import:** Registry→portalAutoSync(3s)→Portal→Monolit via `portal_project_id`, paired row scanner
 - **TOV sync:** labor-only to Portal DOV, 3 variants (A/B/C) auto-detected, formwork rental for bednění
 - **Account Isolation:** `portal_user_id`, Portal JWT via `JWT_SECRET`, 403 on cross-account
+- **ErrorBoundary:** PositionsTable + KPIPanel wrapped; prevents white screen on React #310
+- **Dual DB:** `monolith_projects` (listed via `/api/monolith-projects`, auth) + `bridges` (FK compat for `positions.bridge_id`); `bridgesAPI.getAll()` calls monolith-projects
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
 Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 tables**.
@@ -116,8 +118,9 @@ React 19 + Vite + Vercel serverless. **12 endpoints**, **0 tests**, **~16K LOC**
 BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemini), TOV Modal, Formwork/Pump Calculators.
 - **Import:** Fuzzy auto-detect (header keywords + normalize), per-sheet dataStartRow detection (code+MJ heuristic), reimport with skupiny preservation
 - **Export:** "Vrátit do původního (ceny + skupiny)" — ZIP/XML patch, inline strings, autoFilter + sheetProtection patch
-- **Virtualization:** @tanstack/react-virtual for 2000+ row tables, overscan=20
-- **UI:** Dropdown flip (viewport edge), resizable GroupManager (min 480px, localStorage persist)
+- **Virtualization:** @tanstack/react-virtual for 2000+ row tables, overscan=20, `display:flex` on `<tr>` with explicit `width` per `<td>`/`<th>`
+- **Undo/Redo:** `undoStore.ts` (in-memory, MAX_UNDO=50) + `useUndoableActions` hook wrapping skupina/role mutations; Ctrl+Z/Ctrl+Shift+Z; toolbar above table
+- **UI:** Portal-rendered dropdowns (RowActionsCell, SkupinaAutocomplete) escape `overflow:auto`, resizable GroupManager (min 480px, localStorage persist)
 
 ## Totals
 
@@ -162,6 +165,7 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Construction sequence: bridge (pilota→římsa), building (pilota→schodiště)
 - Scroll restoration: `sessionStorage('monolit-planner-return-part')` + 3s highlight
 - Calculator suggestions: write-through `_PROJECT_FACTS` (memory + `calculator_facts` in project cache JSON)
+- **Product naming:** App 1 (root `/`) = "Monolit Planner", App 2 (`/planner`) = "Kalkulátor betonáže". Never "Plánovač elementu" or "Kalkulátor monolitních prací"
 
 - Registry export ZIP/XML: JSZip + DOMParser, inline strings (`t="inlineStr"`), autoFilter via string replace after serialization
 - Portal INSERTs: always explicit `gen_random_uuid()` for `position_instance_id` (Phase 8 NOT NULL constraint)
@@ -208,6 +212,10 @@ VITE_DISABLE_AUTH=true  # local dev only
 | position_instance_id NULL | All portal_positions INSERTs must use `gen_random_uuid()` explicitly |
 | Registry auto-detect 0% | Keywords in `structureDetector.ts` FIELD_PATTERNS; normalize removes [CZK] |
 | klasifikator.stavagent.cz → Portal | Vercel Edge Middleware in `frontend/middleware.js` proxies by hostname |
+| Monolit white screen #310 | ErrorBoundary catches; check console for `componentStack`; likely object rendered as React child |
+| Monolit click no reaction | KPIPanel shows "Načítání KPI..." (not "Vyberte objekt") when bridge selected but API pending/failed |
+| Registry columns misaligned | `display:flex` on `<tr>`, `width: cell.column.getSize()` + `flexShrink:0` on each `<td>` |
+| Registry dropdown clipped | Must use `createPortal(…, document.body)` with `position:fixed`; scroll listener closes on scroll |
 
 ---
 
@@ -227,14 +235,14 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
-- [ ] **P1: Merge + deploy** PR #808 (prod bugs + registry features + klasifikator middleware)
-- [ ] **P1: Verify prod after deploy** — position_instance_id sync OK, klasifikator shows URS, VZ stats 200, passport retry works
+- [ ] **P1: Debug Monolit React #310** — ErrorBoundary deployed, need `componentStack` from prod console to find exact object-as-child culprit
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
 - [ ] **P2: Test reimport** — import multi-sheet, edit mapping, reimport → skupiny preserved
 - [ ] **P2: Test auto-detect** — Komplet/OTSKP/AspeEsticon formats → ≥4/6 fields found
 - [ ] **P2: Calculator suggestions E2E** — upload TZ→Core extraction→Planner→suggestions appear for correct SO
 - [ ] **P2: Načíst z Rozpočtu E2E** — XLSX→Registry→auto-sync→Portal→Monolit→verify subtypes
 - [ ] **P2: TOV sync E2E** — 3 composition variants (A/B/C) with real bridge project
+- [ ] **P2: Registry undo E2E** — assign skupina → Ctrl+Z → verify revert; AI classify → Ctrl+Z → all restored
 - [ ] **P3: Planner E2E** — lateral pressure + záběry on SO-203, Aplikovat → TOV
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
 - [ ] **P3: Rimsa spec** — 3 formwork systems (T/TU/T-vozík), záběry by bridge length
