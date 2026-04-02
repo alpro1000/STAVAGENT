@@ -12,6 +12,7 @@ import {
   createColumnHelper,
   type SortingState,
 } from '@tanstack/react-table';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
@@ -909,6 +910,19 @@ export function ItemsTable({
     },
   });
 
+  // Virtualization: scroll container ref and virtualizer
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const ROW_HEIGHT = 40; // estimated row height in px
+
+  const rows = table.getRowModel().rows;
+
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => ROW_HEIGHT,
+    overscan: 20,
+  });
+
   if (items.length === 0) {
     return (
       <div className="card text-center py-12">
@@ -920,9 +934,13 @@ export function ItemsTable({
   return (
     <div className="w-full overflow-hidden">
       <div className="card">
-        <div className="overflow-x-auto scrollbar-thin">
-          <table className="table">
-          <thead>
+        <div
+          ref={tableContainerRef}
+          className="overflow-auto scrollbar-thin"
+          style={{ maxHeight: 'calc(100vh - 260px)' }}
+        >
+          <table className="table" style={{ tableLayout: 'fixed' }}>
+          <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--bg-secondary, #f8f9fa)' }}>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -965,21 +983,36 @@ export function ItemsTable({
               </tr>
             ))}
           </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                data-item-id={row.original.id}
-                data-position-instance-id={row.original.position_instance_id || undefined}
-                className={row.original.rowRole === 'subordinate' ? 'opacity-70' : ''}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
+          <tbody
+            style={{ height: `${rowVirtualizer.getTotalSize()}px`, position: 'relative' }}
+          >
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const row = rows[virtualRow.index];
+              return (
+                <tr
+                  key={row.id}
+                  data-item-id={row.original.id}
+                  data-position-instance-id={row.original.position_instance_id || undefined}
+                  className={row.original.rowRole === 'subordinate' ? 'opacity-70' : ''}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                  ref={(node) => rowVirtualizer.measureElement(node)}
+                  data-index={virtualRow.index}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
