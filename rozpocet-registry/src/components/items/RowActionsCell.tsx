@@ -14,6 +14,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { MoveUp, MoveDown, Link2, X, GripVertical, ClipboardList, FileText, CircleHelp } from 'lucide-react';
 import type { ParsedItem } from '../../types/item';
 import { useRegistryStore } from '../../stores/registryStore';
+import { useUndoableActions } from '../../hooks/useUndoableActions';
 
 interface RowActionsCellProps {
   item: ParsedItem;
@@ -54,7 +55,8 @@ const LIGHT = {
 };
 
 export function RowActionsCell({ item, projectId, sheetId, allItems }: RowActionsCellProps) {
-  const { updateItemRole, updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
+  const { updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
+  const { updateItemRoleUndoable } = useUndoableActions(projectId, sheetId);
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
@@ -124,7 +126,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
   );
 
   const handleChangeRole = (newRole: RowRole) => {
-    updateItemRole(projectId, sheetId, item.id, newRole);
+    updateItemRoleUndoable(item.id, newRole);
     setShowRoleMenu(false);
   };
 

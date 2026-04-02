@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { Trash2, Tag, X, Eraser } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
+import { useUndoableActions } from '../../hooks/useUndoableActions';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 
 interface BulkActionsBarProps {
@@ -21,7 +22,8 @@ export function BulkActionsBar({
   sheetId,
   onClearSelection,
 }: BulkActionsBarProps) {
-  const { bulkSetSkupina, getAllGroups, addCustomGroup } = useRegistryStore();
+  const { getAllGroups, addCustomGroup } = useRegistryStore();
+  const { bulkSetSkupinaUndoable } = useUndoableActions(projectId, sheetId);
   const allGroups = getAllGroups();
   const [showSkupinaDropdown, setShowSkupinaDropdown] = useState(false);
 
@@ -47,27 +49,25 @@ export function BulkActionsBar({
   const handleBulkClearSkupiny = () => {
     const updates = Array.from(selectedIds).map((itemId) => ({
       itemId,
-      skupina: null!,
+      skupina: null! as string,
     }));
-    bulkSetSkupina(projectId, sheetId, updates);
+    bulkSetSkupinaUndoable(updates, `Skupiny vymazány (${selectedCount} položek)`);
     onClearSelection();
   };
 
   const handleBulkSetSkupina = (skupina: string | null) => {
     if (skupina === null) {
-      // Clear skupina for all selected
       const updates = Array.from(selectedIds).map((itemId) => ({
         itemId,
-        skupina: null!,
+        skupina: null! as string,
       }));
-      bulkSetSkupina(projectId, sheetId, updates);
+      bulkSetSkupinaUndoable(updates, `Skupiny vymazány (${selectedCount} položek)`);
     } else {
-      // Set skupina for all selected
       const updates = Array.from(selectedIds).map((itemId) => ({
         itemId,
         skupina,
       }));
-      bulkSetSkupina(projectId, sheetId, updates);
+      bulkSetSkupinaUndoable(updates, `Skupina → ${skupina} (${selectedCount} položek)`);
     }
 
     setShowSkupinaDropdown(false);

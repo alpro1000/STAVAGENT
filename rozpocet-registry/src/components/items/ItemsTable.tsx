@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -22,6 +22,8 @@ import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
 import { TOVButton, TOVModal } from '../tov';
+import { useUndoStore } from '../../stores/undoStore';
+import { useUndoableActions } from '../../hooks/useUndoableActions';
 import './ItemsTable.css';
 
 /** Editable price cell with local state to prevent cursor jumping */
@@ -103,6 +105,32 @@ export function ItemsTable({
   conflictMap,
 }: ItemsTableProps) {
   const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny } = useRegistryStore();
+
+  // Undo/Redo
+  const { undoStack, redoStack } = useUndoStore();
+  const { undo, redo, setItemSkupinaUndoable, setItemSkupinaGlobalUndoable } = useUndoableActions(projectId, sheetId);
+
+  // Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Skip when typing in inputs
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      } else if (
+        ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) ||
+        ((e.ctrlKey || e.metaKey) && e.key === 'y')
+      ) {
+        e.preventDefault();
+        redo();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [undo, redo]);
 
   // TOV modal state
   const [tovModalItem, setTovModalItem] = useState<ParsedItem | null>(null);
@@ -339,7 +367,7 @@ export function ItemsTable({
     const skupina = sourceItem.skupina;
 
     // Apply to all projects with same kod
-    setItemSkupinaGlobal(itemKod, skupina);
+    setItemSkupinaGlobalUndoable(itemKod, skupina);
 
     // Show success notification
     setAlertModal({
@@ -438,7 +466,7 @@ export function ItemsTable({
             allItems={items}
           />
         ),
-        size: 40,
+        size: 70,
         enableResizing: false,
       }),
 
@@ -798,9 +826,9 @@ export function ItemsTable({
                   memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
                   onChange={async (value, shouldLearn = false) => {
                     if (value === null) {
-                      setItemSkupina(projectId, sheetId, item.id, null!);
+                      setItemSkupinaUndoable(item.id, null);
                     } else {
-                      setItemSkupina(projectId, sheetId, item.id, value);
+                      setItemSkupinaUndoable(item.id, value);
 
                       // Always record to browser localStorage memory (persistent, works offline)
                       if (item.kod) {
@@ -952,7 +980,7 @@ export function ItemsTable({
                         ? 'cursor-pointer select-none hover:bg-bg-secondary transition-colors'
                         : ''
                     }`}
-                    style={{ width: header.getSize(), position: 'relative', flexShrink: 0, overflow: 'hidden' }}
+                    style={{ width: header.getSize(), position: 'relative', flexShrink: 0 }}
                     title={header.column.getCanSort() ? 'Klikněte pro seřazení' : undefined}
                   >
                     <div className="flex items-center gap-1">
@@ -1006,7 +1034,7 @@ export function ItemsTable({
                   data-index={virtualRow.index}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} style={{ width: cell.column.getSize(), flexShrink: 0, overflow: 'hidden' }}>
+                    <td key={cell.id} style={{ width: cell.column.getSize(), flexShrink: 0 }}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
@@ -1019,22 +1047,53 @@ export function ItemsTable({
 
       {/* Footer */}
       <div className="border-t border-border-color px-4 py-3 flex items-center justify-between">
-        <p className="text-sm text-text-secondary">
-          {isFilterActive
-            ? `Zobrazeno ${visibleItems.length} z ${items.length} položek (filtr aktivní)`
-            : `Zobrazeno ${visibleItems.length} z ${items.length} položek`
-          }
-          {hiddenSubordinateCount > 0 && (
-            <span className="text-text-muted ml-1">
-              ({hiddenSubordinateCount} podřízených skryto)
-            </span>
-          )}
-        </p>
-        {selectedIds.size > 0 && (
-          <p className="text-sm font-medium text-accent-primary">
-            Vybráno: {selectedIds.size}
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-text-secondary">
+            {isFilterActive
+              ? `Zobrazeno ${visibleItems.length} z ${items.length} položek (filtr aktivní)`
+              : `Zobrazeno ${visibleItems.length} z ${items.length} položek`
+            }
+            {hiddenSubordinateCount > 0 && (
+              <span className="text-text-muted ml-1">
+                ({hiddenSubordinateCount} podřízených skryto)
+              </span>
+            )}
           </p>
-        )}
+          {selectedIds.size > 0 && (
+            <p className="text-sm font-medium text-accent-primary">
+              Vybráno: {selectedIds.size}
+            </p>
+          )}
+        </div>
+
+        {/* Undo / Redo */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={undo}
+            disabled={undoStack.length === 0}
+            className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            title={undoStack.length > 0
+              ? `Zpět: ${undoStack[undoStack.length - 1].description} (Ctrl+Z)`
+              : 'Nic k vrácení'
+            }
+          >
+            <Undo2 size={16} className="text-text-secondary" />
+          </button>
+          <button
+            onClick={redo}
+            disabled={redoStack.length === 0}
+            className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            title={redoStack.length > 0
+              ? `Znovu: ${redoStack[redoStack.length - 1].description} (Ctrl+Shift+Z)`
+              : 'Nic k opakování'
+            }
+          >
+            <Redo2 size={16} className="text-text-secondary" />
+          </button>
+          {undoStack.length > 0 && (
+            <span className="text-xs text-text-muted ml-1 tabular-nums">{undoStack.length}/50</span>
+          )}
+        </div>
       </div>
 
       {/* Alert Modal */}

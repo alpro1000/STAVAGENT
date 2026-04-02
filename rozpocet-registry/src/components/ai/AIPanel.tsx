@@ -20,6 +20,7 @@
 import { useState } from 'react';
 import { Sparkles, Loader2, ChevronDown, ChevronUp, Zap, Power, Brain, Eraser } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
+import { useUndoableActions } from '../../hooks/useUndoableActions';
 import { isMainCodeExported } from '../../services/classification/rowClassificationService';
 import type { ParsedItem } from '../../types/item';
 
@@ -78,7 +79,8 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     };
   } | null>(null);
 
-  const { bulkSetSkupina, clearSheetSkupiny, skupinyMemory, getSkupinyMemoryCount } = useRegistryStore();
+  const { skupinyMemory, getSkupinyMemoryCount } = useRegistryStore();
+  const { bulkSetSkupinaUndoable, clearSheetSkupinyUndoable } = useUndoableActions(projectId, sheetId);
 
   const itemsToProcess = selectedItemIds.length > 0
     ? items.filter(item => selectedItemIds.includes(item.id))
@@ -143,7 +145,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
         }));
 
         if (updates.length > 0) {
-          bulkSetSkupina(projectId, sheetId, updates);
+          bulkSetSkupinaUndoable(updates, `AI klasifikace prázdných (${updates.length} položek)`, 'ai_classify');
         }
 
         setClassificationStats({
@@ -223,7 +225,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           }));
 
         if (updates.length > 0) {
-          bulkSetSkupina(projectId, sheetId, updates);
+          bulkSetSkupinaUndoable(updates, `AI překlasifikace (${updates.length} položek)`, 'ai_classify');
         }
 
         setClassificationStats({
@@ -272,7 +274,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     }
 
     if (updates.length > 0) {
-      bulkSetSkupina(projectId, sheetId, updates);
+      bulkSetSkupinaUndoable(updates, `Z paměti: ${updates.length} skupin`, 'bulk_skupina');
       setClassificationStats(null);
       setLastAction(`Aplikováno ${updates.length} skupin z paměti (z ${getSkupinyMemoryCount()} uložených)`);
     } else {
@@ -290,7 +292,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
       return;
     }
     if (!window.confirm(`Opravdu chcete vymazat skupiny u ${classifiedCount} položek v tomto listu?\nPoložky zůstanou zachovány.`)) return;
-    clearSheetSkupiny(projectId, sheetId);
+    clearSheetSkupinyUndoable();
     setClassificationStats(null);
     setLastAction(`Skupiny vymazány u ${classifiedCount} položek`);
   };
