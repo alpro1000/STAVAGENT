@@ -14,6 +14,7 @@
 import { getDatabase } from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import VvzClient from './vvzClient.js';
+import { ensureSchema } from './smlouvyCollector.js';
 
 // ============================================================================
 // Schema migration — add VZ/CPV fields
@@ -120,6 +121,7 @@ export async function startVzCollection({ cpv = '45', maxPages = 20 } = {}) {
     throw new Error('VZ enrichment already in progress');
   }
 
+  await ensureSchema();
   const db = await getDatabase();
   await ensureVzFields(db);
 
@@ -367,6 +369,7 @@ export function getVzEnrichmentStatus() {
 }
 
 export async function getVzStats() {
+  await ensureSchema();
   const db = await getDatabase();
   await ensureVzFields(db);
 
