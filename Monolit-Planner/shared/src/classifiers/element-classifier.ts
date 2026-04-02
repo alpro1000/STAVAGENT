@@ -96,13 +96,13 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   rimsa: {
     label_cs: 'Římsa',
-    recommended_formwork: ['Římsové bednění T', 'Tradiční tesařské'],
+    recommended_formwork: ['Římsové bednění T', 'Římsový vozík TU', 'Římsový vozík T'],
     difficulty_factor: 1.15,
-    needs_supports: true,
+    needs_supports: false,
     needs_platforms: true,
     needs_crane: true,
     rebar_ratio_kg_m3: 120,
-    rebar_ratio_range: [100, 150],
+    rebar_ratio_range: [100, 180],
     rebar_norm_h_per_t: 50,
     strip_strength_pct: 70,
     orientation: 'horizontal',
@@ -653,8 +653,22 @@ export function recommendFormwork(
   type: StructuralElementType,
   height_m?: number,
   pour_method?: PourMethod,
+  total_length_m?: number,
 ): FormworkSystemSpec {
   const profile = ELEMENT_CATALOG[type];
+
+  // Rimsa: select formwork based on bridge length (konzoly vs. vozík)
+  if (type === 'rimsa') {
+    let systemName: string;
+    if (total_length_m && total_length_m > 150) {
+      systemName = 'Římsový vozík TU'; // long bridges → travelling carriage
+    } else {
+      systemName = 'Římsové bednění T'; // short bridges → bracket formwork
+    }
+    return FORMWORK_SYSTEMS.find(s => s.name === systemName)
+      ?? FORMWORK_SYSTEMS.find(s => s.name === 'Římsové bednění T')
+      ?? FORMWORK_SYSTEMS[0];
+  }
 
   // No height → static recommendation (original behavior)
   if (height_m == null || height_m <= 0) {

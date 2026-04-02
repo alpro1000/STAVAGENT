@@ -357,8 +357,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const warnings: string[] = [];
 
   // Unpack defaults
-  const crew = input.crew_size ?? DEFAULTS.crew_size;
-  const crewRebar = input.crew_size_rebar ?? input.crew_size ?? DEFAULTS.crew_size_rebar;
+  let crew = input.crew_size ?? DEFAULTS.crew_size;
+  let crewRebar = input.crew_size_rebar ?? input.crew_size ?? DEFAULTS.crew_size_rebar;
   const shift = input.shift_h ?? DEFAULTS.shift_h;
   const k = input.k ?? DEFAULTS.k;
   const wage = input.wage_czk_h ?? DEFAULTS.wage_czk_h;
@@ -389,6 +389,12 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   const elementType = profile.element_type;
 
+  // Rimsa crew sizing: 6 formwork+concrete (tesaři+betonáři) + 3 rebar (železáři) = 9 per side
+  if (elementType === 'rimsa' && !input.crew_size) {
+    crew = 6;
+    if (!input.crew_size_rebar) crewRebar = 3;
+  }
+
   // ─── 2. Lateral Pressure & Formwork System Selection ─────────────────
 
   // 2a. Calculate lateral pressure if height is known and element is vertical
@@ -416,7 +422,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     const found = findFormworkSystem(input.formwork_system_name);
     if (!found) {
       warnings.push(`Systém bednění "${input.formwork_system_name}" nenalezen — použit doporučený.`);
-      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method);
+      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m);
     } else {
       fwSystem = found;
       // Warn if manually selected system can't handle the pressure
@@ -430,7 +436,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       }
     }
   } else {
-    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method);
+    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m);
   }
 
   const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
@@ -504,6 +510,29 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   log.push(`Pour: ${pourDecision.pour_mode}/${pourDecision.sub_mode}, ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
   warnings.push(...pourDecision.warnings);
+
+  // ─── 3a. Rimsa-specific warnings ───────────────────────────────────────
+  if (elementType === 'rimsa') {
+    // Info: záběry summary
+    const spacing = input.spara_spacing_m ?? 20;
+    warnings.push(
+      `Římsa: záběr ${spacing} m, celkem ${pourDecision.num_tacts} záběrů, ` +
+      `objem/záběr ${pourDecision.tact_volume_m3} m³`
+    );
+
+    // Info: construction sequence — rimsa comes AFTER bridge deck + prestressing
+    warnings.push(
+      `Římsa se betonuje PO dokončení mostovky a PO vnesení předpětí (pokud NK předpjatá).`
+    );
+
+    // Warning: formwork system for long bridges
+    if (!input.total_length_m) {
+      warnings.push(
+        `⚠️ Římsa: délka mostu nezadána — použito konzolové bednění T. ` +
+        `Zadejte délku mostu (>150 m → římsový vozík TU/T) pro správný výběr systému.`
+      );
+    }
+  }
 
   // ─── 3b. Bridge-specific advice (mostovkova_deska) ──────────────────────
 

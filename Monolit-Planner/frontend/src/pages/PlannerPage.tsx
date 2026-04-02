@@ -1150,7 +1150,7 @@ export default function PlannerPage() {
               fontSize: 11, color: 'var(--r0-info-text)', lineHeight: 1.6,
             }}>
               <strong>Římsa — záběry podle délky mostu:</strong><br/>
-              Římsy se betonují po úsecích 25–30 m. Počet záběrů závisí na celkové délce mostu.<br/>
+              Římsy se betonují po úsecích 20–30 m (default 20 m). Počet záběrů závisí na celkové délce mostu.<br/>
               Zadejte délku mostu v sekci záběrů pro správný výpočet.
             </div>
           )}

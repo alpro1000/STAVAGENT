@@ -137,7 +137,7 @@ const Q1_OPTIONS: { value: ConstructionType; label: string; hint: string }[] = [
   { value: 'mostovka',       label: 'Mostovka / deska',       hint: 'XD3/XF4, stojky 14–28 d — zrání 7–14 d' },
   { value: 'steny',          label: 'Stěny / opěry',          hint: 'Standardní — zrání 1–3 d' },
   { value: 'sloupy',         label: 'Sloupy',                 hint: 'Sloupové SL-1 — zrání 1–3 d' },
-  { value: 'rimsy',          label: 'Římsы / konzoly',        hint: 'Vozíkové / konzolové — zrání 3–7 d' },
+  { value: 'rimsy',          label: 'Římsy / konzoly',         hint: 'Vozíkové / konzolové — zrání 3–7 d' },
 ];
 
 const Q2_OPTIONS: { value: Season; label: string; factor: string }[] = [
