@@ -1,14 +1,30 @@
 /**
  * GroupManager Component
  * Manage work groups: view, rename, delete, add with duplicate prevention
+ * Resizable panel (min 480px, max 80vw, persists width to localStorage)
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import {
-  ChevronDown, ChevronUp, Pencil, Trash2, Plus, Check, X, AlertTriangle, Settings,
+  ChevronDown, ChevronUp, Pencil, Trash2, Plus, Check, X, AlertTriangle, Settings, GripVertical,
 } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
 import { DEFAULT_GROUPS } from '../../utils/constants';
+
+const LS_WIDTH_KEY = 'registry-group-manager-width';
+const MIN_WIDTH = 480;
+const MAX_WIDTH_VW = 0.8; // 80vw
+
+function loadPersistedWidth(): number {
+  try {
+    const stored = localStorage.getItem(LS_WIDTH_KEY);
+    if (stored) {
+      const n = parseInt(stored, 10);
+      if (n >= MIN_WIDTH) return n;
+    }
+  } catch { /* ignore */ }
+  return MIN_WIDTH;
+}
 
 export function GroupManager() {
   const {
@@ -21,6 +37,44 @@ export function GroupManager() {
   const [newGroupValue, setNewGroupValue] = useState('');
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
+
+  // Resize state
+  const [panelWidth, setPanelWidth] = useState<number>(loadPersistedWidth);
+  const isResizingRef = useRef(false);
+  const resizeStartRef = useRef({ x: 0, width: MIN_WIDTH });
+
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    isResizingRef.current = true;
+    resizeStartRef.current = { x: e.clientX, width: panelWidth };
+
+    const handleMouseMove = (ev: MouseEvent) => {
+      if (!isResizingRef.current) return;
+      const delta = ev.clientX - resizeStartRef.current.x;
+      const maxPx = window.innerWidth * MAX_WIDTH_VW;
+      const newWidth = Math.max(MIN_WIDTH, Math.min(maxPx, resizeStartRef.current.width + delta));
+      setPanelWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      if (isResizingRef.current) {
+        isResizingRef.current = false;
+      }
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }, [panelWidth]);
+
+  // Persist width on every change (debounced via effect)
+  useEffect(() => {
+    try {
+      localStorage.setItem(LS_WIDTH_KEY, String(Math.round(panelWidth)));
+    } catch { /* ignore */ }
+  }, [panelWidth]);
 
   const allGroups = getAllGroups();
   const itemCounts = useMemo(() => getGroupItemCounts(), [getGroupItemCounts]);
@@ -102,7 +156,15 @@ export function GroupManager() {
   const newGroupDuplicate = newGroupValue.trim() ? isDuplicate(newGroupValue.trim()) : false;
 
   return (
-    <div className="card" style={{ borderLeft: '3px solid var(--text-muted)' }}>
+    <div
+      className="card relative"
+      style={{
+        borderLeft: '3px solid var(--text-muted)',
+        minWidth: `${MIN_WIDTH}px`,
+        width: isExpanded ? `${panelWidth}px` : undefined,
+        maxWidth: '80vw',
+      }}
+    >
       {/* Header */}
       <div
         className="flex items-center justify-between cursor-pointer"
@@ -245,6 +307,17 @@ export function GroupManager() {
           <p className="text-xs text-text-muted">
             Přejmenování aktualizuje všechny položky. Smazání odstraní skupinu ze všech položek.
           </p>
+        </div>
+      )}
+
+      {/* Resize handle — right edge (only when expanded) */}
+      {isExpanded && (
+        <div
+          className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize flex items-center justify-center hover:bg-accent-primary/10 transition-colors"
+          onMouseDown={handleResizeStart}
+          title="Změnit šířku"
+        >
+          <GripVertical size={12} className="text-text-muted opacity-0 hover:opacity-100" style={{ transform: 'rotate(90deg)' }} />
         </div>
       )}
     </div>

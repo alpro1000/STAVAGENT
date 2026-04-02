@@ -165,9 +165,20 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   };
 
   const handleApplyDetectedTemplate = (result: DetectionResult) => {
-    // Select the detected template
-    setSelectedTemplate(result.template);
-    setDetectionResults(null); // Close detection results
+    // Apply detected columns and startRow to the template config
+    const updatedTemplate = {
+      ...result.template,
+      config: {
+        ...result.template.config,
+        columns: {
+          ...result.template.config.columns,
+          ...result.detectedColumns,
+        },
+        dataStartRow: result.detectedStartRow,
+      },
+    };
+    setSelectedTemplate(updatedTemplate);
+    setDetectionResults(null);
   };
 
   const handleImport = async () => {
@@ -590,8 +601,10 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                         </div>
                       </div>
                       <div className="text-xs text-[var(--text-secondary)] space-y-1">
-                        {result.reasoning.slice(0, 3).map((reason, idx) => (
-                          <div key={idx}>{reason}</div>
+                        {result.reasoning.map((reason, idx) => (
+                          <div key={idx} className={reason.startsWith('✓') ? 'text-green-700' : reason.startsWith('✗') ? 'text-red-600' : ''}>
+                            {reason}
+                          </div>
                         ))}
                       </div>
                     </button>

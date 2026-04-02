@@ -1,7 +1,9 @@
 /**
  * Excel Structure Auto-Detection Service
  *
- * Phase 4: Automatically detect Excel structure and suggest best template
+ * Phase 4+: Fuzzy header detection with normalized matching.
+ * Scans first 20 rows, finds header row by ≥3 keyword hits,
+ * assigns columns, skips numeric sub-header rows, computes % shoda.
  */
 
 import * as XLSX from 'xlsx';
@@ -22,222 +24,383 @@ export interface DetectionResult {
 }
 
 /**
- * Keywords for each column type (Czech and English)
+ * Per-sheet detection result (for multi-sheet imports)
  */
-const COLUMN_KEYWORDS = {
-  kod: ['kód', 'kod', 'code', 'položka', 'polozka', 'item', 'č.', 'číslo'],
-  popis: ['popis', 'description', 'název', 'nazev', 'name', 'text'],
-  mj: ['mj', 'merne', 'jednotka', 'unit', 'měrná', 'merna'],
-  mnozstvi: ['množství', 'mnozstvi', 'quantity', 'qty', 'počet', 'pocet', 'ks'],
-  cenaJednotkova: ['cena', 'price', 'jednotková', 'jednotkova', 'unit price', 'kč/mj', 'kc/mj'],
-  cenaCelkem: ['celkem', 'total', 'celková', 'celkova', 'cena celkem', 'total price'],
-};
+export interface SheetDetectionResult {
+  sheetName: string;
+  matchScore: number;
+  fieldsFound: number;
+  fieldsTotal: 6;
+  detectedColumns: Partial<ColumnMapping>;
+  detectedStartRow: number;
+  headerRow: number;
+  reasoning: string[];
+  confidence: 'high' | 'medium' | 'low';
+}
 
 /**
- * Code pattern detection
+ * Multi-sheet detection summary
  */
-const CODE_PATTERNS = {
-  urs: /^\d{5,6}$/,              // 231112, 23111 - pure digits 5-6 chars
-  ursDots: /^\d{2,3}\.\d{2,3}\.\d{2,3}$/, // 23.11.12
-  otskp: /^[A-Z]\d{5,}$/,        // A12345 - letter + digits
-  rts: /^\d{3,4}-\d{3,4}$/,      // 123-456
+export interface MultiSheetDetectionResult {
+  sheets: SheetDetectionResult[];
+  allSameStructure: boolean;
+  summary: string;
+}
+
+// ─── Fuzzy keyword patterns (case-insensitive, matched via includes) ────────
+
+type FieldKey = keyof ColumnMapping;
+
+const FIELD_PATTERNS: Record<FieldKey, string[]> = {
+  kod: [
+    'kód', 'kod', 'kód pol', 'kod pol', 'číslo pol', 'cislo pol',
+    'položky', 'polozky', 'item', 'code', 'č. pol', 'poř. číslo',
+    'por. cislo', 'poř.číslo', 'pč',
+  ],
+  popis: [
+    'popis', 'název', 'nazev', 'name', 'označení', 'oznaceni',
+    'description', 'text polož', 'název polož',
+  ],
+  mj: [
+    'mj', 'j.m', 'jedn.m', 'unit', 'jednotka', 'měrná', 'merna',
+    'měr.j', 'mer.j',
+  ],
+  mnozstvi: [
+    'množství', 'mnozstvi', 'quantity', 'počet', 'pocet', 'qty',
+    'výměra', 'vymera',
+  ],
+  cenaJednotkova: [
+    'j.cena', 'jedn.cena', 'jednotková', 'jednotkova', 'unit price',
+    'cena/mj', 'kč/mj', 'kc/mj', 'jednotková cena',
+  ],
+  cenaCelkem: [
+    'celkem', 'cena cel', 'total', 'celková', 'celkova',
+    'cena celkem', 'total price',
+  ],
 };
 
+const FIELD_LABELS: Record<FieldKey, string> = {
+  kod: 'kód',
+  popis: 'popis',
+  mj: 'měrná jednotka',
+  mnozstvi: 'množství',
+  cenaJednotkova: 'jednotková cena',
+  cenaCelkem: 'celková cena',
+};
+
+const ALL_FIELDS: FieldKey[] = ['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'];
+
 /**
- * Detect Excel structure and suggest best template
+ * Normalize cell text for matching: lowercase, strip brackets, [CZK], extra spaces
+ */
+function normalize(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/\[.*?\]/g, '')   // remove [CZK], [Kč], etc.
+    .replace(/\(.*?\)/g, '')   // remove parentheses content
+    .replace(/[_\-\/\\|]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Check if a normalized cell text matches any pattern for a given field.
+ * Returns number of matching patterns (0 = no match).
+ */
+function matchField(normalizedText: string, field: FieldKey): number {
+  if (!normalizedText) return 0;
+  let hits = 0;
+  for (const pattern of FIELD_PATTERNS[field]) {
+    if (normalizedText.includes(pattern)) hits++;
+  }
+  return hits;
+}
+
+/**
+ * Check if a row is a numeric sub-header (cells contain only single digits 1-9)
+ */
+function isNumericSubHeader(row: Record<string, string>): boolean {
+  const values = Object.values(row).filter(v => v.trim() !== '');
+  if (values.length < 3) return false;
+  return values.every(v => /^\d{1,2}$/.test(v.trim()));
+}
+
+// ─── Core detection ─────────────────────────────────────────────────────────
+
+interface HeaderDetection {
+  headerRow: number;           // 0-based row index
+  columns: Partial<ColumnMapping>;
+  fieldsFound: number;
+  dataStartRow: number;        // 1-based
+  reasoning: string[];
+}
+
+/**
+ * Scan sheet to find header row and map columns via fuzzy matching.
+ */
+function detectHeaderAndColumns(sheet: XLSX.WorkSheet): HeaderDetection | null {
+  const range = XLSX.utils.decode_range(sheet['!ref'] || 'A1');
+  const maxRow = Math.min(range.e.r, 25); // scan first 25 rows
+  const maxCol = Math.min(range.e.c, 25); // scan first 25 columns
+
+  let bestRow = -1;
+  let bestScore = 0;
+  let bestMapping: Record<FieldKey, { col: string; hits: number; header: string }> = {} as any;
+
+  for (let row = 0; row <= maxRow; row++) {
+    // Read all cells in this row
+    const rowData: Record<string, string> = {};
+    for (let col = 0; col <= maxCol; col++) {
+      const cellAddr = XLSX.utils.encode_cell({ r: row, c: col });
+      const cell = sheet[cellAddr];
+      const value = cell?.v?.toString().trim() || '';
+      if (value) {
+        const colLetter = XLSX.utils.encode_col(col);
+        rowData[colLetter] = value;
+      }
+    }
+
+    if (Object.keys(rowData).length < 3) continue;
+
+    // For each field, find best column in this row
+    const mapping: Record<string, { col: string; hits: number; header: string }> = {};
+    const usedCols = new Set<string>();
+
+    for (const field of ALL_FIELDS) {
+      let bestCol = '';
+      let bestHits = 0;
+      let bestHeader = '';
+
+      for (const [colLetter, rawText] of Object.entries(rowData)) {
+        if (usedCols.has(colLetter)) continue;
+        const norm = normalize(rawText);
+        const hits = matchField(norm, field);
+        if (hits > bestHits) {
+          bestHits = hits;
+          bestCol = colLetter;
+          bestHeader = rawText;
+        }
+      }
+
+      if (bestCol && bestHits > 0) {
+        mapping[field] = { col: bestCol, hits: bestHits, header: bestHeader };
+        usedCols.add(bestCol);
+      }
+    }
+
+    // Resolve conflicts: if cenaJednotkova and cenaCelkem both want the same column,
+    // check for "celkem" specifically in cenaCelkem patterns
+    if (mapping.cenaJednotkova && mapping.cenaCelkem &&
+        mapping.cenaJednotkova.col === mapping.cenaCelkem.col) {
+      // Re-scan: find separate columns for each
+      const jedCol = mapping.cenaJednotkova.col;
+      // Try to find another column for cenaCelkem
+      for (const [colLetter, rawText] of Object.entries(rowData)) {
+        if (colLetter === jedCol) continue;
+        const norm = normalize(rawText);
+        if (norm.includes('celkem') || norm.includes('total')) {
+          mapping.cenaCelkem = { col: colLetter, hits: 1, header: rawText };
+          break;
+        }
+      }
+      // If still same, try finding another for cenaJednotkova
+      if (mapping.cenaJednotkova.col === mapping.cenaCelkem?.col) {
+        for (const [colLetter, rawText] of Object.entries(rowData)) {
+          if (colLetter === mapping.cenaCelkem.col) continue;
+          const norm = normalize(rawText);
+          if (norm.includes('jedn') || norm.includes('j.cena') || norm.includes('unit price')) {
+            mapping.cenaJednotkova = { col: colLetter, hits: 1, header: rawText };
+            break;
+          }
+        }
+      }
+    }
+
+    const fieldsFound = Object.keys(mapping).length;
+    if (fieldsFound >= 3 && fieldsFound > bestScore) {
+      bestScore = fieldsFound;
+      bestRow = row;
+      bestMapping = mapping as any;
+    }
+  }
+
+  if (bestRow < 0) return null;
+
+  // Determine dataStartRow: skip numeric sub-header row if present
+  let dataStartRow = bestRow + 2; // 1-based (bestRow is 0-based, +1 for next row, +1 for 1-based)
+
+  // Check if the row right after header is a numeric sub-header
+  const nextRowData: Record<string, string> = {};
+  for (let col = 0; col <= maxCol; col++) {
+    const cellAddr = XLSX.utils.encode_cell({ r: bestRow + 1, c: col });
+    const cell = sheet[cellAddr];
+    const value = cell?.v?.toString().trim() || '';
+    if (value) {
+      nextRowData[XLSX.utils.encode_col(col)] = value;
+    }
+  }
+  if (isNumericSubHeader(nextRowData)) {
+    dataStartRow = bestRow + 3; // skip the sub-header too
+  }
+
+  // Build result
+  const columns: Partial<ColumnMapping> = {};
+  const reasoning: string[] = [];
+
+  for (const field of ALL_FIELDS) {
+    const m = bestMapping[field];
+    if (m) {
+      columns[field] = m.col;
+      reasoning.push(`✓ ${FIELD_LABELS[field]}: sloupec ${m.col} ("${m.header}")`);
+    } else {
+      reasoning.push(`✗ ${FIELD_LABELS[field]}: nenalezeno`);
+    }
+  }
+
+  return {
+    headerRow: bestRow,
+    columns,
+    fieldsFound: Object.keys(columns).length,
+    dataStartRow,
+    reasoning,
+  };
+}
+
+// ─── Public API ─────────────────────────────────────────────────────────────
+
+/**
+ * Detect Excel structure and suggest best template.
+ * Returns results sorted by match score (highest first).
  */
 export async function detectExcelStructure(
   workbook: XLSX.WorkBook,
   sheetName?: string
 ): Promise<DetectionResult[]> {
-  const sheet = sheetName
-    ? workbook.Sheets[sheetName]
-    : workbook.Sheets[workbook.SheetNames[0]];
+  const name = sheetName || workbook.SheetNames[0];
+  const sheet = workbook.Sheets[name];
 
   if (!sheet) {
     throw new Error('Sheet not found');
   }
 
-  // Analyze first 20 rows to find headers and data
-  const analysis = analyzeSheet(sheet);
+  const detection = detectHeaderAndColumns(sheet);
 
-  // Match against all predefined templates
-  const results: DetectionResult[] = [];
-
-  for (const template of PREDEFINED_TEMPLATES) {
-    const result = matchTemplate(template, analysis);
-    results.push(result);
+  if (!detection) {
+    // Fallback: return predefined templates with 0% score
+    return PREDEFINED_TEMPLATES.map(t => ({
+      template: t,
+      matchScore: 0,
+      confidence: 'low' as const,
+      detectedColumns: {},
+      detectedStartRow: 2,
+      reasoning: ['✗ Nebyl nalezen řádek s hlavičkami'],
+    }));
   }
 
-  // Sort by match score (highest first)
+  const matchScore = Math.round((detection.fieldsFound / 6) * 100);
+  const confidence: 'high' | 'medium' | 'low' =
+    matchScore >= 67 ? 'high' : matchScore >= 50 ? 'medium' : 'low';
+
+  // Create a "detected" result for each predefined template,
+  // but use the actually detected columns/startRow
+  const results: DetectionResult[] = PREDEFINED_TEMPLATES.map(template => {
+    // Give a small bonus if template type matches code pattern in detected data
+    let bonus = 0;
+    const templateType = template.metadata.type;
+    if (templateType === 'flexible') bonus = -5; // flexible is fallback
+
+    return {
+      template: {
+        ...template,
+        config: {
+          ...template.config,
+          columns: {
+            ...template.config.columns,
+            ...detection.columns,
+          } as ColumnMapping,
+          dataStartRow: detection.dataStartRow,
+        },
+      },
+      matchScore: Math.min(100, matchScore + bonus),
+      confidence,
+      detectedColumns: detection.columns,
+      detectedStartRow: detection.dataStartRow,
+      reasoning: detection.reasoning,
+    };
+  });
+
+  // Sort by score descending
   results.sort((a, b) => b.matchScore - a.matchScore);
 
   return results;
 }
 
 /**
- * Sheet analysis result
+ * Detect structure for all sheets in a workbook.
  */
-interface SheetAnalysis {
-  headers: Map<string, string>;  // column letter -> header text
-  dataStartRow: number;
-  codePattern: 'urs' | 'otskp' | 'rts' | 'unknown';
-  sampleData: Record<string, any>[];
-}
+export async function detectAllSheets(
+  workbook: XLSX.WorkBook
+): Promise<MultiSheetDetectionResult> {
+  const sheets: SheetDetectionResult[] = [];
 
-/**
- * Analyze sheet structure
- */
-function analyzeSheet(sheet: XLSX.WorkSheet): SheetAnalysis {
-  const range = XLSX.utils.decode_range(sheet['!ref'] || 'A1');
-  const headers = new Map<string, string>();
-  let dataStartRow = 1;
-  let codePattern: 'urs' | 'otskp' | 'rts' | 'unknown' = 'unknown';
+  for (const name of workbook.SheetNames) {
+    const sheet = workbook.Sheets[name];
+    if (!sheet) continue;
 
-  // Scan first 20 rows to find headers
-  for (let row = 0; row <= Math.min(range.e.r, 20); row++) {
-    const rowData: Record<string, any> = {};
-    let hasData = false;
+    const detection = detectHeaderAndColumns(sheet);
 
-    // Read all columns in this row
-    for (let col = 0; col <= Math.min(range.e.c, 20); col++) {
-      const cellAddr = XLSX.utils.encode_cell({ r: row, c: col });
-      const cell = sheet[cellAddr];
-      const value = cell?.v?.toString().trim() || '';
-
-      if (value) {
-        const colLetter = XLSX.utils.encode_col(col);
-        rowData[colLetter] = value;
-        hasData = true;
-      }
-    }
-
-    if (!hasData) continue;
-
-    // Check if this row contains headers (keywords match)
-    const headerScore = calculateHeaderScore(rowData);
-
-    if (headerScore > 2) {
-      // This looks like a header row
-      for (const [col, value] of Object.entries(rowData)) {
-        headers.set(col, value.toLowerCase());
-      }
-      dataStartRow = row + 2; // Data starts next row (1-based)
-    } else if (headers.size > 0) {
-      // We already found headers, this must be data
-      // Detect code pattern from first data row
-      const firstColValue = rowData['A'] || rowData['B'] || '';
-      codePattern = detectCodePattern(firstColValue);
-      break;
-    }
-  }
-
-  return {
-    headers,
-    dataStartRow: dataStartRow || 2,
-    codePattern,
-    sampleData: [],
-  };
-}
-
-/**
- * Calculate header score (how many keywords match)
- */
-function calculateHeaderScore(row: Record<string, any>): number {
-  let score = 0;
-  const values = Object.values(row).map(v => v.toString().toLowerCase());
-
-  for (const keywords of Object.values(COLUMN_KEYWORDS)) {
-    const hasMatch = values.some(val =>
-      keywords.some(keyword => val.includes(keyword))
-    );
-    if (hasMatch) score++;
-  }
-
-  return score;
-}
-
-/**
- * Detect code pattern from sample value
- */
-function detectCodePattern(value: string): 'urs' | 'otskp' | 'rts' | 'unknown' {
-  if (!value) return 'unknown';
-
-  const trimmed = value.trim();
-
-  if (CODE_PATTERNS.otskp.test(trimmed)) return 'otskp';
-  if (CODE_PATTERNS.rts.test(trimmed)) return 'rts';
-  if (CODE_PATTERNS.urs.test(trimmed) || CODE_PATTERNS.ursDots.test(trimmed)) return 'urs';
-
-  return 'unknown';
-}
-
-/**
- * Match template against sheet analysis
- */
-function matchTemplate(
-  template: ImportTemplate,
-  analysis: SheetAnalysis
-): DetectionResult {
-  const detectedColumns: Partial<ColumnMapping> = {};
-  const reasoning: string[] = [];
-  let matchScore = 0;
-
-  // Match each required column
-  for (const [field, keywords] of Object.entries(COLUMN_KEYWORDS)) {
-    const columnLetter = findColumnByKeywords(analysis.headers, keywords);
-
-    if (columnLetter) {
-      detectedColumns[field as keyof ColumnMapping] = columnLetter;
-      matchScore += 15; // Each matched column = 15 points
-      reasoning.push(`✓ ${field}: sloupec ${columnLetter} (${analysis.headers.get(columnLetter)})`);
+    if (detection) {
+      const matchScore = Math.round((detection.fieldsFound / 6) * 100);
+      sheets.push({
+        sheetName: name,
+        matchScore,
+        fieldsFound: detection.fieldsFound,
+        fieldsTotal: 6,
+        detectedColumns: detection.columns,
+        detectedStartRow: detection.dataStartRow,
+        headerRow: detection.headerRow,
+        reasoning: detection.reasoning,
+        confidence: matchScore >= 67 ? 'high' : matchScore >= 50 ? 'medium' : 'low',
+      });
     } else {
-      reasoning.push(`✗ ${field}: nenalezen`);
+      sheets.push({
+        sheetName: name,
+        matchScore: 0,
+        fieldsFound: 0,
+        fieldsTotal: 6,
+        detectedColumns: {},
+        detectedStartRow: 2,
+        headerRow: -1,
+        reasoning: ['✗ Nebyl nalezen řádek s hlavičkami'],
+        confidence: 'low',
+      });
     }
   }
 
-  // Bonus points for code pattern match
-  if (analysis.codePattern !== 'unknown') {
-    if (template.metadata.type === analysis.codePattern + '-standard') {
-      matchScore += 10;
-      reasoning.push(`✓ Typ kódu: ${analysis.codePattern.toUpperCase()}`);
-    }
+  // Check if all sheets have same structure
+  const allSameStructure = sheets.length > 1 && sheets.every(s => {
+    const first = sheets[0];
+    return s.fieldsFound === first.fieldsFound &&
+      JSON.stringify(s.detectedColumns) === JSON.stringify(first.detectedColumns) &&
+      s.detectedStartRow === first.detectedStartRow;
+  });
+
+  // Build summary
+  let summary: string;
+  if (sheets.length === 0) {
+    summary = 'Žádné listy k analýze';
+  } else if (sheets.length === 1) {
+    const s = sheets[0];
+    summary = `${s.sheetName}: ${s.fieldsFound}/6 polí`;
+  } else if (allSameStructure) {
+    summary = `Všechny listy mají stejnou strukturu ✓ (${sheets[0].fieldsFound}/6)`;
+  } else {
+    summary = sheets.map(s =>
+      `${s.sheetName}: ${s.confidence === 'high' ? '✓' : s.confidence === 'medium' ? '⚠' : '✗'} (${s.fieldsFound}/6${s.fieldsFound < 4 ? ', nutná ruční konfigurace' : ''})`
+    ).join(' | ');
   }
 
-  // Determine confidence level
-  let confidence: 'high' | 'medium' | 'low';
-  if (matchScore >= 75) confidence = 'high';
-  else if (matchScore >= 50) confidence = 'medium';
-  else confidence = 'low';
-
-  return {
-    template,
-    matchScore: Math.min(matchScore, 100),
-    confidence,
-    detectedColumns,
-    detectedStartRow: analysis.dataStartRow,
-    reasoning,
-  };
-}
-
-/**
- * Find column by keywords
- */
-function findColumnByKeywords(
-  headers: Map<string, string>,
-  keywords: string[]
-): string | null {
-  for (const [col, header] of headers.entries()) {
-    const lowerHeader = header.toLowerCase();
-
-    for (const keyword of keywords) {
-      if (lowerHeader.includes(keyword.toLowerCase())) {
-        return col;
-      }
-    }
-  }
-
-  return null;
+  return { sheets, allSameStructure, summary };
 }
 
 /**
@@ -255,4 +418,25 @@ export function applyDetectedConfig(
       ...result.detectedColumns,
     } as ColumnMapping,
   };
+}
+
+// ─── Legacy compat ──────────────────────────────────────────────────────────
+
+/**
+ * Code pattern detection (used by RawExcelViewer)
+ */
+const CODE_PATTERNS = {
+  urs: /^\d{5,6}$/,
+  ursDots: /^\d{2,3}\.\d{2,3}\.\d{2,3}$/,
+  otskp: /^[A-Z]\d{5,}$/,
+  rts: /^\d{3,4}-\d{3,4}$/,
+};
+
+export function detectCodePattern(value: string): 'urs' | 'otskp' | 'rts' | 'unknown' {
+  if (!value) return 'unknown';
+  const trimmed = value.trim();
+  if (CODE_PATTERNS.otskp.test(trimmed)) return 'otskp';
+  if (CODE_PATTERNS.rts.test(trimmed)) return 'rts';
+  if (CODE_PATTERNS.urs.test(trimmed) || CODE_PATTERNS.ursDots.test(trimmed)) return 'urs';
+  return 'unknown';
 }

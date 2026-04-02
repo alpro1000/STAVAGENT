@@ -58,7 +58,9 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
+  const [dropdownFlip, setDropdownFlip] = useState(false); // true = open upward
   const roleMenuRef = useRef<HTMLDivElement>(null);
+  const roleButtonRef = useRef<HTMLButtonElement>(null);
 
   // Modal resize state
   const [modalSize, setModalSize] = useState({ width: 550, height: 500 });
@@ -160,7 +162,15 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
       {/* Role dropdown - compact, LIGHT theme */}
       <div className="relative" ref={roleMenuRef}>
         <button
-          onClick={() => setShowRoleMenu(!showRoleMenu)}
+          ref={roleButtonRef}
+          onClick={() => {
+            if (!showRoleMenu && roleButtonRef.current) {
+              const rect = roleButtonRef.current.getBoundingClientRect();
+              const spaceBelow = window.innerHeight - rect.bottom;
+              setDropdownFlip(spaceBelow < 130); // ~120px for 3 options + padding
+            }
+            setShowRoleMenu(!showRoleMenu);
+          }}
           title={`Role: ${ROLE_LABELS[currentRole]}`}
           className="px-1 py-0.5 rounded text-xs font-medium transition-colors flex items-center gap-0.5"
           style={{
@@ -173,7 +183,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
         {showRoleMenu && (
           <div
-            className="absolute left-0 top-full mt-1 py-1 min-w-[120px] border rounded-lg z-50"
+            className={`absolute left-0 py-1 min-w-[120px] border rounded-lg z-50 ${dropdownFlip ? 'bottom-full mb-1' : 'top-full mt-1'}`}
             style={{
               backgroundColor: LIGHT.panelBg,
               borderColor: LIGHT.border,
