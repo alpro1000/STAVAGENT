@@ -2,7 +2,8 @@
  * PositionsTable - Main table with editable fields
  */
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { Component, useState, useMemo, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
 import { Building2, FileText, Trash2, PlusCircle, ChevronDown, ChevronRight, Lock } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useQueryClient } from '@tanstack/react-query';
@@ -21,7 +22,40 @@ import CustomWorkModal from './CustomWorkModal';
 // FormworkCalculatorModal removed — replaced by /planner route
 // import FormworkCalculatorModal from './FormworkCalculatorModal';
 
-export default function PositionsTable() {
+/** Error boundary to prevent white screen crashes */
+class PositionsTableErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null as Error | null };
+  static getDerivedStateFromError(error: Error) { return { error }; }
+  componentDidCatch(error: Error, info: React.ErrorInfo) {
+    console.error('[PositionsTable] Render crash:', error, info.componentStack);
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
+          <h3 style={{ margin: 0, color: 'var(--danger, #dc3545)' }}>Chyba zobrazení</h3>
+          <p className="u-text-muted" style={{ maxWidth: '500px', textAlign: 'center', fontFamily: 'monospace', fontSize: '12px' }}>
+            {this.state.error.message}
+          </p>
+          <button className="c-btn" onClick={() => { this.setState({ error: null }); window.location.reload(); }}>
+            Obnovit stránku
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+export default function PositionsTableWithBoundary() {
+  return (
+    <PositionsTableErrorBoundary>
+      <PositionsTableInner />
+    </PositionsTableErrorBoundary>
+  );
+}
+
+function PositionsTableInner() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
   const { isLoading, isError, error, updatePositions, deletePosition } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
@@ -485,7 +519,7 @@ export default function PositionsTable() {
               onClick={() => togglePart(partName)}
               style={{ cursor: 'pointer', background: 'var(--data-surface-alt)' }}
             >
-              <span className="u-text-bold">{partPositions[0]?.item_name || partName}</span>
+              <span className="u-text-bold">{String(partPositions[0]?.item_name || partName)}</span>
               <div className="u-flex u-gap-md" style={{ alignItems: 'center' }}>
                 <span className="u-text-muted">{isExpanded ? <ChevronDown size={14} className="inline" /> : <ChevronRight size={14} className="inline" />} {partPositions.length} pozic</span>
                 {!isLocked && (
