@@ -373,11 +373,26 @@ export async function getVzStats() {
   const db = await getDatabase();
   await ensureVzFields(db);
 
+  const safeCount = async (sql) => {
+    try {
+      return await db.get(sql);
+    } catch {
+      return { count: 0 };
+    }
+  };
+  const safeAll = async (sql) => {
+    try {
+      return await db.all(sql);
+    } catch {
+      return [];
+    }
+  };
+
   const [vzTotal, sourceTotal, enriched, cpvBreakdown] = await Promise.all([
-    db.get('SELECT COUNT(*) as count FROM vz_metadata'),
-    db.get('SELECT COUNT(*) as count FROM rozpocet_source'),
-    db.get('SELECT COUNT(*) as count FROM rozpocet_source WHERE cpv_hlavni IS NOT NULL'),
-    db.all(
+    safeCount('SELECT COUNT(*) as count FROM vz_metadata'),
+    safeCount('SELECT COUNT(*) as count FROM rozpocet_source'),
+    safeCount('SELECT COUNT(*) as count FROM rozpocet_source WHERE cpv_hlavni IS NOT NULL'),
+    safeAll(
       `SELECT cpv_hlavni as cpv, COUNT(*) as count
        FROM rozpocet_source
        WHERE cpv_hlavni IS NOT NULL
