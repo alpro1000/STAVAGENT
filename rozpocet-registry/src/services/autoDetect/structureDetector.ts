@@ -440,3 +440,86 @@ export function detectCodePattern(value: string): 'urs' | 'otskp' | 'rts' | 'unk
   if (CODE_PATTERNS.urs.test(trimmed) || CODE_PATTERNS.ursDots.test(trimmed)) return 'urs';
   return 'unknown';
 }
+
+// ─── Per-sheet dataStartRow detection ───────────────────────────────────────
+
+/** Valid MJ values in Czech BOQ files */
+const MJ_VALUES = new Set([
+  'm', 'm2', 'm3', 'ks', 'kg', 't', 'bm', 'kpl', 'hod', 'soubor',
+  'km', 'l', 'kus', 'den', 'tis', 'mj',
+]);
+
+/** Code pattern: 6+ digits, optionally prefixed with D/M/K/PP */
+const DATA_CODE_RE = /^(?:[DMKP]{0,2})?\d{5,}$/;
+
+/**
+ * Detect dataStartRow for a single sheet using heuristic:
+ * Find first row that has both a cell looking like a position code (6+ digits)
+ * AND a cell looking like MJ (m, m2, m3, ks, etc.)
+ * The row above is the last header row → dataStartRow = that row (1-based).
+ *
+ * Falls back to detectHeaderAndColumns() if heuristic fails.
+ */
+export function detectSheetDataStartRow(
+  workbook: XLSX.WorkBook,
+  sheetName: string
+): { dataStartRow: number; confidence: 'high' | 'medium' | 'low'; reason: string } {
+  const sheet = workbook.Sheets[sheetName];
+  if (!sheet) return { dataStartRow: 2, confidence: 'low', reason: 'List nenalezen' };
+
+  const range = XLSX.utils.decode_range(sheet['!ref'] || 'A1');
+  const maxRow = Math.min(range.e.r, 30);
+  const maxCol = Math.min(range.e.c, 20);
+
+  // Scan rows looking for first data row (has code + MJ)
+  for (let row = 0; row <= maxRow; row++) {
+    let hasCode = false;
+    let hasMJ = false;
+
+    for (let col = 0; col <= maxCol; col++) {
+      const cellAddr = XLSX.utils.encode_cell({ r: row, c: col });
+      const cell = sheet[cellAddr];
+      const value = (cell?.v?.toString() || '').trim();
+      if (!value) continue;
+
+      if (DATA_CODE_RE.test(value)) hasCode = true;
+      if (MJ_VALUES.has(value.toLowerCase())) hasMJ = true;
+
+      if (hasCode && hasMJ) {
+        return {
+          dataStartRow: row + 1, // 1-based
+          confidence: 'high',
+          reason: `Řádek ${row + 1}: nalezen kód + MJ`,
+        };
+      }
+    }
+  }
+
+  // Fallback: use header detection
+  const detection = detectHeaderAndColumns(sheet);
+  if (detection && detection.fieldsFound >= 3) {
+    return {
+      dataStartRow: detection.dataStartRow,
+      confidence: 'medium',
+      reason: `Řádek ${detection.dataStartRow}: podle hlavičky (${detection.fieldsFound}/6 polí)`,
+    };
+  }
+
+  return { dataStartRow: 2, confidence: 'low', reason: 'Nepodařilo se určit automaticky' };
+}
+
+/**
+ * Detect dataStartRow for all sheets in a workbook.
+ * Returns a map: sheetName → { dataStartRow, confidence, reason }
+ */
+export function detectAllSheetsStartRows(
+  workbook: XLSX.WorkBook,
+  sheetNames: string[]
+): Record<string, { dataStartRow: number; confidence: 'high' | 'medium' | 'low'; reason: string }> {
+  const result: Record<string, { dataStartRow: number; confidence: 'high' | 'medium' | 'low'; reason: string }> = {};
+  for (const name of sheetNames) {
+    result[name] = detectSheetDataStartRow(workbook, name);
+  }
+  return result;
+}
+

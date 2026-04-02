@@ -52,6 +52,8 @@ interface RegistryState {
   removeProject: (projectId: string) => void;
   removeAllProjects: () => void;
   updateProject: (projectId: string, updates: Partial<Omit<Project, 'sheets'>>) => void;
+  /** Replace all sheets in a project (reimport). Preserves manual skupiny by item kod. */
+  replaceProjectSheets: (projectId: string, newSheets: Sheet[]) => void;
   setSelectedProject: (projectId: string | null) => void;
   getProject: (projectId: string) => Project | undefined;
 
@@ -185,6 +187,43 @@ export const useRegistryStore = create<RegistryState>()(
             p.id === projectId ? { ...p, ...updates } : p
           ),
         }));
+      },
+
+      replaceProjectSheets: (projectId, newSheets) => {
+        set((state) => {
+          const project = state.projects.find(p => p.id === projectId);
+          if (!project) return state;
+
+          // Build map of manual skupiny from old items (by kod)
+          const manualSkupinyByKod = new Map<string, string>();
+          for (const sheet of project.sheets) {
+            for (const item of sheet.items) {
+              if (item.skupina && item.kod) {
+                manualSkupinyByKod.set(item.kod, item.skupina);
+              }
+            }
+          }
+
+          // Apply preserved skupiny to new items
+          const patchedSheets = newSheets.map(sheet => ({
+            ...sheet,
+            items: sheet.items.map(item => {
+              if (!item.skupina && item.kod && manualSkupinyByKod.has(item.kod)) {
+                return { ...item, skupina: manualSkupinyByKod.get(item.kod)! };
+              }
+              return item;
+            }),
+          }));
+
+          return {
+            projects: state.projects.map(p =>
+              p.id === projectId
+                ? { ...p, sheets: patchedSheets, importedAt: new Date() }
+                : p
+            ),
+            selectedSheetId: patchedSheets.length > 0 ? patchedSheets[0].id : null,
+          };
+        });
       },
 
       setSelectedProject: (projectId) => {

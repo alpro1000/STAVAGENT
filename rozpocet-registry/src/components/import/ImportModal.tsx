@@ -3,19 +3,19 @@
  * Modal pro import Excel souborů
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ResizableModal } from '../ui/ResizableModal';
 import { FileUploader } from './FileUploader';
 import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
-import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
+import { detectExcelStructure, detectAllSheetsStartRows, type DetectionResult } from '../../services/autoDetect/structureDetector';
 import { classifyItems, applyClassificationsWithCascade } from '../../services/classification/classificationService';
 import { classifyRows } from '../../services/classification/rowClassificationService';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
-import { storeOriginalFile } from '../../services/originalFileStore';
+import { storeOriginalFile, getOriginalFile } from '../../services/originalFileStore';
 import { saveProjectMapping } from '../../services/excel/mappingStore';
 import { createProjectMapping } from '../../services/excel/excelMapper';
 import type { Project, Sheet } from '../../types';
@@ -27,12 +27,14 @@ import { RawExcelViewer } from './RawExcelViewer';
 interface ImportModalProps {
   isOpen: boolean;
   onClose: () => void;
+  /** Reimport mode: pre-fill with existing project data */
+  reimportProject?: Project;
 }
 
 type Step = 'upload' | 'template' | 'custom-config' | 'sheet' | 'parsing' | 'raw-view' | 'success';
 
-export function ImportModal({ isOpen, onClose }: ImportModalProps) {
-  const { addProject, addTemplate } = useRegistryStore();
+export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalProps) {
+  const { addProject, addTemplate, replaceProjectSheets } = useRegistryStore();
 
   const [step, setStep] = useState<Step>('upload');
   const [file, setFile] = useState<File | null>(null);
@@ -65,8 +67,88 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   // Auto-classification state
   const [autoClassify, setAutoClassify] = useState(true); // enabled by default
 
+  // Per-sheet dataStartRow overrides: sheetName → { row, confidence, reason }
+  const [perSheetStartRows, setPerSheetStartRows] = useState<
+    Record<string, { dataStartRow: number; confidence: 'high' | 'medium' | 'low'; reason: string }>
+  >({});
+
   // Store original file data for "return to original" export
   const originalFileData = useRef<ArrayBuffer | null>(null);
+
+  // Auto-detect per-sheet start rows when workbook & sheet selection changes
+  const runPerSheetDetection = (wb: any, sheets: string[]) => {
+    if (!wb || sheets.length === 0) return;
+    const detected = detectAllSheetsStartRows(wb, sheets);
+    setPerSheetStartRows(detected);
+  };
+
+  // Reimport mode: load original file and pre-fill config
+  const isReimport = !!reimportProject;
+
+  useEffect(() => {
+    if (!reimportProject || !isOpen) return;
+
+    (async () => {
+      try {
+        const originalFile = await getOriginalFile(reimportProject.id);
+        if (!originalFile) {
+          setError('Originální soubor nenalezen. Reimport není možný.');
+          return;
+        }
+
+        originalFileData.current = originalFile.fileData;
+        const wb = await readExcelFile(new File(
+          [originalFile.fileData],
+          originalFile.fileName,
+          { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+        ));
+        const sheets = getSheetNames(wb);
+
+        setFile(new File([originalFile.fileData], originalFile.fileName));
+        setWorkbook(wb);
+        setSheetNames(sheets);
+
+        // Pre-fill from existing project config
+        const existingSheetNames = reimportProject.sheets.map(s => s.name);
+        const availableSheets = sheets.filter(s => existingSheetNames.includes(s));
+        const sheetsToSelect = availableSheets.length > 0 ? availableSheets : sheets;
+
+        if (sheetsToSelect.length > 1) {
+          setImportMode('multiple');
+          setSelectedSheets(sheetsToSelect);
+        } else {
+          setImportMode('single');
+          setSelectedSheet(sheetsToSelect[0] || sheets[0]);
+        }
+
+        // Pre-fill per-sheet start rows from existing configs
+        const existingStartRows: Record<string, { dataStartRow: number; confidence: 'high' | 'medium' | 'low'; reason: string }> = {};
+        for (const sheet of reimportProject.sheets) {
+          existingStartRows[sheet.name] = {
+            dataStartRow: sheet.config?.dataStartRow || 2,
+            confidence: 'high',
+            reason: 'Z předchozího importu',
+          };
+        }
+        // Detect for any new sheets not in existing config
+        const detected = detectAllSheetsStartRows(wb, sheets);
+        setPerSheetStartRows({ ...detected, ...existingStartRows });
+
+        // Use config from first sheet as template
+        if (reimportProject.sheets[0]?.config) {
+          const existingConfig = reimportProject.sheets[0].config;
+          setSelectedTemplate({
+            ...getDefaultTemplate(),
+            config: existingConfig,
+          });
+        }
+
+        setStep('sheet');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Chyba při načítání souboru pro reimport');
+      }
+    })();
+  }, [reimportProject, isOpen]);
 
   const handleFileSelect = async (selectedFile: File) => {
     setError(null);
@@ -188,13 +270,17 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     setIsLoading(true);
 
     try {
-      const projectId = uuidv4();
+      const projectId = isReimport ? reimportProject!.id : uuidv4();
       const sheetId = uuidv4();
+
+      // Use per-sheet start row if available
+      const sheetStartRow = perSheetStartRows[selectedSheet]?.dataStartRow;
 
       const result = await parseExcelSheet(workbook, {
         config: {
           ...selectedTemplate.config,
           sheetName: selectedSheet,
+          ...(sheetStartRow ? { dataStartRow: sheetStartRow } : {}),
         },
         fileName: file.name,
         projectId,
@@ -265,7 +351,11 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         sheets: [sheet],
       };
 
-      addProject(project);
+      if (isReimport) {
+        replaceProjectSheets(projectId, [sheet]);
+      } else {
+        addProject(project);
+      }
 
       // Store original file in IndexedDB for "return to original" export
       if (originalFileData.current) {
@@ -300,7 +390,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     setIsLoading(true);
 
     try {
-      const projectId = uuidv4(); // ONE project for all sheets
+      const projectId = isReimport ? reimportProject!.id : uuidv4();
       const sheets: Sheet[] = [];
       const allWarnings: string[] = [];
       let errorCount = 0;
@@ -310,11 +400,16 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         try {
           const sheetId = uuidv4();
 
+          // Use per-sheet dataStartRow if available
+          const sheetStartRow = perSheetStartRows[sheetName]?.dataStartRow;
+          const sheetConfig = {
+            ...selectedTemplate.config,
+            sheetName,
+            ...(sheetStartRow ? { dataStartRow: sheetStartRow } : {}),
+          };
+
           const result = await parseExcelSheet(workbook, {
-            config: {
-              ...selectedTemplate.config,
-              sheetName,
-            },
+            config: sheetConfig,
             fileName: file.name,
             projectId,
           });
@@ -367,10 +462,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               ...result.metadata,
               sheetName, // Store sheet name in metadata
             },
-            config: {
-              ...selectedTemplate.config,
-              sheetName,
-            },
+            config: sheetConfig,
           };
 
           sheets.push(sheet);
@@ -399,7 +491,12 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         sheets,
       };
 
-      addProject(project); // Single call
+      if (isReimport) {
+        // Reimport: replace sheets, preserve manual skupiny
+        replaceProjectSheets(projectId, sheets);
+      } else {
+        addProject(project);
+      }
 
       // Store original file in IndexedDB for "return to original" export
       if (originalFileData.current) {
@@ -442,7 +539,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     <ResizableModal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Import rozpočtu"
+      title={isReimport ? 'Reimport rozpočtu' : 'Import rozpočtu'}
       defaultWidth={1200}
       defaultHeight={800}
       minWidth={800}
@@ -793,6 +890,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                       setImportMode('multiple');
                       setSelectedSheet('');
                       setSelectedSheets(sheetNames); // Select all by default
+                      runPerSheetDetection(workbook, sheetNames);
                     }}
                     className="w-4 h-4 text-[var(--accent-orange)]"
                   />
@@ -863,6 +961,51 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                   ))}
                 </div>
 
+                {/* Per-sheet dataStartRow controls */}
+                {Object.keys(perSheetStartRows).length > 0 && selectedSheets.length > 0 && (
+                  <div className="mt-3 p-3 bg-[var(--data-surface)] rounded border border-[var(--divider)]">
+                    <label className="block text-xs font-semibold mb-2 text-[var(--text-secondary)]">
+                      Řádek začátku dat (per-sheet):
+                    </label>
+                    <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                      {selectedSheets.map(name => {
+                        const info = perSheetStartRows[name];
+                        if (!info) return null;
+                        return (
+                          <div key={name} className="flex items-center gap-2 text-sm">
+                            <span className="flex-1 truncate text-[var(--text-primary)]" title={name}>{name}</span>
+                            <input
+                              type="number"
+                              min={1}
+                              value={info.dataStartRow}
+                              onChange={(e) => {
+                                const val = parseInt(e.target.value, 10);
+                                if (val >= 1) {
+                                  setPerSheetStartRows(prev => ({
+                                    ...prev,
+                                    [name]: { ...prev[name], dataStartRow: val, confidence: 'high', reason: 'Ručně nastaveno' },
+                                  }));
+                                }
+                              }}
+                              className="w-16 px-2 py-1 text-xs bg-[var(--panel-clean)] border border-[var(--divider)] rounded text-center focus:border-[var(--accent-orange)] focus:outline-none"
+                            />
+                            <span className={`text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap ${
+                              info.confidence === 'high' ? 'bg-green-100 text-green-700' :
+                              info.confidence === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                              'bg-red-100 text-red-700'
+                            }`}>
+                              {info.confidence === 'high' ? '✓' : info.confidence === 'medium' ? '⚠' : '✗'}
+                            </span>
+                            <span className="text-[10px] text-[var(--text-muted)] hidden sm:inline" title={info.reason}>
+                              {info.reason.length > 30 ? info.reason.slice(0, 30) + '…' : info.reason}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* Apply template to all sheets */}
                 <div className="flex items-start gap-3 p-3 bg-blue-500/10 rounded border border-blue-500/30">
                   <input
@@ -927,9 +1070,9 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 className="btn btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading && <Loader2 size={16} className="animate-spin" />}
-                {importMode === 'single'
-                  ? 'Importovat'
-                  : `Importovat ${selectedSheets.length} listů`}
+                {isReimport
+                  ? (importMode === 'single' ? 'Reimportovat' : `Reimportovat ${selectedSheets.length} listů`)
+                  : (importMode === 'single' ? 'Importovat' : `Importovat ${selectedSheets.length} listů`)}
               </button>
             </div>
           </div>
