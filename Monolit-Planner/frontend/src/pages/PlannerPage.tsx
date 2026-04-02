@@ -517,6 +517,9 @@ export default function PlannerPage() {
   const [scenarios, setScenarios] = useState<ScenarioSnapshot[]>(() => loadFromLS(LS_SCENARIOS_KEY, []));
   const [scenarioSeq, setScenarioSeq] = useState(() => loadFromLS(LS_SCENARIO_SEQ_KEY, 0));
 
+  // ── Set page title ──
+  useEffect(() => { document.title = 'Kalkulátor betonáže | StavAgent'; }, []);
+
   // ── Persist to localStorage ──
   useEffect(() => { localStorage.setItem(LS_FORM_KEY, JSON.stringify(form)); }, [form]);
   useEffect(() => { localStorage.setItem(LS_SCENARIOS_KEY, JSON.stringify(scenarios)); }, [scenarios]);
@@ -842,7 +845,7 @@ export default function PlannerPage() {
           <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             {/* ── Intro ── */}
             <h3 style={{ margin: '0 0 6px', fontSize: 16, color: 'var(--r0-slate-800)' }}>
-              Plánovač elementu — Deterministický kalkulátor betonáže
+              Kalkulátor betonáže — Deterministický výpočet monolitických konstrukcí
             </h3>
             <p style={{ margin: '0 0 16px', fontSize: 14, color: 'var(--r0-slate-600)' }}>
               Cíl: <strong>co nejpřesněji spočítat dobu a náklady betonáže</strong> monolitické
