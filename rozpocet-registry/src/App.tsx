@@ -19,7 +19,7 @@ import { useRegistryStore } from './stores/registryStore';
 import { loadFromBackend, mergeProjects, debouncedPushToBackend } from './services/backendSync';
 import { setSuppressAutoSync } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
-import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
+import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
 import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows, Building2, ClipboardList } from 'lucide-react';
@@ -767,6 +767,16 @@ function App() {
     }
   };
 
+  const handleExportToOriginalWithSkupiny = async () => {
+    if (!selectedProject) return;
+    setIsExportMenuOpen(false);
+    const result = await exportToOriginalFileWithSkupiny(selectedProject);
+    if (!result.success) {
+      console.error('Export to original with skupiny failed:', result.errors);
+      alert(`Chyba: ${result.errors.join('\n')}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-bg-primary overflow-x-hidden">
       {/* Header */}
@@ -897,6 +907,16 @@ function App() {
                         <RotateCcw size={14} />
                         Vrátit do původního
                         <span className="text-xs text-text-muted ml-auto">(ceny)</span>
+                      </button>
+                      <button
+                        onMouseDown={(e) => { e.preventDefault(); handleExportToOriginalWithSkupiny(); }}
+                        disabled={!hasOriginalFile}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                        title={hasOriginalFile ? 'Zapsat ceny + skupiny zpět do originálního souboru' : 'Originální soubor není k dispozici'}
+                      >
+                        <RotateCcw size={14} />
+                        Vrátit do původního
+                        <span className="text-xs text-text-muted ml-auto">(ceny + skupiny)</span>
                       </button>
                     </div>
                   )}

@@ -912,6 +912,219 @@ export async function exportToOriginalFile(
 }
 
 /**
+ * Convert 1-based column number to Excel column letter(s): 1→A, 26→Z, 27→AA
+ */
+function colNumToLetter(col: number): string {
+  let s = '';
+  let n = col;
+  while (n > 0) {
+    n--;
+    s = String.fromCharCode(65 + (n % 26)) + s;
+    n = Math.floor(n / 26);
+  }
+  return s;
+}
+
+/**
+ * Parse column letter(s) to 1-based number: A→1, Z→26, AA→27
+ */
+function colLetterToNum(letters: string): number {
+  let n = 0;
+  for (let i = 0; i < letters.length; i++) {
+    n = n * 26 + (letters.charCodeAt(i) - 64);
+  }
+  return n;
+}
+
+/**
+ * Add a string cell (inline string) to a row in sheet XML.
+ * Uses t="inlineStr" to avoid modifying the shared strings table.
+ */
+function addInlineStringCell(
+  doc: Document,
+  rowNum: number,
+  colLetter: string,
+  value: string
+): boolean {
+  const rows = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'row');
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i].getAttribute('r') === String(rowNum)) {
+      const newCell = doc.createElementNS(SPREADSHEET_NS, 'c');
+      newCell.setAttribute('r', `${colLetter}${rowNum}`);
+      newCell.setAttribute('t', 'inlineStr');
+      const isElem = doc.createElementNS(SPREADSHEET_NS, 'is');
+      const tElem = doc.createElementNS(SPREADSHEET_NS, 't');
+      tElem.textContent = value;
+      isElem.appendChild(tElem);
+      newCell.appendChild(isElem);
+      rows[i].appendChild(newCell);
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Find the maximum column number used across all cells in a sheet XML.
+ * Scans all <c r="XX1"> attributes and extracts column letters.
+ */
+function findMaxColumn(doc: Document): number {
+  let maxCol = 0;
+  const cells = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'c');
+  for (let i = 0; i < cells.length; i++) {
+    const ref = cells[i].getAttribute('r') || '';
+    const match = ref.match(/^([A-Z]+)/);
+    if (match) {
+      const col = colLetterToNum(match[1]);
+      if (col > maxCol) maxCol = col;
+    }
+  }
+  return maxCol;
+}
+
+/**
+ * Update the <dimension> element in sheet XML to include the new column.
+ */
+function updateDimension(doc: Document, newColLetter: string): void {
+  const dims = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'dimension');
+  if (dims.length > 0) {
+    const ref = dims[0].getAttribute('ref') || '';
+    // ref is like "A1:G100" — replace the end column
+    const match = ref.match(/^([A-Z]+\d+):([A-Z]+)(\d+)$/);
+    if (match) {
+      dims[0].setAttribute('ref', `${match[1]}:${newColLetter}${match[3]}`);
+    }
+  }
+}
+
+/**
+ * Export original file with skupiny column added.
+ * Same as exportToOriginalFile but appends a "Skupina" column after the last data column.
+ */
+export async function exportToOriginalFileWithSkupiny(
+  project: Project
+): Promise<ReturnToOriginalResult> {
+  const result: ReturnToOriginalResult = {
+    success: false,
+    updatedRows: 0,
+    totalRows: 0,
+    errors: [],
+  };
+
+  const originalFile = await getOriginalFile(project.id);
+  if (!originalFile) {
+    result.errors.push('Originální soubor nebyl nalezen. Soubor musí být importován znovu.');
+    return result;
+  }
+
+  try {
+    const zip = await JSZip.loadAsync(originalFile.fileData);
+
+    const workbookFile = zip.file('xl/workbook.xml');
+    const relsFile = zip.file('xl/_rels/workbook.xml.rels');
+    if (!workbookFile || !relsFile) {
+      result.errors.push('Neplatný formát souboru xlsx.');
+      return result;
+    }
+    const workbookXml = await workbookFile.async('string');
+    const relsXml = await relsFile.async('string');
+    const sheetMap = parseSheetMapping(workbookXml, relsXml);
+
+    // Also patch prices (same as "Vrátit do původního")
+    const firstSheet = project.sheets[0];
+    const config = firstSheet?.config;
+    const cenaJedColLetter = (config?.columns?.cenaJednotkova || '').toUpperCase();
+
+    // Build skupina map and price map per sheet
+    const parser = new DOMParser();
+    const serializer = new XMLSerializer();
+
+    for (const sheet of project.sheets) {
+      const sheetPath = sheetMap.get(sheet.name);
+      if (!sheetPath) continue;
+
+      const fullPath = `xl/${sheetPath}`;
+      const sheetFile = zip.file(fullPath);
+      if (!sheetFile) continue;
+
+      const sheetXml = await sheetFile.async('string');
+      const doc = parser.parseFromString(sheetXml, 'application/xml');
+
+      const parseError = doc.getElementsByTagName('parsererror');
+      if (parseError.length > 0) {
+        result.errors.push(`Chyba parsování XML listu "${sheet.name}".`);
+        continue;
+      }
+
+      // Find the last used column to place "Skupina" after it
+      const maxCol = findMaxColumn(doc);
+      const skupinaCol = maxCol + 1;
+      const skupinaColLetter = colNumToLetter(skupinaCol);
+
+      // Patch prices (same logic as exportToOriginalFile)
+      if (cenaJedColLetter) {
+        for (const item of sheet.items) {
+          const rowNum = item.source?.rowStart;
+          if (rowNum != null && item.cenaJednotkova != null && item.cenaJednotkova > 0) {
+            const cellRef = `${cenaJedColLetter}${rowNum}`;
+            if (patchCellInDoc(doc, cellRef, item.cenaJednotkova, rowNum)) {
+              result.updatedRows++;
+            }
+            result.totalRows++;
+          }
+        }
+      }
+
+      // Add "Skupina" header in the row before data starts
+      const sheetConfig = sheet.config;
+      const dataStartRow = sheetConfig?.dataStartRow || 1;
+      const headerRow = dataStartRow > 1 ? dataStartRow - 1 : 1;
+      addInlineStringCell(doc, headerRow, skupinaColLetter, 'Skupina');
+
+      // Add skupina values for each position row
+      for (const item of sheet.items) {
+        const rowNum = item.source?.rowStart;
+        if (rowNum == null) continue;
+        const skupina = item.skupina;
+        if (skupina) {
+          addInlineStringCell(doc, rowNum, skupinaColLetter, skupina);
+        }
+      }
+
+      // Update dimension to include new column
+      updateDimension(doc, skupinaColLetter);
+
+      const patchedXml = serializer.serializeToString(doc);
+      zip.file(fullPath, patchedXml);
+    }
+
+    // Generate and download
+    const blob = await zip.generateAsync({
+      type: 'blob',
+      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 6 },
+    });
+
+    const fileName = originalFile.fileName.replace(/\.[^.]+$/, '') + '_skupiny.xlsx';
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    result.success = true;
+  } catch (err) {
+    result.errors.push(`Chyba při zpracování souboru: ${err instanceof Error ? err.message : String(err)}`);
+  }
+
+  return result;
+}
+
+/**
  * Check if original file is available for export
  */
 export async function canExportToOriginal(projectId: string): Promise<boolean> {
