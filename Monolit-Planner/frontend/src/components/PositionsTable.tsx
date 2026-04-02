@@ -415,7 +415,7 @@ export default function PositionsTable() {
         <div style={{ fontSize: '48px', opacity: 0.5 }}>⚠️</div>
         <h3 className="u-text-bold" style={{ margin: 0, color: 'var(--danger, #dc3545)' }}>Chyba při načítání</h3>
         <p className="u-text-muted" style={{ maxWidth: '400px', textAlign: 'center' }}>
-          {(error as Error)?.message || 'Nepodařilo se načíst pozice. Zkontrolujte připojení k serveru.'}
+          {error instanceof Error ? error.message : typeof error === 'string' ? error : 'Nepodařilo se načíst pozice. Zkontrolujte připojení k serveru.'}
         </p>
       </div>
     );
