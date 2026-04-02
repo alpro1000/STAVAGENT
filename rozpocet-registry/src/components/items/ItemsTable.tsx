@@ -104,7 +104,7 @@ export function ItemsTable({
   showOnlyWorkItems = false,
   conflictMap,
 }: ItemsTableProps) {
-  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny } = useRegistryStore();
+  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny } = useRegistryStore();
 
   // Undo/Redo
   const { undoStack, redoStack } = useUndoStore();

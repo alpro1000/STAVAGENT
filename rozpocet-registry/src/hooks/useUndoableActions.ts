@@ -117,7 +117,6 @@ export function useUndoableActions(projectId: string, sheetId: string) {
     }
 
     if (changes.length > 0) {
-      const targetItem = items.find(i => i.id === itemId);
       const desc = description ?? (
         skupina
           ? `Skupina → ${skupina}${changes.length > 1 ? ` (${changes.length} položek)` : ''}`
