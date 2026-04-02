@@ -14,11 +14,20 @@ export default function KPIPanel() {
   // Get full bridge data for display
   const currentBridge = bridges.find(b => b.bridge_id === selectedBridge);
 
-  if (!selectedBridge || !headerKPI) {
+  if (!selectedBridge) {
     return (
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
         <div style={{ fontSize: '48px', opacity: 0.6 }}><BarChart3 size={48} /></div>
         <p className="u-text-muted">Vyberte objekt pro zobrazení KPI</p>
+      </div>
+    );
+  }
+
+  if (!headerKPI) {
+    return (
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
+        <div className="spinner" style={{ width: '32px', height: '32px' }}></div>
+        <p className="u-text-muted">Načítání KPI...</p>
       </div>
     );
   }

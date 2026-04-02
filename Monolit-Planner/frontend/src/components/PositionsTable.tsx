@@ -23,7 +23,7 @@ import CustomWorkModal from './CustomWorkModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
-  const { isLoading, updatePositions, deletePosition } = usePositions(selectedBridge);
+  const { isLoading, isError, error, updatePositions, deletePosition } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const queryClient = useQueryClient();
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
@@ -405,6 +405,18 @@ export default function PositionsTable() {
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
         <div className="spinner"></div>
         <p className="u-text-muted">Načítání pozic...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
+        <div style={{ fontSize: '48px', opacity: 0.5 }}>⚠️</div>
+        <h3 className="u-text-bold" style={{ margin: 0, color: 'var(--danger, #dc3545)' }}>Chyba při načítání</h3>
+        <p className="u-text-muted" style={{ maxWidth: '400px', textAlign: 'center' }}>
+          {(error as Error)?.message || 'Nepodařilo se načíst pozice. Zkontrolujte připojení k serveru.'}
+        </p>
       </div>
     );
   }
