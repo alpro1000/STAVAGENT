@@ -6,7 +6,7 @@
 
 import { create } from 'zustand';
 
-const MAX_UNDO = 50;
+export const MAX_UNDO = 50;
 
 export interface UndoChange {
   itemId: string;

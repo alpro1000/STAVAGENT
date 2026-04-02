@@ -7,7 +7,7 @@
 
 import { useCallback } from 'react';
 import { useRegistryStore } from '../stores/registryStore';
-import { useUndoStore, type UndoEntry, type UndoChange } from '../stores/undoStore';
+import { useUndoStore, MAX_UNDO, type UndoEntry, type UndoChange } from '../stores/undoStore';
 import type { ParsedItem } from '../types/item';
 
 /** Helper: find items in current sheet */
@@ -90,7 +90,7 @@ export function useUndoableActions(projectId: string, sheetId: string) {
     // Push back to undo without clearing redo (manual push)
     useUndoStore.setState((s) => {
       const stack = [...s.undoStack, entry];
-      if (stack.length > 50) stack.shift();
+      if (stack.length > MAX_UNDO) stack.shift();
       return { undoStack: stack };
     });
   }, [applyRedo]);

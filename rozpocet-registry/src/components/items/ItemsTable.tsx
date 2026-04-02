@@ -22,7 +22,7 @@ import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
 import { TOVButton, TOVModal } from '../tov';
-import { useUndoStore } from '../../stores/undoStore';
+import { useUndoStore, MAX_UNDO } from '../../stores/undoStore';
 import { useUndoableActions } from '../../hooks/useUndoableActions';
 import './ItemsTable.css';
 
@@ -1091,7 +1091,7 @@ export function ItemsTable({
             <Redo2 size={16} className="text-text-secondary" />
           </button>
           {undoStack.length > 0 && (
-            <span className="text-xs text-text-muted ml-1 tabular-nums">{undoStack.length}/50</span>
+            <span className="text-xs text-text-muted ml-1 tabular-nums">{undoStack.length}/{MAX_UNDO}</span>
           )}
         </div>
       </div>
