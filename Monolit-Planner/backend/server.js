@@ -148,13 +148,13 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Keep-Alive healthcheck (with secret key protection)
+// Keep-Alive healthcheck (doubles as Cloud Run health probe)
 app.get('/healthcheck', (req, res) => {
   const keepAliveKey = process.env.KEEP_ALIVE_KEY;
 
-  // If no key configured, disable endpoint
+  // If no key configured, serve as basic health probe (Cloud Run)
   if (!keepAliveKey) {
-    return res.status(404).json({ error: 'Not found' });
+    return res.json({ status: 'alive', service: 'monolit-planner' });
   }
 
   // Validate X-Keep-Alive-Key header

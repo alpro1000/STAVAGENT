@@ -545,18 +545,18 @@ async function runPhase5Migrations() {
     console.log('[PostgreSQL Migrations] Running Phase 5 migrations (Monolit-Registry Integration)...');
 
     if (USE_POSTGRES) {
-      try {
-        await db.exec(`
-          ALTER TABLE kiosk_links
-          ADD CONSTRAINT kiosk_links_portal_project_id_kiosk_type_key
-          UNIQUE (portal_project_id, kiosk_type);
-        `);
-        console.log('[Migration] ✓ kiosk_links UNIQUE constraint added');
-      } catch (error) {
-        if (error.message.includes('already exists')) {
-          console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
-        }
-      }
+      await db.exec(`
+        DO $$ BEGIN
+          IF NOT EXISTS (
+            SELECT 1 FROM pg_constraint WHERE conname = 'kiosk_links_portal_project_id_kiosk_type_key'
+          ) THEN
+            ALTER TABLE kiosk_links
+            ADD CONSTRAINT kiosk_links_portal_project_id_kiosk_type_key
+            UNIQUE (portal_project_id, kiosk_type);
+          END IF;
+        END $$;
+      `);
+      console.log('[Migration] ✓ kiosk_links UNIQUE constraint ensured');
     }
 
     const migrationPath = join(__dirname, 'migrations', 'add-unified-project-structure.sql');
