@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.5.0
-**Last Updated:** 2026-04-02
+**Version:** 4.6.0
+**Last Updated:** 2026-04-03
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -96,8 +96,9 @@ JWT auth (24h), 5 org roles, Stripe credits (fail-open), Data Pipeline admin, CO
 Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 
 ### 3. Monolit-Planner (Kiosk)
-Node.js/Express + React. **128 endpoints**, **484 tests**, **~33K LOC**.
-Structure: `shared/` (424 tests), `backend/` (60 tests), `frontend/`. Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **128 endpoints**, **548 tests**, **~33K LOC**.
+Structure: `shared/` (465 tests), `backend/` (83 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+**DB:** 44 tables. **Frontend:** PlannerPage (Part B) = 21 useState, NO AppContext. React Router v7.9.5, Vite 5.0.11.
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
 - **Element Planner:** 21 types (10 bridge + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
@@ -128,10 +129,10 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~80 | 1 file | ~25K |
-| Monolit-Planner | 128 | 484 | ~33K |
+| Monolit-Planner | 128 | 548 | ~33K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~16K |
-| **TOTAL** | **~388** | **678+** | **~145K** |
+| **TOTAL** | **~388** | **742+** | **~145K** |
 
 ---
 
@@ -212,7 +213,10 @@ VITE_DISABLE_AUTH=true  # local dev only
 | position_instance_id NULL | All portal_positions INSERTs must use `gen_random_uuid()` explicitly |
 | Registry auto-detect 0% | Keywords in `structureDetector.ts` FIELD_PATTERNS; normalize removes [CZK] |
 | klasifikator.stavagent.cz → Portal | Vercel Edge Middleware in `frontend/middleware.js` proxies by hostname |
-| Monolit white screen #310 | ErrorBoundary catches; check console for `componentStack`; likely object rendered as React child |
+| Monolit white screen #310 | ErrorBoundary deployed on PositionsTable+KPIPanel; check `componentStack` in console |
+| FK/constraint "already exists" | Portal schema+migrations use `DO $ IF NOT EXISTS $` guards; never bare ALTER TABLE |
+| Monolit /healthcheck 404 | Returns 200 without KEEP_ALIVE_KEY; only 404 on wrong key |
+| "Jen problémy" shows wrong data | BUG: `include_rfi=false` filters OUT rfi rows; should filter IN (inverted logic in positions.js:150) |
 | Monolit click no reaction | KPIPanel shows "Načítání KPI..." (not "Vyberte objekt") when bridge selected but API pending/failed |
 | Registry columns misaligned | `display:flex` on `<tr>`, `width: cell.column.getSize()` + `flexShrink:0` on each `<td>` |
 | Registry dropdown clipped | Must use `createPortal(…, document.body)` with `position:fixed`; scroll listener closes on scroll |
@@ -235,7 +239,9 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
+- [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
 - [ ] **P1: Debug Monolit React #310** — ErrorBoundary deployed, need `componentStack` from prod console to find exact object-as-child culprit
+- [ ] **P1: Fix portal_user_id type mismatch** — INTEGER in `bridges`, TEXT in `monolith_projects`
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
 - [ ] **P2: Test reimport** — import multi-sheet, edit mapping, reimport → skupiny preserved
 - [ ] **P2: Test auto-detect** — Komplet/OTSKP/AspeEsticon formats → ≥4/6 fields found
