@@ -355,9 +355,15 @@ CREATE TABLE IF NOT EXISTS org_members (
 
 -- FK from users.org_id → organizations.id
 -- Runs after CREATE TABLE pass, so organizations already exists.
--- Will error "already exists" on re-runs — caught by schema runner, safe to ignore.
-ALTER TABLE users ADD CONSTRAINT fk_users_org_id
-  FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE SET NULL;
+-- Uses DO block to avoid "already exists" errors in Cloud SQL logs.
+DO $$ BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'fk_users_org_id'
+  ) THEN
+    ALTER TABLE users ADD CONSTRAINT fk_users_org_id
+      FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE SET NULL;
+  END IF;
+END $$;
 
 CREATE INDEX IF NOT EXISTS idx_organizations_owner ON organizations(owner_id);
 CREATE INDEX IF NOT EXISTS idx_organizations_slug ON organizations(slug);
