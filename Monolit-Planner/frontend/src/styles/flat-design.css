@@ -1,0 +1,1082 @@
+/**
+ * Flat Design System — Stone Palette + DM Sans
+ * Monolit Planner Part A rewrite
+ *
+ * Replaces the old "Digital Concrete" neumorphism theme.
+ * Only Part A uses this; Part B (PlannerPage) keeps old styles.
+ */
+
+/* ============================================
+   FONTS — Bunny Fonts (GDPR-compliant)
+   ============================================ */
+@import url('https://fonts.bunny.net/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ============================================
+   STONE PALETTE — CSS Custom Properties
+   ============================================ */
+:root {
+  /* Stone palette */
+  --stone-50:  #FAFAF9;
+  --stone-100: #F5F5F4;
+  --stone-200: #E7E5E4;
+  --stone-300: #D6D3D1;
+  --stone-400: #A8A29E;
+  --stone-500: #78716C;
+  --stone-600: #57534E;
+  --stone-700: #44403C;
+  --stone-800: #292524;
+  --stone-900: #1C1917;
+
+  /* Accent */
+  --orange-500: #F97316;
+  --orange-100: #FFF7ED;
+  --orange-200: #FFEDD5;
+  --orange-600: #EA580C;
+
+  /* Status */
+  --green-500: #22C55E;
+  --green-100: #F0FDF4;
+  --red-500: #EF4444;
+  --red-100: #FEF2F2;
+  --blue-50:  #EFF6FF;
+  --blue-100: #DBEAFE;
+  --blue-500: #3B82F6;
+  --yellow-500: #EAB308;
+  --yellow-100: #FEF9C3;
+
+  /* Semantic aliases */
+  --flat-bg:          var(--stone-50);
+  --flat-surface:     #FFFFFF;
+  --flat-header-bg:   var(--stone-100);
+  --flat-border:      var(--stone-200);
+  --flat-text:        var(--stone-900);
+  --flat-text-secondary: var(--stone-400);
+  --flat-text-label:  var(--stone-600);
+  --flat-accent:      var(--orange-500);
+  --flat-hover:       var(--blue-50);
+  --flat-selected:    var(--blue-100);
+
+  /* Flat design fonts */
+  --flat-font:      'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --flat-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* Table dimensions */
+  --flat-row-h:     32px;
+  --flat-header-h:  36px;
+  --flat-sidebar-w: 280px;
+}
+
+/* ============================================
+   BASE — Flat app shell
+   ============================================ */
+.flat-app {
+  font-family: var(--flat-font);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--flat-text);
+  background: var(--flat-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove old concrete texture for flat pages */
+.flat-app body::before,
+.flat-app body::after {
+  display: none !important;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+.flat-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 48px); /* minus header */
+}
+
+.flat-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 24px;
+  min-width: 0;
+}
+
+/* ============================================
+   HEADER BAR
+   ============================================ */
+.flat-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--flat-border);
+  background: var(--flat-surface);
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.flat-header__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--flat-text);
+  white-space: nowrap;
+}
+
+.flat-header__subtitle {
+  font-size: 13px;
+  color: var(--flat-text-secondary);
+}
+
+.flat-header__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+.flat-sidebar {
+  width: var(--flat-sidebar-w);
+  min-width: var(--flat-sidebar-w);
+  border-right: 1px solid var(--flat-border);
+  background: var(--flat-surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width 0.2s ease, min-width 0.2s ease;
+  position: relative;
+}
+
+.flat-sidebar--collapsed {
+  width: 0;
+  min-width: 0;
+  border-right: none;
+}
+
+.flat-sidebar__header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--flat-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.flat-sidebar__header h3 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--flat-text-label);
+  margin: 0;
+}
+
+.flat-sidebar__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.flat-sidebar__footer {
+  padding: 8px 16px;
+  border-top: 1px solid var(--flat-border);
+  flex-shrink: 0;
+}
+
+/* Sidebar toggle button */
+.flat-sidebar-toggle {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--flat-surface);
+  border: 1px solid var(--flat-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--flat-text-secondary);
+  transition: color 0.15s;
+}
+
+.flat-sidebar-toggle:hover {
+  color: var(--flat-accent);
+}
+
+/* Resize handle */
+.flat-sidebar__resize {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  z-index: 5;
+}
+
+.flat-sidebar__resize:hover {
+  background: var(--flat-accent);
+  opacity: 0.3;
+}
+
+/* ============================================
+   SIDEBAR — FILTER TABS
+   ============================================ */
+.flat-tabs {
+  display: flex;
+  padding: 0 16px;
+  gap: 0;
+  border-bottom: 1px solid var(--flat-border);
+}
+
+.flat-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--flat-text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.flat-tab:hover {
+  color: var(--flat-text);
+}
+
+.flat-tab--active {
+  color: var(--flat-accent);
+  border-bottom-color: var(--flat-accent);
+}
+
+/* ============================================
+   SIDEBAR — PROJECT GROUP
+   ============================================ */
+.flat-project-group {
+  margin-bottom: 4px;
+}
+
+.flat-project-group__header {
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.flat-project-group__header:hover {
+  background: var(--stone-100);
+}
+
+.flat-project-group__chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--flat-text-secondary);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+
+.flat-project-group__chevron--open {
+  transform: rotate(90deg);
+}
+
+.flat-project-group__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--flat-text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flat-project-group__badge {
+  font-size: 11px;
+  color: var(--flat-text-secondary);
+  background: var(--stone-100);
+  padding: 1px 6px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.flat-project-group__actions {
+  display: none;
+  gap: 2px;
+}
+
+.flat-project-group__header:hover .flat-project-group__actions {
+  display: flex;
+}
+
+/* ============================================
+   SIDEBAR — OBJECT ITEM
+   ============================================ */
+.flat-object-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 16px 4px 40px;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.1s;
+  min-height: 28px;
+}
+
+.flat-object-item:hover {
+  background: var(--flat-hover);
+}
+
+.flat-object-item--selected {
+  background: var(--flat-selected);
+}
+
+.flat-object-item__checkbox {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--flat-accent);
+  flex-shrink: 0;
+}
+
+.flat-object-item__name {
+  font-size: 13px;
+  color: var(--flat-text);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flat-object-item__count {
+  font-size: 11px;
+  color: var(--flat-text-secondary);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   ICON BUTTON (shared)
+   ============================================ */
+.flat-icon-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--flat-text-secondary);
+  transition: background 0.1s, color 0.1s;
+  padding: 0;
+}
+
+.flat-icon-btn:hover {
+  background: var(--stone-200);
+  color: var(--flat-text);
+}
+
+.flat-icon-btn--accent:hover {
+  color: var(--flat-accent);
+}
+
+.flat-icon-btn--danger:hover {
+  color: var(--red-500);
+}
+
+/* ============================================
+   BUTTON
+   ============================================ */
+.flat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--flat-font);
+  border-radius: 6px;
+  border: 1px solid var(--flat-border);
+  background: var(--flat-surface);
+  color: var(--flat-text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.flat-btn:hover {
+  background: var(--stone-100);
+  border-color: var(--stone-300);
+}
+
+.flat-btn--primary {
+  background: var(--flat-accent);
+  border-color: var(--flat-accent);
+  color: white;
+}
+
+.flat-btn--primary:hover {
+  background: var(--orange-600);
+  border-color: var(--orange-600);
+}
+
+.flat-btn--sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.flat-btn--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+
+.flat-btn--ghost:hover {
+  background: var(--stone-100);
+  border-color: transparent;
+}
+
+/* ============================================
+   TABLE
+   ============================================ */
+.flat-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--flat-border);
+  border-radius: 8px;
+  background: var(--flat-surface);
+}
+
+.flat-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.flat-table th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--flat-header-bg);
+  height: var(--flat-header-h);
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--flat-text-label);
+  text-align: left;
+  border-bottom: 1px solid var(--flat-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flat-table th.flat-col--right,
+.flat-table td.flat-col--right {
+  text-align: right;
+}
+
+.flat-table th.flat-col--center,
+.flat-table td.flat-col--center {
+  text-align: center;
+}
+
+.flat-table td {
+  height: var(--flat-row-h);
+  padding: 0 8px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--flat-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+/* Hover row */
+.flat-table tr.flat-row:hover {
+  background: var(--flat-hover);
+}
+
+/* Selected row */
+.flat-table tr.flat-row--selected {
+  background: var(--flat-selected);
+}
+
+/* ============================================
+   TABLE — PART HEADER ROW
+   ============================================ */
+.flat-part-header {
+  background: var(--stone-100) !important;
+}
+
+.flat-part-header td {
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--flat-text-label);
+  border-bottom: 1px solid var(--stone-300);
+  height: 28px;
+}
+
+/* ============================================
+   TABLE — SUBTYPE STYLING
+   ============================================ */
+.flat-row--beton td:first-child {
+  font-weight: 500;
+}
+
+.flat-row--sub td:first-child {
+  padding-left: 28px;
+}
+
+.flat-row--rfi {
+  border-left: 3px solid var(--orange-500);
+  background: var(--orange-100) !important;
+}
+
+/* ============================================
+   BADGE
+   ============================================ */
+.flat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.flat-badge--beton {
+  background: var(--stone-200);
+  color: var(--stone-700);
+}
+
+.flat-badge--bedneni {
+  background: var(--orange-100);
+  color: var(--orange-600);
+}
+
+.flat-badge--odbedneni {
+  background: var(--orange-100);
+  color: var(--orange-600);
+}
+
+.flat-badge--vystuz {
+  background: var(--blue-100);
+  color: var(--blue-500);
+}
+
+.flat-badge--jine {
+  background: var(--stone-100);
+  color: var(--stone-500);
+}
+
+.flat-badge--status-empty {
+  color: var(--stone-400);
+}
+
+.flat-badge--status-progress {
+  background: var(--orange-100);
+  color: var(--orange-500);
+}
+
+.flat-badge--status-done {
+  background: var(--green-100);
+  color: var(--green-500);
+}
+
+.flat-badge--status-incomplete {
+  background: var(--red-100);
+  color: var(--red-500);
+}
+
+/* ============================================
+   MONO — Monospaced numbers
+   ============================================ */
+.flat-mono {
+  font-family: var(--flat-font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   KPI PANEL
+   ============================================ */
+.flat-kpi {
+  display: flex;
+  gap: 16px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.flat-kpi__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 100px;
+}
+
+.flat-kpi__label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--flat-text-secondary);
+}
+
+.flat-kpi__value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--flat-text);
+  font-family: var(--flat-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.flat-kpi__unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--flat-text-secondary);
+  margin-left: 4px;
+}
+
+/* ============================================
+   TOOLBAR — above table
+   ============================================ */
+.flat-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+
+.flat-toolbar__spacer {
+  flex: 1;
+}
+
+/* Checkbox filter */
+.flat-filter-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--flat-text-label);
+  cursor: pointer;
+}
+
+.flat-filter-check input[type="checkbox"] {
+  accent-color: var(--flat-accent);
+}
+
+/* ============================================
+   INLINE INPUT (editable table cells)
+   ============================================ */
+.flat-inline-input {
+  width: 100%;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  font-family: var(--flat-font-mono);
+  font-size: 12px;
+  color: var(--flat-text);
+  text-align: inherit;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.flat-inline-input:hover {
+  border-color: var(--stone-300);
+}
+
+.flat-inline-input:focus {
+  border-color: var(--flat-accent);
+  background: var(--flat-surface);
+}
+
+.flat-inline-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Override color for overridden values */
+.flat-inline-input--overridden {
+  color: var(--orange-500);
+}
+
+/* ============================================
+   TOOLTIP (formula legend)
+   ============================================ */
+.flat-tooltip {
+  position: relative;
+}
+
+.flat-tooltip__content {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: var(--flat-font-mono);
+  background: var(--stone-800);
+  color: white;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.flat-tooltip:hover .flat-tooltip__content {
+  display: block;
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+.flat-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.flat-modal {
+  background: var(--flat-surface);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  padding: 24px;
+  min-width: 380px;
+  max-width: 520px;
+  width: 100%;
+}
+
+.flat-modal__title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  color: var(--flat-text);
+}
+
+.flat-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+/* Form fields inside modal */
+.flat-field {
+  margin-bottom: 12px;
+}
+
+.flat-field__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--flat-text-label);
+  margin-bottom: 4px;
+}
+
+.flat-field__input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: var(--flat-font);
+  border: 1px solid var(--flat-border);
+  border-radius: 6px;
+  background: var(--flat-surface);
+  color: var(--flat-text);
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.flat-field__input:focus {
+  border-color: var(--flat-accent);
+}
+
+.flat-field__input::placeholder {
+  color: var(--flat-text-secondary);
+}
+
+/* Select dropdown */
+.flat-field__select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: var(--flat-font);
+  border: 1px solid var(--flat-border);
+  border-radius: 6px;
+  background: var(--flat-surface);
+  color: var(--flat-text);
+  outline: none;
+  cursor: pointer;
+}
+
+.flat-field__select:focus {
+  border-color: var(--flat-accent);
+}
+
+/* ============================================
+   TOV (expandable section under position)
+   ============================================ */
+.flat-tov {
+  background: var(--stone-50);
+}
+
+.flat-tov td {
+  font-size: 12px;
+  height: 28px;
+  color: var(--flat-text-label);
+}
+
+.flat-tov--group td {
+  background: var(--stone-100);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.flat-tov--detail td {
+  color: var(--stone-500);
+  font-style: italic;
+  padding-left: 32px !important;
+}
+
+.flat-tov--total td {
+  font-weight: 600;
+  border-top: 2px solid var(--flat-border);
+}
+
+/* ============================================
+   PROJECT SETTINGS (compact inline panel)
+   ============================================ */
+.flat-settings {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: var(--stone-100);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.flat-settings__field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flat-settings__label {
+  color: var(--flat-text-secondary);
+  font-size: 12px;
+}
+
+.flat-settings__input {
+  width: 60px;
+  padding: 3px 6px;
+  border: 1px solid var(--flat-border);
+  border-radius: 4px;
+  font-family: var(--flat-font-mono);
+  font-size: 13px;
+  text-align: right;
+  background: var(--flat-surface);
+  color: var(--flat-text);
+}
+
+.flat-settings__input:focus {
+  outline: none;
+  border-color: var(--flat-accent);
+}
+
+.flat-settings__unit {
+  font-size: 12px;
+  color: var(--flat-text-secondary);
+}
+
+.flat-settings__select {
+  padding: 3px 6px;
+  border: 1px solid var(--flat-border);
+  border-radius: 4px;
+  font-size: 13px;
+  background: var(--flat-surface);
+  cursor: pointer;
+}
+
+/* ============================================
+   GANTT (embedded)
+   ============================================ */
+.flat-gantt {
+  overflow-x: auto;
+  border: 1px solid var(--flat-border);
+  border-radius: 8px;
+  background: var(--flat-surface);
+  margin-top: 16px;
+}
+
+.flat-gantt__bar {
+  height: 18px;
+  border-radius: 3px;
+  min-width: 4px;
+}
+
+.flat-gantt__bar--beton {
+  background: var(--stone-500);
+}
+
+.flat-gantt__bar--bedneni {
+  background: var(--orange-500);
+}
+
+.flat-gantt__bar--vystuz {
+  background: var(--blue-500);
+}
+
+.flat-gantt__bar--estimate {
+  opacity: 0.4;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(255,255,255,0.3) 4px,
+    rgba(255,255,255,0.3) 8px
+  );
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.flat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  color: var(--flat-text-secondary);
+  text-align: center;
+}
+
+.flat-empty__icon {
+  width: 48px;
+  height: 48px;
+  color: var(--stone-300);
+  margin-bottom: 16px;
+}
+
+.flat-empty__title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--flat-text-label);
+  margin-bottom: 8px;
+}
+
+.flat-empty__text {
+  font-size: 13px;
+  max-width: 360px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+  .flat-sidebar {
+    position: fixed;
+    left: 0;
+    top: 48px;
+    bottom: 0;
+    z-index: 50;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+  }
+
+  .flat-sidebar--collapsed {
+    display: none;
+  }
+
+  .flat-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    top: 48px;
+    background: rgba(0,0,0,0.2);
+    z-index: 49;
+  }
+}
+
+@media (max-width: 640px) {
+  .flat-col--hide-mobile {
+    display: none;
+  }
+
+  .flat-kpi {
+    gap: 8px;
+  }
+
+  .flat-kpi__item {
+    min-width: 80px;
+  }
+
+  .flat-kpi__value {
+    font-size: 15px;
+  }
+}
+
+/* First column sticky for horizontal scroll */
+.flat-table th:first-child,
+.flat-table td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: inherit;
+}
+
+.flat-table th:first-child {
+  background: var(--flat-header-bg);
+  z-index: 4;
+}
+
+/* ============================================
+   LOADING / SPINNER
+   ============================================ */
+.flat-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--stone-200);
+  border-top-color: var(--flat-accent);
+  border-radius: 50%;
+  animation: flat-spin 0.6s linear infinite;
+}
+
+@keyframes flat-spin {
+  to { transform: rotate(360deg); }
+}
+
+.flat-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 12px;
+  color: var(--flat-text-secondary);
+  font-size: 13px;
+}

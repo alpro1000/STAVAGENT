@@ -145,10 +145,10 @@ router.get('/', async (req, res) => {
       days_per_month_mode: config.days_per_month_mode
     }, config);
 
-    // Filter RFI if requested
+    // Filter: when include_rfi=false ("Jen problémy"), show ONLY positions with RFI issues
     let responsePositions = calculatedPositions;
     if (include_rfi === 'false') {
-      responsePositions = calculatedPositions.filter(p => !p.has_rfi);
+      responsePositions = calculatedPositions.filter(p => p.has_rfi);
     }
 
     // RFI summary

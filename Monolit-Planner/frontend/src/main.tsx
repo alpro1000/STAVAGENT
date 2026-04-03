@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 
-// Digital Concrete Design System v2.0
+// Design System — Flat Design (new)
+import './styles/flat-design.css';
+
+// Legacy styles for Part B (PlannerPage) — keep until Part B is migrated
 import './styles/design-system/tokens.css';
 import './styles/design-system/components.css';
-
-// App-specific styles (may override design system)
 import './styles/global.css';
-
-// Slate Minimal Table Design (overrides)
 import './styles/slate-table.css';
 
 // Build timestamp for cache debugging (injected by Vite)
@@ -23,12 +22,12 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      refetchOnMount: false, // CRITICAL: Never refetch on mount
+      refetchOnMount: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutes - no refetch unless stale
-      gcTime: 10 * 60 * 1000 // 10 minutes - keep unused data in cache before garbage collection
-    }
-  }
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+    },
+  },
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
