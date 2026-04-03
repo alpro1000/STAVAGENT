@@ -395,8 +395,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       'Kč celkem',
       'Kč/m³ ⭐',
       'Objem m³',
-      'KROS JC',
-      'KROS celkem',
+      'Jedn. cena',
+      'Celkem',
       'RFI'
     ];
 
@@ -730,8 +730,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     concreteVolumeRow.getCell(2).alignment = { horizontal: 'right' };
     concreteVolumeRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
 
-    // Σ Cena (KROS) - formula referencing Detaily totals row, column N
-    const krosTotalRow = kpiSheet.addRow(['Σ Cena (KROS)', null, 'CZK']);
+    // Σ Celková cena - formula referencing Detaily totals row, column N
+    const krosTotalRow = kpiSheet.addRow(['Σ Celková cena', null, 'CZK']);
     applyDataRowStyle(krosTotalRow, false);
     krosTotalRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
     krosTotalRow.getCell(2).value = detailTotalsRow ? {

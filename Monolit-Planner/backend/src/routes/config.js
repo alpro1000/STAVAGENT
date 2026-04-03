@@ -1,18 +1,20 @@
 /**
- * Config routes - NO AUTH (Kiosk Mode)
+ * Config routes - Protected by optionalAuth
  * GET/POST /api/config - Project configuration
  */
 
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
+import { optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// NO AUTH REQUIRED - This is a public kiosk application
-// Authentication is handled at the portal level (stavagent-portal)
+// Auth: optionalAuth — authenticated users get account-scoped config,
+// kiosk (anonymous) gets global config.
+router.use(optionalAuth);
 
-// GET config - PUBLIC (kiosk mode)
+// GET config
 router.get('/', async (req, res) => {
   try {
     const config = await db.prepare(`

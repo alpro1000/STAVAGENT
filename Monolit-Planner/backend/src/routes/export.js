@@ -12,8 +12,12 @@ import db from '../db/init.js';
 import { calculatePositions, calculateKPI } from '../services/calculator.js';
 import { exportToXLSX, getExportsList, getExportFile, deleteExportFile } from '../services/exporter.js';
 import { logger } from '../utils/logger.js';
+import { optionalAuth } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Auth: optionalAuth — authenticated users can only export their own projects
+router.use(optionalAuth);
 
 // Custom error class for 404 responses
 class NotFoundError extends Error {

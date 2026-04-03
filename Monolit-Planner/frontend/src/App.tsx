@@ -1,74 +1,29 @@
 /**
- * Main Application Entry Point
- * Clean calculator app without authentication
+ * Main Application Entry Point — Flat Design Rewrite
+ *
+ * Single UIProvider wraps ALL routes so state persists across navigation.
+ * Part B (PlannerPage) works standalone — doesn't need UIProvider but
+ * benefits from it being available (shared QueryClient, persistent selection).
  */
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AppProvider } from './context/AppContext';
-import MainApp from './components/MainApp';
+import { UIProvider } from './context/UIContext';
+import FlatMainPage from './components/flat/FlatMainPage';
 import PlannerPage from './pages/PlannerPage';
-import ProjectGantt from './components/ProjectGantt';
-import RegistryView from './pages/RegistryView';
-import TariffPage from './pages/TariffPage';
-import './styles/components.css';
-
-// Create QueryClient instance
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 5 * 60 * 1000 // 5 minutes
-    }
-  }
-});
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <UIProvider>
       <BrowserRouter>
         <Routes>
-          {/* Main calculator application */}
-          <Route
-            path="/"
-            element={
-              <AppProvider>
-                <MainApp />
-              </AppProvider>
-            }
-          />
-          {/* Registry View */}
-          <Route
-            path="/registry/:projectId"
-            element={
-              <AppProvider>
-                <RegistryView />
-              </AppProvider>
-            }
-          />
-          {/* Planner - Element Planning Orchestrator */}
-          <Route
-            path="/planner"
-            element={<PlannerPage />}
-          />
-          {/* Project Gantt - All positions timeline */}
-          <Route
-            path="/project-gantt"
-            element={
-              <AppProvider>
-                <ProjectGantt />
-              </AppProvider>
-            }
-          />
-          {/* Tariff Management */}
-          <Route
-            path="/tariffs"
-            element={<TariffPage />}
-          />
+          {/* Part A: Main page (new flat design) */}
+          <Route path="/" element={<FlatMainPage />} />
+
+          {/* Part B: Element Planning Orchestrator (UNCHANGED) */}
+          <Route path="/planner" element={<PlannerPage />} />
         </Routes>
       </BrowserRouter>
-    </QueryClientProvider>
+    </UIProvider>
   );
 }
 
