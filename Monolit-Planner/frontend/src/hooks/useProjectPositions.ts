@@ -5,9 +5,27 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { positionsAPI } from '../services/api';
+import axios from 'axios';
+import { positionsAPI, API_URL } from '../services/api';
 import { useUI } from '../context/UIContext';
 import type { Position, HeaderKPI } from '@stavagent/monolit-shared';
+
+/**
+ * Fire-and-forget TOV sync to Registry for positions that have
+ * position_instance_id (linked to Portal). Called after Aplikovat.
+ */
+function syncTOVToRegistry(positions: Position[]) {
+  for (const pos of positions) {
+    if (!pos.id || !pos.position_instance_id) continue;
+    // Only sync beton positions that have calculated data
+    if (!pos.kros_total_czk && !pos.labor_hours) continue;
+    // Fire-and-forget — don't await, don't block UI
+    axios.post(`${API_URL}/api/export-to-registry/position/${pos.id}/tov`)
+      .catch(err => {
+        console.warn(`[TOV sync] Failed for position ${pos.id}:`, err.message);
+      });
+  }
+}
 
 function positionsKey(projectId: string | null, onlyRFI: boolean) {
   return ['positions', projectId, onlyRFI] as const;
@@ -38,6 +56,8 @@ export function useProjectPositions() {
     onSuccess: (data) => {
       // Update cache directly with fresh data from server
       qc.setQueryData(positionsKey(selectedProjectId, showOnlyRFI), data);
+      // Auto-sync TOV to Registry (fire-and-forget) for linked positions
+      if (data?.positions) syncTOVToRegistry(data.positions);
     },
   });
 

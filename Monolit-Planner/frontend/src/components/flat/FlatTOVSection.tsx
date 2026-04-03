@@ -33,7 +33,7 @@ export default function FlatTOVSection({ position: pos }: Props) {
   if (!pos.labor_hours && !pos.cost_czk) {
     return (
       <tr className="flat-tov">
-        <td colSpan={13} style={{ padding: '8px 16px', fontStyle: 'italic', color: 'var(--stone-400)' }}>
+        <td colSpan={16} style={{ padding: '8px 16px', fontStyle: 'italic', color: 'var(--stone-400)' }}>
           Zatím nespočítáno — klikněte na Vypočítat.
         </td>
       </tr>
@@ -97,13 +97,14 @@ export default function FlatTOVSection({ position: pos }: Props) {
 
         return (
           <tr key={i} className={cls}>
-            <td colSpan={7} style={row.type === 'detail' ? { paddingLeft: 32 } : undefined}>
+            <td colSpan={8} style={row.type === 'detail' ? { paddingLeft: 32 } : undefined}>
               {row.label}
             </td>
             <td></td>
+            <td></td>
             <td className="flat-col--right flat-mono">{row.hours || ''}</td>
             <td className="flat-col--right flat-mono">{row.cost || ''}</td>
-            <td colSpan={3}></td>
+            <td colSpan={4}></td>
           </tr>
         );
       })}
