@@ -15,18 +15,20 @@ export default function FlatHeader() {
   // Selected object info
   const selectedObj = projects.find(p => p.bridge_id === selectedProjectId);
 
-  // JWT expiry check
+  // JWT expiry check — verify via backend (server validates signature)
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (!token) return;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.exp && payload.exp * 1000 < Date.now()) {
-        setTokenExpired(true);
-      }
-    } catch {
-      // Invalid token format — ignore
-    }
+
+    fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(res => {
+        if (!res.ok) setTokenExpired(true);
+      })
+      .catch(() => {
+        // Network error — don't mark as expired (might be offline)
+      });
   }, []);
 
   const handleLogout = () => {

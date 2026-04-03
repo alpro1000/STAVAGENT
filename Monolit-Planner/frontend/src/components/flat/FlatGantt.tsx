@@ -54,7 +54,7 @@ export default function FlatGantt({ positions }: Props) {
             startDay: currentDay + (phase.start_day || 0),
             duration: phase.duration || 1,
             isEstimate: false,
-            label: phase.name || SUBTYPE_LABELS[phase.subtype] || phase.subtype,
+            label: phase.name || (SUBTYPE_LABELS as Record<string, string>)[phase.subtype] || phase.subtype,
           });
         }
         const totalDays = meta.schedule_info.total_days || beton?.days || 1;
