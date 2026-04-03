@@ -1,16 +1,18 @@
 /**
- * FlatPositionsTable — Positions table with part grouping, flat design.
+ * FlatPositionsTable — Full positions table with 15 columns, part grouping.
  *
- * Groups positions by part_name, sorted by construction sequence.
- * beton = primary row, bednění/výztuž = subordinate (indented).
- * Supports: inline editing, RFI filter, Vypočítat navigation.
+ * Spec columns: Práce, MJ, Množství, Počet lidí, Kč/h, Hod/den, Dny, MJ/h,
+ *               Celk.hod, Celk.Kč, Jedn.cena/m³, Jedn.cena (zaokr.), Celkem, RFI, Akce
+ *
+ * Features: bidirectional MJ/h ↔ Dny, formula tooltips on all calculated numbers,
+ * OTSKP autocomplete in part header, override detection (orange color), AI suggestion.
  */
 
 import { useMemo, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Calculator, AlertTriangle, Sparkles, Lock,
-  ChevronDown, ChevronRight,
+  Calculator, AlertTriangle, Lock,
+  ChevronDown, ChevronRight, Sparkles, AlertCircle,
 } from 'lucide-react';
 import type { Position, Subtype } from '@stavagent/monolit-shared';
 import {
@@ -19,6 +21,7 @@ import {
 } from '@stavagent/monolit-shared';
 import { useUI } from '../../context/UIContext';
 import { useProjectPositions } from '../../hooks/useProjectPositions';
+import OtskpAutocomplete from '../OtskpAutocomplete';
 import FlatKPIPanel from './FlatKPIPanel';
 import FlatProjectSettings from './FlatProjectSettings';
 import FlatTOVSection from './FlatTOVSection';
@@ -26,7 +29,8 @@ import FlatToolbar from './FlatToolbar';
 import FlatGantt from './FlatGantt';
 import FlatSnapshots from './FlatSnapshots';
 
-/** Helper: CSS class for subtype badge */
+/* ── Helpers ─────────────────────────────────────────────────── */
+
 function subtypeBadgeClass(subtype: Subtype): string {
   const map: Record<string, string> = {
     beton: 'flat-badge--beton',
@@ -38,7 +42,6 @@ function subtypeBadgeClass(subtype: Subtype): string {
   return map[subtype] || 'flat-badge--jine';
 }
 
-/** Helper: calculation status */
 function calcStatus(pos: Position): 'empty' | 'progress' | 'done' | 'incomplete' {
   if (!pos.kros_total_czk && !pos.days) return 'empty';
   if (pos.has_rfi) return 'incomplete';
@@ -46,16 +49,26 @@ function calcStatus(pos: Position): 'empty' | 'progress' | 'done' | 'incomplete'
   return 'progress';
 }
 
-/** Format number for display */
 function fmt(n: number | null | undefined, d = 0): string {
   if (n == null || isNaN(n)) return '';
   return n.toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+
+/** Speed: MJ/h = qty / labor_hours */
+function calcSpeed(pos: Position): number | null {
+  if (!pos.labor_hours || !pos.qty) return null;
+  return pos.qty / pos.labor_hours;
 }
 
 interface PartGroup {
   partName: string;
   positions: Position[];
 }
+
+/* ── CONFIG DEFAULTS (for override detection) ─────────────── */
+const PROJECT_DEFAULTS = { wage: 398, shift: 10 };
+
+/* ── MAIN COMPONENT ──────────────────────────────────────────── */
 
 export default function FlatPositionsTable() {
   const { selectedProjectId, activeSnapshot } = useUI();
@@ -66,22 +79,17 @@ export default function FlatPositionsTable() {
   const navigate = useNavigate();
   const isLocked = activeSnapshot?.is_locked ?? false;
 
-  // Expanded TOV sections
   const [expandedTOV, setExpandedTOV] = useState<Set<string>>(new Set());
 
   // Group positions by part_name, sorted by construction sequence
   const groups = useMemo((): PartGroup[] => {
     if (!positions.length) return [];
-
-    // Collect unique part names
     const partNames = [...new Set(positions.map(p => p.part_name))];
     const sorted = sortPartsBySequence(partNames);
-
     return sorted.map(partName => ({
       partName,
       positions: positions
         .filter(p => p.part_name === partName)
-        // beton first, then bednění, then výztuž, then rest
         .sort((a, b) => {
           const order: Record<string, number> = { beton: 0, 'bednění': 1, 'odbednění': 2, 'výztuž': 3, 'jiné': 4 };
           return (order[a.subtype] ?? 5) - (order[b.subtype] ?? 5);
@@ -91,17 +99,11 @@ export default function FlatPositionsTable() {
 
   // Navigate to calculator
   const handleCalculate = useCallback((pos: Position) => {
-    // Save scroll position for return
     sessionStorage.setItem('monolit-planner-return-part', pos.part_name);
     sessionStorage.setItem('monolit-planner-scroll-y', String(window.scrollY));
-
-    // Find related positions (same part: bednění, výztuž)
-    const related = positions.filter(
-      p => p.part_name === pos.part_name && p.id !== pos.id
-    );
+    const related = positions.filter(p => p.part_name === pos.part_name && p.id !== pos.id);
     const bedneniPos = related.find(p => p.subtype === 'bednění');
     const vystuzPos = related.find(p => p.subtype === 'výztuž');
-
     const params = new URLSearchParams();
     params.set('bridge_id', pos.bridge_id);
     if (pos.id) params.set('position_id', pos.id);
@@ -111,18 +113,35 @@ export default function FlatPositionsTable() {
     if (pos.qty) params.set('qty', String(pos.qty));
     if (bedneniPos?.id) params.set('bedneni_position_id', bedneniPos.id);
     if (vystuzPos?.id) params.set('vystuz_position_id', vystuzPos.id);
-
     navigate(`/planner?${params.toString()}`);
   }, [positions, navigate]);
 
   // Inline edit handler
   const handleFieldChange = useCallback(async (
-    pos: Position,
-    field: keyof Position,
-    value: number
+    pos: Position, field: keyof Position, value: number
   ) => {
     if (isLocked || !pos.id) return;
     await updatePositions([{ id: pos.id, [field]: value }]);
+  }, [isLocked, updatePositions]);
+
+  // Bidirectional MJ/h: set speed → recalc days
+  const handleSpeedChange = useCallback(async (pos: Position, speed: number) => {
+    if (isLocked || !pos.id || !speed || !pos.qty) return;
+    // days = qty / (speed * crew_size * shift_hours)
+    // but simpler: labor_hours = qty / speed, days = labor_hours / (crew * shift)
+    const laborHours = pos.qty / speed;
+    const days = Math.ceil(laborHours / ((pos.crew_size || 4) * (pos.shift_hours || 10)));
+    await updatePositions([{ id: pos.id, days }]);
+  }, [isLocked, updatePositions]);
+
+  // OTSKP select on part
+  const handleOtskpSelect = useCallback(async (
+    posId: string, code: string, _name: string, _unitPrice?: number
+  ) => {
+    if (isLocked) return;
+    const updates: Partial<Position> & { id: string } = { id: posId, otskp_code: code };
+    // Store catalog price in metadata if available
+    await updatePositions([updates]);
   }, [isLocked, updatePositions]);
 
   const toggleTOV = useCallback((posId: string) => {
@@ -151,42 +170,37 @@ export default function FlatPositionsTable() {
 
   return (
     <div>
-      {/* Project settings (wage, shift, mode) */}
       <FlatProjectSettings />
-
-      {/* KPI panel */}
       <FlatKPIPanel kpi={headerKPI} />
-
-      {/* Toolbar: filters + actions */}
       <FlatToolbar positionCount={positions.length} />
 
-      {/* Positions table */}
       {positions.length === 0 ? (
         <div className="flat-empty">
           <AlertTriangle size={32} className="flat-empty__icon" />
           <div className="flat-empty__title">Žádné pozice</div>
-          <div className="flat-empty__text">
-            Nahrajte Excel nebo importujte z Registry.
-          </div>
+          <div className="flat-empty__text">Nahrajte Excel nebo importujte z Registry.</div>
         </div>
       ) : (
         <div className="flat-table-wrap">
           <table className="flat-table">
             <thead>
               <tr>
-                <th style={{ width: 240 }}>Element</th>
-                <th style={{ width: 80 }}>Typ</th>
-                <th style={{ width: 70 }} className="flat-col--right">MJ</th>
-                <th style={{ width: 80 }} className="flat-col--right">Množství</th>
-                <th style={{ width: 60 }} className="flat-col--right flat-col--hide-mobile">Lidé</th>
-                <th style={{ width: 70 }} className="flat-col--right flat-col--hide-mobile">Kč/h</th>
-                <th style={{ width: 60 }} className="flat-col--right flat-col--hide-mobile">H/den</th>
-                <th style={{ width: 60 }} className="flat-col--right">Dny</th>
-                <th style={{ width: 80 }} className="flat-col--right flat-col--hide-mobile">Celk.hod</th>
-                <th style={{ width: 100 }} className="flat-col--right">Celkem</th>
-                <th style={{ width: 90 }} className="flat-col--right flat-col--hide-mobile">Jedn. cena</th>
-                <th style={{ width: 60 }} className="flat-col--center">Status</th>
-                <th style={{ width: 60 }} className="flat-col--center">Akce</th>
+                <th style={{ width: 220 }}>Element</th>
+                <th style={{ width: 75 }}>Typ</th>
+                <th style={{ width: 50 }} className="flat-col--right">MJ</th>
+                <th style={{ width: 75 }} className="flat-col--right">Množství</th>
+                <th style={{ width: 50 }} className="flat-col--right flat-col--hide-mobile">Lidé</th>
+                <th style={{ width: 60 }} className="flat-col--right flat-col--hide-mobile">Kč/h</th>
+                <th style={{ width: 55 }} className="flat-col--right flat-col--hide-mobile">Hod/den</th>
+                <th style={{ width: 50 }} className="flat-col--right">Dny</th>
+                <th style={{ width: 55 }} className="flat-col--right flat-col--hide-mobile">MJ/h</th>
+                <th style={{ width: 70 }} className="flat-col--right flat-col--hide-mobile">Celk.hod</th>
+                <th style={{ width: 80 }} className="flat-col--right flat-col--hide-mobile">Celk.Kč</th>
+                <th style={{ width: 70 }} className="flat-col--right flat-col--hide-mobile">Kč/m³</th>
+                <th style={{ width: 70 }} className="flat-col--right">Jedn. cena</th>
+                <th style={{ width: 80 }} className="flat-col--right">Celkem</th>
+                <th style={{ width: 40 }} className="flat-col--center flat-col--hide-mobile">RFI</th>
+                <th style={{ width: 55 }} className="flat-col--center">Akce</th>
               </tr>
             </thead>
             <tbody>
@@ -198,6 +212,8 @@ export default function FlatPositionsTable() {
                   expandedTOV={expandedTOV}
                   onCalculate={handleCalculate}
                   onFieldChange={handleFieldChange}
+                  onSpeedChange={handleSpeedChange}
+                  onOtskpSelect={handleOtskpSelect}
                   onToggleTOV={toggleTOV}
                 />
               ))}
@@ -206,52 +222,72 @@ export default function FlatPositionsTable() {
         </div>
       )}
 
-      {/* Gantt chart (embedded, not a separate route) */}
-      {positions.length > 0 && (
-        <FlatGantt positions={positions} />
-      )}
-
-      {/* Snapshots */}
+      {positions.length > 0 && <FlatGantt positions={positions} />}
       <FlatSnapshots />
     </div>
   );
 }
 
-/** Part group: header row + position rows */
+/* ── PART GROUP ───────────────────────────────────────────────── */
+
 function PartGroupRows({
   group, isLocked, expandedTOV,
-  onCalculate, onFieldChange, onToggleTOV,
+  onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onToggleTOV,
 }: {
   group: PartGroup;
   isLocked: boolean;
   expandedTOV: Set<string>;
   onCalculate: (pos: Position) => void;
   onFieldChange: (pos: Position, field: keyof Position, value: number) => void;
+  onSpeedChange: (pos: Position, speed: number) => void;
+  onOtskpSelect: (posId: string, code: string, name: string, unitPrice?: number) => void;
   onToggleTOV: (posId: string) => void;
 }) {
-  // Sum concrete m3 for this part
+  const betonPos = group.positions.find(p => p.subtype === 'beton');
   const partM3 = group.positions
     .filter(p => p.subtype === 'beton')
     .reduce((s, p) => s + (p.concrete_m3 || 0), 0);
+  const partTotalDays = group.positions
+    .filter(p => p.subtype === 'beton')
+    .reduce((s, p) => s + (p.days || 0), 0);
+  const partKrosTotal = group.positions.reduce((s, p) => s + (p.kros_total_czk || 0), 0);
 
   return (
     <>
-      {/* Part header row */}
+      {/* Part header row — includes OTSKP autocomplete */}
       <tr className="flat-part-header" id={`part-${group.partName}`}>
-        <td colSpan={2}>{group.partName}</td>
+        <td colSpan={2} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span>{group.partName}</span>
+          {/* OTSKP autocomplete for the beton position of this part */}
+          {betonPos?.id && !isLocked && (
+            <span style={{ flex: '0 0 200px', display: 'inline-block' }}>
+              <OtskpAutocomplete
+                value={betonPos.otskp_code || ''}
+                onSelect={(code, name, price, _unit) => onOtskpSelect(betonPos.id!, code, name, price)}
+                disabled={isLocked}
+              />
+            </span>
+          )}
+        </td>
         <td></td>
         <td className="flat-col--right flat-mono">{partM3 ? fmt(partM3, 1) + ' m³' : ''}</td>
-        <td colSpan={9}></td>
+        <td colSpan={4}></td>
+        <td className="flat-col--right flat-col--hide-mobile"></td>
+        <td className="flat-col--right flat-col--hide-mobile flat-mono">{partTotalDays ? fmt(partTotalDays) + ' d' : ''}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td className="flat-col--right flat-mono">{partKrosTotal ? fmt(partKrosTotal) + ' Kč' : ''}</td>
+        <td></td>
+        <td></td>
       </tr>
 
-      {/* Position rows */}
       {group.positions.map(pos => {
         const isSub = pos.subtype !== 'beton';
         const status = calcStatus(pos);
         const hasTOV = expandedTOV.has(pos.id || '');
-
         return (
-          <PositionRows
+          <PositionRow
             key={pos.id || `${pos.part_name}-${pos.subtype}`}
             pos={pos}
             isSub={isSub}
@@ -260,6 +296,7 @@ function PartGroupRows({
             showTOV={hasTOV}
             onCalculate={onCalculate}
             onFieldChange={onFieldChange}
+            onSpeedChange={onSpeedChange}
             onToggleTOV={onToggleTOV}
           />
         );
@@ -268,10 +305,11 @@ function PartGroupRows({
   );
 }
 
-/** Single position row + optional TOV expansion */
-function PositionRows({
+/* ── POSITION ROW (15 columns) ───────────────────────────────── */
+
+function PositionRow({
   pos, isSub, status, isLocked, showTOV,
-  onCalculate, onFieldChange, onToggleTOV,
+  onCalculate, onFieldChange, onSpeedChange, onToggleTOV,
 }: {
   pos: Position;
   isSub: boolean;
@@ -280,6 +318,7 @@ function PositionRows({
   showTOV: boolean;
   onCalculate: (pos: Position) => void;
   onFieldChange: (pos: Position, field: keyof Position, value: number) => void;
+  onSpeedChange: (pos: Position, speed: number) => void;
   onToggleTOV: (posId: string) => void;
 }) {
   const rowClass = [
@@ -296,91 +335,109 @@ function PositionRows({
   }[status] || { cls: '', label: '' };
 
   const unitLabel = UNIT_LABELS[pos.unit] || pos.unit || '';
+  const speed = calcSpeed(pos);
+
+  // Override detection: if position value differs from project default → override
+  const wageOverridden = pos.wage_czk_ph !== PROJECT_DEFAULTS.wage;
+  const shiftOverridden = pos.shift_hours !== PROJECT_DEFAULTS.shift;
 
   return (
     <>
       <tr className={rowClass} data-position-instance-id={pos.position_instance_id}>
-        {/* Element name — clickable to expand TOV */}
-        <td
-          style={{ cursor: 'pointer' }}
-          onClick={() => pos.id && onToggleTOV(pos.id)}
-          title={pos.item_name || pos.part_name}
-        >
+        {/* 1. Element name */}
+        <td style={{ cursor: 'pointer' }} onClick={() => pos.id && onToggleTOV(pos.id)}
+          title={pos.item_name || pos.part_name}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             {pos.id && (showTOV ? <ChevronDown size={12} /> : <ChevronRight size={12} />)}
             {pos.item_name || SUBTYPE_LABELS[pos.subtype] || pos.subtype}
           </span>
         </td>
 
-        {/* Type badge */}
+        {/* 2. Type badge */}
         <td>
           <span className={`flat-badge ${subtypeBadgeClass(pos.subtype)}`}>
             {SUBTYPE_LABELS[pos.subtype] || pos.subtype}
           </span>
         </td>
 
-        {/* Unit */}
+        {/* 3. MJ (unit) */}
         <td className="flat-col--right flat-mono">{unitLabel}</td>
 
-        {/* Quantity */}
+        {/* 4. Množství */}
         <td className="flat-col--right">
           <span className="flat-mono">{fmt(pos.qty, 1)}</span>
         </td>
 
-        {/* Crew size */}
+        {/* 5. Počet lidí */}
         <td className="flat-col--right flat-col--hide-mobile">
-          <EditableCell
-            value={pos.crew_size}
-            disabled={isLocked}
-            onChange={v => onFieldChange(pos, 'crew_size', v)}
-          />
+          <EditableCell value={pos.crew_size} disabled={isLocked}
+            onChange={v => onFieldChange(pos, 'crew_size', v)} />
         </td>
 
-        {/* Wage */}
+        {/* 6. Kč/h — orange if overridden */}
         <td className="flat-col--right flat-col--hide-mobile">
-          <EditableCell
-            value={pos.wage_czk_ph}
-            disabled={isLocked}
-            onChange={v => onFieldChange(pos, 'wage_czk_ph', v)}
-          />
-        </td>
-
-        {/* Shift hours */}
-        <td className="flat-col--right flat-col--hide-mobile">
-          <EditableCell
-            value={pos.shift_hours}
-            disabled={isLocked}
-            onChange={v => onFieldChange(pos, 'shift_hours', v)}
-          />
-        </td>
-
-        {/* Days */}
-        <td className="flat-col--right">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <EditableCell
-              value={pos.days}
-              disabled={isLocked}
-              onChange={v => onFieldChange(pos, 'days', v)}
-            />
-          </div>
-        </td>
-
-        {/* Total hours */}
-        <td className="flat-col--right flat-col--hide-mobile">
-          <span className="flat-mono flat-tooltip">
-            {fmt(pos.labor_hours, 0)}
-            {pos.labor_hours ? (
+          <span className="flat-tooltip" style={{ display: 'block' }}>
+            <EditableCell value={pos.wage_czk_ph} disabled={isLocked}
+              onChange={v => onFieldChange(pos, 'wage_czk_ph', v)}
+              overridden={wageOverridden} />
+            {wageOverridden && (
               <span className="flat-tooltip__content">
-                {pos.crew_size} × {pos.shift_hours}h × {pos.days}d = {fmt(pos.labor_hours)} Nhod
+                Přepsáno: {fmt(pos.wage_czk_ph)} Kč/h (projekt: {PROJECT_DEFAULTS.wage} Kč/h)
+              </span>
+            )}
+          </span>
+        </td>
+
+        {/* 7. Hod/den — orange if overridden */}
+        <td className="flat-col--right flat-col--hide-mobile">
+          <span className="flat-tooltip" style={{ display: 'block' }}>
+            <EditableCell value={pos.shift_hours} disabled={isLocked}
+              onChange={v => onFieldChange(pos, 'shift_hours', v)}
+              overridden={shiftOverridden} />
+            {shiftOverridden && (
+              <span className="flat-tooltip__content">
+                Přepsáno: {fmt(pos.shift_hours)} h (projekt: {PROJECT_DEFAULTS.shift} h)
+              </span>
+            )}
+          </span>
+        </td>
+
+        {/* 8. Dny */}
+        <td className="flat-col--right">
+          <EditableCell value={pos.days} disabled={isLocked}
+            onChange={v => onFieldChange(pos, 'days', v)} />
+        </td>
+
+        {/* 9. MJ/h (speed) — bidirectional: edit speed → recalc days */}
+        <td className="flat-col--right flat-col--hide-mobile">
+          <span className="flat-tooltip" style={{ display: 'block' }}>
+            <EditableCell value={speed ? Math.round(speed * 100) / 100 : 0}
+              disabled={isLocked}
+              onChange={v => onSpeedChange(pos, v)} />
+            {speed ? (
+              <span className="flat-tooltip__content">
+                {fmt(pos.qty, 1)} {unitLabel} / {fmt(pos.labor_hours)} hod = {fmt(speed, 2)} {unitLabel}/h
               </span>
             ) : null}
           </span>
         </td>
 
-        {/* Total cost (Celkem) */}
-        <td className="flat-col--right">
+        {/* 10. Celk.hod (total hours) */}
+        <td className="flat-col--right flat-col--hide-mobile">
           <span className="flat-mono flat-tooltip">
-            {pos.kros_total_czk ? fmt(pos.kros_total_czk) : fmt(pos.cost_czk)}
+            {fmt(pos.labor_hours, 0)}
+            {pos.labor_hours ? (
+              <span className="flat-tooltip__content">
+                {pos.crew_size} lidí × {pos.shift_hours}h × {pos.days}d = {fmt(pos.labor_hours)} Nhod
+              </span>
+            ) : null}
+          </span>
+        </td>
+
+        {/* 11. Celk.Kč (total cost native) */}
+        <td className="flat-col--right flat-col--hide-mobile">
+          <span className="flat-mono flat-tooltip">
+            {fmt(pos.cost_czk)}
             {pos.cost_czk ? (
               <span className="flat-tooltip__content">
                 {fmt(pos.labor_hours)} Nhod × {fmt(pos.wage_czk_ph)} Kč/h = {fmt(pos.cost_czk)} Kč
@@ -389,35 +446,69 @@ function PositionRows({
           </span>
         </td>
 
-        {/* Unit price (Jedn. cena) */}
+        {/* 12. Kč/m³ (unit cost on m3) */}
         <td className="flat-col--right flat-col--hide-mobile">
-          <span className="flat-mono">
-            {pos.kros_unit_czk ? fmt(pos.kros_unit_czk) : ''}
+          <span className="flat-mono flat-tooltip">
+            {pos.unit_cost_on_m3 ? fmt(pos.unit_cost_on_m3) : ''}
+            {pos.unit_cost_on_m3 && pos.concrete_m3 ? (
+              <span className="flat-tooltip__content">
+                {fmt(pos.cost_czk)} Kč / {fmt(pos.concrete_m3, 1)} m³ = {fmt(pos.unit_cost_on_m3)} Kč/m³
+              </span>
+            ) : null}
           </span>
         </td>
 
-        {/* Status */}
-        <td className="flat-col--center">
-          <span className={`flat-badge ${statusBadge.cls}`}>{statusBadge.label}</span>
+        {/* 13. Jedn. cena (rounded to 50 CZK) */}
+        <td className="flat-col--right">
+          <span className="flat-mono flat-tooltip">
+            {pos.kros_unit_czk ? fmt(pos.kros_unit_czk) : ''}
+            {pos.kros_unit_czk ? (
+              <span className="flat-tooltip__content">
+                CEILING({fmt(pos.unit_cost_on_m3)} / 50) × 50 = {fmt(pos.kros_unit_czk)} Kč
+              </span>
+            ) : null}
+          </span>
         </td>
 
-        {/* Actions */}
+        {/* 14. Celkem (kros total) */}
+        <td className="flat-col--right">
+          <span className="flat-mono flat-tooltip">
+            {pos.kros_total_czk ? fmt(pos.kros_total_czk) : ''}
+            {pos.kros_total_czk && pos.concrete_m3 ? (
+              <span className="flat-tooltip__content">
+                {fmt(pos.kros_unit_czk)} Kč × {fmt(pos.concrete_m3, 1)} m³ = {fmt(pos.kros_total_czk)} Kč
+              </span>
+            ) : null}
+          </span>
+        </td>
+
+        {/* 15. RFI */}
+        <td className="flat-col--center flat-col--hide-mobile">
+          {pos.has_rfi ? (
+            <span className="flat-tooltip">
+              <AlertCircle size={14} style={{ color: 'var(--orange-500)' }} />
+              {pos.rfi_message ? (
+                <span className="flat-tooltip__content">{pos.rfi_message}</span>
+              ) : null}
+            </span>
+          ) : null}
+        </td>
+
+        {/* 16. Akce */}
         <td className="flat-col--center">
           {isLocked ? (
             <Lock size={14} style={{ color: 'var(--stone-400)' }} />
           ) : pos.subtype === 'beton' ? (
-            <button
-              className="flat-icon-btn flat-icon-btn--accent"
-              onClick={() => onCalculate(pos)}
-              title="Vypočítat v kalkulátoru"
-            >
-              <Calculator size={14} />
-            </button>
+            <div style={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
+              <button className="flat-icon-btn flat-icon-btn--accent"
+                onClick={() => onCalculate(pos)} title="Vypočítat v kalkulátoru">
+                <Calculator size={14} />
+              </button>
+            </div>
           ) : null}
         </td>
       </tr>
 
-      {/* Expanded TOV section */}
       {showTOV && pos.id && (
         <FlatTOVSection positionId={pos.id} position={pos} />
       )}
@@ -425,13 +516,15 @@ function PositionRows({
   );
 }
 
-/** Inline editable numeric cell */
+/* ── EDITABLE CELL ───────────────────────────────────────────── */
+
 function EditableCell({
-  value, disabled, onChange,
+  value, disabled, onChange, overridden,
 }: {
   value: number;
   disabled: boolean;
   onChange: (v: number) => void;
+  overridden?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState('');
@@ -439,13 +532,18 @@ function EditableCell({
   if (!editing) {
     return (
       <span
-        className="flat-mono"
+        className={`flat-mono ${overridden ? 'flat-inline-input--overridden' : ''}`}
         onDoubleClick={() => {
           if (disabled) return;
           setEditing(true);
           setText(String(value || ''));
         }}
-        style={{ cursor: disabled ? 'default' : 'pointer', display: 'block', textAlign: 'right' }}
+        style={{
+          cursor: disabled ? 'default' : 'pointer',
+          display: 'block',
+          textAlign: 'right',
+          color: overridden ? 'var(--orange-500)' : undefined,
+        }}
       >
         {value ? fmt(value) : ''}
       </span>
@@ -465,7 +563,7 @@ function EditableCell({
       }}
       onKeyDown={e => {
         if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
-        if (e.key === 'Escape') { setEditing(false); }
+        if (e.key === 'Escape') setEditing(false);
       }}
       autoFocus
       style={{ textAlign: 'right' }}

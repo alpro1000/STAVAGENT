@@ -1065,20 +1065,9 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     scheduleSheet.addRow([]); // Empty row
 
-    // PLACEHOLDER WARNING - This sheet is not yet fully calculated
-    const placeholderRow1 = scheduleSheet.addRow(['⚠️ UPOZORNĚNÍ: Tento harmonogram je prozatím ZÁSTUPNÝ (placeholder)']);
-    placeholderRow1.font = { name: 'Calibri', bold: true, size: 11, color: { argb: colors.warning } };
-    placeholderRow1.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFEF3C7' } };
-    scheduleSheet.mergeCells(placeholderRow1.number, 1, placeholderRow1.number, 5);
-
-    const placeholderRow2 = scheduleSheet.addRow(['Logika výpočtu a reálná data budou doplněny v budoucí verzi.']);
-    placeholderRow2.font = { name: 'Calibri', italic: true, size: 10, color: { argb: colors.textMuted } };
-    scheduleSheet.mergeCells(placeholderRow2.number, 1, placeholderRow2.number, 5);
-
-    scheduleSheet.addRow([]); // Empty row
-
     // Headers with Slate style
-    const scheduleHeaders = ['Fáze', 'Trvání (dny)', 'Začátek', 'Konec', 'Osob'];
+    const scheduleHeaders = ['Část / Fáze', 'Trvání (dny)', 'Začátek', 'Konec', 'Osob', 'Zdroj'];
+    scheduleSheet.getColumn('F').width = 12;
     const schedHeaderRow = scheduleSheet.addRow(scheduleHeaders);
     schedHeaderRow.eachCell((cell, colNumber) => {
       applyHeaderStyle(cell);
@@ -1087,62 +1076,111 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       }
     });
 
-    // Placeholder phases (example data - not calculated from actual positions)
-    const phases = [
-      { name: 'Příprava stavby', duration: 2, color: colors.sectionBg },
-      { name: 'Bednění', duration: 5, color: 'FFE2E8F0' },
-      { name: 'Betonáž', duration: 3, color: 'FFD1FAE5' },
-      { name: 'Vyztužování', duration: 4, color: 'FFCBD5E1' },
-      { name: 'Dokončovací práce', duration: 3, color: 'FFFEF3C7' }
-    ];
-
+    // Build real schedule from positions grouped by part_name
+    const partNames = [...new Set(positions.map(p => p.part_name))];
     let currentDay = 1;
     let totalDuration = 0;
 
-    // Get average crew size for schedule (placeholder value)
-    const avgCrewSize = Math.round(
-      positions.reduce((sum, p) => sum + (p.crew_size || 0), 0) / Math.max(positions.length, 1) || 4
-    );
+    for (const partName of partNames) {
+      const partPositions = positions.filter(p => p.part_name === partName);
+      const betonPos = partPositions.find(p => p.subtype === 'beton');
 
-    phases.forEach((phase) => {
-      const startDay = currentDay;
-      const endDay = currentDay + phase.duration - 1;
-      currentDay = endDay + 1;
-      totalDuration += phase.duration;
+      // Check if this element has real schedule_info from calculator
+      let metadata = null;
+      if (betonPos && betonPos.metadata) {
+        try { metadata = typeof betonPos.metadata === 'string' ? JSON.parse(betonPos.metadata) : betonPos.metadata; }
+        catch { metadata = null; }
+      }
 
-      const schedRow = scheduleSheet.addRow([
-        phase.name,
-        phase.duration,
-        `Den ${startDay}`,
-        `Den ${endDay}`,
-        avgCrewSize
-      ]);
+      if (metadata?.schedule_info?.phases) {
+        // Real calculated schedule — use exact phases
+        const schedInfo = metadata.schedule_info;
+        const partStartDay = currentDay;
 
-      schedRow.eachCell((cell, colNumber) => {
-        applyBorders(cell);
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: phase.color } };
-        cell.font = { name: 'Calibri', size: 10, color: { argb: colors.textPrimary } };
-
-        if (colNumber === 1) {
-          cell.alignment = { vertical: 'center', horizontal: 'left' };
+        // Part header row
+        const partRow = scheduleSheet.addRow([
+          partName,
+          schedInfo.total_days || '',
+          `Den ${partStartDay}`,
+          `Den ${partStartDay + (schedInfo.total_days || 1) - 1}`,
+          betonPos.crew_size || '',
+          'výpočet'
+        ]);
+        partRow.eachCell((cell, colNumber) => {
+          applyBorders(cell);
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: colors.sectionBg } };
           cell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
-        } else {
-          cell.alignment = { vertical: 'center', horizontal: 'right' };
+          if (colNumber > 1) cell.alignment = { vertical: 'center', horizontal: 'right' };
+        });
+
+        // Individual phases
+        for (const phase of schedInfo.phases) {
+          const phaseStart = partStartDay + (phase.start_day || 0);
+          const phaseEnd = phaseStart + (phase.duration || 1) - 1;
+          const phaseRow = scheduleSheet.addRow([
+            `  ${phase.name || phase.subtype || ''}`,
+            phase.duration || '',
+            `Den ${phaseStart}`,
+            `Den ${phaseEnd}`,
+            '',
+            ''
+          ]);
+          phaseRow.eachCell((cell, colNumber) => {
+            applyBorders(cell);
+            cell.font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+            if (colNumber > 1) cell.alignment = { vertical: 'center', horizontal: 'right' };
+          });
         }
-      });
-    });
+
+        currentDay += schedInfo.total_days || 1;
+        totalDuration += schedInfo.total_days || 1;
+      } else {
+        // Not calculated — show estimate from days field
+        const partDays = partPositions
+          .filter(p => p.subtype === 'beton')
+          .reduce((sum, p) => sum + (p.days || 0), 0) || 0;
+        const partEndDay = currentDay + Math.max(partDays, 1) - 1;
+        const avgCrew = Math.round(
+          partPositions.reduce((sum, p) => sum + (p.crew_size || 0), 0) / Math.max(partPositions.length, 1)
+        ) || 4;
+
+        const partRow = scheduleSheet.addRow([
+          partName,
+          partDays || 'nespočítáno',
+          partDays ? `Den ${currentDay}` : '',
+          partDays ? `Den ${partEndDay}` : '',
+          avgCrew,
+          partDays ? 'odhad' : 'nespočítáno'
+        ]);
+        partRow.eachCell((cell, colNumber) => {
+          applyBorders(cell);
+          cell.font = { name: 'Calibri', size: 10, color: { argb: partDays ? colors.textPrimary : colors.textMuted } };
+          if (!partDays) cell.font.italic = true;
+          if (colNumber === 1) cell.font.bold = true;
+          if (colNumber > 1) cell.alignment = { vertical: 'center', horizontal: 'right' };
+        });
+
+        if (partDays) {
+          currentDay = partEndDay + 1;
+          totalDuration += partDays;
+        } else {
+          currentDay += 1;
+          totalDuration += 1;
+        }
+      }
+    }
 
     // Total row
     scheduleSheet.addRow([]);
-    const schedTotalRow = scheduleSheet.addRow(['CELKEM (zástupné)', totalDuration, '', '', '']);
+    const schedTotalRow = scheduleSheet.addRow(['CELKEM', totalDuration, `Den 1`, `Den ${currentDay - 1}`, '', '']);
     applyTotalRowStyle(schedTotalRow);
     schedTotalRow.getCell(2).numFmt = '0';
 
-    // Note about future functionality
+    // Note
     scheduleSheet.addRow([]);
-    const noteRow = scheduleSheet.addRow(['Poznámka: V budoucnu bude harmonogram propojen s listem Detaily pomocí vzorců.']);
+    const noteRow = scheduleSheet.addRow(['Řádky označené "odhad" vycházejí z pole Dny. Řádky "výpočet" obsahují reálný schedule z kalkulátoru.']);
     noteRow.font = { name: 'Calibri', italic: true, size: 9, color: { argb: colors.textMuted } };
-    scheduleSheet.mergeCells(noteRow.number, 1, noteRow.number, 5);
+    scheduleSheet.mergeCells(noteRow.number, 1, noteRow.number, 6);
 
     // ============= SHEET 5: CHARTS & ANALYTICS (with formulas referencing Materials) =============
     const chartsSheet = workbook.addWorksheet('Grafy', {
