@@ -26,7 +26,7 @@ import {
 } from '@stavagent/monolit-shared';
 import { useUI } from '../../context/UIContext';
 import { useProjectPositions } from '../../hooks/useProjectPositions';
-import OtskpAutocomplete from '../OtskpAutocomplete';
+import InlineOtskpSearch from './InlineOtskpSearch';
 import FlatKPIPanel from './FlatKPIPanel';
 import FlatProjectSettings from './FlatProjectSettings';
 import FlatToolbar from './FlatToolbar';
@@ -278,6 +278,8 @@ function ElementBlock({
   onAddWork: () => void;
   onToggleTOV: (posId: string) => void;
 }) {
+  const [katalogPrice, setKatalogPrice] = useState<number | null>(null);
+
   const betonPos = element.positions.find(p => p.subtype === 'beton');
   const partM3 = element.positions
     .filter(p => p.subtype === 'beton')
@@ -287,82 +289,104 @@ function ElementBlock({
   const calcPricePerM3 = partM3 > 0 ? totalKros / partM3 : 0;
   const hasDays = maxDays > 0;
 
+  const handleOtskp = (code: string, name: string, unitPrice?: number) => {
+    if (betonPos?.id) {
+      onOtskpSelect(betonPos.id, code, name, unitPrice);
+      if (unitPrice) setKatalogPrice(unitPrice);
+    }
+  };
+
+  // Výpočet color: green if cheaper than katalog, red if more expensive
+  const vypocetColor = calcPricePerM3 > 0
+    ? (katalogPrice && calcPricePerM3 > katalogPrice ? 'var(--red-500)' : 'var(--green-500)')
+    : 'var(--stone-400)';
+
   return (
     <>
       {/* Layer 1: INFO row */}
       <tr className="flat-el-info" id={`part-${element.partName}`}>
         <td colSpan={COL_COUNT}>
           <div className="flat-el-info__inner">
-            {/* Toggle */}
-            <button className="flat-el-info__toggle" onClick={onToggle}>
+            {/* ▼ Toggle — 24px */}
+            <button className="flat-el-info__toggle" onClick={onToggle} style={{ width: 24, flexShrink: 0 }}>
               {collapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
             </button>
 
-            {/* Name (flex) */}
+            {/* Name — flex:1, takes remaining space */}
             <span className="flat-el-info__name" title={betonPos?.item_name || element.partName}>
               {betonPos?.item_name || element.partName}
             </span>
 
-            {/* OTSKP input */}
-            {betonPos?.id && !isLocked && (
-              <span className="flat-el-info__otskp">
-                <OtskpAutocomplete
-                  value={betonPos.otskp_code || ''}
-                  onSelect={(code, name, price, _unit) => onOtskpSelect(betonPos.id!, code, name, price)}
-                  disabled={isLocked}
-                />
-              </span>
+            {/* OTSKP input — 82px fixed */}
+            {betonPos?.id && !isLocked ? (
+              <InlineOtskpSearch
+                value={betonPos.otskp_code || ''}
+                onSelect={handleOtskp}
+                disabled={isLocked}
+              />
+            ) : (
+              <span style={{ width: 82, flexShrink: 0 }} />
             )}
 
-            {/* Separator */}
+            {/* | separator */}
             <span className="flat-el-info__sep" />
 
-            {/* Katalog Kč/m³ */}
-            <span className="flat-el-info__metric">
+            {/* Katalog — 90px */}
+            <span className="flat-el-info__metric" style={{ width: 90 }}>
               <span className="flat-el-info__metric-label">Katalog</span>
-              <span className="flat-el-info__metric-value flat-mono" style={{ color: 'var(--stone-400)' }}>
-                —
+              <span className="flat-el-info__metric-value flat-mono" style={{
+                color: katalogPrice ? 'var(--green-500)' : 'var(--stone-400)',
+              }}>
+                {katalogPrice ? fmt(katalogPrice) : '—'}
+                {katalogPrice ? <span style={{ fontSize: 9, color: 'var(--stone-400)', marginLeft: 2 }}>Kč/m³</span> : null}
               </span>
             </span>
 
-            {/* Výpočet Kč/m³ */}
-            <span className="flat-el-info__metric">
+            {/* | */}
+            <span className="flat-el-info__sep" />
+
+            {/* Výpočet — 90px */}
+            <span className="flat-el-info__metric" style={{ width: 90 }}>
               <span className="flat-el-info__metric-label">Výpočet</span>
-              <span
-                className="flat-el-info__metric-value flat-mono"
-                style={{ color: calcPricePerM3 > 0 ? 'var(--green-500)' : 'var(--stone-400)' }}
-              >
-                {calcPricePerM3 > 0 ? fmt(calcPricePerM3) + ' Kč/m³' : '—'}
+              <span className="flat-el-info__metric-value flat-mono" style={{ color: vypocetColor }}>
+                {calcPricePerM3 > 0 ? fmt(calcPricePerM3) : '—'}
+                {calcPricePerM3 > 0 ? <span style={{ fontSize: 9, color: 'var(--stone-400)', marginLeft: 2 }}>Kč/m³</span> : null}
               </span>
             </span>
 
-            {/* Objem m³ */}
-            <span className="flat-el-info__metric">
+            {/* | */}
+            <span className="flat-el-info__sep" />
+
+            {/* Objem — 60px */}
+            <span className="flat-el-info__metric" style={{ width: 60 }}>
               <span className="flat-el-info__metric-label">Objem</span>
               <span className="flat-el-info__metric-value flat-mono">
-                {partM3 ? fmt(partM3, 1) + ' m³' : '—'}
+                {partM3 ? fmt(partM3, 1) : '—'}
+                {partM3 ? <span style={{ fontSize: 9, color: 'var(--stone-400)', marginLeft: 2 }}>m³</span> : null}
               </span>
             </span>
 
-            {/* Celkem dní (display only) */}
-            <span className="flat-el-info__metric">
-              <span className="flat-el-info__metric-label">Celkem dní</span>
-              <span
-                className="flat-el-info__metric-value flat-mono"
-                style={{
-                  color: hasDays ? 'var(--flat-text)' : 'var(--stone-400)',
-                  fontWeight: hasDays ? 600 : 400,
-                }}
-              >
+            {/* | */}
+            <span className="flat-el-info__sep" />
+
+            {/* Celkem dní — 52px */}
+            <span className="flat-el-info__metric" style={{ width: 52 }}>
+              <span className="flat-el-info__metric-label">Celkem</span>
+              <span className="flat-el-info__metric-value flat-mono" style={{
+                color: hasDays ? 'var(--flat-text)' : 'var(--stone-400)',
+                fontWeight: hasDays ? 600 : 400,
+              }}>
                 {hasDays ? fmt(maxDays) : '—'}
+                {hasDays ? <span style={{ fontSize: 9, color: 'var(--stone-400)', marginLeft: 2 }}>dní</span> : null}
               </span>
             </span>
 
-            {/* Vypočítat / Upřesnit button */}
+            {/* Vypočítat / Upřesnit — 88px */}
             {!isLocked && betonPos && (
               <button
                 className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
                 onClick={onCalculate}
+                style={{ flexShrink: 0 }}
               >
                 <Zap size={13} />
                 {hasDays ? 'Upřesnit' : 'Vypočítat'}
