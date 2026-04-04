@@ -32,6 +32,7 @@ import FlatProjectSettings from './FlatProjectSettings';
 import FlatToolbar from './FlatToolbar';
 import FlatGantt from './FlatGantt';
 import FlatSnapshots from './FlatSnapshots';
+import FlatTOVSection from './FlatTOVSection';
 import AddWorkModal from './AddWorkModal';
 
 /* ── Helpers ─────────────────────────────────────────────────── */
@@ -95,7 +96,16 @@ export default function FlatPositionsTable() {
   const isLocked = activeSnapshot?.is_locked ?? false;
 
   const [collapsedElements, setCollapsedElements] = useState<Set<string>>(new Set());
+  const [expandedTOV, setExpandedTOV] = useState<Set<string>>(new Set());
   const [addWorkFor, setAddWorkFor] = useState<string | null>(null);
+
+  const toggleTOV = useCallback((posId: string) => {
+    setExpandedTOV(prev => {
+      const next = new Set(prev);
+      if (next.has(posId)) next.delete(posId); else next.add(posId);
+      return next;
+    });
+  }, []);
 
   // Client-side calculated positions
   const calcPositions = useMemo(() => {
@@ -103,12 +113,21 @@ export default function FlatPositionsTable() {
     return positions.map(p => calculatePositionFields(p, positions));
   }, [positions]);
 
-  // Group by part_name, sorted by construction sequence
+  // Group by part_name, sorted by construction sequence.
+  // "Podkladní beton" and shared positions → "Ostatní" at the bottom.
   const elements = useMemo((): ElementGroup[] => {
     if (!calcPositions.length) return [];
     const partNames = [...new Set(calcPositions.map(p => p.part_name))];
-    const sorted = sortPartsBySequence(partNames);
-    return sorted.map(partName => ({
+
+    // Separate podkladní/shared from normal parts
+    const isPodkladni = (name: string) => /podklad/i.test(name);
+    const normalParts = partNames.filter(n => !isPodkladni(n));
+    const ostatniParts = partNames.filter(n => isPodkladni(n));
+
+    const sorted = sortPartsBySequence(normalParts);
+    const allOrdered = [...sorted, ...ostatniParts];
+
+    return allOrdered.map(partName => ({
       partName,
       positions: calcPositions
         .filter(p => p.part_name === partName)
@@ -209,12 +228,14 @@ export default function FlatPositionsTable() {
                   element={el}
                   isLocked={isLocked}
                   collapsed={collapsedElements.has(el.partName)}
+                  expandedTOV={expandedTOV}
                   onToggle={() => toggleElement(el.partName)}
                   onCalculate={() => handleCalculate(el)}
                   onFieldChange={handleFieldChange}
                   onSpeedChange={handleSpeedChange}
                   onOtskpSelect={handleOtskpSelect}
                   onAddWork={() => setAddWorkFor(el.partName)}
+                  onToggleTOV={toggleTOV}
                 />
               ))}
             </tbody>
@@ -242,18 +263,20 @@ export default function FlatPositionsTable() {
 /* ── ELEMENT BLOCK ───────────────────────────────────────────── */
 
 function ElementBlock({
-  element, isLocked, collapsed,
-  onToggle, onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onAddWork,
+  element, isLocked, collapsed, expandedTOV,
+  onToggle, onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onAddWork, onToggleTOV,
 }: {
   element: ElementGroup;
   isLocked: boolean;
   collapsed: boolean;
+  expandedTOV: Set<string>;
   onToggle: () => void;
   onCalculate: () => void;
   onFieldChange: (pos: Position, field: keyof Position, value: number) => Promise<boolean>;
   onSpeedChange: (pos: Position, speed: number) => Promise<boolean>;
   onOtskpSelect: (posId: string, code: string, name: string, unitPrice?: number) => void;
   onAddWork: () => void;
+  onToggleTOV: (posId: string) => void;
 }) {
   const betonPos = element.positions.find(p => p.subtype === 'beton');
   const partM3 = element.positions
@@ -370,14 +393,16 @@ function ElementBlock({
             <th style={{ width: 35 }} className="flat-col--center">ⓘ</th>
           </tr>
 
-          {/* Layer 3: Work rows */}
+          {/* Layer 3: Work rows + TOV */}
           {element.positions.map(pos => (
             <WorkRow
               key={pos.id || `${pos.part_name}-${pos.subtype}`}
               pos={pos}
               isLocked={isLocked}
+              showTOV={!!pos.id && expandedTOV.has(pos.id)}
               onFieldChange={onFieldChange}
               onSpeedChange={onSpeedChange}
+              onToggleTOV={onToggleTOV}
             />
           ))}
 
@@ -400,12 +425,14 @@ function ElementBlock({
 /* ── WORK ROW ────────────────────────────────────────────────── */
 
 function WorkRow({
-  pos, isLocked, onFieldChange, onSpeedChange,
+  pos, isLocked, showTOV, onFieldChange, onSpeedChange, onToggleTOV,
 }: {
   pos: Position;
   isLocked: boolean;
+  showTOV: boolean;
   onFieldChange: (pos: Position, field: keyof Position, value: number) => Promise<boolean>;
   onSpeedChange: (pos: Position, speed: number) => Promise<boolean>;
+  onToggleTOV: (posId: string) => void;
 }) {
   const unitLabel = UNIT_LABELS[pos.unit] || pos.unit || '';
   const speed = calcSpeed(pos);
@@ -413,14 +440,22 @@ function WorkRow({
   const shiftOverridden = pos.shift_hours !== PROJECT_DEFAULTS.shift;
 
   return (
+    <>
     <tr
       className={`flat-work-row ${pos.has_rfi ? 'flat-row--rfi' : ''}`}
       data-position-instance-id={pos.position_instance_id}
     >
-      {/* Typ práce (badge) */}
-      <td className="flat-work-row__type">
-        <span className={`flat-badge ${subtypeBadgeClass(pos.subtype)}`}>
-          {SUBTYPE_LABELS[pos.subtype] || pos.subtype}
+      {/* Typ práce (badge) — click to expand TOV */}
+      <td className="flat-work-row__type"
+        style={{ cursor: 'pointer' }}
+        onClick={() => pos.id && onToggleTOV(pos.id)}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          {pos.id && (showTOV
+            ? <ChevronDown size={11} style={{ color: 'var(--flat-text-secondary)', flexShrink: 0 }} />
+            : <ChevronRight size={11} style={{ color: 'var(--flat-text-secondary)', flexShrink: 0 }} />)}
+          <span className={`flat-badge ${subtypeBadgeClass(pos.subtype)}`}>
+            {SUBTYPE_LABELS[pos.subtype] || pos.subtype}
+          </span>
         </span>
       </td>
 
@@ -549,6 +584,12 @@ function WorkRow({
         ) : null}
       </td>
     </tr>
+
+    {/* TOV expandable section */}
+    {showTOV && pos.id && (
+      <FlatTOVSection positionId={pos.id} position={pos} />
+    )}
+    </>
   );
 }
 
