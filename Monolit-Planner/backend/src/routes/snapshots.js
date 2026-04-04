@@ -1,6 +1,9 @@
 /**
  * Snapshots routes
  * API for snapshot management (create, list, restore, unlock, delete)
+ *
+ * All handlers are async — required for PostgreSQL adapter where
+ * db.prepare().all/get/run return Promises.
  */
 
 import express from 'express';
@@ -16,7 +19,7 @@ import {
 const router = express.Router();
 
 // POST /api/snapshots/create - Create new snapshot
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
   try {
     const { bridge_id, positions, header_kpi, description, snapshot_name, created_by } = req.body;
 
@@ -25,13 +28,13 @@ router.post('/create', (req, res) => {
     }
 
     // FIX: Unlock previous locked snapshot if exists
-    const previousLocked = db.prepare(`
+    const previousLocked = await db.prepare(`
       SELECT id FROM snapshots
       WHERE bridge_id = ? AND is_locked = 1
     `).get(bridge_id);
 
     if (previousLocked) {
-      db.prepare('UPDATE snapshots SET is_locked = 0 WHERE id = ?').run(previousLocked.id);
+      await db.prepare('UPDATE snapshots SET is_locked = 0 WHERE id = ?').run(previousLocked.id);
       logger.info(`Unlocked previous snapshot: ${previousLocked.id}`);
     }
 
@@ -43,7 +46,7 @@ router.post('/create', (req, res) => {
     });
 
     // Insert into database
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO snapshots (
         id, bridge_id, snapshot_name, snapshot_hash, created_by,
         positions_snapshot, header_kpi_snapshot, description,
@@ -80,11 +83,11 @@ router.post('/create', (req, res) => {
 });
 
 // GET /api/snapshots/:bridge_id - List all snapshots for bridge
-router.get('/:bridge_id', (req, res) => {
+router.get('/:bridge_id', async (req, res) => {
   try {
     const { bridge_id } = req.params;
 
-    const snapshots = db.prepare(`
+    const snapshots = await db.prepare(`
       SELECT
         id as snapshot_id,
         snapshot_name,
@@ -121,11 +124,11 @@ router.get('/:bridge_id', (req, res) => {
 });
 
 // GET /api/snapshots/detail/:snapshot_id - Get snapshot details
-router.get('/detail/:snapshot_id', (req, res) => {
+router.get('/detail/:snapshot_id', async (req, res) => {
   try {
     const { snapshot_id } = req.params;
 
-    const snapshot = db.prepare(`
+    const snapshot = await db.prepare(`
       SELECT * FROM snapshots WHERE id = ?
     `).get(snapshot_id);
 
@@ -160,12 +163,12 @@ router.get('/detail/:snapshot_id', (req, res) => {
 });
 
 // POST /api/snapshots/:snapshot_id/restore - Restore snapshot
-router.post('/:snapshot_id/restore', (req, res) => {
+router.post('/:snapshot_id/restore', async (req, res) => {
   try {
     const { snapshot_id } = req.params;
     const { comment, created_by } = req.body;
 
-    const snapshot = db.prepare(`
+    const snapshot = await db.prepare(`
       SELECT * FROM snapshots WHERE id = ?
     `).get(snapshot_id);
 
@@ -193,7 +196,7 @@ router.post('/:snapshot_id/restore', (req, res) => {
     newSnapshot.parent_snapshot_id = snapshot_id;
 
     // Insert new snapshot
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO snapshots (
         id, bridge_id, snapshot_name, snapshot_hash, created_by,
         positions_snapshot, header_kpi_snapshot, description,
@@ -230,7 +233,7 @@ router.post('/:snapshot_id/restore', (req, res) => {
 });
 
 // POST /api/snapshots/:snapshot_id/unlock - Unlock snapshot
-router.post('/:snapshot_id/unlock', (req, res) => {
+router.post('/:snapshot_id/unlock', async (req, res) => {
   try {
     const { snapshot_id } = req.params;
     const { reason, created_by } = req.body;
@@ -239,7 +242,7 @@ router.post('/:snapshot_id/unlock', (req, res) => {
       return res.status(400).json({ error: 'Důvod je povinný' });
     }
 
-    const snapshot = db.prepare(`
+    const snapshot = await db.prepare(`
       SELECT * FROM snapshots WHERE id = ?
     `).get(snapshot_id);
 
@@ -251,7 +254,7 @@ router.post('/:snapshot_id/unlock', (req, res) => {
     const draftSnapshot = createDraftFromSnapshot(snapshot, reason, created_by);
 
     // Insert draft
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO snapshots (
         id, bridge_id, snapshot_name, snapshot_hash, created_by,
         positions_snapshot, header_kpi_snapshot, description,
@@ -288,11 +291,11 @@ router.post('/:snapshot_id/unlock', (req, res) => {
 });
 
 // DELETE /api/snapshots/:snapshot_id - Delete snapshot
-router.delete('/:snapshot_id', (req, res) => {
+router.delete('/:snapshot_id', async (req, res) => {
   try {
     const { snapshot_id } = req.params;
 
-    const snapshot = db.prepare(`
+    const snapshot = await db.prepare(`
       SELECT is_locked FROM snapshots WHERE id = ?
     `).get(snapshot_id);
 
@@ -304,7 +307,7 @@ router.delete('/:snapshot_id', (req, res) => {
       return res.status(400).json({ error: 'Nelze smazat zamčený snapshot' });
     }
 
-    const result = db.prepare('DELETE FROM snapshots WHERE id = ?').run(snapshot_id);
+    const result = await db.prepare('DELETE FROM snapshots WHERE id = ?').run(snapshot_id);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: 'Snapshot not found' });
@@ -319,11 +322,11 @@ router.delete('/:snapshot_id', (req, res) => {
 });
 
 // GET /api/snapshots/active/:bridge_id - Get active (locked) snapshot for bridge
-router.get('/active/:bridge_id', (req, res) => {
+router.get('/active/:bridge_id', async (req, res) => {
   try {
     const { bridge_id } = req.params;
 
-    const snapshot = db.prepare(`
+    const snapshot = await db.prepare(`
       SELECT
         id as snapshot_id,
         snapshot_name,

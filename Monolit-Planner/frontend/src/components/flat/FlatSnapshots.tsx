@@ -19,9 +19,17 @@ export default function FlatSnapshots() {
 
   const { data: snapshots = [] } = useQuery({
     queryKey: ['snapshots', selectedProjectId],
-    queryFn: () => selectedProjectId ? snapshotsAPI.list(selectedProjectId) : [],
+    queryFn: async () => {
+      if (!selectedProjectId) return [];
+      try {
+        return await snapshotsAPI.list(selectedProjectId);
+      } catch {
+        return []; // Graceful: empty list if snapshots API fails
+      }
+    },
     enabled: !!selectedProjectId,
     staleTime: 60_000,
+    retry: false, // Don't retry on 500 — avoids console spam
   });
 
   // Check active snapshot
@@ -41,6 +49,7 @@ export default function FlatSnapshots() {
     },
     enabled: !!selectedProjectId,
     staleTime: 60_000,
+    retry: false,
   });
 
   const createMutation = useMutation({
