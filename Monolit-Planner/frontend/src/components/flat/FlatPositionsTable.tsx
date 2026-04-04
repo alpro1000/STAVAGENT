@@ -15,7 +15,7 @@
 import { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Calculator, AlertTriangle, Lock, Plus, Zap,
+  Calculator, AlertTriangle, Lock, Plus, Zap, Trash2,
   ChevronDown, ChevronRight, AlertCircle,
 } from 'lucide-react';
 import type { Position, Subtype } from '@stavagent/monolit-shared';
@@ -91,7 +91,7 @@ export default function FlatPositionsTable() {
   const { selectedProjectId, activeSnapshot } = useUI();
   const {
     positions, headerKPI, isLoading,
-    updatePositions,
+    updatePositions, deletePosition,
   } = useProjectPositions();
   const navigate = useNavigate();
   const isLocked = activeSnapshot?.is_locked ?? false;
@@ -183,6 +183,16 @@ export default function FlatPositionsTable() {
     await updatePositions([{ id: posId, otskp_code: code }]);
   }, [isLocked, updatePositions]);
 
+  // Delete all positions of an element
+  const handleDeleteElement = useCallback(async (element: ElementGroup) => {
+    if (isLocked) return;
+    const name = element.positions[0]?.item_name || element.partName;
+    if (!confirm(`Odstranit element "${name}" a všechny jeho práce? Tato akce je nevratná.`)) return;
+    for (const pos of element.positions) {
+      if (pos.id) await deletePosition(pos.id);
+    }
+  }, [isLocked, deletePosition]);
+
   const toggleElement = useCallback((partName: string) => {
     setCollapsedElements(prev => {
       const next = new Set(prev);
@@ -237,6 +247,7 @@ export default function FlatPositionsTable() {
                   onOtskpSelect={handleOtskpSelect}
                   onAddWork={() => setAddWorkFor(el.partName)}
                   onToggleTOV={toggleTOV}
+                  onDelete={() => handleDeleteElement(el)}
                 />
               ))}
             </tbody>
@@ -265,7 +276,7 @@ export default function FlatPositionsTable() {
 
 function ElementBlock({
   element, isLocked, collapsed, expandedTOV,
-  onToggle, onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onAddWork, onToggleTOV,
+  onToggle, onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onAddWork, onToggleTOV, onDelete,
 }: {
   element: ElementGroup;
   isLocked: boolean;
@@ -277,6 +288,7 @@ function ElementBlock({
   onSpeedChange: (pos: Position, speed: number) => Promise<boolean>;
   onOtskpSelect: (posId: string, code: string, name: string, unitPrice?: number) => void;
   onAddWork: () => void;
+  onDelete: () => void;
   onToggleTOV: (posId: string) => void;
 }) {
   const [katalogPrice, setKatalogPrice] = useState<number | null>(null);
@@ -294,10 +306,17 @@ function ElementBlock({
   const partM3 = element.positions
     .filter(p => p.subtype === 'beton')
     .reduce((s, p) => s + (p.concrete_m3 || p.qty || 0), 0);
-  const maxDays = Math.max(...element.positions.map(p => p.days || 0), 0);
+
+  // Celkem dní: if calculator metadata exists → use it, otherwise SUM (sequential)
+  const betonMeta = betonPos?.metadata
+    ? (() => { try { return JSON.parse(typeof betonPos.metadata === 'string' ? betonPos.metadata : '{}'); } catch { return null; } })()
+    : null;
+  const totalDays = betonMeta?.schedule_info?.total_days
+    || element.positions.reduce((s, p) => s + (p.days || 0), 0);
+
   const totalKros = element.positions.reduce((s, p) => s + (p.kros_total_czk || 0), 0);
   const calcPricePerM3 = partM3 > 0 ? totalKros / partM3 : 0;
-  const hasDays = maxDays > 0;
+  const hasDays = totalDays > 0;
 
   const handleOtskp = (code: string, name: string, unitPrice?: number) => {
     if (betonPos?.id) {
@@ -386,21 +405,33 @@ function ElementBlock({
                 color: hasDays ? 'var(--flat-text)' : 'var(--stone-400)',
                 fontWeight: hasDays ? 600 : 400,
               }}>
-                {hasDays ? fmt(maxDays) : '—'}
+                {hasDays ? fmt(totalDays) : '—'}
                 {hasDays ? <span style={{ fontSize: 9, color: 'var(--stone-400)', marginLeft: 2 }}>dní</span> : null}
               </span>
             </span>
 
-            {/* Vypočítat / Upřesnit — 88px */}
+            {/* Vypočítat / Upřesnit + Delete */}
             {!isLocked && betonPos && (
-              <button
-                className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
-                onClick={onCalculate}
-                style={{ flexShrink: 0 }}
-              >
-                <Zap size={13} />
-                {hasDays ? 'Upřesnit' : 'Vypočítat'}
-              </button>
+              <>
+                <button
+                  className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
+                  onClick={onCalculate}
+                  style={{ flexShrink: 0 }}
+                >
+                  <Zap size={13} />
+                  {hasDays ? 'Upřesnit' : 'Vypočítat'}
+                </button>
+                <button
+                  className="sb__icon-btn sb__icon-btn--danger"
+                  onClick={onDelete}
+                  title="Odstranit element"
+                  style={{ flexShrink: 0, opacity: 0.4 }}
+                  onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                  onMouseLeave={e => (e.currentTarget.style.opacity = '0.4')}
+                >
+                  <Trash2 size={13} />
+                </button>
+              </>
             )}
           </div>
         </td>
@@ -411,7 +442,7 @@ function ElementBlock({
         <>
           {/* Layer 2: Column headers */}
           <tr className="flat-el-colheader">
-            <th style={{ width: 140 }}>Typ práce</th>
+            <th style={{ width: 100 }}>Typ práce</th>
             <th style={{ width: 50 }} className="flat-col--right">MJ</th>
             <th style={{ width: 75 }} className="flat-col--right">Množství</th>
             <th style={{ width: 50 }} className="flat-col--right flat-col--hide-mobile">Lidé</th>

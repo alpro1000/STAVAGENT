@@ -97,12 +97,15 @@ export default function FlatTOVSection({ position: pos }: Props) {
 
         return (
           <tr key={i} className={cls}>
-            <td colSpan={7} style={row.type === 'detail' ? { paddingLeft: 32 } : undefined}>
+            {/* cols 1-8: label spans to align with Celk.hod (col 9) */}
+            <td colSpan={8} style={row.type === 'detail' ? { paddingLeft: 32 } : undefined}>
               {row.label}
             </td>
-            <td></td>
+            {/* col 9: Celk.hod */}
             <td className="flat-col--right flat-mono">{row.hours || ''}</td>
+            {/* col 10: Celk.Kč */}
             <td className="flat-col--right flat-mono">{row.cost || ''}</td>
+            {/* cols 11-14: empty */}
             <td colSpan={4}></td>
           </tr>
         );
