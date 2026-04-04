@@ -53,8 +53,8 @@
   --flat-text-secondary: var(--stone-400);
   --flat-text-label:  var(--stone-600);
   --flat-accent:      var(--orange-500);
-  --flat-hover:       var(--blue-50);
-  --flat-selected:    var(--blue-100);
+  --flat-hover:       #F5F3F0;
+  --flat-selected:    #EDEBE8;
 
   /* Flat design fonts */
   --flat-font:      'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
