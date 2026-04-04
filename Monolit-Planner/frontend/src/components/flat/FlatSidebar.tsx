@@ -145,14 +145,10 @@ export default function FlatSidebar() {
 
   if (!sidebarOpen) {
     return (
-      <button
-        className="flat-icon-btn"
-        onClick={toggleSidebar}
-        style={{ position: 'fixed', left: 8, top: 56, zIndex: 10 }}
-        title="Otevřít sidebar (Ctrl+B)"
-      >
-        <PanelLeftOpen size={18} />
-      </button>
+      <div className="flat-sidebar-collapsed" onClick={toggleSidebar} title="Otevřít sidebar (Ctrl+B)">
+        <PanelLeftOpen size={16} />
+        <span className="flat-sidebar-collapsed__label">Objekty</span>
+      </div>
     );
   }
 
