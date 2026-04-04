@@ -1,13 +1,14 @@
 /**
- * FlatSidebar — Project list sidebar with flat design.
+ * FlatSidebar — Portal-style sidebar with warm stone background.
  *
+ * Stone-200 background, white active item with orange border-left.
  * Groups objects by project_name (stavba).
- * Supports: filter tabs (Aktivní/Hotové/Vše), create, rename, delete, bulk ops.
+ * Shows element count + concrete volume under each object.
  */
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import {
-  ChevronRight, Plus, Pencil, Trash2, FolderOpen, Settings,
+  ChevronRight, Plus, Pencil, Trash2, FolderOpen,
   PanelLeftClose, PanelLeftOpen
 } from 'lucide-react';
 import { useUI, SIDEBAR_WIDTH_KEY } from '../../context/UIContext';
@@ -62,13 +63,11 @@ export default function FlatSidebar() {
     };
   }, []);
 
-  // Filter objects by status
   const filtered = useMemo(() => {
     if (filter === 'all') return projects;
     return projects.filter(p => (p.status ?? 'active') === filter);
   }, [projects, filter]);
 
-  // Group by project_name
   const groups = useMemo((): ProjectGroup[] => {
     const map = new Map<string, Bridge[]>();
     for (const obj of filtered) {
@@ -76,23 +75,15 @@ export default function FlatSidebar() {
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(obj);
     }
-    // Auto-expand groups
-    const result: ProjectGroup[] = [];
-    for (const [name, objects] of map) {
-      result.push({ name, objects });
-    }
-    return result.sort((a, b) => a.name.localeCompare(b.name, 'cs'));
+    return Array.from(map, ([name, objects]) => ({ name, objects }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'cs'));
   }, [filtered]);
 
-  // Auto-expand group containing selected project
   useEffect(() => {
     if (!selectedProjectId) return;
     for (const g of groups) {
       if (g.objects.some(o => o.bridge_id === selectedProjectId)) {
-        setExpandedGroups(prev => {
-          if (prev.has(g.name)) return prev;
-          return new Set([...prev, g.name]);
-        });
+        setExpandedGroups(prev => prev.has(g.name) ? prev : new Set([...prev, g.name]));
       }
     }
   }, [selectedProjectId, groups]);
@@ -119,16 +110,11 @@ export default function FlatSidebar() {
     if (!confirm(`Smazat ${selectedIds.size} objektů?`)) return;
     await bulkDelete(Array.from(selectedIds));
     setSelectedIds(new Set());
-    if (selectedProjectId && selectedIds.has(selectedProjectId)) {
-      selectProject(null);
-    }
+    if (selectedProjectId && selectedIds.has(selectedProjectId)) selectProject(null);
   }, [selectedIds, bulkDelete, selectedProjectId, selectProject]);
 
   const handleRenameSubmit = useCallback(async (oldName: string) => {
-    if (!editName.trim() || editName === oldName) {
-      setEditingProject(null);
-      return;
-    }
+    if (!editName.trim() || editName === oldName) { setEditingProject(null); return; }
     await renameProject({ oldName, newName: editName.trim() });
     setEditingProject(null);
   }, [editName, renameProject]);
@@ -136,52 +122,43 @@ export default function FlatSidebar() {
   const handleDeleteProject = useCallback(async (projectName: string) => {
     if (!confirm(`Smazat projekt "${projectName}" a všechny jeho objekty?`)) return;
     await deleteProject(projectName);
-    // Deselect if any deleted object was selected
     const deleted = projects.filter(p => p.project_name === projectName);
-    if (deleted.some(d => d.bridge_id === selectedProjectId)) {
-      selectProject(null);
-    }
+    if (deleted.some(d => d.bridge_id === selectedProjectId)) selectProject(null);
   }, [deleteProject, projects, selectedProjectId, selectProject]);
 
+  /* ── Collapsed state ─── */
   if (!sidebarOpen) {
     return (
-      <div className="flat-sidebar-collapsed" onClick={toggleSidebar} title="Otevřít sidebar (Ctrl+B)">
+      <div className="sb-collapsed" onClick={toggleSidebar} title="Otevřít sidebar (Ctrl+B)">
         <PanelLeftOpen size={16} />
-        <span className="flat-sidebar-collapsed__label">Objekty</span>
+        <span className="sb-collapsed__label">Objekty</span>
       </div>
     );
   }
 
+  /* ── Open state ─── */
   return (
     <>
-      <aside className="flat-sidebar" style={{ width, minWidth: width }}>
-        {/* Resize handle */}
-        <div
-          className="flat-sidebar__resize"
-          onMouseDown={() => { resizing.current = true; }}
-        />
+      <aside className="sb" style={{ width, minWidth: width }}>
+        <div className="sb__resize" onMouseDown={() => { resizing.current = true; }} />
 
         {/* Header */}
-        <div className="flat-sidebar__header">
-          <h3>Objekty</h3>
-          <div style={{ display: 'flex', gap: 4 }}>
-            <button className="flat-icon-btn flat-icon-btn--accent" onClick={() => setShowCreate(true)} title="Nový objekt">
-              <Plus size={16} />
+        <div className="sb__head">
+          <span className="sb__title">Objekty</span>
+          <div style={{ display: 'flex', gap: 2 }}>
+            <button className="sb__icon-btn sb__icon-btn--accent" onClick={() => setShowCreate(true)} title="Nový objekt">
+              <Plus size={15} />
             </button>
-            <button className="flat-icon-btn" onClick={toggleSidebar} title="Skrýt sidebar (Ctrl+B)">
-              <PanelLeftClose size={16} />
+            <button className="sb__icon-btn" onClick={toggleSidebar} title="Skrýt (Ctrl+B)">
+              <PanelLeftClose size={15} />
             </button>
           </div>
         </div>
 
         {/* Filter tabs */}
-        <div className="flat-tabs">
+        <div className="sb__tabs">
           {(['active', 'completed', 'all'] as const).map(f => (
-            <button
-              key={f}
-              className={`flat-tab ${filter === f ? 'flat-tab--active' : ''}`}
-              onClick={() => setFilter(f)}
-            >
+            <button key={f} className={`sb__tab ${filter === f ? 'sb__tab--on' : ''}`} onClick={() => setFilter(f)}>
               {f === 'active' ? 'Aktivní' : f === 'completed' ? 'Hotové' : 'Vše'}
             </button>
           ))}
@@ -189,120 +166,88 @@ export default function FlatSidebar() {
 
         {/* Bulk actions */}
         {selectedIds.size > 0 && (
-          <div style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid var(--flat-border)' }}>
-            <span style={{ fontSize: 12, color: 'var(--flat-text-secondary)' }}>
-              Vybráno: {selectedIds.size}
-            </span>
-            <button className="flat-btn flat-btn--sm" onClick={handleBulkDelete}>
-              <Trash2 size={12} /> Smazat
-            </button>
-            <button className="flat-btn flat-btn--sm flat-btn--ghost" onClick={() => setSelectedIds(new Set())}>
-              Zrušit
-            </button>
+          <div className="sb__bulk">
+            <span>Vybráno: {selectedIds.size}</span>
+            <button className="flat-btn flat-btn--sm" onClick={handleBulkDelete}><Trash2 size={12} /> Smazat</button>
+            <button className="flat-btn flat-btn--sm flat-btn--ghost" onClick={() => setSelectedIds(new Set())}>Zrušit</button>
           </div>
         )}
 
         {/* Body */}
-        <div className="flat-sidebar__body">
+        <div className="sb__body">
           {isLoading ? (
             <div className="flat-loading"><div className="flat-spinner" /> Načítání...</div>
           ) : groups.length === 0 ? (
-            <div style={{ padding: 24, textAlign: 'center', color: 'var(--flat-text-secondary)', fontSize: 13 }}>
-              <FolderOpen size={32} style={{ marginBottom: 8, opacity: 0.3 }} />
+            <div className="sb__empty">
+              <FolderOpen size={28} style={{ opacity: 0.3, marginBottom: 6 }} />
               <p>Žádné objekty</p>
-              <button className="flat-btn flat-btn--primary flat-btn--sm" onClick={() => setShowCreate(true)}>
-                <Plus size={14} /> Vytvořit
-              </button>
             </div>
           ) : (
             groups.map(group => {
               const isOpen = expandedGroups.has(group.name);
+              const totalM3 = group.objects.reduce((s, o) => s + (o.concrete_m3 || 0), 0);
               return (
-                <div key={group.name} className="flat-project-group">
-                  {/* Group header */}
-                  <div className="flat-project-group__header" onClick={() => toggleGroup(group.name)}>
-                    <ChevronRight
-                      size={14}
-                      className={`flat-project-group__chevron ${isOpen ? 'flat-project-group__chevron--open' : ''}`}
-                    />
+                <div key={group.name} className="sb__group">
+                  {/* Stavba header */}
+                  <div className="sb__stavba" onClick={() => toggleGroup(group.name)}>
+                    <ChevronRight size={13} className={`sb__chevron ${isOpen ? 'sb__chevron--open' : ''}`} />
 
                     {editingProject === group.name ? (
-                      <input
-                        className="flat-field__input"
-                        style={{ height: 24, fontSize: 13, padding: '0 6px' }}
-                        value={editName}
+                      <input className="sb__rename-input" value={editName}
                         onChange={e => setEditName(e.target.value)}
-                        onKeyDown={e => {
-                          if (e.key === 'Enter') handleRenameSubmit(group.name);
-                          if (e.key === 'Escape') setEditingProject(null);
-                        }}
+                        onKeyDown={e => { if (e.key === 'Enter') handleRenameSubmit(group.name); if (e.key === 'Escape') setEditingProject(null); }}
                         onBlur={() => handleRenameSubmit(group.name)}
-                        autoFocus
-                        onClick={e => e.stopPropagation()}
-                      />
+                        autoFocus onClick={e => e.stopPropagation()} />
                     ) : (
-                      <span className="flat-project-group__name">{group.name}</span>
+                      <span className="sb__stavba-name">{group.name}</span>
                     )}
 
-                    <span className="flat-project-group__badge">{group.objects.length}</span>
+                    <span className="sb__stavba-badge">{group.objects.length}</span>
 
-                    <div className="flat-project-group__actions">
-                      <button
-                        className="flat-icon-btn"
-                        onClick={e => {
-                          e.stopPropagation();
-                          setEditingProject(group.name);
-                          setEditName(group.name);
-                        }}
-                        title="Přejmenovat"
-                      >
-                        <Pencil size={12} />
+                    <div className="sb__stavba-actions">
+                      <button className="sb__icon-btn" onClick={e => { e.stopPropagation(); setEditingProject(group.name); setEditName(group.name); }} title="Přejmenovat">
+                        <Pencil size={11} />
                       </button>
-                      <button
-                        className="flat-icon-btn flat-icon-btn--danger"
-                        onClick={e => {
-                          e.stopPropagation();
-                          handleDeleteProject(group.name);
-                        }}
-                        title="Smazat projekt"
-                      >
-                        <Trash2 size={12} />
+                      <button className="sb__icon-btn sb__icon-btn--danger" onClick={e => { e.stopPropagation(); handleDeleteProject(group.name); }} title="Smazat">
+                        <Trash2 size={11} />
                       </button>
                     </div>
                   </div>
 
                   {/* Objects */}
-                  {isOpen && group.objects.map(obj => (
-                    <div
-                      key={obj.bridge_id}
-                      className={`flat-object-item ${obj.bridge_id === selectedProjectId ? 'flat-object-item--selected' : ''}`}
-                      onClick={() => selectProject(obj.bridge_id)}
-                    >
-                      <input
-                        type="checkbox"
-                        className="flat-object-item__checkbox"
-                        checked={selectedIds.has(obj.bridge_id)}
-                        onChange={() => {}} // controlled by onClick
-                        onClick={e => toggleSelect(obj.bridge_id, e)}
-                      />
-                      <span className="flat-object-item__name" title={obj.object_name}>
-                        {obj.object_name}
-                      </span>
-                      <span className="flat-object-item__count">
-                        {obj.element_count ?? 0}
-                      </span>
-                    </div>
-                  ))}
+                  {isOpen && group.objects.map(obj => {
+                    const isActive = obj.bridge_id === selectedProjectId;
+                    return (
+                      <div key={obj.bridge_id} className={`sb__obj ${isActive ? 'sb__obj--active' : ''}`}
+                        onClick={() => selectProject(obj.bridge_id)}>
+                        <input type="checkbox" className="sb__obj-check"
+                          checked={selectedIds.has(obj.bridge_id)} onChange={() => {}}
+                          onClick={e => toggleSelect(obj.bridge_id, e)} />
+                        <div className="sb__obj-info">
+                          <span className="sb__obj-name" title={obj.object_name}>{obj.object_name}</span>
+                          <span className="sb__obj-meta">
+                            {obj.element_count ?? 0} prvků
+                            {obj.concrete_m3 ? ` · ${obj.concrete_m3.toLocaleString('cs-CZ', { maximumFractionDigits: 0 })} m³` : ''}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               );
             })
           )}
         </div>
+
+        {/* Footer: + Nový objekt */}
+        <div className="sb__footer">
+          <button className="sb__new-btn" onClick={() => setShowCreate(true)}>
+            <Plus size={14} /> Nový objekt
+          </button>
+        </div>
       </aside>
 
-      {showCreate && (
-        <CreateObjectModal onClose={() => setShowCreate(false)} />
-      )}
+      {showCreate && <CreateObjectModal onClose={() => setShowCreate(false)} />}
     </>
   );
 }
