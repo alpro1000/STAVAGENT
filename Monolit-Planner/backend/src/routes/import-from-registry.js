@@ -68,6 +68,29 @@ router.get('/projects', async (req, res) => {
         monolit_linked: p.position_stats?.monolit_linked || 0,
       }));
 
+    // Fallback: if Portal returned nothing, try Registry backend directly
+    if (withRegistry.length === 0) {
+      logger.info('[ImportRegistry] No Portal projects found, trying Registry backend directly...');
+      const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
+      try {
+        const regRes = await fetch(`${REGISTRY_API}/api/registry/projects`);
+        if (regRes.ok) {
+          const regData = await regRes.json();
+          const regProjects = (regData.projects || []).map(p => ({
+            portal_project_id: p.portal_project_id || p.project_id,
+            project_name: p.project_name,
+            positions_total: p.item_count || 0,
+          }));
+          if (regProjects.length > 0) {
+            logger.info(`[ImportRegistry] Fallback: found ${regProjects.length} projects from Registry`);
+            return res.json({ success: true, projects: regProjects });
+          }
+        }
+      } catch (regErr) {
+        logger.warn('[ImportRegistry] Registry fallback failed:', regErr.message);
+      }
+    }
+
     logger.info(`[ImportRegistry] Found ${withRegistry.length} projects with Registry data`);
 
     res.json({ success: true, projects: withRegistry });

@@ -49,6 +49,7 @@ export declare const SUBTYPE_ICONS: {
     bednění: string;
     odbednění: string;
     výztuž: string;
+    zrání: string;
     jiné: string;
 };
 /**
@@ -61,6 +62,7 @@ export declare const SUBTYPE_LABELS: {
     bednění: string;
     odbednění: string;
     výztuž: string;
+    zrání: string;
     jiné: string;
 };
 export declare const UNIT_LABELS: {

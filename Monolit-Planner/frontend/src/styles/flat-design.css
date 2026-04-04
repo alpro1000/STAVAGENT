@@ -830,6 +830,11 @@
   color: var(--blue-500);
 }
 
+.flat-badge--zrani {
+  background: #EEF2FF;
+  color: #4338CA;
+}
+
 .flat-badge--jine {
   background: var(--stone-100);
   color: var(--stone-500);

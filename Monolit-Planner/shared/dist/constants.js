@@ -56,6 +56,7 @@ export const SUBTYPE_ICONS = {
     'bednění': '📦',
     'odbednění': '📤',
     'výztuž': '🛠️',
+    'zrání': '⏳',
     'jiné': '📋'
 };
 /**
@@ -68,6 +69,7 @@ export const SUBTYPE_LABELS = {
     'bednění': 'Bednění',
     'odbednění': 'Odbednění',
     'výztuž': 'Výztuž',
+    'zrání': 'Zrání',
     'jiné': 'Jiné'
 };
 export const UNIT_LABELS = {
