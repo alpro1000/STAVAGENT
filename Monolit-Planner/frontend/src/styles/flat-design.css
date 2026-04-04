@@ -515,8 +515,233 @@
 }
 
 /* ============================================
-   TABLE — PART HEADER ROW
+   ELEMENT STRUCTURE — INFO / COLHEADER / WORK ROWS
    ============================================ */
+
+/* Layer 1: INFO row (element summary) */
+.flat-el-info {
+  background: var(--stone-100) !important;
+}
+
+.flat-el-info td {
+  padding: 0 !important;
+  height: auto !important;
+  border-bottom: 1px solid var(--stone-300);
+}
+
+.flat-el-info__inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  min-height: 40px;
+  flex-wrap: wrap;
+}
+
+.flat-el-info__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--flat-text-secondary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.flat-el-info__toggle:hover {
+  color: var(--flat-accent);
+}
+
+.flat-el-info__name {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--flat-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+
+.flat-el-info__vol {
+  font-size: 13px;
+  color: var(--flat-text-label);
+  flex-shrink: 0;
+}
+
+.flat-el-info__otskp {
+  flex: 0 0 200px;
+  min-width: 160px;
+}
+
+.flat-el-info__otskp .otskp-autocomplete-container {
+  position: relative;
+}
+
+.flat-el-info__otskp .otskp-search-input {
+  width: 100%;
+  height: 28px;
+  padding: 0 8px 0 28px;
+  border: 1px solid var(--flat-border);
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: var(--flat-font);
+  background: var(--flat-surface);
+  color: var(--flat-text);
+  outline: none;
+}
+
+.flat-el-info__otskp .otskp-search-input:focus {
+  border-color: var(--flat-accent);
+}
+
+.flat-el-info__otskp .otskp-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 400px;
+  max-height: 280px;
+  overflow-y: auto;
+  background: var(--flat-surface);
+  border: 1px solid var(--flat-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  z-index: 50;
+}
+
+.flat-el-info__otskp .otskp-dropdown-item {
+  padding: 6px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--flat-border);
+  font-size: 12px;
+}
+
+.flat-el-info__otskp .otskp-dropdown-item:hover,
+.flat-el-info__otskp .otskp-dropdown-item.selected {
+  background: var(--flat-hover);
+}
+
+.flat-el-info__otskp .otskp-item-code {
+  font-family: var(--flat-font-mono);
+  font-weight: 600;
+  color: var(--flat-accent);
+}
+
+.flat-el-info__otskp .otskp-item-price {
+  float: right;
+  font-family: var(--flat-font-mono);
+  color: var(--flat-text-secondary);
+}
+
+.flat-el-info__otskp .otskp-item-name {
+  color: var(--flat-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flat-el-info__otskp .otskp-item-spec {
+  font-size: 11px;
+  color: var(--flat-text-secondary);
+}
+
+.flat-el-info__otskp .otskp-loading {
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  color: var(--flat-text-secondary);
+}
+
+.flat-el-info__otskp .otskp-input-wrapper {
+  position: relative;
+}
+
+.flat-el-info__price {
+  font-size: 12px;
+  color: var(--flat-text-secondary);
+  flex-shrink: 0;
+}
+
+.flat-el-info__days {
+  font-size: 12px;
+  color: var(--flat-text-label);
+  flex-shrink: 0;
+}
+
+/* Layer 2: Column headers (per-element) */
+.flat-el-colheader {
+  background: var(--stone-50) !important;
+}
+
+.flat-el-colheader th {
+  height: 28px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--flat-text-secondary);
+  border-bottom: 1px solid var(--flat-border);
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* Layer 3: Work rows */
+.flat-work-row {
+  background: var(--flat-surface);
+}
+
+.flat-work-row td {
+  height: var(--flat-row-h);
+  padding: 0 8px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--flat-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.flat-work-row td:first-child {
+  padding-left: 16px;
+}
+
+.flat-work-row:hover {
+  background: var(--flat-hover);
+}
+
+/* Layer 4: Add work button */
+.flat-el-add {
+  background: var(--flat-surface);
+}
+
+.flat-el-add td {
+  padding: 4px 16px !important;
+  height: auto !important;
+  border-bottom: 2px solid var(--stone-200);
+}
+
+.flat-el-add__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--flat-font);
+  color: var(--flat-text-secondary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.flat-el-add__btn:hover {
+  color: var(--flat-accent);
+  background: var(--stone-100);
+}
+
+/* Keep old part-header and otskp-row classes for backward compat (unused now) */
 .flat-part-header {
   background: var(--stone-100) !important;
 }
