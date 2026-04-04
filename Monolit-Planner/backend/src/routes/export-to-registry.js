@@ -256,23 +256,44 @@ router.post('/:bridge_id', requireExportAuth, async (req, res) => {
       console.warn('[Export] Portal sync failed (non-critical):', portalErr.message);
     }
 
-    // 7. Direct export to Registry backend - create project + sheet + items + TOV
+    // 7. Direct export to Registry backend — reuse existing project if linked
     let registryProjectId = null;
     try {
-      const regProjectRes = await fetch(`${REGISTRY_API}/api/registry/projects`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          project_name: project.project_name || bridge_id,
-          portal_project_id: portalProjectId
-        })
-      });
+      // First: check if this project was originally imported from Registry
+      // by looking up portal_project_id → registry project
+      if (portalProjectId) {
+        try {
+          const lookupRes = await fetch(`${REGISTRY_API}/api/registry/projects/by-portal/${portalProjectId}`);
+          if (lookupRes.ok) {
+            const lookupData = await lookupRes.json();
+            registryProjectId = lookupData.project?.project_id || null;
+            if (registryProjectId) {
+              console.log(`[Export] Found existing Registry project ${registryProjectId} for portal ${portalProjectId}`);
+            }
+          }
+        } catch (lookupErr) {
+          console.warn('[Export] Registry lookup failed:', lookupErr.message);
+        }
+      }
 
-      if (regProjectRes.ok) {
-        const regProject = await regProjectRes.json();
-        registryProjectId = regProject.project?.project_id;
+      // If not found, create new project
+      if (!registryProjectId) {
+        const regProjectRes = await fetch(`${REGISTRY_API}/api/registry/projects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_name: project.project_name || bridge_id,
+            portal_project_id: portalProjectId
+          })
+        });
 
-        if (registryProjectId) {
+        if (regProjectRes.ok) {
+          const regProject = await regProjectRes.json();
+          registryProjectId = regProject.project?.project_id;
+        }
+      } // end if (!registryProjectId)
+
+      if (registryProjectId) {
           // Create sheet
           const sheetRes = await fetch(`${REGISTRY_API}/api/registry/projects/${registryProjectId}/sheets`, {
             method: 'POST',
@@ -320,7 +341,6 @@ router.post('/:bridge_id', requireExportAuth, async (req, res) => {
               console.log(`[Export] Created ${positions.length} items in Registry`);
             }
           }
-        }
       }
     } catch (regErr) {
       console.warn('[Export] Registry direct sync failed (non-critical):', regErr.message);

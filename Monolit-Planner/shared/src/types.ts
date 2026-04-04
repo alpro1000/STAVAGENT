@@ -8,6 +8,7 @@ export type Subtype =
   | 'bednění'
   | 'odbednění'
   | 'výztuž'
+  | 'zrání'
   | 'jiné';
 
 export type Unit = 'M3' | 'm2' | 'kg' | 'ks' | 't' | 'other';

@@ -97,6 +97,22 @@ export function calculatePositionFields(
 ): Position {
   const { rounding_step_kros = 50 } = config;
 
+  // Zrání has no labor — only duration (days)
+  if (position.subtype === 'zrání') {
+    return {
+      ...position,
+      labor_hours: 0,
+      cost_czk: 0,
+      unit_cost_native: 0,
+      concrete_m3: 0,
+      unit_cost_on_m3: 0,
+      kros_unit_czk: 0,
+      kros_total_czk: 0,
+      has_rfi: position.days === 0,
+      rfi_message: position.days === 0 ? 'Zadejte dobu zrání (dny).' : '',
+    };
+  }
+
   // Calculate labor hours
   const labor_hours = calculateLaborHours(
     position.crew_size,

@@ -39,7 +39,7 @@ import AddWorkModal from './AddWorkModal';
 /* ── Helpers ─────────────────────────────────────────────────── */
 
 const SUBTYPE_ORDER: Record<string, number> = {
-  beton: 0, 'bednění': 1, 'odbednění': 2, 'výztuž': 3, 'jiné': 4,
+  beton: 0, 'bednění': 1, 'výztuž': 2, 'zrání': 3, 'odbednění': 4, 'jiné': 5,
 };
 
 function subtypeBadgeClass(subtype: Subtype): string {
@@ -48,6 +48,7 @@ function subtypeBadgeClass(subtype: Subtype): string {
     'bednění': 'flat-badge--bedneni',
     'odbednění': 'flat-badge--odbedneni',
     'výztuž': 'flat-badge--vystuz',
+    'zrání': 'flat-badge--zrani',
     'jiné': 'flat-badge--jine',
   };
   return map[subtype] || 'flat-badge--jine';
@@ -503,6 +504,7 @@ function WorkRow({
   const speed = calcSpeed(pos);
   const wageOverridden = pos.wage_czk_ph !== PROJECT_DEFAULTS.wage;
   const shiftOverridden = pos.shift_hours !== PROJECT_DEFAULTS.shift;
+  const isZrani = pos.subtype === 'zrání';
 
   return (
     <>
@@ -527,32 +529,32 @@ function WorkRow({
       {/* MJ */}
       <td className="flat-col--right flat-mono">{unitLabel}</td>
 
-      {/* Množství — editable, min 0 */}
+      {/* Množství — editable (not for zrání) */}
       <td className="flat-col--right">
-        <EditableNum value={pos.qty} field="qty" disabled={isLocked} decimals={1}
-          onChange={v => onFieldChange(pos, 'qty', v)} />
+        {!isZrani && <EditableNum value={pos.qty} field="qty" disabled={isLocked} decimals={1}
+          onChange={v => onFieldChange(pos, 'qty', v)} />}
       </td>
 
-      {/* Lidé — editable, min 1 */}
+      {/* Lidé (not for zrání) */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <EditableNum value={pos.crew_size} field="crew_size" disabled={isLocked}
-          onChange={v => onFieldChange(pos, 'crew_size', v)} />
+        {!isZrani && <EditableNum value={pos.crew_size} field="crew_size" disabled={isLocked}
+          onChange={v => onFieldChange(pos, 'crew_size', v)} />}
       </td>
 
-      {/* Kč/h — editable, min 0, override detection */}
+      {/* Kč/h (not for zrání) */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <EditableNum value={pos.wage_czk_ph} field="wage_czk_ph" disabled={isLocked}
+        {!isZrani && <EditableNum value={pos.wage_czk_ph} field="wage_czk_ph" disabled={isLocked}
           onChange={v => onFieldChange(pos, 'wage_czk_ph', v)}
           overridden={wageOverridden}
-          overrideTooltip={`Přepsáno pro tuto pozici (projekt: ${PROJECT_DEFAULTS.wage})`} />
+          overrideTooltip={`Přepsáno pro tuto pozici (projekt: ${PROJECT_DEFAULTS.wage})`} />}
       </td>
 
-      {/* Hod/den — editable, min 0.5, override detection */}
+      {/* Hod/den (not for zrání) */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <EditableNum value={pos.shift_hours} field="shift_hours" disabled={isLocked}
+        {!isZrani && <EditableNum value={pos.shift_hours} field="shift_hours" disabled={isLocked}
           onChange={v => onFieldChange(pos, 'shift_hours', v)}
           overridden={shiftOverridden}
-          overrideTooltip={`Přepsáno pro tuto pozici (projekt: ${PROJECT_DEFAULTS.shift})`} />
+          overrideTooltip={`Přepsáno pro tuto pozici (projekt: ${PROJECT_DEFAULTS.shift})`} />}
       </td>
 
       {/* Dny — editable, min 0, step 0.5 */}
