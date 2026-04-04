@@ -46,7 +46,7 @@ export default function FlatProjectSettings() {
     if (!selectedProjectId) return;
 
     // Ask user if they want to update existing positions
-    const defaultWage = (config?.defaults as Record<string, any>)?.DEFAULT_WAGE_CZK_PH ?? 398;
+    const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? 398;
     const nonOverridden = positions.filter(p => p.wage_czk_ph === defaultWage);
 
     if (nonOverridden.length > 0) {
@@ -73,7 +73,7 @@ export default function FlatProjectSettings() {
   const handleShiftChange = useCallback(async () => {
     if (!selectedProjectId) return;
 
-    const defaultShift = (config?.defaults as Record<string, any>)?.DEFAULT_SHIFT_HOURS ?? 10;
+    const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? 10;
     const nonOverridden = positions.filter(p => p.shift_hours === defaultShift);
 
     if (nonOverridden.length > 0) {

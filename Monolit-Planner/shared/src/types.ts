@@ -125,6 +125,8 @@ export interface ProjectConfig {
     CURRENCY: string;
     DAYS_PER_MONTH_OPTIONS: number[];
     DAYS_PER_MONTH_DEFAULT: 30 | 22;
+    DEFAULT_WAGE_CZK_PH: number;
+    DEFAULT_SHIFT_HOURS: number;
   };
   days_per_month_mode: 30 | 22;
 }
