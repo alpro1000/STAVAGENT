@@ -1,0 +1,343 @@
+/**
+ * Monolit Planner - Calculation Formulas
+ * Core business logic for position calculations
+ */
+import { scheduleElement } from './calculators/element-scheduler.js';
+/**
+ * Calculate labor hours for a position
+ */
+export function calculateLaborHours(crew_size, shift_hours, days) {
+    return crew_size * shift_hours * days;
+}
+/**
+ * Calculate total cost in CZK
+ */
+export function calculateCostCZK(labor_hours, wage_czk_ph) {
+    return labor_hours * wage_czk_ph;
+}
+/**
+ * Calculate unit cost in native unit (CZK/MJ)
+ */
+export function calculateUnitCostNative(cost_czk, qty) {
+    if (qty === 0)
+        return 0;
+    return cost_czk / qty;
+}
+/**
+ * Calculate unit cost per m³ of concrete (KEY METRIC!)
+ * This converts all subtypes to a common denominator: CZK/m³ of concrete
+ */
+export function calculateUnitCostOnM3(cost_czk, concrete_m3) {
+    if (concrete_m3 === 0)
+        return 0;
+    return cost_czk / concrete_m3;
+}
+/**
+ * Calculate KROS unit cost with rounding up to nearest 50 CZK step
+ */
+export function calculateKrosUnitCZK(unit_cost_on_m3, rounding_step = 50) {
+    return Math.ceil(unit_cost_on_m3 / rounding_step) * rounding_step;
+}
+/**
+ * Calculate KROS total cost
+ */
+export function calculateKrosTotalCZK(kros_unit_czk, concrete_m3) {
+    return kros_unit_czk * concrete_m3;
+}
+/**
+ * Find concrete volume for a part (from beton subtype position)
+ */
+export function findConcreteVolumeForPart(positions, bridge_id, part_name) {
+    const betonPosition = positions.find(p => p.bridge_id === bridge_id &&
+        p.part_name === part_name &&
+        p.subtype === 'beton');
+    return betonPosition?.qty || null;
+}
+/**
+ * Calculate all derived fields for a position
+ */
+export function calculatePositionFields(position, allPositions, config = {}) {
+    const { rounding_step_kros = 50 } = config;
+    // Calculate labor hours
+    const labor_hours = calculateLaborHours(position.crew_size, position.shift_hours, position.days);
+    // Calculate cost
+    const cost_czk = calculateCostCZK(labor_hours, position.wage_czk_ph);
+    // Calculate native unit cost
+    const unit_cost_native = calculateUnitCostNative(cost_czk, position.qty);
+    // Determine concrete volume
+    let concrete_m3;
+    if (position.subtype === 'beton') {
+        concrete_m3 = position.qty; // For beton, qty IS the concrete volume
+    }
+    else {
+        // For other subtypes, find the beton position of the same part
+        const foundVolume = findConcreteVolumeForPart(allPositions, position.bridge_id, position.part_name);
+        concrete_m3 = foundVolume || 0;
+    }
+    // Calculate unit cost per m³ (KEY METRIC!)
+    const unit_cost_on_m3 = calculateUnitCostOnM3(cost_czk, concrete_m3);
+    // Calculate KROS values
+    const kros_unit_czk = calculateKrosUnitCZK(unit_cost_on_m3, rounding_step_kros);
+    const kros_total_czk = calculateKrosTotalCZK(kros_unit_czk, concrete_m3);
+    // Detect RFI
+    let has_rfi = false;
+    let rfi_message = '';
+    // Check if beton quantity is missing (for both beton and other subtypes)
+    if (concrete_m3 === 0) {
+        has_rfi = true;
+        if (position.subtype === 'beton') {
+            rfi_message = `⚠️ Chybí objem betonu! Zadejte "Objem betonu celkem" v PartHeader výše.`;
+        }
+        else {
+            rfi_message = `Není najdena řádka beton pro část "${position.part_name}". Zadejte objem betonu (m³) v PartHeader.`;
+        }
+    }
+    if (position.days === 0) {
+        has_rfi = true;
+        rfi_message += (rfi_message ? ' | ' : '') +
+            'Chybí počet dní (den=0). Náklady nejsou zahrnuty do KPI.';
+    }
+    return {
+        ...position,
+        labor_hours,
+        cost_czk,
+        unit_cost_native,
+        concrete_m3,
+        unit_cost_on_m3,
+        kros_unit_czk,
+        kros_total_czk,
+        has_rfi,
+        rfi_message: rfi_message || undefined
+    };
+}
+/**
+ * Calculate weighted average of a field across positions
+ */
+export function calculateWeightedAverage(positions, field, weightField = 'concrete_m3') {
+    const validPositions = positions.filter(p => {
+        const weight = p[weightField];
+        const value = p[field];
+        // Type safety: ensure both weight and value are numbers
+        return (typeof weight === 'number' &&
+            typeof value === 'number' &&
+            weight !== 0 &&
+            !isNaN(weight) &&
+            !isNaN(value));
+    });
+    if (validPositions.length === 0)
+        return 0;
+    const totalWeight = validPositions.reduce((sum, p) => sum + p[weightField], 0);
+    const weightedSum = validPositions.reduce((sum, p) => sum + (p[field] * p[weightField]), 0);
+    return weightedSum / totalWeight;
+}
+/**
+ * ⭐ Calculate duration in months
+ * Formula: sum_kros_total_czk / (avg_crew × avg_wage × avg_shift × days_per_month)
+ */
+export function calculateEstimatedMonths(sum_kros_total_czk, avg_crew_size, avg_wage_czk_ph, avg_shift_hours, days_per_month) {
+    const cost_per_day = avg_crew_size * avg_wage_czk_ph * avg_shift_hours;
+    // Prevent division by zero
+    if (cost_per_day === 0 || days_per_month === 0)
+        return 0;
+    const total_days = sum_kros_total_czk / cost_per_day;
+    return total_days / days_per_month;
+}
+/**
+ * ⭐ Calculate duration in weeks
+ * Formula:
+ *   days_per_month=30 (calendar days) → divide by 7 (calendar days/week)
+ *   days_per_month=22 (working days)  → divide by 5 (working days/week)
+ */
+export function calculateEstimatedWeeks(estimated_months, days_per_month) {
+    const days_per_week = days_per_month === 22 ? 5 : 7;
+    return (estimated_months * days_per_month) / days_per_week;
+}
+/**
+ * Calculate complete Header KPI for a bridge
+ */
+export function calculateHeaderKPI(positions, bridgeParams, config = {}) {
+    const { rho_t_per_m3 = 2.4 } = config;
+    const days_per_month_mode = bridgeParams.days_per_month_mode || 30;
+    // Calculate sums
+    const betonPositions = positions.filter(p => p.subtype === 'beton');
+    const sum_concrete_m3 = betonPositions.reduce((sum, p) => sum + (p.concrete_m3 || 0), 0);
+    const sum_kros_total_czk = positions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0);
+    // Calculate unit costs
+    const project_unit_cost_czk_per_m3 = sum_concrete_m3 > 0
+        ? sum_kros_total_czk / sum_concrete_m3
+        : 0;
+    const project_unit_cost_czk_per_t = project_unit_cost_czk_per_m3 / rho_t_per_m3;
+    // Calculate weighted averages
+    const avg_crew_size = calculateWeightedAverage(positions, 'crew_size');
+    const avg_wage_czk_ph = calculateWeightedAverage(positions, 'wage_czk_ph');
+    const avg_shift_hours = calculateWeightedAverage(positions, 'shift_hours');
+    // ⭐ Calculate duration
+    const estimated_months = calculateEstimatedMonths(sum_kros_total_czk, avg_crew_size, avg_wage_czk_ph, avg_shift_hours, days_per_month_mode);
+    const estimated_weeks = calculateEstimatedWeeks(estimated_months, days_per_month_mode);
+    return {
+        span_length_m: bridgeParams.span_length_m,
+        deck_width_m: bridgeParams.deck_width_m,
+        pd_weeks: bridgeParams.pd_weeks,
+        days_per_month_mode,
+        sum_concrete_m3,
+        sum_kros_total_czk,
+        project_unit_cost_czk_per_m3,
+        project_unit_cost_czk_per_t,
+        estimated_months,
+        estimated_weeks,
+        avg_crew_size,
+        avg_wage_czk_ph,
+        avg_shift_hours,
+        days_per_month: days_per_month_mode,
+        rho_t_per_m3
+    };
+}
+// ============================================================
+// FORMWORK CALCULATOR FORMULAS
+// ============================================================
+/**
+ * Calculate number of tacts (cycles) for formwork
+ * Default: ceil(total_area / set_area), but user can override
+ */
+export function calculateFormworkTacts(total_area_m2, set_area_m2) {
+    if (set_area_m2 <= 0)
+        return 1;
+    return Math.ceil(total_area_m2 / set_area_m2);
+}
+/**
+ * Calculate formwork term in days (pure formwork work only)
+ * termín = taktů × dní_na_takt
+ */
+export function calculateFormworkTerm(num_tacts, days_per_tact) {
+    return num_tacts * days_per_tact;
+}
+/**
+ * Calculate monthly rental cost per set
+ * měsíční_nájem_sada = sada_m² × cena_Kč/m²
+ */
+export function calculateMonthlyRentalPerSet(set_area_m2, rental_czk_per_m2_month) {
+    return set_area_m2 * rental_czk_per_m2_month;
+}
+/**
+ * Calculate final rental cost for the usage period
+ * konečný_nájem = měsíční_nájem_sada × (termín_dní / 30)
+ */
+export function calculateFinalRentalCost(monthly_rental_per_set, term_days) {
+    if (term_days <= 0)
+        return 0;
+    return monthly_rental_per_set * (term_days / 30);
+}
+/**
+ * Calculate total element duration (all work types + curing)
+ * Used to determine total element calendar duration for rental calculation
+ *
+ * Two modes:
+ *
+ * 1. RCPSP Scheduler (when num_tacts available in formwork_rental metadata):
+ *    Builds a DAG of activities per tact, schedules with resource constraints
+ *    (formwork sets, crews), finds critical path. Models parallel work on
+ *    different sets during curing and rebar overlap with assembly.
+ *
+ * 2. Simple formula (fallback):
+ *    Celk. doba = max(bednění, výztuž) + beton + effectiveCuring + jiné
+ *    Parallel prep + curing divided by num_sets.
+ *
+ * Metadata for RCPSP mode (in formwork_rental position):
+ *   { type: "formwork_rental", num_tacts: 4, stripping_days: 1, rebar_lag_pct: 50 }
+ */
+export function calculateElementTotalDays(partPositions) {
+    let bedneniDays = 0;
+    let vyztuzDays = 0;
+    let betonDays = 0;
+    let maxCuringDays = 0;
+    let otherDays = 0;
+    let maxNumSets = 1;
+    let numTacts = 0;
+    let strippingDays = 1;
+    let rebarLagPct = 50;
+    for (const pos of partPositions) {
+        const days = pos.days || 0;
+        const subtype = pos.subtype;
+        if (subtype === 'bednění' || subtype === 'odbednění') {
+            bedneniDays += days;
+        }
+        else if (subtype === 'výztuž') {
+            vyztuzDays += days;
+        }
+        else if (subtype === 'beton') {
+            betonDays += days;
+            const curing = pos.curing_days ?? 3;
+            if (curing > maxCuringDays)
+                maxCuringDays = curing;
+        }
+        else if (subtype === 'jiné') {
+            // "jiné" with rental metadata don't count towards element time
+            // they are a result of the calculator, not a work activity
+            const meta = pos.metadata;
+            const parsed = typeof meta === 'string' ? safeParseMeta(meta) : meta;
+            const isFormworkRental = parsed && parsed.type === 'formwork_rental';
+            if (isFormworkRental) {
+                // Extract num_sets from rental position (stored as qty)
+                const sets = pos.qty || 1;
+                if (sets > maxNumSets)
+                    maxNumSets = sets;
+                // Extract RCPSP scheduler params if available
+                if (parsed.num_tacts && parsed.num_tacts > 0) {
+                    numTacts = parsed.num_tacts;
+                    if (typeof parsed.stripping_days === 'number')
+                        strippingDays = parsed.stripping_days;
+                    if (typeof parsed.rebar_lag_pct === 'number')
+                        rebarLagPct = parsed.rebar_lag_pct;
+                }
+            }
+            else {
+                otherDays += days;
+            }
+        }
+    }
+    // --- Mode 1: RCPSP Scheduler (graph-based, parallel sets + crews) ---
+    if (numTacts > 0 && maxNumSets > 0 && (bedneniDays > 0 || betonDays > 0)) {
+        const result = scheduleElement({
+            num_tacts: numTacts,
+            num_sets: maxNumSets,
+            assembly_days: bedneniDays / numTacts,
+            rebar_days: vyztuzDays > 0 ? vyztuzDays / numTacts : 0,
+            concrete_days: betonDays > 0 ? betonDays / numTacts : 1,
+            curing_days: maxCuringDays,
+            stripping_days: strippingDays,
+            rebar_lag_pct: rebarLagPct,
+        });
+        return result.total_days + otherDays;
+    }
+    // --- Mode 2: Simple parallel formula (fallback) ---
+    // Effective curing: divided by num_sets (parallel work with multiple sets)
+    const effectiveCuring = maxNumSets > 1
+        ? maxCuringDays / maxNumSets
+        : maxCuringDays;
+    // Bednění and výztuž run in parallel (different crews, overlapping work)
+    // Critical path = the longer of the two
+    const criticalPrep = Math.max(bedneniDays, vyztuzDays);
+    return criticalPrep + betonDays + effectiveCuring + otherDays;
+}
+/** Safely parse JSON metadata string */
+function safeParseMeta(meta) {
+    try {
+        return JSON.parse(meta);
+    }
+    catch {
+        // Legacy format: check for substring match
+        if (meta.includes('formwork_rental')) {
+            return { type: 'formwork_rental' };
+        }
+        return null;
+    }
+}
+/**
+ * Generate KROS description for formwork rental position
+ */
+export function generateFormworkKrosDescription(row) {
+    const price = row.rental_czk_per_m2_month.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const setArea = row.set_area_m2.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const monthlyRental = row.monthly_rental_per_set.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return `Bednění - ${row.construction_name} (${row.system_name} ${row.system_height}; ${price} Kč/m2) sada - ${setArea} m2 => ${monthlyRental} Kč/sada/měsíc`;
+}

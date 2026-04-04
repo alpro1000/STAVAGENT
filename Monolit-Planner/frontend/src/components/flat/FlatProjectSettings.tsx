@@ -46,7 +46,7 @@ export default function FlatProjectSettings() {
     if (!selectedProjectId) return;
 
     // Ask user if they want to update existing positions
-    const defaultWage = (config?.defaults as Record<string, any>)?.DEFAULT_WAGE_CZK_PH ?? 398;
+    const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? 398;
     const nonOverridden = positions.filter(p => p.wage_czk_ph === defaultWage);
 
     if (nonOverridden.length > 0) {
@@ -73,7 +73,7 @@ export default function FlatProjectSettings() {
   const handleShiftChange = useCallback(async () => {
     if (!selectedProjectId) return;
 
-    const defaultShift = (config?.defaults as Record<string, any>)?.DEFAULT_SHIFT_HOURS ?? 10;
+    const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? 10;
     const nonOverridden = positions.filter(p => p.shift_hours === defaultShift);
 
     if (nonOverridden.length > 0) {
@@ -108,7 +108,7 @@ export default function FlatProjectSettings() {
   return (
     <div className="flat-settings">
       <div className="flat-settings__field">
-        <span className="flat-settings__label">Zároveň</span>
+        <span className="flat-settings__label">Výchozí sazba</span>
         <input
           className="flat-settings__input"
           type="number"
@@ -130,7 +130,7 @@ export default function FlatProjectSettings() {
           onBlur={handleShiftChange}
           onKeyDown={e => e.key === 'Enter' && handleShiftChange()}
         />
-        <span className="flat-settings__unit">h</span>
+        <span className="flat-settings__unit">h/den</span>
       </div>
 
       <div className="flat-settings__field">
