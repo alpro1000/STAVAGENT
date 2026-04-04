@@ -6,8 +6,8 @@
  */
 
 import { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { positionsAPI } from '../../services/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { positionsAPI, configAPI } from '../../services/api';
 import { useUI } from '../../context/UIContext';
 import type { Subtype } from '@stavagent/monolit-shared';
 
@@ -30,6 +30,15 @@ export default function AddWorkModal({ partName, existingSubtypes, onClose }: Pr
   const qc = useQueryClient();
   const [submitting, setSubmitting] = useState(false);
 
+  // Read project config for defaults
+  const { data: config } = useQuery({
+    queryKey: ['config'],
+    queryFn: () => configAPI.get(),
+    staleTime: 10 * 60_000,
+  });
+  const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? 398;
+  const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? 10;
+
   // Custom work fields
   const [customName, setCustomName] = useState('');
   const [customUnit, setCustomUnit] = useState('m2');
@@ -51,8 +60,8 @@ export default function AddWorkModal({ partName, existingSubtypes, onClose }: Pr
         unit: unit as any,
         qty,
         crew_size: 4,
-        wage_czk_ph: 398,
-        shift_hours: 10,
+        wage_czk_ph: defaultWage,
+        shift_hours: defaultShift,
         days: 0,
       }]);
       qc.invalidateQueries({ queryKey: ['positions', selectedProjectId] });

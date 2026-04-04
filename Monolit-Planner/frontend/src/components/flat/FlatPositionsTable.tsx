@@ -118,7 +118,7 @@ export default function FlatPositionsTable() {
     if (betonPos.concrete_m3) params.set('volume_m3', String(betonPos.concrete_m3));
     if (betonPos.qty) params.set('qty', String(betonPos.qty));
     if (bedneniPos?.id) params.set('bedneni_position_id', bedneniPos.id);
-    if (vystuzPos?.id) params.set('vystuz_position_id', vystuzPos.id);
+    if (vystuzPos?.id) params.set('vyzuz_position_id', vystuzPos.id);
     navigate(`/planner?${params.toString()}`);
   }, [navigate]);
 

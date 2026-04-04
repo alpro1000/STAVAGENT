@@ -44,6 +44,7 @@ export function useProjectPositions() {
     enabled: !!selectedProjectId,
     staleTime: 5 * 60_000,
     gcTime: 30 * 60_000,
+    refetchOnMount: 'always', // Always refetch when component remounts (e.g. returning from /planner after Aplikovat)
     retry: 3,
     retryDelay: (i) => Math.min(1000 * 2 ** i, 30000),
   });
