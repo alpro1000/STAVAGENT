@@ -12,7 +12,7 @@
  * Negative values rejected with shake animation.
  */
 
-import { useMemo, useCallback, useState, useRef } from 'react';
+import { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calculator, AlertTriangle, Lock, Plus, Zap,
@@ -26,6 +26,7 @@ import {
 } from '@stavagent/monolit-shared';
 import { useUI } from '../../context/UIContext';
 import { useProjectPositions } from '../../hooks/useProjectPositions';
+import { otskpAPI } from '../../services/api';
 import InlineOtskpSearch from './InlineOtskpSearch';
 import FlatKPIPanel from './FlatKPIPanel';
 import FlatProjectSettings from './FlatProjectSettings';
@@ -281,6 +282,15 @@ function ElementBlock({
   const [katalogPrice, setKatalogPrice] = useState<number | null>(null);
 
   const betonPos = element.positions.find(p => p.subtype === 'beton');
+
+  // Fetch catalog price on mount if OTSKP code already set
+  useEffect(() => {
+    if (!betonPos?.otskp_code || katalogPrice !== null) return;
+    otskpAPI.getByCode(betonPos.otskp_code)
+      .then(data => { if (data?.unit_price) setKatalogPrice(data.unit_price); })
+      .catch(() => {}); // Ignore if code not found
+  }, [betonPos?.otskp_code]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const partM3 = element.positions
     .filter(p => p.subtype === 'beton')
     .reduce((s, p) => s + (p.concrete_m3 || p.qty || 0), 0);
