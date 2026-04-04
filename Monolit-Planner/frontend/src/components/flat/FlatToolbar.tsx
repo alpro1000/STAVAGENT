@@ -5,12 +5,13 @@
  */
 
 import { useState, useRef } from 'react';
-import { Upload, Download, FileSpreadsheet, ArrowRightLeft } from 'lucide-react';
+import { Upload, Download, FileSpreadsheet, ArrowRightLeft, Plus } from 'lucide-react';
 import { useUI } from '../../context/UIContext';
 import { uploadAPI, exportAPI } from '../../services/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { saveAs } from 'file-saver';
 import ImportRegistryModal from './ImportRegistryModal';
+import AddPositionModal from './AddPositionModal';
 
 interface Props {
   positionCount: number;
@@ -22,6 +23,7 @@ export default function FlatToolbar({ positionCount }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [showImportRegistry, setShowImportRegistry] = useState(false);
+  const [showAddPosition, setShowAddPosition] = useState(false);
 
   // XLSX Upload (standalone, no Registry)
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,6 +94,12 @@ export default function FlatToolbar({ positionCount }: Props) {
 
         <div className="flat-toolbar__spacer" />
 
+        {/* Add position manually */}
+        <button className="flat-btn flat-btn--sm flat-btn--primary"
+          onClick={() => setShowAddPosition(true)} disabled={!selectedProjectId}>
+          <Plus size={14} /> Přidat pozici
+        </button>
+
         {/* Import from Registry */}
         <button className="flat-btn flat-btn--sm" onClick={() => setShowImportRegistry(true)}>
           <ArrowRightLeft size={14} /> Načíst z Rozpočtu
@@ -134,6 +142,9 @@ export default function FlatToolbar({ positionCount }: Props) {
 
       {showImportRegistry && (
         <ImportRegistryModal onClose={() => setShowImportRegistry(false)} />
+      )}
+      {showAddPosition && (
+        <AddPositionModal onClose={() => setShowAddPosition(false)} />
       )}
     </>
   );
