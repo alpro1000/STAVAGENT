@@ -171,7 +171,7 @@ export default function FlatPositionsTable() {
   return (
     <div>
       <FlatProjectSettings />
-      <FlatKPIPanel kpi={headerKPI} />
+      <FlatKPIPanel kpi={headerKPI} positions={positions} />
       <FlatToolbar positionCount={positions.length} />
 
       {positions.length === 0 ? (
@@ -254,21 +254,9 @@ function PartGroupRows({
 
   return (
     <>
-      {/* Part header row — includes OTSKP autocomplete */}
+      {/* Part header row */}
       <tr className="flat-part-header" id={`part-${group.partName}`}>
-        <td colSpan={2} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span>{group.partName}</span>
-          {/* OTSKP autocomplete for the beton position of this part */}
-          {betonPos?.id && !isLocked && (
-            <span style={{ flex: '0 0 200px', display: 'inline-block' }}>
-              <OtskpAutocomplete
-                value={betonPos.otskp_code || ''}
-                onSelect={(code, name, price, _unit) => onOtskpSelect(betonPos.id!, code, name, price)}
-                disabled={isLocked}
-              />
-            </span>
-          )}
-        </td>
+        <td colSpan={2}>{group.partName}</td>
         <td></td>
         <td className="flat-col--right flat-mono">{partM3 ? fmt(partM3, 1) + ' m³' : ''}</td>
         <td colSpan={4}></td>
@@ -281,6 +269,21 @@ function PartGroupRows({
         <td></td>
         <td></td>
       </tr>
+
+      {/* OTSKP autocomplete row — separate row for visibility */}
+      {betonPos?.id && !isLocked && (
+        <tr className="flat-otskp-row">
+          <td colSpan={16} style={{ padding: '4px 8px', height: 'auto' }}>
+            <div style={{ maxWidth: 360 }}>
+              <OtskpAutocomplete
+                value={betonPos.otskp_code || ''}
+                onSelect={(code, name, price, _unit) => onOtskpSelect(betonPos.id!, code, name, price)}
+                disabled={isLocked}
+              />
+            </div>
+          </td>
+        </tr>
+      )}
 
       {group.positions.map(pos => {
         const isSub = pos.subtype !== 'beton';

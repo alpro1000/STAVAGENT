@@ -108,7 +108,7 @@ export default function FlatProjectSettings() {
   return (
     <div className="flat-settings">
       <div className="flat-settings__field">
-        <span className="flat-settings__label">Zároveň</span>
+        <span className="flat-settings__label">Výchozí sazba</span>
         <input
           className="flat-settings__input"
           type="number"
@@ -130,7 +130,7 @@ export default function FlatProjectSettings() {
           onBlur={handleShiftChange}
           onKeyDown={e => e.key === 'Enter' && handleShiftChange()}
         />
-        <span className="flat-settings__unit">h</span>
+        <span className="flat-settings__unit">h/den</span>
       </div>
 
       <div className="flat-settings__field">
