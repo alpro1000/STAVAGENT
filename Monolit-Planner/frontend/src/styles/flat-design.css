@@ -535,7 +535,7 @@
   gap: 10px;
   padding: 8px 10px;
   min-height: 40px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .flat-el-info__toggle {
@@ -560,13 +560,33 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 320px;
+  flex: 1;
+  min-width: 0;
 }
 
-.flat-el-info__vol {
-  font-size: 13px;
-  color: var(--flat-text-label);
+/* Separator bar between name/OTSKP and metrics */
+.flat-el-info__sep {
+  width: 1px;
+  height: 24px;
+  background: var(--flat-border);
   flex-shrink: 0;
+}
+
+/* Metric mini-card in INFO row */
+.flat-el-info__metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  gap: 1px;
+}
+
+.flat-el-info__metric-label {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--flat-text-secondary);
+  line-height: 1;
 }
 
 .flat-el-info__otskp {
@@ -656,16 +676,9 @@
   position: relative;
 }
 
-.flat-el-info__price {
-  font-size: 12px;
-  color: var(--flat-text-secondary);
-  flex-shrink: 0;
-}
-
-.flat-el-info__days {
-  font-size: 12px;
-  color: var(--flat-text-label);
-  flex-shrink: 0;
+.flat-el-info__metric-value {
+  font-size: 13px;
+  line-height: 1.2;
 }
 
 /* Layer 2: Column headers (per-element) */
@@ -1049,8 +1062,75 @@
 }
 
 /* ============================================
-   INLINE INPUT (editable table cells)
+   EDITABLE CELLS (work row inline editing)
    ============================================ */
+
+/* Display mode */
+.flat-ecell {
+  display: block;
+  text-align: right;
+  font-family: var(--flat-font-mono);
+  font-size: 12px;
+  color: var(--flat-text);
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  transition: background 0.1s, border-color 0.15s;
+  min-height: 20px;
+}
+
+.flat-ecell:hover {
+  background: #f5f3f0;
+}
+
+/* Override (wage/shift differs from project default) */
+.flat-ecell--override {
+  color: var(--stone-500);
+}
+
+/* Shake animation on validation error */
+.flat-ecell--shake {
+  animation: flat-shake 0.3s ease;
+  border-color: #dc2626 !important;
+}
+
+@keyframes flat-shake {
+  0%, 100% { transform: translateX(0); }
+  20%  { transform: translateX(-3px); }
+  40%  { transform: translateX(3px); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(2px); }
+}
+
+/* Edit mode input */
+.flat-ecell-input {
+  display: block;
+  width: 100%;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid var(--orange-500);
+  border-radius: 3px;
+  background: var(--flat-surface);
+  font-family: var(--flat-font-mono);
+  font-size: 12px;
+  color: var(--flat-text);
+  text-align: right;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.flat-ecell-input:focus {
+  border-color: var(--orange-500);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
+}
+
+/* Calculated (non-editable) cells */
+.flat-cell--calc {
+  cursor: default;
+}
+
+/* Legacy inline input (kept for backward compat) */
 .flat-inline-input {
   width: 100%;
   height: 24px;
