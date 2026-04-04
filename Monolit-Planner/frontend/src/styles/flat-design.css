@@ -94,7 +94,7 @@
   display: flex;
   flex: 1;
   overflow: hidden;
-  height: calc(100vh - 48px); /* minus header */
+  height: calc(100vh - 44px); /* minus header */
 }
 
 .flat-main {
@@ -106,29 +106,51 @@
 }
 
 /* ============================================
-   HEADER BAR
+   HEADER BAR — Portal style (stone-200)
    ============================================ */
-.flat-header {
-  height: 48px;
+.app-header {
+  height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--flat-border);
-  background: var(--flat-surface);
-  gap: 12px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--stone-300);
+  background: var(--stone-200);
+  gap: 6px;
   flex-shrink: 0;
 }
-
-.flat-header__title {
-  font-size: 15px;
+.app-header__app {
+  font-size: 14px;
   font-weight: 600;
-  color: var(--flat-text);
+  color: var(--stone-800);
   white-space: nowrap;
 }
-
-.flat-header__subtitle {
+.app-header__sep {
   font-size: 13px;
-  color: var(--flat-text-secondary);
+  color: var(--stone-400);
+}
+.app-header__project {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stone-600);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+.app-header__object {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stone-500);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+.app-header__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .flat-header__actions {
@@ -145,7 +167,7 @@
 /* Collapsed strip */
 .sb-collapsed {
   width: 36px; min-width: 36px; flex-shrink: 0;
-  height: calc(100vh - 48px);
+  height: calc(100vh - 44px);
   border-right: 1px solid var(--stone-300);
   background: var(--stone-200);
   display: flex; flex-direction: column; align-items: center;
@@ -254,8 +276,9 @@
 
 /* Object item */
 .sb__obj {
-  display: flex; align-items: center; padding: 5px 14px 5px 32px; gap: 8px;
+  display: flex; align-items: center; padding: 6px 14px 6px 32px; gap: 8px;
   cursor: pointer; transition: background 0.1s; border-left: 2px solid transparent;
+  border-bottom: 0.5px solid var(--stone-300);
 }
 .sb__obj:hover { background: rgba(255,255,255,0.4); }
 
@@ -509,10 +532,11 @@
 }
 
 .flat-el-info__metric-label {
-  font-size: 8px;
+  font-size: 9px;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--flat-text-secondary);
+  color: var(--stone-500);
   line-height: 1;
 }
 
@@ -852,36 +876,36 @@
 
 /* Card base */
 .kpi-card {
-  flex: 1; min-width: 180px; background: white;
+  flex: 1; min-width: 180px; max-height: 80px; background: white;
   border: 1px solid var(--stone-200); border-radius: 6px;
-  border-left-width: 3px; overflow: hidden;
+  border-left-width: 4px; overflow: hidden;
 }
 .kpi-card--blue   { border-left-color: #3B82F6; }
 .kpi-card--amber  { border-left-color: #F59E0B; }
 .kpi-card--green  { border-left-color: #16A34A; }
 .kpi-card--violet { border-left-color: #8B5CF6; }
 
-/* Tinted backgrounds (~3%) */
-.kpi-card--blue   { background: #FBFCFF; }
-.kpi-card--amber  { background: #FFFDF8; }
-.kpi-card--green  { background: #FBFEFB; }
-.kpi-card--violet { background: #FCFBFF; }
+/* Tinted backgrounds (~6%) — visible on real monitors */
+.kpi-card--blue   { background: #F5F8FF; }
+.kpi-card--amber  { background: #FFF9EE; }
+.kpi-card--green  { background: #F4FBF5; }
+.kpi-card--violet { background: #F8F5FF; }
 
 /* Card header */
 .kpi-card__head {
-  font-size: 9px; font-weight: 600; text-transform: uppercase;
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
   letter-spacing: 0.06em; color: var(--stone-500);
-  padding: 5px 10px 4px; border-bottom: 1px solid var(--stone-200);
+  padding: 5px 12px 4px; border-bottom: 1px solid var(--stone-200);
 }
 
 /* Card body */
 .kpi-card__body {
-  display: flex; align-items: flex-start; gap: 10px; padding: 5px 10px 6px;
+  display: flex; align-items: flex-start; gap: 12px; padding: 6px 12px 7px;
 }
 
 /* Hero number */
 .kpi-card__hero {
-  font-size: 18px; font-weight: 700; font-family: var(--flat-font-mono);
+  font-size: 20px; font-weight: 600; font-family: var(--flat-font-mono);
   font-variant-numeric: tabular-nums; line-height: 1.2; flex-shrink: 0;
 }
 .kpi-card--blue .kpi-card__hero   { color: #1E3A5F; }
@@ -895,10 +919,10 @@
   display: flex; justify-content: space-between; align-items: baseline; gap: 4px;
 }
 .kpi-row__label {
-  font-size: 10px; color: var(--stone-500); white-space: nowrap;
+  font-size: 11px; font-weight: 500; color: var(--stone-500); white-space: nowrap;
 }
 .kpi-row__value {
-  font-size: 12px; font-weight: 600; color: var(--stone-800);
+  font-size: 13px; font-weight: 600; color: var(--stone-800);
   font-family: var(--flat-font-mono); font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -1204,11 +1228,12 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px 16px;
-  background: var(--stone-100);
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid var(--stone-200);
   border-radius: 6px;
-  margin-bottom: 12px;
-  font-size: 13px;
+  margin-bottom: 8px;
+  font-size: 12px;
 }
 
 .flat-settings__field {
