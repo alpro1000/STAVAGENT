@@ -2,18 +2,20 @@
  * FlatPositionsTable — Element-grouped positions table.
  *
  * Structure per element (part_name group):
- *   Layer 1: INFO row (stone-100) — name, m³, OTSKP, prices, days, Vypočítat
+ *   Layer 1: INFO row — name, OTSKP, Katalog, Výpočet, Objem, Celkem dní, Vypočítat
  *   Layer 2: Column headers (stone-50, 28px, muted)
- *   Layer 3: Work rows (white, 32px) — one per position, no element name repeat
+ *   Layer 3: Work rows (white, 32px) — editable cells with validation
  *   Layer 4: "+ Přidat práci" button row
  *
- * Uses calculatePositionFields from shared for client-side display of calculated columns.
+ * calculatePositionFields applied client-side for instant calculated columns.
+ * All editable cells: click → input → Enter/blur → validated PUT → optimistic update.
+ * Negative values rejected with shake animation.
  */
 
-import { useMemo, useCallback, useState } from 'react';
+import { useMemo, useCallback, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Calculator, AlertTriangle, Lock, Plus,
+  Calculator, AlertTriangle, Lock, Plus, Zap,
   ChevronDown, ChevronRight, AlertCircle,
 } from 'lucide-react';
 import type { Position, Subtype } from '@stavagent/monolit-shared';
@@ -59,14 +61,26 @@ function calcSpeed(pos: Position): number | null {
   return pos.qty / pos.labor_hours;
 }
 
+/** Round to nearest 0.5 */
+function roundHalf(n: number): number {
+  return Math.round(n * 2) / 2;
+}
+
+/** Validation rules per field */
+function validateField(field: string, value: number): string | null {
+  if (isNaN(value)) return 'Neplatné číslo';
+  if (value < 0) return 'Záporná hodnota';
+  if (field === 'crew_size' && value < 1) return 'Min. 1 osoba';
+  if (field === 'shift_hours' && value < 0.5) return 'Min. 0,5 h';
+  return null;
+}
+
 interface ElementGroup {
   partName: string;
   positions: Position[];
 }
 
 const PROJECT_DEFAULTS = { wage: 398, shift: 10 };
-
-/* Column count for colSpan */
 const COL_COUNT = 14;
 
 /* ── MAIN COMPONENT ──────────────────────────────────────────── */
@@ -83,7 +97,7 @@ export default function FlatPositionsTable() {
   const [collapsedElements, setCollapsedElements] = useState<Set<string>>(new Set());
   const [addWorkFor, setAddWorkFor] = useState<string | null>(null);
 
-  // Client-side calculated positions (apply shared formulas for display)
+  // Client-side calculated positions
   const calcPositions = useMemo(() => {
     if (!positions.length) return positions;
     return positions.map(p => calculatePositionFields(p, positions));
@@ -118,22 +132,28 @@ export default function FlatPositionsTable() {
     if (betonPos.concrete_m3) params.set('volume_m3', String(betonPos.concrete_m3));
     if (betonPos.qty) params.set('qty', String(betonPos.qty));
     if (bedneniPos?.id) params.set('bedneni_position_id', bedneniPos.id);
-    if (vystuzPos?.id) params.set('vystuz_position_id', vystuzPos.id);
+    if (vystuzPos?.id) params.set('vyzuz_position_id', vystuzPos.id);
     navigate(`/planner?${params.toString()}`);
   }, [navigate]);
 
+  // Single-field update with validation
   const handleFieldChange = useCallback(async (
     pos: Position, field: keyof Position, value: number
-  ) => {
-    if (isLocked || !pos.id) return;
+  ): Promise<boolean> => {
+    if (isLocked || !pos.id) return false;
+    const err = validateField(field as string, value);
+    if (err) return false;
     await updatePositions([{ id: pos.id, [field]: value }]);
+    return true;
   }, [isLocked, updatePositions]);
 
-  const handleSpeedChange = useCallback(async (pos: Position, speed: number) => {
-    if (isLocked || !pos.id || !speed || !pos.qty) return;
+  // Bidirectional MJ/h: single PUT with days recalculated
+  const handleSpeedChange = useCallback(async (pos: Position, speed: number): Promise<boolean> => {
+    if (isLocked || !pos.id || !pos.qty || speed <= 0) return false;
     const laborHours = pos.qty / speed;
-    const days = Math.ceil(laborHours / ((pos.crew_size || 4) * (pos.shift_hours || 10)));
-    await updatePositions([{ id: pos.id, days }]);
+    const days = roundHalf(laborHours / ((pos.crew_size || 4) * (pos.shift_hours || 10)));
+    await updatePositions([{ id: pos.id, days: Math.max(days, 0.5) }]);
+    return true;
   }, [isLocked, updatePositions]);
 
   const handleOtskpSelect = useCallback(async (
@@ -230,8 +250,8 @@ function ElementBlock({
   collapsed: boolean;
   onToggle: () => void;
   onCalculate: () => void;
-  onFieldChange: (pos: Position, field: keyof Position, value: number) => void;
-  onSpeedChange: (pos: Position, speed: number) => void;
+  onFieldChange: (pos: Position, field: keyof Position, value: number) => Promise<boolean>;
+  onSpeedChange: (pos: Position, speed: number) => Promise<boolean>;
   onOtskpSelect: (posId: string, code: string, name: string, unitPrice?: number) => void;
   onAddWork: () => void;
 }) {
@@ -240,7 +260,9 @@ function ElementBlock({
     .filter(p => p.subtype === 'beton')
     .reduce((s, p) => s + (p.concrete_m3 || p.qty || 0), 0);
   const maxDays = Math.max(...element.positions.map(p => p.days || 0), 0);
-  const calcPrice = betonPos?.kros_unit_czk || 0;
+  const totalKros = element.positions.reduce((s, p) => s + (p.kros_total_czk || 0), 0);
+  const calcPricePerM3 = partM3 > 0 ? totalKros / partM3 : 0;
+  const hasDays = maxDays > 0;
 
   return (
     <>
@@ -248,22 +270,17 @@ function ElementBlock({
       <tr className="flat-el-info" id={`part-${element.partName}`}>
         <td colSpan={COL_COUNT}>
           <div className="flat-el-info__inner">
-            {/* Collapse toggle */}
+            {/* Toggle */}
             <button className="flat-el-info__toggle" onClick={onToggle}>
               {collapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
             </button>
 
-            {/* Element name */}
+            {/* Name (flex) */}
             <span className="flat-el-info__name" title={betonPos?.item_name || element.partName}>
               {betonPos?.item_name || element.partName}
             </span>
 
-            {/* Volume */}
-            <span className="flat-el-info__vol flat-mono">
-              {partM3 ? fmt(partM3, 1) + ' m³' : ''}
-            </span>
-
-            {/* OTSKP autocomplete */}
+            {/* OTSKP input */}
             {betonPos?.id && !isLocked && (
               <span className="flat-el-info__otskp">
                 <OtskpAutocomplete
@@ -274,20 +291,58 @@ function ElementBlock({
               </span>
             )}
 
-            {/* Prices */}
-            <span className="flat-el-info__price">
-              Výpočet: <strong className="flat-mono">{calcPrice ? fmt(calcPrice) + ' Kč/m³' : '—'}</strong>
+            {/* Separator */}
+            <span className="flat-el-info__sep" />
+
+            {/* Katalog Kč/m³ */}
+            <span className="flat-el-info__metric">
+              <span className="flat-el-info__metric-label">Katalog</span>
+              <span className="flat-el-info__metric-value flat-mono" style={{ color: 'var(--stone-400)' }}>
+                —
+              </span>
             </span>
 
-            {/* Days */}
-            <span className="flat-el-info__days flat-mono">
-              {maxDays ? fmt(maxDays) + ' dní' : '0 dní'}
+            {/* Výpočet Kč/m³ */}
+            <span className="flat-el-info__metric">
+              <span className="flat-el-info__metric-label">Výpočet</span>
+              <span
+                className="flat-el-info__metric-value flat-mono"
+                style={{ color: calcPricePerM3 > 0 ? 'var(--green-500)' : 'var(--stone-400)' }}
+              >
+                {calcPricePerM3 > 0 ? fmt(calcPricePerM3) + ' Kč/m³' : '—'}
+              </span>
             </span>
 
-            {/* Vypočítat button */}
+            {/* Objem m³ */}
+            <span className="flat-el-info__metric">
+              <span className="flat-el-info__metric-label">Objem</span>
+              <span className="flat-el-info__metric-value flat-mono">
+                {partM3 ? fmt(partM3, 1) + ' m³' : '—'}
+              </span>
+            </span>
+
+            {/* Celkem dní (display only) */}
+            <span className="flat-el-info__metric">
+              <span className="flat-el-info__metric-label">Celkem dní</span>
+              <span
+                className="flat-el-info__metric-value flat-mono"
+                style={{
+                  color: hasDays ? 'var(--flat-text)' : 'var(--stone-400)',
+                  fontWeight: hasDays ? 600 : 400,
+                }}
+              >
+                {hasDays ? fmt(maxDays) : '—'}
+              </span>
+            </span>
+
+            {/* Vypočítat / Upřesnit button */}
             {!isLocked && betonPos && (
-              <button className="flat-btn flat-btn--primary flat-btn--sm" onClick={onCalculate}>
-                <Calculator size={13} /> Vypočítat
+              <button
+                className={`flat-btn flat-btn--sm ${hasDays ? '' : 'flat-btn--primary'}`}
+                onClick={onCalculate}
+              >
+                <Zap size={13} />
+                {hasDays ? 'Upřesnit' : 'Vypočítat'}
               </button>
             )}
           </div>
@@ -299,20 +354,20 @@ function ElementBlock({
         <>
           {/* Layer 2: Column headers */}
           <tr className="flat-el-colheader">
-            <th>Typ práce</th>
-            <th className="flat-col--right">MJ</th>
-            <th className="flat-col--right">Množství</th>
-            <th className="flat-col--right flat-col--hide-mobile">Lidé</th>
-            <th className="flat-col--right flat-col--hide-mobile">Kč/h</th>
-            <th className="flat-col--right flat-col--hide-mobile">Hod/den</th>
-            <th className="flat-col--right">Dny</th>
-            <th className="flat-col--right flat-col--hide-mobile">MJ/h</th>
-            <th className="flat-col--right flat-col--hide-mobile">Celk.hod</th>
-            <th className="flat-col--right flat-col--hide-mobile">Celk.Kč</th>
-            <th className="flat-col--right flat-col--hide-mobile">Kč/m³</th>
-            <th className="flat-col--right">Jedn. cena</th>
-            <th className="flat-col--right">Celkem</th>
-            <th className="flat-col--center">ⓘ</th>
+            <th style={{ width: 140 }}>Typ práce</th>
+            <th style={{ width: 50 }} className="flat-col--right">MJ</th>
+            <th style={{ width: 75 }} className="flat-col--right">Množství</th>
+            <th style={{ width: 50 }} className="flat-col--right flat-col--hide-mobile">Lidé</th>
+            <th style={{ width: 65 }} className="flat-col--right flat-col--hide-mobile">Kč/h</th>
+            <th style={{ width: 60 }} className="flat-col--right flat-col--hide-mobile">Hod/den</th>
+            <th style={{ width: 55 }} className="flat-col--right">Dny</th>
+            <th style={{ width: 55 }} className="flat-col--right flat-col--hide-mobile">MJ/h</th>
+            <th style={{ width: 70 }} className="flat-col--right flat-col--hide-mobile">Celk.hod</th>
+            <th style={{ width: 80 }} className="flat-col--right flat-col--hide-mobile">Celk.Kč</th>
+            <th style={{ width: 70 }} className="flat-col--right flat-col--hide-mobile">Kč/m³</th>
+            <th style={{ width: 75 }} className="flat-col--right">Jedn. cena</th>
+            <th style={{ width: 85 }} className="flat-col--right">Celkem</th>
+            <th style={{ width: 35 }} className="flat-col--center">ⓘ</th>
           </tr>
 
           {/* Layer 3: Work rows */}
@@ -326,7 +381,7 @@ function ElementBlock({
             />
           ))}
 
-          {/* Layer 4: Add work button */}
+          {/* Layer 4: Add work */}
           {!isLocked && (
             <tr className="flat-el-add">
               <td colSpan={COL_COUNT}>
@@ -349,8 +404,8 @@ function WorkRow({
 }: {
   pos: Position;
   isLocked: boolean;
-  onFieldChange: (pos: Position, field: keyof Position, value: number) => void;
-  onSpeedChange: (pos: Position, speed: number) => void;
+  onFieldChange: (pos: Position, field: keyof Position, value: number) => Promise<boolean>;
+  onSpeedChange: (pos: Position, speed: number) => Promise<boolean>;
 }) {
   const unitLabel = UNIT_LABELS[pos.unit] || pos.unit || '';
   const speed = calcSpeed(pos);
@@ -362,8 +417,8 @@ function WorkRow({
       className={`flat-work-row ${pos.has_rfi ? 'flat-row--rfi' : ''}`}
       data-position-instance-id={pos.position_instance_id}
     >
-      {/* Typ práce */}
-      <td>
+      {/* Typ práce (badge) */}
+      <td className="flat-work-row__type">
         <span className={`flat-badge ${subtypeBadgeClass(pos.subtype)}`}>
           {SUBTYPE_LABELS[pos.subtype] || pos.subtype}
         </span>
@@ -372,68 +427,56 @@ function WorkRow({
       {/* MJ */}
       <td className="flat-col--right flat-mono">{unitLabel}</td>
 
-      {/* Množství */}
+      {/* Množství — editable, min 0 */}
       <td className="flat-col--right">
-        <EditableCell value={pos.qty} disabled={isLocked}
-          onChange={v => onFieldChange(pos, 'qty', v)} decimals={1} />
+        <EditableNum value={pos.qty} field="qty" disabled={isLocked} decimals={1}
+          onChange={v => onFieldChange(pos, 'qty', v)} />
       </td>
 
-      {/* Lidé */}
+      {/* Lidé — editable, min 1 */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <EditableCell value={pos.crew_size} disabled={isLocked}
+        <EditableNum value={pos.crew_size} field="crew_size" disabled={isLocked}
           onChange={v => onFieldChange(pos, 'crew_size', v)} />
       </td>
 
-      {/* Kč/h */}
+      {/* Kč/h — editable, min 0, override detection */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <span className="flat-tooltip" style={{ display: 'block' }}>
-          <EditableCell value={pos.wage_czk_ph} disabled={isLocked}
-            onChange={v => onFieldChange(pos, 'wage_czk_ph', v)}
-            overridden={wageOverridden} />
-          {wageOverridden && (
-            <span className="flat-tooltip__content">
-              Přepsáno: {fmt(pos.wage_czk_ph)} Kč/h (projekt: {PROJECT_DEFAULTS.wage})
-            </span>
-          )}
-        </span>
+        <EditableNum value={pos.wage_czk_ph} field="wage_czk_ph" disabled={isLocked}
+          onChange={v => onFieldChange(pos, 'wage_czk_ph', v)}
+          overridden={wageOverridden}
+          overrideTooltip={`Přepsáno pro tuto pozici (projekt: ${PROJECT_DEFAULTS.wage})`} />
       </td>
 
-      {/* Hod/den */}
+      {/* Hod/den — editable, min 0.5, override detection */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <span className="flat-tooltip" style={{ display: 'block' }}>
-          <EditableCell value={pos.shift_hours} disabled={isLocked}
-            onChange={v => onFieldChange(pos, 'shift_hours', v)}
-            overridden={shiftOverridden} />
-          {shiftOverridden && (
-            <span className="flat-tooltip__content">
-              Přepsáno: {fmt(pos.shift_hours)} h (projekt: {PROJECT_DEFAULTS.shift})
-            </span>
-          )}
-        </span>
+        <EditableNum value={pos.shift_hours} field="shift_hours" disabled={isLocked}
+          onChange={v => onFieldChange(pos, 'shift_hours', v)}
+          overridden={shiftOverridden}
+          overrideTooltip={`Přepsáno pro tuto pozici (projekt: ${PROJECT_DEFAULTS.shift})`} />
       </td>
 
-      {/* Dny */}
+      {/* Dny — editable, min 0, step 0.5 */}
       <td className="flat-col--right">
-        <EditableCell value={pos.days} disabled={isLocked}
+        <EditableNum value={pos.days} field="days" disabled={isLocked} step={0.5}
           onChange={v => onFieldChange(pos, 'days', v)} />
       </td>
 
-      {/* MJ/h — bidirectional */}
+      {/* MJ/h — editable, bidirectional */}
       <td className="flat-col--right flat-col--hide-mobile">
-        <span className="flat-tooltip" style={{ display: 'block' }}>
-          <EditableCell value={speed ? Math.round(speed * 100) / 100 : 0}
-            disabled={isLocked}
-            onChange={v => onSpeedChange(pos, v)} />
-          {speed ? (
-            <span className="flat-tooltip__content">
-              {fmt(pos.qty, 1)} {unitLabel} / {fmt(pos.labor_hours)} hod = {fmt(speed, 2)} {unitLabel}/h
-            </span>
-          ) : null}
-        </span>
+        <EditableNum
+          value={speed ? Math.round(speed * 100) / 100 : 0}
+          field="speed"
+          disabled={isLocked}
+          decimals={2}
+          onChange={v => onSpeedChange(pos, v)}
+          tooltip={speed
+            ? `${fmt(pos.qty, 1)} ${unitLabel} / ${fmt(pos.labor_hours)} hod = ${fmt(speed, 2)} ${unitLabel}/h`
+            : undefined}
+        />
       </td>
 
-      {/* Celk.hod */}
-      <td className="flat-col--right flat-col--hide-mobile">
+      {/* Celk.hod — calculated, not editable */}
+      <td className="flat-col--right flat-col--hide-mobile flat-cell--calc">
         <span className="flat-mono flat-tooltip">
           {fmt(pos.labor_hours)}
           {pos.labor_hours ? (
@@ -444,20 +487,20 @@ function WorkRow({
         </span>
       </td>
 
-      {/* Celk.Kč */}
-      <td className="flat-col--right flat-col--hide-mobile">
+      {/* Celk.Kč — calculated */}
+      <td className="flat-col--right flat-col--hide-mobile flat-cell--calc">
         <span className="flat-mono flat-tooltip">
           {fmt(pos.cost_czk)}
           {pos.cost_czk ? (
             <span className="flat-tooltip__content">
-              {fmt(pos.labor_hours)} Nhod × {fmt(pos.wage_czk_ph)} Kč/h = {fmt(pos.cost_czk)} Kč
+              {fmt(pos.labor_hours)} × {fmt(pos.wage_czk_ph)} Kč/h = {fmt(pos.cost_czk)} Kč
             </span>
           ) : null}
         </span>
       </td>
 
-      {/* Kč/m³ */}
-      <td className="flat-col--right flat-col--hide-mobile">
+      {/* Kč/m³ — calculated */}
+      <td className="flat-col--right flat-col--hide-mobile flat-cell--calc">
         <span className="flat-mono flat-tooltip">
           {pos.unit_cost_on_m3 ? fmt(pos.unit_cost_on_m3) : ''}
           {pos.unit_cost_on_m3 && pos.concrete_m3 ? (
@@ -468,8 +511,8 @@ function WorkRow({
         </span>
       </td>
 
-      {/* Jedn. cena */}
-      <td className="flat-col--right">
+      {/* Jedn. cena — calculated */}
+      <td className="flat-col--right flat-cell--calc">
         <span className="flat-mono flat-tooltip">
           {pos.kros_unit_czk ? fmt(pos.kros_unit_czk) : ''}
           {pos.kros_unit_czk ? (
@@ -480,8 +523,8 @@ function WorkRow({
         </span>
       </td>
 
-      {/* Celkem */}
-      <td className="flat-col--right">
+      {/* Celkem — calculated */}
+      <td className="flat-col--right flat-cell--calc">
         <span className="flat-mono flat-tooltip">
           {pos.kros_total_czk ? fmt(pos.kros_total_czk) : ''}
           {pos.kros_total_czk && pos.concrete_m3 ? (
@@ -509,35 +552,56 @@ function WorkRow({
   );
 }
 
-/* ── EDITABLE CELL ───────────────────────────────────────────── */
+/* ── EDITABLE NUMERIC CELL ───────────────────────────────────── */
 
-function EditableCell({
-  value, disabled, onChange, overridden, decimals = 0,
+function EditableNum({
+  value, field, disabled, onChange, decimals = 0, step,
+  overridden, overrideTooltip, tooltip,
 }: {
   value: number;
+  field: string;
   disabled: boolean;
-  onChange: (v: number) => void;
-  overridden?: boolean;
+  onChange: (v: number) => Promise<boolean>;
   decimals?: number;
+  step?: number;
+  overridden?: boolean;
+  overrideTooltip?: string;
+  tooltip?: string;
 }) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState('');
+  const [shaking, setShaking] = useState(false);
+  const cellRef = useRef<HTMLSpanElement>(null);
+
+  const reject = () => {
+    setShaking(true);
+    setTimeout(() => setShaking(false), 400);
+  };
+
+  const commit = async () => {
+    setEditing(false);
+    const n = parseFloat(text);
+    const err = validateField(field, n);
+    if (err) {
+      reject();
+      return;
+    }
+    if (n === value) return; // no change
+    const ok = await onChange(n);
+    if (!ok) reject();
+  };
 
   if (!editing) {
     return (
       <span
-        className="flat-mono"
-        onDoubleClick={() => {
+        ref={cellRef}
+        className={`flat-ecell ${shaking ? 'flat-ecell--shake' : ''} ${overridden ? 'flat-ecell--override' : ''}`}
+        onClick={() => {
           if (disabled) return;
           setEditing(true);
           setText(String(value || ''));
         }}
-        style={{
-          cursor: disabled ? 'default' : 'pointer',
-          display: 'block',
-          textAlign: 'right',
-          color: overridden ? 'var(--orange-500)' : undefined,
-        }}
+        title={overridden ? overrideTooltip : tooltip}
       >
         {value ? fmt(value, decimals) : ''}
       </span>
@@ -546,21 +610,18 @@ function EditableCell({
 
   return (
     <input
-      className="flat-inline-input"
+      className={`flat-ecell-input ${shaking ? 'flat-ecell--shake' : ''}`}
       type="number"
+      min={field === 'crew_size' ? 1 : field === 'shift_hours' ? 0.5 : 0}
+      step={step || (decimals > 0 ? Math.pow(10, -decimals) : 1)}
       value={text}
       onChange={e => setText(e.target.value)}
-      onBlur={() => {
-        setEditing(false);
-        const n = parseFloat(text);
-        if (!isNaN(n) && n !== value) onChange(n);
-      }}
+      onBlur={commit}
       onKeyDown={e => {
-        if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
+        if (e.key === 'Enter') commit();
         if (e.key === 'Escape') setEditing(false);
       }}
       autoFocus
-      style={{ textAlign: 'right' }}
     />
   );
 }
