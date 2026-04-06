@@ -777,99 +777,86 @@ router.post('/import-from-registry', async (req, res) => {
         }
       }
 
-      // Step 4: Batch INSERT new positions
+      // Step 4: Batch INSERT new positions (with per-item error handling)
       if (hasPhase8Columns) {
-        for (let i = 0; i < toInsert.length; i += BATCH_SIZE) {
-          const batch = toInsert.slice(i, i + BATCH_SIZE);
-          const params = [];
-          const valuesClauses = [];
-          const colCount = 16;
-          for (let j = 0; j < batch.length; j++) {
-            const { item, itemTov, dovPayload, dbObjectId, sheetName, itemIdx, registryItemId } = batch[j];
-            const b = j * colCount;
-            valuesClauses.push(`(gen_random_uuid(), ${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())`);
-            params.push(
-              `pos_${uuidv4()}`, dbObjectId,
-              item.kod || '', item.popis || '',
-              item.mnozstvi || 0, item.mj || '',
-              item.cenaJednotkova || 0, item.cenaCelkem || 0,
-              JSON.stringify(itemTov.labor || []),
-              JSON.stringify(itemTov.machinery || []),
-              JSON.stringify(itemTov.materials || []),
-              dovPayload,
-              registryItemId,
-              sheetName, itemIdx, item.skupina || null
+        const insertErrors = [];
+        for (const entry of toInsert) {
+          const { item, itemTov, dovPayload, dbObjectId, sheetName, itemIdx, registryItemId } = entry;
+          try {
+            const result = await client.query(
+              `INSERT INTO portal_positions (
+                position_instance_id,
+                position_id, object_id, kod, popis, mnozstvi, mj,
+                cena_jednotkova, cena_celkem,
+                tov_labor, tov_machinery, tov_materials,
+                dov_payload,
+                registry_item_id,
+                sheet_name, row_index, skupina,
+                last_sync_from, last_sync_at,
+                created_by, updated_by,
+                created_at, updated_at
+              ) VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())
+              RETURNING position_instance_id`,
+              [
+                `pos_${uuidv4()}`, dbObjectId,
+                item.kod || '', item.popis || '',
+                item.mnozstvi || 0, item.mj || '',
+                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                JSON.stringify(itemTov.labor || []),
+                JSON.stringify(itemTov.machinery || []),
+                JSON.stringify(itemTov.materials || []),
+                dovPayload,
+                registryItemId,
+                sheetName, itemIdx, item.skupina || null
+              ]
             );
-          }
-          const result = await client.query(
-            `INSERT INTO portal_positions (
-              position_instance_id,
-              position_id, object_id, kod, popis, mnozstvi, mj,
-              cena_jednotkova, cena_celkem,
-              tov_labor, tov_machinery, tov_materials,
-              dov_payload,
-              registry_item_id,
-              sheet_name, row_index, skupina,
-              last_sync_from, last_sync_at,
-              created_by, updated_by,
-              created_at, updated_at
-            ) VALUES ${valuesClauses.join(', ')}
-            RETURNING position_instance_id`,
-            params
-          );
-          for (let j = 0; j < batch.length; j++) {
-            const { registryItemId } = batch[j];
             totalItems++;
-            if (registryItemId && result.rows[j]?.position_instance_id) {
+            if (registryItemId && result.rows[0]?.position_instance_id) {
               instanceMapping.push({
                 registry_item_id: registryItemId,
-                position_instance_id: result.rows[j].position_instance_id,
+                position_instance_id: result.rows[0].position_instance_id,
               });
             }
+          } catch (insertErr) {
+            console.warn(`[Integration] Failed to insert position ${registryItemId || item.kod}: ${insertErr.message}`);
+            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: insertErr.message });
           }
         }
       } else {
-        for (let i = 0; i < toInsert.length; i += BATCH_SIZE) {
-          const batch = toInsert.slice(i, i + BATCH_SIZE);
-          const params = [];
-          const valuesClauses = [];
-          const colCount = 12;
-          for (let j = 0; j < batch.length; j++) {
-            const { item, itemTov, dbObjectId, registryItemId } = batch[j];
-            const b = j * colCount;
-            valuesClauses.push(`(gen_random_uuid(), ${Array.from({length: colCount}, (_, k) => `$${b+k+1}`).join(', ')}, 'registry', NOW(), NOW(), NOW())`);
-            params.push(
-              `pos_${uuidv4()}`, dbObjectId,
-              item.kod || '', item.popis || '',
-              item.mnozstvi || 0, item.mj || '',
-              item.cenaJednotkova || 0, item.cenaCelkem || 0,
-              JSON.stringify(itemTov.labor || []),
-              JSON.stringify(itemTov.machinery || []),
-              JSON.stringify(itemTov.materials || []),
-              registryItemId
+        // Fallback: per-item INSERT for partial success
+        for (const entry of toInsert) {
+          const { item, itemTov, dbObjectId, registryItemId } = entry;
+          try {
+            const result = await client.query(
+              `INSERT INTO portal_positions (
+                position_instance_id,
+                position_id, object_id, kod, popis, mnozstvi, mj,
+                cena_jednotkova, cena_celkem,
+                tov_labor, tov_machinery, tov_materials,
+                registry_item_id, last_sync_from, last_sync_at,
+                created_at, updated_at
+              ) VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())
+              RETURNING position_instance_id`,
+              [
+                `pos_${uuidv4()}`, dbObjectId,
+                item.kod || '', item.popis || '',
+                item.mnozstvi || 0, item.mj || '',
+                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                JSON.stringify(itemTov.labor || []),
+                JSON.stringify(itemTov.machinery || []),
+                JSON.stringify(itemTov.materials || []),
+                registryItemId
+              ]
             );
-          }
-          const result = await client.query(
-            `INSERT INTO portal_positions (
-              position_instance_id,
-              position_id, object_id, kod, popis, mnozstvi, mj,
-              cena_jednotkova, cena_celkem,
-              tov_labor, tov_machinery, tov_materials,
-              registry_item_id, last_sync_from, last_sync_at,
-              created_at, updated_at
-            ) VALUES ${valuesClauses.join(', ')}
-            RETURNING position_instance_id`,
-            params
-          );
-          for (let j = 0; j < batch.length; j++) {
-            const { registryItemId } = batch[j];
             totalItems++;
-            if (registryItemId && result.rows[j]?.position_instance_id) {
+            if (registryItemId && result.rows[0]?.position_instance_id) {
               instanceMapping.push({
                 registry_item_id: registryItemId,
-                position_instance_id: result.rows[j].position_instance_id,
+                position_instance_id: result.rows[0].position_instance_id,
               });
             }
+          } catch (insertErr) {
+            console.warn(`[Integration] Fallback INSERT failed for ${registryItemId || item.kod}: ${insertErr.message}`);
           }
         }
       }

@@ -16,5 +16,8 @@ COPY Monolit-Planner/backend/package*.json ./
 RUN npm install --production
 COPY Monolit-Planner/backend/ .
 
+# Copy OTSKP catalog XML for auto-import at startup
+COPY "Monolit-Planner/2025_03 OTSKP.xml" /app/2025_03\ OTSKP.xml
+
 EXPOSE 3001
 CMD ["node", "server.js"]
