@@ -33,7 +33,7 @@ import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 const IS_ADMIN = (import.meta as any).env?.VITE_ADMIN_MODE === 'true';
-const PORTAL_URL = 'https://www.stavagent.cz';
+const PORTAL_URL = 'https://www.stavagent.cz/portal';
 
 // ─── AI Advisor types ──────────────────────────────────────────────────────
 

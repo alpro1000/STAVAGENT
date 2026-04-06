@@ -118,6 +118,24 @@
   gap: 6px;
   flex-shrink: 0;
 }
+.app-header__home {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--stone-500);
+  text-decoration: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.app-header__home:hover {
+  color: var(--orange-500);
+  background: rgba(255,255,255,0.5);
+}
+
 .app-header__app {
   font-size: 14px;
   font-weight: 600;
