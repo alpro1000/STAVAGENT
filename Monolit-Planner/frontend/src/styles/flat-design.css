@@ -1359,25 +1359,34 @@
    RESPONSIVE
    ============================================ */
 @media (max-width: 900px) {
-  .flat-sidebar {
+  /* Sidebar: fixed overlay on mobile */
+  .sb {
     position: fixed;
     left: 0;
-    top: 48px;
+    top: 44px;
     bottom: 0;
     z-index: 50;
     box-shadow: 4px 0 20px rgba(0,0,0,0.1);
   }
 
-  .flat-sidebar--collapsed {
-    display: none;
+  .sb-collapsed {
+    height: calc(100vh - 44px);
   }
 
+  /* Backdrop behind sidebar */
   .flat-sidebar-backdrop {
     position: fixed;
     inset: 0;
-    top: 48px;
-    background: rgba(0,0,0,0.2);
+    top: 44px;
+    background: rgba(0,0,0,0.3);
     z-index: 49;
+  }
+}
+
+/* Desktop: backdrop hidden */
+@media (min-width: 901px) {
+  .flat-sidebar-backdrop {
+    display: none;
   }
 }
 
@@ -1385,6 +1394,13 @@
   .flat-col--hide-mobile {
     display: none;
   }
+
+  /* Touch targets: min 44px height for all interactive elements */
+  .sb__obj { min-height: 44px; }
+  .sb__stavba { min-height: 40px; }
+  .flat-btn { min-height: 36px; padding: 8px 12px; }
+  .flat-el-info__inner { min-height: 44px; flex-wrap: wrap; }
+  .flat-ecell { min-height: 32px; line-height: 32px; }
 
   .flat-kpi {
     gap: 8px;

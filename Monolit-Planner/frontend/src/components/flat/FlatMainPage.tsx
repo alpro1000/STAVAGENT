@@ -71,12 +71,11 @@ export default function FlatMainPage() {
     <div className="flat-app">
       <FlatHeader />
       <div className="flat-layout">
-        {/* Mobile backdrop */}
+        {/* Mobile backdrop — CSS handles visibility via @media */}
         {sidebarOpen && (
           <div
             className="flat-sidebar-backdrop"
             onClick={() => setSidebarOpen(false)}
-            style={{ display: window.innerWidth <= 900 ? 'block' : 'none' }}
           />
         )}
 
