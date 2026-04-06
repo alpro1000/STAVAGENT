@@ -158,15 +158,30 @@ export default function FlatPositionsTable() {
   }, [navigate]);
 
   // Single-field update with validation
+  // Special: bednění qty auto-syncs to odbednění (same formwork area)
   const handleFieldChange = useCallback(async (
     pos: Position, field: keyof Position, value: number
   ): Promise<boolean> => {
     if (isLocked || !pos.id) return false;
     const err = validateField(field as string, value);
     if (err) return false;
-    await updatePositions([{ id: pos.id, [field]: value }]);
+
+    const updates: { id: string; [k: string]: any }[] = [{ id: pos.id, [field]: value }];
+
+    // Sync bednění qty → odbednění qty (same opалубка area)
+    if (field === 'qty' && (pos.subtype === 'bednění' || pos.subtype === 'odbednění')) {
+      const siblingSubtype = pos.subtype === 'bednění' ? 'odbednění' : 'bednění';
+      const sibling = calcPositions.find(
+        p => p.part_name === pos.part_name && p.bridge_id === pos.bridge_id && p.subtype === siblingSubtype && p.id
+      );
+      if (sibling?.id) {
+        updates.push({ id: sibling.id, qty: value });
+      }
+    }
+
+    await updatePositions(updates);
     return true;
-  }, [isLocked, updatePositions]);
+  }, [isLocked, updatePositions, calcPositions]);
 
   // Bidirectional MJ/h: single PUT with days recalculated
   const handleSpeedChange = useCallback(async (pos: Position, speed: number): Promise<boolean> => {
