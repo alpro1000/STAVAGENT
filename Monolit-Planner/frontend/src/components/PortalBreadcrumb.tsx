@@ -12,7 +12,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 
-const PORTAL_URL = 'https://www.stavagent.cz';
+const PORTAL_URL = 'https://www.stavagent.cz/portal';
 const STORAGE_KEY = 'monolit-portal-project';
 
 export default function PortalBreadcrumb() {

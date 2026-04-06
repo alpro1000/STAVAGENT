@@ -26,7 +26,7 @@ interface PortalProjectItem {
   kiosks?: Array<{ kiosk_type: string; kiosk_project_id: string }>;
 }
 
-const PORTAL_URL = import.meta.env.VITE_PORTAL_FRONTEND_URL || 'https://www.stavagent.cz';
+const PORTAL_URL = import.meta.env.VITE_PORTAL_FRONTEND_URL || 'https://www.stavagent.cz/portal';
 import { PORTAL_API_URL } from '../../utils/config.js';
 
 export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgeProps) {

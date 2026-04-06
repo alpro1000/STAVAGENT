@@ -30,7 +30,7 @@ export default function FlatHeader() {
   return (
     <header className="app-header">
       {/* Portal home link */}
-      <a href="https://www.stavagent.cz" className="app-header__home" title="Zpět na Portal">
+      <a href="https://www.stavagent.cz/portal" className="app-header__home" title="Zpět na Portal">
         <ExternalLink size={14} />
         <span>Portal</span>
       </a>

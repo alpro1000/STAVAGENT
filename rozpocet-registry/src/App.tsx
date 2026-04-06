@@ -789,7 +789,7 @@ function App() {
           borderBottom: '1px solid #334155',
         }}>
           <a
-            href="https://www.stavagent.cz"
+            href="https://www.stavagent.cz/portal"
             style={{
               color: '#94a3b8', textDecoration: 'none',
               display: 'flex', alignItems: 'center', gap: 4,
