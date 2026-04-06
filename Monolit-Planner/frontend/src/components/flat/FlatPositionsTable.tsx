@@ -168,10 +168,10 @@ export default function FlatPositionsTable() {
 
     const updates: { id: string; [k: string]: any }[] = [{ id: pos.id, [field]: value }];
 
-    // Sync bednění qty → odbednění qty (same opалубка area)
+    // Sync bednění qty → odbednění qty (same formwork area)
     if (field === 'qty' && (pos.subtype === 'bednění' || pos.subtype === 'odbednění')) {
       const siblingSubtype = pos.subtype === 'bednění' ? 'odbednění' : 'bednění';
-      const sibling = calcPositions.find(
+      const sibling = positions.find(
         p => p.part_name === pos.part_name && p.bridge_id === pos.bridge_id && p.subtype === siblingSubtype && p.id
       );
       if (sibling?.id) {
@@ -181,7 +181,7 @@ export default function FlatPositionsTable() {
 
     await updatePositions(updates);
     return true;
-  }, [isLocked, updatePositions, calcPositions]);
+  }, [isLocked, updatePositions, positions]);
 
   // Bidirectional MJ/h: single PUT with days recalculated
   const handleSpeedChange = useCallback(async (pos: Position, speed: number): Promise<boolean> => {
