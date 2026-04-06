@@ -2,7 +2,7 @@
  * FlatHeader — Portal-style header with stone-200 background.
  */
 
-import { PanelLeftOpen, LogOut, AlertCircle } from 'lucide-react';
+import { PanelLeftOpen, LogOut, AlertCircle, ExternalLink } from 'lucide-react';
 import { useUI } from '../../context/UIContext';
 import { useProjects } from '../../hooks/useProjects';
 import { useState, useEffect } from 'react';
@@ -29,6 +29,14 @@ export default function FlatHeader() {
 
   return (
     <header className="app-header">
+      {/* Portal home link */}
+      <a href="https://www.stavagent.cz" className="app-header__home" title="Zpět na Portal">
+        <ExternalLink size={14} />
+        <span>Portal</span>
+      </a>
+
+      <span className="app-header__sep">/</span>
+
       {!sidebarOpen && (
         <button className="sb__icon-btn" onClick={toggleSidebar} title="Otevřít sidebar (Ctrl+B)">
           <PanelLeftOpen size={16} />
