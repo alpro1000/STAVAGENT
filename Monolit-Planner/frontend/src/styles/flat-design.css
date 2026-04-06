@@ -1227,60 +1227,105 @@
 }
 
 /* ============================================
-   PROJECT SETTINGS (compact inline panel)
+   PROJECT SETTINGS — "⚙ Nastavení projektu"
    ============================================ */
-.flat-settings {
+.pset {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 6px 16px;
-  background: transparent;
-  border: 1px solid var(--stone-200);
+  align-items: flex-end;
+  gap: 20px;
+  padding: 8px 16px;
+  background: white;
+  border: 0.5px solid var(--stone-200);
   border-radius: 6px;
   margin-bottom: 8px;
-  font-size: 12px;
 }
 
-.flat-settings__field {
+.pset__marker {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--stone-500);
+  white-space: nowrap;
+  align-self: center;
 }
 
-.flat-settings__label {
-  color: var(--flat-text-secondary);
-  font-size: 12px;
+.pset__field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.flat-settings__input {
-  width: 60px;
-  padding: 3px 6px;
-  border: 1px solid var(--flat-border);
+.pset__label {
+  font-size: 9px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--stone-500);
+}
+
+.pset__input-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pset__input {
+  width: 48px;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid var(--stone-200);
   border-radius: 4px;
   font-family: var(--flat-font-mono);
   font-size: 13px;
+  font-weight: 500;
   text-align: right;
-  background: var(--flat-surface);
+  background: var(--stone-50);
   color: var(--flat-text);
-}
-
-.flat-settings__input:focus {
   outline: none;
-  border-color: var(--flat-accent);
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.flat-settings__unit {
-  font-size: 12px;
-  color: var(--flat-text-secondary);
+.pset__input:focus {
+  border-color: var(--orange-500);
+  background: #FFF7ED;
 }
 
-.flat-settings__select {
-  padding: 3px 6px;
-  border: 1px solid var(--flat-border);
+.pset__unit {
+  font-size: 11px;
+  color: var(--stone-400);
+  white-space: nowrap;
+}
+
+/* Segment toggle */
+.pset__toggle {
+  display: flex;
+  background: var(--stone-100);
+  border-radius: 5px;
+  padding: 2px;
+}
+
+.pset__toggle-btn {
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--flat-font);
+  border: none;
   border-radius: 4px;
-  font-size: 13px;
-  background: var(--flat-surface);
   cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  background: transparent;
+  color: var(--stone-500);
+  white-space: nowrap;
+}
+
+.pset__toggle-btn--on {
+  background: #1C1917;
+  color: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* ============================================
