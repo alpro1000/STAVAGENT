@@ -23,7 +23,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -204,7 +204,9 @@ interface FormState {
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
   deadline_days: string; // empty = no deadline, number = investor deadline in working days
   is_prestressed: boolean;
-  bridge_deck_subtype: string; // '' = default (deskový), or 'deskovy'|'jednotram'|'dvoutram'|...|'sprazeny'
+  bridge_deck_subtype: string;
+  include_kridla: boolean;
+  kridla_height_m: string; // empty = not set
 }
 
 const DEFAULT_FORM: FormState = {
@@ -250,6 +252,8 @@ const DEFAULT_FORM: FormState = {
   deadline_days: '',
   is_prestressed: false,
   bridge_deck_subtype: '',
+  include_kridla: false,
+  kridla_height_m: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -452,6 +456,14 @@ export default function PlannerPage() {
       if (/PŘEDPJ|PŘEDPĚT|PŘEPJ|PREDPJ/.test(pn)) f.is_prestressed = true;
     }
 
+    // Auto-detect composite opěry+křídla from part_name
+    if (positionContext.part_name) {
+      const pnUpper = positionContext.part_name.toUpperCase();
+      const hasOpery = /OPĚR|OPER/.test(pnUpper);
+      const hasKridla = /KŘÍDL|KRIDL|KŘÍDEL/.test(pnUpper);
+      if (hasOpery && hasKridla) f.include_kridla = true;
+    }
+
     // Clear start_date in Monolit mode (ordinal days only)
     f.start_date = '';
 
@@ -461,6 +473,16 @@ export default function PlannerPage() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Křídla: compute separate formwork recommendation when composite enabled
+  const kridlaFormwork = useMemo(() => {
+    if (!result || !form.include_kridla || !form.kridla_height_m) return null;
+    const kH = parseFloat(form.kridla_height_m);
+    if (!kH || kH <= 0) return null;
+    const fw = recommendFormwork('kridla_opery', kH);
+    return { system: fw, height_m: kH };
+  }, [result, form.include_kridla, form.kridla_height_m]);
+
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -1199,6 +1221,39 @@ export default function PlannerPage() {
                 </label>
               </Field>
           </div>
+
+          {/* ─── Opěry: composite křídla toggle ─── */}
+          {(form.element_type === 'opery_ulozne_prahy' && !form.use_name_classification) && (
+            <div style={{
+              maxHeight: 120, opacity: 1,
+              transition: 'max-height 0.3s ease, opacity 0.2s ease',
+              marginBottom: 12,
+            }}>
+              <Field label="Součástí jsou křídla">
+                <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={form.include_kridla}
+                    onChange={e => update('include_kridla', e.target.checked)}
+                  />
+                  <span style={{ fontSize: 12 }}>Zahrnout křídla opěr (samostatná sada bednění)</span>
+                </label>
+              </Field>
+              {form.include_kridla && (
+                <Field label="Výška křídel (m)">
+                  <input
+                    style={inputStyle}
+                    type="number"
+                    step="0.1"
+                    min="0.5"
+                    placeholder="Typicky 1.8–6.0 m"
+                    value={form.kridla_height_m}
+                    onChange={e => update('kridla_height_m', e.target.value)}
+                  />
+                </Field>
+              )}
+            </div>
+          )}
 
           {/* ─── Římsa: length-based pour hint ─── */}
           {(form.element_type === 'rimsa' && !form.use_name_classification) && (
@@ -2322,6 +2377,28 @@ export default function PlannerPage() {
                       });
                     }
 
+                    // 2b. Křídla bednění — separate formwork set (composite opěry+křídla)
+                    if (kridlaFormwork && form.include_kridla) {
+                      // Create křídla bednění position (item_name distinguishes from main bednění)
+                      const kridlaBedneniId = await ensurePosition(null, 'bednění', 'm2');
+                      if (kridlaBedneniId) {
+                        updates.push({
+                          id: kridlaBedneniId,
+                          days: bedneniDays, // same labor-days estimate (separate crew same duration)
+                          crew_size: plan.resources.crew_size_formwork,
+                          wage_czk_ph: plan.resources.wage_formwork_czk_h,
+                          shift_hours: plan.resources.shift_h,
+                          metadata: JSON.stringify({
+                            formwork_system: kridlaFormwork.system.name,
+                            formwork_manufacturer: kridlaFormwork.system.manufacturer,
+                            kridla_height_m: kridlaFormwork.height_m,
+                            is_kridla_bedneni: true,
+                            calculated_at: monolit_data.calculated_at,
+                          }),
+                        });
+                      }
+                    }
+
                     // 3. Výztuž position — rebar labor-days summed across all tacts
                     if (positionContext.vyzuz_position_id) {
                       updates.push({
@@ -3055,6 +3132,31 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
           </div>
         </div>
       </Card>
+
+      {/* Křídla formwork (composite opěry+křídla) */}
+      {kridlaFormwork && (
+        <Card title="Bednění křídel" icon="📦">
+          <div className="r0-grid-2">
+            <div>
+              <Row label="Systém" value={kridlaFormwork.system.name} bold />
+              <Row label="Výrobce" value={kridlaFormwork.system.manufacturer} />
+              <Row label="Výška křídel" value={`${kridlaFormwork.height_m} m`} />
+              <Row label="Pronájem" value={kridlaFormwork.system.rental_czk_m2_month > 0
+                ? `${formatNum(kridlaFormwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
+                : 'Bez pronájmu'} />
+            </div>
+            <div>
+              <Row label="Jeřáb" value={kridlaFormwork.system.needs_crane ? 'Nutný (panel > 150 kg)' : 'Nepotřebuje'} />
+              {kridlaFormwork.height_m > 1.2 && (
+                <Row label="Vzpěry" value="IB vzpěry nutné (h > 1.2 m)" />
+              )}
+              <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 8 }}>
+                Samostatná sada bednění — křídla se betonují jako oddělený záběr od dříku opěry.
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Rebar */}
       <Card title="Výztuž" icon="🔩">
