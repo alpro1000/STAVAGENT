@@ -73,6 +73,12 @@ export const ELEMENT_DEFAULTS = {
         typical_spara_spacing_m: null,
         description_cs: 'Opěry, úložné prahy — spáry obvykle ano, libovolné pořadí',
     },
+    kridla_opery: {
+        typical_has_spary: false,
+        typical_sub_mode: null,
+        typical_spara_spacing_m: null,
+        description_cs: 'Křídla opěr — VŽDY samostatný záběr, oddělená sada bednění od dříku opěry',
+    },
     mostni_zavirne_zidky: {
         typical_has_spary: false,
         typical_sub_mode: null,

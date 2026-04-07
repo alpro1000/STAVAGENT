@@ -32,7 +32,7 @@ export type MonolithicSubMode = 'single_pump' | 'multi_pump' | 'mega_pour';
 /** Temperature/season affecting t_window */
 export type SeasonMode = 'hot' | 'normal' | 'cold';
 /** Element type — used ONLY for default suggestions, NOT for mode determination */
-export type StructuralElementType = 'zaklady_piliru' | 'driky_piliru' | 'rimsa' | 'operne_zdi' | 'mostovkova_deska' | 'rigel' | 'opery_ulozne_prahy' | 'mostni_zavirne_zidky' | 'prechodova_deska' | 'zakladova_deska' | 'zakladovy_pas' | 'zakladova_patka' | 'stropni_deska' | 'stena' | 'sloup' | 'pruvlak' | 'schodiste' | 'nadrz' | 'podzemni_stena' | 'pilota' | 'other';
+export type StructuralElementType = 'zaklady_piliru' | 'driky_piliru' | 'rimsa' | 'operne_zdi' | 'mostovkova_deska' | 'rigel' | 'opery_ulozne_prahy' | 'kridla_opery' | 'mostni_zavirne_zidky' | 'prechodova_deska' | 'zakladova_deska' | 'zakladovy_pas' | 'zakladova_patka' | 'stropni_deska' | 'stena' | 'sloup' | 'pruvlak' | 'schodiste' | 'nadrz' | 'podzemni_stena' | 'pilota' | 'other';
 export interface PourDecisionInput {
     element_type: StructuralElementType;
     volume_m3: number;

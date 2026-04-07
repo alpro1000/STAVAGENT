@@ -426,6 +426,24 @@ describe('Element Classifier', () => {
         .toBe('zaklady_piliru');
     });
 
+    // Křídla as separate element type
+    it('"KŘÍDLA OPĚRY OP1" → kridla_opery (křídla standalone)', () => {
+      expect(classifyElement('KŘÍDLA OPĚRY OP1', { is_bridge: true }).element_type)
+        .toBe('opery_ulozne_prahy'); // composite item — opěra wins
+    });
+    it('"KŘÍDLO D SO 206" → kridla_opery (standalone wing)', () => {
+      expect(classifyElement('KŘÍDLO D SO 206', { is_bridge: true }).element_type)
+        .toBe('kridla_opery');
+    });
+    it('"KŘÍDLA MOSTNÍ" → kridla_opery', () => {
+      expect(classifyElement('KŘÍDLA MOSTNÍ', { is_bridge: true }).element_type)
+        .toBe('kridla_opery');
+    });
+    it('"MOSTNÍ OPĚRY A KŘÍDLA" stays opery_ulozne_prahy (composite)', () => {
+      expect(classifyElement('MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', { is_bridge: true }).element_type)
+        .toBe('opery_ulozne_prahy');
+    });
+
     it('PŘEDPJATÝ always → mostovkova_deska regardless of context', () => {
       expect(classifyElement('PŘEDPJATÝ BETON C40/50').element_type)
         .toBe('mostovkova_deska');
@@ -438,9 +456,9 @@ describe('Element Classifier', () => {
   });
 
   describe('getAllElementTypes', () => {
-    it('returns 21 element types (10 bridge + 11 building)', () => {
+    it('returns 22 element types (11 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(21);
+      expect(types).toHaveLength(22);
     });
 
     it('includes prechodova_deska', () => {
