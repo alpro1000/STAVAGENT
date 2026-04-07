@@ -16,7 +16,7 @@ import { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Calculator, AlertTriangle, Lock, Plus, Zap, Trash2,
-  ChevronDown, ChevronRight, AlertCircle,
+  ChevronDown, ChevronRight, AlertCircle, ArrowRightLeft, Upload,
 } from 'lucide-react';
 import type { Position, Subtype } from '@stavagent/monolit-shared';
 import {
@@ -217,20 +217,23 @@ export default function FlatPositionsTable() {
     });
   }, []);
 
+  // Always render toolbar so action buttons are accessible
   if (!selectedProjectId) {
     return (
-      <div className="flat-empty">
-        <Calculator size={48} className="flat-empty__icon" />
-        <div className="flat-empty__title">Vyberte objekt</div>
-        <div className="flat-empty__text">
-          Vyberte konstrukční objekt v postranním panelu pro zobrazení pozic.
-        </div>
+      <div>
+        <FlatToolbar positionCount={0} />
+        <EmptyStateNoProject />
       </div>
     );
   }
 
   if (isLoading) {
-    return <div className="flat-loading"><div className="flat-spinner" /> Načítání pozic...</div>;
+    return (
+      <div>
+        <FlatToolbar positionCount={0} />
+        <div className="flat-loading"><div className="flat-spinner" /> Načítání pozic...</div>
+      </div>
+    );
   }
 
   return (
@@ -240,11 +243,7 @@ export default function FlatPositionsTable() {
       <FlatToolbar positionCount={positions.length} />
 
       {positions.length === 0 ? (
-        <div className="flat-empty">
-          <AlertTriangle size={32} className="flat-empty__icon" />
-          <div className="flat-empty__title">Žádné pozice</div>
-          <div className="flat-empty__text">Nahrajte Excel nebo importujte z Registry.</div>
-        </div>
+        <EmptyStateNoPositions />
       ) : (
         <div className="flat-table-wrap">
           <table className="flat-table">
@@ -672,6 +671,76 @@ function WorkRow({
       <FlatTOVSection positionId={pos.id} position={pos} />
     )}
     </>
+  );
+}
+
+/* ── EMPTY STATES ────────────────────────────────────────────── */
+
+function EmptyStateNoProject() {
+  return (
+    <div className="flat-empty" style={{ padding: '80px 24px' }}>
+      <Calculator size={48} className="flat-empty__icon" />
+      <div className="flat-empty__title" style={{ fontSize: 18 }}>Zatím nemáte žádný projekt</div>
+      <div className="flat-empty__text" style={{ marginBottom: 20 }}>
+        Začněte jedním z těchto kroků:
+      </div>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <EmptyAction icon={<Plus size={16} />} label="Vytvořit objekt" desc="Ručně zadat nový objekt" id="create" />
+        <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" id="registry" />
+        <EmptyAction icon={<Upload size={16} />} label="Nahrát Excel" desc="Nahrát soubor se smetou" id="upload" />
+      </div>
+    </div>
+  );
+}
+
+function EmptyStateNoPositions() {
+  return (
+    <div className="flat-empty" style={{ padding: '48px 24px' }}>
+      <AlertTriangle size={32} className="flat-empty__icon" />
+      <div className="flat-empty__title">Objekt je prázdný</div>
+      <div className="flat-empty__text" style={{ marginBottom: 16 }}>
+        Přidejte pozice jedním z těchto způsobů:
+      </div>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" id="registry" />
+        <EmptyAction icon={<Upload size={16} />} label="Nahrát Excel" desc="Nahrát soubor se smetou" id="upload" />
+      </div>
+    </div>
+  );
+}
+
+/** Action card for empty states — triggers toolbar actions via DOM click */
+function EmptyAction({ icon, label, desc, id }: { icon: React.ReactNode; label: string; desc: string; id: string }) {
+  const handleClick = () => {
+    // Find and click the corresponding toolbar button
+    if (id === 'create') {
+      // Click sidebar "+ Nový objekt" button
+      const btn = document.querySelector('.sb__new-btn') as HTMLButtonElement;
+      if (btn) btn.click();
+    } else if (id === 'registry') {
+      // Find the "Načíst z Rozpočtu" button in toolbar
+      const btns = document.querySelectorAll('.flat-toolbar .flat-btn');
+      for (const b of btns) { if (b.textContent?.includes('Rozpočtu')) (b as HTMLButtonElement).click(); }
+    } else if (id === 'upload') {
+      const btns = document.querySelectorAll('.flat-toolbar .flat-btn');
+      for (const b of btns) { if (b.textContent?.includes('Excel')) (b as HTMLButtonElement).click(); }
+    }
+  };
+
+  return (
+    <button onClick={handleClick} style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+      padding: '16px 24px', background: 'white', border: '1px solid var(--stone-200)',
+      borderRadius: 8, cursor: 'pointer', transition: 'border-color 0.15s, box-shadow 0.15s',
+      minWidth: 160,
+    }}
+    onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--orange-500)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(249,115,22,0.1)'; }}
+    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--stone-200)'; e.currentTarget.style.boxShadow = 'none'; }}
+    >
+      <span style={{ color: 'var(--orange-500)' }}>{icon}</span>
+      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--flat-text)' }}>{label}</span>
+      <span style={{ fontSize: 11, color: 'var(--stone-400)' }}>{desc}</span>
+    </button>
   );
 }
 
