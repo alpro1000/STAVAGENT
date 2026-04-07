@@ -1,31 +1,28 @@
 /**
  * FlatToolbar — Toolbar above the positions table.
  *
- * Contains: RFI filter, import/export buttons.
+ * Action buttons always visible. Modal triggers passed from parent.
  */
 
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Upload, Download, FileSpreadsheet, ArrowRightLeft, Plus } from 'lucide-react';
 import { useUI } from '../../context/UIContext';
 import { uploadAPI, exportAPI } from '../../services/api';
 import { useQueryClient } from '@tanstack/react-query';
 import { saveAs } from 'file-saver';
-import ImportRegistryModal from './ImportRegistryModal';
-import AddPositionModal from './AddPositionModal';
 
 interface Props {
   positionCount: number;
+  onImportRegistry: () => void;
+  onAddPosition: () => void;
 }
 
-export default function FlatToolbar({ positionCount }: Props) {
+export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosition }: Props) {
   const { showOnlyRFI, setShowOnlyRFI, selectedProjectId } = useUI();
   const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
-  const [showImportRegistry, setShowImportRegistry] = useState(false);
-  const [showAddPosition, setShowAddPosition] = useState(false);
 
-  // XLSX Upload (standalone, no Registry)
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !selectedProjectId) return;
@@ -42,7 +39,6 @@ export default function FlatToolbar({ positionCount }: Props) {
     }
   };
 
-  // XLSX Export
   const handleExport = async () => {
     if (!selectedProjectId) return;
     try {
@@ -54,7 +50,6 @@ export default function FlatToolbar({ positionCount }: Props) {
     }
   };
 
-  // Export to Registry
   const handleExportRegistry = async () => {
     if (!selectedProjectId) return;
     try {
@@ -75,77 +70,50 @@ export default function FlatToolbar({ positionCount }: Props) {
   };
 
   return (
-    <>
-      <div className="flat-toolbar">
-        {/* Position count */}
-        <span style={{ fontSize: 13, color: 'var(--flat-text-secondary)' }}>
-          {positionCount} pozic
-        </span>
-
-        {/* RFI filter */}
-        <label className="flat-filter-check">
-          <input
-            type="checkbox"
-            checked={showOnlyRFI}
-            onChange={e => setShowOnlyRFI(e.target.checked)}
-          />
-          Jen problémy
-        </label>
-
-        <div className="flat-toolbar__spacer" />
-
-        {/* Add position manually */}
-        <button className="flat-btn flat-btn--sm flat-btn--primary"
-          onClick={() => setShowAddPosition(true)} disabled={!selectedProjectId}>
-          <Plus size={14} /> Přidat pozici
-        </button>
-
-        {/* Import from Registry */}
-        <button className="flat-btn flat-btn--sm" onClick={() => setShowImportRegistry(true)}>
-          <ArrowRightLeft size={14} /> Načíst z Rozpočtu
-        </button>
-
-        {/* XLSX Upload */}
-        <button
-          className="flat-btn flat-btn--sm"
-          onClick={() => fileRef.current?.click()}
-          disabled={!selectedProjectId || uploading}
-        >
-          <Upload size={14} /> {uploading ? 'Nahrávám...' : 'Nahrát Excel'}
-        </button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept=".xlsx,.xls"
-          style={{ display: 'none' }}
-          onChange={handleUpload}
-        />
-
-        {/* XLSX Export */}
-        <button
-          className="flat-btn flat-btn--sm"
-          onClick={handleExport}
-          disabled={!selectedProjectId || positionCount === 0}
-        >
-          <FileSpreadsheet size={14} /> Export XLSX
-        </button>
-
-        {/* Export to Registry */}
-        <button
-          className="flat-btn flat-btn--sm"
-          onClick={handleExportRegistry}
-          disabled={!selectedProjectId || positionCount === 0}
-        >
-          <Download size={14} /> → Registry
-        </button>
-      </div>
-
-      {showImportRegistry && (
-        <ImportRegistryModal onClose={() => setShowImportRegistry(false)} />
+    <div className="flat-toolbar">
+      {positionCount > 0 && (
+        <>
+          <span style={{ fontSize: 13, color: 'var(--flat-text-secondary)' }}>
+            {positionCount} pozic
+          </span>
+          <label className="flat-filter-check">
+            <input type="checkbox" checked={showOnlyRFI}
+              onChange={e => setShowOnlyRFI(e.target.checked)} />
+            Jen problémy
+          </label>
+        </>
       )}
-      {showAddPosition && (
-        <AddPositionModal onClose={() => setShowAddPosition(false)} />
-      )}
-    </>
+
+      <div className="flat-toolbar__spacer" />
+
+      <button className="flat-btn flat-btn--sm flat-btn--primary"
+        onClick={onAddPosition} disabled={!selectedProjectId}>
+        <Plus size={14} /> Přidat pozici
+      </button>
+
+      <button className="flat-btn flat-btn--sm" onClick={onImportRegistry}>
+        <ArrowRightLeft size={14} /> Načíst z Rozpočtu
+      </button>
+
+      <button className="flat-btn flat-btn--sm"
+        onClick={() => fileRef.current?.click()}
+        disabled={!selectedProjectId || uploading}>
+        <Upload size={14} /> {uploading ? 'Nahrávám...' : 'Nahrát Excel'}
+      </button>
+      <input ref={fileRef} type="file" accept=".xlsx,.xls"
+        style={{ display: 'none' }} onChange={handleUpload} />
+
+      <button className="flat-btn flat-btn--sm"
+        onClick={handleExport}
+        disabled={!selectedProjectId || positionCount === 0}>
+        <FileSpreadsheet size={14} /> Export XLSX
+      </button>
+
+      <button className="flat-btn flat-btn--sm"
+        onClick={handleExportRegistry}
+        disabled={!selectedProjectId || positionCount === 0}>
+        <Download size={14} /> → Registry
+      </button>
+    </div>
   );
 }
