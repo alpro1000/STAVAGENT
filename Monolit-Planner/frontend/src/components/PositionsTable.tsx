@@ -577,6 +577,10 @@ function PositionsTableInner() {
                       params.set('vyzuz_position_id', vyzuzPos.id);
                       if (vyzuzPos.qty) params.set('vyzuz_qty', String(vyzuzPos.qty));
                     }
+                    const zraniPos = partPositions.find(p => p.subtype?.toLowerCase().includes('zrání') || p.subtype?.toLowerCase().includes('zrani'));
+                    const odbedneniPos = partPositions.find(p => p.subtype?.toLowerCase().includes('odbedněn') || p.subtype?.toLowerCase().includes('odbednen'));
+                    if (zraniPos?.id) params.set('zrani_position_id', zraniPos.id);
+                    if (odbedneniPos?.id) params.set('odbedneni_position_id', odbedneniPos.id);
                     // Save part name for scroll restoration on return
                     sessionStorage.setItem('monolit-planner-return-part', partName);
                     window.location.href = `/planner?${params.toString()}`;

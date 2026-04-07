@@ -153,6 +153,8 @@ export default function FlatPositionsTable() {
     sessionStorage.setItem('monolit-planner-scroll-y', String(window.scrollY));
     const bedneniPos = element.positions.find(p => p.subtype === 'bednění');
     const vystuzPos = element.positions.find(p => p.subtype === 'výztuž');
+    const zraniPos = element.positions.find(p => p.subtype === 'zrání');
+    const odbedneniPos = element.positions.find(p => p.subtype === 'odbednění');
     const params = new URLSearchParams();
     params.set('bridge_id', betonPos.bridge_id);
     if (betonPos.id) params.set('position_id', betonPos.id);
@@ -162,6 +164,8 @@ export default function FlatPositionsTable() {
     if (betonPos.qty) params.set('qty', String(betonPos.qty));
     if (bedneniPos?.id) params.set('bedneni_position_id', bedneniPos.id);
     if (vystuzPos?.id) params.set('vyzuz_position_id', vystuzPos.id);
+    if (zraniPos?.id) params.set('zrani_position_id', zraniPos.id);
+    if (odbedneniPos?.id) params.set('odbedneni_position_id', odbedneniPos.id);
     navigate(`/planner?${params.toString()}`);
   }, [navigate]);
 

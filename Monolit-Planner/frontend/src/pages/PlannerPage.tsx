@@ -398,11 +398,13 @@ export default function PlannerPage() {
       volume_m3: searchParams.get('volume_m3') ? parseFloat(searchParams.get('volume_m3')!) : undefined,
       concrete_class: (searchParams.get('concrete_class') || extractedConcreteClass) as ConcreteClass | undefined,
       exposure_class: extractedExposure,
-      // Sibling position IDs for TOV mapping (bednění, výztuž)
+      // Sibling position IDs for TOV mapping (bednění, výztuž, zrání, odbednění)
       bedneni_position_id: searchParams.get('bedneni_position_id'),
       bedneni_m2: searchParams.get('bedneni_m2') ? parseFloat(searchParams.get('bedneni_m2')!) : undefined,
       vyzuz_position_id: searchParams.get('vyzuz_position_id'),
       vyzuz_qty: searchParams.get('vyzuz_qty') ? parseFloat(searchParams.get('vyzuz_qty')!) : undefined,
+      zrani_position_id: searchParams.get('zrani_position_id'),
+      odbedneni_position_id: searchParams.get('odbedneni_position_id'),
     };
   }, [searchParams]);
 
@@ -2134,10 +2136,43 @@ export default function PlannerPage() {
                   if (positionContext.position_id && bridgeId) {
                     const updates: Array<Record<string, unknown>> = [];
 
-                    // 1. Beton position — days, crew, curing, full metadata
+                    // Aggregate labor-days from schedule tact_details
+                    // Each tact has phases: assembly, rebar, concrete, curing, stripping as [start, end]
+                    const tacts = plan.schedule.tact_details || [];
+                    const numTacts = plan.pour_decision.num_tacts || 1;
+                    const roundDay = (v: number) => Math.ceil(v * 10) / 10;
+
+                    // Sum of (end - start) across ALL tacts for a phase (labor-days)
+                    const sumPhaseDays = (phase: 'assembly' | 'rebar' | 'concrete' | 'stripping') =>
+                      tacts.reduce((sum, t) => {
+                        const p = t[phase];
+                        return sum + (p ? Math.max(0, p[1] - p[0]) : 0);
+                      }, 0);
+
+                    // Calendar span for curing: max(end) - min(start) across all tacts
+                    const curingCalendarDays = tacts.length > 0
+                      ? Math.max(...tacts.map(t => t.curing[1])) - Math.min(...tacts.map(t => t.curing[0]))
+                      : plan.formwork.curing_days;
+
+                    // Fallback: per-tact values × numTacts when tact_details unavailable
+                    const betonDays = tacts.length > 0
+                      ? roundDay(sumPhaseDays('concrete'))
+                      : roundDay(numTacts * 1); // default 1 day/tact
+                    const bedneniDays = tacts.length > 0
+                      ? roundDay(sumPhaseDays('assembly'))
+                      : roundDay(numTacts * plan.formwork.assembly_days);
+                    const vyztuzDays = tacts.length > 0
+                      ? roundDay(sumPhaseDays('rebar'))
+                      : roundDay(numTacts * plan.rebar.duration_days);
+                    const zraniDays = roundDay(curingCalendarDays);
+                    const odbedneniDays = tacts.length > 0
+                      ? roundDay(sumPhaseDays('stripping'))
+                      : roundDay(numTacts * plan.formwork.disassembly_days);
+
+                    // 1. Beton position — concrete labor-days, crew, curing, full metadata
                     updates.push({
                       id: positionContext.position_id,
-                      days: plan.schedule.total_days,
+                      days: betonDays,
                       crew_size: plan.resources.crew_size_formwork,
                       wage_czk_ph: plan.resources.wage_pour_czk_h,
                       shift_hours: plan.resources.shift_h,
@@ -2151,12 +2186,11 @@ export default function PlannerPage() {
                       }),
                     });
 
-                    // 2. Bednění position — formwork days, crew, area
+                    // 2. Bednění position — assembly labor-days only (no disassembly)
                     if (positionContext.bedneni_position_id) {
-                      const fwDays = plan.formwork.assembly_days + plan.formwork.disassembly_days;
                       updates.push({
                         id: positionContext.bedneni_position_id,
-                        days: Math.ceil(fwDays * 10) / 10,
+                        days: bedneniDays,
                         crew_size: plan.resources.crew_size_formwork,
                         wage_czk_ph: plan.resources.wage_formwork_czk_h,
                         shift_hours: plan.resources.shift_h,
@@ -2171,17 +2205,45 @@ export default function PlannerPage() {
                       });
                     }
 
-                    // 3. Výztuž position — rebar days, crew
+                    // 3. Výztuž position — rebar labor-days summed across all tacts
                     if (positionContext.vyzuz_position_id) {
                       updates.push({
                         id: positionContext.vyzuz_position_id,
-                        days: Math.ceil(plan.rebar.duration_days * 10) / 10,
+                        days: vyztuzDays,
                         crew_size: plan.resources.crew_size_rebar,
                         wage_czk_ph: plan.resources.wage_rebar_czk_h,
                         shift_hours: plan.resources.shift_h,
                         metadata: JSON.stringify({
                           rebar_mass_kg: plan.rebar.mass_kg,
                           norm_h_per_t: plan.rebar.norm_h_per_t,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      });
+                    }
+
+                    // 4. Zrání position — calendar duration (not labor), lide=0
+                    if (positionContext.zrani_position_id) {
+                      updates.push({
+                        id: positionContext.zrani_position_id,
+                        days: zraniDays,
+                        crew_size: 1, // zrání has no labor; crew_size=1 avoids div-by-zero, formulas return 0 for subtype 'zrání'
+                        metadata: JSON.stringify({
+                          curing_calendar_days: zraniDays,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      });
+                    }
+
+                    // 5. Odbednění position — stripping labor-days summed across all tacts
+                    if (positionContext.odbedneni_position_id) {
+                      updates.push({
+                        id: positionContext.odbedneni_position_id,
+                        days: odbedneniDays,
+                        crew_size: plan.resources.crew_size_formwork,
+                        wage_czk_ph: plan.resources.wage_formwork_czk_h,
+                        shift_hours: plan.resources.shift_h,
+                        metadata: JSON.stringify({
+                          stripping_days_per_tact: plan.formwork.disassembly_days,
                           calculated_at: monolit_data.calculated_at,
                         }),
                       });
