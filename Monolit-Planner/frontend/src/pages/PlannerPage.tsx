@@ -2535,6 +2535,7 @@ export default function PlannerPage() {
               onSaveVariant={variantsKey ? () => saveVariant(plan) : undefined}
               onLoadVariant={variantsKey ? loadVariant : undefined}
               onRemoveVariant={variantsKey ? removeVariant : undefined}
+              kridlaFormwork={kridlaFormwork}
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
@@ -2817,7 +2818,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, kridlaFormwork }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -2829,6 +2830,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
+  kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
