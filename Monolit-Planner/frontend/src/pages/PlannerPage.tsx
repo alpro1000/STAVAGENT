@@ -2308,9 +2308,15 @@ export default function PlannerPage() {
                         qty: parseFloat(form.formwork_area_m2) || undefined,
                         metadata: JSON.stringify({
                           formwork_system: plan.formwork.system.name,
+                          formwork_manufacturer: plan.formwork.system.manufacturer,
                           assembly_days: plan.formwork.assembly_days,
                           disassembly_days: plan.formwork.disassembly_days,
                           rental_czk: plan.costs.formwork_rental_czk,
+                          ...(plan.props?.needed ? {
+                            props_system: plan.props.system.name,
+                            props_manufacturer: plan.props.system.manufacturer,
+                            props_count: plan.props.num_props_per_tact,
+                          } : {}),
                           calculated_at: monolit_data.calculated_at,
                         }),
                       });
@@ -3030,6 +3036,9 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ? `${formatNum(plan.formwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
               : 'Bez pronájmu'} />
             <Row label="Tesařů celkem" value={`${plan.resources?.total_formwork_workers ?? '-'} (${plan.resources?.num_formwork_crews ?? 1}×${plan.resources?.crew_size_formwork ?? '-'})`} />
+            {plan.props?.needed && (
+              <Row label="Podpěra" value={`${plan.props.system.name} (${plan.props.system.manufacturer}), ${plan.props.num_props_per_tact} ks`} bold />
+            )}
           </div>
           <div>
             <div style={subTitle}>Časy (na záběr)</div>
