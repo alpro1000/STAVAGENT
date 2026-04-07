@@ -69,7 +69,9 @@ export const SUBTYPE_LABELS = {
     'bednění': 'Bednění',
     'odbednění': 'Odbednění',
     'výztuž': 'Výztuž',
+    'předpětí': 'Předpětí',
     'zrání': 'Zrání',
+    'podpěrná konstr.': 'Podpěrná konstr.',
     'jiné': 'Jiné'
 };
 export const UNIT_LABELS = {
