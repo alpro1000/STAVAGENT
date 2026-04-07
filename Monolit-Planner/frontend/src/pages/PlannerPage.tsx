@@ -436,7 +436,11 @@ export default function PlannerPage() {
       if (classified.element_type !== 'other' || classified.confidence > 0.5) {
         f.element_type = classified.element_type;
       }
-      // Don't enable name classification — we already resolved the type
+      // Use OTSKP metadata to prefill form fields
+      if (classified.is_prestressed_detected === true) f.is_prestressed = true;
+      if (classified.concrete_class_detected) f.concrete_class = classified.concrete_class_detected as any;
+      if (classified.bridge_deck_subtype_detected) f.bridge_deck_subtype = classified.bridge_deck_subtype_detected;
+      if (classified.has_kridla_detected) f.include_kridla = true;
     }
 
     if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
@@ -3085,7 +3089,10 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
       <div className="r0-grid-2">
         <Card title="Element" icon={<Blocks size={16} />}>
           <Row label="Typ" value={plan.element.label_cs} />
-          <Row label="Klasifikace" value={`${(plan.element.classification_confidence * 100).toFixed(0)}%`} />
+          <Row label="Klasifikace" value={`${(plan.element.classification_confidence * 100).toFixed(0)}%${
+            plan.element.profile.classification_source === 'otskp' ? ' (OTSKP katalog)' :
+            plan.element.profile.classification_source === 'keywords' ? ' (klíčová slova)' : ''
+          }`} />
           <Row label="Orientace" value={plan.element.profile.orientation === 'horizontal' ? 'Horizontální' : 'Vertikální'} />
           <Row label="Výztuž typická" value={`${plan.element.profile.rebar_ratio_kg_m3} kg/m³`} />
           <Row label="Podpěry" value={plan.element.profile.needs_supports ? 'Ano' : 'Ne'} />

@@ -45,7 +45,28 @@ export interface ElementProfile {
     max_pour_rate_m3_h: number;
     /** Whether pump is typically needed */
     pump_typical: boolean;
+    /** Source of classification: 'otskp' (catalog match) | 'keywords' (regex) */
+    classification_source?: 'otskp' | 'keywords';
+    /** Concrete class detected from name (e.g. 'C30/37') */
+    concrete_class_detected?: string;
+    /** Prestressed concrete detected from name */
+    is_prestressed_detected?: boolean;
+    /** Bridge deck subtype detected from name */
+    bridge_deck_subtype_detected?: string;
+    /** Composite element — contains křídla */
+    has_kridla_detected?: boolean;
+    /** Prefabricated element (info only — calculator doesn't compute prefab) */
+    is_prefab?: boolean;
 }
+/**
+ * Extract metadata from OTSKP element name.
+ * Detects concrete class, prestress, and material type.
+ */
+export declare function extractOtskpMetadata(name: string): {
+    concrete_class?: string;
+    is_prestressed?: boolean;
+    is_prefab?: boolean;
+};
 /** Classification context — optional hints to improve accuracy */
 export interface ClassificationContext {
     /** Is this element part of a bridge/mostní objekt? (SO-xxx prefix, bridge_id present) */
