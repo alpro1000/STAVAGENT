@@ -48,6 +48,7 @@ export type StructuralElementType =
   | 'mostovkova_deska'    // Mostovková deska / nosná konstrukce
   | 'rigel'               // Příčník / ригель
   | 'opery_ulozne_prahy'  // Opěry, úložné prahy
+  | 'kridla_opery'        // Křídla mostních opěr (wing walls)
   | 'mostni_zavirne_zidky'// Mostní závěrné zídky
   | 'prechodova_deska'   // Přechodová deska mostních opěr
   // ─── Building elements (pozemní stavby) ───
@@ -180,6 +181,12 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
     typical_sub_mode: 'independent',
     typical_spara_spacing_m: null,
     description_cs: 'Opěry, úložné prahy — spáry obvykle ano, libovolné pořadí',
+  },
+  kridla_opery: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Křídla opěr — VŽDY samostatný záběr, oddělená sada bednění od dříku opěry',
   },
   mostni_zavirne_zidky: {
     typical_has_spary: false,

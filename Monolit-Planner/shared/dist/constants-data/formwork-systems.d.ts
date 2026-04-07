@@ -26,6 +26,8 @@ export interface FormworkSystemSpec {
     weight_kg_m2?: number;
     /** Max fresh concrete pressure (kN/m²) — determines pour rate limit */
     pressure_kn_m2?: number;
+    /** Max pour height per stage (m) — panel combination limit */
+    max_pour_height_m?: number;
     /** Max single panel weight (kg) — determines if crane needed */
     max_panel_weight_kg?: number;
     /** Whether crane is required for assembly/relocation */

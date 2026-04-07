@@ -22,6 +22,8 @@ const STANDARD_WORKS: { subtype: Subtype; label: string; unit: string }[] = [
   { subtype: 'odbednění', label: 'Odbednění', unit: 'm2' },
   { subtype: 'výztuž', label: 'Výztuž', unit: 't' },
   { subtype: 'zrání', label: 'Zrání betonu', unit: 'den' },
+  { subtype: 'podpěrná konstr.', label: 'Podpěrná konstr.', unit: 'm2' },
+  { subtype: 'předpětí', label: 'Předpětí', unit: 'kpl' },
 ];
 
 const UNIT_OPTIONS = ['m3', 'm2', 't', 'kg', 'ks', 'bm', 'hod', 'den', 'kpl'];

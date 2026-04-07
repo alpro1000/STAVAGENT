@@ -21,6 +21,7 @@ export const BRIDGE_ELEMENT_ORDER = {
     // Group 2: Substructure (Spodní stavba)
     driky_piliru: 40,
     opery_ulozne_prahy: 50,
+    kridla_opery: 52,
     operne_zdi: 55,
     // Group 3: Superstructure (Nosná konstrukce)
     rigel: 60,
@@ -64,6 +65,7 @@ export const BUILDING_ELEMENT_ORDER = {
     zaklady_piliru: 80,
     driky_piliru: 81,
     opery_ulozne_prahy: 82,
+    kridla_opery: 82,
     operne_zdi: 83,
     rigel: 84,
     mostovkova_deska: 85,

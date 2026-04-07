@@ -464,6 +464,25 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
   log.push(`Formwork: ${fwSystem.name} (${adjustedNorms.assembly_h_m2} h/m², df=${adjustedNorms.difficulty_factor})`);
 
+  // ─── 2d. Formwork-specific warnings ─────────────────────────────────────
+  if (fwSystem.needs_crane) {
+    warnings.push(
+      `${fwSystem.name} vyžaduje jeřáb (panel ${fwSystem.max_panel_weight_kg || '150+'} kg) — ` +
+      `zajistěte jeřáb na stavbě pro celou dobu bednění.`
+    );
+  }
+  if (heightForPressure && heightForPressure > 1.2 && isVertical) {
+    warnings.push(
+      `Bednění výška ${heightForPressure}m > 1.2m → nutné stabilizační vzpěry IB (započítány v sestavě).`
+    );
+  }
+  if (lateralPressure && fwSystem.name === 'Frami Xlife' && lateralPressure.pressure_kn_m2 > 60) {
+    warnings.push(
+      `Boční tlak ${lateralPressure.pressure_kn_m2} kN/m² — Frami Xlife na hranici kapacity. ` +
+      `Zvažte Framax Xlife (100 kN/m²) pro vyšší bezpečnost.`
+    );
+  }
+
   // ─── 3. Pour Decision ──────────────────────────────────────────────────
 
   const pourDecision = decidePourMode({

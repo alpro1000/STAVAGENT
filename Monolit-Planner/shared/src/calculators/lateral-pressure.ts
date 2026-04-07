@@ -151,6 +151,7 @@ export function filterFormworkByPressure(
   pressure_kn_m2: number,
   systems: FormworkSystemSpec[],
   orientation: 'vertical' | 'horizontal' = 'vertical',
+  pour_height_m?: number,
 ): FormworkFilterResult {
   const suitable: FormworkSystemSpec[] = [];
   const rejected: FormworkSystemSpec[] = [];
@@ -168,11 +169,19 @@ export function filterFormworkByPressure(
       continue;
     }
 
-    if (sys.pressure_kn_m2 >= pressure_kn_m2) {
-      suitable.push(sys);
-    } else {
+    // Check pressure capacity
+    if (sys.pressure_kn_m2 < pressure_kn_m2) {
       rejected.push(sys);
+      continue;
     }
+
+    // Check max pour height (e.g. Frami max 3.0m záběr)
+    if (pour_height_m && sys.max_pour_height_m && pour_height_m > sys.max_pour_height_m) {
+      rejected.push(sys);
+      continue;
+    }
+
+    suitable.push(sys);
   }
 
   // Sort suitable by rental price (cheapest first), 0-price (tradiční) at end

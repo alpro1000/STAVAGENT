@@ -373,6 +373,7 @@ function PositionsTableInner() {
         { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['bednění'] || 'Bednění', subtype: 'bednění', unit: 'm2', qty: 0 },
         { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['odbednění'] || 'Odbednění', subtype: 'odbednění', unit: 'm2', qty: 0 },
         { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['výztuž'] || 'Výztuž', subtype: 'výztuž', unit: 't', qty: 0 },
+        { ...baseFields, id: uuidv4(), item_name: SUBTYPE_LABELS['zrání'] || 'Zrání', subtype: 'zrání', unit: 'den' as any, qty: 0, crew_size: 1 },
       ];
 
       // Create all positions via API

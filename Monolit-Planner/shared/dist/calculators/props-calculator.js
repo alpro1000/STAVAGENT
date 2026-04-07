@@ -140,6 +140,12 @@ export const ELEMENT_DIMENSION_HINTS = {
         typical_height_range: [3, 12],
         has_height: true,
     },
+    kridla_opery: {
+        required_dimensions: ['height_m'],
+        hint_cs: 'Výška křídla opěry. Samostatný záběr bednění.',
+        typical_height_range: [1.5, 6],
+        has_height: true,
+    },
     mostni_zavirne_zidky: {
         required_dimensions: ['height_m'],
         hint_cs: 'Výška zídky (typicky 0.5–1.5 m). Malý prvek, bez podpěr.',

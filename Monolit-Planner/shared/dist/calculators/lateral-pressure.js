@@ -83,7 +83,7 @@ export function calculateLateralPressure(height_m, pour_method = 'pump') {
  * @param orientation - Element orientation ('vertical' | 'horizontal')
  * @returns Filtered result sorted by rental price (cheapest first)
  */
-export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 'vertical') {
+export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 'vertical', pour_height_m) {
     const suitable = [];
     const rejected = [];
     for (const sys of systems) {
@@ -97,12 +97,17 @@ export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 
             suitable.push(sys);
             continue;
         }
-        if (sys.pressure_kn_m2 >= pressure_kn_m2) {
-            suitable.push(sys);
-        }
-        else {
+        // Check pressure capacity
+        if (sys.pressure_kn_m2 < pressure_kn_m2) {
             rejected.push(sys);
+            continue;
         }
+        // Check max pour height (e.g. Frami max 3.0m záběr)
+        if (pour_height_m && sys.max_pour_height_m && pour_height_m > sys.max_pour_height_m) {
+            rejected.push(sys);
+            continue;
+        }
+        suitable.push(sys);
     }
     // Sort suitable by rental price (cheapest first), 0-price (tradiční) at end
     suitable.sort((a, b) => {

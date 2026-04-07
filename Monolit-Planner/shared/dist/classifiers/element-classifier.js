@@ -106,7 +106,7 @@ const ELEMENT_CATALOG = {
         pump_typical: true,
     },
     opery_ulozne_prahy: {
-        label_cs: 'Opěry, úložné prahy, křídla',
+        label_cs: 'Opěry, úložné prahy',
         recommended_formwork: ['TRIO', 'Framax Xlife', 'DOMINO', 'Frami Xlife'],
         difficulty_factor: 1.0,
         needs_supports: false,
@@ -119,6 +119,21 @@ const ELEMENT_CATALOG = {
         orientation: 'vertical',
         max_pour_rate_m3_h: 35,
         pump_typical: true,
+    },
+    kridla_opery: {
+        label_cs: 'Křídla mostních opěr',
+        recommended_formwork: ['Frami Xlife', 'Framax Xlife', 'Frami Xlife'],
+        difficulty_factor: 0.9,
+        needs_supports: false,
+        needs_platforms: true,
+        needs_crane: false, // Frami = ruční; Framax potřebuje jeřáb ale jen pro h>3m
+        rebar_ratio_kg_m3: 90,
+        rebar_ratio_range: [70, 120],
+        rebar_norm_h_per_t: 45,
+        strip_strength_pct: 50,
+        orientation: 'vertical',
+        max_pour_rate_m3_h: 35,
+        pump_typical: false,
     },
     mostni_zavirne_zidky: {
         label_cs: 'Mostní závěrné zídky',
@@ -395,12 +410,15 @@ const KEYWORD_RULES = [
             'retaining wall',
             'подпорн стен',
         ], priority: 8 },
+    { element_type: 'kridla_opery', keywords: [
+            'kridl', 'křídl', 'kridla', 'křídla', 'křídlo',
+            'wing wall', 'mostni kridl', 'mostní křídl',
+        ], priority: 9 },
     { element_type: 'opery_ulozne_prahy', keywords: [
             'opera', 'opěra', 'opery', 'opěry',
             'ulozn', 'úložn', 'ulozne prah', 'úložné prah',
             'prah', 'sedlo',
             'mostni oper', 'mostní opěr', 'mostni opery', 'mostní opěry',
-            'kridl', 'křídl', 'kridla', 'křídla',
             'abutment', 'bearing seat',
         ], priority: 7 },
     // ─── Building elements ───
@@ -465,8 +483,8 @@ function normalize(text) {
 /** Bridge element types — get priority boost in bridge context */
 const BRIDGE_ELEMENT_TYPES = new Set([
     'zaklady_piliru', 'driky_piliru', 'rimsa', 'operne_zdi',
-    'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'mostni_zavirne_zidky',
-    'prechodova_deska',
+    'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'kridla_opery',
+    'mostni_zavirne_zidky', 'prechodova_deska',
 ]);
 /** Building element types that have bridge equivalents */
 const BRIDGE_EQUIVALENT = {
@@ -519,6 +537,13 @@ export function classifyElement(name, context) {
             if (normalized.includes(normalize(kw))) {
                 matchCount++;
             }
+        }
+        // Křídla: suppress when name contains both "opěr" and "křídl" (composite item = opěra)
+        if (rule.element_type === 'kridla_opery' && matchCount > 0) {
+            const hasOpera = /oper|opěr/.test(normalized);
+            const isComposite = hasOpera && /kridl|křídl/.test(normalized);
+            if (isComposite)
+                matchCount = 0; // Let opery_ulozne_prahy handle it
         }
         if (matchCount > 0) {
             // Bridge context: boost bridge element types by +5 priority
@@ -603,8 +628,8 @@ export function recommendFormwork(type, height_m, pour_method, total_length_m) {
     const pressure = calculateLateralPressure(height_m, method);
     // Get category-compatible systems
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
-    // Filter by pressure
-    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation);
+    // Filter by pressure AND max pour height
+    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation, height_m);
     if (filtered.suitable.length > 0) {
         return filtered.suitable[0]; // Cheapest suitable
     }
@@ -622,7 +647,7 @@ export function getFilteredFormworkSystems(type, height_m, pour_method) {
     const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
     const pressure = calculateLateralPressure(height_m, method);
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
-    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation);
+    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation, height_m);
     return {
         ...filtered,
         pour_method: method,
