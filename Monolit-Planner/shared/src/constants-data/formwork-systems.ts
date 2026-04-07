@@ -29,6 +29,8 @@ export interface FormworkSystemSpec {
   weight_kg_m2?: number;
   /** Max fresh concrete pressure (kN/m²) — determines pour rate limit */
   pressure_kn_m2?: number;
+  /** Max pour height per stage (m) — panel combination limit */
+  max_pour_height_m?: number;
   /** Max single panel weight (kg) — determines if crane needed */
   max_panel_weight_kg?: number;
   /** Whether crane is required for assembly/relocation */
@@ -65,9 +67,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 507.20,
     unit: 'm2',
-    description: 'Rámové bednění pro základy, opěry, nízké stěny',
+    description: 'Rámové bednění pro základy, opěry, nízké stěny — ruční montáž, vzpěry IB pro h>1.2m',
     weight_kg_m2: 30,
-    pressure_kn_m2: 60,
+    pressure_kn_m2: 80,
+    max_pour_height_m: 3.0,
     max_panel_weight_kg: 52,
     needs_crane: false,
     panel_widths_mm: [300, 450, 600, 750, 900],
@@ -82,9 +85,10 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.30,
     rental_czk_m2_month: 520.00,
     unit: 'm2',
-    description: 'Velkoformátové rámové bednění pro vysoké stěny, pilíře',
+    description: 'Velkoformátové rámové bednění pro vysoké stěny, pilíře — vyžaduje jeřáb (panel 154–259 kg)',
     weight_kg_m2: 56,
-    pressure_kn_m2: 80,
+    pressure_kn_m2: 100,
+    max_pour_height_m: 6.75,
     max_panel_weight_kg: 350,
     needs_crane: true,
     panel_widths_mm: [300, 450, 600, 900, 1200],

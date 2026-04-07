@@ -694,11 +694,12 @@ export function recommendFormwork(
   // Get category-compatible systems
   const { all: compatibleSystems } = getSuitableSystemsForElement(type);
 
-  // Filter by pressure
+  // Filter by pressure AND max pour height
   const filtered = filterFormworkByPressure(
     pressure.pressure_kn_m2,
     compatibleSystems,
     profile.orientation,
+    height_m,
   );
 
   if (filtered.suitable.length > 0) {
@@ -728,6 +729,7 @@ export function getFilteredFormworkSystems(
     pressure.pressure_kn_m2,
     compatibleSystems,
     profile.orientation,
+    height_m,
   );
   return {
     ...filtered,

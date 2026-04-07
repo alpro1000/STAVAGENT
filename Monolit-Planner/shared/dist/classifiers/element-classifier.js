@@ -603,8 +603,8 @@ export function recommendFormwork(type, height_m, pour_method, total_length_m) {
     const pressure = calculateLateralPressure(height_m, method);
     // Get category-compatible systems
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
-    // Filter by pressure
-    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation);
+    // Filter by pressure AND max pour height
+    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation, height_m);
     if (filtered.suitable.length > 0) {
         return filtered.suitable[0]; // Cheapest suitable
     }
@@ -622,7 +622,7 @@ export function getFilteredFormworkSystems(type, height_m, pour_method) {
     const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
     const pressure = calculateLateralPressure(height_m, method);
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
-    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation);
+    const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation, height_m);
     return {
         ...filtered,
         pour_method: method,

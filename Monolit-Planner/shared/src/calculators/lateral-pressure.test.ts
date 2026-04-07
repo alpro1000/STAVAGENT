@@ -184,6 +184,86 @@ describe('filterFormworkByPressure', () => {
     const r = filterFormworkByPressure(999, MOCK_SYSTEMS, 'vertical');
     expect(r.suitable.map(s => s.name)).toContain('NoPressureLimit');
   });
+
+  it('max_pour_height_m rejects system when height exceeds limit', () => {
+    const systems: FormworkSystemSpec[] = [
+      { ...MOCK_SYSTEMS[0], name: 'ShortSystem', pressure_kn_m2: 80, max_pour_height_m: 3.0, rental_czk_m2_month: 500 },
+      { ...MOCK_SYSTEMS[1], name: 'TallSystem', pressure_kn_m2: 100, max_pour_height_m: 6.75, rental_czk_m2_month: 520 },
+    ];
+    // h=4m: ShortSystem (max 3.0m) rejected, TallSystem (max 6.75m) passes
+    const r = filterFormworkByPressure(50, systems, 'vertical', 4.0);
+    expect(r.suitable.map(s => s.name)).not.toContain('ShortSystem');
+    expect(r.suitable.map(s => s.name)).toContain('TallSystem');
+  });
+
+  it('max_pour_height_m passes when height within limit', () => {
+    const systems: FormworkSystemSpec[] = [
+      { ...MOCK_SYSTEMS[0], name: 'ShortSystem', pressure_kn_m2: 80, max_pour_height_m: 3.0, rental_czk_m2_month: 500 },
+    ];
+    const r = filterFormworkByPressure(50, systems, 'vertical', 2.5);
+    expect(r.suitable.map(s => s.name)).toContain('ShortSystem');
+  });
+
+  it('system without max_pour_height_m passes any height', () => {
+    const r = filterFormworkByPressure(50, MOCK_SYSTEMS, 'vertical', 10.0);
+    // MediumPressure has no max_pour_height_m → passes
+    expect(r.suitable.map(s => s.name)).toContain('MediumPressure');
+  });
+});
+
+// ─── DOKA system selection (real-world validation from D6 offers) ───────────
+
+describe('DOKA Frami/Framax selection', () => {
+  const FRAMI: FormworkSystemSpec = {
+    name: 'Frami Xlife', manufacturer: 'DOKA', heights: ['0.30', '0.60', '0.90', '1.20', '1.50'],
+    assembly_h_m2: 0.72, disassembly_h_m2: 0.25, disassembly_ratio: 0.35,
+    rental_czk_m2_month: 507.20, unit: 'm2', description: 'Frami',
+    pressure_kn_m2: 80, max_pour_height_m: 3.0, needs_crane: false, formwork_category: 'wall',
+  };
+  const FRAMAX: FormworkSystemSpec = {
+    name: 'Framax Xlife', manufacturer: 'DOKA', heights: ['2.70', '3.00', '3.30', '5.40'],
+    assembly_h_m2: 0.55, disassembly_h_m2: 0.17, disassembly_ratio: 0.30,
+    rental_czk_m2_month: 520.00, unit: 'm2', description: 'Framax',
+    pressure_kn_m2: 100, max_pour_height_m: 6.75, needs_crane: true, formwork_category: 'wall',
+  };
+  const frami = FRAMI;
+  const framax = FRAMAX;
+
+  it('Frami Xlife has pressure 80 kN/m² and max height 3.0m', () => {
+    expect(frami.pressure_kn_m2).toBe(80);
+    expect(frami.max_pour_height_m).toBe(3.0);
+    expect(frami.needs_crane).toBe(false);
+  });
+
+  it('Framax Xlife has pressure 100 kN/m² and max height 6.75m', () => {
+    expect(framax.pressure_kn_m2).toBe(100);
+    expect(framax.max_pour_height_m).toBe(6.75);
+    expect(framax.needs_crane).toBe(true);
+  });
+
+  it('h=2.4m, p<80 → Frami passes (SO 202 opěra)', () => {
+    const p = calculateLateralPressure(2.4, 'crane_bucket');
+    expect(p.pressure_kn_m2).toBeLessThan(80);
+    const r = filterFormworkByPressure(p.pressure_kn_m2, [frami, framax], 'vertical', 2.4);
+    expect(r.suitable.map((s: any) => s.name)).toContain('Frami Xlife');
+  });
+
+  it('h=5.4m, crane_bucket → Frami rejected (height > 3.0m), Framax passes (SO 203 pilíř)', () => {
+    // Pilíře: crane_bucket (k=1.0), p = 2400*9.81*5.4*1.0/1000 = 127.1 kN/m²
+    // Framax (100 kN/m²) doesn't pass on pressure, but záběrová betonáž splits the height
+    // With staged pour at 4.0m: p = 2400*9.81*4.0*1.0/1000 = 94.2 → Framax passes
+    const p = calculateLateralPressure(4.0, 'crane_bucket');
+    expect(p.pressure_kn_m2).toBeLessThan(100);
+    const r = filterFormworkByPressure(p.pressure_kn_m2, [frami, framax], 'vertical', 5.4);
+    expect(r.suitable.map((s: any) => s.name)).not.toContain('Frami Xlife'); // height > 3.0m
+    expect(r.suitable.map((s: any) => s.name)).toContain('Framax Xlife'); // height < 6.75m, p < 100
+  });
+
+  it('h=6.0m, křídla → Framax passes (SO 206 dřík)', () => {
+    const r = filterFormworkByPressure(80, [frami, framax], 'vertical', 6.0);
+    expect(r.suitable.map((s: any) => s.name)).toContain('Framax Xlife');
+    expect(r.suitable.map((s: any) => s.name)).not.toContain('Frami Xlife');
+  });
 });
 
 // ─── parseMaxHeight ─────────────────────────────────────────────────────────

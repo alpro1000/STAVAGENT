@@ -96,7 +96,7 @@ export declare function calculateLateralPressure(height_m: number, pour_method?:
  * @param orientation - Element orientation ('vertical' | 'horizontal')
  * @returns Filtered result sorted by rental price (cheapest first)
  */
-export declare function filterFormworkByPressure(pressure_kn_m2: number, systems: FormworkSystemSpec[], orientation?: 'vertical' | 'horizontal'): FormworkFilterResult;
+export declare function filterFormworkByPressure(pressure_kn_m2: number, systems: FormworkSystemSpec[], orientation?: 'vertical' | 'horizontal', pour_height_m?: number): FormworkFilterResult;
 /**
  * Parse max formwork height from the `heights` array.
  *
