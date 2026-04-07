@@ -35,6 +35,9 @@ import FlatGantt from './FlatGantt';
 import FlatSnapshots from './FlatSnapshots';
 import FlatTOVSection from './FlatTOVSection';
 import AddWorkModal from './AddWorkModal';
+import ImportRegistryModal from './ImportRegistryModal';
+import AddPositionModal from './AddPositionModal';
+import CreateObjectModal from './CreateObjectModal';
 
 /* ── Helpers ─────────────────────────────────────────────────── */
 
@@ -100,6 +103,11 @@ export default function FlatPositionsTable() {
   const [collapsedElements, setCollapsedElements] = useState<Set<string>>(new Set());
   const [expandedTOV, setExpandedTOV] = useState<Set<string>>(new Set());
   const [addWorkFor, setAddWorkFor] = useState<string | null>(null);
+
+  // Modal state — lifted here so empty states can trigger them too
+  const [showImportRegistry, setShowImportRegistry] = useState(false);
+  const [showAddPosition, setShowAddPosition] = useState(false);
+  const [showCreateObject, setShowCreateObject] = useState(false);
 
   const toggleTOV = useCallback((posId: string) => {
     setExpandedTOV(prev => {
@@ -217,12 +225,26 @@ export default function FlatPositionsTable() {
     });
   }, []);
 
+  // Shared modals — rendered at every return path
+  const modals = (
+    <>
+      {showImportRegistry && <ImportRegistryModal onClose={() => setShowImportRegistry(false)} />}
+      {showAddPosition && <AddPositionModal onClose={() => setShowAddPosition(false)} />}
+      {showCreateObject && <CreateObjectModal onClose={() => setShowCreateObject(false)} />}
+    </>
+  );
+
   // Always render toolbar so action buttons are accessible
   if (!selectedProjectId) {
     return (
       <div>
-        <FlatToolbar positionCount={0} />
-        <EmptyStateNoProject />
+        <FlatToolbar positionCount={0}
+          onImportRegistry={() => setShowImportRegistry(true)}
+          onAddPosition={() => setShowAddPosition(true)} />
+        <EmptyStateNoProject
+          onCreateObject={() => setShowCreateObject(true)}
+          onImportRegistry={() => setShowImportRegistry(true)} />
+        {modals}
       </div>
     );
   }
@@ -230,8 +252,11 @@ export default function FlatPositionsTable() {
   if (isLoading) {
     return (
       <div>
-        <FlatToolbar positionCount={0} />
+        <FlatToolbar positionCount={0}
+          onImportRegistry={() => setShowImportRegistry(true)}
+          onAddPosition={() => setShowAddPosition(true)} />
         <div className="flat-loading"><div className="flat-spinner" /> Načítání pozic...</div>
+        {modals}
       </div>
     );
   }
@@ -240,10 +265,13 @@ export default function FlatPositionsTable() {
     <div>
       <FlatProjectSettings />
       <FlatKPIPanel kpi={headerKPI} positions={calcPositions} />
-      <FlatToolbar positionCount={positions.length} />
+      <FlatToolbar positionCount={positions.length}
+        onImportRegistry={() => setShowImportRegistry(true)}
+        onAddPosition={() => setShowAddPosition(true)} />
 
       {positions.length === 0 ? (
-        <EmptyStateNoPositions />
+        <EmptyStateNoPositions
+          onImportRegistry={() => setShowImportRegistry(true)} />
       ) : (
         <div className="flat-table-wrap">
           <table className="flat-table">
@@ -283,6 +311,7 @@ export default function FlatPositionsTable() {
           onClose={() => setAddWorkFor(null)}
         />
       )}
+      {modals}
     </div>
   );
 }
@@ -676,7 +705,10 @@ function WorkRow({
 
 /* ── EMPTY STATES ────────────────────────────────────────────── */
 
-function EmptyStateNoProject() {
+function EmptyStateNoProject({ onCreateObject, onImportRegistry }: {
+  onCreateObject: () => void;
+  onImportRegistry: () => void;
+}) {
   return (
     <div className="flat-empty" style={{ padding: '80px 24px' }}>
       <Calculator size={48} className="flat-empty__icon" />
@@ -685,15 +717,14 @@ function EmptyStateNoProject() {
         Začněte jedním z těchto kroků:
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <EmptyAction icon={<Plus size={16} />} label="Vytvořit objekt" desc="Ručně zadat nový objekt" id="create" />
-        <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" id="registry" />
-        <EmptyAction icon={<Upload size={16} />} label="Nahrát Excel" desc="Nahrát soubor se smetou" id="upload" />
+        <EmptyAction icon={<Plus size={16} />} label="Vytvořit objekt" desc="Ručně zadat nový objekt" onClick={onCreateObject} />
+        <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" onClick={onImportRegistry} />
       </div>
     </div>
   );
 }
 
-function EmptyStateNoPositions() {
+function EmptyStateNoPositions({ onImportRegistry }: { onImportRegistry: () => void }) {
   return (
     <div className="flat-empty" style={{ padding: '48px 24px' }}>
       <AlertTriangle size={32} className="flat-empty__icon" />
@@ -702,33 +733,18 @@ function EmptyStateNoPositions() {
         Přidejte pozice jedním z těchto způsobů:
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-        <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" id="registry" />
-        <EmptyAction icon={<Upload size={16} />} label="Nahrát Excel" desc="Nahrát soubor se smetou" id="upload" />
+        <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" onClick={onImportRegistry} />
       </div>
     </div>
   );
 }
 
-/** Action card for empty states — triggers toolbar actions via DOM click */
-function EmptyAction({ icon, label, desc, id }: { icon: React.ReactNode; label: string; desc: string; id: string }) {
-  const handleClick = () => {
-    // Find and click the corresponding toolbar button
-    if (id === 'create') {
-      // Click sidebar "+ Nový objekt" button
-      const btn = document.querySelector('.sb__new-btn') as HTMLButtonElement;
-      if (btn) btn.click();
-    } else if (id === 'registry') {
-      // Find the "Načíst z Rozpočtu" button in toolbar
-      const btns = document.querySelectorAll('.flat-toolbar .flat-btn');
-      for (const b of btns) { if (b.textContent?.includes('Rozpočtu')) (b as HTMLButtonElement).click(); }
-    } else if (id === 'upload') {
-      const btns = document.querySelectorAll('.flat-toolbar .flat-btn');
-      for (const b of btns) { if (b.textContent?.includes('Excel')) (b as HTMLButtonElement).click(); }
-    }
-  };
-
+/** Action card for empty states — pure React callbacks, no DOM queries */
+function EmptyAction({ icon, label, desc, onClick }: {
+  icon: React.ReactNode; label: string; desc: string; onClick: () => void;
+}) {
   return (
-    <button onClick={handleClick} style={{
+    <button onClick={onClick} style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
       padding: '16px 24px', background: 'white', border: '1px solid var(--stone-200)',
       borderRadius: 8, cursor: 'pointer', transition: 'border-color 0.15s, box-shadow 0.15s',
