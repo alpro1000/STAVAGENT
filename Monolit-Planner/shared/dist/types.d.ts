@@ -2,7 +2,7 @@
  * Monolit Planner - Shared Types
  * Types used across backend and frontend
  */
-export type Subtype = 'beton' | 'bednění' | 'odbednění' | 'výztuž' | 'zrání' | 'jiné';
+export type Subtype = 'beton' | 'bednění' | 'odbednění' | 'výztuž' | 'zrání' | 'podpěrná konstr.' | 'jiné';
 export type Unit = 'M3' | 'm2' | 'kg' | 'ks' | 't' | 'other';
 export interface Position {
     id?: string;

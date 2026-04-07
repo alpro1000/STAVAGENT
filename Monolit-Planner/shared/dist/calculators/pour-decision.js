@@ -308,10 +308,11 @@ export function decidePourMode(input) {
     const effective_q = q_eff * pumps_required;
     const pour_h = setup_h + (V / effective_q) + washout_h;
     if (pumps_required > 1) {
-        warnings.push(`${pumps_required} čerpadel potřeba — interval domíchávačů ≤ 8 min`);
-        warnings.push('Před zahájením nutný podpis PDK (plán kontroly a zkoušek)');
+        const pCtx = `[Celkem ${V} m³]`;
+        warnings.push(`${pCtx} ${pumps_required} čerpadel potřeba — interval domíchávačů ≤ 8 min`);
+        warnings.push(`${pCtx} Před zahájením nutný podpis PDK (plán kontroly a zkoušek)`);
         if (pour_h > 8) {
-            warnings.push(`Zálivka ${roundTo(pour_h, 1)}h > 8h — zajistit osvětlení pracoviště`);
+            warnings.push(`${pCtx} Zálivka ${roundTo(pour_h, 1)}h > 8h — zajistit osvětlení pracoviště`);
         }
     }
     return {

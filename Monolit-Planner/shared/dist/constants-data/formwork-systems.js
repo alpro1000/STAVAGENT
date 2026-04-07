@@ -148,7 +148,7 @@ export const FORMWORK_SYSTEMS = [
         unit: 'm2',
         description: 'Podpěrné věže Staxo 100 — mosty výška 5–20 m, raster 1.25×1.25 m',
         needs_crane: true,
-        formwork_category: 'slab',
+        formwork_category: 'support_tower',
     },
     {
         name: 'UP Rosett Flex',
@@ -161,7 +161,7 @@ export const FORMWORK_SYSTEMS = [
         unit: 'm2',
         description: 'Modulární lešení/podpěrné věže UP Rosett — výška do 25 m, variabilní geometrie',
         needs_crane: true,
-        formwork_category: 'slab',
+        formwork_category: 'support_tower',
     },
     // ── PERI ─────────────────────────────────────────────────────────────
     {

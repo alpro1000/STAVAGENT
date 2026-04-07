@@ -76,21 +76,22 @@ export function calculatePourTask(input) {
     const pour_sessions = fits_in_window ? 1 : Math.ceil(pumping_hours / pour_window_h);
     // --- Warnings ---
     const warnings = [];
+    const ctx = `[Záběr ${input.volume_m3} m³]`;
     if (!fits_in_window) {
-        warnings.push(`Doba betonáže ${roundTo(pumping_hours, 1)}h překračuje okno ${pour_window_h}h. ` +
+        warnings.push(`${ctx} Doba betonáže ${roundTo(pumping_hours, 1)}h překračuje okno ${pour_window_h}h. ` +
             `Nutný pracovní šev nebo retardér.`);
     }
     if (pumps_required > 1) {
-        warnings.push(`Objem ${input.volume_m3}m³ vyžaduje ${pumps_required} čerpadla (${effective_rate_m3_h} m³/h celkem).`);
+        warnings.push(`${ctx} ${pumps_required} čerpadla potřeba (${effective_rate_m3_h} m³/h celkem).`);
     }
     if (backup_pump_recommended) {
-        warnings.push(`Objem > 200m³ — doporučeno záložní čerpadlo.`);
+        warnings.push(`${ctx} Objem > 200m³ — doporučeno záložní čerpadlo.`);
     }
     if (season === 'hot' && !useRetarder && pumping_hours > 3) {
-        warnings.push(`Letní betonáž > 3h bez retardéru — zvažte PCE přísadu.`);
+        warnings.push(`${ctx} Letní betonáž > 3h bez retardéru — zvažte PCE přísadu.`);
     }
     if (rate_bottleneck === 'mixer') {
-        warnings.push(`Omezení rychlosti podáváním mixů (${effective_rate_m3_h} m³/h).`);
+        warnings.push(`${ctx} Omezení rychlosti podáváním mixů (${effective_rate_m3_h} m³/h).`);
     }
     // --- Traceability ---
     const assumptions = [

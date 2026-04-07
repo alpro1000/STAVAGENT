@@ -449,7 +449,7 @@ export function planElement(input) {
             effectiveShift = pourResult.total_pour_hours;
             const maxCrew = 15;
             effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
-            warnings.push(`Monolitická zálivka (${pourDecision.tact_volume_m3}m³): nutno zalít v jednom záběru bez přerušení. ` +
+            warnings.push(`[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: nutno zalít v jednom záběru bez přerušení. ` +
                 `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
                 `směna ${roundTo(effectiveShift, 1)}h. ` +
                 (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : ''));
@@ -463,8 +463,8 @@ export function planElement(input) {
             effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * MAX_LEGAL_SHIFT) / shift)));
             const nightHours = Math.max(0, pourResult.total_pour_hours - MAX_LEGAL_SHIFT);
             pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
-            warnings.push(`Monolitická zálivka (${pourDecision.tact_volume_m3}m³, ${roundTo(pourResult.total_pour_hours, 1)}h): ` +
-                `nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
+            warnings.push(`[Záběr ${pourDecision.tact_volume_m3} m³, ${roundTo(pourResult.total_pour_hours, 1)}h] ` +
+                `Monolitická zálivka: nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
                 `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} pracovníků). ` +
                 `Noční směna: +${nightHours.toFixed(1)}h s příplatkem +10% (§ 116 ZP).`);
         }
@@ -497,6 +497,16 @@ export function planElement(input) {
         log.push(`Prestress: ${prestressDays}d (bridge ${bridgeLength}m, is_prestressed=true)`);
     }
     // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
+    // Multi-bridge monolithic deck: each bridge = 1 tact (T1 = LM, T2 = PM)
+    // Override only if pour-decision didn't already produce enough tacts.
+    if (isBridgeMonolith && numBridges >= 2 && pourDecision.num_tacts < numBridges) {
+        const prevTacts = pourDecision.num_tacts;
+        pourDecision.num_tacts = numBridges;
+        pourDecision.tact_volume_m3 = roundTo(input.volume_m3 / numBridges, 2);
+        pourDecision.num_sections = numBridges;
+        pourDecision.section_volume_m3 = pourDecision.tact_volume_m3;
+        log.push(`Multi-bridge override: ${prevTacts} → ${numBridges} tacts (1 tact = 1 celý most, ${pourDecision.tact_volume_m3} m³/most)`);
+    }
     const scheduleResult = scheduleElement({
         num_tacts: pourDecision.num_tacts,
         num_sets: numSets,

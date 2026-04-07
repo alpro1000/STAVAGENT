@@ -36,8 +36,8 @@ export interface FormworkSystemSpec {
     panel_widths_mm?: number[];
     /** Purchase price per m² (CZK) — multi-use purchase from PERI offer */
     purchase_czk_m2?: number;
-    /** Formwork category: wall, slab, column, special, universal */
-    formwork_category?: 'wall' | 'slab' | 'column' | 'special' | 'universal';
+    /** Formwork category: wall, slab, column, special, universal, support_tower */
+    formwork_category?: 'wall' | 'slab' | 'column' | 'special' | 'universal' | 'support_tower';
 }
 /**
  * All formwork systems — 25 systems (DOKA, PERI, ULMA, NOE, Místní)
