@@ -899,9 +899,9 @@
 
 /* Card base */
 .kpi-card {
-  flex: 1; min-width: 180px; max-height: 80px; background: white;
+  flex: 1; min-width: 200px; max-height: 80px; background: white;
   border: 1px solid var(--stone-200); border-radius: 6px;
-  border-left-width: 4px; overflow: hidden;
+  border-left-width: 4px; overflow: visible;
 }
 .kpi-card--blue   { border-left-color: #3B82F6; }
 .kpi-card--amber  { border-left-color: #F59E0B; }
