@@ -853,6 +853,11 @@
   color: #4338CA;
 }
 
+.flat-badge--podperna {
+  background: #FDF4FF;
+  color: #7E22CE;
+}
+
 .flat-badge--jine {
   background: var(--stone-100);
   color: var(--stone-500);

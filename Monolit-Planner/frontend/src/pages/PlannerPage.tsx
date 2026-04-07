@@ -405,6 +405,7 @@ export default function PlannerPage() {
       vyzuz_qty: searchParams.get('vyzuz_qty') ? parseFloat(searchParams.get('vyzuz_qty')!) : undefined,
       zrani_position_id: searchParams.get('zrani_position_id'),
       odbedneni_position_id: searchParams.get('odbedneni_position_id'),
+      podperna_position_id: searchParams.get('podperna_position_id'),
     };
   }, [searchParams]);
 
@@ -2170,11 +2171,20 @@ export default function PlannerPage() {
                       : roundDay(numTacts * plan.formwork.disassembly_days);
 
                     // 1. Beton position — concrete labor-days, crew, curing, full metadata
+                    // Blended wage includes night premium (§116 ZP: +10% for hours beyond 12h shift)
+                    const basePourWage = plan.resources.wage_pour_czk_h;
+                    const nightPremium = plan.costs.pour_night_premium_czk || 0;
+                    const pourCrew = plan.resources.crew_size_formwork;
+                    const pourLaborHours = pourCrew * plan.resources.shift_h * betonDays;
+                    const effectivePourWage = pourLaborHours > 0 && nightPremium > 0
+                      ? Math.round(((pourLaborHours * basePourWage + nightPremium) / pourLaborHours) * 100) / 100
+                      : basePourWage;
+
                     updates.push({
                       id: positionContext.position_id,
                       days: betonDays,
-                      crew_size: plan.resources.crew_size_formwork,
-                      wage_czk_ph: plan.resources.wage_pour_czk_h,
+                      crew_size: pourCrew,
+                      wage_czk_ph: effectivePourWage,
                       shift_hours: plan.resources.shift_h,
                       curing_days: plan.formwork.curing_days,
                       metadata: JSON.stringify({
@@ -2244,6 +2254,29 @@ export default function PlannerPage() {
                         shift_hours: plan.resources.shift_h,
                         metadata: JSON.stringify({
                           stripping_days_per_tact: plan.formwork.disassembly_days,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      });
+                    }
+
+                    // 6. Podpěrná konstr. position — props assembly + disassembly labor-days
+                    if (positionContext.podperna_position_id && plan.props?.needed) {
+                      const propsDays = roundDay(plan.props.assembly_days + plan.props.disassembly_days);
+                      updates.push({
+                        id: positionContext.podperna_position_id,
+                        days: propsDays,
+                        crew_size: plan.resources.crew_size_formwork,
+                        wage_czk_ph: plan.resources.wage_formwork_czk_h,
+                        shift_hours: plan.resources.shift_h,
+                        metadata: JSON.stringify({
+                          props_system: plan.props.system.name,
+                          props_count: plan.props.num_props_per_tact,
+                          assembly_days: plan.props.assembly_days,
+                          hold_days: plan.props.hold_days,
+                          disassembly_days: plan.props.disassembly_days,
+                          rental_cost_czk: plan.props.rental_cost_czk,
+                          labor_cost_czk: plan.props.labor_cost_czk,
+                          total_cost_czk: plan.props.total_cost_czk,
                           calculated_at: monolit_data.calculated_at,
                         }),
                       });
