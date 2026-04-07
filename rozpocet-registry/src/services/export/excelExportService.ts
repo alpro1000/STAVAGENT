@@ -815,26 +815,26 @@ export async function exportToOriginalFile(
     const relsXml = await relsFile.async('string');
     const sheetMap = parseSheetMapping(workbookXml, relsXml);
 
-    // 4. Determine which column to patch
+    // 4. Determine fallback column from first sheet (or options)
     const firstSheet = project.sheets[0];
-    const config = firstSheet?.config;
-    const cenaJedCol = options.cenaJednotkovaCol || config?.columns?.cenaJednotkova || '';
+    const fallbackConfig = firstSheet?.config;
+    const fallbackCenaCol = (options.cenaJednotkovaCol || fallbackConfig?.columns?.cenaJednotkova || '').toUpperCase();
 
-    if (!cenaJedCol) {
+    if (!fallbackCenaCol) {
       result.errors.push('Nebyl nalezen sloupec pro cenu jednotkovou. Zkontrolujte konfiguraci importu.');
       return result;
     }
 
-    const cenaJedColLetter = cenaJedCol.toUpperCase();
-
-    // 5. Build price map: sheetName → [{row, price}]
-    const pricesBySheet = new Map<string, Array<{ row: number; price: number }>>();
+    // 5. Build price map: sheetName → [{row, price, colLetter}]
+    //    Each sheet may have its own column mapping (per-sheet config)
+    const pricesBySheet = new Map<string, Array<{ row: number; price: number; colLetter: string }>>();
     for (const sheet of project.sheets) {
-      const prices: Array<{ row: number; price: number }> = [];
+      const sheetCenaCol = (sheet.config?.columns?.cenaJednotkova || fallbackCenaCol).toUpperCase();
+      const prices: Array<{ row: number; price: number; colLetter: string }> = [];
       for (const item of sheet.items) {
         const rowNum = item.source?.rowStart;
         if (rowNum != null && item.cenaJednotkova != null && item.cenaJednotkova > 0) {
-          prices.push({ row: rowNum, price: item.cenaJednotkova });
+          prices.push({ row: rowNum, price: item.cenaJednotkova, colLetter: sheetCenaCol });
           result.totalRows++;
         }
       }
@@ -871,9 +871,9 @@ export async function exportToOriginalFile(
         continue;
       }
 
-      // Patch each price cell
-      for (const { row, price } of prices) {
-        const cellRef = `${cenaJedColLetter}${row}`;
+      // Patch each price cell (per-sheet column from config)
+      for (const { row, price, colLetter } of prices) {
+        const cellRef = `${colLetter}${row}`;
         const patched = patchCellInDoc(doc, cellRef, price, row);
         if (patched) {
           result.updatedRows++;
@@ -1061,12 +1061,14 @@ export async function exportToOriginalFileWithSkupiny(
       const skupinaCol = maxCol + 1;
       const skupinaColLetter = colNumToLetter(skupinaCol);
 
-      // Patch prices (same logic as exportToOriginalFile)
-      if (cenaJedColLetter) {
+      // Patch prices — use per-sheet config for column mapping
+      const sheetConfig = sheet.config;
+      const sheetCenaCol = (sheetConfig?.columns?.cenaJednotkova || cenaJedColLetter || '').toUpperCase();
+      if (sheetCenaCol) {
         for (const item of sheet.items) {
           const rowNum = item.source?.rowStart;
           if (rowNum != null && item.cenaJednotkova != null && item.cenaJednotkova > 0) {
-            const cellRef = `${cenaJedColLetter}${rowNum}`;
+            const cellRef = `${sheetCenaCol}${rowNum}`;
             if (patchCellInDoc(doc, cellRef, item.cenaJednotkova, rowNum)) {
               result.updatedRows++;
             }
@@ -1076,7 +1078,6 @@ export async function exportToOriginalFileWithSkupiny(
       }
 
       // Add "Skupina" header in the row before data starts
-      const sheetConfig = sheet.config;
       const dataStartRow = sheetConfig?.dataStartRow || 1;
       const headerRow = dataStartRow > 1 ? dataStartRow - 1 : 1;
       addInlineStringCell(doc, headerRow, skupinaColLetter, 'Skupina');
