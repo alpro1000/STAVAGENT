@@ -2247,13 +2247,37 @@ export default function PlannerPage() {
                   const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
                   if (positionContext.position_id && bridgeId) {
                     // Helper: create missing sibling position if ID absent but data exists
+                    // Cache existing positions for this bridge to avoid duplicate creation
+                    let existingPositions: any[] | null = null;
+                    const getExisting = async (): Promise<any[]> => {
+                      if (existingPositions) return existingPositions;
+                      try {
+                        const res = await fetch(`${API_URL}/api/positions?bridge_id=${bridgeId}`);
+                        if (res.ok) {
+                          const data = await res.json();
+                          existingPositions = data.positions || [];
+                        }
+                      } catch { /* ignore */ }
+                      return existingPositions || [];
+                    };
+
                     const ensurePosition = async (
                       existingId: string | null | undefined,
                       subtype: string,
                       unit: string,
+                      itemName?: string,
                     ): Promise<string | null> => {
                       if (existingId) return existingId;
+                      // Check if position already exists in DB (prevents duplicates on repeated Aplikovat)
+                      const existing = await getExisting();
+                      const partName = positionContext.part_name || '';
+                      const found = existing.find((p: any) =>
+                        p.subtype === subtype && p.part_name === partName &&
+                        (!itemName || p.item_name === itemName)
+                      );
+                      if (found?.id) return found.id;
                       // Create via POST
+                      const name = itemName || subtype;
                       try {
                         const createRes = await fetch(`${API_URL}/api/positions`, {
                           method: 'POST',
@@ -2262,8 +2286,8 @@ export default function PlannerPage() {
                             bridge_id: bridgeId,
                             positions: [{
                               bridge_id: bridgeId,
-                              part_name: positionContext.part_name || '',
-                              item_name: subtype,
+                              part_name: partName,
+                              item_name: name,
                               subtype,
                               unit,
                               qty: 0,
@@ -2276,15 +2300,20 @@ export default function PlannerPage() {
                         });
                         if (createRes.ok) {
                           const data = await createRes.json();
-                          const created = data.positions?.find((p: any) => p.subtype === subtype && p.part_name === (positionContext.part_name || ''));
-                          return created?.id || null;
+                          existingPositions = data.positions || existingPositions;
+                          const matching = data.positions?.filter((p: any) =>
+                            p.subtype === subtype && p.part_name === partName
+                          );
+                          return matching?.at(-1)?.id || null;
                         }
                       } catch { /* non-critical */ }
                       return null;
                     };
 
-                    // Create missing sibling positions for subtypes the calculator computed
-                    const [zraniId, odbedneniId, podpernaId, predpetiId] = await Promise.all([
+                    // Create ALL missing sibling positions needed by the calculator
+                    const [bedneniId, vyztuzId, zraniId, odbedneniId, podpernaId, predpetiId] = await Promise.all([
+                      ensurePosition(positionContext.bedneni_position_id, 'bednění', 'm2'),
+                      ensurePosition(positionContext.vyzuz_position_id, 'výztuž', 't'),
                       ensurePosition(positionContext.zrani_position_id, 'zrání', 'den'),
                       ensurePosition(positionContext.odbedneni_position_id, 'odbednění', 'm2'),
                       plan.props?.needed
@@ -2357,9 +2386,9 @@ export default function PlannerPage() {
                     });
 
                     // 2. Bednění position — assembly labor-days only (no disassembly)
-                    if (positionContext.bedneni_position_id) {
+                    if (bedneniId) {
                       updates.push({
-                        id: positionContext.bedneni_position_id,
+                        id: bedneniId,
                         days: bedneniDays,
                         crew_size: plan.resources.crew_size_formwork,
                         wage_czk_ph: plan.resources.wage_formwork_czk_h,
@@ -2382,13 +2411,15 @@ export default function PlannerPage() {
                     }
 
                     // 2b. Křídla bednění — separate formwork set (composite opěry+křídla)
+                    // Uses 'odbednění' subtype slot repurposed as křídla bednění — OR creates via jiné with křídla label
                     if (kridlaFormwork && form.include_kridla) {
-                      // Create křídla bednění position (item_name distinguishes from main bednění)
-                      const kridlaBedneniId = await ensurePosition(null, 'bednění', 'm2');
+                      const kridlaBedneniId = await ensurePosition(
+                        null, 'jiné', 'm2', 'Bednění křídel'
+                      );
                       if (kridlaBedneniId) {
                         updates.push({
                           id: kridlaBedneniId,
-                          days: bedneniDays, // same labor-days estimate (separate crew same duration)
+                          days: bedneniDays,
                           crew_size: plan.resources.crew_size_formwork,
                           wage_czk_ph: plan.resources.wage_formwork_czk_h,
                           shift_hours: plan.resources.shift_h,
@@ -2404,9 +2435,9 @@ export default function PlannerPage() {
                     }
 
                     // 3. Výztuž position — rebar labor-days summed across all tacts
-                    if (positionContext.vyzuz_position_id) {
+                    if (vyztuzId) {
                       updates.push({
-                        id: positionContext.vyzuz_position_id,
+                        id: vyztuzId,
                         days: vyztuzDays,
                         crew_size: plan.resources.crew_size_rebar,
                         wage_czk_ph: plan.resources.wage_rebar_czk_h,
