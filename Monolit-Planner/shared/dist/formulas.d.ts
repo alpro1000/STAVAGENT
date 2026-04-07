@@ -108,3 +108,44 @@ export declare function calculateElementTotalDays(partPositions: Position[]): nu
  * Generate KROS description for formwork rental position
  */
 export declare function generateFormworkKrosDescription(row: Pick<FormworkCalculatorRow, 'construction_name' | 'system_name' | 'system_height' | 'rental_czk_per_m2_month' | 'set_area_m2' | 'monthly_rental_per_set'>): string;
+/**
+ * Aggregate schedule tact_details into labor-days per subtype.
+ *
+ * Each tact has phases: assembly, rebar, concrete, curing, stripping, prestress?
+ * as [start_day, end_day] tuples.
+ *
+ * Labor-days = Σ (end - start) across ALL tacts (parallel tacts add up
+ * because different crews work simultaneously → labor costs are additive).
+ *
+ * Exception: curing = calendar span (max end - min start), not labor sum,
+ * because curing is a technological pause with 0 workers.
+ *
+ * @param tacts - Array of TactDetail from ElementScheduleOutput
+ * @param fallback - Fallback values when tact_details is empty
+ * @returns Aggregated days per subtype
+ */
+export interface ScheduleFallback {
+    numTacts: number;
+    assemblyDaysPerTact: number;
+    rebarDaysPerTact: number;
+    concreteDaysPerTact?: number;
+    curingDays: number;
+    strippingDaysPerTact: number;
+    prestressDaysPerTact?: number;
+}
+export interface AggregatedScheduleDays {
+    bedneni: number;
+    vyztuž: number;
+    beton: number;
+    zrani: number;
+    odbedneni: number;
+    predpeti: number;
+}
+export declare function aggregateScheduleDays(tacts: Array<{
+    assembly: [number, number];
+    rebar: [number, number];
+    concrete: [number, number];
+    curing: [number, number];
+    stripping: [number, number];
+    prestress?: [number, number];
+}>, fallback?: ScheduleFallback): AggregatedScheduleDays;

@@ -483,3 +483,92 @@ export function generateFormworkKrosDescription(
 
   return `Bednění - ${row.construction_name} (${row.system_name} ${row.system_height}; ${price} Kč/m2) sada - ${setArea} m2 => ${monthlyRental} Kč/sada/měsíc`;
 }
+
+// ============================================================
+// SCHEDULE → DNY AGGREGATION
+// ============================================================
+
+/**
+ * Aggregate schedule tact_details into labor-days per subtype.
+ *
+ * Each tact has phases: assembly, rebar, concrete, curing, stripping, prestress?
+ * as [start_day, end_day] tuples.
+ *
+ * Labor-days = Σ (end - start) across ALL tacts (parallel tacts add up
+ * because different crews work simultaneously → labor costs are additive).
+ *
+ * Exception: curing = calendar span (max end - min start), not labor sum,
+ * because curing is a technological pause with 0 workers.
+ *
+ * @param tacts - Array of TactDetail from ElementScheduleOutput
+ * @param fallback - Fallback values when tact_details is empty
+ * @returns Aggregated days per subtype
+ */
+export interface ScheduleFallback {
+  numTacts: number;
+  assemblyDaysPerTact: number;
+  rebarDaysPerTact: number;
+  concreteDaysPerTact?: number;
+  curingDays: number;
+  strippingDaysPerTact: number;
+  prestressDaysPerTact?: number;
+}
+
+export interface AggregatedScheduleDays {
+  bedneni: number;
+  vyztuž: number;
+  beton: number;
+  zrani: number;
+  odbedneni: number;
+  predpeti: number;
+}
+
+export function aggregateScheduleDays(
+  tacts: Array<{
+    assembly: [number, number];
+    rebar: [number, number];
+    concrete: [number, number];
+    curing: [number, number];
+    stripping: [number, number];
+    prestress?: [number, number];
+  }>,
+  fallback?: ScheduleFallback,
+): AggregatedScheduleDays {
+  const round = (v: number) => Math.round(v * 10) / 10;
+
+  if (!tacts || tacts.length === 0) {
+    // Fallback: per-tact duration × numTacts
+    const fb = fallback || { numTacts: 1, assemblyDaysPerTact: 0, rebarDaysPerTact: 0, curingDays: 0, strippingDaysPerTact: 0 };
+    return {
+      bedneni: round(fb.numTacts * fb.assemblyDaysPerTact),
+      vyztuž: round(fb.numTacts * fb.rebarDaysPerTact),
+      beton: round(fb.numTacts * (fb.concreteDaysPerTact ?? 1)),
+      zrani: round(fb.curingDays),
+      odbedneni: round(fb.numTacts * fb.strippingDaysPerTact),
+      predpeti: round(fb.numTacts * (fb.prestressDaysPerTact ?? 0)),
+    };
+  }
+
+  // Sum of (end - start) across ALL tacts for a phase (labor-days)
+  const sumPhase = (phase: 'assembly' | 'rebar' | 'concrete' | 'stripping') =>
+    tacts.reduce((sum, t) => {
+      const p = t[phase];
+      return sum + (p ? Math.max(0, p[1] - p[0]) : 0);
+    }, 0);
+
+  // Prestress: optional phase
+  const sumPrestress = tacts.reduce((sum, t) =>
+    sum + (t.prestress ? Math.max(0, t.prestress[1] - t.prestress[0]) : 0), 0);
+
+  // Curing: calendar span (max end - min start), NOT labor sum
+  const curingCalendar = Math.max(...tacts.map(t => t.curing[1])) - Math.min(...tacts.map(t => t.curing[0]));
+
+  return {
+    bedneni: round(sumPhase('assembly')),
+    vyztuž: round(sumPhase('rebar')),
+    beton: round(sumPhase('concrete')),
+    zrani: round(Math.max(0, curingCalendar)),
+    odbedneni: round(sumPhase('stripping')),
+    predpeti: round(sumPrestress),
+  };
+}

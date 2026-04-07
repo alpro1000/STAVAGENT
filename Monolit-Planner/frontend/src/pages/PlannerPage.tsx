@@ -20,6 +20,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   planElement,
   addWorkDays,
+  aggregateScheduleDays,
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
@@ -2326,38 +2327,24 @@ export default function PlannerPage() {
 
                     const updates: Array<Record<string, unknown>> = [];
 
-                    // Aggregate labor-days from schedule tact_details
-                    // Each tact has phases: assembly, rebar, concrete, curing, stripping as [start, end]
+                    // Aggregate schedule tact_details → labor-days per subtype
                     const tacts = plan.schedule.tact_details || [];
                     const numTacts = plan.pour_decision.num_tacts || 1;
-                    const roundDay = (v: number) => Math.ceil(v * 10) / 10;
-
-                    // Sum of (end - start) across ALL tacts for a phase (labor-days)
-                    const sumPhaseDays = (phase: 'assembly' | 'rebar' | 'concrete' | 'stripping') =>
-                      tacts.reduce((sum, t) => {
-                        const p = t[phase];
-                        return sum + (p ? Math.max(0, p[1] - p[0]) : 0);
-                      }, 0);
-
-                    // Calendar span for curing: max(end) - min(start) across all tacts
-                    const curingCalendarDays = tacts.length > 0
-                      ? Math.max(...tacts.map(t => t.curing[1])) - Math.min(...tacts.map(t => t.curing[0]))
-                      : plan.formwork.curing_days;
-
-                    // Fallback: per-tact values × numTacts when tact_details unavailable
-                    const betonDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('concrete'))
-                      : roundDay(numTacts * 1); // default 1 day/tact
-                    const bedneniDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('assembly'))
-                      : roundDay(numTacts * plan.formwork.assembly_days);
-                    const vyztuzDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('rebar'))
-                      : roundDay(numTacts * plan.rebar.duration_days);
-                    const zraniDays = roundDay(curingCalendarDays);
-                    const odbedneniDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('stripping'))
-                      : roundDay(numTacts * plan.formwork.disassembly_days);
+                    const roundDay = (v: number) => Math.round(v * 10) / 10;
+                    const agg = aggregateScheduleDays(tacts, {
+                      numTacts,
+                      assemblyDaysPerTact: plan.formwork.assembly_days,
+                      rebarDaysPerTact: plan.rebar.duration_days,
+                      concreteDaysPerTact: 1,
+                      curingDays: plan.formwork.curing_days,
+                      strippingDaysPerTact: plan.formwork.disassembly_days,
+                      prestressDaysPerTact: plan.prestress?.days,
+                    });
+                    const betonDays = agg.beton;
+                    const bedneniDays = agg.bedneni;
+                    const vyztuzDays = agg.vyztuž;
+                    const zraniDays = agg.zrani;
+                    const odbedneniDays = agg.odbedneni;
 
                     // 1. Beton position — concrete labor-days, crew, curing, full metadata
                     // Blended wage includes night premium (§116 ZP: +10% for hours beyond 12h shift)
@@ -2503,10 +2490,7 @@ export default function PlannerPage() {
 
                     // 7. Předpětí position — prestressing days (only if is_prestressed)
                     if (predpetiId && plan.prestress) {
-                      // Aggregate prestress days from tact_details or use plan.prestress.days
-                      const prestressDays = tacts.length > 0 && tacts[0].prestress
-                        ? roundDay(tacts.reduce((sum, t) => sum + (t.prestress ? t.prestress[1] - t.prestress[0] : 0), 0))
-                        : roundDay(plan.prestress.days * numTacts);
+                      const prestressDays = agg.predpeti || roundDay(plan.prestress.days * numTacts);
                       updates.push({
                         id: predpetiId,
                         days: prestressDays,
