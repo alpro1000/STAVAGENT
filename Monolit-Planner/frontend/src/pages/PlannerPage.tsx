@@ -2187,6 +2187,55 @@ export default function PlannerPage() {
                   // Write to positions via Monolit backend (TOV mapping)
                   const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
                   if (positionContext.position_id && bridgeId) {
+                    // Helper: create missing sibling position if ID absent but data exists
+                    const ensurePosition = async (
+                      existingId: string | null | undefined,
+                      subtype: string,
+                      unit: string,
+                    ): Promise<string | null> => {
+                      if (existingId) return existingId;
+                      // Create via POST
+                      try {
+                        const createRes = await fetch(`${API_URL}/api/positions`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            bridge_id: bridgeId,
+                            positions: [{
+                              bridge_id: bridgeId,
+                              part_name: positionContext.part_name || '',
+                              item_name: subtype,
+                              subtype,
+                              unit,
+                              qty: 0,
+                              crew_size: 4,
+                              wage_czk_ph: 398,
+                              shift_hours: 10,
+                              days: 0,
+                            }],
+                          }),
+                        });
+                        if (createRes.ok) {
+                          const data = await createRes.json();
+                          const created = data.positions?.find((p: any) => p.subtype === subtype && p.part_name === (positionContext.part_name || ''));
+                          return created?.id || null;
+                        }
+                      } catch { /* non-critical */ }
+                      return null;
+                    };
+
+                    // Create missing sibling positions for subtypes the calculator computed
+                    const [zraniId, odbedneniId, podpernaId, predpetiId] = await Promise.all([
+                      ensurePosition(positionContext.zrani_position_id, 'zrání', 'den'),
+                      ensurePosition(positionContext.odbedneni_position_id, 'odbednění', 'm2'),
+                      plan.props?.needed
+                        ? ensurePosition(positionContext.podperna_position_id, 'podpěrná konstr.', 'm2')
+                        : Promise.resolve(positionContext.podperna_position_id || null),
+                      plan.prestress
+                        ? ensurePosition(positionContext.predpeti_position_id, 'předpětí', 'kpl')
+                        : Promise.resolve(positionContext.predpeti_position_id || null),
+                    ]);
+
                     const updates: Array<Record<string, unknown>> = [];
 
                     // Aggregate labor-days from schedule tact_details
@@ -2284,9 +2333,9 @@ export default function PlannerPage() {
                     }
 
                     // 4. Zrání position — calendar duration (not labor), lide=0
-                    if (positionContext.zrani_position_id) {
+                    if (zraniId) {
                       updates.push({
-                        id: positionContext.zrani_position_id,
+                        id: zraniId,
                         days: zraniDays,
                         crew_size: 1, // zrání has no labor; crew_size=1 avoids div-by-zero, formulas return 0 for subtype 'zrání'
                         metadata: JSON.stringify({
@@ -2297,9 +2346,9 @@ export default function PlannerPage() {
                     }
 
                     // 5. Odbednění position — stripping labor-days summed across all tacts
-                    if (positionContext.odbedneni_position_id) {
+                    if (odbedneniId) {
                       updates.push({
-                        id: positionContext.odbedneni_position_id,
+                        id: odbedneniId,
                         days: odbedneniDays,
                         crew_size: plan.resources.crew_size_formwork,
                         wage_czk_ph: plan.resources.wage_formwork_czk_h,
@@ -2312,10 +2361,10 @@ export default function PlannerPage() {
                     }
 
                     // 6. Podpěrná konstr. position — props assembly + disassembly labor-days
-                    if (positionContext.podperna_position_id && plan.props?.needed) {
+                    if (podpernaId && plan.props?.needed) {
                       const propsDays = roundDay(plan.props.assembly_days + plan.props.disassembly_days);
                       updates.push({
-                        id: positionContext.podperna_position_id,
+                        id: podpernaId,
                         days: propsDays,
                         crew_size: plan.resources.crew_size_formwork,
                         wage_czk_ph: plan.resources.wage_formwork_czk_h,
@@ -2335,13 +2384,13 @@ export default function PlannerPage() {
                     }
 
                     // 7. Předpětí position — prestressing days (only if is_prestressed)
-                    if (positionContext.predpeti_position_id && plan.prestress) {
+                    if (predpetiId && plan.prestress) {
                       // Aggregate prestress days from tact_details or use plan.prestress.days
                       const prestressDays = tacts.length > 0 && tacts[0].prestress
                         ? roundDay(tacts.reduce((sum, t) => sum + (t.prestress ? t.prestress[1] - t.prestress[0] : 0), 0))
                         : roundDay(plan.prestress.days * numTacts);
                       updates.push({
-                        id: positionContext.predpeti_position_id,
+                        id: predpetiId,
                         days: prestressDays,
                         crew_size: plan.prestress.crew_size || 5,
                         wage_czk_ph: 500, // specialist rate for prestressing
