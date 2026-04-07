@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.6.0
-**Last Updated:** 2026-04-03
+**Version:** 4.7.0
+**Last Updated:** 2026-04-07
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -94,6 +94,9 @@ KB: 42 JSON files (~40MB), 21 prompt files, 23 SQL schemas.
 Node.js/Express + React. **~80+ endpoints**, **20 pages**, **40+ components**.
 JWT auth (24h), 5 org roles, Stripe credits (fail-open), Data Pipeline admin, CORE proxy (300s timeout, headersTimeout=310s).
 Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
+- **Landing page v2.0** (`LandingPage.tsx`, 622 lines): 12 sections (Nav→Hero→Social proof→Pro koho→5 Modulů→Jak to funguje→Blok důvěry→Příklad→Technologie→Ceník→FAQ→Footer). H1: "Stavební rozpočty a dokumentace pod kontrolou". Credit pricing table (15 ops). FAQ accordion (8 Q&A).
+- **SEO:** `index.html` has og:title, og:description, canonical, twitter card. Title matches AI-last philosophy.
+- **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Monolit-Planner (Kiosk)
 Node.js/Express + React. **128 endpoints**, **548 tests**, **~33K LOC**.
@@ -108,6 +111,7 @@ Structure: `shared/` (465 tests), `backend/` (83 tests), `frontend/` (0 tests). 
 - **TOV sync:** labor-only to Portal DOV, 3 variants (A/B/C) auto-detected, formwork rental for bednění
 - **Account Isolation:** `portal_user_id`, Portal JWT via `JWT_SECRET`, 403 on cross-account
 - **ErrorBoundary:** PositionsTable + KPIPanel wrapped; prevents white screen on React #310
+- **KPI Panel CSS:** `.kpi-card` in `flat-design.css` — `overflow:visible`, `min-width:200px` (was 180px/hidden, clipped "lidí" and "Kč/m³")
 - **Dual DB:** `monolith_projects` (listed via `/api/monolith-projects`, auth) + `bridges` (FK compat for `positions.bridge_id`); `bridgesAPI.getAll()` calls monolith-projects
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
@@ -118,7 +122,7 @@ Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 t
 React 19 + Vite + Vercel serverless. **12 endpoints**, **0 tests**, **~16K LOC**.
 BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemini), TOV Modal, Formwork/Pump Calculators.
 - **Import:** Fuzzy auto-detect (header keywords + normalize), per-sheet dataStartRow detection (code+MJ heuristic), reimport with skupiny preservation
-- **Export:** "Vrátit do původního (ceny + skupiny)" — ZIP/XML patch, inline strings, autoFilter + sheetProtection patch
+- **Export:** "Vrátit do původního (ceny + skupiny)" — ZIP/XML patch, inline strings, autoFilter + sheetProtection patch. Per-sheet column mapping (each sheet reads own `config.columns.cenaJednotkova`).
 - **Virtualization:** @tanstack/react-virtual for 2000+ row tables, overscan=20, `display:flex` on `<tr>` with explicit `width` per `<td>`/`<th>`
 - **Undo/Redo:** `undoStore.ts` (in-memory, MAX_UNDO=50) + `useUndoableActions` hook wrapping skupina/role mutations; Ctrl+Z/Ctrl+Shift+Z; toolbar above table
 - **UI:** Portal-rendered dropdowns (RowActionsCell, SkupinaAutocomplete) escape `overflow:auto`, resizable GroupManager (min 480px, localStorage persist)
@@ -167,6 +171,7 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Scroll restoration: `sessionStorage('monolit-planner-return-part')` + 3s highlight
 - Calculator suggestions: write-through `_PROJECT_FACTS` (memory + `calculator_facts` in project cache JSON)
 - **Product naming:** App 1 (root `/`) = "Monolit Planner", App 2 (`/planner`) = "Kalkulátor betonáže". Never "Plánovač elementu" or "Kalkulátor monolitních prací"
+- **SEO/noindex:** kalkulator.stavagent.cz has `<meta name="robots" content="noindex">` + `X-Robots-Tag` header in `vercel.json` (working app, not public page)
 
 - Registry export ZIP/XML: JSZip + DOMParser, inline strings (`t="inlineStr"`), autoFilter via string replace after serialization
 - Portal INSERTs: always explicit `gen_random_uuid()` for `position_instance_id` (Phase 8 NOT NULL constraint)
@@ -220,6 +225,8 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Monolit click no reaction | KPIPanel shows "Načítání KPI..." (not "Vyberte objekt") when bridge selected but API pending/failed |
 | Registry columns misaligned | `display:flex` on `<tr>`, `width: cell.column.getSize()` + `flexShrink:0` on each `<td>` |
 | Registry dropdown clipped | Must use `createPortal(…, document.body)` with `position:fixed`; scroll listener closes on scroll |
+| Registry export wrong column | Was: `firstSheet.config` used for all sheets. Now: per-sheet `sheet.config.columns.cenaJednotkova` |
+| KPI text clipped ("lidí") | `.kpi-card` overflow:hidden→visible, min-width 180→200px in `flat-design.css` |
 
 ---
 
@@ -239,6 +246,9 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
+- [ ] **P1: Landing page — visual QA** — deploy to Vercel, check all 12 sections render, Czech chars OK, responsive, scroll anchors work, FAQ accordion
+- [ ] **P1: Landing page — /register route** — CTA buttons point to `/register`, verify route exists in Portal router or change to `/login`
+- [ ] **P1: Landing page — SEO subpages** — schema v2.0 defines 7 future SEO pages (/analyza-dokumentu, /parovani-kodu, etc.), not yet created
 - [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
 - [ ] **P1: Debug Monolit React #310** — ErrorBoundary deployed, need `componentStack` from prod console to find exact object-as-child culprit
 - [ ] **P1: Fix portal_user_id type mismatch** — INTEGER in `bridges`, TEXT in `monolith_projects`
@@ -249,6 +259,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **P2: Načíst z Rozpočtu E2E** — XLSX→Registry→auto-sync→Portal→Monolit→verify subtypes
 - [ ] **P2: TOV sync E2E** — 3 composition variants (A/B/C) with real bridge project
 - [ ] **P2: Registry undo E2E** — assign skupina → Ctrl+Z → verify revert; AI classify → Ctrl+Z → all restored
+- [ ] **P2: Registry export QA** — test multi-sheet file with different column mappings, verify per-sheet cenaJednotkova patching
 - [ ] **P3: Planner E2E** — lateral pressure + záběry on SO-203, Aplikovat → TOV
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
 - [ ] **P3: Rimsa spec** — 3 formwork systems (T/TU/T-vozík), záběry by bridge length
