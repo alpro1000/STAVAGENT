@@ -1078,7 +1078,6 @@ export async function exportToOriginalFileWithSkupiny(
       }
 
       // Add "Skupina" header in the row before data starts
-      const sheetConfig = sheet.config;
       const dataStartRow = sheetConfig?.dataStartRow || 1;
       const headerRow = dataStartRow > 1 ? dataStartRow - 1 : 1;
       addInlineStringCell(doc, headerRow, skupinaColLetter, 'Skupina');
