@@ -411,7 +411,7 @@ function renderGantt(tacts, total_days, numSets, nodes, sched, numFW, numRB) {
     lines.push(`Den:  ${scaleRow.join('').substring(0, days)}`);
     // Per-set timeline
     const CHARS = {
-        assembly: '█', rebar: '▒', concrete: '░', curing: '═', stripping: '▓',
+        assembly: '█', rebar: '▒', concrete: '░', curing: '═', prestress: '▼', stripping: '▓',
     };
     for (let s = 0; s < numSets; s++) {
         const row = new Array(days).fill('·');
@@ -420,6 +420,8 @@ function renderGantt(tacts, total_days, numSets, nodes, sched, numFW, numRB) {
             fillRow(row, td.assembly, '█');
             fillRow(row, td.concrete, '░');
             fillRow(row, td.curing, '═');
+            if (td.prestress)
+                fillRow(row, td.prestress, '▼');
             fillRow(row, td.stripping, '▓');
         }
         lines.push(`S${s + 1}:   ${row.join('')}`);

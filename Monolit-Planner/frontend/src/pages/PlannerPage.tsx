@@ -203,6 +203,8 @@ interface FormState {
   start_date: string; // ISO date string for calendar mapping
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
   deadline_days: string; // empty = no deadline, number = investor deadline in working days
+  is_prestressed: boolean;
+  bridge_deck_subtype: string; // '' = default (deskový), or 'deskovy'|'jednotram'|'dvoutram'|...|'sprazeny'
 }
 
 const DEFAULT_FORM: FormState = {
@@ -246,6 +248,8 @@ const DEFAULT_FORM: FormState = {
   start_date: new Date().toISOString().split('T')[0],
   num_bridges: 1,
   deadline_days: '',
+  is_prestressed: false,
+  bridge_deck_subtype: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -406,6 +410,7 @@ export default function PlannerPage() {
       zrani_position_id: searchParams.get('zrani_position_id'),
       odbedneni_position_id: searchParams.get('odbedneni_position_id'),
       podperna_position_id: searchParams.get('podperna_position_id'),
+      predpeti_position_id: searchParams.get('predpeti_position_id'),
     };
   }, [searchParams]);
 
@@ -434,6 +439,18 @@ export default function PlannerPage() {
     if (positionContext.concrete_class) f.concrete_class = positionContext.concrete_class;
     if (positionContext.bedneni_m2) f.formwork_area_m2 = String(positionContext.bedneni_m2);
     if (positionContext.vyzuz_qty) f.rebar_mass_kg = String(positionContext.vyzuz_qty);
+
+    // Auto-detect bridge deck subtype and is_prestressed from part_name
+    if (f.element_type === 'mostovkova_deska' && positionContext.part_name) {
+      const pn = positionContext.part_name.toUpperCase();
+      if (/KOMOR/.test(pn)) f.bridge_deck_subtype = 'jednokomora';
+      else if (/RÁM/.test(pn)) f.bridge_deck_subtype = 'ramovy';
+      else if (/SPŘAŽ|PREFAB/.test(pn)) f.bridge_deck_subtype = 'sprazeny';
+      else if (/TRÁM|NOSN.*TRÁM/.test(pn)) f.bridge_deck_subtype = 'dvoutram';
+      else if (/DESK/.test(pn)) f.bridge_deck_subtype = 'deskovy';
+      // Auto-detect is_prestressed from part_name
+      if (/PŘEDPJ|PŘEDPĚT|PŘEPJ|PREDPJ/.test(pn)) f.is_prestressed = true;
+    }
 
     // Clear start_date in Monolit mode (ordinal days only)
     f.start_date = '';
@@ -728,6 +745,14 @@ export default function PlannerPage() {
       input.num_identical_elements = form.num_identical_elements;
       if (form.formwork_sets_count) input.formwork_sets_count = parseInt(form.formwork_sets_count);
     }
+    // Prestressed concrete
+    if (form.is_prestressed) input.is_prestressed = true;
+    // Bridge deck subtype
+    if (form.bridge_deck_subtype) input.bridge_deck_subtype = form.bridge_deck_subtype as any;
+    // Exposure class from URL context
+    if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
+    // Total length for non-spáry mode (needed for prestress days calculation)
+    if (form.total_length_m > 0 && !effectiveHasSpary) input.total_length_m = form.total_length_m;
     return input;
   };
 
@@ -1145,6 +1170,33 @@ export default function PlannerPage() {
                   <option value={1}>1 — jeden most</option>
                   <option value={2}>2 — levý + pravý (souběžné)</option>
                 </select>
+              </Field>
+              <Field label="Typ nosné konstrukce">
+                <select
+                  style={inputStyle}
+                  value={form.bridge_deck_subtype}
+                  onChange={e => update('bridge_deck_subtype', e.target.value)}
+                >
+                  <option value="">Deskový (plná deska)</option>
+                  <option value="deskovy">Deskový (plná deska)</option>
+                  <option value="jednotram">Trámový — jednotrámový (T-průřez)</option>
+                  <option value="dvoutram">Trámový — dvoutrámový (π-průřez)</option>
+                  <option value="vicetram">Trámový — vícetrámový (3+ trámů)</option>
+                  <option value="jednokomora">Komorový — jednokomorový</option>
+                  <option value="dvoukomora">Komorový — dvoukomorový</option>
+                  <option value="ramovy">Rámový most</option>
+                  <option value="sprazeny">Spřažený (prefab + monolit)</option>
+                </select>
+              </Field>
+              <Field label="Předpjatý beton">
+                <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={form.is_prestressed}
+                    onChange={e => update('is_prestressed', e.target.checked)}
+                  />
+                  <span style={{ fontSize: 12 }}>Předpjatá NK (kabely Y1860S7, injektáž)</span>
+                </label>
               </Field>
           </div>
 
@@ -2277,6 +2329,26 @@ export default function PlannerPage() {
                           rental_cost_czk: plan.props.rental_cost_czk,
                           labor_cost_czk: plan.props.labor_cost_czk,
                           total_cost_czk: plan.props.total_cost_czk,
+                          calculated_at: monolit_data.calculated_at,
+                        }),
+                      });
+                    }
+
+                    // 7. Předpětí position — prestressing days (only if is_prestressed)
+                    if (positionContext.predpeti_position_id && plan.prestress) {
+                      // Aggregate prestress days from tact_details or use plan.prestress.days
+                      const prestressDays = tacts.length > 0 && tacts[0].prestress
+                        ? roundDay(tacts.reduce((sum, t) => sum + (t.prestress ? t.prestress[1] - t.prestress[0] : 0), 0))
+                        : roundDay(plan.prestress.days * numTacts);
+                      updates.push({
+                        id: positionContext.predpeti_position_id,
+                        days: prestressDays,
+                        crew_size: plan.prestress.crew_size || 5,
+                        wage_czk_ph: 500, // specialist rate for prestressing
+                        shift_hours: plan.resources.shift_h,
+                        metadata: JSON.stringify({
+                          prestress_days_per_tact: plan.prestress.days,
+                          skruz_total_days: plan.prestress.skruz_total_days,
                           calculated_at: monolit_data.calculated_at,
                         }),
                       });

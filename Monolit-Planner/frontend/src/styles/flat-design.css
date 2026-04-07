@@ -858,6 +858,11 @@
   color: #7E22CE;
 }
 
+.flat-badge--predpeti {
+  background: #FFF1F2;
+  color: #BE123C;
+}
+
 .flat-badge--jine {
   background: var(--stone-100);
   color: var(--stone-500);

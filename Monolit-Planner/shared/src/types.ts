@@ -8,6 +8,7 @@ export type Subtype =
   | 'bednění'
   | 'odbednění'
   | 'výztuž'
+  | 'předpětí'
   | 'zrání'
   | 'podpěrná konstr.'
   | 'jiné';

@@ -606,7 +606,7 @@ function renderGantt(
 
   // Per-set timeline
   const CHARS: Record<string, string> = {
-    assembly: '█', rebar: '▒', concrete: '░', curing: '═', stripping: '▓',
+    assembly: '█', rebar: '▒', concrete: '░', curing: '═', prestress: '▼', stripping: '▓',
   };
 
   for (let s = 0; s < numSets; s++) {
@@ -616,6 +616,7 @@ function renderGantt(
       fillRow(row, td.assembly, '█');
       fillRow(row, td.concrete, '░');
       fillRow(row, td.curing, '═');
+      if (td.prestress) fillRow(row, td.prestress, '▼');
       fillRow(row, td.stripping, '▓');
     }
     lines.push(`S${s + 1}:   ${row.join('')}`);

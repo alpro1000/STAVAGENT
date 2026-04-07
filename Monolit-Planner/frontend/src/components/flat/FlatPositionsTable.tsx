@@ -42,7 +42,7 @@ import CreateObjectModal from './CreateObjectModal';
 /* ── Helpers ─────────────────────────────────────────────────── */
 
 const SUBTYPE_ORDER: Record<string, number> = {
-  beton: 0, 'bednění': 1, 'podpěrná konstr.': 2, 'výztuž': 3, 'zrání': 4, 'odbednění': 5, 'jiné': 6,
+  beton: 0, 'bednění': 1, 'podpěrná konstr.': 2, 'výztuž': 3, 'předpětí': 4, 'zrání': 5, 'odbednění': 6, 'jiné': 7,
 };
 
 function subtypeBadgeClass(subtype: Subtype): string {
@@ -53,6 +53,7 @@ function subtypeBadgeClass(subtype: Subtype): string {
     'výztuž': 'flat-badge--vystuz',
     'zrání': 'flat-badge--zrani',
     'podpěrná konstr.': 'flat-badge--podperna',
+    'předpětí': 'flat-badge--predpeti',
     'jiné': 'flat-badge--jine',
   };
   return map[subtype] || 'flat-badge--jine';
@@ -157,6 +158,7 @@ export default function FlatPositionsTable() {
     const zraniPos = element.positions.find(p => p.subtype === 'zrání');
     const odbedneniPos = element.positions.find(p => p.subtype === 'odbednění');
     const podpernaPos = element.positions.find(p => p.subtype === 'podpěrná konstr.');
+    const predpetiPos = element.positions.find(p => p.subtype === 'předpětí');
     const params = new URLSearchParams();
     params.set('bridge_id', betonPos.bridge_id);
     if (betonPos.id) params.set('position_id', betonPos.id);
@@ -169,6 +171,7 @@ export default function FlatPositionsTable() {
     if (zraniPos?.id) params.set('zrani_position_id', zraniPos.id);
     if (odbedneniPos?.id) params.set('odbedneni_position_id', odbedneniPos.id);
     if (podpernaPos?.id) params.set('podperna_position_id', podpernaPos.id);
+    if (predpetiPos?.id) params.set('predpeti_position_id', predpetiPos.id);
     navigate(`/planner?${params.toString()}`);
   }, [navigate]);
 
