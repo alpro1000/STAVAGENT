@@ -42,7 +42,7 @@ import CreateObjectModal from './CreateObjectModal';
 /* ── Helpers ─────────────────────────────────────────────────── */
 
 const SUBTYPE_ORDER: Record<string, number> = {
-  beton: 0, 'bednění': 1, 'výztuž': 2, 'zrání': 3, 'odbednění': 4, 'jiné': 5,
+  beton: 0, 'bednění': 1, 'podpěrná konstr.': 2, 'výztuž': 3, 'předpětí': 4, 'zrání': 5, 'odbednění': 6, 'jiné': 7,
 };
 
 function subtypeBadgeClass(subtype: Subtype): string {
@@ -52,6 +52,8 @@ function subtypeBadgeClass(subtype: Subtype): string {
     'odbednění': 'flat-badge--odbedneni',
     'výztuž': 'flat-badge--vystuz',
     'zrání': 'flat-badge--zrani',
+    'podpěrná konstr.': 'flat-badge--podperna',
+    'předpětí': 'flat-badge--predpeti',
     'jiné': 'flat-badge--jine',
   };
   return map[subtype] || 'flat-badge--jine';
@@ -153,6 +155,10 @@ export default function FlatPositionsTable() {
     sessionStorage.setItem('monolit-planner-scroll-y', String(window.scrollY));
     const bedneniPos = element.positions.find(p => p.subtype === 'bednění');
     const vystuzPos = element.positions.find(p => p.subtype === 'výztuž');
+    const zraniPos = element.positions.find(p => p.subtype === 'zrání');
+    const odbedneniPos = element.positions.find(p => p.subtype === 'odbednění');
+    const podpernaPos = element.positions.find(p => p.subtype === 'podpěrná konstr.');
+    const predpetiPos = element.positions.find(p => p.subtype === 'předpětí');
     const params = new URLSearchParams();
     params.set('bridge_id', betonPos.bridge_id);
     if (betonPos.id) params.set('position_id', betonPos.id);
@@ -162,6 +168,10 @@ export default function FlatPositionsTable() {
     if (betonPos.qty) params.set('qty', String(betonPos.qty));
     if (bedneniPos?.id) params.set('bedneni_position_id', bedneniPos.id);
     if (vystuzPos?.id) params.set('vyzuz_position_id', vystuzPos.id);
+    if (zraniPos?.id) params.set('zrani_position_id', zraniPos.id);
+    if (odbedneniPos?.id) params.set('odbedneni_position_id', odbedneniPos.id);
+    if (podpernaPos?.id) params.set('podperna_position_id', podpernaPos.id);
+    if (predpetiPos?.id) params.set('predpeti_position_id', predpetiPos.id);
     navigate(`/planner?${params.toString()}`);
   }, [navigate]);
 

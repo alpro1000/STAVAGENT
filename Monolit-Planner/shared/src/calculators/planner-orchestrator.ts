@@ -162,7 +162,7 @@ export interface PlannerInput {
 
   // --- Bridge deck subtype ---
   /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
-  bridge_deck_subtype?: 'deskovy' | 'dvoutram' | 'komora';
+  bridge_deck_subtype?: 'deskovy' | 'jednotram' | 'dvoutram' | 'vicetram' | 'jednokomora' | 'dvoukomora' | 'ramovy' | 'sprazeny';
 
   // --- Exposure class ---
   /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). For validation warnings. */
@@ -564,26 +564,38 @@ export function planElement(input: PlannerInput): PlannerOutput {
       `Ověřte že spodní stavba je hotová.`
     );
 
-    // Bridge deck subtype warnings
-    const subtype = input.bridge_deck_subtype;
-    if (subtype === 'dvoutram') {
+    // Bridge deck subtype: difficulty + warnings
+    const deckSubtype = input.bridge_deck_subtype;
+    const DECK_DIFFICULTY: Record<string, number> = {
+      deskovy: 1.0, jednotram: 1.15, dvoutram: 1.2, vicetram: 1.2,
+      jednokomora: 1.5, dvoukomora: 1.6, ramovy: 1.1, sprazeny: 0.8,
+    };
+    if (deckSubtype && DECK_DIFFICULTY[deckSubtype] !== undefined) {
+      profile.difficulty_factor = DECK_DIFFICULTY[deckSubtype];
+      log.push(`Deck subtype ${deckSubtype}: difficulty_factor → ${profile.difficulty_factor}`);
+    }
+    if (deckSubtype === 'jednotram' || deckSubtype === 'dvoutram' || deckSubtype === 'vicetram') {
       warnings.push(
-        `Dvoutrámový nosník: 2 fáze betonáže — nejdřív trámy, pak deska (pracovní spára mezi trámy a deskou).`
+        `Trámový nosník: 2 fáze betonáže — nejdřív trámy, pak deska (pracovní spára).`
       );
-    } else if (subtype === 'komora') {
+    } else if (deckSubtype === 'jednokomora' || deckSubtype === 'dvoukomora') {
       warnings.push(
         `Komorový nosník: vnitřní bednění dutin — speciální prvek, ověřte s dodavatelem bednění. ` +
         `3 fáze betonáže: dno → stěny → horní deska.`
       );
+    } else if (deckSubtype === 'ramovy') {
+      warnings.push(
+        `Rámový most: stojky vetknuty do NK — ověřte postup betonáže s projektem.`
+      );
+    } else if (deckSubtype === 'sprazeny') {
+      warnings.push(
+        `Spřažená konstrukce: kalkulátor počítá pouze monolitickou spřahující desku (ne prefabrikáty).`
+      );
     }
-
-    // Adjust difficulty_factor based on subtype (override profile default)
-    if (subtype === 'deskovy' && profile.difficulty_factor > 1.0) {
-      profile.difficulty_factor = 1.0;
-      log.push(`Subtype deskový: difficulty_factor → 1.0 (simple slab deck)`);
-    } else if (subtype === 'komora' && profile.difficulty_factor < 1.5) {
-      profile.difficulty_factor = 1.5;
-      log.push(`Subtype komorový: difficulty_factor → 1.5 (box girder, internal formwork)`);
+    // Auto-set is_prestressed for komorový and long trámový
+    if (!input.is_prestressed && (deckSubtype === 'jednokomora' || deckSubtype === 'dvoukomora')) {
+      (input as any).is_prestressed = true;
+      warnings.push(`Komorový nosník: automaticky nastaveno předpětí (is_prestressed=true).`);
     }
   }
 
@@ -603,6 +615,22 @@ export function planElement(input: PlannerInput): PlannerOutput {
       warnings.push(
         `⚠️ Třída prostředí ${input.exposure_class} je neobvyklá pro ${profile.label_cs}. ` +
         `Doporučeno: ${recommended.join(', ')}. Ověřte s projektem.`
+      );
+    }
+  }
+
+  // Concrete class validation
+  if (input.concrete_class && elementType === 'mostovkova_deska') {
+    const concreteNum = parseInt(input.concrete_class.replace(/C(\d+)\/.*/, '$1'));
+    const isPrestressed = input.is_prestressed === true;
+    if (isPrestressed && concreteNum < 30) {
+      warnings.push(`⚠️ Předpjatá mostovka: třída ${input.concrete_class} je pod minimem C30/37 pro předpjatý beton.`);
+    } else if (!isPrestressed && concreteNum < 25) {
+      warnings.push(`⚠️ Mostovka: třída ${input.concrete_class} je pod minimem C25/30 pro železobeton.`);
+    } else if (concreteNum > 40) {
+      warnings.push(
+        `Třída ${input.concrete_class} je neobvyklá pro mostní NK. ` +
+        `Typicky C35/45 (předpjaté) nebo C30/37 (ŽB). Ověřte s projektem.`
       );
     }
   }
@@ -657,7 +685,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // Estimate formwork area if not given
   const fwArea = input.formwork_area_m2 ?? estimateFormworkArea(
-    input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation,
+    input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation, input.total_length_m,
   );
   log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`);
 
@@ -849,7 +877,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
 
       warnings.push(
-        `Monolitická zálivka (${pourDecision.tact_volume_m3}m³): nutno zalít v jednom záběru bez přerušení. ` +
+        `[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: nutno zalít v jednom záběru bez přerušení. ` +
         `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
         `směna ${roundTo(effectiveShift, 1)}h. ` +
         (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
@@ -865,8 +893,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
       pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
 
       warnings.push(
-        `Monolitická zálivka (${pourDecision.tact_volume_m3}m³, ${roundTo(pourResult.total_pour_hours, 1)}h): ` +
-        `nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
+        `[Záběr ${pourDecision.tact_volume_m3} m³, ${roundTo(pourResult.total_pour_hours, 1)}h] ` +
+        `Monolitická zálivka: nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
         `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} pracovníků). ` +
         `Noční směna: +${nightHours.toFixed(1)}h s příplatkem +10% (§ 116 ZP).`
       );
@@ -902,6 +930,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
+
+  // Multi-bridge monolithic deck: each bridge = 1 tact (T1 = LM, T2 = PM)
+  // Override only if pour-decision didn't already produce enough tacts.
+  if (isBridgeMonolith && numBridges >= 2 && pourDecision.num_tacts < numBridges) {
+    const prevTacts = pourDecision.num_tacts;
+    pourDecision.num_tacts = numBridges;
+    pourDecision.tact_volume_m3 = roundTo(input.volume_m3 / numBridges, 2);
+    pourDecision.num_sections = numBridges;
+    pourDecision.section_volume_m3 = pourDecision.tact_volume_m3;
+    log.push(`Multi-bridge override: ${prevTacts} → ${numBridges} tacts (1 tact = 1 celý most, ${pourDecision.tact_volume_m3} m³/most)`);
+  }
 
   const scheduleResult = scheduleElement({
     num_tacts: pourDecision.num_tacts,
@@ -1191,6 +1230,7 @@ function estimateFormworkArea(
   numTacts: number,
   height_m?: number,
   orientation?: string,
+  totalLength_m?: number,
 ): number {
   const volumePerTact = totalVolume_m3 / numTacts;
 
@@ -1205,6 +1245,23 @@ function estimateFormworkArea(
     const perimeter = 2 * (L + W);
     const estimated = roundTo(perimeter * height_m, 1);
     return Math.max(estimated, 5);
+  }
+
+  // For horizontal elements: plan area = volume / thickness
+  // Bridge decks: total plan area = length × width; width = volume / (length × thickness)
+  // Thickness estimated as volume / plan_area, or if length known: width = volume / (length × ~0.6m)
+  if (orientation === 'horizontal') {
+    if (totalLength_m && totalLength_m > 0) {
+      // Known length: plan area ≈ volume / avg_thickness (typical 0.5-1.0m for bridge decks)
+      // Better: width = volume / (length × thickness_est). For mostovka: 0.55-0.8m avg
+      const avgThickness = 0.6; // conservative default for bridge decks
+      const planArea = totalVolume_m3 / avgThickness;
+      return Math.max(roundTo(planArea / numTacts, 1), 5);
+    }
+    // No length: estimate plan area = volume / typical_thickness
+    const avgThickness = 0.5; // conservative for slabs (150-300mm) and decks (500-1000mm)
+    const planArea = volumePerTact / avgThickness;
+    return Math.max(roundTo(planArea, 1), 5);
   }
 
   // Fallback: cube-root heuristic (4 vertical faces)

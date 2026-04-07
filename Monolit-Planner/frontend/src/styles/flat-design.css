@@ -853,6 +853,16 @@
   color: #4338CA;
 }
 
+.flat-badge--podperna {
+  background: #FDF4FF;
+  color: #7E22CE;
+}
+
+.flat-badge--predpeti {
+  background: #FFF1F2;
+  color: #BE123C;
+}
+
 .flat-badge--jine {
   background: var(--stone-100);
   color: var(--stone-500);
@@ -899,7 +909,7 @@
 
 /* Card base */
 .kpi-card {
-  flex: 1; min-width: 200px; max-height: 80px; background: white;
+  flex: 1; min-width: 200px; background: white;
   border: 1px solid var(--stone-200); border-radius: 6px;
   border-left-width: 4px; overflow: visible;
 }

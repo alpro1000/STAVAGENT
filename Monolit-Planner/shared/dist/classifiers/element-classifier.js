@@ -77,7 +77,7 @@ const ELEMENT_CATALOG = {
     },
     mostovkova_deska: {
         label_cs: 'Mostovková deska',
-        recommended_formwork: ['Staxo 100', 'UP Rosett Flex', 'MULTIFLEX', 'Top 50', 'Dokaflex'],
+        recommended_formwork: ['MULTIFLEX', 'Top 50', 'Dokaflex'],
         difficulty_factor: 1.2,
         needs_supports: true,
         needs_platforms: true,
@@ -679,9 +679,11 @@ export function getSuitableSystemsForElement(elementType) {
         if (sys.unit === 'bm')
             continue; // skip linear-meter systems
         const cat = sys.formwork_category ?? 'wall';
+        if (cat === 'support_tower')
+            continue; // support towers handled by props calculator, not formwork comparison
         const isSuitable = suitableCategories.has(cat);
         const isRecommended = recommendedNames.has(sys.name);
-        if (isRecommended) {
+        if (isRecommended && isSuitable) {
             recommended.push(sys);
         }
         else if (isSuitable) {

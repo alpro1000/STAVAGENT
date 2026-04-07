@@ -88,7 +88,7 @@ export default function FlatGantt({ positions }: Props) {
         }
         currentDay += meta.schedule_info.total_days || beton?.days || 1;
       } else {
-        const subtypeOrder: string[] = ['bednění', 'výztuž', 'beton', 'odbednění', 'jiné'];
+        const subtypeOrder: string[] = ['bednění', 'podpěrná konstr.', 'výztuž', 'předpětí', 'beton', 'odbednění', 'jiné'];
         const ordered = [...partPositions].sort((a, b) =>
           (subtypeOrder.indexOf(a.subtype) ?? 99) - (subtypeOrder.indexOf(b.subtype) ?? 99)
         );

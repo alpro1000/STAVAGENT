@@ -38,6 +38,8 @@ const SUBTYPE_COLORS: Record<string, string> = {
   beton: '#3b82f6',     // blue
   bednění: '#f59e0b',   // orange
   výztuž: '#8b5cf6',    // purple
+  'podpěrná konstr.': '#7e22ce', // deep purple
+  'předpětí': '#be123c', // rose
   jiné: '#6b7280',      // gray
 };
 

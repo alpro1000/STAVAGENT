@@ -57,14 +57,7 @@ export declare const SUBTYPE_ICONS: {
  * Key: internal subtype value (used in data)
  * Value: display name for UI
  */
-export declare const SUBTYPE_LABELS: {
-    beton: string;
-    bednění: string;
-    odbednění: string;
-    výztuž: string;
-    zrání: string;
-    jiné: string;
-};
+export declare const SUBTYPE_LABELS: Record<string, string>;
 export declare const UNIT_LABELS: {
     M3: string;
     m2: string;

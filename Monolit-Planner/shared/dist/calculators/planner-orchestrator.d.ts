@@ -121,7 +121,7 @@ export interface PlannerInput {
     /** Prestressing duration override (days). Auto-calculated from bridge length if not given. */
     prestress_days_override?: number;
     /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
-    bridge_deck_subtype?: 'deskovy' | 'dvoutram' | 'komora';
+    bridge_deck_subtype?: 'deskovy' | 'jednotram' | 'dvoutram' | 'vicetram' | 'jednokomora' | 'dvoukomora' | 'ramovy' | 'sprazeny';
     /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). For validation warnings. */
     exposure_class?: string;
     /** Run Monte Carlo simulation. Default: false */

@@ -75,12 +75,14 @@ export const SUBTYPE_ICONS = {
  * Key: internal subtype value (used in data)
  * Value: display name for UI
  */
-export const SUBTYPE_LABELS = {
+export const SUBTYPE_LABELS: Record<string, string> = {
   'beton': 'Betonování',
   'bednění': 'Bednění',
   'odbednění': 'Odbednění',
   'výztuž': 'Výztuž',
+  'předpětí': 'Předpětí',
   'zrání': 'Zrání',
+  'podpěrná konstr.': 'Podpěrná konstr.',
   'jiné': 'Jiné'
 };
 
