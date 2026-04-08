@@ -124,31 +124,92 @@ router.get('/projects', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    const { portal_project_id, project_name } = req.body;
+    const { portal_project_id, project_name, source } = req.body;
     const portalUserId = req.user?.userId || null;
 
     if (!portal_project_id) {
       return res.status(400).json({ error: 'portal_project_id is required' });
     }
 
-    logger.info(`[ImportRegistry] Fetching project ${portal_project_id} from Portal...`);
+    logger.info(`[ImportRegistry] Importing project ${portal_project_id} (source=${source || 'portal'})...`);
 
-    // 1. Fetch project data from Portal integration API
-    const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portal_project_id}`, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    let projectData = null;
 
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: `Portal project not found or unavailable: ${response.status}`,
+    // Try Portal first (primary path)
+    try {
+      const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portal_project_id}`, {
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(15000),
       });
+      if (response.ok) {
+        const data = await response.json();
+        projectData = data.project;
+      } else {
+        logger.warn(`[ImportRegistry] Portal returned ${response.status} for project ${portal_project_id}`);
+      }
+    } catch (portalErr) {
+      logger.warn(`[ImportRegistry] Portal fetch failed: ${portalErr.message}`);
     }
 
-    const data = await response.json();
-    const projectData = data.project;
+    // Fallback: fetch directly from Registry backend if Portal failed or returned no data
+    if (!projectData || !projectData.sheets || projectData.sheets.length === 0) {
+      logger.info('[ImportRegistry] Trying direct Registry backend fetch...');
+      const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
+      try {
+        // Try fetching project by ID
+        const regRes = await fetch(`${REGISTRY_API}/api/registry/projects/${portal_project_id}`, {
+          signal: AbortSignal.timeout(10000),
+        });
+        if (regRes.ok) {
+          const regData = await regRes.json();
+          const regProject = regData.project;
+          if (regProject) {
+            // Fetch sheets for this project
+            const sheetsRes = await fetch(`${REGISTRY_API}/api/registry/projects/${portal_project_id}/sheets`, {
+              signal: AbortSignal.timeout(10000),
+            });
+            if (sheetsRes.ok) {
+              const sheetsData = await sheetsRes.json();
+              const sheets = [];
+              for (const sheet of (sheetsData.sheets || [])) {
+                const itemsRes = await fetch(`${REGISTRY_API}/api/registry/sheets/${sheet.sheet_id}/items`, {
+                  signal: AbortSignal.timeout(10000),
+                });
+                if (itemsRes.ok) {
+                  const itemsData = await itemsRes.json();
+                  sheets.push({
+                    name: sheet.sheet_name || 'Sheet',
+                    items: (itemsData.items || []).map(i => ({
+                      id: i.item_id,
+                      kod: i.kod || '',
+                      popis: i.popis || '',
+                      mnozstvi: i.mnozstvi || 0,
+                      mj: i.mj || '',
+                      cenaJednotkova: i.cena_jednotkova || 0,
+                      cenaCelkem: i.cena_celkem || 0,
+                      position_instance_id: i.position_instance_id || null,
+                    })),
+                  });
+                }
+              }
+              if (sheets.length > 0) {
+                projectData = {
+                  id: portal_project_id,
+                  name: regProject.project_name || project_name || 'Import z Registry',
+                  sheets,
+                };
+                logger.info(`[ImportRegistry] Loaded ${sheets.length} sheets directly from Registry backend`);
+              }
+            }
+          }
+        }
+      } catch (regErr) {
+        logger.warn(`[ImportRegistry] Registry direct fetch failed: ${regErr.message}`);
+      }
+    }
 
     if (!projectData || !projectData.sheets || projectData.sheets.length === 0) {
-      return res.status(404).json({ error: 'Project has no sheets/positions in Portal' });
+      return res.status(404).json({ error: 'Project has no sheets/positions in Portal or Registry' });
     }
 
     const projectName = project_name || projectData.name || 'Import z Rozpočtu';
