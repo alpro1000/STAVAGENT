@@ -9,6 +9,7 @@ import {
   getAdjustedAssemblyNorm,
   estimateRebarMass,
   getAllElementTypes,
+  extractOtskpMetadata,
 } from './element-classifier.js';
 
 describe('Element Classifier', () => {
@@ -427,9 +428,9 @@ describe('Element Classifier', () => {
     });
 
     // Křídla as separate element type
-    it('"KŘÍDLA OPĚRY OP1" → kridla_opery (křídla standalone)', () => {
+    it('"KŘÍDLA OPĚRY OP1" → kridla_opery (standalone wing)', () => {
       expect(classifyElement('KŘÍDLA OPĚRY OP1', { is_bridge: true }).element_type)
-        .toBe('opery_ulozne_prahy'); // composite item — opěra wins
+        .toBe('kridla_opery'); // standalone wing — no "MOSTNÍ" prefix
     });
     it('"KŘÍDLO D SO 206" → kridla_opery (standalone wing)', () => {
       expect(classifyElement('KŘÍDLO D SO 206', { is_bridge: true }).element_type)
@@ -472,6 +473,94 @@ describe('Element Classifier', () => {
         expect(t.label_cs).toBeTruthy();
         expect(t.type).toBeTruthy();
       });
+    });
+  });
+
+  // ─── OTSKP catalog matching ────────────────────────────────────────────
+
+  describe('OTSKP catalog match', () => {
+    it('trámová mostovka → mostovkova_deska, subtype dvoutram, confidence 1.0', () => {
+      const r = classifyElement('MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET DO C40/50');
+      expect(r.element_type).toBe('mostovkova_deska');
+      expect(r.confidence).toBe(1.0);
+      expect(r.classification_source).toBe('otskp');
+      expect(r.bridge_deck_subtype_detected).toBe('dvoutram');
+      expect(r.concrete_class_detected).toBe('C40/50');
+      expect(r.is_prestressed_detected).toBe(true);
+    });
+
+    it('opěry a křídla → opery_ulozne_prahy, has_kridla, confidence 1.0', () => {
+      const r = classifyElement('MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37');
+      expect(r.element_type).toBe('opery_ulozne_prahy');
+      expect(r.confidence).toBe(1.0);
+      expect(r.classification_source).toBe('otskp');
+      expect(r.has_kridla_detected).toBe(true);
+      expect(r.concrete_class_detected).toBe('C30/37');
+      expect(r.is_prestressed_detected).toBe(false);
+    });
+
+    it('komorová mostovka → jednokomora', () => {
+      const r = classifyElement('MOSTNÍ NOSNÉ KOMOROVÉ KONSTR ZE ŽELEZOBET DO C40/50');
+      expect(r.element_type).toBe('mostovkova_deska');
+      expect(r.bridge_deck_subtype_detected).toBe('jednokomora');
+    });
+
+    it('římsy → rimsa, confidence 1.0', () => {
+      const r = classifyElement('ŘÍMSY ZE ŽELEZOBETONU DO C30/37');
+      expect(r.element_type).toBe('rimsa');
+      expect(r.confidence).toBe(1.0);
+      expect(r.classification_source).toBe('otskp');
+    });
+
+    it('přechodové desky → prechodova_deska', () => {
+      const r = classifyElement('PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30');
+      expect(r.element_type).toBe('prechodova_deska');
+      expect(r.confidence).toBe(1.0);
+    });
+
+    it('pilíře a stativa → driky_piliru', () => {
+      const r = classifyElement('MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37');
+      expect(r.element_type).toBe('driky_piliru');
+      expect(r.confidence).toBe(1.0);
+    });
+
+    it('prefab nosníky → mostovkova_deska, is_prefab', () => {
+      const r = classifyElement('MOSTNÍ NOSNÍKY Z DÍLCŮ Z PŘEDPJ BET DO C40/50');
+      expect(r.element_type).toBe('mostovkova_deska');
+      expect(r.is_prefab).toBe(true);
+      expect(r.is_prestressed_detected).toBe(true);
+    });
+
+    it('keyword fallback has source "keywords"', () => {
+      const r = classifyElement('ZÁKLADY PILÍŘŮ C30/37-XC2', { is_bridge: true });
+      expect(r.classification_source).toBe('keywords');
+      expect(r.element_type).toBe('zaklady_piliru');
+      expect(r.concrete_class_detected).toBe('C30/37');
+    });
+  });
+
+  // ─── extractOtskpMetadata ──────────────────────────────────────────────
+
+  describe('extractOtskpMetadata', () => {
+    it('extracts C30/37', () => {
+      expect(extractOtskpMetadata('OPĚRY ZE ŽELEZOVÉHO BETONU DO C30/37').concrete_class).toBe('C30/37');
+    });
+    it('extracts C40/50', () => {
+      expect(extractOtskpMetadata('PŘEDPJATÝ BETON C40/50').concrete_class).toBe('C40/50');
+    });
+    it('detects prestressed', () => {
+      expect(extractOtskpMetadata('PŘEDPJ BET DO C40/50').is_prestressed).toBe(true);
+    });
+    it('detects reinforced (not prestressed)', () => {
+      expect(extractOtskpMetadata('ŽELEZOVÉHO BETONU DO C30/37').is_prestressed).toBe(false);
+    });
+    it('detects prefab', () => {
+      expect(extractOtskpMetadata('NOSNÍKY Z DÍLCŮ').is_prefab).toBe(true);
+    });
+    it('no metadata for plain name', () => {
+      const m = extractOtskpMetadata('ZÁKLADY');
+      expect(m.concrete_class).toBeUndefined();
+      expect(m.is_prestressed).toBeUndefined();
     });
   });
 });

@@ -22,7 +22,8 @@ import {
   calculateMonthlyRentalPerSet,
   calculateFinalRentalCost,
   calculateElementTotalDays,
-  generateFormworkKrosDescription
+  generateFormworkKrosDescription,
+  aggregateScheduleDays,
 } from './formulas';
 import type { Position } from './types';
 
@@ -678,5 +679,82 @@ describe('generateFormworkKrosDescription', () => {
     expect(desc).toContain('h= 0,9 m');
     expect(desc).toContain('Kč/m2');
     expect(desc).toContain('Kč/sada/měsíc');
+  });
+});
+
+// ─── aggregateScheduleDays ──────────────────────────────────────────────────
+
+describe('aggregateScheduleDays', () => {
+  const makeTact = (asm: [number,number], reb: [number,number], con: [number,number], cur: [number,number], str: [number,number]) =>
+    ({ assembly: asm, rebar: reb, concrete: con, curing: cur, stripping: str });
+
+  it('4 záběry: bednění = Σ assembly durations', () => {
+    const tacts = [
+      makeTact([0, 0.7], [0.4, 5], [5, 6], [6, 7.5], [7.5, 7.8]),
+      makeTact([0, 0.7], [0.4, 5], [5, 6], [6, 7.5], [7.5, 7.8]),
+      makeTact([7.8, 8.5], [8.2, 12.8], [12.8, 13.8], [13.8, 15.3], [15.3, 15.6]),
+      makeTact([7.8, 8.5], [8.2, 12.8], [12.8, 13.8], [13.8, 15.3], [15.3, 15.6]),
+    ];
+    const agg = aggregateScheduleDays(tacts);
+    expect(agg.bedneni).toBeCloseTo(2.8, 1);   // 4 × 0.7 = 2.8
+    expect(agg.vyztuž).toBeCloseTo(18.4, 1);   // 4 × 4.6 = 18.4
+    expect(agg.beton).toBeCloseTo(4.0, 1);     // 4 × 1.0 = 4.0
+    expect(agg.odbedneni).toBeCloseTo(1.2, 1);  // 4 × 0.3 = 1.2
+  });
+
+  it('zrání = calendar span (max - min), not sum', () => {
+    const tacts = [
+      makeTact([0, 1], [0, 1], [1, 2], [2, 5], [5, 6]),
+      makeTact([0, 1], [0, 1], [1, 2], [2, 5], [5, 6]),
+      makeTact([6, 7], [6, 7], [7, 8], [8, 11], [11, 12]),
+      makeTact([6, 7], [6, 7], [7, 8], [8, 11], [11, 12]),
+    ];
+    const agg = aggregateScheduleDays(tacts);
+    // Calendar: max(5,5,11,11) - min(2,2,8,8) = 11 - 2 = 9
+    expect(agg.zrani).toBeCloseTo(9, 1);
+  });
+
+  it('empty tacts → uses fallback', () => {
+    const agg = aggregateScheduleDays([], {
+      numTacts: 4,
+      assemblyDaysPerTact: 0.7,
+      rebarDaysPerTact: 4.6,
+      concreteDaysPerTact: 1,
+      curingDays: 9.3,
+      strippingDaysPerTact: 0.3,
+    });
+    expect(agg.bedneni).toBeCloseTo(2.8, 1);
+    expect(agg.vyztuž).toBeCloseTo(18.4, 1);
+    expect(agg.beton).toBeCloseTo(4, 1);
+    expect(agg.zrani).toBeCloseTo(9.3, 1);
+    expect(agg.odbedneni).toBeCloseTo(1.2, 1);
+  });
+
+  it('1 záběr → duration of that záběr', () => {
+    const tacts = [makeTact([0, 2], [1, 6], [6, 7], [7, 10], [10, 10.5])];
+    const agg = aggregateScheduleDays(tacts);
+    expect(agg.bedneni).toBeCloseTo(2, 1);
+    expect(agg.beton).toBeCloseTo(1, 1);
+    expect(agg.zrani).toBeCloseTo(3, 1);  // 10 - 7
+  });
+
+  it('empty tacts without fallback → 0 days except beton default (not NaN)', () => {
+    const agg = aggregateScheduleDays([]);
+    expect(agg.bedneni).toBe(0);
+    expect(agg.vyztuž).toBe(0);
+    expect(agg.beton).toBe(1); // default: numTacts=1 × concreteDaysPerTact=1
+    expect(agg.zrani).toBe(0);
+    expect(agg.odbedneni).toBe(0);
+    expect(agg.predpeti).toBe(0);
+    expect(Number.isNaN(agg.bedneni)).toBe(false);
+  });
+
+  it('prestress aggregated from tact_details', () => {
+    const tacts = [
+      { ...makeTact([0, 1], [0, 1], [1, 2], [2, 5], [8, 9]), prestress: [5, 8] as [number, number] },
+      { ...makeTact([0, 1], [0, 1], [1, 2], [2, 5], [8, 9]), prestress: [5, 8] as [number, number] },
+    ];
+    const agg = aggregateScheduleDays(tacts);
+    expect(agg.predpeti).toBeCloseTo(6, 1); // 2 × 3 = 6
   });
 });

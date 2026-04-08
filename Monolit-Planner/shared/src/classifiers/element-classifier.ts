@@ -59,6 +59,20 @@ export interface ElementProfile {
   max_pour_rate_m3_h: number;
   /** Whether pump is typically needed */
   pump_typical: boolean;
+
+  // --- Classification metadata (optional, populated by OTSKP match) ---
+  /** Source of classification: 'otskp' (catalog match) | 'keywords' (regex) */
+  classification_source?: 'otskp' | 'keywords';
+  /** Concrete class detected from name (e.g. 'C30/37') */
+  concrete_class_detected?: string;
+  /** Prestressed concrete detected from name */
+  is_prestressed_detected?: boolean;
+  /** Bridge deck subtype detected from name */
+  bridge_deck_subtype_detected?: string;
+  /** Composite element — contains křídla */
+  has_kridla_detected?: boolean;
+  /** Prefabricated element (info only — calculator doesn't compute prefab) */
+  is_prefab?: boolean;
 }
 
 // ─── Element Catalog ─────────────────────────────────────────────────────────
@@ -398,6 +412,88 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
 };
 
+// ─── OTSKP catalog mapping (confidence=1.0, highest priority) ──────────────
+
+interface OtskpRule {
+  pattern: RegExp;
+  element_type: StructuralElementType;
+  metadata?: {
+    bridge_deck_subtype?: string;
+    has_kridla?: boolean;
+    is_prefab?: boolean;
+  };
+}
+
+/**
+ * OTSKP→element_type mapping table.
+ * Checked BEFORE keyword rules. Patterns match normalized (lowercased) OTSKP names.
+ * Order matters — first match wins.
+ */
+const OTSKP_RULES: OtskpRule[] = [
+  // ─── Mostovková deska subtypes ───
+  { pattern: /mostn[ií]\s*nosn[eéa]\s*deskove|mostn[ií]\s*nosn[eéa]\s*desk\s*konstr/,
+    element_type: 'mostovkova_deska', metadata: { bridge_deck_subtype: 'deskovy' } },
+  { pattern: /mostn[ií]\s*nosn[eéa]\s*tram\s*konstr|mostn[ií]\s*nosn[eéa]\s*trám/,
+    element_type: 'mostovkova_deska', metadata: { bridge_deck_subtype: 'dvoutram' } },
+  { pattern: /mostn[ií]\s*nosn[eéa]\s*komorov/,
+    element_type: 'mostovkova_deska', metadata: { bridge_deck_subtype: 'jednokomora' } },
+  { pattern: /mostn[ií]\s*nosn[ií]ky\s*z\s*d[ií]lc[uů]|nosn[ií]ky\s*z\s*d[ií]lc/,
+    element_type: 'mostovkova_deska', metadata: { is_prefab: true } },
+  // ─── Opěry ───
+  { pattern: /mostn[ií]\s*op[eě]ry\s*(a\s*)?k[rř][ií]dl/,
+    element_type: 'opery_ulozne_prahy', metadata: { has_kridla: true } },
+  { pattern: /mostn[ií]\s*op[eě]ry/,
+    element_type: 'opery_ulozne_prahy' },
+  // ─── Pilíře ───
+  { pattern: /mostn[ií]\s*pil[ií][rř]e?\s*(a\s*)?stativ/,
+    element_type: 'driky_piliru' },
+  // ─── Římsy ───
+  { pattern: /[rř][ií]msy|[rř][ií]msov/,
+    element_type: 'rimsa' },
+  // ─── Přechodové desky ───
+  { pattern: /p[rř]echodov[eéa]\s*desk/,
+    element_type: 'prechodova_deska' },
+  // ─── Závěrné zídky ───
+  { pattern: /z[aá]v[eě]rn[eéa]\s*z[ií]dk/,
+    element_type: 'mostni_zavirne_zidky' },
+  // ─── Křídla (standalone) ───
+  { pattern: /k[rř][ií]dl[oa]\s+op[eě]r|k[rř][ií]dl[oa]\s+most/,
+    element_type: 'kridla_opery' },
+];
+
+/**
+ * Extract metadata from OTSKP element name.
+ * Detects concrete class, prestress, and material type.
+ */
+export function extractOtskpMetadata(name: string): {
+  concrete_class?: string;
+  is_prestressed?: boolean;
+  is_prefab?: boolean;
+} {
+  const n = name.toUpperCase();
+  const result: { concrete_class?: string; is_prestressed?: boolean; is_prefab?: boolean } = {};
+
+  // Concrete class: C20/25, C30/37, C35/45, C40/50
+  const ccMatch = n.match(/C(\d{2})\/(\d{2,3})/);
+  if (ccMatch) result.concrete_class = `C${ccMatch[1]}/${ccMatch[2]}`;
+
+  // Prestressed vs reinforced vs plain
+  if (/PŘEDPJ|PŘEDPĚT|PŘEPJ|PREDPJ/.test(n)) {
+    result.is_prestressed = true;
+  } else if (/ŽELEZOB|ŽELEZOVÉHO/.test(n)) {
+    result.is_prestressed = false;
+  } else if (/PROST\s*BET|PROSTÉHO/.test(n)) {
+    result.is_prestressed = false;
+  }
+
+  // Prefab
+  if (/Z\s*DÍLCŮ|Z\s*DILCU/.test(n)) {
+    result.is_prefab = true;
+  }
+
+  return result;
+}
+
 // ─── Keyword-based classification ────────────────────────────────────────────
 
 interface KeywordRule {
@@ -601,7 +697,26 @@ export function classifyElement(name: string, context?: ClassificationContext): 
     return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
   }
 
-  // Score each rule
+  // ─── OTSKP catalog match (confidence=1.0, highest priority) ───
+  for (const rule of OTSKP_RULES) {
+    if (rule.pattern.test(normalized)) {
+      const catalog = ELEMENT_CATALOG[rule.element_type];
+      const meta = extractOtskpMetadata(name);
+      return {
+        element_type: rule.element_type,
+        confidence: 1.0,
+        ...catalog,
+        classification_source: 'otskp',
+        concrete_class_detected: meta.concrete_class,
+        is_prestressed_detected: meta.is_prestressed,
+        is_prefab: meta.is_prefab || rule.metadata?.is_prefab,
+        has_kridla_detected: rule.metadata?.has_kridla,
+        bridge_deck_subtype_detected: rule.metadata?.bridge_deck_subtype,
+      };
+    }
+  }
+
+  // ─── Keyword scoring (fallback) ───
   let bestType: StructuralElementType = 'other';
   let bestScore = 0;
   let bestPriority = 0;
@@ -638,11 +753,15 @@ export function classifyElement(name: string, context?: ClassificationContext): 
 
   const confidence = bestType === 'other' ? 0.3 : Math.min(1.0, 0.6 + bestScore * 0.04);
   const catalog = ELEMENT_CATALOG[bestType];
+  const meta = extractOtskpMetadata(name);
 
   return {
     element_type: bestType,
     confidence,
     ...catalog,
+    classification_source: 'keywords',
+    ...(meta.concrete_class ? { concrete_class_detected: meta.concrete_class } : {}),
+    ...(meta.is_prestressed !== undefined ? { is_prestressed_detected: meta.is_prestressed } : {}),
   };
 }
 

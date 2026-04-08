@@ -356,3 +356,35 @@ export function generateFormworkKrosDescription(row) {
     const monthlyRental = row.monthly_rental_per_set.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     return `Bednění - ${row.construction_name} (${row.system_name} ${row.system_height}; ${price} Kč/m2) sada - ${setArea} m2 => ${monthlyRental} Kč/sada/měsíc`;
 }
+export function aggregateScheduleDays(tacts, fallback) {
+    const round = (v) => Math.round(v * 10) / 10;
+    if (!tacts || tacts.length === 0) {
+        // Fallback: per-tact duration × numTacts
+        const fb = fallback || { numTacts: 1, assemblyDaysPerTact: 0, rebarDaysPerTact: 0, curingDays: 0, strippingDaysPerTact: 0 };
+        return {
+            bedneni: round(fb.numTacts * fb.assemblyDaysPerTact),
+            vyztuž: round(fb.numTacts * fb.rebarDaysPerTact),
+            beton: round(fb.numTacts * (fb.concreteDaysPerTact ?? 1)),
+            zrani: round(fb.curingDays),
+            odbedneni: round(fb.numTacts * fb.strippingDaysPerTact),
+            predpeti: round(fb.numTacts * (fb.prestressDaysPerTact ?? 0)),
+        };
+    }
+    // Sum of (end - start) across ALL tacts for a phase (labor-days)
+    const sumPhase = (phase) => tacts.reduce((sum, t) => {
+        const p = t[phase];
+        return sum + (p ? Math.max(0, p[1] - p[0]) : 0);
+    }, 0);
+    // Prestress: optional phase
+    const sumPrestress = tacts.reduce((sum, t) => sum + (t.prestress ? Math.max(0, t.prestress[1] - t.prestress[0]) : 0), 0);
+    // Curing: calendar span (max end - min start), NOT labor sum
+    const curingCalendar = Math.max(...tacts.map(t => t.curing[1])) - Math.min(...tacts.map(t => t.curing[0]));
+    return {
+        bedneni: round(sumPhase('assembly')),
+        vyztuž: round(sumPhase('rebar')),
+        beton: round(sumPhase('concrete')),
+        zrani: round(Math.max(0, curingCalendar)),
+        odbedneni: round(sumPhase('stripping')),
+        predpeti: round(sumPrestress),
+    };
+}

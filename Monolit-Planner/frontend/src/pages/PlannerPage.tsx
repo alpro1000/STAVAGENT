@@ -20,10 +20,11 @@ import { useSearchParams } from 'react-router-dom';
 import {
   planElement,
   addWorkDays,
+  aggregateScheduleDays,
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -204,7 +205,9 @@ interface FormState {
   num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
   deadline_days: string; // empty = no deadline, number = investor deadline in working days
   is_prestressed: boolean;
-  bridge_deck_subtype: string; // '' = default (deskový), or 'deskovy'|'jednotram'|'dvoutram'|...|'sprazeny'
+  bridge_deck_subtype: string;
+  include_kridla: boolean;
+  kridla_height_m: string; // empty = not set
 }
 
 const DEFAULT_FORM: FormState = {
@@ -250,6 +253,8 @@ const DEFAULT_FORM: FormState = {
   deadline_days: '',
   is_prestressed: false,
   bridge_deck_subtype: '',
+  include_kridla: false,
+  kridla_height_m: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -432,7 +437,11 @@ export default function PlannerPage() {
       if (classified.element_type !== 'other' || classified.confidence > 0.5) {
         f.element_type = classified.element_type;
       }
-      // Don't enable name classification — we already resolved the type
+      // Use OTSKP metadata to prefill form fields
+      if (classified.is_prestressed_detected === true) f.is_prestressed = true;
+      if (classified.concrete_class_detected) f.concrete_class = classified.concrete_class_detected as any;
+      if (classified.bridge_deck_subtype_detected) f.bridge_deck_subtype = classified.bridge_deck_subtype_detected;
+      if (classified.has_kridla_detected) f.include_kridla = true;
     }
 
     if (positionContext.volume_m3) f.volume_m3 = positionContext.volume_m3;
@@ -452,6 +461,14 @@ export default function PlannerPage() {
       if (/PŘEDPJ|PŘEDPĚT|PŘEPJ|PREDPJ/.test(pn)) f.is_prestressed = true;
     }
 
+    // Auto-detect composite opěry+křídla from part_name
+    if (positionContext.part_name) {
+      const pnUpper = positionContext.part_name.toUpperCase();
+      const hasOpery = /OPĚR|OPER/.test(pnUpper);
+      const hasKridla = /KŘÍDL|KRIDL|KŘÍDEL/.test(pnUpper);
+      if (hasOpery && hasKridla) f.include_kridla = true;
+    }
+
     // Clear start_date in Monolit mode (ordinal days only)
     f.start_date = '';
 
@@ -461,6 +478,16 @@ export default function PlannerPage() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Křídla: compute separate formwork recommendation when composite enabled
+  const kridlaFormwork = useMemo(() => {
+    if (!result || !form.include_kridla || !form.kridla_height_m) return null;
+    const kH = parseFloat(form.kridla_height_m);
+    if (!kH || kH <= 0) return null;
+    const fw = recommendFormwork('kridla_opery', kH);
+    return { system: fw, height_m: kH };
+  }, [result, form.include_kridla, form.kridla_height_m]);
+
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
@@ -1199,6 +1226,39 @@ export default function PlannerPage() {
                 </label>
               </Field>
           </div>
+
+          {/* ─── Opěry: composite křídla toggle ─── */}
+          {(form.element_type === 'opery_ulozne_prahy' && !form.use_name_classification) && (
+            <div style={{
+              maxHeight: 120, opacity: 1,
+              transition: 'max-height 0.3s ease, opacity 0.2s ease',
+              marginBottom: 12,
+            }}>
+              <Field label="Součástí jsou křídla">
+                <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={form.include_kridla}
+                    onChange={e => update('include_kridla', e.target.checked)}
+                  />
+                  <span style={{ fontSize: 12 }}>Zahrnout křídla opěr (samostatná sada bednění)</span>
+                </label>
+              </Field>
+              {form.include_kridla && (
+                <Field label="Výška křídel (m)">
+                  <input
+                    style={inputStyle}
+                    type="number"
+                    step="0.1"
+                    min="0.5"
+                    placeholder="Typicky 1.8–6.0 m"
+                    value={form.kridla_height_m}
+                    onChange={e => update('kridla_height_m', e.target.value)}
+                  />
+                </Field>
+              )}
+            </div>
+          )}
 
           {/* ─── Římsa: length-based pour hint ─── */}
           {(form.element_type === 'rimsa' && !form.use_name_classification) && (
@@ -2188,13 +2248,37 @@ export default function PlannerPage() {
                   const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
                   if (positionContext.position_id && bridgeId) {
                     // Helper: create missing sibling position if ID absent but data exists
+                    // Cache existing positions for this bridge to avoid duplicate creation
+                    let existingPositions: any[] | null = null;
+                    const getExisting = async (): Promise<any[]> => {
+                      if (existingPositions) return existingPositions;
+                      try {
+                        const res = await fetch(`${API_URL}/api/positions?bridge_id=${bridgeId}`);
+                        if (res.ok) {
+                          const data = await res.json();
+                          existingPositions = data.positions || [];
+                        }
+                      } catch { /* ignore */ }
+                      return existingPositions || [];
+                    };
+
                     const ensurePosition = async (
                       existingId: string | null | undefined,
                       subtype: string,
                       unit: string,
+                      itemName?: string,
                     ): Promise<string | null> => {
                       if (existingId) return existingId;
+                      // Check if position already exists in DB (prevents duplicates on repeated Aplikovat)
+                      const existing = await getExisting();
+                      const partName = positionContext.part_name || '';
+                      const found = existing.find((p: any) =>
+                        p.subtype === subtype && p.part_name === partName &&
+                        (!itemName || p.item_name === itemName)
+                      );
+                      if (found?.id) return found.id;
                       // Create via POST
+                      const name = itemName || subtype;
                       try {
                         const createRes = await fetch(`${API_URL}/api/positions`, {
                           method: 'POST',
@@ -2203,8 +2287,8 @@ export default function PlannerPage() {
                             bridge_id: bridgeId,
                             positions: [{
                               bridge_id: bridgeId,
-                              part_name: positionContext.part_name || '',
-                              item_name: subtype,
+                              part_name: partName,
+                              item_name: name,
                               subtype,
                               unit,
                               qty: 0,
@@ -2217,15 +2301,20 @@ export default function PlannerPage() {
                         });
                         if (createRes.ok) {
                           const data = await createRes.json();
-                          const created = data.positions?.find((p: any) => p.subtype === subtype && p.part_name === (positionContext.part_name || ''));
-                          return created?.id || null;
+                          existingPositions = data.positions || existingPositions;
+                          const matching = data.positions?.filter((p: any) =>
+                            p.subtype === subtype && p.part_name === partName
+                          );
+                          return matching?.at(-1)?.id || null;
                         }
                       } catch { /* non-critical */ }
                       return null;
                     };
 
-                    // Create missing sibling positions for subtypes the calculator computed
-                    const [zraniId, odbedneniId, podpernaId, predpetiId] = await Promise.all([
+                    // Create ALL missing sibling positions needed by the calculator
+                    const [bedneniId, vyztuzId, zraniId, odbedneniId, podpernaId, predpetiId] = await Promise.all([
+                      ensurePosition(positionContext.bedneni_position_id, 'bednění', 'm2'),
+                      ensurePosition(positionContext.vyzuz_position_id, 'výztuž', 't'),
                       ensurePosition(positionContext.zrani_position_id, 'zrání', 'den'),
                       ensurePosition(positionContext.odbedneni_position_id, 'odbednění', 'm2'),
                       plan.props?.needed
@@ -2238,38 +2327,24 @@ export default function PlannerPage() {
 
                     const updates: Array<Record<string, unknown>> = [];
 
-                    // Aggregate labor-days from schedule tact_details
-                    // Each tact has phases: assembly, rebar, concrete, curing, stripping as [start, end]
+                    // Aggregate schedule tact_details → labor-days per subtype
                     const tacts = plan.schedule.tact_details || [];
                     const numTacts = plan.pour_decision.num_tacts || 1;
-                    const roundDay = (v: number) => Math.ceil(v * 10) / 10;
-
-                    // Sum of (end - start) across ALL tacts for a phase (labor-days)
-                    const sumPhaseDays = (phase: 'assembly' | 'rebar' | 'concrete' | 'stripping') =>
-                      tacts.reduce((sum, t) => {
-                        const p = t[phase];
-                        return sum + (p ? Math.max(0, p[1] - p[0]) : 0);
-                      }, 0);
-
-                    // Calendar span for curing: max(end) - min(start) across all tacts
-                    const curingCalendarDays = tacts.length > 0
-                      ? Math.max(...tacts.map(t => t.curing[1])) - Math.min(...tacts.map(t => t.curing[0]))
-                      : plan.formwork.curing_days;
-
-                    // Fallback: per-tact values × numTacts when tact_details unavailable
-                    const betonDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('concrete'))
-                      : roundDay(numTacts * 1); // default 1 day/tact
-                    const bedneniDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('assembly'))
-                      : roundDay(numTacts * plan.formwork.assembly_days);
-                    const vyztuzDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('rebar'))
-                      : roundDay(numTacts * plan.rebar.duration_days);
-                    const zraniDays = roundDay(curingCalendarDays);
-                    const odbedneniDays = tacts.length > 0
-                      ? roundDay(sumPhaseDays('stripping'))
-                      : roundDay(numTacts * plan.formwork.disassembly_days);
+                    const roundDay = (v: number) => Math.round(v * 10) / 10;
+                    const agg = aggregateScheduleDays(tacts, {
+                      numTacts,
+                      assemblyDaysPerTact: plan.formwork.assembly_days,
+                      rebarDaysPerTact: plan.rebar.duration_days,
+                      concreteDaysPerTact: 1,
+                      curingDays: plan.formwork.curing_days,
+                      strippingDaysPerTact: plan.formwork.disassembly_days,
+                      prestressDaysPerTact: plan.prestress?.days,
+                    });
+                    const betonDays = agg.beton;
+                    const bedneniDays = agg.bedneni;
+                    const vyztuzDays = agg.vyztuž;
+                    const zraniDays = agg.zrani;
+                    const odbedneniDays = agg.odbedneni;
 
                     // 1. Beton position — concrete labor-days, crew, curing, full metadata
                     // Blended wage includes night premium (§116 ZP: +10% for hours beyond 12h shift)
@@ -2298,9 +2373,9 @@ export default function PlannerPage() {
                     });
 
                     // 2. Bednění position — assembly labor-days only (no disassembly)
-                    if (positionContext.bedneni_position_id) {
+                    if (bedneniId) {
                       updates.push({
-                        id: positionContext.bedneni_position_id,
+                        id: bedneniId,
                         days: bedneniDays,
                         crew_size: plan.resources.crew_size_formwork,
                         wage_czk_ph: plan.resources.wage_formwork_czk_h,
@@ -2322,10 +2397,34 @@ export default function PlannerPage() {
                       });
                     }
 
+                    // 2b. Křídla bednění — separate formwork set (composite opěry+křídla)
+                    // Uses 'odbednění' subtype slot repurposed as křídla bednění — OR creates via jiné with křídla label
+                    if (kridlaFormwork && form.include_kridla) {
+                      const kridlaBedneniId = await ensurePosition(
+                        null, 'jiné', 'm2', 'Bednění křídel'
+                      );
+                      if (kridlaBedneniId) {
+                        updates.push({
+                          id: kridlaBedneniId,
+                          days: bedneniDays,
+                          crew_size: plan.resources.crew_size_formwork,
+                          wage_czk_ph: plan.resources.wage_formwork_czk_h,
+                          shift_hours: plan.resources.shift_h,
+                          metadata: JSON.stringify({
+                            formwork_system: kridlaFormwork.system.name,
+                            formwork_manufacturer: kridlaFormwork.system.manufacturer,
+                            kridla_height_m: kridlaFormwork.height_m,
+                            is_kridla_bedneni: true,
+                            calculated_at: monolit_data.calculated_at,
+                          }),
+                        });
+                      }
+                    }
+
                     // 3. Výztuž position — rebar labor-days summed across all tacts
-                    if (positionContext.vyzuz_position_id) {
+                    if (vyztuzId) {
                       updates.push({
-                        id: positionContext.vyzuz_position_id,
+                        id: vyztuzId,
                         days: vyztuzDays,
                         crew_size: plan.resources.crew_size_rebar,
                         wage_czk_ph: plan.resources.wage_rebar_czk_h,
@@ -2391,10 +2490,7 @@ export default function PlannerPage() {
 
                     // 7. Předpětí position — prestressing days (only if is_prestressed)
                     if (predpetiId && plan.prestress) {
-                      // Aggregate prestress days from tact_details or use plan.prestress.days
-                      const prestressDays = tacts.length > 0 && tacts[0].prestress
-                        ? roundDay(tacts.reduce((sum, t) => sum + (t.prestress ? t.prestress[1] - t.prestress[0] : 0), 0))
-                        : roundDay(plan.prestress.days * numTacts);
+                      const prestressDays = agg.predpeti || roundDay(plan.prestress.days * numTacts);
                       updates.push({
                         id: predpetiId,
                         days: prestressDays,
@@ -2439,6 +2535,7 @@ export default function PlannerPage() {
               onSaveVariant={variantsKey ? () => saveVariant(plan) : undefined}
               onLoadVariant={variantsKey ? loadVariant : undefined}
               onRemoveVariant={variantsKey ? removeVariant : undefined}
+              kridlaFormwork={kridlaFormwork}
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
@@ -2721,7 +2818,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, kridlaFormwork }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -2733,6 +2830,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
+  kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -3008,7 +3106,10 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
       <div className="r0-grid-2">
         <Card title="Element" icon={<Blocks size={16} />}>
           <Row label="Typ" value={plan.element.label_cs} />
-          <Row label="Klasifikace" value={`${(plan.element.classification_confidence * 100).toFixed(0)}%`} />
+          <Row label="Klasifikace" value={`${(plan.element.classification_confidence * 100).toFixed(0)}%${
+            plan.element.profile.classification_source === 'otskp' ? ' (OTSKP katalog)' :
+            plan.element.profile.classification_source === 'keywords' ? ' (klíčová slova)' : ''
+          }`} />
           <Row label="Orientace" value={plan.element.profile.orientation === 'horizontal' ? 'Horizontální' : 'Vertikální'} />
           <Row label="Výztuž typická" value={`${plan.element.profile.rebar_ratio_kg_m3} kg/m³`} />
           <Row label="Podpěry" value={plan.element.profile.needs_supports ? 'Ano' : 'Ne'} />
@@ -3055,6 +3156,31 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
           </div>
         </div>
       </Card>
+
+      {/* Křídla formwork (composite opěry+křídla) */}
+      {kridlaFormwork && (
+        <Card title="Bednění křídel" icon="📦">
+          <div className="r0-grid-2">
+            <div>
+              <Row label="Systém" value={kridlaFormwork.system.name} bold />
+              <Row label="Výrobce" value={kridlaFormwork.system.manufacturer} />
+              <Row label="Výška křídel" value={`${kridlaFormwork.height_m} m`} />
+              <Row label="Pronájem" value={kridlaFormwork.system.rental_czk_m2_month > 0
+                ? `${formatNum(kridlaFormwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
+                : 'Bez pronájmu'} />
+            </div>
+            <div>
+              <Row label="Jeřáb" value={kridlaFormwork.system.needs_crane ? 'Nutný (panel > 150 kg)' : 'Nepotřebuje'} />
+              {kridlaFormwork.height_m > 1.2 && (
+                <Row label="Vzpěry" value="IB vzpěry nutné (h > 1.2 m)" />
+              )}
+              <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 8 }}>
+                Samostatná sada bednění — křídla se betonují jako oddělený záběr od dříku opěry.
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Rebar */}
       <Card title="Výztuž" icon="🔩">
