@@ -263,11 +263,11 @@ router.post('/', upload.single('file'), async (req, res) => {
         }
 
         // Scan for paired výztuž/bednění rows adjacent to beton positions
+        // Linked data is stored in parent beton's metadata.linked_positions (for TOV)
         if (concretePositions.length > 0) {
           const pairedRows = findPairedRows(sheet.rawRows, concretePositions);
           if (pairedRows.length > 0) {
-            concretePositions = concretePositions.concat(pairedRows);
-            logger.info(`[Upload] Added ${pairedRows.length} paired rows (výztuž/bednění) for sheet "${sheet.sheetName}"`);
+            logger.info(`[Upload] Found ${pairedRows.length} paired rows (výztuž/bednění) for sheet "${sheet.sheetName}" — stored as linked_positions in beton metadata`);
           }
         }
 

@@ -941,6 +941,30 @@ export function findPairedRows(rawRows, betonPositions) {
 
   logger.info(`[PairedRows] Found ${pairedPositions.length} paired rows (${pairedPositions.filter(p => p.subtype === 'výztuž').length} výztuž, ${pairedPositions.filter(p => p.subtype === 'bednění').length} bednění)`);
 
+  // Attach linked_positions to parent beton metadata (for TOV linking)
+  const linkedByParent = new Map();
+  for (const pp of pairedPositions) {
+    const parentCode = pp.parent_otskp;
+    if (!parentCode) continue;
+    if (!linkedByParent.has(parentCode)) linkedByParent.set(parentCode, []);
+    linkedByParent.get(parentCode).push({
+      code: pp.otskp_code || '',
+      name: pp.item_name || '',
+      mj: pp.unit || '',
+      mnozstvi: pp.qty || 0,
+      typ: pp.subtype === 'výztuž' ? 'výztuž' : pp.subtype === 'bednění' ? 'bednění' : pp.subtype,
+      unit_price: pp.unit_price || 0,
+      total_price: pp.total_price || 0,
+    });
+  }
+  for (const bp of betonPositions) {
+    if (bp.otskp_code && linkedByParent.has(bp.otskp_code)) {
+      const existing = bp.metadata ? (typeof bp.metadata === 'string' ? JSON.parse(bp.metadata) : bp.metadata) : {};
+      existing.linked_positions = linkedByParent.get(bp.otskp_code);
+      bp.metadata = JSON.stringify(existing);
+    }
+  }
+
   return pairedPositions;
 }
 
