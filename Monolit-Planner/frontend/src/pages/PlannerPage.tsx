@@ -3561,12 +3561,18 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
           const propsLabor = plan.costs.props_labor_czk || 0;
           const propsRental = plan.costs.props_rental_czk || 0;
           const totalAll = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
+          const nT = plan.pour_decision.num_tacts;
+          const fwTotalDays = formatNum((plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT, 1);
+          const fwTotalH = formatNum((plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT * (plan.resources.crew_size_formwork * plan.resources.shift_h * 0.8), 0);
+          const rbTotalDays = formatNum(plan.rebar.duration_days * nT, 1);
+          const rbTotalH = formatNum(plan.rebar.duration_days * nT * (plan.resources.crew_size_rebar * plan.resources.shift_h * 0.8), 0);
+          const pourH = formatNum(plan.pour.total_pour_hours * nT, 1);
           return (
             <div className="r0-grid-2">
               <div>
-                <Row label="Bednění (práce)" value={formatCZK(plan.costs.formwork_labor_czk)} />
-                <Row label="Výztuž (práce)" value={formatCZK(plan.costs.rebar_labor_czk)} />
-                <Row label="Betonáž (práce)" value={formatCZK(plan.costs.pour_labor_czk)} />
+                <Row label="Bednění (práce)" value={`${formatCZK(plan.costs.formwork_labor_czk)}  ·  ${fwTotalDays} dní  ·  ${fwTotalH} h`} />
+                <Row label="Výztuž (práce)" value={`${formatCZK(plan.costs.rebar_labor_czk)}  ·  ${rbTotalDays} dní  ·  ${rbTotalH} h`} />
+                <Row label="Betonáž (práce)" value={`${formatCZK(plan.costs.pour_labor_czk)}  ·  ${pourH} h`} />
                 {propsLabor > 0 && <Row label="Podpěry (práce)" value={formatCZK(propsLabor)} />}
               </div>
               <div>
