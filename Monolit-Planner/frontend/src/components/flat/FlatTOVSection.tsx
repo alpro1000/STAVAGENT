@@ -56,7 +56,7 @@ export default function FlatTOVSection({ position: pos }: Props) {
 }
 
 /** Rich TOV with multiple professions — from calculator Aplikovat */
-function RichTOV({ tov, pos, meta }: { tov: TOVEntries; pos: Position; meta: Record<string, any> | null }) {
+function RichTOV({ tov, meta }: { tov: TOVEntries; pos: Position; meta: Record<string, any> | null }) {
   const rows: { type: 'group' | 'item' | 'detail' | 'total'; label: string; hours?: string; cost?: string }[] = [];
 
   // Labor section
