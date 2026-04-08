@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.7.0
-**Last Updated:** 2026-04-07
+**Version:** 4.8.0
+**Last Updated:** 2026-04-08
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -104,8 +104,14 @@ Structure: `shared/` (465 tests), `backend/` (83 tests), `frontend/` (0 tests). 
 **DB:** 44 tables. **Frontend:** PlannerPage (Part B) = 21 useState, NO AppContext. React Router v7.9.5, Vite 5.0.11.
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
-- **Element Planner:** 21 types (10 bridge + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
-- **Lateral Pressure:** p = ρ×g×h×k (ČSN EN 12812), auto-filter formwork, záběrová betonáž, shape correction (×1.0–1.8)
+- **Element Planner:** 22 types (11 bridge + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
+- **Element Subtypes:** beton, bednění, odbednění, výztuž, zrání, podpěrná konstr., předpětí, jiné
+- **OTSKP Catalog:** 11 regex patterns → element_type (confidence=1.0), metadata extraction (concrete class, prestress, prefab)
+- **NK Classification:** 8 bridge deck subtypes (deskový→spřažený), auto-detect from OTSKP name
+- **Křídla opěry:** separate element type `kridla_opery`, composite detection (opěra+křídla → dual formwork)
+- **Lateral Pressure:** p = ρ×g×h×k (DIN 18218), auto-filter formwork, záběrová betonáž, shape correction (×1.0–1.8)
+- **Formwork Selector:** Frami 80 kN/m² (max 3.0m), Framax 100 kN/m² (max 6.75m), support_tower category, max_pour_height_m filter
+- **Aplikovat:** auto-creates ALL missing sub-positions (ensurePosition with GET dedup), aggregateScheduleDays() shared function
 - **Two modes:** Monolit (ordinal days, auto-classify, TOV mapping) / Portal (calendar, manual)
 - **Import:** Registry→portalAutoSync(3s)→Portal→Monolit via `portal_project_id`, paired row scanner
 - **TOV sync:** labor-only to Portal DOV, 3 variants (A/B/C) auto-detected, formwork rental for bednění
@@ -133,10 +139,10 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~80 | 1 file | ~25K |
-| Monolit-Planner | 128 | 548 | ~33K |
+| Monolit-Planner | 128 | 556 | ~34K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~16K |
-| **TOTAL** | **~388** | **742+** | **~145K** |
+| **TOTAL** | **~388** | **750+** | **~146K** |
 
 ---
 
@@ -226,7 +232,12 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Registry columns misaligned | `display:flex` on `<tr>`, `width: cell.column.getSize()` + `flexShrink:0` on each `<td>` |
 | Registry dropdown clipped | Must use `createPortal(…, document.body)` with `position:fixed`; scroll listener closes on scroll |
 | Registry export wrong column | Was: `firstSheet.config` used for all sheets. Now: per-sheet `sheet.config.columns.cenaJednotkova` |
-| KPI text clipped ("lidí") | `.kpi-card` overflow:hidden→visible, min-width 180→200px in `flat-design.css` |
+| KPI text clipped ("lidí") | `.kpi-card` overflow:hidden→visible, min-width 180→200px, no max-height |
+| Aplikovat DNY wrong | Check shared/dist rebuilt (tsc), aggregateScheduleDays in formulas.ts |
+| Formwork Frami for tall element | Frami max 3.0m (max_pour_height_m), Framax max 6.75m; pressure 80/100 kN/m² |
+| Sub-position missing after Aplikovat | ensurePosition checks GET before POST; check browser console for fetch errors |
+| OTSKP not matching | OTSKP_RULES in element-classifier.ts; runs before KEYWORD_RULES; check normalize() |
+| Křídla classified as opěra | Composite suppression: if both "opěr" + "křídl" → opery_ulozne_prahy, not kridla_opery |
 
 ---
 
@@ -246,23 +257,20 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
-- [ ] **P1: Landing page — visual QA** — deploy to Vercel, check all 12 sections render, Czech chars OK, responsive, scroll anchors work, FAQ accordion
-- [ ] **P1: Landing page — /register route** — CTA buttons point to `/register`, verify route exists in Portal router or change to `/login`
-- [ ] **P1: Landing page — SEO subpages** — schema v2.0 defines 7 future SEO pages (/analyza-dokumentu, /parovani-kodu, etc.), not yet created
+- [ ] **P1: Merge branch** — `claude/fix-duplicate-constraints-DijC5` → main (15 commits, 456 tests)
 - [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
-- [ ] **P1: Debug Monolit React #310** — ErrorBoundary deployed, need `componentStack` from prod console to find exact object-as-child culprit
+- [ ] **P1: Debug Monolit React #310** — ErrorBoundary deployed, need `componentStack` from prod console
 - [ ] **P1: Fix portal_user_id type mismatch** — INTEGER in `bridges`, TEXT in `monolith_projects`
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
+- [ ] **P1: E2E test D6 SO202** — dvoutrámový, C35/45, is_prestressed=true, 2 mosty, Aplikovat → verify all subtypes in table
+- [ ] **P2: Výztuž B500B + Y1860** — split rebar for prestressed (dual RebarLiteResult), two rows in table
+- [ ] **P2: Landing page — visual QA + /register route + SEO subpages**
 - [ ] **P2: Test reimport** — import multi-sheet, edit mapping, reimport → skupiny preserved
-- [ ] **P2: Test auto-detect** — Komplet/OTSKP/AspeEsticon formats → ≥4/6 fields found
 - [ ] **P2: Calculator suggestions E2E** — upload TZ→Core extraction→Planner→suggestions appear for correct SO
-- [ ] **P2: Načíst z Rozpočtu E2E** — XLSX→Registry→auto-sync→Portal→Monolit→verify subtypes
 - [ ] **P2: TOV sync E2E** — 3 composition variants (A/B/C) with real bridge project
-- [ ] **P2: Registry undo E2E** — assign skupina → Ctrl+Z → verify revert; AI classify → Ctrl+Z → all restored
-- [ ] **P2: Registry export QA** — test multi-sheet file with different column mappings, verify per-sheet cenaJednotkova patching
+- [ ] **P2: Registry export QA** — test multi-sheet file with different column mappings
 - [ ] **P3: Planner E2E** — lateral pressure + záběry on SO-203, Aplikovat → TOV
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
-- [ ] **P3: Rimsa spec** — 3 formwork systems (T/TU/T-vozík), záběry by bridge length
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
