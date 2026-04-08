@@ -48,11 +48,21 @@ export default function FlatTOVSection({ position: pos }: Props) {
 
   // If tov_entries exist (from calculator), render rich multi-profession TOV
   if (tovEntries && (tovEntries.labor.length > 0 || tovEntries.materials.length > 0)) {
-    return <RichTOV tov={tovEntries} pos={pos} meta={meta} />;
+    return (
+      <>
+        <RichTOV tov={tovEntries} pos={pos} meta={meta} />
+        <LinkedPositionsBadges meta={meta} />
+      </>
+    );
   }
 
   // Legacy: single-profession from position fields
-  return <LegacyTOV pos={pos} meta={meta} />;
+  return (
+    <>
+      <LegacyTOV pos={pos} meta={meta} />
+      <LinkedPositionsBadges meta={meta} />
+    </>
+  );
 }
 
 /** Rich TOV with multiple professions — from calculator Aplikovat */
@@ -190,6 +200,35 @@ function TOVRow({ row }: { row: { type: string; label: string; hours?: string; c
       <td className="flat-col--right flat-mono">{row.hours || ''}</td>
       <td className="flat-col--right flat-mono">{row.cost || ''}</td>
       <td colSpan={4}></td>
+    </tr>
+  );
+}
+
+/** Show linked positions from import (výztuž, bednění found by OTSKP prefix) */
+function LinkedPositionsBadges({ meta }: { meta: Record<string, any> | null }) {
+  const linked: Array<{ code: string; name: string; mj: string; mnozstvi: number; typ: string }> =
+    meta?.linked_positions || [];
+  if (linked.length === 0) return null;
+
+  return (
+    <tr className="flat-tov flat-tov--detail">
+      <td colSpan={14} style={{ padding: '4px 16px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {linked.map((lp, i) => (
+            <span key={i} title={lp.name} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 4,
+              padding: '2px 8px', borderRadius: 4, fontSize: 10,
+              background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1e40af',
+              cursor: 'default', whiteSpace: 'nowrap',
+            }}>
+              <span style={{ fontSize: 11 }}>&#128206;</span>
+              {lp.code && <strong>{lp.code}</strong>}
+              {lp.typ}
+              {lp.mnozstvi > 0 && ` (${lp.mnozstvi.toLocaleString('cs')} ${lp.mj})`}
+            </span>
+          ))}
+        </div>
+      </td>
     </tr>
   );
 }
