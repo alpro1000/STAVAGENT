@@ -25,6 +25,8 @@ import {
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
+import { findLinkedPositions, detectWorkType } from '@stavagent/monolit-shared';
+import type { TOVEntries, TOVLaborEntry, TOVMaterialEntry } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -427,6 +429,7 @@ export default function PlannerPage() {
       odbedneni_position_id: searchParams.get('odbedneni_position_id'),
       podperna_position_id: searchParams.get('podperna_position_id'),
       predpeti_position_id: searchParams.get('predpeti_position_id'),
+      otskp_code: searchParams.get('otskp_code') || '',
     };
   }, [searchParams]);
 
@@ -2412,84 +2415,6 @@ export default function PlannerPage() {
                   // Write to positions via Monolit backend (TOV mapping)
                   const bridgeId = positionContext.bridge_id || positionContext.project_id || '';
                   if (positionContext.position_id && bridgeId) {
-                    // Helper: create missing sibling position if ID absent but data exists
-                    // Cache existing positions for this bridge to avoid duplicate creation
-                    let existingPositions: any[] | null = null;
-                    const getExisting = async (): Promise<any[]> => {
-                      if (existingPositions) return existingPositions;
-                      try {
-                        const res = await fetch(`${API_URL}/api/positions?bridge_id=${bridgeId}`);
-                        if (res.ok) {
-                          const data = await res.json();
-                          existingPositions = data.positions || [];
-                        }
-                      } catch { /* ignore */ }
-                      return existingPositions || [];
-                    };
-
-                    const ensurePosition = async (
-                      existingId: string | null | undefined,
-                      subtype: string,
-                      unit: string,
-                      itemName?: string,
-                    ): Promise<string | null> => {
-                      if (existingId) return existingId;
-                      // Check if position already exists in DB (prevents duplicates on repeated Aplikovat)
-                      const existing = await getExisting();
-                      const partName = positionContext.part_name || '';
-                      const found = existing.find((p: any) =>
-                        p.subtype === subtype && p.part_name === partName &&
-                        (!itemName || p.item_name === itemName)
-                      );
-                      if (found?.id) return found.id;
-                      // Create via POST
-                      const name = itemName || subtype;
-                      try {
-                        const createRes = await fetch(`${API_URL}/api/positions`, {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            bridge_id: bridgeId,
-                            positions: [{
-                              bridge_id: bridgeId,
-                              part_name: partName,
-                              item_name: name,
-                              subtype,
-                              unit,
-                              qty: 0,
-                              crew_size: 4,
-                              wage_czk_ph: 398,
-                              shift_hours: 10,
-                              days: 0,
-                            }],
-                          }),
-                        });
-                        if (createRes.ok) {
-                          const data = await createRes.json();
-                          existingPositions = data.positions || existingPositions;
-                          const matching = data.positions?.filter((p: any) =>
-                            p.subtype === subtype && p.part_name === partName
-                          );
-                          return matching?.at(-1)?.id || null;
-                        }
-                      } catch { /* non-critical */ }
-                      return null;
-                    };
-
-                    // Create ALL missing sibling positions needed by the calculator
-                    const [bedneniId, vyztuzId, zraniId, odbedneniId, podpernaId, predpetiId] = await Promise.all([
-                      ensurePosition(positionContext.bedneni_position_id, 'bednění', 'm2'),
-                      ensurePosition(positionContext.vyzuz_position_id, 'výztuž', 't'),
-                      ensurePosition(positionContext.zrani_position_id, 'zrání', 'den'),
-                      ensurePosition(positionContext.odbedneni_position_id, 'odbednění', 'm2'),
-                      plan.props?.needed
-                        ? ensurePosition(positionContext.podperna_position_id, 'podpěrná konstr.', 'm2')
-                        : Promise.resolve(positionContext.podperna_position_id || null),
-                      plan.prestress
-                        ? ensurePosition(positionContext.predpeti_position_id, 'předpětí', 'kpl')
-                        : Promise.resolve(positionContext.predpeti_position_id || null),
-                    ]);
-
                     const updates: Array<Record<string, unknown>> = [];
 
                     // Aggregate schedule tact_details → labor-days per subtype
@@ -2511,19 +2436,152 @@ export default function PlannerPage() {
                     const zraniDays = agg.zrani;
                     const odbedneniDays = agg.odbedneni;
 
-                    // 1. Beton position — concrete labor-days, crew, curing, full metadata
-                    // Blended wage includes night premium (§116 ZP: +10% for hours beyond 12h shift)
-                    const basePourWage = plan.resources.wage_pour_czk_h;
-                    const nightPremium = plan.costs.pour_night_premium_czk || 0;
+                    // Rental duration (days) = total schedule + transport buffer
+                    const rentalDays = plan.schedule.total_days + 2;
+                    const rentalMonths = Math.round((rentalDays / 30) * 10) / 10;
+                    const k = 0.8;
+
+                    // ── Build TOV entries for the main (beton) position ──
+                    const tovLabor: TOVLaborEntry[] = [];
+                    const tovMaterials: TOVMaterialEntry[] = [];
+                    let idC = 1;
+
+                    // Betonář
                     const pourCrew = plan.resources.crew_size_formwork;
+                    const pourWage = plan.resources.wage_pour_czk_h;
+                    const pourH = roundDay(pourCrew * plan.resources.shift_h * k * betonDays);
+                    tovLabor.push({
+                      id: `tov-${idC++}`, profession: 'Betonář', professionCode: 'BET',
+                      count: pourCrew, hours: pourH, normHours: pourH,
+                      hourlyRate: pourWage, totalCost: Math.round(pourH * pourWage),
+                    });
+
+                    // Tesař — montáž
+                    const fwCrew = plan.resources.crew_size_formwork;
+                    const fwWage = plan.resources.wage_formwork_czk_h;
+                    const fwAsmH = roundDay(fwCrew * plan.resources.shift_h * k * bedneniDays);
+                    tovLabor.push({
+                      id: `tov-${idC++}`, profession: 'Tesař/Bednář', professionCode: 'TES',
+                      count: fwCrew, hours: fwAsmH, normHours: fwAsmH,
+                      hourlyRate: fwWage, totalCost: Math.round(fwAsmH * fwWage),
+                      note: 'montáž bednění',
+                    });
+
+                    // Tesař — demontáž
+                    const fwDisH = roundDay(fwCrew * plan.resources.shift_h * k * odbedneniDays);
+                    tovLabor.push({
+                      id: `tov-${idC++}`, profession: 'Tesař/Bednář', professionCode: 'TES',
+                      count: fwCrew, hours: fwDisH, normHours: fwDisH,
+                      hourlyRate: fwWage, totalCost: Math.round(fwDisH * fwWage),
+                      note: 'demontáž bednění',
+                    });
+
+                    // Ošetřovatel (curing — shorter shift)
+                    if (zraniDays > 0) {
+                      const curingWorkers = 1;
+                      const curingShiftH = 5; // 3× denně kropení, ne celý den
+                      const curingWage = 320;
+                      const curingH = roundDay(curingWorkers * curingShiftH * zraniDays);
+                      tovLabor.push({
+                        id: `tov-${idC++}`, profession: 'Ošetřovatel betonu', professionCode: 'OSE',
+                        count: curingWorkers, hours: curingH, normHours: curingH,
+                        hourlyRate: curingWage, totalCost: Math.round(curingH * curingWage),
+                        note: 'zrání — kropení, zakrytí fólií',
+                      });
+                    }
+
+                    // Železář (if no separate linked výztuž position found later)
+                    const rbCrew = plan.resources.crew_size_rebar;
+                    const rbWage = plan.resources.wage_rebar_czk_h;
+                    const rbH = roundDay(rbCrew * plan.resources.shift_h * k * vyztuzDays);
+
+                    // Předpětí specialist
+                    let prestressEntry: TOVLaborEntry | null = null;
+                    if (plan.prestress) {
+                      const prDays = agg.predpeti || roundDay(plan.prestress.days * numTacts);
+                      const prCrew = plan.prestress.crew_size || 5;
+                      const prWage = 550;
+                      const prH = roundDay(prCrew * plan.resources.shift_h * k * prDays);
+                      prestressEntry = {
+                        id: `tov-${idC++}`, profession: 'Specialista předpětí', professionCode: 'PRE',
+                        count: prCrew, hours: prH, normHours: prH,
+                        hourlyRate: prWage, totalCost: Math.round(prH * prWage),
+                      };
+                    }
+
+                    // Formwork rental material
+                    const fwArea = parseFloat(form.formwork_area_m2) || 0;
+                    if (plan.costs.formwork_rental_czk > 0 && fwArea > 0) {
+                      tovMaterials.push({
+                        id: `tov-mat-${idC++}`,
+                        name: `Pronájem ${plan.formwork.system.name} (${plan.formwork.system.manufacturer})`,
+                        quantity: fwArea, unit: 'm²',
+                        unitPrice: plan.formwork.system.rental_czk_m2_month,
+                        totalCost: Math.round(plan.costs.formwork_rental_czk),
+                        rentalMonths,
+                        note: `${rentalDays} dní (${rentalMonths} měs.)`,
+                      });
+                    }
+
+                    // Props rental
+                    if (plan.props?.needed && plan.costs.props_rental_czk > 0) {
+                      tovMaterials.push({
+                        id: `tov-mat-${idC++}`,
+                        name: `Pronájem ${plan.props.system.name} (${plan.props.system.manufacturer})`,
+                        quantity: plan.props.num_props_per_tact, unit: 'ks',
+                        unitPrice: plan.props.system.rental_czk_per_prop_day,
+                        totalCost: Math.round(plan.costs.props_rental_czk),
+                        rentalMonths: Math.round((plan.props.rental_days / 30) * 10) / 10,
+                        note: `${plan.props.rental_days} dní pronájmu`,
+                      });
+                    }
+
+                    // ── Find linked positions by OTSKP/URS code prefix ──
+                    let allPositions: any[] = [];
+                    try {
+                      const posRes = await fetch(`${API_URL}/api/positions?bridge_id=${bridgeId}`);
+                      if (posRes.ok) allPositions = (await posRes.json()).positions || [];
+                    } catch { /* ignore */ }
+
+                    const currentCode = positionContext.otskp_code || '';
+                    const linked = findLinkedPositions(currentCode, allPositions);
+
+                    // Determine if výztuž goes into separate linked position or into main TOV
+                    const linkedVyzuz = linked.related.find(r => r.work_type === 'výztuž');
+                    const linkedPredpeti = linked.related.find(r => r.work_type === 'předpětí');
+
+                    // If no linked výztuž position — add Železář to main TOV
+                    if (!linkedVyzuz && rbH > 0) {
+                      tovLabor.push({
+                        id: `tov-${idC++}`, profession: 'Železář', professionCode: 'ZEL',
+                        count: rbCrew, hours: rbH, normHours: rbH,
+                        hourlyRate: rbWage, totalCost: Math.round(rbH * rbWage),
+                      });
+                    }
+
+                    // If no linked předpětí position — add to main TOV
+                    if (!linkedPredpeti && prestressEntry) {
+                      tovLabor.push(prestressEntry);
+                    }
+
+                    // Blended wage for position fields (beton days only)
+                    const nightPremium = plan.costs.pour_night_premium_czk || 0;
                     const pourLaborHours = pourCrew * plan.resources.shift_h * betonDays;
                     const effectivePourWage = pourLaborHours > 0 && nightPremium > 0
-                      ? Math.round(((pourLaborHours * basePourWage + nightPremium) / pourLaborHours) * 100) / 100
-                      : basePourWage;
+                      ? Math.round(((pourLaborHours * pourWage + nightPremium) / pourLaborHours) * 100) / 100
+                      : pourWage;
 
+                    const mainTovEntries: TOVEntries = {
+                      labor: tovLabor,
+                      materials: tovMaterials,
+                      source: 'calculator',
+                      calculated_at: monolit_data.calculated_at,
+                    };
+
+                    // 1. Main (beton) position — update with TOV entries in metadata
                     updates.push({
                       id: positionContext.position_id,
-                      days: betonDays,
+                      days: plan.schedule.total_days,
                       crew_size: pourCrew,
                       wage_czk_ph: effectivePourWage,
                       shift_hours: plan.resources.shift_h,
@@ -2534,138 +2592,55 @@ export default function PlannerPage() {
                         formwork_info: monolit_data.formwork_info,
                         schedule_info: monolit_data.schedule_info,
                         calculated_at: monolit_data.calculated_at,
+                        tov_entries: mainTovEntries,
                       }),
                     });
 
-                    // 2. Bednění position — assembly labor-days only (no disassembly)
-                    if (bedneniId) {
+                    // 2. Linked výztuž position — write Železář TOV
+                    if (linkedVyzuz && rbH > 0) {
+                      const vyzTov: TOVEntries = {
+                        labor: [{
+                          id: 'tov-vyz-1', profession: 'Železář', professionCode: 'ZEL',
+                          count: rbCrew, hours: rbH, normHours: rbH,
+                          hourlyRate: rbWage, totalCost: Math.round(rbH * rbWage),
+                        }],
+                        materials: [],
+                        source: 'calculator',
+                        calculated_at: monolit_data.calculated_at,
+                      };
                       updates.push({
-                        id: bedneniId,
-                        days: bedneniDays,
-                        crew_size: plan.resources.crew_size_formwork,
-                        wage_czk_ph: plan.resources.wage_formwork_czk_h,
-                        shift_hours: plan.resources.shift_h,
-                        qty: parseFloat(form.formwork_area_m2) || undefined,
-                        metadata: JSON.stringify({
-                          formwork_system: plan.formwork.system.name,
-                          formwork_manufacturer: plan.formwork.system.manufacturer,
-                          assembly_days: plan.formwork.assembly_days,
-                          disassembly_days: plan.formwork.disassembly_days,
-                          rental_czk: plan.costs.formwork_rental_czk,
-                          ...(plan.props?.needed ? {
-                            props_system: plan.props.system.name,
-                            props_manufacturer: plan.props.system.manufacturer,
-                            props_count: plan.props.num_props_per_tact,
-                          } : {}),
-                          calculated_at: monolit_data.calculated_at,
-                        }),
-                      });
-                    }
-
-                    // 2b. Křídla bednění — separate formwork set (composite opěry+křídla)
-                    // Uses 'odbednění' subtype slot repurposed as křídla bednění — OR creates via jiné with křídla label
-                    if (kridlaFormwork && form.include_kridla) {
-                      const kridlaBedneniId = await ensurePosition(
-                        null, 'jiné', 'm2', 'Bednění křídel'
-                      );
-                      if (kridlaBedneniId) {
-                        updates.push({
-                          id: kridlaBedneniId,
-                          days: bedneniDays,
-                          crew_size: plan.resources.crew_size_formwork,
-                          wage_czk_ph: plan.resources.wage_formwork_czk_h,
-                          shift_hours: plan.resources.shift_h,
-                          metadata: JSON.stringify({
-                            formwork_system: kridlaFormwork.system.name,
-                            formwork_manufacturer: kridlaFormwork.system.manufacturer,
-                            kridla_height_m: kridlaFormwork.height_m,
-                            is_kridla_bedneni: true,
-                            calculated_at: monolit_data.calculated_at,
-                          }),
-                        });
-                      }
-                    }
-
-                    // 3. Výztuž position — rebar labor-days summed across all tacts
-                    if (vyztuzId) {
-                      updates.push({
-                        id: vyztuzId,
+                        id: linkedVyzuz.id,
                         days: vyztuzDays,
-                        crew_size: plan.resources.crew_size_rebar,
-                        wage_czk_ph: plan.resources.wage_rebar_czk_h,
+                        crew_size: rbCrew,
+                        wage_czk_ph: rbWage,
                         shift_hours: plan.resources.shift_h,
                         metadata: JSON.stringify({
                           rebar_mass_kg: plan.rebar.mass_kg,
                           norm_h_per_t: plan.rebar.norm_h_per_t,
                           calculated_at: monolit_data.calculated_at,
+                          tov_entries: vyzTov,
                         }),
                       });
                     }
 
-                    // 4. Zrání position — calendar duration (not labor), lide=0
-                    if (zraniId) {
+                    // 3. Linked předpětí position — write specialist TOV
+                    if (linkedPredpeti && prestressEntry) {
+                      const preTov: TOVEntries = {
+                        labor: [prestressEntry],
+                        materials: [],
+                        source: 'calculator',
+                        calculated_at: monolit_data.calculated_at,
+                      };
+                      const prDays = agg.predpeti || roundDay((plan.prestress?.days || 5) * numTacts);
                       updates.push({
-                        id: zraniId,
-                        days: zraniDays,
-                        crew_size: 1, // zrání has no labor; crew_size=1 avoids div-by-zero, formulas return 0 for subtype 'zrání'
-                        metadata: JSON.stringify({
-                          curing_calendar_days: zraniDays,
-                          calculated_at: monolit_data.calculated_at,
-                        }),
-                      });
-                    }
-
-                    // 5. Odbednění position — stripping labor-days summed across all tacts
-                    if (odbedneniId) {
-                      updates.push({
-                        id: odbedneniId,
-                        days: odbedneniDays,
-                        crew_size: plan.resources.crew_size_formwork,
-                        wage_czk_ph: plan.resources.wage_formwork_czk_h,
+                        id: linkedPredpeti.id,
+                        days: prDays,
+                        crew_size: prestressEntry.count,
+                        wage_czk_ph: prestressEntry.hourlyRate,
                         shift_hours: plan.resources.shift_h,
                         metadata: JSON.stringify({
-                          stripping_days_per_tact: plan.formwork.disassembly_days,
                           calculated_at: monolit_data.calculated_at,
-                        }),
-                      });
-                    }
-
-                    // 6. Podpěrná konstr. position — props assembly + disassembly labor-days
-                    if (podpernaId && plan.props?.needed) {
-                      const propsDays = roundDay(plan.props.assembly_days + plan.props.disassembly_days);
-                      updates.push({
-                        id: podpernaId,
-                        days: propsDays,
-                        crew_size: plan.resources.crew_size_formwork,
-                        wage_czk_ph: plan.resources.wage_formwork_czk_h,
-                        shift_hours: plan.resources.shift_h,
-                        metadata: JSON.stringify({
-                          props_system: plan.props.system.name,
-                          props_count: plan.props.num_props_per_tact,
-                          assembly_days: plan.props.assembly_days,
-                          hold_days: plan.props.hold_days,
-                          disassembly_days: plan.props.disassembly_days,
-                          rental_cost_czk: plan.props.rental_cost_czk,
-                          labor_cost_czk: plan.props.labor_cost_czk,
-                          total_cost_czk: plan.props.total_cost_czk,
-                          calculated_at: monolit_data.calculated_at,
-                        }),
-                      });
-                    }
-
-                    // 7. Předpětí position — prestressing days (only if is_prestressed)
-                    if (predpetiId && plan.prestress) {
-                      const prestressDays = agg.predpeti || roundDay(plan.prestress.days * numTacts);
-                      updates.push({
-                        id: predpetiId,
-                        days: prestressDays,
-                        crew_size: plan.prestress.crew_size || 5,
-                        wage_czk_ph: 500, // specialist rate for prestressing
-                        shift_hours: plan.resources.shift_h,
-                        metadata: JSON.stringify({
-                          prestress_days_per_tact: plan.prestress.days,
-                          skruz_total_days: plan.prestress.skruz_total_days,
-                          calculated_at: monolit_data.calculated_at,
+                          tov_entries: preTov,
                         }),
                       });
                     }
