@@ -959,7 +959,14 @@ export function findPairedRows(rawRows, betonPositions) {
   }
   for (const bp of betonPositions) {
     if (bp.otskp_code && linkedByParent.has(bp.otskp_code)) {
-      const existing = bp.metadata ? (typeof bp.metadata === 'string' ? JSON.parse(bp.metadata) : bp.metadata) : {};
+      let existing = {};
+      if (bp.metadata) {
+        try {
+          existing = typeof bp.metadata === 'string' ? JSON.parse(bp.metadata) : bp.metadata;
+        } catch (err) {
+          logger.warn(`[PairedRows] Failed to parse metadata for ${bp.otskp_code}: ${err.message}`);
+        }
+      }
       existing.linked_positions = linkedByParent.get(bp.otskp_code);
       bp.metadata = JSON.stringify(existing);
     }
