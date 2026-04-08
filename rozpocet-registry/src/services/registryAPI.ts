@@ -81,6 +81,7 @@ export interface RegistryItem {
   cena_jednotkova?: number;
   cena_celkem?: number;
   item_order: number;
+  skupina?: string;
   created_at: string;
   updated_at: string;
   tov_data?: any[];
