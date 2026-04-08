@@ -122,6 +122,20 @@ export interface PlannerInput {
     prestress_days_override?: number;
     /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
     bridge_deck_subtype?: 'deskovy' | 'jednotram' | 'dvoutram' | 'vicetram' | 'jednokomora' | 'dvoukomora' | 'ramovy' | 'sprazeny';
+    /** Span length of the longest span (m). For technology recommendation. */
+    span_m?: number;
+    /** Number of bridge spans. */
+    num_spans?: number;
+    /** NK width (m). For MSS area calculation. */
+    nk_width_m?: number;
+    /** Construction technology override. Auto-recommended if not given. */
+    construction_technology?: 'fixed_scaffolding' | 'mss' | 'cantilever';
+    /** MSS tact duration override (days per span). Auto from deck subtype if not given. */
+    mss_tact_days?: number;
+    /** MSS mobilization cost override (Kč). */
+    mss_mobilization_czk?: number;
+    /** MSS monthly rental override (Kč/month). */
+    mss_rental_czk_month?: number;
     /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). For validation warnings. */
     exposure_class?: string;
     /** Run Monte Carlo simulation. Default: false */
@@ -205,6 +219,13 @@ export interface PlannerOutput {
         skruz_total_days: number;
     };
     props?: PropsCalculatorResult;
+    bridge_technology?: {
+        technology: import('./bridge-technology.js').ConstructionTechnology;
+        technology_label_cs: string;
+        recommendation: import('./bridge-technology.js').TechnologyRecommendation;
+        mss_cost?: import('./bridge-technology.js').MSSCostResult;
+        mss_schedule?: import('./bridge-technology.js').MSSScheduleResult;
+    };
     monte_carlo?: MonteCarloResult;
     deadline_check?: DeadlineCheckResult;
     norms_sources: {

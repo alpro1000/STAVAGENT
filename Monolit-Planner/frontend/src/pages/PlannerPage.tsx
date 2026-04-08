@@ -24,7 +24,7 @@ import {
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
@@ -208,6 +208,12 @@ interface FormState {
   bridge_deck_subtype: string;
   include_kridla: boolean;
   kridla_height_m: string; // empty = not set
+  // Bridge geometry (mostovka only)
+  span_m: string;         // empty = not set
+  num_spans: string;      // empty = not set
+  nk_width_m: string;     // empty = auto (12m)
+  construction_technology: '' | 'fixed_scaffolding' | 'mss' | 'cantilever';
+  mss_tact_days: string;  // empty = auto from subtype
 }
 
 const DEFAULT_FORM: FormState = {
@@ -255,6 +261,11 @@ const DEFAULT_FORM: FormState = {
   bridge_deck_subtype: '',
   include_kridla: false,
   kridla_height_m: '',
+  span_m: '',
+  num_spans: '',
+  nk_width_m: '',
+  construction_technology: '',
+  mss_tact_days: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -789,6 +800,12 @@ export default function PlannerPage() {
     if (form.is_prestressed) input.is_prestressed = true;
     // Bridge deck subtype
     if (form.bridge_deck_subtype) input.bridge_deck_subtype = form.bridge_deck_subtype as any;
+    // Bridge geometry (mostovka only)
+    if (form.span_m) input.span_m = parseFloat(form.span_m);
+    if (form.num_spans) input.num_spans = parseInt(form.num_spans);
+    if (form.nk_width_m) input.nk_width_m = parseFloat(form.nk_width_m);
+    if (form.construction_technology) input.construction_technology = form.construction_technology as any;
+    if (form.mss_tact_days) input.mss_tact_days = parseInt(form.mss_tact_days);
     // Exposure class from URL context
     if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
     // Total length for non-spáry mode (needed for prestress days calculation)
@@ -1196,7 +1213,7 @@ export default function PlannerPage() {
 
           {/* ─── Mostovková deska: bridge config + context hint ─── */}
           <div style={{
-            maxHeight: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 300 : 0,
+            maxHeight: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 900 : 0,
             opacity: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 1 : 0,
             overflow: 'hidden',
             transition: 'max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease',
@@ -1249,6 +1266,130 @@ export default function PlannerPage() {
                   <span style={{ fontSize: 12 }}>Předpjatá NK (kabely Y1860S7, injektáž)</span>
                 </label>
               </Field>
+
+              {/* ─── Parametry mostu (bridge geometry) ─── */}
+              <div style={{
+                marginTop: 8, padding: '10px 12px',
+                background: 'var(--r0-slate-50)', border: '1px solid var(--r0-slate-200)', borderRadius: 6,
+              }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600)', marginBottom: 8 }}>
+                  Parametry mostu (nepovinné — pro doporučení technologie)
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                  <Field label="Rozpětí pole (m)">
+                    <input style={inputStyle} type="number" step="0.5" min="5" max="200"
+                      placeholder="např. 36"
+                      value={form.span_m}
+                      onChange={e => update('span_m', e.target.value)} />
+                  </Field>
+                  <Field label="Počet polí">
+                    <input style={inputStyle} type="number" step="1" min="1" max="30"
+                      placeholder="např. 9"
+                      value={form.num_spans}
+                      onChange={e => update('num_spans', e.target.value)} />
+                  </Field>
+                  <Field label="Šířka NK (m)">
+                    <input style={inputStyle} type="number" step="0.1" min="3" max="30"
+                      placeholder="12"
+                      value={form.nk_width_m}
+                      onChange={e => update('nk_width_m', e.target.value)} />
+                  </Field>
+                </div>
+                {form.span_m && form.num_spans && (
+                  <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', marginTop: 4 }}>
+                    Celková délka NK: {(parseFloat(form.span_m) * parseInt(form.num_spans)).toFixed(0)} m
+                    {form.nk_width_m && ` | Plocha NK: ${(parseFloat(form.span_m) * parseInt(form.num_spans) * parseFloat(form.nk_width_m)).toFixed(0)} m²`}
+                  </div>
+                )}
+
+                {/* Technology recommendation */}
+                {(() => {
+                  const spanVal = parseFloat(form.span_m);
+                  const numSpansVal = parseInt(form.num_spans);
+                  const heightVal = parseFloat(form.height_m) || 10;
+                  if (!spanVal || !numSpansVal || spanVal < 5 || numSpansVal < 1) return null;
+
+                  const techRec = recommendBridgeTechnology({
+                    span_m: spanVal,
+                    clearance_height_m: heightVal,
+                    num_spans: numSpansVal,
+                    deck_subtype: form.bridge_deck_subtype || undefined,
+                    is_prestressed: form.is_prestressed,
+                    nk_width_m: parseFloat(form.nk_width_m) || undefined,
+                  });
+
+                  const selectedTech = form.construction_technology || techRec.recommended;
+
+                  return (
+                    <div style={{ marginTop: 10 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600)', marginBottom: 6 }}>
+                        Technologie výstavby
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        {techRec.options.map(opt => (
+                          <label key={opt.technology} style={{
+                            display: 'flex', alignItems: 'center', gap: 6,
+                            cursor: opt.feasible ? 'pointer' : 'not-allowed',
+                            opacity: opt.feasible ? 1 : 0.5,
+                            fontSize: 12,
+                          }}>
+                            <input
+                              type="radio"
+                              name="construction_technology"
+                              value={opt.technology}
+                              checked={selectedTech === opt.technology}
+                              disabled={!opt.feasible}
+                              onChange={() => update('construction_technology', opt.technology)}
+                            />
+                            <span>
+                              {opt.label_cs}
+                              {opt.is_recommended && <span style={{ color: '#16a34a', fontWeight: 600, marginLeft: 4 }}>DOPORUČENO</span>}
+                              {!opt.feasible && opt.infeasible_reason && (
+                                <span style={{ color: 'var(--r0-slate-400)', marginLeft: 4 }}>— {opt.infeasible_reason}</span>
+                              )}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+
+                      {/* Recommendation card */}
+                      <div style={{
+                        marginTop: 8, padding: '8px 10px', borderRadius: 6,
+                        background: selectedTech === techRec.recommended ? '#f0fdf4' : '#fefce8',
+                        border: `1px solid ${selectedTech === techRec.recommended ? '#bbf7d0' : '#fef08a'}`,
+                        fontSize: 11, lineHeight: 1.6,
+                      }}>
+                        <div style={{ fontWeight: 700, color: selectedTech === techRec.recommended ? '#166534' : '#854d0e', marginBottom: 2 }}>
+                          {selectedTech === techRec.recommended ? '✓' : '⚠'} {selectedTech === techRec.recommended ? 'DOPORUČENO' : 'Uživatelský výběr'}:{' '}
+                          {techRec.options.find(o => o.technology === selectedTech)?.label_cs}
+                        </div>
+                        <div style={{ color: 'var(--r0-slate-600)' }}>
+                          {techRec.reason}
+                        </div>
+                        {selectedTech === 'mss' && (
+                          <div style={{ marginTop: 4, color: 'var(--r0-slate-500)' }}>
+                            Záběr: 1 pole ({spanVal}m × {parseFloat(form.nk_width_m) || 12}m = {(spanVal * (parseFloat(form.nk_width_m) || 12)).toFixed(0)} m²)
+                            {' | '}Počet taktů: {numSpansVal}
+                            {' | '}Orientační doba: {numSpansVal} × {getMSSTactDays(form.bridge_deck_subtype || undefined)} dní + montáž/demontáž
+                          </div>
+                        )}
+                      </div>
+
+                      {/* MSS tact duration override */}
+                      {selectedTech === 'mss' && (
+                        <div style={{ marginTop: 6 }}>
+                          <Field label="Doba taktu MSS (dní/pole)" hint="auto dle typu NK">
+                            <input style={inputStyle} type="number" step="1" min="7" max="60"
+                              placeholder={String(getMSSTactDays(form.bridge_deck_subtype || undefined))}
+                              value={form.mss_tact_days}
+                              onChange={e => update('mss_tact_days', e.target.value)} />
+                          </Field>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+              </div>
           </div>
 
           {/* ─── Opěry: composite křídla toggle ─── */}
@@ -3276,6 +3417,43 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               )}
             </div>
           </div>
+        </Card>
+      )}
+
+      {/* Bridge Technology (MSS / Fixed) */}
+      {plan.bridge_technology && (
+        <Card title={`Technologie: ${plan.bridge_technology.technology_label_cs}`} icon="🌉" borderColor="var(--r0-blue)">
+          <Row label="Technologie" value={plan.bridge_technology.technology_label_cs} bold />
+          <Row label="Doporučení" value={plan.bridge_technology.recommendation.recommended === plan.bridge_technology.technology ? 'Shoduje se s doporučením' : 'Uživatelský výběr'} />
+
+          {plan.bridge_technology.mss_schedule && (
+            <div style={{ marginTop: 8 }}>
+              <div style={subTitle}>Harmonogram MSS</div>
+              <Row label="Montáž MSS" value={`${plan.bridge_technology.mss_schedule.setup_days} dní`} />
+              <Row label="Taktů" value={`${plan.bridge_technology.mss_schedule.num_tacts}`} />
+              <Row label="Doba taktu" value={`${plan.bridge_technology.mss_schedule.tact_days} dní`} />
+              <Row label="Demontáž MSS" value={`${plan.bridge_technology.mss_schedule.teardown_days} dní`} />
+              <Row label="Celkem MSS" value={`${plan.bridge_technology.mss_schedule.total_days} dní`} bold />
+              <div style={{ fontSize: 11, color: 'var(--r0-slate-400)', marginTop: 4 }}>
+                = montáž {plan.bridge_technology.mss_schedule.setup_days}d
+                + {plan.bridge_technology.mss_schedule.num_tacts} × {plan.bridge_technology.mss_schedule.tact_days}d
+                + demontáž {plan.bridge_technology.mss_schedule.teardown_days}d
+              </div>
+            </div>
+          )}
+
+          {plan.bridge_technology.mss_cost && (
+            <div style={{ marginTop: 8 }}>
+              <div style={subTitle}>Náklady MSS</div>
+              <Row label="Mobilizace" value={formatCZK(plan.bridge_technology.mss_cost.mobilization_czk)} />
+              <Row label="Pronájem" value={`${formatCZK(plan.bridge_technology.mss_cost.rental_czk_month)}/měs × ${plan.bridge_technology.mss_cost.rental_months} měs`} />
+              <Row label="Pronájem celkem" value={formatCZK(plan.bridge_technology.mss_cost.rental_total_czk)} />
+              <Row label="Demobilizace" value={formatCZK(plan.bridge_technology.mss_cost.demobilization_czk)} />
+              <Row label="Celkem MSS" value={formatCZK(plan.bridge_technology.mss_cost.total_czk)} bold />
+              <Row label="JC" value={`${plan.bridge_technology.mss_cost.unit_cost_czk_m2.toLocaleString('cs')} Kč/m² NK`} />
+              <Row label="Plocha NK" value={`${plan.bridge_technology.mss_cost.nk_area_m2.toLocaleString('cs')} m²`} />
+            </div>
+          )}
         </Card>
       )}
 
