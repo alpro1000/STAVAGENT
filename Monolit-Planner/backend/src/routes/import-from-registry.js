@@ -131,7 +131,17 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'portal_project_id is required' });
     }
 
+    // Input validation: prevent path traversal in URL interpolation
+    if (!/^[a-zA-Z0-9_\-]+$/.test(portal_project_id)) {
+      logger.warn(`[ImportRegistry] Invalid portal_project_id format: ${portal_project_id}`);
+      return res.status(400).json({ error: 'Invalid portal_project_id format' });
+    }
+
     logger.info(`[ImportRegistry] Importing project ${portal_project_id} (source=${source || 'portal'})...`);
+
+    // Configurable timeouts via env
+    const PORTAL_TIMEOUT = parseInt(process.env.PORTAL_TIMEOUT_MS || '5000', 10);
+    const REGISTRY_TIMEOUT = parseInt(process.env.REGISTRY_TIMEOUT_MS || '8000', 10);
 
     let projectData = null;
 
@@ -139,7 +149,7 @@ router.post('/', async (req, res) => {
     try {
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portal_project_id}`, {
         headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(15000),
+        signal: AbortSignal.timeout(PORTAL_TIMEOUT),
       });
       if (response.ok) {
         const data = await response.json();
@@ -156,49 +166,60 @@ router.post('/', async (req, res) => {
       logger.info('[ImportRegistry] Trying direct Registry backend fetch...');
       const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
       try {
-        // Try fetching project by ID
         const regRes = await fetch(`${REGISTRY_API}/api/registry/projects/${portal_project_id}`, {
-          signal: AbortSignal.timeout(10000),
+          signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
         });
         if (regRes.ok) {
           const regData = await regRes.json();
           const regProject = regData.project;
           if (regProject) {
-            // Fetch sheets for this project
             const sheetsRes = await fetch(`${REGISTRY_API}/api/registry/projects/${portal_project_id}/sheets`, {
-              signal: AbortSignal.timeout(10000),
+              signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
             });
             if (sheetsRes.ok) {
               const sheetsData = await sheetsRes.json();
-              const sheets = [];
-              for (const sheet of (sheetsData.sheets || [])) {
-                const itemsRes = await fetch(`${REGISTRY_API}/api/registry/sheets/${sheet.sheet_id}/items`, {
-                  signal: AbortSignal.timeout(10000),
-                });
-                if (itemsRes.ok) {
-                  const itemsData = await itemsRes.json();
-                  sheets.push({
-                    name: sheet.sheet_name || 'Sheet',
-                    items: (itemsData.items || []).map(i => ({
-                      id: i.item_id,
-                      kod: i.kod || '',
-                      popis: i.popis || '',
-                      mnozstvi: i.mnozstvi || 0,
-                      mj: i.mj || '',
-                      cenaJednotkova: i.cena_jednotkova || 0,
-                      cenaCelkem: i.cena_celkem || 0,
-                      position_instance_id: i.position_instance_id || null,
-                    })),
-                  });
-                }
-              }
+
+              // Parallel fetch: all sheet items at once (avoids N+1 sequential problem)
+              const sheetResults = await Promise.all(
+                (sheetsData.sheets || []).map(async (sheet) => {
+                  try {
+                    const itemsRes = await fetch(`${REGISTRY_API}/api/registry/sheets/${sheet.sheet_id}/items`, {
+                      signal: AbortSignal.timeout(REGISTRY_TIMEOUT),
+                    });
+                    if (itemsRes.ok) {
+                      const itemsData = await itemsRes.json();
+                      return {
+                        name: sheet.sheet_name || 'Sheet',
+                        items: (itemsData.items || []).map(i => ({
+                          id: i.item_id,
+                          kod: i.kod || '',
+                          popis: i.popis || '',
+                          mnozstvi: i.mnozstvi || 0,
+                          mj: i.mj || '',
+                          cenaJednotkova: i.cena_jednotkova || 0,
+                          cenaCelkem: i.cena_celkem || 0,
+                          position_instance_id: i.position_instance_id || null,
+                        })),
+                      };
+                    }
+                    logger.warn(`[ImportRegistry] Failed to fetch items for sheet ${sheet.sheet_id}: HTTP ${itemsRes.status}`);
+                    return null;
+                  } catch (sheetErr) {
+                    logger.warn(`[ImportRegistry] Failed to fetch sheet ${sheet.sheet_id}: ${sheetErr.message}`);
+                    return null;
+                  }
+                })
+              );
+
+              const sheets = sheetResults.filter(Boolean);
               if (sheets.length > 0) {
                 projectData = {
                   id: portal_project_id,
                   name: regProject.project_name || project_name || 'Import z Registry',
                   sheets,
                 };
-                logger.info(`[ImportRegistry] Loaded ${sheets.length} sheets directly from Registry backend`);
+                const skipped = sheetResults.length - sheets.length;
+                logger.info(`[ImportRegistry] Loaded ${sheets.length} sheets from Registry${skipped > 0 ? ` (${skipped} failed)` : ''}`);
               }
             }
           }
