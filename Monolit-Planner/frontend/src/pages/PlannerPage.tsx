@@ -2585,7 +2585,7 @@ export default function PlannerPage() {
                       crew_size: pourCrew,
                       wage_czk_ph: effectivePourWage,
                       shift_hours: plan.resources.shift_h,
-                      curing_days: plan.formwork.curing_days,
+                      curing_days: Math.round(plan.formwork.curing_days),
                       metadata: JSON.stringify({
                         costs: monolit_data.costs,
                         resources: monolit_data.resources,

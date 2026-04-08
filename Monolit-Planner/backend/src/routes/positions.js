@@ -371,11 +371,18 @@ router.put('/', async (req, res) => {
 
         logger.info(`  Updating position id=${id}: ${fieldNames.join(', ')}`);
 
-        const stmt = client.prepare(sql);
-        const result = await stmt.run(...values);
+        try {
+          const stmt = client.prepare(sql);
+          const result = await stmt.run(...values);
 
-        if (result.changes === 0) {
-          logger.warn(`  ⚠️ No rows updated for id=${id}`);
+          if (result.changes === 0) {
+            logger.warn(`  ⚠️ No rows updated for id=${id}`);
+          }
+        } catch (updateErr) {
+          logger.error(`  ❌ Failed to update position id=${id}: ${updateErr.message}`);
+          logger.error(`  SQL: ${sql.trim().substring(0, 200)}`);
+          logger.error(`  Values types: ${values.map((v, i) => `${fieldNames[i] || 'id/bridge'}=${typeof v}`).join(', ')}`);
+          throw updateErr;
         }
       }
     });
