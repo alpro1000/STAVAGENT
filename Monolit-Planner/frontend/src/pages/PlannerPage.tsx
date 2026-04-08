@@ -475,6 +475,19 @@ export default function PlannerPage() {
     return f;
   }, [positionContext]);
 
+  // Store classification hint from auto-detection (OTSKP/keywords) for display
+  const classificationHint = useMemo(() => {
+    if (!positionContext?.part_name) return null;
+    const isBridge = !!(positionContext.bridge_id && /^SO[-\s]?\d/i.test(positionContext.bridge_id));
+    const classified = classifyElement(positionContext.part_name, { is_bridge: isBridge });
+    if (classified.element_type === 'other' && classified.confidence <= 0.5) return null;
+    return {
+      source: classified.classification_source as 'otskp' | 'keywords' | undefined,
+      confidence: classified.confidence,
+      element_type: classified.element_type,
+    };
+  }, [positionContext]);
+
   const [form, setForm] = useState<FormState>(initialForm);
   const [result, setResult] = useState<PlannerOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -1166,6 +1179,17 @@ export default function PlannerPage() {
                     );
                   })()}
                 </select>
+                {classificationHint && form.element_type === classificationHint.element_type && (
+                  <div style={{
+                    marginTop: 4, fontSize: 10, padding: '3px 8px', borderRadius: 4,
+                    background: classificationHint.source === 'otskp' ? '#ecfdf5' : '#eff6ff',
+                    color: classificationHint.source === 'otskp' ? '#065f46' : '#1e40af',
+                    border: `1px solid ${classificationHint.source === 'otskp' ? '#a7f3d0' : '#bfdbfe'}`,
+                  }}>
+                    Rozpoznáno z {classificationHint.source === 'otskp' ? 'OTSKP katalogu' : 'klíčových slov'}{' '}
+                    (confidence {(classificationHint.confidence * 100).toFixed(0)}%)
+                  </div>
+                )}
               </Field>
             )}
           </Section>
