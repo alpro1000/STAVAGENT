@@ -41,6 +41,8 @@ import { scheduleElement } from './element-scheduler.js';
 import { findFormworkSystem } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod } from './lateral-pressure.js';
 import type { LateralPressureResult, PourStagesSuggestion, PourMethod } from './lateral-pressure.js';
+import { recommendBridgeTechnology, calculateMSSCost, calculateMSSSchedule, getMSSTactDays } from './bridge-technology.js';
+import type { ConstructionTechnology, TechnologyRecommendation, MSSCostResult, MSSScheduleResult } from './bridge-technology.js';
 
 // ─── Input ──────────────────────────────────────────────────────────────────
 
@@ -164,6 +166,22 @@ export interface PlannerInput {
   /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
   bridge_deck_subtype?: 'deskovy' | 'jednotram' | 'dvoutram' | 'vicetram' | 'jednokomora' | 'dvoukomora' | 'ramovy' | 'sprazeny';
 
+  // --- Bridge geometry (mostovka only) ---
+  /** Span length of the longest span (m). For technology recommendation. */
+  span_m?: number;
+  /** Number of bridge spans. */
+  num_spans?: number;
+  /** NK width (m). For MSS area calculation. */
+  nk_width_m?: number;
+  /** Construction technology override. Auto-recommended if not given. */
+  construction_technology?: 'fixed_scaffolding' | 'mss' | 'cantilever';
+  /** MSS tact duration override (days per span). Auto from deck subtype if not given. */
+  mss_tact_days?: number;
+  /** MSS mobilization cost override (Kč). */
+  mss_mobilization_czk?: number;
+  /** MSS monthly rental override (Kč/month). */
+  mss_rental_czk_month?: number;
+
   // --- Exposure class ---
   /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). For validation warnings. */
   exposure_class?: string;
@@ -278,6 +296,15 @@ export interface PlannerOutput {
 
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
+
+  // --- Bridge technology (only for mostovkova_deska with span_m/num_spans) ---
+  bridge_technology?: {
+    technology: import('./bridge-technology.js').ConstructionTechnology;
+    technology_label_cs: string;
+    recommendation: import('./bridge-technology.js').TechnologyRecommendation;
+    mss_cost?: import('./bridge-technology.js').MSSCostResult;
+    mss_schedule?: import('./bridge-technology.js').MSSScheduleResult;
+  };
 
   // --- Monte Carlo (optional) ---
   monte_carlo?: MonteCarloResult;
@@ -616,6 +643,81 @@ export function planElement(input: PlannerInput): PlannerOutput {
       (input as any).is_prestressed = true;
       warnings.push(`Komorový nosník: automaticky nastaveno předpětí (is_prestressed=true).`);
     }
+  }
+
+  // ─── 3a2b. Bridge construction technology (mostovka only, when geometry given) ──
+  let bridgeTechResult: PlannerOutput['bridge_technology'] | undefined;
+  if (elementType === 'mostovkova_deska' && input.span_m && input.num_spans) {
+    const clearanceH = input.height_m ?? 10; // default 10m if not given
+    const techRec = recommendBridgeTechnology({
+      span_m: input.span_m,
+      clearance_height_m: clearanceH,
+      num_spans: input.num_spans,
+      deck_subtype: input.bridge_deck_subtype,
+      is_prestressed: input.is_prestressed,
+      nk_width_m: input.nk_width_m,
+    });
+
+    const selectedTech = input.construction_technology ?? techRec.recommended;
+    const techLabels: Record<ConstructionTechnology, string> = {
+      fixed_scaffolding: 'Pevná skruž',
+      mss: 'Posuvná skruž (MSS)',
+      cantilever: 'Letmá betonáž (CFT)',
+    };
+
+    log.push(`Bridge technology: ${selectedTech} (recommended: ${techRec.recommended})`);
+    warnings.push(...techRec.warnings);
+
+    // Warn if user overrides to a non-recommended or infeasible technology
+    if (input.construction_technology && input.construction_technology !== techRec.recommended) {
+      const option = techRec.options.find(o => o.technology === input.construction_technology);
+      if (option && !option.feasible) {
+        warnings.push(`POZOR: ${techLabels[input.construction_technology]} — ${option.infeasible_reason}`);
+      } else if (selectedTech === 'fixed_scaffolding' && input.span_m > 40) {
+        warnings.push(
+          `Rozpětí ${input.span_m}m — pevná skruž není standardní řešení pro rozpětí > 40m. ` +
+          `Zvažte posuvnou skruž (MSS).`
+        );
+      }
+    }
+
+    let mssCost: MSSCostResult | undefined;
+    let mssSchedule: MSSScheduleResult | undefined;
+
+    if (selectedTech === 'mss') {
+      const nkWidth = input.nk_width_m ?? 12;
+      const tactDays = input.mss_tact_days ?? getMSSTactDays(input.bridge_deck_subtype);
+
+      mssSchedule = calculateMSSSchedule(
+        input.num_spans, input.bridge_deck_subtype, input.is_prestressed, input.mss_tact_days,
+      );
+      mssCost = calculateMSSCost({
+        span_m: input.span_m,
+        num_spans: input.num_spans,
+        nk_width_m: nkWidth,
+        tact_days: tactDays,
+        mobilization_czk_override: input.mss_mobilization_czk,
+        rental_czk_month_override: input.mss_rental_czk_month,
+      });
+
+      log.push(`MSS schedule: setup ${mssSchedule.setup_days}d + ${mssSchedule.num_tacts}×${mssSchedule.tact_days}d + teardown ${mssSchedule.teardown_days}d = ${mssSchedule.total_days}d`);
+      log.push(`MSS cost: mob ${(mssCost.mobilization_czk / 1e6).toFixed(1)}M + rental ${(mssCost.rental_total_czk / 1e6).toFixed(1)}M + demob ${(mssCost.demobilization_czk / 1e6).toFixed(1)}M = ${(mssCost.total_czk / 1e6).toFixed(1)}M Kč (${mssCost.unit_cost_czk_m2} Kč/m²)`);
+    }
+
+    if (selectedTech === 'cantilever') {
+      warnings.push(
+        `Letmá betonáž (CFT): kalkulátor nepočítá detailní náklady. ` +
+        `Orientační cena: 25 000–40 000 Kč/m² NK. Kontaktujte dodavatele (DOKA CFT / VSL / Freyssinet).`
+      );
+    }
+
+    bridgeTechResult = {
+      technology: selectedTech,
+      technology_label_cs: techLabels[selectedTech],
+      recommendation: techRec,
+      mss_cost: mssCost,
+      mss_schedule: mssSchedule,
+    };
   }
 
   // ─── 3a3. Exposure class validation ─────────────────────────────────────
@@ -1186,6 +1288,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       },
     } : {}),
     props: propsResult,
+    bridge_technology: bridgeTechResult,
     costs: {
       formwork_labor_czk: formworkLaborCZK,
       rebar_labor_czk: rebarLaborCZK,
