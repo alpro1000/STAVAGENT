@@ -1339,7 +1339,7 @@ export default function PlannerPage() {
                               value={opt.technology}
                               checked={selectedTech === opt.technology}
                               disabled={!opt.feasible}
-                              onChange={() => update('construction_technology', opt.technology)}
+                              onChange={() => update('construction_technology', opt.technology as FormState['construction_technology'])}
                             />
                             <span>
                               {opt.label_cs}
