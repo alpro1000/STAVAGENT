@@ -57,9 +57,17 @@ router.get('/projects', async (req, res) => {
     const data = await response.json();
     const portalProjects = data.projects || [];
 
-    // Filter to projects that have Registry data
+    // Filter to projects that have Registry data — check both has_registry flag AND
+    // registry_linked count (dov_payload) since has_registry_id may be 0 when
+    // PortalAutoSync synced the project but items don't have registry_item_id set yet
     const withRegistry = portalProjects
-      .filter(p => p.has_registry || (p.position_stats?.has_registry_id > 0))
+      .filter(p =>
+        p.has_registry ||
+        (p.position_stats?.has_registry_id > 0) ||
+        (p.position_stats?.registry_linked > 0) ||
+        // Also include projects that have any kiosk_link of type 'registry'
+        (p.kiosk_links || []).some(kl => kl.kiosk_type === 'registry' && kl.status !== 'deleted')
+      )
       .map(p => ({
         portal_project_id: p.portal_project_id,
         project_name: p.project_name,
@@ -68,32 +76,48 @@ router.get('/projects', async (req, res) => {
         monolit_linked: p.position_stats?.monolit_linked || 0,
       }));
 
-    // Fallback: if Portal returned nothing, try Registry backend directly
-    if (withRegistry.length === 0) {
-      logger.info('[ImportRegistry] No Portal projects found, trying Registry backend directly...');
-      const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
-      try {
-        const regRes = await fetch(`${REGISTRY_API}/api/registry/projects`);
-        if (regRes.ok) {
-          const regData = await regRes.json();
-          const regProjects = (regData.projects || []).map(p => ({
-            portal_project_id: p.portal_project_id || p.project_id,
-            project_name: p.project_name,
-            positions_total: p.item_count || 0,
-          }));
-          if (regProjects.length > 0) {
-            logger.info(`[ImportRegistry] Fallback: found ${regProjects.length} projects from Registry`);
-            return res.json({ success: true, projects: regProjects });
-          }
-        }
-      } catch (regErr) {
-        logger.warn('[ImportRegistry] Registry fallback failed:', regErr.message);
-      }
+    if (withRegistry.length > 0) {
+      logger.info(`[ImportRegistry] Found ${withRegistry.length} projects with Registry data`);
+      return res.json({ success: true, projects: withRegistry });
     }
 
-    logger.info(`[ImportRegistry] Found ${withRegistry.length} projects with Registry data`);
+    // Fallback: if Portal returned nothing with Registry flag, try Registry backend directly
+    logger.info('[ImportRegistry] No Portal projects with Registry flag, trying Registry backend directly...');
+    const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
+    try {
+      const regRes = await fetch(`${REGISTRY_API}/api/registry/projects?user_id=1`, {
+        signal: AbortSignal.timeout(10000),
+      });
+      if (regRes.ok) {
+        const regData = await regRes.json();
+        const regProjects = (regData.projects || []).map(p => ({
+          portal_project_id: p.portal_project_id || p.project_id,
+          project_name: p.project_name || p.name,
+          positions_total: p.item_count || p.sheet_count || 0,
+        }));
+        if (regProjects.length > 0) {
+          logger.info(`[ImportRegistry] Fallback: found ${regProjects.length} projects from Registry`);
+          return res.json({ success: true, projects: regProjects });
+        }
+      }
+    } catch (regErr) {
+      logger.warn('[ImportRegistry] Registry fallback failed:', regErr.message);
+    }
 
-    res.json({ success: true, projects: withRegistry });
+    // Last resort: return ALL Portal projects (user can pick which one to import)
+    if (portalProjects.length > 0) {
+      logger.info(`[ImportRegistry] Returning all ${portalProjects.length} Portal projects as last resort`);
+      const allProjects = portalProjects.map(p => ({
+        portal_project_id: p.portal_project_id,
+        project_name: p.project_name,
+        positions_total: p.position_stats?.total_positions || 0,
+        registry_linked: p.position_stats?.registry_linked || 0,
+        monolit_linked: p.position_stats?.monolit_linked || 0,
+      }));
+      return res.json({ success: true, projects: allProjects });
+    }
+
+    res.json({ success: true, projects: [] });
   } catch (error) {
     logger.error('[ImportRegistry] Error fetching projects:', error);
     res.json({ success: true, projects: [] });
