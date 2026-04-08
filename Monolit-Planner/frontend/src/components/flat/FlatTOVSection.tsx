@@ -3,10 +3,15 @@
  *
  * Shows work items grouped by Práce/Materiál/Stroje with formulas.
  * Rendered as table rows inside the positions table.
+ *
+ * Supports two data sources:
+ *   1. tov_entries in metadata (from calculator Aplikovat) — multiple professions
+ *   2. Position's own fields (crew_size, days, wage) — legacy single profession
  */
 
 import type { Position } from '@stavagent/monolit-shared';
 import { SUBTYPE_LABELS } from '@stavagent/monolit-shared';
+import type { TOVEntries } from '@stavagent/monolit-shared';
 
 interface Props {
   positionId: string;
@@ -28,9 +33,10 @@ function fmt(n: number | null | undefined, d = 0): string {
 
 export default function FlatTOVSection({ position: pos }: Props) {
   const meta = parseMetadata(pos);
+  const tovEntries: TOVEntries | null = meta?.tov_entries ?? null;
 
-  // If no calculated data, show minimal info
-  if (!pos.labor_hours && !pos.cost_czk) {
+  // If no calculated data at all, show placeholder
+  if (!pos.labor_hours && !pos.cost_czk && !tovEntries) {
     return (
       <tr className="flat-tov">
         <td colSpan={14} style={{ padding: '8px 16px', fontStyle: 'italic', color: 'var(--stone-400)' }}>
@@ -40,12 +46,104 @@ export default function FlatTOVSection({ position: pos }: Props) {
     );
   }
 
-  const rows: { type: 'group' | 'item' | 'detail' | 'total'; label: string; hours?: string; cost?: string; formula?: string }[] = [];
+  // If tov_entries exist (from calculator), render rich multi-profession TOV
+  if (tovEntries && (tovEntries.labor.length > 0 || tovEntries.materials.length > 0)) {
+    return <RichTOV tov={tovEntries} pos={pos} meta={meta} />;
+  }
 
-  // Group: Práce
+  // Legacy: single-profession from position fields
+  return <LegacyTOV pos={pos} meta={meta} />;
+}
+
+/** Rich TOV with multiple professions — from calculator Aplikovat */
+function RichTOV({ tov, meta }: { tov: TOVEntries; pos: Position; meta: Record<string, any> | null }) {
+  const rows: { type: 'group' | 'item' | 'detail' | 'total'; label: string; hours?: string; cost?: string }[] = [];
+
+  // Labor section
+  if (tov.labor.length > 0) {
+    rows.push({ type: 'group', label: 'Lidské zdroje' });
+    let totalLaborH = 0;
+    let totalLaborCZK = 0;
+
+    for (const entry of tov.labor) {
+      rows.push({
+        type: 'item',
+        label: `${entry.profession}${entry.note ? ` (${entry.note})` : ''}`,
+        hours: fmt(entry.normHours, 1),
+        cost: fmt(entry.totalCost),
+      });
+      rows.push({
+        type: 'detail',
+        label: `${entry.count} lid${entry.count === 1 ? '' : entry.count < 5 ? 'é' : 'í'} × ${fmt(entry.hours, 1)}h × ${entry.hourlyRate} Kč/h`,
+      });
+      totalLaborH += entry.normHours;
+      totalLaborCZK += entry.totalCost;
+    }
+
+    rows.push({
+      type: 'total',
+      label: 'Celkem práce',
+      hours: fmt(totalLaborH, 1),
+      cost: fmt(totalLaborCZK),
+    });
+  }
+
+  // Materials/Rental section
+  if (tov.materials.length > 0) {
+    rows.push({ type: 'group', label: 'Materiály / Pronájem' });
+    let totalMatCZK = 0;
+
+    for (const entry of tov.materials) {
+      const rentalInfo = entry.rentalMonths
+        ? ` × ${entry.rentalMonths} měs.`
+        : '';
+      rows.push({
+        type: 'item',
+        label: `${entry.name}${entry.note ? ` (${entry.note})` : ''}`,
+        hours: `${fmt(entry.quantity, 1)} ${entry.unit}`,
+        cost: fmt(entry.totalCost),
+      });
+      if (entry.unitPrice > 0) {
+        rows.push({
+          type: 'detail',
+          label: `${fmt(entry.quantity, 1)} ${entry.unit} × ${fmt(entry.unitPrice)} Kč/${entry.unit}${rentalInfo}`,
+        });
+      }
+      totalMatCZK += entry.totalCost;
+    }
+
+    rows.push({
+      type: 'total',
+      label: 'Celkem materiály',
+      cost: fmt(totalMatCZK),
+    });
+  }
+
+  // Pump from metadata (legacy compat)
+  if (meta?.pump_cost_czk) {
+    rows.push({ type: 'group', label: 'Stroje' });
+    rows.push({ type: 'item', label: 'Čerpadlo betonu', cost: fmt(meta.pump_cost_czk) });
+  }
+
+  // Grand total
+  const totalLabor = tov.labor.reduce((s, e) => s + e.totalCost, 0);
+  const totalMat = tov.materials.reduce((s, e) => s + e.totalCost, 0);
+  const totalPump = meta?.pump_cost_czk || 0;
+  rows.push({
+    type: 'total',
+    label: 'CELKEM',
+    hours: fmt(tov.labor.reduce((s, e) => s + e.normHours, 0), 1),
+    cost: fmt(totalLabor + totalMat + totalPump),
+  });
+
+  return <>{rows.map((row, i) => <TOVRow key={i} row={row} />)}</>;
+}
+
+/** Legacy single-profession TOV from position fields */
+function LegacyTOV({ pos, meta }: { pos: Position; meta: Record<string, any> | null }) {
+  const rows: { type: 'group' | 'item' | 'detail' | 'total'; label: string; hours?: string; cost?: string }[] = [];
+
   rows.push({ type: 'group', label: 'Práce' });
-
-  // Main work item
   rows.push({
     type: 'item',
     label: SUBTYPE_LABELS[pos.subtype] || pos.subtype,
@@ -53,7 +151,6 @@ export default function FlatTOVSection({ position: pos }: Props) {
     cost: fmt(pos.cost_czk),
   });
 
-  // Formula detail
   if (pos.crew_size && pos.shift_hours && pos.days) {
     rows.push({
       type: 'detail',
@@ -67,49 +164,32 @@ export default function FlatTOVSection({ position: pos }: Props) {
     });
   }
 
-  // Pump cost from metadata
   if (meta?.pump_cost_czk) {
     rows.push({ type: 'group', label: 'Stroje' });
-    rows.push({
-      type: 'item',
-      label: 'Čerpadlo betonu',
-      cost: fmt(meta.pump_cost_czk),
-    });
+    rows.push({ type: 'item', label: 'Čerpadlo betonu', cost: fmt(meta.pump_cost_czk) });
   }
 
-  // Total
   const totalCost = (pos.cost_czk || 0) + (meta?.pump_cost_czk || 0);
-  rows.push({
-    type: 'total',
-    label: 'Celkem',
-    hours: fmt(pos.labor_hours),
-    cost: fmt(totalCost),
-  });
+  rows.push({ type: 'total', label: 'Celkem', hours: fmt(pos.labor_hours), cost: fmt(totalCost) });
 
+  return <>{rows.map((row, i) => <TOVRow key={i} row={row} />)}</>;
+}
+
+/** Shared row renderer */
+function TOVRow({ row }: { row: { type: string; label: string; hours?: string; cost?: string } }) {
+  const cls = `flat-tov ${
+    row.type === 'group' ? 'flat-tov--group' :
+    row.type === 'detail' ? 'flat-tov--detail' :
+    row.type === 'total' ? 'flat-tov--total' : ''
+  }`;
   return (
-    <>
-      {rows.map((row, i) => {
-        const cls = `flat-tov ${
-          row.type === 'group' ? 'flat-tov--group' :
-          row.type === 'detail' ? 'flat-tov--detail' :
-          row.type === 'total' ? 'flat-tov--total' : ''
-        }`;
-
-        return (
-          <tr key={i} className={cls}>
-            {/* cols 1-8: label spans to align with Celk.hod (col 9) */}
-            <td colSpan={8} style={row.type === 'detail' ? { paddingLeft: 32 } : undefined}>
-              {row.label}
-            </td>
-            {/* col 9: Celk.hod */}
-            <td className="flat-col--right flat-mono">{row.hours || ''}</td>
-            {/* col 10: Celk.Kč */}
-            <td className="flat-col--right flat-mono">{row.cost || ''}</td>
-            {/* cols 11-14: empty */}
-            <td colSpan={4}></td>
-          </tr>
-        );
-      })}
-    </>
+    <tr className={cls}>
+      <td colSpan={8} style={row.type === 'detail' ? { paddingLeft: 32 } : undefined}>
+        {row.label}
+      </td>
+      <td className="flat-col--right flat-mono">{row.hours || ''}</td>
+      <td className="flat-col--right flat-mono">{row.cost || ''}</td>
+      <td colSpan={4}></td>
+    </tr>
   );
 }
