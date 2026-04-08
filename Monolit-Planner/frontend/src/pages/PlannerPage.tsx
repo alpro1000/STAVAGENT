@@ -1326,7 +1326,7 @@ export default function PlannerPage() {
                         Technologie výstavby
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                        {techRec.options.map(opt => (
+                        {techRec.options.map((opt: { technology: string; label_cs: string; feasible: boolean; infeasible_reason?: string; is_recommended: boolean }) => (
                           <label key={opt.technology} style={{
                             display: 'flex', alignItems: 'center', gap: 6,
                             cursor: opt.feasible ? 'pointer' : 'not-allowed',
@@ -1361,7 +1361,7 @@ export default function PlannerPage() {
                       }}>
                         <div style={{ fontWeight: 700, color: selectedTech === techRec.recommended ? '#166534' : '#854d0e', marginBottom: 2 }}>
                           {selectedTech === techRec.recommended ? '✓' : '⚠'} {selectedTech === techRec.recommended ? 'DOPORUČENO' : 'Uživatelský výběr'}:{' '}
-                          {techRec.options.find(o => o.technology === selectedTech)?.label_cs}
+                          {techRec.options.find((o: { technology: string; label_cs: string }) => o.technology === selectedTech)?.label_cs}
                         </div>
                         <div style={{ color: 'var(--r0-slate-600)' }}>
                           {techRec.reason}

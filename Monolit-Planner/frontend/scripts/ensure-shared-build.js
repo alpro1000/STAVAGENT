@@ -32,26 +32,20 @@ try {
   hasTypescript = false;
 }
 
-// In CI environment, ensure shared is built from cache or build it
+// In CI environment, always rebuild shared to ensure dist matches source
 if (process.env.CI || process.env.VERCEL) {
   console.log('[prepare:shared] CI environment detected.');
-  
-  if (!existsSync(distEntry)) {
-    console.log('[prepare:shared] dist not found, building shared package...');
-    
-    // Check if typescript is available
-    if (!hasTypescript) {
-      console.log('[prepare:shared] Installing shared dependencies...');
-      run(npmCmd, ['install', '--include=dev']);
-    }
-    
-    // Build shared package
-    console.log('[prepare:shared] Building shared package...');
-    run(npmCmd, ['run', 'build']);
-  } else {
-    console.log('[prepare:shared] Shared build found in cache.');
+
+  // Check if typescript is available
+  if (!hasTypescript) {
+    console.log('[prepare:shared] Installing shared dependencies...');
+    run(npmCmd, ['install', '--include=dev']);
   }
-  
+
+  // Always rebuild in CI — cached dist may be stale when new source files are added
+  console.log('[prepare:shared] Building shared package...');
+  run(npmCmd, ['run', 'build']);
+
   process.exit(0);
 }
 
