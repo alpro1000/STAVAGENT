@@ -3562,26 +3562,82 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
           const propsRental = plan.costs.props_rental_czk || 0;
           const totalAll = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
           const nT = plan.pour_decision.num_tacts;
-          const fwTotalDays = formatNum((plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT, 1);
-          const fwTotalH = formatNum((plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT * (plan.resources.crew_size_formwork * plan.resources.shift_h * 0.8), 0);
-          const rbTotalDays = formatNum(plan.rebar.duration_days * nT, 1);
-          const rbTotalH = formatNum(plan.rebar.duration_days * nT * (plan.resources.crew_size_rebar * plan.resources.shift_h * 0.8), 0);
-          const pourH = formatNum(plan.pour.total_pour_hours * nT, 1);
+          const k = 0.8;
+          const fwDays = (plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT;
+          const fwH = fwDays * plan.resources.crew_size_formwork * plan.resources.shift_h * k;
+          const rbDays = plan.rebar.duration_days * nT;
+          const rbH = rbDays * plan.resources.crew_size_rebar * plan.resources.shift_h * k;
+          const pourH = plan.pour.total_pour_hours * nT;
+          const rentalDays = plan.schedule.total_days + 2; // +2 transport (same as orchestrator)
+          const rentalMonths = (rentalDays / 30).toFixed(1);
+          const cs = { padding: '4px 10px', fontSize: 12, fontFamily: "'JetBrains Mono', monospace", textAlign: 'right' as const, whiteSpace: 'nowrap' as const };
+          const cl = { ...cs, textAlign: 'left' as const, color: 'var(--r0-slate-500)' };
+          const cb = { ...cs, fontWeight: 700 };
           return (
-            <div className="r0-grid-2">
-              <div>
-                <Row label="Bednění (práce)" value={`${formatCZK(plan.costs.formwork_labor_czk)}  ·  ${fwTotalDays} dní  ·  ${fwTotalH} h`} />
-                <Row label="Výztuž (práce)" value={`${formatCZK(plan.costs.rebar_labor_czk)}  ·  ${rbTotalDays} dní  ·  ${rbTotalH} h`} />
-                <Row label="Betonáž (práce)" value={`${formatCZK(plan.costs.pour_labor_czk)}  ·  ${pourH} h`} />
-                {propsLabor > 0 && <Row label="Podpěry (práce)" value={formatCZK(propsLabor)} />}
+            <>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
+                      <th style={{ ...cl, fontSize: 11, fontWeight: 600 }}>Položka</th>
+                      <th style={{ ...cs, fontSize: 11, fontWeight: 600, color: 'var(--r0-slate-500)' }}>Náklady</th>
+                      <th style={{ ...cs, fontSize: 11, fontWeight: 600, color: 'var(--r0-slate-500)' }}>Dní</th>
+                      <th style={{ ...cs, fontSize: 11, fontWeight: 600, color: 'var(--r0-slate-500)' }}>Normohodin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                      <td style={cl}>Bednění (práce)</td>
+                      <td style={cs}>{formatCZK(plan.costs.formwork_labor_czk)}</td>
+                      <td style={cs}>{formatNum(fwDays, 1)}</td>
+                      <td style={cs}>{formatNum(fwH, 0)} h</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                      <td style={cl}>Výztuž (práce)</td>
+                      <td style={cs}>{formatCZK(plan.costs.rebar_labor_czk)}</td>
+                      <td style={cs}>{formatNum(rbDays, 1)}</td>
+                      <td style={cs}>{formatNum(rbH, 0)} h</td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                      <td style={cl}>Betonáž (práce)</td>
+                      <td style={cs}>{formatCZK(plan.costs.pour_labor_czk)}</td>
+                      <td style={cs}>—</td>
+                      <td style={cs}>{formatNum(pourH, 1)} h</td>
+                    </tr>
+                    {propsLabor > 0 && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                        <td style={cl}>Podpěry (práce)</td>
+                        <td style={cs}>{formatCZK(propsLabor)}</td>
+                        <td style={cs}>{plan.props ? formatNum(plan.props.assembly_days + plan.props.disassembly_days, 1) : '—'}</td>
+                        <td style={cs}>—</td>
+                      </tr>
+                    )}
+                    <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                      <td style={cl}>Pronájem bednění</td>
+                      <td style={cs}>{formatCZK(plan.costs.formwork_rental_czk)}</td>
+                      <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{rentalDays} dní ({rentalMonths} měs.)</td>
+                    </tr>
+                    {propsRental > 0 && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                        <td style={cl}>Pronájem podpěr</td>
+                        <td style={cs}>{formatCZK(propsRental)}</td>
+                        <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{plan.props?.rental_days ?? '—'} dní</td>
+                      </tr>
+                    )}
+                    <tr style={{ borderTop: '2px solid var(--r0-slate-300)' }}>
+                      <td style={{ ...cl, fontWeight: 700 }}>Celkem práce</td>
+                      <td style={cb}>{formatCZK(plan.costs.total_labor_czk + propsLabor)}</td>
+                      <td style={cs} colSpan={2}></td>
+                    </tr>
+                    <tr>
+                      <td style={{ ...cl, fontWeight: 700 }}>Celkem vše</td>
+                      <td style={cb}>{formatCZK(totalAll)}</td>
+                      <td style={cs} colSpan={2}></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <div>
-                <Row label="Pronájem bednění" value={formatCZK(plan.costs.formwork_rental_czk)} />
-                {propsRental > 0 && <Row label="Pronájem podpěr" value={formatCZK(propsRental)} />}
-                <Row label="Celkem práce" value={formatCZK(plan.costs.total_labor_czk + propsLabor)} bold />
-                <Row label="Celkem vše" value={formatCZK(totalAll)} bold />
-              </div>
-            </div>
+            </>
           );
         })()}
       </Card>
