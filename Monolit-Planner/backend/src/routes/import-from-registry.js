@@ -43,7 +43,8 @@ function determineSubtype(item) {
  */
 router.get('/projects', async (req, res) => {
   try {
-    logger.info('[ImportRegistry] Fetching available projects from Portal...');
+    const userId = req.user?.userId || req.query.user_id || null;
+    logger.info(`[ImportRegistry] Fetching available projects from Portal (userId=${userId})...`);
 
     const response = await fetch(`${PORTAL_API}/api/portal-projects/registry`, {
       headers: { 'Content-Type': 'application/json' },
@@ -82,10 +83,14 @@ router.get('/projects', async (req, res) => {
     }
 
     // Fallback: if Portal returned nothing with Registry flag, try Registry backend directly
+    // Pass userId for proper scoping (Registry API requires user_id for project isolation)
     logger.info('[ImportRegistry] No Portal projects with Registry flag, trying Registry backend directly...');
     const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
     try {
-      const regRes = await fetch(`${REGISTRY_API}/api/registry/projects?user_id=1`, {
+      const registryUrl = userId
+        ? `${REGISTRY_API}/api/registry/projects?user_id=${encodeURIComponent(userId)}`
+        : `${REGISTRY_API}/api/registry/projects`;
+      const regRes = await fetch(registryUrl, {
         signal: AbortSignal.timeout(10000),
       });
       if (regRes.ok) {
@@ -102,19 +107,6 @@ router.get('/projects', async (req, res) => {
       }
     } catch (regErr) {
       logger.warn('[ImportRegistry] Registry fallback failed:', regErr.message);
-    }
-
-    // Last resort: return ALL Portal projects (user can pick which one to import)
-    if (portalProjects.length > 0) {
-      logger.info(`[ImportRegistry] Returning all ${portalProjects.length} Portal projects as last resort`);
-      const allProjects = portalProjects.map(p => ({
-        portal_project_id: p.portal_project_id,
-        project_name: p.project_name,
-        positions_total: p.position_stats?.total_positions || 0,
-        registry_linked: p.position_stats?.registry_linked || 0,
-        monolit_linked: p.position_stats?.monolit_linked || 0,
-      }));
-      return res.json({ success: true, projects: allProjects });
     }
 
     res.json({ success: true, projects: [] });
