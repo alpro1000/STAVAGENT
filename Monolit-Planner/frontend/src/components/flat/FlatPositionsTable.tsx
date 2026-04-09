@@ -14,6 +14,8 @@
 
 import { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { uploadAPI } from '../../services/api';
 import {
   Calculator, AlertTriangle, Lock, Plus, Zap, Trash2,
   ChevronDown, ChevronRight, AlertCircle, ArrowRightLeft, Upload,
@@ -110,6 +112,29 @@ export default function FlatPositionsTable() {
   const [showImportRegistry, setShowImportRegistry] = useState(false);
   const [showAddPosition, setShowAddPosition] = useState(false);
   const [showCreateObject, setShowCreateObject] = useState(false);
+
+  // XLSX upload in empty state (creates project from file metadata)
+  const xlsxInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingXlsx, setUploadingXlsx] = useState(false);
+  const qc = useQueryClient();
+
+  const handleXlsxUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingXlsx(true);
+    try {
+      await uploadAPI.uploadXLSX(file);
+      qc.invalidateQueries({ queryKey: ['positions'] });
+      qc.invalidateQueries({ queryKey: ['monolith-projects'] });
+      qc.invalidateQueries({ queryKey: ['bridges'] });
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('Nahrání souboru selhalo.');
+    } finally {
+      setUploadingXlsx(false);
+      if (xlsxInputRef.current) xlsxInputRef.current.value = '';
+    }
+  }, [qc]);
 
   const toggleTOV = useCallback((posId: string) => {
     setExpandedTOV(prev => {
@@ -253,7 +278,11 @@ export default function FlatPositionsTable() {
           onAddPosition={() => setShowAddPosition(true)} />
         <EmptyStateNoProject
           onCreateObject={() => setShowCreateObject(true)}
-          onImportRegistry={() => setShowImportRegistry(true)} />
+          onImportRegistry={() => setShowImportRegistry(true)}
+          onUploadXlsx={() => xlsxInputRef.current?.click()} />
+        <input ref={xlsxInputRef} type="file" accept=".xlsx,.xls"
+          style={{ display: 'none' }} onChange={handleXlsxUpload}
+          disabled={uploadingXlsx} />
         {modals}
       </div>
     );
@@ -715,9 +744,10 @@ function WorkRow({
 
 /* ── EMPTY STATES ────────────────────────────────────────────── */
 
-function EmptyStateNoProject({ onCreateObject, onImportRegistry }: {
+function EmptyStateNoProject({ onCreateObject, onImportRegistry, onUploadXlsx }: {
   onCreateObject: () => void;
   onImportRegistry: () => void;
+  onUploadXlsx: () => void;
 }) {
   return (
     <div className="flat-empty" style={{ padding: '80px 24px' }}>
@@ -728,6 +758,7 @@ function EmptyStateNoProject({ onCreateObject, onImportRegistry }: {
       </div>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
         <EmptyAction icon={<Plus size={16} />} label="Vytvořit objekt" desc="Ručně zadat nový objekt" onClick={onCreateObject} />
+        <EmptyAction icon={<Upload size={16} />} label="Nahrát Excel" desc="Import z XLSX (auto projekt)" onClick={onUploadXlsx} />
         <EmptyAction icon={<ArrowRightLeft size={16} />} label="Načíst z Rozpočtu" desc="Importovat z Registry" onClick={onImportRegistry} />
       </div>
     </div>

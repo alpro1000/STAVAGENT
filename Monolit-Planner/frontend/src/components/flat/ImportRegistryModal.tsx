@@ -7,7 +7,6 @@
 import { useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { uploadAPI } from '../../services/api';
-import { useUI } from '../../context/UIContext';
 import { FolderOpen } from 'lucide-react';
 
 interface RegistryProject {
@@ -22,7 +21,6 @@ interface Props {
 }
 
 export default function ImportRegistryModal({ onClose }: Props) {
-  const { selectedProjectId } = useUI();
   const qc = useQueryClient();
 
   const [projects, setProjects] = useState<RegistryProject[]>([]);
@@ -45,14 +43,13 @@ export default function ImportRegistryModal({ onClose }: Props) {
   }, []);
 
   const handleImport = async (project: RegistryProject) => {
-    if (!selectedProjectId) {
-      alert('Nejdříve vyberte objekt v postranním panelu.');
-      return;
-    }
     setImporting(true);
     try {
       await uploadAPI.importFromRegistry(project.portal_project_id, project.project_name);
-      qc.invalidateQueries({ queryKey: ['positions', selectedProjectId] });
+      // Backend auto-creates bridges — invalidate all relevant queries
+      qc.invalidateQueries({ queryKey: ['positions'] });
+      qc.invalidateQueries({ queryKey: ['monolith-projects'] });
+      qc.invalidateQueries({ queryKey: ['bridges'] });
       onClose();
     } catch (err) {
       console.error('Import failed:', err);
