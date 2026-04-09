@@ -1004,8 +1004,14 @@ export default function PlannerPage() {
     if (form.height_m) input.height_m = parseFloat(form.height_m);
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
-    const sc = parseFloat(form.formwork_shape_correction);
-    if (sc && sc !== 1.0) input.formwork_shape_correction = sc;
+    // Shape correction: římsa always uses 1.5 (complex geometry), regardless of form value
+    const elemTypeForShape = form.use_name_classification ? 'other' : form.element_type;
+    if (elemTypeForShape === 'rimsa') {
+      input.formwork_shape_correction = 1.5;
+    } else {
+      const sc = parseFloat(form.formwork_shape_correction);
+      if (sc && sc !== 1.0) input.formwork_shape_correction = sc;
+    }
     if (form.num_identical_elements > 1) {
       input.num_identical_elements = form.num_identical_elements;
       if (form.formwork_sets_count) input.formwork_sets_count = parseInt(form.formwork_sets_count);
@@ -2007,6 +2013,15 @@ export default function PlannerPage() {
               const elemType = form.use_name_classification ? 'other' : form.element_type;
               const hint = ELEMENT_DIMENSION_HINTS[elemType];
               if (!hint) return null;
+
+              // Element-specific field visibility overrides:
+              // - rimsa: shape_correction is fixed (always složitá geometrie), hide dropdown
+              // - pilota, podzemni_stena: no plocha bednění (in the ground)
+              const hideShapeCorrection = elemType === 'rimsa'
+                || elemType === 'zakladova_deska'
+                || elemType === 'zakladovy_pas'
+                || elemType === 'zakladova_patka';
+
               return (
                 <>
                   {hint.has_height && (
@@ -2023,8 +2038,8 @@ export default function PlannerPage() {
                           : 'výška elementu'} />
                     </Field>
                   )}
-                  {/* Shape correction dropdown (only for vertical elements with height) */}
-                  {hint.has_height && (
+                  {/* Shape correction dropdown — hidden for element types with fixed geometry */}
+                  {hint.has_height && !hideShapeCorrection && (
                     <Field label="Tvar průřezu" hint="korekce pracnosti bednění za geometrii">
                       <select style={inputStyle} value={form.formwork_shape_correction}
                         onChange={e => update('formwork_shape_correction', e.target.value)}>
@@ -2034,6 +2049,15 @@ export default function PlannerPage() {
                         <option value="1.8">Nepravidelný — atypický (×1.8)</option>
                       </select>
                     </Field>
+                  )}
+                  {/* Info about fixed shape correction for specific types */}
+                  {hint.has_height && elemType === 'rimsa' && (
+                    <div style={{
+                      padding: '4px 8px', marginBottom: 6, fontSize: 10,
+                      color: 'var(--r0-slate-500)', fontStyle: 'italic',
+                    }}>
+                      Římsa: tvar průřezu je fixní (složitá geometrie × 1.5) — nelze přepnout.
+                    </div>
                   )}
 
                   <div style={{
