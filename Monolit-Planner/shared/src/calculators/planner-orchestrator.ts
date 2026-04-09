@@ -1159,6 +1159,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
       k,
       wage_czk_h: wageFormwork,
       num_tacts: pourDecision.num_tacts,
+      // Vendor match: pass formwork manufacturer so props prefer same vendor
+      // (e.g. Dokaflex → Doka Eurex; PERI SKYDECK → PERI Multiprop)
+      formwork_manufacturer: fwSystem.manufacturer,
     });
     warnings.push(...propsResult.warnings);
     log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
