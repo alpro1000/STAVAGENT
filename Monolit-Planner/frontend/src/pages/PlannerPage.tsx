@@ -2501,32 +2501,12 @@ export default function PlannerPage() {
               Porovnat bednění (všechny systémy)
             </button>
           )}
-          {plan && (
-            <button
-              onClick={handleSaveScenario}
-              style={{
-                width: '100%', padding: '10px', marginTop: 8,
-                background: 'var(--r0-slate-100, #f1f5f9)', color: 'var(--r0-slate-700, #334155)',
-                border: '1px solid var(--r0-slate-300, #cbd5e1)',
-                borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                fontFamily: 'inherit',
-              }}
-            >
-              + Uložit scénář {scenarios.length > 0 ? `(${scenarios.length})` : ''}
-            </button>
-          )}
-          {scenarios.length > 0 && (
-            <button
-              onClick={() => { setScenarios([]); setScenarioSeq(0); }}
-              style={{
-                width: '100%', padding: '6px', marginTop: 4,
-                background: 'none', color: 'var(--r0-slate-400)',
-                border: 'none', fontSize: 11, cursor: 'pointer',
-              }}
-            >
-              Vymazat scénáře
-            </button>
-          )}
+          {/*
+            "+ Uložit scénář" and "Vymazat scénáře" buttons removed.
+            Variant saving now happens automatically via the prompt-based
+            flow (Part 2 of calc refactor) when the user changes inputs
+            with an unsaved result. See savePrompt modal below.
+          */}
 
           <button
             onClick={() => { setForm(DEFAULT_FORM); setResult(null); setError(null); setAdvisor(null); setComparison(null); }}
@@ -3305,18 +3285,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
         >
           Kopírovat Gantt
         </button>
-        {onSaveVariant && (
-          <button
-            onClick={onSaveVariant}
-            style={{
-              padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-indigo)',
-              cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
-              background: 'white', color: 'var(--r0-indigo)',
-            }}
-          >
-            💾 Uložit plán
-          </button>
-        )}
+        {/*
+          "💾 Uložit plán" button removed — variant saving is now automatic
+          via the prompt modal when user changes inputs (see savePrompt in
+          PlannerPage). To mark a variant as the chosen plan, use the "✓"
+          button in the variants table below.
+        */}
       </div>
 
       {/* Saved variants comparison (Monolit mode only) */}
