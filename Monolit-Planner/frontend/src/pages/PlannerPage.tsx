@@ -33,6 +33,7 @@ import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import PlannerGantt from '../components/PlannerGantt';
 import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
+import { plannerVariantsAPI } from '../services/api';
 import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
@@ -539,7 +540,9 @@ export default function PlannerPage() {
     try { localStorage.setItem('planner_autosave_variants', String(autoSaveVariants)); } catch { /* ignore */ }
   }, [autoSaveVariants]);
 
-  // Plan variants (Monolit mode — save & compare)
+  // Plan variants (saved scenarios per position)
+  // Mode A (position_id present): persisted in PostgreSQL via /api/planner-variants
+  // Mode B (standalone): in-memory state only, lost on page leave
   interface SavedVariant {
     id: string;
     label: string;
@@ -550,18 +553,52 @@ export default function PlannerPage() {
     saved_at: string;
     plan: PlannerOutput;
     form: FormState;
+    is_plan?: boolean;  // one variant per position can be marked as the chosen plan
   }
-  const variantsKey = positionContext?.position_id ? `planner_variants_${positionContext.position_id}` : null;
-  const [savedVariants, setSavedVariants] = useState<SavedVariant[]>(() => {
-    if (!variantsKey) return [];
-    try { return JSON.parse(localStorage.getItem(variantsKey) || '[]'); } catch { return []; }
-  });
+  const positionId = positionContext?.position_id || null;
+  const [savedVariants, setSavedVariants] = useState<SavedVariant[]>([]);
+  const [variantsLoading, setVariantsLoading] = useState(false);
 
-  const saveVariant = (plan: PlannerOutput) => {
-    if (!variantsKey) return;
-    const variant: SavedVariant = {
-      id: Date.now().toString(36),
-      label: `V${savedVariants.length + 1}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`,
+  // Load variants from backend when position changes (Mode A)
+  useEffect(() => {
+    if (!positionId) {
+      setSavedVariants([]);
+      return;
+    }
+    let cancelled = false;
+    setVariantsLoading(true);
+    plannerVariantsAPI.list(positionId)
+      .then(rows => {
+        if (cancelled) return;
+        const loaded: SavedVariant[] = rows.map(r => ({
+          id: r.id,
+          label: r.description || `V${r.variant_number}`,
+          total_days: Number(r.total_days) || 0,
+          total_cost_czk: Number(r.total_cost_czk) || 0,
+          num_tacts: r.calc_result?.pour_decision?.num_tacts || 0,
+          system_name: r.system_name || '',
+          saved_at: r.created_at || new Date().toISOString(),
+          plan: r.calc_result as PlannerOutput,
+          form: r.input_params as FormState,
+          is_plan: !!r.is_plan,
+        }));
+        setSavedVariants(loaded);
+      })
+      .catch(err => {
+        console.warn('[PlannerVariants] Failed to load:', err);
+      })
+      .finally(() => {
+        if (!cancelled) setVariantsLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [positionId]);
+
+  const saveVariant = async (plan: PlannerOutput): Promise<SavedVariant | null> => {
+    const num = savedVariants.length + 1;
+    const description = `V${num}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`;
+    const baseVariant: SavedVariant = {
+      id: Date.now().toString(36),  // temp id for Mode B
+      label: description,
       total_days: plan.schedule.total_days,
       total_cost_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
       num_tacts: plan.pour_decision.num_tacts,
@@ -569,17 +606,48 @@ export default function PlannerPage() {
       saved_at: new Date().toISOString(),
       plan,
       form: { ...form },
+      is_plan: false,
     };
-    const updated = [...savedVariants, variant];
-    setSavedVariants(updated);
-    localStorage.setItem(variantsKey, JSON.stringify(updated));
+
+    if (positionId) {
+      // Mode A: persist via API
+      try {
+        const created = await plannerVariantsAPI.create({
+          position_id: positionId,
+          description,
+          input_params: form,
+          calc_result: plan,
+          total_days: plan.schedule.total_days,
+          total_cost_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
+          system_name: plan.formwork.system.name,
+        });
+        const variant: SavedVariant = {
+          ...baseVariant,
+          id: created.id,
+          label: created.description || description,
+        };
+        setSavedVariants(prev => [...prev, variant]);
+        return variant;
+      } catch (err) {
+        console.error('[PlannerVariants] Save failed:', err);
+        return null;
+      }
+    } else {
+      // Mode B: in-memory only
+      setSavedVariants(prev => [...prev, baseVariant]);
+      return baseVariant;
+    }
   };
 
-  const removeVariant = (id: string) => {
-    if (!variantsKey) return;
-    const updated = savedVariants.filter(v => v.id !== id);
-    setSavedVariants(updated);
-    localStorage.setItem(variantsKey, JSON.stringify(updated));
+  const removeVariant = async (id: string) => {
+    if (positionId) {
+      try {
+        await plannerVariantsAPI.delete(id);
+      } catch (err) {
+        console.warn('[PlannerVariants] Delete failed:', err);
+      }
+    }
+    setSavedVariants(prev => prev.filter(v => v.id !== id));
   };
 
   const loadVariant = (variant: SavedVariant) => {
@@ -589,6 +657,18 @@ export default function PlannerPage() {
     setForm(variant.form);
     setResult(variant.plan);
     setResultDirty(false);
+  };
+
+  /** Mark a variant as the "chosen plan" (✅ PLÁN badge). Only one plan per position. */
+  const setAsPlan = async (id: string) => {
+    if (positionId) {
+      try {
+        await plannerVariantsAPI.update(id, { is_plan: true });
+      } catch (err) {
+        console.warn('[PlannerVariants] setAsPlan failed:', err);
+      }
+    }
+    setSavedVariants(prev => prev.map(v => ({ ...v, is_plan: v.id === id })));
   };
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
@@ -740,6 +820,9 @@ export default function PlannerPage() {
       const output = planElement(input);
       setResult(output);
       setResultDirty(false);
+      // After a real calc, mark that a previous result exists — next change
+      // will trigger the save prompt (unless auto-save is on).
+      hasExistingResultRef.current = true;
       return output;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba výpočtu');
@@ -768,10 +851,15 @@ export default function PlannerPage() {
     }
   };
 
+  // Pending save prompt (Part 2): shown when the user changes inputs while
+  // there's an unsaved result. User chooses: save+continue / discard+continue.
+  const [savePrompt, setSavePrompt] = useState<{ oldResult: PlannerOutput; oldForm: FormState } | null>(null);
+  const hasExistingResultRef = useRef(false);
+
   // Auto-calculate on form change with 1.5s debounce.
   // Skip if:
   //  - skipNextAutoCalcRef is set (first mount, variant load, etc.)
-  //  - form change was minor UI-only (showAdvanced, showLog — not in form state)
+  //  - a save prompt is already showing
   useEffect(() => {
     if (skipNextAutoCalcRef.current) {
       skipNextAutoCalcRef.current = false;
@@ -782,6 +870,17 @@ export default function PlannerPage() {
     // Debounce — clear prior timer
     if (autoCalcTimerRef.current) clearTimeout(autoCalcTimerRef.current);
     autoCalcTimerRef.current = setTimeout(() => {
+      // If there's a previous result and auto-save is OFF and no prompt showing yet,
+      // show the save-before-recalc prompt instead of running calc immediately
+      if (hasExistingResultRef.current && !autoSaveVariants && !savePrompt && result) {
+        setSavePrompt({ oldResult: result, oldForm: { ...form } });
+        autoCalcTimerRef.current = null;
+        return;
+      }
+      // If auto-save is ON, save the previous result silently before recomputing
+      if (hasExistingResultRef.current && autoSaveVariants && result) {
+        saveVariant(result).catch(() => {});
+      }
       // Show "Počítám..." indicator only if calc takes >500ms
       const indicatorTimer = setTimeout(() => setCalcStatus('calculating'), 500);
       const t0 = Date.now();
@@ -794,6 +893,7 @@ export default function PlannerPage() {
       } else {
         setCalcStatus('idle');
       }
+      hasExistingResultRef.current = true;
       autoCalcTimerRef.current = null;
     }, 1500);
 
@@ -804,7 +904,25 @@ export default function PlannerPage() {
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
+  }, [form, autoSaveVariants]);
+
+  /** User chose "Uložit a pokračovat" in the save prompt. */
+  const handleSaveAndContinue = async () => {
+    if (savePrompt) {
+      await saveVariant(savePrompt.oldResult);
+    }
+    setSavePrompt(null);
+    // Now run the pending calculation with the NEW form
+    runCalculation();
+    hasExistingResultRef.current = true;
+  };
+
+  /** User chose "Zahodit a pokračovat" in the save prompt. */
+  const handleDiscardAndContinue = () => {
+    setSavePrompt(null);
+    runCalculation();
+    hasExistingResultRef.current = true;
+  };
 
   const handleCompare = () => {
     if (!result) return;
@@ -2764,10 +2882,12 @@ export default function PlannerPage() {
                   setTimeout(() => setApplyStatus('idle'), 3000);
                 }
               } : undefined}
-              savedVariants={variantsKey ? savedVariants : undefined}
-              onSaveVariant={variantsKey ? () => saveVariant(plan) : undefined}
-              onLoadVariant={variantsKey ? loadVariant : undefined}
-              onRemoveVariant={variantsKey ? removeVariant : undefined}
+              savedVariants={savedVariants}
+              onSaveVariant={() => { saveVariant(plan); }}
+              onLoadVariant={loadVariant}
+              onRemoveVariant={removeVariant}
+              onSetAsPlan={setAsPlan}
+              positionId={positionId}
               kridlaFormwork={kridlaFormwork}
               calcStatus={calcStatus}
               resultDirty={resultDirty}
@@ -2999,6 +3119,50 @@ export default function PlannerPage() {
           )}
         </main>
       </div>
+
+      {/* Save-before-recalc prompt (Part 2 of calc refactor) */}
+      {savePrompt && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.55)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+          padding: 16,
+        }} onClick={(e) => { if (e.target === e.currentTarget) handleDiscardAndContinue(); }}>
+          <div style={{
+            background: 'white', borderRadius: 8, padding: 24, maxWidth: 480, width: '100%',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+          }}>
+            <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 10, color: 'var(--r0-slate-800)' }}>
+              ⚠ Máte neuložený výpočet
+            </div>
+            <div style={{ fontSize: 13, color: 'var(--r0-slate-600)', marginBottom: 14 }}>
+              {savePrompt.oldResult.formwork.system.name}, {savePrompt.oldResult.resources.num_formwork_crews} čet
+              {' — '}
+              <strong>{savePrompt.oldResult.schedule.total_days} dní</strong>,{' '}
+              <strong>{Math.round(savePrompt.oldResult.costs.total_labor_czk + savePrompt.oldResult.costs.formwork_rental_czk).toLocaleString('cs')} Kč</strong>
+            </div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <button onClick={handleSaveAndContinue} style={{
+                flex: 1, padding: '10px 14px', fontSize: 13, fontWeight: 600,
+                border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit',
+                background: 'var(--r0-orange, #f59e0b)', color: 'white',
+              }}>Uložit a pokračovat</button>
+              <button onClick={handleDiscardAndContinue} style={{
+                flex: 1, padding: '10px 14px', fontSize: 13, fontWeight: 600,
+                border: '1px solid var(--r0-slate-300)', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit',
+                background: 'white', color: 'var(--r0-slate-700)',
+              }}>Zahodit a pokračovat</button>
+            </div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--r0-slate-500)', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={autoSaveVariants}
+                onChange={e => setAutoSaveVariants(e.target.checked)}
+              />
+              Ukládat automaticky (neptát se)
+            </label>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -3053,7 +3217,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, kridlaFormwork, calcStatus, resultDirty }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -3061,10 +3225,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   scenarios?: any[];
   applyStatus: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
-  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number }>;
+  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number; is_plan?: boolean }>;
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
+  onSetAsPlan?: (id: string) => void;
+  positionId?: string | null;
   kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
   calcStatus?: 'idle' | 'calculating';
   resultDirty?: boolean;
@@ -3169,22 +3335,42 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
                 <th style={{ textAlign: 'left', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Konfigurace</th>
                 <th style={{ textAlign: 'right', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Dní</th>
                 <th style={{ textAlign: 'right', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Náklady</th>
+                <th style={{ textAlign: 'center', padding: '4px 8px' }}>Stav</th>
                 <th style={{ textAlign: 'center', padding: '4px 8px' }}></th>
               </tr>
             </thead>
             <tbody>
               {savedVariants.map((v: any, i: number) => (
-                <tr key={v.id} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                <tr key={v.id} style={{
+                  borderBottom: '1px solid var(--r0-slate-100)',
+                  background: v.is_plan ? 'rgba(34,197,94,0.06)' : undefined,
+                }}>
                   <td style={{ padding: '6px 8px', color: 'var(--r0-slate-400)' }}>{i + 1}</td>
-                  <td style={{ padding: '6px 8px', fontWeight: 500 }}>{v.label}</td>
+                  <td style={{ padding: '6px 8px', fontWeight: 500, cursor: onLoadVariant ? 'pointer' : 'default' }}
+                      onClick={() => onLoadVariant && onLoadVariant(v)}>
+                    {v.label}
+                  </td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{v.total_days}</td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{Math.round(v.total_cost_czk).toLocaleString('cs')} Kč</td>
                   <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                    {v.is_plan && <span style={{
+                      fontSize: 10, padding: '1px 6px', borderRadius: 3,
+                      background: '#dcfce7', color: '#166534', fontWeight: 700,
+                    }}>✓ PLÁN</span>}
+                  </td>
+                  <td style={{ padding: '6px 8px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                    {onSetAsPlan && !v.is_plan && <button onClick={() => onSetAsPlan(v.id)} style={{
+                      fontSize: 10, padding: '2px 6px', border: '1px solid var(--r0-slate-300)',
+                      borderRadius: 4, cursor: 'pointer', background: 'white', fontFamily: 'inherit', marginRight: 4,
+                    }} title="Označit jako plán">✓</button>}
                     {onLoadVariant && <button onClick={() => onLoadVariant(v)} style={{
                       fontSize: 11, padding: '2px 8px', border: '1px solid var(--r0-slate-300)',
                       borderRadius: 4, cursor: 'pointer', background: 'white', fontFamily: 'inherit', marginRight: 4,
                     }}>Načíst</button>}
-                    {onRemoveVariant && <button onClick={() => onRemoveVariant(v.id)} style={{
+                    {onRemoveVariant && <button onClick={() => {
+                      if (v.is_plan && !confirm('Tato varianta je označena jako PLÁN. Opravdu smazat?')) return;
+                      onRemoveVariant(v.id);
+                    }} style={{
                       fontSize: 11, padding: '2px 6px', border: '1px solid var(--r0-slate-200)',
                       borderRadius: 4, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-400)', fontFamily: 'inherit',
                     }}>✕</button>}
@@ -3193,6 +3379,25 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ))}
             </tbody>
           </table>
+          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyToPosition && (
+            <div style={{ marginTop: 8, textAlign: 'right' }}>
+              <button
+                onClick={onApplyToPosition}
+                disabled={applyStatus === 'saving'}
+                style={{
+                  padding: '6px 14px', fontSize: 12, fontWeight: 600,
+                  border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit',
+                  background: applyStatus === 'saved' ? '#22c55e' : applyStatus === 'error' ? '#ef4444' : '#16a34a',
+                  color: 'white',
+                }}
+              >
+                {applyStatus === 'saving' ? 'Ukládám…'
+                  : applyStatus === 'saved' ? '✓ Aplikováno'
+                  : applyStatus === 'error' ? '✗ Chyba'
+                  : '✓ Aplikovat plán do pozice'}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
