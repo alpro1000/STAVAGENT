@@ -21,6 +21,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [userTyping, setUserTyping] = useState(false);  // Only search on user input, not prop init
+  const [searchReason, setSearchReason] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,20 +50,25 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
     if (!userTyping || searchQuery.length < 2) {
       setResults([]);
       setIsOpen(false);
+      setSearchReason(null);
       return;
     }
 
     const timeoutId = setTimeout(async () => {
       try {
         setIsLoading(true);
+        setSearchReason(null);
         const response = await otskpAPI.search(searchQuery, 20);
-        setResults(response.results);
-        const shouldOpen = response.results.length > 0;
+        setResults(response.results || []);
+        // Backend returns reason: 'ok' | 'no_match' | 'db_empty' | 'db_error'
+        setSearchReason(response.reason || (response.results?.length ? 'ok' : 'no_match'));
+        const shouldOpen = (response.results || []).length > 0;
         setIsOpen(shouldOpen);
         setSelectedIndex(-1);
       } catch (error) {
         setResults([]);
         setIsOpen(false);
+        setSearchReason('network_error');
       } finally {
         setIsLoading(false);
       }
@@ -153,10 +159,21 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
         </div>
       )}
 
-      {!isOpen && searchQuery.length >= 2 && !isLoading && results.length === 0 && (
+      {!isOpen && searchQuery.length >= 2 && !isLoading && results.length === 0 && searchReason && (
         <div className="otskp-dropdown">
           <div className="otskp-no-results">
-            Nenalezeny žádné výsledky pro "{searchQuery}"
+            {searchReason === 'db_empty' && (
+              <>OTSKP databáze není načtena.<br/><small>Kontaktujte administrátora — spustit import katalogu.</small></>
+            )}
+            {searchReason === 'db_error' && (
+              <>Chyba OTSKP databáze.<br/><small>Zkuste později.</small></>
+            )}
+            {searchReason === 'network_error' && (
+              <>Chyba připojení k serveru.<br/><small>Zkontrolujte síť.</small></>
+            )}
+            {(searchReason === 'no_match' || searchReason === 'ok') && (
+              <>Nenalezeno pro "{searchQuery}".<br/><small>Zkuste jiný kód nebo popis.</small></>
+            )}
           </div>
         </div>
       )}

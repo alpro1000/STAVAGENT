@@ -11,6 +11,7 @@ import { positionsAPI, otskpAPI, configAPI } from '../../services/api';
 import { useUI } from '../../context/UIContext';
 import { useProjectPositions } from '../../hooks/useProjectPositions';
 import type { OtskpCode } from '@stavagent/monolit-shared';
+import { DEFAULT_CREW_SIZE, DEFAULT_WAGE_CZK_PH, DEFAULT_SHIFT_HOURS } from '../../constants/positionDefaults';
 
 interface Props {
   onClose: () => void;
@@ -48,8 +49,9 @@ export default function AddPositionModal({ onClose }: Props) {
     queryFn: () => configAPI.get(),
     staleTime: 10 * 60_000,
   });
-  const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? 398;
-  const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? 10;
+  const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? DEFAULT_WAGE_CZK_PH;
+  const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? DEFAULT_SHIFT_HOURS;
+  const defaultCrew = config?.defaults?.DEFAULT_CREW_SIZE ?? DEFAULT_CREW_SIZE;
 
   // Existing part names from positions
   const existingParts = useMemo(() => {
@@ -98,7 +100,7 @@ export default function AddPositionModal({ onClose }: Props) {
         unit: unit as any,
         qty: parseFloat(qty) || 0,
         otskp_code: otskpCode || undefined,
-        crew_size: 4,
+        crew_size: defaultCrew,
         wage_czk_ph: defaultWage,
         shift_hours: defaultShift,
         days: 0,

@@ -225,9 +225,10 @@ export default function NKBAdminPage() {
   /* ── Harvest functions ── */
   const URS_MATCHER_URL = 'https://klasifikator.stavagent.cz';
 
-  const fetchHarvestStatus = useCallback(async () => {
+  const fetchHarvestStatus = useCallback(async (): Promise<any | '_rate_limited' | null> => {
     try {
       const res = await fetch(`${URS_MATCHER_URL}/api/urs-catalog/harvest/status`, { signal: AbortSignal.timeout(10000) });
+      if (res.status === 429) return '_rate_limited';
       if (res.ok) {
         const data = await res.json();
         setHarvestState(data);
@@ -264,6 +265,7 @@ export default function NKBAdminPage() {
   };
 
   // Poll harvest status while running (exponential backoff: 5s → 10s → 20s → 30s max)
+  // On 429: triple the delay (up to 120s) and show rate-limit notice
   useEffect(() => {
     if (!harvestPolling) return;
     let cancelled = false;
@@ -272,7 +274,12 @@ export default function NKBAdminPage() {
       if (cancelled) return;
       const st = await fetchHarvestStatus();
       if (cancelled) return;
-      if (st && st.status !== 'running') {
+      if (st === '_rate_limited') {
+        // Server overloaded — back off aggressively
+        delay = Math.min(delay * 3, 120000);
+        setError('Server je přetížen (harvest), zpomaluji dotazování...');
+        setTimeout(poll, delay);
+      } else if (st && typeof st === 'object' && st.status !== 'running') {
         setHarvestPolling(false);
       } else {
         delay = Math.min(delay * 2, 30000);
@@ -284,9 +291,10 @@ export default function NKBAdminPage() {
   }, [harvestPolling, fetchHarvestStatus]);
 
   // ── Audit functions ──
-  const fetchAuditStatus = useCallback(async () => {
+  const fetchAuditStatus = useCallback(async (): Promise<any | '_rate_limited' | null> => {
     try {
       const res = await fetch(`${CORE_API_URL}/nkb/audit/status`, { signal: AbortSignal.timeout(10000) });
+      if (res.status === 429) return '_rate_limited';
       if (res.ok) {
         const data = await res.json();
         setAuditStatus(data);
@@ -336,6 +344,7 @@ export default function NKBAdminPage() {
   };
 
   // Poll audit while running (exponential backoff: 3s → 6s → 12s → 30s max)
+  // On 429: triple the delay (up to 120s) and show rate-limit notice
   useEffect(() => {
     if (!auditPolling) return;
     let cancelled = false;
@@ -344,7 +353,12 @@ export default function NKBAdminPage() {
       if (cancelled) return;
       const st = await fetchAuditStatus();
       if (cancelled) return;
-      if (st && st.status !== 'running') {
+      if (st === '_rate_limited') {
+        // Server overloaded — back off aggressively, keep polling at slower rate
+        delay = Math.min(delay * 3, 120000);
+        setError('Server je přetížen (audit), zpomaluji dotazování...');
+        setTimeout(poll, delay);
+      } else if (st && typeof st === 'object' && st.status !== 'running') {
         setAuditPolling(false);
         fetchAuditResult();
       } else {

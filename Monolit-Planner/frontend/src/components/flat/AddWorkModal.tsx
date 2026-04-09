@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { positionsAPI, configAPI } from '../../services/api';
+import { DEFAULT_CREW_SIZE, DEFAULT_WAGE_CZK_PH, DEFAULT_SHIFT_HOURS } from '../../constants/positionDefaults';
 import { useUI } from '../../context/UIContext';
 import type { Subtype } from '@stavagent/monolit-shared';
 
@@ -39,8 +40,9 @@ export default function AddWorkModal({ partName, existingSubtypes, onClose }: Pr
     queryFn: () => configAPI.get(),
     staleTime: 10 * 60_000,
   });
-  const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? 398;
-  const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? 10;
+  const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? DEFAULT_WAGE_CZK_PH;
+  const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? DEFAULT_SHIFT_HOURS;
+  const defaultCrew = config?.defaults?.DEFAULT_CREW_SIZE ?? DEFAULT_CREW_SIZE;
 
   // Custom work fields
   const [customName, setCustomName] = useState('');
@@ -62,7 +64,7 @@ export default function AddWorkModal({ partName, existingSubtypes, onClose }: Pr
         item_name: itemName,
         unit: unit as any,
         qty,
-        crew_size: 4,
+        crew_size: defaultCrew,
         wage_czk_ph: defaultWage,
         shift_hours: defaultShift,
         days: 0,
