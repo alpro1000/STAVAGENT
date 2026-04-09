@@ -60,6 +60,14 @@ export interface PlannerInput {
   formwork_area_m2?: number;
   /** Height from ground/floor to underside of element (m). Used for props calculation. */
   height_m?: number;
+  /**
+   * Lost formwork area (m²) — trapezoidal steel sheet (trapézový plech) that
+   * stays in the structure permanently. This area does NOT need system formwork
+   * (Dokaflex, TRIO, etc.) — only the remaining perimeter/edges do.
+   * Props are still needed on the FULL area (TP does not support itself).
+   * Only applicable to horizontal elements (stropni_deska, zakladova_deska, mostovkova_deska).
+   */
+  lost_formwork_area_m2?: number;
 
   // --- Rebar ---
   /** Exact rebar mass (kg). If not given, estimated from element type. */
@@ -805,17 +813,52 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 4. Formwork Calculation ────────────────────────────────────────────
 
   // Estimate formwork area if not given
-  const fwArea = input.formwork_area_m2 ?? estimateFormworkArea(
+  const fwAreaTotal = input.formwork_area_m2 ?? estimateFormworkArea(
     input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation, input.total_length_m,
   );
-  log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`);
 
-  // Warn about estimated formwork area for complex elements where estimation is unreliable
-  const COMPLEX_ELEMENT_TYPES = ['opery_ulozne_prahy', 'operne_zdi', 'rimsa', 'schodiste'];
-  if (!input.formwork_area_m2 && COMPLEX_ELEMENT_TYPES.includes(elementType)) {
+  // Ztracené bednění (trapézový plech / lost formwork):
+  // If user provided lost_formwork_area_m2, subtract it from the area that needs
+  // SYSTEM formwork (Dokaflex, TRIO, etc.). Only applies to horizontal elements.
+  // Props/shoring still need the FULL area (TP does not support itself).
+  const isHorizontal = profile.orientation === 'horizontal';
+  const lostFwArea = (isHorizontal && input.lost_formwork_area_m2 && input.lost_formwork_area_m2 > 0)
+    ? Math.min(input.lost_formwork_area_m2, fwAreaTotal)  // cap at total
+    : 0;
+  const fwArea = Math.max(fwAreaTotal - lostFwArea, 0);  // system formwork = total − lost
+
+  log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`
+    + (lostFwArea > 0 ? ` (total ${fwAreaTotal} m² − ztracené ${lostFwArea} m²)` : ''));
+
+  if (lostFwArea > 0) {
+    const lostPct = (lostFwArea / fwAreaTotal) * 100;
+    if (lostPct > 80) {
+      warnings.push(
+        `ℹ️ Převážně ztracené bednění (${lostPct.toFixed(0)}% z ${fwAreaTotal.toFixed(1)} m²) — ` +
+        `systémové bednění pouze pro okraje, čela a prostupy (${fwArea.toFixed(1)} m²).`
+      );
+    } else {
+      warnings.push(
+        `ℹ️ Ztracené bednění ${lostFwArea.toFixed(1)} m² (trapézový plech) — ` +
+        `systémové bednění jen na ${fwArea.toFixed(1)} m² (okraje + zbývající plocha). ` +
+        `Podpěry jsou počítány na plnou plochu ${fwAreaTotal.toFixed(1)} m².`
+      );
+    }
+  }
+
+  // Warn about estimated formwork area for complex elements where estimation is unreliable.
+  // Element-specific hint about geometry — the previous generic "dřík + křídla + stěna"
+  // text was correct only for opěry, not for římsy/operne_zdi/schodiště.
+  const GEOMETRY_HINTS: Partial<Record<string, string>> = {
+    opery_ulozne_prahy: 'dřík + křídla + stěna',
+    operne_zdi: 'stěna + konzoly',
+    rimsa: 'obrys + dno + čela',
+    schodiste: 'stupně + podesty',
+  };
+  if (!input.formwork_area_m2 && GEOMETRY_HINTS[elementType]) {
     warnings.push(
       `⚠️ ${profile.label_cs}: plocha bednění je odhadnuta (${fwArea} m²). ` +
-      `Tento typ má složitou geometrii (dřík + křídla + stěna) — zadejte skutečnou plochu pro přesný výpočet.`
+      `Tento typ má složitou geometrii (${GEOMETRY_HINTS[elementType]}) — zadejte skutečnou plochu pro přesný výpočet.`
     );
   }
 
@@ -1147,12 +1190,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // ─── 7c. Props (podpěry / stojky / skruž) ─────────────────────────────
+  // Props are calculated on the FULL area (fwAreaTotal), not the reduced
+  // system-formwork area. Even if ztracené bednění covers most of the deck,
+  // props still support the full slab weight.
   let propsResult: PropsCalculatorResult | undefined;
   if (profile.needs_supports && input.height_m && input.height_m > 0) {
     propsResult = calculateProps({
       element_type: elementType,
       height_m: input.height_m,
-      formwork_area_m2: fwArea,
+      formwork_area_m2: fwAreaTotal,
       hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
       crew_size: crew,
       shift_h: shift,

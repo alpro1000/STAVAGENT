@@ -218,6 +218,9 @@ interface FormState {
   nk_width_m: string;     // empty = auto (12m)
   construction_technology: '' | 'fixed_scaffolding' | 'mss' | 'cantilever';
   mss_tact_days: string;  // empty = auto from subtype
+  // Ztracené bednění (lost formwork / trapézový plech) — only for horizontal elements
+  has_lost_formwork: boolean;
+  lost_formwork_area_m2: string; // empty = 0
 }
 
 const DEFAULT_FORM: FormState = {
@@ -270,6 +273,8 @@ const DEFAULT_FORM: FormState = {
   nk_width_m: '',
   construction_technology: '',
   mss_tact_days: '',
+  has_lost_formwork: false,
+  lost_formwork_area_m2: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -1015,6 +1020,11 @@ export default function PlannerPage() {
     if (form.nk_width_m) input.nk_width_m = parseFloat(form.nk_width_m);
     if (form.construction_technology) input.construction_technology = form.construction_technology as any;
     if (form.mss_tact_days) input.mss_tact_days = parseInt(form.mss_tact_days);
+    // Lost formwork (trapézový plech) — horizontal elements only
+    if (form.has_lost_formwork && form.lost_formwork_area_m2) {
+      const lostArea = parseFloat(form.lost_formwork_area_m2);
+      if (lostArea > 0) input.lost_formwork_area_m2 = lostArea;
+    }
     // Exposure class from URL context
     if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
     // Total length for non-spáry mode (needed for prestress days calculation)
@@ -1934,6 +1944,39 @@ export default function PlannerPage() {
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
+
+            {/* Ztracené bednění (trapézový plech) — only for horizontal elements */}
+            {(() => {
+              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              const horizontalTypes = ['stropni_deska', 'zakladova_deska', 'mostovkova_deska'];
+              if (!horizontalTypes.includes(elemType)) return null;
+              return (
+                <div style={{ marginTop: 6, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-700)' }}>
+                    <input
+                      type="checkbox"
+                      checked={form.has_lost_formwork}
+                      onChange={e => update('has_lost_formwork', e.target.checked)}
+                    />
+                    Ztracené bednění (trapézový plech)
+                  </label>
+                  {form.has_lost_formwork && (
+                    <div style={{ marginTop: 6 }}>
+                      <Field label="Plocha ztraceného bednění (m²)" hint="TP 60mm atd. — odečte se od systémového bednění">
+                        <NumInput style={inputStyle} value={form.lost_formwork_area_m2} min={0}
+                          onChange={v => update('lost_formwork_area_m2', String(v))}
+                          placeholder="např. 1325" />
+                      </Field>
+                      <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginTop: 4 }}>
+                        Systémové bednění (Dokaflex/TRIO) se spočítá pouze na zbývající plochu.
+                        Podpěry pokrývají celou plochu.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
             <Field label="Norma výztuže (kg/m³)" hint="prázdné = odhad z profilu elementu">
               <NumInput style={inputStyle} value={form.rebar_norm_kg_m3} min={0}
                 onChange={v => {
