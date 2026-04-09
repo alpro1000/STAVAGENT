@@ -51,7 +51,7 @@ export default function AddPositionModal({ onClose }: Props) {
   });
   const defaultWage = config?.defaults?.DEFAULT_WAGE_CZK_PH ?? DEFAULT_WAGE_CZK_PH;
   const defaultShift = config?.defaults?.DEFAULT_SHIFT_HOURS ?? DEFAULT_SHIFT_HOURS;
-  const defaultCrew = config?.defaults?.DEFAULT_CREW_SIZE ?? DEFAULT_CREW_SIZE;
+  const defaultCrew = DEFAULT_CREW_SIZE;
 
   // Existing part names from positions
   const existingParts = useMemo(() => {

@@ -635,8 +635,10 @@ router.post('/import-from-registry', async (req, res) => {
         [objectId, projectId, sheetCode, sheetCode]
       );
       if (!objResult.rows[0]?.object_id) {
-        console.error(`[Integration] Failed to create/get object for sheet "${sheet.name}" — no object_id returned`);
-        continue; // Skip this sheet, don't fail entire sync
+        const errMsg = `Failed to create/get object for sheet "${sheet.name}" — no object_id returned`;
+        console.error(`[Integration] ${errMsg}`);
+        insertErrors.push({ sheet: sheet.name, error: errMsg });
+        continue; // Skip this sheet, don't fail entire sync (partial success)
       }
       const dbObjectId = objResult.rows[0].object_id;
 
