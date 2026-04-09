@@ -183,6 +183,12 @@ interface FormState {
   adjacent_sections: boolean;
   num_tacts_override: string; // empty = auto, number = direct
   tact_volume_m3_override: string; // empty = auto-divide
+  // Manual záběry (custom non-uniform tacts) — overrides num_tacts + volume split
+  // When enabled, each záběr has its own volume and optional name/formwork area.
+  // The engine receives num_tacts_override = array.length and
+  // tact_volume_m3_override = max(volumes) (bottleneck, drives schedule).
+  use_manual_zabery: boolean;
+  manual_zabery: Array<{ name: string; volume_m3: string; formwork_area_m2: string }>;
   scheduling_mode_override: '' | 'linear' | 'chess';
   season: SeasonMode;
   use_retarder: boolean;
@@ -239,6 +245,8 @@ const DEFAULT_FORM: FormState = {
   adjacent_sections: true,
   num_tacts_override: '',
   tact_volume_m3_override: '',
+  use_manual_zabery: false,
+  manual_zabery: [],
   scheduling_mode_override: '',
   season: 'normal',
   use_retarder: false,
@@ -996,7 +1004,17 @@ export default function PlannerPage() {
       input.total_length_m = form.total_length_m;
       input.adjacent_sections = form.adjacent_sections;
     }
-    if (form.tact_mode === 'manual' && form.num_tacts_override) {
+    // Manual záběry (non-uniform volumes) override both tact count and per-tact volume.
+    // Bottleneck záběr (largest volume) drives schedule calculation.
+    if (form.use_manual_zabery && form.manual_zabery.length > 0) {
+      const volumes = form.manual_zabery
+        .map(z => parseFloat(z.volume_m3) || 0)
+        .filter(v => v > 0);
+      if (volumes.length > 0) {
+        input.num_tacts_override = volumes.length;
+        input.tact_volume_m3_override = Math.max(...volumes);  // bottleneck for schedule
+      }
+    } else if (form.tact_mode === 'manual' && form.num_tacts_override) {
       input.num_tacts_override = parseInt(form.num_tacts_override);
       if (form.tact_volume_m3_override) input.tact_volume_m3_override = parseFloat(form.tact_volume_m3_override);
       if (form.scheduling_mode_override) input.scheduling_mode_override = form.scheduling_mode_override;
@@ -2180,6 +2198,135 @@ export default function PlannerPage() {
                 </Field>
               </>
             )}
+
+            {/* ─── Ruční rozdělení záběrů (non-uniform volumes) ─── */}
+            <div style={{ marginTop: 12, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-700)' }}>
+                <input
+                  type="checkbox"
+                  checked={form.use_manual_zabery}
+                  onChange={e => {
+                    const enabled = e.target.checked;
+                    update('use_manual_zabery', enabled);
+                    if (enabled && form.manual_zabery.length === 0) {
+                      // Seed with one empty row
+                      update('manual_zabery', [{ name: '', volume_m3: '', formwork_area_m2: '' }]);
+                    }
+                  }}
+                />
+                Ruční rozdělení záběrů (nerovnoměrné objemy)
+              </label>
+              {form.use_manual_zabery && (
+                <div style={{ marginTop: 8 }}>
+                  <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginBottom: 6 }}>
+                    Zadejte objem každého záběru zvlášť. Největší záběr určuje harmonogram (bottleneck).
+                  </div>
+                  <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-200)' }}>
+                        <th style={{ textAlign: 'left', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>#</th>
+                        <th style={{ textAlign: 'left', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Název</th>
+                        <th style={{ textAlign: 'right', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Objem (m³)</th>
+                        <th style={{ textAlign: 'right', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Plocha (m²)</th>
+                        <th style={{ padding: '3px 4px' }}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {form.manual_zabery.map((z, i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                          <td style={{ padding: '4px', color: 'var(--r0-slate-400)', fontSize: 10 }}>{i + 1}</td>
+                          <td style={{ padding: '2px 4px' }}>
+                            <input
+                              type="text"
+                              value={z.name}
+                              onChange={e => {
+                                const next = form.manual_zabery.slice();
+                                next[i] = { ...next[i], name: e.target.value };
+                                update('manual_zabery', next);
+                              }}
+                              placeholder={`Záběr ${i + 1}`}
+                              style={{ width: '100%', padding: '3px 6px', fontSize: 11, border: '1px solid var(--r0-slate-300)', borderRadius: 3, fontFamily: 'inherit' }}
+                            />
+                          </td>
+                          <td style={{ padding: '2px 4px' }}>
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              value={z.volume_m3}
+                              onChange={e => {
+                                const next = form.manual_zabery.slice();
+                                next[i] = { ...next[i], volume_m3: e.target.value };
+                                update('manual_zabery', next);
+                              }}
+                              placeholder="0"
+                              style={{ width: '100%', padding: '3px 6px', fontSize: 11, border: '1px solid var(--r0-slate-300)', borderRadius: 3, textAlign: 'right', fontFamily: 'JetBrains Mono, monospace' }}
+                            />
+                          </td>
+                          <td style={{ padding: '2px 4px' }}>
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              value={z.formwork_area_m2}
+                              onChange={e => {
+                                const next = form.manual_zabery.slice();
+                                next[i] = { ...next[i], formwork_area_m2: e.target.value };
+                                update('manual_zabery', next);
+                              }}
+                              placeholder="0"
+                              style={{ width: '100%', padding: '3px 6px', fontSize: 11, border: '1px solid var(--r0-slate-300)', borderRadius: 3, textAlign: 'right', fontFamily: 'JetBrains Mono, monospace' }}
+                            />
+                          </td>
+                          <td style={{ padding: '2px 4px', textAlign: 'center' }}>
+                            <button
+                              onClick={() => {
+                                const next = form.manual_zabery.filter((_, idx) => idx !== i);
+                                update('manual_zabery', next);
+                              }}
+                              style={{
+                                fontSize: 10, padding: '2px 6px', border: '1px solid var(--r0-slate-200)',
+                                borderRadius: 3, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-400)',
+                              }}
+                              title="Odstranit záběr"
+                            >✕</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <button
+                    onClick={() => {
+                      update('manual_zabery', [...form.manual_zabery, { name: '', volume_m3: '', formwork_area_m2: '' }]);
+                    }}
+                    style={{
+                      marginTop: 6, padding: '4px 10px', fontSize: 11, border: '1px dashed var(--r0-slate-300)',
+                      borderRadius: 4, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-600)', fontFamily: 'inherit',
+                    }}
+                  >+ Přidat záběr</button>
+
+                  {/* Sum validation */}
+                  {(() => {
+                    const sum = form.manual_zabery.reduce((s, z) => s + (parseFloat(z.volume_m3) || 0), 0);
+                    const total = form.volume_m3 || 0;
+                    if (sum === 0 || total === 0) return null;
+                    const deviation = Math.abs(sum - total) / total;
+                    if (deviation <= 0.05) {
+                      return (
+                        <div style={{ marginTop: 6, fontSize: 10, color: 'var(--r0-green, #16a34a)' }}>
+                          ✓ Σ {sum.toFixed(2)} m³ ≈ {total.toFixed(2)} m³
+                        </div>
+                      );
+                    }
+                    return (
+                      <div style={{ marginTop: 6, fontSize: 10, color: 'var(--r0-orange, #f59e0b)' }}>
+                        ⚠ Σ {sum.toFixed(2)} m³ ≠ {total.toFixed(2)} m³ (odchylka {(deviation * 100).toFixed(0)}%)
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+            </div>
           </Section>
 
           {/* ─── Environment ─── */}
