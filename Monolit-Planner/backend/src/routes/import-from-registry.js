@@ -56,11 +56,13 @@ router.get('/projects', async (req, res) => {
     registry: { tried: false, ok: false, count: 0, error: null },
   };
 
-  // Helper: fetch Portal projects with filter
+  // Helper: fetch Portal projects via public integration endpoint (no auth)
+  // Uses /api/integration/list-registry-projects which filters by kiosk_type='registry'
+  // intrinsically — no user-scoping, no auth required (cross-kiosk pattern).
   const fetchPortalProjects = async () => {
     debug.portal.tried = true;
     try {
-      const response = await fetch(`${PORTAL_API}/api/portal-projects/registry`, {
+      const response = await fetch(`${PORTAL_API}/api/integration/list-registry-projects`, {
         headers: { 'Content-Type': 'application/json' },
         signal: AbortSignal.timeout(PORTAL_TIMEOUT),
       });
@@ -71,25 +73,18 @@ router.get('/projects', async (req, res) => {
       }
       const data = await response.json();
       const portalProjects = data.projects || [];
-      const withRegistry = portalProjects
-        .filter(p =>
-          p.has_registry ||
-          (p.position_stats?.has_registry_id > 0) ||
-          (p.position_stats?.registry_linked > 0) ||
-          (p.kiosk_links || []).some(kl => kl.kiosk_type === 'registry' && kl.status !== 'deleted')
-        )
-        .map(p => ({
-          portal_project_id: p.portal_project_id,
-          project_name: p.project_name,
-          positions_total: p.position_stats?.total_positions || 0,
-          registry_linked: p.position_stats?.registry_linked || 0,
-          monolit_linked: p.position_stats?.monolit_linked || 0,
-          updated_at: p.updated_at || null,
-          source: 'portal',
-        }));
+      // Endpoint already filters by kiosk_type='registry', no extra filter needed
+      const mapped = portalProjects.map(p => ({
+        portal_project_id: p.portal_project_id,
+        project_name: p.project_name,
+        positions_total: p.positions_total || 0,
+        registry_linked: p.registry_linked || 0,
+        updated_at: p.updated_at || null,
+        source: 'portal',
+      }));
       debug.portal.ok = true;
-      debug.portal.count = withRegistry.length;
-      return withRegistry;
+      debug.portal.count = mapped.length;
+      return mapped;
     } catch (err) {
       debug.portal.error = err.message;
       logger.warn(`[ImportRegistry] Portal fetch failed: ${err.message}`);

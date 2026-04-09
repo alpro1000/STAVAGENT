@@ -16,7 +16,7 @@ import { MonolitCompareDrawer } from './components/comparison/MonolitCompareDraw
 import { startPolling, stopPolling, refreshNow, type PollState, type ComparisonItem } from './services/monolithPolling';
 // FormworkRentalCalculator removed from header — now integrated into TOV/Materiály tab
 import { useRegistryStore } from './stores/registryStore';
-import { loadFromBackend, mergeProjects, debouncedPushToBackend } from './services/backendSync';
+import { loadFromBackend, mergeProjects, debouncedPushToBackend, pushProjectToBackend } from './services/backendSync';
 import { setSuppressAutoSync } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
@@ -200,27 +200,44 @@ function App() {
     return () => stopPolling();
   }, [selectedProjectId, projects]);
 
-  // Backend sync: on startup, load projects from PostgreSQL and merge with local store
+  // Backend sync: on startup, load projects from PostgreSQL and merge with local store.
+  // Also push local projects that are NOT in backend (covers case where user worked
+  // offline / backend was sleeping during edits, so IndexedDB has data backend lacks).
   const backendSyncDone = useRef(false);
   useEffect(() => {
     if (backendSyncDone.current) return;
     backendSyncDone.current = true;
 
     loadFromBackend().then((backendProjects) => {
-      if (backendProjects.length === 0) return;
       const { projects: localProjects } = useRegistryStore.getState();
-      const merged = mergeProjects(localProjects, backendProjects);
-      if (merged.length > localProjects.length) {
-        // Suppress auto-sync subscriber to prevent sync loop
-        // (backend-loaded projects should not be re-synced back to Portal)
-        setSuppressAutoSync(true);
-        const localIds = new Set(localProjects.map(p => p.id));
-        for (const p of merged) {
-          if (!localIds.has(p.id)) {
-            useRegistryStore.getState().addProject(p);
+
+      // 1. Merge backend → local: add backend projects not already local
+      if (backendProjects.length > 0) {
+        const merged = mergeProjects(localProjects, backendProjects);
+        if (merged.length > localProjects.length) {
+          setSuppressAutoSync(true);
+          const localIds = new Set(localProjects.map(p => p.id));
+          for (const p of merged) {
+            if (!localIds.has(p.id)) {
+              useRegistryStore.getState().addProject(p);
+            }
           }
+          setSuppressAutoSync(false);
         }
-        setSuppressAutoSync(false);
+      }
+
+      // 2. Push local → backend: for any local project not in backend
+      // (ensures IndexedDB-only data reaches PostgreSQL on next session load)
+      const backendIds = new Set(backendProjects.map(p => p.id));
+      const localOnly = localProjects.filter(p => !backendIds.has(p.id));
+      if (localOnly.length > 0) {
+        console.log(`[App] Pushing ${localOnly.length} local-only projects to backend...`);
+        // Push sequentially (not parallel) to avoid overwhelming the backend
+        (async () => {
+          for (const project of localOnly) {
+            await pushProjectToBackend(project).catch(() => {});
+          }
+        })();
       }
     }).catch(() => {});
   }, []);

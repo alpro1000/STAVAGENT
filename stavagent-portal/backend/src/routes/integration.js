@@ -980,4 +980,61 @@ router.get('/registry-status/:registry_project_id', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/integration/list-registry-projects
+ * List all Portal projects linked to Registry (for Monolit "Načíst z Rozpočtu" modal).
+ * PUBLIC endpoint — no auth required (cross-kiosk communication pattern).
+ * Scoped by kiosk_type='registry' in kiosk_links (intrinsic filter, not user-based).
+ */
+router.get('/list-registry-projects', async (req, res) => {
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.json({ success: true, projects: [] });
+  }
+
+  try {
+    // Get all projects that have a Registry kiosk link (regardless of owner).
+    // This is cross-kiosk data, not user-scoped.
+    const result = await pool.query(
+      `SELECT
+         pp.portal_project_id,
+         pp.project_name,
+         pp.project_type,
+         pp.updated_at,
+         kl.kiosk_project_id AS registry_project_id,
+         kl.last_sync,
+         (SELECT COUNT(*)::int FROM portal_positions pop
+          JOIN portal_objects po ON pop.object_id = po.object_id
+          WHERE po.portal_project_id = pp.portal_project_id) AS positions_total,
+         (SELECT COUNT(*)::int FROM portal_positions pop
+          JOIN portal_objects po ON pop.object_id = po.object_id
+          WHERE po.portal_project_id = pp.portal_project_id
+            AND pop.registry_item_id IS NOT NULL) AS registry_linked
+       FROM portal_projects pp
+       INNER JOIN kiosk_links kl
+         ON pp.portal_project_id = kl.portal_project_id
+         AND kl.kiosk_type = 'registry'
+         AND kl.status != 'deleted'
+       ORDER BY pp.updated_at DESC`
+    );
+
+    const projects = result.rows.map(r => ({
+      portal_project_id: r.portal_project_id,
+      project_name: r.project_name,
+      project_type: r.project_type,
+      registry_project_id: r.registry_project_id,
+      positions_total: r.positions_total || 0,
+      registry_linked: r.registry_linked || 0,
+      updated_at: r.updated_at,
+      last_sync: r.last_sync,
+      source: 'portal',
+    }));
+
+    res.json({ success: true, projects });
+  } catch (error) {
+    console.error('[Integration] Error listing registry projects:', error.message);
+    res.json({ success: true, projects: [], error: error.message });
+  }
+});
+
 export default router;
