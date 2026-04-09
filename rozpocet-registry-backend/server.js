@@ -360,12 +360,13 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
       const itemId = item.item_id || `item_${uuidv4()}`;
 
       await client.query(
-        `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, sync_metadata, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
+        `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, skupina, sync_metadata, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
          ON CONFLICT (item_id) DO UPDATE SET
            kod = EXCLUDED.kod, popis = EXCLUDED.popis, mnozstvi = EXCLUDED.mnozstvi,
            mj = EXCLUDED.mj, cena_jednotkova = EXCLUDED.cena_jednotkova,
            cena_celkem = EXCLUDED.cena_celkem, item_order = EXCLUDED.item_order,
+           skupina = COALESCE(EXCLUDED.skupina, registry_items.skupina),
            sync_metadata = EXCLUDED.sync_metadata, updated_at = NOW()`,
         [
           itemId,
@@ -377,6 +378,7 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
           item.cena_jednotkova ?? null,
           item.cena_celkem ?? null,
           item.item_order ?? i,
+          item.skupina || null,
           item.sync_metadata ? JSON.stringify(item.sync_metadata) : null,
         ]
       );

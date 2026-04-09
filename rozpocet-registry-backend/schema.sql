@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS registry_items (
   cena_jednotkova REAL,
   cena_celkem REAL,
   item_order INTEGER DEFAULT 0,
+  skupina VARCHAR(50),
   sync_metadata TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -63,3 +64,6 @@ CREATE INDEX IF NOT EXISTS idx_registry_items_sheet ON registry_items(sheet_id);
 CREATE INDEX IF NOT EXISTS idx_registry_tov_item ON registry_tov(item_id);
 CREATE INDEX IF NOT EXISTS idx_registry_permissions_project ON registry_permissions(project_id);
 CREATE INDEX IF NOT EXISTS idx_registry_permissions_user ON registry_permissions(user_id);
+
+-- Migration: add skupina column to existing tables (idempotent)
+ALTER TABLE registry_items ADD COLUMN IF NOT EXISTS skupina VARCHAR(50);

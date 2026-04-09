@@ -55,7 +55,7 @@ export async function loadFromBackend(): Promise<Project[]> {
               mj: i.mj || '',
               cenaJednotkova: i.cena_jednotkova ?? null,
               cenaCelkem: i.cena_celkem ?? null,
-              skupina: null,
+              skupina: i.skupina || null,
               skupinaSuggested: null,
               source: {
                 projectId: ap.project_id,
@@ -169,6 +169,7 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
           cena_jednotkova: item.cenaJednotkova ?? undefined,
           cena_celkem: item.cenaCelkem ?? undefined,
           item_order: idx,
+          skupina: item.skupina || undefined,
         }));
         await registryAPI.bulkCreateItems(sheet.id, bulkItems);
       }
