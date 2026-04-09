@@ -2581,9 +2581,10 @@ export default function PlannerPage() {
                     };
 
                     // 1. Main (beton) position — update with TOV entries in metadata
+                    // Use betonDays (pour-only duration) NOT total_days (full schedule)
                     updates.push({
                       id: positionContext.position_id,
-                      days: plan.schedule.total_days,
+                      days: betonDays,
                       crew_size: pourCrew,
                       wage_czk_ph: effectivePourWage,
                       shift_hours: plan.resources.shift_h,

@@ -15,7 +15,10 @@ import { logger } from '../utils/logger.js';
 
 const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
 const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://kalkulator.stavagent.cz';
-const WRITE_BACK_TIMEOUT = parseInt(process.env.PORTAL_WRITE_BACK_TIMEOUT) || 5000;
+// Per-request timeout — default 15s to tolerate Cloud Run cold start (was 5s, too tight)
+const WRITE_BACK_TIMEOUT = parseInt(process.env.PORTAL_WRITE_BACK_TIMEOUT) || 15000;
+// Max concurrent write-back requests (prevents flooding Portal with 755+ parallel calls)
+const WRITE_BACK_CONCURRENCY = parseInt(process.env.PORTAL_WRITE_BACK_CONCURRENCY) || 10;
 
 /**
  * Build MonolithPayload from a DB position row.
@@ -74,12 +77,17 @@ export async function writeBackToPortal(positionInstanceId, payload) {
     });
 
     if (response.ok) {
-      logger.info(`[WriteBack] ✅ Monolith payload sent to Portal: ${positionInstanceId}`);
+      logger.debug(`[WriteBack] ✅ Portal: ${positionInstanceId}`);
+      return { ok: true };
     } else {
-      logger.warn(`[WriteBack] ⚠️ Portal responded ${response.status} for ${positionInstanceId}`);
+      logger.debug(`[WriteBack] Portal responded ${response.status} for ${positionInstanceId}`);
+      return { ok: false, status: response.status };
     }
   } catch (error) {
-    logger.warn(`[WriteBack] ⚠️ Portal write-back failed for ${positionInstanceId}: ${error.message}`);
+    // Demoted to debug — Portal writeback is non-critical, positions are already in Monolit DB.
+    // Timeouts during Cloud Run cold start are expected and will be retried on next PUT.
+    logger.debug(`[WriteBack] Portal unavailable for ${positionInstanceId}: ${error.message}`);
+    return { ok: false, error: error.message };
   }
 }
 
@@ -95,13 +103,30 @@ export async function writeBackBatch(positions, bridgeId) {
   const linked = positions.filter(p => p.position_instance_id);
   if (linked.length === 0) return;
 
-  logger.info(`[WriteBack] Sending ${linked.length} monolith payloads to Portal...`);
+  logger.info(`[WriteBack] Sending ${linked.length} monolith payloads to Portal (concurrency=${WRITE_BACK_CONCURRENCY})...`);
 
-  const promises = linked.map(pos => {
-    const payload = buildMonolithPayload(pos, bridgeId);
-    return writeBackToPortal(pos.position_instance_id, payload);
-  });
+  // Chunked parallelism: process in batches of WRITE_BACK_CONCURRENCY
+  // Prevents flooding Portal with hundreds of parallel requests which
+  // causes Cloud Run to throttle / cold-start-timeout under load.
+  let ok = 0;
+  let failed = 0;
+  for (let i = 0; i < linked.length; i += WRITE_BACK_CONCURRENCY) {
+    const chunk = linked.slice(i, i + WRITE_BACK_CONCURRENCY);
+    const results = await Promise.allSettled(
+      chunk.map(pos => {
+        const payload = buildMonolithPayload(pos, bridgeId);
+        return writeBackToPortal(pos.position_instance_id, payload);
+      })
+    );
+    for (const r of results) {
+      if (r.status === 'fulfilled' && r.value?.ok) ok++;
+      else failed++;
+    }
+  }
 
-  // Fire all in parallel, don't await individually
-  await Promise.allSettled(promises);
+  if (failed > 0) {
+    logger.info(`[WriteBack] Batch complete: ${ok} ok, ${failed} failed (Portal may be cold-starting, non-critical)`);
+  } else {
+    logger.info(`[WriteBack] Batch complete: ${ok} ok`);
+  }
 }

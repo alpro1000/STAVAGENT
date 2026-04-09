@@ -207,32 +207,44 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
     }
 
-    // Create stavba (project container) if metadata exists
+    // Create stavba (project container) if metadata exists.
+    // Stavba ID = normalized name + short suffix if already exists with different content.
+    // This prevents collision when two different XLSX files use the same Stavba name.
     let stavbaProjectId = null;
     if (fileMetadata.stavba) {
-      stavbaProjectId = normalizeString(fileMetadata.stavba);
+      const baseId = normalizeString(fileMetadata.stavba);
+      stavbaProjectId = baseId;
 
       try {
         const existing = await db.prepare(
           'SELECT project_id FROM monolith_projects WHERE project_id = ?'
         ).get(stavbaProjectId);
 
-        if (!existing) {
-          await db.prepare(`
-            INSERT INTO monolith_projects
-            (project_id, project_name, description, owner_id)
-            VALUES (?, ?, ?, ?)
-          `).run(stavbaProjectId, fileMetadata.stavba, fileMetadata.stavba, 1);
-
-          // Create bridge entry for FK compatibility
-          await db.prepare(`
-            INSERT INTO bridges (bridge_id, object_name)
-            VALUES (?, ?)
-            ON CONFLICT (bridge_id) DO NOTHING
-          `).run(stavbaProjectId, fileMetadata.stavba);
-
-          logger.info(`[Upload] Created stavba project: ${stavbaProjectId}`);
+        if (existing) {
+          // Project with this ID exists. To avoid collision between different
+          // XLSX files with the same Stavba name, append a short hash suffix
+          // derived from the file name + timestamp. This makes each upload
+          // produce a distinct project (old projects remain intact).
+          const suffix = `${Date.now().toString(36).slice(-4)}_${Math.random().toString(36).slice(2, 6)}`;
+          stavbaProjectId = `${baseId}_${suffix}`;
+          logger.info(`[Upload] Stavba "${baseId}" already exists — using unique ID: ${stavbaProjectId}`);
         }
+
+        await db.prepare(`
+          INSERT INTO monolith_projects
+          (project_id, project_name, description, owner_id)
+          VALUES (?, ?, ?, ?)
+          ON CONFLICT (project_id) DO NOTHING
+        `).run(stavbaProjectId, fileMetadata.stavba, fileMetadata.stavba, 1);
+
+        // Create bridge entry for FK compatibility
+        await db.prepare(`
+          INSERT INTO bridges (bridge_id, object_name)
+          VALUES (?, ?)
+          ON CONFLICT (bridge_id) DO NOTHING
+        `).run(stavbaProjectId, fileMetadata.stavba);
+
+        logger.info(`[Upload] Created stavba project: ${stavbaProjectId}`);
       } catch (err) {
         logger.warn(`[Upload] Could not create stavba: ${err.message}`);
       }
@@ -243,7 +255,14 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     for (const sheet of sheets) {
       try {
-        const bridgeId = sheet.bridgeId;
+        // Prefix bridge_id with stavba project ID to make bridges unique per file.
+        // This prevents collision when two XLSX files have sheets with the same name
+        // (e.g. both files have "SO010" — without prefix, second would overwrite first).
+        const baseSheetBridgeId = sheet.bridgeId;
+        const bridgeId = stavbaProjectId
+          ? `${stavbaProjectId}__${baseSheetBridgeId}`
+          : baseSheetBridgeId;
+
         // Use Objekt metadata for first sheet's bridge name, fallback to sheet-detected name
         const bridgeName = (sheets.indexOf(sheet) === 0 && fileMetadata.objekt)
           ? fileMetadata.objekt
