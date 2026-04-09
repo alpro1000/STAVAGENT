@@ -34,6 +34,7 @@ import kbResearchRoutes from './src/routes/kb-research.js';
 import registryRoutes from './src/routes/registry.js';
 import relinkRoutes from './src/routes/relink.js';
 import plannerAdvisorRoutes from './src/routes/planner-advisor.js';
+import plannerVariantsRoutes from './src/routes/planner-variants.js';
 // soupisRoutes removed — Soupis prací moved to Portal
 
 // Utils
@@ -192,6 +193,7 @@ app.use('/api/kb/research', kbResearchRoutes);
 app.use('/api/v1/registry', registryRoutes);
 app.use('/api/relink', relinkRoutes);
 app.use('/api/planner-advisor', plannerAdvisorRoutes);
+app.use('/api/planner-variants', plannerVariantsRoutes);
 
 // DEBUG routes - ONLY enabled in development
 if (process.env.NODE_ENV !== 'production') {

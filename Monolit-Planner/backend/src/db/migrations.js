@@ -1412,6 +1412,26 @@ async function initSqliteSchema() {
     );
   `);
 
+  // Planner variants table (Part B calculator saved scenarios per position)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS planner_variants (
+      id TEXT PRIMARY KEY,
+      position_id TEXT NOT NULL REFERENCES positions(id) ON DELETE CASCADE,
+      variant_number INTEGER NOT NULL DEFAULT 1,
+      description TEXT NOT NULL DEFAULT '',
+      input_params TEXT NOT NULL,
+      calc_result TEXT NOT NULL,
+      total_days REAL,
+      total_cost_czk REAL,
+      system_name TEXT,
+      is_plan INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  db.exec(`CREATE INDEX IF NOT EXISTS idx_planner_variants_position ON planner_variants(position_id);`);
+  db.exec(`CREATE INDEX IF NOT EXISTS idx_planner_variants_is_plan ON planner_variants(position_id, is_plan);`);
+
   // Insert default config if not exists
   const configExists = db.prepare('SELECT id FROM project_config WHERE id = 1').get();
   if (!configExists) {

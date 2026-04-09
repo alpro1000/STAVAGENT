@@ -143,6 +143,24 @@ CREATE TABLE IF NOT EXISTS project_config (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Planner variants table (Part B calculator saved scenarios)
+-- Each variant is a snapshot of input params + full calc result for a position.
+-- One variant can be marked as the "plan" (is_plan=true) per position.
+CREATE TABLE IF NOT EXISTS planner_variants (
+  id VARCHAR(255) PRIMARY KEY,
+  position_id VARCHAR(255) NOT NULL REFERENCES positions(id) ON DELETE CASCADE,
+  variant_number INTEGER NOT NULL DEFAULT 1,
+  description VARCHAR(500) NOT NULL DEFAULT '',
+  input_params TEXT NOT NULL,
+  calc_result TEXT NOT NULL,
+  total_days REAL,
+  total_cost_czk REAL,
+  system_name VARCHAR(255),
+  is_plan INTEGER DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- OTSKP codes table
 CREATE TABLE IF NOT EXISTS otskp_codes (
   code VARCHAR(50) PRIMARY KEY,
@@ -291,6 +309,8 @@ CREATE INDEX IF NOT EXISTS idx_snapshots_final ON snapshots(is_final);
 CREATE INDEX IF NOT EXISTS idx_otskp_code ON otskp_codes(code);
 CREATE INDEX IF NOT EXISTS idx_otskp_name ON otskp_codes(name);
 CREATE INDEX IF NOT EXISTS idx_otskp_search_name ON otskp_codes(search_name);
+CREATE INDEX IF NOT EXISTS idx_planner_variants_position ON planner_variants(position_id);
+CREATE INDEX IF NOT EXISTS idx_planner_variants_is_plan ON planner_variants(position_id, is_plan);
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_owner ON monolith_projects(owner_id);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(object_type);
