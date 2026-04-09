@@ -39,81 +39,110 @@ function determineSubtype(item) {
 
 /**
  * GET /api/import-from-registry/projects
- * Returns list of Portal projects that have Registry data (for dropdown selector)
+ * Returns list of projects available for import.
+ * Strategy: fetch Portal + Registry in parallel, merge results.
+ * Each source has its own timeout; failures are non-fatal.
  */
 router.get('/projects', async (req, res) => {
-  try {
-    const userId = req.user?.userId || req.query.user_id || null;
-    logger.info(`[ImportRegistry] Fetching available projects from Portal (userId=${userId})...`);
+  const userId = req.user?.userId || req.query.user_id || 1;
+  const PORTAL_TIMEOUT = parseInt(process.env.PORTAL_TIMEOUT_MS || '5000', 10);
+  const REGISTRY_TIMEOUT = parseInt(process.env.REGISTRY_TIMEOUT_MS || '8000', 10);
+  const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
 
-    const response = await fetch(`${PORTAL_API}/api/portal-projects/registry`, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+  logger.info(`[ImportRegistry] Fetching projects (userId=${userId})...`);
 
-    if (!response.ok) {
-      logger.warn(`[ImportRegistry] Portal returned ${response.status}`);
-      return res.json({ success: true, projects: [] });
-    }
+  const debug = {
+    portal: { tried: false, ok: false, count: 0, error: null },
+    registry: { tried: false, ok: false, count: 0, error: null },
+  };
 
-    const data = await response.json();
-    const portalProjects = data.projects || [];
-
-    // Filter to projects that have Registry data — check both has_registry flag AND
-    // registry_linked count (dov_payload) since has_registry_id may be 0 when
-    // PortalAutoSync synced the project but items don't have registry_item_id set yet
-    const withRegistry = portalProjects
-      .filter(p =>
-        p.has_registry ||
-        (p.position_stats?.has_registry_id > 0) ||
-        (p.position_stats?.registry_linked > 0) ||
-        // Also include projects that have any kiosk_link of type 'registry'
-        (p.kiosk_links || []).some(kl => kl.kiosk_type === 'registry' && kl.status !== 'deleted')
-      )
-      .map(p => ({
-        portal_project_id: p.portal_project_id,
-        project_name: p.project_name,
-        positions_total: p.position_stats?.total_positions || 0,
-        registry_linked: p.position_stats?.registry_linked || 0,
-        monolit_linked: p.position_stats?.monolit_linked || 0,
-      }));
-
-    if (withRegistry.length > 0) {
-      logger.info(`[ImportRegistry] Found ${withRegistry.length} projects with Registry data`);
-      return res.json({ success: true, projects: withRegistry });
-    }
-
-    // Fallback: if Portal returned nothing with Registry flag, try Registry backend directly
-    // Pass userId for proper scoping (Registry API requires user_id for project isolation)
-    logger.info('[ImportRegistry] No Portal projects with Registry flag, trying Registry backend directly...');
-    const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app';
+  // Helper: fetch Portal projects with filter
+  const fetchPortalProjects = async () => {
+    debug.portal.tried = true;
     try {
-      const registryUrl = userId
-        ? `${REGISTRY_API}/api/registry/projects?user_id=${encodeURIComponent(userId)}`
-        : `${REGISTRY_API}/api/registry/projects`;
-      const regRes = await fetch(registryUrl, {
-        signal: AbortSignal.timeout(10000),
+      const response = await fetch(`${PORTAL_API}/api/portal-projects/registry`, {
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(PORTAL_TIMEOUT),
       });
-      if (regRes.ok) {
-        const regData = await regRes.json();
-        const regProjects = (regData.projects || []).map(p => ({
-          portal_project_id: p.portal_project_id || p.project_id,
-          project_name: p.project_name || p.name,
-          positions_total: p.item_count || p.sheet_count || 0,
-        }));
-        if (regProjects.length > 0) {
-          logger.info(`[ImportRegistry] Fallback: found ${regProjects.length} projects from Registry`);
-          return res.json({ success: true, projects: regProjects });
-        }
+      if (!response.ok) {
+        debug.portal.error = `HTTP ${response.status}`;
+        logger.warn(`[ImportRegistry] Portal returned ${response.status}`);
+        return [];
       }
-    } catch (regErr) {
-      logger.warn('[ImportRegistry] Registry fallback failed:', regErr.message);
+      const data = await response.json();
+      const portalProjects = data.projects || [];
+      const withRegistry = portalProjects
+        .filter(p =>
+          p.has_registry ||
+          (p.position_stats?.has_registry_id > 0) ||
+          (p.position_stats?.registry_linked > 0) ||
+          (p.kiosk_links || []).some(kl => kl.kiosk_type === 'registry' && kl.status !== 'deleted')
+        )
+        .map(p => ({
+          portal_project_id: p.portal_project_id,
+          project_name: p.project_name,
+          positions_total: p.position_stats?.total_positions || 0,
+          registry_linked: p.position_stats?.registry_linked || 0,
+          monolit_linked: p.position_stats?.monolit_linked || 0,
+          updated_at: p.updated_at || null,
+          source: 'portal',
+        }));
+      debug.portal.ok = true;
+      debug.portal.count = withRegistry.length;
+      return withRegistry;
+    } catch (err) {
+      debug.portal.error = err.message;
+      logger.warn(`[ImportRegistry] Portal fetch failed: ${err.message}`);
+      return [];
     }
+  };
 
-    res.json({ success: true, projects: [] });
-  } catch (error) {
-    logger.error('[ImportRegistry] Error fetching projects:', error);
-    res.json({ success: true, projects: [] });
-  }
+  // Helper: fetch Registry projects directly (fallback)
+  const fetchRegistryProjects = async () => {
+    debug.registry.tried = true;
+    try {
+      const url = `${REGISTRY_API}/api/registry/projects?user_id=${encodeURIComponent(userId)}`;
+      const regRes = await fetch(url, { signal: AbortSignal.timeout(REGISTRY_TIMEOUT) });
+      if (!regRes.ok) {
+        debug.registry.error = `HTTP ${regRes.status}`;
+        return [];
+      }
+      const regData = await regRes.json();
+      const regProjects = (regData.projects || []).map(p => ({
+        portal_project_id: p.portal_project_id || p.project_id,
+        project_name: p.project_name || p.name || 'Bez názvu',
+        positions_total: p.items_count || p.item_count || 0,
+        sheet_count: p.sheets_count || p.sheet_count || 0,
+        updated_at: p.updated_at || null,
+        source: 'registry',
+      }));
+      debug.registry.ok = true;
+      debug.registry.count = regProjects.length;
+      return regProjects;
+    } catch (err) {
+      debug.registry.error = err.message;
+      logger.warn(`[ImportRegistry] Registry fallback failed: ${err.message}`);
+      return [];
+    }
+  };
+
+  // Parallel fetch — take whichever returns first (with results)
+  const [portalProjects, registryProjects] = await Promise.all([
+    fetchPortalProjects(),
+    fetchRegistryProjects(),
+  ]);
+
+  // Merge: prefer Portal projects (they have full cross-kiosk stats);
+  // add Registry projects that don't overlap by portal_project_id
+  const portalIds = new Set(portalProjects.map(p => p.portal_project_id));
+  const merged = [
+    ...portalProjects,
+    ...registryProjects.filter(p => !portalIds.has(p.portal_project_id)),
+  ];
+
+  logger.info(`[ImportRegistry] Result: ${merged.length} projects (Portal: ${debug.portal.count}, Registry: ${debug.registry.count})`);
+
+  res.json({ success: true, projects: merged, debug });
 });
 
 /**
