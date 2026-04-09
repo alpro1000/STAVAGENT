@@ -14,7 +14,7 @@
  *   - Warnings + decision log
  */
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Calculator, TriangleAlert, ArrowLeft, Download, Hourglass, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -522,6 +522,23 @@ export default function PlannerPage() {
   const [showHelp, setShowHelp] = useState(false);
   const [applyStatus, setApplyStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
+  // Auto-calculate state (Part 1 of calc refactor)
+  // calcStatus: indicator shown while computing
+  // resultDirty: true when form has changed but result hasn't been recomputed yet
+  // skipNextAutoCalc: set when loading a variant or on page mount — skips the next auto-calc trigger
+  const [calcStatus, setCalcStatus] = useState<'idle' | 'calculating'>('idle');
+  const [resultDirty, setResultDirty] = useState(false);
+  const skipNextAutoCalcRef = useRef(true); // Skip on first mount — first calc happens via firstRun useMemo
+  const autoCalcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-save toggle (persisted in localStorage so it survives sessions)
+  const [autoSaveVariants, setAutoSaveVariants] = useState<boolean>(() => {
+    try { return localStorage.getItem('planner_autosave_variants') === 'true'; } catch { return false; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem('planner_autosave_variants', String(autoSaveVariants)); } catch { /* ignore */ }
+  }, [autoSaveVariants]);
+
   // Plan variants (Monolit mode — save & compare)
   interface SavedVariant {
     id: string;
@@ -566,8 +583,12 @@ export default function PlannerPage() {
   };
 
   const loadVariant = (variant: SavedVariant) => {
+    // Skip auto-calc — loading a variant should restore its result as-is,
+    // not trigger a new computation.
+    skipNextAutoCalcRef.current = true;
     setForm(variant.form);
     setResult(variant.plan);
+    setResultDirty(false);
   };
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
@@ -704,7 +725,11 @@ export default function PlannerPage() {
       form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
       form.total_length_m, form.spara_spacing_m]);
 
-  const handleCalculate = () => {
+  /**
+   * Run the calculation synchronously.
+   * Called both by the manual "Vypočítat" button AND the auto-calc debounced effect.
+   */
+  const runCalculation = useCallback(() => {
     setError(null);
     setShowComparison(false);
     try {
@@ -714,11 +739,72 @@ export default function PlannerPage() {
       }
       const output = planElement(input);
       setResult(output);
+      setResultDirty(false);
+      return output;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba výpočtu');
       setResult(null);
+      return null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
+
+  /** Manual "Vypočítat" button handler — forces calc even if not dirty */
+  const handleCalculate = () => {
+    // Cancel any pending auto-calc so we don't double-run
+    if (autoCalcTimerRef.current) {
+      clearTimeout(autoCalcTimerRef.current);
+      autoCalcTimerRef.current = null;
+    }
+    setCalcStatus('calculating');
+    const t0 = Date.now();
+    runCalculation();
+    const elapsed = Date.now() - t0;
+    // Only show indicator briefly if calc was fast
+    if (elapsed < 500) {
+      setCalcStatus('idle');
+    } else {
+      setTimeout(() => setCalcStatus('idle'), 200);
     }
   };
+
+  // Auto-calculate on form change with 1.5s debounce.
+  // Skip if:
+  //  - skipNextAutoCalcRef is set (first mount, variant load, etc.)
+  //  - form change was minor UI-only (showAdvanced, showLog — not in form state)
+  useEffect(() => {
+    if (skipNextAutoCalcRef.current) {
+      skipNextAutoCalcRef.current = false;
+      return;
+    }
+    // Mark result as stale
+    setResultDirty(true);
+    // Debounce — clear prior timer
+    if (autoCalcTimerRef.current) clearTimeout(autoCalcTimerRef.current);
+    autoCalcTimerRef.current = setTimeout(() => {
+      // Show "Počítám..." indicator only if calc takes >500ms
+      const indicatorTimer = setTimeout(() => setCalcStatus('calculating'), 500);
+      const t0 = Date.now();
+      runCalculation();
+      clearTimeout(indicatorTimer);
+      const elapsed = Date.now() - t0;
+      if (elapsed >= 500) {
+        setCalcStatus('calculating');
+        setTimeout(() => setCalcStatus('idle'), 200);
+      } else {
+        setCalcStatus('idle');
+      }
+      autoCalcTimerRef.current = null;
+    }, 1500);
+
+    return () => {
+      if (autoCalcTimerRef.current) {
+        clearTimeout(autoCalcTimerRef.current);
+        autoCalcTimerRef.current = null;
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
 
   const handleCompare = () => {
     if (!result) return;
@@ -2683,6 +2769,8 @@ export default function PlannerPage() {
               onLoadVariant={variantsKey ? loadVariant : undefined}
               onRemoveVariant={variantsKey ? removeVariant : undefined}
               kridlaFormwork={kridlaFormwork}
+              calcStatus={calcStatus}
+              resultDirty={resultDirty}
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
@@ -2965,7 +3053,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, kridlaFormwork }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -2978,6 +3066,8 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
   kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
+  calcStatus?: 'idle' | 'calculating';
+  resultDirty?: boolean;
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -3103,6 +3193,22 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Auto-calc indicator */}
+      {(calcStatus === 'calculating' || resultDirty) && (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          padding: '4px 12px', marginBottom: 10,
+          background: calcStatus === 'calculating' ? 'var(--r0-info-bg, #eff6ff)' : 'var(--r0-slate-50, #f8fafc)',
+          border: `1px solid ${calcStatus === 'calculating' ? 'var(--r0-info-border, #bfdbfe)' : 'var(--r0-slate-200, #e2e8f0)'}`,
+          borderRadius: 4, fontSize: 11,
+          color: calcStatus === 'calculating' ? 'var(--r0-info-text, #1e40af)' : 'var(--r0-slate-500, #64748b)',
+        }}>
+          {calcStatus === 'calculating'
+            ? <><span className="flat-spinner" style={{ width: 10, height: 10 }} /> Počítám…</>
+            : 'Čekám na zastavení vstupu…'}
         </div>
       )}
 
