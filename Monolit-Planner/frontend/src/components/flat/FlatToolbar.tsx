@@ -25,11 +25,14 @@ export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosi
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !selectedProjectId) return;
+    if (!file) return;
     setUploading(true);
     try {
       await uploadAPI.uploadXLSX(file);
-      qc.invalidateQueries({ queryKey: ['positions', selectedProjectId] });
+      // Invalidate all position queries (new projects created by backend)
+      qc.invalidateQueries({ queryKey: ['positions'] });
+      qc.invalidateQueries({ queryKey: ['monolith-projects'] });
+      qc.invalidateQueries({ queryKey: ['bridges'] });
     } catch (err) {
       console.error('Upload failed:', err);
       alert('Nahrání souboru selhalo.');
@@ -97,7 +100,7 @@ export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosi
 
       <button className="flat-btn flat-btn--sm"
         onClick={() => fileRef.current?.click()}
-        disabled={!selectedProjectId || uploading}>
+        disabled={uploading}>
         <Upload size={14} /> {uploading ? 'Nahrávám...' : 'Nahrát Excel'}
       </button>
       <input ref={fileRef} type="file" accept=".xlsx,.xls"

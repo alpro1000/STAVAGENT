@@ -213,6 +213,12 @@ export interface OtskpSearchResult {
   query: string;
   count: number;
   results: OtskpCode[];
+  /** Reason for result: 'ok' | 'no_match' | 'db_empty' | 'db_error' */
+  reason?: 'ok' | 'no_match' | 'db_empty' | 'db_error';
+  /** Total codes in DB (for debugging empty results) */
+  total_db?: number;
+  /** Human-readable message for special cases */
+  message?: string;
 }
 
 /**

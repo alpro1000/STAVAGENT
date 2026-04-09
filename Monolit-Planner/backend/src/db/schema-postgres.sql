@@ -175,8 +175,7 @@ CREATE TABLE IF NOT EXISTS monolith_projects (
   road_length_km REAL,
   road_width_m REAL,
   description TEXT,
-  status VARCHAR(50) DEFAULT 'active',
-  portal_user_id INTEGER
+  status VARCHAR(50) DEFAULT 'active'
 );
 
 -- Part Templates table (predefined parts for each construction type)

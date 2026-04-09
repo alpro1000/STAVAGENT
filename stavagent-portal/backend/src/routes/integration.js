@@ -620,18 +620,26 @@ router.post('/import-from-registry', async (req, res) => {
     let updatedItems = 0;
     const instanceMapping = [];
     const allIncomingRegistryItemIds = [];
+    const insertErrors = []; // Accumulate per-item insert failures for partial success response
 
     // Phase 1: Create objects and collect all items for batch processing
     const allItems = [];
     for (const sheet of sheets) {
       const objectId = `obj_${uuidv4()}`;
+      const sheetCode = (sheet.name || 'Sheet').toString().slice(0, 100); // VARCHAR(100) limit
       const objResult = await client.query(
         `INSERT INTO portal_objects (object_id, portal_project_id, object_code, object_name, created_at, updated_at)
          VALUES ($1, $2, $3, $4, NOW(), NOW())
          ON CONFLICT (portal_project_id, object_code) DO UPDATE SET object_name = $4, updated_at = NOW()
          RETURNING object_id`,
-        [objectId, projectId, sheet.name || 'Sheet', sheet.name || 'Sheet']
+        [objectId, projectId, sheetCode, sheetCode]
       );
+      if (!objResult.rows[0]?.object_id) {
+        const errMsg = `Failed to create/get object for sheet "${sheet.name}" — no object_id returned`;
+        console.error(`[Integration] ${errMsg}`);
+        insertErrors.push({ sheet: sheet.name, error: errMsg });
+        continue; // Skip this sheet, don't fail entire sync (partial success)
+      }
       const dbObjectId = objResult.rows[0].object_id;
 
       for (let itemIdx = 0; itemIdx < (sheet.items || []).length; itemIdx++) {
@@ -658,31 +666,38 @@ router.post('/import-from-registry', async (req, res) => {
 
     // Phase 2: Batch process positions
     if (!hasRegistrySyncColumns) {
-      // === BATCH INSERT: basic fallback (no extended columns) ===
-      for (let i = 0; i < allItems.length; i += BATCH_SIZE) {
-        const batch = allItems.slice(i, i + BATCH_SIZE);
-        const params = [];
-        const valuesClauses = [];
-        for (let j = 0; j < batch.length; j++) {
-          const { item, dbObjectId } = batch[j];
-          const b = j * 8;
-          valuesClauses.push(`(gen_random_uuid(), $${b+1}, $${b+2}, $${b+3}, $${b+4}, $${b+5}, $${b+6}, $${b+7}, $${b+8}, NOW(), NOW())`);
-          params.push(
-            `pos_${uuidv4()}`, dbObjectId,
-            item.kod || '', item.popis || '',
-            item.mnozstvi || 0, item.mj || '',
-            item.cenaJednotkova || 0, item.cenaCelkem || 0
-          );
+      // === BASIC INSERT path (no extended columns) ===
+      // Per-item try/catch for partial success — one bad row doesn't kill the batch
+      for (const entry of allItems) {
+        const { item, dbObjectId } = entry;
+        if (!dbObjectId) {
+          insertErrors.push({ kod: item.kod, error: 'Missing object_id (sheet create failed)' });
+          continue;
         }
-        await client.query(
-          `INSERT INTO portal_positions (
-            position_instance_id, position_id, object_id, kod, popis, mnozstvi, mj,
-            cena_jednotkova, cena_celkem,
-            created_at, updated_at
-          ) VALUES ${valuesClauses.join(', ')}`,
-          params
-        );
-        totalItems += batch.length;
+        try {
+          await client.query(
+            `INSERT INTO portal_positions (
+              position_instance_id, position_id, object_id, kod, popis, mnozstvi, mj,
+              cena_jednotkova, cena_celkem,
+              created_at, updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())`,
+            [
+              uuidv4(),                                   // position_instance_id — explicit UUID
+              `pos_${uuidv4()}`,                          // position_id — explicit UUID
+              dbObjectId,
+              (item.kod || '').toString().slice(0, 50),   // kod VARCHAR(50) NOT NULL
+              (item.popis || '').toString(),              // popis TEXT NOT NULL
+              Number(item.mnozstvi) || 0,
+              (item.mj || '').toString().slice(0, 20),
+              item.cenaJednotkova != null ? Number(item.cenaJednotkova) : null,
+              item.cenaCelkem != null ? Number(item.cenaCelkem) : null,
+            ]
+          );
+          totalItems++;
+        } catch (insertErr) {
+          console.warn(`[Integration] Basic INSERT failed for ${item.kod}: ${insertErr.message}`);
+          insertErrors.push({ kod: item.kod, error: insertErr.message });
+        }
       }
     } else {
       // === BATCH UPSERT: extended columns available ===
@@ -779,9 +794,12 @@ router.post('/import-from-registry', async (req, res) => {
 
       // Step 4: Batch INSERT new positions (with per-item error handling)
       if (hasPhase8Columns) {
-        const insertErrors = [];
         for (const entry of toInsert) {
           const { item, itemTov, dovPayload, dbObjectId, sheetName, itemIdx, registryItemId } = entry;
+          if (!dbObjectId) {
+            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: 'Missing object_id' });
+            continue;
+          }
           try {
             const result = await client.query(
               `INSERT INTO portal_positions (
@@ -795,19 +813,26 @@ router.post('/import-from-registry', async (req, res) => {
                 last_sync_from, last_sync_at,
                 created_by, updated_by,
                 created_at, updated_at
-              ) VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, 'registry', NOW(), 'registry_import', 'registry_import', NOW(), NOW())
               RETURNING position_instance_id`,
               [
-                `pos_${uuidv4()}`, dbObjectId,
-                item.kod || '', item.popis || '',
-                item.mnozstvi || 0, item.mj || '',
-                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                uuidv4(),                                    // position_instance_id — explicit UUID
+                `pos_${uuidv4()}`,                           // position_id
+                dbObjectId,
+                (item.kod || '').toString().slice(0, 100),   // VARCHAR(100)
+                (item.popis || '').toString(),               // TEXT
+                Number(item.mnozstvi) || 0,
+                (item.mj || '').toString().slice(0, 50),     // VARCHAR(50)
+                item.cenaJednotkova != null ? Number(item.cenaJednotkova) : null,
+                item.cenaCelkem != null ? Number(item.cenaCelkem) : null,
                 JSON.stringify(itemTov.labor || []),
                 JSON.stringify(itemTov.machinery || []),
                 JSON.stringify(itemTov.materials || []),
                 dovPayload,
                 registryItemId,
-                sheetName, itemIdx, item.skupina || null
+                (sheetName || '').toString().slice(0, 255),
+                Number.isFinite(itemIdx) ? itemIdx : 0,
+                item.skupina || null,
               ]
             );
             totalItems++;
@@ -823,9 +848,13 @@ router.post('/import-from-registry', async (req, res) => {
           }
         }
       } else {
-        // Fallback: per-item INSERT for partial success
+        // Fallback: per-item INSERT for partial success (no phase8 columns)
         for (const entry of toInsert) {
           const { item, itemTov, dbObjectId, registryItemId } = entry;
+          if (!dbObjectId) {
+            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: 'Missing object_id' });
+            continue;
+          }
           try {
             const result = await client.query(
               `INSERT INTO portal_positions (
@@ -835,17 +864,22 @@ router.post('/import-from-registry', async (req, res) => {
                 tov_labor, tov_machinery, tov_materials,
                 registry_item_id, last_sync_from, last_sync_at,
                 created_at, updated_at
-              ) VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'registry', NOW(), NOW(), NOW())
               RETURNING position_instance_id`,
               [
-                `pos_${uuidv4()}`, dbObjectId,
-                item.kod || '', item.popis || '',
-                item.mnozstvi || 0, item.mj || '',
-                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                uuidv4(),                                    // position_instance_id — explicit UUID
+                `pos_${uuidv4()}`,                           // position_id
+                dbObjectId,
+                (item.kod || '').toString().slice(0, 100),
+                (item.popis || '').toString(),
+                Number(item.mnozstvi) || 0,
+                (item.mj || '').toString().slice(0, 50),
+                item.cenaJednotkova != null ? Number(item.cenaJednotkova) : null,
+                item.cenaCelkem != null ? Number(item.cenaCelkem) : null,
                 JSON.stringify(itemTov.labor || []),
                 JSON.stringify(itemTov.machinery || []),
                 JSON.stringify(itemTov.materials || []),
-                registryItemId
+                registryItemId,
               ]
             );
             totalItems++;
@@ -857,6 +891,7 @@ router.post('/import-from-registry', async (req, res) => {
             }
           } catch (insertErr) {
             console.warn(`[Integration] Fallback INSERT failed for ${registryItemId || item.kod}: ${insertErr.message}`);
+            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: insertErr.message });
           }
         }
       }
@@ -879,7 +914,8 @@ router.post('/import-from-registry', async (req, res) => {
 
     await client.query('COMMIT');
     const newItems = totalItems - updatedItems;
-    console.log(`[Integration] Registry sync complete: ${projectId}, ${sheets.length} sheets, ${newItems} new + ${updatedItems} updated = ${totalItems} total, ${instanceMapping.length} instance mappings`);
+    const failedCount = insertErrors.length;
+    console.log(`[Integration] Registry sync complete: ${projectId}, ${sheets.length} sheets, ${newItems} new + ${updatedItems} updated = ${totalItems} total, ${failedCount} failed, ${instanceMapping.length} instance mappings`);
 
     res.json({
       success: true,
@@ -888,13 +924,23 @@ router.post('/import-from-registry', async (req, res) => {
       items_imported: newItems,
       items_updated: updatedItems,
       items_total: totalItems,
+      // Partial success report
+      synced: totalItems,
+      failed: failedCount,
+      errors: insertErrors.slice(0, 50), // cap to avoid huge responses
       instance_mapping: instanceMapping,
     });
 
   } catch (error) {
     if (client) await client.query('ROLLBACK').catch(() => {});
     console.error('[Integration] Error importing from Registry:', error.message);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      synced: 0,
+      failed: 0,
+      errors: [],
+    });
   } finally {
     if (client) client.release();
   }

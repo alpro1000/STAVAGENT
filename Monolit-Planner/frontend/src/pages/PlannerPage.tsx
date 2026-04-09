@@ -17,6 +17,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Calculator, TriangleAlert, ArrowLeft, Download, Hourglass, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   planElement,
   addWorkDays,
@@ -392,6 +393,7 @@ function loadFromLS<T>(key: string, fallback: T): T {
 
 export default function PlannerPage() {
   const [searchParams] = useSearchParams();
+  const queryClient = useQueryClient();
 
   // Position context — when opened from PositionsTable with position params
   const positionContext = useMemo(() => {
@@ -2664,6 +2666,10 @@ export default function PlannerPage() {
                       throw new Error(errData?.error || `HTTP ${res.status}`);
                     }
                   }
+                  // Invalidate positions cache so table refetches when user returns
+                  queryClient.invalidateQueries({ queryKey: ['positions'] });
+                  queryClient.invalidateQueries({ queryKey: ['bridges'] });
+                  queryClient.invalidateQueries({ queryKey: ['monolith-projects'] });
                   setApplyStatus('saved');
                   setTimeout(() => setApplyStatus('idle'), 3000);
                 } catch (err) {

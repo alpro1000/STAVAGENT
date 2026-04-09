@@ -96,15 +96,27 @@ router.get('/search', async (req, res) => {
     }
 
     // Check if OTSKP table exists and has data
+    let totalCount = 0;
     try {
       const count = await db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
-      if (count.count === 0) {
+      totalCount = Number(count?.count || 0);
+      if (totalCount === 0) {
         logger.warn('[OTSKP Search] No OTSKP codes in database');
-        return res.json({ query: q.trim(), count: 0, results: [], message: 'OTSKP codes not loaded yet' });
+        return res.json({
+          query: q.trim(),
+          count: 0,
+          results: [],
+          reason: 'db_empty',
+          message: 'OTSKP databáze není načtena. Spusťte import katalogu.',
+        });
       }
     } catch (tableError) {
       logger.error('[OTSKP Search] OTSKP table error:', tableError);
-      return res.status(500).json({ error: 'OTSKP database not initialized', details: tableError.message });
+      return res.status(500).json({
+        error: 'OTSKP database not initialized',
+        reason: 'db_error',
+        details: tableError.message,
+      });
     }
 
     const searchLimit = Math.min(parseInt(limit) || 20, 100);
@@ -163,16 +175,18 @@ router.get('/search', async (req, res) => {
 
     const results = await db.prepare(sql).all(...params);
 
-    logger.info('[OTSKP Search] Found results:', results.length);
+    logger.info('[OTSKP Search] Found results:', results.length, 'of', totalCount, 'total codes');
     res.json({
       query: searchQuery,
       count: results.length,
-      results
+      total_db: totalCount,
+      reason: results.length > 0 ? 'ok' : 'no_match',
+      results,
     });
 
   } catch (error) {
     logger.error('[OTSKP Search] Error:', error);
-    res.status(500).json({ error: 'Failed to search OTSKP codes' });
+    res.status(500).json({ error: 'Failed to search OTSKP codes', reason: 'db_error' });
   }
 });
 
