@@ -5,9 +5,8 @@
 # API FRAMEWORK
 # ==========================================
 fastapi==0.115.0
-uvicorn[standard]==0.32.0
+uvicorn[standard]>=0.35.0
 python-multipart==0.0.17
-
 # Production server (for deployment)
 gunicorn>=23.0.0
 
