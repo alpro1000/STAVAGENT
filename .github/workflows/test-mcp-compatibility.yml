@@ -1,0 +1,37 @@
+name: MCP Compatibility Test
+
+on:
+  push:
+    paths:
+      - 'concrete-agent/packages/core-backend/app/**'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_compatibility.py'
+  pull_request:
+    paths:
+      - 'concrete-agent/packages/core-backend/app/**'
+      - 'concrete-agent/packages/core-backend/tests/test_mcp_compatibility.py'
+
+jobs:
+  mcp-compatibility:
+    name: MCP Tools Compatibility
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: concrete-agent/packages/core-backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: concrete-agent/packages/core-backend/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install fastmcp pytest pytest-asyncio pdfplumber openpyxl pandas httpx pydantic pydantic-settings python-dotenv
+
+      - name: Run MCP compatibility tests
+        run: python -m pytest tests/test_mcp_compatibility.py -v --tb=short

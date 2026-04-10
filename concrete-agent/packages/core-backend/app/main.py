@@ -66,6 +66,15 @@ app.include_router(api_router)
 from app.api.routes_parser import router as parser_router
 app.include_router(parser_router)
 
+# ── MCP Server (Model Context Protocol) ──────────────────────────────────────
+# Exposes STAVAGENT tools via MCP for Claude Desktop, ChatGPT, Gemini, etc.
+try:
+    from app.mcp.server import mcp as mcp_server
+    app.mount("/mcp", mcp_server.http_app())
+    logger.info("🔌 MCP server mounted at /mcp (9 tools)")
+except Exception as e:
+    logger.warning(f"⚠️  MCP server not mounted: {e}")
+
 # Mount static files (if web directory exists)
 web_dir = settings.BASE_DIR / "web"
 if web_dir.exists():

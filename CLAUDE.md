@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.10.0
+**Version:** 4.11.0
 **Last Updated:** 2026-04-10
 **Repository:** STAVAGENT (Monorepo)
 
@@ -86,7 +86,8 @@ Python FastAPI. **120 endpoints**, **34 test files**, **~61K LOC**.
 Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,parsers,prompts}`
 KB: 42 JSON files (~40MB), 21 prompt files, 23 SQL schemas.
 
-**Subsystems:** Multi-Role Expert (4 roles), Workflows A/B/C, Document Accumulator (20 ep), Multi-Format Parser v5.0 (XLSX/XML/PDF/DXF/OCR), Add-Document Pipeline (14 doc types), NKB 3-layer, NormIngestionPipeline (chunked: L1→chunk→per-chunk[L2+L3a]→merge→L3b), NKB Audit (15 sources), Unified Item Layer, Soupis Assembler, Scenario B, Section Extraction Engine v2 (28 extractors, negative-context filter), Calculator Suggestions (fact→param mapping, warnings, conflicts, write-through persistence), Chunked Extraction (document_chunker + parsed_document_adapter + extraction_to_facts_bridge), Drive OAuth2, Agents, Chat.
+**Subsystems:** Multi-Role Expert (4 roles), Workflows A/B/C, Document Accumulator (20 ep), Multi-Format Parser v5.0 (XLSX/XML/PDF/DXF/OCR), Add-Document Pipeline (14 doc types), NKB 3-layer, NormIngestionPipeline (chunked: L1→chunk→per-chunk[L2+L3a]→merge→L3b), NKB Audit (15 sources), Unified Item Layer, Soupis Assembler, Scenario B, Section Extraction Engine v2 (28 extractors, negative-context filter), Calculator Suggestions (fact→param mapping, warnings, conflicts, write-through persistence), Chunked Extraction (document_chunker + parsed_document_adapter + extraction_to_facts_bridge), Drive OAuth2, Agents, Chat, **MCP Server v1.0** (9 tools, FastMCP, mounted at `/mcp`).
+- **MCP Server** — `app/mcp/server.py` + `app/mcp/tools/` (9 tools): find_otskp_code, find_urs_code, classify_construction_element, calculate_concrete_works, parse_construction_budget, analyze_construction_document, create_work_breakdown, get_construction_advisor, search_czech_construction_norms. FastMCP 3.x, SSE transport, mounted on FastAPI at `/mcp`.
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 - **Confidence** — regex=1.0, OTSKP DB=1.0, drawing_note=0.90, Perplexity=0.85, URS=0.80, AI=0.70
 
@@ -194,6 +195,39 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Registry import: per-sheet `dataStartRow` via code+MJ heuristic; reimport via `replaceProjectSheets()` preserves manual skupiny by kod
 
 **Stack decisions:** rozpocet-registry=Vercel+Zustand, Monolit=PostgreSQL prod/SQLite dev, URS=SQLite+per-request LLM fallback, CORE=Vertex AI primary+stateless, Portal=central `portal_project_id` linking.
+
+### MCP Compatibility Check
+
+After **EVERY** change to modules wrapped by MCP tools, verify the wrapper still works.
+
+**MCP tool → module mapping:**
+| MCP Tool | Module file(s) |
+|----------|---------------|
+| find_otskp_code | `pricing/otskp_engine.py`, KB XML |
+| find_urs_code | `core/perplexity_client.py`, URS Matcher HTTP |
+| classify_construction_element | MCP has own classifier (no external dep) |
+| calculate_concrete_works | Monolit-Planner `/api/calculate` HTTP |
+| parse_construction_budget | `parsers/xlsx_komplet_parser.py`, `xlsx_rtsrozp_parser.py`, `excel_parser.py` |
+| analyze_construction_document | `parsers/pdf_parser.py`, pdfplumber |
+| create_work_breakdown | MCP `otskp.py` + `classifier.py` (internal) |
+| get_construction_advisor | MCP `classifier.py` + `calculator.py` (internal) |
+| search_czech_construction_norms | `core/perplexity_client.py`, `core/kb_loader.py` |
+
+**NO check needed if:**
+- Bugfix inside a function (same signature, same return format)
+- New enum value added (e.g., new element type with default behavior)
+- New optional parameter with default value
+- Text/description changes in response
+
+**CHECK NEEDED if:**
+- Function/module renamed or moved (import path breaks)
+- Required parameter added, removed, or renamed
+- Response structure changed (field removed, renamed, or type changed)
+- New module added that should have its own MCP tool
+
+**How to check:** `cd concrete-agent/packages/core-backend && python -m pytest tests/test_mcp_compatibility.py -v`
+
+**If broken:** update MCP wrapper in `app/mcp/tools/`, not the backend module.
 
 ---
 

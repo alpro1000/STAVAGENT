@@ -130,6 +130,12 @@ redis[hiredis]==5.0.1  # Redis client with C parser for performance
 # Celery for background task processing
 celery[redis]==5.4.0  # Task queue with Redis broker
 
+# ==========================================
+# MCP SERVER (Model Context Protocol)
+# ==========================================
+# FastMCP for exposing STAVAGENT tools via MCP
+fastmcp>=3.2.0
+
 # Advanced Excel export
 xlsxwriter==3.2.0
 
