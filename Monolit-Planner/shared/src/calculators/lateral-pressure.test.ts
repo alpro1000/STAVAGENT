@@ -185,14 +185,14 @@ describe('filterFormworkByPressure', () => {
     expect(r.suitable.map(s => s.name)).toContain('NoPressureLimit');
   });
 
-  it('max_pour_height_m rejects system when height exceeds limit', () => {
+  it('max_pour_height_m → per-záběr pressure: both pass when per-stage pressure within capacity', () => {
     const systems: FormworkSystemSpec[] = [
       { ...MOCK_SYSTEMS[0], name: 'ShortSystem', pressure_kn_m2: 80, max_pour_height_m: 3.0, rental_czk_m2_month: 500 },
       { ...MOCK_SYSTEMS[1], name: 'TallSystem', pressure_kn_m2: 100, max_pour_height_m: 6.75, rental_czk_m2_month: 520 },
     ];
-    // h=4m: ShortSystem (max 3.0m) rejected, TallSystem (max 6.75m) passes
+    // h=4m, input pressure=50: ShortSystem per-záběr = 50×(3/4)=37.5 < 80 → passes (staging)
     const r = filterFormworkByPressure(50, systems, 'vertical', 4.0);
-    expect(r.suitable.map(s => s.name)).not.toContain('ShortSystem');
+    expect(r.suitable.map(s => s.name)).toContain('ShortSystem');
     expect(r.suitable.map(s => s.name)).toContain('TallSystem');
   });
 
@@ -248,21 +248,25 @@ describe('DOKA Frami/Framax selection', () => {
     expect(r.suitable.map((s: any) => s.name)).toContain('Frami Xlife');
   });
 
-  it('h=5.4m, crane_bucket → Frami rejected (height > 3.0m), Framax passes (SO 203 pilíř)', () => {
-    // Pilíře: crane_bucket (k=1.0), p = 2400*9.81*5.4*1.0/1000 = 127.1 kN/m²
-    // Framax (100 kN/m²) doesn't pass on pressure, but záběrová betonáž splits the height
-    // With staged pour at 4.0m: p = 2400*9.81*4.0*1.0/1000 = 94.2 → Framax passes
+  it('h=5.4m, crane_bucket → per-záběr: Frami (3m záběr, p=52.8<80) + Framax both pass', () => {
+    // Full-height pressure: p = 2400*9.81*5.4*1.0/1000 = 127.1 kN/m²
+    // Per-záběr: Frami → stage 3.0m → 127.1*(3.0/5.4) = 70.6 < 80 → passes
+    // Per-záběr: Framax → stage 5.4m (within 6.75m limit) → 127.1 → rejects (>100)
+    // But with pressure at 4.0m as input: 94.2*(3/5.4)=52.3 < 80 → both pass
     const p = calculateLateralPressure(4.0, 'crane_bucket');
     expect(p.pressure_kn_m2).toBeLessThan(100);
     const r = filterFormworkByPressure(p.pressure_kn_m2, [frami, framax], 'vertical', 5.4);
-    expect(r.suitable.map((s: any) => s.name)).not.toContain('Frami Xlife'); // height > 3.0m
-    expect(r.suitable.map((s: any) => s.name)).toContain('Framax Xlife'); // height < 6.75m, p < 100
+    expect(r.suitable.map((s: any) => s.name)).toContain('Frami Xlife');
+    expect(r.suitable.map((s: any) => s.name)).toContain('Framax Xlife');
   });
 
-  it('h=6.0m, křídla → Framax passes (SO 206 dřík)', () => {
+  it('h=6.0m, křídla → per-záběr: Frami (3m, p=40<80) + Framax (6m<6.75, p=80) both pass', () => {
+    // input pressure=80, h=6.0m
+    // Frami: stage 3.0m → 80*(3/6)=40 < 80 → passes (staging)
+    // Framax: h=6.0 < max 6.75 → no staging needed, 80 ≤ 100 → passes
     const r = filterFormworkByPressure(80, [frami, framax], 'vertical', 6.0);
     expect(r.suitable.map((s: any) => s.name)).toContain('Framax Xlife');
-    expect(r.suitable.map((s: any) => s.name)).not.toContain('Frami Xlife');
+    expect(r.suitable.map((s: any) => s.name)).toContain('Frami Xlife');
   });
 });
 

@@ -547,13 +547,8 @@ export default function PlannerPage() {
   const skipNextAutoCalcRef = useRef(true); // Skip on first mount — first calc happens via firstRun useMemo
   const autoCalcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-save toggle (persisted in localStorage so it survives sessions)
-  const [autoSaveVariants, setAutoSaveVariants] = useState<boolean>(() => {
-    try { return localStorage.getItem('planner_autosave_variants') === 'true'; } catch { return false; }
-  });
-  useEffect(() => {
-    try { localStorage.setItem('planner_autosave_variants', String(autoSaveVariants)); } catch { /* ignore */ }
-  }, [autoSaveVariants]);
+  // Auto-save removed (v4.1): variants are created ONLY by explicit user action
+  // (Uložit variantu button), never automatically on auto-calc.
 
   // Plan variants (saved scenarios per position)
   // Mode A (position_id present): persisted in PostgreSQL via /api/planner-variants
@@ -747,7 +742,7 @@ export default function PlannerPage() {
           setForm(planVar.form);
           setResult(planVar.plan);
           setResultDirty(false);
-          hasExistingResultRef.current = true;
+          // hasExistingResultRef removed (v4.1)
         }
       })
       .catch(err => {
@@ -828,8 +823,6 @@ export default function PlannerPage() {
     setForm(variant.form);
     setResult(variant.plan);
     setResultDirty(false);
-    // Mark that a result exists — so the next change triggers the save prompt
-    hasExistingResultRef.current = true;
   };
 
   /** Mark a variant as the "chosen plan" (✅ PLÁN badge). Only one plan per position. */
@@ -993,9 +986,6 @@ export default function PlannerPage() {
       const output = planElement(input);
       setResult(output);
       setResultDirty(false);
-      // After a real calc, mark that a previous result exists — next change
-      // will trigger the save prompt (unless auto-save is on).
-      hasExistingResultRef.current = true;
       return output;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba výpočtu');
@@ -1024,27 +1014,10 @@ export default function PlannerPage() {
     }
   };
 
-  // "Aplikovat plán" — loads variant, then triggers apply on next render via state flag.
-  // The onApplyToPosition inline function captures plan+form from the current render.
-  // After loadVariant sets new state, React re-renders, creating a new onApplyToPosition
-  // with updated closure. The useEffect below fires AFTER that re-render.
-  const [pendingApplyPlan, setPendingApplyPlan] = useState(false);
-  const handleApplyPlan = useCallback((variantId: string) => {
-    const variant = savedVariants.find(v => v.id === variantId);
-    if (!variant) return;
-    loadVariant(variant);
-    setPendingApplyPlan(true);
-  }, [savedVariants]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Save prompt + auto-save removed (v4.1): auto-calc is pure preview,
+  // never saves variants or asks the user to save before recalculating.
 
-  // Pending save prompt (Part 2): shown when the user changes inputs while
-  // there's an unsaved result. User chooses: save+continue / discard+continue.
-  const [savePrompt, setSavePrompt] = useState<{ oldResult: PlannerOutput; oldForm: FormState } | null>(null);
-  const hasExistingResultRef = useRef(false);
-
-  // Auto-calculate on form change with 1.5s debounce.
-  // Skip if:
-  //  - skipNextAutoCalcRef is set (first mount, variant load, etc.)
-  //  - a save prompt is already showing
+  // Auto-calculate on form change with 1.5s debounce (v4.1: pure preview, no save).
   useEffect(() => {
     if (skipNextAutoCalcRef.current) {
       skipNextAutoCalcRef.current = false;
@@ -1057,18 +1030,6 @@ export default function PlannerPage() {
     // Debounce — clear prior timer
     if (autoCalcTimerRef.current) clearTimeout(autoCalcTimerRef.current);
     autoCalcTimerRef.current = setTimeout(() => {
-      // If there's a previous result and auto-save is OFF and no prompt showing yet,
-      // show the save-before-recalc prompt instead of running calc immediately
-      if (hasExistingResultRef.current && !autoSaveVariants && !savePrompt && result) {
-        setSavePrompt({ oldResult: result, oldForm: { ...form } });
-        autoCalcTimerRef.current = null;
-        return;
-      }
-      // If auto-save is ON, save the previous result silently before recomputing
-      if (hasExistingResultRef.current && autoSaveVariants && result) {
-        saveVariant(result).catch(() => {});
-      }
-      // Show "Počítám..." indicator only if calc takes >500ms
       const indicatorTimer = setTimeout(() => setCalcStatus('calculating'), 500);
       const t0 = Date.now();
       runCalculation();
@@ -1080,7 +1041,6 @@ export default function PlannerPage() {
       } else {
         setCalcStatus('idle');
       }
-      hasExistingResultRef.current = true;
       autoCalcTimerRef.current = null;
     }, 1500);
 
@@ -1091,36 +1051,10 @@ export default function PlannerPage() {
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form, autoSaveVariants]);
+  }, [form]);
 
-  /** User chose "Uložit a pokračovat" in the save prompt. */
-  const handleSaveAndContinue = async () => {
-    if (savePrompt) {
-      await saveVariant(savePrompt.oldResult);
-    }
-    setSavePrompt(null);
-    // Now run the pending calculation with the NEW form
-    runCalculation();
-    hasExistingResultRef.current = true;
-  };
-
-  /** User chose "Zahodit a pokračovat" in the save prompt. */
-  const handleDiscardAndContinue = () => {
-    setSavePrompt(null);
-    runCalculation();
-    hasExistingResultRef.current = true;
-  };
-
-  // Ref holding the latest apply function — updated on every render so the effect
-  // after loadVariant calls the version with fresh plan+form closure.
-  const applyFnRef = useRef<(() => void) | null>(null);
-  // Effect: trigger apply after variant load completes (pendingApplyPlan flag).
-  // Runs AFTER React commit → applyFnRef holds function with updated plan+form.
-  useEffect(() => {
-    if (!pendingApplyPlan) return;
-    setPendingApplyPlan(false);
-    applyFnRef.current?.();
-  }, [pendingApplyPlan]);
+  // pendingApplyPlan + applyFnRef removed (v4.1): Aplikovat do pozice
+  // now applies the CURRENT result directly, no variant load needed.
 
   const handleCompare = () => {
     if (!result) return;
@@ -3086,9 +3020,8 @@ export default function PlannerPage() {
           )}
           {/*
             "+ Uložit scénář" and "Vymazat scénáře" buttons removed.
-            Variant saving now happens automatically via the prompt-based
-            flow (Part 2 of calc refactor) when the user changes inputs
-            with an unsaved result. See savePrompt modal below.
+            Variant saving is manual (v4.1): user clicks "Uložit variantu"
+            explicitly. Auto-calc is pure preview.
           */}
 
           <button
@@ -3444,14 +3377,12 @@ export default function PlannerPage() {
                   setApplyStatus('error');
                   setTimeout(() => setApplyStatus('idle'), 3000);
                 }
-              }; applyFnRef.current = fn; return fn; })()}
+              }; return fn; })()}
               savedVariants={savedVariants}
               onSaveVariant={() => { saveVariant(plan); }}
               onLoadVariant={loadVariant}
               onRemoveVariant={removeVariant}
               onSetAsPlan={setAsPlan}
-              onApplyPlan={handleApplyPlan}
-              positionId={positionId}
               kridlaFormwork={kridlaFormwork}
               calcStatus={calcStatus}
               resultDirty={resultDirty}
@@ -3684,49 +3615,7 @@ export default function PlannerPage() {
         </main>
       </div>
 
-      {/* Save-before-recalc prompt (Part 2 of calc refactor) */}
-      {savePrompt && (
-        <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.55)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
-          padding: 16,
-        }} onClick={(e) => { if (e.target === e.currentTarget) handleDiscardAndContinue(); }}>
-          <div style={{
-            background: 'white', borderRadius: 8, padding: 24, maxWidth: 480, width: '100%',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-          }}>
-            <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 10, color: 'var(--r0-slate-800)' }}>
-              ⚠ Máte neuložený výpočet
-            </div>
-            <div style={{ fontSize: 13, color: 'var(--r0-slate-600)', marginBottom: 14 }}>
-              {savePrompt.oldResult.formwork.system.name}, {savePrompt.oldResult.resources.num_formwork_crews} čet
-              {' — '}
-              <strong>{savePrompt.oldResult.schedule.total_days} dní</strong>,{' '}
-              <strong>{Math.round(savePrompt.oldResult.costs.total_labor_czk + savePrompt.oldResult.costs.formwork_rental_czk).toLocaleString('cs')} Kč</strong>
-            </div>
-            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-              <button onClick={handleSaveAndContinue} style={{
-                flex: 1, padding: '10px 14px', fontSize: 13, fontWeight: 600,
-                border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit',
-                background: 'var(--r0-orange, #f59e0b)', color: 'white',
-              }}>Uložit a pokračovat</button>
-              <button onClick={handleDiscardAndContinue} style={{
-                flex: 1, padding: '10px 14px', fontSize: 13, fontWeight: 600,
-                border: '1px solid var(--r0-slate-300)', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit',
-                background: 'white', color: 'var(--r0-slate-700)',
-              }}>Zahodit a pokračovat</button>
-            </div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--r0-slate-500)', cursor: 'pointer' }}>
-              <input
-                type="checkbox"
-                checked={autoSaveVariants}
-                onChange={e => setAutoSaveVariants(e.target.checked)}
-              />
-              Ukládat automaticky (neptát se)
-            </label>
-          </div>
-        </div>
-      )}
+      {/* Save prompt removed (v4.1): auto-calc is pure preview, user saves explicitly */}
     </div>
   );
 }
@@ -3781,7 +3670,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, onApplyPlan, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -3790,13 +3679,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   applyStatus: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
   /** Apply a specific plan variant (bypasses current result, uses variant's saved plan+form) */
-  onApplyPlan?: (variantId: string) => void;
+  // onApplyPlan removed (v4.1): user applies current result via toolbar button
   savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number; is_plan?: boolean }>;
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
   onSetAsPlan?: (id: string) => void;
-  positionId?: string | null;
   kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
   calcStatus?: 'idle' | 'calculating';
   resultDirty?: boolean;
@@ -3872,10 +3760,8 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
           Kopírovat Gantt
         </button>
         {/*
-          "💾 Uložit plán" button removed — variant saving is now automatic
-          via the prompt modal when user changes inputs (see savePrompt in
-          PlannerPage). To mark a variant as the chosen plan, use the "✓"
-          button in the variants table below.
+          Variant saving is manual (v4.1): "Uložit variantu" in sidebar,
+          "Aplikovat do pozice" saves as PLÁN + applies TOV.
         */}
       </div>
 
@@ -3939,28 +3825,7 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ))}
             </tbody>
           </table>
-          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyPlan && (
-            <div style={{ marginTop: 8, textAlign: 'right' }}>
-              <button
-                onClick={() => {
-                  const planVar = savedVariants.find((v: any) => v.is_plan);
-                  if (planVar) onApplyPlan(planVar.id);
-                }}
-                disabled={applyStatus === 'saving'}
-                style={{
-                  padding: '6px 14px', fontSize: 12, fontWeight: 600,
-                  border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit',
-                  background: applyStatus === 'saved' ? '#22c55e' : applyStatus === 'error' ? '#ef4444' : '#16a34a',
-                  color: 'white',
-                }}
-              >
-                {applyStatus === 'saving' ? 'Ukládám…'
-                  : applyStatus === 'saved' ? '✓ Aplikováno'
-                  : applyStatus === 'error' ? '✗ Chyba'
-                  : '✓ Aplikovat plán do pozice'}
-              </button>
-            </div>
-          )}
+          {/* "Aplikovat plán" button removed (v4.1): use the main "Aplikovat do pozice" button in toolbar */}
         </div>
       )}
 

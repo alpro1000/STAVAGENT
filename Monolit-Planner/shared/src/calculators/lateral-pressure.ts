@@ -157,8 +157,15 @@ export function filterFormworkByPressure(
   const rejected: FormworkSystemSpec[] = [];
 
   for (const sys of systems) {
+    // Horizontal elements (slab, deck, foundation slab): lateral pressure is irrelevant —
+    // concrete sits ON the formwork, doesn't push AGAINST it. All compatible systems pass.
+    if (orientation === 'horizontal') {
+      suitable.push(sys);
+      continue;
+    }
+
     // Skip slab systems for vertical elements (they resist gravity load, not lateral pressure)
-    if (orientation === 'vertical' && sys.formwork_category === 'slab') {
+    if (sys.formwork_category === 'slab') {
       rejected.push(sys);
       continue;
     }
@@ -169,14 +176,23 @@ export function filterFormworkByPressure(
       continue;
     }
 
-    // Check pressure capacity
+    // Check pressure capacity — with per-záběr staging for tall elements.
+    // Formwork handles one záběr at a time, not the full element height.
     if (sys.pressure_kn_m2 < pressure_kn_m2) {
-      rejected.push(sys);
-      continue;
-    }
+      // Full-height pressure exceeds system. Can staging save it?
+      if (pour_height_m && pour_height_m > 0) {
+        // Max stage height this system can handle at current pour rate:
+        // sys_max_h = sys.pressure / pressure * total_height
+        const sysMaxStageH = (sys.pressure_kn_m2 / pressure_kn_m2) * pour_height_m;
+        const catalogMaxH = sys.max_pour_height_m ?? Infinity;
+        const effectiveMaxH = Math.min(sysMaxStageH, catalogMaxH);
 
-    // Check max pour height (e.g. Frami max 3.0m záběr)
-    if (pour_height_m && sys.max_pour_height_m && pour_height_m > sys.max_pour_height_m) {
+        if (effectiveMaxH >= 1.5) {
+          // System works with záběrová betonáž (min 1.5m per stage is practical)
+          suitable.push(sys);
+          continue;
+        }
+      }
       rejected.push(sys);
       continue;
     }
