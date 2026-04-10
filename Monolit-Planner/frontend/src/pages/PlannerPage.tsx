@@ -26,7 +26,7 @@ import {
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
-import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterByPressure } from '@stavagent/monolit-shared';
+import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure } from '@stavagent/monolit-shared';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import { findLinkedPositions, detectWorkType } from '@stavagent/monolit-shared';
 import type { TOVEntries, TOVLaborEntry, TOVMaterialEntry } from '@stavagent/monolit-shared';
@@ -675,7 +675,7 @@ export default function PlannerPage() {
       const pourMethod = inferPourMethod(profile.pump_typical, h);
       const lp = calculateLateralPressure(h, pourMethod);
       const { all: allSystems } = getSuitableSystemsForElement(et);
-      const filtered = filterByPressure(allSystems, lp.pressure_kn_m2);
+      const filtered = filterFormworkByPressure(lp.pressure_kn_m2, allSystems);
       const stages = suggestPourStages(h, pourMethod, allSystems);
       return { lateralPressure: lp, filtered, stages, profile };
     } catch { return null; }
@@ -2354,12 +2354,12 @@ export default function PlannerPage() {
               )}
               {wizardHint3.filtered.suitable.length > 0 && (
                 <div style={{ marginTop: 4, fontSize: 10, color: 'var(--r0-slate-500)' }}>
-                  Vhodné systémy: {wizardHint3.filtered.suitable.map(s => `${s.name} (${s.manufacturer})`).join(', ')}
+                  Vhodné systémy: {wizardHint3.filtered.suitable.map((s: any) => `${s.name} (${s.manufacturer})`).join(', ')}
                 </div>
               )}
               {wizardHint3.filtered.rejected.length > 0 && (
                 <div style={{ marginTop: 2, fontSize: 10, color: 'var(--r0-error-text, #dc2626)' }}>
-                  Nevhodné (nízká nosnost): {wizardHint3.filtered.rejected.map(s => s.name).join(', ')}
+                  Nevhodné (nízká nosnost): {wizardHint3.filtered.rejected.map((s: any) => s.name).join(', ')}
                 </div>
               )}
             </div>
