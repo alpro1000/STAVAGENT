@@ -823,8 +823,6 @@ export default function PlannerPage() {
     setForm(variant.form);
     setResult(variant.plan);
     setResultDirty(false);
-    // Mark that a result exists — so the next change triggers the save prompt
-    hasExistingResultRef.current = true;
   };
 
   /** Mark a variant as the "chosen plan" (✅ PLÁN badge). Only one plan per position. */
@@ -988,9 +986,6 @@ export default function PlannerPage() {
       const output = planElement(input);
       setResult(output);
       setResultDirty(false);
-      // After a real calc, mark that a previous result exists — next change
-      // will trigger the save prompt (unless auto-save is on).
-      hasExistingResultRef.current = true;
       return output;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba výpočtu');
@@ -3388,7 +3383,6 @@ export default function PlannerPage() {
               onLoadVariant={loadVariant}
               onRemoveVariant={removeVariant}
               onSetAsPlan={setAsPlan}
-              positionId={positionId}
               kridlaFormwork={kridlaFormwork}
               calcStatus={calcStatus}
               resultDirty={resultDirty}
@@ -3676,7 +3670,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -3691,7 +3685,6 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
   onSetAsPlan?: (id: string) => void;
-  positionId?: string | null;
   kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
   calcStatus?: 'idle' | 'calculating';
   resultDirty?: boolean;
