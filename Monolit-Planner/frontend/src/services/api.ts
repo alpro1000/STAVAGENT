@@ -341,6 +341,48 @@ export const uploadAPI = {
   },
 };
 
+// Planner Variants API (Part B calculator variants per position)
+export interface PlannerVariant {
+  id: string;
+  position_id: string;
+  variant_number: number;
+  description: string;
+  input_params: any;
+  calc_result: any;
+  total_days?: number | null;
+  total_cost_czk?: number | null;
+  system_name?: string | null;
+  is_plan: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export const plannerVariantsAPI = {
+  list: async (positionId: string): Promise<PlannerVariant[]> => {
+    const { data } = await api.get('/api/planner-variants', { params: { position_id: positionId } });
+    return data.variants || [];
+  },
+  create: async (payload: {
+    position_id: string;
+    description?: string;
+    input_params: any;
+    calc_result: any;
+    total_days?: number;
+    total_cost_czk?: number;
+    system_name?: string;
+  }): Promise<PlannerVariant> => {
+    const { data } = await api.post('/api/planner-variants', payload);
+    return data.variant;
+  },
+  update: async (id: string, changes: { description?: string; is_plan?: boolean }): Promise<PlannerVariant> => {
+    const { data } = await api.put(`/api/planner-variants/${id}`, changes);
+    return data.variant;
+  },
+  delete: async (id: string): Promise<void> => {
+    await api.delete(`/api/planner-variants/${id}`);
+  },
+};
+
 // Export
 export const exportAPI = {
   exportXLSX: async (bridgeId: string): Promise<Blob> => {

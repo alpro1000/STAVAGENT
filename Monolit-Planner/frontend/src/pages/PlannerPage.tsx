@@ -14,7 +14,7 @@
  *   - Warnings + decision log
  */
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Calculator, TriangleAlert, ArrowLeft, Download, Hourglass, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -33,6 +33,7 @@ import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import PlannerGantt from '../components/PlannerGantt';
 import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
+import { plannerVariantsAPI } from '../services/api';
 import '../styles/r0.css';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
@@ -182,6 +183,12 @@ interface FormState {
   adjacent_sections: boolean;
   num_tacts_override: string; // empty = auto, number = direct
   tact_volume_m3_override: string; // empty = auto-divide
+  // Manual záběry (custom non-uniform tacts) — overrides num_tacts + volume split
+  // When enabled, each záběr has its own volume and optional name/formwork area.
+  // The engine receives num_tacts_override = array.length and
+  // tact_volume_m3_override = max(volumes) (bottleneck, drives schedule).
+  use_manual_zabery: boolean;
+  manual_zabery: Array<{ name: string; volume_m3: string; formwork_area_m2: string }>;
   scheduling_mode_override: '' | 'linear' | 'chess';
   season: SeasonMode;
   use_retarder: boolean;
@@ -217,6 +224,9 @@ interface FormState {
   nk_width_m: string;     // empty = auto (12m)
   construction_technology: '' | 'fixed_scaffolding' | 'mss' | 'cantilever';
   mss_tact_days: string;  // empty = auto from subtype
+  // Ztracené bednění (lost formwork / trapézový plech) — only for horizontal elements
+  has_lost_formwork: boolean;
+  lost_formwork_area_m2: string; // empty = 0
 }
 
 const DEFAULT_FORM: FormState = {
@@ -235,6 +245,8 @@ const DEFAULT_FORM: FormState = {
   adjacent_sections: true,
   num_tacts_override: '',
   tact_volume_m3_override: '',
+  use_manual_zabery: false,
+  manual_zabery: [],
   scheduling_mode_override: '',
   season: 'normal',
   use_retarder: false,
@@ -269,6 +281,8 @@ const DEFAULT_FORM: FormState = {
   nk_width_m: '',
   construction_technology: '',
   mss_tact_days: '',
+  has_lost_formwork: false,
+  lost_formwork_area_m2: '',
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -522,7 +536,26 @@ export default function PlannerPage() {
   const [showHelp, setShowHelp] = useState(false);
   const [applyStatus, setApplyStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
-  // Plan variants (Monolit mode — save & compare)
+  // Auto-calculate state (Part 1 of calc refactor)
+  // calcStatus: indicator shown while computing
+  // resultDirty: true when form has changed but result hasn't been recomputed yet
+  // skipNextAutoCalc: set when loading a variant or on page mount — skips the next auto-calc trigger
+  const [calcStatus, setCalcStatus] = useState<'idle' | 'calculating'>('idle');
+  const [resultDirty, setResultDirty] = useState(false);
+  const skipNextAutoCalcRef = useRef(true); // Skip on first mount — first calc happens via firstRun useMemo
+  const autoCalcTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-save toggle (persisted in localStorage so it survives sessions)
+  const [autoSaveVariants, setAutoSaveVariants] = useState<boolean>(() => {
+    try { return localStorage.getItem('planner_autosave_variants') === 'true'; } catch { return false; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem('planner_autosave_variants', String(autoSaveVariants)); } catch { /* ignore */ }
+  }, [autoSaveVariants]);
+
+  // Plan variants (saved scenarios per position)
+  // Mode A (position_id present): persisted in PostgreSQL via /api/planner-variants
+  // Mode B (standalone): in-memory state only, lost on page leave
   interface SavedVariant {
     id: string;
     label: string;
@@ -533,18 +566,52 @@ export default function PlannerPage() {
     saved_at: string;
     plan: PlannerOutput;
     form: FormState;
+    is_plan?: boolean;  // one variant per position can be marked as the chosen plan
   }
-  const variantsKey = positionContext?.position_id ? `planner_variants_${positionContext.position_id}` : null;
-  const [savedVariants, setSavedVariants] = useState<SavedVariant[]>(() => {
-    if (!variantsKey) return [];
-    try { return JSON.parse(localStorage.getItem(variantsKey) || '[]'); } catch { return []; }
-  });
+  const positionId = positionContext?.position_id || null;
+  const [savedVariants, setSavedVariants] = useState<SavedVariant[]>([]);
+  const [variantsLoading, setVariantsLoading] = useState(false);
 
-  const saveVariant = (plan: PlannerOutput) => {
-    if (!variantsKey) return;
-    const variant: SavedVariant = {
-      id: Date.now().toString(36),
-      label: `V${savedVariants.length + 1}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`,
+  // Load variants from backend when position changes (Mode A)
+  useEffect(() => {
+    if (!positionId) {
+      setSavedVariants([]);
+      return;
+    }
+    let cancelled = false;
+    setVariantsLoading(true);
+    plannerVariantsAPI.list(positionId)
+      .then(rows => {
+        if (cancelled) return;
+        const loaded: SavedVariant[] = rows.map(r => ({
+          id: r.id,
+          label: r.description || `V${r.variant_number}`,
+          total_days: Number(r.total_days) || 0,
+          total_cost_czk: Number(r.total_cost_czk) || 0,
+          num_tacts: r.calc_result?.pour_decision?.num_tacts || 0,
+          system_name: r.system_name || '',
+          saved_at: r.created_at || new Date().toISOString(),
+          plan: r.calc_result as PlannerOutput,
+          form: r.input_params as FormState,
+          is_plan: !!r.is_plan,
+        }));
+        setSavedVariants(loaded);
+      })
+      .catch(err => {
+        console.warn('[PlannerVariants] Failed to load:', err);
+      })
+      .finally(() => {
+        if (!cancelled) setVariantsLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [positionId]);
+
+  const saveVariant = async (plan: PlannerOutput): Promise<SavedVariant | null> => {
+    const num = savedVariants.length + 1;
+    const description = `V${num}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`;
+    const baseVariant: SavedVariant = {
+      id: Date.now().toString(36),  // temp id for Mode B
+      label: description,
       total_days: plan.schedule.total_days,
       total_cost_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
       num_tacts: plan.pour_decision.num_tacts,
@@ -552,22 +619,69 @@ export default function PlannerPage() {
       saved_at: new Date().toISOString(),
       plan,
       form: { ...form },
+      is_plan: false,
     };
-    const updated = [...savedVariants, variant];
-    setSavedVariants(updated);
-    localStorage.setItem(variantsKey, JSON.stringify(updated));
+
+    if (positionId) {
+      // Mode A: persist via API
+      try {
+        const created = await plannerVariantsAPI.create({
+          position_id: positionId,
+          description,
+          input_params: form,
+          calc_result: plan,
+          total_days: plan.schedule.total_days,
+          total_cost_czk: plan.costs.total_labor_czk + plan.costs.formwork_rental_czk,
+          system_name: plan.formwork.system.name,
+        });
+        const variant: SavedVariant = {
+          ...baseVariant,
+          id: created.id,
+          label: created.description || description,
+        };
+        setSavedVariants(prev => [...prev, variant]);
+        return variant;
+      } catch (err) {
+        console.error('[PlannerVariants] Save failed:', err);
+        return null;
+      }
+    } else {
+      // Mode B: in-memory only
+      setSavedVariants(prev => [...prev, baseVariant]);
+      return baseVariant;
+    }
   };
 
-  const removeVariant = (id: string) => {
-    if (!variantsKey) return;
-    const updated = savedVariants.filter(v => v.id !== id);
-    setSavedVariants(updated);
-    localStorage.setItem(variantsKey, JSON.stringify(updated));
+  const removeVariant = async (id: string) => {
+    if (positionId) {
+      try {
+        await plannerVariantsAPI.delete(id);
+      } catch (err) {
+        console.warn('[PlannerVariants] Delete failed:', err);
+      }
+    }
+    setSavedVariants(prev => prev.filter(v => v.id !== id));
   };
 
   const loadVariant = (variant: SavedVariant) => {
+    // Skip auto-calc — loading a variant should restore its result as-is,
+    // not trigger a new computation.
+    skipNextAutoCalcRef.current = true;
     setForm(variant.form);
     setResult(variant.plan);
+    setResultDirty(false);
+  };
+
+  /** Mark a variant as the "chosen plan" (✅ PLÁN badge). Only one plan per position. */
+  const setAsPlan = async (id: string) => {
+    if (positionId) {
+      try {
+        await plannerVariantsAPI.update(id, { is_plan: true });
+      } catch (err) {
+        console.warn('[PlannerVariants] setAsPlan failed:', err);
+      }
+    }
+    setSavedVariants(prev => prev.map(v => ({ ...v, is_plan: v.id === id })));
   };
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
@@ -704,7 +818,11 @@ export default function PlannerPage() {
       form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
       form.total_length_m, form.spara_spacing_m]);
 
-  const handleCalculate = () => {
+  /**
+   * Run the calculation synchronously.
+   * Called both by the manual "Vypočítat" button AND the auto-calc debounced effect.
+   */
+  const runCalculation = useCallback(() => {
     setError(null);
     setShowComparison(false);
     try {
@@ -714,10 +832,109 @@ export default function PlannerPage() {
       }
       const output = planElement(input);
       setResult(output);
+      setResultDirty(false);
+      // After a real calc, mark that a previous result exists — next change
+      // will trigger the save prompt (unless auto-save is on).
+      hasExistingResultRef.current = true;
+      return output;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba výpočtu');
       setResult(null);
+      return null;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form]);
+
+  /** Manual "Vypočítat" button handler — forces calc even if not dirty */
+  const handleCalculate = () => {
+    // Cancel any pending auto-calc so we don't double-run
+    if (autoCalcTimerRef.current) {
+      clearTimeout(autoCalcTimerRef.current);
+      autoCalcTimerRef.current = null;
+    }
+    setCalcStatus('calculating');
+    const t0 = Date.now();
+    runCalculation();
+    const elapsed = Date.now() - t0;
+    // Only show indicator briefly if calc was fast
+    if (elapsed < 500) {
+      setCalcStatus('idle');
+    } else {
+      setTimeout(() => setCalcStatus('idle'), 200);
+    }
+  };
+
+  // Pending save prompt (Part 2): shown when the user changes inputs while
+  // there's an unsaved result. User chooses: save+continue / discard+continue.
+  const [savePrompt, setSavePrompt] = useState<{ oldResult: PlannerOutput; oldForm: FormState } | null>(null);
+  const hasExistingResultRef = useRef(false);
+
+  // Auto-calculate on form change with 1.5s debounce.
+  // Skip if:
+  //  - skipNextAutoCalcRef is set (first mount, variant load, etc.)
+  //  - a save prompt is already showing
+  useEffect(() => {
+    if (skipNextAutoCalcRef.current) {
+      skipNextAutoCalcRef.current = false;
+      return;
+    }
+    // Mark result as stale
+    setResultDirty(true);
+    // Debounce — clear prior timer
+    if (autoCalcTimerRef.current) clearTimeout(autoCalcTimerRef.current);
+    autoCalcTimerRef.current = setTimeout(() => {
+      // If there's a previous result and auto-save is OFF and no prompt showing yet,
+      // show the save-before-recalc prompt instead of running calc immediately
+      if (hasExistingResultRef.current && !autoSaveVariants && !savePrompt && result) {
+        setSavePrompt({ oldResult: result, oldForm: { ...form } });
+        autoCalcTimerRef.current = null;
+        return;
+      }
+      // If auto-save is ON, save the previous result silently before recomputing
+      if (hasExistingResultRef.current && autoSaveVariants && result) {
+        saveVariant(result).catch(() => {});
+      }
+      // Show "Počítám..." indicator only if calc takes >500ms
+      const indicatorTimer = setTimeout(() => setCalcStatus('calculating'), 500);
+      const t0 = Date.now();
+      runCalculation();
+      clearTimeout(indicatorTimer);
+      const elapsed = Date.now() - t0;
+      if (elapsed >= 500) {
+        setCalcStatus('calculating');
+        setTimeout(() => setCalcStatus('idle'), 200);
+      } else {
+        setCalcStatus('idle');
+      }
+      hasExistingResultRef.current = true;
+      autoCalcTimerRef.current = null;
+    }, 1500);
+
+    return () => {
+      if (autoCalcTimerRef.current) {
+        clearTimeout(autoCalcTimerRef.current);
+        autoCalcTimerRef.current = null;
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, autoSaveVariants]);
+
+  /** User chose "Uložit a pokračovat" in the save prompt. */
+  const handleSaveAndContinue = async () => {
+    if (savePrompt) {
+      await saveVariant(savePrompt.oldResult);
+    }
+    setSavePrompt(null);
+    // Now run the pending calculation with the NEW form
+    runCalculation();
+    hasExistingResultRef.current = true;
+  };
+
+  /** User chose "Zahodit a pokračovat" in the save prompt. */
+  const handleDiscardAndContinue = () => {
+    setSavePrompt(null);
+    runCalculation();
+    hasExistingResultRef.current = true;
   };
 
   const handleCompare = () => {
@@ -787,7 +1004,17 @@ export default function PlannerPage() {
       input.total_length_m = form.total_length_m;
       input.adjacent_sections = form.adjacent_sections;
     }
-    if (form.tact_mode === 'manual' && form.num_tacts_override) {
+    // Manual záběry (non-uniform volumes) override both tact count and per-tact volume.
+    // Bottleneck záběr (largest volume) drives schedule calculation.
+    if (form.use_manual_zabery && form.manual_zabery.length > 0) {
+      const volumes = form.manual_zabery
+        .map(z => parseFloat(z.volume_m3) || 0)
+        .filter(v => v > 0);
+      if (volumes.length > 0) {
+        input.num_tacts_override = volumes.length;
+        input.tact_volume_m3_override = Math.max(...volumes);  // bottleneck for schedule
+      }
+    } else if (form.tact_mode === 'manual' && form.num_tacts_override) {
       input.num_tacts_override = parseInt(form.num_tacts_override);
       if (form.tact_volume_m3_override) input.tact_volume_m3_override = parseFloat(form.tact_volume_m3_override);
       if (form.scheduling_mode_override) input.scheduling_mode_override = form.scheduling_mode_override;
@@ -795,8 +1022,14 @@ export default function PlannerPage() {
     if (form.height_m) input.height_m = parseFloat(form.height_m);
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
-    const sc = parseFloat(form.formwork_shape_correction);
-    if (sc && sc !== 1.0) input.formwork_shape_correction = sc;
+    // Shape correction: římsa always uses 1.5 (complex geometry), regardless of form value
+    const elemTypeForShape = form.use_name_classification ? 'other' : form.element_type;
+    if (elemTypeForShape === 'rimsa') {
+      input.formwork_shape_correction = 1.5;
+    } else {
+      const sc = parseFloat(form.formwork_shape_correction);
+      if (sc && sc !== 1.0) input.formwork_shape_correction = sc;
+    }
     if (form.num_identical_elements > 1) {
       input.num_identical_elements = form.num_identical_elements;
       if (form.formwork_sets_count) input.formwork_sets_count = parseInt(form.formwork_sets_count);
@@ -811,6 +1044,11 @@ export default function PlannerPage() {
     if (form.nk_width_m) input.nk_width_m = parseFloat(form.nk_width_m);
     if (form.construction_technology) input.construction_technology = form.construction_technology as any;
     if (form.mss_tact_days) input.mss_tact_days = parseInt(form.mss_tact_days);
+    // Lost formwork (trapézový plech) — horizontal elements only
+    if (form.has_lost_formwork && form.lost_formwork_area_m2) {
+      const lostArea = parseFloat(form.lost_formwork_area_m2);
+      if (lostArea > 0) input.lost_formwork_area_m2 = lostArea;
+    }
     // Exposure class from URL context
     if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
     // Total length for non-spáry mode (needed for prestress days calculation)
@@ -1730,6 +1968,39 @@ export default function PlannerPage() {
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
+
+            {/* Ztracené bednění (trapézový plech) — only for horizontal elements */}
+            {(() => {
+              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              const horizontalTypes = ['stropni_deska', 'zakladova_deska', 'mostovkova_deska'];
+              if (!horizontalTypes.includes(elemType)) return null;
+              return (
+                <div style={{ marginTop: 6, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-700)' }}>
+                    <input
+                      type="checkbox"
+                      checked={form.has_lost_formwork}
+                      onChange={e => update('has_lost_formwork', e.target.checked)}
+                    />
+                    Ztracené bednění (trapézový plech)
+                  </label>
+                  {form.has_lost_formwork && (
+                    <div style={{ marginTop: 6 }}>
+                      <Field label="Plocha ztraceného bednění (m²)" hint="TP 60mm atd. — odečte se od systémového bednění">
+                        <NumInput style={inputStyle} value={form.lost_formwork_area_m2} min={0}
+                          onChange={v => update('lost_formwork_area_m2', String(v))}
+                          placeholder="např. 1325" />
+                      </Field>
+                      <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginTop: 4 }}>
+                        Systémové bednění (Dokaflex/TRIO) se spočítá pouze na zbývající plochu.
+                        Podpěry pokrývají celou plochu.
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
             <Field label="Norma výztuže (kg/m³)" hint="prázdné = odhad z profilu elementu">
               <NumInput style={inputStyle} value={form.rebar_norm_kg_m3} min={0}
                 onChange={v => {
@@ -1760,6 +2031,15 @@ export default function PlannerPage() {
               const elemType = form.use_name_classification ? 'other' : form.element_type;
               const hint = ELEMENT_DIMENSION_HINTS[elemType];
               if (!hint) return null;
+
+              // Element-specific field visibility overrides:
+              // - rimsa: shape_correction is fixed (always složitá geometrie), hide dropdown
+              // - pilota, podzemni_stena: no plocha bednění (in the ground)
+              const hideShapeCorrection = elemType === 'rimsa'
+                || elemType === 'zakladova_deska'
+                || elemType === 'zakladovy_pas'
+                || elemType === 'zakladova_patka';
+
               return (
                 <>
                   {hint.has_height && (
@@ -1776,8 +2056,8 @@ export default function PlannerPage() {
                           : 'výška elementu'} />
                     </Field>
                   )}
-                  {/* Shape correction dropdown (only for vertical elements with height) */}
-                  {hint.has_height && (
+                  {/* Shape correction dropdown — hidden for element types with fixed geometry */}
+                  {hint.has_height && !hideShapeCorrection && (
                     <Field label="Tvar průřezu" hint="korekce pracnosti bednění za geometrii">
                       <select style={inputStyle} value={form.formwork_shape_correction}
                         onChange={e => update('formwork_shape_correction', e.target.value)}>
@@ -1787,6 +2067,15 @@ export default function PlannerPage() {
                         <option value="1.8">Nepravidelný — atypický (×1.8)</option>
                       </select>
                     </Field>
+                  )}
+                  {/* Info about fixed shape correction for specific types */}
+                  {hint.has_height && elemType === 'rimsa' && (
+                    <div style={{
+                      padding: '4px 8px', marginBottom: 6, fontSize: 10,
+                      color: 'var(--r0-slate-500)', fontStyle: 'italic',
+                    }}>
+                      Římsa: tvar průřezu je fixní (složitá geometrie × 1.5) — nelze přepnout.
+                    </div>
                   )}
 
                   <div style={{
@@ -1909,6 +2198,135 @@ export default function PlannerPage() {
                 </Field>
               </>
             )}
+
+            {/* ─── Ruční rozdělení záběrů (non-uniform volumes) ─── */}
+            <div style={{ marginTop: 12, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-700)' }}>
+                <input
+                  type="checkbox"
+                  checked={form.use_manual_zabery}
+                  onChange={e => {
+                    const enabled = e.target.checked;
+                    update('use_manual_zabery', enabled);
+                    if (enabled && form.manual_zabery.length === 0) {
+                      // Seed with one empty row
+                      update('manual_zabery', [{ name: '', volume_m3: '', formwork_area_m2: '' }]);
+                    }
+                  }}
+                />
+                Ruční rozdělení záběrů (nerovnoměrné objemy)
+              </label>
+              {form.use_manual_zabery && (
+                <div style={{ marginTop: 8 }}>
+                  <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginBottom: 6 }}>
+                    Zadejte objem každého záběru zvlášť. Největší záběr určuje harmonogram (bottleneck).
+                  </div>
+                  <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-200)' }}>
+                        <th style={{ textAlign: 'left', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>#</th>
+                        <th style={{ textAlign: 'left', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Název</th>
+                        <th style={{ textAlign: 'right', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Objem (m³)</th>
+                        <th style={{ textAlign: 'right', padding: '3px 4px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Plocha (m²)</th>
+                        <th style={{ padding: '3px 4px' }}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {form.manual_zabery.map((z, i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                          <td style={{ padding: '4px', color: 'var(--r0-slate-400)', fontSize: 10 }}>{i + 1}</td>
+                          <td style={{ padding: '2px 4px' }}>
+                            <input
+                              type="text"
+                              value={z.name}
+                              onChange={e => {
+                                const next = form.manual_zabery.slice();
+                                next[i] = { ...next[i], name: e.target.value };
+                                update('manual_zabery', next);
+                              }}
+                              placeholder={`Záběr ${i + 1}`}
+                              style={{ width: '100%', padding: '3px 6px', fontSize: 11, border: '1px solid var(--r0-slate-300)', borderRadius: 3, fontFamily: 'inherit' }}
+                            />
+                          </td>
+                          <td style={{ padding: '2px 4px' }}>
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              value={z.volume_m3}
+                              onChange={e => {
+                                const next = form.manual_zabery.slice();
+                                next[i] = { ...next[i], volume_m3: e.target.value };
+                                update('manual_zabery', next);
+                              }}
+                              placeholder="0"
+                              style={{ width: '100%', padding: '3px 6px', fontSize: 11, border: '1px solid var(--r0-slate-300)', borderRadius: 3, textAlign: 'right', fontFamily: 'JetBrains Mono, monospace' }}
+                            />
+                          </td>
+                          <td style={{ padding: '2px 4px' }}>
+                            <input
+                              type="number"
+                              step="0.1"
+                              min="0"
+                              value={z.formwork_area_m2}
+                              onChange={e => {
+                                const next = form.manual_zabery.slice();
+                                next[i] = { ...next[i], formwork_area_m2: e.target.value };
+                                update('manual_zabery', next);
+                              }}
+                              placeholder="0"
+                              style={{ width: '100%', padding: '3px 6px', fontSize: 11, border: '1px solid var(--r0-slate-300)', borderRadius: 3, textAlign: 'right', fontFamily: 'JetBrains Mono, monospace' }}
+                            />
+                          </td>
+                          <td style={{ padding: '2px 4px', textAlign: 'center' }}>
+                            <button
+                              onClick={() => {
+                                const next = form.manual_zabery.filter((_, idx) => idx !== i);
+                                update('manual_zabery', next);
+                              }}
+                              style={{
+                                fontSize: 10, padding: '2px 6px', border: '1px solid var(--r0-slate-200)',
+                                borderRadius: 3, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-400)',
+                              }}
+                              title="Odstranit záběr"
+                            >✕</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <button
+                    onClick={() => {
+                      update('manual_zabery', [...form.manual_zabery, { name: '', volume_m3: '', formwork_area_m2: '' }]);
+                    }}
+                    style={{
+                      marginTop: 6, padding: '4px 10px', fontSize: 11, border: '1px dashed var(--r0-slate-300)',
+                      borderRadius: 4, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-600)', fontFamily: 'inherit',
+                    }}
+                  >+ Přidat záběr</button>
+
+                  {/* Sum validation */}
+                  {(() => {
+                    const sum = form.manual_zabery.reduce((s, z) => s + (parseFloat(z.volume_m3) || 0), 0);
+                    const total = form.volume_m3 || 0;
+                    if (sum === 0 || total === 0) return null;
+                    const deviation = Math.abs(sum - total) / total;
+                    if (deviation <= 0.05) {
+                      return (
+                        <div style={{ marginTop: 6, fontSize: 10, color: 'var(--r0-green, #16a34a)' }}>
+                          ✓ Σ {sum.toFixed(2)} m³ ≈ {total.toFixed(2)} m³
+                        </div>
+                      );
+                    }
+                    return (
+                      <div style={{ marginTop: 6, fontSize: 10, color: 'var(--r0-orange, #f59e0b)' }}>
+                        ⚠ Σ {sum.toFixed(2)} m³ ≠ {total.toFixed(2)} m³ (odchylka {(deviation * 100).toFixed(0)}%)
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+            </div>
           </Section>
 
           {/* ─── Environment ─── */}
@@ -2297,32 +2715,12 @@ export default function PlannerPage() {
               Porovnat bednění (všechny systémy)
             </button>
           )}
-          {plan && (
-            <button
-              onClick={handleSaveScenario}
-              style={{
-                width: '100%', padding: '10px', marginTop: 8,
-                background: 'var(--r0-slate-100, #f1f5f9)', color: 'var(--r0-slate-700, #334155)',
-                border: '1px solid var(--r0-slate-300, #cbd5e1)',
-                borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                fontFamily: 'inherit',
-              }}
-            >
-              + Uložit scénář {scenarios.length > 0 ? `(${scenarios.length})` : ''}
-            </button>
-          )}
-          {scenarios.length > 0 && (
-            <button
-              onClick={() => { setScenarios([]); setScenarioSeq(0); }}
-              style={{
-                width: '100%', padding: '6px', marginTop: 4,
-                background: 'none', color: 'var(--r0-slate-400)',
-                border: 'none', fontSize: 11, cursor: 'pointer',
-              }}
-            >
-              Vymazat scénáře
-            </button>
-          )}
+          {/*
+            "+ Uložit scénář" and "Vymazat scénáře" buttons removed.
+            Variant saving now happens automatically via the prompt-based
+            flow (Part 2 of calc refactor) when the user changes inputs
+            with an unsaved result. See savePrompt modal below.
+          */}
 
           <button
             onClick={() => { setForm(DEFAULT_FORM); setResult(null); setError(null); setAdvisor(null); setComparison(null); }}
@@ -2581,9 +2979,10 @@ export default function PlannerPage() {
                     };
 
                     // 1. Main (beton) position — update with TOV entries in metadata
+                    // Use betonDays (pour-only duration) NOT total_days (full schedule)
                     updates.push({
                       id: positionContext.position_id,
-                      days: plan.schedule.total_days,
+                      days: betonDays,
                       crew_size: pourCrew,
                       wage_czk_ph: effectivePourWage,
                       shift_hours: plan.resources.shift_h,
@@ -2677,11 +3076,15 @@ export default function PlannerPage() {
                   setTimeout(() => setApplyStatus('idle'), 3000);
                 }
               } : undefined}
-              savedVariants={variantsKey ? savedVariants : undefined}
-              onSaveVariant={variantsKey ? () => saveVariant(plan) : undefined}
-              onLoadVariant={variantsKey ? loadVariant : undefined}
-              onRemoveVariant={variantsKey ? removeVariant : undefined}
+              savedVariants={savedVariants}
+              onSaveVariant={() => { saveVariant(plan); }}
+              onLoadVariant={loadVariant}
+              onRemoveVariant={removeVariant}
+              onSetAsPlan={setAsPlan}
+              positionId={positionId}
               kridlaFormwork={kridlaFormwork}
+              calcStatus={calcStatus}
+              resultDirty={resultDirty}
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
@@ -2910,6 +3313,50 @@ export default function PlannerPage() {
           )}
         </main>
       </div>
+
+      {/* Save-before-recalc prompt (Part 2 of calc refactor) */}
+      {savePrompt && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.55)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+          padding: 16,
+        }} onClick={(e) => { if (e.target === e.currentTarget) handleDiscardAndContinue(); }}>
+          <div style={{
+            background: 'white', borderRadius: 8, padding: 24, maxWidth: 480, width: '100%',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+          }}>
+            <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 10, color: 'var(--r0-slate-800)' }}>
+              ⚠ Máte neuložený výpočet
+            </div>
+            <div style={{ fontSize: 13, color: 'var(--r0-slate-600)', marginBottom: 14 }}>
+              {savePrompt.oldResult.formwork.system.name}, {savePrompt.oldResult.resources.num_formwork_crews} čet
+              {' — '}
+              <strong>{savePrompt.oldResult.schedule.total_days} dní</strong>,{' '}
+              <strong>{Math.round(savePrompt.oldResult.costs.total_labor_czk + savePrompt.oldResult.costs.formwork_rental_czk).toLocaleString('cs')} Kč</strong>
+            </div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+              <button onClick={handleSaveAndContinue} style={{
+                flex: 1, padding: '10px 14px', fontSize: 13, fontWeight: 600,
+                border: 'none', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit',
+                background: 'var(--r0-orange, #f59e0b)', color: 'white',
+              }}>Uložit a pokračovat</button>
+              <button onClick={handleDiscardAndContinue} style={{
+                flex: 1, padding: '10px 14px', fontSize: 13, fontWeight: 600,
+                border: '1px solid var(--r0-slate-300)', borderRadius: 6, cursor: 'pointer', fontFamily: 'inherit',
+                background: 'white', color: 'var(--r0-slate-700)',
+              }}>Zahodit a pokračovat</button>
+            </div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--r0-slate-500)', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={autoSaveVariants}
+                onChange={e => setAutoSaveVariants(e.target.checked)}
+              />
+              Ukládat automaticky (neptát se)
+            </label>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -2964,7 +3411,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, kridlaFormwork }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -2972,11 +3419,15 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   scenarios?: any[];
   applyStatus: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
-  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number }>;
+  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number; is_plan?: boolean }>;
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
+  onSetAsPlan?: (id: string) => void;
+  positionId?: string | null;
   kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
+  calcStatus?: 'idle' | 'calculating';
+  resultDirty?: boolean;
 }) {
   // Calendar date mapping
   const calendarInfo = useMemo(() => {
@@ -3048,18 +3499,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
         >
           Kopírovat Gantt
         </button>
-        {onSaveVariant && (
-          <button
-            onClick={onSaveVariant}
-            style={{
-              padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-indigo)',
-              cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
-              background: 'white', color: 'var(--r0-indigo)',
-            }}
-          >
-            💾 Uložit plán
-          </button>
-        )}
+        {/*
+          "💾 Uložit plán" button removed — variant saving is now automatic
+          via the prompt modal when user changes inputs (see savePrompt in
+          PlannerPage). To mark a variant as the chosen plan, use the "✓"
+          button in the variants table below.
+        */}
       </div>
 
       {/* Saved variants comparison (Monolit mode only) */}
@@ -3078,22 +3523,42 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
                 <th style={{ textAlign: 'left', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Konfigurace</th>
                 <th style={{ textAlign: 'right', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Dní</th>
                 <th style={{ textAlign: 'right', padding: '4px 8px', color: 'var(--r0-slate-500)', fontWeight: 600 }}>Náklady</th>
+                <th style={{ textAlign: 'center', padding: '4px 8px' }}>Stav</th>
                 <th style={{ textAlign: 'center', padding: '4px 8px' }}></th>
               </tr>
             </thead>
             <tbody>
               {savedVariants.map((v: any, i: number) => (
-                <tr key={v.id} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                <tr key={v.id} style={{
+                  borderBottom: '1px solid var(--r0-slate-100)',
+                  background: v.is_plan ? 'rgba(34,197,94,0.06)' : undefined,
+                }}>
                   <td style={{ padding: '6px 8px', color: 'var(--r0-slate-400)' }}>{i + 1}</td>
-                  <td style={{ padding: '6px 8px', fontWeight: 500 }}>{v.label}</td>
+                  <td style={{ padding: '6px 8px', fontWeight: 500, cursor: onLoadVariant ? 'pointer' : 'default' }}
+                      onClick={() => onLoadVariant && onLoadVariant(v)}>
+                    {v.label}
+                  </td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{v.total_days}</td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{Math.round(v.total_cost_czk).toLocaleString('cs')} Kč</td>
                   <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                    {v.is_plan && <span style={{
+                      fontSize: 10, padding: '1px 6px', borderRadius: 3,
+                      background: '#dcfce7', color: '#166534', fontWeight: 700,
+                    }}>✓ PLÁN</span>}
+                  </td>
+                  <td style={{ padding: '6px 8px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                    {onSetAsPlan && !v.is_plan && <button onClick={() => onSetAsPlan(v.id)} style={{
+                      fontSize: 10, padding: '2px 6px', border: '1px solid var(--r0-slate-300)',
+                      borderRadius: 4, cursor: 'pointer', background: 'white', fontFamily: 'inherit', marginRight: 4,
+                    }} title="Označit jako plán">✓</button>}
                     {onLoadVariant && <button onClick={() => onLoadVariant(v)} style={{
                       fontSize: 11, padding: '2px 8px', border: '1px solid var(--r0-slate-300)',
                       borderRadius: 4, cursor: 'pointer', background: 'white', fontFamily: 'inherit', marginRight: 4,
                     }}>Načíst</button>}
-                    {onRemoveVariant && <button onClick={() => onRemoveVariant(v.id)} style={{
+                    {onRemoveVariant && <button onClick={() => {
+                      if (v.is_plan && !confirm('Tato varianta je označena jako PLÁN. Opravdu smazat?')) return;
+                      onRemoveVariant(v.id);
+                    }} style={{
                       fontSize: 11, padding: '2px 6px', border: '1px solid var(--r0-slate-200)',
                       borderRadius: 4, cursor: 'pointer', background: 'white', color: 'var(--r0-slate-400)', fontFamily: 'inherit',
                     }}>✕</button>}
@@ -3102,6 +3567,41 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ))}
             </tbody>
           </table>
+          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyToPosition && (
+            <div style={{ marginTop: 8, textAlign: 'right' }}>
+              <button
+                onClick={onApplyToPosition}
+                disabled={applyStatus === 'saving'}
+                style={{
+                  padding: '6px 14px', fontSize: 12, fontWeight: 600,
+                  border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit',
+                  background: applyStatus === 'saved' ? '#22c55e' : applyStatus === 'error' ? '#ef4444' : '#16a34a',
+                  color: 'white',
+                }}
+              >
+                {applyStatus === 'saving' ? 'Ukládám…'
+                  : applyStatus === 'saved' ? '✓ Aplikováno'
+                  : applyStatus === 'error' ? '✗ Chyba'
+                  : '✓ Aplikovat plán do pozice'}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Auto-calc indicator */}
+      {(calcStatus === 'calculating' || resultDirty) && (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          padding: '4px 12px', marginBottom: 10,
+          background: calcStatus === 'calculating' ? 'var(--r0-info-bg, #eff6ff)' : 'var(--r0-slate-50, #f8fafc)',
+          border: `1px solid ${calcStatus === 'calculating' ? 'var(--r0-info-border, #bfdbfe)' : 'var(--r0-slate-200, #e2e8f0)'}`,
+          borderRadius: 4, fontSize: 11,
+          color: calcStatus === 'calculating' ? 'var(--r0-info-text, #1e40af)' : 'var(--r0-slate-500, #64748b)',
+        }}>
+          {calcStatus === 'calculating'
+            ? <><span className="flat-spinner" style={{ width: 10, height: 10 }} /> Počítám…</>
+            : 'Čekám na zastavení vstupu…'}
         </div>
       )}
 
