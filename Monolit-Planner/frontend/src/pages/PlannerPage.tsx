@@ -740,6 +740,15 @@ export default function PlannerPage() {
           is_plan: !!r.is_plan,
         }));
         setSavedVariants(loaded);
+        // Auto-restore plán variant if one exists
+        const planVar = loaded.find(v => v.is_plan);
+        if (planVar && planVar.form && planVar.plan) {
+          skipNextAutoCalcRef.current = true;
+          setForm(planVar.form);
+          setResult(planVar.plan);
+          setResultDirty(false);
+          hasExistingResultRef.current = true;
+        }
       })
       .catch(err => {
         console.warn('[PlannerVariants] Failed to load:', err);
@@ -751,7 +760,12 @@ export default function PlannerPage() {
   }, [positionId]);
 
   const saveVariant = async (plan: PlannerOutput): Promise<SavedVariant | null> => {
-    const num = savedVariants.length + 1;
+    // Use max existing variant number + 1 to avoid duplicates after deletion
+    const existingNums = savedVariants.map(v => {
+      const m = v.label.match(/^V(\d+)/);
+      return m ? parseInt(m[1], 10) : 0;
+    });
+    const num = Math.max(0, ...existingNums) + 1;
     const description = `V${num}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`;
     const baseVariant: SavedVariant = {
       id: Date.now().toString(36),  // temp id for Mode B
@@ -814,6 +828,8 @@ export default function PlannerPage() {
     setForm(variant.form);
     setResult(variant.plan);
     setResultDirty(false);
+    // Mark that a result exists — so the next change triggers the save prompt
+    hasExistingResultRef.current = true;
   };
 
   /** Mark a variant as the "chosen plan" (✅ PLÁN badge). Only one plan per position. */
@@ -1205,20 +1221,27 @@ export default function PlannerPage() {
   // Auto-calculate on first render with defaults
   const firstRun = useMemo(() => {
     try {
-      return planElement({
-        element_type: DEFAULT_FORM.element_type,
-        volume_m3: DEFAULT_FORM.volume_m3,
-        has_dilatacni_spary: DEFAULT_FORM.has_dilatacni_spary,
-        spara_spacing_m: DEFAULT_FORM.spara_spacing_m,
-        total_length_m: DEFAULT_FORM.total_length_m,
-        adjacent_sections: DEFAULT_FORM.adjacent_sections,
-        concrete_class: DEFAULT_FORM.concrete_class,
-        temperature_c: DEFAULT_FORM.temperature_c,
-      });
+      // Use initialForm (from URL params / position context), not DEFAULT_FORM
+      const f = initialForm;
+      const input: PlannerInput = {
+        element_type: f.use_name_classification ? undefined : f.element_type,
+        element_name: f.use_name_classification ? f.element_name : undefined,
+        volume_m3: f.volume_m3,
+        has_dilatacni_spary: f.tact_mode === 'spary' ? f.has_dilatacni_spary : false,
+        spara_spacing_m: f.spara_spacing_m,
+        total_length_m: f.total_length_m,
+        adjacent_sections: f.adjacent_sections,
+        concrete_class: f.concrete_class,
+        temperature_c: f.temperature_c,
+      };
+      if (f.formwork_area_m2) input.formwork_area_m2 = parseFloat(f.formwork_area_m2);
+      if (f.height_m) input.height_m = parseFloat(f.height_m);
+      if (f.rebar_mass_kg) input.rebar_mass_kg = parseFloat(f.rebar_mass_kg);
+      return planElement(input);
     } catch {
       return null;
     }
-  }, []);
+  }, [initialForm]);
 
   const plan = result ?? firstRun;
 
@@ -3169,7 +3192,7 @@ export default function PlannerPage() {
                     const tovMaterials: TOVMaterialEntry[] = [];
                     let idC = 1;
 
-                    // Betonář
+                    // Betonář (pour crew = formwork crew by design; effectivePourCrew for continuous pours not exposed separately)
                     const pourCrew = plan.resources.crew_size_formwork;
                     const pourWage = plan.resources.wage_pour_czk_h;
                     const pourH = roundDay(pourCrew * plan.resources.shift_h * k * betonDays);
@@ -3890,10 +3913,16 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ))}
             </tbody>
           </table>
-          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyToPosition && (
+          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyToPosition && onLoadVariant && (
             <div style={{ marginTop: 8, textAlign: 'right' }}>
               <button
-                onClick={onApplyToPosition}
+                onClick={() => {
+                  // Load the plan variant first, then apply on next render
+                  const planVar = savedVariants.find((v: any) => v.is_plan);
+                  if (planVar && onLoadVariant) onLoadVariant(planVar);
+                  // Delay apply to allow state update from loadVariant
+                  setTimeout(() => onApplyToPosition(), 50);
+                }}
                 disabled={applyStatus === 'saving'}
                 style={{
                   padding: '6px 14px', fontSize: 12, fontWeight: 600,
