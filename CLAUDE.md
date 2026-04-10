@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.8.0
-**Last Updated:** 2026-04-08
+**Version:** 4.9.0
+**Last Updated:** 2026-04-10
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -99,23 +99,31 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Monolit-Planner (Kiosk)
-Node.js/Express + React. **128 endpoints**, **548 tests**, **~33K LOC**.
-Structure: `shared/` (465 tests), `backend/` (83 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
-**DB:** 44 tables. **Frontend:** PlannerPage (Part B) = 21 useState, NO AppContext. React Router v7.9.5, Vite 5.0.11.
+Node.js/Express + React. **132 endpoints**, **498 tests**, **~37K LOC**.
+Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+**DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~4200 lines, auto-calc 1.5s debounce.
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
 - **Element Planner:** 22 types (11 bridge + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
-- **Element Subtypes:** beton, bednění, odbednění, výztuž, zrání, podpěrná konstr., předpětí, jiné
+- **Element Subtypes:** beton, bednění, odbednění (Tesař), výztuž, zrání, podpěrná konstr., předpětí, jiné
 - **OTSKP Catalog:** 11 regex patterns → element_type (confidence=1.0), metadata extraction (concrete class, prestress, prefab)
+- **Position Linking:** `position-linking.ts` — links by OTSKP/URS code prefix (first 4 digits), 22 tests. `detectWorkType()` by 5th digit. `findLinkedPositions()` groups beton+výztuž+bednění.
 - **NK Classification:** 8 bridge deck subtypes (deskový→spřažený), auto-detect from OTSKP name
+- **Bridge Technology:** `bridge-technology.ts` — pevná/posuvná skruž/CFT recommendation, MSS cost+schedule, 20 tests. UI: radio buttons + recommendation card.
 - **Křídla opěry:** separate element type `kridla_opery`, composite detection (opěra+křídla → dual formwork)
 - **Lateral Pressure:** p = ρ×g×h×k (DIN 18218), auto-filter formwork, záběrová betonáž, shape correction (×1.0–1.8)
 - **Formwork Selector:** Frami 80 kN/m² (max 3.0m), Framax 100 kN/m² (max 6.75m), support_tower category, max_pour_height_m filter
-- **Aplikovat:** auto-creates ALL missing sub-positions (ensurePosition with GET dedup), aggregateScheduleDays() shared function
+- **Props:** `selectPropSystem()` with `preferred_manufacturer` vendor match (DOKA formwork → DOKA props). `PropsCalculatorResult.labor_hours` exposed.
+- **Ztracené bednění:** `lost_formwork_area_m2` — TP deducted from system formwork, props on full area. UI checkbox for horizontal elements only.
+- **Manual záběry:** `use_manual_zabery` toggle + editable table (name+volume+area per záběr). Engine receives `num_tacts_override = count, tact_volume_m3_override = max(volumes)`.
+- **Aplikovat → TOV:** writes `tov_entries` (multi-profession: Betonář, Tesař, Ošetřovatel, Železář) into metadata. Links výztuž/předpětí by OTSKP prefix. No sub-positions created. Beton days = `betonDays` (not total_days).
+- **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory.
+- **Auto-calc:** 1.5s debounce on form change. Prompt "Uložit a pokračovat?" before overwriting dirty result. "Ukládat automaticky" toggle (localStorage). `calcStatus` indicator above KPIs.
 - **Two modes:** Monolit (ordinal days, auto-classify, TOV mapping) / Portal (calendar, manual)
-- **Import:** Registry→portalAutoSync(3s)→Portal→Monolit via `portal_project_id`, paired row scanner
-- **TOV sync:** labor-only to Portal DOV, 3 variants (A/B/C) auto-detected, formwork rental for bednění
-- **Account Isolation:** `portal_user_id`, Portal JWT via `JWT_SECRET`, 403 on cross-account
+- **Import:** XLSX + Registry — both work without pre-created project (backend auto-creates `bridges` + `monolith_projects`). Empty state shows 3 actions: Vytvořit/Nahrát Excel/Načíst z Rozpočtu. `metadata` column persisted (linked_positions from parser). `bridge_id` prefixed with `stavbaProjectId__` to prevent cross-file collision.
+- **Registry Import Modal:** parallel fetch (Portal public endpoint `/api/integration/list-registry-projects` + Registry backend), search, debug info, refresh button, source badges (PORTAL/REGISTRY).
+- **TOV sync:** tov_entries to Portal DOV via prefillTOVFromMonolit, formwork rental for bednění
+- **Account Isolation:** `portal_user_id TEXT` (not INTEGER), Portal JWT via `JWT_SECRET`, 403 on cross-account
 - **ErrorBoundary:** PositionsTable + KPIPanel wrapped; prevents white screen on React #310
 - **KPI Panel CSS:** `.kpi-card` in `flat-design.css` — `overflow:visible`, `min-width:200px` (was 180px/hidden, clipped "lidí" and "Kč/m³")
 - **Dual DB:** `monolith_projects` (listed via `/api/monolith-projects`, auth) + `bridges` (FK compat for `positions.bridge_id`); `bridgesAPI.getAll()` calls monolith-projects
@@ -138,11 +146,11 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 | Service | Endpoints | Tests | LOC |
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
-| stavagent-portal | ~80 | 1 file | ~25K |
-| Monolit-Planner | 128 | 556 | ~34K |
+| stavagent-portal | ~82 | 1 file | ~26K |
+| Monolit-Planner | 132 | 498 | ~37K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~16K |
-| **TOTAL** | **~388** | **750+** | **~146K** |
+| **TOTAL** | **~391** | **692+** | **~150K** |
 
 ---
 
@@ -238,6 +246,13 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Sub-position missing after Aplikovat | ensurePosition checks GET before POST; check browser console for fetch errors |
 | OTSKP not matching | OTSKP_RULES in element-classifier.ts; runs before KEYWORD_RULES; check normalize() |
 | Křídla classified as opěra | Composite suppression: if both "opěr" + "křídl" → opery_ulozne_prahy, not kridla_opery |
+| Registry modal empty | Debug banner shows Portal/Registry status. Portal 401 → use `/api/integration/list-registry-projects` (public). Registry 0 → startup push-sync in App.tsx |
+| Aplikovat 500 error | Check curing_days Math.round (INTEGER column). Error logging in PUT handler shows exact field/type |
+| Portal sync 0 items | Log misleading — `items_imported = newItems = total - updated`. On re-sync all items are UPDATES, so 0 new. Data IS synced. |
+| XLSX overwrites old project | bridge_id prefixed with `stavbaProjectId__sheetBridgeId`. Each upload creates unique project via hash suffix. |
+| Props missing normohodiny | `PropsCalculatorResult.labor_hours` field; check `fwSystem.manufacturer` passed to `calculateProps()` |
+| NKB 429 console spam | fetchAuditStatus returns `'_rate_limited'` sentinel → polling triples delay (max 120s) |
+| OTSKP search empty | Check `/api/otskp/stats/summary` for total_codes; response has `reason: 'db_empty'|'no_match'` |
 
 ---
 
@@ -257,20 +272,19 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
-- [ ] **P1: Merge branch** — `claude/fix-duplicate-constraints-DijC5` → main (15 commits, 456 tests)
+- [ ] **P1: Merge branch** — `claude/fix-duplicate-constraints-ENOZO` → main (40+ commits, 498 tests)
 - [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
-- [ ] **P1: Debug Monolit React #310** — ErrorBoundary deployed, need `componentStack` from prod console
-- [ ] **P1: Fix portal_user_id type mismatch** — INTEGER in `bridges`, TEXT in `monolith_projects`
+- [ ] **P1: Průvodce (Wizard)** — 5-step calculator wizard (element→volume→geometry→rebar→záběry), element-type-dependent step 3, "Expertní režim" toggle
+- [ ] **P1: Per-záběr scheduling** — refactor element-scheduler engine to compute per-záběr with independent volumes (currently engine uses max volume as bottleneck)
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
-- [ ] **P1: E2E test D6 SO202** — dvoutrámový, C35/45, is_prestressed=true, 2 mosty, Aplikovat → verify all subtypes in table
+- [ ] **P1: E2E test FORESTINA SO.01** — stropní deska 125.559 m³, ztracené bednění 1325 m², manual záběry 4x, Aplikovat → verify TOV
 - [ ] **P2: Výztuž B500B + Y1860** — split rebar for prestressed (dual RebarLiteResult), two rows in table
 - [ ] **P2: Landing page — visual QA + /register route + SEO subpages**
-- [ ] **P2: Test reimport** — import multi-sheet, edit mapping, reimport → skupiny preserved
-- [ ] **P2: Calculator suggestions E2E** — upload TZ→Core extraction→Planner→suggestions appear for correct SO
-- [ ] **P2: TOV sync E2E** — 3 composition variants (A/B/C) with real bridge project
+- [ ] **P2: OTSKP import** — auto-import OTSKP XML on startup if DB empty (auto-import function exists but may fail on Cloud Run; verify XML path in Docker)
+- [ ] **P2: Element field visibility map** — full ELEMENT_FIELD_VISIBILITY config for all 22 element types (currently only rimsa/základy have overrides)
 - [ ] **P2: Registry export QA** — test multi-sheet file with different column mappings
-- [ ] **P3: Planner E2E** — lateral pressure + záběry on SO-203, Aplikovat → TOV
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
+- [ ] **P3: SAFE cenový katalog** — add SAFE as 3rd vendor alongside DOKA/PERI in formwork-systems.ts
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
