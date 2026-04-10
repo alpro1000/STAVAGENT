@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.11.0
+**Version:** 4.12.0
 **Last Updated:** 2026-04-10
 **Repository:** STAVAGENT (Monorepo)
 
@@ -87,7 +87,9 @@ Structure: `packages/core-backend/app/{api,services,classifiers,knowledge_base,p
 KB: 42 JSON files (~40MB), 21 prompt files, 23 SQL schemas.
 
 **Subsystems:** Multi-Role Expert (4 roles), Workflows A/B/C, Document Accumulator (20 ep), Multi-Format Parser v5.0 (XLSX/XML/PDF/DXF/OCR), Add-Document Pipeline (14 doc types), NKB 3-layer, NormIngestionPipeline (chunked: L1→chunk→per-chunk[L2+L3a]→merge→L3b), NKB Audit (15 sources), Unified Item Layer, Soupis Assembler, Scenario B, Section Extraction Engine v2 (28 extractors, negative-context filter), Calculator Suggestions (fact→param mapping, warnings, conflicts, write-through persistence), Chunked Extraction (document_chunker + parsed_document_adapter + extraction_to_facts_bridge), Drive OAuth2, Agents, Chat, **MCP Server v1.0** (9 tools, FastMCP, mounted at `/mcp`).
-- **MCP Server** — `app/mcp/server.py` + `app/mcp/tools/` (9 tools): find_otskp_code, find_urs_code, classify_construction_element, calculate_concrete_works, parse_construction_budget, analyze_construction_document, create_work_breakdown, get_construction_advisor, search_czech_construction_norms. FastMCP 3.x, SSE transport, mounted on FastAPI at `/mcp`.
+- **MCP Server** — `app/mcp/server.py` + `app/mcp/tools/` (9 tools): find_otskp_code, find_urs_code, classify_construction_element, calculate_concrete_works, parse_construction_budget, analyze_construction_document, create_work_breakdown, get_construction_advisor, search_czech_construction_norms. FastMCP 3.x, mounted on FastAPI at `/mcp`.
+- **MCP Auth** — `app/mcp/auth.py` + `app/mcp/routes.py`: bcrypt passwords, per-thread SQLite pool, API keys (`sk-stavagent-{hex48}`), 200 free credits, per-tool billing (0-20 credits), atomic `UPDATE WHERE credits >= cost`, rate limiting (10/60s per IP), OAuth 2.0 `client_credentials` for ChatGPT. REST wrappers at `/api/v1/mcp/tools/*` (auto-generate OpenAPI for GPT Actions). Lemon Squeezy webhook at `/api/v1/mcp/billing/webhook`.
+- **MCP CI** — `tests/test_mcp_compatibility.py` (17 tests), `.github/workflows/test-mcp-compatibility.yml`. Runs on every push to concrete-agent/.
 - **LLM chain** — Vertex AI → Bedrock → Gemini API → Claude API → OpenAI
 - **Confidence** — regex=1.0, OTSKP DB=1.0, drawing_note=0.90, Perplexity=0.85, URS=0.80, AI=0.70
 
@@ -112,15 +114,15 @@ Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0
 - **NK Classification:** 8 bridge deck subtypes (deskový→spřažený), auto-detect from OTSKP name
 - **Bridge Technology:** `bridge-technology.ts` — pevná/posuvná skruž/CFT recommendation, MSS cost+schedule, 20 tests. UI: radio buttons + recommendation card.
 - **Křídla opěry:** separate element type `kridla_opery`, composite detection (opěra+křídla → dual formwork)
-- **Lateral Pressure:** p = ρ×g×h×k (DIN 18218), auto-filter formwork, záběrová betonáž, shape correction (×1.0–1.8)
-- **Formwork Selector:** Frami 80 kN/m² (max 3.0m), Framax 100 kN/m² (max 6.75m), support_tower category, max_pour_height_m filter
+- **Lateral Pressure:** p = ρ×g×h×k (DIN 18218), per-záběr staging (`max_stage = sys.pressure/full_pressure × h`, min 1.5m), shape correction (×1.0–1.8)
+- **Formwork Selector:** Horizontal → skip pressure, select by category+rental. Vertical → per-záběr pressure filter. Frami 80 kN/m² (max 3.0m), Framax 100 kN/m² (max 6.75m), 30 systems total
 - **Props:** `selectPropSystem()` with `preferred_manufacturer` vendor match (DOKA formwork → DOKA props). `PropsCalculatorResult.labor_hours` exposed.
 - **Ztracené bednění:** `lost_formwork_area_m2` — TP deducted from system formwork, props on full area. UI checkbox for horizontal elements only.
 - **Manual záběry:** `use_manual_zabery` toggle + editable table (name+volume+area per záběr). Engine receives `num_tacts_override = count, tact_volume_m3_override = max(volumes)`.
 - **Per-záběr scheduling (v4.0):** `tact_volumes: number[]` in PlannerInput → per-záběr `calculatePourTask()`. `per_tact_concrete_days[]`, `per_tact_rebar_days[]`, `per_tact_assembly_days[]` in scheduler. Validation: mismatch length → warning + ignore.
-- **Aplikovat → TOV:** writes `tov_entries` (multi-profession: Betonář, Tesař, Ošetřovatel, Železář) into metadata. Links výztuž/předpětí by OTSKP prefix. No sub-positions created. Beton days = `betonDays` (not total_days). `applyFnRef` + `pendingApplyPlan` for "Aplikovat plán" (no setTimeout).
+- **Aplikovat → TOV:** writes `tov_entries` (multi-profession: Betonář, Tesař, Ošetřovatel, Železář) into metadata. Links výztuž/předpětí by OTSKP prefix. No sub-positions created. Beton days = `betonDays` (not total_days). Direct apply of current result (v4.1: no `applyFnRef`/`pendingApplyPlan`).
 - **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory. Auto-restore plán on entry. Numbering: `Math.max(existingNums) + 1`.
-- **Auto-calc:** 1.5s debounce on form change. Prompt "Uložit a pokračovat?" before overwriting dirty result. "Ukládat automaticky" toggle (localStorage). `calcStatus` indicator above KPIs. `hasExistingResultRef` set on loadVariant. Wizard guard: skip steps 1-4.
+- **Auto-calc (v4.1):** 1.5s debounce, pure preview (no save). `calcStatus` indicator above KPIs. No save prompt, no autosave checkbox. Variants created ONLY by explicit "Uložit variantu" click. Wizard guard: skip steps 1-4.
 - **Průvodce (Wizard):** Inline sidebar mode (`wizardMode` + `wizardStep` 1-5). Same form state. `display:none` on sections. Steps: Element→Volume+Beton→Geometry→Rebar+Resources→Záběry. Engine-powered hints per step (maturity, lateral pressure, rebar PERT). `localStorage('planner_wizard_mode')`. Keyboard: Enter=next, Escape=back.
 - **Two modes:** Monolit (ordinal days, auto-classify, TOV mapping) / Portal (calendar, manual)
 - **Import:** XLSX + Registry — both work without pre-created project (backend auto-creates `bridges` + `monolith_projects`). Empty state shows 3 actions: Vytvořit/Nahrát Excel/Načíst z Rozpočtu. `metadata` column persisted (linked_positions from parser). `bridge_id` prefixed with `stavbaProjectId__` to prevent cross-file collision.
@@ -182,11 +184,13 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Icons: `lucide-react` only, no emojis in JSX; `shared/icon-registry.ts`
 - Monolit subtypes: beton, bednění, odbednění (Tesař), výztuž, jiné
 - Negative context: `_safe_search()` skips stávající/demolition matches
-- Element classifier v3: 21 types, bridge context, 5 early-exits, 7 BRIDGE_EQUIVALENT mappings
+- Element classifier v3: 22 types, bridge context, 5 early-exits, 7 BRIDGE_EQUIVALENT mappings
 - Passport = structured tables; Shrnutí = narrative + topics + risks
 - Construction sequence: bridge (pilota→římsa), building (pilota→schodiště)
 - Scroll restoration: `sessionStorage('monolit-planner-return-part')` + 3s highlight
 - Calculator suggestions: write-through `_PROJECT_FACTS` (memory + `calculator_facts` in project cache JSON)
+- **Formwork orientation rule:** horizontal elements (strop, mostovka, základ) → skip lateral pressure, select by category+rental. Vertical (stěna, sloup, pilíř) → per-záběr pressure (`sys.pressure / full_pressure × height`, min 1.5m stage). Special (rimsa → římsový vozík, pilota → pažnice).
+- **Calculator UX v4.1:** auto-calc = preview only (no auto-save). Variants created ONLY by "Uložit variantu" button. No save prompt, no autosave checkbox, no `pendingApplyPlan`.
 - **Product naming:** App 1 (root `/`) = "Monolit Planner", App 2 (`/planner`) = "Kalkulátor betonáže". Never "Plánovač elementu" or "Kalkulátor monolitních prací"
 - **SEO/noindex:** kalkulator.stavagent.cz has `<meta name="robots" content="noindex">` + `X-Robots-Tag` header in `vercel.json` (working app, not public page)
 
@@ -278,7 +282,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Registry export wrong column | Was: `firstSheet.config` used for all sheets. Now: per-sheet `sheet.config.columns.cenaJednotkova` |
 | KPI text clipped ("lidí") | `.kpi-card` overflow:hidden→visible, min-width 180→200px, no max-height |
 | Aplikovat DNY wrong | Check shared/dist rebuilt (tsc), aggregateScheduleDays in formulas.ts |
-| Formwork Frami for tall element | Frami max 3.0m (max_pour_height_m), Framax max 6.75m; pressure 80/100 kN/m² |
+| Formwork Frami for tall element | Per-záběr pressure: `filterFormworkByPressure()` stages automatically (min 1.5m). Frami 80kN/3m, Framax 100kN/6.75m |
 | Sub-position missing after Aplikovat | ensurePosition checks GET before POST; check browser console for fetch errors |
 | OTSKP not matching | OTSKP_RULES in element-classifier.ts; runs before KEYWORD_RULES; check normalize() |
 | Křídla classified as opěra | Composite suppression: if both "opěr" + "křídl" → opery_ulozne_prahy, not kridla_opery |
@@ -292,7 +296,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Wizard not showing hints | `wizardHint1-4` are `useMemo` — check deps array matches form fields; hint3 only for vertical elements |
 | Wizard auto-calc fires early | Guard `wizardMode && wizardStep < 5` in auto-calc useEffect; check `skipNextAutoCalcRef` |
 | firstRun shows wrong result | `firstRun` useMemo depends on `[initialForm]` — verify positionContext parsed correctly |
-| Aplikovat plán applies wrong data | `applyFnRef.current` updated on each render; `pendingApplyPlan` triggers effect after React commit |
+| Aplikovat plán applies wrong data | v4.1: `applyFnRef` + `pendingApplyPlan` removed. Aplikovat now applies current result directly |
 | Variant V1 V1 duplicate | `existingNums.length === 0 ? 1 : Math.max(...existingNums) + 1` — check label parsing regex |
 
 ---
@@ -301,7 +305,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 
 **Cloud Build:** `cloudbuild-{concrete,monolit,portal,urs,registry,mineru}.yaml` + `triggers/*.yaml`
 Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `europe-west3`. MinerU: `europe-west1`.
-**GitHub Actions:** keep-alive, monolit-planner-ci, test-coverage, test-urs-matcher.
+**GitHub Actions:** keep-alive, monolit-planner-ci, test-coverage, test-urs-matcher, **test-mcp-compatibility** (17 tests, triggers on concrete-agent/ changes).
 
 ---
 
@@ -309,25 +313,26 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 
 ### Manual Actions
 - [ ] **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → GCP Secret Manager
-- [ ] **Stripe env vars**: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` in Secret Manager
+- [ ] **LEMONSQUEEZY_WEBHOOK_SECRET**: set in GCP Secret Manager (Lemon Squeezy → Settings → Webhooks → Signing secret)
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
-- [ ] **P1: Merge branch** — `claude/fix-duplicate-constraints-ENOZO` → main (40+ commits, 498 tests)
+- [ ] **P0: Merge MCP branch** — `claude/merge-mcp-server-vNUI3` → main (8 commits: MCP server, auth, billing, formwork fixes, UX cleanup)
+- [ ] **P0: Deploy MCP** — after merge, verify `/mcp` endpoint on Cloud Run, test with curl
+- [ ] **P0: stavagent.cz/api-access page** — registration UI, API key display, credit balance, Lemon Squeezy checkout links
+- [ ] **P1: Lemon Squeezy webhook IDs** — set actual product_id mapping in `routes.py:PRODUCT_CREDITS` after creating products (done: CZK 11/55/220)
+- [ ] **P1: Custom GPT in GPT Store** — create GPT with Actions from `/openapi.json`, verify domain
 - [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
-- [ ] **P1: Wizard STEP3_FIELDS config** — data-driven field map for 22 element types (currently uses ELEMENT_DIMENSION_HINTS, not per-type config)
-- [ ] **P1: Wizard krok 4 toggle** — Norma (kg/m³) vs Hmotnost (kg) toggle (currently both visible)
-- [ ] **P1: saveVariant error notification** — API fail silently swallowed, need toast/UI feedback
+- [ ] **P1: Wizard STEP3_FIELDS config** — data-driven field map for 22 element types
 - [ ] **P1: Per-záběr engine refactor** — element-scheduler uses max(tact_volumes) as bottleneck, should schedule per-záběr independently
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
 - [ ] **P1: E2E test FORESTINA SO.01** — stropní deska 125.559 m³, ztracené bednění 1325 m², manual záběry 4x, Aplikovat → verify TOV
-- [ ] **P2: Výztuž B500B + Y1860** — split rebar for prestressed (dual RebarLiteResult), two rows in table
+- [ ] **P2: MCP listings** — PR to modelcontextprotocol/servers, register on mcp.so
+- [ ] **P2: Výztuž B500B + Y1860** — split rebar for prestressed (dual RebarLiteResult)
 - [ ] **P2: Landing page — visual QA + /register route + SEO subpages**
-- [ ] **P2: OTSKP import** — auto-import OTSKP XML on startup if DB empty (auto-import function exists but may fail on Cloud Run; verify XML path in Docker)
-- [ ] **P2: Element field visibility map** — full ELEMENT_FIELD_VISIBILITY config for all 22 element types (currently only rimsa/základy have overrides)
-- [ ] **P2: Registry export QA** — test multi-sheet file with different column mappings
+- [ ] **P2: Element field visibility map** — full ELEMENT_FIELD_VISIBILITY config for all 22 element types
 - [ ] **P3: Gantt calendar** — date axis in Portal mode
-- [ ] **P3: SAFE cenový katalog** — add SAFE as 3rd vendor alongside DOKA/PERI in formwork-systems.ts
+- [ ] **P3: SAFE cenový katalog** — add SAFE as 3rd vendor alongside DOKA/PERI
 
 ### Product Backlog
 - [ ] Export Work Packages → PostgreSQL (currently SQLite in URS)
