@@ -196,6 +196,39 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 
 **Stack decisions:** rozpocet-registry=Vercel+Zustand, Monolit=PostgreSQL prod/SQLite dev, URS=SQLite+per-request LLM fallback, CORE=Vertex AI primary+stateless, Portal=central `portal_project_id` linking.
 
+### MCP Compatibility Check
+
+After **EVERY** change to modules wrapped by MCP tools, verify the wrapper still works.
+
+**MCP tool → module mapping:**
+| MCP Tool | Module file(s) |
+|----------|---------------|
+| find_otskp_code | `pricing/otskp_engine.py`, KB XML |
+| find_urs_code | `core/perplexity_client.py`, URS Matcher HTTP |
+| classify_construction_element | MCP has own classifier (no external dep) |
+| calculate_concrete_works | Monolit-Planner `/api/calculate` HTTP |
+| parse_construction_budget | `parsers/xlsx_komplet_parser.py`, `xlsx_rtsrozp_parser.py`, `excel_parser.py` |
+| analyze_construction_document | `parsers/pdf_parser.py`, pdfplumber |
+| create_work_breakdown | MCP `otskp.py` + `classifier.py` (internal) |
+| get_construction_advisor | MCP `classifier.py` + `calculator.py` (internal) |
+| search_czech_construction_norms | `core/perplexity_client.py`, `core/kb_loader.py` |
+
+**NO check needed if:**
+- Bugfix inside a function (same signature, same return format)
+- New enum value added (e.g., new element type with default behavior)
+- New optional parameter with default value
+- Text/description changes in response
+
+**CHECK NEEDED if:**
+- Function/module renamed or moved (import path breaks)
+- Required parameter added, removed, or renamed
+- Response structure changed (field removed, renamed, or type changed)
+- New module added that should have its own MCP tool
+
+**How to check:** `cd concrete-agent/packages/core-backend && python -m pytest tests/test_mcp_compatibility.py -v`
+
+**If broken:** update MCP wrapper in `app/mcp/tools/`, not the backend module.
+
 ---
 
 ## Environment Variables
