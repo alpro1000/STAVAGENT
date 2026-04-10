@@ -765,7 +765,7 @@ export default function PlannerPage() {
       const m = v.label.match(/^V(\d+)/);
       return m ? parseInt(m[1], 10) : 0;
     });
-    const num = Math.max(0, ...existingNums) + 1;
+    const num = existingNums.length === 0 ? 1 : Math.max(...existingNums) + 1;
     const description = `V${num}: ${plan.formwork.system.name}, ${plan.resources.num_formwork_crews} čet`;
     const baseVariant: SavedVariant = {
       id: Date.now().toString(36),  // temp id for Mode B
@@ -1024,6 +1024,18 @@ export default function PlannerPage() {
     }
   };
 
+  // "Aplikovat plán" — loads variant, then triggers apply on next render via state flag.
+  // The onApplyToPosition inline function captures plan+form from the current render.
+  // After loadVariant sets new state, React re-renders, creating a new onApplyToPosition
+  // with updated closure. The useEffect below fires AFTER that re-render.
+  const [pendingApplyPlan, setPendingApplyPlan] = useState(false);
+  const handleApplyPlan = useCallback((variantId: string) => {
+    const variant = savedVariants.find(v => v.id === variantId);
+    if (!variant) return;
+    loadVariant(variant);
+    setPendingApplyPlan(true);
+  }, [savedVariants]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Pending save prompt (Part 2): shown when the user changes inputs while
   // there's an unsaved result. User chooses: save+continue / discard+continue.
   const [savePrompt, setSavePrompt] = useState<{ oldResult: PlannerOutput; oldForm: FormState } | null>(null);
@@ -1098,6 +1110,17 @@ export default function PlannerPage() {
     runCalculation();
     hasExistingResultRef.current = true;
   };
+
+  // Ref holding the latest apply function — updated on every render so the effect
+  // after loadVariant calls the version with fresh plan+form closure.
+  const applyFnRef = useRef<(() => void) | null>(null);
+  // Effect: trigger apply after variant load completes (pendingApplyPlan flag).
+  // Runs AFTER React commit → applyFnRef holds function with updated plan+form.
+  useEffect(() => {
+    if (!pendingApplyPlan) return;
+    setPendingApplyPlan(false);
+    applyFnRef.current?.();
+  }, [pendingApplyPlan]);
 
   const handleCompare = () => {
     if (!result) return;
@@ -3100,7 +3123,7 @@ export default function PlannerPage() {
               onToggleLog={() => setShowLog(!showLog)}
               scenarios={scenarios}
               applyStatus={applyStatus}
-              onApplyToPosition={positionContext ? async () => {
+              onApplyToPosition={(() => { if (!positionContext) return undefined; const fn = async () => {
                 setApplyStatus('saving');
                 try {
                   const monolit_data = {
@@ -3421,12 +3444,13 @@ export default function PlannerPage() {
                   setApplyStatus('error');
                   setTimeout(() => setApplyStatus('idle'), 3000);
                 }
-              } : undefined}
+              }; applyFnRef.current = fn; return fn; })()}
               savedVariants={savedVariants}
               onSaveVariant={() => { saveVariant(plan); }}
               onLoadVariant={loadVariant}
               onRemoveVariant={removeVariant}
               onSetAsPlan={setAsPlan}
+              onApplyPlan={handleApplyPlan}
               positionId={positionId}
               kridlaFormwork={kridlaFormwork}
               calcStatus={calcStatus}
@@ -3757,7 +3781,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, onApplyPlan, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
@@ -3765,6 +3789,8 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
   scenarios?: any[];
   applyStatus: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
+  /** Apply a specific plan variant (bypasses current result, uses variant's saved plan+form) */
+  onApplyPlan?: (variantId: string) => void;
   savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number; is_plan?: boolean }>;
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
@@ -3913,15 +3939,12 @@ function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applySta
               ))}
             </tbody>
           </table>
-          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyToPosition && onLoadVariant && (
+          {positionId && savedVariants.some((v: any) => v.is_plan) && onApplyPlan && (
             <div style={{ marginTop: 8, textAlign: 'right' }}>
               <button
                 onClick={() => {
-                  // Load the plan variant first, then apply on next render
                   const planVar = savedVariants.find((v: any) => v.is_plan);
-                  if (planVar && onLoadVariant) onLoadVariant(planVar);
-                  // Delay apply to allow state update from loadVariant
-                  setTimeout(() => onApplyToPosition(), 50);
+                  if (planVar) onApplyPlan(planVar.id);
                 }}
                 disabled={applyStatus === 'saving'}
                 style={{
