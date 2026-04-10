@@ -103,13 +103,22 @@ export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 
             suitable.push(sys);
             continue;
         }
-        // Check pressure capacity (vertical elements only at this point)
+        // Check pressure capacity — with per-záběr staging for tall elements.
+        // Formwork handles one záběr at a time, not the full element height.
         if (sys.pressure_kn_m2 < pressure_kn_m2) {
-            rejected.push(sys);
-            continue;
-        }
-        // Check max pour height (e.g. Frami max 3.0m záběr)
-        if (pour_height_m && sys.max_pour_height_m && pour_height_m > sys.max_pour_height_m) {
+            // Full-height pressure exceeds system. Can staging save it?
+            if (pour_height_m && pour_height_m > 0) {
+                // Max stage height this system can handle at current pour rate:
+                // sys_max_h = sys.pressure / pressure * total_height
+                const sysMaxStageH = (sys.pressure_kn_m2 / pressure_kn_m2) * pour_height_m;
+                const catalogMaxH = sys.max_pour_height_m ?? Infinity;
+                const effectiveMaxH = Math.min(sysMaxStageH, catalogMaxH);
+                if (effectiveMaxH >= 1.5) {
+                    // System works with záběrová betonáž (min 1.5m per stage is practical)
+                    suitable.push(sys);
+                    continue;
+                }
+            }
             rejected.push(sys);
             continue;
         }
