@@ -26,6 +26,8 @@ import {
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, classifyElement, recommendFormwork, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
+import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterByPressure } from '@stavagent/monolit-shared';
+import type { CuringResult } from '@stavagent/monolit-shared';
 import { findLinkedPositions, detectWorkType } from '@stavagent/monolit-shared';
 import type { TOVEntries, TOVLaborEntry, TOVMaterialEntry } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
@@ -628,6 +630,74 @@ export default function PlannerPage() {
       simulation: false,                  // monte carlo = expert only
     };
   }, [wizardMode, wizardStep]);
+
+  // ── Engine-powered wizard hints ──────────────────────────────────────────
+  // Progressive engine calls per step (Variant B: use defaults for missing data).
+  // Each hint is a REAL engine calculation, not a static text.
+
+  /** Step 1 hint: element profile from classifier */
+  const wizardHint1 = useMemo(() => {
+    if (!wizardMode) return null;
+    const et = form.use_name_classification ? 'other' : form.element_type;
+    try {
+      const profile = getElementProfile(et);
+      return profile;
+    } catch { return null; }
+  }, [wizardMode, form.element_type, form.use_name_classification]);
+
+  /** Step 2 hint: maturity/curing from concrete class + temp */
+  const wizardHint2 = useMemo<CuringResult | null>(() => {
+    if (!wizardMode || wizardStep < 2) return null;
+    if (!form.concrete_class || form.volume_m3 <= 0) return null;
+    const et = form.use_name_classification ? 'other' : form.element_type;
+    const profile = (() => { try { return getElementProfile(et); } catch { return null; } })();
+    const elemType = profile?.orientation === 'vertical' ? 'wall' as const : 'slab' as const;
+    try {
+      return calculateCuring({
+        concrete_class: form.concrete_class,
+        temperature_c: form.temperature_c,
+        cement_type: form.cement_type,
+        element_type: elemType,
+      });
+    } catch { return null; }
+  }, [wizardMode, wizardStep, form.concrete_class, form.temperature_c, form.cement_type, form.element_type, form.use_name_classification, form.volume_m3]);
+
+  /** Step 3 hint: lateral pressure + formwork recommendation */
+  const wizardHint3 = useMemo(() => {
+    if (!wizardMode || wizardStep < 3) return null;
+    const et = form.use_name_classification ? 'other' : form.element_type;
+    const profile = (() => { try { return getElementProfile(et); } catch { return null; } })();
+    const h = parseFloat(form.height_m);
+    if (!profile || !h || h <= 0) return null;
+    const isVert = profile.orientation === 'vertical';
+    if (!isVert) return null; // lateral pressure only for vertical elements
+    try {
+      const pourMethod = inferPourMethod(profile.pump_typical, h);
+      const lp = calculateLateralPressure(h, pourMethod);
+      const { all: allSystems } = getSuitableSystemsForElement(et);
+      const filtered = filterByPressure(allSystems, lp.pressure_kn_m2);
+      const stages = suggestPourStages(h, pourMethod, allSystems);
+      return { lateralPressure: lp, filtered, stages, profile };
+    } catch { return null; }
+  }, [wizardMode, wizardStep, form.element_type, form.use_name_classification, form.height_m]);
+
+  /** Step 4 hint: rebar estimation */
+  const wizardHint4 = useMemo(() => {
+    if (!wizardMode || wizardStep < 4) return null;
+    const et = form.use_name_classification ? 'other' : form.element_type;
+    if (form.volume_m3 <= 0) return null;
+    const massKg = form.rebar_mass_kg ? parseFloat(form.rebar_mass_kg) : undefined;
+    try {
+      return calculateRebarLite({
+        element_type: et,
+        volume_m3: form.volume_m3,
+        mass_kg: massKg,
+        crew_size: form.crew_size_rebar,
+        shift_h: form.shift_h,
+        wage_czk_h: form.wage_czk_h,
+      });
+    } catch { return null; }
+  }, [wizardMode, wizardStep, form.element_type, form.use_name_classification, form.volume_m3, form.rebar_mass_kg, form.crew_size_rebar, form.shift_h, form.wage_czk_h]);
 
 
   interface SavedVariant {
@@ -2060,6 +2130,24 @@ export default function PlannerPage() {
             </div>
           )}
 
+          {/* Wizard hint: element profile */}
+          {wizardMode && wizardStep === 1 && wizardHint1 && (
+            <div style={{ margin: '8px 0 12px', padding: '10px 12px', background: 'var(--r0-info-bg, #eff6ff)', border: '1px solid var(--r0-info-border, #bfdbfe)', borderRadius: 6, fontSize: 11, lineHeight: 1.6, color: 'var(--r0-slate-700)' }}>
+              <strong>{wizardHint1.label_cs}</strong>
+              <div style={{ marginTop: 4, color: 'var(--r0-slate-500)' }}>
+                Orientace: {wizardHint1.orientation === 'vertical' ? 'svislý' : 'vodorovný'}
+                {' | '}Obtížnost: {wizardHint1.difficulty_factor}x
+                {' | '}Výztuž: ~{wizardHint1.rebar_ratio_kg_m3} kg/m³
+                {wizardHint1.needs_supports ? ' | Podpěry: ano' : ''}
+                {wizardHint1.needs_crane ? ' | Jeřáb: ano' : ''}
+              </div>
+              {wizardHint1.orientation === 'vertical' && (
+                <div style={{ marginTop: 4, fontSize: 10, color: 'var(--r0-slate-400)' }}>
+                  Betonáž po výškových záběrech — výška záběru omezena bočním tlakem na bednění (DIN 18218)
+                </div>
+              )}
+            </div>
+          )}
           </div>{/* /wizard element */}
 
           {/* ─── Volumes (wizard step 2: objem + beton) ─── */}
@@ -2078,6 +2166,25 @@ export default function PlannerPage() {
                 />
               </div>
             </Field>
+            {/* Wizard hint: maturity calculation */}
+            {wizardMode && wizardStep === 2 && wizardHint2 && (
+              <div style={{ margin: '8px 0', padding: '10px 12px', background: 'var(--r0-info-bg, #eff6ff)', border: '1px solid var(--r0-info-border, #bfdbfe)', borderRadius: 6, fontSize: 11, lineHeight: 1.6, color: 'var(--r0-slate-700)' }}>
+                <strong>Výpočet zrání (Nurse-Saul)</strong>
+                <div style={{ marginTop: 4 }}>
+                  Doba zrání: <strong>{formatNum(wizardHint2.min_curing_days, 1)} dní</strong> při {form.temperature_c}°C
+                  {' '}(M = {formatNum(wizardHint2.maturity_index, 0)} °C·h)
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 2 }}>
+                  ČSN EN 13670: min. {formatNum(wizardHint2.min_curing_days, 0)} dní pro {form.concrete_class} + {form.cement_type}
+                  {' '}(odbednění při {wizardHint2.strip_strength_pct}% f<sub>ck</sub>)
+                </div>
+                {wizardHint2.warning && (
+                  <div style={{ marginTop: 4, color: 'var(--r0-warn-text)', fontSize: 10 }}>
+                    {wizardHint2.warning}
+                  </div>
+                )}
+              </div>
+            )}
             </div>
             {/* ── Step 3: Geometry (formwork area, lost formwork, height, shape) ── */}
             <div style={wizardVisible.objemy_geometry ? undefined : { display: 'none' }}>
@@ -2146,6 +2253,25 @@ export default function PlannerPage() {
                 }} placeholder="automatický odhad" />
             </Field>
 
+            {/* Wizard hint: rebar calculation */}
+            {wizardMode && wizardStep === 4 && wizardHint4 && (
+              <div style={{ margin: '8px 0', padding: '10px 12px', background: 'var(--r0-info-bg, #eff6ff)', border: '1px solid var(--r0-info-border, #bfdbfe)', borderRadius: 6, fontSize: 11, lineHeight: 1.6, color: 'var(--r0-slate-700)' }}>
+                <strong>Výpočet výztuže</strong>
+                <div style={{ marginTop: 4 }}>
+                  Hmotnost: <strong>{formatNum(wizardHint4.mass_kg, 0)} kg</strong> ({formatNum(wizardHint4.mass_t, 2)} t)
+                  {wizardHint4.mass_source === 'estimated' && ' (odhad z profilu)'}
+                </div>
+                <div>
+                  Norma: {wizardHint4.norm_h_per_t} h/t → <strong>{formatNum(wizardHint4.labor_hours, 0)} Nhod</strong>
+                </div>
+                <div>
+                  {form.crew_size_rebar} železáři × {form.shift_h}h = <strong>{formatNum(wizardHint4.duration_days, 1)} dní/záběr</strong>
+                </div>
+                <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 2 }}>
+                  PERT: {formatNum(wizardHint4.optimistic_days, 1)}d (opt.) | {formatNum(wizardHint4.most_likely_days, 1)}d (střed) | {formatNum(wizardHint4.pessimistic_days, 1)}d (pes.)
+                </div>
+              </div>
+            )}
             </div>{/* /wizard rebar */}
 
             {/* ─── Height + Element Dimension Hint (step 3: geometry) ─── */}
@@ -2212,6 +2338,32 @@ export default function PlannerPage() {
               );
             })()}
 
+          {/* Wizard hint: lateral pressure + formwork (vertical elements) */}
+          {wizardMode && wizardStep === 3 && wizardHint3 && (
+            <div style={{ margin: '8px 0', padding: '10px 12px', background: 'var(--r0-warn-bg, #fffbeb)', border: '1px solid var(--r0-warn-border, #fde68a)', borderRadius: 6, fontSize: 11, lineHeight: 1.6, color: 'var(--r0-slate-700)' }}>
+              <strong>Boční tlak (DIN 18218)</strong>
+              <div style={{ marginTop: 4 }}>
+                p = {wizardHint3.lateralPressure.formula}
+              </div>
+              {wizardHint3.stages.needs_staging && (
+                <div style={{ marginTop: 4 }}>
+                  Záběry z tlaku: <strong>{wizardHint3.stages.num_stages} záběry</strong> po {formatNum(wizardHint3.stages.stage_height_m, 1)}m
+                  {' '}(tlak/záběr: {formatNum(wizardHint3.stages.stage_pressure_kn_m2, 0)} kN/m²
+                  {' '}≤ {wizardHint3.stages.max_system_pressure_kn_m2} kN/m²)
+                </div>
+              )}
+              {wizardHint3.filtered.suitable.length > 0 && (
+                <div style={{ marginTop: 4, fontSize: 10, color: 'var(--r0-slate-500)' }}>
+                  Vhodné systémy: {wizardHint3.filtered.suitable.map(s => `${s.name} (${s.manufacturer})`).join(', ')}
+                </div>
+              )}
+              {wizardHint3.filtered.rejected.length > 0 && (
+                <div style={{ marginTop: 2, fontSize: 10, color: 'var(--r0-error-text, #dc2626)' }}>
+                  Nevhodné (nízká nosnost): {wizardHint3.filtered.rejected.map(s => s.name).join(', ')}
+                </div>
+              )}
+            </div>
+          )}
           </div>{/* /wizard geometry (height+hints) */}
           </Section>
           </div>{/* /wizard objemy */}
@@ -3582,7 +3734,7 @@ function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, positionId, kridlaFormwork, calcStatus, resultDirty }: {
   plan: PlannerOutput;
   startDate: string;
   showLog: boolean;
