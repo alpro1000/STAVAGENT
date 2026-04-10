@@ -32,8 +32,6 @@ import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-share
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import PlannerGantt from '../components/PlannerGantt';
-import CalculatorWizard from '../components/CalculatorWizard';
-import type { WizardFormPatch } from '../components/CalculatorWizard';
 import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
 import { plannerVariantsAPI } from '../services/api';
 import '../styles/r0.css';
@@ -558,54 +556,78 @@ export default function PlannerPage() {
   // Plan variants (saved scenarios per position)
   // Mode A (position_id present): persisted in PostgreSQL via /api/planner-variants
   // Mode B (standalone): in-memory state only, lost on page leave
-  // Wizard / Expert mode toggle — Wizard shown by default for new users
-  const [expertMode, setExpertMode] = useState(() => {
-    // If user already has saved form state (returning user), default to expert mode
-    try { return !!localStorage.getItem(LS_FORM_KEY); } catch { return false; }
+  // ── Wizard / Expert mode toggle ──────────────────────────────────────────
+  // wizardMode=true → 5-step wizard (same form state, just controls visibility)
+  // wizardMode=false → flat expert form (all sections visible)
+  const [wizardMode, setWizardMode] = useState(() => {
+    try { return localStorage.getItem('planner_wizard_mode') !== 'false'; } catch { return true; }
   });
-  const [wizardDone, setWizardDone] = useState(false);
+  const [wizardStep, setWizardStep] = useState(1); // 1-5
 
-  const handleWizardComplete = useCallback((patch: WizardFormPatch) => {
-    setForm(prev => ({
-      ...prev,
-      element_type: patch.element_type,
-      use_name_classification: false,
-      volume_m3: patch.volume_m3,
-      concrete_class: patch.concrete_class,
-      cement_type: patch.cement_type,
-      season: patch.season,
-      temperature_c: patch.temperature_c,
-      height_m: patch.height_m,
-      formwork_area_m2: patch.formwork_area_m2,
-      rebar_mass_kg: patch.rebar_mass_kg,
-      crew_size: patch.crew_size,
-      crew_size_rebar: patch.crew_size_rebar,
-      num_sets: patch.num_sets,
-      shift_h: patch.shift_h,
-      wage_czk_h: patch.wage_czk_h,
-      tact_mode: patch.tact_mode,
-      has_dilatacni_spary: patch.has_dilatacni_spary,
-      spara_spacing_m: patch.spara_spacing_m,
-      total_length_m: patch.total_length_m,
-      num_tacts_override: patch.num_tacts_override,
-      is_prestressed: patch.is_prestressed,
-      bridge_deck_subtype: patch.bridge_deck_subtype,
-      span_m: patch.span_m,
-      num_spans: patch.num_spans,
-    }));
-    setWizardDone(true);
-    setExpertMode(true); // switch to expert mode after wizard completes
-    // Auto-calculate after wizard
-    setTimeout(() => {
-      try {
-        const input = buildInput();
-        const output = planElement(input);
-        setResult(output);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Chyba výpočtu');
+  useEffect(() => {
+    try { localStorage.setItem('planner_wizard_mode', String(wizardMode)); } catch { /* ignore */ }
+  }, [wizardMode]);
+
+  /** Wizard step validation — can user proceed to next step? */
+  const wizardCanAdvance = useMemo(() => {
+    switch (wizardStep) {
+      case 1: return !!form.element_type || (form.use_name_classification && !!form.element_name.trim());
+      case 2: return form.volume_m3 > 0;
+      case 3: return true; // geometry is optional
+      case 4: return true; // rebar has defaults
+      case 5: return true; // záběry have defaults
+      default: return false;
+    }
+  }, [wizardStep, form.element_type, form.use_name_classification, form.element_name, form.volume_m3]);
+
+  const wizardNext = useCallback(() => {
+    if (wizardStep < 5 && wizardCanAdvance) {
+      setWizardStep(wizardStep + 1);
+    } else if (wizardStep === 5) {
+      // Final step: trigger calculation
+      runCalculation();
+    }
+  }, [wizardStep, wizardCanAdvance]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const wizardBack = useCallback(() => {
+    if (wizardStep > 1) setWizardStep(wizardStep - 1);
+  }, [wizardStep]);
+
+  // Keyboard navigation for wizard: Enter = next, Escape = back
+  useEffect(() => {
+    if (!wizardMode) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey && !(e.target instanceof HTMLTextAreaElement)) {
+        e.preventDefault();
+        wizardNext();
+      } else if (e.key === 'Escape') {
+        wizardBack();
       }
-    }, 0);
-  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [wizardMode, wizardNext, wizardBack]);
+
+  /** Which sections are visible in the current wizard step.
+   *  Objemy section contains fields from steps 2+3+4, so we use sub-field visibility. */
+  const wizardVisible = useMemo(() => {
+    if (!wizardMode) return { element: true, objemy: true, zabery: true, conditions: true, beton: true, resources: true, formwork: true, simulation: true,
+      // Sub-field visibility within Objemy (all true in expert)
+      objemy_volume: true, objemy_geometry: true, objemy_rebar: true };
+    return {
+      element: wizardStep === 1,
+      objemy: wizardStep >= 2 && wizardStep <= 4, // Objemy section visible for steps 2-4
+      objemy_volume: wizardStep === 2,    // volume m³
+      objemy_geometry: wizardStep === 3,  // formwork area, lost formwork, height, shape
+      objemy_rebar: wizardStep === 4,     // rebar norm/mass
+      zabery: wizardStep === 5,
+      conditions: wizardStep === 5,
+      beton: wizardStep === 2,            // concrete class, cement → shown with volumes
+      resources: wizardStep === 4,        // crew, shift, wages → shown with rebar
+      formwork: false,                    // formwork override = expert only
+      simulation: false,                  // monte carlo = expert only
+    };
+  }, [wizardMode, wizardStep]);
 
 
   interface SavedVariant {
@@ -930,6 +952,8 @@ export default function PlannerPage() {
       skipNextAutoCalcRef.current = false;
       return;
     }
+    // In wizard mode, auto-calc only runs after step 5 (all data entered)
+    if (wizardMode && wizardStep < 5) return;
     // Mark result as stale
     setResultDirty(true);
     // Debounce — clear prior timer
@@ -1207,16 +1231,16 @@ export default function PlannerPage() {
             ?
           </button>
           <button
-            onClick={() => { setExpertMode(!expertMode); setWizardDone(false); }}
+            onClick={() => { setWizardMode(!wizardMode); if (wizardMode) setWizardStep(1); }}
             style={{
-              background: expertMode ? 'var(--r0-slate-800)' : 'transparent',
-              color: expertMode ? 'white' : 'var(--r0-slate-600)',
-              border: `1px solid ${expertMode ? 'var(--r0-slate-800)' : 'var(--r0-slate-300)'}`,
+              background: !wizardMode ? 'var(--r0-slate-800)' : 'transparent',
+              color: !wizardMode ? 'white' : 'var(--r0-slate-600)',
+              border: `1px solid ${!wizardMode ? 'var(--r0-slate-800)' : 'var(--r0-slate-300)'}`,
               borderRadius: 6, padding: '4px 12px', cursor: 'pointer',
               fontSize: 12, fontFamily: 'inherit', fontWeight: 600,
             }}
           >
-            {expertMode ? 'Expertní' : 'Průvodce'}
+            {wizardMode ? 'Průvodce' : 'Expertní'}
           </button>
           <span className="r0-badge">v1.1</span>
         </div>
@@ -1443,20 +1467,31 @@ export default function PlannerPage() {
       )}
 
       <div className="r0-planner-layout">
-        {/* LEFT: Input Form or Wizard */}
+        {/* LEFT: Input Form (wizard mode shows steps, expert mode shows all) */}
         <aside className="r0-planner-sidebar">
-          {!expertMode && !wizardDone ? (
-            <CalculatorWizard
-              onComplete={handleWizardComplete}
-              onCancel={() => setExpertMode(true)}
-              initialElementType={(positionContext as any)?.element_type as StructuralElementType | undefined}
-              initialVolume={positionContext?.volume_m3}
-            />
-          ) : (
-          <>
+          {/* ── Wizard step indicator ── */}
+          {wizardMode && (
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--r0-slate-800)' }}>
+                  Krok {wizardStep} z 5: {['Element', 'Objem a beton', 'Geometrie', 'Výztuž a zdroje', 'Záběry a podmínky'][wizardStep - 1]}
+                </span>
+              </div>
+              {/* Progress bar */}
+              <div style={{ height: 4, background: 'var(--r0-slate-200)', borderRadius: 2, overflow: 'hidden' }}>
+                <div style={{
+                  height: '100%', width: `${(wizardStep / 5) * 100}%`,
+                  background: 'var(--r0-orange, #f59e0b)', borderRadius: 2,
+                  transition: 'width 0.2s ease',
+                }} />
+              </div>
+            </div>
+          )}
+          {!wizardMode && (
           <h2 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 16px', color: 'var(--r0-slate-800)' }}>
             Vstupní parametry
           </h2>
+          )}
 
           {/* ─── Document suggestions banner ─── */}
           {docSugLoading && (
@@ -1467,6 +1502,7 @@ export default function PlannerPage() {
           <DocWarningsBanner response={docSuggestions} />
 
           {/* ─── Element ─── */}
+          <div style={wizardVisible.element ? undefined : { display: 'none' }}>
           <Section title="Element">
             <label style={labelStyle}>
               <input
@@ -2024,8 +2060,13 @@ export default function PlannerPage() {
             </div>
           )}
 
-          {/* ─── Volumes ─── */}
-          <Section title="Objemy">
+          </div>{/* /wizard element */}
+
+          {/* ─── Volumes (wizard step 2: objem + beton) ─── */}
+          <div style={wizardVisible.objemy ? undefined : { display: 'none' }}>
+          <Section title={wizardMode ? ['', 'Objem a beton', 'Geometrie', 'Výztuž a zdroje'][wizardStep - 1] || 'Objemy' : 'Objemy'}>
+            {/* ── Step 2: Volume ── */}
+            <div style={wizardVisible.objemy_volume ? undefined : { display: 'none' }}>
             <Field label="Objem betonu (m³)">
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <NumInput style={{ ...inputStyle, flex: 1 }} value={form.volume_m3} min={0.1} fallback={1}
@@ -2037,6 +2078,9 @@ export default function PlannerPage() {
                 />
               </div>
             </Field>
+            </div>
+            {/* ── Step 3: Geometry (formwork area, lost formwork, height, shape) ── */}
+            <div style={wizardVisible.objemy_geometry ? undefined : { display: 'none' }}>
             <Field label="Plocha bednění (m²)" hint="prázdné = automatický odhad z objemu a výšky">
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
@@ -2074,6 +2118,9 @@ export default function PlannerPage() {
               );
             })()}
 
+            </div>{/* /wizard geometry (formwork + lost formwork) */}
+            {/* ── Step 4: Rebar ── */}
+            <div style={wizardVisible.objemy_rebar ? undefined : { display: 'none' }}>
             <Field label="Norma výztuže (kg/m³)" hint="prázdné = odhad z profilu elementu">
               <NumInput style={inputStyle} value={form.rebar_norm_kg_m3} min={0}
                 onChange={v => {
@@ -2099,7 +2146,10 @@ export default function PlannerPage() {
                 }} placeholder="automatický odhad" />
             </Field>
 
-            {/* ─── Height + Element Dimension Hint ─── */}
+            </div>{/* /wizard rebar */}
+
+            {/* ─── Height + Element Dimension Hint (step 3: geometry) ─── */}
+            <div style={wizardVisible.objemy_geometry ? undefined : { display: 'none' }}>
             {(() => {
               const elemType = form.use_name_classification ? 'other' : form.element_type;
               const hint = ELEMENT_DIMENSION_HINTS[elemType];
@@ -2162,9 +2212,12 @@ export default function PlannerPage() {
               );
             })()}
 
+          </div>{/* /wizard geometry (height+hints) */}
           </Section>
+          </div>{/* /wizard objemy */}
 
-          {/* ─── Záběry (Tacts) ─── */}
+          {/* ─── Záběry (Tacts) — wizard step 5 ─── */}
+          <div style={wizardVisible.zabery ? undefined : { display: 'none' }}>
           <Section title="Záběry">
             <div style={{
               display: 'flex', gap: 4, marginBottom: 10,
@@ -2402,7 +2455,10 @@ export default function PlannerPage() {
             </div>
           </Section>
 
-          {/* ─── Environment ─── */}
+          </div>{/* /wizard zabery */}
+
+          {/* ─── Environment — wizard step 5 ─── */}
+          <div style={wizardVisible.conditions ? undefined : { display: 'none' }}>
           <Section title="Podmínky">
             {!isMonolitMode && (
               <Field label="Datum zahájení" hint="pro kalendářní Gantt">
@@ -2455,7 +2511,10 @@ export default function PlannerPage() {
             </Field>
           </Section>
 
-          {/* ─── Concrete / Maturity ─── */}
+          </div>{/* /wizard conditions */}
+
+          {/* ─── Concrete / Maturity — wizard step 2 ─── */}
+          <div style={wizardVisible.beton ? undefined : { display: 'none' }}>
           <Section title="Beton / Zrání">
             <Field label="Třída betonu">
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -2534,7 +2593,11 @@ export default function PlannerPage() {
             })()}
           </Section>
 
-          {/* ─── Advanced ─── */}
+          </div>{/* /wizard beton */}
+
+          {/* ─── Advanced (Zdroje in wizard step 4, Bednění+Simulace expert only) ─── */}
+          <div style={wizardVisible.resources ? undefined : { display: 'none' }}>
+          {!wizardMode && (
           <button
             onClick={() => setShowAdvanced(!showAdvanced)}
             style={{
@@ -2544,8 +2607,9 @@ export default function PlannerPage() {
           >
             {showAdvanced ? '▼' : '▶'} Pokročilé nastavení
           </button>
+          )}
 
-          {showAdvanced && (
+          {(showAdvanced || wizardMode) && (
             <>
               <Section title="Zdroje">
                 {/* Obrátkovost (repetitive elements) — logically belongs with resources */}
@@ -2640,6 +2704,7 @@ export default function PlannerPage() {
                 </div>
               </Section>
 
+              <div style={wizardMode ? { display: 'none' } : undefined}>
               <Section title="Bednění (override)">
                 <Field label="Systém bednění">
                   <select style={inputStyle} value={form.formwork_system_name}
@@ -2759,10 +2824,42 @@ export default function PlannerPage() {
                   1000× náhodná simulace doby záběru. Ukazuje P50–P95 odhady termínů. Zpomaluje výpočet.
                 </div>
               </Section>
+              </div>{/* /wizard expert-only (bednění + simulace) */}
             </>
           )}
+          </div>{/* /wizard resources */}
 
-          {/* ─── Calculate Button ─── */}
+          {/* ─── Calculate Button / Wizard Navigation ─── */}
+          {/* Wizard navigation */}
+          {wizardMode && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, gap: 8 }}>
+              <button
+                onClick={wizardBack}
+                disabled={wizardStep <= 1}
+                style={{
+                  padding: '10px 16px', border: '1px solid var(--r0-slate-300)', borderRadius: 6,
+                  background: 'transparent', color: 'var(--r0-slate-600)', cursor: wizardStep > 1 ? 'pointer' : 'not-allowed',
+                  fontSize: 13, fontWeight: 600, fontFamily: 'inherit', opacity: wizardStep > 1 ? 1 : 0.4,
+                }}
+              >
+                ← Zpět
+              </button>
+              <button
+                onClick={wizardNext}
+                disabled={!wizardCanAdvance}
+                style={{
+                  flex: 1, padding: '10px 16px', border: 'none', borderRadius: 6,
+                  background: wizardCanAdvance ? 'var(--r0-orange)' : 'var(--r0-slate-300)',
+                  color: 'white', cursor: wizardCanAdvance ? 'pointer' : 'not-allowed',
+                  fontSize: 14, fontWeight: 700, fontFamily: 'inherit',
+                }}
+              >
+                {wizardStep === 5 ? 'Vypočítat →' : 'Další →'}
+              </button>
+            </div>
+          )}
+          {/* Expert mode: normal calculate button */}
+          {!wizardMode && (
           <button
             onClick={handleCalculate}
             style={{
@@ -2774,6 +2871,7 @@ export default function PlannerPage() {
           >
             Vypočítat plán
           </button>
+          )}
           {result && (
             <button
               onClick={handleCompare}
@@ -2814,8 +2912,6 @@ export default function PlannerPage() {
             }}>
               {error}
             </div>
-          )}
-          </>
           )}
         </aside>
 
