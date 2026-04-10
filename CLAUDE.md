@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.9.0
+**Version:** 4.10.0
 **Last Updated:** 2026-04-10
 **Repository:** STAVAGENT (Monorepo)
 
@@ -116,9 +116,11 @@ Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0
 - **Props:** `selectPropSystem()` with `preferred_manufacturer` vendor match (DOKA formwork → DOKA props). `PropsCalculatorResult.labor_hours` exposed.
 - **Ztracené bednění:** `lost_formwork_area_m2` — TP deducted from system formwork, props on full area. UI checkbox for horizontal elements only.
 - **Manual záběry:** `use_manual_zabery` toggle + editable table (name+volume+area per záběr). Engine receives `num_tacts_override = count, tact_volume_m3_override = max(volumes)`.
-- **Aplikovat → TOV:** writes `tov_entries` (multi-profession: Betonář, Tesař, Ošetřovatel, Železář) into metadata. Links výztuž/předpětí by OTSKP prefix. No sub-positions created. Beton days = `betonDays` (not total_days).
-- **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory.
-- **Auto-calc:** 1.5s debounce on form change. Prompt "Uložit a pokračovat?" before overwriting dirty result. "Ukládat automaticky" toggle (localStorage). `calcStatus` indicator above KPIs.
+- **Per-záběr scheduling (v4.0):** `tact_volumes: number[]` in PlannerInput → per-záběr `calculatePourTask()`. `per_tact_concrete_days[]`, `per_tact_rebar_days[]`, `per_tact_assembly_days[]` in scheduler. Validation: mismatch length → warning + ignore.
+- **Aplikovat → TOV:** writes `tov_entries` (multi-profession: Betonář, Tesař, Ošetřovatel, Železář) into metadata. Links výztuž/předpětí by OTSKP prefix. No sub-positions created. Beton days = `betonDays` (not total_days). `applyFnRef` + `pendingApplyPlan` for "Aplikovat plán" (no setTimeout).
+- **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory. Auto-restore plán on entry. Numbering: `Math.max(existingNums) + 1`.
+- **Auto-calc:** 1.5s debounce on form change. Prompt "Uložit a pokračovat?" before overwriting dirty result. "Ukládat automaticky" toggle (localStorage). `calcStatus` indicator above KPIs. `hasExistingResultRef` set on loadVariant. Wizard guard: skip steps 1-4.
+- **Průvodce (Wizard):** Inline sidebar mode (`wizardMode` + `wizardStep` 1-5). Same form state. `display:none` on sections. Steps: Element→Volume+Beton→Geometry→Rebar+Resources→Záběry. Engine-powered hints per step (maturity, lateral pressure, rebar PERT). `localStorage('planner_wizard_mode')`. Keyboard: Enter=next, Escape=back.
 - **Two modes:** Monolit (ordinal days, auto-classify, TOV mapping) / Portal (calendar, manual)
 - **Import:** XLSX + Registry — both work without pre-created project (backend auto-creates `bridges` + `monolith_projects`). Empty state shows 3 actions: Vytvořit/Nahrát Excel/Načíst z Rozpočtu. `metadata` column persisted (linked_positions from parser). `bridge_id` prefixed with `stavbaProjectId__` to prevent cross-file collision.
 - **Registry Import Modal:** parallel fetch (Portal public endpoint `/api/integration/list-registry-projects` + Registry backend), search, debug info, refresh button, source badges (PORTAL/REGISTRY).
@@ -147,10 +149,10 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 498 | ~37K |
+| Monolit-Planner | 132 | 513 | ~37K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~16K |
-| **TOTAL** | **~391** | **692+** | **~150K** |
+| **TOTAL** | **~391** | **707+** | **~150K** |
 
 ---
 
@@ -253,6 +255,11 @@ VITE_DISABLE_AUTH=true  # local dev only
 | Props missing normohodiny | `PropsCalculatorResult.labor_hours` field; check `fwSystem.manufacturer` passed to `calculateProps()` |
 | NKB 429 console spam | fetchAuditStatus returns `'_rate_limited'` sentinel → polling triples delay (max 120s) |
 | OTSKP search empty | Check `/api/otskp/stats/summary` for total_codes; response has `reason: 'db_empty'|'no_match'` |
+| Wizard not showing hints | `wizardHint1-4` are `useMemo` — check deps array matches form fields; hint3 only for vertical elements |
+| Wizard auto-calc fires early | Guard `wizardMode && wizardStep < 5` in auto-calc useEffect; check `skipNextAutoCalcRef` |
+| firstRun shows wrong result | `firstRun` useMemo depends on `[initialForm]` — verify positionContext parsed correctly |
+| Aplikovat plán applies wrong data | `applyFnRef.current` updated on each render; `pendingApplyPlan` triggers effect after React commit |
+| Variant V1 V1 duplicate | `existingNums.length === 0 ? 1 : Math.max(...existingNums) + 1` — check label parsing regex |
 
 ---
 
@@ -274,8 +281,10 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 ### TODO
 - [ ] **P1: Merge branch** — `claude/fix-duplicate-constraints-ENOZO` → main (40+ commits, 498 tests)
 - [ ] **P1: Fix "Jen problémy" filter** — `positions.js:150` inverted: `!p.has_rfi` should be `p.has_rfi`
-- [ ] **P1: Průvodce (Wizard)** — 5-step calculator wizard (element→volume→geometry→rebar→záběry), element-type-dependent step 3, "Expertní režim" toggle
-- [ ] **P1: Per-záběr scheduling** — refactor element-scheduler engine to compute per-záběr with independent volumes (currently engine uses max volume as bottleneck)
+- [ ] **P1: Wizard STEP3_FIELDS config** — data-driven field map for 22 element types (currently uses ELEMENT_DIMENSION_HINTS, not per-type config)
+- [ ] **P1: Wizard krok 4 toggle** — Norma (kg/m³) vs Hmotnost (kg) toggle (currently both visible)
+- [ ] **P1: saveVariant error notification** — API fail silently swallowed, need toast/UI feedback
+- [ ] **P1: Per-záběr engine refactor** — element-scheduler uses max(tact_volumes) as bottleneck, should schedule per-záběr independently
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
 - [ ] **P1: E2E test FORESTINA SO.01** — stropní deska 125.559 m³, ztracené bednění 1325 m², manual záběry 4x, Aplikovat → verify TOV
 - [ ] **P2: Výztuž B500B + Y1860** — split rebar for prestressed (dual RebarLiteResult), two rows in table
