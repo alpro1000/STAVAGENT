@@ -75,6 +75,14 @@ try:
 except Exception as e:
     logger.warning(f"⚠️  MCP server not mounted: {e}")
 
+# MCP Auth + Billing + REST API (for GPT Actions)
+try:
+    from app.mcp.routes import router as mcp_routes
+    app.include_router(mcp_routes)
+    logger.info("🔑 MCP auth + REST API mounted at /api/v1/mcp/")
+except Exception as e:
+    logger.warning(f"⚠️  MCP routes not mounted: {e}")
+
 # Mount static files (if web directory exists)
 web_dir = settings.BASE_DIR / "web"
 if web_dir.exists():
