@@ -79,8 +79,9 @@ ezdxf>=1.1.0  # DXF/DWG drawing parsing
 # CONFIGURATION & VALIDATION
 # ==========================================
 # CRITICAL: Versions must be compatible!
-pydantic==2.10.3
-pydantic-settings==2.7.0
+# pydantic >=2.11.7 required by fastmcp>=3.2.0
+pydantic>=2.11.7,<3.0.0
+pydantic-settings>=2.7.0,<3.0.0
 python-dotenv>=1.0.0
 python-slugify>=8.0.0
 
