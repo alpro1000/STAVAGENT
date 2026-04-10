@@ -543,7 +543,11 @@ export function planElement(input) {
     log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews} čet×${crewRebar} prac.=${numRBCrews * crewRebar} železářů, RCPSP parallel=${numRBCrews})`);
     // ─── 6. Pour Task ──────────────────────────────────────────────────────
     // v4.0: Per-záběr volume support — calculate pour for each tact individually
+    // v4.0: Per-záběr volume support — calculate pour for each tact individually
     const hasTactVolumes = input.tact_volumes && input.tact_volumes.length === pourDecision.num_tacts;
+    if (input.tact_volumes && input.tact_volumes.length !== pourDecision.num_tacts) {
+        warnings.push(`⚠️ tact_volumes délka (${input.tact_volumes.length}) neodpovídá počtu záběrů (${pourDecision.num_tacts}) — ignorováno.`);
+    }
     const perTactConcreteDays = hasTactVolumes ? [] : undefined;
     const pourResult = calculatePourTask({
         element_type: elementType,
@@ -610,7 +614,7 @@ export function planElement(input) {
             concreteDays = 1;
     }
     // v4.0: Per-záběr pour duration calculation
-    if (hasTactVolumes && perTactConcreteDays) {
+    if (hasTactVolumes && perTactConcreteDays && input.tact_volumes) {
         for (let i = 0; i < input.tact_volumes.length; i++) {
             const vol = input.tact_volumes[i];
             const tactPour = calculatePourTask({
