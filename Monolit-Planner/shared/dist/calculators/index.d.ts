@@ -19,6 +19,7 @@ export * from './tariff-versioning.js';
 export * from './props-calculator.js';
 export * from './lateral-pressure.js';
 export * from './bridge-technology.js';
+export * from './position-linking.js';
 export * from './planner-orchestrator.js';
 export * from './batchCalculator.js';
 export * from '../classifiers/element-classifier.js';

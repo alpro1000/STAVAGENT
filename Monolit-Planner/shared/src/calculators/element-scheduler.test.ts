@@ -608,4 +608,75 @@ describe('Element Scheduler — RCPSP', () => {
       }
     });
   });
+
+  // ──────────────────────────────────────────────────────────────────────
+  // v4.0: Per-záběr durations
+  // ──────────────────────────────────────────────────────────────────────
+
+  describe('Per-záběr durations (v4.0)', () => {
+    it('uses per_tact_concrete_days when provided', () => {
+      // Tact 0: 2 days, Tact 1: 1 day, Tact 2: 1 day, Tact 3: 3 days
+      const r = scheduleElement(makeInput({
+        num_tacts: 4,
+        num_sets: 2,
+        per_tact_concrete_days: [2, 1, 1, 3],
+      }));
+      expect(r.tact_details).toHaveLength(4);
+      // Concrete durations should match per-tact values
+      const conDurations = r.tact_details.map(d => d.concrete[1] - d.concrete[0]);
+      expect(conDurations[0]).toBeCloseTo(2, 1);
+      expect(conDurations[1]).toBeCloseTo(1, 1);
+      expect(conDurations[2]).toBeCloseTo(1, 1);
+      expect(conDurations[3]).toBeCloseTo(3, 1);
+    });
+
+    it('falls back to uniform when per-tact not provided', () => {
+      const r = scheduleElement(makeInput({
+        num_tacts: 3,
+        concrete_days: 1,
+      }));
+      const conDurations = r.tact_details.map(d => d.concrete[1] - d.concrete[0]);
+      for (const d of conDurations) {
+        expect(d).toBeCloseTo(1, 2);
+      }
+    });
+
+    it('per_tact_assembly_days varies assembly per tact', () => {
+      const r = scheduleElement(makeInput({
+        num_tacts: 3,
+        num_sets: 1,
+        per_tact_assembly_days: [5, 2, 2],
+      }));
+      const asmDurations = r.tact_details.map(d => d.assembly[1] - d.assembly[0]);
+      expect(asmDurations[0]).toBeCloseTo(5, 1);
+      expect(asmDurations[1]).toBeCloseTo(2, 1);
+      expect(asmDurations[2]).toBeCloseTo(2, 1);
+    });
+
+    it('per_tact_rebar_days varies rebar per tact', () => {
+      const r = scheduleElement(makeInput({
+        num_tacts: 2,
+        num_sets: 1,
+        per_tact_rebar_days: [4, 1],
+      }));
+      const rebDurations = r.tact_details.map(d => d.rebar[1] - d.rebar[0]);
+      expect(rebDurations[0]).toBeCloseTo(4, 1);
+      expect(rebDurations[1]).toBeCloseTo(1, 1);
+    });
+
+    it('sequential_days sums per-tact cycles correctly', () => {
+      // With per-tact concrete: [2, 1], assembly 3, rebar 2, curing 5, strip 1
+      // sequential = (3+2+2+5+1) + (3+2+1+5+1) = 13 + 12 = 25
+      const r = scheduleElement(makeInput({
+        num_tacts: 2,
+        num_sets: 1,
+        assembly_days: 3,
+        rebar_days: 2,
+        curing_days: 5,
+        stripping_days: 1,
+        per_tact_concrete_days: [2, 1],
+      }));
+      expect(r.sequential_days).toBeCloseTo(25, 1);
+    });
+  });
 });

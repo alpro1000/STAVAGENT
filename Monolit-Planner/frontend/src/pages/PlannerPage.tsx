@@ -32,6 +32,8 @@ import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-share
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import PlannerGantt from '../components/PlannerGantt';
+import CalculatorWizard from '../components/CalculatorWizard';
+import type { WizardFormPatch } from '../components/CalculatorWizard';
 import { exportPlanToXLSX } from '../utils/exportPlanXLSX';
 import { plannerVariantsAPI } from '../services/api';
 import '../styles/r0.css';
@@ -556,6 +558,56 @@ export default function PlannerPage() {
   // Plan variants (saved scenarios per position)
   // Mode A (position_id present): persisted in PostgreSQL via /api/planner-variants
   // Mode B (standalone): in-memory state only, lost on page leave
+  // Wizard / Expert mode toggle — Wizard shown by default for new users
+  const [expertMode, setExpertMode] = useState(() => {
+    // If user already has saved form state (returning user), default to expert mode
+    try { return !!localStorage.getItem(LS_FORM_KEY); } catch { return false; }
+  });
+  const [wizardDone, setWizardDone] = useState(false);
+
+  const handleWizardComplete = useCallback((patch: WizardFormPatch) => {
+    setForm(prev => ({
+      ...prev,
+      element_type: patch.element_type,
+      use_name_classification: false,
+      volume_m3: patch.volume_m3,
+      concrete_class: patch.concrete_class,
+      cement_type: patch.cement_type,
+      season: patch.season,
+      temperature_c: patch.temperature_c,
+      height_m: patch.height_m,
+      formwork_area_m2: patch.formwork_area_m2,
+      rebar_mass_kg: patch.rebar_mass_kg,
+      crew_size: patch.crew_size,
+      crew_size_rebar: patch.crew_size_rebar,
+      num_sets: patch.num_sets,
+      shift_h: patch.shift_h,
+      wage_czk_h: patch.wage_czk_h,
+      tact_mode: patch.tact_mode,
+      has_dilatacni_spary: patch.has_dilatacni_spary,
+      spara_spacing_m: patch.spara_spacing_m,
+      total_length_m: patch.total_length_m,
+      num_tacts_override: patch.num_tacts_override,
+      is_prestressed: patch.is_prestressed,
+      bridge_deck_subtype: patch.bridge_deck_subtype,
+      span_m: patch.span_m,
+      num_spans: patch.num_spans,
+    }));
+    setWizardDone(true);
+    setExpertMode(true); // switch to expert mode after wizard completes
+    // Auto-calculate after wizard
+    setTimeout(() => {
+      try {
+        const input = buildInput();
+        const output = planElement(input);
+        setResult(output);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Chyba výpočtu');
+      }
+    }, 0);
+  }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+
+
   interface SavedVariant {
     id: string;
     label: string;
@@ -1154,7 +1206,19 @@ export default function PlannerPage() {
           >
             ?
           </button>
-          <span className="r0-badge">v1.0</span>
+          <button
+            onClick={() => { setExpertMode(!expertMode); setWizardDone(false); }}
+            style={{
+              background: expertMode ? 'var(--r0-slate-800)' : 'transparent',
+              color: expertMode ? 'white' : 'var(--r0-slate-600)',
+              border: `1px solid ${expertMode ? 'var(--r0-slate-800)' : 'var(--r0-slate-300)'}`,
+              borderRadius: 6, padding: '4px 12px', cursor: 'pointer',
+              fontSize: 12, fontFamily: 'inherit', fontWeight: 600,
+            }}
+          >
+            {expertMode ? 'Expertní' : 'Průvodce'}
+          </button>
+          <span className="r0-badge">v1.1</span>
         </div>
       </header>
 
@@ -1379,8 +1443,17 @@ export default function PlannerPage() {
       )}
 
       <div className="r0-planner-layout">
-        {/* LEFT: Input Form */}
+        {/* LEFT: Input Form or Wizard */}
         <aside className="r0-planner-sidebar">
+          {!expertMode && !wizardDone ? (
+            <CalculatorWizard
+              onComplete={handleWizardComplete}
+              onCancel={() => setExpertMode(true)}
+              initialElementType={positionContext?.element_type as StructuralElementType | undefined}
+              initialVolume={positionContext?.volume_m3}
+            />
+          ) : (
+          <>
           <h2 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 16px', color: 'var(--r0-slate-800)' }}>
             Vstupní parametry
           </h2>
@@ -2741,6 +2814,8 @@ export default function PlannerPage() {
             }}>
               {error}
             </div>
+          )}
+          </>
           )}
         </aside>
 

@@ -43,6 +43,9 @@ export interface ElementScheduleInput {
     num_formwork_crews?: number;
     num_rebar_crews?: number;
     rebar_lag_pct?: number;
+    per_tact_concrete_days?: number[];
+    per_tact_rebar_days?: number[];
+    per_tact_assembly_days?: number[];
     scheduling_mode?: 'linear' | 'chess';
     cure_between_neighbors_days?: number;
     pert_params?: PertParams;
