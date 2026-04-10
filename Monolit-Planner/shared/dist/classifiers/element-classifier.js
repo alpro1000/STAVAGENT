@@ -707,9 +707,26 @@ export function recommendFormwork(type, height_m, pour_method, total_length_m) {
         const systemName = profile.recommended_formwork[0];
         return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
     }
-    // Infer pour method if not given
+    // Horizontal elements: lateral pressure is irrelevant (concrete sits ON formwork).
+    // Select by category compatibility and rental price — no pressure filtering needed.
+    if (profile.orientation === 'horizontal') {
+        const { all: compatibleSystems } = getSuitableSystemsForElement(type);
+        if (compatibleSystems.length > 0) {
+            // Sort: cheapest rental first, 0-price (tradiční) last
+            const sorted = [...compatibleSystems].sort((a, b) => {
+                if (a.rental_czk_m2_month === 0 && b.rental_czk_m2_month > 0)
+                    return 1;
+                if (b.rental_czk_m2_month === 0 && a.rental_czk_m2_month > 0)
+                    return -1;
+                return a.rental_czk_m2_month - b.rental_czk_m2_month;
+            });
+            return sorted[0];
+        }
+        const systemName = profile.recommended_formwork[0];
+        return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
+    }
+    // Vertical elements: use lateral pressure (DIN 18218) to filter formwork systems.
     const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
-    // Calculate lateral pressure
     const pressure = calculateLateralPressure(height_m, method);
     // Get category-compatible systems
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);

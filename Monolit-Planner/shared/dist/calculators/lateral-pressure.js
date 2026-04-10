@@ -87,8 +87,14 @@ export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 
     const suitable = [];
     const rejected = [];
     for (const sys of systems) {
+        // Horizontal elements (slab, deck, foundation slab): lateral pressure is irrelevant —
+        // concrete sits ON the formwork, doesn't push AGAINST it. All compatible systems pass.
+        if (orientation === 'horizontal') {
+            suitable.push(sys);
+            continue;
+        }
         // Skip slab systems for vertical elements (they resist gravity load, not lateral pressure)
-        if (orientation === 'vertical' && sys.formwork_category === 'slab') {
+        if (sys.formwork_category === 'slab') {
             rejected.push(sys);
             continue;
         }
@@ -97,7 +103,7 @@ export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 
             suitable.push(sys);
             continue;
         }
-        // Check pressure capacity
+        // Check pressure capacity (vertical elements only at this point)
         if (sys.pressure_kn_m2 < pressure_kn_m2) {
             rejected.push(sys);
             continue;
