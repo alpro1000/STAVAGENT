@@ -587,6 +587,25 @@ describe('Planner Orchestrator', () => {
       expect(variable.schedule.total_days).toBeGreaterThan(0);
       expect(variable.tact_volumes).toEqual([60, 20, 20, 20]);
     });
+
+    it('warns and ignores mismatched tact_volumes length', () => {
+      const plan = planElement({
+        element_type: 'operne_zdi',
+        volume_m3: 120,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 40,
+        num_tacts_override: 4,
+        tact_volumes: [60, 30, 30], // 3 volumes but 4 tacts → mismatch
+        concrete_class: 'C25/30',
+        temperature_c: 15,
+      });
+      // Should produce valid plan (tact_volumes ignored)
+      expect(plan.schedule.total_days).toBeGreaterThan(0);
+      expect(plan.tact_volumes).toBeUndefined();
+      // Should warn about mismatch
+      expect(plan.warnings.some(w => w.includes('tact_volumes') && w.includes('ignorováno'))).toBe(true);
+    });
   });
 
   // ──────────────────────────────────────────────────────────────────────

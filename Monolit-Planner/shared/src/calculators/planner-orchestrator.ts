@@ -1007,7 +1007,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 6. Pour Task ──────────────────────────────────────────────────────
 
   // v4.0: Per-záběr volume support — calculate pour for each tact individually
+  // v4.0: Per-záběr volume support — calculate pour for each tact individually
   const hasTactVolumes = input.tact_volumes && input.tact_volumes.length === pourDecision.num_tacts;
+  if (input.tact_volumes && input.tact_volumes.length !== pourDecision.num_tacts) {
+    warnings.push(`⚠️ tact_volumes délka (${input.tact_volumes.length}) neodpovídá počtu záběrů (${pourDecision.num_tacts}) — ignorováno.`);
+  }
   const perTactConcreteDays: number[] | undefined = hasTactVolumes ? [] : undefined;
 
   const pourResult = calculatePourTask({
@@ -1087,9 +1091,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // v4.0: Per-záběr pour duration calculation
-  if (hasTactVolumes && perTactConcreteDays) {
-    for (let i = 0; i < input.tact_volumes!.length; i++) {
-      const vol = input.tact_volumes![i];
+  if (hasTactVolumes && perTactConcreteDays && input.tact_volumes) {
+    for (let i = 0; i < input.tact_volumes.length; i++) {
+      const vol = input.tact_volumes[i];
       const tactPour = calculatePourTask({
         element_type: elementType,
         volume_m3: vol,
