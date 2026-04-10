@@ -41,6 +41,14 @@ export interface PlannerInput {
     formwork_area_m2?: number;
     /** Height from ground/floor to underside of element (m). Used for props calculation. */
     height_m?: number;
+    /**
+     * Lost formwork area (m²) — trapezoidal steel sheet (trapézový plech) that
+     * stays in the structure permanently. This area does NOT need system formwork
+     * (Dokaflex, TRIO, etc.) — only the remaining perimeter/edges do.
+     * Props are still needed on the FULL area (TP does not support itself).
+     * Only applicable to horizontal elements (stropni_deska, zakladova_deska, mostovkova_deska).
+     */
+    lost_formwork_area_m2?: number;
     /** Exact rebar mass (kg). If not given, estimated from element type. */
     rebar_mass_kg?: number;
     /** Does the element have dilatation joints? */
@@ -103,6 +111,10 @@ export interface PlannerInput {
     tact_volume_m3_override?: number;
     /** Scheduling mode override: 'linear' or 'chess' */
     scheduling_mode_override?: 'linear' | 'chess';
+    /** Per-záběr volumes (m³) for manual záběry with individual sizes.
+     *  Length must equal num_tacts_override. Sum should approximate volume_m3.
+     *  When provided, each záběr gets its own pour duration calculation. */
+    tact_volumes?: number[];
     /** Is this element part of a bridge (mostní objekt)?
      *  Auto-detected from bridge_id "SO-xxx" if not set explicitly.
      *  Affects classifier: pilíř→driky_piliru, základy→zaklady_piliru, etc. */
@@ -154,6 +166,9 @@ export interface PlannerOutput {
         profile: ElementProfile;
     };
     pour_decision: PourDecisionOutput;
+    /** Per-záběr volumes when manual záběry with variable sizes are used.
+     *  undefined = all záběry have equal volume (pourDecision.tact_volume_m3). */
+    tact_volumes?: number[];
     formwork: {
         system: FormworkSystemSpec;
         assembly_days: number;

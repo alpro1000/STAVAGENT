@@ -73,8 +73,11 @@ export function scheduleElement(input) {
         tactOrder = Array.from({ length: num_tacts }, (_, i) => i);
     }
     const nodes = [];
-    const rebar_lag = assembly_days * (rebar_lag_pct / 100);
     const tactSetMap = new Map(); // tact index → set (0-based)
+    // Per-tact duration accessors — fall back to uniform values when per-tact arrays not provided
+    const getAssemblyDays = (t) => input.per_tact_assembly_days?.[t] ?? assembly_days;
+    const getRebarDays = (t) => input.per_tact_rebar_days?.[t] ?? rebar_days;
+    const getConcreteDays = (t) => input.per_tact_concrete_days?.[t] ?? concrete_days;
     // Map from execution order → tact index
     // executionPos[i] = which tact is scheduled at position i
     // We build DAG using execution position for set reuse, but keep original tact index for output
@@ -101,24 +104,29 @@ export function scheduleElement(input) {
                 }
             }
         }
+        // Per-tact durations for this specific záběr
+        const tAsmDays = getAssemblyDays(t);
+        const tRebDays = getRebarDays(t);
+        const tConDays = getConcreteDays(t);
+        const rebar_lag = tAsmDays * (rebar_lag_pct / 100);
         // ASM: after STR of previous tact on same set + chess cure deps
         const asmPreds = [
             ...(prevTactOnSet >= 0 ? [`T${prevTactOnSet}_STR`] : []),
             ...chessPreds,
         ];
         nodes.push({
-            id: `T${t}_ASM`, tact: t, type: 'assembly', duration: assembly_days,
+            id: `T${t}_ASM`, tact: t, type: 'assembly', duration: tAsmDays,
             crew: 'formwork', fs_preds: asmPreds,
             fs_lags: chessLags.size > 0 ? chessLags : undefined, set,
         });
         // REB: start-to-start with ASM (lag = assembly_days × lag%)
         nodes.push({
-            id: `T${t}_REB`, tact: t, type: 'rebar', duration: rebar_days,
+            id: `T${t}_REB`, tact: t, type: 'rebar', duration: tRebDays,
             crew: 'rebar', fs_preds: [], ss_source: `T${t}_ASM`, ss_lag: rebar_lag, set,
         });
         // CON: after both ASM and REB finish
         nodes.push({
-            id: `T${t}_CON`, tact: t, type: 'concrete', duration: concrete_days,
+            id: `T${t}_CON`, tact: t, type: 'concrete', duration: tConDays,
             crew: null, fs_preds: [`T${t}_ASM`, `T${t}_REB`], set,
         });
         // CUR: after CON (passive — no crew, set occupied)
@@ -217,8 +225,13 @@ export function scheduleElement(input) {
     }
     // ─── 3. Compute results ──────────────────────────────────────────────────
     const total_days = round(Math.max(...Array.from(sched.values()).map(s => s.finish)));
-    const cycle = assembly_days + rebar_days + concrete_days + effectiveCuringDays + prestress_days + stripping_days;
-    const sequential_days = round(num_tacts * cycle);
+    // Sequential days: sum of per-tact cycles (accounts for variable durations)
+    let sequential_days = 0;
+    for (let t = 0; t < num_tacts; t++) {
+        sequential_days += getAssemblyDays(t) + getRebarDays(t) + getConcreteDays(t) +
+            effectiveCuringDays + prestress_days + stripping_days;
+    }
+    sequential_days = round(sequential_days);
     const savings_days = round(sequential_days - total_days);
     const savings_pct = sequential_days > 0 ? Math.round(savings_days / sequential_days * 100) : 0;
     // Tact details

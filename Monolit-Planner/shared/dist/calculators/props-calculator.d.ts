@@ -72,6 +72,8 @@ export interface PropsCalculatorInput {
     num_tacts: number;
     /** Prop system name override (auto-select if not given) */
     prop_system_name?: string;
+    /** Formwork manufacturer hint (DOKA/PERI/ULMA/NOE) — props will prefer matching vendor */
+    formwork_manufacturer?: string;
 }
 export interface PropsCalculatorResult {
     /** Whether props are needed at all */
@@ -92,6 +94,8 @@ export interface PropsCalculatorResult {
     assembly_days: number;
     /** Disassembly days per tact */
     disassembly_days: number;
+    /** Total labor hours across all tacts (assembly + disassembly) — exposed for TOV/KPI */
+    labor_hours: number;
     /** Hold duration (days) — props stay under element */
     hold_days: number;
     /** Rental duration per set (days) */
@@ -113,7 +117,8 @@ export interface PropsCalculatorResult {
 }
 /**
  * Select the best prop system for given height.
- * Prefers cheapest system that covers the height.
+ * If preferred_manufacturer is set (e.g. "DOKA" from the chosen formwork system),
+ * prefer props from that same vendor. Falls back to cheapest overall if no match.
  */
-export declare function selectPropSystem(height_m: number, override_name?: string): PropSystem;
+export declare function selectPropSystem(height_m: number, override_name?: string, preferred_manufacturer?: string): PropSystem;
 export declare function calculateProps(input: PropsCalculatorInput): PropsCalculatorResult;

@@ -149,6 +149,11 @@ export interface PlannerInput {
   /** Scheduling mode override: 'linear' or 'chess' */
   scheduling_mode_override?: 'linear' | 'chess';
 
+  /** Per-záběr volumes (m³) for manual záběry with individual sizes.
+   *  Length must equal num_tacts_override. Sum should approximate volume_m3.
+   *  When provided, each záběr gets its own pour duration calculation. */
+  tact_volumes?: number[];
+
   // --- Bridge configuration ---
   /** Is this element part of a bridge (mostní objekt)?
    *  Auto-detected from bridge_id "SO-xxx" if not set explicitly.
@@ -219,6 +224,9 @@ export interface PlannerOutput {
 
   // --- Pour decision ---
   pour_decision: PourDecisionOutput;
+  /** Per-záběr volumes when manual záběry with variable sizes are used.
+   *  undefined = all záběry have equal volume (pourDecision.tact_volume_m3). */
+  tact_volumes?: number[];
 
   // --- Formwork ---
   formwork: {
@@ -998,6 +1006,14 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 6. Pour Task ──────────────────────────────────────────────────────
 
+  // v4.0: Per-záběr volume support — calculate pour for each tact individually
+  // v4.0: Per-záběr volume support — calculate pour for each tact individually
+  const hasTactVolumes = input.tact_volumes && input.tact_volumes.length === pourDecision.num_tacts;
+  if (input.tact_volumes && input.tact_volumes.length !== pourDecision.num_tacts) {
+    warnings.push(`⚠️ tact_volumes délka (${input.tact_volumes.length}) neodpovídá počtu záběrů (${pourDecision.num_tacts}) — ignorováno.`);
+  }
+  const perTactConcreteDays: number[] | undefined = hasTactVolumes ? [] : undefined;
+
   const pourResult = calculatePourTask({
     element_type: elementType,
     volume_m3: pourDecision.tact_volume_m3,
@@ -1074,6 +1090,26 @@ export function planElement(input: PlannerInput): PlannerOutput {
     if (concreteDays < 1) concreteDays = 1;
   }
 
+  // v4.0: Per-záběr pour duration calculation
+  if (hasTactVolumes && perTactConcreteDays && input.tact_volumes) {
+    for (let i = 0; i < input.tact_volumes.length; i++) {
+      const vol = input.tact_volumes[i];
+      const tactPour = calculatePourTask({
+        element_type: elementType,
+        volume_m3: vol,
+        season: input.season,
+        use_retarder: input.use_retarder,
+        crew_size: crew,
+        shift_h: shift,
+      });
+      const days = isContinuousPour
+        ? 1
+        : Math.max(1, roundTo(tactPour.total_pour_hours / shift, 2));
+      perTactConcreteDays.push(days);
+    }
+    log.push(`Per-záběr concrete_days: [${perTactConcreteDays.map(d => d.toFixed(2)).join(', ')}]`);
+  }
+
   // Strategy comparison (now with actual rebar + concrete days)
   const strategiesWithRebar = calculateStrategiesDetailed({
     assembly_days: assemblyDays,
@@ -1120,6 +1156,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
     rebar_lag_pct: 50,
     scheduling_mode: pourDecision.scheduling_mode,
     cure_between_neighbors_days: pourDecision.cure_between_neighbors_h / 24,
+    // v4.0: Per-záběr durations (variable záběr volumes)
+    per_tact_concrete_days: perTactConcreteDays,
     pert_params: input.enable_monte_carlo ? {
       monte_carlo_iterations: input.monte_carlo_iterations ?? DEFAULTS.monte_carlo_iterations,
       seed: 42, // Reproducible
@@ -1301,6 +1339,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       profile,
     },
     pour_decision: pourDecision,
+    tact_volumes: hasTactVolumes ? input.tact_volumes : undefined,
     formwork: {
       system: fwSystem,
       assembly_days: assemblyDays,

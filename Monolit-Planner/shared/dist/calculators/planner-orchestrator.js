@@ -394,13 +394,42 @@ export function planElement(input) {
     }
     // ─── 4. Formwork Calculation ────────────────────────────────────────────
     // Estimate formwork area if not given
-    const fwArea = input.formwork_area_m2 ?? estimateFormworkArea(input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation, input.total_length_m);
-    log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`);
-    // Warn about estimated formwork area for complex elements where estimation is unreliable
-    const COMPLEX_ELEMENT_TYPES = ['opery_ulozne_prahy', 'operne_zdi', 'rimsa', 'schodiste'];
-    if (!input.formwork_area_m2 && COMPLEX_ELEMENT_TYPES.includes(elementType)) {
+    const fwAreaTotal = input.formwork_area_m2 ?? estimateFormworkArea(input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation, input.total_length_m);
+    // Ztracené bednění (trapézový plech / lost formwork):
+    // If user provided lost_formwork_area_m2, subtract it from the area that needs
+    // SYSTEM formwork (Dokaflex, TRIO, etc.). Only applies to horizontal elements.
+    // Props/shoring still need the FULL area (TP does not support itself).
+    const isHorizontal = profile.orientation === 'horizontal';
+    const lostFwArea = (isHorizontal && input.lost_formwork_area_m2 && input.lost_formwork_area_m2 > 0)
+        ? Math.min(input.lost_formwork_area_m2, fwAreaTotal) // cap at total
+        : 0;
+    const fwArea = Math.max(fwAreaTotal - lostFwArea, 0); // system formwork = total − lost
+    log.push(`Formwork area: ${fwArea} m² per tact${input.formwork_area_m2 ? '' : ' (estimated)'}`
+        + (lostFwArea > 0 ? ` (total ${fwAreaTotal} m² − ztracené ${lostFwArea} m²)` : ''));
+    if (lostFwArea > 0) {
+        const lostPct = (lostFwArea / fwAreaTotal) * 100;
+        if (lostPct > 80) {
+            warnings.push(`ℹ️ Převážně ztracené bednění (${lostPct.toFixed(0)}% z ${fwAreaTotal.toFixed(1)} m²) — ` +
+                `systémové bednění pouze pro okraje, čela a prostupy (${fwArea.toFixed(1)} m²).`);
+        }
+        else {
+            warnings.push(`ℹ️ Ztracené bednění ${lostFwArea.toFixed(1)} m² (trapézový plech) — ` +
+                `systémové bednění jen na ${fwArea.toFixed(1)} m² (okraje + zbývající plocha). ` +
+                `Podpěry jsou počítány na plnou plochu ${fwAreaTotal.toFixed(1)} m².`);
+        }
+    }
+    // Warn about estimated formwork area for complex elements where estimation is unreliable.
+    // Element-specific hint about geometry — the previous generic "dřík + křídla + stěna"
+    // text was correct only for opěry, not for římsy/operne_zdi/schodiště.
+    const GEOMETRY_HINTS = {
+        opery_ulozne_prahy: 'dřík + křídla + stěna',
+        operne_zdi: 'stěna + konzoly',
+        rimsa: 'obrys + dno + čela',
+        schodiste: 'stupně + podesty',
+    };
+    if (!input.formwork_area_m2 && GEOMETRY_HINTS[elementType]) {
         warnings.push(`⚠️ ${profile.label_cs}: plocha bednění je odhadnuta (${fwArea} m²). ` +
-            `Tento typ má složitou geometrii (dřík + křídla + stěna) — zadejte skutečnou plochu pro přesný výpočet.`);
+            `Tento typ má složitou geometrii (${GEOMETRY_HINTS[elementType]}) — zadejte skutečnou plochu pro přesný výpočet.`);
     }
     // Maturity-based curing or default
     const maturityParams = input.concrete_class ? {
@@ -513,6 +542,9 @@ export function planElement(input) {
     }
     log.push(`Rebar: ${rebarResult.mass_kg}kg/tact, ${rebarResult.duration_days}d/tact (${rebarResult.mass_source}, ${numRBCrews} čet×${crewRebar} prac.=${numRBCrews * crewRebar} železářů, RCPSP parallel=${numRBCrews})`);
     // ─── 6. Pour Task ──────────────────────────────────────────────────────
+    // v4.0: Per-záběr volume support — calculate pour for each tact individually
+    const hasTactVolumes = input.tact_volumes && input.tact_volumes.length === pourDecision.num_tacts;
+    const perTactConcreteDays = hasTactVolumes ? [] : undefined;
     const pourResult = calculatePourTask({
         element_type: elementType,
         volume_m3: pourDecision.tact_volume_m3,
@@ -577,6 +609,25 @@ export function planElement(input) {
         if (concreteDays < 1)
             concreteDays = 1;
     }
+    // v4.0: Per-záběr pour duration calculation
+    if (hasTactVolumes && perTactConcreteDays) {
+        for (let i = 0; i < input.tact_volumes.length; i++) {
+            const vol = input.tact_volumes[i];
+            const tactPour = calculatePourTask({
+                element_type: elementType,
+                volume_m3: vol,
+                season: input.season,
+                use_retarder: input.use_retarder,
+                crew_size: crew,
+                shift_h: shift,
+            });
+            const days = isContinuousPour
+                ? 1
+                : Math.max(1, roundTo(tactPour.total_pour_hours / shift, 2));
+            perTactConcreteDays.push(days);
+        }
+        log.push(`Per-záběr concrete_days: [${perTactConcreteDays.map(d => d.toFixed(2)).join(', ')}]`);
+    }
     // Strategy comparison (now with actual rebar + concrete days)
     const strategiesWithRebar = calculateStrategiesDetailed({
         assembly_days: assemblyDays,
@@ -619,6 +670,8 @@ export function planElement(input) {
         rebar_lag_pct: 50,
         scheduling_mode: pourDecision.scheduling_mode,
         cure_between_neighbors_days: pourDecision.cure_between_neighbors_h / 24,
+        // v4.0: Per-záběr durations (variable záběr volumes)
+        per_tact_concrete_days: perTactConcreteDays,
         pert_params: input.enable_monte_carlo ? {
             monte_carlo_iterations: input.monte_carlo_iterations ?? DEFAULTS.monte_carlo_iterations,
             seed: 42, // Reproducible
@@ -673,18 +726,24 @@ export function planElement(input) {
         log.push(`Bridge pour sequencing required by resources: sets=${numSets}/${numBridges}, crews=${numFWCrews}/${numBridges}`);
     }
     // ─── 7c. Props (podpěry / stojky / skruž) ─────────────────────────────
+    // Props are calculated on the FULL area (fwAreaTotal), not the reduced
+    // system-formwork area. Even if ztracené bednění covers most of the deck,
+    // props still support the full slab weight.
     let propsResult;
     if (profile.needs_supports && input.height_m && input.height_m > 0) {
         propsResult = calculateProps({
             element_type: elementType,
             height_m: input.height_m,
-            formwork_area_m2: fwArea,
+            formwork_area_m2: fwAreaTotal,
             hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
             crew_size: crew,
             shift_h: shift,
             k,
             wage_czk_h: wageFormwork,
             num_tacts: pourDecision.num_tacts,
+            // Vendor match: pass formwork manufacturer so props prefer same vendor
+            // (e.g. Dokaflex → Doka Eurex; PERI SKYDECK → PERI Multiprop)
+            formwork_manufacturer: fwSystem.manufacturer,
         });
         warnings.push(...propsResult.warnings);
         log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
@@ -757,6 +816,7 @@ export function planElement(input) {
             profile,
         },
         pour_decision: pourDecision,
+        tact_volumes: hasTactVolumes ? input.tact_volumes : undefined,
         formwork: {
             system: fwSystem,
             assembly_days: assemblyDays,

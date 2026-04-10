@@ -511,4 +511,170 @@ describe('Planner Orchestrator', () => {
       expect(plan.warnings.some(w => w.includes('Obrátkovost'))).toBe(true);
     });
   });
+
+  // ──────────────────────────────────────────────────────────────────────
+  // E2E: Per-záběr volumes (v4.0)
+  // ──────────────────────────────────────────────────────────────────────
+
+  describe('per-záběr volumes (tact_volumes)', () => {
+    it('accepts tact_volumes and produces per-tact concrete days', () => {
+      const plan = planElement({
+        element_type: 'stropni_deska',
+        volume_m3: 125.559,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 40,
+        adjacent_sections: true,
+        num_tacts_override: 4,
+        tact_volumes: [35, 30, 30, 30.559],
+        concrete_class: 'C30/37',
+        temperature_c: 15,
+      });
+      expect(plan.tact_volumes).toEqual([35, 30, 30, 30.559]);
+      expect(plan.pour_decision.num_tacts).toBe(4);
+      expect(plan.schedule.tact_details).toHaveLength(4);
+      // Total days should be computed
+      expect(plan.schedule.total_days).toBeGreaterThan(0);
+      // Decision log should mention per-záběr
+      expect(plan.decision_log.some(l => l.includes('Per-záběr'))).toBe(true);
+    });
+
+    it('uniform volumes when tact_volumes not provided', () => {
+      const plan = planElement({
+        element_type: 'stropni_deska',
+        volume_m3: 120,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 40,
+        adjacent_sections: true,
+        num_tacts_override: 4,
+      });
+      expect(plan.tact_volumes).toBeUndefined();
+      // All tacts should have same schedule (uniform)
+      const details = plan.schedule.tact_details;
+      const conDurations = details.map(d => d.concrete[1] - d.concrete[0]);
+      // All durations should be the same (uniform)
+      const first = conDurations[0];
+      for (const d of conDurations) {
+        expect(d).toBeCloseTo(first, 2);
+      }
+    });
+
+    it('per-záběr with variable volumes affects total schedule', () => {
+      const uniform = planElement({
+        element_type: 'operne_zdi',
+        volume_m3: 120,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 40,
+        num_tacts_override: 4,
+        concrete_class: 'C25/30',
+        temperature_c: 15,
+      });
+      const variable = planElement({
+        element_type: 'operne_zdi',
+        volume_m3: 120,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 40,
+        num_tacts_override: 4,
+        tact_volumes: [60, 20, 20, 20],
+        concrete_class: 'C25/30',
+        temperature_c: 15,
+      });
+      // Both should produce valid plans
+      expect(uniform.schedule.total_days).toBeGreaterThan(0);
+      expect(variable.schedule.total_days).toBeGreaterThan(0);
+      expect(variable.tact_volumes).toEqual([60, 20, 20, 20]);
+    });
+
+    it('warns and ignores mismatched tact_volumes length', () => {
+      const plan = planElement({
+        element_type: 'operne_zdi',
+        volume_m3: 120,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 40,
+        num_tacts_override: 4,
+        tact_volumes: [60, 30, 30], // 3 volumes but 4 tacts → mismatch
+        concrete_class: 'C25/30',
+        temperature_c: 15,
+      });
+      // Should produce valid plan (tact_volumes ignored)
+      expect(plan.schedule.total_days).toBeGreaterThan(0);
+      expect(plan.tact_volumes).toBeUndefined();
+      // Should warn about mismatch
+      expect(plan.warnings.some(w => w.includes('tact_volumes') && w.includes('ignorováno'))).toBe(true);
+    });
+  });
+
+  // ──────────────────────────────────────────────────────────────────────
+  // E2E: FORESTINA SO.01 — stropní deska 125.559 m³, 4 záběry
+  // ──────────────────────────────────────────────────────────────────────
+
+  describe('E2E: FORESTINA SO.01', () => {
+    const forestinaInput: PlannerInput = {
+      element_type: 'stropni_deska',
+      volume_m3: 125.559,
+      has_dilatacni_spary: true,
+      spara_spacing_m: 8,
+      total_length_m: 32,
+      adjacent_sections: true,
+      concrete_class: 'C25/30',
+      cement_type: 'CEM_II',
+      temperature_c: 15,
+      num_sets: 2,
+      num_formwork_crews: 1,
+      num_rebar_crews: 1,
+      crew_size: 4,
+      crew_size_rebar: 4,
+      shift_h: 10,
+      wage_czk_h: 398,
+      num_tacts_override: 4,
+      tact_volumes: [33, 31, 31, 30.559],
+      height_m: 3.2,
+    };
+
+    it('classifies as stropní deska', () => {
+      const plan = planElement(forestinaInput);
+      expect(plan.element.type).toBe('stropni_deska');
+    });
+
+    it('schedules 4 záběry with correct total volume', () => {
+      const plan = planElement(forestinaInput);
+      expect(plan.pour_decision.num_tacts).toBe(4);
+      expect(plan.schedule.tact_details).toHaveLength(4);
+      expect(plan.tact_volumes).toEqual([33, 31, 31, 30.559]);
+    });
+
+    it('needs supports (stropní deska = horizontal)', () => {
+      const plan = planElement(forestinaInput);
+      expect(plan.element.profile.needs_supports).toBe(true);
+      // Should have props calculated (height provided)
+      expect(plan.props).toBeDefined();
+    });
+
+    it('produces valid schedule with parallelized tacts', () => {
+      const plan = planElement(forestinaInput);
+      // With 2 sets and 4 tacts, should have savings
+      expect(plan.schedule.savings_pct).toBeGreaterThan(0);
+      // Total days should be reasonable for a floor slab (< 100 working days)
+      expect(plan.schedule.total_days).toBeLessThan(100);
+      expect(plan.schedule.total_days).toBeGreaterThan(5);
+    });
+
+    it('calculates costs for all trades', () => {
+      const plan = planElement(forestinaInput);
+      expect(plan.costs.formwork_labor_czk).toBeGreaterThan(0);
+      expect(plan.costs.rebar_labor_czk).toBeGreaterThan(0);
+      expect(plan.costs.pour_labor_czk).toBeGreaterThan(0);
+      expect(plan.costs.total_labor_czk).toBeGreaterThan(0);
+    });
+
+    it('generates warnings about supports/curing', () => {
+      const plan = planElement(forestinaInput);
+      // Should warn about props / skruž for horizontal element
+      expect(plan.warnings.length).toBeGreaterThan(0);
+    });
+  });
 });

@@ -236,9 +236,10 @@ function roundTo(val, decimals) {
 }
 /**
  * Select the best prop system for given height.
- * Prefers cheapest system that covers the height.
+ * If preferred_manufacturer is set (e.g. "DOKA" from the chosen formwork system),
+ * prefer props from that same vendor. Falls back to cheapest overall if no match.
  */
-export function selectPropSystem(height_m, override_name) {
+export function selectPropSystem(height_m, override_name, preferred_manufacturer) {
     if (override_name) {
         const found = PROP_SYSTEMS.find(s => s.name === override_name);
         if (found)
@@ -252,6 +253,15 @@ export function selectPropSystem(height_m, override_name) {
             return PROP_SYSTEMS[0]; // Eurex 20 (shortest)
         }
         return PROP_SYSTEMS[PROP_SYSTEMS.length - 2]; // Staxo 100 (tallest)
+    }
+    // If vendor hint is given, prefer matching manufacturer first
+    if (preferred_manufacturer) {
+        const matching = candidates.filter(s => s.manufacturer.toLowerCase() === preferred_manufacturer.toLowerCase());
+        if (matching.length > 0) {
+            matching.sort((a, b) => a.rental_czk_per_prop_day - b.rental_czk_per_prop_day);
+            return matching[0];
+        }
+        // No match → fall through to cheapest overall
     }
     // Sort by rental cost (cheapest first)
     candidates.sort((a, b) => a.rental_czk_per_prop_day - b.rental_czk_per_prop_day);
@@ -269,9 +279,10 @@ export function calculateProps(input) {
     const gridDefault = PROP_GRID_DEFAULTS[input.element_type];
     const grid = input.grid_spacing_m ?? gridDefault?.grid_m ?? 1.5;
     log.push(`Grid: ${grid}m (${gridDefault?.description ?? 'default 1.5m'})`);
-    // Prop system selection
-    const system = selectPropSystem(input.height_m, input.prop_system_name);
-    log.push(`System: ${system.name} (${system.manufacturer}), ${system.min_height_m}–${system.max_height_m}m`);
+    // Prop system selection — pass formwork manufacturer as vendor hint
+    const system = selectPropSystem(input.height_m, input.prop_system_name, input.formwork_manufacturer);
+    log.push(`System: ${system.name} (${system.manufacturer}), ${system.min_height_m}–${system.max_height_m}m`
+        + (input.formwork_manufacturer ? ` [vendor hint: ${input.formwork_manufacturer}]` : ''));
     if (input.height_m < system.min_height_m || input.height_m > system.max_height_m) {
         warnings.push(`Výška ${input.height_m}m je mimo rozsah systému ${system.name} ` +
             `(${system.min_height_m}–${system.max_height_m}m). Zkontrolujte výběr podpěrného systému.`);
@@ -320,6 +331,7 @@ export function calculateProps(input) {
         disassembly_hours: disHours,
         assembly_days: asmDays,
         disassembly_days: disDays,
+        labor_hours: roundTo(totalLaborH, 2), // total across all tacts (montáž + demontáž)
         hold_days: input.hold_days,
         rental_days: rentalDays,
         rental_cost_czk: rentalCostCZK,
