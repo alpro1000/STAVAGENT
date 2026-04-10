@@ -135,6 +135,8 @@ celery[redis]==5.4.0  # Task queue with Redis broker
 # ==========================================
 # FastMCP for exposing STAVAGENT tools via MCP
 fastmcp>=3.2.0
+# bcrypt for MCP auth password hashing
+bcrypt>=4.0.0
 
 # Advanced Excel export
 xlsxwriter==3.2.0

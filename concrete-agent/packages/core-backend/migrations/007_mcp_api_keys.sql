@@ -20,7 +20,7 @@ CREATE INDEX IF NOT EXISTS idx_mcp_api_keys_email ON mcp_api_keys(user_email);
 -- Credit transaction log for audit trail
 CREATE TABLE IF NOT EXISTS mcp_credit_log (
     id SERIAL PRIMARY KEY,
-    api_key_id INTEGER NOT NULL REFERENCES mcp_api_keys(id),
+    api_key_id INTEGER NOT NULL REFERENCES mcp_api_keys(id) ON DELETE CASCADE,
     tool_name TEXT NOT NULL,
     credits_used INTEGER NOT NULL,
     credits_remaining INTEGER NOT NULL,

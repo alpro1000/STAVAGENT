@@ -43,21 +43,27 @@ class CreditCheckResponse(BaseModel):
 # ── Auth endpoints ───────────────────────────────────────────────────────────
 
 @router.post("/auth/register")
-async def register(body: AuthRequest):
+async def register(body: AuthRequest, request: Request):
     """Register for MCP API access. Returns API key + 200 free credits."""
     if len(body.password) < 6:
         raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
 
-    result = mcp_auth.register(body.email, body.password)
+    client_ip = request.client.host if request.client else "unknown"
+    result = mcp_auth.register(body.email, body.password, client_ip=client_ip)
+    if result.get("status") == "rate_limited":
+        raise HTTPException(status_code=429, detail=result["error"])
     if "error" in result:
         raise HTTPException(status_code=409, detail=result["error"])
     return result
 
 
 @router.post("/auth/login")
-async def login(body: AuthRequest):
+async def login(body: AuthRequest, request: Request):
     """Login to retrieve API key and current credits."""
-    result = mcp_auth.login(body.email, body.password)
+    client_ip = request.client.host if request.client else "unknown"
+    result = mcp_auth.login(body.email, body.password, client_ip=client_ip)
+    if result.get("status") == "rate_limited":
+        raise HTTPException(status_code=429, detail=result["error"])
     if "error" in result:
         raise HTTPException(status_code=401, detail=result["error"])
     return result
