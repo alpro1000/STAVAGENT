@@ -1449,7 +1449,7 @@ export default function PlannerPage() {
             <CalculatorWizard
               onComplete={handleWizardComplete}
               onCancel={() => setExpertMode(true)}
-              initialElementType={positionContext?.element_type as StructuralElementType | undefined}
+              initialElementType={(positionContext as any)?.element_type as StructuralElementType | undefined}
               initialVolume={positionContext?.volume_m3}
             />
           ) : (
