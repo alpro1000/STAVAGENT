@@ -42,20 +42,20 @@ export const LS_SCENARIO_SEQ_KEY = 'planner-scenario-seq';
 // ─── Shared style constants ────────────────────────────────────────────────
 
 export const inputStyle: React.CSSProperties = {
-  width: '100%', padding: '7px 10px', fontSize: 13,
-  border: '1px solid var(--r0-slate-300)', borderRadius: 4,
+  width: '100%', padding: '8px 12px', fontSize: 14,
+  border: '1px solid var(--r0-slate-200)', borderRadius: 6,
   background: 'white', fontFamily: 'inherit',
   boxSizing: 'border-box',
 };
 
 export const labelStyle: React.CSSProperties = {
   display: 'block', fontSize: 13, color: 'var(--r0-slate-700)',
-  marginBottom: 8, cursor: 'pointer',
+  marginBottom: 6, cursor: 'pointer',
 };
 
 export const subTitle: React.CSSProperties = {
-  fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-600)',
-  marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.03em',
+  fontSize: 11, fontWeight: 600, color: 'var(--r0-slate-500)',
+  marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em',
 };
 
 export const thStyle: React.CSSProperties = {
@@ -65,5 +65,5 @@ export const thStyle: React.CSSProperties = {
 
 export const tdStyle: React.CSSProperties = {
   padding: '5px 8px', fontSize: 12,
-  fontFamily: "'JetBrains Mono', monospace",
+  fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)",
 };

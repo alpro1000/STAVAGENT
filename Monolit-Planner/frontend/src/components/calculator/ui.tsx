@@ -1,10 +1,11 @@
 /**
  * Reusable UI primitives for the Calculator (PlannerPage Part B).
  * Extracted from PlannerPage.tsx — Section, Field, Card, KPICard, Row,
- * NumInput, SuggestionBadge, DocWarningsBanner.
+ * NumInput, CollapsibleSection, SuggestionBadge, DocWarningsBanner.
  */
 
 import { useState } from 'react';
+import { ChevronRight } from 'lucide-react';
 import type { DocSuggestion, DocSuggestionsResponse } from './types';
 
 // ─── Section ───────────────────────────────────────────────────────────────
@@ -44,11 +45,11 @@ export function Card({ title, icon, children, borderColor }: {
 }) {
   return (
     <div style={{
-      background: 'white', borderRadius: 8, padding: 16, marginBottom: 12,
+      background: 'white', borderRadius: 6, padding: 16, marginBottom: 12,
       border: '1px solid var(--r0-slate-200)',
-      borderLeft: borderColor ? `4px solid ${borderColor}` : undefined,
+      borderLeftWidth: borderColor ? 4 : 1, borderLeftColor: borderColor || 'var(--r0-slate-200)',
     }}>
-      <h3 style={{ fontSize: 14, fontWeight: 700, margin: '0 0 12px', color: 'var(--r0-slate-800)' }}>
+      <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px', color: 'var(--r0-slate-800)' }}>
         {icon} {title}
       </h3>
       {children}
@@ -63,14 +64,26 @@ export function KPICard({ label, value, unit, color }: {
 }) {
   return (
     <div style={{
-      background: 'white', borderRadius: 8, padding: '14px 16px',
-      border: '1px solid var(--r0-slate-200)', borderTop: `3px solid ${color}`,
+      background: 'white', borderRadius: 6, padding: 0,
+      border: '1px solid var(--r0-slate-200)',
+      borderLeftWidth: 4, borderLeftColor: color,
+      overflow: 'visible',
     }}>
-      <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--r0-slate-800)', fontFamily: "'JetBrains Mono', monospace" }}>
-        {value}
+      <div style={{
+        fontSize: 10, fontWeight: 600, textTransform: 'uppercase',
+        letterSpacing: '0.06em', color: 'var(--r0-slate-500)',
+        padding: '5px 12px 4px', borderBottom: '1px solid var(--r0-slate-200)',
+      }}>{label}</div>
+      <div style={{ padding: '6px 12px 7px' }}>
+        <div style={{
+          fontSize: 20, fontWeight: 600, color: 'var(--r0-slate-800)',
+          fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)",
+          fontVariantNumeric: 'tabular-nums', lineHeight: 1.2,
+        }}>
+          {value}
+        </div>
+        {unit && <div style={{ fontSize: 9, color: 'var(--r0-slate-400)', marginTop: 2 }}>{unit}</div>}
       </div>
-      {unit && <div style={{ fontSize: 11, color: 'var(--r0-slate-400)' }}>{unit}</div>}
     </div>
   );
 }
@@ -86,8 +99,9 @@ export function Row({ label, value, bold }: { label: React.ReactNode; value: str
       <span style={{ color: 'var(--r0-slate-500)' }}>{label}</span>
       <span style={{
         color: 'var(--r0-slate-800)',
-        fontWeight: bold ? 700 : 500,
-        fontFamily: "'JetBrains Mono', monospace",
+        fontWeight: bold ? 600 : 500,
+        fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)",
+        fontVariantNumeric: 'tabular-nums',
       }}>{value}</span>
     </div>
   );
@@ -240,6 +254,42 @@ export function DocWarningsBanner({ response }: {
               ({response.documents_used.join(', ')})
             </span>
           )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── CollapsibleSection (accordion) ────────────────────────────────────────
+
+export function CollapsibleSection({ title, icon, children, defaultOpen = false, mobileDefaultOpen }: {
+  title: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  /** Override default for mobile (<768px). Falls back to defaultOpen if not set. */
+  mobileDefaultOpen?: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(() => {
+    if (mobileDefaultOpen !== undefined && typeof window !== 'undefined' && window.innerWidth < 768) {
+      return mobileDefaultOpen;
+    }
+    return defaultOpen;
+  });
+
+  return (
+    <div className={`r0-collapsible${isOpen ? ' r0-collapsible--open' : ''}`}>
+      <button
+        className="r0-collapsible__trigger"
+        onClick={() => setIsOpen(!isOpen)}
+        type="button"
+      >
+        <ChevronRight size={16} />
+        {icon} {title}
+      </button>
+      {isOpen && (
+        <div className="r0-collapsible__body">
+          {children}
         </div>
       )}
     </div>

@@ -11,7 +11,7 @@ import { TriangleAlert, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, 
 import { addWorkDays, type PlannerOutput } from '@stavagent/monolit-shared';
 import PlannerGantt from '../PlannerGantt';
 import { exportPlanToXLSX } from '../../utils/exportPlanXLSX';
-import { Card, KPICard, Row } from './ui';
+import { Card, KPICard, Row, CollapsibleSection } from './ui';
 import { formatCZK, formatNum, formatWorkDayRange, subTitle, thStyle, tdStyle } from './helpers';
 
 // ─── CSV Export (local helper) ─────────────────────────────────────────────
@@ -561,7 +561,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
       )}
 
       {/* Schedule / Gantt */}
-      <Card title="Harmonogram" icon={<CalendarDays size={16} />}>
+      <CollapsibleSection title="Harmonogram" icon={<CalendarDays size={16} />} defaultOpen={true} mobileDefaultOpen={false}>
         <div className={calendarInfo ? 'r0-grid-4' : 'r0-grid-3'} style={{ marginBottom: 12 }}>
           <Row label="Celkem (prac.)" value={`${plan.schedule.total_days} dní`} bold />
           <Row label="Sekvenčně" value={`${plan.schedule.sequential_days} dní`} />
@@ -638,7 +638,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
             </div>
           </div>
         )}
-      </Card>
+      </CollapsibleSection>
 
       {/* Monte Carlo */}
       {plan.monte_carlo && (
@@ -657,7 +657,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
       )}
 
       {/* Costs Summary */}
-      <Card title="Souhrn nákladů" icon={<DollarSign size={16} />}>
+      <CollapsibleSection title="Souhrn nákladů" icon={<DollarSign size={16} />} defaultOpen={true} mobileDefaultOpen={false}>
         {(() => {
           const propsLabor = plan.costs.props_labor_czk || 0;
           const propsRental = plan.costs.props_rental_czk || 0;
@@ -671,7 +671,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           const pourH = plan.pour.total_pour_hours * nT;
           const rentalDays = plan.schedule.total_days + 2;
           const rentalMonths = (rentalDays / 30).toFixed(1);
-          const cs = { padding: '4px 10px', fontSize: 12, fontFamily: "'JetBrains Mono', monospace", textAlign: 'right' as const, whiteSpace: 'nowrap' as const };
+          const cs = { padding: '4px 10px', fontSize: 12, fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)", textAlign: 'right' as const, whiteSpace: 'nowrap' as const };
           const cl = { ...cs, textAlign: 'left' as const, color: 'var(--r0-slate-500)' };
           const cb = { ...cs, fontWeight: 700 };
           return (
@@ -741,11 +741,11 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
             </>
           );
         })()}
-      </Card>
+      </CollapsibleSection>
 
       {/* Norms Sources */}
       {plan.norms_sources && (
-        <Card title="Zdroje norem" icon="📚">
+        <CollapsibleSection title="Zdroje norem" icon={<span>📚</span>} defaultOpen={false}>
           <div style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--r0-slate-600)' }}>
             <Row label="Montáž bednění" value={plan.norms_sources.formwork_assembly} />
             <Row label="Demontáž" value={plan.norms_sources.formwork_disassembly} />
@@ -755,7 +755,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
               <Row label="Skruž" value={plan.norms_sources.skruz} />
             )}
           </div>
-        </Card>
+        </CollapsibleSection>
       )}
 
       {/* Decision Log */}
@@ -770,7 +770,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         <Card title="Traceability" icon="📋">
           <ol style={{ margin: 0, paddingLeft: 24, fontSize: 12, color: 'var(--r0-slate-600)' }}>
             {plan.decision_log.map((entry, i) => (
-              <li key={i} style={{ marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>{entry}</li>
+              <li key={i} style={{ marginBottom: 4, fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)" }}>{entry}</li>
             ))}
           </ol>
         </Card>
