@@ -880,7 +880,7 @@ export default function useCalculator() {
                     wage_czk_ph: form.wage_czk_h,
                     shift_hours: form.shift_h,
                     days: plan.schedule.total_days,
-                    labor_hours: plan.costs.total_labor_czk / form.wage_czk_h,
+                    labor_hours: form.wage_czk_h > 0 ? plan.costs.total_labor_czk / form.wage_czk_h : 0,
                     cost_czk: plan.costs.total_labor_czk,
                     unit_cost_on_m3: form.volume_m3 > 0 ? plan.costs.total_labor_czk / form.volume_m3 : 0,
                     kros_unit_czk: plan.costs.formwork_rental_czk + plan.costs.total_labor_czk,
