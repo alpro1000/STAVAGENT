@@ -129,7 +129,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
       <DocWarningsBanner response={docSuggestions} />
 
           {/* ─── Element ─── */}
-          <div style={wizardVisible.element ? undefined : { display: 'none' }}>
+          <div className={wizardVisible.element ? 'r0-wizard-step' : ''} style={wizardVisible.element ? undefined : { display: 'none' }}>
           <Section title="Element">
             <label style={labelStyle}>
               <input

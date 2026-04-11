@@ -38,7 +38,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
   return (
     <>
           {/* ─── Volumes (wizard step 2: objem + beton) ─── */}
-          <div style={wizardVisible.objemy ? undefined : { display: 'none' }}>
+          <div className={wizardVisible.objemy ? 'r0-wizard-step' : ''} style={wizardVisible.objemy ? undefined : { display: 'none' }}>
           <Section title={wizardMode ? ['', 'Objem a beton', 'Geometrie', 'Výztuž a zdroje'][wizardStep - 1] || 'Objemy' : 'Objemy'}>
             {/* ── Step 2: Volume ── */}
             <div style={wizardVisible.objemy_volume ? undefined : { display: 'none' }}>
@@ -256,7 +256,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
           </div>{/* /wizard objemy */}
 
           {/* ─── Záběry (Tacts) — wizard step 5 ─── */}
-          <div style={wizardVisible.zabery ? undefined : { display: 'none' }}>
+          <div className={wizardVisible.zabery ? 'r0-wizard-step' : ''} style={wizardVisible.zabery ? undefined : { display: 'none' }}>
           <Section title="Záběry">
             <div style={{
               display: 'flex', gap: 4, marginBottom: 10,
@@ -497,7 +497,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
           </div>{/* /wizard zabery */}
 
           {/* ─── Environment — wizard step 5 ─── */}
-          <div style={wizardVisible.conditions ? undefined : { display: 'none' }}>
+          <div className={wizardVisible.conditions ? 'r0-wizard-step' : ''} style={wizardVisible.conditions ? undefined : { display: 'none' }}>
           <Section title="Podmínky">
             {!isMonolitMode && (
               <Field label="Datum zahájení" hint="pro kalendářní Gantt">

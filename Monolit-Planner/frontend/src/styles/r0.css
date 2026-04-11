@@ -330,7 +330,7 @@
 }
 
 .r0-collapsible__trigger svg {
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -349,6 +349,26 @@
   border-radius: 0 0 8px 8px;
   padding: 16px;
   background: white;
+  /* Smooth open transition */
+  animation: r0-slideDown 0.2s ease-out;
+}
+
+@keyframes r0-slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   WIZARD STEP TRANSITIONS
+   ============================================ */
+
+.r0-wizard-step {
+  animation: r0-fadeIn 0.2s ease-out;
+}
+
+@keyframes r0-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ============================================
@@ -366,6 +386,10 @@
 @media (max-width: 1024px) {
   :root {
     --r0-sidebar-width: 300px;
+  }
+
+  .r0-planner-main {
+    min-width: 500px;
   }
 
   .r0-grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -397,6 +421,10 @@
     max-height: none;
     overflow-y: visible;
     padding: 12px 16px;
+  }
+
+  .r0-planner-main {
+    min-width: auto; /* override tablet 500px */
   }
 
   .r0-planner-main {
@@ -448,9 +476,9 @@
     white-space: nowrap;
   }
 
+  /* Hide version badge on mobile — saves header space */
   .r0-badge {
-    font-size: 9px;
-    padding: 1px 6px;
+    display: none;
   }
 
   .r0-header-right {
@@ -460,6 +488,7 @@
   .r0-header-right .r0-btn {
     padding: 4px 10px;
     font-size: 12px;
+    min-height: 32px;
   }
 
   /* PERT row wraps */
@@ -490,9 +519,16 @@
 
   /* Form inputs: larger touch targets (min 44px, 16px font = no iOS zoom) */
   .r0-form-group input,
-  .r0-form-group select {
+  .r0-form-group select,
+  .r0-planner-sidebar input,
+  .r0-planner-sidebar select {
     padding: 10px 12px;
     font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* Buttons: 44px min touch target */
+  .r0-planner-sidebar button {
     min-height: 44px;
   }
 
