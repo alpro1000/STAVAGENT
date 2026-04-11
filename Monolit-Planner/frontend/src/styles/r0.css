@@ -1,49 +1,50 @@
 /**
- * Planner Design System — Slate Minimal
- * Design tokens + layout classes for the Element Planner
+ * Calculator Design System — Stone Palette + DM Sans
+ * Unified with Monolit Planner Part A (flat-design.css)
  *
- * Palette: Tailwind Slate + semantic accents (orange, blue, green, red, indigo)
- * Typography: JetBrains Mono (monospace)
+ * Palette: Stone (warm grays) + orange accent — same as Part A
+ * Typography: DM Sans (body) + JetBrains Mono (numbers)
+ * Layout: Mobile-first responsive (1-col → 2-col at 1024px)
  */
 
 /* ============================================
-   DESIGN TOKENS
+   DESIGN TOKENS — aligned with flat-design.css
    ============================================ */
 
 :root {
-  /* ─── Slate scale ─── */
-  --r0-slate-50: #f8fafc;
-  --r0-slate-100: #f1f5f9;
-  --r0-slate-200: #e2e8f0;
-  --r0-slate-300: #cbd5e1;
-  --r0-slate-400: #94a3b8;
-  --r0-slate-500: #64748b;
-  --r0-slate-600: #475569;
-  --r0-slate-700: #334155;
-  --r0-slate-800: #1e293b;
-  --r0-slate-900: #0f172a;
+  /* ─── Stone palette (from Part A) ─── */
+  --r0-slate-50:  #FAFAF9;
+  --r0-slate-100: #F5F5F4;
+  --r0-slate-200: #E7E5E4;
+  --r0-slate-300: #D6D3D1;
+  --r0-slate-400: #A8A29E;
+  --r0-slate-500: #78716C;
+  --r0-slate-600: #57534E;
+  --r0-slate-700: #44403C;
+  --r0-slate-800: #292524;
+  --r0-slate-900: #1C1917;
 
   /* ─── Semantic colors ─── */
-  --r0-orange: #f97316;
-  --r0-blue: #3b82f6;
-  --r0-green: #22c55e;
+  --r0-orange: #F97316;
+  --r0-blue: #3B82F6;
+  --r0-green: #22C55E;
   --r0-green-dark: #059669;
-  --r0-red: #ef4444;
+  --r0-red: #EF4444;
   --r0-indigo: #6366f1;
   --r0-purple: #8b5cf6;
-  --r0-amber: #f59e0b;
+  --r0-amber: #F59E0B;
   --r0-lime: #a3e635;
 
   /* ─── Info / Warning / Error backgrounds ─── */
-  --r0-info-bg: #f0f9ff;
-  --r0-info-border: #bae6fd;
-  --r0-info-text: #0c4a6e;
-  --r0-warn-bg: #fef9c3;
-  --r0-warn-border: #fde68a;
-  --r0-warn-text: #92400e;
-  --r0-error-bg: #fef2f2;
-  --r0-error-border: #fecaca;
-  --r0-error-text: #dc2626;
+  --r0-info-bg: #EFF6FF;
+  --r0-info-border: #BFDBFE;
+  --r0-info-text: #1E40AF;
+  --r0-warn-bg: #FEF9C3;
+  --r0-warn-border: #FDE68A;
+  --r0-warn-text: #92400E;
+  --r0-error-bg: #FEF2F2;
+  --r0-error-border: #FECACA;
+  --r0-error-text: #DC2626;
   --r0-ai-bg: #f5f3ff;
   --r0-ai-border: #c4b5fd;
   --r0-ai-text: #5b21b6;
@@ -51,13 +52,13 @@
   --r0-ai-divider: #ddd6fe;
 
   /* ─── Semantic badge backgrounds ─── */
-  --r0-badge-blue-bg: #dbeafe;
-  --r0-badge-blue-text: #1e40af;
-  --r0-badge-green-bg: #dcfce7;
+  --r0-badge-blue-bg: #DBEAFE;
+  --r0-badge-blue-text: #1E40AF;
+  --r0-badge-green-bg: #DCFCE7;
   --r0-badge-green-text: #166534;
-  --r0-badge-amber-bg: #fef3c7;
-  --r0-badge-indigo-bg: #e0e7ff;
-  --r0-badge-indigo-text: #3730a3;
+  --r0-badge-amber-bg: #FEF3C7;
+  --r0-badge-indigo-bg: #E0E7FF;
+  --r0-badge-indigo-text: #3730A3;
 
   /* ─── Norms / green accent ─── */
   --r0-norms-bg: #ecfdf5;
@@ -67,18 +68,19 @@
   --r0-muted: #6b7280;
 
   /* ─── Phase colors (Gantt / schedule) ─── */
-  --r0-phase-assembly: #3b82f6;
-  --r0-phase-rebar: #f59e0b;
-  --r0-phase-concrete: #ef4444;
+  --r0-phase-assembly: #3B82F6;
+  --r0-phase-rebar: #F59E0B;
+  --r0-phase-concrete: #EF4444;
   --r0-phase-curing: #a3e635;
-  --r0-phase-stripping: #8b5cf6;
+  --r0-phase-stripping: #8B5CF6;
 
   /* ─── Layout ─── */
-  --r0-sidebar-width: 380px;
-  --r0-header-height: 56px;
+  --r0-sidebar-width: 340px;
+  --r0-header-height: 44px;
 
-  /* ─── Typography ─── */
-  --r0-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* ─── Typography — DM Sans (body) + JetBrains Mono (numbers) ─── */
+  --r0-font: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --r0-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 }
 
 /* ============================================
@@ -87,63 +89,71 @@
 
 .r0-app {
   min-height: 100vh;
-  background: var(--r0-slate-100);
-  font-family: var(--r0-font-mono);
+  background: var(--r0-slate-50);
+  font-family: var(--r0-font);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--r0-slate-900);
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ─── Header (stone-200 like Part A) ─── */
 .r0-header {
   height: var(--r0-header-height);
-  background: var(--r0-slate-800);
-  color: white;
+  background: var(--r0-slate-200);
+  color: var(--r0-slate-800);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
+  padding: 0 14px;
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid var(--r0-slate-300);
 }
 
 .r0-header-left {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 10px;
 }
 
 .r0-header-right {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-}
-
-.r0-back-link {
-  color: var(--r0-slate-400);
-  text-decoration: none;
-  font-size: 0.875rem;
-}
-
-.r0-back-link:hover {
-  color: white;
-}
-
-.r0-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
   gap: 0.5rem;
 }
 
+.r0-back-link {
+  color: var(--r0-slate-500);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.r0-back-link:hover {
+  color: var(--r0-orange);
+}
+
+.r0-title {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--r0-slate-800);
+}
+
 .r0-icon {
-  font-size: 1.5rem;
+  font-size: 18px;
 }
 
 .r0-badge {
   background: var(--r0-orange);
   color: white;
-  font-size: 0.625rem;
+  font-size: 10px;
   font-weight: 700;
-  padding: 0.25rem 0.5rem;
+  padding: 2px 8px;
   border-radius: 4px;
   letter-spacing: 0.05em;
 }
@@ -153,14 +163,21 @@
    ============================================ */
 
 .r0-btn {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 500;
-  border: none;
+  border: 1px solid var(--r0-slate-200);
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: background 0.15s, border-color 0.15s;
   font-family: inherit;
+  background: white;
+  color: var(--r0-slate-700);
+}
+
+.r0-btn:hover {
+  background: var(--r0-slate-100);
+  border-color: var(--r0-slate-300);
 }
 
 .r0-btn:disabled {
@@ -171,10 +188,11 @@
 .r0-btn-primary {
   background: var(--r0-orange);
   color: white;
+  border-color: var(--r0-orange);
 }
 
 .r0-btn-primary:hover:not(:disabled) {
-  background: #ea580c;
+  background: #EA580C;
 }
 
 .r0-btn-secondary {
@@ -203,30 +221,31 @@
 
 .r0-form-group label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 11px;
   font-weight: 600;
   color: var(--r0-slate-600);
-  margin-bottom: 0.375rem;
+  margin-bottom: 4px;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.04em;
 }
 
 .r0-form-group input,
 .r0-form-group select {
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  border: 1px solid var(--r0-slate-300);
-  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--r0-slate-200);
+  border-radius: 6px;
   font-family: inherit;
   box-sizing: border-box;
+  background: white;
 }
 
 .r0-form-group input:focus,
 .r0-form-group select:focus {
   outline: none;
   border-color: var(--r0-orange);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15);
 }
 
 /* ============================================
@@ -242,7 +261,7 @@
 .r0-planner-sidebar {
   width: var(--r0-sidebar-width);
   flex-shrink: 0;
-  background: var(--r0-slate-50);
+  background: var(--r0-slate-100);
   border-right: 1px solid var(--r0-slate-200);
   overflow-y: auto;
   padding: 16px 20px;
@@ -252,7 +271,7 @@
   flex: 1;
   overflow-y: auto;
   padding: 20px 24px;
-  background: var(--r0-slate-100);
+  background: var(--r0-slate-50);
 }
 
 /* ============================================
@@ -273,7 +292,7 @@
   flex-wrap: wrap;
   padding: 10px 14px;
   margin-bottom: 12px;
-  background: var(--r0-slate-50);
+  background: white;
   border-radius: 6px;
   border: 1px solid var(--r0-slate-200);
   font-size: 13px;
@@ -282,12 +301,95 @@
 .r0-help-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
 
 /* ============================================
-   RESPONSIVE
+   COLLAPSIBLE SECTION (accordion)
+   ============================================ */
+
+.r0-collapsible {
+  margin-bottom: 12px;
+}
+
+.r0-collapsible__trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid var(--r0-slate-200);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--r0-slate-800);
+  transition: background 0.15s;
+}
+
+.r0-collapsible__trigger:hover {
+  background: var(--r0-slate-50);
+}
+
+.r0-collapsible__trigger svg {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.r0-collapsible--open .r0-collapsible__trigger {
+  border-radius: 8px 8px 0 0;
+  border-bottom-color: transparent;
+}
+
+.r0-collapsible--open .r0-collapsible__trigger svg {
+  transform: rotate(90deg);
+}
+
+.r0-collapsible__body {
+  border: 1px solid var(--r0-slate-200);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 16px;
+  background: white;
+  /* Smooth open transition */
+  animation: r0-slideDown 0.2s ease-out;
+}
+
+@keyframes r0-slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   WIZARD STEP TRANSITIONS
+   ============================================ */
+
+.r0-wizard-step {
+  animation: r0-fadeIn 0.2s ease-out;
+}
+
+@keyframes r0-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================
+   STICKY TOOLBAR (mobile action buttons)
+   ============================================ */
+
+.r0-sticky-toolbar {
+  display: none; /* hidden on desktop */
+}
+
+/* ============================================
+   RESPONSIVE — TABLET (768px–1024px)
    ============================================ */
 
 @media (max-width: 1024px) {
   :root {
-    --r0-sidebar-width: 320px;
+    --r0-sidebar-width: 300px;
+  }
+
+  .r0-planner-main {
+    min-width: 500px;
   }
 
   .r0-grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -295,16 +397,21 @@
   .r0-help-grid { grid-template-columns: 1fr 1fr; }
 }
 
+/* ============================================
+   RESPONSIVE — MOBILE (<768px)
+   ============================================ */
+
 @media (max-width: 768px) {
   :root {
     --r0-sidebar-width: 100%;
-    --r0-header-height: 48px;
+    --r0-header-height: 44px;
   }
 
   /* Stack sidebar and main vertically */
   .r0-planner-layout {
     flex-direction: column;
     height: auto;
+    min-height: calc(100vh - var(--r0-header-height));
   }
 
   .r0-planner-sidebar {
@@ -313,17 +420,26 @@
     border-bottom: 1px solid var(--r0-slate-200);
     max-height: none;
     overflow-y: visible;
-    padding: 12px 14px;
+    padding: 12px 16px;
   }
 
   .r0-planner-main {
-    padding: 12px;
-    min-height: auto;
-    overflow-y: visible;
+    min-width: auto; /* override tablet 500px */
   }
 
-  /* All grids stack to single column */
-  .r0-grid-4,
+  .r0-planner-main {
+    padding: 12px 16px;
+    min-height: auto;
+    overflow-y: visible;
+    /* Space for sticky toolbar at bottom */
+    padding-bottom: 80px;
+  }
+
+  /* KPI: 2×2 grid on mobile */
+  .r0-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .r0-grid-3,
   .r0-grid-2 {
     grid-template-columns: 1fr;
@@ -335,44 +451,44 @@
 
   /* Header compact */
   .r0-header {
-    padding: 0 0.75rem;
-    gap: 0.5rem;
-    height: var(--r0-header-height);
+    padding: 0 12px;
+    gap: 6px;
   }
 
   .r0-header-left {
-    gap: 0.5rem;
+    gap: 8px;
     overflow: hidden;
   }
 
   .r0-title {
-    font-size: 0.875rem;
+    font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .r0-icon {
-    font-size: 1.125rem;
+    font-size: 16px;
   }
 
   .r0-back-link {
-    font-size: 0.75rem;
+    font-size: 12px;
     white-space: nowrap;
   }
 
+  /* Hide version badge on mobile — saves header space */
   .r0-badge {
-    font-size: 0.5rem;
-    padding: 0.125rem 0.375rem;
+    display: none;
   }
 
   .r0-header-right {
-    gap: 0.375rem;
+    gap: 4px;
   }
 
   .r0-header-right .r0-btn {
-    padding: 0.375rem 0.625rem;
-    font-size: 0.75rem;
+    padding: 4px 10px;
+    font-size: 12px;
+    min-height: 32px;
   }
 
   /* PERT row wraps */
@@ -387,43 +503,89 @@
     gap: 6px;
   }
 
-  /* Action buttons wrap */
+  /* Action bar: full width buttons */
   .r0-action-bar {
-    flex-wrap: wrap;
+    flex-direction: column;
   }
 
-  /* Comparison tables: ensure horizontal scroll works */
+  .r0-action-bar button {
+    width: 100%;
+  }
+
+  /* Comparison tables: horizontal scroll */
   .r0-planner-main table {
     min-width: 600px;
   }
 
-  /* Form inputs: larger touch targets */
+  /* Form inputs: larger touch targets (min 44px, 16px font = no iOS zoom) */
   .r0-form-group input,
-  .r0-form-group select {
-    padding: 0.625rem 0.75rem;
-    font-size: 1rem;
+  .r0-form-group select,
+  .r0-planner-sidebar input,
+  .r0-planner-sidebar select {
+    padding: 10px 12px;
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* Buttons: 44px min touch target */
+  .r0-planner-sidebar button {
+    min-height: 44px;
+  }
+
+  /* Sticky toolbar on mobile */
+  .r0-sticky-toolbar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    background: white;
+    border-top: 1px solid var(--r0-slate-200);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+    gap: 8px;
+    z-index: 50;
+  }
+
+  .r0-sticky-toolbar button {
+    flex: 1;
+    min-height: 44px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Collapsible: default closed on mobile */
+  .r0-collapsible--mobile-closed .r0-collapsible__body {
+    display: none;
   }
 }
 
 /* ── Extra small screens (phones < 480px) ── */
 @media (max-width: 480px) {
   .r0-header-left {
-    gap: 0.375rem;
+    gap: 4px;
   }
 
   .r0-title {
-    font-size: 0.8125rem;
+    font-size: 13px;
   }
 
   .r0-back-link {
-    font-size: 0.6875rem;
+    font-size: 11px;
   }
 
   .r0-planner-sidebar {
-    padding: 10px 10px;
+    padding: 10px 12px;
   }
 
   .r0-planner-main {
-    padding: 8px;
+    padding: 10px 12px;
+    padding-bottom: 80px;
+  }
+
+  /* KPI: 1 column on very small screens */
+  .r0-grid-4 {
+    grid-template-columns: 1fr;
   }
 }
