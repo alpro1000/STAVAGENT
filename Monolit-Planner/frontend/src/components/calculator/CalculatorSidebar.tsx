@@ -87,6 +87,9 @@ export interface CalculatorSidebarProps {
   normsScrapeResult: string | null;
   setNormsScrapeResult: (v: string | null) => void;
 
+  // Variant save
+  onSaveVariant?: () => void;
+
   // Config
   apiUrl: string;
   isAdmin: boolean;
@@ -107,6 +110,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     handleCalculate, handleCompare, fetchAdvisor,
     update,
     normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
+    onSaveVariant,
     apiUrl, isAdmin,
   } = props;
 
@@ -784,6 +788,20 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           }}
         >
           Porovnat bednění (všechny systémy)
+        </button>
+      )}
+      {result && onSaveVariant && (
+        <button
+          onClick={onSaveVariant}
+          style={{
+            width: '100%', padding: '10px', marginTop: 8,
+            background: 'white', color: 'var(--r0-slate-700)',
+            border: '1px solid var(--r0-slate-300)',
+            borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            fontFamily: 'inherit',
+          }}
+        >
+          Uložit variantu
         </button>
       )}
 

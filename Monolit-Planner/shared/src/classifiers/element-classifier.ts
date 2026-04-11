@@ -822,6 +822,13 @@ export function recommendFormwork(
       ?? FORMWORK_SYSTEMS[0];
   }
 
+  // Pilota: bored pile — uses pažnice (casing) or tremie pipe, not panel formwork.
+  // Skip pressure-based filtering entirely.
+  if (type === 'pilota') {
+    const systemName = profile.recommended_formwork[0];
+    return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
+  }
+
   // No height → static recommendation (original behavior)
   if (height_m == null || height_m <= 0) {
     const systemName = profile.recommended_formwork[0];

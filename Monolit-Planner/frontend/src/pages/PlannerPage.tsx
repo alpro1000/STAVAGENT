@@ -162,6 +162,7 @@ export default function PlannerPage() {
           update={update}
           normsScraping={calc.normsScraping} setNormsScraping={calc.setNormsScraping}
           normsScrapeResult={calc.normsScrapeResult} setNormsScrapeResult={calc.setNormsScrapeResult}
+          onSaveVariant={plan ? () => saveVariant(plan) : undefined}
           apiUrl={API_URL} isAdmin={IS_ADMIN}
         />
 
