@@ -158,6 +158,10 @@ export default function PlannerPage() {
           positionContext={positionContext} isMonolitMode={isMonolitMode}
           autoClassification={autoClassification}
           handleCalculate={handleCalculate} handleCompare={handleCompare}
+          fetchAdvisor={calc.fetchAdvisor}
+          update={update}
+          normsScraping={calc.normsScraping} setNormsScraping={calc.setNormsScraping}
+          normsScrapeResult={calc.normsScrapeResult} setNormsScrapeResult={calc.setNormsScrapeResult}
           apiUrl={API_URL} isAdmin={IS_ADMIN}
         />
 

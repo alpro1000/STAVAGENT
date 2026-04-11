@@ -8,7 +8,7 @@
  */
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
-import type { CuringResult } from '@stavagent/monolit-shared';
+import type { CuringResult, SeasonMode, ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge } from './ui';
 import { formatCZK, formatNum, inputStyle, labelStyle } from './helpers';
@@ -33,6 +33,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
     onAcceptSuggestion, onDismissSuggestion,
     positionContext, isMonolitMode,
     getSuggestion, apiUrl, isAdmin,
+    update,
   } = props;
 
   return (

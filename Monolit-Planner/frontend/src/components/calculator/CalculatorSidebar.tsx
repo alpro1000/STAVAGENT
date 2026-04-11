@@ -9,6 +9,7 @@
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
 import type { CuringResult } from '@stavagent/monolit-shared';
+import type { StructuralElementType } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge, DocWarningsBanner } from './ui';
 import { formatCZK, formatNum, inputStyle, labelStyle } from './helpers';
@@ -75,6 +76,16 @@ export interface CalculatorSidebarProps {
   // Actions
   handleCalculate: () => void;
   handleCompare: () => void;
+  fetchAdvisor: () => void;
+
+  // Form update helper
+  update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+
+  // Norms scraping
+  normsScraping: boolean;
+  setNormsScraping: (v: boolean) => void;
+  normsScrapeResult: string | null;
+  setNormsScrapeResult: (v: string | null) => void;
 
   // Config
   apiUrl: string;
@@ -93,9 +104,15 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     docSuggestions, docSugLoading, acceptedParams, onAcceptSuggestion, onDismissSuggestion,
     comparison, setComparison, showComparison, setShowComparison,
     positionContext, isMonolitMode, autoClassification,
-    handleCalculate, handleCompare,
+    handleCalculate, handleCompare, fetchAdvisor,
+    update,
+    normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
     apiUrl, isAdmin,
   } = props;
+
+  // Alias for backward compatibility with extracted JSX
+  const classificationHint = autoClassification;
+  const IS_ADMIN = isAdmin;
 
   // Helper: get suggestion for a param
   const getSuggestion = (param: string): DocSuggestion | undefined => {

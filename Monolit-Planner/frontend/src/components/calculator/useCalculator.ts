@@ -869,6 +869,7 @@ export default function useCalculator() {
   const handleApplyToPosition = useMemo(() => {
     if (!positionContext) return undefined;
     return async () => {
+                if (!plan) return;
                 setApplyStatus('saving');
                 try {
                   const monolit_data = {
@@ -1230,6 +1231,11 @@ export default function useCalculator() {
     // AI advisor
     advisor, setAdvisor,
     advisorLoading, setAdvisorLoading,
+    fetchAdvisor,
+
+    // Norms scraping
+    normsScraping, setNormsScraping,
+    normsScrapeResult, setNormsScrapeResult,
 
     // Document suggestions
     docSuggestions, docSugLoading,
