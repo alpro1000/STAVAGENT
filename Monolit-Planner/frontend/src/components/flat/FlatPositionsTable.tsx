@@ -97,8 +97,20 @@ const COL_COUNT = 14;
 
 /* ── MAIN COMPONENT ──────────────────────────────────────────── */
 
+/**
+ * Detect "monolitické práce" by OTSKP code prefix.
+ * HSV 2xx = základy, 3xx = svislé konstrukce, 4xx = vodorovné konstrukce.
+ * If code is missing, assume monolithic (don't hide work-in-progress).
+ */
+function isMonolithicOTSKP(code?: string | null): boolean {
+  if (!code) return true;
+  const clean = String(code).replace(/\s/g, '').trim();
+  if (!clean) return true;
+  return /^[234]/.test(clean);
+}
+
 export default function FlatPositionsTable() {
-  const { selectedProjectId, activeSnapshot } = useUI();
+  const { selectedProjectId, activeSnapshot, showOnlyMonolity } = useUI();
   const {
     positions, headerKPI, isLoading,
     updatePositions, deletePosition,
@@ -174,6 +186,18 @@ export default function FlatPositionsTable() {
     }));
   }, [calcPositions]);
 
+  // "Jen monolity" filter — keep only element groups that have a beton subtype
+  // (Vypočítat button shown) AND whose beton OTSKP code is monolitické (2xx/3xx/4xx)
+  // or empty (work-in-progress).
+  const visibleElements = useMemo(() => {
+    if (!showOnlyMonolity) return elements;
+    return elements.filter(el => {
+      const betonPos = el.positions.find(p => p.subtype === 'beton');
+      if (!betonPos) return false;
+      return isMonolithicOTSKP(betonPos.otskp_code);
+    });
+  }, [elements, showOnlyMonolity]);
+
   // Navigate to calculator
   const handleCalculate = useCallback((element: ElementGroup) => {
     const betonPos = element.positions.find(p => p.subtype === 'beton');
@@ -248,6 +272,43 @@ export default function FlatPositionsTable() {
     await updatePositions([{ id: posId, otskp_code: code }]);
   }, [isLocked, updatePositions]);
 
+  /**
+   * Quick-fix #2: delete a calculator-added labor entry from a position's
+   * tov_entries. Removes the entry, recomputes labor totals, adjusts `days`
+   * proportionally so the position row's Celk.hod / Celk.Kč reflect the
+   * new sum, and PUTs the updated metadata.
+   */
+  const handleDeleteTOVLaborEntry = useCallback(async (
+    pos: Position, entry: { id: string; normHours: number; totalCost: number }
+  ) => {
+    if (isLocked || !pos.id || !pos.metadata) return;
+    let meta: Record<string, any>;
+    try {
+      meta = typeof pos.metadata === 'string' ? JSON.parse(pos.metadata) : pos.metadata;
+    } catch { return; }
+    const tov = meta?.tov_entries;
+    if (!tov || !Array.isArray(tov.labor)) return;
+
+    const remaining = tov.labor.filter((e: { id: string }) => e.id !== entry.id);
+    const newMeta = {
+      ...meta,
+      tov_entries: { ...tov, labor: remaining },
+    };
+
+    // Recompute the position-row totals from the remaining labor entries.
+    // calculatePositionFields derives Celk.hod = crew_size × shift_hours × days,
+    // so we adjust `days` to keep that product equal to the new sum of normHours.
+    const newLaborH = remaining.reduce((s: number, e: { normHours: number }) => s + (e.normHours || 0), 0);
+    const denom = (pos.crew_size || 1) * (pos.shift_hours || 1);
+    const newDays = denom > 0 ? Math.max(0, Math.round((newLaborH / denom) * 10) / 10) : 0;
+
+    await updatePositions([{
+      id: pos.id,
+      metadata: JSON.stringify(newMeta),
+      days: newDays,
+    }]);
+  }, [isLocked, updatePositions]);
+
   // Delete all positions of an element
   const handleDeleteElement = useCallback(async (element: ElementGroup) => {
     if (isLocked) return;
@@ -319,9 +380,16 @@ export default function FlatPositionsTable() {
           onImportRegistry={() => setShowImportRegistry(true)} />
       ) : (
         <div className="flat-table-wrap">
+          {showOnlyMonolity && visibleElements.length === 0 && (
+            <div style={{
+              padding: 24, textAlign: 'center', color: 'var(--stone-400)', fontSize: 13,
+            }}>
+              Filtr "Jen monolity" je aktivní — žádný element nemá betonovou pozici s OTSKP kódem 2xx/3xx/4xx.
+            </div>
+          )}
           <table className="flat-table">
             <tbody>
-              {elements.map(el => (
+              {visibleElements.map(el => (
                 <ElementBlock
                   key={el.partName}
                   element={el}
@@ -336,6 +404,7 @@ export default function FlatPositionsTable() {
                   onAddWork={() => setAddWorkFor(el.partName)}
                   onToggleTOV={toggleTOV}
                   onDelete={() => handleDeleteElement(el)}
+                  onDeleteTOVLaborEntry={handleDeleteTOVLaborEntry}
                 />
               ))}
             </tbody>
@@ -366,6 +435,7 @@ export default function FlatPositionsTable() {
 function ElementBlock({
   element, isLocked, collapsed, expandedTOV,
   onToggle, onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onAddWork, onToggleTOV, onDelete,
+  onDeleteTOVLaborEntry,
 }: {
   element: ElementGroup;
   isLocked: boolean;
@@ -379,6 +449,7 @@ function ElementBlock({
   onAddWork: () => void;
   onDelete: () => void;
   onToggleTOV: (posId: string) => void;
+  onDeleteTOVLaborEntry?: (pos: Position, entry: { id: string; normHours: number; totalCost: number }) => Promise<void>;
 }) {
   const [katalogPrice, setKatalogPrice] = useState<number | null>(null);
 
@@ -557,6 +628,7 @@ function ElementBlock({
               onFieldChange={onFieldChange}
               onSpeedChange={onSpeedChange}
               onToggleTOV={onToggleTOV}
+              onDeleteTOVLaborEntry={onDeleteTOVLaborEntry}
             />
           ))}
 
@@ -579,7 +651,7 @@ function ElementBlock({
 /* ── WORK ROW ────────────────────────────────────────────────── */
 
 function WorkRow({
-  pos, isLocked, showTOV, onFieldChange, onSpeedChange, onToggleTOV,
+  pos, isLocked, showTOV, onFieldChange, onSpeedChange, onToggleTOV, onDeleteTOVLaborEntry,
 }: {
   pos: Position;
   isLocked: boolean;
@@ -587,6 +659,7 @@ function WorkRow({
   onFieldChange: (pos: Position, field: keyof Position, value: number) => Promise<boolean>;
   onSpeedChange: (pos: Position, speed: number) => Promise<boolean>;
   onToggleTOV: (posId: string) => void;
+  onDeleteTOVLaborEntry?: (pos: Position, entry: { id: string; normHours: number; totalCost: number }) => Promise<void>;
 }) {
   const unitLabel = UNIT_LABELS[pos.unit] || pos.unit || '';
   const speed = calcSpeed(pos);
@@ -742,7 +815,15 @@ function WorkRow({
 
     {/* TOV expandable section */}
     {showTOV && pos.id && (
-      <FlatTOVSection positionId={pos.id} position={pos} />
+      <FlatTOVSection
+        positionId={pos.id}
+        position={pos}
+        onDeleteLaborEntry={
+          isLocked || !onDeleteTOVLaborEntry
+            ? undefined
+            : (entry) => onDeleteTOVLaborEntry(pos, entry)
+        }
+      />
     )}
     </>
   );

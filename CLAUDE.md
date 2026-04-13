@@ -181,6 +181,13 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 **Branches:** `claude/<task-description>-<random5chars>`
 **Git Hooks (Husky):** Pre-commit: 34 formula tests (~470ms). Pre-push: branch + tests.
 
+**Karpathy rules (anti-bloat):**
+- Pokud lze 200 řádků napsat za 50 — napiš za 50.
+- Nesahej na kód, který se zadáním nesouvisí.
+- Nepřidávej "flexibilitu" a "konfigurovatelnost", o kterou nikdo nepožádal.
+- Když si nejsi jistý — zeptej se, neháděj mlčky.
+- Definuj kritéria úspěchu PŘED kódem, pak iteruj k jejich splnění.
+
 **Key rules:**
 - Determinism > AI: if regex can do it, don't use LLM
 - Confidence: never overwrite higher with lower

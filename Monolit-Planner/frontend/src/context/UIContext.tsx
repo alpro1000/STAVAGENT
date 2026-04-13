@@ -21,6 +21,12 @@ interface UIContextType {
   showOnlyRFI: boolean;
   setShowOnlyRFI: (show: boolean) => void;
 
+  /** "Jen monolity" filter — keeps only elements with a beton subtype
+   *  (i.e. positions where Vypočítat is shown) and OTSKP codes for
+   *  monolitické práce (HSV 2xx, 3xx, 4xx). */
+  showOnlyMonolity: boolean;
+  setShowOnlyMonolity: (show: boolean) => void;
+
   /** Days per month mode (22 or 30) */
   daysPerMonth: 30 | 22;
   setDaysPerMonth: (d: 30 | 22) => void;
@@ -57,6 +63,7 @@ export function UIProvider({ children }: { children: ReactNode }) {
   });
 
   const [showOnlyRFI, setShowOnlyRFI] = useState(false);
+  const [showOnlyMonolity, setShowOnlyMonolity] = useState(false);
   const [daysPerMonth, setDaysPerMonth] = useState<30 | 22>(30);
   const [activeSnapshot, setActiveSnapshot] = useState<ActiveSnapshot | null>(null);
 
@@ -86,6 +93,8 @@ export function UIProvider({ children }: { children: ReactNode }) {
       toggleSidebar,
       showOnlyRFI,
       setShowOnlyRFI,
+      showOnlyMonolity,
+      setShowOnlyMonolity,
       daysPerMonth,
       setDaysPerMonth,
       activeSnapshot,

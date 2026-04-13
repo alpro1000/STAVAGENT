@@ -224,15 +224,26 @@ router.post('/', async (req, res) => {
     }
 
     const insertMany = db.transaction(async (client, positions) => {
+      // metadata column added in Phase 10 migration — accepting it here lets
+      // Aplikovat create new sibling work rows (bednění, podpěry, zrání, …)
+      // with their TOV blob in a single round trip.
       const insertStmt = client.prepare(`
         INSERT INTO positions (
           id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper,
-          crew_size, wage_czk_ph, shift_hours, days, otskp_code
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          crew_size, wage_czk_ph, shift_hours, days, otskp_code, metadata
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
 
       for (const pos of positions) {
         const id = pos.id || uuidv4();
+        // metadata is TEXT in the schema — accept either a stringified JSON
+        // (preferred) or an object (auto-serialize for safety).
+        let metadata = null;
+        if (pos.metadata != null) {
+          metadata = typeof pos.metadata === 'string'
+            ? pos.metadata
+            : JSON.stringify(pos.metadata);
+        }
         await insertStmt.run(
           id,
           bridge_id,
@@ -246,7 +257,8 @@ router.post('/', async (req, res) => {
           pos.wage_czk_ph || 398,
           pos.shift_hours || 10,
           pos.days || 0,
-          pos.otskp_code || null
+          pos.otskp_code || null,
+          metadata
         );
       }
     });
