@@ -1,12 +1,14 @@
 /**
- * Position Linking by OTSKP/URS Code Prefix v1.0
+ * Position Linking by OTSKP/URS Code Prefix v1.1
  *
- * Links related positions (beton + bednění + výztuž + předpětí) by their
- * catalog code prefix. The first 4 digits of OTSKP/URS codes identify the
- * construction element; the 5th digit identifies the work type.
+ * Links related positions (beton + bednění + výztuž + předpětí + podpěry + zrání)
+ * by their catalog code prefix. The first 4 digits of OTSKP/URS codes identify
+ * the construction element; the 5th digit identifies the work type.
  *
  * OTSKP (bridges): 6 digits, d5: 1-3=beton, 6=výztuž, 7=předpětí
  * URS (buildings): 9 digits, d5: 2=beton, 5=bednění, 6=výztuž
+ *
+ * RTS / unknown: name-based fallback via detectWorkTypeFromName.
  *
  * Reference: OTSKP catalog (17,904 entries), URS classification system.
  */
@@ -15,7 +17,14 @@
 
 export type CatalogType = 'otskp' | 'urs' | 'unknown';
 
-export type WorkType = 'beton' | 'bednění' | 'bednění_zřízení' | 'bednění_odstranění' | 'výztuž' | 'předpětí' | 'unknown';
+export type WorkType =
+  | 'beton'
+  | 'bednění' | 'bednění_zřízení' | 'bednění_odstranění'
+  | 'výztuž'
+  | 'předpětí'
+  | 'podpěry'      // podpěrná konstrukce / skruž / stojky
+  | 'zrání'        // ošetřování betonu
+  | 'unknown';
 
 export interface LinkedPosition {
   /** Position ID in Monolit DB */
@@ -58,6 +67,13 @@ export interface TOVLaborEntry {
   hourlyRate: number;
   totalCost: number;
   note?: string;
+  /**
+   * Per-entry source flag (Aplikovat split refactor).
+   * 'calculator' = added by Aplikovat — eligible for [×] delete in TOV.
+   * 'manual'     = added by user manually or by import — preserved.
+   * Undefined entries fall back to the parent TOVEntries.source for legacy data.
+   */
+  source?: 'calculator' | 'manual';
 }
 
 /** TOV material/rental entry */
@@ -148,6 +164,8 @@ export function workTypeToSubtype(wt: WorkType): string {
     case 'bednění_odstranění': return 'odbednění';
     case 'výztuž': return 'výztuž';
     case 'předpětí': return 'předpětí';
+    case 'podpěry': return 'podpěrná konstr.';
+    case 'zrání': return 'zrání';
     default: return 'jiné';
   }
 }
@@ -162,35 +180,64 @@ interface PositionMinimal {
   subtype: string;
   unit: string;
   qty: number;
+  /** Used by findLinkedPositions to match siblings inside the same element block */
+  bridge_id?: string;
 }
 
 /**
- * Find related positions by code prefix.
- * Groups positions where the first 4 digits match.
+ * Find related positions by code prefix — with two fallbacks.
+ *
+ * Matching strategy (in priority order):
+ *   1. Same OTSKP/URS code prefix (first 4 digits of `otskp_code`)
+ *      → use detectWorkType(code); if it returns 'unknown', fall back to
+ *        detectWorkTypeFromName(item_name|part_name).
+ *   2. If `currentCode` has no recognizable prefix BUT the caller passed
+ *      `currentPartName` + `currentBridgeId`, we treat all positions sharing
+ *      that part_name+bridge_id as siblings (for RTS / no-code soupis).
+ *      Work type is derived from each sibling's name.
+ *
+ * @param currentCode    OTSKP/URS code of the "main" position (may be empty for RTS)
+ * @param allPositions   All positions in the project
+ * @param ctx            Optional context for sibling-by-name matching
  */
 export function findLinkedPositions(
   currentCode: string,
   allPositions: PositionMinimal[],
+  ctx?: { currentPartName?: string; currentBridgeId?: string },
 ): PositionGroup {
   const prefix = getCodePrefix(currentCode);
   const catalog = detectCatalog(currentCode);
+  const partName = ctx?.currentPartName?.trim();
+  const bridgeId = ctx?.currentBridgeId;
 
-  if (!prefix) {
+  // No prefix AND no part_name fallback → empty group
+  if (!prefix && !partName) {
     return { prefix: '', catalog: 'unknown', main: null, related: [], all: [] };
   }
 
   const linked: LinkedPosition[] = [];
   let main: LinkedPosition | null = null;
+  const seen = new Set<string>();
 
-  for (const pos of allPositions) {
-    if (!pos.otskp_code) continue;
-    const posPrefix = getCodePrefix(pos.otskp_code);
-    if (posPrefix !== prefix) continue;
+  const consider = (pos: PositionMinimal, codeWasUsed: boolean) => {
+    if (seen.has(pos.id)) return;
 
-    const wt = detectWorkType(pos.otskp_code);
+    // Resolve work type: try code first, fall back to name
+    let wt: WorkType = 'unknown';
+    if (codeWasUsed && pos.otskp_code) {
+      wt = detectWorkType(pos.otskp_code);
+    }
+    if (wt === 'unknown') {
+      wt = detectWorkTypeFromName(pos.item_name || pos.part_name || '');
+    }
+    if (wt === 'unknown') {
+      // Last resort: trust the existing subtype if it maps cleanly
+      wt = subtypeToWorkType(pos.subtype);
+    }
+
     const lp: LinkedPosition = {
       id: pos.id,
-      code: pos.otskp_code,
+      code: pos.otskp_code || '',
       work_type: wt,
       name: pos.item_name || pos.part_name || '',
       unit: pos.unit,
@@ -198,15 +245,40 @@ export function findLinkedPositions(
       subtype: pos.subtype,
     };
 
+    seen.add(pos.id);
     if (wt === 'beton') {
-      main = lp;
+      // First beton wins (in case of duplicates)
+      if (!main) main = lp;
+      else linked.push(lp);
     } else {
       linked.push(lp);
+    }
+  };
+
+  // Pass 1: code-prefix match
+  if (prefix) {
+    for (const pos of allPositions) {
+      if (!pos.otskp_code) continue;
+      const posPrefix = getCodePrefix(pos.otskp_code);
+      if (posPrefix !== prefix) continue;
+      consider(pos, true);
+    }
+  }
+
+  // Pass 2: part_name + bridge_id sibling match (catches positions that have
+  // no OTSKP code at all, e.g. RTS imports or manually added rows).
+  if (partName) {
+    for (const pos of allPositions) {
+      if (seen.has(pos.id)) continue;
+      if (!pos.part_name) continue;
+      if (pos.part_name.trim() !== partName) continue;
+      if (bridgeId && pos.bridge_id && pos.bridge_id !== bridgeId) continue;
+      consider(pos, false);
     }
   }
 
   return {
-    prefix,
+    prefix: prefix || '',
     catalog,
     main,
     related: linked,
@@ -215,17 +287,58 @@ export function findLinkedPositions(
 }
 
 /**
+ * Coarse mapping from existing Monolit subtype → WorkType (used when we have
+ * neither a recognizable OTSKP/URS code nor a meaningful name).
+ */
+function subtypeToWorkType(subtype: string): WorkType {
+  switch ((subtype || '').toLowerCase()) {
+    case 'beton': return 'beton';
+    case 'bednění': return 'bednění_zřízení';
+    case 'odbednění': return 'bednění_odstranění';
+    case 'výztuž': return 'výztuž';
+    case 'předpětí': return 'předpětí';
+    case 'podpěrná konstr.':
+    case 'podpěrná konstr':
+    case 'podpěry':
+    case 'skruž':
+      return 'podpěry';
+    case 'zrání': return 'zrání';
+    default: return 'unknown';
+  }
+}
+
+/**
  * Fallback: detect work type from position name (when no OTSKP/URS code).
+ *
+ * Used by findLinkedPositions when detectWorkType(code) returns 'unknown'
+ * (e.g. RTS soupis, manually added positions, OTSKP positions with mistyped
+ * codes). Patterns are diacritic-insensitive and match Czech + a couple of
+ * common English / German equivalents.
  */
 export function detectWorkTypeFromName(name: string): WorkType {
   if (!name) return 'unknown';
-  const lower = name.toLowerCase();
+  // Strip diacritics so that "BEDNĚNÍ" and "bedneni" match the same regex
+  const lower = name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
 
-  if (/předpětí|předpínání|předpínac|y1860/.test(lower)) return 'předpětí';
-  if (/odstran.*bedn|odbedň|demontáž.*bedn/.test(lower)) return 'bednění_odstranění';
-  if (/zřízen.*bedn|montáž.*bedn|bednění|bedneni/.test(lower)) return 'bednění_zřízení';
-  if (/výztuž|armování|armatura|ocel\s*b500|kari\s*síť/.test(lower)) return 'výztuž';
-  if (/beton|železobet|prostý\s*bet/.test(lower)) return 'beton';
+  // Order matters — more specific patterns must come first.
+  // Předpětí must match before výztuž (which would also catch "predpinaci vyztuz").
+  if (/predpet|predpinan|predpinac|predpjat|y1860|y\s*1860/.test(lower)) return 'předpětí';
+  // Odstranění bednění (must precede generic bedneni)
+  if (/odstran.*bedn|odbedn|demont.*bedn|stripping/.test(lower)) return 'bednění_odstranění';
+  // Zřízení bednění
+  if (/zrizen.*bedn|montaz.*bedn|bedneni|salovan|formwork|forma\s*beton/.test(lower)) return 'bednění_zřízení';
+  // Podpěrná konstrukce / skruž / shoring (BUT not "shoring" inside another keyword)
+  if (/podper|skruz|stojk|falsework|shoring/.test(lower)) return 'podpěry';
+  // Ošetřování / zrání (curing) — intentionally before "vyztuž" to avoid
+  // matching "ošetřování výztuže".
+  if (/osetrov|zrani(?!\s*v)|curing|kropeni/.test(lower)) return 'zrání';
+  // Výztuž / armování
+  if (/vyztuz|armovan|armatura|ocel\s*b500|kari\s*sit/.test(lower)) return 'výztuž';
+  // Beton (generic) — comes last to avoid swallowing the more specific ones
+  if (/beton|zelezobet|prosty\s*bet/.test(lower)) return 'beton';
 
   return 'unknown';
 }

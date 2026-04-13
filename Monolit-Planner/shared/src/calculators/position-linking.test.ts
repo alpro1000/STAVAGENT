@@ -168,12 +168,86 @@ describe('detectWorkTypeFromName — fallback', () => {
     expect(detectWorkTypeFromName('Odstranění bednění')).toBe('bednění_odstranění');
   });
 
+  it('detects bednění regardless of diacritics or case', () => {
+    expect(detectWorkTypeFromName('BEDNĚNÍ PILOT')).toBe('bednění_zřízení');
+    expect(detectWorkTypeFromName('bedneni piloty')).toBe('bednění_zřízení');
+    expect(detectWorkTypeFromName('Šalování stěn')).toBe('bednění_zřízení');
+  });
+
   it('detects předpětí from name', () => {
     expect(detectWorkTypeFromName('Předpínací výztuž Y1860S7')).toBe('předpětí');
+    expect(detectWorkTypeFromName('Předpětí kabely')).toBe('předpětí');
+  });
+
+  it('detects podpěry from name', () => {
+    expect(detectWorkTypeFromName('Podpěrná konstrukce stropní desky')).toBe('podpěry');
+    expect(detectWorkTypeFromName('Skruž mostovky')).toBe('podpěry');
+    expect(detectWorkTypeFromName('Stojky pod průvlak')).toBe('podpěry');
+  });
+
+  it('detects zrání from name', () => {
+    expect(detectWorkTypeFromName('Ošetřování betonu kropením')).toBe('zrání');
+    expect(detectWorkTypeFromName('Curing concrete')).toBe('zrání');
   });
 
   it('returns unknown for unrecognized', () => {
     expect(detectWorkTypeFromName('Zemní práce')).toBe('unknown');
     expect(detectWorkTypeFromName('')).toBe('unknown');
+  });
+});
+
+describe('findLinkedPositions — name fallback (Krok 1)', () => {
+  it('uses detectWorkTypeFromName when code returns unknown', () => {
+    // Position has an OTSKP code with d5=4 (not mapped) but its name says BEDNĚNÍ
+    const positions = [
+      { id: 'b', otskp_code: '333325', item_name: 'MOSTNÍ OPĚRY ZE ŽB', subtype: 'beton', unit: 'M3', qty: 100 },
+      { id: 'f', otskp_code: '333345', item_name: 'BEDNĚNÍ MOSTNÍCH OPĚR', subtype: 'bednění', unit: 'm2', qty: 200 },
+    ];
+    const group = findLinkedPositions('333325', positions);
+    expect(group.main?.id).toBe('b');
+    const fw = group.related.find(r => r.id === 'f');
+    expect(fw).toBeDefined();
+    expect(fw!.work_type).toBe('bednění_zřízení');
+  });
+
+  it('matches RTS-style siblings by part_name when no code is set', () => {
+    const positions = [
+      { id: 'a', item_name: 'BETONÁŽ PILOT', part_name: 'PILOTY 600', subtype: 'beton', unit: 'M3', qty: 100, bridge_id: 'B1' },
+      { id: 'b', item_name: 'BEDNĚNÍ PILOT', part_name: 'PILOTY 600', subtype: 'bednění', unit: 'm2', qty: 50, bridge_id: 'B1' },
+      { id: 'c', item_name: 'VÝZTUŽ PILOT B500B', part_name: 'PILOTY 600', subtype: 'výztuž', unit: 'T', qty: 5, bridge_id: 'B1' },
+      { id: 'x', item_name: 'BETONÁŽ ZÁKLADŮ', part_name: 'ZÁKLADY', subtype: 'beton', unit: 'M3', qty: 80, bridge_id: 'B1' },
+    ];
+    const group = findLinkedPositions('', positions, { currentPartName: 'PILOTY 600', currentBridgeId: 'B1' });
+    expect(group.main?.id).toBe('a');
+    expect(group.related.map(r => r.id).sort()).toEqual(['b', 'c']);
+    expect(group.related.find(r => r.id === 'b')!.work_type).toBe('bednění_zřízení');
+    expect(group.related.find(r => r.id === 'c')!.work_type).toBe('výztuž');
+  });
+
+  it('combines OTSKP prefix match AND part_name siblings', () => {
+    const positions = [
+      // Main beton with code
+      { id: 'b', otskp_code: '273323611', item_name: 'Základy ŽB C30/37', part_name: 'ZÁKLADY', subtype: 'beton', unit: 'M3', qty: 50, bridge_id: 'B1' },
+      // Linked výztuž with matching prefix
+      { id: 'v', otskp_code: '273361821', item_name: 'Výztuž základů', part_name: 'ZÁKLADY', subtype: 'výztuž', unit: 'T', qty: 4, bridge_id: 'B1' },
+      // Sibling with NO code but matching part_name
+      { id: 'p', item_name: 'PODPĚRNÁ KONSTRUKCE', part_name: 'ZÁKLADY', subtype: 'podpěrná konstr.', unit: 'm2', qty: 60, bridge_id: 'B1' },
+    ];
+    const group = findLinkedPositions('273323611', positions, { currentPartName: 'ZÁKLADY', currentBridgeId: 'B1' });
+    expect(group.main?.id).toBe('b');
+    const ids = group.related.map(r => r.id).sort();
+    expect(ids).toEqual(['p', 'v']);
+    const podpery = group.related.find(r => r.id === 'p')!;
+    expect(podpery.work_type).toBe('podpěry');
+  });
+
+  it('respects bridge_id when filtering siblings', () => {
+    const positions = [
+      { id: 'a', item_name: 'BETONÁŽ', part_name: 'PILOTY', subtype: 'beton', unit: 'M3', qty: 100, bridge_id: 'B1' },
+      { id: 'b', item_name: 'BEDNĚNÍ', part_name: 'PILOTY', subtype: 'bednění', unit: 'm2', qty: 50, bridge_id: 'B2' },
+    ];
+    const group = findLinkedPositions('', positions, { currentPartName: 'PILOTY', currentBridgeId: 'B1' });
+    // Only B1 sibling should appear (a is main, b is on B2 → filtered out)
+    expect(group.related).toHaveLength(0);
   });
 });
