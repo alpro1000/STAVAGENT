@@ -7,15 +7,26 @@
  * Supports two data sources:
  *   1. tov_entries in metadata (from calculator Aplikovat) — multiple professions
  *   2. Position's own fields (crew_size, days, wage) — legacy single profession
+ *
+ * Quick-fix #2: each calculator-added labor row has a [×] delete button.
+ * Click → confirm → onDeleteLaborEntry(entryId). Parent recomputes totals.
  */
 
+import { Fragment } from 'react';
+import { X } from 'lucide-react';
 import type { Position } from '@stavagent/monolit-shared';
 import { SUBTYPE_LABELS } from '@stavagent/monolit-shared';
-import type { TOVEntries } from '@stavagent/monolit-shared';
+import type { TOVEntries, TOVLaborEntry } from '@stavagent/monolit-shared';
 
 interface Props {
   positionId: string;
   position: Position;
+  /**
+   * Called when the user confirms deletion of a calculator-added labor entry.
+   * Only labor rows from `tov_entries` (source='calculator') are deletable —
+   * legacy / import rows have no [×] button.
+   */
+  onDeleteLaborEntry?: (entry: TOVLaborEntry) => void | Promise<void>;
 }
 
 /** Parse metadata JSON safely */
@@ -31,7 +42,7 @@ function fmt(n: number | null | undefined, d = 0): string {
   return n.toLocaleString('cs-CZ', { minimumFractionDigits: d, maximumFractionDigits: d });
 }
 
-export default function FlatTOVSection({ position: pos }: Props) {
+export default function FlatTOVSection({ position: pos, onDeleteLaborEntry }: Props) {
   const meta = parseMetadata(pos);
   const tovEntries: TOVEntries | null = meta?.tov_entries ?? null;
 
@@ -50,7 +61,7 @@ export default function FlatTOVSection({ position: pos }: Props) {
   if (tovEntries && (tovEntries.labor.length > 0 || tovEntries.materials.length > 0)) {
     return (
       <>
-        <RichTOV tov={tovEntries} pos={pos} meta={meta} />
+        <RichTOV tov={tovEntries} pos={pos} meta={meta} onDeleteLaborEntry={onDeleteLaborEntry} />
         <LinkedPositionsBadges meta={meta} />
       </>
     );
@@ -66,87 +77,162 @@ export default function FlatTOVSection({ position: pos }: Props) {
 }
 
 /** Rich TOV with multiple professions — from calculator Aplikovat */
-function RichTOV({ tov, meta }: { tov: TOVEntries; pos: Position; meta: Record<string, any> | null }) {
-  const rows: { type: 'group' | 'item' | 'detail' | 'total'; label: string; hours?: string; cost?: string }[] = [];
+function RichTOV({
+  tov, meta, onDeleteLaborEntry,
+}: {
+  tov: TOVEntries;
+  pos: Position;
+  meta: Record<string, any> | null;
+  onDeleteLaborEntry?: (entry: TOVLaborEntry) => void | Promise<void>;
+}) {
+  // Calculator-added entries are deletable. Legacy/import entries don't have
+  // a TOVEntries blob at all (they go through LegacyTOV), so we can simply
+  // gate on source==='calculator'.
+  const isCalculatorSource = tov.source === 'calculator';
+  const deletable = isCalculatorSource && !!onDeleteLaborEntry;
 
-  // Labor section
-  if (tov.labor.length > 0) {
-    rows.push({ type: 'group', label: 'Lidské zdroje' });
-    let totalLaborH = 0;
-    let totalLaborCZK = 0;
-
-    for (const entry of tov.labor) {
-      rows.push({
-        type: 'item',
-        label: `${entry.profession}${entry.note ? ` (${entry.note})` : ''}`,
-        hours: fmt(entry.normHours, 1),
-        cost: fmt(entry.totalCost),
-      });
-      rows.push({
-        type: 'detail',
-        label: `${entry.count} lid${entry.count === 1 ? '' : entry.count < 5 ? 'é' : 'í'} × ${fmt(entry.hours, 1)}h × ${entry.hourlyRate} Kč/h`,
-      });
-      totalLaborH += entry.normHours;
-      totalLaborCZK += entry.totalCost;
-    }
-
-    rows.push({
-      type: 'total',
-      label: 'Celkem práce',
-      hours: fmt(totalLaborH, 1),
-      cost: fmt(totalLaborCZK),
-    });
-  }
-
-  // Materials/Rental section
-  if (tov.materials.length > 0) {
-    rows.push({ type: 'group', label: 'Materiály / Pronájem' });
-    let totalMatCZK = 0;
-
-    for (const entry of tov.materials) {
-      const rentalInfo = entry.rentalMonths
-        ? ` × ${entry.rentalMonths} měs.`
-        : '';
-      rows.push({
-        type: 'item',
-        label: `${entry.name}${entry.note ? ` (${entry.note})` : ''}`,
-        hours: `${fmt(entry.quantity, 1)} ${entry.unit}`,
-        cost: fmt(entry.totalCost),
-      });
-      if (entry.unitPrice > 0) {
-        rows.push({
-          type: 'detail',
-          label: `${fmt(entry.quantity, 1)} ${entry.unit} × ${fmt(entry.unitPrice)} Kč/${entry.unit}${rentalInfo}`,
-        });
-      }
-      totalMatCZK += entry.totalCost;
-    }
-
-    rows.push({
-      type: 'total',
-      label: 'Celkem materiály',
-      cost: fmt(totalMatCZK),
-    });
-  }
-
-  // Pump from metadata (legacy compat)
-  if (meta?.pump_cost_czk) {
-    rows.push({ type: 'group', label: 'Stroje' });
-    rows.push({ type: 'item', label: 'Čerpadlo betonu', cost: fmt(meta.pump_cost_czk) });
-  }
-
-  // Grand total
-  const totalLabor = tov.labor.reduce((s, e) => s + e.totalCost, 0);
-  const totalMat = tov.materials.reduce((s, e) => s + e.totalCost, 0);
+  const totalLaborH = tov.labor.reduce((s, e) => s + e.normHours, 0);
+  const totalLaborCZK = tov.labor.reduce((s, e) => s + e.totalCost, 0);
+  const totalMatCZK = tov.materials.reduce((s, e) => s + e.totalCost, 0);
   const totalPump = meta?.pump_cost_czk || 0;
-  rows.push({
-    type: 'total',
-    label: 'CELKEM',
-    hours: fmt(tov.labor.reduce((s, e) => s + e.normHours, 0), 1),
-    cost: fmt(totalLabor + totalMat + totalPump),
-  });
 
-  return <>{rows.map((row, i) => <TOVRow key={i} row={row} />)}</>;
+  const handleDelete = (entry: TOVLaborEntry) => {
+    if (!onDeleteLaborEntry) return;
+    const label = `${entry.profession}${entry.note ? ` (${entry.note})` : ''}`;
+    if (!confirm(`Smazat práci "${label}"?\n\nTato akce odstraní řádek z TOV a přepočítá souhrn pozice (celkem hodin a Kč).`)) return;
+    void onDeleteLaborEntry(entry);
+  };
+
+  return (
+    <>
+      {tov.labor.length > 0 && (
+        <>
+          <TOVRow row={{ type: 'group', label: 'Lidské zdroje' }} />
+          {tov.labor.map((entry, i) => (
+            <LaborEntryRows
+              key={entry.id || i}
+              entry={entry}
+              deletable={deletable}
+              onDelete={() => handleDelete(entry)}
+            />
+          ))}
+          <TOVRow row={{
+            type: 'total',
+            label: 'Celkem práce',
+            hours: fmt(totalLaborH, 1),
+            cost: fmt(totalLaborCZK),
+          }} />
+        </>
+      )}
+
+      {tov.materials.length > 0 && (
+        <>
+          <TOVRow row={{ type: 'group', label: 'Materiály / Pronájem' }} />
+          {tov.materials.map((entry, i) => {
+            const rentalInfo = entry.rentalMonths ? ` × ${entry.rentalMonths} měs.` : '';
+            return (
+              <Fragment key={entry.id || i}>
+                <TOVRow row={{
+                  type: 'item',
+                  label: `${entry.name}${entry.note ? ` (${entry.note})` : ''}`,
+                  hours: `${fmt(entry.quantity, 1)} ${entry.unit}`,
+                  cost: fmt(entry.totalCost),
+                }} />
+                {entry.unitPrice > 0 && (
+                  <TOVRow row={{
+                    type: 'detail',
+                    label: `${fmt(entry.quantity, 1)} ${entry.unit} × ${fmt(entry.unitPrice)} Kč/${entry.unit}${rentalInfo}`,
+                  }} />
+                )}
+              </Fragment>
+            );
+          })}
+          <TOVRow row={{ type: 'total', label: 'Celkem materiály', cost: fmt(totalMatCZK) }} />
+        </>
+      )}
+
+      {meta?.pump_cost_czk ? (
+        <>
+          <TOVRow row={{ type: 'group', label: 'Stroje' }} />
+          <TOVRow row={{ type: 'item', label: 'Čerpadlo betonu', cost: fmt(meta.pump_cost_czk) }} />
+        </>
+      ) : null}
+
+      <TOVRow row={{
+        type: 'total',
+        label: 'CELKEM',
+        hours: fmt(totalLaborH, 1),
+        cost: fmt(totalLaborCZK + totalMatCZK + totalPump),
+      }} />
+    </>
+  );
+}
+
+/** A labor entry rendered as item + detail rows, optionally with [×] delete */
+function LaborEntryRows({
+  entry, deletable, onDelete,
+}: {
+  entry: TOVLaborEntry;
+  deletable: boolean;
+  onDelete: () => void;
+}) {
+  const label = `${entry.profession}${entry.note ? ` (${entry.note})` : ''}`;
+  return (
+    <>
+      <tr className="flat-tov">
+        <td colSpan={8}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            {label}
+            {deletable && (
+              <button
+                type="button"
+                onClick={onDelete}
+                title={`Smazat práci "${label}"`}
+                style={{
+                  marginLeft: 4,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 18,
+                  height: 18,
+                  padding: 0,
+                  border: '1px solid var(--stone-300, #d6d3d1)',
+                  borderRadius: 4,
+                  background: 'transparent',
+                  color: 'var(--stone-400, #a8a29e)',
+                  cursor: 'pointer',
+                  lineHeight: 0,
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = '#dc2626';
+                  e.currentTarget.style.borderColor = '#fecaca';
+                  e.currentTarget.style.background = '#fef2f2';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = 'var(--stone-400, #a8a29e)';
+                  e.currentTarget.style.borderColor = 'var(--stone-300, #d6d3d1)';
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <X size={11} />
+              </button>
+            )}
+          </span>
+        </td>
+        <td className="flat-col--right flat-mono">{fmt(entry.normHours, 1)}</td>
+        <td className="flat-col--right flat-mono">{fmt(entry.totalCost)}</td>
+        <td colSpan={4}></td>
+      </tr>
+      <tr className="flat-tov flat-tov--detail">
+        <td colSpan={8} style={{ paddingLeft: 32 }}>
+          {`${entry.count} lid${entry.count === 1 ? '' : entry.count < 5 ? 'é' : 'í'} × ${fmt(entry.hours, 1)}h × ${entry.hourlyRate} Kč/h`}
+        </td>
+        <td className="flat-col--right flat-mono"></td>
+        <td className="flat-col--right flat-mono"></td>
+        <td colSpan={4}></td>
+      </tr>
+    </>
+  );
 }
 
 /** Legacy single-profession TOV from position fields */

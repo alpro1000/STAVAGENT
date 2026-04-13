@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosition }: Props) {
-  const { showOnlyRFI, setShowOnlyRFI, selectedProjectId } = useUI();
+  const { showOnlyRFI, setShowOnlyRFI, showOnlyMonolity, setShowOnlyMonolity, selectedProjectId } = useUI();
   const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -83,6 +83,11 @@ export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosi
             <input type="checkbox" checked={showOnlyRFI}
               onChange={e => setShowOnlyRFI(e.target.checked)} />
             Jen problémy
+          </label>
+          <label className="flat-filter-check" title="Pouze monolitické práce — elementy s betonem (Vypočítat) a OTSKP kódem 2xx/3xx/4xx">
+            <input type="checkbox" checked={showOnlyMonolity}
+              onChange={e => setShowOnlyMonolity(e.target.checked)} />
+            Jen monolity
           </label>
         </>
       )}
