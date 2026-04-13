@@ -474,8 +474,13 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string, s
         // Convention: a range [a, b] covers days (a, b] (exclusive start,
         // inclusive end) — matches how the scheduler emits them.
         for (const phaseKey of PHASE_ORDER) {
-          const range = (td as any)[phaseKey] as [number, number] | undefined;
-          if (!range) continue;
+          // Typed indexed access — td has assembly/rebar/concrete/curing/
+          // stripping as required [number, number] fields in the local
+          // PlannerOutput interface. Guard with Array.isArray so that a
+          // malformed runtime payload (e.g. missing phase) can't crash the
+          // sheet — we just skip that cell.
+          const range = td[phaseKey];
+          if (!Array.isArray(range) || range.length < 2) continue;
           if (d > range[0] && d <= range[1]) {
             cell.fill = fillBg(PHASE[phaseKey].argb.slice(2));  // drop 'FF' prefix
             break;

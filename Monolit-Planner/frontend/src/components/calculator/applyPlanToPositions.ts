@@ -7,13 +7,19 @@
  *   2. Routes each entry to its destination position:
  *        URL position_id (most reliable)
  *        → linked position via OTSKP/URS prefix or name fallback
- *        → fallback to the main beton position
- *   3. PUTs metadata (TOV blob) on every destination position in one batch.
+ *        → AUTO-CREATE a new sibling Position record (POST)
+ *        → last-resort merge into the main beton position
+ *   3. POSTs new sibling positions (with their TOV metadata in one shot),
+ *      then PUTs updates on every existing destination position in a
+ *      single batch.
  *
- * Auto-create of NEW sibling positions is intentionally NOT implemented —
- * the calculator's job is to populate work rows that the BOQ already lists
- * (or that the user has explicitly linked). Creating phantom rows surprises
- * users; if a row is missing, they should add it via "Přidat práci".
+ * Per-entry source flag: every labor entry carries source: 'calculator',
+ * which the FlatTOVSection [×] delete gate uses to distinguish Aplikovat
+ * rows from manual/import rows.
+ *
+ * Element-type filter: pilota and podzemni_stena skip the bednění /
+ * odbednění drafts entirely — they use pažnice / tremie pipe / guide
+ * walls, not systémové bednění.
  */
 
 import {
@@ -414,8 +420,12 @@ function templateForWorkType(
     case 'výztuž':
       return { subtype: 'výztuž', unit: 't', qty: totalRebarT, item_name: `${baseItemName} — výztuž B500B` };
     case 'předpětí': {
-      // Y1860S7 typical ratio ~30 kg/m³
-      const massT = round1((form.volume_m3 * 30) / 1000);
+      // Y1860S7 typical ratio ~30 kg/m³. Guard against 0/NaN volume so the
+      // backend validator (which requires qty >= 0 and typeof === 'number')
+      // never receives a bad payload — e.g. pilota/podzemni_stena where the
+      // user may not have entered a volume.
+      const volumeM3 = Number.isFinite(form.volume_m3) && form.volume_m3 > 0 ? form.volume_m3 : 0;
+      const massT = round1((volumeM3 * 30) / 1000);
       return { subtype: 'předpětí', unit: 't', qty: massT, item_name: `${baseItemName} — předpětí Y1860` };
     }
     case 'podpěry':
@@ -520,9 +530,12 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
 
     const spec = newSpecs.get(bucket.positionId);
     if (spec) {
-      // New sibling position — POST with full template + TOV blob in one shot
+      // New sibling position — POST with full template + TOV blob in one shot.
+      // bridge_id is sent both at request-body top level (primary) AND
+      // per-position (redundant but silences strict payload validators).
       createPayloads.push({
         id: bucket.positionId,
+        bridge_id: bridgeId,
         part_name: positionContext.part_name,
         item_name: spec.item_name,
         subtype: spec.subtype,
