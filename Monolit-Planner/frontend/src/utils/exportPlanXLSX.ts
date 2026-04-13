@@ -419,27 +419,101 @@ export async function exportPlanToXLSX(plan: PlannerOutput, startDate: string, s
     }
   });
 
-  // ─── Sheet 3: Gantt (ASCII) ─────────────────────────────────────────
-  if (plan.schedule.gantt) {
-    const ws3 = wb.addWorksheet('Gantt', {
-      views: [{ showGridLines: false }],
-    });
-    ws3.columns = [{ width: 100 }];
+  // ─── Sheet 3: Gantt (colored cells) ─────────────────────────────────
+  // Draws one row per záběr; each day-column gets a background colour based
+  // on the active phase for that day (precedence: concrete > stripping >
+  // curing > rebar > assembly). Legend rows with colour swatches follow.
+  //
+  // Falls back to the old ASCII dump only when tact_details is empty.
+  const hasTacts = (plan.schedule.tact_details?.length ?? 0) > 0;
+  const totalDays = Math.max(1, Math.ceil(plan.schedule.total_days || 0));
+  if (hasTacts) {
+    const ws3 = wb.addWorksheet('Gantt', { views: [{ showGridLines: false }] });
 
-    const ganttLines = plan.schedule.gantt.split('\n');
-    ganttLines.forEach((line, idx) => {
+    // Phase → colour map (matches the task spec palette)
+    const PHASE = {
+      assembly:  { argb: 'FF1E40AF', label: 'Montáž bednění' },
+      rebar:     { argb: 'FF6B7280', label: 'Výztuž' },
+      concrete:  { argb: 'FFD97706', label: 'Betonáž' },
+      curing:    { argb: 'FF10B981', label: 'Zrání' },
+      stripping: { argb: 'FF8B5CF6', label: 'Demontáž' },
+    } as const;
+    const PHASE_ORDER: Array<keyof typeof PHASE> =
+      ['concrete', 'stripping', 'curing', 'rebar', 'assembly'];
+
+    // Narrow 3-char day columns + wider label column
+    ws3.columns = [
+      { width: 8 },
+      ...Array.from({ length: totalDays }, () => ({ width: 3 })),
+    ];
+
+    // Header row: "Záběr" + day numbers 1..N
+    const hdrCells: (string | number)[] = ['Záběr'];
+    for (let d = 1; d <= totalDays; d++) hdrCells.push(d);
+    const hdr = ws3.addRow(hdrCells);
+    hdr.height = 18;
+    hdr.font = { name: FONT_MONO, size: 9, bold: true, color: { argb: 'FF' + C.textWhite } };
+    for (let i = 1; i <= totalDays + 1; i++) {
+      const cell = hdr.getCell(i);
+      cell.fill = fillBg(C.titleBg);
+      cell.alignment = { horizontal: 'center', vertical: 'middle' };
+    }
+
+    // Data rows — one per záběr
+    plan.schedule.tact_details.forEach((td) => {
+      const row = ws3.addRow([`T${td.tact}`]);
+      row.height = 16;
+      row.getCell(1).font = { name: FONT_MONO, size: 10, bold: true, color: { argb: 'FF' + C.textPrimary } };
+      row.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };
+      row.getCell(1).fill = fillBg(C.headerBg);
+
+      for (let d = 1; d <= totalDays; d++) {
+        const cell = row.getCell(d + 1);
+        cell.border = borderThin(C.borderLight);
+        // Pick the highest-precedence phase whose [start, end] covers day d.
+        // Convention: a range [a, b] covers days (a, b] (exclusive start,
+        // inclusive end) — matches how the scheduler emits them.
+        for (const phaseKey of PHASE_ORDER) {
+          // Typed indexed access — td has assembly/rebar/concrete/curing/
+          // stripping as required [number, number] fields in the local
+          // PlannerOutput interface. Guard with Array.isArray so that a
+          // malformed runtime payload (e.g. missing phase) can't crash the
+          // sheet — we just skip that cell.
+          const range = td[phaseKey];
+          if (!Array.isArray(range) || range.length < 2) continue;
+          if (d > range[0] && d <= range[1]) {
+            cell.fill = fillBg(PHASE[phaseKey].argb.slice(2));  // drop 'FF' prefix
+            break;
+          }
+        }
+      }
+    });
+
+    // Legend
+    ws3.addRow([]);
+    const legendTitle = ws3.addRow(['Legenda:']);
+    legendTitle.getCell(1).font = { name: FONT_MAIN, size: 10, bold: true, color: { argb: 'FF' + C.textSecondary } };
+
+    for (const key of ['assembly', 'rebar', 'concrete', 'curing', 'stripping'] as const) {
+      const info = PHASE[key];
+      const r = ws3.addRow(['', info.label]);
+      const swatch = r.getCell(1);
+      swatch.fill = fillBg(info.argb.slice(2));
+      swatch.border = borderThin(C.borderLight);
+      r.getCell(2).font = { name: FONT_MAIN, size: 10, color: { argb: 'FF' + C.textPrimary } };
+      r.getCell(2).alignment = { horizontal: 'left', vertical: 'middle' };
+    }
+  } else if (plan.schedule.gantt) {
+    // Fallback: no tact_details → dump the ASCII Gantt so the sheet still
+    // shows *something* useful.
+    const ws3 = wb.addWorksheet('Gantt', { views: [{ showGridLines: false }] });
+    ws3.columns = [{ width: 100 }];
+    plan.schedule.gantt.split('\n').forEach((line, idx) => {
       const r = ws3.addRow([line]);
       r.font = { name: FONT_MONO, size: 10, color: { argb: 'FF' + C.textPrimary } };
-
-      // First line (header with day numbers) gets title style
       if (idx === 0) {
         r.font = { name: FONT_MONO, size: 10, bold: true, color: { argb: 'FF' + C.textWhite } };
         r.getCell(1).fill = fillBg(C.titleBg);
-      }
-      // Legend line
-      if (line.includes('=montáž') || line.includes('=volno')) {
-        r.font = { name: FONT_MONO, size: 9, color: { argb: 'FF' + C.textSecondary } };
-        r.getCell(1).fill = fillBg(C.sectionBg);
       }
     });
   }
