@@ -23,6 +23,7 @@ import {
   type TOVMaterialEntry,
   type TOVEntries,
   type WorkType,
+  type StructuralElementType,
 } from '@stavagent/monolit-shared';
 import { aggregateScheduleDays } from '@stavagent/monolit-shared';
 import type { FormState } from './types';
@@ -126,12 +127,36 @@ const PRESTRESS_WAGE = 550;
 const round1 = (v: number) => Math.round(v * 10) / 10;
 
 /**
+ * Elements that don't use system formwork at all. For these we skip the
+ * bednění / odbednění drafts entirely regardless of what the orchestrator
+ * returned (it always runs on "Tradiční tesařské" as a placeholder).
+ *   - pilota, mikropilota → pažnice / tremie pipe, not panels
+ *   - podzemni_stena      → guide walls + bentonite slurry
+ *   - prumyslova_podlaha  → flat slab poured straight onto subbase
+ */
+const NO_FORMWORK: ReadonlySet<StructuralElementType> = new Set<StructuralElementType>([
+  'pilota',
+  'podzemni_stena',
+]);
+
+/** Should we emit a draft for this work type given the element? */
+function shouldEmit(workType: WorkType, elementType: StructuralElementType): boolean {
+  if (NO_FORMWORK.has(elementType)) {
+    if (workType === 'bednění_zřízení' || workType === 'bednění_odstranění' || workType === 'bednění') return false;
+  }
+  return true;
+}
+
+/**
  * Build all 7 work entries from a calculator plan. Entries with zero hours
- * are skipped (auto-create rule: don't materialize empty rows).
+ * are skipped (auto-create rule: don't materialize empty rows). Work types
+ * that don't apply to the element (e.g. bednění for pilota) are filtered
+ * via NO_FORMWORK / shouldEmit().
  */
 export function buildWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraft[] {
   const drafts: WorkDraft[] = [];
   let id = 1;
+  const elementType = plan.element.type;
 
   const tacts = plan.schedule.tact_details || [];
   const numTacts = plan.pour_decision.num_tacts || 1;
@@ -167,8 +192,8 @@ export function buildWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraf
     });
   }
 
-  // 2. Tesař — montáž bednění
-  if (agg.bedneni > 0) {
+  // 2. Tesař — montáž bednění (skip for piles / diaphragm walls)
+  if (agg.bedneni > 0 && shouldEmit('bednění_zřízení', elementType)) {
     const h = round1(fwCrew * shift * K_UTIL * agg.bedneni);
     drafts.push({
       workType: 'bednění_zřízení', days: agg.bedneni, crew: fwCrew, wage: fwWage,
@@ -181,8 +206,8 @@ export function buildWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraf
     });
   }
 
-  // 3. Tesař — demontáž bednění
-  if (agg.odbedneni > 0) {
+  // 3. Tesař — demontáž bednění (skip for piles / diaphragm walls)
+  if (agg.odbedneni > 0 && shouldEmit('bednění_odstranění', elementType)) {
     const h = round1(fwCrew * shift * K_UTIL * agg.odbedneni);
     drafts.push({
       workType: 'bednění_odstranění', days: agg.odbedneni, crew: fwCrew, wage: fwWage,
@@ -359,6 +384,57 @@ function effectivePourWage(plan: PlannerOutput): number {
 }
 
 /**
+ * Template for a NEW sibling position that Aplikovat needs to create when no
+ * linked/sibling match exists. Returns null for work types we never emit as
+ * standalone rows (e.g. raw 'beton', unknown).
+ */
+interface NewPositionSpec {
+  subtype: string;
+  unit: string;
+  qty: number;
+  item_name: string;
+}
+
+function templateForWorkType(
+  wt: WorkType,
+  plan: PlannerOutput,
+  form: FormState,
+  baseItemName: string,
+): NewPositionSpec | null {
+  const fwArea = parseFloat(form.formwork_area_m2) || 0;
+  const numTacts = plan.pour_decision.num_tacts || 1;
+  const totalRebarT = round1((plan.rebar.mass_kg * numTacts) / 1000);
+
+  switch (wt) {
+    case 'bednění':
+    case 'bednění_zřízení':
+      return { subtype: 'bednění', unit: 'm2', qty: fwArea || 0, item_name: `${baseItemName} — bednění` };
+    case 'bednění_odstranění':
+      return { subtype: 'odbednění', unit: 'm2', qty: fwArea || 0, item_name: `${baseItemName} — odbednění` };
+    case 'výztuž':
+      return { subtype: 'výztuž', unit: 't', qty: totalRebarT, item_name: `${baseItemName} — výztuž B500B` };
+    case 'předpětí': {
+      // Y1860S7 typical ratio ~30 kg/m³
+      const massT = round1((form.volume_m3 * 30) / 1000);
+      return { subtype: 'předpětí', unit: 't', qty: massT, item_name: `${baseItemName} — předpětí Y1860` };
+    }
+    case 'podpěry':
+      return { subtype: 'podpěrná konstr.', unit: 'm2', qty: fwArea || 0, item_name: `${baseItemName} — podpěrná konstr.` };
+    case 'zrání':
+      return { subtype: 'zrání', unit: 'dny', qty: plan.formwork.curing_days, item_name: `${baseItemName} — zrání betonu` };
+    default:
+      return null;
+  }
+}
+
+/** Generate a client-side UUID (falls back to Math.random for old browsers) */
+function genPositionId(): string {
+  const c = (globalThis as any).crypto;
+  if (c && typeof c.randomUUID === 'function') return c.randomUUID();
+  return 'pos-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
+
+/**
  * Main entry point — fetches positions, routes work entries to destinations,
  * and PUTs metadata in one batch.
  */
@@ -383,21 +459,44 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
     { currentPartName: positionContext.part_name, currentBridgeId: bridgeId },
   );
 
-  // 3. Route every draft into a destination bucket
+  // 3. Route every draft into a destination bucket.
+  //    Priority: URL ID → linked sibling → AUTO-CREATE new sibling Position.
+  //    'beton' always lands on the main position; other work types create a
+  //    new sibling row if no existing one matches.
   const buckets = new Map<string, Bucket>();
+  const newSpecs = new Map<string, NewPositionSpec>();  // newId → POST template
+  const baseItemName = positionContext.part_name || plan.element.label_cs;
+
   for (const draft of drafts) {
+    if (draft.workType === 'beton') {
+      addDraftToBucket(buckets, mainId, draft, true);
+      continue;
+    }
     const target = findTargetPosition(draft.workType, positionContext, linked);
-    const dest = target && target !== mainId ? target : mainId;
-    addDraftToBucket(buckets, dest, draft, dest === mainId);
+    if (target && target !== mainId) {
+      addDraftToBucket(buckets, target, draft, false);
+      continue;
+    }
+    // No linked sibling → create a new Position record
+    const tpl = templateForWorkType(draft.workType, plan, form, baseItemName);
+    if (!tpl) {
+      // Unknown template → merge into main as last resort
+      addDraftToBucket(buckets, mainId, draft, true);
+      continue;
+    }
+    const newId = genPositionId();
+    newSpecs.set(newId, tpl);
+    addDraftToBucket(buckets, newId, draft, false);
   }
 
   // 4. Materials always live on main beton (rentals)
   const mainBucket = buckets.get(mainId);
   const materials = buildMaterials(plan, form);
 
-  // 5. Build PUT updates
+  // 5. Build payloads — categorize into POST (new positions) vs PUT (existing)
   const calculatedAt = (monolitDataMeta.calculated_at as string) || new Date().toISOString();
-  const updates: Array<Record<string, unknown>> = [];
+  const createPayloads: Array<Record<string, unknown>> = [];
+  const updatePayloads: Array<Record<string, unknown>> = [];
 
   for (const bucket of buckets.values()) {
     const tov: TOVEntries = {
@@ -419,21 +518,40 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
         }
       : { calculated_at: calculatedAt, tov_entries: tov };
 
-    updates.push({
-      id: bucket.positionId,
-      days: bucket.days,
-      crew_size: bucket.crew,
-      wage_czk_ph: bucket.isMain ? effectivePourWage(plan) : bucket.wage,
-      shift_hours: plan.resources.shift_h,
-      ...(bucket.isMain ? { curing_days: Math.round(plan.formwork.curing_days) } : {}),
-      metadata: JSON.stringify(meta),
-    });
+    const spec = newSpecs.get(bucket.positionId);
+    if (spec) {
+      // New sibling position — POST with full template + TOV blob in one shot
+      createPayloads.push({
+        id: bucket.positionId,
+        part_name: positionContext.part_name,
+        item_name: spec.item_name,
+        subtype: spec.subtype,
+        unit: spec.unit,
+        qty: spec.qty,
+        crew_size: bucket.crew,
+        wage_czk_ph: bucket.wage,
+        shift_hours: plan.resources.shift_h,
+        days: bucket.days,
+        metadata: JSON.stringify(meta),
+      });
+    } else {
+      // Existing position — PUT update
+      updatePayloads.push({
+        id: bucket.positionId,
+        days: bucket.days,
+        crew_size: bucket.crew,
+        wage_czk_ph: bucket.isMain ? effectivePourWage(plan) : bucket.wage,
+        shift_hours: plan.resources.shift_h,
+        ...(bucket.isMain ? { curing_days: Math.round(plan.formwork.curing_days) } : {}),
+        metadata: JSON.stringify(meta),
+      });
+    }
   }
 
   // 6. Always touch the main beton position even if no draft landed there
   // (e.g. all routed to linked siblings) — keeps Aplikovat status visible.
   if (!mainBucket) {
-    updates.push({
+    updatePayloads.push({
       id: mainId,
       metadata: JSON.stringify({
         costs: monolitDataMeta.costs,
@@ -446,12 +564,32 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
     });
   }
 
-  // 7. PUT all updates in one batch
+  // 7a. POST new sibling positions (one round trip)
+  if (createPayloads.length > 0) {
+    try {
+      const res = await fetch(`${apiUrl}/api/positions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bridge_id: bridgeId, positions: createPayloads }),
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => null);
+        return { ok: false, error: errData?.error || `POST HTTP ${res.status}` };
+      }
+    } catch (err) {
+      return { ok: false, error: err instanceof Error ? err.message : String(err) };
+    }
+  }
+
+  // 7b. PUT existing position updates
+  if (updatePayloads.length === 0) {
+    return { ok: true, positionsUpdated: createPayloads.length };
+  }
   try {
     const res = await fetch(`${apiUrl}/api/positions`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bridge_id: bridgeId, updates }),
+      body: JSON.stringify({ bridge_id: bridgeId, updates: updatePayloads }),
     });
     if (!res.ok) {
       const errData = await res.json().catch(() => null);
@@ -461,7 +599,7 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
     return { ok: false, error: err instanceof Error ? err.message : String(err) };
   }
 
-  return { ok: true, positionsUpdated: updates.length };
+  return { ok: true, positionsUpdated: createPayloads.length + updatePayloads.length };
 }
 
 

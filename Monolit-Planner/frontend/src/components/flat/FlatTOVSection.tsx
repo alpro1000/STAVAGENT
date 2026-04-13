@@ -85,11 +85,18 @@ function RichTOV({
   meta: Record<string, any> | null;
   onDeleteLaborEntry?: (entry: TOVLaborEntry) => void | Promise<void>;
 }) {
-  // Calculator-added entries are deletable. Legacy/import entries don't have
-  // a TOVEntries blob at all (they go through LegacyTOV), so we can simply
-  // gate on source==='calculator'.
-  const isCalculatorSource = tov.source === 'calculator';
-  const deletable = isCalculatorSource && !!onDeleteLaborEntry;
+  // Per-entry delete gate: only labor rows flagged source='calculator' show
+  // the [×] button. Entries without an explicit source fall back to the
+  // parent blob's source (backwards compat with older Aplikovat runs where
+  // the per-entry flag wasn't set).
+  const blobIsCalculator = tov.source === 'calculator';
+  const deleteHandlerReady = !!onDeleteLaborEntry;
+  const isEntryDeletable = (entry: TOVLaborEntry): boolean => {
+    if (!deleteHandlerReady) return false;
+    if (entry.source === 'calculator') return true;
+    if (entry.source === 'manual') return false;
+    return blobIsCalculator;  // legacy data
+  };
 
   const totalLaborH = tov.labor.reduce((s, e) => s + e.normHours, 0);
   const totalLaborCZK = tov.labor.reduce((s, e) => s + e.totalCost, 0);
@@ -112,7 +119,7 @@ function RichTOV({
             <LaborEntryRows
               key={entry.id || i}
               entry={entry}
-              deletable={deletable}
+              deletable={isEntryDeletable(entry)}
               onDelete={() => handleDelete(entry)}
             />
           ))}
