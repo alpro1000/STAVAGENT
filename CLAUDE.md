@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.12.0
-**Last Updated:** 2026-04-10
+**Version:** 4.13.0
+**Last Updated:** 2026-04-11
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -104,7 +104,7 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 ### 3. Monolit-Planner (Kiosk)
 Node.js/Express + React. **132 endpoints**, **498 tests**, **~37K LOC**.
 Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
-**DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~4200 lines, auto-calc 1.5s debounce.
+**DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 7 files in `components/calculator/` (Sidebar, FormFields, Result, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
 - **Element Planner:** 22 types (11 bridge + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
@@ -124,6 +124,9 @@ Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0
 - **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory. Auto-restore plán on entry. Numbering: `Math.max(existingNums) + 1`.
 - **Auto-calc (v4.1):** 1.5s debounce, pure preview (no save). `calcStatus` indicator above KPIs. No save prompt, no autosave checkbox. Variants created ONLY by explicit "Uložit variantu" click. Wizard guard: skip steps 1-4.
 - **Průvodce (Wizard):** Inline sidebar mode (`wizardMode` + `wizardStep` 1-5). Same form state. `display:none` on sections. Steps: Element→Volume+Beton→Geometry→Rebar+Resources→Záběry. Engine-powered hints per step (maturity, lateral pressure, rebar PERT). `localStorage('planner_wizard_mode')`. Keyboard: Enter=next, Escape=back.
+- **Calculator refactor (v4.13):** PlannerPage 4620→380 lines. State/logic in `useCalculator` hook (1255 lines). Split: `CalculatorSidebar.tsx` (shell+Element+AI), `CalculatorFormFields.tsx` (Objemy+Záběry+Beton+Resources), `CalculatorResult.tsx` (KPI+Gantt+Costs+Variants), `ui.tsx` (Card/KPICard/CollapsibleSection), `types.ts`, `helpers.ts`. State owner = PlannerPage via hook.
+- **Calculator design unified (v4.13):** `r0.css` palette slate→stone, font JetBrains Mono→DM Sans body + JetBrains Mono numbers. KPI left-border + tinted bg (matches Part A). Responsive: mobile 1-col+2x2 KPI grid, tablet sidebar 300px, desktop sidebar 340px. Gantt/Souhrn/Norms in `CollapsibleSection` (open on desktop, closed on mobile). Sticky toolbar for mobile with `env(safe-area-inset-bottom)`. Inputs 16px on mobile (no iOS zoom), 44px touch targets.
+- **Pilota formwork fix:** `recommendFormwork()` has special case for `pilota` — skip pressure filter, return `Tradiční tesařské` (bored pile uses pažnice/tremie). Special cases: rimsa → Římsové bednění T, mostovka >5m → Staxo 100, pilota → catalog recommendation.
 - **Two modes:** Monolit (ordinal days, auto-classify, TOV mapping) / Portal (calendar, manual)
 - **Import:** XLSX + Registry — both work without pre-created project (backend auto-creates `bridges` + `monolith_projects`). Empty state shows 3 actions: Vytvořit/Nahrát Excel/Načíst z Rozpočtu. `metadata` column persisted (linked_positions from parser). `bridge_id` prefixed with `stavbaProjectId__` to prevent cross-file collision.
 - **Registry Import Modal:** parallel fetch (Portal public endpoint `/api/integration/list-registry-projects` + Registry backend), search, debug info, refresh button, source badges (PORTAL/REGISTRY).
@@ -317,7 +320,6 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
 
 ### TODO
-- [ ] **P0: Merge MCP branch** — `claude/merge-mcp-server-vNUI3` → main (8 commits: MCP server, auth, billing, formwork fixes, UX cleanup)
 - [ ] **P0: Deploy MCP** — after merge, verify `/mcp` endpoint on Cloud Run, test with curl
 - [ ] **P0: stavagent.cz/api-access page** — registration UI, API key display, credit balance, Lemon Squeezy checkout links
 - [ ] **P1: Lemon Squeezy webhook IDs** — set actual product_id mapping in `routes.py:PRODUCT_CREDITS` after creating products (done: CZK 11/55/220)
