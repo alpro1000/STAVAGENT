@@ -21,8 +21,32 @@
  * Reference: ČSN EN 12812 (Falsework), DIN 18218 (concrete pressure on formwork)
  */
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
-/** How concrete is delivered — determines pour rate coefficient k */
+/** How concrete is delivered — used as legacy fallback for k coefficient */
 export type PourMethod = 'pump' | 'crane_bucket' | 'direct' | 'chute';
+/**
+ * Concrete consistency class — primary driver of lateral pressure k coefficient.
+ *
+ * Per DIN 18218 / ČSN EN 12812:
+ *   - 'standard' (S1–S2, slow rise ≤1 m/h) → k = 0.85   ← DEFAULT
+ *   - 'plastic'  (S3–S4, controlled pump)  → k = 1.00
+ *   - 'scc'      (samozhutnitelný / SCC)   → k = 1.50
+ *
+ * Use 'scc' ONLY for self-consolidating concrete. Standard is the safe default
+ * for most construction work in CZ.
+ */
+export type ConcreteConsistency = 'standard' | 'plastic' | 'scc';
+/** Map consistency → DIN 18218 k coefficient */
+export declare function getConsistencyKFactor(consistency: ConcreteConsistency): number;
+/** Optional knobs for calculateLateralPressure */
+export interface LateralPressureOptions {
+    /**
+     * Concrete consistency (DIN 18218). Takes precedence over pour_method.
+     * Default: 'standard' (k=0.85).
+     */
+    concrete_consistency?: ConcreteConsistency;
+    /** Explicit k-factor override (highest priority). Used for manual tuning. */
+    k_factor?: number;
+}
 /** Result of lateral pressure calculation */
 export interface LateralPressureResult {
     /** Calculated lateral pressure (kN/m²) */
@@ -31,8 +55,10 @@ export interface LateralPressureResult {
     pour_height_m: number;
     /** Pour rate coefficient used */
     k: number;
-    /** Pour method */
+    /** Pour method (legacy field, may not match k when consistency is set) */
     pour_method: PourMethod;
+    /** Concrete consistency used (only when explicitly provided) */
+    concrete_consistency?: ConcreteConsistency;
     /** Human-readable formula trace */
     formula: string;
 }
@@ -78,24 +104,29 @@ export declare function getPourRateCoefficient(method: PourMethod): number;
  *
  * p = ρ × g × h × k  (kN/m²)
  *
+ * Coefficient k resolution order (highest priority first):
+ *   1. options.k_factor       (manual override)
+ *   2. options.concrete_consistency (DIN 18218)
+ *   3. pour_method            (legacy fallback)
+ *
  * @param height_m - Pour height (m). For staged pours, this is per-stage height.
- * @param pour_method - Delivery method (determines k coefficient)
+ * @param pour_method - Delivery method (legacy fallback for k coefficient)
+ * @param options - Concrete consistency or explicit k override
  * @returns Pressure result with formula trace
  */
-export declare function calculateLateralPressure(height_m: number, pour_method?: PourMethod): LateralPressureResult;
+export declare function calculateLateralPressure(height_m: number, pour_method?: PourMethod, options?: LateralPressureOptions): LateralPressureResult;
 /**
- * Filter formwork systems by pressure capacity.
+ * Stage count penalty multiplier (BUG-5).
+ * Pure cost favors many small záběry; this penalty pushes the algorithm
+ * toward systems that need fewer záběry.
  *
- * Systems without pressure_kn_m2 (e.g. tradiční tesařské) are always included
- * as they have no defined pressure limit (unlimited with proper bracing).
- *
- * Slab-category systems are excluded for vertical elements (they don't resist lateral pressure).
- *
- * @param pressure_kn_m2 - Required pressure resistance
- * @param systems - Formwork systems to filter (defaults to full catalog)
- * @param orientation - Element orientation ('vertical' | 'horizontal')
- * @returns Filtered result sorted by rental price (cheapest first)
+ * 1 zabér  = 1.0     (ideal)
+ * 2 záběry = 1.0     (still acceptable)
+ * 3 záběry = 1.1
+ * 4–5      = 1.3
+ * 6+       = 1.5
  */
+export declare function getStageCountPenalty(stageCount: number): number;
 export declare function filterFormworkByPressure(pressure_kn_m2: number, systems: FormworkSystemSpec[], orientation?: 'vertical' | 'horizontal', pour_height_m?: number): FormworkFilterResult;
 /**
  * Parse max formwork height from the `heights` array.
@@ -123,7 +154,7 @@ export declare function parseMaxHeight(heights: string[]): number;
  * @param available_systems - Systems to consider (pre-filtered by category)
  * @returns Staging suggestion
  */
-export declare function suggestPourStages(total_height_m: number, pour_method: PourMethod | undefined, available_systems: FormworkSystemSpec[]): PourStagesSuggestion;
+export declare function suggestPourStages(total_height_m: number, pour_method: PourMethod | undefined, available_systems: FormworkSystemSpec[], options?: LateralPressureOptions): PourStagesSuggestion;
 /**
  * Infer pour method from element profile.
  *

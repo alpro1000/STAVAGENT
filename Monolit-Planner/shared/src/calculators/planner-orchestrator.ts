@@ -40,7 +40,7 @@ import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
 import { findFormworkSystem } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod } from './lateral-pressure.js';
-import type { LateralPressureResult, PourStagesSuggestion, PourMethod } from './lateral-pressure.js';
+import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
 import { recommendBridgeTechnology, calculateMSSCost, calculateMSSSchedule, getMSSTactDays } from './bridge-technology.js';
 import type { ConstructionTechnology, TechnologyRecommendation, MSSCostResult, MSSScheduleResult } from './bridge-technology.js';
 
@@ -90,6 +90,24 @@ export interface PlannerInput {
   // --- Pour method (for lateral pressure) ---
   /** Concrete delivery method. If not given, inferred from element profile and height. */
   pour_method?: PourMethod;
+  /**
+   * Concrete consistency (DIN 18218) — primary driver of lateral pressure k.
+   * Default: 'standard' (k=0.85). Use 'scc' ONLY for self-consolidating concrete.
+   */
+  concrete_consistency?: ConcreteConsistency;
+  /**
+   * BUG-4: Are pracovní spáry (working joints) allowed when the element has
+   * NO dilatační spáry?
+   *   - 'no' (default for backward compat): strictly monolithic, 1 záběr
+   *   - 'yes': sectioning by pour-window capacity is allowed
+   *   - 'unknown': same as 'yes' but emits an "ověřte v RDS" warning
+   */
+  working_joints_allowed?: 'yes' | 'no' | 'unknown';
+  /**
+   * BUG-2: Optional target pour window (h) for the alternative pump scenario.
+   * If set, a "target window" pump count is computed alongside the actual one.
+   */
+  target_pour_window_h?: number;
 
   // --- Maturity (optional, auto-calculates curing) ---
   concrete_class?: ConcreteClass;
@@ -297,6 +315,16 @@ export interface PlannerOutput {
     wage_pour_czk_h: number;
     /** Number of crew shifts for continuous pours (1 = normal, 2+ = crew relief) */
     pour_shifts: number;
+    /**
+     * BUG-6: Pour crew breakdown for continuous pours.
+     * - simultaneous_headcount = workers actively on the front at any moment
+     * - rostered_headcount     = total workers in the schedule across all shifts
+     * For pours that fit a single shift these two values are equal.
+     */
+    pour_simultaneous_headcount: number;
+    pour_rostered_headcount: number;
+    /** True when night-shift premium (§116 ZP) applies */
+    pour_has_night_premium: boolean;
   };
 
   // --- Lateral pressure & pour stages (záběrová betonáž) ---
@@ -468,13 +496,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const heightForPressure = input.height_m;
   const isVertical = profile.orientation === 'vertical';
 
+  // BUG-1: default concrete consistency is 'standard' (k=0.85), not 'pump' (k=1.5)
+  const consistency: ConcreteConsistency = input.concrete_consistency ?? 'standard';
+  const lpOptions = { concrete_consistency: consistency };
+
   if (heightForPressure && heightForPressure > 0 && isVertical) {
     const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
-    lateralPressure = calculateLateralPressure(heightForPressure, pourMethod);
-    log.push(`Lateral pressure: ${lateralPressure.pressure_kn_m2} kN/m² (h=${heightForPressure}m, k=${lateralPressure.k}, method=${pourMethod})`);
+    lateralPressure = calculateLateralPressure(heightForPressure, pourMethod, lpOptions);
+    log.push(`Lateral pressure: ${lateralPressure.pressure_kn_m2} kN/m² (h=${heightForPressure}m, k=${lateralPressure.k}, consistency=${consistency})`);
 
     // Check if pressure-based filtering changes recommendation
-    const filterResult = getFilteredFormworkSystems(elementType, heightForPressure, pourMethod);
+    const filterResult = getFilteredFormworkSystems(elementType, heightForPressure, pourMethod, consistency);
     if (filterResult.rejected.length > 0) {
       const rejectedNames = filterResult.rejected.map(s => s.name).join(', ');
       log.push(`Pressure filter: rejected ${filterResult.rejected.length} systems (${rejectedNames})`);
@@ -487,7 +519,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     const found = findFormworkSystem(input.formwork_system_name);
     if (!found) {
       warnings.push(`Systém bednění "${input.formwork_system_name}" nenalezen — použit doporučený.`);
-      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m);
+      fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m, consistency);
     } else {
       fwSystem = found;
       // Warn if manually selected system can't handle the pressure
@@ -501,7 +533,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       }
     }
   } else {
-    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m);
+    fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m, consistency);
   }
 
   const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
@@ -535,6 +567,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     spara_spacing_m: input.spara_spacing_m,
     total_length_m: input.total_length_m,
     adjacent_sections: input.adjacent_sections,
+    working_joints_allowed: input.working_joints_allowed,
     season: input.season,
     use_retarder: input.use_retarder,
   });
@@ -557,7 +590,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
   if (heightForPressure && heightForPressure > 0 && isVertical && !input.num_tacts_override) {
     const { all: allCompatible } = getSuitableSystemsForElement(elementType);
     const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
-    pourStages = suggestPourStages(heightForPressure, pourMethod, allCompatible);
+    pourStages = suggestPourStages(heightForPressure, pourMethod, allCompatible, lpOptions);
 
     if (pourStages.needs_staging && pourStages.num_stages > pourDecision.num_tacts) {
       // Height-based staging produces more tacts than spára-based → use staging
@@ -1021,6 +1054,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     use_retarder: input.use_retarder,
     crew_size: crew,
     shift_h: shift,
+    target_window_h: input.target_pour_window_h,
   });
 
   log.push(`Pour: ${pourResult.effective_rate_m3_h}m³/h, ${pourResult.total_pour_hours}h/tact (bottleneck: ${pourResult.rate_bottleneck})`);
@@ -1101,6 +1135,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
         use_retarder: input.use_retarder,
         crew_size: crew,
         shift_h: shift,
+        target_window_h: input.target_pour_window_h,
       });
       const days = isContinuousPour
         ? 1
@@ -1208,10 +1243,16 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
     // For monolithic pours of horizontal elements: full area support is mandatory
     if (pourDecision.pour_mode === 'monolithic') {
+      // BUG-3: text now references the maturity-based value AND its conditions
+      const concreteClassLabel = input.concrete_class ?? '?';
+      const tempLabel = `${temperature}°C`;
+      const normLabel = elementType === 'mostovkova_deska' ? 'ČSN 73 6244' : 'ČSN EN 13670';
       warnings.push(
         `${profile.label_cs} bez spár: celá plocha = jeden záběr. ` +
         `Podpěrná konstrukce musí pokrýt celou plochu (${fwArea} m²). ` +
-        `Nelze postupně přestavovat — podpěry zůstávají po dobu min. ${effectiveHoldDays} dní.`
+        `Podpěry musí zůstat min. ${effectiveHoldDays} dní (${normLabel}, ${concreteClassLabel}, ${tempLabel}). ` +
+        `Při nižší teplotě se doba prodlužuje. ` +
+        `Pro přestavbu (reshoring) je nutné statické posouzení.`
       );
       log.push(`Monolithic horizontal element: full-area support required (${fwArea} m²), hold ${effectiveHoldDays}d`);
     }
@@ -1365,6 +1406,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
       wage_rebar_czk_h: wageRebar,
       wage_pour_czk_h: wagePour,
       pour_shifts: numPourShifts,
+      // BUG-6: simultaneous = workers on the front; rostered = total in schedule
+      pour_simultaneous_headcount: effectivePourCrew,
+      pour_rostered_headcount: effectivePourCrew * numPourShifts,
+      pour_has_night_premium: pourNightPremiumCZK > 0,
     },
     lateral_pressure: lateralPressure,
     pour_stages: pourStages,
@@ -1400,8 +1445,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
           `${maturityParams.concrete_class}, ${maturityParams.cement_type || 'CEM_I'}`
         : `Výchozí: ${curingDays} dní (24h strip_wait). Pro přesnější odhad zadejte třídu betonu a teplotu`,
       ...(elementType === 'mostovkova_deska' ? {
-        skruz: `ČSN 73 6244: min. 21 dní od poslední betonáže. ` +
-          `Porovnáno se zráním dle ČSN EN 13670 — použita delší hodnota.`,
+        skruz: `ČSN 73 6244 + ČSN EN 13670: min. ${skruzMinDays || curingDays} dní od poslední betonáže ` +
+          `(sezóna "${seasonForCuring}", ${input.concrete_class || 'C30/37'}, ${temperature}°C). ` +
+          `Porovnáno se zráním dle maturity modelu — použita delší hodnota.`,
       } : {}),
     },
     monte_carlo: scheduleResult.monte_carlo,

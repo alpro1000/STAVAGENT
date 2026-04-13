@@ -78,6 +78,19 @@ export interface PourDecisionInput {
   total_length_m?: number;              // Total length of element (m)
   adjacent_sections?: boolean;          // Sections touch each other?
 
+  /**
+   * BUG-4: Are pracovní (working) joints allowed when the element has NO
+   * dilatační spáry?
+   *   - undefined / 'no'  → strictly monolithic (1 záběr) — backward compatible default
+   *   - 'yes'             → working joints allowed, sectioning by capacity
+   *   - 'unknown'         → same as 'yes', but emits an "ověřte v RDS" warning
+   *
+   * Pracovní spára ≠ dilatační spára: the latter is permanent and designed by
+   * the architect, the former is a temporary construction joint decided by the
+   * builder. They can exist independently.
+   */
+  working_joints_allowed?: 'yes' | 'no' | 'unknown';
+
   // === PUMP PARAMETERS ===
   q_eff_m3_h?: number;                  // Pump effective capacity (m³/h) — default 30
   setup_hours?: number;                 // Per-pour setup (h) — default 0.5
@@ -391,9 +404,58 @@ export function decidePourMode(input: PourDecisionInput): PourDecisionOutput {
     };
   }
 
+  // ─── BUG-4: BRANCH: NO dilatační spáry, but working joints allowed ───────
+  const wjAllowed = input.working_joints_allowed;
+  if (wjAllowed === 'yes' || wjAllowed === 'unknown') {
+    log.push(`Dilatační spáry: NE, pracovní spáry: ${wjAllowed} → sekční režim po pracovních spárách`);
+
+    if (wjAllowed === 'unknown') {
+      warnings.push(
+        'Pracovní spáry nepotvrzeny — ověřte v RDS. ' +
+        'Bez dilatačních spár: doporučena minimalizace pracovních spár. ' +
+        'Definitivní členění záběrů dle RDS/statiky.',
+      );
+    }
+
+    // Compute number of tacts purely by volume / window capacity
+    const max_vol_per_tact = q_eff * available_pumping_h;
+    const num_tacts = Math.max(1, Math.ceil(input.volume_m3 / max_vol_per_tact));
+    const tact_volume = input.volume_m3 / num_tacts;
+    const pour_h_per_tact = setup_h + (tact_volume / q_eff) + washout_h;
+
+    log.push(`Working joints: ${num_tacts} záběrů × ${roundTo(tact_volume, 1)} m³ ` +
+      `(max ${roundTo(max_vol_per_tact, 0)} m³/okno)`);
+
+    return {
+      pour_mode: 'sectional',
+      sub_mode: 'independent',
+      num_sections: num_tacts,
+      section_volume_m3: roundTo(tact_volume, 2),
+      max_sections_per_tact: 1,
+      num_tacts,
+      tact_volume_m3: roundTo(tact_volume, 2),
+      t_window_hours: t_window,
+      pumps_required: 1,
+      retarder_required: false,
+      backup_pump: false,
+      pour_hours_per_tact: roundTo(pour_h_per_tact, 2),
+      total_pour_hours: roundTo(pour_h_per_tact * num_tacts, 2),
+      scheduling_mode: 'linear',
+      cure_between_neighbors_h: 0,
+      warnings,
+      decision_log: log,
+    };
+  }
+
   // ─── BRANCH: NO spáry → monolithic ───────────────────────────────────────
 
   log.push('Spáry: NE → monolitický režim (nepřerušitelná zálivka)');
+  if (wjAllowed === 'no') {
+    warnings.push(
+      'Bez dilatačních spár a bez pracovních spár: vyžaduje nepřetržitou betonáž. ' +
+      'Definitivní členění záběrů dle RDS/statiky.',
+    );
+  }
 
   const V = input.volume_m3;
   const pumping_h_1pump = V / q_eff;

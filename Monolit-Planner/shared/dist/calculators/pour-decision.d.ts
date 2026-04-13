@@ -40,6 +40,18 @@ export interface PourDecisionInput {
     spara_spacing_m?: number;
     total_length_m?: number;
     adjacent_sections?: boolean;
+    /**
+     * BUG-4: Are pracovní (working) joints allowed when the element has NO
+     * dilatační spáry?
+     *   - undefined / 'no'  → strictly monolithic (1 záběr) — backward compatible default
+     *   - 'yes'             → working joints allowed, sectioning by capacity
+     *   - 'unknown'         → same as 'yes', but emits an "ověřte v RDS" warning
+     *
+     * Pracovní spára ≠ dilatační spára: the latter is permanent and designed by
+     * the architect, the former is a temporary construction joint decided by the
+     * builder. They can exist independently.
+     */
+    working_joints_allowed?: 'yes' | 'no' | 'unknown';
     q_eff_m3_h?: number;
     setup_hours?: number;
     washout_hours?: number;

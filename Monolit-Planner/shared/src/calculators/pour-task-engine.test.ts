@@ -75,12 +75,24 @@ describe('Pour Task Engine', () => {
       expect(result.backup_pump_recommended).toBe(true);
     });
 
-    it('requires 2 pumps for very large volumes', () => {
+    it('exposes target-window pump scenario when target_window_h is set', () => {
+      // BUG-2: actual scenario uses 1 pump, target window scenario calculates
+      // how many pumps are needed to fit the requested window.
       const result = calculatePourTask({
         element_type: 'mostovkova_deska',
         volume_m3: 350,
+        target_window_h: 5,
       });
-      expect(result.pumps_required).toBe(2);
+      // Actual scenario = single pump (longer duration)
+      expect(result.pumps_for_actual_window.count).toBe(1);
+      expect(result.pumps_required).toBe(1);
+      // Target scenario = enough pumps to fit 5h window
+      expect(result.pumps_for_target_window).toBeDefined();
+      expect(result.pumps_for_target_window!.count).toBeGreaterThan(1);
+      expect(result.pumps_for_target_window!.target_window_h).toBe(5);
+      // Target scenario must be faster than actual
+      expect(result.pumps_for_target_window!.pour_duration_h)
+        .toBeLessThan(result.pumps_for_actual_window.pour_duration_h);
     });
 
     it('includes setup and washout in total', () => {

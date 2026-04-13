@@ -49,6 +49,26 @@ export interface PourTaskInput {
   crew_size?: number;
   /** Shift hours. Default: 10 */
   shift_h?: number;
+
+  /**
+   * BUG-2: Optional target pour window (h). When set, an alternative
+   * "target window" pump count is computed alongside the actual scenario.
+   */
+  target_window_h?: number;
+}
+
+/** BUG-2: Pump scenario describing one possible pump configuration */
+export interface PumpScenario {
+  /** Number of pumps in this scenario */
+  count: number;
+  /** Combined m³/h capacity of all pumps */
+  total_rate_m3_h: number;
+  /** Resulting pour duration (h) including setup/washout */
+  pour_duration_h: number;
+  /** Czech label describing the scenario */
+  scenario: string;
+  /** Target window (h) — only set for the target scenario */
+  target_window_h?: number;
 }
 
 export interface PourTaskResult {
@@ -71,6 +91,17 @@ export interface PourTaskResult {
   pumps_required: number;
   /** Whether backup pump is recommended (volume > 200m³) */
   backup_pump_recommended: boolean;
+
+  /**
+   * BUG-2: Active scenario reflecting the actual pour duration with the
+   * single-pump setup. Always present.
+   */
+  pumps_for_actual_window: PumpScenario;
+  /**
+   * BUG-2: Alternative scenario for a target pour window. Only present when
+   * input.target_window_h is provided.
+   */
+  pumps_for_target_window?: PumpScenario;
 
   // --- Time window ---
   /** Available pour window (h) */
@@ -136,7 +167,9 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
 
   // --- Pump decision (before rate calc — affects effective rate) ---
   const pump_needed = profile.pump_typical || input.volume_m3 > 5;
-  const pumps_required = input.volume_m3 > 300 ? 2 : 1;
+  // BUG-2: Default scenario uses a single pump. Multi-pump configurations are
+  // exposed via the explicit "actual" / "target" pump scenarios below.
+  const pumps_required = 1;
   const backup_pump_recommended = input.volume_m3 > 200;
 
   // Effective rate = MIN of all constraints, multiplied by number of pumps
@@ -151,6 +184,34 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
   const total_pour_hours = setup + pumping_hours + washout;
   const pour_days = roundTo(total_pour_hours / shift, 2);
 
+  // --- BUG-2: Pump scenarios -------------------------------------------------
+  // Actual scenario = single pump (or whatever was configured), reflects the
+  // duration the user will actually face. Target scenario is only emitted if
+  // the user gave a desired pour window.
+  const actualScenario: PumpScenario = {
+    count: pumps_required,
+    total_rate_m3_h: roundTo(single_pump_rate * pumps_required, 1),
+    pour_duration_h: roundTo(total_pour_hours, 2),
+    scenario: 'Skutečná doba betonáže (1 čerpadlo)',
+  };
+
+  let targetScenario: PumpScenario | undefined;
+  if (input.target_window_h && input.target_window_h > 0) {
+    const targetWindow = input.target_window_h;
+    const availForPump = Math.max(0.1, targetWindow - setup - washout);
+    const requiredRate = input.volume_m3 / availForPump;
+    const targetCount = Math.max(1, Math.ceil(requiredRate / single_pump_rate));
+    const targetRate = single_pump_rate * targetCount;
+    const targetDuration = setup + (input.volume_m3 / targetRate) + washout;
+    targetScenario = {
+      count: targetCount,
+      total_rate_m3_h: roundTo(targetRate, 1),
+      pour_duration_h: roundTo(targetDuration, 2),
+      scenario: `Cílové okno ${targetWindow}h`,
+      target_window_h: targetWindow,
+    };
+  }
+
   // --- Time window ---
   const window_config = T_WINDOW_HOURS[season];
   const pour_window_h = useRetarder ? window_config.with_retarder : window_config.no_retarder;
@@ -164,12 +225,11 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
   if (!fits_in_window) {
     warnings.push(
       `${ctx} Doba betonáže ${roundTo(pumping_hours, 1)}h překračuje okno ${pour_window_h}h. ` +
-      `Nutný pracovní šev nebo retardér.`
+      `Nutný pracovní šev, retardér, nebo více čerpadel (viz alternativní scénář).`
     );
   }
-  if (pumps_required > 1) {
-    warnings.push(`${ctx} ${pumps_required} čerpadla potřeba (${effective_rate_m3_h} m³/h celkem).`);
-  }
+  // BUG-2: removed the "{N} čerpadla potřeba" warning that conflicted with the
+  // single-pump scenario emitted above. Use pumps_for_target_window instead.
   if (backup_pump_recommended) {
     warnings.push(`${ctx} Objem > 200m³ — doporučeno záložní čerpadlo.`);
   }
@@ -199,6 +259,8 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
     pump_needed,
     pumps_required,
     backup_pump_recommended,
+    pumps_for_actual_window: actualScenario,
+    pumps_for_target_window: targetScenario,
     pour_window_h,
     fits_in_window,
     pour_sessions,

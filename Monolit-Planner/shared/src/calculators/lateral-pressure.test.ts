@@ -18,6 +18,8 @@ import {
   parseMaxHeight,
   getPourRateCoefficient,
   inferPourMethod,
+  getConsistencyKFactor,
+  getStageCountPenalty,
 } from './lateral-pressure.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 
@@ -335,6 +337,100 @@ describe('suggestPourStages', () => {
     const r = suggestPourStages(8, 'pump', MOCK_SYSTEMS);
     expect(r.decision_log.length).toBeGreaterThan(0);
     expect(r.decision_log.some(l => l.includes('kN/m²'))).toBe(true);
+  });
+});
+
+// ─── BUG-1: Consistency-based k coefficient ────────────────────────────────
+
+describe('getConsistencyKFactor (BUG-1)', () => {
+  it('standard → 0.85', () => {
+    expect(getConsistencyKFactor('standard')).toBe(0.85);
+  });
+  it('plastic → 1.0', () => {
+    expect(getConsistencyKFactor('plastic')).toBe(1.0);
+  });
+  it('scc → 1.5', () => {
+    expect(getConsistencyKFactor('scc')).toBe(1.5);
+  });
+});
+
+describe('calculateLateralPressure with consistency (BUG-1)', () => {
+  it('Opěra h=6m + standard → ~120 kN/m² (Framax passes)', () => {
+    // p = 2400 × 9.81 × 6 × 0.85 / 1000 = 120.07
+    const r = calculateLateralPressure(6, 'pump', { concrete_consistency: 'standard' });
+    expect(r.k).toBe(0.85);
+    expect(r.pressure_kn_m2).toBeCloseTo(120, 0);
+  });
+
+  it('Stěna h=3m + standard → ~60 kN/m² (Frami passes)', () => {
+    // p = 2400 × 9.81 × 3 × 0.85 / 1000 = 60.04
+    const r = calculateLateralPressure(3, 'pump', { concrete_consistency: 'standard' });
+    expect(r.pressure_kn_m2).toBeCloseTo(60, 0);
+  });
+
+  it('SCC override raises pressure significantly', () => {
+    const std = calculateLateralPressure(6, 'pump', { concrete_consistency: 'standard' });
+    const scc = calculateLateralPressure(6, 'pump', { concrete_consistency: 'scc' });
+    // 1.5 / 0.85 ≈ 1.76× increase
+    expect(scc.pressure_kn_m2).toBeGreaterThan(std.pressure_kn_m2 * 1.7);
+  });
+
+  it('explicit k_factor overrides consistency', () => {
+    const r = calculateLateralPressure(5, 'pump', { concrete_consistency: 'scc', k_factor: 0.5 });
+    expect(r.k).toBe(0.5);
+  });
+});
+
+// ─── BUG-5: Stage-count penalty for formwork sort ──────────────────────────
+
+describe('getStageCountPenalty (BUG-5)', () => {
+  it('1 záběr → 1.0', () => expect(getStageCountPenalty(1)).toBe(1.0));
+  it('2 záběry → 1.0', () => expect(getStageCountPenalty(2)).toBe(1.0));
+  it('3 záběry → 1.1', () => expect(getStageCountPenalty(3)).toBe(1.1));
+  it('4 záběry → 1.3', () => expect(getStageCountPenalty(4)).toBe(1.3));
+  it('5 záběry → 1.3', () => expect(getStageCountPenalty(5)).toBe(1.3));
+  it('6+ záběry → 1.5', () => expect(getStageCountPenalty(6)).toBe(1.5));
+});
+
+describe('filterFormworkByPressure stage-count sort (BUG-5)', () => {
+  it('Pilíř 8m: Framax (2 záběry) preferred over COMAIN (many záběrů) despite higher rental', () => {
+    const COMAIN: FormworkSystemSpec = {
+      name: 'COMAIN',
+      manufacturer: 'Test',
+      heights: ['1.50', '1.80'],
+      assembly_h_m2: 0.6,
+      disassembly_h_m2: 0.2,
+      disassembly_ratio: 0.33,
+      rental_czk_m2_month: 350,
+      unit: 'm2',
+      description: 'cheap low-pressure, short panels',
+      pressure_kn_m2: 60,
+      max_pour_height_m: 1.5, // short panels → 8m / 1.5 ≈ 6 stages, ≥ 1.5 staging OK
+      formwork_category: 'wall',
+    };
+    const FRAMAX: FormworkSystemSpec = {
+      name: 'Framax Xlife',
+      manufacturer: 'DOKA',
+      heights: ['2.70', '5.40'],
+      assembly_h_m2: 0.55,
+      disassembly_h_m2: 0.17,
+      disassembly_ratio: 0.30,
+      rental_czk_m2_month: 520,
+      unit: 'm2',
+      description: 'tall panels',
+      pressure_kn_m2: 100,
+      max_pour_height_m: 6.75,
+      formwork_category: 'wall',
+    };
+    // h=8m, standard consistency: p = 2400×9.81×8×0.85/1000 ≈ 160.1 kN/m²
+    const p = calculateLateralPressure(8, 'pump', { concrete_consistency: 'standard' });
+    const r = filterFormworkByPressure(p.pressure_kn_m2, [COMAIN, FRAMAX], 'vertical', 8);
+    // Both should pass with staging
+    const names = r.suitable.map(s => s.name);
+    expect(names).toContain('Framax Xlife');
+    // Framax should rank ahead of COMAIN despite higher rental, because
+    // it needs fewer záběry → lower stage_count_penalty.
+    expect(names.indexOf('Framax Xlife')).toBeLessThan(names.indexOf('COMAIN'));
   });
 });
 
