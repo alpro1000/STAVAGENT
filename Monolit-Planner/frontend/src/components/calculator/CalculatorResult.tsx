@@ -13,6 +13,8 @@ import PlannerGantt from '../PlannerGantt';
 import { exportPlanToXLSX } from '../../utils/exportPlanXLSX';
 import { Card, KPICard, Row, CollapsibleSection } from './ui';
 import { formatCZK, formatNum, formatWorkDayRange, subTitle, thStyle, tdStyle } from './helpers';
+import InlineResourcePanel from './InlineResourcePanel';
+import type { FormState } from './types';
 
 // ─── CSV Export (local helper) ─────────────────────────────────────────────
 
@@ -79,11 +81,14 @@ export interface CalculatorResultProps {
   kridlaFormwork?: { system: { name: string; manufacturer: string; rental_czk_m2_month: number; needs_crane?: boolean }; height_m: number } | null;
   calcStatus?: 'idle' | 'calculating';
   resultDirty?: boolean;
+  /** Part C: Inline resource panel — requires form + update for editing */
+  form?: FormState;
+  updateForm?: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
 }
 
 // ─── Component ─────────────────────────────────────────────────────────────
 
-export default function CalculatorResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty }: CalculatorResultProps) {
+export default function CalculatorResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty, form, updateForm }: CalculatorResultProps) {
   const calendarInfo = useMemo(() => {
     if (!startDate) return null;
     const start = new Date(startDate + 'T00:00:00');
@@ -216,6 +221,16 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
             </tbody>
           </table>
         </div>
+      )}
+
+      {/* Part C: Inline resource panel — edit resources without re-entering wizard */}
+      {form && updateForm && (
+        <InlineResourcePanel
+          form={form}
+          update={updateForm}
+          calcStatus={calcStatus}
+          resultDirty={resultDirty}
+        />
       )}
 
       {/* Auto-calc indicator */}

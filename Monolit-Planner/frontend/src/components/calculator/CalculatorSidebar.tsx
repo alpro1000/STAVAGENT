@@ -17,6 +17,7 @@ import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState 
 import { ELEMENT_TYPES, SEASONS, CONCRETE_CLASSES, CEMENT_TYPES, DEFAULT_FORM } from './types';
 import { Download, Hourglass, Star } from 'lucide-react';
 import CalculatorFormFields from './CalculatorFormFields';
+import WizardHintsPanel from './WizardHints';
 
 // ─── Props ─────────────────────────────────────────────────────────────────
 
@@ -726,6 +727,21 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               )}
             </div>
           )}
+          {/* Smart wizard hints: missing/sanity/technology/review (HINT-1,2,3,4) */}
+          <WizardHintsPanel
+            wizardMode={wizardMode}
+            wizardStep={wizardStep}
+            elementType={form.use_name_classification ? 'other' : form.element_type}
+            form={form}
+            currentSystemName={form.formwork_system_name}
+            onApplyRecommendedSystem={(systemName, numTacts) => {
+              update('formwork_system_name', systemName);
+              if (numTacts && numTacts > 1) {
+                update('tact_mode', 'manual');
+                update('num_tacts_override', String(numTacts));
+              }
+            }}
+          />
           </div>{/* /wizard element */}
 
 

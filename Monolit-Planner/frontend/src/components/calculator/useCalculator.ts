@@ -793,6 +793,15 @@ export default function useCalculator() {
     if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
     // Total length for non-spáry mode (needed for prestress days calculation)
     if (form.total_length_m > 0 && !effectiveHasSpary) input.total_length_m = form.total_length_m;
+    // BUG-1: concrete consistency (DIN 18218 k-factor)
+    if (form.concrete_consistency) input.concrete_consistency = form.concrete_consistency;
+    // BUG-4: working joints allowed
+    if (form.working_joints_allowed) input.working_joints_allowed = form.working_joints_allowed as any;
+    // BUG-2: target pour window for alt pump scenario
+    if (form.target_pour_window_h) {
+      const tw = parseFloat(form.target_pour_window_h);
+      if (Number.isFinite(tw) && tw > 0) input.target_pour_window_h = tw;
+    }
     return input;
   };
 

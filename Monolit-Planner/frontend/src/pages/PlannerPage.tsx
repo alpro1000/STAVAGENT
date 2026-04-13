@@ -185,6 +185,8 @@ export default function PlannerPage() {
               kridlaFormwork={kridlaFormwork}
               calcStatus={calcStatus}
               resultDirty={resultDirty}
+              form={form}
+              updateForm={update}
             />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>

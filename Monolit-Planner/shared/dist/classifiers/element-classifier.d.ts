@@ -13,7 +13,7 @@
  */
 import type { StructuralElementType } from '../calculators/pour-decision.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
-import type { PourMethod, FormworkFilterResult } from '../calculators/lateral-pressure.js';
+import type { PourMethod, FormworkFilterResult, ConcreteConsistency } from '../calculators/lateral-pressure.js';
 export interface ElementProfile {
     /** Classified element type */
     element_type: StructuralElementType;
@@ -99,13 +99,13 @@ export declare function getElementProfile(type: StructuralElementType): ElementP
  * @param height_m - Element/pour height (m). Enables pressure-based selection.
  * @param pour_method - Concrete delivery method. Auto-inferred if not given.
  */
-export declare function recommendFormwork(type: StructuralElementType, height_m?: number, pour_method?: PourMethod, total_length_m?: number): FormworkSystemSpec;
+export declare function recommendFormwork(type: StructuralElementType, height_m?: number, pour_method?: PourMethod, total_length_m?: number, concrete_consistency?: ConcreteConsistency): FormworkSystemSpec;
 /**
  * Get pressure-filtered formwork systems for an element type.
  * Returns the full filter result (suitable, rejected, pressure).
  * Used by orchestrator for warnings and UI display.
  */
-export declare function getFilteredFormworkSystems(type: StructuralElementType, height_m: number, pour_method?: PourMethod): FormworkFilterResult & {
+export declare function getFilteredFormworkSystems(type: StructuralElementType, height_m: number, pour_method?: PourMethod, concrete_consistency?: ConcreteConsistency): FormworkFilterResult & {
     pour_method: PourMethod;
     pressure_formula: string;
 };
@@ -129,6 +129,48 @@ export declare function getSuitableSystemsForElement(elementType: StructuralElem
     compatible: FormworkSystemSpec[];
     all: FormworkSystemSpec[];
 };
+/**
+ * Severity for a missing / out-of-range hint
+ *   'critical' → engine cannot produce meaningful output
+ *   'optional' → engine has fallback, but user gets less precise result
+ */
+export type HintSeverity = 'critical' | 'optional';
+export interface RequiredFieldSpec {
+    field: string;
+    label_cs: string;
+    severity: HintSeverity;
+    reason_cs: string;
+}
+/**
+ * Minimum inputs the planner needs to compute a useful result.
+ * Shared between wizard hints (HINT-1) and validation.
+ */
+export declare const REQUIRED_FIELDS: Record<StructuralElementType, RequiredFieldSpec[]>;
+/**
+ * Typical min/max ranges per element type — used for sanity checks in the
+ * wizard (HINT-2). Values outside these bounds should trigger a warning
+ * but NOT block the user.
+ */
+export interface SanityRanges {
+    volume_m3?: [number, number];
+    height_m?: [number, number];
+    rebar_kg_m3?: [number, number];
+    formwork_area_m2?: [number, number];
+}
+export declare const SANITY_RANGES: Record<StructuralElementType, SanityRanges>;
+export interface SanityIssue {
+    field: keyof SanityRanges;
+    value: number;
+    min: number;
+    max: number;
+    label_cs: string;
+    message_cs: string;
+}
+/**
+ * Check a set of user-provided numeric inputs against SANITY_RANGES and
+ * return any that are out of the typical range (possibly a typo).
+ */
+export declare function checkSanity(elementType: StructuralElementType, values: Partial<Record<keyof SanityRanges, number>>): SanityIssue[];
 export declare function estimateRebarMass(elementType: StructuralElementType, volume_m3: number): {
     estimated_kg: number;
     min_kg: number;

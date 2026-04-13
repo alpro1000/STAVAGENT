@@ -29,7 +29,7 @@ import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
 import { calculateStrategiesDetailed } from './formwork.js';
-import type { LateralPressureResult, PourStagesSuggestion, PourMethod } from './lateral-pressure.js';
+import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
 export interface PlannerInput {
     /** Czech name/description for auto-classification */
     element_name?: string;
@@ -63,6 +63,24 @@ export interface PlannerInput {
     use_retarder?: boolean;
     /** Concrete delivery method. If not given, inferred from element profile and height. */
     pour_method?: PourMethod;
+    /**
+     * Concrete consistency (DIN 18218) — primary driver of lateral pressure k.
+     * Default: 'standard' (k=0.85). Use 'scc' ONLY for self-consolidating concrete.
+     */
+    concrete_consistency?: ConcreteConsistency;
+    /**
+     * BUG-4: Are pracovní spáry (working joints) allowed when the element has
+     * NO dilatační spáry?
+     *   - 'no' (default for backward compat): strictly monolithic, 1 záběr
+     *   - 'yes': sectioning by pour-window capacity is allowed
+     *   - 'unknown': same as 'yes' but emits an "ověřte v RDS" warning
+     */
+    working_joints_allowed?: 'yes' | 'no' | 'unknown';
+    /**
+     * BUG-2: Optional target pour window (h) for the alternative pump scenario.
+     * If set, a "target window" pump count is computed alongside the actual one.
+     */
+    target_pour_window_h?: number;
     concrete_class?: ConcreteClass;
     cement_type?: CementType;
     /** Average ambient temperature (°C). Default: 15 */
@@ -225,6 +243,16 @@ export interface PlannerOutput {
         wage_pour_czk_h: number;
         /** Number of crew shifts for continuous pours (1 = normal, 2+ = crew relief) */
         pour_shifts: number;
+        /**
+         * BUG-6: Pour crew breakdown for continuous pours.
+         * - simultaneous_headcount = workers actively on the front at any moment
+         * - rostered_headcount     = total workers in the schedule across all shifts
+         * For pours that fit a single shift these two values are equal.
+         */
+        pour_simultaneous_headcount: number;
+        pour_rostered_headcount: number;
+        /** True when night-shift premium (§116 ZP) applies */
+        pour_has_night_premium: boolean;
     };
     lateral_pressure?: LateralPressureResult;
     pour_stages?: PourStagesSuggestion;

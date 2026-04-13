@@ -25,6 +25,15 @@
 const RHO = 2400;
 /** Gravitational acceleration (m/s²) */
 const G = 9.81;
+/** Map consistency → DIN 18218 k coefficient */
+export function getConsistencyKFactor(consistency) {
+    switch (consistency) {
+        case 'standard': return 0.85;
+        case 'plastic': return 1.00;
+        case 'scc': return 1.50;
+        default: return 0.85;
+    }
+}
 // ─── Pour rate coefficient ──────────────────────────────────────────────────
 /**
  * Get pour rate coefficient k based on delivery method.
@@ -49,15 +58,39 @@ export function getPourRateCoefficient(method) {
  *
  * p = ρ × g × h × k  (kN/m²)
  *
+ * Coefficient k resolution order (highest priority first):
+ *   1. options.k_factor       (manual override)
+ *   2. options.concrete_consistency (DIN 18218)
+ *   3. pour_method            (legacy fallback)
+ *
  * @param height_m - Pour height (m). For staged pours, this is per-stage height.
- * @param pour_method - Delivery method (determines k coefficient)
+ * @param pour_method - Delivery method (legacy fallback for k coefficient)
+ * @param options - Concrete consistency or explicit k override
  * @returns Pressure result with formula trace
  */
-export function calculateLateralPressure(height_m, pour_method = 'pump') {
+export function calculateLateralPressure(height_m, pour_method = 'pump', options) {
     if (height_m <= 0) {
-        return { pressure_kn_m2: 0, pour_height_m: 0, k: 1.0, pour_method, formula: 'h=0 → p=0' };
+        return {
+            pressure_kn_m2: 0, pour_height_m: 0, k: 1.0, pour_method,
+            concrete_consistency: options?.concrete_consistency,
+            formula: 'h=0 → p=0',
+        };
     }
-    const k = getPourRateCoefficient(pour_method);
+    // Resolve k factor: explicit override → consistency → method
+    let k;
+    let kSource;
+    if (options?.k_factor != null) {
+        k = options.k_factor;
+        kSource = 'k_override';
+    }
+    else if (options?.concrete_consistency) {
+        k = getConsistencyKFactor(options.concrete_consistency);
+        kSource = `consistency=${options.concrete_consistency}`;
+    }
+    else {
+        k = getPourRateCoefficient(pour_method);
+        kSource = `method=${pour_method}`;
+    }
     // p = ρ × g × h × k / 1000  (convert Pa → kN/m²)
     const pressure = (RHO * G * height_m * k) / 1000;
     const rounded = Math.round(pressure * 10) / 10;
@@ -66,7 +99,8 @@ export function calculateLateralPressure(height_m, pour_method = 'pump') {
         pour_height_m: height_m,
         k,
         pour_method,
-        formula: `p = ${RHO} × ${G} × ${height_m} × ${k} / 1000 = ${rounded} kN/m²`,
+        concrete_consistency: options?.concrete_consistency,
+        formula: `p = ${RHO} × ${G} × ${height_m} × ${k} / 1000 = ${rounded} kN/m² (${kSource})`,
     };
 }
 // ─── Formwork filtering ─────────────────────────────────────────────────────
@@ -83,6 +117,55 @@ export function calculateLateralPressure(height_m, pour_method = 'pump') {
  * @param orientation - Element orientation ('vertical' | 'horizontal')
  * @returns Filtered result sorted by rental price (cheapest first)
  */
+/**
+ * Compute number of záběry (stages) a system needs to handle pour_height_m
+ * given the pressure constraint.
+ *
+ * - Systems without pressure limit → 1 stage
+ * - Systems with limit ≥ pressure → 1 stage (no staging needed for pressure)
+ *   but may still be limited by catalog max_pour_height_m
+ * - Systems below limit → effectiveMaxH = sys.pressure/pressure × height,
+ *   capped at catalog max_pour_height_m
+ */
+function computeStageCount(sys, required_pressure, pour_height_m) {
+    if (!pour_height_m || pour_height_m <= 0)
+        return 1;
+    const catalogMaxH = sys.max_pour_height_m ?? Infinity;
+    // No pressure limit on the system
+    if (sys.pressure_kn_m2 == null) {
+        if (catalogMaxH >= pour_height_m)
+            return 1;
+        return Math.max(1, Math.ceil(pour_height_m / catalogMaxH));
+    }
+    // Pressure-derived max stage height
+    const pressureMaxH = (sys.pressure_kn_m2 / Math.max(1e-6, required_pressure)) * pour_height_m;
+    const effectiveMaxH = Math.min(pressureMaxH, catalogMaxH);
+    if (effectiveMaxH >= pour_height_m)
+        return 1;
+    if (effectiveMaxH <= 0)
+        return Infinity;
+    return Math.max(1, Math.ceil(pour_height_m / effectiveMaxH));
+}
+/**
+ * Stage count penalty multiplier (BUG-5).
+ * Pure cost favors many small záběry; this penalty pushes the algorithm
+ * toward systems that need fewer záběry.
+ *
+ * 1 zabér  = 1.0     (ideal)
+ * 2 záběry = 1.0     (still acceptable)
+ * 3 záběry = 1.1
+ * 4–5      = 1.3
+ * 6+       = 1.5
+ */
+export function getStageCountPenalty(stageCount) {
+    if (stageCount <= 2)
+        return 1.0;
+    if (stageCount === 3)
+        return 1.1;
+    if (stageCount <= 5)
+        return 1.3;
+    return 1.5;
+}
 export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 'vertical', pour_height_m) {
     const suitable = [];
     const rejected = [];
@@ -124,14 +207,24 @@ export function filterFormworkByPressure(pressure_kn_m2, systems, orientation = 
         }
         suitable.push(sys);
     }
-    // Sort suitable by rental price (cheapest first), 0-price (tradiční) at end
+    // BUG-5: Sort by score = rental × stage_count_penalty.
+    // This balances pure cost against practicality (fewer záběry = less work).
+    // Systems with 0 rental (tradiční) go last regardless of penalty.
     suitable.sort((a, b) => {
-        // Systems with 0 rental (purchase-based, e.g. tradiční) go last
-        if (a.rental_czk_m2_month === 0 && b.rental_czk_m2_month > 0)
+        const aZero = a.rental_czk_m2_month === 0;
+        const bZero = b.rental_czk_m2_month === 0;
+        if (aZero && !bZero)
             return 1;
-        if (b.rental_czk_m2_month === 0 && a.rental_czk_m2_month > 0)
+        if (bZero && !aZero)
             return -1;
-        return a.rental_czk_m2_month - b.rental_czk_m2_month;
+        const aStages = computeStageCount(a, pressure_kn_m2, pour_height_m);
+        const bStages = computeStageCount(b, pressure_kn_m2, pour_height_m);
+        const aScore = a.rental_czk_m2_month * getStageCountPenalty(aStages);
+        const bScore = b.rental_czk_m2_month * getStageCountPenalty(bStages);
+        if (aScore !== bScore)
+            return aScore - bScore;
+        // Tiebreaker: fewer stages wins
+        return aStages - bStages;
     });
     return {
         suitable,
@@ -186,9 +279,19 @@ export function parseMaxHeight(heights) {
  * @param available_systems - Systems to consider (pre-filtered by category)
  * @returns Staging suggestion
  */
-export function suggestPourStages(total_height_m, pour_method = 'pump', available_systems) {
+export function suggestPourStages(total_height_m, pour_method = 'pump', available_systems, options) {
     const log = [];
-    const k = getPourRateCoefficient(pour_method);
+    // Resolve k factor identical to calculateLateralPressure
+    let k;
+    if (options?.k_factor != null) {
+        k = options.k_factor;
+    }
+    else if (options?.concrete_consistency) {
+        k = getConsistencyKFactor(options.concrete_consistency);
+    }
+    else {
+        k = getPourRateCoefficient(pour_method);
+    }
     // Find max pressure capacity among all systems
     const pressures = available_systems
         .map(s => s.pressure_kn_m2)
@@ -196,7 +299,7 @@ export function suggestPourStages(total_height_m, pour_method = 'pump', availabl
     const maxSystemPressure = pressures.length > 0 ? Math.max(...pressures) : 80; // fallback 80 kN/m²
     log.push(`Max system pressure: ${maxSystemPressure} kN/m² (from ${pressures.length} systems)`);
     // Full-height pressure
-    const fullPressure = calculateLateralPressure(total_height_m, pour_method);
+    const fullPressure = calculateLateralPressure(total_height_m, pour_method, options);
     log.push(`Full height ${total_height_m}m: ${fullPressure.pressure_kn_m2} kN/m² (k=${k})`);
     if (fullPressure.pressure_kn_m2 <= maxSystemPressure) {
         log.push(`No staging needed: ${fullPressure.pressure_kn_m2} ≤ ${maxSystemPressure} kN/m²`);
@@ -211,7 +314,9 @@ export function suggestPourStages(total_height_m, pour_method = 'pump', availabl
         };
     }
     // Calculate max stage height: h_max = P_max / (ρ × g × k / 1000)
-    const hMax = (maxSystemPressure * 1000) / (RHO * G * k);
+    // Guard k>0 to avoid div-by-zero
+    const safeK = k > 0 ? k : 0.85;
+    const hMax = (maxSystemPressure * 1000) / (RHO * G * safeK);
     const hMaxRounded = Math.floor(hMax * 10) / 10; // Round down for safety
     log.push(`Max stage height: ${hMaxRounded}m (for ${maxSystemPressure} kN/m², k=${k})`);
     // Number of stages

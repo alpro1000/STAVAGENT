@@ -141,6 +141,12 @@ export interface FormState {
   mss_tact_days: string;
   has_lost_formwork: boolean;
   lost_formwork_area_m2: string;
+  /** BUG-2: target pour window in hours (for pumps_for_target_window scenario) */
+  target_pour_window_h: string;
+  /** BUG-1 + HINT: concrete consistency for DIN 18218 k-factor */
+  concrete_consistency: 'standard' | 'plastic' | 'scc';
+  /** BUG-4: working joints allowed when no dilatation joints */
+  working_joints_allowed: '' | 'yes' | 'no' | 'unknown';
 }
 
 // ─── Scenario Snapshot ──────────────────────────────────────────────────────
@@ -287,4 +293,7 @@ export const DEFAULT_FORM: FormState = {
   mss_tact_days: '',
   has_lost_formwork: false,
   lost_formwork_area_m2: '',
+  target_pour_window_h: '',
+  concrete_consistency: 'standard',
+  working_joints_allowed: '',
 };

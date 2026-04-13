@@ -679,7 +679,7 @@ export function getElementProfile(type) {
  * @param height_m - Element/pour height (m). Enables pressure-based selection.
  * @param pour_method - Concrete delivery method. Auto-inferred if not given.
  */
-export function recommendFormwork(type, height_m, pour_method, total_length_m) {
+export function recommendFormwork(type, height_m, pour_method, total_length_m, concrete_consistency) {
     const profile = ELEMENT_CATALOG[type];
     // Rimsa: select formwork based on bridge length (konzoly vs. vozík)
     if (type === 'rimsa') {
@@ -701,6 +701,12 @@ export function recommendFormwork(type, height_m, pour_method, total_length_m) {
             ?? FORMWORK_SYSTEMS.find(s => s.name === 'UP Rosett Flex')
             ?? FORMWORK_SYSTEMS.find(s => s.name === profile.recommended_formwork[0])
             ?? FORMWORK_SYSTEMS[0];
+    }
+    // Pilota: bored pile — uses pažnice (casing) or tremie pipe, not panel formwork.
+    // Skip pressure-based filtering entirely.
+    if (type === 'pilota') {
+        const systemName = profile.recommended_formwork[0];
+        return FORMWORK_SYSTEMS.find(s => s.name === systemName) ?? FORMWORK_SYSTEMS[0];
     }
     // No height → static recommendation (original behavior)
     if (height_m == null || height_m <= 0) {
@@ -727,7 +733,9 @@ export function recommendFormwork(type, height_m, pour_method, total_length_m) {
     }
     // Vertical elements: use lateral pressure (DIN 18218) to filter formwork systems.
     const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
-    const pressure = calculateLateralPressure(height_m, method);
+    // BUG-1: default concrete consistency = 'standard' (k=0.85), not method-based.
+    const consistency = concrete_consistency ?? 'standard';
+    const pressure = calculateLateralPressure(height_m, method, { concrete_consistency: consistency });
     // Get category-compatible systems
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
     // Filter by pressure AND max pour height
@@ -744,10 +752,11 @@ export function recommendFormwork(type, height_m, pour_method, total_length_m) {
  * Returns the full filter result (suitable, rejected, pressure).
  * Used by orchestrator for warnings and UI display.
  */
-export function getFilteredFormworkSystems(type, height_m, pour_method) {
+export function getFilteredFormworkSystems(type, height_m, pour_method, concrete_consistency) {
     const profile = ELEMENT_CATALOG[type];
     const method = pour_method ?? inferPourMethod(profile.pump_typical, height_m);
-    const pressure = calculateLateralPressure(height_m, method);
+    const consistency = concrete_consistency ?? 'standard';
+    const pressure = calculateLateralPressure(height_m, method, { concrete_consistency: consistency });
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
     const filtered = filterFormworkByPressure(pressure.pressure_kn_m2, compatibleSystems, profile.orientation, height_m);
     return {
@@ -822,6 +831,158 @@ export function getSuitableSystemsForElement(elementType) {
         compatible,
         all: [...recommended, ...compatible],
     };
+}
+/**
+ * Minimum inputs the planner needs to compute a useful result.
+ * Shared between wizard hints (HINT-1) and validation.
+ */
+export const REQUIRED_FIELDS = {
+    zaklady_piliru: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry a náklady' },
+        { field: 'height_m', label_cs: 'Výška základu', severity: 'optional', reason_cs: 'ovlivňuje boční tlak a volbu bednění' },
+    ],
+    driky_piliru: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška pilíře', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak a záběry' },
+        { field: 'formwork_area_m2', label_cs: 'Plocha bednění', severity: 'optional', reason_cs: 'prázdné = dopočítám z objemu a výšky' },
+    ],
+    rimsa: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'total_length_m', label_cs: 'Délka mostu', severity: 'optional', reason_cs: 'určuje systém (konzoly vs. vozík)' },
+    ],
+    operne_zdi: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška zdi', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak' },
+        { field: 'total_length_m', label_cs: 'Délka zdi', severity: 'optional', reason_cs: 'ovlivňuje sekce a šachovnici' },
+    ],
+    mostovkova_deska: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat náklady' },
+        { field: 'formwork_area_m2', label_cs: 'Plocha bednění', severity: 'optional', reason_cs: 'prázdné = dopočítám z objemu' },
+        { field: 'span_m', label_cs: 'Rozpětí', severity: 'optional', reason_cs: 'rozhoduje o technologii (MSS/CFT)' },
+        { field: 'num_spans', label_cs: 'Počet polí', severity: 'optional', reason_cs: 'pro MSS harmonogram' },
+    ],
+    rigel: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška pod příčníkem', severity: 'critical', reason_cs: 'nutné pro podpěrnou konstrukci' },
+    ],
+    opery_ulozne_prahy: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška opěry', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak' },
+    ],
+    kridla_opery: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška křídla', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak' },
+    ],
+    mostni_zavirne_zidky: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+    ],
+    prechodova_deska: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+    ],
+    zakladova_deska: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'formwork_area_m2', label_cs: 'Plocha desky', severity: 'optional', reason_cs: 'pro podpěry a pronájem bednění' },
+    ],
+    zakladovy_pas: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'total_length_m', label_cs: 'Délka pásu', severity: 'optional', reason_cs: 'pro sekcování' },
+    ],
+    zakladova_patka: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+    ],
+    stropni_deska: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'formwork_area_m2', label_cs: 'Plocha stropu', severity: 'optional', reason_cs: 'prázdné = dopočítám z objemu' },
+        { field: 'height_m', label_cs: 'Světlá výška', severity: 'critical', reason_cs: 'pro výpočet stojek a skruže' },
+    ],
+    stena: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška stěny', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak a záběry' },
+    ],
+    sloup: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška sloupu', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak' },
+    ],
+    pruvlak: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Světlá výška', severity: 'critical', reason_cs: 'pro skruž a stojky' },
+    ],
+    schodiste: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška podlaží', severity: 'critical', reason_cs: 'pro skruž' },
+    ],
+    nadrz: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+        { field: 'height_m', label_cs: 'Výška stěn', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak' },
+    ],
+    podzemni_stena: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat panely' },
+    ],
+    pilota: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
+    ],
+    other: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat náklady' },
+    ],
+};
+export const SANITY_RANGES = {
+    zaklady_piliru: { volume_m3: [10, 800], height_m: [0.8, 3.0], rebar_kg_m3: [60, 150] },
+    driky_piliru: { volume_m3: [5, 400], height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
+    rimsa: { volume_m3: [2, 200], height_m: [0.3, 0.8], rebar_kg_m3: [80, 180] },
+    operne_zdi: { volume_m3: [10, 500], height_m: [2.0, 12.0], rebar_kg_m3: [50, 130] },
+    mostovkova_deska: { volume_m3: [20, 2000], height_m: [0.3, 2.5], rebar_kg_m3: [100, 200] },
+    rigel: { volume_m3: [3, 150], height_m: [0.6, 3.0], rebar_kg_m3: [100, 200] },
+    opery_ulozne_prahy: { volume_m3: [10, 500], height_m: [2.0, 15.0], rebar_kg_m3: [70, 160] },
+    kridla_opery: { volume_m3: [5, 200], height_m: [2.0, 10.0], rebar_kg_m3: [60, 140] },
+    mostni_zavirne_zidky: { volume_m3: [1, 20], height_m: [0.5, 2.0], rebar_kg_m3: [50, 120] },
+    prechodova_deska: { volume_m3: [5, 80], height_m: [0.2, 0.5], rebar_kg_m3: [70, 140] },
+    zakladova_deska: { volume_m3: [10, 2000], height_m: [0.3, 2.0], rebar_kg_m3: [80, 160] },
+    zakladovy_pas: { volume_m3: [5, 500], height_m: [0.4, 1.5], rebar_kg_m3: [50, 120] },
+    zakladova_patka: { volume_m3: [2, 50], height_m: [0.5, 2.0], rebar_kg_m3: [60, 140] },
+    stropni_deska: { volume_m3: [5, 1000], height_m: [0.12, 0.40], rebar_kg_m3: [60, 150] },
+    stena: { volume_m3: [5, 500], height_m: [2.5, 12.0], rebar_kg_m3: [50, 130] },
+    sloup: { volume_m3: [1, 80], height_m: [2.5, 20.0], rebar_kg_m3: [120, 240] },
+    pruvlak: { volume_m3: [1, 60], height_m: [0.4, 2.0], rebar_kg_m3: [100, 200] },
+    schodiste: { volume_m3: [1, 30], height_m: [2.5, 5.0], rebar_kg_m3: [100, 180] },
+    nadrz: { volume_m3: [10, 800], height_m: [2.0, 8.0], rebar_kg_m3: [70, 160] },
+    podzemni_stena: { volume_m3: [20, 2000], height_m: [5.0, 40.0], rebar_kg_m3: [50, 140] },
+    pilota: { volume_m3: [1, 200], height_m: [5.0, 40.0], rebar_kg_m3: [40, 120] },
+    other: { volume_m3: [0.5, 5000] },
+};
+/**
+ * Check a set of user-provided numeric inputs against SANITY_RANGES and
+ * return any that are out of the typical range (possibly a typo).
+ */
+export function checkSanity(elementType, values) {
+    const ranges = SANITY_RANGES[elementType];
+    if (!ranges)
+        return [];
+    const issues = [];
+    const labels = {
+        volume_m3: 'Objem',
+        height_m: 'Výška',
+        rebar_kg_m3: 'Výztuž',
+        formwork_area_m2: 'Plocha bednění',
+    };
+    for (const key of Object.keys(ranges)) {
+        const range = ranges[key];
+        if (!range)
+            continue;
+        const value = values[key];
+        if (value == null || !Number.isFinite(value))
+            continue;
+        const [min, max] = range;
+        if (value < min || value > max) {
+            issues.push({
+                field: key,
+                value,
+                min, max,
+                label_cs: labels[key],
+                message_cs: `${labels[key]} ${value} je mimo typický rozsah (${min}–${max}) pro ${ELEMENT_CATALOG[elementType].label_cs}.`,
+            });
+        }
+    }
+    return issues;
 }
 export function estimateRebarMass(elementType, volume_m3) {
     const profile = ELEMENT_CATALOG[elementType];

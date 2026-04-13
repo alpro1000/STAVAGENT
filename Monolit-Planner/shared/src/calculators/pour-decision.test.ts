@@ -276,4 +276,56 @@ describe('Pour Decision Tree v2.0', () => {
       expect(result.decision_log.some(l => l.includes('T-window'))).toBe(true);
     });
   });
+
+  // ────────────────────────────────────────────────────────────────────────
+  // BUG-4: Working joints (pracovní spáry) — separate from dilatační spáry
+  // ────────────────────────────────────────────────────────────────────────
+
+  describe('BUG-4: working_joints_allowed', () => {
+    it('default (undefined) preserves monolithic mode (backward compat)', () => {
+      const r = decidePourMode(makeInput({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        has_dilatacni_spary: false,
+      }));
+      expect(r.pour_mode).toBe('monolithic');
+      expect(r.num_tacts).toBe(1);
+    });
+
+    it("'no' is strictly monolithic and adds nepřetržitá warning", () => {
+      const r = decidePourMode(makeInput({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      }));
+      expect(r.pour_mode).toBe('monolithic');
+      expect(r.num_tacts).toBe(1);
+      expect(r.warnings.some(w => w.includes('nepřetržitou'))).toBe(true);
+    });
+
+    it("'yes' splits into záběry by pour-window capacity (no extra warning)", () => {
+      const r = decidePourMode(makeInput({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+      }));
+      expect(r.pour_mode).toBe('sectional');
+      expect(r.num_tacts).toBeGreaterThan(1);
+      expect(r.warnings.some(w => w.includes('nepotvrzeny'))).toBe(false);
+    });
+
+    it("'unknown' splits AND emits 'ověřte v RDS' warning", () => {
+      const r = decidePourMode(makeInput({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'unknown',
+      }));
+      expect(r.pour_mode).toBe('sectional');
+      expect(r.num_tacts).toBeGreaterThan(1);
+      expect(r.warnings.some(w => w.includes('nepotvrzeny'))).toBe(true);
+    });
+  });
 });

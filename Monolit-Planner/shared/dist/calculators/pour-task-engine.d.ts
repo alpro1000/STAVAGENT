@@ -37,6 +37,24 @@ export interface PourTaskInput {
     crew_size?: number;
     /** Shift hours. Default: 10 */
     shift_h?: number;
+    /**
+     * BUG-2: Optional target pour window (h). When set, an alternative
+     * "target window" pump count is computed alongside the actual scenario.
+     */
+    target_window_h?: number;
+}
+/** BUG-2: Pump scenario describing one possible pump configuration */
+export interface PumpScenario {
+    /** Number of pumps in this scenario */
+    count: number;
+    /** Combined m³/h capacity of all pumps */
+    total_rate_m3_h: number;
+    /** Resulting pour duration (h) including setup/washout */
+    pour_duration_h: number;
+    /** Czech label describing the scenario */
+    scenario: string;
+    /** Target window (h) — only set for the target scenario */
+    target_window_h?: number;
 }
 export interface PourTaskResult {
     /** Effective delivery rate — the actual bottleneck rate (m³/h) */
@@ -55,6 +73,16 @@ export interface PourTaskResult {
     pumps_required: number;
     /** Whether backup pump is recommended (volume > 200m³) */
     backup_pump_recommended: boolean;
+    /**
+     * BUG-2: Active scenario reflecting the actual pour duration with the
+     * single-pump setup. Always present.
+     */
+    pumps_for_actual_window: PumpScenario;
+    /**
+     * BUG-2: Alternative scenario for a target pour window. Only present when
+     * input.target_window_h is provided.
+     */
+    pumps_for_target_window?: PumpScenario;
     /** Available pour window (h) */
     pour_window_h: number;
     /** Whether pour fits in one window */
