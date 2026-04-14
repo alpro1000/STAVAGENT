@@ -707,10 +707,24 @@ export default function useCalculator() {
 
   /** Build PlannerInput from current form state (shared by calculate + compare) */
   const buildInput = (): PlannerInput => {
-    const effectiveHasSpary = form.tact_mode === 'spary' ? form.has_dilatacni_spary : false;
+    // Block A (2026-04): hierarchical sections × záběry per section.
+    // The new sidebar UI writes has_dilatation_joints + num_dilatation_sections
+    // + tacts_per_section_mode/manual. Engine consumes them via Block A
+    // pre-compute in the orchestrator. has_dilatacni_spary stays false here
+    // because the orchestrator's Block A path supersedes branch A.
+    const numSections = form.has_dilatation_joints
+      ? Math.max(1, Math.floor(form.num_dilatation_sections || 1))
+      : 1;
+    const tactsPerSectionManual = form.tacts_per_section_mode === 'manual'
+      ? Math.max(1, parseInt(form.tacts_per_section_manual || '0', 10) || 0)
+      : 0;
+
     const input: PlannerInput = {
       volume_m3: form.volume_m3,
-      has_dilatacni_spary: effectiveHasSpary,
+      // New model: dilatace + working joints handled by Block A pre-compute
+      has_dilatacni_spary: false,
+      num_dilatation_sections: numSections,
+      ...(tactsPerSectionManual > 0 ? { tacts_per_section: tactsPerSectionManual } : {}),
       season: form.season,
       use_retarder: form.use_retarder,
       concrete_class: form.concrete_class,
@@ -737,13 +751,20 @@ export default function useCalculator() {
     }
     if (form.formwork_area_m2) input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
     if (form.rebar_mass_kg) input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
-    if (effectiveHasSpary) {
-      input.spara_spacing_m = form.spara_spacing_m;
+    // Block A: adjacent sections still drives chess scheduling (delegated via
+    // scheduling_mode_override path so the scheduler reorders neighbours).
+    if (form.has_dilatation_joints && numSections > 1 && form.adjacent_sections) {
+      input.adjacent_sections = true;
+      input.scheduling_mode_override = 'chess';
+    }
+    if (form.total_length_m > 0) {
+      // Still useful for římsa formwork selection + prestress days
       input.total_length_m = form.total_length_m;
-      input.adjacent_sections = form.adjacent_sections;
     }
     // Manual záběry (non-uniform volumes) override both tact count and per-tact volume.
     // Bottleneck záběr (largest volume) drives schedule calculation.
+    // NOTE: this path is kept (unchanged) and takes precedence over Block A
+    // because non-uniform záběry are a fundamentally different mode.
     if (form.use_manual_zabery && form.manual_zabery.length > 0) {
       const volumes = form.manual_zabery
         .map(z => parseFloat(z.volume_m3) || 0)
@@ -751,12 +772,12 @@ export default function useCalculator() {
       if (volumes.length > 0) {
         input.num_tacts_override = volumes.length;
         input.tact_volume_m3_override = Math.max(...volumes);  // bottleneck for schedule
+        // Block A: when manual záběry is on, suppress hierarchical pre-compute
+        // by clearing num_dilatation_sections so the legacy override branch wins.
+        delete input.num_dilatation_sections;
       }
-    } else if (form.tact_mode === 'manual' && form.num_tacts_override) {
-      input.num_tacts_override = parseInt(form.num_tacts_override);
-      if (form.tact_volume_m3_override) input.tact_volume_m3_override = parseFloat(form.tact_volume_m3_override);
-      if (form.scheduling_mode_override) input.scheduling_mode_override = form.scheduling_mode_override;
     }
+    if (form.scheduling_mode_override) input.scheduling_mode_override = form.scheduling_mode_override;
     if (form.height_m) input.height_m = parseFloat(form.height_m);
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
@@ -790,7 +811,8 @@ export default function useCalculator() {
     // Exposure class from URL context
     if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
     // Total length for non-spáry mode (needed for prestress days calculation)
-    if (form.total_length_m > 0 && !effectiveHasSpary) input.total_length_m = form.total_length_m;
+    // Block A: total_length_m is now ALWAYS forwarded above (used by římsa
+    // formwork selection + prestress day estimation).
     // BUG-1: concrete consistency (DIN 18218 k-factor)
     if (form.concrete_consistency) input.concrete_consistency = form.concrete_consistency;
     // BUG-4: working joints allowed

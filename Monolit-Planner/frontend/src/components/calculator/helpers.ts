@@ -35,7 +35,10 @@ export function loadFromLS<T>(key: string, fallback: T): T {
 
 // ─── localStorage keys ──────────────────────────────────────────────────────
 
-export const LS_FORM_KEY = 'planner-form';
+// Block A (2026-04): bumped from 'planner-form' to 'planner-form-v2' so the
+// stale form schema with tact_mode / num_tacts_override is silently dropped
+// on first load. Per user decision: clean start, no migration.
+export const LS_FORM_KEY = 'planner-form-v2';
 export const LS_SCENARIOS_KEY = 'planner-scenarios';
 export const LS_SCENARIO_SEQ_KEY = 'planner-scenario-seq';
 

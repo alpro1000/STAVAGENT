@@ -258,112 +258,115 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
 
           {/* ─── Záběry (Tacts) — wizard step 5 ─── */}
           <div className={wizardVisible.zabery ? 'r0-wizard-step' : ''} style={wizardVisible.zabery ? undefined : { display: 'none' }}>
-          <Section title="Záběry">
-            <div style={{
-              display: 'flex', gap: 4, marginBottom: 10,
-              background: 'var(--r0-slate-200)', borderRadius: 4, padding: 2,
-            }}>
-              <button
-                onClick={() => update('tact_mode', 'spary')}
-                style={{
-                  flex: 1, padding: '6px 0', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer',
-                  borderRadius: 3, fontFamily: 'inherit',
-                  background: form.tact_mode === 'spary' ? 'white' : 'transparent',
-                  color: form.tact_mode === 'spary' ? 'var(--r0-slate-800)' : 'var(--r0-slate-500)',
-                  boxShadow: form.tact_mode === 'spary' ? '0 1px 3px rgba(0,0,0,.1)' : 'none',
-                }}
-              >
-                Dilatační spáry
-              </button>
-              <button
-                onClick={() => update('tact_mode', 'manual')}
-                style={{
-                  flex: 1, padding: '6px 0', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer',
-                  borderRadius: 3, fontFamily: 'inherit',
-                  background: form.tact_mode === 'manual' ? 'white' : 'transparent',
-                  color: form.tact_mode === 'manual' ? 'var(--r0-slate-800)' : 'var(--r0-slate-500)',
-                  boxShadow: form.tact_mode === 'manual' ? '0 1px 3px rgba(0,0,0,.1)' : 'none',
-                }}
-              >
-                Počet záběrů
-              </button>
-            </div>
+          <Section title="Členění konstrukce">
+            {/* Block A (2026-04): hierarchical sections × záběry per section
+                replaces the legacy two-tab UI ("Dilatační spáry" / "Počet záběrů").
+                The two layers are independent — a dilatation cell may itself
+                contain multiple záběry depending on volume + capacity. */}
 
-            {form.tact_mode === 'spary' ? (
+            {/* ─── KROK 1: Dilatační celky ─── */}
+            <label style={labelStyle}>
+              <input
+                type="checkbox"
+                checked={form.has_dilatation_joints}
+                onChange={e => {
+                  update('has_dilatation_joints', e.target.checked);
+                  if (!e.target.checked) update('num_dilatation_sections', 1);
+                }}
+              />
+              {' '}Konstrukce má dilatační spáry
+            </label>
+
+            {form.has_dilatation_joints && (
               <>
+                <Field label="Počet dilatačních celků" hint="z TZ / projektu">
+                  <NumInput
+                    style={inputStyle}
+                    value={form.num_dilatation_sections}
+                    min={1}
+                    fallback={1}
+                    onChange={v => update('num_dilatation_sections', v as number)}
+                  />
+                </Field>
+                <Field label="Rozteč spár (m)" hint="prázdné = ručně počet">
+                  <NumInput
+                    style={inputStyle}
+                    value={form.dilatation_spacing_m}
+                    min={0.1}
+                    onChange={v => {
+                      const spacing = v as number;
+                      update('dilatation_spacing_m', String(spacing));
+                      // Auto-derive num_dilatation_sections from total_length / spacing
+                      if (spacing > 0 && form.total_length_m > 0) {
+                        update('num_dilatation_sections', Math.max(1, Math.ceil(form.total_length_m / spacing)));
+                      }
+                    }}
+                    placeholder="např. 15"
+                  />
+                </Field>
+                <Field label="Celková délka (m)">
+                  <NumInput
+                    style={inputStyle}
+                    value={form.total_length_m}
+                    min={0.1}
+                    fallback={1}
+                    onChange={v => update('total_length_m', v as number)}
+                  />
+                </Field>
                 <label style={labelStyle}>
                   <input
                     type="checkbox"
-                    checked={form.has_dilatacni_spary}
-                    onChange={e => update('has_dilatacni_spary', e.target.checked)}
+                    checked={form.adjacent_sections}
+                    onChange={e => update('adjacent_sections', e.target.checked)}
                   />
-                  {' '}Dilatační spáry
+                  {' '}Šachové betonování sousedních celků
                 </label>
-                {!form.has_dilatacni_spary && (
-                  <div style={{
-                    padding: '8px 10px', marginBottom: 8,
-                    background: 'var(--r0-warn-bg)', border: '1px solid var(--r0-warn-border)', borderRadius: 4,
-                    fontSize: 11, color: 'var(--r0-warn-text)', lineHeight: 1.5,
-                  }}>
-                    Bez dilatačních spár = monolitický záběr v jednom průchodu.
-                    Zajistěte dostatečnou kapacitu čerpadla a betonárny.
-                  </div>
-                )}
-                {form.has_dilatacni_spary && (
-                  <>
-                    <Field label="Rozteč spár (m)">
-                      <NumInput style={inputStyle} value={form.spara_spacing_m} min={0.1} fallback={1}
-                        onChange={v => update('spara_spacing_m', v as number)} />
-                    </Field>
-                    <Field label="Celková délka (m)">
-                      <NumInput style={inputStyle} value={form.total_length_m} min={0.1} fallback={1}
-                        onChange={v => update('total_length_m', v as number)} />
-                    </Field>
-                    <label style={labelStyle}>
-                      <input
-                        type="checkbox"
-                        checked={form.adjacent_sections}
-                        onChange={e => update('adjacent_sections', e.target.checked)}
-                      />
-                      {' '}Sousední sekce (šachový pořadí)
-                    </label>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                <div style={{
-                  padding: '8px 10px', marginBottom: 10,
-                  background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 4,
-                  fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
-                }}>
-                  Pro základy, pilíře, opěry: každý element = 1 záběr.<br/>
-                  Např. 569 m³ na 2 opěry + 8 pilířů = 10 záběrů.
-                </div>
-                <Field label="Počet záběrů">
-                  <NumInput style={inputStyle} value={form.num_tacts_override} min={1}
-                    onChange={v => update('num_tacts_override', String(v))} placeholder="např. 10" />
-                </Field>
-                <Field label="Objem na záběr (m³)" hint="prázdné = celkem ÷ záběry">
-                  <NumInput style={inputStyle} value={form.tact_volume_m3_override} min={0.1}
-                    onChange={v => update('tact_volume_m3_override', String(v))}
-                    placeholder={form.num_tacts_override
-                      ? `${(form.volume_m3 / (parseInt(form.num_tacts_override) || 1)).toFixed(1)} m³ (auto)`
-                      : 'automatický výpočet'} />
-                </Field>
-                <Field label="Režim betonáže">
-                  <select
-                    style={inputStyle}
-                    value={form.scheduling_mode_override}
-                    onChange={e => update('scheduling_mode_override', e.target.value as '' | 'linear' | 'chess')}
-                  >
-                    <option value="">Automatický (dle typu)</option>
-                    <option value="linear">Lineární (po řadě)</option>
-                    <option value="chess">Šachový (obskakuje sousední)</option>
-                  </select>
-                </Field>
               </>
             )}
+
+            <div style={{ height: 1, background: 'var(--r0-slate-200)', margin: '10px 0' }} />
+
+            {/* ─── KROK 2: Záběry per celek ─── */}
+            <Field label="Záběry v jednom celku">
+              <select
+                style={inputStyle}
+                value={form.tacts_per_section_mode}
+                onChange={e => update('tacts_per_section_mode', e.target.value as 'auto' | 'manual')}
+              >
+                <option value="auto">Automaticky (dle kapacity)</option>
+                <option value="manual">Ručně</option>
+              </select>
+            </Field>
+
+            {form.tacts_per_section_mode === 'manual' && (
+              <Field label="Počet záběrů per celek">
+                <NumInput
+                  style={inputStyle}
+                  value={form.tacts_per_section_manual}
+                  min={1}
+                  onChange={v => update('tacts_per_section_manual', String(v))}
+                  placeholder="např. 2"
+                />
+              </Field>
+            )}
+
+            {/* ─── Náhled výsledku ─── */}
+            <div style={{
+              padding: '8px 10px', marginTop: 10,
+              background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)',
+              borderRadius: 4, fontSize: 11, color: 'var(--r0-badge-blue-text)', lineHeight: 1.5,
+            }}>
+              {(() => {
+                const nSec = form.has_dilatation_joints ? Math.max(1, form.num_dilatation_sections || 1) : 1;
+                const tps = form.tacts_per_section_mode === 'manual'
+                  ? Math.max(1, parseInt(form.tacts_per_section_manual || '0', 10) || 0)
+                  : 0;
+                const totalLabel = tps > 0
+                  ? `${nSec} celk${nSec === 1 ? '' : nSec < 5 ? 'y' : 'ů'} × ${tps} záběr${tps === 1 ? '' : tps < 5 ? 'y' : 'ů'} = ${nSec * tps} celkem`
+                  : `${nSec} celk${nSec === 1 ? '' : nSec < 5 ? 'y' : 'ů'} × auto záběry (engine spočítá z objemu/kapacity)`;
+                return <>Členění: <strong>{totalLabel}</strong></>;
+              })()}
+            </div>
 
             {/* ─── Block B: Pracovní spáry (visible PŘED prvním výpočtem) ─── */}
             <Field

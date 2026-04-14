@@ -173,10 +173,43 @@ export function planElement(input) {
         season: input.season,
         use_retarder: input.use_retarder,
     });
+    // Block A — pre-compute total tacts from hierarchical sections × záběry
+    // when the new sidebar fields are set. Result feeds the existing
+    // num_tacts_override path, which Block D rebuilds (pumps/sub_mode) and
+    // which honours working_joints_allowed already (because the auto branch
+    // delegates back to decidePourMode for one section's volume).
+    let effectiveNumTactsOverride = input.num_tacts_override;
+    let effectiveTactVolumeOverride = input.tact_volume_m3_override;
+    if (input.num_dilatation_sections !== undefined && input.num_dilatation_sections > 0) {
+        const numSections = Math.max(1, Math.floor(input.num_dilatation_sections));
+        const sectionVolume = input.volume_m3 / numSections;
+        let tactsPerSection;
+        if (input.tacts_per_section !== undefined && input.tacts_per_section > 0) {
+            tactsPerSection = Math.max(1, Math.floor(input.tacts_per_section));
+        }
+        else {
+            // Auto compute by running decidePourMode for ONE section's volume.
+            // working_joints_allowed flows through unchanged so 'no'/'unknown'
+            // produce the right záběry-per-section count.
+            const subDecision = decidePourMode({
+                element_type: elementType,
+                volume_m3: sectionVolume,
+                has_dilatacni_spary: false,
+                working_joints_allowed: input.working_joints_allowed,
+                season: input.season,
+                use_retarder: input.use_retarder,
+            });
+            tactsPerSection = subDecision.num_tacts;
+        }
+        const totalTacts = numSections * tactsPerSection;
+        effectiveNumTactsOverride = totalTacts;
+        effectiveTactVolumeOverride = input.volume_m3 / totalTacts;
+        log.push(`Block A: ${numSections} sekcí × ${tactsPerSection} záběrů/sekce = ${totalTacts} celkem`);
+    }
     // Apply user overrides for tacts (foundations, piers, etc.)
-    if (input.num_tacts_override && input.num_tacts_override > 0) {
-        const overrideN = input.num_tacts_override;
-        const overrideTactVol = input.tact_volume_m3_override
+    if (effectiveNumTactsOverride && effectiveNumTactsOverride > 0) {
+        const overrideN = effectiveNumTactsOverride;
+        const overrideTactVol = effectiveTactVolumeOverride
             ?? Math.round((input.volume_m3 / overrideN) * 100) / 100;
         pourDecision.num_tacts = overrideN;
         pourDecision.tact_volume_m3 = overrideTactVol;
@@ -210,7 +243,7 @@ export function planElement(input) {
         log.push(`Scheduling mode: MANUAL → ${input.scheduling_mode_override}`);
     }
     // 3b. Apply height-based záběry (pour stages) for vertical elements
-    if (heightForPressure && heightForPressure > 0 && isVertical && !input.num_tacts_override) {
+    if (heightForPressure && heightForPressure > 0 && isVertical && !effectiveNumTactsOverride) {
         const { all: allCompatible } = getSuitableSystemsForElement(elementType);
         const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
         pourStages = suggestPourStages(heightForPressure, pourMethod, allCompatible, lpOptions);

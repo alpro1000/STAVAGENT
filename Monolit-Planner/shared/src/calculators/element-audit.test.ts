@@ -169,6 +169,76 @@ describe('22-type audit (Part D)', () => {
     });
   });
 
+  // Block A: hierarchical sections × záběry per section.
+  describe('hierarchical sections × tacts (Block A)', () => {
+    it('explicit num_dilatation_sections + tacts_per_section → multiplied total', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 100,
+        height_m: 3,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+        num_dilatation_sections: 3,
+        tacts_per_section: 2,
+      });
+      // 3 × 2 = 6 záběrů celkem
+      expect(plan.pour_decision.num_tacts).toBe(6);
+      // Per-tact volume = 100/6 ≈ 16.67
+      expect(plan.pour_decision.tact_volume_m3).toBeCloseTo(16.67, 1);
+      // Block D's manual_override sub_mode kicks in (we routed through the
+      // num_tacts_override path)
+      expect(plan.pour_decision.sub_mode).toBe('manual_override');
+    });
+
+    it('auto tacts_per_section respects working_joints_allowed=no → 1 záběr per section', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        formwork_area_m2: 800,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        concrete_class: 'C30/37',
+        num_dilatation_sections: 4,
+        // tacts_per_section omitted → auto
+      });
+      // 4 sections × 1 záběr (working_joints='no') = 4 total
+      expect(plan.pour_decision.num_tacts).toBe(4);
+      // Warning about nepřetržitou betonáž should bubble up (one per section)
+      expect(plan.warnings.some(w => w.includes('nepřetržitou'))).toBe(true);
+    });
+
+    it('auto tacts_per_section without working_joints → splits each section by capacity', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        formwork_area_m2: 800,
+        has_dilatacni_spary: false,
+        // working_joints_allowed omitted → 'unknown' default
+        concrete_class: 'C30/37',
+        num_dilatation_sections: 2,
+      });
+      // 2 sections × auto. 300m³ per section, q_eff=30, available_h≈4 → 120m³/window
+      // → ceil(300/120) = 3 záběry per section. Total = 2 × 3 = 6.
+      expect(plan.pour_decision.num_tacts).toBe(6);
+      expect(plan.warnings.some(w => w.includes('nepotvrzeny'))).toBe(true);
+    });
+
+    it('num_dilatation_sections=1 + auto → behaves like single-section calc', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 200,
+        formwork_area_m2: 400,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+        num_dilatation_sections: 1,
+      });
+      // 1 section × ceil(200/120) = 2 → total 2
+      expect(plan.pour_decision.num_tacts).toBe(2);
+    });
+  });
+
   // Block D: num_tacts_override rebuild of derived pump/window fields.
   describe('num_tacts_override rebuild (Block D)', () => {
     it('override 10 tacts for 50m³ → pumps=1, sub_mode=manual_override', () => {
