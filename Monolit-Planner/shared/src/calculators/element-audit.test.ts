@@ -119,18 +119,33 @@ describe('22-type audit (Part D)', () => {
     });
   });
 
-  // Spot check: working_joints_allowed='yes' on a large monolith splits into záběry
-  describe('working_joints_allowed end-to-end (BUG-4)', () => {
-    it('large monolithic deck stays 1 záběr by default', () => {
+  // Spot check: working_joints_allowed routing end-to-end (BUG-4 + Block C)
+  describe('working_joints_allowed end-to-end (BUG-4 + Block C)', () => {
+    // Block C: default (undefined) now splits a large deck by capacity
+    // and emits the "ověřte v RDS" warning instead of silently producing
+    // num_tacts=1 on the first run.
+    it('large deck default (undefined) — sectional + "ověřte v RDS" warning', () => {
       const plan = planElement({
         element_type: 'mostovkova_deska', volume_m3: 800,
         formwork_area_m2: 1200, has_dilatacni_spary: false,
         concrete_class: 'C30/37',
       });
-      expect(plan.pour_decision.num_tacts).toBe(1);
+      expect(plan.pour_decision.num_tacts).toBeGreaterThan(1);
+      expect(plan.warnings.some(w => w.includes('nepotvrzeny'))).toBe(true);
     });
 
-    it('same deck with working_joints_allowed=yes splits into multiple záběry', () => {
+    it("explicit 'no' keeps large deck at 1 záběr + nepřetržitá warning", () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska', volume_m3: 800,
+        formwork_area_m2: 1200, has_dilatacni_spary: false,
+        concrete_class: 'C30/37',
+        working_joints_allowed: 'no',
+      });
+      expect(plan.pour_decision.num_tacts).toBe(1);
+      expect(plan.warnings.some(w => w.includes('nepřetržitou'))).toBe(true);
+    });
+
+    it("'yes' splits into multiple záběry, no ověřte warning", () => {
       const plan = planElement({
         element_type: 'mostovkova_deska', volume_m3: 800,
         formwork_area_m2: 1200, has_dilatacni_spary: false,
@@ -138,6 +153,7 @@ describe('22-type audit (Part D)', () => {
         working_joints_allowed: 'yes',
       });
       expect(plan.pour_decision.num_tacts).toBeGreaterThan(1);
+      expect(plan.warnings.some(w => w.includes('nepotvrzeny'))).toBe(false);
     });
   });
 });

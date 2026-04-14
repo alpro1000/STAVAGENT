@@ -59,21 +59,38 @@ export function Card({ title, icon, children, borderColor }: {
 
 // ─── KPICard ───────────────────────────────────────────────────────────────
 
-export function KPICard({ label, value, unit, color }: {
+export function KPICard({ label, value, unit, color, tooltip }: {
   label: string; value: string | number; unit?: string; color: string;
+  /** Optional hover tooltip shown on the label (ℹ️) — explains the number */
+  tooltip?: string;
 }) {
   return (
-    <div style={{
-      background: 'white', borderRadius: 6, padding: 0,
-      border: '1px solid var(--r0-slate-200)',
-      borderLeftWidth: 4, borderLeftColor: color,
-      overflow: 'visible',
-    }}>
+    <div
+      style={{
+        background: 'white', borderRadius: 6, padding: 0,
+        border: '1px solid var(--r0-slate-200)',
+        borderLeftWidth: 4, borderLeftColor: color,
+        overflow: 'visible',
+      }}
+      title={tooltip}
+    >
       <div style={{
         fontSize: 10, fontWeight: 600, textTransform: 'uppercase',
         letterSpacing: '0.06em', color: 'var(--r0-slate-500)',
         padding: '5px 12px 4px', borderBottom: '1px solid var(--r0-slate-200)',
-      }}>{label}</div>
+        display: 'flex', alignItems: 'center', gap: 4,
+      }}>
+        <span>{label}</span>
+        {tooltip && (
+          <span
+            style={{
+              fontSize: 10, color: 'var(--r0-slate-400)',
+              cursor: 'help', userSelect: 'none',
+            }}
+            aria-label={tooltip}
+          >ⓘ</span>
+        )}
+      </div>
       <div style={{ padding: '6px 12px 7px' }}>
         <div style={{
           fontSize: 20, fontWeight: 600, color: 'var(--r0-slate-800)',

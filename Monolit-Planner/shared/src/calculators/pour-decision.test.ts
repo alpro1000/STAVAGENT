@@ -125,10 +125,14 @@ describe('Pour Decision Tree v2.0', () => {
   // ────────────────────────────────────────────────────────────────────────
 
   describe('Monolithic mode', () => {
+    // Block C: explicit working_joints_allowed:'no' is now required to
+    // reach the strict monolithic branch. Default undefined routes to the
+    // sectional-by-capacity branch with an "ověřte v RDS" warning.
     it('should detect monolithic mode when no spáry', () => {
       const result = decidePourMode(makeInput({
         has_dilatacni_spary: false,
         volume_m3: 50,
+        working_joints_allowed: 'no',
       }));
       expect(result.pour_mode).toBe('monolithic');
       expect(result.num_tacts).toBe(1);
@@ -143,6 +147,7 @@ describe('Pour Decision Tree v2.0', () => {
         q_eff_m3_h: 30,
         season: 'normal',
         use_retarder: false,
+        working_joints_allowed: 'no',
       }));
       expect(result.sub_mode).toBe('single_pump');
       expect(result.pumps_required).toBe(1);
@@ -159,6 +164,7 @@ describe('Pour Decision Tree v2.0', () => {
         q_eff_m3_h: 30,
         season: 'normal',
         use_retarder: false,
+        working_joints_allowed: 'no',
       }));
       expect(result.pumps_required).toBe(1);
       expect(result.retarder_required).toBe(true);
@@ -173,6 +179,7 @@ describe('Pour Decision Tree v2.0', () => {
         q_eff_m3_h: 30,
         season: 'normal',
         use_retarder: false,
+        working_joints_allowed: 'no',
       }));
       expect(result.sub_mode).toBe('multi_pump');
       expect(result.pumps_required).toBe(2);
@@ -186,6 +193,7 @@ describe('Pour Decision Tree v2.0', () => {
         q_eff_m3_h: 30,
         season: 'normal',
         use_retarder: true,
+        working_joints_allowed: 'no',
       }));
       expect(result.sub_mode).toBe('mega_pour');
       expect(result.pumps_required).toBeGreaterThanOrEqual(2);
@@ -197,6 +205,7 @@ describe('Pour Decision Tree v2.0', () => {
       const result = decidePourMode(makeInput({
         has_dilatacni_spary: false,
         volume_m3: 100,
+        working_joints_allowed: 'no',
       }));
       expect(result.scheduling_mode).toBe('linear');
     });
@@ -281,15 +290,20 @@ describe('Pour Decision Tree v2.0', () => {
   // BUG-4: Working joints (pracovní spáry) — separate from dilatační spáry
   // ────────────────────────────────────────────────────────────────────────
 
-  describe('BUG-4: working_joints_allowed', () => {
-    it('default (undefined) preserves monolithic mode (backward compat)', () => {
+  describe('BUG-4 + Block C: working_joints_allowed', () => {
+    // Block C (2026-04): default undefined now behaves like explicit
+    // 'unknown' — sectional by pour-window capacity + "ověřte v RDS"
+    // warning. Previously an unset field silently produced monolit=1 tact,
+    // which hid the decision from the user.
+    it('default (undefined) behaves like "unknown" — sectional + warning', () => {
       const r = decidePourMode(makeInput({
         element_type: 'mostovkova_deska',
         volume_m3: 600,
         has_dilatacni_spary: false,
       }));
-      expect(r.pour_mode).toBe('monolithic');
-      expect(r.num_tacts).toBe(1);
+      expect(r.pour_mode).toBe('sectional');
+      expect(r.num_tacts).toBeGreaterThan(1);
+      expect(r.warnings.some(w => w.includes('nepotvrzeny'))).toBe(true);
     });
 
     it("'no' is strictly monolithic and adds nepřetržitá warning", () => {

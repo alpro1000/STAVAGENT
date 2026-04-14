@@ -263,10 +263,19 @@ export function decidePourMode(input) {
             decision_log: log,
         };
     }
-    // ─── BUG-4: BRANCH: NO dilatační spáry, but working joints allowed ───────
-    const wjAllowed = input.working_joints_allowed;
+    // ─── BUG-4 + Block C: NO dilatační spáry, check working joints ──────────
+    // Block C (2026-04): unify default — when the user hasn't explicitly set
+    // working_joints_allowed, treat it as 'unknown' (sectional by capacity +
+    // warning "ověřte v RDS"). Previously undefined fell through to the
+    // strict monolithic branch silently, which made the first Aplikovat for
+    // any no-dilatace element produce num_tacts=1 without warning. Explicit
+    // 'no' still forces a single continuous pour with its own warning.
+    const wjRaw = input.working_joints_allowed;
+    const wjAllowed = wjRaw === 'no' ? 'no' :
+        wjRaw === 'yes' ? 'yes' :
+            'unknown'; // covers 'unknown', undefined, ''
     if (wjAllowed === 'yes' || wjAllowed === 'unknown') {
-        log.push(`Dilatační spáry: NE, pracovní spáry: ${wjAllowed} → sekční režim po pracovních spárách`);
+        log.push(`Dilatační spáry: NE, pracovní spáry: ${wjAllowed}${wjRaw == null || wjRaw === '' ? ' (default)' : ''} → sekční režim po pracovních spárách`);
         if (wjAllowed === 'unknown') {
             warnings.push('Pracovní spáry nepotvrzeny — ověřte v RDS. ' +
                 'Bez dilatačních spár: doporučena minimalizace pracovních spár. ' +
@@ -299,12 +308,13 @@ export function decidePourMode(input) {
             decision_log: log,
         };
     }
-    // ─── BRANCH: NO spáry → monolithic ───────────────────────────────────────
-    log.push('Spáry: NE → monolitický režim (nepřerušitelná zálivka)');
-    if (wjAllowed === 'no') {
-        warnings.push('Bez dilatačních spár a bez pracovních spár: vyžaduje nepřetržitou betonáž. ' +
-            'Definitivní členění záběrů dle RDS/statiky.');
-    }
+    // ─── BRANCH: explicit 'no' pracovní spáry → strict monolithic ─────────
+    // After Block C, this branch is only reachable when the user explicitly
+    // disallowed pracovní spáry — undefined/'' now routes through 'unknown'
+    // in the sectional branch above.
+    log.push("Pracovní spáry: NE (explicit) → monolitický režim (nepřerušitelná zálivka)");
+    warnings.push('Bez dilatačních spár a bez pracovních spár: vyžaduje nepřetržitou betonáž. ' +
+        'Definitivní členění záběrů dle RDS/statiky.');
     const V = input.volume_m3;
     const pumping_h_1pump = V / q_eff;
     const pour_h_1pump = setup_h + pumping_h_1pump + washout_h;
