@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.13.0
-**Last Updated:** 2026-04-11
+**Version:** 4.14.0
+**Last Updated:** 2026-04-14
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -102,9 +102,9 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Monolit-Planner (Kiosk)
-Node.js/Express + React. **132 endpoints**, **498 tests**, **~37K LOC**.
-Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
-**DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 7 files in `components/calculator/` (Sidebar, FormFields, Result, ui, types, helpers, useCalculator).
+Node.js/Express + React. **132 endpoints**, **687 tests**, **~38K LOC**.
+Structure: `shared/` (687 tests, 17 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+**DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
 - **Element Planner:** 22 types (11 bridge + 11 building), 7-engine pipeline, Gantt + XLSX export, SuggestionBadge + DocWarningsBanner via Core API
@@ -120,13 +120,26 @@ Structure: `shared/` (498 tests, 16 files), `backend/` (0 tests), `frontend/` (0
 - **Ztracené bednění:** `lost_formwork_area_m2` — TP deducted from system formwork, props on full area. UI checkbox for horizontal elements only.
 - **Manual záběry:** `use_manual_zabery` toggle + editable table (name+volume+area per záběr). Engine receives `num_tacts_override = count, tact_volume_m3_override = max(volumes)`.
 - **Per-záběr scheduling (v4.0):** `tact_volumes: number[]` in PlannerInput → per-záběr `calculatePourTask()`. `per_tact_concrete_days[]`, `per_tact_rebar_days[]`, `per_tact_assembly_days[]` in scheduler. Validation: mismatch length → warning + ignore.
-- **Aplikovat → TOV:** writes `tov_entries` (multi-profession: Betonář, Tesař, Ošetřovatel, Železář) into metadata. Links výztuž/předpětí by OTSKP prefix. No sub-positions created. Beton days = `betonDays` (not total_days). Direct apply of current result (v4.1: no `applyFnRef`/`pendingApplyPlan`).
+- **Aplikovat → TOV (v4.14):** `applyPlanToPositions.ts` helper. Splits 7 work types (Betonář, Tesař montáž/demontáž, Železář, Ošetřovatel, Specialista předpětí, Tesař podpěry) across positions: URL ID → linked via prefix/name → AUTO-CREATE new sibling Position (POST with metadata) → last-resort merge into beton. Each entry carries `source: 'calculator'` for per-entry [×] delete gate in FlatTOVSection. `NO_FORMWORK` set (pilota, podzemni_stena) skips bednění drafts. Backend POST /api/positions accepts metadata in INSERT.
 - **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory. Auto-restore plán on entry. Numbering: `Math.max(existingNums) + 1`.
 - **Auto-calc (v4.1):** 1.5s debounce, pure preview (no save). `calcStatus` indicator above KPIs. No save prompt, no autosave checkbox. Variants created ONLY by explicit "Uložit variantu" click. Wizard guard: skip steps 1-4.
 - **Průvodce (Wizard):** Inline sidebar mode (`wizardMode` + `wizardStep` 1-5). Same form state. `display:none` on sections. Steps: Element→Volume+Beton→Geometry→Rebar+Resources→Záběry. Engine-powered hints per step (maturity, lateral pressure, rebar PERT). `localStorage('planner_wizard_mode')`. Keyboard: Enter=next, Escape=back.
 - **Calculator refactor (v4.13):** PlannerPage 4620→380 lines. State/logic in `useCalculator` hook (1255 lines). Split: `CalculatorSidebar.tsx` (shell+Element+AI), `CalculatorFormFields.tsx` (Objemy+Záběry+Beton+Resources), `CalculatorResult.tsx` (KPI+Gantt+Costs+Variants), `ui.tsx` (Card/KPICard/CollapsibleSection), `types.ts`, `helpers.ts`. State owner = PlannerPage via hook.
 - **Calculator design unified (v4.13):** `r0.css` palette slate→stone, font JetBrains Mono→DM Sans body + JetBrains Mono numbers. KPI left-border + tinted bg (matches Part A). Responsive: mobile 1-col+2x2 KPI grid, tablet sidebar 300px, desktop sidebar 340px. Gantt/Souhrn/Norms in `CollapsibleSection` (open on desktop, closed on mobile). Sticky toolbar for mobile with `env(safe-area-inset-bottom)`. Inputs 16px on mobile (no iOS zoom), 44px touch targets.
 - **Pilota formwork fix:** `recommendFormwork()` has special case for `pilota` — skip pressure filter, return `Tradiční tesařské` (bored pile uses pažnice/tremie). Special cases: rimsa → Římsové bednění T, mostovka >5m → Staxo 100, pilota → catalog recommendation.
+- **Block A — hierarchy (v4.14):** FormState `has_dilatation_joints` + `num_dilatation_sections` + `tacts_per_section_mode/manual` replace legacy `tact_mode`/`has_dilatacni_spary`/`num_tacts_override` pair. Orchestrator pre-computes `totalTacts = numSections × tactsPerSection` before `decidePourMode`; routes through existing override path so Block D pump rebuild + Block C working_joints warnings compose. LS_FORM_KEY bumped `planner-form` → `planner-form-v2` (clean start). UI: one sequence "Členění konstrukce" replaces two tabs. Live preview "X celků × Y záběrů = Z celkem".
+- **Block C — working_joints default:** `undefined`/`''` now behaves like `'unknown'` (sectional by capacity + warning "ověřte v RDS"). Explicit `'no'` → 1 záběr + "nepřetržitou betonáž" warning. Only `'no'` reaches the strict monolithic branch.
+- **Block D — override rebuild:** `num_tacts_override` active → orchestrator recomputes `pour_hours_per_tact` for smaller per-tact volume, sets `sub_mode='manual_override'`, `pumps_required=1`. Previously stale monolithic pumps stuck.
+- **Block E — variant cost parity:** `DeadlineContext.mainLaborBreakdown` passed from main cost path; variants reuse labor verbatim (man-hours conservation) and only recompute rental. `DeadlineOptimizationVariant.cost_breakdown = { labor_czk, rental_czk }`.
+- **Block F — crews > tacts warning:** orchestrator emits warning per crew type when `numFWCrews` or `numRBCrews` exceeds `pourDecision.num_tacts`.
+- **Block 2 (pump) — dual scenarios:** `PourTaskResult.pumps_for_actual_window` (always, 1 pump) + `pumps_for_target_window` (optional, N pumps for `target_window_h`). No more mixed single/multi number.
+- **Block 1 (DIN 18218) — consistency k-factor:** `LateralPressureOptions.concrete_consistency: 'standard'|'plastic'|'scc'` → k = 0.85 / 1.0 / 1.5. Default `'standard'` (was method-based k=1.5). `filterFormworkByPressure` sort now uses `rental × getStageCountPenalty(stageCount)` — Framax wins over short-panel COMAIN on tall piers.
+- **Manufacturer pre-filter (v4.14):** `PlannerInput.preferred_manufacturer` + FormState dropdown (DOKA/PERI/ULMA/NOE/Místní). Auto-recommendation path only: `recommendFormwork` → if manufacturer mismatches, rebuild pool from `getSuitableSystemsForElement` filtered to vendor, re-run `filterFormworkByPressure`, pick first. Empty pool → keep auto + warning "Žádný systém {vendor} nevyhovuje technickým požadavkům".
+- **Expert-mode hints:** `WizardHintsPanel` renders `MissingFieldsHint + SanityHint + TechnologyHint` in one "💡 Doporučení a kontrola" section when `wizardMode=false`. `ReviewHint` exported and rendered separately by `CalculatorSidebar` right above the "Vypočítat plán" button. Added "Podpěry: nelze spočítat — chybí výška" warning when `profile.needs_supports && height_m <= 0`.
+- **Help auto-show:** `showHelp` state initializer reads `localStorage('planner_help_seen')` — first visit opens automatically, both close paths persist the flag. Full nápověda restored from commit `67a2bc8^` as dedicated `HelpPanel.tsx` component (3-column grid: pipeline / math models / settings+norms). Refreshed with Block A, DIN 18218, Block C/D/E/F content.
+- **PERT row under KPI:** compact line "PERT: X optimistická — Y střed — Z pesimistická". Source priority: `plan.monte_carlo` if present → derived `total_days × 0.85 / 1.0 / 1.30` (same factors as rebar-lite PERT).
+- **Wizard stale closure fix:** `runCalculationRef = useRef(...)` updated inline after runCalculation definition → `wizardNext` calls `runCalculationRef.current()` instead of captured closure. Previously clicking "Vypočítat →" at step 5 ran planElement with a pre-inline-panel form snapshot.
+- **Čety terminology:** "Brigády" (slang for side-job) replaced with "Čety" (proper construction team) everywhere. Inline panel re-grouped into "Pracovní čety" subsection + "Parametry výpočtu" subsection — Čety bednění/Tesařů/četa and Čety výztuže/Železářů/četa always paired.
 - **Two modes:** Monolit (ordinal days, auto-classify, TOV mapping) / Portal (calendar, manual)
 - **Import:** XLSX + Registry — both work without pre-created project (backend auto-creates `bridges` + `monolith_projects`). Empty state shows 3 actions: Vytvořit/Nahrát Excel/Načíst z Rozpočtu. `metadata` column persisted (linked_positions from parser). `bridge_id` prefixed with `stavbaProjectId__` to prevent cross-file collision.
 - **Registry Import Modal:** parallel fetch (Portal public endpoint `/api/integration/list-registry-projects` + Registry backend), search, debug info, refresh button, source badges (PORTAL/REGISTRY).
@@ -155,10 +168,10 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 513 | ~37K |
+| Monolit-Planner | 132 | 687 | ~38K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~16K |
-| **TOTAL** | **~391** | **707+** | **~150K** |
+| **TOTAL** | **~391** | **881+** | **~151K** |
 
 ---
 
