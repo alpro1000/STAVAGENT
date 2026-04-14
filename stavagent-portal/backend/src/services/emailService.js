@@ -7,7 +7,13 @@
 import { logger } from '../utils/logger.js';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'StavAgent <onboarding@resend.dev>';
+// Default from-address must use a Resend-verified domain. stavagent.cz is
+// verified (DNS + DKIM) — noreply@stavagent.cz is a send-only mailbox that
+// doesn't need a real inbox. The previous default 'onboarding@resend.dev'
+// triggered a 403 validation_error because it belongs to Resend's testing
+// domain, not the customer's verified one. Override via RESEND_FROM_EMAIL
+// env var if the domain ever changes.
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'STAVAGENT <noreply@stavagent.cz>';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'https://www.stavagent.cz';
 
 /**

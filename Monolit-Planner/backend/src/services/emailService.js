@@ -7,7 +7,13 @@
 import { logger } from '../utils/logger.js';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@monolit-planner.com';
+// Default from-address must use a Resend-verified domain. stavagent.cz is
+// verified (DNS + DKIM) for the project. The previous default
+// 'noreply@monolit-planner.com' is a non-existent domain that would
+// trigger a 403 validation_error. This file is currently unused (no
+// importer) but the default is kept consistent with stavagent-portal so
+// any future wiring works out of the box. Override via RESEND_FROM_EMAIL.
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'STAVAGENT <noreply@stavagent.cz>';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 /**
