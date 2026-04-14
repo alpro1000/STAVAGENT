@@ -268,6 +268,47 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
       </div>
 
+      {/* Task 2 (2026-04): PERT range under KPI cards.
+          Source priority:
+            1. plan.monte_carlo (real Monte Carlo, only if enable_monte_carlo)
+            2. derived from plan.schedule.total_days × ±15% / +30%
+               (matches the same factors rebar-lite uses for its own PERT)
+          The row is hidden if total_days <= 0. */}
+      {(() => {
+        const total = plan.schedule.total_days || 0;
+        if (total <= 0) return null;
+        const mc = plan.monte_carlo;
+        const optimistic = mc ? mc.p50 * 0.85 : total * 0.85;
+        const median = mc ? mc.p50 : total;
+        const pessimistic = mc ? Math.max(mc.p80, mc.p90) : total * 1.30;
+        const sourceLabel = mc ? 'PERT (Monte Carlo)' : 'PERT (orient.)';
+        return (
+          <div
+            style={{
+              marginTop: -12, marginBottom: 16,
+              padding: '6px 12px', fontSize: 11,
+              color: 'var(--r0-slate-500)',
+              background: 'var(--r0-slate-50, #f8fafc)',
+              border: '1px solid var(--r0-slate-200)',
+              borderRadius: 4, lineHeight: 1.5,
+            }}
+            title={
+              mc
+                ? `Monte Carlo (${mc.iterations} simulací): P50=${mc.p50}, P80=${mc.p80}, P90=${mc.p90}, P95=${mc.p95}`
+                : 'Orientační rozsah: optimistická -15%, pesimistická +30% z celkových dní (stejné faktory jako rebar PERT). Pro přesnější odhad zapněte Monte Carlo simulaci v Pokročilém nastavení.'
+            }
+          >
+            <strong style={{ color: 'var(--r0-slate-700)' }}>{sourceLabel}:</strong>{' '}
+            <span style={{ color: 'var(--r0-green-dark, #16a34a)' }}>{formatNum(optimistic, 1)} optimistická</span>
+            {' — '}
+            <span style={{ color: 'var(--r0-slate-700)', fontWeight: 600 }}>{formatNum(median, 1)} střed</span>
+            {' — '}
+            <span style={{ color: '#dc2626' }}>{formatNum(pessimistic, 1)} pesimistická</span>
+            <span style={{ color: 'var(--r0-slate-400)' }}>{' '}prac. dní</span>
+          </div>
+        );
+      })()}
+
       {/* Resource Optimization + Deadline Check */}
       {plan.deadline_check && (() => {
         const dc = plan.deadline_check;

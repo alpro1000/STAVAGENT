@@ -27,7 +27,7 @@ import { calculateRebarLite } from './rebar-lite.js';
 import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
 import { findFormworkSystem } from '../constants-data/formwork-systems.js';
-import { calculateLateralPressure, suggestPourStages, inferPourMethod } from './lateral-pressure.js';
+import { calculateLateralPressure, suggestPourStages, inferPourMethod, filterFormworkByPressure } from './lateral-pressure.js';
 import { recommendBridgeTechnology, calculateMSSCost, calculateMSSSchedule, getMSSTactDays } from './bridge-technology.js';
 // ─── Defaults ───────────────────────────────────────────────────────────────
 const DEFAULTS = {
@@ -146,6 +146,35 @@ export function planElement(input) {
     }
     else {
         fwSystem = recommendFormwork(elementType, heightForPressure, input.pour_method, input.total_length_m, consistency);
+        // Task 4 (2026-04): preferred manufacturer pre-filter. Only applies to
+        // the auto-recommendation path — when the user picked an explicit
+        // formwork_system_name above, we honour it as-is.
+        const preferredVendor = input.preferred_manufacturer && input.preferred_manufacturer.trim() !== ''
+            ? input.preferred_manufacturer.trim()
+            : '';
+        if (preferredVendor && fwSystem.manufacturer !== preferredVendor) {
+            // Try to find a vendor-matching alternative from the same suitable pool.
+            // For vertical elements with height, also respect the lateral-pressure filter.
+            const { all: allCandidates } = getSuitableSystemsForElement(elementType);
+            let vendorPool = allCandidates.filter(s => s.manufacturer === preferredVendor);
+            if (vendorPool.length > 0 && lateralPressure && isVertical && heightForPressure) {
+                const filtered = filterFormworkByPressure(lateralPressure.pressure_kn_m2, vendorPool, 'vertical', heightForPressure);
+                if (filtered.suitable.length > 0)
+                    vendorPool = filtered.suitable;
+                else
+                    vendorPool = []; // pool exists but none pass pressure
+            }
+            if (vendorPool.length > 0) {
+                fwSystem = vendorPool[0]; // already sorted by rental × stage_count_penalty
+                log.push(`Vendor pre-filter: pinned to ${preferredVendor} → ${fwSystem.name}`);
+            }
+            else {
+                warnings.push(`Žádný systém ${preferredVendor} nevyhovuje technickým požadavkům ` +
+                    `(orientace, plocha, boční tlak). Ponechán automatický výběr ` +
+                    `(${fwSystem.manufacturer} ${fwSystem.name}). Zvažte jiného výrobce.`);
+                log.push(`Vendor pre-filter: ${preferredVendor} has no feasible system → fallback to auto`);
+            }
+        }
     }
     const adjustedNorms = getAdjustedAssemblyNorm(elementType, fwSystem);
     log.push(`Formwork: ${fwSystem.name} (${adjustedNorms.assembly_h_m2} h/m², df=${adjustedNorms.difficulty_factor})`);

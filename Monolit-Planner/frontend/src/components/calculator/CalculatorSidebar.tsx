@@ -17,7 +17,7 @@ import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState 
 import { ELEMENT_TYPES, SEASONS, CONCRETE_CLASSES, CEMENT_TYPES, DEFAULT_FORM } from './types';
 import { Download, Hourglass, Star } from 'lucide-react';
 import CalculatorFormFields from './CalculatorFormFields';
-import WizardHintsPanel from './WizardHints';
+import WizardHintsPanel, { ReviewHint } from './WizardHints';
 
 // ─── Props ─────────────────────────────────────────────────────────────────
 
@@ -778,12 +778,21 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           </button>
         </div>
       )}
+      {/* Expert mode: review summary above the calculate button (Task 1) */}
+      {!wizardMode && (
+        <div style={{ marginTop: 16 }}>
+          <ReviewHint
+            elementType={form.use_name_classification ? 'other' : form.element_type}
+            form={form}
+          />
+        </div>
+      )}
       {/* Expert mode: normal calculate button */}
       {!wizardMode && (
       <button
         onClick={handleCalculate}
         style={{
-          width: '100%', padding: '12px', marginTop: 16,
+          width: '100%', padding: '12px', marginTop: 8,
           background: 'var(--r0-orange)', color: 'white', border: 'none',
           borderRadius: 6, fontSize: 15, fontWeight: 700, cursor: 'pointer',
           fontFamily: 'inherit',

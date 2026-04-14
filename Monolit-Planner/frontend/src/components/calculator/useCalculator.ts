@@ -156,7 +156,14 @@ export default function useCalculator() {
 
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
+  // Task 5 (2026-04): first-visit help auto-show. The "?" panel opens
+  // automatically the FIRST time a user lands on the calculator and stays
+  // open until they click "Zavřít nápovědu". After that the localStorage
+  // flag sticks and subsequent visits start with the panel collapsed.
+  const [showHelp, setShowHelp] = useState(() => {
+    try { return localStorage.getItem('planner_help_seen') !== 'true'; }
+    catch { return false; }
+  });
   const [applyStatus, setApplyStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   // Auto-calculate state (Part 1 of calc refactor)
@@ -198,14 +205,23 @@ export default function useCalculator() {
     }
   }, [wizardStep, form.element_type, form.use_name_classification, form.element_name, form.volume_m3]);
 
+  // Forward ref to runCalculation (defined later). wizardNext cannot include
+  // runCalculation in its deps directly because of the TDZ — runCalculation
+  // is defined ~400 lines below. Using a ref keeps wizardNext stable while
+  // always calling the latest runCalculation, which fixes the stale closure
+  // where "Vypočítat →" at step 5 ran planElement with an OLDER form
+  // snapshot after the user tweaked inline-panel fields.
+  const runCalculationRef = useRef<() => void>(() => {});
+
   const wizardNext = useCallback(() => {
     if (wizardStep < 5 && wizardCanAdvance) {
       setWizardStep(wizardStep + 1);
     } else if (wizardStep === 5) {
-      // Final step: trigger calculation
-      runCalculation();
+      // Final step: trigger calculation via ref so we always hit the
+      // up-to-date runCalculation (which captures the current form).
+      runCalculationRef.current();
     }
-  }, [wizardStep, wizardCanAdvance]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [wizardStep, wizardCanAdvance]);
 
   const wizardBack = useCallback(() => {
     if (wizardStep > 1) setWizardStep(wizardStep - 1);
@@ -614,6 +630,11 @@ export default function useCalculator() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form]);
 
+  // Keep wizardNext's ref in sync with the latest runCalculation so that
+  // clicking "Vypočítat →" at step 5 uses the CURRENT form, not the one
+  // from when wizardStep was last set (stale-closure bug fix).
+  runCalculationRef.current = runCalculation;
+
   /** Manual "Vypočítat" button handler — forces calc even if not dirty */
   const handleCalculate = () => {
     // Cancel any pending auto-calc so we don't double-run
@@ -822,25 +843,41 @@ export default function useCalculator() {
       const tw = parseFloat(form.target_pour_window_h);
       if (Number.isFinite(tw) && tw > 0) input.target_pour_window_h = tw;
     }
+    // Task 4 (2026-04): preferred formwork manufacturer (vendor pre-filter)
+    if (form.preferred_manufacturer) {
+      input.preferred_manufacturer = form.preferred_manufacturer;
+    }
     return input;
   };
 
   // Auto-calculate on first render with defaults
   const firstRun = useMemo(() => {
     try {
-      // Use initialForm (from URL params / position context), not DEFAULT_FORM
+      // Block A (2026-04): firstRun now sources its inputs from the NEW
+      // hierarchical fields (has_dilatation_joints, num_dilatation_sections,
+      // tacts_per_section_*) instead of the legacy tact_mode/has_dilatacni_spary
+      // pair, which after the Block A refactor always carry default values
+      // and produce a bogus first-render plan.
       const f = initialForm;
+      const numSections = f.has_dilatation_joints
+        ? Math.max(1, Math.floor(f.num_dilatation_sections || 1))
+        : 1;
+      const tactsPerSectionManual = f.tacts_per_section_mode === 'manual'
+        ? Math.max(1, parseInt(f.tacts_per_section_manual || '0', 10) || 0)
+        : 0;
       const input: PlannerInput = {
         element_type: f.use_name_classification ? undefined : f.element_type,
         element_name: f.use_name_classification ? f.element_name : undefined,
         volume_m3: f.volume_m3,
-        has_dilatacni_spary: f.tact_mode === 'spary' ? f.has_dilatacni_spary : false,
-        spara_spacing_m: f.spara_spacing_m,
-        total_length_m: f.total_length_m,
-        adjacent_sections: f.adjacent_sections,
+        has_dilatacni_spary: false,
+        num_dilatation_sections: numSections,
+        ...(tactsPerSectionManual > 0 ? { tacts_per_section: tactsPerSectionManual } : {}),
+        adjacent_sections: f.has_dilatation_joints && numSections > 1 ? f.adjacent_sections : false,
         concrete_class: f.concrete_class,
         temperature_c: f.temperature_c,
+        ...(f.working_joints_allowed ? { working_joints_allowed: f.working_joints_allowed as any } : {}),
       };
+      if (f.total_length_m > 0) input.total_length_m = f.total_length_m;
       if (f.formwork_area_m2) input.formwork_area_m2 = parseFloat(f.formwork_area_m2);
       if (f.height_m) input.height_m = parseFloat(f.height_m);
       if (f.rebar_mass_kg) input.rebar_mass_kg = parseFloat(f.rebar_mass_kg);
