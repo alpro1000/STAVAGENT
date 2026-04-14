@@ -11,6 +11,7 @@ import type { PlannerOutput } from '@stavagent/monolit-shared';
 import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import CalculatorResult from '../components/calculator/CalculatorResult';
 import CalculatorSidebar from '../components/calculator/CalculatorSidebar';
+import HelpPanel from '../components/calculator/HelpPanel';
 import useCalculator from '../components/calculator/useCalculator';
 import { formatCZK, formatNum } from '../components/calculator/helpers';
 import type { FormState } from '../components/calculator/types';
@@ -93,43 +94,8 @@ export default function PlannerPage() {
         </div>
       </header>
 
-      {/* ─── Help Panel ─── */}
-      {showHelp && (
-        <div style={{
-          background: 'var(--r0-slate-50)', borderBottom: '1px solid var(--r0-slate-200)',
-          padding: '20px 24px', fontSize: 13, lineHeight: 1.7, color: 'var(--r0-slate-700)',
-          maxHeight: 'calc(100vh - 60px)', overflowY: 'auto', position: 'relative',
-        }}>
-          <button onClick={() => setShowHelp(false)} style={{
-            position: 'sticky', top: 0, float: 'right', background: 'var(--r0-slate-200)',
-            border: 'none', borderRadius: 6, padding: '6px 14px', cursor: 'pointer',
-            fontSize: 13, fontWeight: 600, color: 'var(--r0-slate-700)', zIndex: 1,
-          }}>Zavřít nápovědu ✕</button>
-          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <h3 style={{ margin: '0 0 6px', fontSize: 16, color: 'var(--r0-slate-800)' }}>
-              Kalkulátor betonáže — Deterministický výpočet monolitických konstrukcí
-            </h3>
-            <p style={{ margin: '0 0 16px', fontSize: 14, color: 'var(--r0-slate-600)' }}>
-              Cíl: <strong>co nejpřesněji spočítat dobu a náklady betonáže</strong> monolitické
-              konstrukce. Založen na <strong>deterministických matematických modelech</strong> s daty
-              z norem a katalogů výrobců. AI se používá pouze pro doporučení postupu.
-            </p>
-            <div style={{
-              background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)',
-              borderRadius: 8, padding: '12px 16px', marginBottom: 16,
-            }}>
-              <h4 style={{ margin: '0 0 6px', fontSize: 13, color: 'var(--r0-badge-blue-text)' }}>Jak začít (5 kroků)</h4>
-              <ol style={{ margin: 0, paddingLeft: 18 }}>
-                <li>Vyberte <strong>typ elementu</strong> (20 typů: mosty + budovy)</li>
-                <li>Zadejte <strong>objem betonu</strong> (m³) — povinný údaj</li>
-                <li>Volitelně: plocha bednění (m²), hmotnost výztuže (kg)</li>
-                <li>Nastavte záběry — dilatační spáry nebo ruční počet</li>
-                <li>Klikněte <strong>Vypočítat plán</strong></li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* ─── Help Panel — full description restored from commit 67a2bc8^ ─── */}
+      {showHelp && <HelpPanel onClose={() => setShowHelp(false)} />}
 
       {/* ─── Layout: Sidebar + Main ─── */}
       <div className="r0-planner-layout">
