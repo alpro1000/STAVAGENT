@@ -97,18 +97,31 @@ const apiLimiter = rateLimit({
   max: 300,
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => req.path === '/health' || req.path === '/api/health',
+  // Skip cheap in-memory reads that the UI needs to poll often.
+  // /api/batch/{id}/status is a plain batchCache lookup — no AI, no DB —
+  // and the frontend polls it every few seconds while a batch is running.
+  // Rate-limiting it globally locks users out of their own job progress.
+  skip: (req) => (
+    req.path === '/health' ||
+    req.path === '/api/health' ||
+    (req.method === 'GET' && /^\/api\/batch\/[^/]+\/status$/.test(req.path))
+  ),
   handler: (req, res) => {
     logger.warn(`[RATE] Limit exceeded for IP: ${req.ip}, path: ${req.path}`);
     res.status(429).json({ error: 'Too Many Requests', message: 'Příliš mnoho požadavků' });
   }
 });
 
+// matchLimiter guards EXPENSIVE endpoints: text-match, file-upload,
+// batch/create, batch/:id/start, pipeline/run. Cheap GETs (status polls,
+// result reads, diagnostics) are allowed through — the frontend does
+// client-side polling on these and must not get 429'd mid-job.
 const matchLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 50, // 50 match requests per hour per IP
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req) => req.method === 'GET',
   handler: (req, res) => {
     logger.warn(`[RATE] Match limit exceeded for IP: ${req.ip}`);
     res.status(429).json({ error: 'Too Many Requests', message: 'Příliš mnoho požadavků na párování' });
