@@ -292,7 +292,7 @@ export function ReviewHint({
   if (h > 0) rows.push(['Výška', `${h} m`]);
   rows.push(['Výztuž', `~${rebarRatio} kg/m³`]);
   rows.push([
-    'Brigáda',
+    'Čety',
     `${form.num_formwork_crews}× ${form.crew_size} (bednění) + ${form.num_rebar_crews}× ${form.crew_size_rebar} (výztuž)`,
   ]);
 

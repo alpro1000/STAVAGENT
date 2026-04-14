@@ -31,6 +31,17 @@ const labelStyle: React.CSSProperties = {
   marginBottom: 2,
 };
 
+const sectionHeaderStyle: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 700,
+  color: 'var(--r0-slate-700)',
+  textTransform: 'uppercase',
+  letterSpacing: 0.6,
+  marginBottom: 8,
+  paddingBottom: 4,
+  borderBottom: '1px solid var(--r0-slate-200)',
+};
+
 const selectStyle: React.CSSProperties = {
   padding: '6px 8px',
   border: '1px solid var(--r0-slate-300)',
@@ -104,132 +115,147 @@ export default function InlineResourcePanel({ form, update, calcStatus, resultDi
       </div>
 
       {expanded && (
-        <div style={{
-          padding: 14,
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-          gap: 12,
-        }}>
-          <div style={cellStyle}>
-            <label style={labelStyle}>Brigády bednění</label>
-            <select
-              value={form.num_formwork_crews}
-              onChange={e => update('num_formwork_crews', toInt(e.target.value, 1))}
-              style={selectStyle}
-            >
-              {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
+        <div style={{ padding: 14, display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {/* ─── Pracovní čety — paired četa count + workers per crew ─── */}
+          <div>
+            <div style={sectionHeaderStyle}>Pracovní čety</div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+              gap: 12,
+            }}>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Čety bednění</label>
+                <select
+                  value={form.num_formwork_crews}
+                  onChange={e => update('num_formwork_crews', toInt(e.target.value, 1))}
+                  style={selectStyle}
+                >
+                  {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+
+              <div style={cellStyle}>
+                <label style={labelStyle}>Tesařů / četa</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={20}
+                  value={form.crew_size}
+                  onChange={e => update('crew_size', toInt(e.target.value, 1))}
+                  style={selectStyle}
+                />
+              </div>
+
+              <div style={cellStyle}>
+                <label style={labelStyle}>Čety výztuže</label>
+                <select
+                  value={form.num_rebar_crews}
+                  onChange={e => update('num_rebar_crews', toInt(e.target.value, 1))}
+                  style={selectStyle}
+                >
+                  {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+
+              <div style={cellStyle}>
+                <label style={labelStyle}>Železářů / četa</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={20}
+                  value={form.crew_size_rebar}
+                  onChange={e => update('crew_size_rebar', toInt(e.target.value, 1))}
+                  style={selectStyle}
+                />
+              </div>
+            </div>
           </div>
 
-          <div style={cellStyle}>
-            <label style={labelStyle}>Brigády výztuž</label>
-            <select
-              value={form.num_rebar_crews}
-              onChange={e => update('num_rebar_crews', toInt(e.target.value, 1))}
-              style={selectStyle}
-            >
-              {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </div>
+          {/* ─── Parametry výpočtu — everything else ─── */}
+          <div>
+            <div style={sectionHeaderStyle}>Parametry výpočtu</div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+              gap: 12,
+            }}>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Soupravy bednění</label>
+                <select
+                  value={form.num_sets}
+                  onChange={e => update('num_sets', toInt(e.target.value, 1))}
+                  style={selectStyle}
+                >
+                  {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
 
-          <div style={cellStyle}>
-            <label style={labelStyle}>Soupravy bednění</label>
-            <select
-              value={form.num_sets}
-              onChange={e => update('num_sets', toInt(e.target.value, 1))}
-              style={selectStyle}
-            >
-              {[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </div>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Směna (h)</label>
+                <select
+                  value={form.shift_h}
+                  onChange={e => update('shift_h', toInt(e.target.value, 10))}
+                  style={selectStyle}
+                >
+                  <option value={8}>8 (jedna směna)</option>
+                  <option value={10}>10 (prodloužená)</option>
+                  <option value={12}>12 (max. dle ZP)</option>
+                </select>
+              </div>
 
-          <div style={cellStyle}>
-            <label style={labelStyle}>Směna (h)</label>
-            <select
-              value={form.shift_h}
-              onChange={e => update('shift_h', toInt(e.target.value, 10))}
-              style={selectStyle}
-            >
-              <option value={8}>8 (jedna směna)</option>
-              <option value={10}>10 (prodloužená)</option>
-              <option value={12}>12 (max. dle ZP)</option>
-            </select>
-          </div>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Cílové okno (h)</label>
+                <input
+                  type="text"
+                  placeholder="—"
+                  value={form.target_pour_window_h}
+                  onChange={e => update('target_pour_window_h', e.target.value)}
+                  style={selectStyle}
+                  title="Pro alternativní scénář pumpy (BUG-2)"
+                />
+              </div>
 
-          <div style={cellStyle}>
-            <label style={labelStyle}>Tesařů / četa</label>
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={form.crew_size}
-              onChange={e => update('crew_size', toInt(e.target.value, 1))}
-              style={selectStyle}
-            />
-          </div>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Termín (prac. dní)</label>
+                <input
+                  type="text"
+                  placeholder="—"
+                  value={form.deadline_days}
+                  onChange={e => update('deadline_days', e.target.value)}
+                  style={selectStyle}
+                />
+              </div>
 
-          <div style={cellStyle}>
-            <label style={labelStyle}>Železářů / četa</label>
-            <input
-              type="number"
-              min={1}
-              max={20}
-              value={form.crew_size_rebar}
-              onChange={e => update('crew_size_rebar', toInt(e.target.value, 1))}
-              style={selectStyle}
-            />
-          </div>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Konzistence</label>
+                <select
+                  value={form.concrete_consistency}
+                  onChange={e => update('concrete_consistency', e.target.value as FormState['concrete_consistency'])}
+                  style={selectStyle}
+                  title="DIN 18218: k-factor pro boční tlak"
+                >
+                  <option value="standard">Standard (k=0.85)</option>
+                  <option value="plastic">Plastický S3–S4 (k=1.0)</option>
+                  <option value="scc">SCC (k=1.5)</option>
+                </select>
+              </div>
 
-          <div style={cellStyle}>
-            <label style={labelStyle}>Cílové okno (h)</label>
-            <input
-              type="text"
-              placeholder="—"
-              value={form.target_pour_window_h}
-              onChange={e => update('target_pour_window_h', e.target.value)}
-              style={selectStyle}
-              title="Pro alternativní scénář pumpy (BUG-2)"
-            />
-          </div>
-
-          <div style={cellStyle}>
-            <label style={labelStyle}>Termín (prac. dní)</label>
-            <input
-              type="text"
-              placeholder="—"
-              value={form.deadline_days}
-              onChange={e => update('deadline_days', e.target.value)}
-              style={selectStyle}
-            />
-          </div>
-
-          <div style={cellStyle}>
-            <label style={labelStyle}>Konzistence</label>
-            <select
-              value={form.concrete_consistency}
-              onChange={e => update('concrete_consistency', e.target.value as FormState['concrete_consistency'])}
-              style={selectStyle}
-              title="DIN 18218: k-factor pro boční tlak"
-            >
-              <option value="standard">Standard (k=0.85)</option>
-              <option value="plastic">Plastický S3–S4 (k=1.0)</option>
-              <option value="scc">SCC (k=1.5)</option>
-            </select>
-          </div>
-
-          <div style={cellStyle}>
-            <label style={labelStyle}>Pracovní spáry</label>
-            <select
-              value={form.working_joints_allowed}
-              onChange={e => update('working_joints_allowed', e.target.value as FormState['working_joints_allowed'])}
-              style={selectStyle}
-              title="Když element nemá dilatační spáry, povolit pracovní spáry?"
-            >
-              <option value="">— výchozí (monolit)</option>
-              <option value="yes">Ano (členit po záběrech)</option>
-              <option value="no">Ne (nepřetržitě)</option>
-              <option value="unknown">Neznámo (ověřit v RDS)</option>
-            </select>
+              <div style={cellStyle}>
+                <label style={labelStyle}>Pracovní spáry</label>
+                <select
+                  value={form.working_joints_allowed}
+                  onChange={e => update('working_joints_allowed', e.target.value as FormState['working_joints_allowed'])}
+                  style={selectStyle}
+                  title="Když element nemá dilatační spáry, povolit pracovní spáry?"
+                >
+                  <option value="">— výchozí (monolit)</option>
+                  <option value="yes">Ano (členit po záběrech)</option>
+                  <option value="no">Ne (nepřetržitě)</option>
+                  <option value="unknown">Neznámo (ověřit v RDS)</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       )}
