@@ -253,7 +253,18 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
       <div className="r0-grid-4" style={{ marginBottom: 20 }}>
         <KPICard label={plan.deadline_check && !plan.deadline_check.fits ? `Celkem dní (termín ${plan.deadline_check.deadline_days}d)` : 'Celkem dní'} value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color={plan.deadline_check && !plan.deadline_check.fits ? '#ef4444' : 'var(--r0-blue)'} />
         <KPICard label="Počet záběrů" value={plan.pour_decision.num_tacts} unit="taktů" color="var(--r0-orange)" />
-        <KPICard label="Náklady práce" value={formatCZK(plan.costs.total_labor_czk)} color="var(--r0-green)" />
+        <KPICard
+          label="Náklady práce"
+          value={formatCZK(plan.costs.total_labor_czk)}
+          color="var(--r0-green)"
+          tooltip={
+            'Součet formwork + výztuž + betonáž + podpěry (bez pronájmu bednění). ' +
+            'Více čet bednění/výztuže = kratší harmonogram, ale stejné pracovní náklady ' +
+            '(stejný počet člověkohodin — "conservation of labor"). ' +
+            'Úspora při přidání čet se projeví v pronájmu bednění (viz Celkem náklady níže), ' +
+            'protože se zkrátí doba pronájmu.'
+          }
+        />
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
       </div>
 

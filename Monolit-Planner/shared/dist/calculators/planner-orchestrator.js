@@ -692,6 +692,20 @@ export function planElement(input) {
     if (scheduleResult.bottleneck) {
         warnings.push(scheduleResult.bottleneck);
     }
+    // Block F: warn when the user asked for more crews than there are záběry
+    // to run in parallel. The scheduler simply never assigns the extra crews,
+    // so they sit idle — we surface that as a visible warning + log entry.
+    const finalNumTacts = pourDecision.num_tacts;
+    if (numFWCrews > finalNumTacts) {
+        warnings.push(`Více čet bednění (${numFWCrews}) než záběrů (${finalNumTacts}) — ` +
+            `extra čety nebudou využity. Snižte počet čet nebo zvyšte počet záběrů.`);
+        log.push(`Block F: numFWCrews=${numFWCrews} > num_tacts=${finalNumTacts} → idle crews`);
+    }
+    if (numRBCrews > finalNumTacts) {
+        warnings.push(`Více čet výztuže (${numRBCrews}) než záběrů (${finalNumTacts}) — ` +
+            `extra čety nebudou využity. Snižte počet čet nebo zvyšte počet záběrů.`);
+        log.push(`Block F: numRBCrews=${numRBCrews} > num_tacts=${finalNumTacts} → idle crews`);
+    }
     // ─── 7a. Prestressing warnings ──────────────────────────────────────────
     const skruzTotalDays = isPrestressed ? curingDays + prestressDays : curingDays;
     if (isPrestressed) {

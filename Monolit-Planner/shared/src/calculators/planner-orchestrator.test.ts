@@ -27,6 +27,9 @@ const monoInput: PlannerInput = {
   volume_m3: 8,
   formwork_area_m2: 12,
   has_dilatacni_spary: false,
+  // Block C: explicit 'no' is required to reach strict monolithic mode;
+  // default undefined now routes to sectional-by-capacity + "ověřte v RDS".
+  working_joints_allowed: 'no',
 };
 
 // ─── Basic integration ──────────────────────────────────────────────────────
