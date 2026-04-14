@@ -301,6 +301,10 @@ export function ReviewHint({
   if (!form.has_dilatacni_spary) {
     warnings.push('Pracovní spáry: neurčeno (ověřit v RDS)');
   }
+  // Task 3 (2026-04): missing height_m for elements that need supports
+  if (profile.needs_supports && h <= 0) {
+    warnings.push('Podpěry: nelze spočítat — chybí výška nad terénem');
+  }
   warnings.push(`k-factor: ${consistencyLabel}`);
 
   return (
@@ -342,7 +346,36 @@ export interface WizardHintsPanelProps {
 
 export default function WizardHintsPanel(props: WizardHintsPanelProps) {
   const { wizardMode, wizardStep, elementType, form, currentSystemName, onApplyRecommendedSystem, onKeepSanity } = props;
-  if (!wizardMode) return null;
+
+  // ─── Expert mode (Task 1, 2026-04) ────────────────────────────────────────
+  // Show ALL hints at once as a single section. The wizard's per-step
+  // gating doesn't apply — expert users see everything they have entered
+  // so far. ReviewHint is rendered separately by the sidebar right above
+  // the "Vypočítat plán" button (see ExpertReviewHint export below).
+  if (!wizardMode) {
+    return (
+      <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--r0-slate-200)' }}>
+        <div style={{
+          fontSize: 11, fontWeight: 700, textTransform: 'uppercase',
+          letterSpacing: 0.6, color: 'var(--r0-slate-700)', marginBottom: 8,
+        }}>
+          💡 Doporučení a kontrola
+        </div>
+        {/* All three hints unconditionally (wizardStep arg passed as 5 so
+            MissingFieldsHint shows every gap, not just the per-step subset). */}
+        <MissingFieldsHint elementType={elementType} form={form} wizardStep={5} />
+        <SanityHint elementType={elementType} form={form} onKeep={onKeepSanity} />
+        <TechnologyHint
+          elementType={elementType}
+          heightStr={form.height_m}
+          currentSystemName={currentSystemName}
+          onApply={onApplyRecommendedSystem}
+        />
+      </div>
+    );
+  }
+
+  // ─── Wizard mode — per-step gated hints (unchanged) ───────────────────────
   return (
     <>
       {/* HINT-1 on every non-trivial step */}

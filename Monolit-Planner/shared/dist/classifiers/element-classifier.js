@@ -857,6 +857,10 @@ export const REQUIRED_FIELDS = {
     ],
     mostovkova_deska: [
         { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat náklady' },
+        // Task 3 (2026-04): height_m is REQUIRED for needs_supports=true elements.
+        // calculateProps in the orchestrator gates on input.height_m, so without
+        // it the entire skruž / stojky pricing pipeline is skipped silently.
+        { field: 'height_m', label_cs: 'Výška nad terénem', severity: 'critical', reason_cs: 'nutná pro výpočet podpěr/skruže (stropní bednění visí na stojkách)' },
         { field: 'formwork_area_m2', label_cs: 'Plocha bednění', severity: 'optional', reason_cs: 'prázdné = dopočítám z objemu' },
         { field: 'span_m', label_cs: 'Rozpětí', severity: 'optional', reason_cs: 'rozhoduje o technologii (MSS/CFT)' },
         { field: 'num_spans', label_cs: 'Počet polí', severity: 'optional', reason_cs: 'pro MSS harmonogram' },

@@ -771,6 +771,28 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
 
               <div style={wizardMode ? { display: 'none' } : undefined}>
               <Section title="Bednění (override)">
+                {/* Task 4 (2026-04): vendor pre-filter — orchestrator pins to
+                    the chosen vendor when picking the auto-recommended
+                    system. Auto = no constraint (default). Falls back to
+                    Auto + warning if the chosen vendor has no feasible
+                    system for the current geometry / pressure. */}
+                <Field
+                  label="Výrobce bednění"
+                  hint="Auto = engine vybere napříč všemi výrobci"
+                >
+                  <select
+                    style={inputStyle}
+                    value={form.preferred_manufacturer}
+                    onChange={e => update('preferred_manufacturer', e.target.value as FormState['preferred_manufacturer'])}
+                  >
+                    <option value="">Auto (všichni výrobci)</option>
+                    <option value="DOKA">DOKA</option>
+                    <option value="PERI">PERI</option>
+                    <option value="ULMA">ULMA</option>
+                    <option value="NOE">NOE</option>
+                    <option value="Místní">Místní (tradiční)</option>
+                  </select>
+                </Field>
                 <Field label="Systém bednění">
                   <select style={inputStyle} value={form.formwork_system_name}
                     onChange={e => {

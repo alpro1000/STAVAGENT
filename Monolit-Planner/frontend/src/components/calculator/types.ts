@@ -163,6 +163,14 @@ export interface FormState {
   concrete_consistency: 'standard' | 'plastic' | 'scc';
   /** BUG-4: working joints allowed when no dilatation joints */
   working_joints_allowed: '' | 'yes' | 'no' | 'unknown';
+  /**
+   * Task 4 (2026-04): preferred formwork manufacturer.
+   * Empty string = Auto (engine picks the cheapest feasible system across
+   * all vendors). Non-empty = pre-filter the catalog to that vendor only.
+   * If the resulting subset has no feasible system, the engine emits a
+   * warning and falls back to Auto so the user is never stuck.
+   */
+  preferred_manufacturer: '' | 'DOKA' | 'PERI' | 'ULMA' | 'NOE' | 'Místní';
 }
 
 // ─── Scenario Snapshot ──────────────────────────────────────────────────────
@@ -319,4 +327,5 @@ export const DEFAULT_FORM: FormState = {
   target_pour_window_h: '',
   concrete_consistency: 'standard',
   working_joints_allowed: '',
+  preferred_manufacturer: '',
 };

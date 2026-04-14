@@ -169,6 +169,67 @@ describe('22-type audit (Part D)', () => {
     });
   });
 
+  // Task 4 (2026-04): preferred_manufacturer pre-filter
+  describe('preferred_manufacturer pre-filter (Task 4)', () => {
+    it('preferred=DOKA → fwSystem.manufacturer === "DOKA"', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 60,
+        height_m: 3,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+        preferred_manufacturer: 'DOKA',
+      });
+      expect(plan.formwork.system.manufacturer).toBe('DOKA');
+    });
+
+    it('preferred=PERI → fwSystem.manufacturer === "PERI"', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 60,
+        height_m: 3,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+        preferred_manufacturer: 'PERI',
+      });
+      expect(plan.formwork.system.manufacturer).toBe('PERI');
+    });
+
+    it('preferred undefined → engine picks freely (regression guard)', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 60,
+        height_m: 3,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+      });
+      // Just verify a system was picked — vendor unconstrained
+      expect(plan.formwork.system).toBeDefined();
+      expect(plan.formwork.system.manufacturer).toBeTruthy();
+    });
+
+    it('preferred vendor with no feasible system → fallback + warning', () => {
+      // NOE catalog only has slab systems; pinning it to a vertical wall
+      // with high pressure should fall back to auto.
+      const plan = planElement({
+        element_type: 'driky_piliru',
+        volume_m3: 80,
+        height_m: 8,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        concrete_class: 'C30/37',
+        preferred_manufacturer: 'NOE',
+      });
+      // Either NOE matched (unlikely) OR a fallback warning was emitted
+      const matched = plan.formwork.system.manufacturer === 'NOE';
+      const warned = plan.warnings.some(w => w.includes('NOE') && w.includes('nevyhovuje'));
+      expect(matched || warned).toBe(true);
+    });
+  });
+
   // Block A: hierarchical sections × záběry per section.
   describe('hierarchical sections × tacts (Block A)', () => {
     it('explicit num_dilatation_sections + tacts_per_section → multiplied total', () => {

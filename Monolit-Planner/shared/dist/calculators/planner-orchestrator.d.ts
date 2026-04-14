@@ -110,6 +110,15 @@ export interface PlannerInput {
     wage_pour_czk_h?: number;
     /** Explicit formwork system name (overrides auto-recommendation) */
     formwork_system_name?: string;
+    /**
+     * Task 4 (2026-04): preferred formwork manufacturer pre-filter. When set,
+     * the catalog is filtered to the given vendor BEFORE pressure / category
+     * filtering runs. If no system from the chosen vendor passes the
+     * downstream filters, the orchestrator falls back to the full catalog
+     * and emits a warning so the user is never stuck with zero options.
+     * Empty string or undefined = Auto (no pre-filter).
+     */
+    preferred_manufacturer?: string;
     /** Override rental price (Kč/m²/month or Kč/bm/month). If set, replaces catalog value. */
     rental_czk_override?: number;
     /** Cross-section shape correction for formwork assembly/disassembly.

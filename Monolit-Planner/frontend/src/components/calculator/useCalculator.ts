@@ -156,7 +156,14 @@ export default function useCalculator() {
 
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showLog, setShowLog] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
+  // Task 5 (2026-04): first-visit help auto-show. The "?" panel opens
+  // automatically the FIRST time a user lands on the calculator and stays
+  // open until they click "Zavřít nápovědu". After that the localStorage
+  // flag sticks and subsequent visits start with the panel collapsed.
+  const [showHelp, setShowHelp] = useState(() => {
+    try { return localStorage.getItem('planner_help_seen') !== 'true'; }
+    catch { return false; }
+  });
   const [applyStatus, setApplyStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   // Auto-calculate state (Part 1 of calc refactor)
@@ -835,6 +842,10 @@ export default function useCalculator() {
     if (form.target_pour_window_h) {
       const tw = parseFloat(form.target_pour_window_h);
       if (Number.isFinite(tw) && tw > 0) input.target_pour_window_h = tw;
+    }
+    // Task 4 (2026-04): preferred formwork manufacturer (vendor pre-filter)
+    if (form.preferred_manufacturer) {
+      input.preferred_manufacturer = form.preferred_manufacturer;
     }
     return input;
   };

@@ -70,7 +70,14 @@ export default function PlannerPage() {
         <div className="r0-header-right">
           <button
             className="r0-btn"
-            onClick={() => setShowHelp(!showHelp)}
+            onClick={() => {
+              const next = !showHelp;
+              setShowHelp(next);
+              // Task 5: persist "seen" so the panel doesn't auto-open again.
+              if (!next) {
+                try { localStorage.setItem('planner_help_seen', 'true'); } catch { /* ignore */ }
+              }
+            }}
             style={{
               background: showHelp ? 'var(--r0-orange)' : undefined,
               color: showHelp ? 'white' : undefined,
@@ -95,7 +102,10 @@ export default function PlannerPage() {
       </header>
 
       {/* ─── Help Panel — full description restored from commit 67a2bc8^ ─── */}
-      {showHelp && <HelpPanel onClose={() => setShowHelp(false)} />}
+      {showHelp && <HelpPanel onClose={() => {
+        setShowHelp(false);
+        try { localStorage.setItem('planner_help_seen', 'true'); } catch { /* ignore */ }
+      }} />}
 
       {/* ─── Layout: Sidebar + Main ─── */}
       <div className="r0-planner-layout">
