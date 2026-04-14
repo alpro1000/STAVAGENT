@@ -304,6 +304,14 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         <th style={{ textAlign: 'left', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Konfigurace</th>
                         <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Dní</th>
                         <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Úspora dní</th>
+                        <th
+                          style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}
+                          title="Pracovní náklady — konstantní across variant (man-hours conservation)"
+                        >Práce ⓘ</th>
+                        <th
+                          style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}
+                          title="Pronájem bednění — klesá s kratší dobou"
+                        >Pronájem ⓘ</th>
                         <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Náklady</th>
                         <th style={{ textAlign: 'right', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Rozdíl Kč</th>
                         {hasDeadline && <th style={{ textAlign: 'center', padding: '4px 6px', color: 'var(--r0-slate-500)', fontSize: 11 }}>Termín</th>}
@@ -312,6 +320,10 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                     <tbody>
                       {dc.suggestions.map((s, i) => {
                         const isBestDeadline = hasDeadline && dc.best_for_deadline && s.label === dc.best_for_deadline.label;
+                        const laborCZK = s.cost_breakdown?.labor_czk ?? 0;
+                        const rentalCZK = s.cost_breakdown?.rental_czk ?? 0;
+                        const mainRentalCZK = plan.costs.formwork_rental_czk || 0;
+                        const rentalDelta = rentalCZK - mainRentalCZK;
                         return (
                           <tr key={i} style={{
                             borderBottom: '1px solid var(--r0-slate-100)',
@@ -323,6 +335,24 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatNum(s.total_days, 1)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right', color: '#16a34a' }}>
                               −{formatNum(dc.calculated_days - s.total_days, 1)}
+                            </td>
+                            <td
+                              style={{ padding: '5px 6px', textAlign: 'right', color: 'var(--r0-slate-500)' }}
+                              title="Konstantní napříč všemi variantami (stejný počet člověkohodin)"
+                            >
+                              {formatCZK(laborCZK)}
+                              <span style={{ color: 'var(--r0-slate-400)', marginLeft: 2 }}>=</span>
+                            </td>
+                            <td
+                              style={{ padding: '5px 6px', textAlign: 'right', color: rentalDelta < 0 ? '#16a34a' : rentalDelta > 0 ? '#dc2626' : 'var(--r0-slate-600)' }}
+                              title={`Pronájem se zkrátí díky menšímu harmonogramu (${formatNum(s.total_days, 1)} dní × ${s.num_sets} sad)`}
+                            >
+                              {formatCZK(rentalCZK)}
+                              {rentalDelta !== 0 && (
+                                <span style={{ fontSize: 10, marginLeft: 4 }}>
+                                  ({rentalDelta > 0 ? '+' : ''}{formatCZK(rentalDelta)})
+                                </span>
+                              )}
                             </td>
                             <td style={{ padding: '5px 6px', textAlign: 'right' }}>{formatCZK(s.total_cost_czk)}</td>
                             <td style={{ padding: '5px 6px', textAlign: 'right', color: s.extra_cost_czk > 0 ? '#dc2626' : '#16a34a' }}>

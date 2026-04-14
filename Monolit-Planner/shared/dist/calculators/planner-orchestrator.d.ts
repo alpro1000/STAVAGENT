@@ -292,6 +292,18 @@ export interface DeadlineOptimizationVariant {
     /** Extra cost vs. current configuration */
     extra_cost_czk: number;
     fits_deadline: boolean;
+    /**
+     * Block E + G2 (2026-04): cost split between labor (constant across
+     * variants due to man-hours conservation) and rental (scales with days).
+     * UI can show "Práce: 125k =, Pronájem: 42k −18k = 167k −18k" so users
+     * see WHY adding crews changes price.
+     */
+    cost_breakdown: {
+        /** formwork + rebar + pour + props labor — constant across variants */
+        labor_czk: number;
+        /** bednění rental — scales with total_days × num_sets */
+        rental_czk: number;
+    };
 }
 export interface DeadlineCheckResult {
     /** Investor/project deadline (working days), undefined if not set */

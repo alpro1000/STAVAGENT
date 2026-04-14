@@ -365,6 +365,28 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               </>
             )}
 
+            {/* ─── Block B: Pracovní spáry (visible PŘED prvním výpočtem) ─── */}
+            <Field
+              label="Pracovní spáry (dle RDS)"
+              hint="bez dilatačních spár: jak dělit záběry"
+            >
+              <select
+                style={inputStyle}
+                value={form.working_joints_allowed}
+                onChange={e => update('working_joints_allowed', e.target.value as FormState['working_joints_allowed'])}
+                title={
+                  'Automaticky / Nezjištěno: engine rozdělí na záběry podle kapacity + warning "ověřte v RDS". ' +
+                  'Povoleny: rozdělí bez warningu. ' +
+                  'Zakázány: 1 záběr (nepřetržitá betonáž) + warning.'
+                }
+              >
+                <option value="">Automaticky (default)</option>
+                <option value="yes">Povoleny (sekční)</option>
+                <option value="no">Zakázány (nepřetržitá betonáž)</option>
+                <option value="unknown">Nezjištěno ⚠️</option>
+              </select>
+            </Field>
+
             {/* ─── Ruční rozdělení záběrů (non-uniform volumes) ─── */}
             <div style={{ marginTop: 12, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-700)' }}>

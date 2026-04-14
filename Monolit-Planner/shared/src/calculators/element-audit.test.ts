@@ -119,6 +119,89 @@ describe('22-type audit (Part D)', () => {
     });
   });
 
+  // Block E: variant cost parity — labor const across variants, rental varies.
+  describe('variant cost parity (Block E)', () => {
+    it('labor const + rental scales → cost_breakdown present, labor same as main', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 200,
+        height_m: 3,
+        has_dilatacni_spary: true,
+        spara_spacing_m: 10,
+        total_length_m: 60,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+        num_formwork_crews: 1,
+        num_rebar_crews: 1,
+        num_sets: 1,
+      });
+      const dc = plan.deadline_check!;
+      expect(dc.suggestions.length).toBeGreaterThan(0);
+      for (const v of dc.suggestions) {
+        // cost_breakdown must exist and its pieces must sum to total
+        expect(v.cost_breakdown).toBeDefined();
+        const sum = v.cost_breakdown.labor_czk + v.cost_breakdown.rental_czk;
+        expect(Math.abs(sum - v.total_cost_czk)).toBeLessThan(2);
+        // Labor must equal the main plan's total labor (man-hours conservation)
+        expect(v.cost_breakdown.labor_czk).toBe(plan.costs.total_labor_czk);
+      }
+    });
+
+    it('extra_cost_czk is negative only when rental actually drops below main', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 400,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'yes',
+        concrete_class: 'C30/37',
+        num_formwork_crews: 1,
+        num_rebar_crews: 1,
+        num_sets: 1,
+      });
+      const dc = plan.deadline_check!;
+      if (dc.suggestions.length > 0) {
+        const main = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk;
+        for (const v of dc.suggestions) {
+          // extra_cost_czk must equal variant.total - main (±1 for rounding)
+          expect(Math.abs(v.extra_cost_czk - (v.total_cost_czk - main))).toBeLessThan(2);
+        }
+      }
+    });
+  });
+
+  // Block D: num_tacts_override rebuild of derived pump/window fields.
+  describe('num_tacts_override rebuild (Block D)', () => {
+    it('override 10 tacts for 50m³ → pumps=1, sub_mode=manual_override', () => {
+      const plan = planElement({
+        element_type: 'mostni_zavirne_zidky',
+        volume_m3: 50,
+        formwork_area_m2: 30,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        concrete_class: 'C25/30',
+        num_tacts_override: 10,
+      });
+      expect(plan.pour_decision.num_tacts).toBe(10);
+      expect(plan.pour_decision.tact_volume_m3).toBe(5);
+      expect(plan.pour_decision.sub_mode).toBe('manual_override');
+      expect(plan.pour_decision.pumps_required).toBe(1);
+      // pour_hours_per_tact for 5 m³ @ 30 m³/h = 0.5 + 5/30 + 0.5 ≈ 1.17h
+      expect(plan.pour_decision.pour_hours_per_tact).toBeLessThan(2);
+    });
+
+    it('no override → untouched (regression guard)', () => {
+      const plan = planElement({
+        element_type: 'mostni_zavirne_zidky',
+        volume_m3: 50,
+        formwork_area_m2: 30,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        concrete_class: 'C25/30',
+      });
+      expect(plan.pour_decision.sub_mode).not.toBe('manual_override');
+    });
+  });
+
   // Spot check: working_joints_allowed routing end-to-end (BUG-4 + Block C)
   describe('working_joints_allowed end-to-end (BUG-4 + Block C)', () => {
     // Block C: default (undefined) now splits a large deck by capacity
