@@ -38,6 +38,15 @@ const batchResultsBody = document.getElementById('batchResultsBody');
 
 let currentBatchId = null;
 let pollInterval = null;
+// Polling backoff state — keeps the UI alive even if the server briefly
+// rate-limits us. Base 3s, exponential doubling on 429 up to 30s, reset
+// on success. After too many consecutive failures we stop polling and
+// let the user retry manually.
+const POLL_BASE_MS = 3000;
+const POLL_MAX_MS = 30000;
+const POLL_MAX_CONSECUTIVE_ERRORS = 10;
+let pollCurrentMs = POLL_BASE_MS;
+let pollConsecutiveErrors = 0;
 
 // ============================================================================
 // NAVIGATION
@@ -247,15 +256,27 @@ async function resumeBatch() {
 
 function startPolling() {
   stopPolling();
-  pollInterval = setInterval(checkBatchStatus, 2000);  // Poll every 2 seconds
+  // Reset backoff state on every new batch so previous errors don't
+  // carry over.
+  pollCurrentMs = POLL_BASE_MS;
+  pollConsecutiveErrors = 0;
+  schedulePoll();
   checkBatchStatus();  // Check immediately
 }
 
 function stopPolling() {
   if (pollInterval) {
-    clearInterval(pollInterval);
+    clearTimeout(pollInterval);
     pollInterval = null;
   }
+}
+
+// Schedule the next poll based on the current backoff delay. Using
+// setTimeout (re-armed on each run) instead of setInterval lets us bump
+// the delay mid-stream without racing the timer.
+function schedulePoll() {
+  if (pollInterval) clearTimeout(pollInterval);
+  pollInterval = setTimeout(checkBatchStatus, pollCurrentMs);
 }
 
 async function checkBatchStatus() {
@@ -265,8 +286,26 @@ async function checkBatchStatus() {
     const response = await fetch(`/api/batch/${currentBatchId}/status`);
 
     if (!response.ok) {
-      throw new Error('Failed to get batch status');
+      // Rate-limited? Back off exponentially up to POLL_MAX_MS.
+      if (response.status === 429) {
+        pollCurrentMs = Math.min(pollCurrentMs * 2, POLL_MAX_MS);
+        pollConsecutiveErrors++;
+        debugLog(`⏳ 429 on status poll — backing off to ${pollCurrentMs}ms (${pollConsecutiveErrors} consecutive errors)`);
+      } else {
+        pollConsecutiveErrors++;
+      }
+      if (pollConsecutiveErrors >= POLL_MAX_CONSECUTIVE_ERRORS) {
+        stopPolling();
+        alert('Nepodařilo se načíst stav zpracování po opakovaných pokusech. Obnovte stránku pro pokračování.');
+        return;
+      }
+      schedulePoll();
+      throw new Error(`Failed to get batch status (HTTP ${response.status})`);
     }
+
+    // Success — reset backoff to the base interval.
+    pollCurrentMs = POLL_BASE_MS;
+    pollConsecutiveErrors = 0;
 
     const result = await response.json();
     const status = result.data;
@@ -288,7 +327,11 @@ async function checkBatchStatus() {
       } else {
         alert(`Zpracování selhalo: ${status.errorMessage || 'Neznámá chyba'}`);
       }
+      return;
     }
+
+    // Still running — schedule the next poll.
+    schedulePoll();
 
   } catch (error) {
     debugError('Status check error', error);
