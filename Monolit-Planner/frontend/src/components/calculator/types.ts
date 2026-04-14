@@ -96,13 +96,29 @@ export interface FormState {
   rebar_mass_kg: string;
   rebar_norm_kg_m3: string;
   height_m: string;
+  /** @deprecated Block A (2026-04): use has_dilatation_joints + tacts_per_section_mode */
   tact_mode: TactMode;
+  /** @deprecated Block A: kept for backward compat with WizardHints — UI now writes has_dilatation_joints */
   has_dilatacni_spary: boolean;
+  /** @deprecated Block A: replaced by dilatation_spacing_m (string) */
   spara_spacing_m: number;
   total_length_m: number;
   adjacent_sections: boolean;
+  /** @deprecated Block A: replaced by tacts_per_section_manual (used only in manual mode) */
   num_tacts_override: string;
   tact_volume_m3_override: string;
+
+  // ─── Block A (2026-04): hierarchical sections × záběry per section ────────
+  /** Has dilatation joints? Used to decide whether num_dilatation_sections is editable. */
+  has_dilatation_joints: boolean;
+  /** Number of dilatation cells (sections). Min 1. */
+  num_dilatation_sections: number;
+  /** Optional spacing in m — when set, num_dilatation_sections auto-derives from total_length_m. */
+  dilatation_spacing_m: string;
+  /** 'auto' = engine computes záběry from per-section volume; 'manual' = user value. */
+  tacts_per_section_mode: 'auto' | 'manual';
+  /** Manual záběry-per-section count (only used when mode='manual'). */
+  tacts_per_section_manual: string;
   use_manual_zabery: boolean;
   manual_zabery: Array<{ name: string; volume_m3: string; formwork_area_m2: string }>;
   scheduling_mode_override: '' | 'linear' | 'chess';
@@ -255,6 +271,13 @@ export const DEFAULT_FORM: FormState = {
   adjacent_sections: true,
   num_tacts_override: '',
   tact_volume_m3_override: '',
+  // Block A: hierarchical sections × záběry per section (replaces the
+  // legacy tact_mode tab-pair). Default = 1 section, auto-tact-count.
+  has_dilatation_joints: false,
+  num_dilatation_sections: 1,
+  dilatation_spacing_m: '',
+  tacts_per_section_mode: 'auto',
+  tacts_per_section_manual: '',
   use_manual_zabery: false,
   manual_zabery: [],
   scheduling_mode_override: '',

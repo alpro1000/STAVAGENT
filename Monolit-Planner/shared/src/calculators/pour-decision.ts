@@ -29,8 +29,11 @@
 /** Pour mode — determined by has_dilatacni_spary */
 export type PourMode = 'sectional' | 'monolithic';
 
-/** Sub-mode for sectional pouring */
-export type SectionalSubMode = 'independent' | 'adjacent_chess' | 'vertical_layers';
+/** Sub-mode for sectional pouring.
+ *  `manual_override` is set by the orchestrator when the user provides
+ *  `num_tacts_override` — derived fields (pumps, t_window, pour_hours_per_tact)
+ *  get recomputed for the smaller per-tact volume (Block D). */
+export type SectionalSubMode = 'independent' | 'adjacent_chess' | 'vertical_layers' | 'manual_override';
 
 /** Sub-mode for monolithic pouring */
 export type MonolithicSubMode = 'single_pump' | 'multi_pump' | 'mega_pour';

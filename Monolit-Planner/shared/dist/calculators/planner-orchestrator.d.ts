@@ -129,6 +129,22 @@ export interface PlannerInput {
     tact_volume_m3_override?: number;
     /** Scheduling mode override: 'linear' or 'chess' */
     scheduling_mode_override?: 'linear' | 'chess';
+    /**
+     * Block A (2026-04): hierarchical sections × záběry per section.
+     * The new sidebar UI sends these instead of the legacy
+     * has_dilatacni_spary + num_tacts_override pair. When set, the
+     * orchestrator pre-computes total tacts as
+     *   num_dilatation_sections × tacts_per_section
+     * and routes through the existing num_tacts_override path (so Block D
+     * pump rebuild and Block C working-joints warnings keep working).
+     */
+    num_dilatation_sections?: number;
+    /**
+     * Optional manual override for záběry per section. When undefined the
+     * orchestrator runs decidePourMode for one section's volume to derive
+     * the auto-count from pump capacity (respecting working_joints_allowed).
+     */
+    tacts_per_section?: number;
     /** Per-záběr volumes (m³) for manual záběry with individual sizes.
      *  Length must equal num_tacts_override. Sum should approximate volume_m3.
      *  When provided, each záběr gets its own pour duration calculation. */
@@ -292,6 +308,18 @@ export interface DeadlineOptimizationVariant {
     /** Extra cost vs. current configuration */
     extra_cost_czk: number;
     fits_deadline: boolean;
+    /**
+     * Block E + G2 (2026-04): cost split between labor (constant across
+     * variants due to man-hours conservation) and rental (scales with days).
+     * UI can show "Práce: 125k =, Pronájem: 42k −18k = 167k −18k" so users
+     * see WHY adding crews changes price.
+     */
+    cost_breakdown: {
+        /** formwork + rebar + pour + props labor — constant across variants */
+        labor_czk: number;
+        /** bednění rental — scales with total_days × num_sets */
+        rental_czk: number;
+    };
 }
 export interface DeadlineCheckResult {
     /** Investor/project deadline (working days), undefined if not set */

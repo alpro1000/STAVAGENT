@@ -167,6 +167,23 @@ export interface PlannerInput {
   /** Scheduling mode override: 'linear' or 'chess' */
   scheduling_mode_override?: 'linear' | 'chess';
 
+  /**
+   * Block A (2026-04): hierarchical sections × záběry per section.
+   * The new sidebar UI sends these instead of the legacy
+   * has_dilatacni_spary + num_tacts_override pair. When set, the
+   * orchestrator pre-computes total tacts as
+   *   num_dilatation_sections × tacts_per_section
+   * and routes through the existing num_tacts_override path (so Block D
+   * pump rebuild and Block C working-joints warnings keep working).
+   */
+  num_dilatation_sections?: number;
+  /**
+   * Optional manual override for záběry per section. When undefined the
+   * orchestrator runs decidePourMode for one section's volume to derive
+   * the auto-count from pump capacity (respecting working_joints_allowed).
+   */
+  tacts_per_section?: number;
+
   /** Per-záběr volumes (m³) for manual záběry with individual sizes.
    *  Length must equal num_tacts_override. Sum should approximate volume_m3.
    *  When provided, each záběr gets its own pour duration calculation. */
@@ -385,6 +402,18 @@ export interface DeadlineOptimizationVariant {
   /** Extra cost vs. current configuration */
   extra_cost_czk: number;
   fits_deadline: boolean;
+  /**
+   * Block E + G2 (2026-04): cost split between labor (constant across
+   * variants due to man-hours conservation) and rental (scales with days).
+   * UI can show "Práce: 125k =, Pronájem: 42k −18k = 167k −18k" so users
+   * see WHY adding crews changes price.
+   */
+  cost_breakdown: {
+    /** formwork + rebar + pour + props labor — constant across variants */
+    labor_czk: number;
+    /** bednění rental — scales with total_days × num_sets */
+    rental_czk: number;
+  };
 }
 
 export interface DeadlineCheckResult {
@@ -572,14 +601,71 @@ export function planElement(input: PlannerInput): PlannerOutput {
     use_retarder: input.use_retarder,
   });
 
+  // Block A — pre-compute total tacts from hierarchical sections × záběry
+  // when the new sidebar fields are set. Result feeds the existing
+  // num_tacts_override path, which Block D rebuilds (pumps/sub_mode) and
+  // which honours working_joints_allowed already (because the auto branch
+  // delegates back to decidePourMode for one section's volume).
+  let effectiveNumTactsOverride = input.num_tacts_override;
+  let effectiveTactVolumeOverride = input.tact_volume_m3_override;
+  if (input.num_dilatation_sections !== undefined && input.num_dilatation_sections > 0) {
+    const numSections = Math.max(1, Math.floor(input.num_dilatation_sections));
+    const sectionVolume = input.volume_m3 / numSections;
+    let tactsPerSection: number;
+    if (input.tacts_per_section !== undefined && input.tacts_per_section > 0) {
+      tactsPerSection = Math.max(1, Math.floor(input.tacts_per_section));
+    } else {
+      // Auto compute by running decidePourMode for ONE section's volume.
+      // working_joints_allowed flows through unchanged so 'no'/'unknown'
+      // produce the right záběry-per-section count.
+      const subDecision = decidePourMode({
+        element_type: elementType,
+        volume_m3: sectionVolume,
+        has_dilatacni_spary: false,
+        working_joints_allowed: input.working_joints_allowed,
+        season: input.season,
+        use_retarder: input.use_retarder,
+      });
+      tactsPerSection = subDecision.num_tacts;
+    }
+    const totalTacts = numSections * tactsPerSection;
+    effectiveNumTactsOverride = totalTacts;
+    effectiveTactVolumeOverride = input.volume_m3 / totalTacts;
+    log.push(`Block A: ${numSections} sekcí × ${tactsPerSection} záběrů/sekce = ${totalTacts} celkem`);
+  }
+
   // Apply user overrides for tacts (foundations, piers, etc.)
-  if (input.num_tacts_override && input.num_tacts_override > 0) {
-    pourDecision.num_tacts = input.num_tacts_override;
-    pourDecision.tact_volume_m3 = input.tact_volume_m3_override
-      ?? Math.round((input.volume_m3 / input.num_tacts_override) * 100) / 100;
-    pourDecision.num_sections = input.num_tacts_override;
-    pourDecision.section_volume_m3 = pourDecision.tact_volume_m3;
+  if (effectiveNumTactsOverride && effectiveNumTactsOverride > 0) {
+    const overrideN = effectiveNumTactsOverride;
+    const overrideTactVol = effectiveTactVolumeOverride
+      ?? Math.round((input.volume_m3 / overrideN) * 100) / 100;
+    pourDecision.num_tacts = overrideN;
+    pourDecision.tact_volume_m3 = overrideTactVol;
+    pourDecision.num_sections = overrideN;
+    pourDecision.section_volume_m3 = overrideTactVol;
     log.push(`Tacts: MANUAL override → ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
+
+    // Block D: rebuild derived pump/window fields for the smaller tact volume.
+    // Previously we kept the original decidePourMode output (which was computed
+    // for the full volume in the monolithic branch), leaving sub_mode='monolit',
+    // pumps_required and t_window_hours stale. With override active we treat
+    // every tact as an independent sectional pour and recalculate:
+    //   - pour_hours_per_tact from the SMALLER volume
+    //   - pumps_required = 1 (sectional mode — one pump per tact)
+    //   - sub_mode = 'manual_override' to signal the state change
+    //   - t_window_hours stays as the raw window (retarder/season unchanged)
+    const q_eff = 30;       // matches pour-decision default
+    const setup_h = 0.5;
+    const washout_h = 0.5;
+    const pour_h_per_tact = setup_h + (overrideTactVol / q_eff) + washout_h;
+    pourDecision.pour_hours_per_tact = Math.round(pour_h_per_tact * 100) / 100;
+    pourDecision.total_pour_hours = Math.round(pour_h_per_tact * overrideN * 100) / 100;
+    pourDecision.pour_mode = 'sectional';
+    pourDecision.sub_mode = 'manual_override';
+    pourDecision.pumps_required = 1;
+    pourDecision.backup_pump = false;
+    pourDecision.max_sections_per_tact = 1;
+    log.push(`Override rebuild: pour/tact=${pourDecision.pour_hours_per_tact}h, pumps=1, sub_mode=manual_override`);
   }
   if (input.scheduling_mode_override) {
     pourDecision.scheduling_mode = input.scheduling_mode_override;
@@ -587,7 +673,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // 3b. Apply height-based záběry (pour stages) for vertical elements
-  if (heightForPressure && heightForPressure > 0 && isVertical && !input.num_tacts_override) {
+  if (heightForPressure && heightForPressure > 0 && isVertical && !effectiveNumTactsOverride) {
     const { all: allCompatible } = getSuitableSystemsForElement(elementType);
     const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
     pourStages = suggestPourStages(heightForPressure, pourMethod, allCompatible, lpOptions);
@@ -1474,6 +1560,16 @@ export function planElement(input: PlannerInput): PlannerOutput {
       pourDecision, assemblyDays, rebarResult, concreteDays, curingDays, disassemblyDays,
       numFWCrews, numRBCrews, numSets, maturityParams, fwArea, fwSystem,
       wageFormwork, wageRebar, wagePour, crew, crewRebar, shift, k,
+      // Block E: pass labor breakdown so variants reuse it instead of
+      // recomputing a simplified (and inconsistent) version.
+      mainLaborBreakdown: {
+        formwork_labor_czk: formworkLaborCZK,
+        rebar_labor_czk: rebarLaborCZK,
+        pour_labor_czk: pourLaborCZK,
+        props_labor_czk: propsLaborCZK,
+        total_labor_czk: totalLaborCZK,
+      },
+      rentalRate,
     }),
     warnings,
     decision_log: [...log, ...pourDecision.decision_log],
@@ -1582,6 +1678,21 @@ interface DeadlineContext {
   crewRebar: number;
   shift: number;
   k: number;
+  /**
+   * Block E (2026-04): labor breakdown from the main cost path. Variants
+   * reuse these numbers because changing num_crews / num_sets does not
+   * affect labor hours (man-hours conservation) — only total_days and
+   * therefore rental. Passing the pre-computed values avoids duplicating
+   * the 3-phase formwork / pour-task / props cost pipelines.
+   */
+  mainLaborBreakdown: {
+    formwork_labor_czk: number;   // 3-phase total (initial+middle+final with multipliers)
+    rebar_labor_czk: number;
+    pour_labor_czk: number;       // includes overtime + night premium
+    props_labor_czk: number;
+    total_labor_czk: number;
+  };
+  rentalRate: number;              // effective rental rate (catalog or override)
 }
 
 /**
@@ -1637,16 +1748,18 @@ function checkDeadline(
           // Only keep variants that are actually faster
           if (days >= calculatedDays) continue;
 
-          // Estimate cost for this variant
+          // Block E — variant cost parity.
+          // Labor is invariant across variants (man-hours conservation: more
+          // crews = shorter schedule but same total hours). Reuse the main
+          // path's labor breakdown including 3-phase multipliers, pour
+          // overtime + night premium, and props labor. Only rental scales
+          // with total_days × num_sets.
           const rentalDays = days + 2;
-          const rentalRate = ctx.fwSystem.rental_czk_m2_month;
-          const rentalCZK = rentalRate > 0
-            ? roundTo(ctx.fwArea * rentalRate * (rentalDays / 30) * sets, 2)
+          const variantRentalCZK = ctx.rentalRate > 0
+            ? roundTo(ctx.fwArea * ctx.rentalRate * (rentalDays / 30) * sets, 2)
             : 0;
-          const fwLabor = ctx.fwSystem.assembly_h_m2 * ctx.fwArea * ctx.wageFormwork +
-                          ctx.fwSystem.disassembly_h_m2 * ctx.fwArea * ctx.wageFormwork;
-          const rbLabor = ctx.rebarResult.cost_labor * numTacts;
-          const totalCost = roundTo(fwLabor + rbLabor + rentalCZK, 0);
+          const variantLaborCZK = ctx.mainLaborBreakdown.total_labor_czk;
+          const totalCost = roundTo(variantLaborCZK + variantRentalCZK, 0);
 
           const fitsDeadline = deadline ? days <= deadline : true;
           const label = `${fwC} čet bednění, ${rbC} čet výztuže, ${sets} sad`;
@@ -1660,6 +1773,12 @@ function checkDeadline(
             total_cost_czk: totalCost,
             extra_cost_czk: roundTo(totalCost - currentTotalCost, 0),
             fits_deadline: fitsDeadline,
+            // Block G2: expose labor-vs-rental split so the UI can show
+            // the user WHY cost changes (labor const, rental variable).
+            cost_breakdown: {
+              labor_czk: variantLaborCZK,
+              rental_czk: variantRentalCZK,
+            },
           });
         } catch {
           // Skip invalid combinations
