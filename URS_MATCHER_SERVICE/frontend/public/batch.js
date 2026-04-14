@@ -279,28 +279,50 @@ function schedulePoll() {
   pollInterval = setTimeout(checkBatchStatus, pollCurrentMs);
 }
 
+// Exceeded-error helper: called from every error path (HTTP or network).
+// Increments the consecutive-error counter, and if we blew past the budget,
+// stops polling and notifies the user. Returns `true` when polling was
+// stopped (caller should NOT reschedule).
+function recordPollError(reason) {
+  pollConsecutiveErrors++;
+  debugError('Status check error', reason);
+  if (pollConsecutiveErrors >= POLL_MAX_CONSECUTIVE_ERRORS) {
+    stopPolling();
+    alert('Nepodařilo se načíst stav zpracování po opakovaných pokusech. Obnovte stránku pro pokračování.');
+    return true;
+  }
+  return false;
+}
+
 async function checkBatchStatus() {
   if (!currentBatchId) return;
+
+  // Single reschedule path via try/finally. The `shouldReschedule` flag is
+  // flipped to false by:
+  //   - terminal batch status (completed / failed)
+  //   - error budget exhausted (recordPollError → stopPolling)
+  //   - currentBatchId cleared mid-request
+  // Everything else — including HTTP 429 and network exceptions — falls
+  // through to the finally block and re-arms the timer with the current
+  // backoff delay. This fixes the review finding: the previous version
+  // rescheduled before throwing, then caught the throw without rescheduling
+  // again, which gave two different behaviors for HTTP vs network errors.
+  let shouldReschedule = true;
 
   try {
     const response = await fetch(`/api/batch/${currentBatchId}/status`);
 
     if (!response.ok) {
-      // Rate-limited? Back off exponentially up to POLL_MAX_MS.
+      // 429 triggers exponential backoff; other HTTP errors still count
+      // toward the consecutive-error budget but don't bump the interval.
       if (response.status === 429) {
         pollCurrentMs = Math.min(pollCurrentMs * 2, POLL_MAX_MS);
-        pollConsecutiveErrors++;
-        debugLog(`⏳ 429 on status poll — backing off to ${pollCurrentMs}ms (${pollConsecutiveErrors} consecutive errors)`);
-      } else {
-        pollConsecutiveErrors++;
+        debugLog(`⏳ 429 on status poll — backing off to ${pollCurrentMs}ms`);
       }
-      if (pollConsecutiveErrors >= POLL_MAX_CONSECUTIVE_ERRORS) {
-        stopPolling();
-        alert('Nepodařilo se načíst stav zpracování po opakovaných pokusech. Obnovte stránku pro pokračování.');
-        return;
+      if (recordPollError(`HTTP ${response.status}`)) {
+        shouldReschedule = false;
       }
-      schedulePoll();
-      throw new Error(`Failed to get batch status (HTTP ${response.status})`);
+      return;
     }
 
     // Success — reset backoff to the base interval.
@@ -318,6 +340,7 @@ async function checkBatchStatus() {
     // If completed, stop polling and load results
     if (status.status === 'completed' || status.status === 'failed') {
       stopPolling();
+      shouldReschedule = false;
       batchStartBtn.textContent = '✅ Dokončeno';
       batchStartBtn.disabled = true;
       batchPauseBtn.disabled = true;
@@ -327,14 +350,20 @@ async function checkBatchStatus() {
       } else {
         alert(`Zpracování selhalo: ${status.errorMessage || 'Neznámá chyba'}`);
       }
-      return;
     }
-
-    // Still running — schedule the next poll.
-    schedulePoll();
-
   } catch (error) {
-    debugError('Status check error', error);
+    // Network failure, DNS/CORS error, JSON parse error — treat as a
+    // transient error and still count toward the budget. The review caught
+    // that the previous version silently died here because reschedule only
+    // happened on the happy path and the HTTP-error path, never the catch.
+    if (recordPollError(error instanceof Error ? error.message : String(error))) {
+      shouldReschedule = false;
+    }
+  } finally {
+    // Only one place in the function that arms the next timer.
+    if (shouldReschedule && currentBatchId) {
+      schedulePoll();
+    }
   }
 }
 
