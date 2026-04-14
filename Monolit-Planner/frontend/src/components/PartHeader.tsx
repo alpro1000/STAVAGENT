@@ -329,7 +329,7 @@ export default function PartHeader({
             <button
               onClick={onOpenFormworkCalculator}
               disabled={isLocked}
-              title="Otevřít kalkulátor — délka prací, brigáda, bednění, Gantt"
+              title="Otevřít kalkulátor — délka prací, čety, bednění, Gantt"
               style={{
                 background: '#FF9F1C',
                 color: 'white',
