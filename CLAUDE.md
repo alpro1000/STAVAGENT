@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.14.0
-**Last Updated:** 2026-04-14
+**Version:** 4.15.0
+**Last Updated:** 2026-04-15
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -200,6 +200,28 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 - Nepřidávej "flexibilitu" a "konfigurovatelnost", o kterou nikdo nepožádal.
 - Když si nejsi jistý — zeptej se, neháděj mlčky.
 - Definuj kritéria úspěchu PŘED kódem, pak iteruj k jejich splnění.
+
+## Session Setup — Effort & Thinking
+
+**ОБЯЗАТЕЛЬНО в начале каждой сессии:**
+
+1. Проверь effort level: должен быть `high` или `max`. Если `medium` / `low` → `/effort high`.
+2. Adaptive thinking должен быть ОТКЛЮЧЁН (`CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1` в `~/.claude/settings.json` env).
+3. Перед любым изменением кода — ПРОЧИТАЙ контекст. Мантра: «Сначала читаешь весь репо. Потом определяешь naming. Потом пишешь.»
+4. Если не уверен в имени файла, SHA, API или пакете — ПРОВЕРЬ через Grep / Glob / Read. Никогда не фабрикуй пути, коммиты, имена.
+5. Для STAVAGENT (1500+ commits, 22 element types, 7 engines) поверхностный анализ = баги в проде. Думай глубоко.
+
+**Reference settings.json (user owns this file, не Claude Code):**
+```json
+{
+  "effortLevel": "high",
+  "env": {
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "400000"
+  }
+}
+```
+> ⚠️ Эти ключи не верифицированы против актуальной Claude Code docs — если харнес их игнорирует, проверь `/help` или попроси Claude настроить SessionStart hook вместо этого.
 
 **Key rules:**
 - Determinism > AI: if regex can do it, don't use LLM
