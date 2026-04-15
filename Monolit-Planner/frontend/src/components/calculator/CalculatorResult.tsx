@@ -582,6 +582,16 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
       </div>
 
       {/* Formwork */}
+      {/* 2026-04-15: PILOTA cards (drilling / armokoše / betonáž / head /
+          optional cap) — rendered INSTEAD of the standard "Bednění" card
+          when the element is a bored pile. plan.pile is populated by the
+          orchestrator's runPilePath helper. */}
+      {plan.element.type === 'pilota' && plan.pile && (
+        <PileCards pile={plan.pile} />
+      )}
+
+      {/* Standard formwork card — hidden for piles (no formwork on a bored pile) */}
+      {plan.element.type !== 'pilota' && (
       <Card title="Bednění" icon="📦">
         <div className="r0-grid-3">
           <div>
@@ -611,6 +621,7 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           </div>
         </div>
       </Card>
+      )}
 
       {/* Křídla formwork (composite opěry+křídla) */}
       {kridlaFormwork && (
@@ -962,6 +973,161 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         </Card>
       )}
     </div>
+  );
+}
+
+// ─── PILE: Vrtaná pilota result cards (2026-04-15) ──────────────────────────
+
+/**
+ * PileCards — drilling / armokoše / betonáž / úprava hlavy / [hlavice]
+ *
+ * Rendered by CalculatorResult INSTEAD of the standard "Bednění" card when
+ * plan.element.type === 'pilota'. All data comes from plan.pile (PileResult
+ * from shared/src/calculators/pile-engine.ts).
+ *
+ * Standard cards that are NOT shown for piles (controlled in CalculatorResult):
+ *   - Bednění (no formwork)
+ *   - Boční tlak (lateral_pressure undefined)
+ *   - Podpěrná konstrukce (props undefined)
+ *
+ * Cards still shown for piles via the existing JSX blocks:
+ *   - KPI cards (total days, costs)
+ *   - Výztuž (rebar — but the duration matters less than for in-situ rebar)
+ *   - Schedule / Gantt
+ */
+function PileCards({ pile }: { pile: any }) {
+  const geologyLabelCs: Record<string, string> = {
+    cohesive: 'Soudržná zemina',
+    noncohesive: 'Nesoudržná zemina',
+    below_gwt: 'Pod hladinou podzemní vody',
+    rock: 'Skalní podloží',
+  };
+  const methodLabelCs: Record<string, string> = {
+    cfa: 'CFA (průběžný šnek)',
+    cased: 'S pažnicí',
+    uncased: 'Bez pažení',
+  };
+
+  return (
+    <>
+      {/* Card 1: Vrtání */}
+      <Card title="Vrtání pilot" icon={<span>⚙️</span>}>
+        <div className="r0-grid-3">
+          <div>
+            <div style={subTitle}>Geometrie</div>
+            <Row label="Průměr" value={`Ø${pile.diameter_mm} mm`} />
+            <Row label="Délka" value={`${pile.length_m} m`} />
+            <Row label="Počet pilot" value={String(pile.count)} bold />
+            <Row label="Objem 1 piloty" value={`${formatNum(pile.volume_per_pile_m3, 2)} m³`} />
+            <Row label="Objem celkem" value={`${formatNum(pile.total_volume_m3, 1)} m³`} bold />
+          </div>
+          <div>
+            <div style={subTitle}>Metoda + geologie</div>
+            <Row label="Metoda" value={methodLabelCs[pile.casing_method] || pile.casing_method} />
+            <Row label="Geologie" value={geologyLabelCs[pile.geology] || pile.geology} />
+            <Row label="Produktivita" value={`${pile.productivity_pile_per_shift} pilot/směna`} />
+          </div>
+          <div>
+            <div style={subTitle}>Časy</div>
+            <Row label="Vrtání" value={`${pile.drilling_days} dní`} bold />
+            <Row label="Tech. přestávka" value={`${pile.technological_pause_days} dní`} />
+            <Row label="Úprava hlav" value={`${pile.head_adjustment_days} dní`} />
+            {pile.pile_cap_days != null && (
+              <Row label="Hlavice" value={`${pile.pile_cap_days} dní`} />
+            )}
+            <Row label="Celkem" value={`${pile.total_days} dní`} bold />
+          </div>
+        </div>
+      </Card>
+
+      {/* Card 2: Armokoše */}
+      <Card title="Armokoše" icon={<span>🔩</span>}>
+        <div className="r0-grid-2">
+          <div>
+            <Row label="Index vyztužení" value={`${pile.rebar_index_kg_m3} kg/m³`} />
+            <Row label="Hmotnost celkem" value={`${formatNum(pile.rebar_total_kg, 0)} kg`} bold />
+            <Row label="Hmotnost / pilota" value={`${formatNum(pile.rebar_total_kg / pile.count, 0)} kg`} />
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', lineHeight: 1.6 }}>
+            Pre-fabrikovaný armokoš (z armovny nebo na stavbě), osazení jeřábem
+            do vrtu. Při CFA — vtlačení do čerstvého betonu, bez vibrace.
+          </div>
+        </div>
+      </Card>
+
+      {/* Card 3: Betonáž piloty */}
+      <Card title="Betonáž piloty" icon={<span>🧱</span>}>
+        <div className="r0-grid-2">
+          <div>
+            <Row label="Objem 1 piloty" value={`${formatNum(pile.volume_per_pile_m3, 2)} m³`} />
+            <Row label="Objem celkem" value={`${formatNum(pile.total_volume_m3, 1)} m³`} bold />
+            <Row label="Konzistence" value="min. S4 (samozhutnění)" />
+            <Row label="Vibrace" value="NE — SCC / S4" />
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', lineHeight: 1.6 }}>
+            {pile.casing_method === 'cfa'
+              ? 'CFA: beton tlačen dutým dříkem současně s vytahováním šneku.'
+              : 'S pažnicí: ukládání kontraktorovou (tremie) rourou. Suchý vrt = přímý výsyp.'}
+            <br />
+            Žádné čerpadlo betonu — pouze autodomíchávač + kontraktor.
+          </div>
+        </div>
+      </Card>
+
+      {/* Card 4: Úprava hlavy */}
+      <Card title="Úprava hlavy piloty" icon={<span>🔨</span>}>
+        <div className="r0-grid-2">
+          <div>
+            <Row label="Tech. přestávka" value={`${pile.technological_pause_days} dní`} />
+            <Row label="Dny úpravy" value={`${pile.head_adjustment_days} dní`} bold />
+            <Row label="Náklady" value={formatCZK(pile.costs.head_adjustment_labor_czk)} />
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', lineHeight: 1.6 }}>
+            Odbourání 0.5–1.0 m nekvalitního betonu nad projektovou úrovní.
+            Empiricky 3 hlavy/směna pro 2-člennou četu.
+          </div>
+        </div>
+      </Card>
+
+      {/* Card 5: Hlavice (volitelně) */}
+      {pile.pile_cap_days != null && (
+        <Card title="Hlavice piloty (ŽB patka)" icon={<span>🟦</span>}>
+          <div className="r0-grid-2">
+            <div>
+              <Row label="Doba" value={`${pile.pile_cap_days} dní`} bold />
+              <Row label="Náklady (práce)" value={formatCZK(pile.costs.pile_cap_labor_czk)} />
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', lineHeight: 1.6 }}>
+              Standardní ŽB cyklus jako u patky: bednění + výztuž + betonáž + zrání + odbednění.
+              Začíná po 7-denní technologické přestávce za betonáží poslední piloty.
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Card 6: Náklady piloty (souhrn) */}
+      <Card title="Náklady (pilota)" icon={<span>💰</span>}>
+        <div className="r0-grid-3">
+          <div>
+            <Row label="Vrtací souprava" value={formatCZK(pile.costs.drilling_rig_czk)} />
+            <Row label="Jeřáb" value={formatCZK(pile.costs.crane_czk)} />
+          </div>
+          <div>
+            <Row label="Četa (vrtání)" value={formatCZK(pile.costs.crew_labor_czk)} />
+            <Row label="Úprava hlav" value={formatCZK(pile.costs.head_adjustment_labor_czk)} />
+          </div>
+          <div>
+            {pile.costs.pile_cap_labor_czk > 0 && (
+              <Row label="Hlavice" value={formatCZK(pile.costs.pile_cap_labor_czk)} />
+            )}
+            <Row label="CELKEM práce" value={formatCZK(pile.costs.total_labor_czk)} bold />
+          </div>
+        </div>
+        <div style={{ marginTop: 8, fontSize: 10, color: 'var(--r0-slate-400)', fontStyle: 'italic' }}>
+          Material (beton + ocel) není v součtu — stejně jako u ostatních prvků v kalkulátoru.
+        </div>
+      </Card>
+    </>
   );
 }
 

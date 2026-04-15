@@ -24,6 +24,9 @@ export type WorkType =
   | 'předpětí'
   | 'podpěry'      // podpěrná konstrukce / skruž / stojky
   | 'zrání'        // ošetřování betonu
+  // 2026-04-15: pile-specific work types (vrtaná pilota — bored pile)
+  | 'vrtání'        // drilling the bore (rotary auger / CFA)
+  | 'úprava_hlavy'  // odbourání nekvalitního betonu nad projektovou úrovní
   | 'unknown';
 
 export interface LinkedPosition {
@@ -166,6 +169,9 @@ export function workTypeToSubtype(wt: WorkType): string {
     case 'předpětí': return 'předpětí';
     case 'podpěry': return 'podpěrná konstr.';
     case 'zrání': return 'zrání';
+    // 2026-04-15: pile-specific subtypes
+    case 'vrtání': return 'vrtání';
+    case 'úprava_hlavy': return 'úprava hlavy';
     default: return 'jiné';
   }
 }

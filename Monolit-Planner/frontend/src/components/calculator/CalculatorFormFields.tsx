@@ -76,10 +76,15 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             </div>
             {/* ── Step 3: Geometry (formwork area, lost formwork, height, shape) ── */}
             <div style={wizardVisible.objemy_geometry ? undefined : { display: 'none' }}>
+            {/* 2026-04-15: hide "Plocha bednění" for piles — bored piles
+                have no system formwork, the pile geometry block below
+                takes over entirely. */}
+            {(form.use_name_classification || form.element_type !== 'pilota') && (
             <Field label="Plocha bednění (m²)" hint="prázdné = automatický odhad z objemu a výšky">
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
             </Field>
+            )}
 
             {/* Ztracené bednění (trapézový plech) — only for horizontal elements */}
             {(() => {
@@ -164,8 +169,140 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
 
             {/* ─── Height + Element Dimension Hint (step 3: geometry) ─── */}
             <div style={wizardVisible.objemy_geometry ? undefined : { display: 'none' }}>
+            {/* 2026-04-15: PILOTA geometry block. Bored piles use a totally
+                different geometry model — diameter × length × count instead
+                of width × height × area. We render this BEFORE the standard
+                hint block and short-circuit it via `return null` from the
+                hint-IIFE below when element_type === 'pilota', so the same
+                wizard step 3 slot shows pile fields. */}
             {(() => {
               const elemType = form.use_name_classification ? 'other' : form.element_type;
+              if (elemType !== 'pilota') return null;
+              // Auto-compute volume preview from diameter × length × count
+              // so the user sees the math the engine will use.
+              const dMm = parseFloat(form.pile_diameter_mm) || 600;
+              const lM = parseFloat(form.pile_length_m) || 10;
+              const n = parseInt(form.pile_count, 10) || 0;
+              const r = dMm / 2 / 1000;
+              const v1 = Math.PI * r * r * lM;
+              const vTotal = n > 0 ? v1 * n : 0;
+              return (
+                <div style={{
+                  padding: '10px 12px', marginBottom: 10,
+                  background: 'var(--r0-slate-50, #f8fafc)',
+                  border: '1px solid var(--r0-slate-200, #e2e8f0)',
+                  borderRadius: 6,
+                }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Geometrie piloty
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <Field label="Průměr (mm)" hint="standardní katalog">
+                      <select style={inputStyle} value={form.pile_diameter_mm}
+                        onChange={e => update('pile_diameter_mm', e.target.value)}>
+                        <option value="">600 (default)</option>
+                        <option value="400">400</option>
+                        <option value="500">500</option>
+                        <option value="600">600</option>
+                        <option value="750">750</option>
+                        <option value="900">900</option>
+                        <option value="1200">1200</option>
+                        <option value="1500">1500</option>
+                      </select>
+                    </Field>
+                    <Field label="Délka (m)" hint="3–35 m">
+                      <NumInput style={inputStyle} value={form.pile_length_m} min={1} step={0.5}
+                        onChange={v => update('pile_length_m', String(v))} placeholder="10" />
+                    </Field>
+                  </div>
+                  <Field label="Počet pilot" hint="klíčový parametr — určuje objem a rozvrh">
+                    <NumInput style={inputStyle} value={form.pile_count} min={1} step={1}
+                      onChange={v => update('pile_count', String(Math.max(1, Math.round(Number(v)))))} placeholder="auto z objemu" />
+                  </Field>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <Field label="Geologie">
+                      <select style={inputStyle} value={form.pile_geology}
+                        onChange={e => update('pile_geology', e.target.value as any)}>
+                        <option value="">Soudržná (default)</option>
+                        <option value="cohesive">Soudržná</option>
+                        <option value="noncohesive">Nesoudržná</option>
+                        <option value="below_gwt">Pod hladinou podzemní vody</option>
+                        <option value="rock">Skalní podloží</option>
+                      </select>
+                    </Field>
+                    <Field label="Metoda vrtání">
+                      <select style={inputStyle} value={form.pile_casing_method}
+                        onChange={e => update('pile_casing_method', e.target.value as any)}>
+                        <option value="">CFA (default)</option>
+                        <option value="cfa">CFA (průběžný šnek)</option>
+                        <option value="cased">S pažnicí</option>
+                        <option value="uncased">Bez pažení</option>
+                      </select>
+                    </Field>
+                  </div>
+                  <Field label="Index vyztužení (kg/m³)" hint="armokoš — typ. 30–60, default 40">
+                    <NumInput style={inputStyle} value={form.pile_rebar_index_kg_m3} min={20} max={120} step={5}
+                      onChange={v => update('pile_rebar_index_kg_m3', String(v))} placeholder="40" />
+                  </Field>
+                  {/* Volume preview — what the engine will use */}
+                  {(n > 0 || form.pile_count) && (
+                    <div style={{
+                      marginTop: 8, padding: '6px 10px', background: 'white',
+                      border: '1px dashed var(--r0-slate-300)', borderRadius: 4,
+                      fontSize: 11, color: 'var(--r0-slate-600)', fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)",
+                    }}>
+                      Objem 1 piloty: <strong>{v1.toFixed(2)} m³</strong>
+                      {' · '}
+                      {n > 0 ? (
+                        <>celkem: <strong>{vTotal.toFixed(1)} m³</strong> ({n}× pilot)</>
+                      ) : (
+                        <span style={{ color: 'var(--r0-slate-400)' }}>počet odvozen z objemu</span>
+                      )}
+                    </div>
+                  )}
+                  {/* Hlavice (pile cap) — optional */}
+                  <label style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    marginTop: 10, fontSize: 12, color: 'var(--r0-slate-600)',
+                    cursor: 'pointer', userSelect: 'none',
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={form.has_pile_cap}
+                      onChange={e => update('has_pile_cap', e.target.checked)}
+                    />
+                    Hlavice piloty (ŽB patka nad pilotou)
+                  </label>
+                  {form.has_pile_cap && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginTop: 6 }}>
+                      <div>
+                        <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3 }}>Délka (m)</label>
+                        <NumInput style={inputStyle} value={form.pile_cap_length_m} min={0.5} step={0.1}
+                          onChange={v => update('pile_cap_length_m', String(v))} placeholder="1.5" />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3 }}>Šířka (m)</label>
+                        <NumInput style={inputStyle} value={form.pile_cap_width_m} min={0.5} step={0.1}
+                          onChange={v => update('pile_cap_width_m', String(v))} placeholder="1.5" />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3 }}>Výška (m)</label>
+                        <NumInput style={inputStyle} value={form.pile_cap_height_m} min={0.3} step={0.1}
+                          onChange={v => update('pile_cap_height_m', String(v))} placeholder="0.8" />
+                      </div>
+                    </div>
+                  )}
+                  <div style={{ marginTop: 8, fontSize: 10, color: 'var(--r0-slate-400)', fontStyle: 'italic' }}>
+                    Pilota nemá bednění (zemina = forma), nemá boční tlak, nemá záběry.
+                    Konzistence betonu min. S4. Beton je ukládán kontraktorovou rourou.
+                  </div>
+                </div>
+              );
+            })()}
+            {(() => {
+              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              // Pilota uses its own geometry block above — skip the standard hint block.
+              if (elemType === 'pilota') return null;
               const hint = ELEMENT_DIMENSION_HINTS[elemType];
               if (!hint) return null;
 
@@ -814,7 +951,8 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 )}
               </Section>
 
-              <div style={wizardMode ? { display: 'none' } : undefined}>
+              {/* 2026-04-15: hide entire Bednění (override) section for piles */}
+              <div style={(wizardMode || (!form.use_name_classification && form.element_type === 'pilota')) ? { display: 'none' } : undefined}>
               <Section title="Bednění (override)">
                 {/* Task 4 (2026-04): vendor pre-filter — orchestrator pins to
                     the chosen vendor when picking the auto-recommended

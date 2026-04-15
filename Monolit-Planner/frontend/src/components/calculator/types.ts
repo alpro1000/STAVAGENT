@@ -178,6 +178,32 @@ export interface FormState {
    * warning and falls back to Auto so the user is never stuck.
    */
   preferred_manufacturer: '' | 'DOKA' | 'PERI' | 'ULMA' | 'NOE' | 'Místní';
+
+  // ─── Pile-specific (2026-04-15) ───────────────────────────────────────
+  // Read ONLY when element_type === 'pilota'. Routed to PlannerInput.pile_*
+  // fields in useCalculator.buildInput. Empty strings mean "use engine
+  // default" (the orchestrator's runPilePath reads `?? defaults`).
+  /** Pile diameter in millimetres — dropdown 400/500/600/750/900/1200/1500. */
+  pile_diameter_mm: string;
+  /** Pile length in metres. */
+  pile_length_m: string;
+  /** Number of piles (the KEY parameter — drives total volume + schedule). */
+  pile_count: string;
+  /** Soil geology — drives drilling productivity table. */
+  pile_geology: '' | 'cohesive' | 'noncohesive' | 'below_gwt' | 'rock';
+  /** Casing / drilling method. */
+  pile_casing_method: '' | 'cfa' | 'cased' | 'uncased';
+  /** Reinforcement index in kg of armokoš per m³ of concrete (typ. 30–60). */
+  pile_rebar_index_kg_m3: string;
+  /** Drilling rig day rate (Kč per shift). */
+  pile_rig_czk_per_shift: string;
+  /** Crane day rate (Kč per shift). */
+  pile_crane_czk_per_shift: string;
+  /** Pile cap (hlavice) — small ŽB patka above the pile. */
+  has_pile_cap: boolean;
+  pile_cap_length_m: string;
+  pile_cap_width_m: string;
+  pile_cap_height_m: string;
 }
 
 // ─── Scenario Snapshot ──────────────────────────────────────────────────────
@@ -341,4 +367,17 @@ export const DEFAULT_FORM: FormState = {
   concrete_consistency: 'standard',
   working_joints_allowed: '',
   preferred_manufacturer: '',
+  // Pile-specific defaults — only consumed when element_type === 'pilota'
+  pile_diameter_mm: '',
+  pile_length_m: '',
+  pile_count: '',
+  pile_geology: '',
+  pile_casing_method: '',
+  pile_rebar_index_kg_m3: '',
+  pile_rig_czk_per_shift: '',
+  pile_crane_czk_per_shift: '',
+  has_pile_cap: false,
+  pile_cap_length_m: '',
+  pile_cap_width_m: '',
+  pile_cap_height_m: '',
 };

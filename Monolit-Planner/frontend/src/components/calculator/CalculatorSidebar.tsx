@@ -801,7 +801,9 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
         Vypočítat plán
       </button>
       )}
-      {result && (
+      {/* 2026-04-15: hide the formwork comparison button for piles —
+          bored piles have no formwork system to compare. */}
+      {result && result.element.type !== 'pilota' && (
         <button
           onClick={handleCompare}
           style={{

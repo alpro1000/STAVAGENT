@@ -13,7 +13,7 @@
  * Reference: OTSKP catalog (17,904 entries), URS classification system.
  */
 export type CatalogType = 'otskp' | 'urs' | 'unknown';
-export type WorkType = 'beton' | 'bednění' | 'bednění_zřízení' | 'bednění_odstranění' | 'výztuž' | 'předpětí' | 'podpěry' | 'zrání' | 'unknown';
+export type WorkType = 'beton' | 'bednění' | 'bednění_zřízení' | 'bednění_odstranění' | 'výztuž' | 'předpětí' | 'podpěry' | 'zrání' | 'vrtání' | 'úprava_hlavy' | 'unknown';
 export interface LinkedPosition {
     /** Position ID in Monolit DB */
     id: string;

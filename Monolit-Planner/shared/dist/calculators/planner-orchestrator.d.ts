@@ -30,6 +30,7 @@ import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
 import { calculateStrategiesDetailed } from './formwork.js';
 import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
+import type { PileResult, PileGeology, PileCasingMethod } from './pile-engine.js';
 export interface PlannerInput {
     /** Czech name/description for auto-classification */
     element_name?: string;
@@ -200,6 +201,27 @@ export interface PlannerInput {
     /** Investor/project deadline in working days. If total_days exceeds this,
      *  the system warns and suggests optimized resource configurations. */
     deadline_days?: number;
+    /** Pile diameter in millimetres (typ. 400, 500, 600, 750, 900, 1200, 1500). */
+    pile_diameter_mm?: number;
+    /** Pile length in metres. */
+    pile_length_m?: number;
+    /** Number of piles. If omitted, derived from volume_m3 ÷ volume per pile. */
+    pile_count?: number;
+    /** Geology that drives the productivity table. */
+    pile_geology?: PileGeology;
+    /** Drilling/casing method. */
+    pile_casing_method?: PileCasingMethod;
+    /** Reinforcement index in kg of rebar per m³ of concrete (typ. 30–60, default 40). */
+    pile_rebar_index_kg_m3?: number;
+    /** Drilling rig day rate in Kč per shift. Default 25 000. */
+    pile_rig_czk_per_shift?: number;
+    /** Crane day rate in Kč per shift. Default 8 000. */
+    pile_crane_czk_per_shift?: number;
+    /** Optional pile cap (hlavice) — small ŽB patka above the pile. */
+    has_pile_cap?: boolean;
+    pile_cap_length_m?: number;
+    pile_cap_width_m?: number;
+    pile_cap_height_m?: number;
 }
 export interface PlannerOutput {
     element: {
@@ -294,6 +316,7 @@ export interface PlannerOutput {
         mss_cost?: import('./bridge-technology.js').MSSCostResult;
         mss_schedule?: import('./bridge-technology.js').MSSScheduleResult;
     };
+    pile?: PileResult;
     monte_carlo?: MonteCarloResult;
     deadline_check?: DeadlineCheckResult;
     norms_sources: {

@@ -895,6 +895,42 @@ export default function useCalculator() {
     if (form.preferred_manufacturer) {
       input.preferred_manufacturer = form.preferred_manufacturer;
     }
+    // 2026-04-15: pile-specific fields. Only forwarded when element_type
+    // === 'pilota' (the orchestrator ignores them otherwise but we save
+    // bytes and avoid sending stale form state across element types).
+    if (form.element_type === 'pilota' && !form.use_name_classification) {
+      const num = (s: string) => {
+        const v = parseFloat(s);
+        return Number.isFinite(v) && v > 0 ? v : undefined;
+      };
+      const intNum = (s: string) => {
+        const v = parseInt(s, 10);
+        return Number.isFinite(v) && v > 0 ? v : undefined;
+      };
+      const d = num(form.pile_diameter_mm);
+      if (d) input.pile_diameter_mm = d;
+      const l = num(form.pile_length_m);
+      if (l) input.pile_length_m = l;
+      const c = intNum(form.pile_count);
+      if (c) input.pile_count = c;
+      if (form.pile_geology) input.pile_geology = form.pile_geology as any;
+      if (form.pile_casing_method) input.pile_casing_method = form.pile_casing_method as any;
+      const ri = num(form.pile_rebar_index_kg_m3);
+      if (ri) input.pile_rebar_index_kg_m3 = ri;
+      const rig = num(form.pile_rig_czk_per_shift);
+      if (rig) input.pile_rig_czk_per_shift = rig;
+      const crane = num(form.pile_crane_czk_per_shift);
+      if (crane) input.pile_crane_czk_per_shift = crane;
+      if (form.has_pile_cap) {
+        input.has_pile_cap = true;
+        const cl = num(form.pile_cap_length_m);
+        const cw = num(form.pile_cap_width_m);
+        const ch = num(form.pile_cap_height_m);
+        if (cl) input.pile_cap_length_m = cl;
+        if (cw) input.pile_cap_width_m = cw;
+        if (ch) input.pile_cap_height_m = ch;
+      }
+    }
     return input;
   };
 

@@ -87,6 +87,9 @@ export function workTypeToSubtype(wt) {
         case 'předpětí': return 'předpětí';
         case 'podpěry': return 'podpěrná konstr.';
         case 'zrání': return 'zrání';
+        // 2026-04-15: pile-specific subtypes
+        case 'vrtání': return 'vrtání';
+        case 'úprava_hlavy': return 'úprava hlavy';
         default: return 'jiné';
     }
 }
