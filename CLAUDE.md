@@ -1,6 +1,6 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.15.0
+**Version:** 4.16.0
 **Last Updated:** 2026-04-15
 **Repository:** STAVAGENT (Monorepo)
 
@@ -102,8 +102,8 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
 ### 3. Monolit-Planner (Kiosk)
-Node.js/Express + React. **132 endpoints**, **687 tests**, **~38K LOC**.
-Structure: `shared/` (687 tests, 17 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
+Node.js/Express + React. **132 endpoints**, **735 tests**, **~40K LOC**.
+Structure: `shared/` (735 tests, 18 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
 
 - **Calculator:** CZK/m³, `unit_cost_on_m3 = cost_czk / concrete_m3`, `kros_unit_czk = Math.ceil(x/50)*50`
@@ -121,6 +121,9 @@ Structure: `shared/` (687 tests, 17 files), `backend/` (0 tests), `frontend/` (0
 - **Manual záběry:** `use_manual_zabery` toggle + editable table (name+volume+area per záběr). Engine receives `num_tacts_override = count, tact_volume_m3_override = max(volumes)`.
 - **Per-záběr scheduling (v4.0):** `tact_volumes: number[]` in PlannerInput → per-záběr `calculatePourTask()`. `per_tact_concrete_days[]`, `per_tact_rebar_days[]`, `per_tact_assembly_days[]` in scheduler. Validation: mismatch length → warning + ignore.
 - **Aplikovat → TOV (v4.14):** `applyPlanToPositions.ts` helper. Splits 7 work types (Betonář, Tesař montáž/demontáž, Železář, Ošetřovatel, Specialista předpětí, Tesař podpěry) across positions: URL ID → linked via prefix/name → AUTO-CREATE new sibling Position (POST with metadata) → last-resort merge into beton. Each entry carries `source: 'calculator'` for per-entry [×] delete gate in FlatTOVSection. `NO_FORMWORK` set (pilota, podzemni_stena) skips bednění drafts. Backend POST /api/positions accepts metadata in INSERT.
+- **Pile pipeline (v4.16):** `shared/src/calculators/pile-engine.ts` — `PILE_PRODUCTIVITY_TABLE` (Ø600/900/1200/1500 × cohesive/noncohesive/below_gwt/rock × cfa/cased/uncased), `calculatePileDrilling()` mid-range piles/shift, drilling → 7d pause → head adjustment → optional cap, costs (rig + crane + crew + head_adj). Off-catalog Ø interpolated 1/d². 48 tests. Orchestrator early-branches via `runPilePath()` when `element_type==='pilota'`: bypasses formwork/lateral-pressure/props, populates `plan.pile`, keeps `formwork.system='Tradiční tesařské'` sentinel + 0 days so `element-audit` test suite still passes for pilota. Frontend FormState gets `pile_diameter_mm/length_m/count/geology/casing_method/rebar_index/has_pile_cap+3 cap dims`. CalculatorFormFields renders pile geometry block in step 3 only when type=pilota; CalculatorResult hides Bednění card + adds 6 PileCards (Vrtání/Armokoše/Betonáž/Úprava hlavy/[Hlavice]/Náklady); CalculatorSidebar gates "Porovnat bednění". applyPlanToPositions routes to `buildPileWorkDrafts` (vrtání + armokoše + beton kontraktor + úprava_hlavy + optional hlavice). `WorkType` union extended with 'vrtání' + 'úprava_hlavy'.
+- **Calculator UX A1-A7 (v4.15):** A1 default `num_sets` 2→1 (1 sada is standard for most prvků; obrátkovost path stays for `num_identical_elements>1`). A2 Směna/Mzda labels shortened so 1fr/1fr grid renders side-by-side in 300px sidebar. A3 per-profession wages behind `use_per_profession_wages` toggle (default OFF, pre-fills with base on enable, clears on disable; LS migration sets ON for returning users with non-empty wages). A4 "Uložit variantu" button mirrored in PlannerPage header next to "?"/"Průvodce". A5 active-variant tracking: `activeVariantId` state on save/load/delete, `activeVariantDirty` derived via JSON diff of form vs variant.form, "● Aktivní"/"● Upraveno" badges + orange left-border, "Porovnat" toggle reveals VariantsComparison (desktop horizontal table with ★ best green / mobile cards sorted cheapest first via `.vc-desktop`/`.vc-mobile` @media swap), Excel export merges variants into scenarios sheet. A6 SANITY_RANGES widened: rimsa 2-200→0.5-500, pilota 1-200→0.5-600, driky_piliru 5-400→1-800, mostni_zavirne_zidky 1-20→0.3-40; soft warning copy "Neobvykle velká/malá hodnota… ověřte zadání". A7 `getSuitableSystemsForElement('rimsa')` short-circuits to recommended `['Římsové bednění T','Římsový vozík TU','Římsový vozík T']` (was returning slab/universal systems because generic loop skips `unit==='bm'`); manufacturer dropdown filter added to ComparisonTable in PlannerPage with <2-system fallback banner.
+- **AI classifier checkbox removed (v4.16):** the "Klasifikace podle názvu (AI)" checkbox in CalculatorSidebar was misleading — `classifyElement()` is regex+OTSKP keyword matching (not LLM) and runs unconditionally on position-context load. Checkbox + `element_name` text input + `use_name_classification`/`element_name` FormState fields all removed; ~30 `form.use_name_classification ? 'other' : form.element_type` ternaries collapsed across CalculatorSidebar/CalculatorFormFields/useCalculator. Position-context auto-classification path (`useCalculator.initialForm` → `classifyElement(part_name)`) untouched; OTSKP/keywords badge below the dropdown still surfaces source + confidence. PlannerPage `AI_CLASSIFIER_AUDIT` (DEV-only console.log) marked RESOLVED. AI_ADVISOR_AUDIT (B2) confirms `/api/planner-advisor` IS real LLM via Core `/api/v1/multi-role/ask` (concrete_specialist) + `/api/v1/kb/research` + methvin productivity norms; sees only form fields, no document context, no integration tests.
 - **Planner Variants:** `planner_variants` table (position_id FK, input_params JSON, calc_result JSON, is_plan flag). REST: GET/POST/PUT/DELETE `/api/planner-variants`. Max 10/position. `setAsPlan()` clears others. Mode A: DB; Mode B: in-memory. Auto-restore plán on entry. Numbering: `Math.max(existingNums) + 1`.
 - **Auto-calc (v4.1):** 1.5s debounce, pure preview (no save). `calcStatus` indicator above KPIs. No save prompt, no autosave checkbox. Variants created ONLY by explicit "Uložit variantu" click. Wizard guard: skip steps 1-4.
 - **Průvodce (Wizard):** Inline sidebar mode (`wizardMode` + `wizardStep` 1-5). Same form state. `display:none` on sections. Steps: Element→Volume+Beton→Geometry→Rebar+Resources→Záběry. Engine-powered hints per step (maturity, lateral pressure, rebar PERT). `localStorage('planner_wizard_mode')`. Keyboard: Enter=next, Escape=back.
@@ -168,7 +171,7 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 |---------|-----------|-------|-----|
 | concrete-agent | 120 | 34 files | ~61K |
 | stavagent-portal | ~82 | 1 file | ~26K |
-| Monolit-Planner | 132 | 687 | ~38K |
+| Monolit-Planner | 132 | 735 | ~40K |
 | URS_MATCHER_SERVICE | ~45 | 159 | ~10K |
 | rozpocet-registry | 12 | 0 | ~16K |
 | **TOTAL** | **~391** | **881+** | **~151K** |
@@ -371,6 +374,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 - [ ] **P1: Per-záběr engine refactor** — element-scheduler uses max(tact_volumes) as bottleneck, should schedule per-záběr independently
 - [ ] **P1: Migrate orphan projects** — `UPDATE monolith_projects SET portal_user_id='<admin_id>' WHERE portal_user_id IS NULL`
 - [ ] **P1: E2E test FORESTINA SO.01** — stropní deska 125.559 m³, ztracené bednění 1325 m², manual záběry 4x, Aplikovat → verify TOV
+- [ ] **P1: Calculator UX walkthrough audit** — per-position Nielsen 10-heuristics audit on real bridge TZ (D6 Karlovy Vary SO-202). Methodology + code reads done; report files NOT produced. Resume by writing `REPORT_Audit_01_Piloty.md` (Ø900/C30/37/below_gwt/cased), then 02 Základy pilířů (4×3×1.5/C25/30), 03 Dříky, 04 Opěry, 05 Mostovka, 06 Římsy, 07 Přechodové desky, 08 Podkladní beton. 5 sections each: Vstup / Engine (with file:line) / UI cards / Nielsen 10×(1-5) / Bugy. Pre-confirmed bug seeds: BUG-Z1 `zaklady_piliru.orientation='vertical'` (element-classifier.ts:92 — should be horizontal/foundation, currently triggers lateral-pressure for a patka), BUG-Z2 curing for XF1/XF3 returns ~1.5d (`maturity.ts:97-112` ignores exposure class, TZ §7.8.3 mandates ≥5d/≥7d), BUG-Z3 RECOMMENDED_EXPOSURE.zaklady_piliru = `[XC2,XA1,XA2]` rejects standard XF1/XF3 (`planner-orchestrator.ts:961`), BUG-P1 pile-engine ignores concrete_class entirely, BUG-P2 pile +0.5m přebetonování loss not modelled, BUG-P3 head-adjust hardcoded 3 hlav/směna independent of Ø, BUG-P4 CHA/PIT integrity tests not modelled (~940k Kč missing for SO-202).
 - [ ] **P2: MCP listings** — PR to modelcontextprotocol/servers, register on mcp.so
 - [ ] **P2: Výztuž B500B + Y1860** — split rebar for prestressed (dual RebarLiteResult)
 - [ ] **P2: Landing page — visual QA + /register route + SEO subpages**
