@@ -47,6 +47,11 @@ CREATE TABLE IF NOT EXISTS bridges (
   pd_weeks REAL,
   status VARCHAR(50) DEFAULT 'active',
   owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  -- Phase 11 (2026-04-15): cross-kiosk linkage so "Aplikovat" from
+  -- Monolit Planner writes back to the SAME Portal/Registry project
+  -- instead of auto-creating a duplicate bridge on every call.
+  portal_project_id VARCHAR(255),
+  registry_project_id VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -180,6 +185,11 @@ CREATE TABLE IF NOT EXISTS monolith_projects (
   object_name VARCHAR(255) NOT NULL DEFAULT '',
   owner_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   portal_user_id TEXT,
+  -- Phase 11 (2026-04-15): cross-kiosk linkage — same project_id space
+  -- as bridges.portal_project_id / registry_project_id so Aplikovat can
+  -- dedupe and re-enter the same Monolit project across sessions.
+  portal_project_id VARCHAR(255),
+  registry_project_id VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   element_count INTEGER DEFAULT 0,

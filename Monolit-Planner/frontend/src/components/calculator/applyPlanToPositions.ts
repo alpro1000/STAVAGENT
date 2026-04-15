@@ -44,6 +44,15 @@ export interface ApplyContext {
     part_name?: string;
     bridge_id?: string | null;
     project_id?: string | null;
+    /**
+     * Phase 11 (2026-04-15): cross-kiosk project identity. When the user
+     * opens Monolit Planner from Portal or Registry, the opening URL
+     * includes these ids. Forwarding them on POST /api/positions lets
+     * the backend dedupe instead of spawning a new bridge on every
+     * Aplikovat call (39-duplicate-projects bug).
+     */
+    portal_project_id?: string | null;
+    registry_project_id?: string | null;
     otskp_code?: string;
     bedneni_position_id?: string | null;
     odbedneni_position_id?: string | null;
@@ -711,7 +720,15 @@ export async function applyPlanToPositions(ctx: ApplyContext): Promise<ApplyResu
       const res = await fetch(`${apiUrl}/api/positions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bridge_id: bridgeId, positions: createPayloads }),
+        body: JSON.stringify({
+          bridge_id: bridgeId,
+          // Phase 11: forward cross-kiosk project identity so the backend
+          // can dedupe bridges by portal_project_id / registry_project_id
+          // instead of auto-creating a new one for every Aplikovat call.
+          portal_project_id: positionContext.portal_project_id ?? null,
+          registry_project_id: positionContext.registry_project_id ?? null,
+          positions: createPayloads,
+        }),
       });
       if (!res.ok) {
         const errData = await res.json().catch(() => null);

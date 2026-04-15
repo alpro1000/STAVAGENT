@@ -35,6 +35,36 @@ type Step = 'upload' | 'template' | 'custom-config' | 'sheet' | 'parsing' | 'raw
 
 export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalProps) {
   const { addProject, addTemplate, replaceProjectSheets } = useRegistryStore();
+  const existingProjects = useRegistryStore(s => s.projects);
+
+  /**
+   * P2.2 (2026-04-15): dedupe on import. When a project with the same
+   * name already exists, prompt the user to either UPDATE it (reuse
+   * the id and call replaceProjectSheets) or create a fresh one. This
+   * fixes the "39 duplicate D6 projects" issue where every re-import
+   * of the same Excel spawned a new project because addProject() had
+   * no deduplication.
+   *
+   * Returns { action, projectId }:
+   *   - 'create': user picked "Nový" → use the fresh projectId
+   *   - 'update': user picked "Aktualizovat" → use the existing id
+   *   - 'cancel': user dismissed the dialog
+   */
+  const resolveDuplicate = (newProjectName: string, newProjectId: string):
+    { action: 'create' | 'update' | 'cancel'; projectId: string } => {
+    const dupe = existingProjects.find(
+      p => p.projectName.trim().toLowerCase() === newProjectName.trim().toLowerCase()
+    );
+    if (!dupe) return { action: 'create', projectId: newProjectId };
+    const label = `Projekt "${dupe.projectName}" už existuje ` +
+      `(${dupe.sheets.length} listů, importovaný ${new Date(dupe.importedAt).toLocaleDateString('cs-CZ')}).\n\n` +
+      `OK = AKTUALIZOVAT existující (přepíše obsah)\n` +
+      `Zrušit = VYTVOŘIT NOVÝ (duplikát)`;
+    const updateExisting = window.confirm(label);
+    if (updateExisting) return { action: 'update', projectId: dupe.id };
+    // User dismissed → create a fresh project with the random id
+    return { action: 'create', projectId: newProjectId };
+  };
 
   const [step, setStep] = useState<Step>('upload');
   const [file, setFile] = useState<File | null>(null);
@@ -270,7 +300,9 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
     setIsLoading(true);
 
     try {
-      const projectId = isReimport ? reimportProject!.id : uuidv4();
+      // P2.2: new imports get a fresh uuid; reimports keep existing id.
+      let projectId = isReimport ? reimportProject!.id : uuidv4();
+      let isUpdate = isReimport;
       const sheetId = uuidv4();
 
       // Use per-sheet start row if available
@@ -342,17 +374,33 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
 
       // Create project with single sheet
       const projectName = file.name.replace(/\.(xlsx?|xls)$/i, '');
+
+      // P2.2: before creating a fresh project, check for an existing
+      // project with the same name and let the user pick update vs new.
+      if (!isReimport) {
+        const r = resolveDuplicate(projectName, projectId);
+        if (r.action === 'cancel') {
+          setIsLoading(false);
+          return;
+        }
+        if (r.action === 'update') {
+          projectId = r.projectId;
+          isUpdate = true;
+        }
+      }
+      // Rebuild the sheet with the (possibly-updated) projectId.
+      const finalSheet: Sheet = { ...sheet, projectId };
       const project: Project = {
         id: projectId,
         fileName: file.name,
         projectName,
         filePath: '', // Browser-only, path nebude použit
         importedAt: new Date(),
-        sheets: [sheet],
+        sheets: [finalSheet],
       };
 
-      if (isReimport) {
-        replaceProjectSheets(projectId, [sheet]);
+      if (isUpdate) {
+        replaceProjectSheets(projectId, [finalSheet]);
       } else {
         addProject(project);
       }
@@ -390,7 +438,9 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
     setIsLoading(true);
 
     try {
-      const projectId = isReimport ? reimportProject!.id : uuidv4();
+      // P2.2: new imports get a fresh uuid; reimports keep existing id.
+      let projectId = isReimport ? reimportProject!.id : uuidv4();
+      let isUpdate = isReimport;
       const sheets: Sheet[] = [];
       const allWarnings: string[] = [];
       let errorCount = 0;
@@ -482,18 +532,33 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
 
       // Create ONE project with all sheets
       const projectName = file.name.replace(/\.(xlsx?|xls)$/i, '');
+
+      // P2.2: dedupe prompt before creating a fresh project.
+      if (!isReimport) {
+        const r = resolveDuplicate(projectName, projectId);
+        if (r.action === 'cancel') {
+          setIsLoading(false);
+          return;
+        }
+        if (r.action === 'update') {
+          projectId = r.projectId;
+          isUpdate = true;
+        }
+      }
+      // Rebuild sheets with the (possibly-updated) projectId.
+      const finalSheets = sheets.map(s => ({ ...s, projectId }));
       const project: Project = {
         id: projectId,
         fileName: file.name,
         projectName,
         filePath: '',
         importedAt: new Date(),
-        sheets,
+        sheets: finalSheets,
       };
 
-      if (isReimport) {
-        // Reimport: replace sheets, preserve manual skupiny
-        replaceProjectSheets(projectId, sheets);
+      if (isUpdate) {
+        // Update: replace sheets, preserve manual skupiny
+        replaceProjectSheets(projectId, finalSheets);
       } else {
         addProject(project);
       }
