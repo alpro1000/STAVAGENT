@@ -49,10 +49,26 @@ export default function useCalculator() {
     const exposureMatch = partName.match(/X[CDFASM]\d/i);
     const extractedExposure = exposureMatch ? exposureMatch[0].toUpperCase() : undefined;
 
+    // Phase 11 (2026-04-15): cross-kiosk project identity from URL.
+    // Portal uses ?portal_project=... (ProjectCard.tsx:53), Registry
+    // passes ?portal_project=... + optionally ?registry_project=... via
+    // its cross-kiosk postMessage path. Both aliases accepted so the
+    // Monolit Planner URL shape stays backward compatible.
+    const portalProjectId =
+      searchParams.get('portal_project_id')
+      || searchParams.get('portal_project')
+      || null;
+    const registryProjectId =
+      searchParams.get('registry_project_id')
+      || searchParams.get('registry_project')
+      || null;
+
     return {
       item_id: itemId,
       project_id: projectId,
       bridge_id: bridgeId,
+      portal_project_id: portalProjectId,
+      registry_project_id: registryProjectId,
       position_id: searchParams.get('position_id'),
       part_name: partName,
       subtype: searchParams.get('subtype'),

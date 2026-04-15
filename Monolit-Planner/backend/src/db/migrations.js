@@ -152,6 +152,12 @@ async function initPostgresSchema() {
   // Run Phase 10 migration (Add metadata + position_number to positions)
   await runPhase10PositionsMetadata();
 
+  // Run Phase 11 migration (Cross-kiosk linkage: portal_project_id +
+  // registry_project_id on bridges + monolith_projects). Fixes the
+  // "Aplikovat creates a new project every time" bug by giving the
+  // POST /api/positions handler a way to dedupe existing bridges.
+  await runPhase11CrossKioskLinkage();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -1794,6 +1800,61 @@ async function runPhase10PositionsMetadata() {
     }
   }
   console.log('[Migration] Phase 10: positions.metadata + position_number OK');
+}
+
+/**
+ * Phase 11 (2026-04-15): Cross-kiosk project linkage.
+ *
+ * Adds portal_project_id + registry_project_id columns to bridges AND
+ * monolith_projects. Without these, POST /api/positions cannot dedupe
+ * calls from "Aplikovat" — every Registry import spawned a new bridge
+ * with a fresh "PRT_<portal>_<n>" prefix, and the 39-duplicate-projects
+ * bug in Registry was driven entirely by this missing linkage.
+ *
+ * The columns are nullable — direct Monolit-only users still work.
+ * Indexes are created to make the dedupe lookup in positions.js fast.
+ */
+async function runPhase11CrossKioskLinkage() {
+  const targets = [
+    { table: 'bridges', cols: ['portal_project_id', 'registry_project_id'] },
+    { table: 'monolith_projects', cols: ['portal_project_id', 'registry_project_id'] },
+  ];
+  for (const { table, cols } of targets) {
+    for (const col of cols) {
+      try {
+        if (db.isPostgres) {
+          await db.exec(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS ${col} VARCHAR(255)`);
+        } else {
+          const rows = db.prepare(`PRAGMA table_info(${table})`).all();
+          if (!rows.some(r => r.name === col)) {
+            db.exec(`ALTER TABLE ${table} ADD COLUMN ${col} VARCHAR(255)`);
+          }
+        }
+      } catch (error) {
+        if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
+          // OK
+        } else {
+          console.error(`[Migration] Phase 11 error adding ${table}.${col}:`, error.message);
+        }
+      }
+    }
+    // Indexes for the dedupe lookup used by POST /api/positions.
+    for (const col of cols) {
+      try {
+        const idx = `idx_${table}_${col}`;
+        if (db.isPostgres) {
+          await db.exec(`CREATE INDEX IF NOT EXISTS ${idx} ON ${table}(${col})`);
+        } else {
+          db.exec(`CREATE INDEX IF NOT EXISTS ${idx} ON ${table}(${col})`);
+        }
+      } catch (error) {
+        if (!error.message?.includes('already exists')) {
+          console.error(`[Migration] Phase 11 error creating index on ${table}.${col}:`, error.message);
+        }
+      }
+    }
+  }
+  console.log('[Migration] Phase 11: cross-kiosk linkage columns OK');
 }
 
 /**

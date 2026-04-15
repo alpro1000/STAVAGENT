@@ -178,7 +178,19 @@ router.get('/', async (req, res) => {
 // POST - Create or update positions
 router.post('/', async (req, res) => {
   try {
-    const { bridge_id, positions: inputPositions } = req.body;
+    // Phase 11 (2026-04-15): accept optional portal_project_id +
+    // registry_project_id at request-body top level. When present, the
+    // auto-create fallback below uses them to dedupe the bridge instead
+    // of always spawning a new one keyed off the raw bridge_id.
+    const {
+      bridge_id: rawBridgeId,
+      positions: inputPositions,
+      portal_project_id = null,
+      registry_project_id = null,
+      project_name = null,
+      object_name = null,
+    } = req.body;
+    let bridge_id = rawBridgeId;
 
     if (!bridge_id || !inputPositions || !Array.isArray(inputPositions)) {
       return res.status(400).json({
@@ -211,16 +223,87 @@ router.post('/', async (req, res) => {
       }
     }
 
-    // Ensure bridge exists (FK constraint: positions.bridge_id -> bridges.bridge_id)
-    const bridgeExists = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
-    if (!bridgeExists) {
-      // Try to get metadata from monolith_projects for a richer bridge entry
+    // Phase 11 dedupe: if a bridge already exists for this
+    // (portal_project_id, registry_project_id) pair, REUSE it instead of
+    // creating a new one. Fixes the "Aplikovat → 39 duplicitních projektů"
+    // bug — every Registry import used to spawn a new bridge with a
+    // fresh "PRT_<portal>_<n>" prefix, disconnected from the source.
+    //
+    // Lookup order:
+    //   1. Exact bridge_id hit  (legacy direct Monolit users)
+    //   2. (portal_project_id, registry_project_id) match
+    //   3. portal_project_id only match
+    //   4. registry_project_id only match
+    //   5. Auto-create a new bridge (standalone path — no Portal context)
+    let bridgeRow = await db.prepare(
+      'SELECT bridge_id, portal_project_id, registry_project_id FROM bridges WHERE bridge_id = ?'
+    ).get(bridge_id);
+
+    if (!bridgeRow && (portal_project_id || registry_project_id)) {
+      if (portal_project_id && registry_project_id) {
+        bridgeRow = await db.prepare(
+          'SELECT bridge_id, portal_project_id, registry_project_id FROM bridges ' +
+          'WHERE portal_project_id = ? AND registry_project_id = ? ORDER BY updated_at DESC LIMIT 1'
+        ).get(portal_project_id, registry_project_id);
+      }
+      if (!bridgeRow && portal_project_id) {
+        bridgeRow = await db.prepare(
+          'SELECT bridge_id, portal_project_id, registry_project_id FROM bridges ' +
+          'WHERE portal_project_id = ? ORDER BY updated_at DESC LIMIT 1'
+        ).get(portal_project_id);
+      }
+      if (!bridgeRow && registry_project_id) {
+        bridgeRow = await db.prepare(
+          'SELECT bridge_id, portal_project_id, registry_project_id FROM bridges ' +
+          'WHERE registry_project_id = ? ORDER BY updated_at DESC LIMIT 1'
+        ).get(registry_project_id);
+      }
+      if (bridgeRow) {
+        // Route all inserts to the existing bridge_id, ignoring the
+        // one the caller provided. The payload's bridge_id was a
+        // transient handle; the portal/registry id is the stable key.
+        logger.info(
+          `[Phase 11] POST /positions dedup: routing bridge_id=${bridge_id} → ${bridgeRow.bridge_id} ` +
+          `(portal=${portal_project_id}, registry=${registry_project_id})`
+        );
+        bridge_id = bridgeRow.bridge_id;
+      }
+    }
+
+    if (!bridgeRow) {
+      // No existing bridge matches — create one. Standalone path when
+      // Portal context is missing; otherwise linked via the columns.
       const mp = await db.prepare(
         'SELECT object_name, project_name, concrete_m3 FROM monolith_projects WHERE project_id = ?'
       ).get(bridge_id);
+      const insertObjectName = object_name || mp?.object_name || bridge_id;
+      const insertProjectName = project_name || mp?.project_name || '';
       await db.prepare(
-        `INSERT INTO bridges (bridge_id, object_name, project_name, concrete_m3, status) VALUES (?, ?, ?, ?, 'active')`
-      ).run(bridge_id, mp?.object_name || bridge_id, mp?.project_name || '', mp?.concrete_m3 || 0);
+        `INSERT INTO bridges (
+          bridge_id, object_name, project_name, concrete_m3, status,
+          portal_project_id, registry_project_id
+        ) VALUES (?, ?, ?, ?, 'active', ?, ?)`
+      ).run(
+        bridge_id, insertObjectName, insertProjectName, mp?.concrete_m3 || 0,
+        portal_project_id, registry_project_id
+      );
+      logger.info(
+        `[Phase 11] POST /positions created bridge_id=${bridge_id} ` +
+        `portal=${portal_project_id} registry=${registry_project_id}`
+      );
+    } else if (
+      (portal_project_id && !bridgeRow.portal_project_id) ||
+      (registry_project_id && !bridgeRow.registry_project_id)
+    ) {
+      // Existing bridge predates Phase 11 — backfill the linkage columns
+      // so future calls can dedupe it. Only fill nulls; never overwrite.
+      await db.prepare(
+        `UPDATE bridges SET
+          portal_project_id = COALESCE(portal_project_id, ?),
+          registry_project_id = COALESCE(registry_project_id, ?),
+          updated_at = CURRENT_TIMESTAMP
+        WHERE bridge_id = ?`
+      ).run(portal_project_id, registry_project_id, bridge_id);
     }
 
     const insertMany = db.transaction(async (client, positions) => {
@@ -289,7 +372,13 @@ router.post('/', async (req, res) => {
     res.json({
       success: true,
       count: inputPositions.length,
-      positions: calculatedPositions
+      positions: calculatedPositions,
+      // Phase 11: echo the resolved bridge_id so the frontend can detect
+      // when the server routed the call to an existing bridge (dedupe)
+      // instead of creating a new one. Useful for toast feedback.
+      bridge_id,
+      portal_project_id: portal_project_id || null,
+      registry_project_id: registry_project_id || null,
     });
   } catch (error) {
     logger.error('Error creating positions:', error);

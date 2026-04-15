@@ -14,7 +14,44 @@ import type { Project, Sheet } from '../types';
 
 let _syncInProgress = false;
 let _syncTimer: ReturnType<typeof setTimeout> | null = null;
-const SYNC_DEBOUNCE_MS = 5000;
+// 2026-04-15: reduced from 5000 → 2000 ms. 5s was long enough that
+// users closing the tab after an import lost everything. 2s is still
+// plenty of debounce for keystroke-level edits but survives quick
+// close-tab patterns.
+const SYNC_DEBOUNCE_MS = 2000;
+/** Pending project to flush on beforeunload. */
+let _pendingProject: Project | null = null;
+
+// beforeunload: best-effort synchronous flush. fetch with keepalive lets
+// the request survive tab close (browsers allow up to 64 KB). The full
+// sheet+items payload is usually larger, so we only flush the project
+// header here and rely on the next session load to re-push the rest.
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    if (_pendingProject) {
+      // Fire keepalive POST directly — skip pushProjectToBackend because
+      // it's async and won't complete before the tab dies.
+      try {
+        const p = _pendingProject;
+        const url = `${(import.meta as any).env?.VITE_REGISTRY_API_URL
+          || 'https://rozpocet-registry-backend-1086027517695.europe-west3.run.app'}/api/registry/projects`;
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+          body: JSON.stringify({
+            project_id: p.id,
+            project_name: p.projectName,
+            portal_project_id: p.portalLink?.portalProjectId,
+            user_id: 1,
+          }),
+        }).catch(() => {});
+      } catch {
+        // ignore
+      }
+    }
+  });
+}
 
 /**
  * Initial sync: load projects from backend and merge with local store.
@@ -128,35 +165,24 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
 
   _syncInProgress = true;
   try {
-    // 1. Ensure project exists
-    let exists = false;
-    try {
-      await registryAPI.getProject(project.id);
-      exists = true;
-    } catch {
-      exists = false;
-    }
+    // 1. UPSERT project (backend's POST has ON CONFLICT DO UPDATE).
+    //    Previously we did a GET first to "check exists" and ignored
+    //    the 404 — but that 404 surfaced in browser console as scary
+    //    noise and confused users into thinking the backend was down.
+    //    POST is idempotent and already the right call.
+    await registryAPI.createProject(
+      project.projectName,
+      project.portalLink?.portalProjectId,
+      project.id,
+    );
 
-    if (!exists) {
-      await registryAPI.createProject(project.projectName, project.portalLink?.portalProjectId, project.id);
-    }
-
-    // 2. Get existing sheets from backend
-    let existingSheets: Array<{ sheet_id: string }> = [];
-    try {
-      existingSheets = await registryAPI.getSheets(project.id);
-    } catch {
-      // Project may have been created with different ID format
-    }
-    const existingSheetIds = new Set(existingSheets.map(s => s.sheet_id));
-
-    // 3. Sync each sheet + its items
+    // 2. Sync each sheet + its items. The sheet POST endpoint is also
+    //    UPSERT (ON CONFLICT DO UPDATE on sheet_id), so we can skip the
+    //    "fetch existing sheets" pre-check too.
     for (let si = 0; si < project.sheets.length; si++) {
       const sheet = project.sheets[si];
 
-      if (!existingSheetIds.has(sheet.id)) {
-        await registryAPI.createSheet(project.id, sheet.name, si, sheet.id);
-      }
+      await registryAPI.createSheet(project.id, sheet.name, si, sheet.id);
 
       // Bulk upsert items
       if (sheet.items.length > 0) {
@@ -185,11 +211,16 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
 
 /**
  * Debounced sync: push changed projects to backend after a delay.
+ * Also arms the beforeunload fallback with the latest snapshot so a
+ * quick close-tab doesn't lose the project header.
  */
 export function debouncedPushToBackend(project: Project): void {
+  _pendingProject = project;
   if (_syncTimer) clearTimeout(_syncTimer);
   _syncTimer = setTimeout(() => {
-    pushProjectToBackend(project).catch(() => {});
+    pushProjectToBackend(project)
+      .then(() => { _pendingProject = null; })
+      .catch(() => {});
   }, SYNC_DEBOUNCE_MS);
 }
 
