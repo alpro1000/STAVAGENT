@@ -933,10 +933,80 @@ router.post('/import-from-registry', async (req, res) => {
 
   } catch (error) {
     if (client) await client.query('ROLLBACK').catch(() => {});
-    console.error('[Integration] Error importing from Registry:', error.message);
-    res.status(500).json({
+    // Phase 4 (2026-04-15): unwrap the generic catch. PostgreSQL error
+    // codes (https://www.postgresql.org/docs/current/errcodes-appendix.html)
+    // let us return a meaningful HTTP status + actionable message
+    // instead of the opaque 500 that Registry frontend surfaced as
+    // "Portal backend 500 — import selhal" with no context.
+    //
+    // Mapping:
+    //   23505 unique_violation       → 409 Conflict (duplicate key)
+    //   23503 foreign_key_violation  → 400 Bad Request (stale parent)
+    //   23502 not_null_violation     → 400 Bad Request (missing required field)
+    //   22P02 invalid_text_rep.      → 400 Bad Request (bad UUID / int)
+    //   42P01 undefined_table        → 500 (schema drift — our bug)
+    //   anything else                → 500 with original message logged
+    const pgCode = error.code || null;
+    const pgDetail = error.detail || null;
+    const pgConstraint = error.constraint || null;
+    const pgTable = error.table || null;
+    const pgColumn = error.column || null;
+
+    // Always log the full error server-side so debugging is possible.
+    // Previously we only logged error.message which hid the pg code.
+    console.error('[Integration] Error importing from Registry:', {
+      message: error.message,
+      code: pgCode,
+      detail: pgDetail,
+      constraint: pgConstraint,
+      table: pgTable,
+      column: pgColumn,
+      stack: error.stack?.split('\n').slice(0, 5).join('\n'),
+    });
+
+    let httpStatus = 500;
+    let publicMessage = error.message || 'Unknown error';
+    let errorType = 'internal_error';
+
+    if (pgCode === '23505') {
+      httpStatus = 409;
+      errorType = 'conflict';
+      publicMessage = pgConstraint
+        ? `Duplicate entry — constraint "${pgConstraint}" already has this value. ` +
+          `This usually means the Registry project was imported twice in quick succession. ` +
+          `Retry should succeed now.`
+        : 'Duplicate entry (unique constraint violation).';
+    } else if (pgCode === '23503') {
+      httpStatus = 400;
+      errorType = 'foreign_key';
+      publicMessage = pgConstraint
+        ? `Parent row missing for constraint "${pgConstraint}". ` +
+          `Check that the referenced project/user exists.`
+        : 'Parent row missing (foreign key violation).';
+    } else if (pgCode === '23502') {
+      httpStatus = 400;
+      errorType = 'missing_field';
+      publicMessage = pgColumn
+        ? `Required field "${pgColumn}" is missing${pgTable ? ` on table ${pgTable}` : ''}.`
+        : 'Required field missing.';
+    } else if (pgCode === '22P02') {
+      httpStatus = 400;
+      errorType = 'invalid_format';
+      publicMessage = 'Invalid data format (e.g. malformed UUID or integer).';
+    } else if (pgCode === '42P01') {
+      httpStatus = 500;
+      errorType = 'schema_drift';
+      publicMessage = pgDetail || 'Database schema mismatch — table not found.';
+    }
+
+    res.status(httpStatus).json({
       success: false,
-      error: error.message,
+      error: publicMessage,
+      error_type: errorType,
+      error_code: pgCode,
+      constraint: pgConstraint,
+      table: pgTable,
+      column: pgColumn,
       synced: 0,
       failed: 0,
       errors: [],

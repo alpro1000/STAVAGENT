@@ -5,6 +5,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ImportModal } from './components/import/ImportModal';
+import { BackendSyncBadge } from './components/BackendSyncBadge';
 import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
 import { SearchResults } from './components/search/SearchResults';
@@ -1066,9 +1067,15 @@ function App() {
               {/* Project Tabs - Horizontal navigation */}
               <div className="mb-4 min-w-0">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-lg font-semibold">
-                    Projekty ({projects.length})
-                  </h2>
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-lg font-semibold">
+                      Projekty ({projects.length})
+                    </h2>
+                    {/* Phase 3 (2026-04-15): backend sync indicator.
+                        Shows syncing/pending/offline/error status so users
+                        know whether their changes have reached PostgreSQL. */}
+                    <BackendSyncBadge />
+                  </div>
                   <div className="flex items-center gap-2">
                     {projects.length > 1 && (
                       <button
