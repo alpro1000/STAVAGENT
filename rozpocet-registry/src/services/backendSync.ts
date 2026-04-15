@@ -22,6 +22,61 @@ const SYNC_DEBOUNCE_MS = 2000;
 /** Pending project to flush on beforeunload. */
 let _pendingProject: Project | null = null;
 
+// ─── Phase 3 (2026-04-15): sync status pub/sub ─────────────────────────────
+//
+// Exposes a tiny event-emitter so the UI can render a badge showing:
+//   'idle'       — everything synced, backend unreachable not detected
+//   'pending'    — debounce timer armed, waiting to push
+//   'syncing'    — POST in flight
+//   'synced'     — last push succeeded (sticks for 3 s then → 'idle')
+//   'error'      — last push threw (sticks until next push)
+//   'offline'    — isBackendAvailable() returned false on last check
+//
+// The `backendSyncStatus` module-level variable is the single source of
+// truth. `subscribeBackendSync(cb)` returns an unsubscribe fn; callers
+// get the current status immediately (pull) plus push notifications.
+
+export type BackendSyncStatus =
+  | 'idle'
+  | 'pending'
+  | 'syncing'
+  | 'synced'
+  | 'error'
+  | 'offline';
+
+interface BackendSyncState {
+  status: BackendSyncStatus;
+  lastError: string | null;
+  lastSyncedAt: number | null;  // unix ms
+  pendingProjectName: string | null;
+}
+
+let _state: BackendSyncState = {
+  status: 'idle',
+  lastError: null,
+  lastSyncedAt: null,
+  pendingProjectName: null,
+};
+
+type Listener = (state: BackendSyncState) => void;
+const _listeners = new Set<Listener>();
+
+function setState(patch: Partial<BackendSyncState>): void {
+  _state = { ..._state, ...patch };
+  for (const l of _listeners) {
+    try { l(_state); } catch { /* ignore listener errors */ }
+  }
+}
+
+export function getBackendSyncState(): BackendSyncState {
+  return _state;
+}
+
+export function subscribeBackendSync(cb: Listener): () => void {
+  _listeners.add(cb);
+  return () => { _listeners.delete(cb); };
+}
+
 // beforeunload: best-effort synchronous flush. fetch with keepalive lets
 // the request survive tab close (browsers allow up to 64 KB). The full
 // sheet+items payload is usually larger, so we only flush the project
@@ -61,6 +116,7 @@ export async function loadFromBackend(): Promise<Project[]> {
   const available = await isBackendAvailable();
   if (!available) {
     console.log('[BackendSync] Backend not available — using local storage only');
+    setState({ status: 'offline' });
     return [];
   }
 
@@ -161,9 +217,13 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
   if (_syncInProgress) return;
 
   const available = await isBackendAvailable();
-  if (!available) return;
+  if (!available) {
+    setState({ status: 'offline', lastError: 'Backend unreachable' });
+    return;
+  }
 
   _syncInProgress = true;
+  setState({ status: 'syncing', pendingProjectName: project.projectName });
   try {
     // 1. UPSERT project (backend's POST has ON CONFLICT DO UPDATE).
     //    Previously we did a GET first to "check exists" and ignored
@@ -202,8 +262,21 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
     }
 
     console.log(`[BackendSync] Full sync: "${project.projectName}" (${project.sheets.length} sheets, ${project.sheets.reduce((s, sh) => s + sh.items.length, 0)} items)`);
+    setState({
+      status: 'synced',
+      lastError: null,
+      lastSyncedAt: Date.now(),
+      pendingProjectName: null,
+    });
+    // Auto-fade the "synced" badge back to idle after 3 s so the UI
+    // doesn't get stuck showing a stale "just now" indicator.
+    setTimeout(() => {
+      if (_state.status === 'synced') setState({ status: 'idle' });
+    }, 3000);
   } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
     console.warn(`[BackendSync] Failed to push project "${project.projectName}":`, err);
+    setState({ status: 'error', lastError: msg });
   } finally {
     _syncInProgress = false;
   }
@@ -216,6 +289,12 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
  */
 export function debouncedPushToBackend(project: Project): void {
   _pendingProject = project;
+  // Phase 3: flip status to 'pending' so the UI shows "Čeká se na uložení…"
+  // while the debounce timer is armed. Don't clobber 'syncing' / 'error'
+  // states (a retry will reset them correctly on next push).
+  if (_state.status !== 'syncing' && _state.status !== 'offline') {
+    setState({ status: 'pending', pendingProjectName: project.projectName });
+  }
   if (_syncTimer) clearTimeout(_syncTimer);
   _syncTimer = setTimeout(() => {
     pushProjectToBackend(project)

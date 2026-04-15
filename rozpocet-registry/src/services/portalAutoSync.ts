@@ -122,8 +122,25 @@ export async function syncProjectToPortal(
         return data.portal_project_id;
       }
     } else {
-      const errorText = await response.text();
-      console.warn(`[PortalAutoSync] Sync failed (${response.status}):`, errorText);
+      // Phase 4 (2026-04-15): Portal integration now returns structured
+      // error bodies with {error, error_type, error_code, constraint}
+      // for PG errors (409 conflict, 400 FK/missing-field, …). Parse
+      // that shape first and fall back to raw text for older backends.
+      let errorBody: any = null;
+      try { errorBody = await response.json(); } catch { /* not JSON */ }
+      if (errorBody && errorBody.error) {
+        const parts = [
+          `${response.status}`,
+          errorBody.error_type && `[${errorBody.error_type}]`,
+          errorBody.error,
+          errorBody.constraint && `(constraint: ${errorBody.constraint})`,
+          errorBody.column && `(column: ${errorBody.column})`,
+        ].filter(Boolean);
+        console.warn(`[PortalAutoSync] Sync failed — ${parts.join(' ')}`);
+      } else {
+        const errorText = errorBody ? JSON.stringify(errorBody) : await response.text().catch(() => '');
+        console.warn(`[PortalAutoSync] Sync failed (${response.status}):`, errorText);
+      }
     }
   } catch (error) {
     // Silent fail — don't block UI if Portal is down
