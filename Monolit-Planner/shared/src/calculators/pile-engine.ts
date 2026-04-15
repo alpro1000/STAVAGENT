@@ -68,6 +68,31 @@ export interface PileInput {
   casing_method?: PileCasingMethod;
   /** Reinforcement index in kg per m³ of concrete. Default 40. */
   rebar_index_kg_m3?: number;
+  /**
+   * BUG-P1 (2026-04-15): concrete class affects consistency requirements
+   * (S4 minimum under water), cost, and technological pause length.
+   * When not given, uses C25/30 defaults.
+   */
+  concrete_class?: string;
+  /**
+   * BUG-P2 (2026-04-15): overpouring height in metres. Real piles are
+   * cast 0.3–1.0 m above the design top so the poor-quality laitance
+   * concrete in the head can be chipped away. Default 0.5 m.
+   */
+  overpouring_m?: number;
+  /**
+   * BUG-P4 (2026-04-15): integrity tests. CHA (cross-hole analysis) is
+   * the slow/expensive test, PIT (low-strain pulse) is the cheap one.
+   * TZ SO-202 §6.3.3: 16× CHA + rest PIT. Both counts default to 0
+   * (opt-in from the UI).
+   */
+  cha_test_count?: number;
+  /** Number of PIT (low-strain integrity) tests. Default 0. */
+  pit_test_count?: number;
+  /** CHA test cost per pile in Kč. Default 40 000. */
+  cha_test_czk?: number;
+  /** PIT test cost per pile in Kč. Default 5 000. */
+  pit_test_czk?: number;
   /** Optional pile cap (hlavice). When present, cap days are added to the schedule. */
   pile_cap?: PileCapInput;
   /** Crew sizing & wages — fall back to PlannerInput defaults if omitted. */
@@ -89,11 +114,21 @@ export interface PileResult {
   geology: PileGeology;
   casing_method: PileCasingMethod;
   rebar_index_kg_m3: number;
+  /** BUG-P1: concrete class actually used by the schedule. */
+  concrete_class: string;
 
   /** Volume of one pile in m³ (π × r² × L). */
   volume_per_pile_m3: number;
-  /** Total concrete volume across all piles in m³. */
+  /**
+   * Total concrete volume across all piles in m³ INCLUDING overpouring loss.
+   * For a Ø900 × 12m × 16 pile with overpouring_m=0.5 this is
+   *   16 × π × 0.45² × 12.5 ≈ 127.2 m³ (vs. 122.1 m³ design).
+   */
   total_volume_m3: number;
+  /** BUG-P2: overpouring loss — extra concrete cast above design top (m³). */
+  overpouring_loss_m3: number;
+  /** BUG-P2: overpouring height applied per pile (m). */
+  overpouring_m: number;
 
   /** Productivity in piles per shift (mid-range from PILE_PRODUCTIVITY_TABLE). */
   productivity_pile_per_shift: number;
@@ -102,8 +137,10 @@ export interface PileResult {
   drilling_days: number;
   /** Technological pause between drilling completion and head adjustment (typically 7d). */
   technological_pause_days: number;
-  /** Head-adjustment days (odbourání nekvalitního betonu, ~3 hlavy/směna). */
+  /** Head-adjustment days (odbourání nekvalitního betonu, diameter-dependent). */
   head_adjustment_days: number;
+  /** BUG-P3: heads_per_shift actually used (diameter-dependent). */
+  heads_per_shift_used: number;
   /** Optional pile cap days (bednění + výztuž + betonáž + zrání + odbednění). */
   pile_cap_days?: number;
   /** Total schedule days across all phases. */
@@ -112,6 +149,15 @@ export interface PileResult {
   /** Total reinforcement mass (armokoše) in kilograms. */
   rebar_total_kg: number;
 
+  /** BUG-P4: integrity tests — summary of CHA/PIT counts and cost. */
+  integrity_tests?: {
+    cha_count: number;
+    pit_count: number;
+    cha_czk: number;
+    pit_czk: number;
+    total_czk: number;
+  };
+
   /** Cost breakdown in CZK (labor only — material is external like the rest of the planner). */
   costs: {
     drilling_rig_czk: number;
@@ -119,6 +165,8 @@ export interface PileResult {
     crew_labor_czk: number;
     head_adjustment_labor_czk: number;
     pile_cap_labor_czk: number;
+    /** BUG-P4: integrity tests (CHA + PIT). 0 when not requested. */
+    integrity_tests_czk: number;
     total_labor_czk: number;
   };
 
@@ -243,6 +291,9 @@ const DEFAULTS = {
   geology: 'cohesive' as PileGeology,
   casing_method: 'cfa' as PileCasingMethod,
   rebar_index_kg_m3: 40,
+  concrete_class: 'C25/30',
+  /** BUG-P2: default overpouring height in m (0.5 m per TZ §6.3.3). */
+  overpouring_m: 0.5,
   crew_size: 6, // 2 obsluha rigu + 2 železáři + 2 betonáři/pomocní
   shift_h: 8, // pile shifts are typically 8h, not 10h
   wage_czk_h: 398,
@@ -250,9 +301,50 @@ const DEFAULTS = {
   crane_czk_per_shift: 8_000,
   /** Technological pause between drilling and head adjustment (ČSN 73 1002 + praxe) */
   technological_pause_days: 7,
-  /** Heads adjusted per shift (odbourání + úprava výztuže). Empirical. */
-  heads_per_shift: 3,
+  /** BUG-P4: integrity test default prices (CZK/pile). */
+  cha_test_czk: 40_000,
+  pit_test_czk: 5_000,
 };
+
+/**
+ * BUG-P3 (2026-04-15): heads_per_shift depends on pile diameter.
+ *
+ * Odbourání laitance + úprava výztuže u Ø600 je rychlé (~5 hlav/směna),
+ * u Ø1500 je to těžká ruční práce s hmotnou výztuží (~1.5 hlav/směna).
+ *
+ * Table (TZ + praxe):
+ *   Ø600  → 5 hlav/směna
+ *   Ø900  → 3 hlav/směna
+ *   Ø1200 → 2 hlav/směna
+ *   Ø1500 → 1.5 hlav/směna
+ *
+ * Off-table diameters are linearly interpolated; off-the-bottom clamps to
+ * Ø600 speed (5), off-the-top clamps to Ø1500 speed (1.5).
+ */
+const HEADS_PER_SHIFT_TABLE: { diameter_mm: number; heads: number }[] = [
+  { diameter_mm: 600,  heads: 5.0 },
+  { diameter_mm: 900,  heads: 3.0 },
+  { diameter_mm: 1200, heads: 2.0 },
+  { diameter_mm: 1500, heads: 1.5 },
+];
+
+export function getHeadsPerShift(diameter_mm: number): number {
+  if (diameter_mm <= HEADS_PER_SHIFT_TABLE[0].diameter_mm) {
+    return HEADS_PER_SHIFT_TABLE[0].heads;
+  }
+  if (diameter_mm >= HEADS_PER_SHIFT_TABLE[HEADS_PER_SHIFT_TABLE.length - 1].diameter_mm) {
+    return HEADS_PER_SHIFT_TABLE[HEADS_PER_SHIFT_TABLE.length - 1].heads;
+  }
+  for (let i = 0; i < HEADS_PER_SHIFT_TABLE.length - 1; i++) {
+    const lo = HEADS_PER_SHIFT_TABLE[i];
+    const hi = HEADS_PER_SHIFT_TABLE[i + 1];
+    if (diameter_mm >= lo.diameter_mm && diameter_mm <= hi.diameter_mm) {
+      const t = (diameter_mm - lo.diameter_mm) / (hi.diameter_mm - lo.diameter_mm);
+      return Math.round((lo.heads + t * (hi.heads - lo.heads)) * 100) / 100;
+    }
+  }
+  return HEADS_PER_SHIFT_TABLE[0].heads;
+}
 
 // ─── Main entry ────────────────────────────────────────────────────────────
 
@@ -277,6 +369,8 @@ export function calculatePileDrilling(input: PileInput): PileResult {
   const geology = input.geology ?? DEFAULTS.geology;
   const casing_method = input.casing_method ?? DEFAULTS.casing_method;
   const rebar_index_kg_m3 = input.rebar_index_kg_m3 ?? DEFAULTS.rebar_index_kg_m3;
+  const concrete_class = input.concrete_class ?? DEFAULTS.concrete_class;
+  const overpouring_m = input.overpouring_m ?? DEFAULTS.overpouring_m;
   const crew_size = input.crew_size ?? DEFAULTS.crew_size;
   const shift_h = input.shift_h ?? DEFAULTS.shift_h;
   const wage_czk_h = input.wage_czk_h ?? DEFAULTS.wage_czk_h;
@@ -284,16 +378,30 @@ export function calculatePileDrilling(input: PileInput): PileResult {
   const crane_czk_per_shift = input.crane_czk_per_shift ?? DEFAULTS.crane_czk_per_shift;
 
   // ── 1. Volume + count ──────────────────────────────────────────────────
-  const volume_per_pile_m3 = calculatePileVolume(diameter_mm, length_m);
+  // BUG-P2: pile is cast (length_m + overpouring_m) above design top.
+  // The extra 0.5–1.0 m of concrete is later chipped away during head
+  // adjustment, but the volume had to leave the truck.
+  const designVolumePerPile = calculatePileVolume(diameter_mm, length_m);
+  const pouredVolumePerPile = calculatePileVolume(diameter_mm, length_m + overpouring_m);
+  // "volume_per_pile" we report is the DESIGN (design length) volume so
+  // existing consumers (acceptance tests, rebar index) keep seeing the
+  // same number. The overpouring loss shows up separately in
+  // `overpouring_loss_m3` and is folded into `total_volume_m3`.
+  const volume_per_pile_m3 = designVolumePerPile;
   // Use explicit count if given; otherwise derive from total volume.
+  // NOTE: derivePileCount is called with DESIGN volume-per-pile, not
+  // poured, so the user-supplied total_m3 is interpreted as DESIGN m³
+  // (matches how quantity surveyors read TZ drawings).
   const count = input.count && input.count > 0
     ? Math.max(1, Math.round(input.count))
     : derivePileCount(input.volume_m3, diameter_mm, length_m);
-  // Total volume: prefer user-supplied total (it may include rounding for
-  // overflow/loss); fall back to count × volume_per_pile.
-  const total_volume_m3 = input.volume_m3 > 0
+  const design_total_m3 = input.volume_m3 > 0
     ? input.volume_m3
-    : count * volume_per_pile_m3;
+    : count * designVolumePerPile;
+  const overpouring_loss_m3 = Math.round(
+    (count * (pouredVolumePerPile - designVolumePerPile)) * 100,
+  ) / 100;
+  const total_volume_m3 = Math.round((design_total_m3 + overpouring_loss_m3) * 10) / 10;
 
   // ── 2. Productivity & drilling days ────────────────────────────────────
   const productivity = getPileProductivity(diameter_mm, geology, casing_method);
@@ -301,7 +409,10 @@ export function calculatePileDrilling(input: PileInput): PileResult {
   const drilling_days = Math.max(1, Math.ceil(count / productivity));
 
   // ── 3. Head adjustment ─────────────────────────────────────────────────
-  const head_adjustment_days = Math.max(1, Math.ceil(count / DEFAULTS.heads_per_shift));
+  // BUG-P3: heads_per_shift depends on diameter. Ø600 = 5/směna,
+  // Ø1500 = 1.5/směna. Previously hardcoded 3 regardless of size.
+  const heads_per_shift_used = getHeadsPerShift(diameter_mm);
+  const head_adjustment_days = Math.max(1, Math.ceil(count / heads_per_shift_used));
 
   // ── 4. Optional pile cap (hlavice) ─────────────────────────────────────
   // We treat the cap as a small patka with simplified labor formulas:
@@ -337,7 +448,20 @@ export function calculatePileDrilling(input: PileInput): PileResult {
     head_adjustment_days +
     (pile_cap_days ?? 0);
 
-  // ── 6. Costs ───────────────────────────────────────────────────────────
+  // ── 6. Integrity tests (BUG-P4) ────────────────────────────────────────
+  // CHA (cross-hole analysis) is the slow/expensive test, PIT is cheap.
+  // Both are external subcontractor costs — no labor days, just money.
+  // Default count 0 = opt-out; UI can fill 10% CHA + rest PIT.
+  const cha_count = Math.max(0, Math.floor(input.cha_test_count ?? 0));
+  const pit_count = Math.max(0, Math.floor(input.pit_test_count ?? 0));
+  const cha_czk = cha_count * (input.cha_test_czk ?? DEFAULTS.cha_test_czk);
+  const pit_czk = pit_count * (input.pit_test_czk ?? DEFAULTS.pit_test_czk);
+  const integrity_total_czk = cha_czk + pit_czk;
+  const integrity_tests = (cha_count + pit_count) > 0
+    ? { cha_count, pit_count, cha_czk, pit_czk, total_czk: integrity_total_czk }
+    : undefined;
+
+  // ── 7. Costs ───────────────────────────────────────────────────────────
   // Drilling phase: rig + crane + crew
   const drilling_rig_czk = drilling_days * rig_czk_per_shift;
   const crane_czk = drilling_days * crane_czk_per_shift;
@@ -352,12 +476,15 @@ export function calculatePileDrilling(input: PileInput): PileResult {
     crane_czk +
     crew_labor_czk +
     head_adjustment_labor_czk +
-    pile_cap_labor_czk;
+    pile_cap_labor_czk +
+    integrity_total_czk;
 
-  // ── 7. Rebar mass (armokoše) ───────────────────────────────────────────
-  const rebar_total_kg = Math.round(total_volume_m3 * rebar_index_kg_m3);
+  // ── 8. Rebar mass (armokoše) ───────────────────────────────────────────
+  // Rebar index applies to DESIGN volume, not poured — the overpouring
+  // laitance has no armokoš.
+  const rebar_total_kg = Math.round(design_total_m3 * rebar_index_kg_m3);
 
-  // ── 8. Traceability log ────────────────────────────────────────────────
+  // ── 9. Traceability log ────────────────────────────────────────────────
   const geologyLabelCs: Record<PileGeology, string> = {
     cohesive: 'soudržná zemina',
     noncohesive: 'nesoudržná zemina',
@@ -370,16 +497,33 @@ export function calculatePileDrilling(input: PileInput): PileResult {
     uncased: 'bez pažení',
   };
   const log: string[] = [
-    `Pilota: Ø${diameter_mm} × ${length_m} m, počet ${count}`,
+    `Pilota: Ø${diameter_mm} × ${length_m} m, počet ${count}, beton ${concrete_class}`,
     `Geologie: ${geologyLabelCs[geology]}, metoda: ${methodLabelCs[casing_method]}`,
-    `Objem 1 piloty: ${volume_per_pile_m3.toFixed(2)} m³, celkem ${total_volume_m3.toFixed(1)} m³`,
+    `Objem 1 piloty (design): ${volume_per_pile_m3.toFixed(2)} m³, celkem design ${design_total_m3.toFixed(1)} m³`,
+    `Přebetonování: +${overpouring_m} m → ztráta ${overpouring_loss_m3} m³ ` +
+      `(celkem odlité: ${total_volume_m3.toFixed(1)} m³)`,
     `Produktivita: ${productivity} pilot/směna → vrtání ${drilling_days} dní`,
     `Technologická přestávka: ${DEFAULTS.technological_pause_days} dní (ČSN 73 1002)`,
-    `Úprava hlav: ${head_adjustment_days} dní (${DEFAULTS.heads_per_shift} hlav/směna)`,
+    `Úprava hlav: ${head_adjustment_days} dní (${heads_per_shift_used} hlav/směna pro Ø${diameter_mm})`,
     ...(pile_cap_days ? [`Hlavice: ${pile_cap_days} dní (vč. zrání)`] : []),
-    `Armokoše: ${rebar_total_kg} kg (index ${rebar_index_kg_m3} kg/m³)`,
+    `Armokoše: ${rebar_total_kg} kg (index ${rebar_index_kg_m3} kg/m³, design objem)`,
+    ...(integrity_tests
+      ? [`Zkoušky integrity: ${cha_count}× CHA + ${pit_count}× PIT = ${integrity_total_czk.toLocaleString('cs')} Kč`]
+      : []),
     `Celkem schedule: ${total_days} dní`,
   ];
+
+  // BUG-P1: concrete class informs design, not schedule. Warn when the
+  // combo doesn't match practice (e.g. C20/25 under water).
+  if (casing_method === 'cased' && geology === 'below_gwt') {
+    const fckMatch = concrete_class.match(/^C(\d+)\//);
+    const fck = fckMatch ? parseInt(fckMatch[1], 10) : 30;
+    if (fck < 25) {
+      log.push(
+        `⚠️ Třída ${concrete_class} pod HPV je pod minimem C25/30 (ČSN EN 206 + TKP 18).`,
+      );
+    }
+  }
 
   return {
     diameter_mm,
@@ -388,21 +532,27 @@ export function calculatePileDrilling(input: PileInput): PileResult {
     geology,
     casing_method,
     rebar_index_kg_m3,
+    concrete_class,
     volume_per_pile_m3: Math.round(volume_per_pile_m3 * 100) / 100,
-    total_volume_m3: Math.round(total_volume_m3 * 10) / 10,
+    total_volume_m3,
+    overpouring_loss_m3,
+    overpouring_m,
     productivity_pile_per_shift: productivity,
     drilling_days,
     technological_pause_days: DEFAULTS.technological_pause_days,
     head_adjustment_days,
+    heads_per_shift_used,
     pile_cap_days,
     total_days,
     rebar_total_kg,
+    integrity_tests,
     costs: {
       drilling_rig_czk,
       crane_czk,
       crew_labor_czk,
       head_adjustment_labor_czk,
       pile_cap_labor_czk,
+      integrity_tests_czk: integrity_total_czk,
       total_labor_czk,
     },
     log,

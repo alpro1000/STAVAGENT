@@ -17,6 +17,7 @@ import {
   calculatePileVolume,
   derivePileCount,
   getPileProductivity,
+  getHeadsPerShift,
 } from './pile-engine.js';
 import { planElement } from './planner-orchestrator.js';
 
@@ -151,19 +152,21 @@ describe('Pile Engine', () => {
       expect(r.pile_cap_days).toBeUndefined();
     });
 
-    it('rebar mass = total_volume × rebar_index_kg_m3', () => {
+    it('rebar mass = design total × rebar_index_kg_m3 (overpouring has no cage)', () => {
+      // BUG-P2: volume_m3 is interpreted as DESIGN volume, so 100 × 50 = 5000.
       const r = calculatePileDrilling({ volume_m3: 100, rebar_index_kg_m3: 50 });
       expect(r.rebar_total_kg).toBe(5000);
     });
 
-    it('costs.total_labor_czk = drilling_rig + crane + crew + head_adj', () => {
+    it('costs.total_labor_czk = drilling_rig + crane + crew + head_adj + integrity', () => {
       const r = calculatePileDrilling({ volume_m3: 30 });
       const sum =
         r.costs.drilling_rig_czk +
         r.costs.crane_czk +
         r.costs.crew_labor_czk +
         r.costs.head_adjustment_labor_czk +
-        r.costs.pile_cap_labor_czk;
+        r.costs.pile_cap_labor_czk +
+        r.costs.integrity_tests_czk;
       expect(r.costs.total_labor_czk).toBe(sum);
     });
 
@@ -221,15 +224,18 @@ describe('Pile Engine', () => {
       volume_m3: 122,
       geology: 'below_gwt',
       casing_method: 'cased',
+      concrete_class: 'C30/37',
       pile_cap: { length_m: 1.5, width_m: 1.5, height_m: 0.8 },
     });
 
-    it('volume per pile ≈ 7.63 m³', () => {
+    it('volume per pile ≈ 7.63 m³ (design)', () => {
       expect(r.volume_per_pile_m3).toBeCloseTo(7.63, 1);
     });
 
-    it('total volume = 122 m³ (user-supplied)', () => {
-      expect(r.total_volume_m3).toBe(122);
+    it('total volume includes +0.5m overpouring loss (122 m³ design → ~127 m³ odlité)', () => {
+      // BUG-P2: 16 × π × 0.45² × 0.5 ≈ 5.09 m³ extra → 122 + 5.1 ≈ 127.1.
+      expect(r.overpouring_loss_m3).toBeCloseTo(5.1, 1);
+      expect(r.total_volume_m3).toBeCloseTo(127.1, 1);
     });
 
     it('productivity for Ø900 cased below_gwt = 1.5 pilot/shift', () => {
@@ -240,7 +246,9 @@ describe('Pile Engine', () => {
       expect(r.drilling_days).toBe(11);
     });
 
-    it('head adjustment days = ceil(16 / 3) = 6', () => {
+    it('head adjustment days: Ø900 → 3 hlav/směna → ceil(16/3) = 6', () => {
+      // BUG-P3: heads_per_shift now depends on diameter. Ø900 = 3.
+      expect(r.heads_per_shift_used).toBe(3);
       expect(r.head_adjustment_days).toBe(6);
     });
 
@@ -252,20 +260,24 @@ describe('Pile Engine', () => {
       expect(r.total_days).toBeGreaterThanOrEqual(24);
     });
 
-    it('rebar mass = 122 × 40 = 4880 kg', () => {
+    it('rebar mass = 122 × 40 = 4880 kg (design volume, no overpouring laitance)', () => {
       expect(r.rebar_total_kg).toBe(4880);
+    });
+
+    it('concrete_class echoed in result', () => {
+      expect(r.concrete_class).toBe('C30/37');
     });
   });
 
   describe('Acceptance scenario 2: Pozemní piloty (bytový dům)', () => {
     // Ø600 × 8m × 42, CFA soudržná, no cap
-    // Spec expectations:
+    // Spec expectations (post BUG-P3 fix):
     //   Volume 1 piloty: π × 0.3² × 8 ≈ 2.26 m³
-    //   Volume celkem: ~95 m³
+    //   Volume celkem (design): ~95 m³
     //   Productivity: ~6.5 pilot/směna (Ø600 CFA cohesive)
     //   Drilling: ceil(42 / 6.5) = 7 dní
-    //   Head:     ceil(42 / 3)   = 14 dní
-    //   Total:    7 + 7 + 14 = 28 dní
+    //   Head:     ceil(42 / 5)   = 9 dní (Ø600 = 5 hlav/směna)
+    //   Total:    7 + 7 + 9 = 23 dní
     const r = calculatePileDrilling({
       diameter_mm: 600,
       length_m: 8,
@@ -287,16 +299,106 @@ describe('Pile Engine', () => {
       expect(r.drilling_days).toBe(7);
     });
 
-    it('head adjustment days = ceil(42 / 3) = 14', () => {
-      expect(r.head_adjustment_days).toBe(14);
+    it('head adjustment days: Ø600 → 5 hlav/směna → ceil(42/5) = 9', () => {
+      // BUG-P3: Ø600 is fast to chip → 5 hlav/směna, not the old hardcoded 3.
+      expect(r.heads_per_shift_used).toBe(5);
+      expect(r.head_adjustment_days).toBe(9);
     });
 
-    it('total schedule = 7 + 7 + 14 = 28 dní', () => {
-      expect(r.total_days).toBe(28);
+    it('total schedule = 7 + 7 + 9 = 23 dní', () => {
+      expect(r.total_days).toBe(23);
     });
 
     it('no pile cap → pile_cap_days undefined', () => {
       expect(r.pile_cap_days).toBeUndefined();
+    });
+  });
+
+  // ─── BUG-P2 / P3 / P4 regression ─────────────────────────────────────
+  describe('BUG-P2 overpouring', () => {
+    it('default 0.5 m adds loss proportional to diameter²', () => {
+      // Ø600 × 8m × 42, overpouring 0.5 m
+      // extra = 42 × π × 0.3² × 0.5 ≈ 5.94 m³
+      const r = calculatePileDrilling({
+        diameter_mm: 600, length_m: 8, count: 42,
+        volume_m3: 95, geology: 'cohesive', casing_method: 'cfa',
+      });
+      expect(r.overpouring_m).toBe(0.5);
+      expect(r.overpouring_loss_m3).toBeCloseTo(5.94, 1);
+      expect(r.total_volume_m3).toBeCloseTo(100.9, 1);
+    });
+
+    it('overpouring_m=0 disables loss', () => {
+      const r = calculatePileDrilling({
+        diameter_mm: 600, length_m: 8, count: 42,
+        volume_m3: 95, overpouring_m: 0,
+      });
+      expect(r.overpouring_loss_m3).toBe(0);
+      expect(r.total_volume_m3).toBe(95);
+    });
+
+    it('overpouring_m=1.0 doubles the loss', () => {
+      const small = calculatePileDrilling({
+        diameter_mm: 600, length_m: 8, count: 42, volume_m3: 95, overpouring_m: 0.5,
+      });
+      const big = calculatePileDrilling({
+        diameter_mm: 600, length_m: 8, count: 42, volume_m3: 95, overpouring_m: 1.0,
+      });
+      expect(big.overpouring_loss_m3).toBeCloseTo(small.overpouring_loss_m3 * 2, 1);
+    });
+  });
+
+  describe('BUG-P3 getHeadsPerShift', () => {
+    it('Ø600 = 5 hlav/směna', () => {
+      expect(getHeadsPerShift(600)).toBe(5);
+    });
+    it('Ø900 = 3 hlav/směna', () => {
+      expect(getHeadsPerShift(900)).toBe(3);
+    });
+    it('Ø1200 = 2 hlav/směna', () => {
+      expect(getHeadsPerShift(1200)).toBe(2);
+    });
+    it('Ø1500 = 1.5 hlav/směna', () => {
+      expect(getHeadsPerShift(1500)).toBe(1.5);
+    });
+    it('Ø750 interpolated between Ø600 (5) and Ø900 (3) → 4', () => {
+      expect(getHeadsPerShift(750)).toBe(4);
+    });
+    it('Ø400 clamped to Ø600 row', () => {
+      expect(getHeadsPerShift(400)).toBe(5);
+    });
+    it('Ø1800 clamped to Ø1500 row', () => {
+      expect(getHeadsPerShift(1800)).toBe(1.5);
+    });
+  });
+
+  describe('BUG-P4 integrity tests (CHA/PIT)', () => {
+    it('no counts → integrity_tests undefined, cost 0', () => {
+      const r = calculatePileDrilling({ volume_m3: 30 });
+      expect(r.integrity_tests).toBeUndefined();
+      expect(r.costs.integrity_tests_czk).toBe(0);
+    });
+
+    it('16× CHA @ 40k + 108× PIT @ 5k = 1 180 000 Kč (SO-202)', () => {
+      const r = calculatePileDrilling({
+        diameter_mm: 900, length_m: 12, count: 124, volume_m3: 946,
+        geology: 'below_gwt', casing_method: 'cased',
+        cha_test_count: 16, pit_test_count: 108,
+      });
+      expect(r.integrity_tests).toBeDefined();
+      expect(r.integrity_tests!.cha_count).toBe(16);
+      expect(r.integrity_tests!.pit_count).toBe(108);
+      expect(r.integrity_tests!.cha_czk).toBe(16 * 40_000);
+      expect(r.integrity_tests!.pit_czk).toBe(108 * 5_000);
+      expect(r.integrity_tests!.total_czk).toBe(16 * 40_000 + 108 * 5_000);
+      expect(r.costs.integrity_tests_czk).toBe(r.integrity_tests!.total_czk);
+    });
+
+    it('custom price overrides default', () => {
+      const r = calculatePileDrilling({
+        volume_m3: 30, cha_test_count: 2, cha_test_czk: 50_000,
+      });
+      expect(r.integrity_tests!.cha_czk).toBe(100_000);
     });
   });
 
@@ -372,7 +474,8 @@ describe('Pile Engine', () => {
         concrete_class: 'C25/30',
       });
       expect(plan.schedule.total_days).toBe(plan.pile!.total_days);
-      expect(plan.schedule.total_days).toBe(28);
+      // Post BUG-P3: Ø600 heads=5 → ceil(42/5)=9 days. Total 7+7+9=23.
+      expect(plan.schedule.total_days).toBe(23);
     });
 
     it('plan.pile is undefined for non-pile elements', () => {

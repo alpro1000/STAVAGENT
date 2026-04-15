@@ -35,7 +35,16 @@ export interface CuringParams {
     cement_type?: CementType;
     element_type?: ElementType;
     strip_strength_pct?: number;
+    /**
+     * BUG-Z2 (2026-04-15): exposure class (XF1/XF3/XF4, XC4, XD3…).
+     * TKP18 §7.8.3 mandates minimum curing days independent of maturity:
+     *   XF1 → min 5 dní, XF3/XF4 → min 7 dní (freeze-thaw cycles).
+     * When given, min_curing_days = max(maturity_result, TKP18_minimum).
+     */
+    exposure_class?: string;
 }
+/** Return the TKP18 minimum curing days for a given exposure class (0 if none). */
+export declare function getExposureMinCuringDays(exposureClass: string | undefined): number;
 /** Result of curing calculation */
 export interface CuringResult {
     min_curing_days: number;

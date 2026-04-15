@@ -22,6 +22,33 @@
  *
  * Reference: ČSN EN 13670, ČSN EN 206+A2, ČSN 73 6244
  */
+/**
+ * BUG-Z2 (2026-04-15): TKP18 §7.8.3 minimum curing days by exposure class.
+ * These are HARD minima independent of concrete class, temperature, or cement.
+ * Freeze-thaw exposure needs time for surface layer to reach freeze-resistance.
+ */
+const EXPOSURE_MIN_CURING_DAYS = {
+    // XF — freeze-thaw (most restrictive)
+    XF1: 5, // moderate saturation, no de-icing
+    XF2: 5, // moderate saturation + de-icing
+    XF3: 7, // high saturation, no de-icing
+    XF4: 7, // high saturation + de-icing (bridge decks, curbs)
+    // XD — chlorides non-marine
+    XD2: 5,
+    XD3: 7,
+    // XS — chlorides marine
+    XS2: 5,
+    XS3: 7,
+    // XA — chemical attack
+    XA2: 5,
+    XA3: 7,
+};
+/** Return the TKP18 minimum curing days for a given exposure class (0 if none). */
+export function getExposureMinCuringDays(exposureClass) {
+    if (!exposureClass)
+        return 0;
+    return EXPOSURE_MIN_CURING_DAYS[exposureClass.toUpperCase()] ?? 0;
+}
 // ─── Constants ──────────────────────────────────────────────────────────────
 /** f_ck values (MPa) for each concrete class */
 const FCK = {
@@ -131,7 +158,13 @@ export function calculateCuring(params) {
         adjustedDays *= stripPct / defaultStripPct;
     }
     // Round up to nearest 0.5 day
-    const minDays = Math.ceil(adjustedDays * 2) / 2;
+    let minDays = Math.ceil(adjustedDays * 2) / 2;
+    // BUG-Z2 (2026-04-15): enforce TKP18 §7.8.3 exposure-class minimum.
+    // Example: XF3 patka zima → maturity says 1.5d, TKP18 says ≥7d → 7d wins.
+    const exposureMin = getExposureMinCuringDays(params.exposure_class);
+    if (exposureMin > minDays) {
+        minDays = exposureMin;
+    }
     const minHours = minDays * 24;
     // Estimate maturity index at curing time
     const maturityIndex = (temp - T_DATUM) * minHours;

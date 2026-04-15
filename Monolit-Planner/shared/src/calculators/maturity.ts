@@ -51,6 +51,41 @@ export interface CuringParams {
   cement_type?: CementType;     // Default: CEM_I
   element_type?: ElementType;   // Default: slab (conservative)
   strip_strength_pct?: number;  // Override: required strength % at stripping
+  /**
+   * BUG-Z2 (2026-04-15): exposure class (XF1/XF3/XF4, XC4, XD3…).
+   * TKP18 §7.8.3 mandates minimum curing days independent of maturity:
+   *   XF1 → min 5 dní, XF3/XF4 → min 7 dní (freeze-thaw cycles).
+   * When given, min_curing_days = max(maturity_result, TKP18_minimum).
+   */
+  exposure_class?: string;
+}
+
+/**
+ * BUG-Z2 (2026-04-15): TKP18 §7.8.3 minimum curing days by exposure class.
+ * These are HARD minima independent of concrete class, temperature, or cement.
+ * Freeze-thaw exposure needs time for surface layer to reach freeze-resistance.
+ */
+const EXPOSURE_MIN_CURING_DAYS: Record<string, number> = {
+  // XF — freeze-thaw (most restrictive)
+  XF1: 5,   // moderate saturation, no de-icing
+  XF2: 5,   // moderate saturation + de-icing
+  XF3: 7,   // high saturation, no de-icing
+  XF4: 7,   // high saturation + de-icing (bridge decks, curbs)
+  // XD — chlorides non-marine
+  XD2: 5,
+  XD3: 7,
+  // XS — chlorides marine
+  XS2: 5,
+  XS3: 7,
+  // XA — chemical attack
+  XA2: 5,
+  XA3: 7,
+};
+
+/** Return the TKP18 minimum curing days for a given exposure class (0 if none). */
+export function getExposureMinCuringDays(exposureClass: string | undefined): number {
+  if (!exposureClass) return 0;
+  return EXPOSURE_MIN_CURING_DAYS[exposureClass.toUpperCase()] ?? 0;
 }
 
 /** Result of curing calculation */
@@ -192,7 +227,15 @@ export function calculateCuring(params: CuringParams): CuringResult {
   }
 
   // Round up to nearest 0.5 day
-  const minDays = Math.ceil(adjustedDays * 2) / 2;
+  let minDays = Math.ceil(adjustedDays * 2) / 2;
+
+  // BUG-Z2 (2026-04-15): enforce TKP18 §7.8.3 exposure-class minimum.
+  // Example: XF3 patka zima → maturity says 1.5d, TKP18 says ≥7d → 7d wins.
+  const exposureMin = getExposureMinCuringDays(params.exposure_class);
+  if (exposureMin > minDays) {
+    minDays = exposureMin;
+  }
+
   const minHours = minDays * 24;
 
   // Estimate maturity index at curing time

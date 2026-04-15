@@ -78,6 +78,8 @@ export interface CalculatorSidebarProps {
   handleCalculate: () => void;
   handleCompare: () => void;
   fetchAdvisor: () => void;
+  /** A2: false until volume_m3 > 0 and element_type is set */
+  canCalculate: boolean;
 
   // Form update helper
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
@@ -108,7 +110,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     docSuggestions, docSugLoading, acceptedParams, onAcceptSuggestion, onDismissSuggestion,
     comparison, setComparison, showComparison, setShowComparison,
     positionContext, isMonolitMode, autoClassification,
-    handleCalculate, handleCompare, fetchAdvisor,
+    handleCalculate, handleCompare, fetchAdvisor, canCalculate,
     update,
     normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
     onSaveVariant,
@@ -163,7 +165,21 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               <select
                 style={inputStyle}
                 value={form.element_type}
-                onChange={e => update('element_type', e.target.value as StructuralElementType)}
+                onChange={e => {
+                  const next = e.target.value as StructuralElementType;
+                  if (next === form.element_type) return;
+                  // A1 (2026-04-15): clear stale results when the user
+                  // switches element type. Without this, the right-hand
+                  // KPI cards show old numbers from the previous type
+                  // (e.g. 136 m³ bednění from Dříky leaking into Pilota)
+                  // until the next recalc kicks in. Form values are
+                  // preserved so the user can re-run instantly.
+                  update('element_type', next);
+                  setResult(null);
+                  setError(null);
+                  setComparison(null);
+                  setShowComparison(false);
+                }}
               >
                 {(() => {
                   const groups = [...new Set(ELEMENT_TYPES.map(t => t.group).filter(Boolean))];
@@ -764,6 +780,69 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           </button>
         </div>
       )}
+      {/* D1/D3 (2026-04-15): Ceny section — always visible above the
+          Vypočítat button. Empty inputs = odhad with warning in the
+          cost table; "Počítat bez cen" toggle switches to harmonogram-only
+          presentation (costs rendered as "— (zadejte ceny)"). */}
+      <div style={{ marginTop: 16 }}>
+        <Section title="Ceny (volitelné)">
+          <label style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            marginBottom: 8, fontSize: 12, color: 'var(--r0-slate-600)',
+            cursor: 'pointer', userSelect: 'none',
+          }}>
+            <input
+              type="checkbox"
+              checked={form.price_mode === 'schedule_only'}
+              onChange={e => update('price_mode', e.target.checked ? 'schedule_only' : 'full')}
+            />
+            Počítat bez cen (pouze harmonogram)
+          </label>
+          {form.price_mode === 'full' && (
+            <>
+              <div style={{
+                fontSize: 10, color: 'var(--r0-slate-400)',
+                marginBottom: 6, lineHeight: 1.5,
+              }}>
+                Prázdná pole = odhad (zobrazeno s varováním). Vyplněná = vaše sazby.
+              </div>
+              {/* Jeřáb */}
+              <Field label="Jeřáb (Kč/směna)">
+                <NumInput style={inputStyle} value={form.price_crane_czk_shift} min={0}
+                  onChange={v => update('price_crane_czk_shift', String(v))}
+                  placeholder="odhad" />
+              </Field>
+              {/* Čerpadlo */}
+              <Field label="Čerpadlo (Kč/h)">
+                <NumInput style={inputStyle} value={form.price_pump_czk_h} min={0}
+                  onChange={v => update('price_pump_czk_h', String(v))}
+                  placeholder="odhad" />
+              </Field>
+              {/* Pile rig — only for pilota */}
+              {form.element_type === 'pilota' && (
+                <Field label="Vrtací souprava (Kč/směna)">
+                  <NumInput style={inputStyle} value={form.pile_rig_czk_per_shift} min={0}
+                    onChange={v => update('pile_rig_czk_per_shift', String(v))}
+                    placeholder="25 000 (odhad)" />
+                </Field>
+              )}
+            </>
+          )}
+          {form.price_mode === 'schedule_only' && (
+            <div style={{
+              padding: '8px 10px',
+              background: 'var(--r0-warn-bg, #fffbeb)',
+              border: '1px solid var(--r0-warn-border, #fde68a)',
+              borderRadius: 6,
+              fontSize: 11, color: 'var(--r0-slate-700)', lineHeight: 1.5,
+            }}>
+              Režim <strong>Harmonogram</strong>: karty nákladů zobrazí
+              &ldquo;— (zadejte ceny)&rdquo;. Plán dnů, záběrů, čet a PERT se počítá normálně.
+            </div>
+          )}
+        </Section>
+      </div>
+
       {/* Expert mode: review summary above the calculate button (Task 1) */}
       {!wizardMode && (
         <div style={{ marginTop: 16 }}>
@@ -775,34 +854,57 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
       )}
       {/* Expert mode: normal calculate button */}
       {!wizardMode && (
+      <>
       <button
         onClick={handleCalculate}
+        disabled={!canCalculate}
+        title={!canCalculate ? 'Vyplňte typ elementu a objem betonu' : undefined}
         style={{
           width: '100%', padding: '12px', marginTop: 8,
-          background: 'var(--r0-orange)', color: 'white', border: 'none',
-          borderRadius: 6, fontSize: 15, fontWeight: 700, cursor: 'pointer',
+          background: canCalculate ? 'var(--r0-orange)' : 'var(--r0-slate-200)',
+          color: canCalculate ? 'white' : 'var(--r0-slate-400)',
+          border: 'none',
+          borderRadius: 6, fontSize: 15, fontWeight: 700,
+          cursor: canCalculate ? 'pointer' : 'not-allowed',
           fontFamily: 'inherit',
         }}
       >
         Vypočítat plán
       </button>
+      {!canCalculate && (
+        <div style={{
+          marginTop: 6, fontSize: 11, color: 'var(--r0-slate-500)',
+          textAlign: 'center', fontStyle: 'italic',
+        }}>
+          Zadejte typ elementu a objem betonu
+        </div>
       )}
-      {/* 2026-04-15: hide the formwork comparison button for piles —
-          bored piles have no formwork system to compare. */}
-      {result && result.element.type !== 'pilota' && (
-        <button
-          onClick={handleCompare}
-          style={{
-            width: '100%', padding: '12px', marginTop: 8,
-            background: 'var(--r0-orange)', color: 'white',
-            border: 'none',
-            borderRadius: 6, fontSize: 14, fontWeight: 700, cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
-        >
-          Porovnat bednění (všechny systémy)
-        </button>
+      </>
       )}
+      {/* 2026-04-15: the formwork comparison button is always rendered,
+          but DISABLED for piles (B1) with an explanatory tooltip so the
+          user sees it exists for other element types. */}
+      {result && (() => {
+        const isPile = result.element.type === 'pilota' || form.element_type === 'pilota';
+        return (
+          <button
+            onClick={isPile ? undefined : handleCompare}
+            disabled={isPile}
+            title={isPile ? 'Pilota nemá systémové bednění — není co porovnávat.' : undefined}
+            style={{
+              width: '100%', padding: '12px', marginTop: 8,
+              background: isPile ? 'var(--r0-slate-200)' : 'var(--r0-orange)',
+              color: isPile ? 'var(--r0-slate-400)' : 'white',
+              border: 'none',
+              borderRadius: 6, fontSize: 14, fontWeight: 700,
+              cursor: isPile ? 'not-allowed' : 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            Porovnat bednění (všechny systémy)
+          </button>
+        );
+      })()}
       {result && onSaveVariant && (
         <button
           onClick={onSaveVariant}
