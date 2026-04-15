@@ -153,72 +153,58 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           {/* ─── Element ─── */}
           <div className={wizardVisible.element ? 'r0-wizard-step' : ''} style={wizardVisible.element ? undefined : { display: 'none' }}>
           <Section title="Element">
-            <label style={labelStyle}>
-              <input
-                type="checkbox"
-                checked={form.use_name_classification}
-                onChange={e => update('use_name_classification', e.target.checked)}
-              />
-              {' '}Klasifikace podle názvu (AI)
-            </label>
-
-            {form.use_name_classification ? (
-              <Field label="Název elementu">
-                <input
-                  style={inputStyle}
-                  value={form.element_name}
-                  onChange={e => update('element_name', e.target.value)}
-                  placeholder="např. Opěrné zdi, Mostovka..."
-                />
-              </Field>
-            ) : (
-              <Field label="Typ elementu">
-                <select
-                  style={inputStyle}
-                  value={form.element_type}
-                  onChange={e => update('element_type', e.target.value as StructuralElementType)}
-                >
-                  {(() => {
-                    const groups = [...new Set(ELEMENT_TYPES.map(t => t.group).filter(Boolean))];
-                    const ungrouped = ELEMENT_TYPES.filter(t => !t.group);
-                    return (
-                      <>
-                        {groups.map(g => (
-                          <optgroup key={g} label={g}>
-                            {ELEMENT_TYPES.filter(t => t.group === g).map(t => (
-                              <option key={t.value} value={t.value}>{t.label}</option>
-                            ))}
-                          </optgroup>
-                        ))}
-                        {ungrouped.map(t => (
-                          <option key={t.value} value={t.value}>{t.label}</option>
-                        ))}
-                      </>
-                    );
-                  })()}
-                </select>
-                {classificationHint && form.element_type === classificationHint.element_type && (
-                  <div style={{
-                    marginTop: 4, fontSize: 10, padding: '3px 8px', borderRadius: 4,
-                    background: classificationHint.source === 'otskp' ? '#ecfdf5' : '#eff6ff',
-                    color: classificationHint.source === 'otskp' ? '#065f46' : '#1e40af',
-                    border: `1px solid ${classificationHint.source === 'otskp' ? '#a7f3d0' : '#bfdbfe'}`,
-                  }}>
-                    Rozpoznáno z {classificationHint.source === 'otskp' ? 'OTSKP katalogu' : 'klíčových slov'}{' '}
-                    (confidence {(classificationHint.confidence * 100).toFixed(0)}%)
-                  </div>
-                )}
-              </Field>
-            )}
+            {/* 2026-04-15: removed the misleading "Klasifikace podle názvu
+                (AI)" checkbox + the element_name text input it gated. The
+                underlying classifier is regex + OTSKP keyword matching
+                (not an LLM) and already runs unconditionally on
+                position-context load via useCalculator.initialForm. The
+                badge below the dropdown still surfaces that result. */}
+            <Field label="Typ elementu">
+              <select
+                style={inputStyle}
+                value={form.element_type}
+                onChange={e => update('element_type', e.target.value as StructuralElementType)}
+              >
+                {(() => {
+                  const groups = [...new Set(ELEMENT_TYPES.map(t => t.group).filter(Boolean))];
+                  const ungrouped = ELEMENT_TYPES.filter(t => !t.group);
+                  return (
+                    <>
+                      {groups.map(g => (
+                        <optgroup key={g} label={g}>
+                          {ELEMENT_TYPES.filter(t => t.group === g).map(t => (
+                            <option key={t.value} value={t.value}>{t.label}</option>
+                          ))}
+                        </optgroup>
+                      ))}
+                      {ungrouped.map(t => (
+                        <option key={t.value} value={t.value}>{t.label}</option>
+                      ))}
+                    </>
+                  );
+                })()}
+              </select>
+              {classificationHint && form.element_type === classificationHint.element_type && (
+                <div style={{
+                  marginTop: 4, fontSize: 10, padding: '3px 8px', borderRadius: 4,
+                  background: classificationHint.source === 'otskp' ? '#ecfdf5' : '#eff6ff',
+                  color: classificationHint.source === 'otskp' ? '#065f46' : '#1e40af',
+                  border: `1px solid ${classificationHint.source === 'otskp' ? '#a7f3d0' : '#bfdbfe'}`,
+                }}>
+                  Rozpoznáno z {classificationHint.source === 'otskp' ? 'OTSKP katalogu' : 'klíčových slov'}{' '}
+                  (confidence {(classificationHint.confidence * 100).toFixed(0)}%)
+                </div>
+              )}
+            </Field>
           </Section>
 
           {/* ─── Mostovková deska: bridge config + context hint ─── */}
           <div style={{
-            maxHeight: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 900 : 0,
-            opacity: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 1 : 0,
+            maxHeight: form.element_type === 'mostovkova_deska' ? 900 : 0,
+            opacity: form.element_type === 'mostovkova_deska' ? 1 : 0,
             overflow: 'hidden',
             transition: 'max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease',
-            marginBottom: (form.element_type === 'mostovkova_deska' && !form.use_name_classification) ? 12 : 0,
+            marginBottom: form.element_type === 'mostovkova_deska' ? 12 : 0,
           }}>
               <div style={{
                 padding: '10px 12px', marginBottom: 12,
@@ -394,7 +380,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           </div>
 
           {/* ─── Opěry: composite křídla toggle ─── */}
-          {(form.element_type === 'opery_ulozne_prahy' && !form.use_name_classification) && (
+          {form.element_type === 'opery_ulozne_prahy' && (
             <div style={{
               maxHeight: 120, opacity: 1,
               transition: 'max-height 0.3s ease, opacity 0.2s ease',
@@ -427,7 +413,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           )}
 
           {/* ─── Římsa: length-based pour hint ─── */}
-          {(form.element_type === 'rimsa' && !form.use_name_classification) && (
+          {form.element_type === 'rimsa' && (
             <div style={{
               padding: '10px 12px', marginBottom: 12,
               background: 'var(--r0-info-bg)', border: '1px solid var(--r0-info-border)', borderRadius: 6,
@@ -731,7 +717,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           <WizardHintsPanel
             wizardMode={wizardMode}
             wizardStep={wizardStep}
-            elementType={form.use_name_classification ? 'other' : form.element_type}
+            elementType={form.element_type}
             form={form}
             currentSystemName={form.formwork_system_name}
             onApplyRecommendedSystem={(systemName, numTacts) => {
@@ -782,7 +768,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
       {!wizardMode && (
         <div style={{ marginTop: 16 }}>
           <ReviewHint
-            elementType={form.use_name_classification ? 'other' : form.element_type}
+            elementType={form.element_type}
             form={form}
           />
         </div>

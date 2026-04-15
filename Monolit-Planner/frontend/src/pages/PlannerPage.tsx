@@ -33,45 +33,33 @@ const PORTAL_URL = 'https://www.stavagent.cz/portal';
 // Source-of-truth for each finding is pinned to file:line so the report
 // stays trivially auditable as the code drifts.
 const AI_CLASSIFIER_AUDIT = `
-=== AI CLASSIFIER AUDIT (B1) ===
-Trigger: checkbox "Klasifikace podle názvu (AI)" in CalculatorSidebar.tsx:156-163
-Bound state: form.use_name_classification (boolean) — types.ts:93
-Behaviour:
-  The checkbox is purely a UI mode switch. ON = render <input> for
-  element_name; OFF = render <select> for element_type. NO model is
-  invoked when the checkbox is toggled.
+=== AI CLASSIFIER AUDIT (B1) — RESOLVED 2026-04-15 ===
+Status: WONTFIX (checkbox removed entirely)
 
-Actual classification:
+Original finding (audit run on commit 74b698d):
+  The "Klasifikace podle názvu (AI)" checkbox in CalculatorSidebar
+  was purely a UI mode switch (ON = render text input for element_name,
+  OFF = render dropdown for element_type). NO model was ever invoked
+  when toggling it. The "(AI)" label in the checkbox was misleading
+  marketing copy.
+
+Actual classifier (still in place):
   classifyElement() in shared/src/classifiers/element-classifier.ts
-  Called from useCalculator.ts:89 inside the initialForm useMemo, and
-  again at line 132-142 for the badge display. Runs unconditionally on
-  every position-context load — independent of the checkbox state.
+  Pure regex + OTSKP keyword matching, no LLM.
+    Step 1: OTSKP regex on part_name → confidence 1.0 if matched
+    Step 2: Czech-keyword fallback (bednění, opěr, římsa, …) → confidence 0.6-0.95
+    Step 3: bridge-context fallback if is_bridge=true
+  Runs unconditionally in useCalculator.initialForm whenever the
+  calculator is opened from a Monolit position with part_name set.
+  Result is surfaced as a confidence badge below the dropdown.
+  92 tests in shared/src/classifiers/element-classifier.test.ts.
 
-Model: NONE — pure regex + keyword classifier
-  Step 1: OTSKP regex on part_name → confidence 1.0 if matched
-  Step 2: Czech-keyword fallback (běnění, opěr, římsa, …) → confidence 0.6-0.95
-  Step 3: bridge-context fallback if is_bridge=true
-
-Input: { partName: string, context: { is_bridge?: boolean } }
-Output: ElementProfile {
-  element_type: StructuralElementType,
-  classification_source: 'otskp' | 'keywords',
-  confidence: number,
-  is_prestressed_detected, concrete_class_detected,
-  bridge_deck_subtype_detected, has_kridla_detected
-}
-
-Interaction with OTSKP regex mapping: SAME function. OTSKP match runs first
-inside classifyElement; if it hits, keyword path is skipped.
-
-Tests: shared/src/classifiers/element-classifier.test.ts — 105 describe/it
-blocks, 71 calls to classifyElement(). Extensive coverage.
-
-Status: WORKING. The "(AI)" label in the checkbox is misleading marketing
-copy — there is NO LLM in this code path.
-
-Recommendation: rename the checkbox to "Klasifikace podle názvu (regex+OTSKP)"
-or just "Zadat název místo typu" so users do not think this is calling Claude.
+Resolution: the checkbox + element_name text input were removed entirely.
+Users now pick the element type from the dropdown only; the OTSKP /
+keyword auto-classification still fires from position context and the
+"Rozpoznáno z OTSKP" badge appears below the dropdown when it matched.
+form.use_name_classification and form.element_name no longer exist on
+FormState.
 `.trim();
 
 const AI_ADVISOR_AUDIT = `

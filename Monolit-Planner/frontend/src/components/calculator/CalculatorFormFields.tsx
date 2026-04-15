@@ -79,7 +79,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             {/* 2026-04-15: hide "Plocha bednění" for piles — bored piles
                 have no system formwork, the pile geometry block below
                 takes over entirely. */}
-            {(form.use_name_classification || form.element_type !== 'pilota') && (
+            {form.element_type !== 'pilota' && (
             <Field label="Plocha bednění (m²)" hint="prázdné = automatický odhad z objemu a výšky">
               <NumInput style={inputStyle} value={form.formwork_area_m2} min={0}
                 onChange={v => update('formwork_area_m2', String(v))} placeholder="automatický odhad" />
@@ -88,7 +88,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
 
             {/* Ztracené bednění (trapézový plech) — only for horizontal elements */}
             {(() => {
-              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              const elemType = form.element_type;
               const horizontalTypes = ['stropni_deska', 'zakladova_deska', 'mostovkova_deska'];
               if (!horizontalTypes.includes(elemType)) return null;
               return (
@@ -176,7 +176,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 hint-IIFE below when element_type === 'pilota', so the same
                 wizard step 3 slot shows pile fields. */}
             {(() => {
-              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              const elemType = form.element_type;
               if (elemType !== 'pilota') return null;
               // Auto-compute volume preview from diameter × length × count
               // so the user sees the math the engine will use.
@@ -300,7 +300,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               );
             })()}
             {(() => {
-              const elemType = form.use_name_classification ? 'other' : form.element_type;
+              const elemType = form.element_type;
               // Pilota uses its own geometry block above — skip the standard hint block.
               if (elemType === 'pilota') return null;
               const hint = ELEMENT_DIMENSION_HINTS[elemType];
@@ -952,7 +952,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               </Section>
 
               {/* 2026-04-15: hide entire Bednění (override) section for piles */}
-              <div style={(wizardMode || (!form.use_name_classification && form.element_type === 'pilota')) ? { display: 'none' } : undefined}>
+              <div style={(wizardMode || form.element_type === 'pilota') ? { display: 'none' } : undefined}>
               <Section title="Bednění (override)">
                 {/* Task 4 (2026-04): vendor pre-filter — orchestrator pins to
                     the chosen vendor when picking the auto-recommended

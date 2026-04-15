@@ -89,8 +89,13 @@ export type TactMode = 'spary' | 'manual';
 
 export interface FormState {
   element_type: StructuralElementType;
-  element_name: string;
-  use_name_classification: boolean;
+  // 2026-04-15: element_name + use_name_classification removed.
+  // The "Klasifikace podle názvu (AI)" checkbox was misleading — the
+  // underlying classifier is regex + OTSKP keyword matching, not an LLM,
+  // and it already runs unconditionally on position-context load via
+  // useCalculator.initialForm. Users now pick the type from the dropdown
+  // and the OTSKP/keywords badge appears below it when auto-classification
+  // matched the position part_name.
   volume_m3: number;
   formwork_area_m2: string;
   rebar_mass_kg: string;
@@ -298,8 +303,6 @@ export const CEMENT_TYPES: { value: CementType; label: string }[] = [
 
 export const DEFAULT_FORM: FormState = {
   element_type: 'operne_zdi',
-  element_name: '',
-  use_name_classification: false,
   volume_m3: 120,
   formwork_area_m2: '',
   rebar_mass_kg: '',
