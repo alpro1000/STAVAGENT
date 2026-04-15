@@ -950,6 +950,30 @@ export function getSuitableSystemsForElement(elementType: StructuralElementType)
   all: FormworkSystemSpec[];
 } {
   const profile = ELEMENT_CATALOG[elementType];
+
+  // A7 (2026-04-15): special case for římsa.
+  //
+  // Římsa is the only horizontal element whose recommended systems are
+  // unit='bm' (linear-meter) and category='special' — Římsové bednění T,
+  // Římsový vozík TU/T. The generic loop below skips both (line "if unit==='bm' continue"
+  // and the orientation→category map only allows {'slab','universal'}), so
+  // calling getSuitableSystemsForElement('rimsa') used to return slab/universal
+  // systems (Dokaflex, MULTIFLEX, Top 50…) which are completely wrong for
+  // římsa. The comparison table in PlannerPage was therefore showing
+  // stropní systems for römsa.
+  //
+  // Fix: short-circuit rimsa to only its recommended_formwork list,
+  // looked up directly in FORMWORK_SYSTEMS by name.
+  if (elementType === 'rimsa') {
+    const rimsaNames = new Set(profile.recommended_formwork);
+    const rimsaSystems = FORMWORK_SYSTEMS.filter(s => rimsaNames.has(s.name));
+    return {
+      recommended: rimsaSystems,
+      compatible: [],
+      all: rimsaSystems,
+    };
+  }
+
   const orientation = profile.orientation;
   const suitableCategories = ELEMENT_SUITABLE_CATEGORIES[orientation] ?? new Set(['wall', 'universal']);
 
@@ -1114,16 +1138,26 @@ export interface SanityRanges {
   formwork_area_m2?: [number, number];
 }
 
+// A6 (2026-04-15): widened ranges to fit real bridge + foundation jobs.
+//
+//   • rimsa: 2–200 → 0.5–500 m³ (FORESTINA estakáda 300 m × 2 římsy × 0.4 m² = 240+ m³
+//     used to trigger a false "mimo rozsah" warning).
+//   • pilota: 1–200 → 0.5–600 m³ (large bridge piles 1.5 m Ø × 30 m × pilier sets reach 400+ m³).
+//   • driky_piliru: 5–400 → 1–800 m³ (tall bridge piers in groups exceed 400 m³).
+//   • mostni_zavirne_zidky: 1–20 → 0.3–40 m³ (long mostní závěrné zídky on viaducts).
+//
+// The remaining ranges were spot-checked against typical Czech bridge and
+// pozemní stavby BOQs and kept as-is.
 export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
   zaklady_piliru:   { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] },
-  driky_piliru:     { volume_m3: [5, 400],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
-  rimsa:            { volume_m3: [2, 200],   height_m: [0.3, 0.8],  rebar_kg_m3: [80, 180] },
+  driky_piliru:     { volume_m3: [1, 800],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
+  rimsa:            { volume_m3: [0.5, 500], height_m: [0.3, 0.8],  rebar_kg_m3: [80, 180] },
   operne_zdi:       { volume_m3: [10, 500],  height_m: [2.0, 12.0], rebar_kg_m3: [50, 130] },
   mostovkova_deska: { volume_m3: [20, 2000], height_m: [0.3, 2.5],  rebar_kg_m3: [100, 200] },
   rigel:            { volume_m3: [3, 150],   height_m: [0.6, 3.0],  rebar_kg_m3: [100, 200] },
   opery_ulozne_prahy:{ volume_m3: [10, 500], height_m: [2.0, 15.0], rebar_kg_m3: [70, 160] },
   kridla_opery:     { volume_m3: [5, 200],   height_m: [2.0, 10.0], rebar_kg_m3: [60, 140] },
-  mostni_zavirne_zidky:{ volume_m3: [1, 20], height_m: [0.5, 2.0],  rebar_kg_m3: [50, 120] },
+  mostni_zavirne_zidky:{ volume_m3: [0.3, 40], height_m: [0.5, 2.0], rebar_kg_m3: [50, 120] },
   prechodova_deska: { volume_m3: [5, 80],    height_m: [0.2, 0.5],  rebar_kg_m3: [70, 140] },
   zakladova_deska:  { volume_m3: [10, 2000], height_m: [0.3, 2.0],  rebar_kg_m3: [80, 160] },
   zakladovy_pas:    { volume_m3: [5, 500],   height_m: [0.4, 1.5],  rebar_kg_m3: [50, 120] },
@@ -1135,7 +1169,7 @@ export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
   schodiste:        { volume_m3: [1, 30],    height_m: [2.5, 5.0],  rebar_kg_m3: [100, 180] },
   nadrz:            { volume_m3: [10, 800],  height_m: [2.0, 8.0],  rebar_kg_m3: [70, 160] },
   podzemni_stena:   { volume_m3: [20, 2000], height_m: [5.0, 40.0], rebar_kg_m3: [50, 140] },
-  pilota:           { volume_m3: [1, 200],   height_m: [5.0, 40.0], rebar_kg_m3: [40, 120] },
+  pilota:           { volume_m3: [0.5, 600], height_m: [5.0, 40.0], rebar_kg_m3: [40, 120] },
   other:            { volume_m3: [0.5, 5000] },
 };
 
@@ -1172,12 +1206,17 @@ export function checkSanity(
     if (value == null || !Number.isFinite(value)) continue;
     const [min, max] = range;
     if (value < min || value > max) {
+      // A6 (2026-04-15): soft warning text — the previous "mimo typický
+      // rozsah" wording sounded like a hard error, even though the wizard
+      // never blocks the user. The new wording asks to verify, with the
+      // direction (větší / menší) explicit.
+      const direction = value > max ? 'Neobvykle velká hodnota' : 'Neobvykle malá hodnota';
       issues.push({
         field: key,
         value,
         min, max,
         label_cs: labels[key],
-        message_cs: `${labels[key]} ${value} je mimo typický rozsah (${min}–${max}) pro ${ELEMENT_CATALOG[elementType].label_cs}.`,
+        message_cs: `${direction} pro ${ELEMENT_CATALOG[elementType].label_cs}: ${labels[key]} ${value}. Ověřte zadání (typický rozsah ${min}–${max}).`,
       });
     }
   }

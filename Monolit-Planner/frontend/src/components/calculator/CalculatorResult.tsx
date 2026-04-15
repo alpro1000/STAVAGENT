@@ -6,7 +6,7 @@
  * schedule/Gantt, costs summary, norms sources, decision log.
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { TriangleAlert, Blocks, Siren, Zap, CircleCheckBig, Star, CalendarDays, DollarSign } from 'lucide-react';
 import { addWorkDays, type PlannerOutput } from '@stavagent/monolit-shared';
 import PlannerGantt from '../PlannerGantt';
@@ -73,7 +73,11 @@ export interface CalculatorResultProps {
   scenarios?: any[];
   applyStatus: 'idle' | 'saving' | 'saved' | 'error';
   onApplyToPosition?: () => void;
-  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number; is_plan?: boolean }>;
+  savedVariants?: Array<{ id: string; label: string; total_days: number; total_cost_czk: number; is_plan?: boolean; plan?: any; form?: any }>;
+  /** A5 (2026-04-15): currently loaded variant id (for "Aktivní" badge). */
+  activeVariantId?: string | null;
+  /** A5 (2026-04-15): true when the form has diverged from the active variant. */
+  activeVariantDirty?: boolean;
   onSaveVariant?: () => void;
   onLoadVariant?: (variant: any) => void;
   onRemoveVariant?: (id: string) => void;
@@ -88,7 +92,9 @@ export interface CalculatorResultProps {
 
 // ─── Component ─────────────────────────────────────────────────────────────
 
-export default function CalculatorResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty, form, updateForm }: CalculatorResultProps) {
+export default function CalculatorResult({ plan, startDate, showLog, onToggleLog, scenarios, applyStatus, onApplyToPosition, savedVariants, activeVariantId, activeVariantDirty, onSaveVariant: _onSaveVariant, onLoadVariant, onRemoveVariant, onSetAsPlan, kridlaFormwork, calcStatus, resultDirty, form, updateForm }: CalculatorResultProps) {
+  // A5 (2026-04-15): toggle for the side-by-side variant comparison view.
+  const [compareVariants, setCompareVariants] = useState(false);
   const calendarInfo = useMemo(() => {
     if (!startDate) return null;
     const start = new Date(startDate + 'T00:00:00');
@@ -108,7 +114,53 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
       {/* Action buttons */}
       <div className="r0-action-bar">
         <button
-          onClick={() => { exportPlanToXLSX(plan as any, startDate, scenarios && scenarios.length > 0 ? scenarios : undefined); }}
+          onClick={() => {
+            // A5 (2026-04-15): export both ad-hoc scenarios AND saved variants
+            // in the same workbook. Variants are mapped to the ScenarioData
+            // shape using their stored plan + form snapshot. The "Stáhnout
+            // Excel" button now includes everything the user has saved for
+            // this position.
+            const variantsAsScenarios = (savedVariants || [])
+              .filter((v: any) => v.plan && v.form)
+              .map((v: any, idx: number) => {
+                const p = v.plan;
+                const f = v.form;
+                return {
+                  id: idx + 1000, // offset to avoid collision with scenario ids
+                  label: v.label,
+                  formwork_system: p.formwork?.system?.name || '—',
+                  manufacturer: p.formwork?.system?.manufacturer || '—',
+                  num_formwork_crews: f.num_formwork_crews || p.resources?.num_formwork_crews || 0,
+                  num_rebar_crews: f.num_rebar_crews || p.resources?.num_rebar_crews || 0,
+                  crew_size: f.crew_size || p.resources?.crew_size_formwork || 0,
+                  num_sets: f.num_sets || 0,
+                  shift_h: f.shift_h || p.resources?.shift_h || 0,
+                  wage_czk_h: f.wage_czk_h || p.resources?.wage_formwork_czk_h || 0,
+                  total_days: p.schedule?.total_days || v.total_days || 0,
+                  assembly_days: p.formwork?.assembly_days || 0,
+                  curing_days: p.formwork?.curing_days || 0,
+                  disassembly_days: p.formwork?.disassembly_days || 0,
+                  pour_hours: p.pour?.total_pour_hours || 0,
+                  formwork_labor_czk: p.costs?.formwork_labor_czk || 0,
+                  rebar_labor_czk: p.costs?.rebar_labor_czk || 0,
+                  pour_labor_czk: p.costs?.pour_labor_czk || 0,
+                  props_labor_czk: p.costs?.props_labor_czk || 0,
+                  props_rental_czk: p.costs?.props_rental_czk || 0,
+                  total_labor_czk: p.costs?.total_labor_czk || 0,
+                  rental_czk: p.costs?.formwork_rental_czk || 0,
+                  total_all_czk: (p.costs?.total_labor_czk || 0)
+                    + (p.costs?.formwork_rental_czk || 0)
+                    + (p.costs?.props_labor_czk || 0)
+                    + (p.costs?.props_rental_czk || 0),
+                  has_overtime: !!(p.warnings || []).find((w: string) => w.includes('přesčas')),
+                };
+              });
+            const merged = [
+              ...((scenarios || []) as any[]),
+              ...variantsAsScenarios,
+            ];
+            exportPlanToXLSX(plan as any, startDate, merged.length > 0 ? merged as any : undefined);
+          }}
           style={{
             padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
             borderRadius: 6, fontFamily: 'inherit',
@@ -160,14 +212,30 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         </button>
       </div>
 
-      {/* Saved variants comparison (Monolit mode only) */}
+      {/* Saved variants — list + side-by-side comparison (A5, 2026-04-15) */}
       {savedVariants && savedVariants.length > 0 && (
         <div style={{
           marginBottom: 16, padding: 12, background: 'var(--r0-slate-50)',
           borderRadius: 8, border: '1px solid var(--r0-slate-200)',
         }}>
-          <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: 'var(--r0-slate-700)' }}>
-            Uložené varianty ({savedVariants.length})
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--r0-slate-700)' }}>
+              Uložené varianty ({savedVariants.length})
+            </div>
+            {savedVariants.length >= 2 && (
+              <button
+                onClick={() => setCompareVariants(v => !v)}
+                style={{
+                  fontSize: 11, padding: '4px 10px', borderRadius: 4,
+                  border: '1px solid var(--r0-slate-300)',
+                  background: compareVariants ? 'var(--r0-orange)' : 'white',
+                  color: compareVariants ? 'white' : 'var(--r0-slate-700)',
+                  cursor: 'pointer', fontFamily: 'inherit', fontWeight: 600,
+                }}
+              >
+                {compareVariants ? '✕ Zavřít porovnání' : '⇅ Porovnat'}
+              </button>
+            )}
           </div>
           <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
             <thead>
@@ -181,10 +249,17 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
               </tr>
             </thead>
             <tbody>
-              {savedVariants.map((v: any, i: number) => (
+              {savedVariants.map((v: any, i: number) => {
+                const isActive = activeVariantId != null && v.id === activeVariantId;
+                return (
                 <tr key={v.id} style={{
                   borderBottom: '1px solid var(--r0-slate-100)',
-                  background: v.is_plan ? 'rgba(34,197,94,0.06)' : undefined,
+                  // Active variant — orange tint + left border. Plan (is_plan)
+                  // gets the green tint as before. Active wins visually.
+                  background: isActive
+                    ? (activeVariantDirty ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.06)')
+                    : v.is_plan ? 'rgba(34,197,94,0.06)' : undefined,
+                  borderLeft: isActive ? '3px solid var(--r0-orange)' : '3px solid transparent',
                 }}>
                   <td style={{ padding: '6px 8px', color: 'var(--r0-slate-400)' }}>{i + 1}</td>
                   <td style={{ padding: '6px 8px', fontWeight: 500, cursor: onLoadVariant ? 'pointer' : 'default' }}
@@ -193,7 +268,17 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                   </td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{v.total_days}</td>
                   <td style={{ padding: '6px 8px', textAlign: 'right', fontFamily: 'var(--r0-font-mono)' }}>{Math.round(v.total_cost_czk).toLocaleString('cs')} Kč</td>
-                  <td style={{ padding: '6px 8px', textAlign: 'center' }}>
+                  <td style={{ padding: '6px 8px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                    {isActive && (
+                      <span style={{
+                        fontSize: 10, padding: '1px 6px', borderRadius: 3,
+                        background: activeVariantDirty ? '#fef3c7' : '#ffedd5',
+                        color: activeVariantDirty ? '#92400e' : '#9a3412',
+                        fontWeight: 700, marginRight: 4,
+                      }}>
+                        {activeVariantDirty ? '● Upraveno' : '● Aktivní'}
+                      </span>
+                    )}
                     {v.is_plan && <span style={{
                       fontSize: 10, padding: '1px 6px', borderRadius: 3,
                       background: '#dcfce7', color: '#166534', fontWeight: 700,
@@ -217,9 +302,13 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                     }}>✕</button>}
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
+          {compareVariants && savedVariants.length >= 2 && (
+            <VariantsComparison variants={savedVariants} onLoadVariant={onLoadVariant} />
+          )}
         </div>
       )}
 
@@ -872,6 +961,228 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           </ol>
         </Card>
       )}
+    </div>
+  );
+}
+
+// ─── A5: Variants Comparison (desktop table + mobile cards) ─────────────────
+
+interface VariantRow {
+  id: string;
+  label: string;
+  total_days: number;
+  total_cost_czk: number;
+  is_plan?: boolean;
+  plan?: any;
+  form?: any;
+}
+
+/**
+ * VariantsComparison — side-by-side comparison of saved variants.
+ *
+ * Renders TWO views in the same JSX:
+ *   - .vc-desktop: horizontal table (rows = metrics, cols = variants)
+ *   - .vc-mobile : stack of cards sorted cheapest → most expensive
+ *
+ * CSS in r0.css toggles them via `@media (max-width: 768px)`.
+ *
+ * Best value per metric is highlighted in green. The cheapest and fastest
+ * variant get badges ("Nejlevnější" / "Nejrychlejší"). Each row is clickable
+ * (load that variant via onLoadVariant).
+ */
+function VariantsComparison({
+  variants,
+  onLoadVariant,
+}: {
+  variants: VariantRow[];
+  onLoadVariant?: (v: VariantRow) => void;
+}) {
+  // Pull the few extra fields we need from the saved plan, with safe fallbacks.
+  // Saved variants from useCalculator have v.plan = full PlannerOutput,
+  // v.form = full FormState — both used here for the per-metric rows.
+  const enriched = useMemo(() => variants.map(v => {
+    const p = v.plan || {};
+    const f = v.form || {};
+    return {
+      id: v.id,
+      label: v.label,
+      is_plan: !!v.is_plan,
+      total_days: v.total_days,
+      total_cost_czk: v.total_cost_czk,
+      num_tacts: p?.pour_decision?.num_tacts ?? 0,
+      num_formwork_crews: f?.num_formwork_crews ?? p?.resources?.num_formwork_crews ?? 0,
+      num_sets: f?.num_sets ?? 0,
+      shift_h: f?.shift_h ?? p?.resources?.shift_h ?? 0,
+      labor_czk: p?.costs?.total_labor_czk ?? 0,
+      rental_czk: p?.costs?.formwork_rental_czk ?? 0,
+      savings_pct: p?.schedule?.savings_pct ?? 0,
+      system_name: p?.formwork?.system?.name ?? '—',
+      raw: v,
+    };
+  }), [variants]);
+
+  // Sort cheapest → most expensive for mobile cards.
+  const sortedByCost = useMemo(
+    () => [...enriched].sort((a, b) => a.total_cost_czk - b.total_cost_czk),
+    [enriched]
+  );
+
+  if (enriched.length < 2) return null;
+
+  const minCost = Math.min(...enriched.map(v => v.total_cost_czk));
+  const minDays = Math.min(...enriched.map(v => v.total_days));
+  const cheapestId = sortedByCost[0]?.id;
+  const fastestId = enriched.find(v => v.total_days === minDays)?.id;
+
+  // Row definitions for the desktop table. Each row knows which value is
+  // "best" so we can highlight it. `lowerIsBetter` defaults to true; only
+  // savings_pct uses higher-is-better.
+  const rows: Array<{
+    label: string;
+    get: (v: typeof enriched[number]) => number | string;
+    fmt: (n: number) => string;
+    lowerIsBetter?: boolean;
+    numeric?: boolean;
+  }> = [
+    { label: 'Dní (prac.)',         get: v => v.total_days,         fmt: n => formatNum(n, 1),       lowerIsBetter: true,  numeric: true },
+    { label: 'Náklady práce',       get: v => v.labor_czk,          fmt: n => formatCZK(n),          lowerIsBetter: true,  numeric: true },
+    { label: 'Pronájem bednění',    get: v => v.rental_czk,         fmt: n => formatCZK(n),          lowerIsBetter: true,  numeric: true },
+    { label: 'CELKEM',              get: v => v.total_cost_czk,     fmt: n => formatCZK(n),          lowerIsBetter: true,  numeric: true },
+    { label: 'Záběry',              get: v => v.num_tacts,          fmt: n => String(n),             lowerIsBetter: true,  numeric: true },
+    { label: 'Čety bednění',        get: v => v.num_formwork_crews, fmt: n => String(n),             lowerIsBetter: false, numeric: true },
+    { label: 'Sady',                get: v => v.num_sets,           fmt: n => String(n),             lowerIsBetter: true,  numeric: true },
+    { label: 'Směna (h)',           get: v => v.shift_h,            fmt: n => String(n),             lowerIsBetter: true,  numeric: true },
+    { label: 'Úspora vs. seq.',     get: v => v.savings_pct,        fmt: n => `${n}%`,               lowerIsBetter: false, numeric: true },
+  ];
+
+  return (
+    <div style={{ marginTop: 12 }}>
+      {/* ── DESKTOP: horizontal table ── */}
+      <div className="vc-desktop">
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse', fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)" }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
+                <th style={{ textAlign: 'left', padding: '6px 8px', fontSize: 10, color: 'var(--r0-slate-500)', fontWeight: 600, fontFamily: 'inherit' }}>Metrika</th>
+                {enriched.map(v => (
+                  <th
+                    key={v.id}
+                    onClick={() => onLoadVariant && onLoadVariant(v.raw)}
+                    style={{
+                      textAlign: 'right', padding: '6px 8px', fontSize: 10, color: 'var(--r0-slate-700)',
+                      fontWeight: 700, cursor: onLoadVariant ? 'pointer' : 'default',
+                      whiteSpace: 'nowrap', minWidth: 120,
+                    }}
+                    title="Načíst tuto variantu"
+                  >
+                    <div>{v.label}</div>
+                    <div style={{ fontWeight: 400, fontSize: 9, color: 'var(--r0-slate-400)', marginTop: 2 }}>
+                      {v.system_name}
+                      {v.id === cheapestId && <span style={{ marginLeft: 4, color: '#16a34a' }}>★ nejlevnější</span>}
+                      {v.id === fastestId && v.id !== cheapestId && <span style={{ marginLeft: 4, color: '#f59e0b' }}>★ nejrychlejší</span>}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(r => {
+                const values = enriched.map(v => r.get(v));
+                const numericValues = values.filter((x): x is number => typeof x === 'number');
+                const best = r.lowerIsBetter
+                  ? Math.min(...numericValues)
+                  : Math.max(...numericValues);
+                return (
+                  <tr key={r.label} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                    <td style={{ padding: '5px 8px', color: 'var(--r0-slate-500)', fontWeight: 500, fontFamily: 'inherit' }}>
+                      {r.label}
+                    </td>
+                    {enriched.map((v, i) => {
+                      const val = values[i];
+                      const isNum = typeof val === 'number';
+                      const isBest = isNum && val === best;
+                      const diff = isNum && r.lowerIsBetter && val !== best && best !== 0
+                        ? `+${(((val as number) / best - 1) * 100).toFixed(0)}%`
+                        : null;
+                      return (
+                        <td
+                          key={v.id}
+                          style={{
+                            padding: '5px 8px', textAlign: 'right',
+                            color: isBest ? '#16a34a' : 'var(--r0-slate-700)',
+                            fontWeight: isBest ? 700 : 400,
+                            background: r.label === 'CELKEM' ? 'rgba(245,158,11,0.04)' : undefined,
+                          }}
+                        >
+                          {isNum ? r.fmt(val as number) : String(val)}
+                          {isBest && <span style={{ marginLeft: 4 }}>★</span>}
+                          {diff && (
+                            <span style={{ marginLeft: 4, fontSize: 9, color: 'var(--r0-slate-400)', fontWeight: 400 }}>
+                              {diff}
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ marginTop: 6, fontSize: 10, color: 'var(--r0-slate-400)' }}>
+          Nejlepší hodnota v každém řádku je zelená a označená ★. Klikněte na hlavičku sloupce pro načtení varianty.
+        </div>
+      </div>
+
+      {/* ── MOBILE: stack of cards (sorted cheapest → most expensive) ── */}
+      <div className="vc-mobile">
+        {sortedByCost.map((v, idx) => {
+          const diffPct = v.total_cost_czk === minCost
+            ? null
+            : `+${((v.total_cost_czk / minCost - 1) * 100).toFixed(0)}% vs. nejlevnější`;
+          const isCheapest = v.id === cheapestId;
+          const isFastest = v.id === fastestId;
+          return (
+            <div
+              key={v.id}
+              onClick={() => onLoadVariant && onLoadVariant(v.raw)}
+              style={{
+                marginTop: 8, padding: 12, background: 'white',
+                border: idx === 0 ? '2px solid var(--r0-green, #16a34a)' : '1px solid var(--r0-slate-200)',
+                borderRadius: 8, cursor: onLoadVariant ? 'pointer' : 'default',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: 'var(--r0-slate-800)' }}>{v.label}</div>
+                  <div style={{ fontSize: 11, color: 'var(--r0-slate-500)', marginTop: 2 }}>{v.system_name}</div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-end' }}>
+                  {isCheapest && <span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 3, background: '#dcfce7', color: '#166534', fontWeight: 700 }}>★ NEJLEVNĚJŠÍ</span>}
+                  {isFastest && !isCheapest && <span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 3, background: '#ffedd5', color: '#9a3412', fontWeight: 700 }}>★ NEJRYCHLEJŠÍ</span>}
+                  {v.is_plan && <span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 3, background: '#dbeafe', color: '#1e40af', fontWeight: 700 }}>✓ PLÁN</span>}
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 8, fontSize: 12 }}>
+                <div><span style={{ color: 'var(--r0-slate-500)' }}>Dní:</span> <strong>{formatNum(v.total_days, 1)}</strong></div>
+                <div><span style={{ color: 'var(--r0-slate-500)' }}>Záběry:</span> <strong>{v.num_tacts}</strong></div>
+                <div><span style={{ color: 'var(--r0-slate-500)' }}>Práce:</span> <strong>{formatCZK(v.labor_czk)}</strong></div>
+                <div><span style={{ color: 'var(--r0-slate-500)' }}>Pronájem:</span> <strong>{formatCZK(v.rental_czk)}</strong></div>
+              </div>
+              <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px dashed var(--r0-slate-200)', display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+                <span style={{ color: 'var(--r0-slate-700)', fontWeight: 700 }}>Celkem: {formatCZK(v.total_cost_czk)}</span>
+                {diffPct && <span style={{ color: '#dc2626' }}>{diffPct}</span>}
+              </div>
+              {onLoadVariant && (
+                <div style={{ marginTop: 6, fontSize: 10, color: 'var(--r0-blue, #3b82f6)', textAlign: 'center' }}>
+                  Klepněte pro načtení této varianty
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

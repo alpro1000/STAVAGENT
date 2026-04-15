@@ -134,6 +134,13 @@ export interface FormState {
   crew_size_rebar: number;
   shift_h: number;
   wage_czk_h: number;
+  /**
+   * A3 (2026-04-15): toggle for per-profession wage rates.
+   * false (default) = all professions use wage_czk_h, the 3 fields below are hidden.
+   * true = show 3 fields pre-filled with wage_czk_h; user can override individually.
+   * Empty string in any wage_*_czk_h field still means "use base" (engine fallback).
+   */
+  use_per_profession_wages: boolean;
   wage_formwork_czk_h: string;
   wage_rebar_czk_h: string;
   wage_pour_czk_h: string;
@@ -294,13 +301,19 @@ export const DEFAULT_FORM: FormState = {
   concrete_class: 'C30/37',
   cement_type: 'CEM_I',
   temperature_c: 15,
-  num_sets: 2,
+  // A1 (2026-04-15): default 1 sada — most prvků (římsa, stěna, pilíř, deska,
+  // mostovka) používá 1 sadu bednění. Hodnota >1 dává smysl jen pro
+  // opakující se prvky (obrátkovost), kde se bednění rotuje mezi
+  // identickými elementy → řeší samostatný field formwork_sets_count
+  // (odemčený jen když num_identical_elements > 1).
+  num_sets: 1,
   num_formwork_crews: 1,
   num_rebar_crews: 1,
   crew_size: 4,
   crew_size_rebar: 4,
   shift_h: 10,
   wage_czk_h: 398,
+  use_per_profession_wages: false,
   wage_formwork_czk_h: '',
   wage_rebar_czk_h: '',
   wage_pour_czk_h: '',
