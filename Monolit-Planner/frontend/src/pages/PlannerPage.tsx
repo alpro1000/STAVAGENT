@@ -328,7 +328,9 @@ export default function PlannerPage() {
           )}
 
           {/* ─── Formwork Comparison Table ─── */}
-          {showComparison && comparison && comparison.length > 0 && (
+          {/* 2026-04-15: never render the formwork comparison for piles —
+              even if stale comparison data is in state. */}
+          {showComparison && comparison && comparison.length > 0 && plan?.element.type !== 'pilota' && (
             <ComparisonTable
               comparison={comparison}
               plan={plan}

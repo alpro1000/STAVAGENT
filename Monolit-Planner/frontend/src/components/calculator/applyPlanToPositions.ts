@@ -160,6 +160,15 @@ function shouldEmit(workType: WorkType, elementType: StructuralElementType): boo
  * via NO_FORMWORK / shouldEmit().
  */
 export function buildWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraft[] {
+  // 2026-04-15: piles take a completely different work-type breakdown
+  // (drilling rig, armokoše osazení, kontraktor betonáž, úprava hlavy,
+  // optional hlavice). Route through buildPileWorkDrafts which reads
+  // plan.pile and produces the right entries — the standard 7-work-type
+  // builder below would either skip everything or label things wrong.
+  if (plan.element.type === 'pilota' && (plan as any).pile) {
+    return buildPileWorkDrafts(plan, _form);
+  }
+
   const drafts: WorkDraft[] = [];
   let id = 1;
   const elementType = plan.element.type;
@@ -330,6 +339,125 @@ export function addDraftToBucket(
     wage: draft.wage,
     entries: [draft.entry],
   });
+}
+
+// ─── PILE: pile-specific work draft builder (2026-04-15) ───────────────────
+
+/**
+ * buildPileWorkDrafts — bored-pile sub-position split.
+ *
+ * Replaces the standard 7-work-type builder for elements with
+ * plan.element.type === 'pilota'. Reads plan.pile (PileResult) to drive
+ * the day counts; pile labor rates are inlined here so the call site
+ * does not need to know about the pile cost structure.
+ *
+ * Sub-positions emitted:
+ *   1. Vrtání           — drilling rig + 2-person crew × drilling_days
+ *   2. Armokoše         — rebar cage manufacture + crane placement (železáři)
+ *   3. Betonáž piloty   — kontraktor / CFA pour during drilling (betonáři)
+ *   4. Úprava hlavy     — head adjustment (2-person crew × head_adjustment_days)
+ *   5. Hlavice          — optional ŽB cap (only when pile.pile_cap_days != null)
+ *
+ * NO bednění / odbednění drafts (already covered by NO_FORMWORK gating in
+ * buildWorkDrafts but irrelevant here — we never reach the standard path).
+ */
+function buildPileWorkDrafts(plan: PlannerOutput, _form: FormState): WorkDraft[] {
+  const drafts: WorkDraft[] = [];
+  let id = 1;
+
+  const pile: any = (plan as any).pile;
+  if (!pile) return drafts; // defensive — buildWorkDrafts gates on this already
+
+  const shift = plan.resources.shift_h;
+  const fwWage = plan.resources.wage_formwork_czk_h; // tesaři/obsluha
+  const rbWage = plan.resources.wage_rebar_czk_h;    // železáři (armokoše)
+  const pourWage = plan.resources.wage_pour_czk_h;   // betonáři (kontraktor)
+
+  // 1. Vrtání — 2 obsluha vrtné soupravy
+  if (pile.drilling_days > 0) {
+    const crew = 2;
+    const h = round1(crew * shift * K_UTIL * pile.drilling_days);
+    drafts.push({
+      workType: 'vrtání', days: pile.drilling_days, crew, wage: fwWage,
+      entry: {
+        id: `tov-${id++}`, profession: 'Obsluha vrtné soupravy', professionCode: 'VRT',
+        count: crew, hours: h, normHours: h,
+        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
+        note: `vrtání ${pile.count}× Ø${pile.diameter_mm} (${pile.casing_method.toUpperCase()})`,
+        source: 'calculator',
+      },
+    });
+  }
+
+  // 2. Armokoše — železáři + jeřáb (1 day per N piles, capped at drilling window)
+  // Armokoše are pre-fabricated; placement runs in parallel with drilling so
+  // the day count = drilling_days (rate-limited by the rig, not by the cage crew).
+  if (pile.rebar_total_kg > 0) {
+    const crew = 2;
+    const h = round1(crew * shift * K_UTIL * pile.drilling_days);
+    drafts.push({
+      workType: 'výztuž', days: pile.drilling_days, crew, wage: rbWage,
+      entry: {
+        id: `tov-${id++}`, profession: 'Železář (armokoše)', professionCode: 'ARM',
+        count: crew, hours: h, normHours: h,
+        hourlyRate: rbWage, totalCost: Math.round(h * rbWage),
+        note: `armokoše ${Math.round(pile.rebar_total_kg)} kg, osazení jeřábem`,
+        source: 'calculator',
+      },
+    });
+  }
+
+  // 3. Betonáž piloty — kontraktor / CFA, 2 betonáři × drilling_days
+  if (pile.drilling_days > 0) {
+    const crew = 2;
+    const h = round1(crew * shift * K_UTIL * pile.drilling_days);
+    drafts.push({
+      workType: 'beton', days: pile.drilling_days, crew, wage: pourWage,
+      entry: {
+        id: `tov-${id++}`, profession: 'Betonář (kontraktor)', professionCode: 'BET',
+        count: crew, hours: h, normHours: h,
+        hourlyRate: pourWage, totalCost: Math.round(h * pourWage),
+        note: pile.casing_method === 'cfa'
+          ? 'betonáž současně s vytahováním šneku'
+          : 'kontraktorová roura, S4/SCC',
+        source: 'calculator',
+      },
+    });
+  }
+
+  // 4. Úprava hlavy — 2 dělníci × head_adjustment_days
+  if (pile.head_adjustment_days > 0) {
+    const crew = 2;
+    const h = round1(crew * shift * K_UTIL * pile.head_adjustment_days);
+    drafts.push({
+      workType: 'úprava_hlavy', days: pile.head_adjustment_days, crew, wage: fwWage,
+      entry: {
+        id: `tov-${id++}`, profession: 'Dělník (úprava hlav)', professionCode: 'UPR',
+        count: crew, hours: h, normHours: h,
+        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
+        note: `odbourání 0.5–1.0 m nekvalitního betonu, ${pile.count} hlav`,
+        source: 'calculator',
+      },
+    });
+  }
+
+  // 5. Hlavice (pile cap) — optional ŽB cap as a single combined draft
+  if (pile.pile_cap_days != null && pile.pile_cap_days > 0) {
+    const crew = 4;
+    const h = round1(crew * shift * K_UTIL * pile.pile_cap_days);
+    drafts.push({
+      workType: 'beton', days: pile.pile_cap_days, crew, wage: fwWage,
+      entry: {
+        id: `tov-${id++}`, profession: 'Hlavice piloty (ŽB cyklus)', professionCode: 'HLA',
+        count: crew, hours: h, normHours: h,
+        hourlyRate: fwWage, totalCost: Math.round(h * fwWage),
+        note: 'hlavice — bednění + výztuž + betonáž + zrání',
+        source: 'calculator',
+      },
+    });
+  }
+
+  return drafts;
 }
 
 // ─── applyPlanToPositions ───────────────────────────────────────────────────

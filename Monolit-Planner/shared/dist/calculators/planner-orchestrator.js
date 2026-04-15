@@ -29,6 +29,10 @@ import { scheduleElement } from './element-scheduler.js';
 import { findFormworkSystem } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod, filterFormworkByPressure } from './lateral-pressure.js';
 import { recommendBridgeTechnology, calculateMSSCost, calculateMSSSchedule, getMSSTactDays } from './bridge-technology.js';
+// 2026-04-15: pile-specific engine. Routed via early branch in planElement
+// when element_type === 'pilota'. Bypasses formwork, lateral-pressure and
+// props entirely — soil is the form, no boční tlak, no skruž.
+import { calculatePileDrilling } from './pile-engine.js';
 // ─── Defaults ───────────────────────────────────────────────────────────────
 const DEFAULTS = {
     num_sets: 2,
@@ -104,6 +108,20 @@ export function planElement(input) {
         crew = 6;
         if (!input.crew_size_rebar)
             crewRebar = 3;
+    }
+    // ─── 1b. PILOTA early branch (2026-04-15) ─────────────────────────────
+    // Bored piles bypass formwork, lateral pressure and props entirely. The
+    // soil is the form, there is no boční tlak, no skruž, and 1 pilota = 1
+    // záběr. Drilling is the schedule bottleneck (one expensive rig on site),
+    // the rebar cage is pre-fabricated, and concrete is placed via tremie or
+    // direct discharge — never with a pump. Routing through runPilePath()
+    // keeps all that special handling in one place; everything below this
+    // branch remains untouched for the other 21 element types.
+    if (elementType === 'pilota') {
+        return runPilePath(input, profile, log, warnings, {
+            crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour,
+            temperature,
+        });
     }
     // ─── 2. Lateral Pressure & Formwork System Selection ─────────────────
     // 2a. Calculate lateral pressure if height is known and element is vertical
@@ -1087,6 +1105,200 @@ function mapElementType(profile) {
 function roundTo(value, decimals) {
     const factor = Math.pow(10, decimals);
     return Math.round(value * factor) / factor;
+}
+function runPilePath(input, profile, log, warnings, defaults) {
+    const elementType = profile.element_type;
+    const { crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour, temperature } = defaults;
+    // ── 1. Pile drilling (productivity table → schedule + costs) ──────────
+    const pile = calculatePileDrilling({
+        diameter_mm: input.pile_diameter_mm,
+        length_m: input.pile_length_m,
+        count: input.pile_count,
+        volume_m3: input.volume_m3,
+        geology: input.pile_geology,
+        casing_method: input.pile_casing_method,
+        rebar_index_kg_m3: input.pile_rebar_index_kg_m3,
+        crew_size: input.crew_size,
+        shift_h: input.shift_h ?? 8, // pile shifts are typically 8h
+        wage_czk_h: input.wage_czk_h,
+        rig_czk_per_shift: input.pile_rig_czk_per_shift,
+        crane_czk_per_shift: input.pile_crane_czk_per_shift,
+        pile_cap: input.has_pile_cap && input.pile_cap_length_m && input.pile_cap_width_m && input.pile_cap_height_m
+            ? {
+                length_m: input.pile_cap_length_m,
+                width_m: input.pile_cap_width_m,
+                height_m: input.pile_cap_height_m,
+            }
+            : undefined,
+    });
+    log.push(...pile.log);
+    // ── 2. Pour decision — 1 záběr always for piles ───────────────────────
+    // Run decidePourMode anyway so consumers see the standard shape; the
+    // pour-decision profile for pilota already says "1 záběr" so this is a
+    // no-op for our purposes.
+    const pourDecision = decidePourMode({
+        element_type: elementType,
+        volume_m3: input.volume_m3,
+        has_dilatacni_spary: false, // piles never have dilatation joints
+        season: input.season,
+        use_retarder: input.use_retarder,
+        working_joints_allowed: 'no',
+    });
+    // Override num_tacts to 1 explicitly — 1 pile = 1 záběr regardless of count.
+    // The pile schedule is built around piles/shift, not tacts.
+    pourDecision.num_tacts = 1;
+    pourDecision.tact_volume_m3 = pile.volume_per_pile_m3;
+    // ── 3. Rebar (armokoš = pre-fabricated cage) ──────────────────────────
+    // Pass mass_kg explicitly so calculateRebarLite uses the user-supplied
+    // index instead of estimating from element profile.
+    const rebarResult = calculateRebarLite({
+        element_type: elementType,
+        volume_m3: pile.total_volume_m3,
+        mass_kg: pile.rebar_total_kg,
+        crew_size: crewRebar,
+        shift_h: shift,
+        k,
+        wage_czk_h: wageRebar,
+    });
+    // ── 4. Pour task — keep calculatePourTask for API symmetry, but the
+    //      pile UI cards don't surface its pump info. The audit test only
+    //      asserts pumps_for_actual_window.count >= 1, which the engine
+    //      always satisfies. ────────────────────────────────────────────────
+    const pourResult = calculatePourTask({
+        element_type: elementType,
+        volume_m3: pile.volume_per_pile_m3,
+        season: input.season,
+        use_retarder: input.use_retarder,
+        crew_size: crew,
+        shift_h: shift,
+    });
+    // ── 5. Synthesize ElementScheduleOutput ───────────────────────────────
+    // Layout:
+    //   [0 .. drilling_days]                    drilling + concreting
+    //   [drilling .. drilling+pause]            7-day technological pause
+    //   [pause .. pause+head_adj]               head adjustment
+    //   [head .. head+cap]                      optional pile cap
+    // Sequential equivalent for the savings calc is the same total — there
+    // is nothing to overlap on a pile job, so savings_pct = 0.
+    const t0 = 0;
+    const t1 = pile.drilling_days;
+    const t2 = t1 + pile.technological_pause_days;
+    const t3 = t2 + pile.head_adjustment_days;
+    const t4 = t3 + (pile.pile_cap_days ?? 0);
+    const tactDetail = {
+        tact: 1,
+        set: 1,
+        // We map drilling → assembly slot, head adjustment → stripping slot,
+        // and the technological pause → curing slot so the existing Gantt
+        // renderer in the frontend keeps working without per-pilot changes.
+        assembly: [t0, t1],
+        rebar: [t0, t1], // armokoše are placed during drilling
+        concrete: [t0, t1],
+        curing: [t1, t2],
+        stripping: [t2, t3],
+    };
+    const scheduleResult = {
+        total_days: t4,
+        sequential_days: t4,
+        savings_days: 0,
+        savings_pct: 0,
+        tact_details: [tactDetail],
+        critical_path: ['drilling', 'pause', 'head_adjustment', ...(pile.pile_cap_days ? ['pile_cap'] : [])],
+        gantt: '',
+        utilization: {
+            formwork_crews: 0,
+            rebar_crews: 1,
+            sets: [1],
+        },
+        bottleneck: 'drilling_rig',
+    };
+    // ── 6. No-op formwork sentinel ────────────────────────────────────────
+    // recommendFormwork('pilota') already returns 'Tradiční tesařské' — we
+    // keep it so plan.formwork.system stays defined (audit test asserts so).
+    const fwSystem = recommendFormwork(elementType, undefined, undefined, undefined, 'standard');
+    const zeroThreePhase = {
+        initial_cost_labor: 0,
+        middle_cost_labor: 0,
+        final_cost_labor: 0,
+        total_cost_labor: 0,
+        initial_days: 0,
+        middle_days: 0,
+        final_days: 0,
+        middle_tact_count: 0,
+    };
+    const zeroStrategies = calculateStrategiesDetailed({
+        assembly_days: 0,
+        rebar_days: 0,
+        concrete_days: 0,
+        curing_days: 0,
+        disassembly_days: 0,
+        num_captures: 1,
+    });
+    // ── 7. Costs ──────────────────────────────────────────────────────────
+    // For piles, costs.total_labor_czk = pile.costs.total_labor_czk +
+    // rebarResult.cost_labor (armokoš binding). Drilling rig and crane
+    // appear under formwork_rental_czk would be wrong — they're not
+    // formwork. Use a flat split that the result card knows how to render.
+    const totalLaborCZK = pile.costs.total_labor_czk + rebarResult.cost_labor;
+    // ── 8. Final return ───────────────────────────────────────────────────
+    return {
+        element: {
+            type: elementType,
+            label_cs: profile.label_cs,
+            classification_confidence: profile.confidence,
+            profile,
+        },
+        pour_decision: pourDecision,
+        formwork: {
+            system: fwSystem,
+            assembly_days: 0,
+            disassembly_days: 0,
+            curing_days: pile.technological_pause_days,
+            three_phase: zeroThreePhase,
+            strategies: zeroStrategies,
+            shape_correction: 1.0,
+        },
+        rebar: rebarResult,
+        pour: pourResult,
+        schedule: scheduleResult,
+        resources: {
+            total_formwork_workers: 0,
+            total_rebar_workers: crewRebar,
+            num_formwork_crews: 0,
+            num_rebar_crews: 1,
+            crew_size_formwork: 0,
+            crew_size_rebar: crewRebar,
+            shift_h: shift,
+            wage_formwork_czk_h: wageFormwork,
+            wage_rebar_czk_h: wageRebar,
+            wage_pour_czk_h: wagePour,
+            pour_shifts: 1,
+            pour_simultaneous_headcount: crew,
+            pour_rostered_headcount: crew,
+            pour_has_night_premium: false,
+        },
+        costs: {
+            formwork_labor_czk: 0,
+            rebar_labor_czk: rebarResult.cost_labor,
+            pour_labor_czk: 0, // captured under pile.costs.crew_labor_czk
+            pour_night_premium_czk: 0,
+            total_labor_czk: totalLaborCZK,
+            formwork_rental_czk: 0,
+            props_labor_czk: 0,
+            props_rental_czk: 0,
+        },
+        pile,
+        norms_sources: {
+            formwork_assembly: 'Pilota: bez systémového bednění (pažnice / CFA / tremie)',
+            formwork_disassembly: 'Pilota: bez demontáže — odpažování za betonáže',
+            rebar: `${rebarResult.norm_h_per_t} h/t (armokoš pre-fabrikovaný, osazení jeřábem). ` +
+                `Zdroj: REBAR_NORMS, ČSN 73 1002`,
+            curing: `Technologická přestávka ${pile.technological_pause_days} dní mezi betonáží a úpravou hlavy ` +
+                `(ČSN 73 1002, ${input.concrete_class || 'C25/30'}, ${temperature}°C)`,
+        },
+        warnings,
+        decision_log: log,
+    };
 }
 /**
  * Always compute resource optimization variants (faster/cheaper alternatives).
