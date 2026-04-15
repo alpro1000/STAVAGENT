@@ -211,14 +211,14 @@ export default function useCalculator() {
   /** Wizard step validation — can user proceed to next step? */
   const wizardCanAdvance = useMemo(() => {
     switch (wizardStep) {
-      case 1: return !!form.element_type || (form.use_name_classification && !!form.element_name.trim());
+      case 1: return !!form.element_type;
       case 2: return form.volume_m3 > 0;
       case 3: return true; // geometry is optional
       case 4: return true; // rebar has defaults
       case 5: return true; // záběry have defaults
       default: return false;
     }
-  }, [wizardStep, form.element_type, form.use_name_classification, form.element_name, form.volume_m3]);
+  }, [wizardStep, form.element_type, form.volume_m3]);
 
   // Forward ref to runCalculation (defined later). wizardNext cannot include
   // runCalculation in its deps directly because of the TDZ — runCalculation
@@ -285,19 +285,16 @@ export default function useCalculator() {
   /** Step 1 hint: element profile from classifier */
   const wizardHint1 = useMemo(() => {
     if (!wizardMode) return null;
-    const et = form.use_name_classification ? 'other' : form.element_type;
     try {
-      const profile = getElementProfile(et);
-      return profile;
+      return getElementProfile(form.element_type);
     } catch { return null; }
-  }, [wizardMode, form.element_type, form.use_name_classification]);
+  }, [wizardMode, form.element_type]);
 
   /** Step 2 hint: maturity/curing from concrete class + temp */
   const wizardHint2 = useMemo<CuringResult | null>(() => {
     if (!wizardMode || wizardStep < 2) return null;
     if (!form.concrete_class || form.volume_m3 <= 0) return null;
-    const et = form.use_name_classification ? 'other' : form.element_type;
-    const profile = (() => { try { return getElementProfile(et); } catch { return null; } })();
+    const profile = (() => { try { return getElementProfile(form.element_type); } catch { return null; } })();
     const elemType = profile?.orientation === 'vertical' ? 'wall' as const : 'slab' as const;
     try {
       return calculateCuring({
@@ -307,13 +304,12 @@ export default function useCalculator() {
         element_type: elemType,
       });
     } catch { return null; }
-  }, [wizardMode, wizardStep, form.concrete_class, form.temperature_c, form.cement_type, form.element_type, form.use_name_classification, form.volume_m3]);
+  }, [wizardMode, wizardStep, form.concrete_class, form.temperature_c, form.cement_type, form.element_type, form.volume_m3]);
 
   /** Step 3 hint: lateral pressure + formwork recommendation */
   const wizardHint3 = useMemo(() => {
     if (!wizardMode || wizardStep < 3) return null;
-    const et = form.use_name_classification ? 'other' : form.element_type;
-    const profile = (() => { try { return getElementProfile(et); } catch { return null; } })();
+    const profile = (() => { try { return getElementProfile(form.element_type); } catch { return null; } })();
     const h = parseFloat(form.height_m);
     if (!profile || !h || h <= 0) return null;
     const isVert = profile.orientation === 'vertical';
@@ -321,22 +317,21 @@ export default function useCalculator() {
     try {
       const pourMethod = inferPourMethod(profile.pump_typical, h);
       const lp = calculateLateralPressure(h, pourMethod);
-      const { all: allSystems } = getSuitableSystemsForElement(et);
+      const { all: allSystems } = getSuitableSystemsForElement(form.element_type);
       const filtered = filterFormworkByPressure(lp.pressure_kn_m2, allSystems);
       const stages = suggestPourStages(h, pourMethod, allSystems);
       return { lateralPressure: lp, filtered, stages, profile };
     } catch { return null; }
-  }, [wizardMode, wizardStep, form.element_type, form.use_name_classification, form.height_m]);
+  }, [wizardMode, wizardStep, form.element_type, form.height_m]);
 
   /** Step 4 hint: rebar estimation */
   const wizardHint4 = useMemo(() => {
     if (!wizardMode || wizardStep < 4) return null;
-    const et = form.use_name_classification ? 'other' : form.element_type;
     if (form.volume_m3 <= 0) return null;
     const massKg = form.rebar_mass_kg ? parseFloat(form.rebar_mass_kg) : undefined;
     try {
       return calculateRebarLite({
-        element_type: et,
+        element_type: form.element_type,
         volume_m3: form.volume_m3,
         mass_kg: massKg,
         crew_size: form.crew_size_rebar,
@@ -344,7 +339,7 @@ export default function useCalculator() {
         wage_czk_h: form.wage_czk_h,
       });
     } catch { return null; }
-  }, [wizardMode, wizardStep, form.element_type, form.use_name_classification, form.volume_m3, form.rebar_mass_kg, form.crew_size_rebar, form.shift_h, form.wage_czk_h]);
+  }, [wizardMode, wizardStep, form.element_type, form.volume_m3, form.rebar_mass_kg, form.crew_size_rebar, form.shift_h, form.wage_czk_h]);
   interface SavedVariant {
     id: string;
     label: string;
@@ -617,8 +612,7 @@ export default function useCalculator() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          element_type: form.use_name_classification ? undefined : form.element_type,
-          element_name: form.use_name_classification ? form.element_name : undefined,
+          element_type: form.element_type,
           volume_m3: form.volume_m3,
           has_dilatacni_spary: form.tact_mode === 'spary' ? form.has_dilatacni_spary : false,
           concrete_class: form.concrete_class,
@@ -650,7 +644,7 @@ export default function useCalculator() {
     } finally {
       setAdvisorLoading(false);
     }
-  }, [form.element_type, form.element_name, form.use_name_classification, form.volume_m3,
+  }, [form.element_type, form.volume_m3,
       form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
       form.total_length_m, form.spara_spacing_m]);
 
@@ -749,8 +743,7 @@ export default function useCalculator() {
     const baseInput = buildInput();
     const results: typeof comparison = [];
     // Filter systems suitable for the current element type
-    const elemType = form.use_name_classification ? 'other' : form.element_type;
-    const suitable = getSuitableSystemsForElement(elemType);
+    const suitable = getSuitableSystemsForElement(form.element_type);
     for (const sys of suitable.all) {
       try {
         const out = planElement({ ...baseInput, formwork_system_name: sys.name });
@@ -813,11 +806,7 @@ export default function useCalculator() {
       enable_monte_carlo: form.enable_monte_carlo,
       ...(form.deadline_days ? { deadline_days: Number(form.deadline_days) } : {}),
     };
-    if (form.use_name_classification && form.element_name.trim()) {
-      input.element_name = form.element_name.trim();
-    } else {
-      input.element_type = form.element_type;
-    }
+    input.element_type = form.element_type;
     if (form.formwork_area_m2) input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
     if (form.rebar_mass_kg) input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
     // Block A: adjacent sections still drives chess scheduling (delegated via
@@ -851,8 +840,7 @@ export default function useCalculator() {
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
     // Shape correction: římsa always uses 1.5 (complex geometry), regardless of form value
-    const elemTypeForShape = form.use_name_classification ? 'other' : form.element_type;
-    if (elemTypeForShape === 'rimsa') {
+    if (form.element_type === 'rimsa') {
       input.formwork_shape_correction = 1.5;
     } else {
       const sc = parseFloat(form.formwork_shape_correction);
@@ -898,7 +886,7 @@ export default function useCalculator() {
     // 2026-04-15: pile-specific fields. Only forwarded when element_type
     // === 'pilota' (the orchestrator ignores them otherwise but we save
     // bytes and avoid sending stale form state across element types).
-    if (form.element_type === 'pilota' && !form.use_name_classification) {
+    if (form.element_type === 'pilota') {
       const num = (s: string) => {
         const v = parseFloat(s);
         return Number.isFinite(v) && v > 0 ? v : undefined;
@@ -950,8 +938,7 @@ export default function useCalculator() {
         ? Math.max(1, parseInt(f.tacts_per_section_manual || '0', 10) || 0)
         : 0;
       const input: PlannerInput = {
-        element_type: f.use_name_classification ? undefined : f.element_type,
-        element_name: f.use_name_classification ? f.element_name : undefined,
+        element_type: f.element_type,
         volume_m3: f.volume_m3,
         has_dilatacni_spary: false,
         num_dilatation_sections: numSections,
