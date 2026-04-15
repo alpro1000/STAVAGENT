@@ -80,7 +80,22 @@ export default function useCalculator() {
 
   // If position context, prefill form with auto-classification
   const initialForm = useMemo(() => {
-    if (!positionContext) return loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
+    if (!positionContext) {
+      // A3 (2026-04-15): merge with DEFAULT_FORM so newly added fields
+      // (use_per_profession_wages) get their default. Then migrate: if a
+      // returning user already had per-profession wages saved as non-empty,
+      // flip the toggle ON automatically so they stay visible.
+      const loaded = loadFromLS(LS_FORM_KEY, DEFAULT_FORM);
+      const merged = { ...DEFAULT_FORM, ...loaded } as FormState;
+      if (
+        merged.use_per_profession_wages === undefined ||
+        merged.use_per_profession_wages === null
+      ) {
+        merged.use_per_profession_wages =
+          !!(merged.wage_formwork_czk_h || merged.wage_rebar_czk_h || merged.wage_pour_czk_h);
+      }
+      return merged;
+    }
     const f = { ...DEFAULT_FORM };
 
     // Auto-classify element_type from part_name (with bridge context)
@@ -345,6 +360,12 @@ export default function useCalculator() {
   const positionId = positionContext?.position_id || null;
   const [savedVariants, setSavedVariants] = useState<SavedVariant[]>([]);
   const [variantsLoading, setVariantsLoading] = useState(false);
+  // A5 (2026-04-15): track which variant is currently loaded into the form.
+  // - saveVariant → set to the newly-created variant.id
+  // - loadVariant → set to the loaded variant.id
+  // The "dirty" state is derived from comparing current `form` with the
+  // variant's stored snapshot — see `activeVariantDirty` below.
+  const [activeVariantId, setActiveVariantId] = useState<string | null>(null);
 
   // Load variants from backend when position changes (Mode A)
   useEffect(() => {
@@ -377,6 +398,9 @@ export default function useCalculator() {
           setForm(planVar.form);
           setResult(planVar.plan);
           setResultDirty(false);
+          // A5 (2026-04-15): mark the auto-restored plán as active so the
+          // sidebar list shows "Aktivní" badge from the start.
+          setActiveVariantId(planVar.id);
           // hasExistingResultRef removed (v4.1)
         }
       })
@@ -428,6 +452,8 @@ export default function useCalculator() {
           label: created.description || description,
         };
         setSavedVariants(prev => [...prev, variant]);
+        // A5: newly saved variant becomes the active one.
+        setActiveVariantId(variant.id);
         return variant;
       } catch (err) {
         console.error('[PlannerVariants] Save failed:', err);
@@ -436,6 +462,8 @@ export default function useCalculator() {
     } else {
       // Mode B: in-memory only
       setSavedVariants(prev => [...prev, baseVariant]);
+      // A5: newly saved variant becomes the active one.
+      setActiveVariantId(baseVariant.id);
       return baseVariant;
     }
   };
@@ -449,6 +477,9 @@ export default function useCalculator() {
       }
     }
     setSavedVariants(prev => prev.filter(v => v.id !== id));
+    // A5: clearing the active variant when it gets deleted prevents a
+    // dangling "Aktivní" badge on a non-existent row.
+    setActiveVariantId(prev => (prev === id ? null : prev));
   };
 
   const loadVariant = (variant: SavedVariant) => {
@@ -458,6 +489,8 @@ export default function useCalculator() {
     setForm(variant.form);
     setResult(variant.plan);
     setResultDirty(false);
+    // A5: loaded variant becomes the active one.
+    setActiveVariantId(variant.id);
   };
 
   /** Mark a variant as the "chosen plan" (✅ PLÁN badge). Only one plan per position. */
@@ -560,6 +593,21 @@ export default function useCalculator() {
     if (!docSuggestions || acceptedParams.has(param)) return undefined;
     return docSuggestions.suggestions.find(s => s.param === param);
   }, [docSuggestions, acceptedParams]);
+
+  // A5 (2026-04-15): derived dirty state for the active variant.
+  // True when the user has tweaked the form since loading/saving the active
+  // variant. Cheap JSON.stringify diff of the small form objects (≈55 keys).
+  // Returns false when there is no active variant or the variant is missing.
+  const activeVariantDirty = useMemo(() => {
+    if (!activeVariantId) return false;
+    const v = savedVariants.find(x => x.id === activeVariantId);
+    if (!v || !v.form) return false;
+    try {
+      return JSON.stringify(form) !== JSON.stringify(v.form);
+    } catch {
+      return false;
+    }
+  }, [activeVariantId, savedVariants, form]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
   const fetchAdvisor = useCallback(async () => {
@@ -1053,6 +1101,7 @@ export default function useCalculator() {
     // Variants
     savedVariants, variantsLoading,
     saveVariant, loadVariant, removeVariant, setAsPlan,
+    activeVariantId, activeVariantDirty,
 
     // AI advisor
     advisor, setAdvisor,

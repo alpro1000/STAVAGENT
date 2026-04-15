@@ -284,6 +284,14 @@
 
 .r0-action-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
 
+/* A5 (2026-04-15): variants comparison switches between a horizontal table
+   on desktop and a vertical card stack on mobile. The default values are
+   the desktop ones; the @media block at the bottom overrides them for
+   max-width:768px viewports. Both views render in the DOM and one is hidden
+   via display:none so we don't need a JS resize listener. */
+.vc-desktop { display: block; }
+.vc-mobile  { display: none; }
+
 .r0-pert-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; }
 
 .r0-calendar-banner {
@@ -559,6 +567,10 @@
   .r0-collapsible--mobile-closed .r0-collapsible__body {
     display: none;
   }
+
+  /* A5 (2026-04-15): swap variants comparison from table to cards */
+  .vc-desktop { display: none; }
+  .vc-mobile  { display: block; }
 }
 
 /* ── Extra small screens (phones < 480px) ── */

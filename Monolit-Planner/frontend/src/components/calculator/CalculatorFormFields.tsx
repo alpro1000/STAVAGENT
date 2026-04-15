@@ -690,8 +690,17 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   </Field>
                 )}
 
-                {/* Sady bednění — separate row */}
-                <Field label="Sady bednění (kompletní soupravy)">
+                {/* A1 (2026-04-15): default num_sets = 1. Hint suggests 2 only when
+                    num_identical_elements > 1 (the obrátkovost path uses formwork_sets_count
+                    above for that, so this stays at 1 sada). */}
+                <Field
+                  label="Sady bednění (kompletní soupravy)"
+                  hint={
+                    form.num_identical_elements > 1
+                      ? `Pro ${form.num_identical_elements} identických elementů zvažte 2 sady (rotace).`
+                      : '1 sada = standard pro většinu prvků (římsa, stěna, pilíř, deska).'
+                  }
+                >
                   <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
                     onChange={v => update('num_sets', v as number)} />
                 </Field>
@@ -736,37 +745,73 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   </div>
                 </div>
 
-                {/* Směna + Mzda — shared */}
+                {/* A2 (2026-04-15): Směna + Mzda na jednom řádku. Labels zkráceny
+                    (kontext "tesaři + železáři" je už v section headeru výše),
+                    aby se vešly do dvousloupcového gridu i v úzkém sidebaru. */}
                 <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                  <Field label="Směna (h) — tesaři + železáři">
+                  <Field label="Směna (h)">
                     <NumInput style={inputStyle} value={form.shift_h} min={6} max={12} fallback={10}
                       onChange={v => update('shift_h', v as number)} />
                   </Field>
-                  <Field label="Mzda — základ (Kč/h)">
+                  <Field label="Mzda (Kč/h)">
                     <NumInput style={inputStyle} value={form.wage_czk_h} min={100} fallback={398}
                       onChange={v => update('wage_czk_h', v as number)} />
                   </Field>
                 </div>
-                <div style={{ marginTop: 6, fontSize: 11, color: 'var(--r0-slate-400)' }}>
-                  Mzda podle profese (prázdné = základ {form.wage_czk_h} Kč/h):
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginTop: 4 }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Tesaři (Kč/h)</label>
-                    <NumInput style={inputStyle} value={form.wage_formwork_czk_h} min={100}
-                      onChange={v => update('wage_formwork_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
+                {/* A3 (2026-04-15): per-profession wages behind a toggle.
+                    OFF (default): all 3 fields hidden, engine uses wage_czk_h for everyone.
+                    ON: 3 fields shown, pre-filled with current base wage. Empty value
+                    in any field still falls back to base via the existing `?:` guard
+                    in useCalculator.buildInput (lines 762-764).
+                    Toggling OFF clears the 3 fields so they're not silently sent. */}
+                <label style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  marginTop: 8, fontSize: 12, color: 'var(--r0-slate-600)',
+                  cursor: 'pointer', userSelect: 'none',
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={form.use_per_profession_wages}
+                    onChange={e => {
+                      const on = e.target.checked;
+                      update('use_per_profession_wages', on);
+                      if (on) {
+                        // Pre-fill all 3 with the current base wage so user sees
+                        // sensible starting values they can then override.
+                        const base = String(form.wage_czk_h);
+                        if (!form.wage_formwork_czk_h) update('wage_formwork_czk_h', base);
+                        if (!form.wage_rebar_czk_h) update('wage_rebar_czk_h', base);
+                        if (!form.wage_pour_czk_h) update('wage_pour_czk_h', base);
+                      } else {
+                        // Clear so engine falls back to base — prevents stale
+                        // overrides being silently sent after the user hides them.
+                        update('wage_formwork_czk_h', '');
+                        update('wage_rebar_czk_h', '');
+                        update('wage_pour_czk_h', '');
+                      }
+                    }}
+                  />
+                  Různé sazby podle profese
+                </label>
+                {form.use_per_profession_wages && (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginTop: 6 }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Tesaři (Kč/h)</label>
+                      <NumInput style={inputStyle} value={form.wage_formwork_czk_h} min={100}
+                        onChange={v => update('wage_formwork_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Železáři (Kč/h)</label>
+                      <NumInput style={inputStyle} value={form.wage_rebar_czk_h} min={100}
+                        onChange={v => update('wage_rebar_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Betonáři (Kč/h)</label>
+                      <NumInput style={inputStyle} value={form.wage_pour_czk_h} min={100}
+                        onChange={v => update('wage_pour_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
+                    </div>
                   </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Železáři (Kč/h)</label>
-                    <NumInput style={inputStyle} value={form.wage_rebar_czk_h} min={100}
-                      onChange={v => update('wage_rebar_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, color: 'var(--r0-slate-600)', marginBottom: 3, whiteSpace: 'nowrap' }}>Betonáři (Kč/h)</label>
-                    <NumInput style={inputStyle} value={form.wage_pour_czk_h} min={100}
-                      onChange={v => update('wage_pour_czk_h', String(v))} placeholder={String(form.wage_czk_h)} />
-                  </div>
-                </div>
+                )}
               </Section>
 
               <div style={wizardMode ? { display: 'none' } : undefined}>
