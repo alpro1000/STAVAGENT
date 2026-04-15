@@ -26,7 +26,11 @@ const ELEMENT_CATALOG = {
         rebar_ratio_range: [80, 120],
         rebar_norm_h_per_t: 40,
         strip_strength_pct: 50,
-        orientation: 'vertical',
+        // BUG-Z1 (2026-04-15): základová patka je horizontální prvek (H < B, H < L).
+        // 'vertical' dříve spouštěla lateral-pressure engine, který pro patku
+        // nemá smysl (tlak se rozptýlí do podloží). Horizontal = formwork
+        // je obvodový věnec bez DIN 18218 filtrace.
+        orientation: 'horizontal',
         max_pour_rate_m3_h: 40,
         pump_typical: true,
     },

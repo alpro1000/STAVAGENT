@@ -341,19 +341,43 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
       {/* KPI Cards */}
       <div className="r0-grid-4" style={{ marginBottom: 20 }}>
         <KPICard label={plan.deadline_check && !plan.deadline_check.fits ? `Celkem dní (termín ${plan.deadline_check.deadline_days}d)` : 'Celkem dní'} value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color={plan.deadline_check && !plan.deadline_check.fits ? '#ef4444' : 'var(--r0-blue)'} />
-        <KPICard label="Počet záběrů" value={plan.pour_decision.num_tacts} unit="taktů" color="var(--r0-orange)" />
         <KPICard
-          label="Náklady práce"
-          value={formatCZK(plan.costs.total_labor_czk)}
-          color="var(--r0-green)"
+          label="Počet záběrů"
+          value={plan.pour_decision.num_tacts}
+          unit="taktů"
+          color="var(--r0-orange)"
           tooltip={
-            'Součet formwork + výztuž + betonáž + podpěry (bez pronájmu bednění). ' +
-            'Více čet bednění/výztuže = kratší harmonogram, ale stejné pracovní náklady ' +
-            '(stejný počet člověkohodin — "conservation of labor"). ' +
-            'Úspora při přidání čet se projeví v pronájmu bednění (viz Celkem náklady níže), ' +
-            'protože se zkrátí doba pronájmu.'
+            // E3 (2026-04-15): show whether záběry are driven by volume
+            // or DIN 18218 lateral pressure. sub_mode='vertical_layers'
+            // means the pressure branch set num_tacts.
+            plan.pour_decision.sub_mode === 'vertical_layers'
+              ? 'Určeno bočním tlakem (DIN 18218) — výška > max. záběr pro vybrané bednění.'
+              : 'Určeno objemem a pracovními spárami (pour_decision).'
           }
         />
+        {/* D1 (2026-04-15): cost card hidden in schedule_only mode */}
+        {form?.price_mode === 'schedule_only' ? (
+          <KPICard
+            label="Náklady práce"
+            value="—"
+            unit="zadejte ceny"
+            color="var(--r0-slate-400)"
+            tooltip={'Režim Harmonogram: ceny nejsou zadány. Přepněte v sidebar → Ceny → "Počítat bez cen".'}
+          />
+        ) : (
+          <KPICard
+            label="Náklady práce"
+            value={formatCZK(plan.costs.total_labor_czk)}
+            color="var(--r0-green)"
+            tooltip={
+              'Součet formwork + výztuž + betonáž + podpěry (bez pronájmu bednění). ' +
+              'Více čet bednění/výztuže = kratší harmonogram, ale stejné pracovní náklady ' +
+              '(stejný počet člověkohodin — "conservation of labor"). ' +
+              'Úspora při přidání čet se projeví v pronájmu bednění (viz Celkem náklady níže), ' +
+              'protože se zkrátí doba pronájmu.'
+            }
+          />
+        )}
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
       </div>
 
@@ -855,7 +879,25 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
 
       {/* Costs Summary */}
       <CollapsibleSection title="Souhrn nákladů" icon={<DollarSign size={16} />} defaultOpen={true} mobileDefaultOpen={false}>
-        {(() => {
+        {/* D1 (2026-04-15): schedule_only mode hides the entire cost
+            table and replaces it with an explanatory banner. */}
+        {form?.price_mode === 'schedule_only' ? (
+          <div style={{
+            padding: '14px 16px',
+            background: 'var(--r0-warn-bg, #fffbeb)',
+            border: '1px solid var(--r0-warn-border, #fde68a)',
+            borderRadius: 6,
+            fontSize: 12, color: 'var(--r0-slate-700)', lineHeight: 1.6,
+          }}>
+            <strong>Režim Harmonogram — ceny nejsou zadány.</strong>
+            <div style={{ marginTop: 4 }}>
+              Plán ukazuje jen dny, záběry, čety, normohodiny a PERT. Pro
+              zobrazení nákladů přepněte v sidebar &rarr; Ceny &rarr;
+              odškrtněte &ldquo;Počítat bez cen&rdquo; a vyplňte sazby
+              (prázdné = odhad s varováním).
+            </div>
+          </div>
+        ) : (() => {
           const propsLabor = plan.costs.props_labor_czk || 0;
           const propsRental = plan.costs.props_rental_czk || 0;
           const totalAll = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;

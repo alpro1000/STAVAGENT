@@ -285,6 +285,20 @@ export interface PlannerInput {
   pile_cap_length_m?: number;
   pile_cap_width_m?: number;
   pile_cap_height_m?: number;
+  /**
+   * BUG-P2 (2026-04-15): overpouring height in metres (default 0.5 m).
+   * The extra 0.3–1.0 m of concrete cast above the design top is chipped
+   * away during head adjustment, but the volume had to leave the truck.
+   */
+  pile_overpouring_m?: number;
+  /** BUG-P4: number of CHA (cross-hole analysis) integrity tests. */
+  pile_cha_test_count?: number;
+  /** BUG-P4: number of PIT (low-strain) integrity tests. */
+  pile_pit_test_count?: number;
+  /** BUG-P4: CHA price per pile in Kč (default 40 000). */
+  pile_cha_test_czk?: number;
+  /** BUG-P4: PIT price per pile in Kč (default 5 000). */
+  pile_pit_test_czk?: number;
 }
 
 // ─── Output ─────────────────────────────────────────────────────────────────
@@ -769,15 +783,31 @@ export function planElement(input: PlannerInput): PlannerOutput {
     log.push(`Scheduling mode: MANUAL → ${input.scheduling_mode_override}`);
   }
 
-  // 3b. Apply height-based záběry (pour stages) for vertical elements
-  if (heightForPressure && heightForPressure > 0 && isVertical && !effectiveNumTactsOverride) {
+  // 3b. Apply height-based záběry (pour stages) for vertical elements.
+  //
+  // E3 (2026-04-15): lateral pressure záběry are now a MINIMUM floor,
+  // not an "override-only" branch. Previously this ran only when
+  // `!effectiveNumTactsOverride`, which meant a user with any manual
+  // override (including the default 1) saw Gantt=1 tact even though the
+  // DIN 18218 hint said "3 záběry po 2.7m". The fix:
+  //
+  //   num_tacts = MAX(volume/spára tacts, pressure-staging tacts)
+  //
+  // always runs for vertical elements with a height, even when an
+  // override is present. The per-záběr pressure from DIN 18218 is a
+  // physical constraint: 8m stěna C40/50 literally cannot be poured in
+  // one lift because the formwork would burst. The user cannot override
+  // physics by clicking "1 záběr".
+  if (heightForPressure && heightForPressure > 0 && isVertical) {
     const { all: allCompatible } = getSuitableSystemsForElement(elementType);
     const pourMethod = input.pour_method ?? inferPourMethod(profile.pump_typical, heightForPressure);
     pourStages = suggestPourStages(heightForPressure, pourMethod, allCompatible, lpOptions);
 
     if (pourStages.needs_staging && pourStages.num_stages > pourDecision.num_tacts) {
-      // Height-based staging produces more tacts than spára-based → use staging
+      // Height-based staging produces more tacts than the current
+      // (volume / spára / override) count → enforce MAX.
       const prevTacts = pourDecision.num_tacts;
+      const prevSource = effectiveNumTactsOverride ? 'override' : 'objemová';
       pourDecision.num_tacts = pourStages.num_stages;
       pourDecision.tact_volume_m3 = Math.round((input.volume_m3 / pourStages.num_stages) * 100) / 100;
       pourDecision.num_sections = pourStages.num_stages;
@@ -792,15 +822,26 @@ export function planElement(input: PlannerInput): PlannerOutput {
         `(boční tlak ${pourStages.stage_pressure_kn_m2} kN/m² ≤ ${pourStages.max_system_pressure_kn_m2} kN/m²)`
       );
       warnings.push(
-        `Záběrová betonáž: výška ${heightForPressure}m vyžaduje ${pourStages.num_stages} záběrů po ~${pourStages.stage_height_m}m ` +
-        `(plný tlak ${lateralPressure?.pressure_kn_m2} kN/m² překračuje ${pourStages.max_system_pressure_kn_m2} kN/m²). ` +
+        `Záběrová betonáž (DIN 18218, E3): výška ${heightForPressure}m vyžaduje ` +
+        `${pourStages.num_stages} záběrů po ~${pourStages.stage_height_m}m ` +
+        `(plný tlak ${lateralPressure?.pressure_kn_m2} kN/m² překračuje ` +
+        `${pourStages.max_system_pressure_kn_m2} kN/m²). ` +
         `Pauza mezi záběry: ${pourStages.cure_between_stages_h}h. ` +
         `Bednění se přesouvá nahoru (${pourStages.num_stages}× obrátka).`
       );
-
+      // Pressure-based staging replaces a manual num_tacts_override too,
+      // because it's a physical minimum. Log the override-shadow so the
+      // user can see why "1 zaber" became "3 záběry".
       if (prevTacts > 1) {
-        log.push(`Note: height-based staging (${pourStages.num_stages}) overrides spára-based tacts (${prevTacts})`);
+        log.push(
+          `Note: height-based staging (${pourStages.num_stages}) ` +
+          `překračuje ${prevSource} tacts (${prevTacts}) — enforced as MIN`,
+        );
       }
+      // Clear the override flag so downstream audits see an automatic
+      // tact count (not a manual override that stops rebuild loops).
+      effectiveNumTactsOverride = undefined;
+      effectiveTactVolumeOverride = undefined;
     } else if (pourStages.needs_staging) {
       // Spára-based already has enough tacts
       log.push(`Height staging suggested ${pourStages.num_stages} stages, but spára-based already has ${pourDecision.num_tacts} tacts — keeping spára-based`);
@@ -954,14 +995,19 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 3a3. Exposure class validation ─────────────────────────────────────
   if (input.exposure_class) {
+    // BUG-Z3 (2026-04-15): in real CZ practice, bridge pier foundations
+    // routinely see freeze-thaw (XF1/XF3) under the bridge and XC4 from
+    // atmospheric exposure. The previous list ['XC2','XA1','XA2'] was too
+    // narrow and produced false-positive "neobvyklá třída" warnings for
+    // standard designs.
     const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
-      mostovkova_deska: ['XF2', 'XD1', 'XD3', 'XC4'],
+      mostovkova_deska: ['XF2', 'XF4', 'XD1', 'XD3', 'XC4'],
       rimsa: ['XF4', 'XD3'],
       driky_piliru: ['XC4', 'XD3', 'XF4'],
-      zaklady_piliru: ['XC2', 'XA1', 'XA2'],
-      opery_ulozne_prahy: ['XC4', 'XD1', 'XF2'],
-      operne_zdi: ['XC4', 'XD1'],
-      prechodova_deska: ['XC4', 'XD1'],
+      zaklady_piliru: ['XC2', 'XC4', 'XA1', 'XA2', 'XF1', 'XF3'],
+      opery_ulozne_prahy: ['XC4', 'XD1', 'XF1', 'XF2', 'XF3'],
+      operne_zdi: ['XC4', 'XD1', 'XF1'],
+      prechodova_deska: ['XC4', 'XD1', 'XF1'],
     };
     const recommended = RECOMMENDED_EXPOSURE[elementType];
     if (recommended && !recommended.includes(input.exposure_class)) {
@@ -1036,9 +1082,14 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 4. Formwork Calculation ────────────────────────────────────────────
 
-  // Estimate formwork area if not given
+  // Estimate formwork area if not given.
+  // BUG-Z1 follow-up: zaklady_piliru is now horizontal, but a pier footing
+  // is a rectangular BLOCK with perimeter-only formwork (top is open for
+  // pour, bottom sits on blinding). Pass the element type so the
+  // estimator can special-case foundation blocks.
   const fwAreaTotal = input.formwork_area_m2 ?? estimateFormworkArea(
-    input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation, input.total_length_m,
+    input.volume_m3, pourDecision.num_tacts, input.height_m, profile.orientation,
+    input.total_length_m, elementType,
   );
 
   // Ztracené bednění (trapézový plech / lost formwork):
@@ -1092,6 +1143,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
     temperature_c: temperature,
     cement_type: input.cement_type,
     element_type: mapElementType(profile),
+    // BUG-Z2 (2026-04-15): propagate exposure class so TKP18 §7.8.3 minimum
+    // (XF1→5d, XF3/XF4→7d) overrides maturity when the envelope is harsh.
+    exposure_class: input.exposure_class,
   } : undefined;
 
   // Map SeasonMode ('hot'|'normal'|'cold') → Season ('leto'|'podzim_jaro'|'zima') for PROPS_MIN_DAYS
@@ -1111,6 +1165,8 @@ export function planElement(input: PlannerInput): PlannerOutput {
       cement_type: maturityParams.cement_type,
       element_type: mapElementType(profile) as ElementType,
       strip_strength_pct: profile.strip_strength_pct,
+      // BUG-Z2: TKP18 §7.8.3 minimum (XF1/XF3/XF4) floors the strip wait.
+      exposure_class: input.exposure_class,
     });
     stripWaitHours = maturityForStrip.min_curing_hours;
     log.push(`Maturity strip: ${(stripWaitHours / 24).toFixed(1)}d (${maturityForStrip.strip_strength_pct}% f_ck, ` +
@@ -1699,8 +1755,27 @@ function estimateFormworkArea(
   height_m?: number,
   orientation?: string,
   totalLength_m?: number,
+  elementType?: StructuralElementType,
 ): number {
   const volumePerTact = totalVolume_m3 / numTacts;
+
+  // BUG-Z1 follow-up (2026-04-15): horizontal foundation BLOCKS
+  // (zaklady_piliru, zakladovy_pas, zakladova_patka) still need
+  // perimeter-only formwork — they are not thin slabs. Aspect ratio
+  // is closer to square for patkas (~1.5:1) than piers (~3:1).
+  const isFoundationBlock =
+    elementType === 'zaklady_piliru' ||
+    elementType === 'zakladova_patka' ||
+    elementType === 'zakladovy_pas';
+  if (height_m && height_m > 0 && isFoundationBlock) {
+    const footprint = volumePerTact / height_m;
+    const aspectRatio = elementType === 'zakladovy_pas' ? 10 : 1.5; // strip is long + narrow
+    const W = Math.sqrt(footprint / aspectRatio);
+    const L = aspectRatio * W;
+    const perimeter = 2 * (L + W);
+    const estimated = roundTo(perimeter * height_m, 1);
+    return Math.max(estimated, 5);
+  }
 
   // For vertical elements with known height: perimeter × height
   if (height_m && height_m > 0 && orientation !== 'horizontal') {
@@ -1797,6 +1872,16 @@ function runPilePath(
     geology: input.pile_geology,
     casing_method: input.pile_casing_method,
     rebar_index_kg_m3: input.pile_rebar_index_kg_m3,
+    // BUG-P1 (2026-04-15): propagate concrete class so the engine can
+    // warn on incompatible combos (e.g. C20/25 pod HPV) and echo it.
+    concrete_class: input.concrete_class,
+    // BUG-P2: overpouring height (default 0.5 m inside the engine).
+    overpouring_m: input.pile_overpouring_m,
+    // BUG-P4: optional integrity tests (opt-in from the UI).
+    cha_test_count: input.pile_cha_test_count,
+    pit_test_count: input.pile_pit_test_count,
+    cha_test_czk: input.pile_cha_test_czk,
+    pit_test_czk: input.pile_pit_test_czk,
     crew_size: input.crew_size,
     shift_h: input.shift_h ?? 8, // pile shifts are typically 8h
     wage_czk_h: input.wage_czk_h,

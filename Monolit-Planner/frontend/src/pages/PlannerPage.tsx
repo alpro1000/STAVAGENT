@@ -189,12 +189,31 @@ export default function PlannerPage() {
             <span className="r0-icon"><Calculator size={20} /></span>
             Kalkulátor betonáže
           </h1>
-          {isMonolitMode && positionContext?.part_name && (
-            <div style={{ fontSize: 12, color: 'var(--r0-slate-500)', marginLeft: 8, fontWeight: 400 }}>
-              {positionContext.part_name}
-              {positionContext.volume_m3 ? ` — ${positionContext.volume_m3} m³` : ''}
-            </div>
-          )}
+          {isMonolitMode && positionContext?.part_name && (() => {
+            // A3 (2026-04-15): per-position state indicator — shows whether
+            // this pozice has a saved variant, whether the form was
+            // touched since loading, or whether it's a brand-new calc.
+            const hasPlan = savedVariants.some(v => v.is_plan);
+            const label = activeVariantDirty
+              ? 'Upraveno'
+              : activeVariantId
+                ? (hasPlan ? 'Uložený plán' : 'Uložená varianta')
+                : 'Nový';
+            const color = activeVariantDirty
+              ? 'var(--r0-orange)'
+              : activeVariantId
+                ? 'var(--r0-success, #059669)'
+                : 'var(--r0-slate-400)';
+            return (
+              <div style={{ fontSize: 12, color: 'var(--r0-slate-500)', marginLeft: 8, fontWeight: 400 }}>
+                {positionContext.part_name}
+                {positionContext.volume_m3 ? ` — ${positionContext.volume_m3} m³` : ''}
+                <span style={{ marginLeft: 6, fontSize: 11, color, fontWeight: 600 }}>
+                  [{label}]
+                </span>
+              </div>
+            );
+          })()}
         </div>
         <div className="r0-header-right">
           {/* A4 (2026-04-15): Uložit variantu in the toolbar — mirrors the
@@ -276,6 +295,7 @@ export default function PlannerPage() {
           positionContext={positionContext} isMonolitMode={isMonolitMode}
           autoClassification={autoClassification}
           handleCalculate={handleCalculate} handleCompare={handleCompare}
+          canCalculate={calc.canCalculate}
           fetchAdvisor={calc.fetchAdvisor}
           update={update}
           normsScraping={calc.normsScraping} setNormsScraping={calc.setNormsScraping}

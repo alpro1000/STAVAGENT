@@ -222,6 +222,20 @@ export interface PlannerInput {
     pile_cap_length_m?: number;
     pile_cap_width_m?: number;
     pile_cap_height_m?: number;
+    /**
+     * BUG-P2 (2026-04-15): overpouring height in metres (default 0.5 m).
+     * The extra 0.3–1.0 m of concrete cast above the design top is chipped
+     * away during head adjustment, but the volume had to leave the truck.
+     */
+    pile_overpouring_m?: number;
+    /** BUG-P4: number of CHA (cross-hole analysis) integrity tests. */
+    pile_cha_test_count?: number;
+    /** BUG-P4: number of PIT (low-strain) integrity tests. */
+    pile_pit_test_count?: number;
+    /** BUG-P4: CHA price per pile in Kč (default 40 000). */
+    pile_cha_test_czk?: number;
+    /** BUG-P4: PIT price per pile in Kč (default 5 000). */
+    pile_pit_test_czk?: number;
 }
 export interface PlannerOutput {
     element: {

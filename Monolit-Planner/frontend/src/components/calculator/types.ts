@@ -101,6 +101,25 @@ export interface FormState {
   rebar_mass_kg: string;
   rebar_norm_kg_m3: string;
   height_m: string;
+  /**
+   * E2 (2026-04-15): length × width × height for horizontal foundation
+   * blocks (zaklady_piliru, zakladova_patka, zakladovy_pas). When all
+   * three are set, volume_m3 and formwork_area_m2 are auto-derived
+   * (L×W×H for volume, 2×(L+W)×H for side-wall formwork). Empty =
+   * no auto-derivation, user enters volume directly.
+   */
+  length_m_input: string;
+  width_m_input: string;
+  /**
+   * E1 (2026-04-15): volume entry mode.
+   *   'manual'        — user types volume directly (default for most types)
+   *   'from_geometry' — volume auto-computed from geometry fields
+   *                     (default for pilota + horizontal foundations)
+   * The mode is informational — the actual rule is "last write wins":
+   * typing into volume_m3 sets 'manual', typing into L/W/H sets
+   * 'from_geometry' and overwrites volume.
+   */
+  volume_mode: 'manual' | 'from_geometry';
   /** @deprecated Block A (2026-04): use has_dilatation_joints + tacts_per_section_mode */
   tact_mode: TactMode;
   /** @deprecated Block A: kept for backward compat with WizardHints — UI now writes has_dilatation_joints */
@@ -183,6 +202,22 @@ export interface FormState {
    * warning and falls back to Auto so the user is never stuck.
    */
   preferred_manufacturer: '' | 'DOKA' | 'PERI' | 'ULMA' | 'NOE' | 'Místní';
+
+  // ─── D1 (2026-04-15): price mode ──────────────────────────────────────
+  /**
+   * 'full' = compute + display costs (labor + rental + props) using
+   *          user-supplied prices with (odhad) fallback for empty fields.
+   * 'schedule_only' = render "— (zadejte ceny)" in cost cards and KPI.
+   *                   Harmonogram, Gantt, záběry, čety, normohodiny,
+   *                   PERT still compute normally.
+   * Default 'full' so existing users see no change; toggled via the
+   * sidebar "Počítat bez cen" checkbox in the new Ceny section.
+   */
+  price_mode: 'full' | 'schedule_only';
+  /** D3: optional crane rate — extra cost input (0 = odhad). */
+  price_crane_czk_shift: string;
+  /** D3: optional concrete pump hourly rate (0 = odhad). */
+  price_pump_czk_h: string;
 
   // ─── Pile-specific (2026-04-15) ───────────────────────────────────────
   // Read ONLY when element_type === 'pilota'. Routed to PlannerInput.pile_*
@@ -302,12 +337,21 @@ export const CEMENT_TYPES: { value: CementType; label: string }[] = [
 ];
 
 export const DEFAULT_FORM: FormState = {
-  element_type: 'operne_zdi',
-  volume_m3: 120,
+  // A2 (2026-04-15): default = clean form. element_type and volume_m3
+  // are the two gate fields — "Vypočítat plán" is disabled until both
+  // are set. Returning users restore their previous element_type from
+  // localStorage, but volume_m3 ALWAYS starts empty (see useCalculator
+  // initialForm) so the right-hand KPIs don't carry stale numbers from
+  // a different project.
+  element_type: 'other',
+  volume_m3: 0,
   formwork_area_m2: '',
   rebar_mass_kg: '',
   rebar_norm_kg_m3: '',
   height_m: '',
+  length_m_input: '',
+  width_m_input: '',
+  volume_mode: 'manual',
   tact_mode: 'spary',
   has_dilatacni_spary: false,
   spara_spacing_m: 10,
@@ -370,6 +414,10 @@ export const DEFAULT_FORM: FormState = {
   concrete_consistency: 'standard',
   working_joints_allowed: '',
   preferred_manufacturer: '',
+  // D1/D3 (2026-04-15): price mode + optional crane/pump rates
+  price_mode: 'full',
+  price_crane_czk_shift: '',
+  price_pump_czk_h: '',
   // Pile-specific defaults — only consumed when element_type === 'pilota'
   pile_diameter_mm: '',
   pile_length_m: '',

@@ -94,6 +94,14 @@ export default function useCalculator() {
         merged.use_per_profession_wages =
           !!(merged.wage_formwork_czk_h || merged.wage_rebar_czk_h || merged.wage_pour_czk_h);
       }
+      // A2 (2026-04-15): volume_m3 is the GATE — on every fresh mount
+      // (no positionContext) it resets to 0 regardless of LS. Otherwise
+      // the KPI cards would carry stale numbers from the previous session
+      // (tested on Chrome 15.04.2026: 136 m³ leaked from Dříky into a
+      // fresh Pilota open). element_type + all other preferences are
+      // preserved from LS because they are cheap to re-enter but
+      // personalise the form.
+      merged.volume_m3 = 0;
       return merged;
     }
     const f = { ...DEFAULT_FORM };
@@ -169,7 +177,10 @@ export default function useCalculator() {
     return { system: fw, height_m: kH };
   }, [result, form.include_kridla, form.kridla_height_m]);
 
-  const [showAdvanced, setShowAdvanced] = useState(false);
+  // D2 (2026-04-15): default Pokročilé OPEN in expert mode so the
+  // Bednění (systém + výrobce + cena pronájmu) section is reachable
+  // without one extra click. Users who don't need it can still collapse.
+  const [showAdvanced, setShowAdvanced] = useState(true);
   const [showLog, setShowLog] = useState(false);
   // Task 5 (2026-04): first-visit help auto-show. The "?" panel opens
   // automatically the FIRST time a user lands on the calculator and stays
@@ -539,6 +550,63 @@ export default function useCalculator() {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
+  // E1/E2 (2026-04-15): auto-derive volume and formwork area from
+  // geometry fields (length × width × height) for horizontal foundation
+  // blocks, OR from (diameter, length, count) for piles. Triggered
+  // whenever L/W/H/pile dims change AND volume_mode='from_geometry'.
+  // The rule is simple: whichever input was last touched wins. Typing
+  // into volume_m3 flips mode→'manual'; typing into L/W/H flips
+  // mode→'from_geometry' and overwrites volume_m3.
+  useEffect(() => {
+    if (form.volume_mode !== 'from_geometry') return;
+    if (form.element_type === 'pilota') {
+      // Pile: V = n × π × (Ø/2)² × L
+      const d = parseFloat(form.pile_diameter_mm);
+      const l = parseFloat(form.pile_length_m);
+      const n = parseInt(form.pile_count, 10);
+      if (d > 0 && l > 0 && n > 0) {
+        const r = d / 2 / 1000;
+        const v = Math.round(n * Math.PI * r * r * l * 100) / 100;
+        if (Math.abs(v - form.volume_m3) > 0.01) {
+          setForm(prev => ({ ...prev, volume_m3: v }));
+        }
+      }
+      return;
+    }
+    // Horizontal foundation blocks: L × W × H
+    const L = parseFloat(form.length_m_input);
+    const W = parseFloat(form.width_m_input);
+    const H = parseFloat(form.height_m);
+    if (L > 0 && W > 0 && H > 0) {
+      const v = Math.round(L * W * H * 100) / 100;
+      const fwArea = Math.round(2 * (L + W) * H * 10) / 10;
+      setForm(prev => {
+        if (Math.abs(v - prev.volume_m3) < 0.01 && prev.formwork_area_m2 === String(fwArea)) {
+          return prev;
+        }
+        return { ...prev, volume_m3: v, formwork_area_m2: String(fwArea) };
+      });
+    }
+  }, [
+    form.volume_mode,
+    form.element_type,
+    form.length_m_input,
+    form.width_m_input,
+    form.height_m,
+    form.pile_diameter_mm,
+    form.pile_length_m,
+    form.pile_count,
+    // volume_m3 is intentionally NOT in deps to avoid loops
+  ]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // E1: pilota defaults to "from geometry" mode — pile volume is always
+  // a function of (Ø, L, count). Switch mode on element type change.
+  useEffect(() => {
+    if (form.element_type === 'pilota' && form.volume_mode !== 'from_geometry') {
+      setForm(prev => ({ ...prev, volume_mode: 'from_geometry' }));
+    }
+  }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Document suggestions fetch (once on mount, when portal_project_id is known) ──
   useEffect(() => {
     const portalProjectId = positionContext?.project_id
@@ -699,10 +767,21 @@ export default function useCalculator() {
   // Save prompt + auto-save removed (v4.1): auto-calc is pure preview,
   // never saves variants or asks the user to save before recalculating.
 
+  // A2 (2026-04-15): gate state — when true, "Vypočítat plán" is disabled
+  // and auto-calc is suppressed. Both conditions (volume and non-"other"
+  // element type) must be satisfied or the result would be garbage.
+  const canCalculate = form.volume_m3 > 0 && form.element_type && form.element_type !== 'other';
+
   // Auto-calculate on form change with 1.5s debounce (v4.1: pure preview, no save).
   useEffect(() => {
     if (skipNextAutoCalcRef.current) {
       skipNextAutoCalcRef.current = false;
+      return;
+    }
+    // A2 (2026-04-15): no auto-calc until volume+type are set.
+    if (!canCalculate) {
+      setResult(null);
+      setResultDirty(false);
       return;
     }
     // In wizard mode, auto-calc only runs after step 5 (all data entered)
@@ -924,6 +1003,12 @@ export default function useCalculator() {
 
   // Auto-calculate on first render with defaults
   const firstRun = useMemo(() => {
+    // A2 (2026-04-15): don't compute a demo plan when volume is the gate
+    // value (0). The right-hand area should read "Zadejte objem betonu a
+    // typ elementu" instead of showing fabricated numbers for a made-up
+    // 120 m³ wall the user never asked for.
+    if (!initialForm.volume_m3 || initialForm.volume_m3 <= 0) return null;
+    if (!initialForm.element_type || initialForm.element_type === 'other') return null;
     try {
       // Block A (2026-04): firstRun now sources its inputs from the NEW
       // hierarchical fields (has_dilatation_joints, num_dilatation_sections,
@@ -1149,6 +1234,8 @@ export default function useCalculator() {
     // Calculation
     handleCalculate, handleCompare,
     handleApplyToPosition,
+    // A2: gate — false until user has set both volume and a real element type
+    canCalculate,
 
     // Misc
     kridlaFormwork,

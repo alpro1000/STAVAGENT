@@ -36,6 +36,21 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
     update,
   } = props;
 
+  // B1 (2026-04-15): for bored piles the formwork-related fields are
+  // still RENDERED but DISABLED (with a tooltip) so the user sees they
+  // exist for other elements and isn't left wondering where they went.
+  // Previously the Bednění override section was hidden entirely with
+  // `display: none`, which made the UI feel inconsistent between
+  // element types. Zemina slouží jako forma pro vrtanou pilotu.
+  const isPile = form.element_type === 'pilota';
+  const pileDisabledTitle = 'Pilota nemá systémové bednění — zemina slouží jako forma (CFA / pažnice / tremie).';
+  const disabledInputStyle = {
+    ...inputStyle,
+    background: 'var(--r0-slate-100, #f1f5f9)',
+    color: 'var(--r0-slate-400)',
+    cursor: 'not-allowed',
+  } as React.CSSProperties;
+
   return (
     <>
           {/* ─── Volumes (wizard step 2: objem + beton) ─── */}
@@ -45,14 +60,44 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             <div style={wizardVisible.objemy_volume ? undefined : { display: 'none' }}>
             <Field label="Objem betonu (m³)">
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <NumInput style={{ ...inputStyle, flex: 1 }} value={form.volume_m3} min={0.1} fallback={1}
-                  onChange={v => update('volume_m3', v as number)} />
+                <NumInput
+                  // E1 (2026-04-15): read-only for pilota (volume is always
+                  // derived from Ø×L×count via the pile engine).
+                  style={{
+                    ...inputStyle, flex: 1,
+                    ...(isPile ? {
+                      background: 'var(--r0-slate-100, #f1f5f9)',
+                      color: 'var(--r0-slate-500)',
+                    } : {}),
+                  }}
+                  value={form.volume_m3} min={0} fallback={0}
+                  onChange={v => {
+                    if (isPile) return; // pile volume is locked to geometry
+                    // Typing into volume → flip to manual mode so the
+                    // L×W×H useEffect stops overwriting this value.
+                    update('volume_m3', v as number);
+                    if (form.volume_mode !== 'manual') {
+                      update('volume_mode', 'manual');
+                    }
+                  }}
+                />
                 <SuggestionBadge
                   suggestion={getSuggestion('volume_m3')}
                   onAccept={onAcceptSuggestion}
                   onDismiss={onDismissSuggestion}
                 />
               </div>
+              {/* Volume source hint */}
+              {form.volume_mode === 'from_geometry' && form.volume_m3 > 0 && (
+                <div style={{ marginTop: 3, fontSize: 10, color: 'var(--r0-slate-500)' }}>
+                  📐 vypočítáno z geometrie ({isPile ? 'Ø × L × počet' : 'D × Š × V'})
+                </div>
+              )}
+              {isPile && (
+                <div style={{ marginTop: 3, fontSize: 10, color: 'var(--r0-slate-500)' }}>
+                  Pilota: objem je vždy odvozen z geometrie v kroku 3.
+                </div>
+              )}
             </Field>
             {/* Wizard hint: maturity calculation */}
             {wizardMode && wizardStep === 2 && wizardHint2 && (
@@ -76,6 +121,77 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             </div>
             {/* ── Step 3: Geometry (formwork area, lost formwork, height, shape) ── */}
             <div style={wizardVisible.objemy_geometry ? undefined : { display: 'none' }}>
+
+            {/* E2 (2026-04-15): Length × Width × Height block for horizontal
+                foundation blocks. When all three are set, volume and
+                formwork area are auto-derived via useCalculator. Also
+                visible for vertical opěry (task spec) because they have
+                rectangular geometry and share the D/Š/V entry pattern. */}
+            {(() => {
+              const elemType = form.element_type;
+              const geomTypes = [
+                'zaklady_piliru', 'zakladova_patka', 'zakladovy_pas',
+                'opery_ulozne_prahy',
+              ];
+              if (!geomTypes.includes(elemType)) return null;
+              return (
+                <div style={{
+                  marginBottom: 10, padding: '8px 10px',
+                  background: 'var(--r0-slate-50, #f8fafc)',
+                  border: '1px solid var(--r0-slate-200, #e2e8f0)',
+                  borderRadius: 6,
+                }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600)', marginBottom: 6 }}>
+                    Rozměry bloku (volitelné) — objem a plocha bednění se dopočítají
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+                    <Field label="Délka D (m)">
+                      <NumInput style={inputStyle} value={form.length_m_input} min={0}
+                        onChange={v => {
+                          update('length_m_input', String(v));
+                          if (String(v) && form.volume_mode !== 'from_geometry') {
+                            update('volume_mode', 'from_geometry');
+                          }
+                        }} placeholder="např. 6" />
+                    </Field>
+                    <Field label="Šířka Š (m)">
+                      <NumInput style={inputStyle} value={form.width_m_input} min={0}
+                        onChange={v => {
+                          update('width_m_input', String(v));
+                          if (String(v) && form.volume_mode !== 'from_geometry') {
+                            update('volume_mode', 'from_geometry');
+                          }
+                        }} placeholder="např. 4" />
+                    </Field>
+                    <Field label="Výška V (m)">
+                      <NumInput style={inputStyle} value={form.height_m} min={0}
+                        onChange={v => {
+                          update('height_m', String(v));
+                          if (String(v) && form.length_m_input && form.width_m_input
+                              && form.volume_mode !== 'from_geometry') {
+                            update('volume_mode', 'from_geometry');
+                          }
+                        }} placeholder="např. 1.5" />
+                    </Field>
+                  </div>
+                  {form.length_m_input && form.width_m_input && form.height_m && (() => {
+                    const L = parseFloat(form.length_m_input);
+                    const W = parseFloat(form.width_m_input);
+                    const H = parseFloat(form.height_m);
+                    if (!(L > 0 && W > 0 && H > 0)) return null;
+                    const v = L * W * H;
+                    const fwA = 2 * (L + W) * H;
+                    return (
+                      <div style={{ marginTop: 6, fontSize: 11, color: 'var(--r0-slate-600)' }}>
+                        📐 Objem = {L}×{W}×{H} = <strong>{v.toFixed(2)} m³</strong>
+                        {' · '}Plocha bednění = 2×({L}+{W})×{H} = <strong>{fwA.toFixed(1)} m²</strong>
+                      </div>
+                    );
+                  })()}
+                </div>
+              );
+            })()}
+
             {/* 2026-04-15: hide "Plocha bednění" for piles — bored piles
                 have no system formwork, the pile geometry block below
                 takes over entirely. */}
@@ -829,36 +945,75 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
 
                 {/* A1 (2026-04-15): default num_sets = 1. Hint suggests 2 only when
                     num_identical_elements > 1 (the obrátkovost path uses formwork_sets_count
-                    above for that, so this stays at 1 sada). */}
+                    above for that, so this stays at 1 sada).
+                    B1 (2026-04-15): disabled for pilota with explanatory tooltip. */}
                 <Field
                   label="Sady bednění (kompletní soupravy)"
                   hint={
-                    form.num_identical_elements > 1
-                      ? `Pro ${form.num_identical_elements} identických elementů zvažte 2 sady (rotace).`
-                      : '1 sada = standard pro většinu prvků (římsa, stěna, pilíř, deska).'
+                    isPile
+                      ? 'Pilota: bez systémového bednění.'
+                      : form.num_identical_elements > 1
+                        ? `Pro ${form.num_identical_elements} identických elementů zvažte 2 sady (rotace).`
+                        : '1 sada = standard pro většinu prvků (římsa, stěna, pilíř, deska).'
                   }
                 >
-                  <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
-                    onChange={v => update('num_sets', v as number)} />
+                  {isPile ? (
+                    <input
+                      type="text"
+                      readOnly
+                      disabled
+                      value="—"
+                      title={pileDisabledTitle}
+                      style={disabledInputStyle}
+                    />
+                  ) : (
+                    <NumInput style={inputStyle} value={form.num_sets} min={1} max={10} fallback={1}
+                      onChange={v => update('num_sets', v as number)} />
+                  )}
                 </Field>
 
                 {/* Tesaři (bednění) */}
-                <div style={{ marginTop: 10, padding: '8px 10px', background: 'var(--r0-slate-50, #f8fafc)', borderRadius: 6, border: '1px solid var(--r0-slate-200, #e2e8f0)' }}>
+                <div
+                  style={{
+                    marginTop: 10, padding: '8px 10px',
+                    background: isPile ? 'var(--r0-slate-100, #f1f5f9)' : 'var(--r0-slate-50, #f8fafc)',
+                    borderRadius: 6,
+                    border: '1px solid var(--r0-slate-200, #e2e8f0)',
+                    opacity: isPile ? 0.6 : 1,
+                  }}
+                  title={isPile ? pileDisabledTitle : undefined}
+                >
                   <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 6 }}>
                     Tesaři / bednáři (bednění)
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <Field label="Čety">
-                      <NumInput style={inputStyle} value={form.num_formwork_crews} min={1} max={5} fallback={1}
-                        onChange={v => update('num_formwork_crews', v as number)} />
+                      {isPile ? (
+                        <input
+                          type="text" readOnly disabled value="—"
+                          title={pileDisabledTitle} style={disabledInputStyle}
+                        />
+                      ) : (
+                        <NumInput style={inputStyle} value={form.num_formwork_crews} min={1} max={5} fallback={1}
+                          onChange={v => update('num_formwork_crews', v as number)} />
+                      )}
                     </Field>
                     <Field label="Pracovníků / četa">
-                      <NumInput style={inputStyle} value={form.crew_size} min={2} max={10} fallback={4}
-                        onChange={v => update('crew_size', v as number)} />
+                      {isPile ? (
+                        <input
+                          type="text" readOnly disabled value="—"
+                          title={pileDisabledTitle} style={disabledInputStyle}
+                        />
+                      ) : (
+                        <NumInput style={inputStyle} value={form.crew_size} min={2} max={10} fallback={4}
+                          onChange={v => update('crew_size', v as number)} />
+                      )}
                     </Field>
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--r0-slate-500, #64748b)', marginTop: 4, fontWeight: 600 }}>
-                    Celkem tesařů: {form.num_formwork_crews * form.crew_size}
+                    {isPile
+                      ? 'Pilota: bez tesařů (vrtací souprava + železáři)'
+                      : `Celkem tesařů: ${form.num_formwork_crews * form.crew_size}`}
                   </div>
                 </div>
 
@@ -951,9 +1106,30 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 )}
               </Section>
 
-              {/* 2026-04-15: hide entire Bednění (override) section for piles */}
-              <div style={(wizardMode || form.element_type === 'pilota') ? { display: 'none' } : undefined}>
-              <Section title="Bednění (override)">
+              {/* D2 (2026-04-15): Bednění section always visible in expert
+                  mode (outside Pokročilé toggle — the wrapper auto-opens).
+                  B1: disabled for pilota with tooltip + opacity instead of
+                  display:none so users see it exists for other elements. */}
+              <div
+                style={{
+                  display: wizardMode ? 'none' : undefined,
+                  opacity: isPile ? 0.55 : 1,
+                  pointerEvents: isPile ? 'none' : undefined,
+                }}
+                title={isPile ? pileDisabledTitle : undefined}
+              >
+              {isPile && (
+                <div style={{
+                  marginBottom: 8, padding: '6px 10px',
+                  background: 'var(--r0-slate-100, #f1f5f9)',
+                  border: '1px dashed var(--r0-slate-300)',
+                  borderRadius: 6, fontSize: 11, color: 'var(--r0-slate-500)',
+                  pointerEvents: 'auto',
+                }}>
+                  Pilota: systémové bednění se neaplikuje (zemina = forma).
+                </div>
+              )}
+              <Section title="Bednění (systém + výrobce + cena)">
                 {/* Task 4 (2026-04): vendor pre-filter — orchestrator pins to
                     the chosen vendor when picking the auto-recommended
                     system. Auto = no constraint (default). Falls back to
