@@ -67,6 +67,27 @@ describe('Element Classifier', () => {
       expect(result.element_type).toBe('mostovkova_deska');
     });
 
+    // OTSKP names for podkladní beton
+    it('classifies OTSKP "podkladní a výplňové vrstvy z prostého betonu" as podkladni_beton', () => {
+      const r1 = classifyElement('PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30');
+      expect(r1.element_type).toBe('podkladni_beton');
+      const r2 = classifyElement('PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15');
+      expect(r2.element_type).toBe('podkladni_beton');
+      const r3 = classifyElement('PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25');
+      expect(r3.element_type).toBe('podkladni_beton');
+    });
+
+    it('classifies abbreviated "PODKL VRSTVY" as podkladni_beton', () => {
+      const r = classifyElement('PODKL VRSTVY Z PROSTÉHO BETONU');
+      expect(r.element_type).toBe('podkladni_beton');
+    });
+
+    it('does NOT classify železobeton layer as podkladni_beton', () => {
+      const r = classifyElement('PODKL VRSTVY ZE ŽELEZOBET DO C16/20 VČET VÝZTUŽE');
+      // This is reinforced concrete — should NOT be plain podkladni_beton
+      expect(r.element_type).not.toBe('podkladni_beton');
+    });
+
     it('returns other for unknown input', () => {
       const result = classifyElement('XYZ neznámý prvek');
       expect(result.element_type).toBe('other');
@@ -264,20 +285,20 @@ describe('Element Classifier', () => {
         .toBe('zakladova_patka');
     });
 
-    // PODKLADNÍ = always other
-    it('PODKLADNÍ A VÝPLŇOVÉ VRSTVY → other', () => {
+    // PODKLADNÍ = podkladni_beton (was 'other' before BUG 11 catalog expansion)
+    it('PODKLADNÍ A VÝPLŇOVÉ VRSTVY → podkladni_beton', () => {
       expect(classifyElement('PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15').element_type)
-        .toBe('other');
+        .toBe('podkladni_beton');
     });
 
-    it('PODKLADNÍ Z PROSTÉHO BETONU C25/30 → other', () => {
+    it('PODKLADNÍ Z PROSTÉHO BETONU C25/30 → podkladni_beton', () => {
       expect(classifyElement('PODKLADNÍ VRSTVY Z PROSTÉHO BETONU C25/30').element_type)
-        .toBe('other');
+        .toBe('podkladni_beton');
     });
 
-    it('PODKLADNÍ Z PROSTÉHO BETONU C20/25 → other', () => {
+    it('PODKLADNÍ Z PROSTÉHO BETONU C20/25 → podkladni_beton', () => {
       expect(classifyElement('PODKLADNÍ VRSTVY Z PROSTÉHO BETONU C20/25').element_type)
-        .toBe('other');
+        .toBe('podkladni_beton');
     });
 
     it('PODKL VRSTVY ZE ŽELEZOBET → other', () => {
@@ -452,9 +473,9 @@ describe('Element Classifier', () => {
         .toBe('mostovkova_deska');
     });
 
-    it('PODKLADNÍ not affected by bridge context', () => {
+    it('PODKLADNÍ → podkladni_beton regardless of bridge context', () => {
       expect(classifyElement('PODKLADNÍ VRSTVY Z PROSTÉHO BETONU C12/15', { is_bridge: true }).element_type)
-        .toBe('other');
+        .toBe('podkladni_beton');
     });
   });
 

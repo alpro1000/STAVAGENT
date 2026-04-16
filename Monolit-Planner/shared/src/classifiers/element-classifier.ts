@@ -669,8 +669,11 @@ const KEYWORD_RULES: KeywordRule[] = [
   // BUG 11: new element types
   { element_type: 'podkladni_beton', keywords: [
     'podkladni beton', 'podkladní beton', 'podklad beton', 'podbet',
-    'prosty beton', 'prostý beton', 'lean concrete', 'blinding',
-    'c12/15', 'c 12/15',
+    'lean concrete', 'blinding',
+    // OTSKP forms: "PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C25/30"
+    'podkladni a vyplnove', 'podkladní a výplňové',
+    'vyplnove vrstvy', 'výplňové vrstvy',
+    'podkl vrst',  // abbreviated OTSKP "PODKL VRSTVY Z(E)..."
   ], priority: 7 },
   { element_type: 'podlozkovy_blok', keywords: [
     'podlozkovy blok', 'podložiskový blok', 'podlozisk', 'podložisk',
@@ -726,10 +729,14 @@ export function classifyElement(name: string, context?: ClassificationContext): 
   const normalized = normalize(name);
   const isBridge = context?.is_bridge ?? false;
 
-  // ─── Early-exit rules: special materials/non-structural → always 'other' ───
-  // PODKLADNÍ/VÝPLŇOVÉ = plain concrete, simplified calculation
-  if (/podkladn|podkl\b|vyplnov|výplňov/.test(normalized)) {
-    return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+  // ─── Early-exit rules: special materials/non-structural ───
+  // PODKLADNÍ/VÝPLŇOVÉ = plain concrete → podkladni_beton (unless reinforced)
+  if (/podkladn|podkl\b|vyplnov|vyplnov/.test(normalized)) {
+    // Reinforced layers (železobeton, výztuž) are NOT plain podkladní beton
+    if (/zelezobet|zelezobeton|vyztuz|armovan/.test(normalized)) {
+      return { element_type: 'other', confidence: 0.9, ...ELEMENT_CATALOG.other };
+    }
+    return { element_type: 'podkladni_beton', confidence: 0.95, ...ELEMENT_CATALOG.podkladni_beton };
   }
   // STŘÍKANÝ = shotcrete, special technology
   if (/strikan|stříkan|torkret|nastrik|nástřik/.test(normalized)) {
@@ -784,6 +791,13 @@ export function classifyElement(name: string, context?: ClassificationContext): 
       const hasOpera = /oper|opěr/.test(normalized);
       const isComposite = hasOpera && /kridl|křídl/.test(normalized);
       if (isComposite) matchCount = 0; // Let opery_ulozne_prahy handle it
+    }
+    // Podkladní beton: suppress when name indicates reinforced concrete
+    // "PODKL VRSTVY ZE ŽELEZOBET DO C16/20 VČET VÝZTUŽE" = NOT plain concrete
+    if (rule.element_type === 'podkladni_beton' && matchCount > 0) {
+      if (/zelezobet|zelezobeton|vyztuz|armovan/.test(normalized)) {
+        matchCount = 0;
+      }
     }
     if (matchCount > 0) {
       // Bridge context: boost bridge element types by +5 priority
