@@ -25,8 +25,8 @@ import type { RebarLiteResult } from './rebar-lite.js';
 import type { PourTaskResult } from './pour-task-engine.js';
 import type { ThreePhaseCostResult } from './formwork.js';
 import type { MonteCarloResult } from './pert.js';
-import { calculateCuring, PROPS_MIN_DAYS } from './maturity.js';
-import type { ConcreteClass, CementType, ElementType, Season, ConstructionType } from './maturity.js';
+import { calculateCuring, PROPS_MIN_DAYS, getDefaultCuringClass } from './maturity.js';
+import type { ConcreteClass, CementType, ElementType, Season, ConstructionType, CuringClass } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
@@ -119,6 +119,9 @@ export interface PlannerInput {
   cement_type?: CementType;
   /** Average ambient temperature (°C). Default: 15 */
   temperature_c?: number;
+  /** Curing class per TKP18 §7.8.3: 2=standard, 3=substructure, 4=superstructure.
+   *  When not set, auto-derived from element_type via getDefaultCuringClass(). */
+  curing_class?: CuringClass;
 
   // --- Resources ---
   /** Formwork sets available. Default: 2 */
@@ -1144,12 +1147,16 @@ export function planElement(input: PlannerInput): PlannerOutput {
     );
   }
 
+  // Resolve curing class: explicit input → element_type default → 2
+  const effectiveCuringClass: CuringClass = input.curing_class ?? getDefaultCuringClass(elementType);
+
   // Maturity-based curing or default
   const maturityParams = input.concrete_class ? {
     concrete_class: input.concrete_class,
     temperature_c: temperature,
     cement_type: input.cement_type,
     element_type: mapElementType(profile),
+    curing_class: effectiveCuringClass,
     // BUG-Z2 (2026-04-15): propagate exposure class so TKP18 §7.8.3 minimum
     // (XF1→5d, XF3/XF4→7d) overrides maturity when the envelope is harsh.
     exposure_class: input.exposure_class,
@@ -1172,6 +1179,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       cement_type: maturityParams.cement_type,
       element_type: mapElementType(profile) as ElementType,
       strip_strength_pct: profile.strip_strength_pct,
+      curing_class: effectiveCuringClass,
       // BUG-Z2: TKP18 §7.8.3 minimum (XF1/XF3/XF4) floors the strip wait.
       exposure_class: input.exposure_class,
     });

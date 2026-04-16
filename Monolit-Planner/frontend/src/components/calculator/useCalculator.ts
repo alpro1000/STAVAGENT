@@ -317,7 +317,7 @@ export default function useCalculator() {
     } catch { return null; }
   }, [wizardMode, form.element_type]);
 
-  /** Step 2 hint: maturity/curing from concrete class + temp */
+  /** Step 2 hint: maturity/curing from concrete class + temp + exposure + curing class */
   const wizardHint2 = useMemo<CuringResult | null>(() => {
     if (!wizardMode || wizardStep < 2) return null;
     if (!form.concrete_class || form.volume_m3 <= 0) return null;
@@ -329,9 +329,12 @@ export default function useCalculator() {
         temperature_c: form.temperature_c,
         cement_type: form.cement_type,
         element_type: elemType,
+        // BUG #2: pass exposure_class + curing_class for accurate hint
+        exposure_class: form.exposure_class || undefined,
+        curing_class: form.curing_class ? (parseInt(form.curing_class) as 2 | 3 | 4) : undefined,
       });
     } catch { return null; }
-  }, [wizardMode, wizardStep, form.concrete_class, form.temperature_c, form.cement_type, form.element_type, form.volume_m3]);
+  }, [wizardMode, wizardStep, form.concrete_class, form.temperature_c, form.cement_type, form.element_type, form.volume_m3, form.exposure_class, form.curing_class]);
 
   /** Step 3 hint: lateral pressure + formwork recommendation */
   const wizardHint3 = useMemo(() => {
@@ -960,8 +963,16 @@ export default function useCalculator() {
       const lostArea = parseFloat(form.lost_formwork_area_m2);
       if (lostArea > 0) input.lost_formwork_area_m2 = lostArea;
     }
-    // Exposure class from URL context
-    if (positionContext?.exposure_class) input.exposure_class = positionContext.exposure_class;
+    // Exposure class: form field takes precedence over URL context
+    if (form.exposure_class) {
+      input.exposure_class = form.exposure_class;
+    } else if (positionContext?.exposure_class) {
+      input.exposure_class = positionContext.exposure_class;
+    }
+    // Curing class: '' = auto from element_type (engine default)
+    if (form.curing_class) {
+      input.curing_class = parseInt(form.curing_class) as 2 | 3 | 4;
+    }
     // Total length for non-spáry mode (needed for prestress days calculation)
     // Block A: total_length_m is now ALWAYS forwarded above (used by římsa
     // formwork selection + prestress day estimation).

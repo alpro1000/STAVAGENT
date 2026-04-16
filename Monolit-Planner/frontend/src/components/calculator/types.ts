@@ -192,6 +192,10 @@ export interface FormState {
   target_pour_window_h: string;
   /** BUG-1 + HINT: concrete consistency for DIN 18218 k-factor */
   concrete_consistency: 'standard' | 'plastic' | 'scc';
+  /** Exposure class (XF2, XF4, XC4 etc.) — for curing floor + validation warnings. */
+  exposure_class: string;
+  /** Curing class per TKP18 §7.8.3. '' = auto from element_type. */
+  curing_class: '' | '2' | '3' | '4';
   /** BUG-4: working joints allowed when no dilatation joints */
   working_joints_allowed: '' | 'yes' | 'no' | 'unknown';
   /**
@@ -414,6 +418,8 @@ export const DEFAULT_FORM: FormState = {
   lost_formwork_area_m2: '',
   target_pour_window_h: '',
   concrete_consistency: 'standard',
+  exposure_class: '',
+  curing_class: '',   // auto from element_type
   working_joints_allowed: '',
   preferred_manufacturer: '',
   // D1/D3 (2026-04-15): price mode + optional crane/pump rates

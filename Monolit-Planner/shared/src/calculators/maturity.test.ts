@@ -8,6 +8,7 @@ import {
   calculateMaturityIndex,
   curingThreePoint,
   CZ_MONTHLY_TEMPS,
+  getDefaultCuringClass,
   type ConcreteClass,
 } from './maturity';
 
@@ -199,6 +200,114 @@ describe('Concrete Maturity & Curing Model', () => {
     it('should have coldest in January, warmest in July', () => {
       expect(CZ_MONTHLY_TEMPS[1]).toBeLessThan(CZ_MONTHLY_TEMPS[7]);
       expect(CZ_MONTHLY_TEMPS[7]).toBeGreaterThanOrEqual(CZ_MONTHLY_TEMPS[6]);
+    });
+  });
+
+  // ─── Curing class 2/3/4 (TKP18 §7.8.3) ───────────────────────
+
+  describe('Curing class 2/3/4', () => {
+    it('class 4 mostovka C35/45 XF2 @15°C → 5 days (from table)', () => {
+      const result = calculateCuring({
+        concrete_class: 'C35/45',
+        temperature_c: 15,
+        element_type: 'slab',
+        curing_class: 4,
+        exposure_class: 'XF2',
+      });
+      // C30+ at 15-25°C class_4 = 5 days. XF2 floor = 5d. max(5,5) = 5
+      expect(result.min_curing_days).toBe(5);
+      expect(result.curing_class).toBe(4);
+    });
+
+    it('class 4 mostovka C25/30 XF2 @15°C → 9 days', () => {
+      const result = calculateCuring({
+        concrete_class: 'C25/30',
+        temperature_c: 15,
+        element_type: 'slab',
+        curing_class: 4,
+        exposure_class: 'XF2',
+      });
+      // C20-C25 at 15-25°C class_4 = 9 days. XF2 floor = 5d. max(9,5) = 9
+      expect(result.min_curing_days).toBe(9);
+    });
+
+    it('class 4 rimsa XF4 @15°C → 7 days (XF4 floor overrides table 5 for C30+)', () => {
+      const result = calculateCuring({
+        concrete_class: 'C30/37',
+        temperature_c: 20,
+        element_type: 'slab',
+        curing_class: 4,
+        exposure_class: 'XF4',
+      });
+      // C30+ at 15-25°C class_4 = 5 days. XF4 floor = 7d. max(5,7) = 7
+      expect(result.min_curing_days).toBe(7);
+    });
+
+    it('class 3 driky_piliru XF4 @15°C → 7 days (XF4 floor)', () => {
+      const result = calculateCuring({
+        concrete_class: 'C35/45',
+        temperature_c: 15,
+        element_type: 'wall',
+        curing_class: 3,
+        exposure_class: 'XF4',
+      });
+      // C30+ at 15-25°C class_3 = 2.5 × 0.7 (wall) = 1.75 → rounds to 2.
+      // XF4 floor = 7d. max(2, 7) = 7. TKP18 abs min = 5 (also < 7). → 7
+      expect(result.min_curing_days).toBe(7);
+    });
+
+    it('class 2 is default (backward compatible)', () => {
+      const withClass = calculateCuring({
+        concrete_class: 'C30/37',
+        temperature_c: 20,
+        curing_class: 2,
+      });
+      const without = calculateCuring({
+        concrete_class: 'C30/37',
+        temperature_c: 20,
+      });
+      expect(withClass.min_curing_days).toBe(without.min_curing_days);
+    });
+
+    it('class 4 > class 3 > class 2 at same temp (use C20/25 to avoid floor collisions)', () => {
+      const c2 = calculateCuring({ concrete_class: 'C20/25', temperature_c: 15, curing_class: 2 });
+      const c3 = calculateCuring({ concrete_class: 'C20/25', temperature_c: 15, curing_class: 3 });
+      const c4 = calculateCuring({ concrete_class: 'C20/25', temperature_c: 15, curing_class: 4 });
+      expect(c4.min_curing_days).toBeGreaterThan(c3.min_curing_days);
+      expect(c3.min_curing_days).toBeGreaterThan(c2.min_curing_days);
+    });
+
+    it('TKP18 absolute min: class 3+ never < 5 days', () => {
+      const result = calculateCuring({
+        concrete_class: 'C50/60',
+        temperature_c: 35,
+        curing_class: 3,
+        element_type: 'wall',
+      });
+      expect(result.min_curing_days).toBeGreaterThanOrEqual(5);
+    });
+  });
+
+  // ─── Default curing class per element type ──────────────────────
+
+  describe('getDefaultCuringClass', () => {
+    it('mostovkova_deska → class 4', () => {
+      expect(getDefaultCuringClass('mostovkova_deska')).toBe(4);
+    });
+    it('rimsa → class 4', () => {
+      expect(getDefaultCuringClass('rimsa')).toBe(4);
+    });
+    it('driky_piliru → class 3', () => {
+      expect(getDefaultCuringClass('driky_piliru')).toBe(3);
+    });
+    it('opery_ulozne_prahy → class 3', () => {
+      expect(getDefaultCuringClass('opery_ulozne_prahy')).toBe(3);
+    });
+    it('pilota → class 2 (default)', () => {
+      expect(getDefaultCuringClass('pilota')).toBe(2);
+    });
+    it('stena → class 2 (default)', () => {
+      expect(getDefaultCuringClass('stena')).toBe(2);
     });
   });
 
