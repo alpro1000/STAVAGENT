@@ -23,6 +23,8 @@
  * Reference: ČSN EN 13670, ČSN EN 206+A2, ČSN 73 6244
  */
 
+import type { StructuralElementType } from './pour-decision.js';
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 /** Concrete strength class per EN 206 */
@@ -44,6 +46,9 @@ export type ElementType =
   | 'beam'     // Horizontal, loaded — needs 70% f_ck min
   | 'column';  // Vertical, compressed — needs 50% f_ck min
 
+/** Curing class per ČSN EN 13670 / TKP18 §7.8.3 */
+export type CuringClass = 2 | 3 | 4;
+
 /** Parameters for curing time calculation */
 export interface CuringParams {
   concrete_class: ConcreteClass;
@@ -51,6 +56,14 @@ export interface CuringParams {
   cement_type?: CementType;     // Default: CEM_I
   element_type?: ElementType;   // Default: slab (conservative)
   strip_strength_pct?: number;  // Override: required strength % at stripping
+  /**
+   * Curing class per TKP18 §7.8.3 Table NA.2.
+   *   2 = foundations, lean concrete, transition slabs (standard)
+   *   3 = substructure (abutments, piers, pier foundations, bearing blocks)
+   *   4 = superstructure (deck, cornices) — most demanding
+   * When not set, defaults to class 2 (backward-compatible).
+   */
+  curing_class?: CuringClass;
   /**
    * BUG-Z2 (2026-04-15): exposure class (XF1/XF3/XF4, XC4, XD3…).
    * TKP18 §7.8.3 mandates minimum curing days independent of maturity:
@@ -99,6 +112,7 @@ export interface CuringResult {
   concrete_class: ConcreteClass;
   cement_type: CementType;
   element_type: ElementType;
+  curing_class: CuringClass;      // Which curing class was used
   warning: string | null;
 }
 
@@ -120,31 +134,56 @@ const STRIP_STRENGTH_PCT: Record<ElementType, number> = {
 };
 
 /**
- * Minimum curing days by temperature range and concrete class
- * Per ČSN EN 13670, Table NA.2 (simplified)
+ * Minimum curing days by temperature range, concrete class, and curing class.
+ * Per ČSN EN 13670, Table NA.2 + TKP18 §7.8.3 (bridge classes 3/4).
  *
- * Rows: temperature ranges (°C)
- * Cols: concrete class groups
+ * Curing classes (TKP18):
+ *   class_2: standard (foundations, lean concrete, building elements)
+ *   class_3: substructure (abutments, piers, pier foundations)
+ *   class_4: superstructure (bridge deck, cornices) — most demanding
  *
- * These assume CEM I, horizontal elements (slab/beam).
- * Vertical elements (wall/column) get ~60% of these values.
+ * Values are for CEM I, horizontal elements (slab/beam).
+ * Vertical elements (wall/column) get ×0.7 adjustment.
  */
 const CURING_DAYS_TABLE: {
   temp_min: number;
   temp_max: number;
-  days: Record<string, number>; // class group → days
+  days: Record<string, Record<CuringClass, number>>; // class group → curing class → days
 }[] = [
   // t < 5°C — very slow hydration
-  { temp_min: -5, temp_max: 5,   days: { 'C12-C16': 7, 'C20-C25': 5, 'C30+': 4 } },
+  { temp_min: -5, temp_max: 5, days: {
+    'C12-C16': { 2: 7,  3: 12, 4: 22 },
+    'C20-C25': { 2: 5,  3: 9,  4: 18 },
+    'C30+':    { 2: 4,  3: 7,  4: 14 },
+  }},
   // 5°C ≤ t < 10°C
-  { temp_min: 5,  temp_max: 10,  days: { 'C12-C16': 5, 'C20-C25': 4, 'C30+': 3 } },
+  { temp_min: 5, temp_max: 10, days: {
+    'C12-C16': { 2: 5,  3: 9,  4: 18 },
+    'C20-C25': { 2: 4,  3: 7,  4: 13 },
+    'C30+':    { 2: 3,  3: 5,  4: 9 },
+  }},
   // 10°C ≤ t < 15°C
-  { temp_min: 10, temp_max: 15,  days: { 'C12-C16': 4, 'C20-C25': 3, 'C30+': 2 } },
+  { temp_min: 10, temp_max: 15, days: {
+    'C12-C16': { 2: 4,  3: 7,  4: 13 },
+    'C20-C25': { 2: 3,  3: 5,  4: 9 },
+    'C30+':    { 2: 2,  3: 4,  4: 7 },
+  }},
   // 15°C ≤ t < 25°C — optimal range
-  { temp_min: 15, temp_max: 25,  days: { 'C12-C16': 3, 'C20-C25': 2, 'C30+': 1.5 } },
+  { temp_min: 15, temp_max: 25, days: {
+    'C12-C16': { 2: 3,   3: 5,   4: 10 },
+    'C20-C25': { 2: 2,   3: 4,   4: 9 },
+    'C30+':    { 2: 1.5, 3: 2.5, 4: 5 },
+  }},
   // t ≥ 25°C — fast but need wet curing!
-  { temp_min: 25, temp_max: 50,  days: { 'C12-C16': 2, 'C20-C25': 1.5, 'C30+': 1 } },
+  { temp_min: 25, temp_max: 50, days: {
+    'C12-C16': { 2: 2,   3: 3.5, 4: 7 },
+    'C20-C25': { 2: 1.5, 3: 2.5, 4: 5 },
+    'C30+':    { 2: 1,   3: 1.5, 4: 3 },
+  }},
 ];
+
+/** TKP18 absolute minimum curing for any bridge element (PK). */
+const TKP18_ABSOLUTE_MIN_DAYS = 5;
 
 /**
  * Cement type speed factor (relative to CEM I = 1.0)
@@ -194,21 +233,24 @@ export function calculateCuring(params: CuringParams): CuringResult {
       concrete_class: params.concrete_class,
       cement_type: cement,
       element_type: element,
+      curing_class: params.curing_class ?? 2,
       warning: 'Temperature below -10°C: concrete must not be placed (ČSN EN 13670)',
     };
   }
 
   const group = classGroup(params.concrete_class);
   const stripPct = params.strip_strength_pct ?? STRIP_STRENGTH_PCT[element];
+  const curingClass: CuringClass = params.curing_class ?? 2;
 
   // Find temperature row
   let baseDays: number;
   if (temp < -5) {
     // Below table range — extrapolate conservatively
-    baseDays = 10;
+    baseDays = curingClass === 4 ? 30 : curingClass === 3 ? 18 : 10;
   } else {
     const row = CURING_DAYS_TABLE.find(r => temp >= r.temp_min && temp < r.temp_max);
-    baseDays = row ? row.days[group] : CURING_DAYS_TABLE[CURING_DAYS_TABLE.length - 1].days[group];
+    const classRow = row ? row.days[group] : CURING_DAYS_TABLE[CURING_DAYS_TABLE.length - 1].days[group];
+    baseDays = classRow[curingClass];
   }
 
   // Adjust for cement type (slower cement = longer curing)
@@ -234,6 +276,12 @@ export function calculateCuring(params: CuringParams): CuringResult {
   const exposureMin = getExposureMinCuringDays(params.exposure_class);
   if (exposureMin > minDays) {
     minDays = exposureMin;
+  }
+
+  // TKP18 absolute minimum for PK (pozemní komunikace) bridge elements: 5 dní.
+  // For curing class 3/4 this is always exceeded, but class 2 at warm temps could go below.
+  if (curingClass >= 3 && minDays < TKP18_ABSOLUTE_MIN_DAYS) {
+    minDays = TKP18_ABSOLUTE_MIN_DAYS;
   }
 
   const minHours = minDays * 24;
@@ -262,6 +310,7 @@ export function calculateCuring(params: CuringParams): CuringResult {
     concrete_class: params.concrete_class,
     cement_type: cement,
     element_type: element,
+    curing_class: curingClass,
     warning,
   };
 }
@@ -525,6 +574,37 @@ export function calculateConstructionCuring(params: {
     props_min_days: propsMinDays,
     orientation: CONSTRUCTION_ORIENTATION[params.construction_type],
   };
+}
+
+// ─── Default curing class per element type ──────────────────────────────────
+
+/**
+ * Default curing class per element type (TKP18 §7.8.3).
+ *
+ *   4 = superstructure (mostovka, římsa) — highest demands
+ *   3 = substructure (opěry, pilíře, základy pilířů, křídla, závěrné zídky, podložiskový blok)
+ *   2 = foundations, lean concrete, building elements, transition slabs
+ */
+export const DEFAULT_CURING_CLASS: Partial<Record<StructuralElementType, CuringClass>> = {
+  // Class 4 — superstructure (NK)
+  mostovkova_deska: 4,
+  rimsa: 4,
+  rigel: 4,
+  // Class 3 — substructure
+  opery_ulozne_prahy: 3,
+  driky_piliru: 3,
+  zaklady_piliru: 3,
+  kridla_opery: 3,
+  mostni_zavirne_zidky: 3,
+  podlozkovy_blok: 3,
+  operne_zdi: 3,
+  // Class 2 — everything else (default)
+  // pilota, podkladni_beton, prechodova_deska, building elements → 2
+};
+
+/** Get the default curing class for an element type. Returns 2 if not mapped. */
+export function getDefaultCuringClass(elementType: StructuralElementType): CuringClass {
+  return DEFAULT_CURING_CLASS[elementType] ?? 2;
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────

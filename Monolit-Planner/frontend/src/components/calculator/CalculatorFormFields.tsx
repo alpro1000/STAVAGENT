@@ -108,7 +108,8 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   {' '}(M = {formatNum(wizardHint2.maturity_index, 0)} °C·h)
                 </div>
                 <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 2 }}>
-                  ČSN EN 13670: min. {formatNum(wizardHint2.min_curing_days, 0)} dní pro {form.concrete_class} + {form.cement_type}
+                  TKP18: třída ošetřování {wizardHint2.curing_class}, {form.concrete_class} + {form.cement_type}
+                  {form.exposure_class ? ` + ${form.exposure_class}` : ''}
                   {' '}(odbednění při {wizardHint2.strip_strength_pct}% f<sub>ck</sub>)
                 </div>
                 {wizardHint2.warning && (
@@ -874,6 +875,32 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 {CEMENT_TYPES.map(c => (
                   <option key={c.value} value={c.value}>{c.label}</option>
                 ))}
+              </select>
+            </Field>
+            <Field label="Třída prostředí" hint="XF2, XF4, XC4… — ovlivňuje min. dobu ošetřování">
+              <select style={inputStyle} value={form.exposure_class}
+                onChange={e => update('exposure_class', e.target.value)}>
+                <option value="">— (nezadáno)</option>
+                <option value="XC1">XC1 — sucho</option>
+                <option value="XC2">XC2 — mokro, bez mrazu</option>
+                <option value="XC4">XC4 — cyklické mokro/sucho</option>
+                <option value="XD1">XD1 — vlhko + chloridy</option>
+                <option value="XD3">XD3 — střídavě mokro + chloridy</option>
+                <option value="XF1">XF1 — mráz, bez solí</option>
+                <option value="XF2">XF2 — mráz + soli (mostovka)</option>
+                <option value="XF3">XF3 — silný mráz, bez solí</option>
+                <option value="XF4">XF4 — silný mráz + soli (římsy)</option>
+                <option value="XA1">XA1 — slabě agresivní</option>
+                <option value="XA2">XA2 — středně agresivní</option>
+              </select>
+            </Field>
+            <Field label="Třída ošetřování" hint="TKP18 §7.8.3. Prázdné = auto dle typu prvku">
+              <select style={inputStyle} value={form.curing_class}
+                onChange={e => update('curing_class', e.target.value as '' | '2' | '3' | '4')}>
+                <option value="">Auto (dle typu prvku)</option>
+                <option value="2">2 — základy, podkladní beton</option>
+                <option value="3">3 — spodní stavba (opěry, pilíře)</option>
+                <option value="4">4 — nosná konstrukce, římsy</option>
               </select>
             </Field>
 
