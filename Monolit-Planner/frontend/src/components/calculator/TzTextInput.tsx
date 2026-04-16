@@ -23,7 +23,7 @@ interface TzTextInputProps {
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
 }
 
-export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProps) {
+export function TzTextInput({ tzText, setTzText, update }: TzTextInputProps) {
   const [expanded, setExpanded] = useState(false);
   const [extracted, setExtracted] = useState<ExtractedParam[]>([]);
   const [checked, setChecked] = useState<Set<string>>(new Set());
@@ -55,7 +55,7 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
         case 'volume_m3': update('volume_m3', Number(p.value)); break;
         case 'height_m': update('height_m', String(p.value)); break;
         case 'nk_width_m': update('nk_width_m', String(p.value)); break;
-        case 'total_length_m': update('total_length_m', String(p.value)); break;
+        case 'total_length_m': update('total_length_m', Number(p.value)); break;
         case 'span_m': update('span_m', String(p.value)); break;
         case 'num_spans': update('num_spans', String(p.value)); break;
         case 'is_prestressed': update('is_prestressed', Boolean(p.value)); break;
