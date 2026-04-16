@@ -15,6 +15,7 @@ import { logger } from '../utils/logger.js';
 import {
   FORMWORK_SYSTEMS,
 } from '@stavagent/monolit-shared';
+import { buildApproachPrompt } from './advisor-prompt.js';
 
 const router = express.Router();
 
@@ -46,7 +47,13 @@ async function fetchWithRetry(url, options, retries = 1) {
 
 /**
  * POST /api/planner-advisor
- * Body: { element_type, element_name?, volume_m3, has_dilatacni_spary, concrete_class, temperature_c }
+ * Body: { element_type, element_name?, volume_m3, has_dilatacni_spary, concrete_class,
+ *         temperature_c, total_length_m?, spara_spacing_m?,
+ *         // Enriched fields (commit 6362d3b):
+ *         exposure_class?, curing_class?, is_prestressed?, num_cables?,
+ *         span_m?, num_spans?, height_m?, formwork_area_m2?, nk_width_m?,
+ *         construction_technology?, tz_excerpt?, extracted_params?,
+ *         user_question?, computed_results? }
  * Returns: { approach, formwork_suggestion, norms, warnings }
  */
 router.post('/', async (req, res) => {
@@ -59,6 +66,22 @@ router.post('/', async (req, res) => {
     temperature_c,
     total_length_m,
     spara_spacing_m,
+    // Enriched fields
+    exposure_class,
+    curing_class,
+    is_prestressed,
+    num_cables,
+    prestress_tensioning,
+    span_m,
+    num_spans,
+    height_m,
+    formwork_area_m2,
+    nk_width_m,
+    construction_technology,
+    tz_excerpt,
+    extracted_params,
+    user_question,
+    computed_results,
   } = req.body;
 
   if (!element_type && !element_name) {
@@ -84,6 +107,21 @@ router.post('/', async (req, res) => {
       temperature_c,
       total_length_m,
       spara_spacing_m,
+      exposure_class,
+      curing_class,
+      is_prestressed,
+      num_cables,
+      prestress_tensioning,
+      span_m,
+      num_spans,
+      height_m,
+      formwork_area_m2,
+      nk_width_m,
+      construction_technology,
+      tz_excerpt,
+      extracted_params,
+      user_question,
+      computed_results,
     });
 
     const controller = new AbortController();
@@ -100,6 +138,10 @@ router.post('/', async (req, res) => {
           volume_m3,
           concrete_class,
           temperature_c,
+          exposure_class,
+          curing_class,
+          is_prestressed,
+          height_m,
         },
       }),
       signal: controller.signal,
@@ -131,7 +173,9 @@ router.post('/', async (req, res) => {
   // ── 3. KB Research — relevant norms ───────────────────────────────────────
   try {
     const normQuestion = `Jaké normy ČSN EN platí pro betonáž ${elementLabel}? ` +
-      `Beton ${concrete_class || 'C30/37'}, objem ${volume_m3} m³. ` +
+      `Beton ${concrete_class || 'C30/37'}${exposure_class ? ` ${exposure_class}` : ''}, objem ${volume_m3} m³. ` +
+      `${curing_class ? `Třída ošetřování ${curing_class} dle TKP18. ` : ''}` +
+      `${is_prestressed ? 'Předpjatý beton — zohledni požadavky na předpětí. ' : ''}` +
       `Zaměř se na: požadavky na bednění, ošetřování betonu, zrání, minimální doby odbednění.`;
 
     const controller = new AbortController();
@@ -202,57 +246,7 @@ router.post('/', async (req, res) => {
   res.json(result);
 });
 
-// ── Approach prompt builder ─────────────────────────────────────────────────
-
-function buildApproachPrompt({
-  elementLabel,
-  element_type,
-  volume_m3,
-  has_dilatacni_spary,
-  concrete_class,
-  temperature_c,
-  total_length_m,
-  spara_spacing_m,
-}) {
-  const sparyText = has_dilatacni_spary
-    ? `ano, rozteč ${spara_spacing_m || '?'} m → sekční betonáž (záběry)`
-    : 'ne → monolitická betonáž (jeden záběr, nepřerušitelná)';
-
-  return `Jsi expert na betonáž monolitických konstrukcí (mosty i pozemní stavby).
-
-ELEMENT: ${elementLabel} (typ: ${element_type || 'neurčen'})
-OBJEM: ${volume_m3} m³
-BETON: ${concrete_class || 'C30/37'}
-TEPLOTA: ${temperature_c || 15}°C
-DÉLKA: ${total_length_m ? total_length_m + ' m' : 'neurčena'}
-DILATAČNÍ SPÁRY: ${sparyText}
-
-PRAVIDLA (dodržuj přesně):
-- Postup betonáže určuje VÝHRADNĚ přítomnost dilatačních spár:
-  • Spáry ANO → sectional (záběrový), sub_mode závisí na typu prvku
-  • Spáry NE → monolithic (vše v jednom záběru)
-- Monolitická betonáž = celý objem v jednom nepřerušeném záběru, i kdyby to trvalo 12-16h
-  • Navýšit osádku (až 15 lidí), čerpadla, prodloužit směnu
-  • Příplatek 25% za přesčas od 10. hodiny
-- Šachovnicový postup (chess) = sousední záběry nejdříve liché, pak sudé (min. 24h tvrdnutí mezi sousedy)
-- Římsy: VŽDY sekční betonáž po 25–30 m bez ohledu na dilatační spáry. Počet záběrů = délka mostu ÷ 25–30 m. Římsa NENÍ deska.
-- Podpěrná konstrukce (skruž/stojky) je nutná pro všechny vodorovné prvky (desky, průvlaky, schodiště, římsy)
-
-Odpověz v tomto JSON formátu:
-{
-  "pour_mode": "sectional" nebo "monolithic",
-  "sub_mode": "chess" nebo "linear" nebo "single_pour",
-  "recommended_tacts": <počet záběrů>,
-  "tact_volume_m3": <objem jednoho záběru>,
-  "reasoning": "<2-3 věty proč tento postup>",
-  "warnings": ["<seznam rizik/upozornění>"],
-  "overtime_recommendation": "<doporučení k přesčasu>",
-  "pump_type": "<stacionární | mobilní | autodomíchávač>"
-}
-
-Zohledni: ČSN EN 13670, ČSN 73 6244 (mosty), technologické okno betonu, klimatické podmínky.
-ODPOVĚZ POUZE VALIDNÍM JSON.`;
-}
+// buildApproachPrompt imported from ./advisor-prompt.js
 
 // ── Formwork suggestion (deterministic) ─────────────────────────────────────
 
