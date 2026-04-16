@@ -102,6 +102,14 @@ export interface FormState {
   rebar_norm_kg_m3: string;
   height_m: string;
   /**
+   * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Separate
+   * from height_m (which for mostovkova_deska is the prop height from
+   * terrain to deck underside). Only rendered for mostovkova_deska in the
+   * Expert panel. Empty = engine auto-derives from volume / (span × width)
+   * when those are set.
+   */
+  deck_thickness_m: string;
+  /**
    * E2 (2026-04-15): length × width × height for horizontal foundation
    * blocks (zaklady_piliru, zakladova_patka, zakladovy_pas). When all
    * three are set, volume_m3 and formwork_area_m2 are auto-derived
@@ -355,6 +363,7 @@ export const DEFAULT_FORM: FormState = {
   rebar_mass_kg: '',
   rebar_norm_kg_m3: '',
   height_m: '',
+  deck_thickness_m: '',
   length_m_input: '',
   width_m_input: '',
   volume_mode: 'manual',

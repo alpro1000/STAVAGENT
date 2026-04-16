@@ -63,8 +63,17 @@ export interface PlannerInput {
   volume_m3: number;
   /** Formwork area per tact (m²). If not given, estimated from volume, height, and element geometry */
   formwork_area_m2?: number;
-  /** Height from ground/floor to underside of element (m). Used for props calculation. */
+  /** Height from ground/floor to underside of element (m). Used for props calculation.
+   *  For mostovkova_deska: this is the prop height (terén → spodek desky), typ. 4–20 m.
+   *  For the deck cross-section thickness, use deck_thickness_m (separate field). */
   height_m?: number;
+  /**
+   * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Optional override.
+   * When omitted and span_m × nk_width_m are set, auto-derived as volume_m3 / (span_m × nk_width_m).
+   * Used for bridge-deck sanity check and deck-specific warnings only — the engine's
+   * formwork/pressure math still reads height_m (prop height) for mostovka.
+   */
+  deck_thickness_m?: number;
   /**
    * Lost formwork area (m²) — trapezoidal steel sheet (trapézový plech) that
    * stays in the structure permanently. This area does NOT need system formwork
@@ -884,6 +893,25 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 3a2. Mostovka-specific warnings ──────────────────────────────────
   if (elementType === 'mostovkova_deska') {
+    // BUG A1 (2026-04-16): resolve the deck cross-section thickness separately
+    // from the prop height. Preference order:
+    //   1. explicit deck_thickness_m (user override)
+    //   2. derived from volume / (span × width) when all three are set
+    //   3. undefined — deck_thickness sanity check is skipped
+    let effectiveDeckThickness = input.deck_thickness_m;
+    if (effectiveDeckThickness === undefined && input.volume_m3 && input.span_m && input.num_spans && input.nk_width_m) {
+      const totalDeckArea = input.span_m * input.num_spans * input.nk_width_m;
+      if (totalDeckArea > 0) {
+        effectiveDeckThickness = Math.round((input.volume_m3 / totalDeckArea) * 100) / 100;
+        log.push(`Deck thickness auto-derived: ${input.volume_m3} / (${input.span_m}×${input.num_spans}×${input.nk_width_m}) = ${effectiveDeckThickness} m`);
+      }
+    }
+    if (effectiveDeckThickness !== undefined && (effectiveDeckThickness < 0.3 || effectiveDeckThickness > 2.5)) {
+      warnings.push(
+        `⚠️ Tloušťka desky ${effectiveDeckThickness} m je mimo typický rozsah 0.3–2.5 m. Ověřte zadání.`
+      );
+    }
+
     // Construction sequence
     warnings.push(
       `Nosná konstrukce se betonuje PO dokončení spodní stavby (opěry, pilíře, úložné prahy). ` +
@@ -928,7 +956,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 3a2b. Bridge construction technology (mostovka only, when geometry given) ──
   let bridgeTechResult: PlannerOutput['bridge_technology'] | undefined;
   if (elementType === 'mostovkova_deska' && input.span_m && input.num_spans) {
-    const clearanceH = input.height_m ?? 10; // default 10m if not given
+    // BUG E1 (2026-04-16): height_m used to silently default to 10 m when
+    // missing, which produced bogus "Výška 10m — věže Staxo 100" warnings
+    // even if the user never entered a height. Now we warn explicitly so
+    // the UI can redirect the user to the výška field.
+    const clearanceH = input.height_m ?? 10;
+    if (input.height_m === undefined) {
+      warnings.push(
+        `⚠️ Výška nad terénem (height_m) nezadána — technologie počítána s odhadem 10 m. ` +
+        `Zadejte výšku pro přesný výběr skruže (Staxo 40 pod 8 m / Staxo 100 pro 8–20 m).`
+      );
+    }
     const techRec = recommendBridgeTechnology({
       span_m: input.span_m,
       clearance_height_m: clearanceH,

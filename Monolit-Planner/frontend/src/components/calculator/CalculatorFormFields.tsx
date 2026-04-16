@@ -436,7 +436,10 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 <>
                   {hint.has_height && (
                     <Field
-                      label="Výška (m)"
+                      // Mostovka A1 (2026-04-16): relabel so the user sees
+                      // "Výška nad terénem" (prop height) and not just
+                      // "Výška", which was ambiguous with deck thickness.
+                      label={elemType === 'mostovkova_deska' ? 'Výška nad terénem (m)' : 'Výška (m)'}
                       hint={hint.typical_height_range
                         ? `typicky ${hint.typical_height_range[0]}–${hint.typical_height_range[1]} m`
                         : 'pro výpočet podpěr'}
@@ -446,6 +449,21 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                         placeholder={hint.typical_height_range
                           ? `${hint.typical_height_range[0]}–${hint.typical_height_range[1]} m`
                           : 'výška elementu'} />
+                    </Field>
+                  )}
+                  {/* Mostovka A1: deck cross-section thickness is a separate
+                      input — was previously conflated with "Výška" and the
+                      0.3–2.5 sanity range triggered false warnings for real
+                      bridges (6–15 m tall support scaffolds). Optional —
+                      empty = engine derives from volume/(span×width). */}
+                  {elemType === 'mostovkova_deska' && (
+                    <Field
+                      label="Tloušťka desky (m)"
+                      hint="průřez NK (typ. 0.3–2.5 m). Volitelné — dopočítá se z objemu/(rozpětí×šířka)."
+                    >
+                      <NumInput style={inputStyle} value={form.deck_thickness_m} min={0} step={0.05}
+                        onChange={v => update('deck_thickness_m', v ? String(v) : '')}
+                        placeholder="např. 1.2" />
                     </Field>
                   )}
                   {/* Shape correction dropdown — hidden for element types with fixed geometry */}

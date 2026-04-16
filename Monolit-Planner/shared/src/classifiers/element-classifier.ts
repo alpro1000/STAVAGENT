@@ -1209,6 +1209,14 @@ export interface SanityRanges {
   height_m?: [number, number];
   rebar_kg_m3?: [number, number];
   formwork_area_m2?: [number, number];
+  /**
+   * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Separate from
+   * height_m, which for mostovkova_deska is the prop height (ground → underside).
+   * Using two distinct ranges stops the old heuristic from flagging a 6 m tall
+   * support scaffold as "neobvykle velká" (it was checked against the
+   * 0.3–2.5 deck-thickness range).
+   */
+  deck_thickness_m?: [number, number];
 }
 
 // A6 (2026-04-15): widened ranges to fit real bridge + foundation jobs.
@@ -1226,7 +1234,11 @@ export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
   driky_piliru:     { volume_m3: [1, 800],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
   rimsa:            { volume_m3: [0.5, 500], height_m: [0.3, 0.8],  rebar_kg_m3: [80, 180] },
   operne_zdi:       { volume_m3: [10, 500],  height_m: [2.0, 12.0], rebar_kg_m3: [50, 130] },
-  mostovkova_deska: { volume_m3: [20, 2000], height_m: [0.3, 2.5],  rebar_kg_m3: [100, 200] },
+  // Mostovka A1 (2026-04-16): height_m = podpěrné lešení od terénu po spodek
+  // desky (prop height), typ. 4–20 m. deck_thickness_m = průřez desky (0.3–2.5 m).
+  // Před tímto splitem byl height_m checkován proti 0.3–2.5 a každý reálný
+  // most (6–15 m nad terénem) triggeroval "neobvykle velká hodnota" warning.
+  mostovkova_deska: { volume_m3: [20, 2000], height_m: [4, 20], deck_thickness_m: [0.3, 2.5], rebar_kg_m3: [100, 200] },
   rigel:            { volume_m3: [3, 150],   height_m: [0.6, 3.0],  rebar_kg_m3: [100, 200] },
   opery_ulozne_prahy:{ volume_m3: [10, 500], height_m: [2.0, 15.0], rebar_kg_m3: [70, 160] },
   kridla_opery:     { volume_m3: [5, 200],   height_m: [2.0, 10.0], rebar_kg_m3: [60, 140] },
@@ -1270,9 +1282,10 @@ export function checkSanity(
   const issues: SanityIssue[] = [];
   const labels: Record<keyof SanityRanges, string> = {
     volume_m3: 'Objem',
-    height_m: 'Výška',
+    height_m: elementType === 'mostovkova_deska' ? 'Výška nad terénem' : 'Výška',
     rebar_kg_m3: 'Výztuž',
     formwork_area_m2: 'Plocha bednění',
+    deck_thickness_m: 'Tloušťka desky',
   };
   for (const key of Object.keys(ranges) as (keyof SanityRanges)[]) {
     const range = ranges[key];
