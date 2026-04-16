@@ -786,13 +786,40 @@ router.post('/:id/send-to-core', async (req, res) => {
     // Send first file to CORE for analysis (Workflow C)
     const firstFile = filesResult.rows[0];
 
-    console.log(`[PortalProjects] Sending project ${id} to CORE via file: ${firstFile.file_name}`);
+    console.log(`[PortalProjects] Sending project ${id} to CORE via file: ${firstFile.file_name} (path: ${firstFile.file_path})`);
 
-    const coreResult = await concreteAgent.workflowAStart(firstFile.file_path, {
-      projectId: id,
-      projectName: project.project_name,
-      objectType: project.project_type
-    });
+    let coreResult;
+    try {
+      coreResult = await concreteAgent.workflowAStart(firstFile.file_path, {
+        projectId: id,
+        projectName: project.project_name,
+        objectType: project.project_type
+      });
+    } catch (coreError) {
+      client.release();
+      const msg = coreError.message || String(coreError);
+      console.error(`[PortalProjects] CORE call failed for project ${id}:`, msg);
+
+      if (msg.includes('File not found')) {
+        return res.status(400).json({
+          success: false,
+          error: 'Uploaded file no longer exists on server. Please re-upload.',
+          detail: msg
+        });
+      }
+      if (msg.includes('timeout') || msg.includes('abort')) {
+        return res.status(504).json({
+          success: false,
+          error: 'CORE service timed out. Try again later.',
+          detail: msg
+        });
+      }
+      return res.status(502).json({
+        success: false,
+        error: 'CORE service returned an error',
+        detail: msg
+      });
+    }
 
     // CORE Workflow C returns project_id (not workflow_id)
     const coreProjectId = coreResult.project_id || coreResult.workflow_id || id;

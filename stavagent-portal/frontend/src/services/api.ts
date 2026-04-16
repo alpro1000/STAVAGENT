@@ -93,8 +93,14 @@ api.interceptors.response.use(
 
     console.error(`[API] Error:`, status, error.message);
 
-    // Handle 401 Unauthorized - redirect to login
+    // Handle 401 Unauthorized - redirect to login (skip in dev mode)
     if (status === 401) {
+      const DISABLE_AUTH = (import.meta as any).env?.VITE_DISABLE_AUTH === 'true';
+      if (DISABLE_AUTH) {
+        console.warn('[API] 401 Unauthorized (auth disabled — skipping redirect)');
+        return Promise.reject(error);
+      }
+
       console.warn('[API] 401 Unauthorized - redirecting to login');
       localStorage.removeItem('auth_token');
 

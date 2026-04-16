@@ -45,6 +45,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Load token from localStorage on mount
   useEffect(() => {
+    const DISABLE_AUTH = (import.meta as any).env?.VITE_DISABLE_AUTH === 'true';
+
+    if (DISABLE_AUTH) {
+      // Dev mode: skip token verification entirely to avoid 401 errors
+      // ProtectedRoute handles the bypass separately
+      setIsLoading(false);
+      return;
+    }
+
     const storedToken = localStorage.getItem('auth_token');
     if (storedToken) {
       setToken(storedToken);
