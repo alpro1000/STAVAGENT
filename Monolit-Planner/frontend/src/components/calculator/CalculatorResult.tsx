@@ -993,6 +993,22 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         <td style={cs}>—</td>
                       </tr>
                     )}
+                    {/* F2 (2026-04-16): tesařské práce subtotal — bednění +
+                        podpěry jsou obě z stejné čety (B1 fix), takže i v
+                        souhrnu by měly být vizuálně spojené. Řádek se
+                        objevuje jen když podpěry skutečně vznikly, aby
+                        uživatel bez výšky nedostal matoucí "součet = 0". */}
+                    {propsLabor > 0 && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-200)', background: 'var(--r0-slate-50)' }}>
+                        <td style={{ ...cl, fontStyle: 'italic', color: 'var(--r0-slate-600)' }}>
+                          ↳ Tesařské práce (bednění + podpěry)
+                        </td>
+                        <td style={{ ...cs, fontStyle: 'italic', color: 'var(--r0-slate-600)' }}>
+                          {formatCZK(plan.costs.formwork_labor_czk + propsLabor)}
+                        </td>
+                        <td style={cs} colSpan={2}></td>
+                      </tr>
+                    )}
                     <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
                       <td style={cl}>Pronájem bednění</td>
                       <td style={cs}>{formatCZK(plan.costs.formwork_rental_czk)}</td>
