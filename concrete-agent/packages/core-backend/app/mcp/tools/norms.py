@@ -78,11 +78,30 @@ async def search_czech_construction_norms(
     sources and extracts norm identifiers (ČSN EN, TP, TKP numbers).
 
     AI models often cite non-existent or outdated norms — this tool verifies
-    against real sources.
+    against real sources. Response includes extracted norm IDs (regex-verified),
+    source citations, and confidence score (1.0 local KB, 0.85 Perplexity).
 
     Args:
-        query: Question in Czech, e.g. 'požadavky na bílou vanu dle TP ČBS 02'
-        category: Filter: 'normy', 'tp', 'vyhlášky', 'všechno' (default)
+        query: Question in Czech about construction norms or practice.
+            Examples:
+            - 'požadavky na bílou vanu dle TP ČBS 02'
+            - 'minimální doba ošetřování betonu TKP kap. 18 §7.8.3'
+            - 'třída ošetřování 4 — kdy je povinná?'
+            - 'ČSN EN 206 tabulka expozičních tříd XF'
+            - 'maximální šířka trhlin pro mostní NK'
+            - 'DIN 18218 boční tlak čerstvého betonu vzorec'
+            - 'požadavky na SCC beton pro hustě vyztužené prvky'
+            Format: Czech language preferred. Include norm number if known
+            (e.g. 'TKP 18', 'ČSN EN 13670') for more precise results.
+
+        category: Source filter to narrow search scope.
+            - 'normy': Czech/EU standards only (ČSN, ČSN EN) —
+              sources: csnonline.cz, unmz.cz
+            - 'tp': Technical regulations (TP, TKP, VL for roads/bridges) —
+              sources: pjpk.rsd.cz, szdc.cz
+            - 'vyhlášky': Laws and decrees —
+              sources: zakonyprolidi.cz, mpo.cz, mmr.cz
+            - 'všechno': All 12 sources including practice journals (default)
     """
     try:
         # ── LAYER 1: Local NKB check ────────────────────────────────────

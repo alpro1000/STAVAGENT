@@ -138,19 +138,37 @@ async def find_otskp_code(
     code: Optional[str] = None,
     max_results: int = 5,
 ) -> dict:
-    """Find OTSKP catalog codes for a construction work item.
+    """Find OTSKP catalog codes for Czech transport/engineering structures.
 
     Database of 17,904 verified items from the Czech OTSKP pricing system
-    for transport and engineering structures (cenová soustava OTSKP).
-    AI models do NOT know these codes — this tool searches the real database.
+    (cenová soustava OTSKP pro dopravní a inženýrské stavby).
+    AI models do NOT know these 9-digit codes — this tool searches the
+    real database with text matching and returns exact prices.
 
-    Returns code, description, unit, and indicative unit price.
+    Each result includes: 9-digit code, Czech description, unit (m³, m², t, ks),
+    unit price in CZK, and confidence (1.0 for database match).
+
+    FREE tool (0 credits). Use for bridges, roads, tunnels, railways.
+    For building construction, use find_urs_code instead.
 
     Args:
-        query: Description of construction work in Czech,
-               e.g. 'bednění pilot průměr 1200mm'
-        code: Known OTSKP code (9 chars) for verification and detail lookup
-        max_results: Maximum number of results (default 5)
+        query: Description of construction work in Czech.
+            Be specific — include concrete class, element type, method.
+            Examples:
+            - 'bednění pilot průměr 1200mm'
+            - 'beton mostních pilířů C35/45'
+            - 'výztuž mostovky z oceli B500B'
+            - 'zřízení pevné skruže pro mostní NK'
+            - 'izolace mostovky natavená'
+            - 'římsový beton C30/37'
+            - 'předpínací výztuž Y1860S7'
+
+        code: Known OTSKP code (9 digits) for exact lookup.
+            Use when you already have a code and want to verify it
+            or get its current unit price.
+            Example: '113472111' (beton základů C25/30).
+
+        max_results: Maximum number of results to return (default 5, max 20).
     """
     try:
         catalog = _get_catalog()

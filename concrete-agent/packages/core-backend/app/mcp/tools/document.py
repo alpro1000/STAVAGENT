@@ -40,17 +40,37 @@ async def analyze_construction_document(
 ) -> dict:
     """Analyze a PDF technical report (TZ) or other construction documentation.
 
-    Extracts: concrete types, rebar classes, dimensions, exposure classes,
-    norms, construction types, special requirements (white tank, prestress, SCC).
+    Extracts construction parameters using deterministic regex patterns
+    (confidence 1.0): concrete classes (C25/30, C35/45...), rebar classes
+    (B500B, 10505), prestress steel (Y1860S7), exposure classes (XF2, XA2...),
+    dimensions (meters, mm), diameters (Ø900), ČSN norm references,
+    white tank indicators, SCC indicators, and OTSKP codes.
+
     For documents > 5 pages uses chunked extraction (by sections).
-    Each found parameter has confidence (1.0 for regex, 0.85 for Perplexity,
-    0.7 for AI) and page reference.
+    Each found parameter includes: type, value, confidence score, source
+    method, and page number reference.
+
+    Supported input: PDF files (text-based or scanned via pdfplumber).
+    Maximum recommended size: 10 MB. Scanned PDFs with poor OCR quality
+    may return fewer parameters.
+
+    Use focus parameter to narrow extraction to specific parameter types
+    for faster results on large documents.
 
     Args:
-        file_base64: PDF file content encoded as base64
-        filename: Original filename
-        focus: What to focus on: 'all', 'concrete', 'reinforcement',
-               'dimensions', 'norms'
+        file_base64: PDF file content encoded as base64 string.
+            To encode: base64.b64encode(open('file.pdf','rb').read()).decode()
+
+        filename: Original filename including extension.
+            Used for document type detection (TZ, soupis, výkres, etc.).
+            Examples: 'SO-202_TZ_statika.pdf', 'D.1.2_soupis_praci.pdf'
+
+        focus: Extraction focus filter to narrow parameter search.
+            - 'all': extract all parameter types (default, ~11 regex patterns)
+            - 'concrete': concrete_class + exposure + white_tank + SCC only
+            - 'reinforcement': rebar_class + prestress_steel + diameters
+            - 'dimensions': dimensions in m/mm + diameters
+            - 'norms': ČSN/EN norm references only
     """
     try:
         file_bytes = base64.b64decode(file_base64)
