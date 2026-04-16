@@ -11,10 +11,11 @@ describe('Rebar Lite Engine', () => {
         element_type: 'zaklady_piliru',
         volume_m3: 50,
       });
-      expect(result.mass_kg).toBe(5000);
-      expect(result.mass_t).toBe(5);
+      // BUG 4: zaklady_piliru rebar raised 100→120 kg/m³
+      expect(result.mass_kg).toBe(6000);
+      expect(result.mass_t).toBe(6);
       expect(result.mass_source).toBe('estimated');
-      expect(result.mass_range_kg).toEqual([4000, 6000]);
+      expect(result.mass_range_kg).toEqual([5000, 7500]);
     });
 
     it('uses given mass when provided', () => {
@@ -102,10 +103,10 @@ describe('Rebar Lite Engine', () => {
     });
 
     it('uses estimated mass when not given', () => {
-      // 50m³ × 100 kg/m³ = 5000kg = 5t → 5×40=200h
-      // Target 5 days: 200/(5×10×0.8)=5 crew
+      // BUG 4: 50m³ × 120 kg/m³ = 6000kg = 6t → 6×40=240h
+      // Target 5 days: 240/(5×10×0.8)=6 crew
       const crew = crewForTargetDays('zaklady_piliru', 50, 5);
-      expect(crew).toBe(5);
+      expect(crew).toBe(6);
     });
   });
 });

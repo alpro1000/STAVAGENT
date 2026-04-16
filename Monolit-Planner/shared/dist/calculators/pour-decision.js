@@ -91,6 +91,18 @@ export const ELEMENT_DEFAULTS = {
         typical_spara_spacing_m: null,
         description_cs: 'Přechodová deska — jednoduchá geometrie, monolit za opěrou, bez švů',
     },
+    podkladni_beton: {
+        typical_has_spary: false,
+        typical_sub_mode: null,
+        typical_spara_spacing_m: null,
+        description_cs: 'Podkladní beton — prostý beton (C12/15 X0), bez výztuže, přímo na terén',
+    },
+    podlozkovy_blok: {
+        typical_has_spary: false,
+        typical_sub_mode: null,
+        typical_spara_spacing_m: null,
+        description_cs: 'Podložiskový blok — malý hustě vyztužený ŽB prvek pod ložisko mostu',
+    },
     // ─── Building elements ───
     zakladova_deska: {
         typical_has_spary: 'depends',

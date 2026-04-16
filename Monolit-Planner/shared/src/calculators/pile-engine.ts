@@ -290,7 +290,7 @@ const DEFAULTS = {
   length_m: 10,
   geology: 'cohesive' as PileGeology,
   casing_method: 'cfa' as PileCasingMethod,
-  rebar_index_kg_m3: 40,
+  rebar_index_kg_m3: 40, // base default, overridden by getDefaultRebarIndex(diameter)
   concrete_class: 'C25/30',
   /** BUG-P2: default overpouring height in m (0.5 m per TZ §6.3.3). */
   overpouring_m: 0.5,
@@ -346,6 +346,26 @@ export function getHeadsPerShift(diameter_mm: number): number {
   return HEADS_PER_SHIFT_TABLE[0].heads;
 }
 
+// ─── Diameter-dependent rebar default (BUG 3/3b) ──────────────────────────
+
+/**
+ * BUG 3/3b: Default rebar index depends on pile diameter.
+ *
+ * Pozemní piloty (Ø<800) use 30-50 kg/m³ (light cages).
+ * Mostní Ø900 use ~90 kg/m³ (B500B podélná + spirála + CHA roury).
+ * Mostní Ø1200+ use ~100 kg/m³ (heavier cage + more spirála/m).
+ *
+ * Table (SO-202 Ø900, SO-203 Ø1200, SO-207 mix):
+ *   Ø < 800  → 40 kg/m³  (pozemní)
+ *   800-999  → 90 kg/m³  (mostní Ø900)
+ *   ≥ 1000   → 100 kg/m³ (mostní Ø1200+)
+ */
+export function getDefaultRebarIndex(diameter_mm: number): number {
+  if (diameter_mm < 800) return 40;
+  if (diameter_mm < 1000) return 90;
+  return 100;
+}
+
 // ─── Main entry ────────────────────────────────────────────────────────────
 
 /**
@@ -368,7 +388,8 @@ export function calculatePileDrilling(input: PileInput): PileResult {
   const length_m = input.length_m ?? DEFAULTS.length_m;
   const geology = input.geology ?? DEFAULTS.geology;
   const casing_method = input.casing_method ?? DEFAULTS.casing_method;
-  const rebar_index_kg_m3 = input.rebar_index_kg_m3 ?? DEFAULTS.rebar_index_kg_m3;
+  // BUG 3/3b: diameter-dependent default replaces flat 40 kg/m³
+  const rebar_index_kg_m3 = input.rebar_index_kg_m3 ?? getDefaultRebarIndex(diameter_mm);
   const concrete_class = input.concrete_class ?? DEFAULTS.concrete_class;
   const overpouring_m = input.overpouring_m ?? DEFAULTS.overpouring_m;
   const crew_size = input.crew_size ?? DEFAULTS.crew_size;

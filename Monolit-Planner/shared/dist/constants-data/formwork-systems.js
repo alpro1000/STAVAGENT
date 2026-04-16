@@ -48,7 +48,8 @@ export const FORMWORK_SYSTEMS = [
         unit: 'm2',
         description: 'Velkoformátové rámové bednění pro vysoké stěny, pilíře — vyžaduje jeřáb (panel 154–259 kg)',
         weight_kg_m2: 56,
-        pressure_kn_m2: 100,
+        // BUG 6: raised 100→120 — Framax Xlife max config (TIE pattern + walers) per DOKA TI
+        pressure_kn_m2: 120,
         max_pour_height_m: 6.75,
         max_panel_weight_kg: 350,
         needs_crane: true,

@@ -1003,11 +1003,18 @@ export function planElement(input: PlannerInput): PlannerOutput {
     const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
       mostovkova_deska: ['XF2', 'XF4', 'XD1', 'XD3', 'XC4'],
       rimsa: ['XF4', 'XD3'],
-      driky_piliru: ['XC4', 'XD3', 'XF4'],
+      // BUG 2: XF2 added — pilíře mimo zónu rozstřiku (SO-202 P4, SO-207 P2/P8/P9/P10P)
+      driky_piliru: ['XC4', 'XD3', 'XF2', 'XF4'],
+      // BUG 1b/1c: XF3 (mráz u vodoteče, SO-207 P2-P4), XA2 (agresivní PV, SO-203/207)
       zaklady_piliru: ['XC2', 'XC4', 'XA1', 'XA2', 'XF1', 'XF3'],
-      opery_ulozne_prahy: ['XC4', 'XD1', 'XF1', 'XF2', 'XF3'],
+      // BUG 1: XF4 added — standard pro mostní opěry v zóně rozstřiku (SO-202/203/207)
+      opery_ulozne_prahy: ['XC4', 'XD1', 'XF1', 'XF2', 'XF3', 'XF4'],
+      // BUG 10: závěrné zídky — XF4 standard (TZ SO-202/203/207 shodně C30/37 XF4)
+      mostni_zavirne_zidky: ['XF4', 'XF3', 'XD1', 'XC4'],
       operne_zdi: ['XC4', 'XD1', 'XF1'],
-      prechodova_deska: ['XC4', 'XD1', 'XF1'],
+      prechodova_deska: ['XC4', 'XD1', 'XF1', 'XF2'],
+      // BUG 11: podložiskový blok — SO-202 XF2, SO-203 opěry XF4
+      podlozkovy_blok: ['XF2', 'XF4', 'XC4'],
     };
     const recommended = RECOMMENDED_EXPOSURE[elementType];
     if (recommended && !recommended.includes(input.exposure_class)) {

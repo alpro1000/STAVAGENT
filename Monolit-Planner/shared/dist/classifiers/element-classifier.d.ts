@@ -31,6 +31,8 @@ export interface ElementProfile {
     needs_platforms: boolean;
     /** Whether crane required for formwork operations */
     needs_crane: boolean;
+    /** Whether formwork is needed at all (default true; false for podkladní beton, pilota) */
+    needs_formwork?: boolean;
     /** Typical reinforcement ratio kg/m³ (midpoint) */
     rebar_ratio_kg_m3: number;
     /** Min–max rebar ratio range */

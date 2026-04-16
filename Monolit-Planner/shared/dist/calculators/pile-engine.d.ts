@@ -178,6 +178,19 @@ export declare function calculatePileVolume(diameter_mm: number, length_m: numbe
 export declare function derivePileCount(total_volume_m3: number, diameter_mm: number, length_m: number): number;
 export declare function getHeadsPerShift(diameter_mm: number): number;
 /**
+ * BUG 3/3b: Default rebar index depends on pile diameter.
+ *
+ * Pozemní piloty (Ø<800) use 30-50 kg/m³ (light cages).
+ * Mostní Ø900 use ~90 kg/m³ (B500B podélná + spirála + CHA roury).
+ * Mostní Ø1200+ use ~100 kg/m³ (heavier cage + more spirála/m).
+ *
+ * Table (SO-202 Ø900, SO-203 Ø1200, SO-207 mix):
+ *   Ø < 800  → 40 kg/m³  (pozemní)
+ *   800-999  → 90 kg/m³  (mostní Ø900)
+ *   ≥ 1000   → 100 kg/m³ (mostní Ø1200+)
+ */
+export declare function getDefaultRebarIndex(diameter_mm: number): number;
+/**
  * calculatePileDrilling — main entry point used by the orchestrator's pile branch.
  *
  * Steps:

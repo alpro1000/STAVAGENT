@@ -49,11 +49,13 @@ export type StructuralElementType =
   | 'rimsa'               // Římsová deska
   | 'operne_zdi'          // Opěrné zdi (mostní i pozemní)
   | 'mostovkova_deska'    // Mostovková deska / nosná konstrukce
-  | 'rigel'               // Příčník / ригель
+  | 'rigel'               // Příčník / hlavice pilíře
   | 'opery_ulozne_prahy'  // Opěry, úložné prahy
   | 'kridla_opery'        // Křídla mostních opěr (wing walls)
   | 'mostni_zavirne_zidky'// Mostní závěrné zídky
   | 'prechodova_deska'   // Přechodová deska mostních opěr
+  | 'podkladni_beton'    // Podkladní beton (prostý, C12/15 X0)
+  | 'podlozkovy_blok'    // Podložiskový blok (pod ložiska, C35/45)
   // ─── Building elements (pozemní stavby) ───
   | 'zakladova_deska'     // Základová deska (foundation slab)
   | 'zakladovy_pas'       // Základový pás (strip foundation)
@@ -215,6 +217,18 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
     typical_sub_mode: null,
     typical_spara_spacing_m: null,
     description_cs: 'Přechodová deska — jednoduchá geometrie, monolit za opěrou, bez švů',
+  },
+  podkladni_beton: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Podkladní beton — prostý beton (C12/15 X0), bez výztuže, přímo na terén',
+  },
+  podlozkovy_blok: {
+    typical_has_spary: false,
+    typical_sub_mode: null,
+    typical_spara_spacing_m: null,
+    description_cs: 'Podložiskový blok — malý hustě vyztužený ŽB prvek pod ložisko mostu',
   },
   // ─── Building elements ───
   zakladova_deska: {

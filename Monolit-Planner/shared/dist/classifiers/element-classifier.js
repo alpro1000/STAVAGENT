@@ -22,8 +22,9 @@ const ELEMENT_CATALOG = {
         needs_supports: false,
         needs_platforms: false,
         needs_crane: false,
-        rebar_ratio_kg_m3: 100,
-        rebar_ratio_range: [80, 120],
+        // BUG 4: raised 100→120, real bridge patky 120-150 (B500B + CHA roury + kotvení)
+        rebar_ratio_kg_m3: 120,
+        rebar_ratio_range: [100, 150],
         rebar_norm_h_per_t: 40,
         strip_strength_pct: 50,
         // BUG-Z1 (2026-04-15): základová patka je horizontální prvek (H < B, H < L).
@@ -116,8 +117,9 @@ const ELEMENT_CATALOG = {
         needs_supports: false,
         needs_platforms: true,
         needs_crane: true,
-        rebar_ratio_kg_m3: 100,
-        rebar_ratio_range: [80, 130],
+        // BUG 5: raised 100→140, opěry jsou hustě vyztužené (dřík+prah+zídka+křídla)
+        rebar_ratio_kg_m3: 140,
+        rebar_ratio_range: [120, 180],
         rebar_norm_h_per_t: 45,
         strip_strength_pct: 50,
         orientation: 'vertical',
@@ -126,7 +128,7 @@ const ELEMENT_CATALOG = {
     },
     kridla_opery: {
         label_cs: 'Křídla mostních opěr',
-        recommended_formwork: ['Frami Xlife', 'Framax Xlife', 'Frami Xlife'],
+        recommended_formwork: ['Frami Xlife', 'Framax Xlife'],
         difficulty_factor: 0.9,
         needs_supports: false,
         needs_platforms: true,
@@ -335,6 +337,38 @@ const ELEMENT_CATALOG = {
         max_pour_rate_m3_h: 30,
         pump_typical: false, // tremie pipe, not pump
     },
+    // ─── BUG 11: New bridge element types ──────────────────────────────────────
+    podkladni_beton: {
+        label_cs: 'Podkladní beton',
+        recommended_formwork: ['Tradiční tesařské'],
+        difficulty_factor: 0.5, // simple plain concrete, no rebar
+        needs_supports: false,
+        needs_platforms: false,
+        needs_crane: false,
+        needs_formwork: false, // poured directly on excavation / terrain
+        rebar_ratio_kg_m3: 0, // prostý beton — no reinforcement
+        rebar_ratio_range: [0, 0],
+        rebar_norm_h_per_t: 0,
+        strip_strength_pct: 50,
+        orientation: 'horizontal',
+        max_pour_rate_m3_h: 50,
+        pump_typical: true,
+    },
+    podlozkovy_blok: {
+        label_cs: 'Podložiskový blok',
+        recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
+        difficulty_factor: 1.2, // small but precisely placed, dense rebar
+        needs_supports: false,
+        needs_platforms: true,
+        needs_crane: false,
+        rebar_ratio_kg_m3: 180, // very dense reinforcement (anchor bars + ties)
+        rebar_ratio_range: [150, 220],
+        rebar_norm_h_per_t: 60,
+        strip_strength_pct: 50,
+        orientation: 'horizontal',
+        max_pour_rate_m3_h: 15,
+        pump_typical: true,
+    },
     other: {
         label_cs: 'Jiný monolitický prvek',
         recommended_formwork: ['Frami Xlife'],
@@ -536,6 +570,17 @@ const KEYWORD_RULES = [
             'pilota', 'piloty', 'mikropilot', 'vrtana pilota', 'vrtaná pilota', 'bored pile',
             'свая', 'буронабивн',
         ], priority: 8 },
+    // BUG 11: new element types
+    { element_type: 'podkladni_beton', keywords: [
+            'podkladni beton', 'podkladní beton', 'podklad beton', 'podbet',
+            'prosty beton', 'prostý beton', 'lean concrete', 'blinding',
+            'c12/15', 'c 12/15',
+        ], priority: 7 },
+    { element_type: 'podlozkovy_blok', keywords: [
+            'podlozkovy blok', 'podložiskový blok', 'podlozisk', 'podložisk',
+            'bearing block', 'bearing pad', 'loziskovy blok', 'ložiskový blok',
+            'blok pod lozisko', 'blok pod ložisko',
+        ], priority: 9 },
 ];
 /**
  * Normalize Czech text for keyword matching: lowercase + strip diacritics
@@ -951,6 +996,13 @@ export const REQUIRED_FIELDS = {
     pilota: [
         { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
     ],
+    podkladni_beton: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat náklady' },
+    ],
+    podlozkovy_blok: [
+        { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat náklady' },
+        { field: 'height_m', label_cs: 'Výška bloku', severity: 'optional', reason_cs: 'ovlivňuje bednění (typicky 0.3–0.5 m)' },
+    ],
     other: [
         { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat náklady' },
     ],
@@ -987,6 +1039,8 @@ export const SANITY_RANGES = {
     nadrz: { volume_m3: [10, 800], height_m: [2.0, 8.0], rebar_kg_m3: [70, 160] },
     podzemni_stena: { volume_m3: [20, 2000], height_m: [5.0, 40.0], rebar_kg_m3: [50, 140] },
     pilota: { volume_m3: [0.5, 600], height_m: [5.0, 40.0], rebar_kg_m3: [40, 120] },
+    podkladni_beton: { volume_m3: [0.5, 200] },
+    podlozkovy_blok: { volume_m3: [0.1, 5], height_m: [0.2, 0.6], rebar_kg_m3: [150, 250] },
     other: { volume_m3: [0.5, 5000] },
 };
 /**

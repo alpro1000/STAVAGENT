@@ -38,6 +38,9 @@ export const BRIDGE_ELEMENT_ORDER = {
     schodiste: 94,
     nadrz: 95,
     podzemni_stena: 96,
+    // BUG 11: new element types
+    podkladni_beton: 5, // before foundations (lean concrete under footings)
+    podlozkovy_blok: 78, // after NK, before cornice (bearing blocks on piers)
     other: 100,
 };
 // ─── Building construction sequence ─────────────────────────────────────────
@@ -72,6 +75,9 @@ export const BUILDING_ELEMENT_ORDER = {
     prechodova_deska: 86,
     rimsa: 87,
     mostni_zavirne_zidky: 88,
+    // BUG 11: new element types
+    podkladni_beton: 5, // before foundations
+    podlozkovy_blok: 78, // after NK, on pier heads
     other: 100,
 };
 // ─── Part name → sequence matching (for ProjectGantt / PositionsTable) ──────
