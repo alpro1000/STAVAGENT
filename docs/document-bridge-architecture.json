@@ -1,0 +1,329 @@
+{
+  "document": "STAVAGENT Document Bridge Architecture",
+  "version": "1.0",
+  "date": "2026-04-16",
+  "status": "architectural_vision",
+  "location_in_repo": "docs/architecture/document-bridge.json",
+
+  "use_scenarios": [
+    {
+      "id": "mcp_via_chatgpt_claude",
+      "name": "MCP přes ChatGPT / Claude",
+      "status": "active",
+      "flow": [
+        "User uploads TZ PDF to ChatGPT/Claude",
+        "LLM reads PDF and extracts parameters",
+        "LLM calls STAVAGENT MCP tool with parameters",
+        "Engine calculates",
+        "LLM formats response for user"
+      ],
+      "key_insight": "Parameter extraction done by user's LLM (ChatGPT/Claude), not STAVAGENT",
+      "stavagent_role": "Provide well-structured MCP tool with clear parameter descriptions",
+      "todo": [
+        "Enrich MCP tool schemas with rules from golden test",
+        "Add examples in description of each parameter",
+        "Example: curing_class description must say '4 for bridge NK per TKP18 §7.8.3'"
+      ]
+    },
+    {
+      "id": "saas_manual_input",
+      "name": "SaaS ruční zadání",
+      "status": "active",
+      "flow": [
+        "User opens calculator",
+        "Selects element_type",
+        "Manually enters volume, concrete, temperature",
+        "Clicks Calculate"
+      ],
+      "limitation": "Slow — 14 pile groups in SO-202 = 14× manual opening"
+    },
+    {
+      "id": "saas_document_bridge",
+      "name": "SaaS Document Bridge",
+      "status": "backlog",
+      "task_reference": "TASK_SmartInput_DocumentBridge",
+      "flow": [
+        "Upload TZ PDF to Monolit Planner",
+        "Backend: MinerU OCR → text",
+        "Backend: extract facts (3 JSON architecture)",
+        "Backend: build calculator inputs per position",
+        "Frontend: list positions ready for calculation",
+        "User: one click 'Calculate all' → batch calculation",
+        "Result: harmonogram, costs, budget"
+      ]
+    }
+  ],
+
+  "extraction_approaches": {
+    "deterministic": {
+      "approach": "regex + rules engine",
+      "confidence": 1.0,
+      "cost": "free",
+      "speed": "fast",
+      "pros": ["deterministic", "no LLM costs", "fast"],
+      "cons": ["misses formulations outside templates"],
+      "example_patterns": [
+        {
+          "pattern_in_tz": "třída ošetřování 4",
+          "extraction": {"curing_class": 4}
+        },
+        {
+          "pattern_in_tz": "C35/45 XF2",
+          "extraction": {"concrete_class": "C35/45", "exposure_class": "XF2"}
+        },
+        {
+          "pattern_in_tz": "Ø900 mm",
+          "extraction": {"diameter_mm": 900}
+        },
+        {
+          "pattern_in_tz": "6 polí × 20m",
+          "extraction": {"num_spans": 6, "span_m": 20}
+        },
+        {
+          "pattern_in_tz": "předpjatá|dodatečně předpjatý",
+          "extraction": {"is_prestressed": true}
+        },
+        {
+          "pattern_in_tz": "pevná skruž|betonáž na pevné skruži",
+          "extraction": {"construction_technology": "fixed_scaffolding"}
+        },
+        {
+          "pattern_in_tz": "12 kabelů × 13 lan",
+          "extraction": {"num_cables": 12, "lanes_per_cable": 13}
+        }
+      ]
+    },
+    "llm_fallback": {
+      "approach": "LLM with golden test as few-shot",
+      "confidence": 0.7,
+      "cost": "paid per token",
+      "provider_chain": ["gemini_flash", "bedrock_claude_sonnet", "perplexity"],
+      "trigger": "when deterministic parser finds < 80% of parameters",
+      "prompt_template": "Here's an example of correct parameter extraction from bridge TZ: [SO-202 golden test JSON]. Now extract parameters from this TZ: [new TZ]. Return JSON in same format.",
+      "pros": ["handles ambiguity", "learns from golden test"],
+      "cons": ["lower confidence", "paid", "slower"]
+    }
+  },
+
+  "document_bridge_pipeline": [
+    {
+      "step": 1,
+      "name": "Document Upload",
+      "input": "PDF TZ file",
+      "output": "file on storage"
+    },
+    {
+      "step": 2,
+      "name": "MinerU OCR",
+      "input": "PDF file",
+      "output": "clean text + zones + tables",
+      "confidence": 1.0,
+      "existing": true
+    },
+    {
+      "step": 3,
+      "name": "Deterministic Extractor",
+      "input": "OCR text",
+      "output": "structured facts JSON",
+      "confidence": 1.0,
+      "extracts": ["concrete_class", "exposure_class", "curing_class", "dimensions", "work_decomposition"]
+    },
+    {
+      "step": 4,
+      "name": "Structure builder",
+      "input": "facts JSON",
+      "output": "hierarchical structure: SO-xxx → objects → positions → calculator inputs"
+    },
+    {
+      "step": 5,
+      "name": "LLM fallback",
+      "input": "unextracted parameters + golden test few-shot",
+      "output": "additional parameters JSON",
+      "confidence": 0.7,
+      "conditional": "only if deterministic < 80%"
+    },
+    {
+      "step": 6,
+      "name": "Validation",
+      "input": "combined parameters",
+      "output": "validated parameters + warnings",
+      "checks": ["cross-check with golden test rules", "flag contradictions", "request user confirmation"]
+    },
+    {
+      "step": 7,
+      "name": "Calculator batch input",
+      "input": "validated parameters",
+      "output": "list of positions ready for calculation"
+    },
+    {
+      "step": 8,
+      "name": "Calculator engine",
+      "input": "batch positions",
+      "output": "harmonogram + costs + PERT + Gantt",
+      "existing": true
+    }
+  ],
+
+  "golden_tests_role": {
+    "description": "Golden tests in test-data/tz/ serve 4 purposes",
+    "levels": [
+      {
+        "level": 1,
+        "name": "Regression tests",
+        "purpose": "Validate calculator outputs",
+        "example": "SO-202 NK must return curing ≥ 9 days (třída ošetřování 4)"
+      },
+      {
+        "level": 2,
+        "name": "Few-shot examples",
+        "purpose": "Prompt examples for LLM extraction",
+        "example": "Show LLM the correct JSON format via SO-202 example"
+      },
+      {
+        "level": 3,
+        "name": "Validation rules",
+        "purpose": "Post-extraction sanity checks",
+        "example": "For bridge NK curing_class must be 4, else warning"
+      },
+      {
+        "level": 4,
+        "name": "Training data",
+        "purpose": "Source of regex patterns",
+        "example": "What formulations appear in real TZ documents"
+      }
+    ],
+    "current_corpus": [
+      {
+        "file": "test-data/tz/SO-202_D6_most_golden_test.md",
+        "type": "dvoutrámový_předpjatý_most",
+        "status": "exists"
+      },
+      {
+        "file": "test-data/tz/SO-207_D6_estakada.md",
+        "type": "estakáda_MSS",
+        "status": "planned"
+      },
+      {
+        "file": "test-data/tz/FORESTINA_bila_vana.md",
+        "type": "bílá_vana_pozemní",
+        "status": "planned"
+      }
+    ],
+    "formula": "More golden tests → more accurate extraction → less manual work"
+  },
+
+  "knowledge_levels": {
+    "description": "STAVAGENT has 4 levels of knowledge",
+    "levels": [
+      {
+        "name": "TKP normy",
+        "location": "STAVAGENT/extracted_data/",
+        "count": "36 pairs",
+        "purpose": "Primary source — ŘSD normatives"
+      },
+      {
+        "name": "KB engine",
+        "location": "concrete-agent/.../knowledge_base/B1-B9",
+        "purpose": "Aggregated data for CORE API"
+      },
+      {
+        "name": "Katalogy",
+        "location": "data/peri-pdfs/",
+        "purpose": "DOKA/PERI bednění specifications"
+      },
+      {
+        "name": "Golden tests",
+        "location": "test-data/tz/",
+        "count": "3+ bridges",
+        "purpose": "Etalons for calculator verification"
+      }
+    ],
+    "chain": "TKP → extracted.json → KB JSON → engine logic → golden test verification"
+  },
+
+  "implementation_plan": {
+    "phase_0": {
+      "name": "MCP scenario works (ACTIVE)",
+      "status": "in_progress",
+      "tasks": [
+        {"task": "MCP v1.0 merged", "done": true},
+        {"task": "Enrich MCP tool schemas with rules from golden test", "done": false},
+        {"task": "Add examples in parameter descriptions", "done": false}
+      ],
+      "outcome": "User in ChatGPT works now"
+    },
+    "phase_1": {
+      "name": "SmartInput v1 (deterministic only)",
+      "duration": "2-3 weeks",
+      "tasks": [
+        {"task": "PDF upload in Monolit Planner", "done": true},
+        {"task": "MinerU OCR", "done": true},
+        {"task": "Regex extractor for 80% of bridge TZ parameters", "done": false},
+        {"task": "Form auto-fill on frontend", "done": false},
+        {"task": "User review before calculation", "done": false}
+      ],
+      "outcome": "Rozpočtář uploads TZ → parameters pre-filled → review → calculate"
+    },
+    "phase_2": {
+      "name": "SmartInput v2 (+ LLM fallback)",
+      "duration": "1-2 weeks",
+      "tasks": [
+        {"task": "LLM (Gemini Flash → Bedrock Claude) processes what regex missed", "done": false},
+        {"task": "Golden tests as few-shot in prompt", "done": false},
+        {"task": "Confidence scoring in UI (green=regex, yellow=LLM, red=manual)", "done": false}
+      ],
+      "outcome": "Coverage > 95% of parameters for standard bridge TZ"
+    },
+    "phase_3": {
+      "name": "Batch processing",
+      "duration": "1 week",
+      "tasks": [
+        {"task": "Vypočítat vše button for position list", "done": false},
+        {"task": "Parallel calculation of all positions", "done": false},
+        {"task": "Aggregated budget + harmonogram", "done": false}
+      ],
+      "outcome": "Complete rozpočet with one click"
+    }
+  },
+
+  "architectural_decision": {
+    "title": "MCP scenario ≠ SaaS scenario",
+    "comparison": [
+      {
+        "aspect": "Who extracts parameters",
+        "mcp": "User's LLM (ChatGPT/Claude)",
+        "saas": "STAVAGENT backend"
+      },
+      {
+        "aspect": "Infrastructure",
+        "mcp": "MCP server + engine",
+        "saas": "MCP server + engine + MinerU + regex + LLM fallback"
+      },
+      {
+        "aspect": "Operating cost",
+        "mcp": "Low (no LLM in our stack)",
+        "saas": "Higher (Bedrock/Gemini calls)"
+      },
+      {
+        "aspect": "Target user",
+        "mcp": "AI-literate developer/rozpočtář",
+        "saas": "Mainstream rozpočtář without AI"
+      },
+      {
+        "aspect": "Dependency",
+        "mcp": "User needs ChatGPT/Claude subscription",
+        "saas": "Only STAVAGENT account"
+      },
+      {
+        "aspect": "Status",
+        "mcp": "ACTIVE (v1.0)",
+        "saas": "BACKLOG (TASK_SmartInput_DocumentBridge)"
+      }
+    ],
+    "why_both": [
+      "MCP is cheap and fast for early adopters",
+      "SaaS Document Bridge is necessary for mainstream — rozpočtář without AI has nowhere to run LLM. Backend must do extraction itself."
+    ],
+    "common_foundation": "Both scenarios rely on golden tests as source of truth. Each added TZ in test-data/tz/ makes both systems smarter."
+  }
+}
