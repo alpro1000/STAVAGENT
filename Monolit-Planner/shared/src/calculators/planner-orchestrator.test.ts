@@ -814,4 +814,50 @@ describe('Planner Orchestrator', () => {
       expect(plan.pour_decision.num_tacts).toBe(1);
     });
   });
+
+  // ─── Mostovka B1 (2026-04-16): tesaři sequence podpěry+bednění ───────
+  describe('planElement — tesaři crew sequencing (B1)', () => {
+    const baseInput: PlannerInput = {
+      element_type: 'mostovkova_deska',
+      volume_m3: 120,
+      formwork_area_m2: 100,
+      concrete_class: 'C35/45',
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',
+    };
+
+    it('schedule total_days grows when height_m is given (props now on critical path)', () => {
+      const withoutHeight = planElement(baseInput);
+      const withHeight = planElement({ ...baseInput, height_m: 8 });
+      // Height triggers calculateProps → asm/dis days roll into ASM/STR.
+      // Because the same tesaři crew now has more sequential work, total
+      // days must be ≥ the height-less plan.
+      expect(withHeight.schedule.total_days).toBeGreaterThanOrEqual(withoutHeight.schedule.total_days);
+      expect(withHeight.props).toBeDefined();
+      expect(withHeight.props!.assembly_days).toBeGreaterThan(0);
+    });
+
+    it('decision log records combined tesaři sequence for horizontal element with props', () => {
+      const plan = planElement({ ...baseInput, height_m: 8 });
+      const hasSequenceLog = plan.decision_log.some(l =>
+        l.includes('Tesaři sequence per tact') && l.includes('podpěry') && l.includes('bednění'),
+      );
+      expect(hasSequenceLog).toBe(true);
+    });
+
+    it('vertical element without needs_supports: no props inflation (stěna)', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 40,
+        formwork_area_m2: 60,
+        height_m: 3,
+        concrete_class: 'C30/37',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      expect(plan.props).toBeUndefined();
+      const hasSequenceLog = plan.decision_log.some(l => l.includes('Tesaři sequence per tact'));
+      expect(hasSequenceLog).toBe(false);
+    });
+  });
 });

@@ -1489,14 +1489,61 @@ export function planElement(input: PlannerInput): PlannerOutput {
     log.push(`Multi-bridge override: ${prevTacts} → ${numBridges} tacts (1 tact = 1 celý most, ${pourDecision.tact_volume_m3} m³/most)`);
   }
 
+  // ─── 7a0. Props (skruž) pre-pass — needed BEFORE scheduler so that
+  //          tesaři work on podpěry is reflected in the critical path. ───
+  // BUG B1 (2026-04-16): until this point the scheduler only saw formwork
+  // ASM/STR days. Props (podpěrná konstrukce) were calculated later and
+  // only surfaced as cost — but the same tesaři crew actually builds the
+  // skruž BEFORE the formwork and dismantles it AFTER stripping. Pouring
+  // props into a parallel track made the schedule pretend tesaři could be
+  // in two places at once. We now roll props assembly into ASM duration
+  // and props disassembly into STR duration for the schedule only; cost
+  // math below still uses the separate propsResult so pronájem stays
+  // visible as its own line item.
+  let propsResult: PropsCalculatorResult | undefined;
+  if (profile.needs_supports && input.height_m && input.height_m > 0) {
+    propsResult = calculateProps({
+      element_type: elementType,
+      height_m: input.height_m,
+      formwork_area_m2: fwAreaTotal,
+      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
+      crew_size: crew,
+      shift_h: shift,
+      k,
+      wage_czk_h: wageFormwork,
+      num_tacts: pourDecision.num_tacts,
+      formwork_manufacturer: fwSystem.manufacturer,
+    });
+    warnings.push(...propsResult.warnings);
+    log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
+      `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
+    log.push(...propsResult.log.map(l => `  props: ${l}`));
+  } else if (profile.needs_supports && !input.height_m) {
+    warnings.push(
+      `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
+      `ale není zadána výška. Zadejte výšku pro výpočet podpěr, počtu stojek a nákladů na pronájem.`
+    );
+    log.push(`Props: skipped — height_m not provided for element with needs_supports=true`);
+  }
+
+  const schedAssemblyDays = roundTo(assemblyDays + (propsResult?.assembly_days ?? 0), 2);
+  const schedStrippingDays = roundTo(disassemblyDays + (propsResult?.disassembly_days ?? 0), 2);
+  if (propsResult) {
+    log.push(
+      `Tesaři sequence per tact: podpěry ${propsResult.assembly_days}d → bednění ${assemblyDays}d ` +
+      `(ASM=${schedAssemblyDays}d) | STR: bednění ${disassemblyDays}d → podpěry ${propsResult.disassembly_days}d ` +
+      `(STR=${schedStrippingDays}d). Tatáž četa, jedna stopa.`,
+    );
+  }
+
   const scheduleResult = scheduleElement({
     num_tacts: pourDecision.num_tacts,
     num_sets: numSets,
-    assembly_days: assemblyDays,
+    assembly_days: schedAssemblyDays,
     rebar_days: rebarResult.duration_days,
     concrete_days: concreteDays,
     curing_days: curingDays,
-    stripping_days: disassemblyDays,
+    stripping_days: schedStrippingDays,
     prestress_days: prestressDays,
     num_formwork_crews: numFWCrews,
     num_rebar_crews: numRBCrews, // parallel rebar crews across tacts (RCPSP)
@@ -1600,36 +1647,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // ─── 7c. Props (podpěry / stojky / skruž) ─────────────────────────────
-  // Props are calculated on the FULL area (fwAreaTotal), not the reduced
-  // system-formwork area. Even if ztracené bednění covers most of the deck,
-  // props still support the full slab weight.
-  let propsResult: PropsCalculatorResult | undefined;
-  if (profile.needs_supports && input.height_m && input.height_m > 0) {
-    propsResult = calculateProps({
-      element_type: elementType,
-      height_m: input.height_m,
-      formwork_area_m2: fwAreaTotal,
-      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
-      crew_size: crew,
-      shift_h: shift,
-      k,
-      wage_czk_h: wageFormwork,
-      num_tacts: pourDecision.num_tacts,
-      // Vendor match: pass formwork manufacturer so props prefer same vendor
-      // (e.g. Dokaflex → Doka Eurex; PERI SKYDECK → PERI Multiprop)
-      formwork_manufacturer: fwSystem.manufacturer,
-    });
-    warnings.push(...propsResult.warnings);
-    log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
-      `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
-    log.push(...propsResult.log.map(l => `  props: ${l}`));
-  } else if (profile.needs_supports && !input.height_m) {
-    warnings.push(
-      `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
-      `ale není zadána výška. Zadejte výšku pro výpočet podpěr, počtu stojek a nákladů na pronájem.`
-    );
-    log.push(`Props: skipped — height_m not provided for element with needs_supports=true`);
-  }
+  // Props were calculated up front in section 7a0 (before the scheduler)
+  // so tesaři podpěry+bednění time appears in one crew trace on the
+  // critical path. The propsResult variable carries cost + warnings into
+  // section 8 below.
 
   // ─── 8. Cost Summary ──────────────────────────────────────────────────
 

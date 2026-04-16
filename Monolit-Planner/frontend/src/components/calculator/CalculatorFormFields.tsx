@@ -1034,7 +1034,10 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   )}
                 </Field>
 
-                {/* Tesaři (bednění) */}
+                {/* Tesaři (bednění + podpěry). Label call-out makes it
+                    explicit that the same crew builds skruž AND bednění —
+                    the orchestrator sequences both onto ASM/STR since
+                    4/2026 (B1 fix). */}
                 <div
                   style={{
                     marginTop: 10, padding: '8px 10px',
@@ -1046,7 +1049,9 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   title={isPile ? pileDisabledTitle : undefined}
                 >
                   <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600, #475569)', marginBottom: 6 }}>
-                    Tesaři / bednáři (bednění)
+                    {form.element_type === 'mostovkova_deska' || form.element_type === 'stropni_deska'
+                      ? 'Tesaři (bednění + podpěrná konstrukce)'
+                      : 'Tesaři / bednáři (bednění)'}
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <Field label="Čety">
@@ -1077,6 +1082,25 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                       ? 'Pilota: bez tesařů (vrtací souprava + železáři)'
                       : `Celkem tesařů: ${form.num_formwork_crews * form.crew_size}`}
                   </div>
+                  {/* B2 (2026-04-16): formwork crew recommendation. Mirrors
+                      the existing rebar hint style so users see both trades
+                      side-by-side. ~0.6 Nhod/m² is the avg assembly norm
+                      across the DOKA/PERI catalog (Framax 0.55, Dokaflex
+                      0.72) — close enough for a sidebar rule of thumb.
+                      Not shown for pilota (no bednění). */}
+                  {!isPile && form.formwork_area_m2 && parseFloat(form.formwork_area_m2) > 0 && (() => {
+                    const area = parseFloat(form.formwork_area_m2);
+                    const shift = form.shift_h || 10;
+                    const targetDays = 2;
+                    const optimal = Math.max(2, Math.ceil((area * 0.6) / (targetDays * shift)));
+                    const current = form.num_formwork_crews * form.crew_size;
+                    const color = current >= optimal ? 'var(--r0-success-text, #059669)' : 'var(--r0-warn-text, #b45309)';
+                    return (
+                      <div style={{ fontSize: 10, color, marginTop: 2 }}>
+                        Doporučeno ~{optimal} tesařů pro {area.toFixed(0)} m² / {targetDays} dny (0,6 Nh/m²)
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* Železáři (výztuž) */}

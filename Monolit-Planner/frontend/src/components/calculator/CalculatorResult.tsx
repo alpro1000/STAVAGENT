@@ -602,6 +602,22 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           <Row label="Objem/záběr" value={`${formatNum(plan.pour_decision.tact_volume_m3)} m³`} />
           <Row label="Rychlost" value={`${formatNum(plan.pour.effective_rate_m3_h)} m³/h`} />
           <Row label="Úzké hrdlo" value={plan.pour.rate_bottleneck} />
+          {/* B3 (2026-04-16): betonáři info row — engine already charges
+              pour_labor but the UI never surfaced WHO does the work. Rule
+              of thumb: 20 m³ per betonář per záběr (ukládka + vibrace +
+              finišování), floored at 3, capped at 10. Rostered headcount
+              across shifts comes from plan.resources when available. */}
+          {(() => {
+            const tactVol = plan.pour_decision.tact_volume_m3 ?? 0;
+            if (tactVol <= 0) return null;
+            const recommended = Math.min(10, Math.max(3, Math.ceil(tactVol / 20)));
+            const rostered = plan.resources?.pour_rostered_headcount;
+            const simultaneous = plan.resources?.pour_simultaneous_headcount;
+            const value = rostered && rostered > 0
+              ? `${recommended} doporučeno · ${simultaneous}/${rostered} (ve směně/celkem)`
+              : `${recommended} doporučeno (ukládka + vibrace + finiš)`;
+            return <Row label="Betonáři / záběr" value={value} />;
+          })()}
         </Card>
       </div>
 
