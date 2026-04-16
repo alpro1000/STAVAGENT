@@ -680,4 +680,58 @@ describe('Planner Orchestrator', () => {
       expect(plan.warnings.length).toBeGreaterThan(0);
     });
   });
+
+  // ─── RECOMMENDED_EXPOSURE — no false-positive warnings (BUG 1/2/10) ───────
+
+  describe('RECOMMENDED_EXPOSURE — no false-positive warnings', () => {
+    it('SO-202 opery dřík XF4: no false-positive', () => {
+      const plan = planElement({
+        element_type: 'opery_ulozne_prahy',
+        volume_m3: 40,
+        formwork_area_m2: 60,
+        height_m: 5,
+        concrete_class: 'C30/37',
+        exposure_class: 'XF4',
+      });
+      const exposureWarning = plan.warnings.find(w => w.includes('neobvyklá'));
+      expect(exposureWarning).toBeUndefined();
+    });
+
+    it('SO-202 pilíř P4 XF2: no false-positive', () => {
+      const plan = planElement({
+        element_type: 'driky_piliru',
+        volume_m3: 20,
+        formwork_area_m2: 44,
+        height_m: 6,
+        concrete_class: 'C35/45',
+        exposure_class: 'XF2',
+      });
+      const exposureWarning = plan.warnings.find(w => w.includes('neobvyklá'));
+      expect(exposureWarning).toBeUndefined();
+    });
+
+    it('mostni_zavirne_zidky XF4: no false-positive', () => {
+      const plan = planElement({
+        element_type: 'mostni_zavirne_zidky',
+        volume_m3: 3,
+        formwork_area_m2: 8,
+        concrete_class: 'C30/37',
+        exposure_class: 'XF4',
+      });
+      const exposureWarning = plan.warnings.find(w => w.includes('neobvyklá'));
+      expect(exposureWarning).toBeUndefined();
+    });
+
+    it('driky_piliru XA3 DOES produce warning (not in recommended)', () => {
+      const plan = planElement({
+        element_type: 'driky_piliru',
+        volume_m3: 20,
+        height_m: 6,
+        concrete_class: 'C35/45',
+        exposure_class: 'XA3',
+      });
+      const exposureWarning = plan.warnings.find(w => w.includes('neobvyklá'));
+      expect(exposureWarning).toBeDefined();
+    });
+  });
 });
