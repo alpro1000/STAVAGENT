@@ -292,6 +292,24 @@ export function suggestPourStages(total_height_m, pour_method = 'pump', availabl
     else {
         k = getPourRateCoefficient(pour_method);
     }
+    // BUG 6: Column formwork (SL-1, QUATTRO) — columns h≤8m are traditionally
+    // poured in a single lift (small cross-section, fast set, no staging needed).
+    const hasColumnFormwork = available_systems.some(s => s.formwork_category === 'column');
+    if (hasColumnFormwork && total_height_m <= 8) {
+        log.push(`Column formwork present + h=${total_height_m}m ≤ 8m → 1 záběr (column exemption)`);
+        const fullPressure = calculateLateralPressure(total_height_m, pour_method, options);
+        const maxP = available_systems
+            .map(s => s.pressure_kn_m2).filter((p) => p != null && p > 0);
+        return {
+            needs_staging: false,
+            num_stages: 1,
+            stage_height_m: total_height_m,
+            stage_pressure_kn_m2: fullPressure.pressure_kn_m2,
+            max_system_pressure_kn_m2: maxP.length > 0 ? Math.max(...maxP) : 80,
+            cure_between_stages_h: 0,
+            decision_log: log,
+        };
+    }
     // Find max pressure capacity among all systems
     const pressures = available_systems
         .map(s => s.pressure_kn_m2)

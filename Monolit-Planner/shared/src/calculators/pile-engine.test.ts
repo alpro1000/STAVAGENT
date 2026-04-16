@@ -260,8 +260,9 @@ describe('Pile Engine', () => {
       expect(r.total_days).toBeGreaterThanOrEqual(24);
     });
 
-    it('rebar mass = 122 × 40 = 4880 kg (design volume, no overpouring laitance)', () => {
-      expect(r.rebar_total_kg).toBe(4880);
+    // BUG 3: Ø900 now defaults to 90 kg/m³ (was 40) — mostní piloty
+    it('rebar mass = 122 × 90 = 10980 kg (design volume, Ø900 bridge default)', () => {
+      expect(r.rebar_total_kg).toBe(10980);
     });
 
     it('concrete_class echoed in result', () => {

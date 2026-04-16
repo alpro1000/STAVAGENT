@@ -260,6 +260,17 @@ export const ELEMENT_DIMENSION_HINTS: Record<StructuralElementType, DimensionHin
     hint_cs: 'Pilota — vrtaná, bez bednění a podpěr.',
     has_height: false,
   },
+  podkladni_beton: {
+    required_dimensions: ['thickness_m'],
+    hint_cs: 'Podkladní beton — prostý beton na terénu, bez bednění a podpěr.',
+    has_height: false,
+  },
+  podlozkovy_blok: {
+    required_dimensions: ['height_m'],
+    hint_cs: 'Podložiskový blok — malý ŽB prvek pod ložisko (typicky 0.3–0.5 m).',
+    typical_height_range: [0.2, 0.6],
+    has_height: true,
+  },
   other: {
     required_dimensions: ['height_m'],
     hint_cs: 'Zadejte výšku elementu (m) pro odhad podpěr.',

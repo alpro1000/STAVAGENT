@@ -168,10 +168,11 @@ describe('Element Classifier', () => {
 
   describe('estimateRebarMass', () => {
     it('estimates rebar for foundation', () => {
+      // BUG 4: rebar raised 100→120 kg/m³, range [100,150]
       const est = estimateRebarMass('zaklady_piliru', 50);
-      expect(est.estimated_kg).toBe(5000);
-      expect(est.min_kg).toBe(4000);
-      expect(est.max_kg).toBe(6000);
+      expect(est.estimated_kg).toBe(6000);
+      expect(est.min_kg).toBe(5000);
+      expect(est.max_kg).toBe(7500);
     });
 
     it('bridge deck has higher reinforcement', () => {
@@ -181,8 +182,9 @@ describe('Element Classifier', () => {
     });
 
     it('handles small volumes', () => {
+      // BUG 4: 1 m³ × 120 kg/m³ = 120 kg
       const est = estimateRebarMass('zaklady_piliru', 1);
-      expect(est.estimated_kg).toBe(100);
+      expect(est.estimated_kg).toBe(120);
     });
   });
 
@@ -457,9 +459,10 @@ describe('Element Classifier', () => {
   });
 
   describe('getAllElementTypes', () => {
-    it('returns 22 element types (11 bridge + 11 building)', () => {
+    // BUG 11: +2 new types (podkladni_beton, podlozkovy_blok)
+    it('returns 24 element types (13 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(22);
+      expect(types).toHaveLength(24);
     });
 
     it('includes prechodova_deska', () => {
