@@ -714,9 +714,38 @@ export default function useCalculator() {
   }, [activeVariantId, savedVariants, form]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
+  // TZ text excerpt state (Phase 3 — textarea for TZ paste)
+  const [tzText, setTzText] = useState('');
+
   const fetchAdvisor = useCallback(async () => {
     setAdvisorLoading(true);
     try {
+      // Phase 2: enriched payload with full calculator context
+      const calculatorContext: Record<string, unknown> = {
+        element_type: form.element_type,
+        volume_m3: form.volume_m3,
+        concrete_class: form.concrete_class,
+        temperature_c: form.temperature_c,
+        exposure_class: form.exposure_class || undefined,
+        curing_class: form.curing_class || undefined,
+        height_m: form.height_m ? parseFloat(form.height_m) : undefined,
+        formwork_area_m2: form.formwork_area_m2 ? parseFloat(form.formwork_area_m2) : undefined,
+        is_prestressed: form.is_prestressed || undefined,
+        num_bridges: form.num_bridges > 1 ? form.num_bridges : undefined,
+        span_m: form.span_m ? parseFloat(form.span_m) : undefined,
+        num_spans: form.num_spans ? parseInt(form.num_spans) : undefined,
+        construction_technology: form.construction_technology || undefined,
+        bridge_deck_subtype: form.bridge_deck_subtype || undefined,
+      };
+      // Include computed results if available
+      if (result) {
+        calculatorContext.computed_results = {
+          total_days: result.schedule?.total_days,
+          curing_days: result.formwork?.curing_days,
+          prestress_days: result.prestress?.days,
+          num_tacts: result.pour_decision?.num_tacts,
+        };
+      }
       const res = await fetch(`${API_URL}/api/planner-advisor`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -728,6 +757,10 @@ export default function useCalculator() {
           temperature_c: form.temperature_c,
           total_length_m: form.total_length_m,
           spara_spacing_m: form.spara_spacing_m,
+          // Phase 2: enriched context
+          calculator_context: calculatorContext,
+          // Phase 3: TZ text excerpt (if pasted)
+          tz_excerpt: tzText || undefined,
         }),
       });
       if (res.ok) {
@@ -755,7 +788,9 @@ export default function useCalculator() {
     }
   }, [form.element_type, form.volume_m3,
       form.has_dilatacni_spary, form.tact_mode, form.concrete_class, form.temperature_c,
-      form.total_length_m, form.spara_spacing_m]);
+      form.total_length_m, form.spara_spacing_m,
+      form.exposure_class, form.curing_class, form.height_m, form.is_prestressed,
+      form.span_m, form.num_spans, form.construction_technology, tzText, result]);
 
   /**
    * Run the calculation synchronously.
@@ -1264,6 +1299,8 @@ export default function useCalculator() {
     advisor, setAdvisor,
     advisorLoading, setAdvisorLoading,
     fetchAdvisor,
+    // TZ text input (Phase 3)
+    tzText, setTzText,
 
     // Norms scraping
     normsScraping, setNormsScraping,

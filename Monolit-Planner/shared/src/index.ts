@@ -16,3 +16,6 @@ export * from './scheduler/index.js';
 
 // Data — Canonical data sets (formwork systems, etc.)
 export * from './constants-data/index.js';
+
+// Parsers — TZ text extraction (regex-based)
+export * from './parsers/tz-text-extractor.js';

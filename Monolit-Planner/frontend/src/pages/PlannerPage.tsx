@@ -298,6 +298,7 @@ export default function PlannerPage() {
           canCalculate={calc.canCalculate}
           fetchAdvisor={calc.fetchAdvisor}
           update={update}
+          tzText={calc.tzText} setTzText={calc.setTzText}
           normsScraping={calc.normsScraping} setNormsScraping={calc.setNormsScraping}
           normsScrapeResult={calc.normsScrapeResult} setNormsScrapeResult={calc.setNormsScrapeResult}
           onSaveVariant={plan ? () => saveVariant(plan) : undefined}

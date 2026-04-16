@@ -8,6 +8,7 @@
  */
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
+import { TzTextInput } from './TzTextInput';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
@@ -74,6 +75,10 @@ export interface CalculatorSidebarProps {
   isMonolitMode: boolean;
   autoClassification: { source?: string; confidence: number; element_type: string } | null;
 
+  // TZ text input (Phase 3)
+  tzText: string;
+  setTzText: (v: string) => void;
+
   // Actions
   handleCalculate: () => void;
   handleCompare: () => void;
@@ -111,7 +116,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     comparison, setComparison, showComparison, setShowComparison,
     positionContext, isMonolitMode, autoClassification,
     handleCalculate, handleCompare, fetchAdvisor, canCalculate,
-    update,
+    update, tzText, setTzText,
     normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
     onSaveVariant,
     apiUrl, isAdmin,
@@ -440,6 +445,14 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               Zadejte délku mostu v sekci záběrů pro správný výpočet.
             </div>
           )}
+
+          {/* ─── TZ Text Input (Phase 3) ─── */}
+          <TzTextInput
+            tzText={tzText}
+            setTzText={setTzText}
+            form={form}
+            update={update}
+          />
 
           {/* ─── AI Advisor Button ─── */}
           <button
