@@ -977,6 +977,22 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         <td style={cs}>—</td>
                       </tr>
                     )}
+                    {/* D1 (2026-04-16): mostovka ALWAYS needs skruž. If
+                        height_m wasn't given propsResult is undefined and
+                        the cost table used to silently drop both podpěry
+                        rows — user saw one total without skruž. Render a
+                        disabled placeholder so the user sees the missing
+                        line item + the orchestrator warning match. */}
+                    {propsLabor === 0 && plan.element.type === 'mostovkova_deska' && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-warn-bg, #fffbeb)' }}>
+                        <td style={{ ...cl, color: 'var(--r0-warn-text, #b45309)', fontStyle: 'italic' }}>
+                          Podpěry (práce) — zadejte výšku
+                        </td>
+                        <td style={{ ...cs, color: 'var(--r0-warn-text, #b45309)' }}>—</td>
+                        <td style={cs}>—</td>
+                        <td style={cs}>—</td>
+                      </tr>
+                    )}
                     <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
                       <td style={cl}>Pronájem bednění</td>
                       <td style={cs}>{formatCZK(plan.costs.formwork_rental_czk)}</td>
@@ -987,6 +1003,16 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         <td style={cl}>Pronájem podpěr</td>
                         <td style={cs}>{formatCZK(propsRental)}</td>
                         <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{plan.props?.rental_days ?? '—'} dní</td>
+                      </tr>
+                    )}
+                    {/* D1 (2026-04-16): matching placeholder for rental. */}
+                    {propsRental === 0 && plan.element.type === 'mostovkova_deska' && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-warn-bg, #fffbeb)' }}>
+                        <td style={{ ...cl, color: 'var(--r0-warn-text, #b45309)', fontStyle: 'italic' }}>
+                          Pronájem podpěr — zadejte výšku
+                        </td>
+                        <td style={{ ...cs, color: 'var(--r0-warn-text, #b45309)' }}>—</td>
+                        <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>—</td>
                       </tr>
                     )}
                     <tr style={{ borderTop: '2px solid var(--r0-slate-300)' }}>

@@ -1538,11 +1538,18 @@ export function planElement(input: PlannerInput): PlannerOutput {
       `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
     log.push(...propsResult.log.map(l => `  props: ${l}`));
   } else if (profile.needs_supports && !input.height_m) {
+    // D1 (2026-04-16): mostovkova_deska bez podpěr = nereálný plán.
+    // Prefixem "🚨 KRITICKÉ:" se warning dostane na vrchol seznamu +
+    // barva se liší od běžných warnings (styling hook v UI). Ostatní
+    // typy s needs_supports (stropní deska, rigel) zůstávají na běžné
+    // úrovni — tam reálně může chybět výška při předběžné kalkulaci.
+    const prefix = elementType === 'mostovkova_deska' ? '🚨 KRITICKÉ: ' : '';
     warnings.push(
-      `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
-      `ale není zadána výška. Zadejte výšku pro výpočet podpěr, počtu stojek a nákladů na pronájem.`
+      `${prefix}${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
+      `ale není zadána výška. Zadejte výšku nad terénem pro výpočet podpěr, počtu stojek a nákladů na pronájem. ` +
+      `Bez ní chybí v souhrnu položka Podpěry (typicky 15–25 % z celkových nákladů mostovky).`
     );
-    log.push(`Props: skipped — height_m not provided for element with needs_supports=true`);
+    log.push(`Props: skipped — height_m not provided for element with needs_supports=true (${elementType})`);
   }
 
   const schedAssemblyDays = roundTo(assemblyDays + (propsResult?.assembly_days ?? 0), 2);
