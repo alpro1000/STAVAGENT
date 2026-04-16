@@ -194,6 +194,26 @@ describe('calculateMSSSchedule', () => {
     const r = calculateMSSSchedule(5, 'jednokomora', true);
     expect(r.tact_days).toBeGreaterThanOrEqual(28);
   });
+
+  // BUG 5: MSS feasible from span≥20m + num_spans≥4
+  it('MSS feasible for span=20m + 6 spans', () => {
+    const r = recommendBridgeTechnology({
+      span_m: 20,
+      clearance_height_m: 7,
+      num_spans: 6,
+    });
+    expect(r.options.find(o => o.technology === 'mss')!.feasible).toBe(true);
+    expect(r.recommended).toBe('mss');
+  });
+
+  it('MSS infeasible for span=20m + 3 spans (< 4 spans)', () => {
+    const r = recommendBridgeTechnology({
+      span_m: 20,
+      clearance_height_m: 7,
+      num_spans: 3,
+    });
+    expect(r.options.find(o => o.technology === 'mss')!.feasible).toBe(false);
+  });
 });
 
 describe('getMSSTactDays', () => {

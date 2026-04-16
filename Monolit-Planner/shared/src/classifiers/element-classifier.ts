@@ -879,9 +879,10 @@ export function recommendFormwork(
       ?? FORMWORK_SYSTEMS[0];
   }
 
-  // Mostovka: prefer support towers for heights > 5m
-  if (type === 'mostovkova_deska' && height_m != null && height_m > 5) {
-    const systemName = 'Staxo 100';
+  // BUG 6: Mostovka support tower selection — Staxo 40 for h<8m, Staxo 100 for h≥8m
+  // (was h>5m → Staxo 100, too aggressive — Staxo 40 handles up to 12m)
+  if (type === 'mostovkova_deska' && height_m != null && height_m > 4) {
+    const systemName = height_m >= 8 ? 'Staxo 100' : 'Staxo 40';
     return FORMWORK_SYSTEMS.find(s => s.name === systemName)
       ?? FORMWORK_SYSTEMS.find(s => s.name === 'UP Rosett Flex')
       ?? FORMWORK_SYSTEMS.find(s => s.name === profile.recommended_formwork[0])

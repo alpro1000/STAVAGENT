@@ -734,4 +734,84 @@ describe('Planner Orchestrator', () => {
       expect(exposureWarning).toBeDefined();
     });
   });
+
+  // ─── BUG 4: Prestress formula (wait + stressing + grouting) ──────────
+
+  describe('planElement — prestress realistic formula', () => {
+    it('SO-202 NK 12 cables jednostranné → ≥11 days (7+2+2)', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 500,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        is_prestressed: true,
+        prestress_cables_count: 12,
+        prestress_tensioning: 'one_sided',
+      });
+      expect(plan.prestress).toBeDefined();
+      // wait_for_strength ≥7, stressing ceil(12/6)=2, grouting ceil(12/8)=2 → ≥11
+      expect(plan.prestress!.days).toBeGreaterThanOrEqual(11);
+    });
+
+    it('default (no cable count) → ≥11 days (7+2+2 defaults)', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 500,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        is_prestressed: true,
+      });
+      expect(plan.prestress).toBeDefined();
+      // wait ≥7, stressing default 2, grouting default 2 → ≥11
+      expect(plan.prestress!.days).toBeGreaterThanOrEqual(11);
+    });
+
+    it('override still works', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 500,
+        formwork_area_m2: 400,
+        height_m: 8,
+        is_prestressed: true,
+        prestress_days_override: 15,
+      });
+      expect(plan.prestress!.days).toBe(15);
+    });
+  });
+
+  // ─── BUG 7: num_bridges schedule multiplier ────────────────────────────
+
+  describe('planElement — num_bridges schedule', () => {
+    it('num_bridges=2 monolithic small volume → 2 tacts (1 per bridge)', () => {
+      // Small volume so capacity-based splitting doesn't exceed 2 tacts
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 60,
+        formwork_area_m2: 100,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        num_bridges: 2,
+      });
+      // Multi-bridge override: 1→2 tacts (each bridge = 1 tact)
+      expect(plan.pour_decision.num_tacts).toBe(2);
+    });
+
+    it('num_bridges=1 monolithic small volume → 1 tact', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 60,
+        formwork_area_m2: 100,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        num_bridges: 1,
+      });
+      expect(plan.pour_decision.num_tacts).toBe(1);
+    });
+  });
 });

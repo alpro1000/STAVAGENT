@@ -20,7 +20,7 @@ import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPour
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
 import type { ConcreteClass } from '@stavagent/monolit-shared';
-import { loadFromLS, LS_FORM_KEY, LS_SCENARIOS_KEY, LS_SCENARIO_SEQ_KEY } from './helpers';
+import { loadFromLS, LS_FORM_KEY, LS_SCENARIOS_KEY, LS_SCENARIO_SEQ_KEY, getSmartDefaults } from './helpers';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState, ScenarioSnapshot, SavedVariant } from './types';
 import { DEFAULT_FORM } from './types';
 import { plannerVariantsAPI } from '../../services/api';
@@ -624,6 +624,28 @@ export default function useCalculator() {
     if (form.element_type === 'pilota' && form.volume_mode !== 'from_geometry') {
       setForm(prev => ({ ...prev, volume_mode: 'from_geometry' }));
     }
+  }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Smart defaults: auto-fill exposure_class, curing_class, concrete_class
+  // when element_type changes AND the user hasn't explicitly set them.
+  // Only apply if the field is empty (= no user override yet).
+  const prevElementTypeRef = useRef(form.element_type);
+  useEffect(() => {
+    if (form.element_type === prevElementTypeRef.current) return;
+    prevElementTypeRef.current = form.element_type;
+    const defaults = getSmartDefaults(form.element_type);
+    setForm(prev => {
+      const updates: Partial<typeof prev> = {};
+      // Only fill empty fields — user overrides are preserved
+      if (!prev.exposure_class) updates.exposure_class = defaults.exposure_class;
+      if (!prev.curing_class) updates.curing_class = defaults.curing_class;
+      // Concrete class: only override if still at the generic C30/37 default
+      if (prev.concrete_class === 'C30/37' && defaults.typical_concrete !== 'C30/37') {
+        updates.concrete_class = defaults.typical_concrete;
+      }
+      if (Object.keys(updates).length === 0) return prev;
+      return { ...prev, ...updates };
+    });
   }, [form.element_type]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Document suggestions fetch (once on mount, when portal_project_id is known) ──

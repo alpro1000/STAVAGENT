@@ -161,11 +161,14 @@ export function recommendBridgeTechnology(input: BridgeTechnologyInput): Technol
     ? `Výška ${clearance_height_m}m > 25m — standardní podpěrné věže nepostačují.`
     : undefined;
 
-  const mssFeasible = span_m >= 25 && span_m <= 80;
+  // BUG 5: threshold lowered 25→20m. MSS feasible from 20m span + 4 spans minimum.
+  const mssFeasible = span_m >= 20 && span_m <= 80 && num_spans >= 4;
   const mssInfeasibleReason = !mssFeasible
-    ? span_m < 25
-      ? `Rozpětí ${span_m}m < 25m — posuvná skruž je neekonomická pro krátká rozpětí.`
-      : `Rozpětí ${span_m}m > 80m — přesahuje rozsah standardních MSS systémů.`
+    ? span_m < 20
+      ? `Rozpětí ${span_m}m < 20m — posuvná skruž je neekonomická pro krátká rozpětí.`
+      : span_m > 80
+      ? `Rozpětí ${span_m}m > 80m — přesahuje rozsah standardních MSS systémů.`
+      : `Počet polí ${num_spans} < 4 — posuvná skruž vyžaduje min. 4 pole pro ekonomičnost.`
     : undefined;
 
   const cantileverFeasible = span_m > 80 &&
