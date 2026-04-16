@@ -714,8 +714,15 @@ export default function useCalculator() {
   }, [activeVariantId, savedVariants, form]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
-  // TZ text excerpt state (Phase 3 — textarea for TZ paste)
-  const [tzText, setTzText] = useState('');
+  // TZ text excerpt state — persisted at project level in localStorage
+  // so it survives across position navigation (TZ describes the whole bridge).
+  const [tzText, setTzTextRaw] = useState(() => {
+    try { return localStorage.getItem('planner-tz-text') || ''; } catch { return ''; }
+  });
+  const setTzText = useCallback((v: string) => {
+    setTzTextRaw(v);
+    try { if (v) localStorage.setItem('planner-tz-text', v); else localStorage.removeItem('planner-tz-text'); } catch {}
+  }, []);
 
   const fetchAdvisor = useCallback(async () => {
     setAdvisorLoading(true);
