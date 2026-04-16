@@ -869,40 +869,17 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 </div>
               )}
             </Field>
-            <Field label="Typ cementu">
-              <select style={inputStyle} value={form.cement_type}
-                onChange={e => update('cement_type', e.target.value as CementType)}>
-                {CEMENT_TYPES.map(c => (
-                  <option key={c.value} value={c.value}>{c.label}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Třída prostředí" hint="XF2, XF4, XC4… — ovlivňuje min. dobu ošetřování">
-              <select style={inputStyle} value={form.exposure_class}
-                onChange={e => update('exposure_class', e.target.value)}>
-                <option value="">— (nezadáno)</option>
-                <option value="XC1">XC1 — sucho</option>
-                <option value="XC2">XC2 — mokro, bez mrazu</option>
-                <option value="XC4">XC4 — cyklické mokro/sucho</option>
-                <option value="XD1">XD1 — vlhko + chloridy</option>
-                <option value="XD3">XD3 — střídavě mokro + chloridy</option>
-                <option value="XF1">XF1 — mráz, bez solí</option>
-                <option value="XF2">XF2 — mráz + soli (mostovka)</option>
-                <option value="XF3">XF3 — silný mráz, bez solí</option>
-                <option value="XF4">XF4 — silný mráz + soli (římsy)</option>
-                <option value="XA1">XA1 — slabě agresivní</option>
-                <option value="XA2">XA2 — středně agresivní</option>
-              </select>
-            </Field>
-            <Field label="Třída ošetřování" hint="TKP18 §7.8.3. Prázdné = auto dle typu prvku">
-              <select style={inputStyle} value={form.curing_class}
-                onChange={e => update('curing_class', e.target.value as '' | '2' | '3' | '4')}>
-                <option value="">Auto (dle typu prvku)</option>
-                <option value="2">2 — základy, podkladní beton</option>
-                <option value="3">3 — spodní stavba (opěry, pilíře)</option>
-                <option value="4">4 — nosná konstrukce, římsy</option>
-              </select>
-            </Field>
+            {/* Smart defaults info — show what auto-values are applied */}
+            {(form.exposure_class || form.curing_class) && (
+              <div style={{ marginTop: 4, fontSize: 10, color: 'var(--r0-slate-500)' }}>
+                {form.exposure_class && <>Prostředí: <strong>{form.exposure_class}</strong> (auto) · </>}
+                {form.curing_class && <>Ošetřování: třída <strong>{form.curing_class}</strong> (auto) · </>}
+                <button style={{ background: 'none', border: 'none', color: 'var(--r0-blue)', cursor: 'pointer', fontSize: 10, padding: 0 }}
+                  onClick={() => setShowAdvanced(true)}>
+                  změnit ▸
+                </button>
+              </div>
+            )}
 
             {/* ─── Special concrete flags from documents ─── */}
             {docSuggestions && (() => {
@@ -951,12 +928,51 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               cursor: 'pointer', fontSize: 13, padding: '8px 0', width: '100%', textAlign: 'left',
             }}
           >
-            {showAdvanced ? '▼' : '▶'} Pokročilé nastavení
+            {showAdvanced ? '▼' : '▶'} Expertní parametry
           </button>
           )}
 
           {(showAdvanced || wizardMode) && (
             <>
+              {/* ─── Expert: exposure, curing, cement (moved from Beton section) ─── */}
+              {!wizardMode && (
+              <Section title="Prostředí a ošetřování">
+                <Field label="Třída prostředí" hint="XF2, XF4, XC4… — ovlivňuje min. dobu ošetřování">
+                  <select style={inputStyle} value={form.exposure_class}
+                    onChange={e => update('exposure_class', e.target.value)}>
+                    <option value="">— (auto dle typu prvku)</option>
+                    <option value="XC1">XC1 — sucho</option>
+                    <option value="XC2">XC2 — mokro, bez mrazu</option>
+                    <option value="XC4">XC4 — cyklické mokro/sucho</option>
+                    <option value="XD1">XD1 — vlhko + chloridy</option>
+                    <option value="XD3">XD3 — střídavě mokro + chloridy</option>
+                    <option value="XF1">XF1 — mráz, bez solí</option>
+                    <option value="XF2">XF2 — mráz + soli (mostovka)</option>
+                    <option value="XF3">XF3 — silný mráz, bez solí</option>
+                    <option value="XF4">XF4 — silný mráz + soli (římsy)</option>
+                    <option value="XA1">XA1 — slabě agresivní</option>
+                    <option value="XA2">XA2 — středně agresivní</option>
+                  </select>
+                </Field>
+                <Field label="Třída ošetřování" hint="TKP18 §7.8.3. Auto = dle typu prvku">
+                  <select style={inputStyle} value={form.curing_class}
+                    onChange={e => update('curing_class', e.target.value as '' | '2' | '3' | '4')}>
+                    <option value="">Auto (dle typu prvku)</option>
+                    <option value="2">2 — základy, podkladní beton</option>
+                    <option value="3">3 — spodní stavba (opěry, pilíře)</option>
+                    <option value="4">4 — nosná konstrukce, římsy</option>
+                  </select>
+                </Field>
+                <Field label="Typ cementu">
+                  <select style={inputStyle} value={form.cement_type}
+                    onChange={e => update('cement_type', e.target.value as CementType)}>
+                    {CEMENT_TYPES.map(c => (
+                      <option key={c.value} value={c.value}>{c.label}</option>
+                    ))}
+                  </select>
+                </Field>
+              </Section>
+              )}
               <Section title="Zdroje">
                 {/* Obrátkovost (repetitive elements) — logically belongs with resources */}
                 <Field label="Počet identických elementů" hint="např. 20 patek, 6 pilířů — ovlivňuje obrátkovost bednění">
