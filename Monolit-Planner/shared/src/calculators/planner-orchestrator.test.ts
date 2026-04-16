@@ -860,4 +860,31 @@ describe('Planner Orchestrator', () => {
       expect(hasSequenceLog).toBe(false);
     });
   });
+
+  // ─── Mostovka E2 (2026-04-16): two-phase pour for trámový subtype ────
+  describe('planElement — dvoutrám 2-fáze pour (E2)', () => {
+    const baseTramInput: PlannerInput = {
+      element_type: 'mostovkova_deska',
+      volume_m3: 120,
+      formwork_area_m2: 100,
+      height_m: 8,
+      concrete_class: 'C35/45',
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',
+    };
+
+    it('dvoutrám triggers 6h technological pauza warning + log', () => {
+      const plan = planElement({ ...baseTramInput, bridge_deck_subtype: 'dvoutram' });
+      const hasWarning = plan.warnings.some(w => w.includes('2 fázích') && w.includes('pauza'));
+      expect(hasWarning).toBe(true);
+      const hasLog = plan.decision_log.some(l => l.includes('Two-phase mostovka pour'));
+      expect(hasLog).toBe(true);
+    });
+
+    it('deskovy subtype (1 fáze) does NOT get the 2-fáze pauza', () => {
+      const plan = planElement({ ...baseTramInput, bridge_deck_subtype: 'deskovy' });
+      const hasLog = plan.decision_log.some(l => l.includes('Two-phase mostovka pour'));
+      expect(hasLog).toBe(false);
+    });
+  });
 });

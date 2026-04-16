@@ -1439,6 +1439,29 @@ export function planElement(input: PlannerInput): PlannerOutput {
     log.push(`Mostovka per-tact continuous pour: ${pourHoursRounded}h > ${shift}h shift → ${shiftsNeeded} shifts recommended`);
   }
 
+  // BUG E2 (2026-04-16): 2-fázová betonáž pro trámové + vícetrámové mostovky.
+  // Trámový nosník se betonuje ve dvou fázích (trámy pak deska) s povinnou
+  // technologickou pauzou 4–12 h pro mírné tuhnutí trámů. Engine dosud
+  // počítal betonáž jako jeden kontinuální odlev, takže záběr byl kratší
+  // než na reálné stavbě. Pauza ≈ 6 h = 0.6 směny se přičítá k concreteDays
+  // (víc realistický plán). Komorový (jednokomora/dvoukomora) má 3 fáze
+  // (dno → stěny → horní deska), kde se pauza řeší skrz separate záběry,
+  // takže tam úpravu neděláme.
+  const twoPhaseSubtype = input.bridge_deck_subtype === 'jednotram'
+    || input.bridge_deck_subtype === 'dvoutram'
+    || input.bridge_deck_subtype === 'vicetram';
+  if (elementType === 'mostovkova_deska' && twoPhaseSubtype) {
+    const pauseHours = 6;
+    const pauseDays = roundTo(pauseHours / shift, 2);
+    const oldConcreteDays = concreteDays;
+    concreteDays = roundTo(concreteDays + pauseDays, 2);
+    warnings.push(
+      `Trámový nosník — betonáž ve 2 fázích (nejdřív trámy, pauza ${pauseHours} h pro mírné tuhnutí, ` +
+      `pak deska). Doba záběru navýšena o ${pauseDays} dne (${oldConcreteDays}d → ${concreteDays}d).`
+    );
+    log.push(`Two-phase mostovka pour: +${pauseHours}h pauza = +${pauseDays}d (${oldConcreteDays}d → ${concreteDays}d)`);
+  }
+
   // v4.0: Per-záběr pour duration calculation
   if (hasTactVolumes && perTactConcreteDays && input.tact_volumes) {
     for (let i = 0; i < input.tact_volumes.length; i++) {
@@ -1492,7 +1515,21 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
       prestressDays = waitForStrength + stressingDays + groutingDays;
     }
-    log.push(`Prestress: ${prestressDays}d (wait ${Math.max(7, curingDays)}d + stressing + grouting, is_prestressed=true)`);
+    // BUG E3 (2026-04-16): make the prestress decomposition explicit so
+    // users can cross-reference the "Min. X dní" warning below. The
+    // previous trace hid stressing + grouting behind "+ stressing +
+    // grouting" so it was easy to mis-read 11d vs 25d (skruž total).
+    const cablesForLog = input.prestress_cables_count ?? 0;
+    const stressForLog = cablesForLog > 0
+      ? Math.ceil(cablesForLog / (input.prestress_tensioning === 'one_sided' ? 6 : 10))
+      : 2;
+    const groutForLog = cablesForLog > 0 ? Math.ceil(cablesForLog / 8) : 2;
+    log.push(
+      `Prestress: ${prestressDays}d = wait ${Math.max(7, curingDays)}d (max{7, curing=${curingDays}}) + ` +
+      `stressing ${stressForLog}d (${cablesForLog || 'default 2'} cables, ` +
+      `${input.prestress_tensioning === 'one_sided' ? 'jednostranné' : 'oboustranné'}) + ` +
+      `grouting ${groutForLog}d. Skruž stojí ještě zrání ${curingDays}d navíc — celková doba skruže = ${curingDays + prestressDays}d.`,
+    );
   }
 
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
