@@ -602,6 +602,15 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           <Row label="Objem/záběr" value={`${formatNum(plan.pour_decision.tact_volume_m3)} m³`} />
           <Row label="Rychlost" value={`${formatNum(plan.pour.effective_rate_m3_h)} m³/h`} />
           <Row label="Úzké hrdlo" value={plan.pour.rate_bottleneck} />
+          {/* C2 (2026-04-16): technologické okno (t_window) — max doba od
+              namíchání po uložení betonu. Typ. 5 h C35/45 bez retardéru.
+              Do teď bylo vidět jen v traceability logu; teď je u KPI. */}
+          {plan.pour.pour_window_h > 0 && (
+            <Row
+              label="Technologické okno"
+              value={`${formatNum(plan.pour.pour_window_h, 1)} h${plan.pour.fits_in_window ? '' : ' (nevejde se — více úseků)'}`}
+            />
+          )}
           {/* B3 (2026-04-16): betonáři info row — engine already charges
               pour_labor but the UI never surfaced WHO does the work. Rule
               of thumb: 20 m³ per betonář per záběr (ukládka + vibrace +

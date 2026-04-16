@@ -1420,6 +1420,25 @@ export function planElement(input: PlannerInput): PlannerOutput {
     if (concreteDays < 1) concreteDays = 1;
   }
 
+  // BUG C1 (2026-04-16): per-záběr continuous-pour gate for mostovka.
+  // Bridge decks can't have a pracovní spára inside a single záběr
+  // (static/crack risk), so even in sectional mode each záběr must pour
+  // without interruption. If the záběr duration exceeds the shift, the
+  // team needs to plan crew relief (2 směny) + noční příplatek §116 ZP.
+  // The isContinuousPour branch above only fires for pour_mode=monolithic,
+  // which misses the typical multi-tact mostovka case.
+  if (elementType === 'mostovkova_deska' && !isContinuousPour && pourResult.total_pour_hours > shift) {
+    const pourHoursRounded = roundTo(pourResult.total_pour_hours, 1);
+    const shiftsNeeded = Math.ceil(pourResult.total_pour_hours / 12);
+    warnings.push(
+      `⚠️ Záběr mostovky (${pourDecision.tact_volume_m3} m³) trvá ${pourHoursRounded}h — přesahuje směnu ${shift}h. ` +
+      `Pracovní spára uprostřed záběru NENÍ přípustná (statika). ` +
+      `Plán: ${shiftsNeeded} směny × betonáři (výměna čet), noční příplatek §116 ZP (+10%). ` +
+      `Zvažte zmenšení záběru, rychlejší čerpadlo nebo retardér.`
+    );
+    log.push(`Mostovka per-tact continuous pour: ${pourHoursRounded}h > ${shift}h shift → ${shiftsNeeded} shifts recommended`);
+  }
+
   // v4.0: Per-záběr pour duration calculation
   if (hasTactVolumes && perTactConcreteDays && input.tact_volumes) {
     for (let i = 0; i < input.tact_volumes.length; i++) {
