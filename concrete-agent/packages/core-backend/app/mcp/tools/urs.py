@@ -22,16 +22,34 @@ async def find_urs_code(
 ) -> dict:
     """Find ÚRS catalog codes for a construction work item.
 
-    Searches the ÚRS/RTS pricing system via Perplexity web search on urs.cz
-    and the URS Matcher service. AI models do NOT reliably know ÚRS codes —
-    this tool searches the real catalog.
+    Searches the ÚRS/RTS pricing system (39,000+ items) via two methods:
+    1. Perplexity web search on urs.cz / podminky.urs.cz / cenova-soustava.cz
+    2. URS Matcher Service (4-phase matching with 17,904 seed items)
 
-    Confidence 0.80-0.85 (lower than OTSKP as it uses web search).
+    AI models do NOT reliably know ÚRS codes — this tool searches the real
+    catalog. ÚRS codes have format xxx-xx-xxxx (e.g. 273-32-1111).
+
+    Confidence: 0.80-0.85 (lower than OTSKP because web-based search).
+    Results are deduplicated across both search methods.
+
+    Use this tool for BUILDING construction (pozemní stavby). For transport
+    structures (mosty, silnice), use find_otskp_code instead.
 
     Args:
-        description: Description of construction work in Czech,
-                     e.g. 'Zřízení bednění stěn základových zdí jednostranné'
-        context: Additional context — building type, material, dimensions
+        description: Description of construction work in Czech.
+            Be specific — include material, method, and element type.
+            Examples:
+            - 'Zřízení bednění stěn základových zdí jednostranné'
+            - 'Betonáž základových desek z betonu C25/30'
+            - 'Výztuž stěn z betonářské oceli B500B'
+            - 'Montáž a demontáž lešení do 10m'
+            - 'Izolace proti vodě svislá, natavená'
+
+        context: Additional context to improve matching precision.
+            Examples:
+            - 'pozemní stavba, bytový dům, 1.PP'
+            - 'výšková budova, 12 pater, ocelový skelet'
+            - 'rekonstrukce, bourací práce'
     """
     try:
         results = []

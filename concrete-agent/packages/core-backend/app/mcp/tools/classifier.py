@@ -293,16 +293,41 @@ async def classify_construction_element(
 ) -> dict:
     """Classify a structural construction element into one of 22 types.
 
-    Types include: pilota, základ, dřík pilíře, opěra, mostovka, římsa,
-    stěna, deska, sloup, průvlak, schodiště, and more.
-    Distinguishes bridge vs building types.
-    Returns difficulty coefficient and formwork recommendations.
+    Input: element name from TZ documentation (Czech or English).
+    Output: element_type code, Czech label, difficulty factor (0.7-1.5),
+    rebar ratio (kg/m³ with range), orientation (horizontal/vertical),
+    recommended formwork systems, and bridge context detection.
+
+    Uses deterministic keyword + regex matching (confidence 0.85),
+    NOT an LLM — results are reproducible and instant.
+    Bridge context auto-detected from object_code (SO-xxx pattern).
 
     Args:
-        name: Element name from project documentation, in Czech,
-              e.g. 'Mostní pilíře P2-P3, C35/45'
-        object_code: Building object code, e.g. 'SO-204'
-                     (helps distinguish bridge vs building context)
+        name: Element name exactly as it appears in TZ/project documentation.
+            Can include concrete class and other specs — they are parsed out.
+            Examples for bridge objects:
+            - 'Piloty vrtané Ø900, C30/37' → pilota
+            - 'Základy opěry OP1, C25/30' → zaklady_piliru
+            - 'Dřík opěry OP1' or 'Opěra OP1 — dřík + úložný práh' → opery_ulozne_prahy
+            - 'Křídla opěry OP1' → kridla_opery
+            - 'Pilíř P2, C35/45' or 'Sloupy P2-P3' (with SO-xxx) → driky_piliru
+            - 'NK — nosná konstrukce, předpjatý dvoutrám' → mostovkova_deska
+            - 'Římsy monolitické, C30/37' → rimsa
+            - 'Přechodová deska' → prechodova_deska
+            Examples for building objects:
+            - 'Stěna 1.PP, C25/30' → stena
+            - 'Stropní deska nad 1.NP' → deska
+            - 'Sloupy S1-S4, C30/37' → sloup (without SO-xxx context)
+            - 'Bílá vana — základová deska + stěny' → izolacni_stena
+            - 'Výtahová šachta' → sachta
+
+        object_code: Building object code from project documentation.
+            If it matches SO-xxx pattern (e.g. 'SO-202', 'SO 204'),
+            classifier switches to bridge context — generic types are
+            upgraded: sloup→driky_piliru, zaklady→zaklady_piliru,
+            deska→mostovkova_deska.
+            Without this hint, 'Sloupy P2' would classify as building
+            column instead of bridge pier.
     """
     try:
         result = _classify(name, object_code)

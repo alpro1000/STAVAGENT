@@ -50,19 +50,53 @@ async def create_work_breakdown(
     catalog: str = "otskp",
 ) -> dict:
     """From a list of structural elements, create a complete bill of quantities
-    (výkaz výměr) with OTSKP/ÚRS codes.
+    (výkaz výměr / soupis prací) with OTSKP/ÚRS codes and prices.
 
-    Pipeline: element classification (22 types) → work decomposition (formwork,
-    rebar, concrete, insulation...) → OTSKP/ÚRS code matching from the database.
-    AI models CANNOT reliably assign Czech catalog codes — this tool uses the
-    database of 17,904 OTSKP items + ÚRS matcher.
+    Pipeline: element classification (22 types) → work decomposition (formwork
+    assembly+disassembly, rebar, concrete, curing, prestress...) → OTSKP/ÚRS
+    code matching from the real database of 17,904 OTSKP + 39,000 ÚRS items.
+
+    AI models CANNOT reliably assign Czech catalog codes — this tool uses
+    deterministic database lookup with verified prices.
+
+    Returns: list of work items grouped by HSV section (HSV2 concrete,
+    HSV3 formwork, HSV4 reinforcement), each with OTSKP code, unit price,
+    and total price. Also returns total_price_czk for the whole breakdown.
+
+    Cost: 20 credits (most expensive tool — generates full bill of quantities).
 
     Args:
         elements: List of structural elements from TZ documentation.
-                  Each element: {name, concrete_class?, volume_m3?, area_m2?,
-                  height_m?, exposure?, is_prestressed?, rebar_tons?}
-        project_type: Project type: most, budova, inzenyrsky_objekt, komunikace
-        catalog: Preferred catalog: 'otskp' (transport), 'urs' (building), 'both'
+            Each element is a dict with fields:
+            - name (required): Element name in Czech, e.g. 'Pilíř P2, C35/45'
+            - concrete_class: e.g. 'C30/37' (default: C30/37)
+            - volume_m3: Concrete volume in m³
+            - area_m2: Formwork area in m² (estimated if missing)
+            - height_m: Element height in m (default: 3.0)
+            - exposure: Exposure class, e.g. 'XF4'
+            - is_prestressed: boolean (triggers prestress steel item)
+            - rebar_tons: Rebar mass in tons (estimated from volume if missing)
+
+            Example for SO-202 bridge:
+            [
+              {"name": "Piloty OP1 Ø900", "volume_m3": 50.9, "concrete_class": "C30/37"},
+              {"name": "Základ opěry OP1", "volume_m3": 35, "concrete_class": "C25/30", "height_m": 1.2},
+              {"name": "Dřík opěry OP1", "volume_m3": 55, "concrete_class": "C30/37", "height_m": 5.0},
+              {"name": "NK mostovka", "volume_m3": 605, "concrete_class": "C35/45", "is_prestressed": true}
+            ]
+
+        project_type: Project type — determines catalog preference and
+            work item templates.
+            - 'most': bridge structure (default) — uses OTSKP catalog,
+              adds scaffolding + prestress items for NK
+            - 'budova': building — uses ÚRS catalog
+            - 'inzenyrsky_objekt': engineering structure (tunnels, walls)
+            - 'komunikace': road/communication infrastructure
+
+        catalog: Preferred pricing catalog for code matching.
+            - 'otskp': OTSKP D6 catalog (17,904 items, transport structures)
+            - 'urs': ÚRS catalog (39,000+ items, building construction)
+            - 'both': search both catalogs (slower, more complete)
     """
     try:
         from app.mcp.tools.classifier import _classify, ELEMENT_TYPES

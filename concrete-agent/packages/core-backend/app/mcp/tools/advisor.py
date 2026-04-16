@@ -27,19 +27,47 @@ async def get_construction_advisor(
     """Expert recommendations for constructing an RC element.
 
     Returns: recommended procedure, formwork selection with reasoning,
-    number of tacts with lateral pressure calculation, crew plan,
-    relevant ČSN EN norms, risks and warnings.
-    Uses knowledge base (methvin.co labor norms, TP ČBS,
-    DIN 18218 lateral pressure, DOKA/PERI catalog).
+    number of tacts with lateral pressure calculation (DIN 18218),
+    crew plan (typical 12-person team), relevant ČSN EN norms,
+    risks and warnings.
+
+    If volume_m3 is provided, also runs the calculator tool internally
+    and includes schedule, formwork, and rebar estimates in the response.
+
+    Knowledge base: methvin.co labor norms, TP ČBS 01/02,
+    DIN 18218 lateral pressure, DOKA/PERI formwork catalog.
 
     Args:
-        description: Free-text description,
-                     e.g. 'výtahová šachta 1.6×2.41m, h=9.1m, bílá vana'
-        element_type: Structural type (optional, auto-detected if missing)
-        volume_m3: Concrete volume in m³
-        height_m: Element height in meters
-        concrete_class: Concrete class, e.g. 'C30/37'
-        question: Specific question, e.g. 'Kolik záběrů?', 'Jaké bednění?'
+        description: Free-text description of the element to advise on.
+            Include dimensions, concrete class, special requirements.
+            Examples:
+            - 'výtahová šachta 1.6×2.41m, h=9.1m, bílá vana C30/37'
+            - 'pilíř mostu P3, h=7.8m, C35/45 XF4, 20 m³'
+            - 'mostovka dvoutrám 6×20m, C35/45, předpjatý'
+            - 'základová deska 40×20m, tl. 0.4m, C25/30 XC2'
+
+        element_type: Structural type code (from classify_construction_element).
+            If omitted, auto-detected from description text.
+            Examples: driky_piliru, sachta, mostovkova_deska, izolacni_stena.
+
+        volume_m3: Concrete volume in m³. When provided, triggers full
+            calculator run and includes schedule/formwork/rebar in response.
+
+        height_m: Element height in meters. Critical for:
+            - Tact calculation (>3m → multiple pours)
+            - Lateral pressure (DIN 18218)
+            - Formwork system selection
+            - Stability warnings (>6m)
+
+        concrete_class: Concrete class, e.g. 'C30/37', 'C35/45'.
+            Affects norm selection — C40+ triggers TP ČBS 01 (high-performance).
+
+        question: Specific question to focus the advisory response.
+            Examples:
+            - 'Kolik záběrů pro výšku 9m?'
+            - 'Jaké bednění pro šachtu?'
+            - 'Jaká je minimální doba ošetřování?'
+            - 'Potřebuji podpěrnou konstrukci?'
     """
     try:
         # Classify element if not provided

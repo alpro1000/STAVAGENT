@@ -20,14 +20,30 @@ async def parse_construction_budget(
 ) -> dict:
     """Parse an Excel file with a construction budget or bill of quantities.
 
-    Supports 3 formats: Komplet/FORESTINA, OTSKP D6 for transport structures,
-    AspeEsticon/SŽ railway. Automatically detects the format.
-    Returns a structured list of items with codes, descriptions, units,
-    quantities, and prices.
+    Supports 4 formats with automatic detection from filename:
+    - Komplet/FORESTINA: general construction budgets (keyword: 'komplet', 'forestina')
+    - RTS/AspeEsticon/SŽ: railway structures (keyword: 'rts', 'aspe', 'sz', 'szdc')
+    - OTSKP D6: transport structures (keyword: 'otskp', 'd6')
+    - Soupis prací: generic bill of quantities (keyword: 'soupis')
+    Falls back to universal parser if format cannot be determined.
+
+    Returns a normalized list of items, each with: code, description, unit,
+    quantity, unit_price, total_price. Also includes format_detected and
+    parser diagnostics.
+
+    Supported file types: .xlsx, .xls (Excel). Maximum recommended: 50 MB.
 
     Args:
-        file_base64: Excel file content encoded as base64 (xlsx, xls)
-        filename: Original filename (helps with format detection)
+        file_base64: Excel file content encoded as base64 string.
+            To encode: base64.b64encode(open('budget.xlsx','rb').read()).decode()
+
+        filename: Original filename with extension. Used for format detection.
+            Examples:
+            - 'SO-202_rozpocet_komplet.xlsx' → detected as 'komplet'
+            - 'D6_otskp_soupis.xlsx' → detected as 'otskp'
+            - 'stavba_rts_rozpocet.xlsx' → detected as 'rts'
+            - 'soupis_praci_2026.xlsx' → detected as 'soupis'
+            If no keyword matches, uses generic auto-detection.
     """
     try:
         # Decode base64 to temp file
