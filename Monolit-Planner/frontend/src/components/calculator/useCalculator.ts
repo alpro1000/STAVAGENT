@@ -714,8 +714,15 @@ export default function useCalculator() {
   }, [activeVariantId, savedVariants, form]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
-  // TZ text excerpt state (Phase 3 — textarea for TZ paste)
-  const [tzText, setTzText] = useState('');
+  // TZ text excerpt state — persisted at project level in localStorage
+  // so it survives across position navigation (TZ describes the whole bridge).
+  const [tzText, setTzTextRaw] = useState(() => {
+    try { return localStorage.getItem('planner-tz-text') || ''; } catch { return ''; }
+  });
+  const setTzText = useCallback((v: string) => {
+    setTzTextRaw(v);
+    try { if (v) localStorage.setItem('planner-tz-text', v); else localStorage.removeItem('planner-tz-text'); } catch {}
+  }, []);
 
   const fetchAdvisor = useCallback(async () => {
     setAdvisorLoading(true);
@@ -767,16 +774,30 @@ export default function useCalculator() {
         const data = await res.json();
         // Try to parse JSON from approach text
         if (data.approach?.text) {
-          try {
-            // Use non-greedy match to find the first complete JSON object
-            const jsonMatch = data.approach.text.match(/\{[\s\S]*?\}(?=[^}]*$)/)
-              || data.approach.text.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-              data.approach.parsed = JSON.parse(jsonMatch[0]);
+          // BUG 1: Detect raw prompt echo — AI returned its own instructions
+          const text = data.approach.text;
+          if (text.includes('ODPOVĚZ POUZE VALIDNÍM JSON') || text.includes('KONTEXT POZICE:') ||
+              text.includes('PRAVIDLA:') || text.includes('Jsi expert rozpočtář')) {
+            console.error('AI Advisor: raw prompt echo detected — prompt engineering failure');
+            data.approach.text = 'AI asistent vrátil neplatnou odpověď. Zkuste znovu za chvíli.';
+            data.approach.parsed = null;
+          } else {
+            try {
+              // BUG 2: Improved JSON extraction — try greedy last-match first
+              const jsonMatch = text.match(/\{[\s\S]*\}/);
+              if (jsonMatch) {
+                const parsed = JSON.parse(jsonMatch[0]);
+                // Validate expected schema
+                if (parsed && typeof parsed === 'object' && (
+                  parsed.pour_mode || parsed.klicove_body || parsed.reasoning
+                )) {
+                  data.approach.parsed = parsed;
+                }
+              }
+            } catch {
+              // JSON parse failed — show text as-is (markdown), not raw JSON attempt
+              console.warn('AI Advisor: could not parse JSON from response, using text fallback');
             }
-          } catch {
-            // If JSON parse fails, try to extract key-value pairs from text
-            console.warn('AI Advisor: could not parse JSON from response, using text fallback');
           }
         }
         setAdvisor(data);

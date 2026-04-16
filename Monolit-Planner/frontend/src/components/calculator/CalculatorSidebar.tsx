@@ -455,19 +455,31 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
           />
 
           {/* ─── AI Advisor Button ─── */}
-          <button
-            onClick={fetchAdvisor}
-            disabled={advisorLoading}
-            style={{
-              width: '100%', padding: '10px', marginBottom: 12,
-              background: advisorLoading ? 'var(--r0-slate-300)' : 'linear-gradient(135deg, var(--r0-indigo), var(--r0-purple))',
-              color: 'white', border: 'none', borderRadius: 6,
-              fontSize: 13, fontWeight: 600, cursor: advisorLoading ? 'wait' : 'pointer',
-              fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-            }}
-          >
-            {advisorLoading ? '⏳ AI analyzuje...' : '✨ AI doporučení (podstup, bednění, normy)'}
-          </button>
+          {(() => {
+            // BUG 6: disable when required fields missing
+            const canAdvise = !advisorLoading && form.volume_m3 > 0 && !!form.element_type && !!form.concrete_class;
+            return (<>
+              <button
+                onClick={fetchAdvisor}
+                disabled={!canAdvise}
+                style={{
+                  width: '100%', padding: '10px', marginBottom: canAdvise ? 12 : 4,
+                  background: !canAdvise ? 'var(--r0-slate-300)' : 'linear-gradient(135deg, var(--r0-indigo), var(--r0-purple))',
+                  color: 'white', border: 'none', borderRadius: 6,
+                  fontSize: 13, fontWeight: 600, cursor: !canAdvise ? 'not-allowed' : 'pointer',
+                  fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  opacity: !canAdvise ? 0.6 : 1,
+                }}
+              >
+                {advisorLoading ? '⏳ AI analyzuje...' : '✨ AI doporučení (podstup, bednění, normy)'}
+              </button>
+              {!canAdvise && !advisorLoading && (
+                <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginBottom: 12, textAlign: 'center' }}>
+                  Zadejte typ, objem a třídu betonu pro AI doporučení.
+                </div>
+              )}
+            </>);
+          })()}
 
           {/* ─── AI Advisor Results ─── */}
           {advisor && (
@@ -693,7 +705,9 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
                                       Object.entries(item).slice(0, 5).map(([k, v]) => (
                                         <td key={k} style={{ padding: '2px 6px', verticalAlign: 'top' }}>
                                           <span style={{ color: 'var(--r0-muted)' }}>{k}: </span>
-                                          <span style={{ color: 'var(--r0-norms-text)' }}>{String(v)}</span>
+                                          <span style={{ color: 'var(--r0-norms-text)' }}>
+                                            {typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v)}
+                                          </span>
                                         </td>
                                       ))
                                     ) : (

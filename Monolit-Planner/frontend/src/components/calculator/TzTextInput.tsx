@@ -23,7 +23,30 @@ interface TzTextInputProps {
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
 }
 
-export function TzTextInput({ tzText, setTzText, update }: TzTextInputProps) {
+/**
+ * Params that only apply to specific element types.
+ * Universal params (concrete_class, exposure_class, volume_m3, height_m) apply to ALL.
+ */
+const ELEMENT_SPECIFIC_PARAMS: Record<string, string[]> = {
+  is_prestressed: ['mostovkova_deska', 'rigel'],
+  prestress_tensioning: ['mostovkova_deska', 'rigel'],
+  prestress_cables_count: ['mostovkova_deska', 'rigel'],
+  prestress_strands_per_cable: ['mostovkova_deska', 'rigel'],
+  span_m: ['mostovkova_deska', 'rigel'],
+  num_spans: ['mostovkova_deska', 'rigel'],
+  nk_width_m: ['mostovkova_deska'],
+  bridge_deck_subtype: ['mostovkova_deska'],
+  pile_diameter_mm: ['pilota'],
+};
+
+/** Check if an extracted param is relevant for the current element_type. */
+function isRelevantForElement(paramName: string, elementType: string): boolean {
+  const allowed = ELEMENT_SPECIFIC_PARAMS[paramName];
+  if (!allowed) return true; // universal param
+  return allowed.includes(elementType);
+}
+
+export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProps) {
   const [expanded, setExpanded] = useState(false);
   const [extracted, setExtracted] = useState<ExtractedParam[]>([]);
   const [checked, setChecked] = useState<Set<string>>(new Set());
@@ -48,6 +71,8 @@ export function TzTextInput({ tzText, setTzText, update }: TzTextInputProps) {
   const applyParams = (params: ExtractedParam[]) => {
     for (const p of params) {
       if (!checked.has(p.name)) continue;
+      // Skip params not relevant for current element_type (e.g., prestress for základ)
+      if (!isRelevantForElement(p.name, form.element_type)) continue;
       switch (p.name) {
         case 'element_type': update('element_type', p.value as any); break;
         case 'concrete_class': update('concrete_class', p.value as any); break;
@@ -132,23 +157,34 @@ export function TzTextInput({ tzText, setTzText, update }: TzTextInputProps) {
           <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--r0-slate-600)', marginBottom: 4 }}>
             Nalezeno ({extracted.length} parametrů):
           </div>
-          {extracted.map((p, i) => (
-            <label key={`${p.name}-${i}`} style={{
-              display: 'flex', alignItems: 'center', gap: 4, fontSize: 11,
-              color: 'var(--r0-slate-700)', cursor: 'pointer', padding: '1px 0',
-            }}>
-              <input type="checkbox" checked={checked.has(p.name)}
-                onChange={() => toggleParam(p.name)} style={{ margin: 0 }} />
-              <span style={{ opacity: p.confidence >= 1 ? 1 : 0.7 }}>
-                {p.label_cs}
-              </span>
-              {p.confidence < 1 && (
-                <span style={{ fontSize: 9, color: 'var(--r0-slate-400)' }}>
-                  ({Math.round(p.confidence * 100)}%)
+          {extracted.map((p, i) => {
+            const relevant = isRelevantForElement(p.name, form.element_type);
+            return (
+              <label key={`${p.name}-${i}`} style={{
+                display: 'flex', alignItems: 'center', gap: 4, fontSize: 11,
+                color: relevant ? 'var(--r0-slate-700)' : 'var(--r0-slate-400)',
+                cursor: 'pointer', padding: '1px 0',
+                opacity: relevant ? 1 : 0.5,
+              }}>
+                <input type="checkbox" checked={checked.has(p.name) && relevant}
+                  disabled={!relevant}
+                  onChange={() => toggleParam(p.name)} style={{ margin: 0 }} />
+                <span style={{ opacity: p.confidence >= 1 ? 1 : 0.7 }}>
+                  {p.label_cs}
                 </span>
-              )}
-            </label>
-          ))}
+                {!relevant && (
+                  <span style={{ fontSize: 9, color: 'var(--r0-slate-400)' }}>
+                    (jiný typ)
+                  </span>
+                )}
+                {p.confidence < 1 && relevant && (
+                  <span style={{ fontSize: 9, color: 'var(--r0-slate-400)' }}>
+                    ({Math.round(p.confidence * 100)}%)
+                  </span>
+                )}
+              </label>
+            );
+          })}
           <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
             <button
               onClick={() => applyParams(extracted)}
