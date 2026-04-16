@@ -224,8 +224,12 @@ export interface PlannerInput {
   // --- Prestressed concrete ---
   /** Is the element prestressed (předpjatý beton)? Adds PRESTRESS step to schedule. */
   is_prestressed?: boolean;
-  /** Prestressing duration override (days). Auto-calculated from bridge length if not given. */
+  /** Prestressing duration override (days). Auto-calculated if not given. */
   prestress_days_override?: number;
+  /** Number of prestress cables (for stressing + grouting duration calc). */
+  prestress_cables_count?: number;
+  /** Tensioning method: one-sided (~6/day) or both-sides (~10/day). Default both. */
+  prestress_tensioning?: 'one_sided' | 'both_sides';
 
   // --- Bridge deck subtype ---
   /** Bridge deck cross-section subtype. Affects difficulty factor and warnings. */
@@ -1412,10 +1416,26 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 6b. Prestressing (předpětí) — only for prestressed elements ──────
   let prestressDays = 0;
   if (isPrestressed) {
-    const bridgeLength = input.total_length_m ?? 0;
-    prestressDays = input.prestress_days_override ??
-      (bridgeLength > 200 ? 7 : bridgeLength > 50 ? 5 : 3);
-    log.push(`Prestress: ${prestressDays}d (bridge ${bridgeLength}m, is_prestressed=true)`);
+    if (input.prestress_days_override != null) {
+      prestressDays = input.prestress_days_override;
+    } else {
+      // BUG 4: Realistic prestress formula per TKP18 §6.5.
+      // Phase 1: Wait for concrete to reach min. 33 MPa (≈70% of C35/45 f_ck)
+      //   For class 4 curing at 15°C this is ~7 days (from CURING_DAYS_TABLE).
+      //   Simplified: use curingDays (already computed above, includes class+exposure).
+      const waitForStrength = Math.max(7, curingDays);
+      // Phase 2: Stressing — cables_per_day depends on tensioning method
+      //   Jednostranné (one-sided): ~6 cables/day
+      //   Oboustranné (both-sides): ~10 cables/day
+      const numCables = input.prestress_cables_count ?? 0;
+      const cablesPerDay = input.prestress_tensioning === 'one_sided' ? 6 : 10;
+      const stressingDays = numCables > 0 ? Math.ceil(numCables / cablesPerDay) : 2;
+      // Phase 3: Grouting (injektáž kanálků) — ~8 cables/day
+      const groutingDays = numCables > 0 ? Math.ceil(numCables / 8) : 2;
+
+      prestressDays = waitForStrength + stressingDays + groutingDays;
+    }
+    log.push(`Prestress: ${prestressDays}d (wait ${Math.max(7, curingDays)}d + stressing + grouting, is_prestressed=true)`);
   }
 
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
