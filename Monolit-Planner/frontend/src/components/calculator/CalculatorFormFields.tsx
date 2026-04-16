@@ -896,7 +896,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             </Field>
             <Field label="Třída ošetřování" hint="TKP18 §7.8.3. Prázdné = auto dle typu prvku">
               <select style={inputStyle} value={form.curing_class}
-                onChange={e => update('curing_class', e.target.value)}>
+                onChange={e => update('curing_class', e.target.value as '' | '2' | '3' | '4')}>
                 <option value="">Auto (dle typu prvku)</option>
                 <option value="2">2 — základy, podkladní beton</option>
                 <option value="3">3 — spodní stavba (opěry, pilíře)</option>
