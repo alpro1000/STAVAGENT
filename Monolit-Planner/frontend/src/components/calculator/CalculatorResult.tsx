@@ -952,7 +952,34 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         ) : (() => {
           const propsLabor = plan.costs.props_labor_czk || 0;
           const propsRental = plan.costs.props_rental_czk || 0;
-          const totalAll = plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
+          // Terminology Commit 5 (2026-04-17): pour_role-aware labels +
+          // MSS-specific rows. Single-number totals become three
+          // separate line items on bridge plans (skruž / stojky / —
+          // bednění is part of skruž labor there). On MSS the table
+          // swaps to mobilization / per-takt / demobilization labor +
+          // machine rental with explicit zero rows for the components
+          // (AC 25).
+          const isMss = plan.costs?.is_mss_path === true;
+          const mssMob = plan.costs?.mss_mobilization_czk ?? 0;
+          const mssDemob = plan.costs?.mss_demobilization_czk ?? 0;
+          const mssRental = plan.costs?.mss_rental_czk ?? 0;
+          const role = plan.formwork.system.pour_role;
+
+          const formworkWorkLabel =
+            isMss                       ? 'MSS — per-takt úprava (práce)' :
+            role === 'falsework'        ? 'Skruž (nosníky — práce)' :
+            role === 'formwork_props'   ? 'Bednění + stojky (práce)' :
+                                          'Bednění (práce)';
+          const formworkRentalLabel =
+            isMss                       ? 'Pronájem MSS (stroj)' :
+            role === 'falsework'        ? 'Pronájem skruže (nosníky)' :
+            role === 'formwork_props'   ? 'Pronájem bednění + stojky' :
+                                          'Pronájem bednění';
+
+          const totalAll = isMss
+            ? plan.costs.total_labor_czk + mssRental
+            : plan.costs.total_labor_czk + plan.costs.formwork_rental_czk + propsLabor + propsRental;
+
           const nT = plan.pour_decision.num_tacts;
           const k = 0.8;
           const fwDays = (plan.formwork.assembly_days + plan.formwork.disassembly_days) * nT;
@@ -962,6 +989,11 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
           const pourH = plan.pour.total_pour_hours * nT;
           const rentalDays = plan.schedule.total_days + 2;
           const rentalMonths = (rentalDays / 30).toFixed(1);
+          // Per-takt work cost on MSS = total formwork_labor minus mob/demob
+          // (which are tracked separately as MSS montáž/demontáž rows).
+          const formworkWorkRowCost = isMss
+            ? Math.max(0, plan.costs.formwork_labor_czk - mssMob - mssDemob)
+            : plan.costs.formwork_labor_czk;
           const cs = { padding: '4px 10px', fontSize: 12, fontFamily: "var(--r0-font-mono, 'JetBrains Mono', monospace)", textAlign: 'right' as const, whiteSpace: 'nowrap' as const };
           const cl = { ...cs, textAlign: 'left' as const, color: 'var(--r0-slate-500)' };
           const cb = { ...cs, fontWeight: 700 };
@@ -978,9 +1010,25 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                     </tr>
                   </thead>
                   <tbody>
+                    {isMss && mssMob > 0 && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                        <td style={cl}>MSS montáž (vlastní síly — tesaři)</td>
+                        <td style={cs}>{formatCZK(mssMob)}</td>
+                        <td style={cs}>{plan.bridge_technology?.mss_schedule?.setup_days ?? '—'}</td>
+                        <td style={cs}>—</td>
+                      </tr>
+                    )}
+                    {isMss && mssDemob > 0 && (
+                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                        <td style={cl}>MSS demontáž (vlastní síly — tesaři)</td>
+                        <td style={cs}>{formatCZK(mssDemob)}</td>
+                        <td style={cs}>{plan.bridge_technology?.mss_schedule?.teardown_days ?? '—'}</td>
+                        <td style={cs}>—</td>
+                      </tr>
+                    )}
                     <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
-                      <td style={cl}>Bednění (práce)</td>
-                      <td style={cs}>{formatCZK(plan.costs.formwork_labor_czk)}</td>
+                      <td style={cl}>{formworkWorkLabel}</td>
+                      <td style={cs}>{formatCZK(formworkWorkRowCost)}</td>
                       <td style={cs}>{formatNum(fwDays, 1)}</td>
                       <td style={cs}>{formatNum(fwH, 0)} h</td>
                     </tr>
@@ -996,9 +1044,9 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                       <td style={cs}>—</td>
                       <td style={cs}>{formatNum(pourH, 1)} h</td>
                     </tr>
-                    {propsLabor > 0 && (
+                    {propsLabor > 0 && !isMss && (
                       <tr style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
-                        <td style={cl}>Podpěry (práce)</td>
+                        <td style={cl}>Stojky (práce)</td>
                         <td style={cs}>{formatCZK(propsLabor)}</td>
                         <td style={cs}>{plan.props ? formatNum(plan.props.assembly_days + plan.props.disassembly_days, 1) : '—'}</td>
                         <td style={cs}>—</td>
@@ -1010,10 +1058,10 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         rows — user saw one total without skruž. Render a
                         disabled placeholder so the user sees the missing
                         line item + the orchestrator warning match. */}
-                    {propsLabor === 0 && plan.element.type === 'mostovkova_deska' && (
+                    {propsLabor === 0 && !isMss && plan.element.type === 'mostovkova_deska' && (
                       <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-warn-bg, #fffbeb)' }}>
                         <td style={{ ...cl, color: 'var(--r0-warn-text, #b45309)', fontStyle: 'italic' }}>
-                          Podpěry (práce) — zadejte výšku
+                          Stojky (práce) — zadejte výšku
                         </td>
                         <td style={{ ...cs, color: 'var(--r0-warn-text, #b45309)' }}>—</td>
                         <td style={cs}>—</td>
@@ -1025,10 +1073,10 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         souhrnu by měly být vizuálně spojené. Řádek se
                         objevuje jen když podpěry skutečně vznikly, aby
                         uživatel bez výšky nedostal matoucí "součet = 0". */}
-                    {propsLabor > 0 && (
+                    {propsLabor > 0 && !isMss && (
                       <tr style={{ borderBottom: '1px solid var(--r0-slate-200)', background: 'var(--r0-slate-50)' }}>
                         <td style={{ ...cl, fontStyle: 'italic', color: 'var(--r0-slate-600)' }}>
-                          ↳ Tesařské práce (bednění + podpěry)
+                          ↳ Tesařské práce (skruž + stojky)
                         </td>
                         <td style={{ ...cs, fontStyle: 'italic', color: 'var(--r0-slate-600)' }}>
                           {formatCZK(plan.costs.formwork_labor_czk + propsLabor)}
@@ -1036,23 +1084,55 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
                         <td style={cs} colSpan={2}></td>
                       </tr>
                     )}
-                    <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
-                      <td style={cl}>Pronájem bednění</td>
-                      <td style={cs}>{formatCZK(plan.costs.formwork_rental_czk)}</td>
-                      <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{rentalDays} dní ({rentalMonths} měs.)</td>
-                    </tr>
-                    {propsRental > 0 && (
-                      <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
-                        <td style={cl}>Pronájem podpěr</td>
-                        <td style={cs}>{formatCZK(propsRental)}</td>
-                        <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{plan.props?.rental_days ?? '—'} dní</td>
-                      </tr>
+                    {/* Rental block — label varies per pour_role. On MSS
+                        the whole machine is a single rental line + three
+                        explicit zero rows for the bundled components. */}
+                    {isMss ? (
+                      <>
+                        <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                          <td style={cl}>{formworkRentalLabel}</td>
+                          <td style={cs}>{formatCZK(mssRental)}</td>
+                          <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>
+                            {plan.bridge_technology?.mss_cost?.rental_months ?? '—'} měsíců
+                          </td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                          <td style={{ ...cl, fontStyle: 'italic' }}>↳ Pronájem bednění</td>
+                          <td style={cs}>0 Kč</td>
+                          <td style={{ ...cs, fontStyle: 'italic', color: 'var(--r0-slate-500)' }} colSpan={2}>(součást MSS)</td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                          <td style={{ ...cl, fontStyle: 'italic' }}>↳ Pronájem skruže</td>
+                          <td style={cs}>0 Kč</td>
+                          <td style={{ ...cs, fontStyle: 'italic', color: 'var(--r0-slate-500)' }} colSpan={2}>(součást MSS)</td>
+                        </tr>
+                        <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                          <td style={{ ...cl, fontStyle: 'italic' }}>↳ Pronájem stojek</td>
+                          <td style={cs}>0 Kč</td>
+                          <td style={{ ...cs, fontStyle: 'italic', color: 'var(--r0-slate-500)' }} colSpan={2}>(součást MSS)</td>
+                        </tr>
+                      </>
+                    ) : (
+                      <>
+                        <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                          <td style={cl}>{formworkRentalLabel}</td>
+                          <td style={cs}>{formatCZK(plan.costs.formwork_rental_czk)}</td>
+                          <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{rentalDays} dní ({rentalMonths} měs.)</td>
+                        </tr>
+                        {propsRental > 0 && (
+                          <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-slate-50)' }}>
+                            <td style={cl}>Pronájem stojek</td>
+                            <td style={cs}>{formatCZK(propsRental)}</td>
+                            <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>{plan.props?.rental_days ?? '—'} dní</td>
+                          </tr>
+                        )}
+                      </>
                     )}
                     {/* D1 (2026-04-16): matching placeholder for rental. */}
-                    {propsRental === 0 && plan.element.type === 'mostovkova_deska' && (
+                    {propsRental === 0 && !isMss && plan.element.type === 'mostovkova_deska' && (
                       <tr style={{ borderBottom: '1px solid var(--r0-slate-100)', background: 'var(--r0-warn-bg, #fffbeb)' }}>
                         <td style={{ ...cl, color: 'var(--r0-warn-text, #b45309)', fontStyle: 'italic' }}>
-                          Pronájem podpěr — zadejte výšku
+                          Pronájem stojek — zadejte výšku
                         </td>
                         <td style={{ ...cs, color: 'var(--r0-warn-text, #b45309)' }}>—</td>
                         <td style={{ ...cs, color: 'var(--r0-slate-500)' }} colSpan={2}>—</td>
