@@ -413,6 +413,25 @@ export interface PlannerOutput {
     pour_rostered_headcount: number;
     /** True when night-shift premium (§116 ZP) applies */
     pour_has_night_premium: boolean;
+    /**
+     * MEGA pour Bug 1 (2026-04-16): per-role crew breakdown for the pour
+     * front. crew_per_shift is derived from pumps_required via
+     *   ukladani  = n_pump × 2  (2 dělníci za každé čerpadlo — vedení hadice + rozprostření)
+     *   vibrace   = ceil(n_pump × 1.5)
+     *   finiseri  = ceil(n_pump × 1.0)
+     *   rizeni    = 3  (stavbyvedoucí + geodet + laborant — fixní)
+     *   total     = součet všech čtyř
+     * UI can render this as "2 ukládání + 2 vibrace + 1 finiš + 3 řízení
+     * = 8 lidí/směna", pour_rostered_headcount = total × pour_shifts.
+     */
+    pour_crew_breakdown: {
+      ukladani: number;
+      vibrace: number;
+      finiseri: number;
+      rizeni: number;
+      total: number;
+      pumps_used: number;
+    };
   };
 
   // --- Lateral pressure & pour stages (záběrová betonáž) ---
@@ -528,6 +547,47 @@ const DEFAULTS = {
   concrete_days: 1,
   monte_carlo_iterations: 10000,
 } as const;
+
+/**
+ * MEGA pour Bug 1 (2026-04-16): pour-front crew size as a function of
+ * how many concrete pumps are on site. Until now `effectivePourCrew`
+ * was only scaled by pour_hours / shift_h, so 1 pump and 4 pumps got
+ * the same 4–5 person crew — a number that cannot run a moving-front
+ * pour behind 4 pump booms at once.
+ *
+ * Reality on site (per CZ concreting practice):
+ *   - 2 dělníci za každým čerpadlem (vedení hadice + rozprostření)
+ *   - vibraceři ≈ 1.5 × čerpadla (překrývání zón)
+ *   - finišeři  ≈ 1.0 × čerpadla (uhlazování za frontou)
+ *   - řízení     = 3 (stavbyvedoucí + geodet + laborant, fixní)
+ *
+ * Universal application (per user decision): applied even for 1 pump
+ * small pours so the breakdown is consistent across all plans. For 1
+ * pump this yields 2+2+1+3 = 8 people, which matches the task spec
+ * example "100 m³, 1 čerpadlo → 8 lidí/směna".
+ */
+export function computePourCrewByPumps(n_pump: number): {
+  ukladani: number;
+  vibrace: number;
+  finiseri: number;
+  rizeni: number;
+  total: number;
+  pumps_used: number;
+} {
+  const pumps = Math.max(1, Math.floor(n_pump));
+  const ukladani = pumps * 2;
+  const vibrace = Math.ceil(pumps * 1.5);
+  const finiseri = Math.ceil(pumps * 1.0);
+  const rizeni = 3;
+  return {
+    ukladani,
+    vibrace,
+    finiseri,
+    rizeni,
+    total: ukladani + vibrace + finiseri + rizeni,
+    pumps_used: pumps,
+  };
+}
 
 // ─── Main Orchestrator ──────────────────────────────────────────────────────
 
@@ -1368,8 +1428,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // - Continuous pour: ALWAYS 1 day (extended shift), scale crew/pump instead
   // - Sectional pour: pour_hours / shift_h (fractional, rounded)
   let concreteDays: number;
-  let effectivePourCrew = crew;
   let effectiveShift = shift;
+
+  // MEGA pour Bug 1 (2026-04-16): crew is now a function of pumps, applied
+  // UNIVERSALLY (1-pump small pour still gets 2+2+1+3 = 8 people). The
+  // previous crew = form.crew_size baseline couldn't run a moving-front
+  // pour behind 2+ pumps. User configured crew_size now drives only the
+  // tesaři/železáři branches — pour crew is derived from pumps_required.
+  const pourCrewBreakdown = computePourCrewByPumps(pourDecision.pumps_required);
+  let effectivePourCrew = pourCrewBreakdown.total;
 
   // Night shift premium (§ 116 ZP: min. +10%)
   const NIGHT_PREMIUM = 0.10;
@@ -1385,15 +1452,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
     const MAX_LEGAL_SHIFT = 12;
 
     if (pourResult.total_pour_hours <= MAX_LEGAL_SHIFT) {
-      // Fits in one extended shift (up to 12h legal max)
+      // Fits in one extended shift (up to 12h legal max). The pour-front
+      // crew is already sized by pumps; we only stretch the shift.
       effectiveShift = pourResult.total_pour_hours;
-      const maxCrew = 15;
-      effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
 
       warnings.push(
         `[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: nutno zalít v jednom záběru bez přerušení. ` +
-        `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
-        `směna ${roundTo(effectiveShift, 1)}h. ` +
+        `Osádka: ${effectivePourCrew} lidí/směna ` +
+        `(${pourCrewBreakdown.ukladani} uklád. + ${pourCrewBreakdown.vibrace} vibrace + ${pourCrewBreakdown.finiseri} finiš + ${pourCrewBreakdown.rizeni} řízení). ` +
+        `Směna ${roundTo(effectiveShift, 1)}h. ` +
         (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
       );
     } else {
@@ -1401,27 +1468,29 @@ export function planElement(input: PlannerInput): PlannerOutput {
       // Each shift max 12h, crews rotate.
       numPourShifts = Math.ceil(pourResult.total_pour_hours / MAX_LEGAL_SHIFT);
       effectiveShift = MAX_LEGAL_SHIFT;
-      const maxCrew = 15;
-      effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * MAX_LEGAL_SHIFT) / shift)));
       const nightHours = Math.max(0, pourResult.total_pour_hours - MAX_LEGAL_SHIFT);
       pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
 
       warnings.push(
         `[Záběr ${pourDecision.tact_volume_m3} m³, ${roundTo(pourResult.total_pour_hours, 1)}h] ` +
         `Monolitická zálivka: nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
-        `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} pracovníků). ` +
+        `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} lidí = ${effectivePourCrew * numPourShifts} celkem). ` +
         `Noční směna: +${nightHours.toFixed(1)}h s příplatkem +10% (§ 116 ZP).`
       );
     }
 
     log.push(`Continuous pour: ${pourResult.total_pour_hours}h → 1 day, ` +
-      `${numPourShifts} shift(s), crew ${crew}→${effectivePourCrew}, ` +
-      `shift ${shift}→${roundTo(effectiveShift, 1)}h`);
+      `${numPourShifts} shift(s), pour crew ${effectivePourCrew} ` +
+      `(${pourCrewBreakdown.ukladani}+${pourCrewBreakdown.vibrace}+${pourCrewBreakdown.finiseri}+${pourCrewBreakdown.rizeni}, ` +
+      `${pourCrewBreakdown.pumps_used} čerpadel), shift ${shift}→${roundTo(effectiveShift, 1)}h`);
   } else {
     // Normal pour: calculate days from hours
     concreteDays = Math.max(1, roundTo(pourResult.total_pour_hours / shift, 2));
     // For very small pours (< half shift), still count as 1 day minimum
     if (concreteDays < 1) concreteDays = 1;
+    log.push(`Pour crew: ${effectivePourCrew} lidí ` +
+      `(${pourCrewBreakdown.ukladani}+${pourCrewBreakdown.vibrace}+${pourCrewBreakdown.finiseri}+${pourCrewBreakdown.rizeni}, ` +
+      `${pourCrewBreakdown.pumps_used} čerpadel) for ${roundTo(pourResult.total_pour_hours, 1)}h pour`);
   }
 
   // BUG C1 (2026-04-16): per-záběr continuous-pour gate for mostovka.
@@ -1829,6 +1898,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       pour_simultaneous_headcount: effectivePourCrew,
       pour_rostered_headcount: effectivePourCrew * numPourShifts,
       pour_has_night_premium: pourNightPremiumCZK > 0,
+      pour_crew_breakdown: pourCrewBreakdown,
     },
     lateral_pressure: lateralPressure,
     pour_stages: pourStages,
@@ -2208,6 +2278,13 @@ function runPilePath(
       pour_simultaneous_headcount: crew,
       pour_rostered_headcount: crew,
       pour_has_night_premium: false,
+      // Piles don't use the moving-front pour crew (drilling rig + armokoš
+      // crew dominate), but the field is required by the schema. Fill
+      // with a 0-pump breakdown so consumers can still render the block.
+      pour_crew_breakdown: {
+        ukladani: 0, vibrace: 0, finiseri: 0, rizeni: 0,
+        total: crew, pumps_used: 0,
+      },
     },
     costs: {
       formwork_labor_czk: 0,

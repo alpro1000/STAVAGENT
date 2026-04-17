@@ -5,7 +5,7 @@
  * rebar → pour task → scheduling → costs.
  */
 import { describe, it, expect } from 'vitest';
-import { planElement } from './planner-orchestrator.js';
+import { planElement, computePourCrewByPumps } from './planner-orchestrator.js';
 import type { PlannerInput } from './planner-orchestrator.js';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -858,6 +858,97 @@ describe('Planner Orchestrator', () => {
       expect(plan.props).toBeUndefined();
       const hasSequenceLog = plan.decision_log.some(l => l.includes('Tesaři sequence per tact'));
       expect(hasSequenceLog).toBe(false);
+    });
+  });
+
+  // ─── MEGA pour Bug 1 (2026-04-16): crew size scales with pump count ──
+  describe('computePourCrewByPumps', () => {
+    it('1 pump yields 8 lidí (task spec table row: 100 m³)', () => {
+      const b = computePourCrewByPumps(1);
+      expect(b).toEqual({
+        ukladani: 2, vibrace: 2, finiseri: 1, rizeni: 3,
+        total: 8, pumps_used: 1,
+      });
+    });
+
+    it('2 pumps yields 12 lidí (task spec table row: 300 m³)', () => {
+      const b = computePourCrewByPumps(2);
+      expect(b.ukladani).toBe(4);
+      expect(b.vibrace).toBe(3);
+      expect(b.finiseri).toBe(2);
+      expect(b.rizeni).toBe(3);
+      expect(b.total).toBe(12);
+    });
+
+    it('3 pumps yields 17 lidí (task spec table row: 664 m³)', () => {
+      expect(computePourCrewByPumps(3).total).toBe(17);
+    });
+
+    it('4 pumps yields 21 lidí (task spec table row: 1000+ m³)', () => {
+      expect(computePourCrewByPumps(4).total).toBe(21);
+    });
+
+    it('clamps invalid pump count to 1 (0/negative/float)', () => {
+      expect(computePourCrewByPumps(0).pumps_used).toBe(1);
+      expect(computePourCrewByPumps(-3).pumps_used).toBe(1);
+      expect(computePourCrewByPumps(1.7).pumps_used).toBe(1);
+    });
+  });
+
+  describe('planElement — pour crew derived from pumps (Bug 1)', () => {
+    it('exposes pour_crew_breakdown on resources', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 120,
+        formwork_area_m2: 100,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      expect(plan.resources.pour_crew_breakdown).toBeDefined();
+      expect(plan.resources.pour_crew_breakdown.total).toBeGreaterThan(0);
+      // total = ukladani + vibrace + finiseri + rizeni
+      const b = plan.resources.pour_crew_breakdown;
+      expect(b.ukladani + b.vibrace + b.finiseri + b.rizeni).toBe(b.total);
+    });
+
+    it('small pour (1 pump) gets 8-person pour crew (universal formula)', () => {
+      const plan = planElement({
+        element_type: 'zakladova_deska',
+        volume_m3: 50,
+        formwork_area_m2: 40,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      expect(plan.resources.pour_crew_breakdown.pumps_used).toBe(1);
+      expect(plan.resources.pour_simultaneous_headcount).toBe(8);
+    });
+
+    it('large monolithic pour (multi-pump) scales crew proportionally', () => {
+      const small = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 100,
+        formwork_area_m2: 100,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      const mega = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 800,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      // Larger pour needs more pumps → bigger crew (no decrease ever)
+      expect(mega.resources.pour_crew_breakdown.pumps_used)
+        .toBeGreaterThanOrEqual(small.resources.pour_crew_breakdown.pumps_used);
+      expect(mega.resources.pour_simultaneous_headcount)
+        .toBeGreaterThanOrEqual(small.resources.pour_simultaneous_headcount);
     });
   });
 
