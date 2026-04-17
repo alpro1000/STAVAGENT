@@ -462,14 +462,17 @@ export function calculateProps(input: PropsCalculatorInput): PropsCalculatorResu
   const craneNeeded = totalWeightKg > 500 || input.height_m > 5;
 
   if (craneNeeded) {
+    // Terminology Commit 6 (2026-04-17): "Stojky" (props/věže) replaces
+    // "Podpěry" to match the UI card split — Skruž (nosníky) vs Stojky
+    // (věže) are now separate layers.
     warnings.push(
-      `Podpěry: celková hmotnost ${(totalWeightKg / 1000).toFixed(1)} t — vyžaduje jeřáb pro montáž/demontáž.`
+      `Stojky (${system.name}): celková hmotnost ${(totalWeightKg / 1000).toFixed(1)} t — vyžaduje jeřáb pro montáž/demontáž.`
     );
   }
 
   if (input.height_m > 6) {
     warnings.push(
-      `Výška podpěr ${input.height_m}m > 6m: vyžaduje podpěrné věže (${system.name}) ` +
+      `Výška stojek ${input.height_m}m > 6m: vyžaduje podpěrné věže (${system.name}) ` +
       `se stabilizačními ztužidly. Kontrola dle ČSN EN 12812.`
     );
   }

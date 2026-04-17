@@ -787,9 +787,18 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 2d. Formwork-specific warnings ─────────────────────────────────────
   if (fwSystem.needs_crane) {
+    // Terminology Commit 6 (2026-04-17): prefix varies per pour_role so
+    // "Skruž Top 50 vyžaduje jeřáb (nosník …)" instead of the generic
+    // "Top 50 vyžaduje jeřáb (panel …)" — a nosníková skruž doesn't
+    // ship as panels, and the UI label already says "Skruž".
+    const prefix =
+      fwSystem.pour_role === 'falsework'       ? `Skruž ${fwSystem.name}` :
+      fwSystem.pour_role === 'mss_integrated'  ? `${fwSystem.name} (MSS)` :
+                                                 fwSystem.name;
+    const itemNoun = fwSystem.pour_role === 'falsework' ? 'nosník' : 'panel';
     warnings.push(
-      `${fwSystem.name} vyžaduje jeřáb (panel ${fwSystem.max_panel_weight_kg || '150+'} kg) — ` +
-      `zajistěte jeřáb na stavbě pro celou dobu bednění.`
+      `${prefix} vyžaduje jeřáb (${itemNoun} ${fwSystem.max_panel_weight_kg || '150+'} kg) — ` +
+      `zajistěte jeřáb na stavbě pro celou dobu montáže.`
     );
   }
   if (heightForPressure && heightForPressure > 1.2 && isVertical) {
@@ -1699,16 +1708,23 @@ export function planElement(input: PlannerInput): PlannerOutput {
       `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
     log.push(...propsResult.log.map(l => `  props: ${l}`));
   } else if (profile.needs_supports && !input.height_m) {
-    // D1 (2026-04-16): mostovkova_deska bez podpěr = nereálný plán.
-    // Prefixem "🚨 KRITICKÉ:" se warning dostane na vrchol seznamu +
-    // barva se liší od běžných warnings (styling hook v UI). Ostatní
-    // typy s needs_supports (stropní deska, rigel) zůstávají na běžné
-    // úrovni — tam reálně může chybět výška při předběžné kalkulaci.
-    const prefix = elementType === 'mostovkova_deska' ? '🚨 KRITICKÉ: ' : '';
+    // D1 (2026-04-16) + Terminology Commit 6 (2026-04-17): mostovka bez
+    // výšky = nereálný plán. Mostovka se správně opírá o nosníkovou
+    // skruž (Top 50 / VARIOKIT HD 200) + stojky (Staxo / UP Rosett),
+    // takže warning to říká explicitně; pro ostatní prvky s
+    // needs_supports necháváme obecnější formulaci (tam může chybět
+    // výška při předběžné kalkulaci).
+    const isBridgeDeck = elementType === 'mostovkova_deska';
+    const prefix = isBridgeDeck ? '🚨 KRITICKÉ: ' : '';
+    const what = isBridgeDeck
+      ? 'Mostovka vyžaduje skruž (nosníky) + stojky'
+      : `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž)`;
+    const detailSuffix = isBridgeDeck
+      ? `Bez výšky chybí v souhrnu Skruž + Stojky (typicky 15–25 % z celkových nákladů mostovky).`
+      : `Bez ní chybí v souhrnu položka Stojky (typicky 15–25 % z celkových nákladů).`;
     warnings.push(
-      `${prefix}${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
-      `ale není zadána výška. Zadejte výšku nad terénem pro výpočet podpěr, počtu stojek a nákladů na pronájem. ` +
-      `Bez ní chybí v souhrnu položka Podpěry (typicky 15–25 % z celkových nákladů mostovky).`
+      `${prefix}${what}, ale není zadána výška. ` +
+      `Zadejte výšku nad terénem pro výpočet skruže, stojek a nákladů na pronájem. ${detailSuffix}`
     );
     log.push(`Props: skipped — height_m not provided for element with needs_supports=true (${elementType})`);
   }
@@ -1857,6 +1873,22 @@ export function planElement(input: PlannerInput): PlannerOutput {
       `MSS costs: mobilization ${(mssMobilizationCZK / 1e6).toFixed(2)} M + demobilization ` +
       `${(mssDemobilizationCZK / 1e6).toFixed(2)} M Kč → flowing into formwork_labor (vlastní síly tesaři). ` +
       `Rental ${(mssRentalCZK / 1e6).toFixed(2)} M Kč bundled separately (pronájem MSS stroje).`,
+    );
+    // Terminology Commit 6 (2026-04-17): surface the "vlastní síly"
+    // framing in the warning pane so users understand the labor cost
+    // is calculated as if their own tesaři crew mounted the rig (for
+    // comparison with a DOKA/PERI subcontract offer). Crew size for MSS
+    // montáž is typically 10–15 lidí per shift — we quote a lower-bound
+    // derived from existing formwork crew × number of crews, floored
+    // at 10 to match task's "10-15 lidí" rule of thumb.
+    const setupDays = bridgeTechResult?.mss_schedule?.setup_days ?? 30;
+    const teardownDays = bridgeTechResult?.mss_schedule?.teardown_days ?? 15;
+    const tesariPerShift = Math.max(10, numFWCrews * crew);
+    warnings.push(
+      `MSS montáž: ~${tesariPerShift} lidí (tesaři) × ${setupDays} dní = ` +
+      `${(mssMobilizationCZK / 1e6).toFixed(2)} M Kč (vlastní síly). ` +
+      `Per-takt úprava: tesaři, Nhod × ${fwSystem.mss_reuse_factor ?? 0.35} (přesun + re-tensioning). ` +
+      `MSS demontáž: ~${teardownDays} dní = ${(mssDemobilizationCZK / 1e6).toFixed(2)} M Kč.`,
     );
   }
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
