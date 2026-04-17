@@ -38,7 +38,7 @@ import { calculateFormwork, calculateThreePhaseFormwork, calculateStrategiesDeta
 import { calculateRebarLite } from './rebar-lite.js';
 import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
-import { findFormworkSystem } from '../constants-data/formwork-systems.js';
+import { findFormworkSystem, findMssSystem, FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod, filterFormworkByPressure } from './lateral-pressure.js';
 import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
 import { recommendBridgeTechnology, calculateMSSCost, calculateMSSSchedule, getMSSTactDays } from './bridge-technology.js';
@@ -63,8 +63,17 @@ export interface PlannerInput {
   volume_m3: number;
   /** Formwork area per tact (m²). If not given, estimated from volume, height, and element geometry */
   formwork_area_m2?: number;
-  /** Height from ground/floor to underside of element (m). Used for props calculation. */
+  /** Height from ground/floor to underside of element (m). Used for props calculation.
+   *  For mostovkova_deska: this is the prop height (terén → spodek desky), typ. 4–20 m.
+   *  For the deck cross-section thickness, use deck_thickness_m (separate field). */
   height_m?: number;
+  /**
+   * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Optional override.
+   * When omitted and span_m × nk_width_m are set, auto-derived as volume_m3 / (span_m × nk_width_m).
+   * Used for bridge-deck sanity check and deck-specific warnings only — the engine's
+   * formwork/pressure math still reads height_m (prop height) for mostovka.
+   */
+  deck_thickness_m?: number;
   /**
    * Lost formwork area (m²) — trapezoidal steel sheet (trapézový plech) that
    * stays in the structure permanently. This area does NOT need system formwork
@@ -370,6 +379,23 @@ export interface PlannerOutput {
     props_labor_czk: number;
     /** Props rental. 0 if no props. */
     props_rental_czk: number;
+
+    // ── MSS path (2026-04-17 Terminology Commit 3) ───────────────────
+    /**
+     * True when the plan uses MSS (posuvná skruž) — form/skruž/stojky
+     * are integrated in one movable rig, per-tact labor collapses to
+     * `mss_reuse_factor` of full mount, individual component rentals
+     * are 0 (bundled in MSS rental). UI branches on this flag to show
+     * the 🌉 MSS card instead of separate Bednění / Skruž / Stojky
+     * cards.
+     */
+    is_mss_path: boolean;
+    /** MSS one-off mobilization (tesaři vlastní síly). Already in formwork_labor. */
+    mss_mobilization_czk: number;
+    /** MSS demobilization (tesaři vlastní síly). Already in formwork_labor. */
+    mss_demobilization_czk: number;
+    /** MSS monthly rental × months (machine rental, separate from labor). */
+    mss_rental_czk: number;
   };
 
   // --- Resources summary ---
@@ -404,6 +430,25 @@ export interface PlannerOutput {
     pour_rostered_headcount: number;
     /** True when night-shift premium (§116 ZP) applies */
     pour_has_night_premium: boolean;
+    /**
+     * MEGA pour Bug 1 (2026-04-16): per-role crew breakdown for the pour
+     * front. crew_per_shift is derived from pumps_required via
+     *   ukladani  = n_pump × 2  (2 dělníci za každé čerpadlo — vedení hadice + rozprostření)
+     *   vibrace   = ceil(n_pump × 1.5)
+     *   finiseri  = ceil(n_pump × 1.0)
+     *   rizeni    = 3  (stavbyvedoucí + geodet + laborant — fixní)
+     *   total     = součet všech čtyř
+     * UI can render this as "2 ukládání + 2 vibrace + 1 finiš + 3 řízení
+     * = 8 lidí/směna", pour_rostered_headcount = total × pour_shifts.
+     */
+    pour_crew_breakdown: {
+      ukladani: number;
+      vibrace: number;
+      finiseri: number;
+      rizeni: number;
+      total: number;
+      pumps_used: number;
+    };
   };
 
   // --- Lateral pressure & pour stages (záběrová betonáž) ---
@@ -520,6 +565,47 @@ const DEFAULTS = {
   monte_carlo_iterations: 10000,
 } as const;
 
+/**
+ * MEGA pour Bug 1 (2026-04-16): pour-front crew size as a function of
+ * how many concrete pumps are on site. Until now `effectivePourCrew`
+ * was only scaled by pour_hours / shift_h, so 1 pump and 4 pumps got
+ * the same 4–5 person crew — a number that cannot run a moving-front
+ * pour behind 4 pump booms at once.
+ *
+ * Reality on site (per CZ concreting practice):
+ *   - 2 dělníci za každým čerpadlem (vedení hadice + rozprostření)
+ *   - vibraceři ≈ 1.5 × čerpadla (překrývání zón)
+ *   - finišeři  ≈ 1.0 × čerpadla (uhlazování za frontou)
+ *   - řízení     = 3 (stavbyvedoucí + geodet + laborant, fixní)
+ *
+ * Universal application (per user decision): applied even for 1 pump
+ * small pours so the breakdown is consistent across all plans. For 1
+ * pump this yields 2+2+1+3 = 8 people, which matches the task spec
+ * example "100 m³, 1 čerpadlo → 8 lidí/směna".
+ */
+export function computePourCrewByPumps(n_pump: number): {
+  ukladani: number;
+  vibrace: number;
+  finiseri: number;
+  rizeni: number;
+  total: number;
+  pumps_used: number;
+} {
+  const pumps = Math.max(1, Math.floor(n_pump));
+  const ukladani = pumps * 2;
+  const vibrace = Math.ceil(pumps * 1.5);
+  const finiseri = Math.ceil(pumps * 1.0);
+  const rizeni = 3;
+  return {
+    ukladani,
+    vibrace,
+    finiseri,
+    rizeni,
+    total: ukladani + vibrace + finiseri + rizeni,
+    pumps_used: pumps,
+  };
+}
+
 // ─── Main Orchestrator ──────────────────────────────────────────────────────
 
 /**
@@ -628,7 +714,20 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // 2c. Select formwork system (pressure-aware when height given)
   let fwSystem: FormworkSystemSpec;
-  if (input.formwork_system_name) {
+
+  // Terminology Commit 2 (2026-04-17): MSS shortcut. When the user
+  // explicitly chose construction_technology='mss' for a bridge deck,
+  // return the mss_integrated catalog sentinel (DOKA MSS or VARIOKIT
+  // Mobile per preferred_manufacturer). calculateProps below is
+  // skipped — MSS carries its own falsework + props. Downstream cost
+  // math zeroes formwork + props rentals (they are bundled in the
+  // bridge-technology.ts calculateMSSCost mobilization + rental).
+  if (input.construction_technology === 'mss' && elementType === 'mostovkova_deska') {
+    fwSystem = findMssSystem(input.preferred_manufacturer)
+      ?? findFormworkSystem('DOKA MSS')
+      ?? FORMWORK_SYSTEMS[0];
+    log.push(`Formwork: MSS shortcut → ${fwSystem.name} (pour_role=mss_integrated)`);
+  } else if (input.formwork_system_name) {
     const found = findFormworkSystem(input.formwork_system_name);
     if (!found) {
       warnings.push(`Systém bednění "${input.formwork_system_name}" nenalezen — použit doporučený.`);
@@ -688,9 +787,18 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 2d. Formwork-specific warnings ─────────────────────────────────────
   if (fwSystem.needs_crane) {
+    // Terminology Commit 6 (2026-04-17): prefix varies per pour_role so
+    // "Skruž Top 50 vyžaduje jeřáb (nosník …)" instead of the generic
+    // "Top 50 vyžaduje jeřáb (panel …)" — a nosníková skruž doesn't
+    // ship as panels, and the UI label already says "Skruž".
+    const prefix =
+      fwSystem.pour_role === 'falsework'       ? `Skruž ${fwSystem.name}` :
+      fwSystem.pour_role === 'mss_integrated'  ? `${fwSystem.name} (MSS)` :
+                                                 fwSystem.name;
+    const itemNoun = fwSystem.pour_role === 'falsework' ? 'nosník' : 'panel';
     warnings.push(
-      `${fwSystem.name} vyžaduje jeřáb (panel ${fwSystem.max_panel_weight_kg || '150+'} kg) — ` +
-      `zajistěte jeřáb na stavbě pro celou dobu bednění.`
+      `${prefix} vyžaduje jeřáb (${itemNoun} ${fwSystem.max_panel_weight_kg || '150+'} kg) — ` +
+      `zajistěte jeřáb na stavbě pro celou dobu montáže.`
     );
   }
   if (heightForPressure && heightForPressure > 1.2 && isVertical) {
@@ -884,6 +992,25 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 3a2. Mostovka-specific warnings ──────────────────────────────────
   if (elementType === 'mostovkova_deska') {
+    // BUG A1 (2026-04-16): resolve the deck cross-section thickness separately
+    // from the prop height. Preference order:
+    //   1. explicit deck_thickness_m (user override)
+    //   2. derived from volume / (span × width) when all three are set
+    //   3. undefined — deck_thickness sanity check is skipped
+    let effectiveDeckThickness = input.deck_thickness_m;
+    if (effectiveDeckThickness === undefined && input.volume_m3 && input.span_m && input.num_spans && input.nk_width_m) {
+      const totalDeckArea = input.span_m * input.num_spans * input.nk_width_m;
+      if (totalDeckArea > 0) {
+        effectiveDeckThickness = Math.round((input.volume_m3 / totalDeckArea) * 100) / 100;
+        log.push(`Deck thickness auto-derived: ${input.volume_m3} / (${input.span_m}×${input.num_spans}×${input.nk_width_m}) = ${effectiveDeckThickness} m`);
+      }
+    }
+    if (effectiveDeckThickness !== undefined && (effectiveDeckThickness < 0.3 || effectiveDeckThickness > 2.5)) {
+      warnings.push(
+        `⚠️ Tloušťka desky ${effectiveDeckThickness} m je mimo typický rozsah 0.3–2.5 m. Ověřte zadání.`
+      );
+    }
+
     // Construction sequence
     warnings.push(
       `Nosná konstrukce se betonuje PO dokončení spodní stavby (opěry, pilíře, úložné prahy). ` +
@@ -928,7 +1055,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 3a2b. Bridge construction technology (mostovka only, when geometry given) ──
   let bridgeTechResult: PlannerOutput['bridge_technology'] | undefined;
   if (elementType === 'mostovkova_deska' && input.span_m && input.num_spans) {
-    const clearanceH = input.height_m ?? 10; // default 10m if not given
+    // BUG E1 (2026-04-16): height_m used to silently default to 10 m when
+    // missing, which produced bogus "Výška 10m — věže Staxo 100" warnings
+    // even if the user never entered a height. Now we warn explicitly so
+    // the UI can redirect the user to the výška field.
+    const clearanceH = input.height_m ?? 10;
+    if (input.height_m === undefined) {
+      warnings.push(
+        `⚠️ Výška nad terénem (height_m) nezadána — technologie počítána s odhadem 10 m. ` +
+        `Zadejte výšku pro přesný výběr skruže (Staxo 40 pod 8 m / Staxo 100 pro 8–20 m).`
+      );
+    }
     const techRec = recommendBridgeTechnology({
       span_m: input.span_m,
       clearance_height_m: clearanceH,
@@ -1222,10 +1359,30 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // Apply shape correction to formwork norms (geometry-based multiplier)
   const shapeCorrection = input.formwork_shape_correction ?? 1.0;
-  const shapedAssemblyNorm = roundTo(adjustedNorms.assembly_h_m2 * shapeCorrection, 3);
-  const shapedDisassemblyNorm = roundTo(adjustedNorms.disassembly_h_m2 * shapeCorrection, 3);
+  let shapedAssemblyNorm = roundTo(adjustedNorms.assembly_h_m2 * shapeCorrection, 3);
+  let shapedDisassemblyNorm = roundTo(adjustedNorms.disassembly_h_m2 * shapeCorrection, 3);
   if (shapeCorrection !== 1.0) {
     log.push(`Shape correction: ×${shapeCorrection} → assembly ${shapedAssemblyNorm} h/m², strike ${shapedDisassemblyNorm} h/m²`);
+  }
+
+  // Terminology Commit 3 (2026-04-17): MSS per-tact reuse. DOKA MSS +
+  // PERI VARIOKIT Mobile carry a prebuilt form/skruž/props rig that
+  // only gets MOVED + re-tensioned between záběry. Full mount Nhod
+  // (catalog 1.20 h/m²) is already paid for inside MSS mobilization
+  // (see calculateMSSCost below); per-tact assembly runs at ~35 % of
+  // that. Factor applied here propagates through fwBase, threePhase,
+  // scheduler, costs — without duplicate bookkeeping.
+  const isMssPath = fwSystem.pour_role === 'mss_integrated';
+  const mssReuseFactor = isMssPath ? (fwSystem.mss_reuse_factor ?? 0.35) : 1;
+  if (isMssPath && mssReuseFactor !== 1) {
+    const oldAsm = shapedAssemblyNorm;
+    const oldDis = shapedDisassemblyNorm;
+    shapedAssemblyNorm = roundTo(shapedAssemblyNorm * mssReuseFactor, 3);
+    shapedDisassemblyNorm = roundTo(shapedDisassemblyNorm * mssReuseFactor, 3);
+    log.push(
+      `MSS reuse factor ×${mssReuseFactor} → per-tact Nhod ${oldAsm}→${shapedAssemblyNorm} asm, ` +
+      `${oldDis}→${shapedDisassemblyNorm} strike (full mount already in MSS mobilization)`,
+    );
   }
 
   // Use formwork calculator for base durations
@@ -1313,6 +1470,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
     crew_size: crew,
     shift_h: shift,
     target_window_h: input.target_pour_window_h,
+    // Pump-consistency fix (2026-04-16): forward the authoritative pump
+    // count from decidePourMode() so pour-task doesn't silently compute
+    // "1 čerpadlo, 20h" while pour-decision already said "4 čerpadel, 5h".
+    num_pumps_available: pourDecision.pumps_required,
   });
 
   log.push(`Pour: ${pourResult.effective_rate_m3_h}m³/h, ${pourResult.total_pour_hours}h/tact (bottleneck: ${pourResult.rate_bottleneck})`);
@@ -1326,8 +1487,15 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // - Continuous pour: ALWAYS 1 day (extended shift), scale crew/pump instead
   // - Sectional pour: pour_hours / shift_h (fractional, rounded)
   let concreteDays: number;
-  let effectivePourCrew = crew;
   let effectiveShift = shift;
+
+  // MEGA pour Bug 1 (2026-04-16): crew is now a function of pumps, applied
+  // UNIVERSALLY (1-pump small pour still gets 2+2+1+3 = 8 people). The
+  // previous crew = form.crew_size baseline couldn't run a moving-front
+  // pour behind 2+ pumps. User configured crew_size now drives only the
+  // tesaři/železáři branches — pour crew is derived from pumps_required.
+  const pourCrewBreakdown = computePourCrewByPumps(pourDecision.pumps_required);
+  let effectivePourCrew = pourCrewBreakdown.total;
 
   // Night shift premium (§ 116 ZP: min. +10%)
   const NIGHT_PREMIUM = 0.10;
@@ -1335,51 +1503,90 @@ export function planElement(input: PlannerInput): PlannerOutput {
   let numPourShifts = 1;
 
   if (isContinuousPour && pourResult.total_pour_hours > shift) {
-    // Continuous pour exceeds normal shift — can't stop, no work joints allowed.
+    // MEGA pour Bug 2 (2026-04-16): continuous pour exceeds the normal
+    // shift → immediately split into multiple shifts with crew relief.
+    // Previous code had an "extended shift" branch up to 12 h legal max
+    // that stretched one crew's workday and only multi-shift'd above
+    // 12 h. Reality on site (§116 ZP + safety): once pour exceeds the
+    // shift, a FRESH crew of the same size takes over. Each worker's
+    // day stays normal; labor accounting is person-hours across all
+    // shifts with +10% night premium on post-shift hours (22:00–06:00
+    // approximated as "everything past first-shift length").
     concreteDays = 1;
+    numPourShifts = Math.max(1, Math.ceil(pourResult.total_pour_hours / shift));
+    effectiveShift = shift; // no stretching — each crew works one normal shift
+    const nightHours = Math.max(0, pourResult.total_pour_hours - shift);
+    pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
 
-    // Czech labor law (§ 83 Zákoník práce): max shift = 12 hours.
-    // For pours > 12h: crew relief (střídání čet) — fresh crew replaces tired one.
-    const MAX_LEGAL_SHIFT = 12;
-
-    if (pourResult.total_pour_hours <= MAX_LEGAL_SHIFT) {
-      // Fits in one extended shift (up to 12h legal max)
-      effectiveShift = pourResult.total_pour_hours;
-      const maxCrew = 15;
-      effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
-
+    const breakdownLabel = `${pourCrewBreakdown.ukladani} uklád. + ${pourCrewBreakdown.vibrace} vibrace + ${pourCrewBreakdown.finiseri} finiš + ${pourCrewBreakdown.rizeni} řízení`;
+    if (numPourShifts === 1) {
+      // Edge case: pour_hours exactly equals shift — 1 shift, no night premium.
       warnings.push(
-        `[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: nutno zalít v jednom záběru bez přerušení. ` +
-        `Doporučeno navýšit osádku na ${effectivePourCrew} pracovníků, ` +
-        `směna ${roundTo(effectiveShift, 1)}h. ` +
-        (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
+        `[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: ${effectivePourCrew} lidí/směna (${breakdownLabel}).`
       );
     } else {
-      // Pour > 12h: multi-shift operation (střídání čet)
-      // Each shift max 12h, crews rotate.
-      numPourShifts = Math.ceil(pourResult.total_pour_hours / MAX_LEGAL_SHIFT);
-      effectiveShift = MAX_LEGAL_SHIFT;
-      const maxCrew = 15;
-      effectivePourCrew = Math.min(maxCrew, Math.max(crew, Math.ceil((crew * MAX_LEGAL_SHIFT) / shift)));
-      const nightHours = Math.max(0, pourResult.total_pour_hours - MAX_LEGAL_SHIFT);
-      pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
-
       warnings.push(
         `[Záběr ${pourDecision.tact_volume_m3} m³, ${roundTo(pourResult.total_pour_hours, 1)}h] ` +
-        `Monolitická zálivka: nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
-        `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} pracovníků). ` +
-        `Noční směna: +${nightHours.toFixed(1)}h s příplatkem +10% (§ 116 ZP).`
+        `Monolitická zálivka nutno zalít bez přerušení. ` +
+        `${numPourShifts} směny × ${effectivePourCrew} lidí = ${effectivePourCrew * numPourShifts} lidí celkem (${breakdownLabel}). ` +
+        `Noční hodiny po ${shift}h směně: ${nightHours.toFixed(1)}h s příplatkem +10% (§116 ZP).`
       );
     }
 
-    log.push(`Continuous pour: ${pourResult.total_pour_hours}h → 1 day, ` +
-      `${numPourShifts} shift(s), crew ${crew}→${effectivePourCrew}, ` +
-      `shift ${shift}→${roundTo(effectiveShift, 1)}h`);
+    log.push(`Continuous pour: ${roundTo(pourResult.total_pour_hours, 1)}h → 1 day, ` +
+      `${numPourShifts} shift(s) × ${effectivePourCrew} lidí ` +
+      `(${pourCrewBreakdown.ukladani}+${pourCrewBreakdown.vibrace}+${pourCrewBreakdown.finiseri}+${pourCrewBreakdown.rizeni}, ` +
+      `${pourCrewBreakdown.pumps_used} čerpadel), night ${nightHours.toFixed(1)}h`);
   } else {
     // Normal pour: calculate days from hours
     concreteDays = Math.max(1, roundTo(pourResult.total_pour_hours / shift, 2));
     // For very small pours (< half shift), still count as 1 day minimum
     if (concreteDays < 1) concreteDays = 1;
+    log.push(`Pour crew: ${effectivePourCrew} lidí ` +
+      `(${pourCrewBreakdown.ukladani}+${pourCrewBreakdown.vibrace}+${pourCrewBreakdown.finiseri}+${pourCrewBreakdown.rizeni}, ` +
+      `${pourCrewBreakdown.pumps_used} čerpadel) for ${roundTo(pourResult.total_pour_hours, 1)}h pour`);
+  }
+
+  // BUG C1 (2026-04-16): per-záběr continuous-pour gate for mostovka.
+  // Bridge decks can't have a pracovní spára inside a single záběr
+  // (static/crack risk), so even in sectional mode each záběr must pour
+  // without interruption. If the záběr duration exceeds the shift, the
+  // team needs to plan crew relief (2 směny) + noční příplatek §116 ZP.
+  // The isContinuousPour branch above only fires for pour_mode=monolithic,
+  // which misses the typical multi-tact mostovka case.
+  if (elementType === 'mostovkova_deska' && !isContinuousPour && pourResult.total_pour_hours > shift) {
+    const pourHoursRounded = roundTo(pourResult.total_pour_hours, 1);
+    const shiftsNeeded = Math.ceil(pourResult.total_pour_hours / 12);
+    warnings.push(
+      `⚠️ Záběr mostovky (${pourDecision.tact_volume_m3} m³) trvá ${pourHoursRounded}h — přesahuje směnu ${shift}h. ` +
+      `Pracovní spára uprostřed záběru NENÍ přípustná (statika). ` +
+      `Plán: ${shiftsNeeded} směny × betonáři (výměna čet), noční příplatek §116 ZP (+10%). ` +
+      `Zvažte zmenšení záběru, rychlejší čerpadlo nebo retardér.`
+    );
+    log.push(`Mostovka per-tact continuous pour: ${pourHoursRounded}h > ${shift}h shift → ${shiftsNeeded} shifts recommended`);
+  }
+
+  // BUG E2 (2026-04-16): 2-fázová betonáž pro trámové + vícetrámové mostovky.
+  // Trámový nosník se betonuje ve dvou fázích (trámy pak deska) s povinnou
+  // technologickou pauzou 4–12 h pro mírné tuhnutí trámů. Engine dosud
+  // počítal betonáž jako jeden kontinuální odlev, takže záběr byl kratší
+  // než na reálné stavbě. Pauza ≈ 6 h = 0.6 směny se přičítá k concreteDays
+  // (víc realistický plán). Komorový (jednokomora/dvoukomora) má 3 fáze
+  // (dno → stěny → horní deska), kde se pauza řeší skrz separate záběry,
+  // takže tam úpravu neděláme.
+  const twoPhaseSubtype = input.bridge_deck_subtype === 'jednotram'
+    || input.bridge_deck_subtype === 'dvoutram'
+    || input.bridge_deck_subtype === 'vicetram';
+  if (elementType === 'mostovkova_deska' && twoPhaseSubtype) {
+    const pauseHours = 6;
+    const pauseDays = roundTo(pauseHours / shift, 2);
+    const oldConcreteDays = concreteDays;
+    concreteDays = roundTo(concreteDays + pauseDays, 2);
+    warnings.push(
+      `Trámový nosník — betonáž ve 2 fázích (nejdřív trámy, pauza ${pauseHours} h pro mírné tuhnutí, ` +
+      `pak deska). Doba záběru navýšena o ${pauseDays} dne (${oldConcreteDays}d → ${concreteDays}d).`
+    );
+    log.push(`Two-phase mostovka pour: +${pauseHours}h pauza = +${pauseDays}d (${oldConcreteDays}d → ${concreteDays}d)`);
   }
 
   // v4.0: Per-záběr pour duration calculation
@@ -1435,7 +1642,21 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
       prestressDays = waitForStrength + stressingDays + groutingDays;
     }
-    log.push(`Prestress: ${prestressDays}d (wait ${Math.max(7, curingDays)}d + stressing + grouting, is_prestressed=true)`);
+    // BUG E3 (2026-04-16): make the prestress decomposition explicit so
+    // users can cross-reference the "Min. X dní" warning below. The
+    // previous trace hid stressing + grouting behind "+ stressing +
+    // grouting" so it was easy to mis-read 11d vs 25d (skruž total).
+    const cablesForLog = input.prestress_cables_count ?? 0;
+    const stressForLog = cablesForLog > 0
+      ? Math.ceil(cablesForLog / (input.prestress_tensioning === 'one_sided' ? 6 : 10))
+      : 2;
+    const groutForLog = cablesForLog > 0 ? Math.ceil(cablesForLog / 8) : 2;
+    log.push(
+      `Prestress: ${prestressDays}d = wait ${Math.max(7, curingDays)}d (max{7, curing=${curingDays}}) + ` +
+      `stressing ${stressForLog}d (${cablesForLog || 'default 2'} cables, ` +
+      `${input.prestress_tensioning === 'one_sided' ? 'jednostranné' : 'oboustranné'}) + ` +
+      `grouting ${groutForLog}d. Skruž stojí ještě zrání ${curingDays}d navíc — celková doba skruže = ${curingDays + prestressDays}d.`,
+    );
   }
 
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
@@ -1451,14 +1672,81 @@ export function planElement(input: PlannerInput): PlannerOutput {
     log.push(`Multi-bridge override: ${prevTacts} → ${numBridges} tacts (1 tact = 1 celý most, ${pourDecision.tact_volume_m3} m³/most)`);
   }
 
+  // ─── 7a0. Props (skruž) pre-pass — needed BEFORE scheduler so that
+  //          tesaři work on podpěry is reflected in the critical path. ───
+  // BUG B1 (2026-04-16): until this point the scheduler only saw formwork
+  // ASM/STR days. Props (podpěrná konstrukce) were calculated later and
+  // only surfaced as cost — but the same tesaři crew actually builds the
+  // skruž BEFORE the formwork and dismantles it AFTER stripping. Pouring
+  // props into a parallel track made the schedule pretend tesaři could be
+  // in two places at once. We now roll props assembly into ASM duration
+  // and props disassembly into STR duration for the schedule only; cost
+  // math below still uses the separate propsResult so pronájem stays
+  // visible as its own line item.
+  let propsResult: PropsCalculatorResult | undefined;
+  // Terminology Commit 3 (2026-04-17): MSS carries its own props
+  // (Staxo-like towers + nosníky are all integrated in the MSS frame).
+  // Running calculateProps on an MSS plan would double-count — the
+  // MSS rental from calculateMSSCost already pays for every layer.
+  if (isMssPath) {
+    log.push(`Props: skipped — MSS integrated layer (stojky + skruž + bednění v jednom, kryto MSS rental)`);
+  } else if (profile.needs_supports && input.height_m && input.height_m > 0) {
+    propsResult = calculateProps({
+      element_type: elementType,
+      height_m: input.height_m,
+      formwork_area_m2: fwAreaTotal,
+      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
+      crew_size: crew,
+      shift_h: shift,
+      k,
+      wage_czk_h: wageFormwork,
+      num_tacts: pourDecision.num_tacts,
+      formwork_manufacturer: fwSystem.manufacturer,
+    });
+    warnings.push(...propsResult.warnings);
+    log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
+      `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
+    log.push(...propsResult.log.map(l => `  props: ${l}`));
+  } else if (profile.needs_supports && !input.height_m) {
+    // D1 (2026-04-16) + Terminology Commit 6 (2026-04-17): mostovka bez
+    // výšky = nereálný plán. Mostovka se správně opírá o nosníkovou
+    // skruž (Top 50 / VARIOKIT HD 200) + stojky (Staxo / UP Rosett),
+    // takže warning to říká explicitně; pro ostatní prvky s
+    // needs_supports necháváme obecnější formulaci (tam může chybět
+    // výška při předběžné kalkulaci).
+    const isBridgeDeck = elementType === 'mostovkova_deska';
+    const prefix = isBridgeDeck ? '🚨 KRITICKÉ: ' : '';
+    const what = isBridgeDeck
+      ? 'Mostovka vyžaduje skruž (nosníky) + stojky'
+      : `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž)`;
+    const detailSuffix = isBridgeDeck
+      ? `Bez výšky chybí v souhrnu Skruž + Stojky (typicky 15–25 % z celkových nákladů mostovky).`
+      : `Bez ní chybí v souhrnu položka Stojky (typicky 15–25 % z celkových nákladů).`;
+    warnings.push(
+      `${prefix}${what}, ale není zadána výška. ` +
+      `Zadejte výšku nad terénem pro výpočet skruže, stojek a nákladů na pronájem. ${detailSuffix}`
+    );
+    log.push(`Props: skipped — height_m not provided for element with needs_supports=true (${elementType})`);
+  }
+
+  const schedAssemblyDays = roundTo(assemblyDays + (propsResult?.assembly_days ?? 0), 2);
+  const schedStrippingDays = roundTo(disassemblyDays + (propsResult?.disassembly_days ?? 0), 2);
+  if (propsResult) {
+    log.push(
+      `Tesaři sequence per tact: podpěry ${propsResult.assembly_days}d → bednění ${assemblyDays}d ` +
+      `(ASM=${schedAssemblyDays}d) | STR: bednění ${disassemblyDays}d → podpěry ${propsResult.disassembly_days}d ` +
+      `(STR=${schedStrippingDays}d). Tatáž četa, jedna stopa.`,
+    );
+  }
+
   const scheduleResult = scheduleElement({
     num_tacts: pourDecision.num_tacts,
     num_sets: numSets,
-    assembly_days: assemblyDays,
+    assembly_days: schedAssemblyDays,
     rebar_days: rebarResult.duration_days,
     concrete_days: concreteDays,
     curing_days: curingDays,
-    stripping_days: disassemblyDays,
+    stripping_days: schedStrippingDays,
     prestress_days: prestressDays,
     num_formwork_crews: numFWCrews,
     num_rebar_crews: numRBCrews, // parallel rebar crews across tacts (RCPSP)
@@ -1562,67 +1850,107 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // ─── 7c. Props (podpěry / stojky / skruž) ─────────────────────────────
-  // Props are calculated on the FULL area (fwAreaTotal), not the reduced
-  // system-formwork area. Even if ztracené bednění covers most of the deck,
-  // props still support the full slab weight.
-  let propsResult: PropsCalculatorResult | undefined;
-  if (profile.needs_supports && input.height_m && input.height_m > 0) {
-    propsResult = calculateProps({
-      element_type: elementType,
-      height_m: input.height_m,
-      formwork_area_m2: fwAreaTotal,
-      hold_days: skruzMinDays > 0 ? skruzMinDays : curingDays,
-      crew_size: crew,
-      shift_h: shift,
-      k,
-      wage_czk_h: wageFormwork,
-      num_tacts: pourDecision.num_tacts,
-      // Vendor match: pass formwork manufacturer so props prefer same vendor
-      // (e.g. Dokaflex → Doka Eurex; PERI SKYDECK → PERI Multiprop)
-      formwork_manufacturer: fwSystem.manufacturer,
-    });
-    warnings.push(...propsResult.warnings);
-    log.push(`Props: ${propsResult.system.name}, ${propsResult.num_props_per_tact} ks/tact, ` +
-      `rental ${propsResult.rental_days}d, total ${propsResult.total_cost_czk} Kč`);
-    log.push(...propsResult.log.map(l => `  props: ${l}`));
-  } else if (profile.needs_supports && !input.height_m) {
-    warnings.push(
-      `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž), ` +
-      `ale není zadána výška. Zadejte výšku pro výpočet podpěr, počtu stojek a nákladů na pronájem.`
-    );
-    log.push(`Props: skipped — height_m not provided for element with needs_supports=true`);
-  }
+  // Props were calculated up front in section 7a0 (before the scheduler)
+  // so tesaři podpěry+bednění time appears in one crew trace on the
+  // critical path. The propsResult variable carries cost + warnings into
+  // section 8 below.
 
   // ─── 8. Cost Summary ──────────────────────────────────────────────────
 
-  const formworkLaborCZK = threePhase.total_cost_labor;
+  // Terminology Commit 3 (2026-04-17): when the plan is on the MSS
+  // path, bridge-technology.ts already computed mobilization +
+  // demobilization costs as "vlastní síly" (tesaři). Fold them into
+  // the tesařské-práce bucket here so the cost summary + KPIs see the
+  // full labor picture on a single line, and expose the split on
+  // PlannerOutput.costs so the UI can show "X lidí × Y dní = Z Kč".
+  const mssMobilizationCZK = isMssPath ? (bridgeTechResult?.mss_cost?.mobilization_czk ?? 0) : 0;
+  const mssDemobilizationCZK = isMssPath ? (bridgeTechResult?.mss_cost?.demobilization_czk ?? 0) : 0;
+  const mssRentalCZK = isMssPath ? (bridgeTechResult?.mss_cost?.rental_total_czk ?? 0) : 0;
+
+  const formworkLaborCZK = threePhase.total_cost_labor + mssMobilizationCZK + mssDemobilizationCZK;
+  if (isMssPath) {
+    log.push(
+      `MSS costs: mobilization ${(mssMobilizationCZK / 1e6).toFixed(2)} M + demobilization ` +
+      `${(mssDemobilizationCZK / 1e6).toFixed(2)} M Kč → flowing into formwork_labor (vlastní síly tesaři). ` +
+      `Rental ${(mssRentalCZK / 1e6).toFixed(2)} M Kč bundled separately (pronájem MSS stroje).`,
+    );
+    // Terminology Commit 6 (2026-04-17): surface the "vlastní síly"
+    // framing in the warning pane so users understand the labor cost
+    // is calculated as if their own tesaři crew mounted the rig (for
+    // comparison with a DOKA/PERI subcontract offer). Crew size for MSS
+    // montáž is typically 10–15 lidí per shift — we quote a lower-bound
+    // derived from existing formwork crew × number of crews, floored
+    // at 10 to match task's "10-15 lidí" rule of thumb.
+    const setupDays = bridgeTechResult?.mss_schedule?.setup_days ?? 30;
+    const teardownDays = bridgeTechResult?.mss_schedule?.teardown_days ?? 15;
+    const tesariPerShift = Math.max(10, numFWCrews * crew);
+    warnings.push(
+      `MSS montáž: ~${tesariPerShift} lidí (tesaři) × ${setupDays} dní = ` +
+      `${(mssMobilizationCZK / 1e6).toFixed(2)} M Kč (vlastní síly). ` +
+      `Per-takt úprava: tesaři, Nhod × ${fwSystem.mss_reuse_factor ?? 0.35} (přesun + re-tensioning). ` +
+      `MSS demontáž: ~${teardownDays} dní = ${(mssDemobilizationCZK / 1e6).toFixed(2)} M Kč.`,
+    );
+  }
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
-  // Pour labor: crew × hours × wage per tact × num_tacts
-  // Overtime premium 25% applies after standard shift (§ 114 ZP)
-  // Night premium 10% applies for hours in night shifts (§ 116 ZP)
-  const overtimeThreshold = shift; // use configured shift, not hardcoded 10
-  const actualPourHours = isContinuousPour ? effectiveShift : pourResult.total_pour_hours;
-  const regularHours = Math.min(overtimeThreshold, actualPourHours);
-  const overtimeHours = Math.max(0, actualPourHours - overtimeThreshold);
-  const laborPerWorkerPerTact = (regularHours * wagePour) + (overtimeHours * wagePour * 1.25);
-  // For multi-shift pours: each shift pays full crew, plus night premium
-  const pourLaborCZK = roundTo(
-    laborPerWorkerPerTact * effectivePourCrew * numPourShifts * pourDecision.num_tacts +
-    pourNightPremiumCZK * pourDecision.num_tacts,
-    2,
-  );
+  // MEGA pour Bug 2 (2026-04-16): pour labor now computed as person-hours
+  // to support the crew-relief model correctly. Each worker works at
+  // most one shift; multi-shift pours simply add fresh crews. Night
+  // premium (§116 ZP) is a +10% stamp on post-first-shift hours.
+  //
+  //   totalPersonHoursPerTact = crew_per_shift × pour_hours
+  //     (sum of hours-worked by every worker who shows up, whether in
+  //      shift 1 or shift 2+ — fits both isContinuousPour paths)
+  //   nightPersonHoursPerTact = crew_per_shift × max(0, pour_hours − shift)
+  //   base    = totalPersonHours × wagePour
+  //   premium = nightPersonHours × wagePour × 0.10
+  //
+  // For sectional pours (pour_hours ≤ shift, crew_per_shift from pumps
+  // formula) the formula collapses to a clean "crew × actual hours ×
+  // wage", with §114 ZP overtime (+25%) for hours beyond shift_h in a
+  // single-shift setting. numPourShifts stays 1 there so no double-pay.
+  let pourLaborCZK: number;
+  if (isContinuousPour && pourResult.total_pour_hours > shift) {
+    // Continuous multi-shift path: person-hours model
+    const totalPersonHours = effectivePourCrew * pourResult.total_pour_hours;
+    const pourBaseCZK = totalPersonHours * wagePour;
+    // pourNightPremiumCZK already computed above using nightHours × crew × wage × 0.10
+    pourLaborCZK = roundTo(
+      (pourBaseCZK + pourNightPremiumCZK) * pourDecision.num_tacts,
+      2,
+    );
+  } else {
+    // Sectional / single-shift path: per-worker daily pay with §114 ZP overtime
+    const overtimeThreshold = shift;
+    const actualPourHours = pourResult.total_pour_hours;
+    const regularHours = Math.min(overtimeThreshold, actualPourHours);
+    const overtimeHours = Math.max(0, actualPourHours - overtimeThreshold);
+    const laborPerWorkerPerTact = (regularHours * wagePour) + (overtimeHours * wagePour * 1.25);
+    pourLaborCZK = roundTo(
+      laborPerWorkerPerTact * effectivePourCrew * numPourShifts * pourDecision.num_tacts,
+      2,
+    );
+  }
 
   // Rental cost (monthly → daily). User override takes precedence over catalog.
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport
   const rentalRate = input.rental_czk_override ?? fwSystem.rental_czk_m2_month;
-  const formworkRentalCZK = rentalRate > 0
-    ? roundTo(fwArea * rentalRate * (rentalDaysPerSet / 30) * numSets, 2)
-    : 0;
-  if (input.rental_czk_override !== undefined) {
+  // Terminology Commit 3: on the MSS path, bednění/skruž/stojky rental is
+  // all bundled in calculateMSSCost.rental_total_czk (tracked separately
+  // below as a new line item). Catalog entry for "DOKA MSS" +
+  // "VARIOKIT Mobile" uses rental_czk_m2_month=0 to enforce this even
+  // against user overrides — which makes formworkRentalCZK already land
+  // on 0 for MSS, but we gate the branch explicitly so the intent is
+  // unambiguous in the source.
+  const formworkRentalCZK = isMssPath
+    ? 0
+    : (rentalRate > 0
+        ? roundTo(fwArea * rentalRate * (rentalDaysPerSet / 30) * numSets, 2)
+        : 0);
+  if (input.rental_czk_override !== undefined && !isMssPath) {
     log.push(`Rental: user override ${rentalRate} Kč/${fwSystem.unit}/měs (catalog: ${fwSystem.rental_czk_m2_month})`);
   }
 
-  // Props costs
+  // Props costs (zeroed on MSS path — skipped calculateProps runs upstream)
   const propsLaborCZK = propsResult?.labor_cost_czk ?? 0;
   const propsRentalCZK = propsResult?.rental_cost_czk ?? 0;
 
@@ -1703,6 +2031,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
       pour_simultaneous_headcount: effectivePourCrew,
       pour_rostered_headcount: effectivePourCrew * numPourShifts,
       pour_has_night_premium: pourNightPremiumCZK > 0,
+      pour_crew_breakdown: pourCrewBreakdown,
     },
     lateral_pressure: lateralPressure,
     pour_stages: pourStages,
@@ -1724,6 +2053,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
       formwork_rental_czk: formworkRentalCZK,
       props_labor_czk: propsLaborCZK,
       props_rental_czk: propsRentalCZK,
+      is_mss_path: isMssPath,
+      mss_mobilization_czk: mssMobilizationCZK,
+      mss_demobilization_czk: mssDemobilizationCZK,
+      mss_rental_czk: mssRentalCZK,
     },
     norms_sources: {
       formwork_assembly: `${fwSystem.name}: ${adjustedNorms.assembly_h_m2} h/m² ` +
@@ -2082,6 +2415,13 @@ function runPilePath(
       pour_simultaneous_headcount: crew,
       pour_rostered_headcount: crew,
       pour_has_night_premium: false,
+      // Piles don't use the moving-front pour crew (drilling rig + armokoš
+      // crew dominate), but the field is required by the schema. Fill
+      // with a 0-pump breakdown so consumers can still render the block.
+      pour_crew_breakdown: {
+        ukladani: 0, vibrace: 0, finiseri: 0, rizeni: 0,
+        total: crew, pumps_used: 0,
+      },
     },
     costs: {
       formwork_labor_czk: 0,
@@ -2092,6 +2432,11 @@ function runPilePath(
       formwork_rental_czk: 0,
       props_labor_czk: 0,
       props_rental_czk: 0,
+      // Pile path never goes through MSS — flags kept zero for schema parity.
+      is_mss_path: false,
+      mss_mobilization_czk: 0,
+      mss_demobilization_czk: 0,
+      mss_rental_czk: 0,
     },
     pile,
     norms_sources: {

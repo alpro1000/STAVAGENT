@@ -5,7 +5,7 @@
  * rebar → pour task → scheduling → costs.
  */
 import { describe, it, expect } from 'vitest';
-import { planElement } from './planner-orchestrator.js';
+import { planElement, computePourCrewByPumps } from './planner-orchestrator.js';
 import type { PlannerInput } from './planner-orchestrator.js';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -812,6 +812,339 @@ describe('Planner Orchestrator', () => {
         num_bridges: 1,
       });
       expect(plan.pour_decision.num_tacts).toBe(1);
+    });
+  });
+
+  // ─── Mostovka B1 (2026-04-16): tesaři sequence podpěry+bednění ───────
+  describe('planElement — tesaři crew sequencing (B1)', () => {
+    const baseInput: PlannerInput = {
+      element_type: 'mostovkova_deska',
+      volume_m3: 120,
+      formwork_area_m2: 100,
+      concrete_class: 'C35/45',
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',
+    };
+
+    it('schedule total_days grows when height_m is given (props now on critical path)', () => {
+      const withoutHeight = planElement(baseInput);
+      const withHeight = planElement({ ...baseInput, height_m: 8 });
+      // Height triggers calculateProps → asm/dis days roll into ASM/STR.
+      // Because the same tesaři crew now has more sequential work, total
+      // days must be ≥ the height-less plan.
+      expect(withHeight.schedule.total_days).toBeGreaterThanOrEqual(withoutHeight.schedule.total_days);
+      expect(withHeight.props).toBeDefined();
+      expect(withHeight.props!.assembly_days).toBeGreaterThan(0);
+    });
+
+    it('decision log records combined tesaři sequence for horizontal element with props', () => {
+      const plan = planElement({ ...baseInput, height_m: 8 });
+      const hasSequenceLog = plan.decision_log.some(l =>
+        l.includes('Tesaři sequence per tact') && l.includes('podpěry') && l.includes('bednění'),
+      );
+      expect(hasSequenceLog).toBe(true);
+    });
+
+    it('vertical element without needs_supports: no props inflation (stěna)', () => {
+      const plan = planElement({
+        element_type: 'stena',
+        volume_m3: 40,
+        formwork_area_m2: 60,
+        height_m: 3,
+        concrete_class: 'C30/37',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      expect(plan.props).toBeUndefined();
+      const hasSequenceLog = plan.decision_log.some(l => l.includes('Tesaři sequence per tact'));
+      expect(hasSequenceLog).toBe(false);
+    });
+  });
+
+  // ─── MEGA pour Bug 1 (2026-04-16): crew size scales with pump count ──
+  describe('computePourCrewByPumps', () => {
+    it('1 pump yields 8 lidí (task spec table row: 100 m³)', () => {
+      const b = computePourCrewByPumps(1);
+      expect(b).toEqual({
+        ukladani: 2, vibrace: 2, finiseri: 1, rizeni: 3,
+        total: 8, pumps_used: 1,
+      });
+    });
+
+    it('2 pumps yields 12 lidí (task spec table row: 300 m³)', () => {
+      const b = computePourCrewByPumps(2);
+      expect(b.ukladani).toBe(4);
+      expect(b.vibrace).toBe(3);
+      expect(b.finiseri).toBe(2);
+      expect(b.rizeni).toBe(3);
+      expect(b.total).toBe(12);
+    });
+
+    it('3 pumps yields 17 lidí (task spec table row: 664 m³)', () => {
+      expect(computePourCrewByPumps(3).total).toBe(17);
+    });
+
+    it('4 pumps yields 21 lidí (task spec table row: 1000+ m³)', () => {
+      expect(computePourCrewByPumps(4).total).toBe(21);
+    });
+
+    it('clamps invalid pump count to 1 (0/negative/float)', () => {
+      expect(computePourCrewByPumps(0).pumps_used).toBe(1);
+      expect(computePourCrewByPumps(-3).pumps_used).toBe(1);
+      expect(computePourCrewByPumps(1.7).pumps_used).toBe(1);
+    });
+  });
+
+  describe('planElement — pour crew derived from pumps (Bug 1)', () => {
+    it('exposes pour_crew_breakdown on resources', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 120,
+        formwork_area_m2: 100,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      expect(plan.resources.pour_crew_breakdown).toBeDefined();
+      expect(plan.resources.pour_crew_breakdown.total).toBeGreaterThan(0);
+      // total = ukladani + vibrace + finiseri + rizeni
+      const b = plan.resources.pour_crew_breakdown;
+      expect(b.ukladani + b.vibrace + b.finiseri + b.rizeni).toBe(b.total);
+    });
+
+    it('small pour (1 pump) gets 8-person pour crew (universal formula)', () => {
+      const plan = planElement({
+        element_type: 'zakladova_deska',
+        volume_m3: 50,
+        formwork_area_m2: 40,
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      expect(plan.resources.pour_crew_breakdown.pumps_used).toBe(1);
+      expect(plan.resources.pour_simultaneous_headcount).toBe(8);
+    });
+
+    it('large monolithic pour (multi-pump) scales crew proportionally', () => {
+      const small = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 100,
+        formwork_area_m2: 100,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      const mega = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 800,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+      });
+      // Larger pour needs more pumps → bigger crew (no decrease ever)
+      expect(mega.resources.pour_crew_breakdown.pumps_used)
+        .toBeGreaterThanOrEqual(small.resources.pour_crew_breakdown.pumps_used);
+      expect(mega.resources.pour_simultaneous_headcount)
+        .toBeGreaterThanOrEqual(small.resources.pour_simultaneous_headcount);
+    });
+  });
+
+  // ─── MEGA pour Bug 2 (2026-04-16): multi-shift crew relief ───────────
+  describe('planElement — multi-shift crew relief (Bug 2)', () => {
+    it('pour fitting in 1 shift → numPourShifts=1, no night premium', () => {
+      const plan = planElement({
+        element_type: 'zakladova_deska',
+        volume_m3: 80,
+        formwork_area_m2: 60,
+        concrete_class: 'C25/30',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 10,
+      });
+      expect(plan.resources.pour_shifts).toBe(1);
+      expect(plan.resources.pour_has_night_premium).toBe(false);
+      expect(plan.costs.pour_night_premium_czk).toBe(0);
+    });
+
+    it('continuous pour > shift triggers multi-shift (tight shift_h edge case)', () => {
+      // After Bug 3 fix, decidePourMode sizes pumps to fit the pour window
+      // (≤8 h with retarder), which in practice always ≤ the default 10 h
+      // shift. The multi-shift branch fires for edge cases — here we
+      // simulate one by using shift_h=5 so a normal monolithic pour
+      // crosses the shift boundary even with the multi-pump fit.
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 5,
+      });
+      expect(plan.resources.pour_shifts).toBeGreaterThanOrEqual(2);
+      expect(plan.resources.pour_rostered_headcount).toBe(
+        plan.resources.pour_simultaneous_headcount * plan.resources.pour_shifts,
+      );
+      expect(plan.resources.pour_has_night_premium).toBe(true);
+      expect(plan.costs.pour_night_premium_czk).toBeGreaterThan(0);
+    });
+
+    it('cost scales with person-hours, not per-worker-per-shift × shifts', () => {
+      // Same tight-shift edge case to actually hit the multi-shift path
+      // we want to verify. Cost should equal crew × pour_hours × wage
+      // + night premium, NOT crew × shift × num_shifts × wage (which
+      // would over-pay the partial 2nd shift under the old formula).
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 500,
+        formwork_area_m2: 300,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 5,
+        wage_pour_czk_h: 400,
+      });
+      const crew = plan.resources.pour_simultaneous_headcount;
+      const pourH = plan.pour.total_pour_hours;
+      const shift = plan.resources.shift_h;
+      const nightH = Math.max(0, pourH - shift);
+      const expectedBase = crew * pourH * 400;
+      const expectedNight = crew * nightH * 400 * 0.10;
+      const expected = (expectedBase + expectedNight) * plan.pour_decision.num_tacts;
+      // 1% tolerance for rounding
+      expect(Math.abs(plan.costs.pour_labor_czk - expected) / expected).toBeLessThan(0.01);
+    });
+
+    it('warning text shows total headcount = crew × shifts and cites §116', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 5,
+      });
+      const hasMultiShiftWarning = plan.warnings.some(w =>
+        w.includes('směny') && w.includes('celkem') && w.includes('+10%')
+      );
+      expect(hasMultiShiftWarning).toBe(true);
+    });
+  });
+
+  // ─── Mostovka E2 (2026-04-16): two-phase pour for trámový subtype ────
+  describe('planElement — dvoutrám 2-fáze pour (E2)', () => {
+    const baseTramInput: PlannerInput = {
+      element_type: 'mostovkova_deska',
+      volume_m3: 120,
+      formwork_area_m2: 100,
+      height_m: 8,
+      concrete_class: 'C35/45',
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',
+    };
+
+    it('dvoutrám triggers 6h technological pauza warning + log', () => {
+      const plan = planElement({ ...baseTramInput, bridge_deck_subtype: 'dvoutram' });
+      const hasWarning = plan.warnings.some(w => w.includes('2 fázích') && w.includes('pauza'));
+      expect(hasWarning).toBe(true);
+      const hasLog = plan.decision_log.some(l => l.includes('Two-phase mostovka pour'));
+      expect(hasLog).toBe(true);
+    });
+
+    it('deskovy subtype (1 fáze) does NOT get the 2-fáze pauza', () => {
+      const plan = planElement({ ...baseTramInput, bridge_deck_subtype: 'deskovy' });
+      const hasLog = plan.decision_log.some(l => l.includes('Two-phase mostovka pour'));
+      expect(hasLog).toBe(false);
+    });
+  });
+
+  // ─── Terminology Commit 3 (2026-04-17): MSS orchestrator path ────────
+  describe('planElement — MSS path (construction_technology=mss)', () => {
+    const baseMssInput: PlannerInput = {
+      element_type: 'mostovkova_deska',
+      volume_m3: 800,
+      formwork_area_m2: 500,
+      height_m: 10,
+      concrete_class: 'C35/45',
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',
+      construction_technology: 'mss',
+      span_m: 36,
+      num_spans: 6,
+      nk_width_m: 12,
+    };
+
+    it('is_mss_path flag is true when construction_technology=mss', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.is_mss_path).toBe(true);
+    });
+
+    it('formwork + props rentals are zero (bundled in MSS rental)', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.formwork_rental_czk).toBe(0);
+      expect(plan.costs.props_rental_czk).toBe(0);
+    });
+
+    it('MSS mobilization + demobilization + rental are exposed', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.mss_mobilization_czk).toBeGreaterThan(0);
+      expect(plan.costs.mss_demobilization_czk).toBeGreaterThan(0);
+      expect(plan.costs.mss_rental_czk).toBeGreaterThan(0);
+    });
+
+    it('formwork_labor_czk includes MSS mobilization + demobilization', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.formwork_labor_czk)
+        .toBeGreaterThanOrEqual(plan.costs.mss_mobilization_czk + plan.costs.mss_demobilization_czk);
+    });
+
+    it('props are skipped on MSS path (propsResult undefined)', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.props).toBeUndefined();
+      const skipLog = plan.decision_log.some(l =>
+        l.includes('Props: skipped') && l.includes('MSS integrated')
+      );
+      expect(skipLog).toBe(true);
+    });
+
+    it('fwSystem selected is mss_integrated (DOKA MSS by default)', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.formwork.system.name).toBe('DOKA MSS');
+      expect(plan.formwork.system.pour_role).toBe('mss_integrated');
+    });
+
+    it('MSS decision_log records reuse factor + mobilization flow', () => {
+      const plan = planElement(baseMssInput);
+      const hasReuseLog = plan.decision_log.some(l =>
+        l.includes('MSS reuse factor') && l.includes('0.35')
+      );
+      expect(hasReuseLog).toBe(true);
+      const hasCostLog = plan.decision_log.some(l =>
+        l.includes('MSS costs') && l.includes('formwork_labor')
+      );
+      expect(hasCostLog).toBe(true);
+    });
+
+    it('PERI vendor picks VARIOKIT Mobile (MSS shortcut is vendor-aware)', () => {
+      const plan = planElement({ ...baseMssInput, preferred_manufacturer: 'PERI' });
+      expect(plan.formwork.system.name).toBe('VARIOKIT Mobile');
+    });
+
+    it('non-MSS plan has is_mss_path=false + zeroed MSS fields', () => {
+      const plan = planElement({
+        ...baseMssInput,
+        construction_technology: 'fixed_scaffolding',
+      });
+      expect(plan.costs.is_mss_path).toBe(false);
+      expect(plan.costs.mss_mobilization_czk).toBe(0);
+      expect(plan.costs.mss_rental_czk).toBe(0);
     });
   });
 });

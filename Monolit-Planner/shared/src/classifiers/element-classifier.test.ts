@@ -10,6 +10,9 @@ import {
   estimateRebarMass,
   getAllElementTypes,
   extractOtskpMetadata,
+  SANITY_RANGES,
+  checkSanity,
+  getSuitableSystemsForElement,
 } from './element-classifier.js';
 
 describe('Element Classifier', () => {
@@ -585,6 +588,86 @@ describe('Element Classifier', () => {
       const m = extractOtskpMetadata('ZÁKLADY');
       expect(m.concrete_class).toBeUndefined();
       expect(m.is_prestressed).toBeUndefined();
+    });
+  });
+
+  // ─── Mostovka A1 (2026-04-16): height vs deck thickness split ────────
+  describe('SANITY_RANGES — mostovkova_deska height/thickness split', () => {
+    it('height_m range covers real prop heights (4–20 m), not deck thickness', () => {
+      const r = SANITY_RANGES.mostovkova_deska;
+      expect(r.height_m).toEqual([4, 20]);
+      expect(r.deck_thickness_m).toEqual([0.3, 2.5]);
+    });
+
+    it('6 m prop height no longer flagged as "neobvykle velká"', () => {
+      const issues = checkSanity('mostovkova_deska', { height_m: 6 });
+      expect(issues).toHaveLength(0);
+    });
+
+    it('flags prop height outside 4–20 m (e.g. 2 m is too short for mostovka)', () => {
+      const issues = checkSanity('mostovkova_deska', { height_m: 2 });
+      expect(issues).toHaveLength(1);
+      expect(issues[0].field).toBe('height_m');
+      expect(issues[0].label_cs).toBe('Výška nad terénem');
+    });
+
+    it('flags deck thickness outside 0.3–2.5 m independently of prop height', () => {
+      const issues = checkSanity('mostovkova_deska', { deck_thickness_m: 3.5 });
+      expect(issues.some(i => i.field === 'deck_thickness_m')).toBe(true);
+    });
+
+    it('other element types keep their original height_m range', () => {
+      expect(SANITY_RANGES.stropni_deska.height_m).toEqual([0.12, 0.40]);
+      expect(SANITY_RANGES.stena.height_m).toEqual([2.5, 12.0]);
+    });
+  });
+
+  // ─── Terminology Commit 2 (2026-04-17): selector honors pour_role +
+  // applicable_element_types allow-list. ───
+  describe('recommendFormwork — pour_role aware', () => {
+    it('mostovka with clearance > 4 m returns Top 50 (falsework), NOT Staxo (props)', () => {
+      const sys = recommendFormwork('mostovkova_deska', 8);
+      expect(sys.name).toBe('Top 50');
+      expect(sys.pour_role).toBe('falsework');
+    });
+
+    it('mostovka with clearance ≥ 8 m STILL returns Top 50 (not Staxo 100)', () => {
+      const sys = recommendFormwork('mostovkova_deska', 12);
+      expect(sys.name).toBe('Top 50');
+      expect(sys.pour_role).toBe('falsework');
+    });
+  });
+
+  describe('getSuitableSystemsForElement — applicable_element_types allow-list', () => {
+    it('excludes Dokaflex + MULTIFLEX + SKYDECK + CC-4 from mostovka candidate pool', () => {
+      const { all } = getSuitableSystemsForElement('mostovkova_deska');
+      const names = all.map(s => s.name);
+      expect(names).not.toContain('Dokaflex');
+      expect(names).not.toContain('MULTIFLEX');
+      expect(names).not.toContain('SKYDECK');
+      expect(names).not.toContain('CC-4');
+    });
+
+    it('keeps Dokaflex + MULTIFLEX in the pool for stropni_deska (building slab)', () => {
+      const { all } = getSuitableSystemsForElement('stropni_deska');
+      const names = all.map(s => s.name);
+      expect(names).toContain('Dokaflex');
+      expect(names).toContain('MULTIFLEX');
+    });
+
+    it('excludes MSS entries (mss_integrated) from every normal candidate pool', () => {
+      for (const etype of ['mostovkova_deska', 'stropni_deska', 'stena'] as const) {
+        const { all } = getSuitableSystemsForElement(etype);
+        const names = all.map(s => s.name);
+        expect(names).not.toContain('DOKA MSS');
+        expect(names).not.toContain('VARIOKIT Mobile');
+      }
+    });
+
+    it('VARIOKIT HD 200 (PERI bridge falsework) is available for mostovka', () => {
+      const { all } = getSuitableSystemsForElement('mostovkova_deska');
+      const names = all.map(s => s.name);
+      expect(names).toContain('VARIOKIT HD 200');
     });
   });
 });

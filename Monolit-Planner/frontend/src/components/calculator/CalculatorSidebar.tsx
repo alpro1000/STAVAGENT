@@ -276,6 +276,13 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
               </Field>
 
               {/* ─── Parametry mostu (bridge geometry) ─── */}
+              {/* F1 (2026-04-16): align Field labels on a common baseline so
+                  the three inputs line up even when one label wraps. The
+                  previous grid used default alignItems=stretch which pushed
+                  input boxes to different heights as soon as a Field label
+                  took two lines. `align-items: end` pins inputs to the
+                  bottom of the row; the CSS-based fixed label height
+                  guarantees uniform rhythm. */}
               <div style={{
                 marginTop: 8, padding: '10px 12px',
                 background: 'var(--r0-slate-50)', border: '1px solid var(--r0-slate-200)', borderRadius: 6,
@@ -283,7 +290,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600)', marginBottom: 8 }}>
                   Parametry mostu (nepovinné — pro doporučení technologie)
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, alignItems: 'end' }}>
                   <Field label="Rozpětí pole (m)">
                     <input style={inputStyle} type="number" step="0.5" min="5" max="200"
                       placeholder="např. 36"

@@ -6,6 +6,30 @@
 **TKP base:** `STAVAGENT/extracted_data/TKP{NN}_*_extracted.json` (36 kapitol, plný rozsah)
 **VL4:** `app/knowledge_base/B2_csn_standards/VL_4_2021_Mosty_markdown.md`
 **Audit tool:** `tools/golden_runner.py --object SO203 --mode three-way`
+**Last re-snapshot:** 2026-04-17 (v4.21.0 terminology + MSS fix pack)
+
+---
+
+## v4.21.0 Re-Snapshot Notes (2026-04-17)
+
+SO-203 runs on pevná skruž (5 polí × ~24 m max span), so the MSS path
+is inactive; the v4.21 changes affect terminology + card split only:
+
+- `plan.formwork.system.name` = `Top 50` (was `Staxo 100` for h ≥ 8 m
+  or `Staxo 40` for h < 8 m). `pour_role='falsework'`.
+- Per-tact formwork labor (Top 50 Nhod 0.60 × 0.55 difficulty) lower
+  than previous Staxo 100 value (0.90). Formwork rental line reads
+  "Pronájem skruže (nosníky)" with 380 Kč/m²/měs — same pricing.
+- `plan.props.system.name` = `Staxo 40` (stojky) — unchanged. UI shows
+  it in its own "🔩 Stojky" card, not conflated with the skruž above.
+- Cost summary: four rental rows (skruž / stojky) replace the two
+  previous (bednění / podpěry) with identical totals but clearer
+  attribution.
+- Dokaflex NEVER appears in the candidate pool (applicable_element_types
+  allow-list) — resolving the "ai advisor recommends Dokaflex" issue
+  flagged in the audit backlog.
+
+No MSS fields populated (`is_mss_path=false`, all `mss_*_czk=0`).
 
 ---
 

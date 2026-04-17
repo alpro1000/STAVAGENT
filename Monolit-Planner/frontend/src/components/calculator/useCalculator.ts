@@ -1013,6 +1013,11 @@ export default function useCalculator() {
     }
     if (form.scheduling_mode_override) input.scheduling_mode_override = form.scheduling_mode_override;
     if (form.height_m) input.height_m = parseFloat(form.height_m);
+    // Mostovka A1 (2026-04-16): deck thickness override — forwarded only for
+    // mostovkova_deska (engine auto-derives from volume/span/width otherwise)
+    if (form.element_type === 'mostovkova_deska' && form.deck_thickness_m) {
+      input.deck_thickness_m = parseFloat(form.deck_thickness_m);
+    }
     if (form.num_bridges > 1) input.num_bridges = form.num_bridges;
     if (form.rental_czk_override) input.rental_czk_override = parseFloat(form.rental_czk_override);
     // Shape correction: římsa always uses 1.5 (complex geometry), regardless of form value
