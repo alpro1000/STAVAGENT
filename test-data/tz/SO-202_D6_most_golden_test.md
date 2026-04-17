@@ -3,6 +3,36 @@
 **Source:** TZ PDPS VD-ZDS, VIAPONT s.r.o., Ing. Jan Macák (ČKAIT 1007197)
 **Audit date:** 2026-04-16
 **Audit session:** claude/calc-blocks-refactor-etX8c commits ffec7b3..55c0dbd
+**Last re-snapshot:** 2026-04-17 (v4.21.0 terminology + MSS fix pack)
+
+---
+
+## v4.21.0 Re-Snapshot Notes (2026-04-17)
+
+Following the "Terminologie bednění/skruž/stojky + MSS" fix pack on
+`claude/calc-ux-fixes-HfW2W`, several audit entries below are now
+resolved or changed behavior. Summary:
+
+| Bug # | Before v4.21 | After v4.21 | Status |
+|-------|--------------|-------------|--------|
+| #5 (MEDIUM) | `recommendFormwork(mostovkova_deska, h=7.8)` returned `Staxo 100` as `fwSystem` (a support tower / props). UI card said "📦 Bednění: Staxo 100". | Returns `Top 50` (pour_role='falsework'). UI card reads "🏗️ Skruž (nosníky): Top 50 / DOKA". `calculateProps()` adds Staxo 40 separately in the new "🔩 Stojky" card. Layers are no longer conflated. | ✅ RESOLVED |
+| Dokaflex for mostovka | `getSuitableSystemsForElement('mostovkova_deska')` pool included Dokaflex, MULTIFLEX, SKYDECK, CC-4 (all `formwork_category='slab'`). User could pick Dokaflex for a bridge deck — max reach ~5 m, structurally a building slab system. | `applicable_element_types` allow-list on those systems excludes mostovkova_deska; selector never offers them for bridge decks. Top 50 + VARIOKIT HD 200 are the only slab-category falsework systems that pass. | ✅ RESOLVED |
+| Cost summary labels | One-line "Bednění (práce)" + "Pronájem bednění" for bridges. | Labels switch per `pour_role`: "Skruž (nosníky — práce)" + "Pronájem skruže" + separate "Stojky (práce)" + "Pronájem stojek" rows. Subtotal renamed "↳ Tesařské práce (skruž + stojky)". | ✅ RESOLVED |
+| Warning prefix | "Top 50 vyžaduje jeřáb (panel 150+ kg)" regardless of pour_role. | "Skruž Top 50 vyžaduje jeřáb (nosník 150+ kg)" for falsework (nosníky ship as beams, not panels). | ✅ RESOLVED |
+
+**Expected output delta for SO-202** (LM, mostovka, h=7.795 m, V≈350 m³, pevná skruž):
+
+- `plan.formwork.system.name` = `Top 50` (was `Staxo 100`)
+- `plan.formwork.system.pour_role` = `'falsework'` (new field)
+- `plan.costs.is_mss_path` = `false` (SO-202 uses pevná skruž)
+- `plan.props?.system.name` = `Staxo 40` (h < 8 m) — unchanged
+- UI cards: "🏗️ Skruž (Top 50)" + "🔩 Stojky (Staxo 40)" instead of one "📦 Bednění"
+- Cost breakdown: 4 rental rows (skruž / stojky) instead of 2 (bednění / podpěry)
+
+Numerical costs shift slightly because Top 50's `assembly_h_m2 = 0.60`
+vs Staxo 100's `0.90` — fewer man-hours for the formwork step, but
+props labor already accounted separately. Magnitude is within the
+~5 % calibration band the audit already tolerates.
 
 ---
 

@@ -5,6 +5,64 @@
 **B3 extraction:** `app/knowledge_base/B3_current_prices/extracted_data/26-0XXC_*.json` (TO_BE_MAPPED)
 **TKP base:** `STAVAGENT/extracted_data/TKP{NN}_*_extracted.json` (36 kapitol)
 **VL4:** `app/knowledge_base/B2_csn_standards/VL_4_2021_Mosty_markdown.md`
+**Last re-snapshot:** 2026-04-17 (v4.21.0 terminology + MSS fix pack)
+
+---
+
+## v4.21.0 Re-Snapshot Notes (2026-04-17)
+
+SO-207 is the estakáda with posuvná skruž (MSS) — biggest change of
+the three golden tests because the MSS path now fully wires through
+orchestrator + UI + cost summary.
+
+**Engine-side changes when `construction_technology='mss'`:**
+
+- Formwork selector short-circuits to `DOKA MSS` (or `VARIOKIT Mobile`
+  if `preferred_manufacturer='PERI'`) — `pour_role='mss_integrated'`,
+  `mss_reuse_factor=0.35`, `rental_czk_m2_month=0`.
+- Per-tact assembly labor (`shapedAssemblyNorm`) = catalog 1.20 h/m²
+  × 0.35 = **0.42 h/m²** (before: full mount hours repeated per tact).
+  Same factor on disassembly. Schedule days per tact drop accordingly.
+- `calculateProps()` is SKIPPED (MSS carries its own stojky). Decision
+  log records "Props: skipped — MSS integrated layer".
+- `formwork_rental_czk` = **0** on MSS path regardless of catalog
+  value (gate applied even against user `rental_czk_override`).
+  `props_rental_czk` = 0 for the same reason.
+- `formwork_labor_czk` = standard 3-fázový model + `mssCost.mobilization_czk`
+  + `mssCost.demobilization_czk` (both from `calculateMSSCost`). The
+  mob/demob represent "vlastní síly tesaři" montáž/demontáž of the
+  MSS rig — priced as if the user's own crew did the mount (for
+  comparison with DOKA/PERI subcontract offers, which typically run
+  1.5–2× the self-mount figure).
+- `plan.costs.is_mss_path=true`, and three new fields populated:
+  `mss_mobilization_czk`, `mss_demobilization_czk`, `mss_rental_czk`.
+
+**UI-side changes:**
+
+- Card 🌉 "Posuvná skruž (MSS) — vše integrováno" replaces the
+  generic 📦 Bednění card. Props card is suppressed.
+- Cost summary gains three rows in the labor block: "MSS montáž
+  (vlastní síly — tesaři)" + "MSS — per-takt úprava (práce)" +
+  "MSS demontáž (vlastní síly — tesaři)". Rental block replaces
+  "Pronájem bednění" with "Pronájem MSS (stroj)" followed by three
+  italic zero rows ("↳ Pronájem bednění / skruže / stojek: 0 Kč
+  (součást MSS)") so users see the bundle structure explicitly.
+
+**Expected cost-order-of-magnitude delta** (19 spans × ~36 m × 13.6 m
+NK ≈ 9 300 m² NK, SO-207 total):
+
+| Category | Before v4.21 | After v4.21 | Delta |
+|----------|--------------|-------------|-------|
+| Formwork rental (Dokaflex/Staxo ghost) | ~1–2 M Kč | 0 Kč | −1…2 M Kč (bundled) |
+| Props rental (Staxo separate) | ~0.6–1 M Kč | 0 Kč | −0.6…1 M Kč (bundled) |
+| Per-takt formwork labor | full-mount × 19 | 0.35 × full × 19 | −65 % |
+| MSS mobilization/rental/demob | in `bridge_technology.mss_cost` but invisible in `costs.*` | Surfaced as `mss_*_czk` fields + 3 cost-table rows | neutral (no double-count) |
+
+**Behavioral check:** total plan cost should land close to the MSS
+cost model from `calculateMSSCost` (mobilization + rental_total +
+demob) plus recurring per-tact work, rebar, concrete. The old
+"Dokaflex recommended for estakáda" issue disappears — the selector
+returns DOKA MSS immediately and never quotes Dokaflex.
 
 ---
 
