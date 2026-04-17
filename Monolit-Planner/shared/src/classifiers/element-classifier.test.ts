@@ -13,6 +13,8 @@ import {
   SANITY_RANGES,
   checkSanity,
   getSuitableSystemsForElement,
+  checkVolumeGeometry,
+  estimateExpectedVolume,
 } from './element-classifier.js';
 
 describe('Element Classifier', () => {
@@ -668,6 +670,74 @@ describe('Element Classifier', () => {
       const { all } = getSuitableSystemsForElement('mostovkova_deska');
       const names = all.map(s => s.name);
       expect(names).toContain('VARIOKIT HD 200');
+    });
+  });
+
+  // ─── Volume-vs-geometry validation (2026-04-17) ──────────────────────
+  describe('checkVolumeGeometry', () => {
+    it('SO-207 bug — V=605 m³ for 9×36 m × 13 m estakáda triggers CRITICAL', () => {
+      const issue = checkVolumeGeometry('mostovkova_deska', 605, {
+        span_m: 36, num_spans: 9, nk_width_m: 13, bridge_deck_subtype: 'dvoutram',
+      });
+      expect(issue).not.toBeNull();
+      expect(issue!.severity).toBe('critical');
+      expect(issue!.ratio).toBeLessThan(0.3);
+      expect(issue!.message_cs).toContain('KRITICKÉ');
+      expect(issue!.message_cs.toLowerCase()).toContain('pole');
+    });
+
+    it('SO-207 correct — V=4000 m³ for same geometry lands OK', () => {
+      const issue = checkVolumeGeometry('mostovkova_deska', 4000, {
+        span_m: 36, num_spans: 9, nk_width_m: 13, bridge_deck_subtype: 'dvoutram',
+      });
+      // Expected = 36 × 9 × 13 × 1.0 = 4 212 m³ → ratio ≈ 0.95 → OK
+      expect(issue).toBeNull();
+    });
+
+    it('deskovy subtype uses thinner equivalent (0.5 m) than trám (1.0 m)', () => {
+      const v = estimateExpectedVolume('mostovkova_deska', {
+        span_m: 30, num_spans: 5, nk_width_m: 10, bridge_deck_subtype: 'deskovy',
+      });
+      expect(v).toBeCloseTo(30 * 5 * 10 * 0.5, 1); // 750 m³
+    });
+
+    it('pilota Ø900 × 10 m × 20 ks ≈ 127 m³ (critical when user enters 10 m³)', () => {
+      const expected = estimateExpectedVolume('pilota', {
+        pile_diameter_mm: 900, pile_length_m: 10, pile_count: 20,
+      });
+      expect(expected).toBeCloseTo(Math.PI * 0.45 * 0.45 * 10 * 20, 1);
+      const issue = checkVolumeGeometry('pilota', 10, {
+        pile_diameter_mm: 900, pile_length_m: 10, pile_count: 20,
+      });
+      expect(issue!.severity).toBe('critical');
+    });
+
+    it('returns null when geometry fields are missing (cannot cross-check)', () => {
+      expect(checkVolumeGeometry('mostovkova_deska', 1000, {})).toBeNull();
+      expect(checkVolumeGeometry('pilota', 50, {})).toBeNull();
+    });
+
+    it('returns null for element types without a geometry formula', () => {
+      expect(checkVolumeGeometry('stena', 100, {})).toBeNull();
+      expect(checkVolumeGeometry('zakladova_deska', 100, {})).toBeNull();
+    });
+
+    it('mostovka V slightly under (ratio 0.5) → WARNING, not CRITICAL', () => {
+      const issue = checkVolumeGeometry('mostovkova_deska', 2000, {
+        span_m: 36, num_spans: 9, nk_width_m: 13, bridge_deck_subtype: 'dvoutram',
+      });
+      // Expected ≈ 4212, actual = 2000 → ratio ≈ 0.47 → warning
+      expect(issue!.severity).toBe('warning');
+      expect(issue!.message_cs).toContain('⚠️');
+    });
+
+    it('mostovka V excessive (ratio > 3) → CRITICAL (upper bound)', () => {
+      const issue = checkVolumeGeometry('mostovkova_deska', 15000, {
+        span_m: 36, num_spans: 9, nk_width_m: 13, bridge_deck_subtype: 'dvoutram',
+      });
+      expect(issue!.severity).toBe('critical');
+      expect(issue!.ratio).toBeGreaterThan(3);
+      expect(issue!.message_cs).toContain('větší');
     });
   });
 });

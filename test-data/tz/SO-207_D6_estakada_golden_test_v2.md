@@ -66,6 +66,47 @@ returns DOKA MSS immediately and never quotes Dokaflex.
 
 ---
 
+## v4.22.0 Phase 1 Validation Re-Snapshot (2026-04-17)
+
+Task 4 Phase 1 fix pack (`claude/calc-ux-fixes-HfW2W` commits
+28a606e → e746f0b) adds input-validation layer that catches the
+exact SO-207 live-test regressions:
+
+**Live SO-207 bug replay (original chybné vstupy):**
+- User entered `volume_m3 = 605` (one span, not whole NK)
+- User entered `exposure_class = 'XF1'`
+- User tried `num_tacts_override = 6` (while MSS has 9 spans)
+
+**What plan.warnings[] now contains (top-of-list, emoji prefix):**
+1. `⛔ KRITICKÉ: Objem 605 m³ je 7.0× menší než očekávaný 4212 m³
+   pro Mostovková deska (z geometrie) — nevkládáš objem jednoho
+   pole místo celé NK?` (unshift, first row)
+2. `⛔ KRITICKÉ: MSS má 9 taktů (= 9 polí). Nelze mít 6 záběrů
+   — posuvná skruž pracuje pole za polem. Ručně zadaný počet
+   záběrů ignorován, plán používá 9.`
+3. `⚠️ Třída prostředí XF1 je neobvyklá pro Mostovková deska.
+   Vyberte jednu z: XF2, XF4, XD1, XD3, XC4. Ověřte s projektem.`
+
+**With corrected inputs (V=4000 m³, XF2, no override):**
+- No geometry warning (ratio = 4000/4212 ≈ 0.95 → OK)
+- No exposure warning (XF2 ∈ recommended set)
+- No MSS-6 warning (num_tacts_override not set)
+- Plan proceeds with normal MSS cost model; `is_mss_path=true`,
+  `mss_mobilization_czk` + `mss_demobilization_czk` +
+  `mss_rental_czk` populated.
+
+**UI changes for SO-207 plans (MSS path):**
+- Bednění card "Časy (na záběr)" now shows 3 rows:
+  "Zrání do napínání: 7 d", "Injektáž + zrání: 14 d",
+  "Doba taktu MSS: 21 d" — instead of the confusing single
+  "Zrání: 21 d" (which people read as ČSN 73 6244 curing).
+- Form sidebar "Záběry v jednom celku" replaced by a read-only
+  "9 taktů (= 9 polí, MSS)" badge; dilatation-joints checkbox
+  disabled with tooltip "Pro MSS jsou dilatační celky
+  irelevantní".
+
+---
+
 ## Proč SO-207 = nejsložitější test
 
 ```

@@ -680,7 +680,28 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
               <div>
                 <div style={subTitle}>Časy (na záběr)</div>
                 <Row label="Montáž" value={`${plan.formwork.assembly_days} dní`} />
-                <Row label="Zrání" value={`${plan.formwork.curing_days} dní`} />
+                {/* MSS-7 (2026-04-17): "Zrání" jedinou hodnotou = matoucí
+                    pro MSS, kde 21 dní = takt (zrání + předpětí + injektáž
+                    + přesun). Rozklad per pour_role. Pro prestressed
+                    mostovku na MSS path je to "Zrání do napínání" +
+                    "Injektáž + zrání" a součet "Doba taktu MSS". */}
+                {isMss && plan.bridge_technology?.mss_schedule ? (() => {
+                  const tactDays = plan.bridge_technology.mss_schedule.tact_days;
+                  const curing = plan.formwork.curing_days;
+                  // Wait-to-tensioning: min 7 d (TKP18) or actual curing, whichever larger.
+                  const waitToTension = Math.max(7, curing);
+                  // Remaining portion of the tact covers injection + subsequent curing.
+                  const injectCuring = Math.max(0, tactDays - waitToTension);
+                  return (
+                    <>
+                      <Row label="Zrání do napínání" value={`${waitToTension} dní`} />
+                      <Row label="Injektáž + zrání" value={`${injectCuring} dní`} />
+                      <Row label="Doba taktu MSS" value={`${tactDays} dní`} bold />
+                    </>
+                  );
+                })() : (
+                  <Row label="Zrání" value={`${plan.formwork.curing_days} dní`} />
+                )}
                 <Row label="Demontáž" value={`${plan.formwork.disassembly_days} dní`} />
               </div>
               <div>
