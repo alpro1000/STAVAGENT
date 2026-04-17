@@ -38,7 +38,7 @@ import { calculateFormwork, calculateThreePhaseFormwork, calculateStrategiesDeta
 import { calculateRebarLite } from './rebar-lite.js';
 import { calculatePourTask } from './pour-task-engine.js';
 import { scheduleElement } from './element-scheduler.js';
-import { findFormworkSystem } from '../constants-data/formwork-systems.js';
+import { findFormworkSystem, findMssSystem, FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import { calculateLateralPressure, suggestPourStages, inferPourMethod, filterFormworkByPressure } from './lateral-pressure.js';
 import type { LateralPressureResult, PourStagesSuggestion, PourMethod, ConcreteConsistency } from './lateral-pressure.js';
 import { recommendBridgeTechnology, calculateMSSCost, calculateMSSSchedule, getMSSTactDays } from './bridge-technology.js';
@@ -697,7 +697,20 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // 2c. Select formwork system (pressure-aware when height given)
   let fwSystem: FormworkSystemSpec;
-  if (input.formwork_system_name) {
+
+  // Terminology Commit 2 (2026-04-17): MSS shortcut. When the user
+  // explicitly chose construction_technology='mss' for a bridge deck,
+  // return the mss_integrated catalog sentinel (DOKA MSS or VARIOKIT
+  // Mobile per preferred_manufacturer). calculateProps below is
+  // skipped — MSS carries its own falsework + props. Downstream cost
+  // math zeroes formwork + props rentals (they are bundled in the
+  // bridge-technology.ts calculateMSSCost mobilization + rental).
+  if (input.construction_technology === 'mss' && elementType === 'mostovkova_deska') {
+    fwSystem = findMssSystem(input.preferred_manufacturer)
+      ?? findFormworkSystem('DOKA MSS')
+      ?? FORMWORK_SYSTEMS[0];
+    log.push(`Formwork: MSS shortcut → ${fwSystem.name} (pour_role=mss_integrated)`);
+  } else if (input.formwork_system_name) {
     const found = findFormworkSystem(input.formwork_system_name);
     if (!found) {
       warnings.push(`Systém bednění "${input.formwork_system_name}" nenalezen — použit doporučený.`);

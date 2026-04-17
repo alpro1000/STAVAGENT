@@ -493,7 +493,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     applicable_element_types: ['sloup'],
   },
   {
-    name: 'VARIOKIT',
+    name: 'VARIOKIT HD 200',
     manufacturer: 'PERI',
     heights: ['libovolná'],
     assembly_h_m2: 1.00,
@@ -501,11 +501,13 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 850.00,
     unit: 'm2',
-    description: 'Inženýrská stavebnice PERI pro mosty a tunely (VGK, VGB, VST moduly) — PERI ekvivalent nosníkové skruže Top 50',
+    description: 'Inženýrská stavebnice PERI HD 200 pro mosty a tunely (VGK, VGB, VST moduly) — PERI ekvivalent nosníkové skruže Top 50',
     weight_kg_m2: 80,
     needs_crane: true,
-    formwork_category: 'special',
-    // PERI skruž pro mosty — engine ji párová s PERI stojkami (VST / UP Rosett).
+    // Slab category so it passes the horizontal suitableCategories gate
+    // for mostovka. applicable_element_types allow-list still keeps it
+    // out of building stropni_deska pool.
+    formwork_category: 'slab',
     pour_role: 'falsework',
     applicable_element_types: ['mostovkova_deska', 'rigel'],
   },

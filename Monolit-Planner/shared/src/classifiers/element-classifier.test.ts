@@ -12,6 +12,7 @@ import {
   extractOtskpMetadata,
   SANITY_RANGES,
   checkSanity,
+  getSuitableSystemsForElement,
 } from './element-classifier.js';
 
 describe('Element Classifier', () => {
@@ -618,6 +619,55 @@ describe('Element Classifier', () => {
     it('other element types keep their original height_m range', () => {
       expect(SANITY_RANGES.stropni_deska.height_m).toEqual([0.12, 0.40]);
       expect(SANITY_RANGES.stena.height_m).toEqual([2.5, 12.0]);
+    });
+  });
+
+  // ─── Terminology Commit 2 (2026-04-17): selector honors pour_role +
+  // applicable_element_types allow-list. ───
+  describe('recommendFormwork — pour_role aware', () => {
+    it('mostovka with clearance > 4 m returns Top 50 (falsework), NOT Staxo (props)', () => {
+      const sys = recommendFormwork('mostovkova_deska', 8);
+      expect(sys.name).toBe('Top 50');
+      expect(sys.pour_role).toBe('falsework');
+    });
+
+    it('mostovka with clearance ≥ 8 m STILL returns Top 50 (not Staxo 100)', () => {
+      const sys = recommendFormwork('mostovkova_deska', 12);
+      expect(sys.name).toBe('Top 50');
+      expect(sys.pour_role).toBe('falsework');
+    });
+  });
+
+  describe('getSuitableSystemsForElement — applicable_element_types allow-list', () => {
+    it('excludes Dokaflex + MULTIFLEX + SKYDECK + CC-4 from mostovka candidate pool', () => {
+      const { all } = getSuitableSystemsForElement('mostovkova_deska');
+      const names = all.map(s => s.name);
+      expect(names).not.toContain('Dokaflex');
+      expect(names).not.toContain('MULTIFLEX');
+      expect(names).not.toContain('SKYDECK');
+      expect(names).not.toContain('CC-4');
+    });
+
+    it('keeps Dokaflex + MULTIFLEX in the pool for stropni_deska (building slab)', () => {
+      const { all } = getSuitableSystemsForElement('stropni_deska');
+      const names = all.map(s => s.name);
+      expect(names).toContain('Dokaflex');
+      expect(names).toContain('MULTIFLEX');
+    });
+
+    it('excludes MSS entries (mss_integrated) from every normal candidate pool', () => {
+      for (const etype of ['mostovkova_deska', 'stropni_deska', 'stena'] as const) {
+        const { all } = getSuitableSystemsForElement(etype);
+        const names = all.map(s => s.name);
+        expect(names).not.toContain('DOKA MSS');
+        expect(names).not.toContain('VARIOKIT Mobile');
+      }
+    });
+
+    it('VARIOKIT HD 200 (PERI bridge falsework) is available for mostovka', () => {
+      const { all } = getSuitableSystemsForElement('mostovkova_deska');
+      const names = all.map(s => s.name);
+      expect(names).toContain('VARIOKIT HD 200');
     });
   });
 });

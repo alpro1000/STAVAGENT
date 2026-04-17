@@ -879,12 +879,16 @@ export function recommendFormwork(
       ?? FORMWORK_SYSTEMS[0];
   }
 
-  // BUG 6: Mostovka support tower selection — Staxo 40 for h<8m, Staxo 100 for h≥8m
-  // (was h>5m → Staxo 100, too aggressive — Staxo 40 handles up to 12m)
+  // Mostovka + tall clearance: return the FALSEWORK (nosníková skruž,
+  // Top 50), NOT the props. The orchestrator adds props (Staxo 40/100)
+  // separately via calculateProps(). Before pour_role taxonomy was
+  // added (2026-04-17 Commit 1), this branch returned Staxo 100 — which
+  // is a support tower (stojky), not bednění. The UI then showed
+  // "📦 Bednění: Staxo 100" for bridge decks, conflating two layers.
+  // Now it returns the skruž and calculateProps handles the věže.
   if (type === 'mostovkova_deska' && height_m != null && height_m > 4) {
-    const systemName = height_m >= 8 ? 'Staxo 100' : 'Staxo 40';
-    return FORMWORK_SYSTEMS.find(s => s.name === systemName)
-      ?? FORMWORK_SYSTEMS.find(s => s.name === 'UP Rosett Flex')
+    return FORMWORK_SYSTEMS.find(s => s.name === 'Top 50')
+      ?? FORMWORK_SYSTEMS.find(s => s.name === 'VARIOKIT HD 200')
       ?? FORMWORK_SYSTEMS.find(s => s.name === profile.recommended_formwork[0])
       ?? FORMWORK_SYSTEMS[0];
   }
@@ -1061,6 +1065,21 @@ export function getSuitableSystemsForElement(elementType: StructuralElementType)
     if (sys.unit === 'bm') continue; // skip linear-meter systems
     const cat = sys.formwork_category ?? 'wall';
     if (cat === 'support_tower') continue; // support towers handled by props calculator, not formwork comparison
+    // Terminology Commit 2 (2026-04-17): MSS entries (mss_integrated)
+    // are dispatched up front by the orchestrator when the user chose
+    // construction_technology='mss'. They must never leak into the
+    // normal candidate pool — their Nhod represent the full MSS mount
+    // which only pays off across many tacts.
+    if (sys.pour_role === 'mss_integrated') continue;
+    // Terminology Commit 2: honour applicable_element_types allow-list.
+    // Before this, Dokaflex/MULTIFLEX/SKYDECK/CC-4 slipped into the
+    // mostovka candidate pool because their formwork_category='slab'
+    // matched horizontal allow-list, and the UI proposed Dokaflex for
+    // bridge decks — structurally wrong (max reach ~5 m, building slab
+    // system).
+    if (sys.applicable_element_types && !sys.applicable_element_types.includes(elementType)) {
+      continue;
+    }
     const isSuitable = suitableCategories.has(cat);
     const isRecommended = recommendedNames.has(sys.name);
 

@@ -63,8 +63,8 @@ describe('Formwork Systems Catalog — applicable_element_types allow-list', () 
     expect(isApplicableForElement(top50, 'stropni_deska')).toBe(true);
   });
 
-  it('VARIOKIT is applicable for mostovka + rigel (bridge falsework)', () => {
-    const variokit = findFormworkSystem('VARIOKIT')!;
+  it('VARIOKIT HD 200 is applicable for mostovka + rigel (bridge falsework)', () => {
+    const variokit = findFormworkSystem('VARIOKIT HD 200')!;
     expect(isApplicableForElement(variokit, 'mostovkova_deska')).toBe(true);
     expect(isApplicableForElement(variokit, 'rigel')).toBe(true);
     expect(isApplicableForElement(variokit, 'stena')).toBe(false);
