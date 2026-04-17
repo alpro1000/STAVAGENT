@@ -1064,4 +1064,87 @@ describe('Planner Orchestrator', () => {
       expect(hasLog).toBe(false);
     });
   });
+
+  // ─── Terminology Commit 3 (2026-04-17): MSS orchestrator path ────────
+  describe('planElement — MSS path (construction_technology=mss)', () => {
+    const baseMssInput: PlannerInput = {
+      element_type: 'mostovkova_deska',
+      volume_m3: 800,
+      formwork_area_m2: 500,
+      height_m: 10,
+      concrete_class: 'C35/45',
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',
+      construction_technology: 'mss',
+      span_m: 36,
+      num_spans: 6,
+      nk_width_m: 12,
+    };
+
+    it('is_mss_path flag is true when construction_technology=mss', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.is_mss_path).toBe(true);
+    });
+
+    it('formwork + props rentals are zero (bundled in MSS rental)', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.formwork_rental_czk).toBe(0);
+      expect(plan.costs.props_rental_czk).toBe(0);
+    });
+
+    it('MSS mobilization + demobilization + rental are exposed', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.mss_mobilization_czk).toBeGreaterThan(0);
+      expect(plan.costs.mss_demobilization_czk).toBeGreaterThan(0);
+      expect(plan.costs.mss_rental_czk).toBeGreaterThan(0);
+    });
+
+    it('formwork_labor_czk includes MSS mobilization + demobilization', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.costs.formwork_labor_czk)
+        .toBeGreaterThanOrEqual(plan.costs.mss_mobilization_czk + plan.costs.mss_demobilization_czk);
+    });
+
+    it('props are skipped on MSS path (propsResult undefined)', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.props).toBeUndefined();
+      const skipLog = plan.decision_log.some(l =>
+        l.includes('Props: skipped') && l.includes('MSS integrated')
+      );
+      expect(skipLog).toBe(true);
+    });
+
+    it('fwSystem selected is mss_integrated (DOKA MSS by default)', () => {
+      const plan = planElement(baseMssInput);
+      expect(plan.formwork.system.name).toBe('DOKA MSS');
+      expect(plan.formwork.system.pour_role).toBe('mss_integrated');
+    });
+
+    it('MSS decision_log records reuse factor + mobilization flow', () => {
+      const plan = planElement(baseMssInput);
+      const hasReuseLog = plan.decision_log.some(l =>
+        l.includes('MSS reuse factor') && l.includes('0.35')
+      );
+      expect(hasReuseLog).toBe(true);
+      const hasCostLog = plan.decision_log.some(l =>
+        l.includes('MSS costs') && l.includes('formwork_labor')
+      );
+      expect(hasCostLog).toBe(true);
+    });
+
+    it('PERI vendor picks VARIOKIT Mobile (MSS shortcut is vendor-aware)', () => {
+      const plan = planElement({ ...baseMssInput, preferred_manufacturer: 'PERI' });
+      expect(plan.formwork.system.name).toBe('VARIOKIT Mobile');
+    });
+
+    it('non-MSS plan has is_mss_path=false + zeroed MSS fields', () => {
+      const plan = planElement({
+        ...baseMssInput,
+        construction_technology: 'fixed_scaffolding',
+      });
+      expect(plan.costs.is_mss_path).toBe(false);
+      expect(plan.costs.mss_mobilization_czk).toBe(0);
+      expect(plan.costs.mss_rental_czk).toBe(0);
+    });
+  });
 });

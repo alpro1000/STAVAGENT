@@ -379,6 +379,23 @@ export interface PlannerOutput {
     props_labor_czk: number;
     /** Props rental. 0 if no props. */
     props_rental_czk: number;
+
+    // ── MSS path (2026-04-17 Terminology Commit 3) ───────────────────
+    /**
+     * True when the plan uses MSS (posuvná skruž) — form/skruž/stojky
+     * are integrated in one movable rig, per-tact labor collapses to
+     * `mss_reuse_factor` of full mount, individual component rentals
+     * are 0 (bundled in MSS rental). UI branches on this flag to show
+     * the 🌉 MSS card instead of separate Bednění / Skruž / Stojky
+     * cards.
+     */
+    is_mss_path: boolean;
+    /** MSS one-off mobilization (tesaři vlastní síly). Already in formwork_labor. */
+    mss_mobilization_czk: number;
+    /** MSS demobilization (tesaři vlastní síly). Already in formwork_labor. */
+    mss_demobilization_czk: number;
+    /** MSS monthly rental × months (machine rental, separate from labor). */
+    mss_rental_czk: number;
   };
 
   // --- Resources summary ---
@@ -1333,10 +1350,30 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // Apply shape correction to formwork norms (geometry-based multiplier)
   const shapeCorrection = input.formwork_shape_correction ?? 1.0;
-  const shapedAssemblyNorm = roundTo(adjustedNorms.assembly_h_m2 * shapeCorrection, 3);
-  const shapedDisassemblyNorm = roundTo(adjustedNorms.disassembly_h_m2 * shapeCorrection, 3);
+  let shapedAssemblyNorm = roundTo(adjustedNorms.assembly_h_m2 * shapeCorrection, 3);
+  let shapedDisassemblyNorm = roundTo(adjustedNorms.disassembly_h_m2 * shapeCorrection, 3);
   if (shapeCorrection !== 1.0) {
     log.push(`Shape correction: ×${shapeCorrection} → assembly ${shapedAssemblyNorm} h/m², strike ${shapedDisassemblyNorm} h/m²`);
+  }
+
+  // Terminology Commit 3 (2026-04-17): MSS per-tact reuse. DOKA MSS +
+  // PERI VARIOKIT Mobile carry a prebuilt form/skruž/props rig that
+  // only gets MOVED + re-tensioned between záběry. Full mount Nhod
+  // (catalog 1.20 h/m²) is already paid for inside MSS mobilization
+  // (see calculateMSSCost below); per-tact assembly runs at ~35 % of
+  // that. Factor applied here propagates through fwBase, threePhase,
+  // scheduler, costs — without duplicate bookkeeping.
+  const isMssPath = fwSystem.pour_role === 'mss_integrated';
+  const mssReuseFactor = isMssPath ? (fwSystem.mss_reuse_factor ?? 0.35) : 1;
+  if (isMssPath && mssReuseFactor !== 1) {
+    const oldAsm = shapedAssemblyNorm;
+    const oldDis = shapedDisassemblyNorm;
+    shapedAssemblyNorm = roundTo(shapedAssemblyNorm * mssReuseFactor, 3);
+    shapedDisassemblyNorm = roundTo(shapedDisassemblyNorm * mssReuseFactor, 3);
+    log.push(
+      `MSS reuse factor ×${mssReuseFactor} → per-tact Nhod ${oldAsm}→${shapedAssemblyNorm} asm, ` +
+      `${oldDis}→${shapedDisassemblyNorm} strike (full mount already in MSS mobilization)`,
+    );
   }
 
   // Use formwork calculator for base durations
@@ -1638,7 +1675,13 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // math below still uses the separate propsResult so pronájem stays
   // visible as its own line item.
   let propsResult: PropsCalculatorResult | undefined;
-  if (profile.needs_supports && input.height_m && input.height_m > 0) {
+  // Terminology Commit 3 (2026-04-17): MSS carries its own props
+  // (Staxo-like towers + nosníky are all integrated in the MSS frame).
+  // Running calculateProps on an MSS plan would double-count — the
+  // MSS rental from calculateMSSCost already pays for every layer.
+  if (isMssPath) {
+    log.push(`Props: skipped — MSS integrated layer (stojky + skruž + bednění v jednom, kryto MSS rental)`);
+  } else if (profile.needs_supports && input.height_m && input.height_m > 0) {
     propsResult = calculateProps({
       element_type: elementType,
       height_m: input.height_m,
@@ -1798,7 +1841,24 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   // ─── 8. Cost Summary ──────────────────────────────────────────────────
 
-  const formworkLaborCZK = threePhase.total_cost_labor;
+  // Terminology Commit 3 (2026-04-17): when the plan is on the MSS
+  // path, bridge-technology.ts already computed mobilization +
+  // demobilization costs as "vlastní síly" (tesaři). Fold them into
+  // the tesařské-práce bucket here so the cost summary + KPIs see the
+  // full labor picture on a single line, and expose the split on
+  // PlannerOutput.costs so the UI can show "X lidí × Y dní = Z Kč".
+  const mssMobilizationCZK = isMssPath ? (bridgeTechResult?.mss_cost?.mobilization_czk ?? 0) : 0;
+  const mssDemobilizationCZK = isMssPath ? (bridgeTechResult?.mss_cost?.demobilization_czk ?? 0) : 0;
+  const mssRentalCZK = isMssPath ? (bridgeTechResult?.mss_cost?.rental_total_czk ?? 0) : 0;
+
+  const formworkLaborCZK = threePhase.total_cost_labor + mssMobilizationCZK + mssDemobilizationCZK;
+  if (isMssPath) {
+    log.push(
+      `MSS costs: mobilization ${(mssMobilizationCZK / 1e6).toFixed(2)} M + demobilization ` +
+      `${(mssDemobilizationCZK / 1e6).toFixed(2)} M Kč → flowing into formwork_labor (vlastní síly tesaři). ` +
+      `Rental ${(mssRentalCZK / 1e6).toFixed(2)} M Kč bundled separately (pronájem MSS stroje).`,
+    );
+  }
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
   // MEGA pour Bug 2 (2026-04-16): pour labor now computed as person-hours
   // to support the crew-relief model correctly. Each worker works at
@@ -1842,14 +1902,23 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // Rental cost (monthly → daily). User override takes precedence over catalog.
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport
   const rentalRate = input.rental_czk_override ?? fwSystem.rental_czk_m2_month;
-  const formworkRentalCZK = rentalRate > 0
-    ? roundTo(fwArea * rentalRate * (rentalDaysPerSet / 30) * numSets, 2)
-    : 0;
-  if (input.rental_czk_override !== undefined) {
+  // Terminology Commit 3: on the MSS path, bednění/skruž/stojky rental is
+  // all bundled in calculateMSSCost.rental_total_czk (tracked separately
+  // below as a new line item). Catalog entry for "DOKA MSS" +
+  // "VARIOKIT Mobile" uses rental_czk_m2_month=0 to enforce this even
+  // against user overrides — which makes formworkRentalCZK already land
+  // on 0 for MSS, but we gate the branch explicitly so the intent is
+  // unambiguous in the source.
+  const formworkRentalCZK = isMssPath
+    ? 0
+    : (rentalRate > 0
+        ? roundTo(fwArea * rentalRate * (rentalDaysPerSet / 30) * numSets, 2)
+        : 0);
+  if (input.rental_czk_override !== undefined && !isMssPath) {
     log.push(`Rental: user override ${rentalRate} Kč/${fwSystem.unit}/měs (catalog: ${fwSystem.rental_czk_m2_month})`);
   }
 
-  // Props costs
+  // Props costs (zeroed on MSS path — skipped calculateProps runs upstream)
   const propsLaborCZK = propsResult?.labor_cost_czk ?? 0;
   const propsRentalCZK = propsResult?.rental_cost_czk ?? 0;
 
@@ -1952,6 +2021,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
       formwork_rental_czk: formworkRentalCZK,
       props_labor_czk: propsLaborCZK,
       props_rental_czk: propsRentalCZK,
+      is_mss_path: isMssPath,
+      mss_mobilization_czk: mssMobilizationCZK,
+      mss_demobilization_czk: mssDemobilizationCZK,
+      mss_rental_czk: mssRentalCZK,
     },
     norms_sources: {
       formwork_assembly: `${fwSystem.name}: ${adjustedNorms.assembly_h_m2} h/m² ` +
@@ -2327,6 +2400,11 @@ function runPilePath(
       formwork_rental_czk: 0,
       props_labor_czk: 0,
       props_rental_czk: 0,
+      // Pile path never goes through MSS — flags kept zero for schema parity.
+      is_mss_path: false,
+      mss_mobilization_czk: 0,
+      mss_demobilization_czk: 0,
+      mss_rental_czk: 0,
     },
     pile,
     norms_sources: {
