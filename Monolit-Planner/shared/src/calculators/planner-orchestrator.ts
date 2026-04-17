@@ -1351,6 +1351,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
     crew_size: crew,
     shift_h: shift,
     target_window_h: input.target_pour_window_h,
+    // Pump-consistency fix (2026-04-16): forward the authoritative pump
+    // count from decidePourMode() so pour-task doesn't silently compute
+    // "1 čerpadlo, 20h" while pour-decision already said "4 čerpadel, 5h".
+    num_pumps_available: pourDecision.pumps_required,
   });
 
   log.push(`Pour: ${pourResult.effective_rate_m3_h}m³/h, ${pourResult.total_pour_hours}h/tact (bottleneck: ${pourResult.rate_bottleneck})`);

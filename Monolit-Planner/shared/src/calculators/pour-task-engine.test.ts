@@ -145,4 +145,43 @@ describe('Pour Task Engine', () => {
       expect(slow).toBeGreaterThan(fast);
     });
   });
+
+  // ─── Pump-consistency fix (2026-04-16) ─────────────────────────────────
+  describe('num_pumps_available input (pump consistency)', () => {
+    it('defaults to 1 pump when not provided (backwards compat)', () => {
+      const result = calculatePourTask({
+        element_type: 'mostovkova_deska',
+        volume_m3: 664,
+      });
+      expect(result.pumps_required).toBe(1);
+    });
+
+    it('forwards the decidePourMode count so rate scales with pumps', () => {
+      const onePump = calculatePourTask({
+        element_type: 'mostovkova_deska',
+        volume_m3: 664,
+        pump_capacity_m3_h: 30,
+      });
+      const fourPumps = calculatePourTask({
+        element_type: 'mostovkova_deska',
+        volume_m3: 664,
+        pump_capacity_m3_h: 30,
+        num_pumps_available: 4,
+      });
+      expect(fourPumps.pumps_required).toBe(4);
+      // 4 pumps → ~4x the rate → ~4x shorter pumping (subject to mixer/plant caps)
+      expect(fourPumps.pumping_hours).toBeLessThan(onePump.pumping_hours);
+      // scenario label reflects actual count
+      expect(fourPumps.pumps_for_actual_window.scenario).toContain('4');
+    });
+
+    it('clamps num_pumps_available to ≥1 (invalid inputs ignored)', () => {
+      const result = calculatePourTask({
+        element_type: 'mostovkova_deska',
+        volume_m3: 120,
+        num_pumps_available: 0,
+      });
+      expect(result.pumps_required).toBe(1);
+    });
+  });
 });

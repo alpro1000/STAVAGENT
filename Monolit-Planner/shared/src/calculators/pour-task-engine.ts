@@ -55,6 +55,16 @@ export interface PourTaskInput {
    * "target window" pump count is computed alongside the actual scenario.
    */
   target_window_h?: number;
+
+  /**
+   * Pump-consistency fix (2026-04-16): accept the authoritative pump count
+   * from decidePourMode() instead of hardcoding 1. When decidePourMode
+   * ran a multi-pump branch (monolithic > 1-pump window), it already
+   * computed how many pumps the site needs; if this field is forwarded
+   * the rate calculation below scales with it instead of silently
+   * reverting to 1-pump duration. Default: 1 (single-pump baseline).
+   */
+  num_pumps_available?: number;
 }
 
 /** BUG-2: Pump scenario describing one possible pump configuration */
@@ -167,9 +177,12 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
 
   // --- Pump decision (before rate calc — affects effective rate) ---
   const pump_needed = profile.pump_typical || input.volume_m3 > 5;
-  // BUG-2: Default scenario uses a single pump. Multi-pump configurations are
-  // exposed via the explicit "actual" / "target" pump scenarios below.
-  const pumps_required = 1;
+  // Pump-consistency fix (2026-04-16): read the authoritative count from
+  // the caller (orchestrator passes pourDecision.pumps_required). Before
+  // this, the value was hardcoded 1, which caused the decision log to
+  // report "4 čerpadel" (pour-decision) and "1 pump" (pour-task) in the
+  // same plan. Now both engines agree.
+  const pumps_required = Math.max(1, Math.floor(input.num_pumps_available ?? 1));
   const backup_pump_recommended = input.volume_m3 > 200;
 
   // Effective rate = MIN of all constraints, multiplied by number of pumps
@@ -192,7 +205,7 @@ export function calculatePourTask(input: PourTaskInput): PourTaskResult {
     count: pumps_required,
     total_rate_m3_h: roundTo(single_pump_rate * pumps_required, 1),
     pour_duration_h: roundTo(total_pour_hours, 2),
-    scenario: 'Skutečná doba betonáže (1 čerpadlo)',
+    scenario: `Skutečná doba betonáže (${pumps_required} ${pumps_required === 1 ? 'čerpadlo' : pumps_required < 5 ? 'čerpadla' : 'čerpadel'})`,
   };
 
   let targetScenario: PumpScenario | undefined;

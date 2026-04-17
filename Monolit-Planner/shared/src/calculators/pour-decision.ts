@@ -538,12 +538,20 @@ export function decidePourMode(input: PourDecisionInput): PourDecisionOutput {
   const pour_h = setup_h + (V / effective_q) + washout_h;
 
   if (pumps_required > 1) {
+    // Pump-consistency fix (2026-04-16): consolidated into ONE warning.
+    // Previously pour-decision emitted 3 separate warnings ("N čerpadel
+    // potřeba", "PDK povinný", "osvětlení") while the orchestrator added
+    // its own "MEGA zálivka..." line and pour-task-engine printed yet
+    // another — so the UI showed the same facts 3–4 times. The backup
+    // pump + crew breakdown are now emitted once by the orchestrator so
+    // we drop the generic "N čerpadel potřeba" line here.
     const pCtx = `[Celkem ${V} m³]`;
-    warnings.push(`${pCtx} ${pumps_required} čerpadel potřeba — interval domíchávačů ≤ 8 min`);
-    warnings.push(`${pCtx} Před zahájením nutný podpis PDK (plán kontroly a zkoušek)`);
-    if (pour_h > 8) {
-      warnings.push(`${pCtx} Zálivka ${roundTo(pour_h, 1)}h > 8h — zajistit osvětlení pracoviště`);
-    }
+    const backupSuffix = backup_pump ? ` (+ 1 záložní, celkem ${pumps_required + 1})` : '';
+    warnings.push(
+      `${pCtx} Čerpadla: ${pumps_required} pracovních${backupSuffix}. ` +
+      `Interval domíchávačů ≤ 8 min. PDK (plán kontroly a zkoušek) podepsat před zahájením.` +
+      (pour_h > 8 ? ` Zálivka ${roundTo(pour_h, 1)}h > 8h — zajistit osvětlení pracoviště.` : '')
+    );
   }
 
   return {
