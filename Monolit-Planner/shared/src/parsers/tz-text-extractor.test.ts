@@ -4,7 +4,12 @@
  * Tested against real SO-202/203/207 TZ excerpts from golden test data.
  */
 import { describe, it, expect } from 'vitest';
-import { extractFromText, type ExtractedParam } from './tz-text-extractor';
+import {
+  extractFromText,
+  extractSmetaLines,
+  parseCzechNumber,
+  type ExtractedParam,
+} from './tz-text-extractor';
 
 function findParam(results: ExtractedParam[], name: string): ExtractedParam | undefined {
   return results.find(r => r.name === name);
@@ -157,6 +162,205 @@ Všechny piloty jsou navrženy z betonu C30/37 XA2.`;
     it('thickness extraction: "tl. 250 mm"', () => {
       const r = extractFromText('deska tl. 250 mm');
       expect(findParam(r, 'thickness_mm')?.value).toBe(250);
+    });
+  });
+
+  // ─── Czech number parsing ───────────────────────────────────────────────
+
+  describe('parseCzechNumber', () => {
+    it('94,231 → 94.231 (Czech decimal, 3 places)', () => {
+      expect(parseCzechNumber('94,231')).toBeCloseTo(94.231, 3);
+    });
+
+    it('547,400 → 547.4 (trailing zero decimals)', () => {
+      expect(parseCzechNumber('547,400')).toBeCloseTo(547.4, 3);
+    });
+
+    it('5,654 → 5.654 (short Czech decimal)', () => {
+      expect(parseCzechNumber('5,654')).toBeCloseTo(5.654, 3);
+    });
+
+    it('"1 456,78" → 1456.78 (space thousands + comma decimal)', () => {
+      expect(parseCzechNumber('1 456,78')).toBeCloseTo(1456.78, 2);
+    });
+
+    it('"1.456,78" → 1456.78 (EU: period thousands, comma decimal)', () => {
+      expect(parseCzechNumber('1.456,78')).toBeCloseTo(1456.78, 2);
+    });
+
+    it('"1,456.78" → 1456.78 (US: comma thousands, period decimal)', () => {
+      expect(parseCzechNumber('1,456.78')).toBeCloseTo(1456.78, 2);
+    });
+
+    it('"1,234,567" → 1234567 (multiple commas → thousands)', () => {
+      expect(parseCzechNumber('1,234,567')).toBe(1234567);
+    });
+
+    it('integer "94" → 94', () => {
+      expect(parseCzechNumber('94')).toBe(94);
+    });
+  });
+
+  // ─── Smeta line extraction ──────────────────────────────────────────────
+
+  describe('extractSmetaLines (VP4 opěrná zeď — live bug 2026-04-17)', () => {
+    // Real smeta excerpt from the live user feedback — 3 positions under
+    // one opěrná zeď VP4. Before this extractor, UI surfaced only 3 params
+    // (concrete/exposure/volume from free-text regex) and missed 547,4 m²
+    // formwork area + 5,654 t rebar despite both being right there.
+    const VP4_SMETA = `
+327323127  Opěrné zdi a valy ze ŽB tř. C 25/30                m3  94,231   "VP4" (0,8*0,3+1,45*0,25)*156,4
+327351211  Bednění opěrných zdí a valů svislých i skloněných  m2  547,400  "VP4" 1,75*2*156,4
+327361006  Výztuž opěrných zdí a valů D 12 mm z bet. oceli    t   5,654    94,231*0,06
+`;
+
+    const lines = extractSmetaLines(VP4_SMETA);
+
+    it('parses 3 smeta lines', () => {
+      expect(lines).toHaveLength(3);
+    });
+
+    it('line 1: code=327323127, catalog=urs, work_type=beton, unit=m3, qty=94.231', () => {
+      expect(lines[0].code).toBe('327323127');
+      expect(lines[0].catalog).toBe('urs');
+      expect(lines[0].work_type).toBe('beton');
+      expect(lines[0].unit).toBe('m3');
+      expect(lines[0].quantity).toBeCloseTo(94.231, 3);
+    });
+
+    it('line 2: code=327351211 → bednění + m2 + 547.4', () => {
+      expect(lines[1].code).toBe('327351211');
+      expect(lines[1].work_type === 'bednění' || lines[1].work_type === 'bednění_zřízení')
+        .toBe(true);
+      expect(lines[1].unit).toBe('m2');
+      expect(lines[1].quantity).toBeCloseTo(547.4, 1);
+    });
+
+    it('line 3: code=327361006 → výztuž + t + 5.654', () => {
+      expect(lines[2].code).toBe('327361006');
+      expect(lines[2].work_type).toBe('výztuž');
+      expect(lines[2].unit).toBe('t');
+      expect(lines[2].quantity).toBeCloseTo(5.654, 3);
+    });
+
+    it('preserves description text (strips leading/trailing whitespace)', () => {
+      expect(lines[0].description).toContain('Opěrné zdi');
+      expect(lines[0].description).toContain('C 25/30');
+    });
+  });
+
+  describe('extractSmetaLines — edge cases', () => {
+    it('empty text returns []', () => {
+      expect(extractSmetaLines('')).toEqual([]);
+    });
+
+    it('non-smeta text returns []', () => {
+      expect(extractSmetaLines('Nosná konstrukce je C35/45, rozpětí 20 m.')).toEqual([]);
+    });
+
+    it('4-digit code is skipped (not OTSKP/URS format)', () => {
+      expect(extractSmetaLines('1234 Nějaký popis m3 10,0')).toEqual([]);
+    });
+
+    it('OTSKP 6-digit code → catalog=otskp', () => {
+      const r = extractSmetaLines('113472  Odstranění krytu  m3  50,0');
+      expect(r).toHaveLength(1);
+      expect(r[0].catalog).toBe('otskp');
+    });
+
+    it('normalizes Unicode unit m² → m2', () => {
+      const r = extractSmetaLines('327351211  Bednění stěn  m²  100,0');
+      expect(r).toHaveLength(1);
+      expect(r[0].unit).toBe('m2');
+    });
+
+    it('normalizes Unicode unit m³ → m3', () => {
+      const r = extractSmetaLines('327323127  Beton stěn  m³  50,0');
+      expect(r).toHaveLength(1);
+      expect(r[0].unit).toBe('m3');
+    });
+
+    it('handles multiple spaces / tabs between columns', () => {
+      const r = extractSmetaLines('327323127\t\tBeton\t\tm3\t\t94,231');
+      expect(r).toHaveLength(1);
+      expect(r[0].quantity).toBeCloseTo(94.231, 3);
+    });
+  });
+
+  // ─── extractFromText — smeta integration ────────────────────────────────
+
+  describe('extractFromText — VP4 opěrná zeď full round-trip', () => {
+    const VP4_TEXT = `Opěrné zdi VP4 — beton C25/30, XC4, XF1, XA1, výztuž B500B (10 505 (R)), 150 kg/m3.
+
+327323127  Opěrné zdi a valy ze ŽB tř. C 25/30                m3  94,231   "VP4" (0,8*0,3+1,45*0,25)*156,4
+327351211  Bednění opěrných zdí a valů svislých i skloněných  m2  547,400  "VP4" 1,75*2*156,4
+327361006  Výztuž opěrných zdí a valů D 12 mm z bet. oceli    t   5,654    94,231*0,06
+`;
+
+    const results = extractFromText(VP4_TEXT, { element_type: 'operne_zdi' });
+
+    it('volume_m3 = 94.231 from smeta (not free-text regex)', () => {
+      const p = findParam(results, 'volume_m3');
+      expect(p).toBeDefined();
+      expect(p!.value).toBeCloseTo(94.231, 3);
+      expect(p!.source).toBe('smeta_line');
+      expect(p!.confidence).toBe(1.0);
+      expect(p!.catalog).toBe('urs');
+      expect(p!.code).toBe('327323127');
+    });
+
+    it('formwork_area_m2 = 547.4 from smeta (NEW — was missing before)', () => {
+      const p = findParam(results, 'formwork_area_m2');
+      expect(p).toBeDefined();
+      expect(p!.value).toBeCloseTo(547.4, 1);
+      expect(p!.source).toBe('smeta_line');
+      expect(p!.code).toBe('327351211');
+    });
+
+    it('reinforcement_total_kg = 5654 kg (converted from 5.654 t)', () => {
+      const p = findParam(results, 'reinforcement_total_kg');
+      expect(p).toBeDefined();
+      expect(p!.value as number).toBeCloseTo(5654, 0);
+      expect(p!.source).toBe('smeta_line');
+      expect(p!.code).toBe('327361006');
+    });
+
+    it('concrete_class C25/30 still detected from free-text', () => {
+      expect(findParam(results, 'concrete_class')?.value).toBe('C25/30');
+    });
+
+    it('exposure_class highest-priority from {XC4, XF1, XA1} = XF1', () => {
+      // XF has priority 4 (highest) vs XA(2)/XC(1) in existing heuristic
+      expect(findParam(results, 'exposure_class')?.value).toBe('XF1');
+    });
+
+    it('≥5 params extracted (vs only 3 before the fix)', () => {
+      expect(results.length).toBeGreaterThanOrEqual(5);
+    });
+  });
+
+  describe('extractFromText — smeta wins over free-text volume regex', () => {
+    it('when text has both free-text "605 m³" AND smeta beton line → smeta wins', () => {
+      const text = `
+Celkový objem 605 m³ dle rozpočtu.
+
+327323127  Beton stěn  m3  94,231
+`;
+      const r = extractFromText(text);
+      const vol = findParam(r, 'volume_m3');
+      expect(vol).toBeDefined();
+      expect(vol!.source).toBe('smeta_line');
+      expect(vol!.value).toBeCloseTo(94.231, 3);
+      // Free-text regex's 605 must NOT override
+      expect(vol!.value).not.toBe(605);
+    });
+
+    it('when text has only free-text "605 m³" (no smeta) → free-text fallback', () => {
+      const r = extractFromText('Celkový objem 605 m³.');
+      const vol = findParam(r, 'volume_m3');
+      expect(vol).toBeDefined();
+      expect(vol!.source).toBe('regex');
+      expect(vol!.value).toBe(605);
     });
   });
 });
