@@ -639,38 +639,61 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         <PileCards pile={plan.pile} />
       )}
 
-      {/* Standard formwork card — hidden for piles (no formwork on a bored pile) */}
-      {plan.element.type !== 'pilota' && (
-      <Card title="Bednění" icon="📦">
-        <div className="r0-grid-3">
-          <div>
-            <div style={subTitle}>Systém</div>
-            <Row label="Název" value={plan.formwork.system.name} />
-            <Row label="Výrobce" value={plan.formwork.system.manufacturer} />
-            <Row label="Pronájem" value={plan.formwork.system.rental_czk_m2_month > 0
-              ? `${formatNum(plan.formwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
-              : 'Bez pronájmu'} />
-            <Row label="Tesařů celkem" value={`${plan.resources?.total_formwork_workers ?? '-'} (${plan.resources?.num_formwork_crews ?? 1}×${plan.resources?.crew_size_formwork ?? '-'})`} />
-            {plan.props?.needed && (
-              <Row label="Podpěra" value={`${plan.props.system.name} (${plan.props.system.manufacturer}), ${plan.props.num_props_per_tact} ks`} bold />
-            )}
-          </div>
-          <div>
-            <div style={subTitle}>Časy (na záběr)</div>
-            <Row label="Montáž" value={`${plan.formwork.assembly_days} dní`} />
-            <Row label="Zrání" value={`${plan.formwork.curing_days} dní`} />
-            <Row label="Demontáž" value={`${plan.formwork.disassembly_days} dní`} />
-          </div>
-          <div>
-            <div style={subTitle}>3-fázový model</div>
-            <Row label="1. záběr" value={formatCZK(plan.formwork.three_phase.initial_cost_labor)} />
-            <Row label="Střední" value={formatCZK(plan.formwork.three_phase.middle_cost_labor)} />
-            <Row label="Poslední" value={formatCZK(plan.formwork.three_phase.final_cost_labor)} />
-            <Row label="Celkem" value={formatCZK(plan.formwork.three_phase.total_cost_labor)} bold />
-          </div>
-        </div>
-      </Card>
-      )}
+      {/* Standard formwork card — hidden for piles (no formwork on a bored pile).
+          Terminology Commit 4 (2026-04-17): card title + icon branch on
+          pour_role so users see the actual layer — "🏗️ Skruž" (nosníky,
+          falsework) vs "📦 Bednění" (form) vs "🌉 MSS" (vše integrováno)
+          vs "📦 Bednění + stojky" (Dokaflex/MULTIFLEX kompakt). Previous
+          hardcoded "Bednění" label obscured that Top 50 is skruž + Staxo
+          is stojky, not a single flat "bednění" category. */}
+      {plan.element.type !== 'pilota' && (() => {
+        const role = plan.formwork.system.pour_role;
+        const label =
+          role === 'falsework'       ? { title: 'Skruž (nosníky)', icon: '🏗️' } :
+          role === 'formwork_props'  ? { title: 'Bednění + stojky', icon: '📦' } :
+          role === 'mss_integrated'  ? { title: 'Posuvná skruž (MSS) — vše integrováno', icon: '🌉' } :
+                                       { title: 'Bednění', icon: '📦' };
+        const isMss = plan.costs?.is_mss_path === true;
+        const rentalLine = isMss
+          ? '0 Kč (součást MSS pronájmu)'
+          : plan.formwork.system.rental_czk_m2_month > 0
+            ? `${formatNum(plan.formwork.system.rental_czk_m2_month, 0)} Kč/m²/měs`
+            : 'Bez pronájmu';
+        return (
+          <Card title={label.title} icon={label.icon}>
+            <div className="r0-grid-3">
+              <div>
+                <div style={subTitle}>Systém</div>
+                <Row label="Název" value={plan.formwork.system.name} />
+                <Row label="Výrobce" value={plan.formwork.system.manufacturer} />
+                <Row label="Pronájem" value={rentalLine} />
+                <Row label="Tesařů celkem" value={`${plan.resources?.total_formwork_workers ?? '-'} (${plan.resources?.num_formwork_crews ?? 1}×${plan.resources?.crew_size_formwork ?? '-'})`} />
+                {isMss && (
+                  <div style={{ fontSize: 10, color: 'var(--r0-slate-500)', marginTop: 4, fontStyle: 'italic' }}>
+                    Bednění + skruž + stojky jsou integrovány v MSS rámu; per-takt Nhod × 0,35 (přesun + re-tensioning).
+                  </div>
+                )}
+                {!isMss && plan.props?.needed && (
+                  <Row label="Podpěra" value={`${plan.props.system.name} (${plan.props.system.manufacturer}), ${plan.props.num_props_per_tact} ks`} bold />
+                )}
+              </div>
+              <div>
+                <div style={subTitle}>Časy (na záběr)</div>
+                <Row label="Montáž" value={`${plan.formwork.assembly_days} dní`} />
+                <Row label="Zrání" value={`${plan.formwork.curing_days} dní`} />
+                <Row label="Demontáž" value={`${plan.formwork.disassembly_days} dní`} />
+              </div>
+              <div>
+                <div style={subTitle}>3-fázový model</div>
+                <Row label="1. záběr" value={formatCZK(plan.formwork.three_phase.initial_cost_labor)} />
+                <Row label="Střední" value={formatCZK(plan.formwork.three_phase.middle_cost_labor)} />
+                <Row label="Poslední" value={formatCZK(plan.formwork.three_phase.final_cost_labor)} />
+                <Row label="Celkem" value={formatCZK(plan.formwork.three_phase.total_cost_labor)} bold />
+              </div>
+            </div>
+          </Card>
+        );
+      })()}
 
       {/* Křídla formwork (composite opěry+křídla) */}
       {kridlaFormwork && (
@@ -737,9 +760,13 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
         })()}
       </Card>
 
-      {/* Props (podpěry) */}
-      {plan.props && plan.props.needed && (
-        <Card title="Podpěrná konstrukce (stojky / skruž)" icon="🏗️">
+      {/* Props (stojky). Terminology Commit 4: renamed from "Podpěrná
+          konstrukce (stojky / skruž)" to just "Stojky" (🔩) since skruž
+          (nosníky) now has its own "🏗️ Skruž" card above via the
+          falsework pour_role. Card skipped entirely on MSS path — MSS
+          carries its own stojky. */}
+      {plan.props && plan.props.needed && !plan.costs?.is_mss_path && (
+        <Card title="Stojky" icon="🔩">
           <div className="r0-grid-3">
             <div>
               <div style={subTitle}>Systém</div>
