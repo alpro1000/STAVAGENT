@@ -1444,45 +1444,40 @@ export function planElement(input: PlannerInput): PlannerOutput {
   let numPourShifts = 1;
 
   if (isContinuousPour && pourResult.total_pour_hours > shift) {
-    // Continuous pour exceeds normal shift — can't stop, no work joints allowed.
+    // MEGA pour Bug 2 (2026-04-16): continuous pour exceeds the normal
+    // shift → immediately split into multiple shifts with crew relief.
+    // Previous code had an "extended shift" branch up to 12 h legal max
+    // that stretched one crew's workday and only multi-shift'd above
+    // 12 h. Reality on site (§116 ZP + safety): once pour exceeds the
+    // shift, a FRESH crew of the same size takes over. Each worker's
+    // day stays normal; labor accounting is person-hours across all
+    // shifts with +10% night premium on post-shift hours (22:00–06:00
+    // approximated as "everything past first-shift length").
     concreteDays = 1;
+    numPourShifts = Math.max(1, Math.ceil(pourResult.total_pour_hours / shift));
+    effectiveShift = shift; // no stretching — each crew works one normal shift
+    const nightHours = Math.max(0, pourResult.total_pour_hours - shift);
+    pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
 
-    // Czech labor law (§ 83 Zákoník práce): max shift = 12 hours.
-    // For pours > 12h: crew relief (střídání čet) — fresh crew replaces tired one.
-    const MAX_LEGAL_SHIFT = 12;
-
-    if (pourResult.total_pour_hours <= MAX_LEGAL_SHIFT) {
-      // Fits in one extended shift (up to 12h legal max). The pour-front
-      // crew is already sized by pumps; we only stretch the shift.
-      effectiveShift = pourResult.total_pour_hours;
-
+    const breakdownLabel = `${pourCrewBreakdown.ukladani} uklád. + ${pourCrewBreakdown.vibrace} vibrace + ${pourCrewBreakdown.finiseri} finiš + ${pourCrewBreakdown.rizeni} řízení`;
+    if (numPourShifts === 1) {
+      // Edge case: pour_hours exactly equals shift — 1 shift, no night premium.
       warnings.push(
-        `[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: nutno zalít v jednom záběru bez přerušení. ` +
-        `Osádka: ${effectivePourCrew} lidí/směna ` +
-        `(${pourCrewBreakdown.ukladani} uklád. + ${pourCrewBreakdown.vibrace} vibrace + ${pourCrewBreakdown.finiseri} finiš + ${pourCrewBreakdown.rizeni} řízení). ` +
-        `Směna ${roundTo(effectiveShift, 1)}h. ` +
-        (effectiveShift > 10 ? `Příplatek za přesčas (25%) od 10. hodiny.` : '')
+        `[Záběr ${pourDecision.tact_volume_m3} m³] Monolitická zálivka: ${effectivePourCrew} lidí/směna (${breakdownLabel}).`
       );
     } else {
-      // Pour > 12h: multi-shift operation (střídání čet)
-      // Each shift max 12h, crews rotate.
-      numPourShifts = Math.ceil(pourResult.total_pour_hours / MAX_LEGAL_SHIFT);
-      effectiveShift = MAX_LEGAL_SHIFT;
-      const nightHours = Math.max(0, pourResult.total_pour_hours - MAX_LEGAL_SHIFT);
-      pourNightPremiumCZK = roundTo(nightHours * effectivePourCrew * wagePour * NIGHT_PREMIUM, 2);
-
       warnings.push(
         `[Záběr ${pourDecision.tact_volume_m3} m³, ${roundTo(pourResult.total_pour_hours, 1)}h] ` +
-        `Monolitická zálivka: nutno zalít bez přerušení. Zákoník práce max. 12h/směna — ` +
-        `nutné střídání čet (${numPourShifts} směny × ${effectivePourCrew} lidí = ${effectivePourCrew * numPourShifts} celkem). ` +
-        `Noční směna: +${nightHours.toFixed(1)}h s příplatkem +10% (§ 116 ZP).`
+        `Monolitická zálivka nutno zalít bez přerušení. ` +
+        `${numPourShifts} směny × ${effectivePourCrew} lidí = ${effectivePourCrew * numPourShifts} lidí celkem (${breakdownLabel}). ` +
+        `Noční hodiny po ${shift}h směně: ${nightHours.toFixed(1)}h s příplatkem +10% (§116 ZP).`
       );
     }
 
-    log.push(`Continuous pour: ${pourResult.total_pour_hours}h → 1 day, ` +
-      `${numPourShifts} shift(s), pour crew ${effectivePourCrew} ` +
+    log.push(`Continuous pour: ${roundTo(pourResult.total_pour_hours, 1)}h → 1 day, ` +
+      `${numPourShifts} shift(s) × ${effectivePourCrew} lidí ` +
       `(${pourCrewBreakdown.ukladani}+${pourCrewBreakdown.vibrace}+${pourCrewBreakdown.finiseri}+${pourCrewBreakdown.rizeni}, ` +
-      `${pourCrewBreakdown.pumps_used} čerpadel), shift ${shift}→${roundTo(effectiveShift, 1)}h`);
+      `${pourCrewBreakdown.pumps_used} čerpadel), night ${nightHours.toFixed(1)}h`);
   } else {
     // Normal pour: calculate days from hours
     concreteDays = Math.max(1, roundTo(pourResult.total_pour_hours / shift, 2));
@@ -1792,20 +1787,44 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   const formworkLaborCZK = threePhase.total_cost_labor;
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
-  // Pour labor: crew × hours × wage per tact × num_tacts
-  // Overtime premium 25% applies after standard shift (§ 114 ZP)
-  // Night premium 10% applies for hours in night shifts (§ 116 ZP)
-  const overtimeThreshold = shift; // use configured shift, not hardcoded 10
-  const actualPourHours = isContinuousPour ? effectiveShift : pourResult.total_pour_hours;
-  const regularHours = Math.min(overtimeThreshold, actualPourHours);
-  const overtimeHours = Math.max(0, actualPourHours - overtimeThreshold);
-  const laborPerWorkerPerTact = (regularHours * wagePour) + (overtimeHours * wagePour * 1.25);
-  // For multi-shift pours: each shift pays full crew, plus night premium
-  const pourLaborCZK = roundTo(
-    laborPerWorkerPerTact * effectivePourCrew * numPourShifts * pourDecision.num_tacts +
-    pourNightPremiumCZK * pourDecision.num_tacts,
-    2,
-  );
+  // MEGA pour Bug 2 (2026-04-16): pour labor now computed as person-hours
+  // to support the crew-relief model correctly. Each worker works at
+  // most one shift; multi-shift pours simply add fresh crews. Night
+  // premium (§116 ZP) is a +10% stamp on post-first-shift hours.
+  //
+  //   totalPersonHoursPerTact = crew_per_shift × pour_hours
+  //     (sum of hours-worked by every worker who shows up, whether in
+  //      shift 1 or shift 2+ — fits both isContinuousPour paths)
+  //   nightPersonHoursPerTact = crew_per_shift × max(0, pour_hours − shift)
+  //   base    = totalPersonHours × wagePour
+  //   premium = nightPersonHours × wagePour × 0.10
+  //
+  // For sectional pours (pour_hours ≤ shift, crew_per_shift from pumps
+  // formula) the formula collapses to a clean "crew × actual hours ×
+  // wage", with §114 ZP overtime (+25%) for hours beyond shift_h in a
+  // single-shift setting. numPourShifts stays 1 there so no double-pay.
+  let pourLaborCZK: number;
+  if (isContinuousPour && pourResult.total_pour_hours > shift) {
+    // Continuous multi-shift path: person-hours model
+    const totalPersonHours = effectivePourCrew * pourResult.total_pour_hours;
+    const pourBaseCZK = totalPersonHours * wagePour;
+    // pourNightPremiumCZK already computed above using nightHours × crew × wage × 0.10
+    pourLaborCZK = roundTo(
+      (pourBaseCZK + pourNightPremiumCZK) * pourDecision.num_tacts,
+      2,
+    );
+  } else {
+    // Sectional / single-shift path: per-worker daily pay with §114 ZP overtime
+    const overtimeThreshold = shift;
+    const actualPourHours = pourResult.total_pour_hours;
+    const regularHours = Math.min(overtimeThreshold, actualPourHours);
+    const overtimeHours = Math.max(0, actualPourHours - overtimeThreshold);
+    const laborPerWorkerPerTact = (regularHours * wagePour) + (overtimeHours * wagePour * 1.25);
+    pourLaborCZK = roundTo(
+      laborPerWorkerPerTact * effectivePourCrew * numPourShifts * pourDecision.num_tacts,
+      2,
+    );
+  }
 
   // Rental cost (monthly → daily). User override takes precedence over catalog.
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport

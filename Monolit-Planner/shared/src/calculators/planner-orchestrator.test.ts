@@ -952,6 +952,92 @@ describe('Planner Orchestrator', () => {
     });
   });
 
+  // ─── MEGA pour Bug 2 (2026-04-16): multi-shift crew relief ───────────
+  describe('planElement — multi-shift crew relief (Bug 2)', () => {
+    it('pour fitting in 1 shift → numPourShifts=1, no night premium', () => {
+      const plan = planElement({
+        element_type: 'zakladova_deska',
+        volume_m3: 80,
+        formwork_area_m2: 60,
+        concrete_class: 'C25/30',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 10,
+      });
+      expect(plan.resources.pour_shifts).toBe(1);
+      expect(plan.resources.pour_has_night_premium).toBe(false);
+      expect(plan.costs.pour_night_premium_czk).toBe(0);
+    });
+
+    it('continuous pour > shift triggers multi-shift (tight shift_h edge case)', () => {
+      // After Bug 3 fix, decidePourMode sizes pumps to fit the pour window
+      // (≤8 h with retarder), which in practice always ≤ the default 10 h
+      // shift. The multi-shift branch fires for edge cases — here we
+      // simulate one by using shift_h=5 so a normal monolithic pour
+      // crosses the shift boundary even with the multi-pump fit.
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 5,
+      });
+      expect(plan.resources.pour_shifts).toBeGreaterThanOrEqual(2);
+      expect(plan.resources.pour_rostered_headcount).toBe(
+        plan.resources.pour_simultaneous_headcount * plan.resources.pour_shifts,
+      );
+      expect(plan.resources.pour_has_night_premium).toBe(true);
+      expect(plan.costs.pour_night_premium_czk).toBeGreaterThan(0);
+    });
+
+    it('cost scales with person-hours, not per-worker-per-shift × shifts', () => {
+      // Same tight-shift edge case to actually hit the multi-shift path
+      // we want to verify. Cost should equal crew × pour_hours × wage
+      // + night premium, NOT crew × shift × num_shifts × wage (which
+      // would over-pay the partial 2nd shift under the old formula).
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 500,
+        formwork_area_m2: 300,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 5,
+        wage_pour_czk_h: 400,
+      });
+      const crew = plan.resources.pour_simultaneous_headcount;
+      const pourH = plan.pour.total_pour_hours;
+      const shift = plan.resources.shift_h;
+      const nightH = Math.max(0, pourH - shift);
+      const expectedBase = crew * pourH * 400;
+      const expectedNight = crew * nightH * 400 * 0.10;
+      const expected = (expectedBase + expectedNight) * plan.pour_decision.num_tacts;
+      // 1% tolerance for rounding
+      expect(Math.abs(plan.costs.pour_labor_czk - expected) / expected).toBeLessThan(0.01);
+    });
+
+    it('warning text shows total headcount = crew × shifts and cites §116', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 600,
+        formwork_area_m2: 400,
+        height_m: 8,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        shift_h: 5,
+      });
+      const hasMultiShiftWarning = plan.warnings.some(w =>
+        w.includes('směny') && w.includes('celkem') && w.includes('+10%')
+      );
+      expect(hasMultiShiftWarning).toBe(true);
+    });
+  });
+
   // ─── Mostovka E2 (2026-04-16): two-phase pour for trámový subtype ────
   describe('planElement — dvoutrám 2-fáze pour (E2)', () => {
     const baseTramInput: PlannerInput = {
