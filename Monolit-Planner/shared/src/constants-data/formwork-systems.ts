@@ -7,6 +7,35 @@
  * Import this instead of maintaining separate copies in frontend/backend.
  */
 
+import type { StructuralElementType } from '../calculators/pour-decision.js';
+
+/**
+ * Pour role (2026-04-17): layer role in the concreting assembly. Drives UI
+ * card labels so users see "🏗️ Skruž" (falsework — nosníky) vs "🔩 Stojky"
+ * (props — věže) vs "📦 Bednění" (formwork — forma/desky) explicitly
+ * instead of one generic "Bednění" card. Parallel to `formwork_category`
+ * which stays a technical filter (wall/slab/column/…).
+ *
+ *  - 'formwork'        — pure side/face form (Framax, MAXIMO, Frami).
+ *                        Vertical or cornice. No integrated props.
+ *  - 'formwork_props'  — slab form with built-in props (Dokaflex,
+ *                        MULTIFLEX, SKYDECK, CC-4). Applies up to
+ *                        ~5 m clear height; above that a falsework +
+ *                        separate props is needed.
+ *  - 'falsework'       — nosníková skruž (Top 50, VARIOKIT engineering
+ *                        kit). Carries the deck formwork. Combined
+ *                        with `props` pour_role systems underneath.
+ *  - 'props'           — stojky / věže (Staxo 40/100, UP Rosett, VST).
+ *                        Carry the falsework. Grid-spaced towers.
+ *  - 'mss_integrated'  — MSS / movable scaffolding system. Carries form
+ *                        + falsework + props in one unit; per-tact labor
+ *                        collapses by `mss_reuse_factor` (0.35 of full
+ *                        mount) and rental of individual components
+ *                        (bednění/skruž/stojky) is 0 — bundled in MSS
+ *                        mobilization + monthly rental.
+ */
+export type PourRole = 'formwork' | 'formwork_props' | 'falsework' | 'props' | 'mss_integrated';
+
 /** Formwork system specification */
 export interface FormworkSystemSpec {
   name: string;
@@ -31,6 +60,14 @@ export interface FormworkSystemSpec {
   pressure_kn_m2?: number;
   /** Max pour height per stage (m) — panel combination limit */
   max_pour_height_m?: number;
+  /**
+   * Max physical reach of the system (m). Separate from max_pour_height_m
+   * which is the per-stage pour limit. Used by selector to decide whether
+   * a `formwork_props` system (e.g. Dokaflex Europlus ~4 m) can cover the
+   * clear height or a `falsework` + `props` combo is needed instead.
+   * When undefined, the system is assumed unlimited for its pour_role.
+   */
+  max_assembly_height_m?: number;
   /** Max single panel weight (kg) — determines if crane needed */
   max_panel_weight_kg?: number;
   /** Whether crane is required for assembly/relocation */
@@ -43,6 +80,30 @@ export interface FormworkSystemSpec {
   purchase_czk_m2?: number;
   /** Formwork category: wall, slab, column, special, universal, support_tower */
   formwork_category?: 'wall' | 'slab' | 'column' | 'special' | 'universal' | 'support_tower';
+
+  // ── Pour-role taxonomy (2026-04-17) ──────────────────────────────────
+  /**
+   * Which layer of the concreting assembly this system belongs to.
+   * Drives UI card labels and cost-summary bucketing.
+   */
+  pour_role?: PourRole;
+  /**
+   * Optional element-type allow-list. When set, the selector only offers
+   * this system for the listed element types. Undefined = universal
+   * (offered whenever other filters pass).
+   *
+   * Use this to prevent Dokaflex/MULTIFLEX/SKYDECK/CC-4 being proposed
+   * for bridge decks — their max reach is ~5 m and structurally they
+   * are building slab formwork, not bridge falsework.
+   */
+  applicable_element_types?: StructuralElementType[];
+  /**
+   * MSS only (pour_role='mss_integrated'): fraction of full formwork
+   * labor that a per-tact move consumes. Real DOKA MSS on site runs at
+   * ~35 % of full-mount hours because the deck form just moves + gets
+   * re-tensioned; it doesn't get rebuilt from zero.
+   */
+  mss_reuse_factor?: number;
 }
 
 /**
@@ -75,6 +136,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: false,
     panel_widths_mm: [300, 450, 600, 750, 900],
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'Framax Xlife',
@@ -94,6 +156,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     panel_widths_mm: [300, 450, 600, 900, 1200],
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'Top 50',
@@ -104,11 +167,15 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 380.00,
     unit: 'm2',
-    description: 'Stropní bednění, desky, mostovky',
+    description: 'Nosníková skruž Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24',
     weight_kg_m2: 25,
     pressure_kn_m2: 75,
     needs_crane: true,
     formwork_category: 'slab',
+    // Pour role: falsework (nosníky). Top 50 nese bednění (desky) — není
+    // to forma samotná, je to skruž. Pro most ho engine kombinuje s
+    // props (Staxo) od stejného výrobce.
+    pour_role: 'falsework',
   },
   {
     name: 'Dokaflex',
@@ -119,10 +186,16 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.30,
     rental_czk_m2_month: 350.00,
     unit: 'm2',
-    description: 'Flexibilní stropní bednění s nosníky H20',
+    description: 'Flexibilní stropní bednění s nosníky H20 a Europlus stojkami v jednom systému (do ~5 m čisté výšky, budovy)',
     weight_kg_m2: 18,
+    max_assembly_height_m: 5.5,
     needs_crane: false,
     formwork_category: 'slab',
+    // Building slab formwork + integrated props. NE mostovka — tam chybí
+    // dosah (max Europlus ~4–5 m) + reálně se pro most používá Top 50
+    // jako nosníková skruž. Allow-list drží selector mimo mostovka.
+    pour_role: 'formwork_props',
+    applicable_element_types: ['stropni_deska', 'zakladova_deska', 'zakladovy_pas', 'pruvlak'],
   },
   {
     name: 'SL-1 Sloupové',
@@ -138,6 +211,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 80,
     needs_crane: true,
     formwork_category: 'column',
+    pour_role: 'formwork',
+    applicable_element_types: ['sloup', 'driky_piliru'],
   },
   {
     name: 'Římsové bednění T',
@@ -151,6 +226,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Konzolové bednění říms mostu (0,30–0,45 h/bm, 672 Kč/bm/měs)',
     needs_crane: true,
     formwork_category: 'special',
+    pour_role: 'formwork',
+    applicable_element_types: ['rimsa'],
   },
   {
     name: 'Římsový vozík TU',
@@ -164,6 +241,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Římsový vozík TU — mosty >150 m, oblouky R≥250 m, takt 4–24 m (672–850 Kč/bm/měs)',
     needs_crane: true,
     formwork_category: 'special',
+    pour_role: 'formwork',
+    applicable_element_types: ['rimsa'],
   },
   {
     name: 'Římsový vozík T',
@@ -177,6 +256,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     description: 'Římsový vozík T — přímé mosty >150 m, takt max 5 m, protizávaží na mostovce',
     needs_crane: true,
     formwork_category: 'special',
+    pour_role: 'formwork',
+    applicable_element_types: ['rimsa'],
   },
   // ── Bridge support towers (podpěrné věže) ──────────────────────────
   {
@@ -188,9 +269,13 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.33,
     rental_czk_m2_month: 380.00,
     unit: 'm2',
-    description: 'Podpěrné věže Staxo 100 — mosty výška 5–20 m, raster 1.25×1.25 m',
+    description: 'Podpěrné věže Staxo 100 — mosty výška 5–20 m, raster 1.25×1.25 m (stojky pod nosníkovou skruž Top 50)',
     needs_crane: true,
+    max_assembly_height_m: 20,
     formwork_category: 'support_tower',
+    // Pour role: props (stojky) — věže pod nosníkovou skruží.
+    pour_role: 'props',
+    applicable_element_types: ['mostovkova_deska', 'rigel', 'stropni_deska', 'pruvlak', 'schodiste'],
   },
   {
     name: 'UP Rosett Flex',
@@ -201,9 +286,12 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.32,
     rental_czk_m2_month: 420.00,
     unit: 'm2',
-    description: 'Modulární lešení/podpěrné věže UP Rosett — výška do 25 m, variabilní geometrie',
+    description: 'Modulární lešení/podpěrné věže UP Rosett — výška do 25 m, variabilní geometrie (stojky pod nosníkovou skruž)',
     needs_crane: true,
+    max_assembly_height_m: 25,
     formwork_category: 'support_tower',
+    pour_role: 'props',
+    applicable_element_types: ['mostovkova_deska', 'rigel', 'stropni_deska', 'pruvlak', 'schodiste'],
   },
   // ── PERI ─────────────────────────────────────────────────────────────
   {
@@ -223,6 +311,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     panel_widths_mm: [300, 330, 600, 720, 900, 1200],
     purchase_czk_m2: 4866,
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'MAXIMO',
@@ -240,6 +329,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     panel_widths_mm: [300, 450, 600, 900, 1200, 2400],
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'DOMINO',
@@ -258,6 +348,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     panel_widths_mm: [250, 300, 375, 500, 625, 750],
     purchase_czk_m2: 4092,
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'SKYDECK',
@@ -268,11 +359,14 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.30,
     rental_czk_m2_month: 400.00,
     unit: 'm2',
-    description: 'Panelové stropní bednění PERI (~14 kg/m², 0,29 stojek/m², rychlé odbednění po 1 dni)',
+    description: 'Panelové stropní bednění PERI (~14 kg/m², 0,29 stojek/m², rychlé odbednění po 1 dni, do ~6 m, budovy)',
     weight_kg_m2: 14,
     max_panel_weight_kg: 20,
+    max_assembly_height_m: 6,
     needs_crane: false,
     formwork_category: 'slab',
+    pour_role: 'formwork_props',
+    applicable_element_types: ['stropni_deska', 'zakladova_deska', 'pruvlak'],
   },
   {
     name: 'VARIO GT 24',
@@ -288,6 +382,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 80,
     needs_crane: true,
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'VARIO',
@@ -304,6 +399,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     purchase_czk_m2: 5133,
     formwork_category: 'column',
+    pour_role: 'formwork',
+    applicable_element_types: ['sloup', 'driky_piliru'],
   },
   {
     name: 'DUO',
@@ -321,6 +418,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: false,
     panel_widths_mm: [250, 500, 750, 1000],
     formwork_category: 'universal',
+    pour_role: 'formwork',
   },
   {
     name: 'QUATTRO',
@@ -337,6 +435,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     max_panel_weight_kg: 120,
     needs_crane: true,
     formwork_category: 'column',
+    pour_role: 'formwork',
+    applicable_element_types: ['sloup', 'driky_piliru'],
   },
   {
     name: 'MULTIFLEX',
@@ -347,10 +447,14 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.32,
     rental_czk_m2_month: 380.00,
     unit: 'm2',
-    description: 'Flexibilní nosníkové stropní bednění PERI s GT 24 nosníky',
+    description: 'Flexibilní nosníkové stropní bednění PERI s GT 24 nosníky a VT 20 stojkami (do ~5 m, budovy)',
     weight_kg_m2: 20,
+    max_assembly_height_m: 5,
     needs_crane: false,
     formwork_category: 'slab',
+    // PERI ekvivalent Dokaflex — budovy, ne mostovka.
+    pour_role: 'formwork_props',
+    applicable_element_types: ['stropni_deska', 'zakladova_deska', 'pruvlak'],
   },
   {
     name: 'RUNDFLEX',
@@ -367,6 +471,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     min_radius_m: 1.0,
     formwork_category: 'special',
+    pour_role: 'formwork',
+    applicable_element_types: ['nadrz'],
   },
   {
     name: 'SRS',
@@ -383,6 +489,8 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     needs_crane: true,
     min_radius_m: 0.125,
     formwork_category: 'column',
+    pour_role: 'formwork',
+    applicable_element_types: ['sloup'],
   },
   {
     name: 'VARIOKIT',
@@ -393,10 +501,13 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 850.00,
     unit: 'm2',
-    description: 'Inženýrská stavebnice PERI pro mosty a tunely (VGK, VGB, VST moduly)',
+    description: 'Inženýrská stavebnice PERI pro mosty a tunely (VGK, VGB, VST moduly) — PERI ekvivalent nosníkové skruže Top 50',
     weight_kg_m2: 80,
     needs_crane: true,
     formwork_category: 'special',
+    // PERI skruž pro mosty — engine ji párová s PERI stojkami (VST / UP Rosett).
+    pour_role: 'falsework',
+    applicable_element_types: ['mostovkova_deska', 'rigel'],
   },
   {
     name: 'CB 240',
@@ -411,6 +522,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 75,
     needs_crane: true,
     formwork_category: 'special',
+    pour_role: 'formwork',
   },
   // ── ULMA ─────────────────────────────────────────────────────────────
   {
@@ -427,6 +539,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 80,
     needs_crane: true,
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'COMAIN',
@@ -443,6 +556,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     max_panel_weight_kg: 60,
     needs_crane: false,
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   {
     name: 'CC-4',
@@ -453,10 +567,14 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.30,
     rental_czk_m2_month: 370.00,
     unit: 'm2',
-    description: 'Stropní bednění ULMA s hliníkovými nosníky',
+    description: 'Stropní bednění ULMA s hliníkovými nosníky a stojkami (do ~6 m, budovy)',
     weight_kg_m2: 16,
+    max_assembly_height_m: 6,
     needs_crane: false,
     formwork_category: 'slab',
+    // ULMA ekvivalent Dokaflex — budovy, ne mostovka.
+    pour_role: 'formwork_props',
+    applicable_element_types: ['stropni_deska', 'zakladova_deska'],
   },
   // ── NOE ──────────────────────────────────────────────────────────────
   {
@@ -473,6 +591,7 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     pressure_kn_m2: 60,
     needs_crane: true,
     formwork_category: 'wall',
+    pour_role: 'formwork',
   },
   // ── Místní ───────────────────────────────────────────────────────────
   {
@@ -488,6 +607,50 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     weight_kg_m2: 35,
     needs_crane: false,
     formwork_category: 'universal',
+    pour_role: 'formwork',
+  },
+  // ── MSS — Movable Scaffolding Systems (2026-04-17) ───────────────────
+  // Posuvná skruž. Vše integrováno v rámu: bednění + nosníky + stojky.
+  // Pronájem komponent separátně = 0 (bundled v MSS mobilization +
+  // monthly rental). Per-tact labor = base × mss_reuse_factor (0.35) —
+  // forma se přesune, nestaví od nuly. MSS-specific costs jsou
+  // spočítány v bridge-technology.ts calculateMSSCost() / Schedule();
+  // tento katalog slouží pro selector + UI card sentinel.
+  {
+    name: 'DOKA MSS',
+    manufacturer: 'DOKA',
+    heights: ['libovolná'],
+    // Nhod představují plnou montáž MSS přepočtenou na NK. Per-tact se
+    // krátí faktorem 0.35 v orchestratoru.
+    assembly_h_m2: 1.20,
+    disassembly_h_m2: 0.60,
+    disassembly_ratio: 0.50,
+    // Pronájem je v MSS mobilization/rental modelu (bridge-technology),
+    // ne per m² — v tomto poli 0 aby nic nedvojnásobilo náklady.
+    rental_czk_m2_month: 0,
+    unit: 'm2',
+    description: 'DOKA MSS (Movable Scaffolding System) — posuvná skruž pro mosty velkých rozpětí, integruje bednění + nosníky + stojky v jednom rámu',
+    needs_crane: true,
+    formwork_category: 'special',
+    pour_role: 'mss_integrated',
+    applicable_element_types: ['mostovkova_deska', 'rigel'],
+    mss_reuse_factor: 0.35,
+  },
+  {
+    name: 'VARIOKIT Mobile',
+    manufacturer: 'PERI',
+    heights: ['libovolná'],
+    assembly_h_m2: 1.25,
+    disassembly_h_m2: 0.60,
+    disassembly_ratio: 0.48,
+    rental_czk_m2_month: 0,
+    unit: 'm2',
+    description: 'PERI VARIOKIT Mobile — posuvná skruž PERI, integrované bednění + skruž + stojky; ekvivalent DOKA MSS',
+    needs_crane: true,
+    formwork_category: 'special',
+    pour_role: 'mss_integrated',
+    applicable_element_types: ['mostovkova_deska', 'rigel'],
+    mss_reuse_factor: 0.35,
   },
 ];
 
@@ -509,4 +672,42 @@ export function getManualFormworkSystems(): FormworkSystemSpec[] {
 /** Filter systems by maximum concrete pressure (kN/m²) */
 export function getSystemsByMinPressure(minPressure: number): FormworkSystemSpec[] {
   return FORMWORK_SYSTEMS.filter(s => s.pressure_kn_m2 != null && s.pressure_kn_m2 >= minPressure);
+}
+
+/**
+ * Pour-role helpers (2026-04-17). Used by the selector + UI rendering to
+ * group systems by their layer role (formwork / formwork_props /
+ * falsework / props / mss_integrated).
+ */
+export function getSystemsByPourRole(role: PourRole): FormworkSystemSpec[] {
+  return FORMWORK_SYSTEMS.filter(s => s.pour_role === role);
+}
+
+/**
+ * Allow-list check: when a system has `applicable_element_types`, the
+ * selector must only offer it for listed types. Undefined allow-list
+ * means the system is universal (offered whenever other filters pass).
+ *
+ * This prevents Dokaflex / MULTIFLEX / SKYDECK / CC-4 from being
+ * proposed for bridge decks — structurally they're building slab
+ * formwork (max ~5 m reach), not bridge falsework.
+ */
+export function isApplicableForElement(
+  system: FormworkSystemSpec,
+  elementType: StructuralElementType,
+): boolean {
+  if (!system.applicable_element_types) return true;
+  return system.applicable_element_types.includes(elementType);
+}
+
+/** Find MSS system for a preferred manufacturer, falling back to first MSS entry. */
+export function findMssSystem(preferred_manufacturer?: string): FormworkSystemSpec | undefined {
+  const mssSystems = getSystemsByPourRole('mss_integrated');
+  if (preferred_manufacturer) {
+    const match = mssSystems.find(s =>
+      s.manufacturer.toLowerCase() === preferred_manufacturer.toLowerCase()
+    );
+    if (match) return match;
+  }
+  return mssSystems[0];
 }
