@@ -1199,5 +1199,31 @@ describe('Planner Orchestrator', () => {
       expect(plan.costs.mss_mobilization_czk).toBe(0);
       expect(plan.costs.mss_rental_czk).toBe(0);
     });
+
+    // MSS-6 hard lock (2026-04-17)
+    it('MSS-6 lock: user override of tacts ≠ num_spans triggers CRITICAL warning', () => {
+      // Base has num_spans = 6 → MSS wants 6 tacts. User forces 3 → mismatch.
+      const plan = planElement({
+        ...baseMssInput,
+        num_tacts_override: 3,
+      });
+      const critWarn = plan.warnings.find(w =>
+        w.includes('⛔ KRITICKÉ') && w.includes('MSS') && w.includes('pole za polem')
+      );
+      expect(critWarn).toBeDefined();
+      // Plan must still use the physically correct tact count = num_spans
+      expect(plan.bridge_technology?.mss_schedule?.num_tacts).toBe(baseMssInput.num_spans);
+    });
+
+    it('MSS-6 lock: correct tacts = num_spans does NOT warn', () => {
+      const plan = planElement({
+        ...baseMssInput,
+        // No override at all — should pass silently
+      });
+      const critWarn = plan.warnings.find(w =>
+        w.includes('⛔ KRITICKÉ') && w.includes('pole za polem')
+      );
+      expect(critWarn).toBeUndefined();
+    });
   });
 });

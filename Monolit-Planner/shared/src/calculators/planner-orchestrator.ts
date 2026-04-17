@@ -1187,6 +1187,29 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
       log.push(`MSS schedule: setup ${mssSchedule.setup_days}d + ${mssSchedule.num_tacts}×${mssSchedule.tact_days}d + teardown ${mssSchedule.teardown_days}d = ${mssSchedule.total_days}d`);
       log.push(`MSS cost: mob ${(mssCost.mobilization_czk / 1e6).toFixed(1)}M + rental ${(mssCost.rental_total_czk / 1e6).toFixed(1)}M + demob ${(mssCost.demobilization_czk / 1e6).toFixed(1)}M = ${(mssCost.total_czk / 1e6).toFixed(1)}M Kč (${mssCost.unit_cost_czk_m2} Kč/m²)`);
+
+      // MSS-6 hard lock (2026-04-17): posuvná skruž pracuje pole za
+      // polem → num_tacts = num_spans is a physical constraint. If
+      // the user still pushed through a manual override via
+      // num_dilatation_sections × tacts_per_section (or the legacy
+      // num_tacts_override), flag the mismatch loudly. The form-
+      // field lock added in the same commit prevents this path in
+      // the UI, but engine must stay self-defending for scripted /
+      // API callers.
+      const manualSections = input.num_dilatation_sections ?? 1;
+      const manualTactsPerSection = input.tacts_per_section ?? 1;
+      const userTotalTacts = manualSections * manualTactsPerSection;
+      const userOverrideTotal = input.num_tacts_override;
+      const mssTacts = mssSchedule.num_tacts;
+      const overrideValue = userOverrideTotal ?? userTotalTacts;
+      if (overrideValue > 1 && overrideValue !== mssTacts) {
+        warnings.push(
+          `⛔ KRITICKÉ: MSS má ${mssTacts} taktů (= ${input.num_spans} polí). ` +
+          `Nelze mít ${overrideValue} záběrů — posuvná skruž pracuje pole za polem. ` +
+          `Ručně zadaný počet záběrů ignorován, plán používá ${mssTacts}.`
+        );
+        log.push(`MSS-6: user override ${overrideValue} tacts ≠ mss_schedule ${mssTacts} → CRITICAL + ignored`);
+      }
     }
 
     if (selectedTech === 'cantilever') {

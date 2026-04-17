@@ -537,20 +537,60 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                 The two layers are independent — a dilatation cell may itself
                 contain multiple záběry depending on volume + capacity. */}
 
-            {/* ─── KROK 1: Dilatační celky ─── */}
-            <label style={labelStyle}>
-              <input
-                type="checkbox"
-                checked={form.has_dilatation_joints}
-                onChange={e => {
-                  update('has_dilatation_joints', e.target.checked);
-                  if (!e.target.checked) update('num_dilatation_sections', 1);
-                }}
-              />
-              {' '}Konstrukce má dilatační spáry
-            </label>
+            {/* MSS-6 hard lock (2026-04-17): when the user picked
+                construction_technology=mss for a mostovka, the number
+                of tacts is physically locked to the number of spans
+                (jeden pole = jeden takt MSS). Form fields go read-only
+                with a badge; engine ignores any manual override (see
+                orchestrator mismatch warning). */}
+            {(() => {
+              const isMssLock = form.element_type === 'mostovkova_deska'
+                && form.construction_technology === 'mss';
+              const numSpansForLock = form.num_spans ? parseInt(form.num_spans, 10) : 0;
+              return isMssLock ? (
+                <div style={{
+                  padding: '8px 10px', marginBottom: 8, borderRadius: 6,
+                  background: 'var(--r0-info-bg, #eff6ff)',
+                  border: '1px solid var(--r0-info-border, #bfdbfe)',
+                  fontSize: 11, lineHeight: 1.5, color: 'var(--r0-slate-700)',
+                }}>
+                  <strong>🌉 MSS: záběry zamčeny na počet polí</strong>
+                  <div style={{ marginTop: 2 }}>
+                    Posuvná skruž pracuje pole za polem — {numSpansForLock || 'N'} taktů
+                    {numSpansForLock ? ` (= ${numSpansForLock} polí)` : ''}.
+                    Dilatační spáry / ruční záběry nejsou pro MSS relevantní.
+                  </div>
+                </div>
+              ) : null;
+            })()}
 
-            {form.has_dilatation_joints && (
+            {/* ─── KROK 1: Dilatační celky ─── */}
+            {(() => {
+              const isMssLock = form.element_type === 'mostovkova_deska'
+                && form.construction_technology === 'mss';
+              return (
+                <label style={{
+                  ...labelStyle,
+                  opacity: isMssLock ? 0.5 : 1,
+                  cursor: isMssLock ? 'not-allowed' : 'pointer',
+                }} title={isMssLock ? 'Pro MSS jsou dilatační celky irelevantní — každé pole = jeden takt.' : undefined}>
+                  <input
+                    type="checkbox"
+                    disabled={isMssLock}
+                    checked={isMssLock ? false : form.has_dilatation_joints}
+                    onChange={e => {
+                      if (isMssLock) return;
+                      update('has_dilatation_joints', e.target.checked);
+                      if (!e.target.checked) update('num_dilatation_sections', 1);
+                    }}
+                  />
+                  {' '}Konstrukce má dilatační spáry
+                </label>
+              );
+            })()}
+
+            {form.has_dilatation_joints
+             && !(form.element_type === 'mostovkova_deska' && form.construction_technology === 'mss') && (
               <>
                 <Field label="Počet dilatačních celků" hint="z TZ / projektu">
                   <NumInput
@@ -600,18 +640,42 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             <div style={{ height: 1, background: 'var(--r0-slate-200)', margin: '10px 0' }} />
 
             {/* ─── KROK 2: Záběry per celek ─── */}
-            <Field label="Záběry v jednom celku">
-              <select
-                style={inputStyle}
-                value={form.tacts_per_section_mode}
-                onChange={e => update('tacts_per_section_mode', e.target.value as 'auto' | 'manual')}
-              >
-                <option value="auto">Automaticky (dle kapacity)</option>
-                <option value="manual">Ručně</option>
-              </select>
-            </Field>
+            {(() => {
+              const isMssLock = form.element_type === 'mostovkova_deska'
+                && form.construction_technology === 'mss';
+              const numSpansForLock = form.num_spans ? parseInt(form.num_spans, 10) : 0;
+              return isMssLock ? (
+                <Field label="Záběry v jednom celku">
+                  <input
+                    type="text"
+                    readOnly
+                    disabled
+                    value={numSpansForLock > 0 ? `${numSpansForLock} taktů (= ${numSpansForLock} polí, MSS)` : 'N taktů (= N polí, MSS)'}
+                    style={{
+                      ...inputStyle,
+                      background: 'var(--r0-slate-100, #f1f5f9)',
+                      color: 'var(--r0-slate-600)',
+                      cursor: 'not-allowed',
+                    }}
+                    title="MSS: jeden pole = jeden takt. Nelze měnit ručně."
+                  />
+                </Field>
+              ) : (
+                <Field label="Záběry v jednom celku">
+                  <select
+                    style={inputStyle}
+                    value={form.tacts_per_section_mode}
+                    onChange={e => update('tacts_per_section_mode', e.target.value as 'auto' | 'manual')}
+                  >
+                    <option value="auto">Automaticky (dle kapacity)</option>
+                    <option value="manual">Ručně</option>
+                  </select>
+                </Field>
+              );
+            })()}
 
-            {form.tacts_per_section_mode === 'manual' && (
+            {form.tacts_per_section_mode === 'manual'
+             && !(form.element_type === 'mostovkova_deska' && form.construction_technology === 'mss') && (
               <Field label="Počet záběrů per celek">
                 <NumInput
                   style={inputStyle}
