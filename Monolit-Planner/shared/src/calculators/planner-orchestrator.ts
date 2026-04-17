@@ -566,6 +566,49 @@ const DEFAULTS = {
 } as const;
 
 /**
+ * Exposure-class allow-list per element type (2026-04-17). Extracted
+ * from the previous inline RECOMMENDED_EXPOSURE map so both the normal
+ * orchestrator path AND the pile early branch (runPilePath) can share
+ * the same list when emitting the "⚠️ XF… je neobvyklá" warning.
+ */
+const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
+  mostovkova_deska: ['XF2', 'XF4', 'XD1', 'XD3', 'XC4'],
+  rimsa: ['XF4', 'XD3'],
+  driky_piliru: ['XC4', 'XD3', 'XF2', 'XF4'],
+  zaklady_piliru: ['XC2', 'XC4', 'XA1', 'XA2', 'XF1', 'XF3'],
+  opery_ulozne_prahy: ['XC4', 'XD1', 'XF1', 'XF2', 'XF3', 'XF4'],
+  mostni_zavirne_zidky: ['XF4', 'XF3', 'XD1', 'XC4'],
+  operne_zdi: ['XC4', 'XD1', 'XF1'],
+  prechodova_deska: ['XC4', 'XD1', 'XF1', 'XF2'],
+  podlozkovy_blok: ['XF2', 'XF4', 'XC4'],
+  pilota: ['XA1', 'XA2', 'XA3', 'XC2'],
+  stropni_deska: ['XC1', 'XC3'],
+  stena: ['XC1', 'XC3', 'XF1'],
+  zakladova_deska: ['XC2', 'XC4', 'XA1', 'XA2'],
+  zakladovy_pas: ['XC2', 'XC4', 'XA1', 'XA2'],
+  zakladova_patka: ['XC2', 'XC4', 'XA1', 'XA2'],
+};
+
+/** Emits the "⚠️ Třída prostředí …" warning when the user-provided
+ *  exposure class is outside the typical set for the element type.
+ *  Shared by both the main orchestrator path and the pilota early
+ *  branch so piloty (XA1/XA2 typical) correctly flag XF4 etc. */
+function pushExposureWarning(
+  elementType: StructuralElementType,
+  exposure_class: string | undefined,
+  labelCs: string,
+  warnings: string[],
+): void {
+  if (!exposure_class) return;
+  const recommended = RECOMMENDED_EXPOSURE[elementType];
+  if (!recommended || recommended.includes(exposure_class)) return;
+  warnings.push(
+    `⚠️ Třída prostředí ${exposure_class} je neobvyklá pro ${labelCs}. ` +
+    `Vyberte jednu z: ${recommended.join(', ')}. Ověřte s projektem.`
+  );
+}
+
+/**
  * MEGA pour Bug 1 (2026-04-16): pour-front crew size as a function of
  * how many concrete pumps are on site. Until now `effectivePourCrew`
  * was only scaled by pour_hours / shift_h, so 1 pump and 4 pumps got
@@ -1163,36 +1206,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
   }
 
   // ─── 3a3. Exposure class validation ─────────────────────────────────────
-  if (input.exposure_class) {
-    // BUG-Z3 (2026-04-15): in real CZ practice, bridge pier foundations
-    // routinely see freeze-thaw (XF1/XF3) under the bridge and XC4 from
-    // atmospheric exposure. The previous list ['XC2','XA1','XA2'] was too
-    // narrow and produced false-positive "neobvyklá třída" warnings for
-    // standard designs.
-    const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
-      mostovkova_deska: ['XF2', 'XF4', 'XD1', 'XD3', 'XC4'],
-      rimsa: ['XF4', 'XD3'],
-      // BUG 2: XF2 added — pilíře mimo zónu rozstřiku (SO-202 P4, SO-207 P2/P8/P9/P10P)
-      driky_piliru: ['XC4', 'XD3', 'XF2', 'XF4'],
-      // BUG 1b/1c: XF3 (mráz u vodoteče, SO-207 P2-P4), XA2 (agresivní PV, SO-203/207)
-      zaklady_piliru: ['XC2', 'XC4', 'XA1', 'XA2', 'XF1', 'XF3'],
-      // BUG 1: XF4 added — standard pro mostní opěry v zóně rozstřiku (SO-202/203/207)
-      opery_ulozne_prahy: ['XC4', 'XD1', 'XF1', 'XF2', 'XF3', 'XF4'],
-      // BUG 10: závěrné zídky — XF4 standard (TZ SO-202/203/207 shodně C30/37 XF4)
-      mostni_zavirne_zidky: ['XF4', 'XF3', 'XD1', 'XC4'],
-      operne_zdi: ['XC4', 'XD1', 'XF1'],
-      prechodova_deska: ['XC4', 'XD1', 'XF1', 'XF2'],
-      // BUG 11: podložiskový blok — SO-202 XF2, SO-203 opěry XF4
-      podlozkovy_blok: ['XF2', 'XF4', 'XC4'],
-    };
-    const recommended = RECOMMENDED_EXPOSURE[elementType];
-    if (recommended && !recommended.includes(input.exposure_class)) {
-      warnings.push(
-        `⚠️ Třída prostředí ${input.exposure_class} je neobvyklá pro ${profile.label_cs}. ` +
-        `Doporučeno: ${recommended.join(', ')}. Ověřte s projektem.`
-      );
-    }
-  }
+  // 2026-04-17: RECOMMENDED_EXPOSURE + pushExposureWarning extracted to
+  // module level so the pilota early branch (runPilePath) shares the
+  // same allow-list. Warning text uses the "⚠️" prefix convention.
+  pushExposureWarning(elementType, input.exposure_class, profile.label_cs, warnings);
 
   // Concrete class validation
   if (input.concrete_class && elementType === 'mostovkova_deska') {
@@ -1740,7 +1757,11 @@ export function planElement(input: PlannerInput): PlannerOutput {
     // needs_supports necháváme obecnější formulaci (tam může chybět
     // výška při předběžné kalkulaci).
     const isBridgeDeck = elementType === 'mostovkova_deska';
-    const prefix = isBridgeDeck ? '🚨 KRITICKÉ: ' : '';
+    // 2026-04-17: unified emoji prefix convention — ⛔ for CRITICAL,
+    // ⚠️ for WARNING, ℹ️ for INFO. Earlier v4.19 D1 fix used 🚨 —
+    // migrating to the convention so the Phase 2 UI severity renderer
+    // has a single prefix set to parse.
+    const prefix = isBridgeDeck ? '⛔ KRITICKÉ: ' : '';
     const what = isBridgeDeck
       ? 'Mostovka vyžaduje skruž (nosníky) + stojky'
       : `${profile.label_cs} vyžaduje podpěrnou konstrukci (stojky/skruž)`;
@@ -2255,6 +2276,12 @@ function runPilePath(
 ): PlannerOutput {
   const elementType = profile.element_type;
   const { crew, crewRebar, shift, k, wage, wageFormwork, wageRebar, wagePour, temperature } = defaults;
+
+  // 2026-04-17: exposure allow-list check shared with the main orchestrator
+  // path. Piles sit deep in ground and should use XA1/XA2/XA3/XC2 — an
+  // XF4 entry (mráz, typical for bridge decks) is a user confusion with
+  // the dřík or deck exposure.
+  pushExposureWarning(elementType, input.exposure_class, profile.label_cs, warnings);
 
   // ── 1. Pile drilling (productivity table → schedule + costs) ──────────
   const pile = calculatePileDrilling({

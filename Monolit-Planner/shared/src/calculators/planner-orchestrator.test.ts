@@ -952,6 +952,59 @@ describe('Planner Orchestrator', () => {
     });
   });
 
+  // ─── Phase 1 Task 4 (2026-04-17): exposure allow-list expansion ─────
+  describe('planElement — exposure allow-list warnings', () => {
+    it('pilota with XF4 triggers "neobvyklá" warning (deep ground, no mráz)', () => {
+      const plan = planElement({
+        element_type: 'pilota',
+        volume_m3: 120,
+        has_dilatacni_spary: false,
+        exposure_class: 'XF4',
+        pile_diameter_mm: 900,
+        pile_length_m: 12,
+        pile_count: 20,
+      });
+      const hasWarn = plan.warnings.some(w => w.includes('⚠️') && w.includes('XF4') && w.includes('Pilota'));
+      expect(hasWarn).toBe(true);
+    });
+
+    it('pilota with XA2 passes without warning (typical for agresivní PV)', () => {
+      const plan = planElement({
+        element_type: 'pilota',
+        volume_m3: 120,
+        has_dilatacni_spary: false,
+        exposure_class: 'XA2',
+        pile_diameter_mm: 900,
+        pile_length_m: 12,
+        pile_count: 20,
+      });
+      const hasXfWarn = plan.warnings.some(w => w.includes('neobvyklá') && w.includes('XA2'));
+      expect(hasXfWarn).toBe(false);
+    });
+
+    it('mostovka XF1 (live SO-207 bug) triggers warning with explicit suggestion list', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 4000,
+        formwork_area_m2: 4200,
+        concrete_class: 'C35/45',
+        has_dilatacni_spary: false,
+        working_joints_allowed: 'no',
+        exposure_class: 'XF1',
+        span_m: 36,
+        num_spans: 9,
+        nk_width_m: 13,
+      });
+      const warn = plan.warnings.find(w => w.includes('XF1') && w.includes('Mostovk'));
+      expect(warn).toBeDefined();
+      // Warning cites the new "Vyberte jednu z:" phrasing
+      expect(warn!).toContain('Vyberte jednu z:');
+      // And lists the recommended set
+      expect(warn!).toContain('XF2');
+      expect(warn!).toContain('XF4');
+    });
+  });
+
   // ─── MEGA pour Bug 2 (2026-04-16): multi-shift crew relief ───────────
   describe('planElement — multi-shift crew relief (Bug 2)', () => {
     it('pour fitting in 1 shift → numPourShifts=1, no night premium', () => {
