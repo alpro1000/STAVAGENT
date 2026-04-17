@@ -32,7 +32,7 @@ import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
 
-import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm, getFilteredFormworkSystems, getSuitableSystemsForElement } from '../classifiers/element-classifier.js';
+import { classifyElement, getElementProfile, recommendFormwork, getAdjustedAssemblyNorm, getFilteredFormworkSystems, getSuitableSystemsForElement, checkVolumeGeometry } from '../classifiers/element-classifier.js';
 import { decidePourMode } from './pour-decision.js';
 import { calculateFormwork, calculateThreePhaseFormwork, calculateStrategiesDetailed } from './formwork.js';
 import { calculateRebarLite } from './rebar-lite.js';
@@ -670,6 +670,31 @@ export function planElement(input: PlannerInput): PlannerOutput {
   if (elementType === 'rimsa' && !input.crew_size) {
     crew = 6;
     if (!input.crew_size_rebar) crewRebar = 3;
+  }
+
+  // ─── 1a. Volume vs geometry sanity (2026-04-17) ──────────────────────
+  // Catches the "V=605 m³ for a 310 m × 13 m estakáda" class of input
+  // mistakes that slipped past SANITY_RANGES alone (605 m³ is inside
+  // 20–2000 m³ mostovka range — but physically 1/7 of real total).
+  // Compares input.volume_m3 against span×num_spans×width×subtype_eq
+  // for mostovka, or π(Ø/2)²×L×count for pilota. Critical mismatches
+  // land at the TOP of warnings[] so the UI surfaces them first.
+  const volumeIssue = checkVolumeGeometry(elementType, input.volume_m3, {
+    span_m: input.span_m,
+    num_spans: input.num_spans,
+    nk_width_m: input.nk_width_m,
+    bridge_deck_subtype: input.bridge_deck_subtype,
+    pile_diameter_mm: input.pile_diameter_mm,
+    pile_length_m: input.pile_length_m,
+    pile_count: input.pile_count,
+  });
+  if (volumeIssue) {
+    warnings.unshift(volumeIssue.message_cs);
+    log.push(
+      `Volume-vs-geometry: actual=${volumeIssue.actual_m3} m³, ` +
+      `expected=${volumeIssue.expected_m3} m³, ratio=${volumeIssue.ratio}, ` +
+      `severity=${volumeIssue.severity}`,
+    );
   }
 
   // ─── 1b. PILOTA early branch (2026-04-15) ─────────────────────────────

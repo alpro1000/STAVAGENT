@@ -1344,6 +1344,124 @@ export function estimateRebarMass(
 }
 
 /**
+ * Volume-vs-geometry validation (2026-04-17).
+ *
+ * Catches the "zadal jsem objem jednoho pole místo celé NK" class of
+ * mistakes — the live SO-207 test had V=605 m³ entered for a 9-span
+ * 310 m × 13 m estakáda where the real total is ~4 000 m³. SanityRanges
+ * alone couldn't catch it (605 m³ is inside the 20–2000 m³ mostovka
+ * range); we need to compare against the geometry the user already
+ * provided (span × num_spans × width × thickness equivalent).
+ *
+ * Ratio = actual / expected:
+ *   < 0.3  → CRITICAL ("objem je 3× menší, nevkládáš pole místo NK?")
+ *   0.3-0.7 → WARNING  ("menší než typický, zkontroluj")
+ *   0.7-1.5 → OK
+ *   1.5-3   → WARNING  ("větší než typický")
+ *   > 3     → CRITICAL ("3× větší, zkontroluj")
+ *
+ * Currently covers mostovkova_deska (span × num_spans × nk_width ×
+ * subtype-equivalent thickness) and pilota (π × (Ø/2)² × length ×
+ * count). Returns null when geometry isn't provided or element type
+ * has no formula (the validator gracefully skips).
+ */
+export type GeometryIssueSeverity = 'critical' | 'warning';
+
+export interface GeometryIssue {
+  severity: GeometryIssueSeverity;
+  actual_m3: number;
+  expected_m3: number;
+  ratio: number;
+  message_cs: string;
+}
+
+/** Equivalent thickness (m) for bridge-deck subtypes — used by
+ *  estimateExpectedVolume to cross-check mostovka volumes. Values
+ *  reflect the typical cross-section area divided by deck width so
+ *  that V = span × num_spans × nk_width × thickness_eq is a
+ *  reasonable 1st-order estimate. Sources: ČSN 73 6220 design
+ *  examples + CZ practice for D6 SO-series. */
+const DECK_SUBTYPE_EQ_THICKNESS_M: Record<string, number> = {
+  deskovy: 0.5,
+  jednotram: 1.0,
+  dvoutram: 1.0,
+  vicetram: 1.0,
+  jednokomora: 0.7,
+  dvoukomora: 0.7,
+  ramovy: 0.8,
+  sprazeny: 0.25,
+};
+
+export function estimateExpectedVolume(
+  elementType: StructuralElementType,
+  input: {
+    span_m?: number;
+    num_spans?: number;
+    nk_width_m?: number;
+    bridge_deck_subtype?: string;
+    pile_diameter_mm?: number;
+    pile_length_m?: number;
+    pile_count?: number;
+  },
+): number | null {
+  if (elementType === 'mostovkova_deska') {
+    if (!input.span_m || !input.num_spans || !input.nk_width_m) return null;
+    const thick = DECK_SUBTYPE_EQ_THICKNESS_M[input.bridge_deck_subtype ?? 'deskovy'] ?? 0.5;
+    return input.span_m * input.num_spans * input.nk_width_m * thick;
+  }
+  if (elementType === 'pilota') {
+    if (!input.pile_diameter_mm || !input.pile_length_m || !input.pile_count) return null;
+    const r = (input.pile_diameter_mm / 1000) / 2;
+    return Math.PI * r * r * input.pile_length_m * input.pile_count;
+  }
+  return null;
+}
+
+export function checkVolumeGeometry(
+  elementType: StructuralElementType,
+  actual_m3: number,
+  geometry: {
+    span_m?: number;
+    num_spans?: number;
+    nk_width_m?: number;
+    bridge_deck_subtype?: string;
+    pile_diameter_mm?: number;
+    pile_length_m?: number;
+    pile_count?: number;
+  },
+): GeometryIssue | null {
+  const expected = estimateExpectedVolume(elementType, geometry);
+  if (expected == null || expected <= 0 || actual_m3 <= 0) return null;
+  const ratio = actual_m3 / expected;
+  if (ratio >= 0.7 && ratio <= 1.5) return null;
+  const label = ELEMENT_CATALOG[elementType].label_cs;
+  const expectedRounded = Math.round(expected * 10) / 10;
+  let severity: GeometryIssueSeverity;
+  let message_cs: string;
+  if (ratio < 0.3) {
+    severity = 'critical';
+    const tooMany = elementType === 'mostovkova_deska' ? '— nevkládáš objem jednoho pole místo celé NK?' : '';
+    message_cs = `⛔ KRITICKÉ: Objem ${actual_m3} m³ je ${(expected / actual_m3).toFixed(1)}× menší než očekávaný ${expectedRounded} m³ pro ${label} (z geometrie) ${tooMany}`.trim();
+  } else if (ratio < 0.7) {
+    severity = 'warning';
+    message_cs = `⚠️ Objem ${actual_m3} m³ je menší než typický pro ${label} (očekáváno ~${expectedRounded} m³ z geometrie). Zkontrolujte zadání.`;
+  } else if (ratio <= 3) {
+    severity = 'warning';
+    message_cs = `⚠️ Objem ${actual_m3} m³ je větší než typický pro ${label} (očekáváno ~${expectedRounded} m³ z geometrie). Zkontrolujte zadání.`;
+  } else {
+    severity = 'critical';
+    message_cs = `⛔ KRITICKÉ: Objem ${actual_m3} m³ je ${ratio.toFixed(1)}× větší než očekávaný ${expectedRounded} m³ pro ${label} (z geometrie).`;
+  }
+  return {
+    severity,
+    actual_m3,
+    expected_m3: expectedRounded,
+    ratio: Math.round(ratio * 100) / 100,
+    message_cs,
+  };
+}
+
+/**
  * Get all element types with their Czech labels.
  */
 export function getAllElementTypes(): Array<{ type: StructuralElementType; label_cs: string }> {
