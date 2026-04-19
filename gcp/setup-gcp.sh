@@ -279,8 +279,17 @@ echo "     Database: rozpocet_registry → run gcp/sql/03-init-rozpocet-registry
 echo ""
 echo "  4. CREATE CLOUD BUILD TRIGGERS (see table above)"
 echo ""
-echo "  5. RESTRICT DB ACCESS:"
-echo "     Remove 0.0.0.0/0 from authorized networks."
-echo "     Cloud Run uses --add-cloudsql-instances (no public IP needed)."
+
+# 5. RESTRICT DB ACCESS — secure default
+# Cloud Run connects via --add-cloudsql-instances (Cloud SQL Auth Proxy),
+# which does NOT require authorized networks. Any whitelisted IP is either
+# a stale Cloud Shell session or a forgotten dev workstation. Clear them.
+log "Step 5: Securing Cloud SQL — clearing authorized networks (Cloud Run uses Auth Proxy)"
+gcloud sql instances patch "${CLOUD_SQL_INSTANCE}" \
+  --clear-authorized-networks \
+  --quiet \
+  --project="${PROJECT_ID}" \
+  || log "WARNING: could not clear authorized networks (may already be empty, or insufficient permissions)"
+
 echo ""
 log "Done!"
