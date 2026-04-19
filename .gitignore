@@ -40,3 +40,6 @@ venv/
 coverage/
 .coverage
 htmlcov/
+
+# Local-only outputs (regenerated from extract_all_pdfs.py)
+extracted_data/
