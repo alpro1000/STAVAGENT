@@ -15,7 +15,7 @@ Upload a 200-page *Technická zpráva* (TZ / technical specification) → get an
 1. **OCR** extracts structured data from PDF drawings via MinerU
 2. **Deterministic classifier** tags 22 element types from OTSKP codes with confidence `1.0`
 3. **LLM** only handles ambiguous cases as fallback (confidence `0.7`)
-4. **OTSKP / ÚRS lookup** joins 17,904 real Czech construction prices
+4. **Professional pricing catalog lookup** joins 17,904 OTSKP entries with commercial civil-construction catalogs
 5. **Calculator** produces pour schedules, formwork systems, rebar masses, and a work breakdown structure
 
 Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil construction, then exposed via MCP so Claude Code users get the same domain intelligence.
@@ -33,7 +33,7 @@ Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil c
 | `stavagent-portal` frontend | Landing + user dashboard | https://www.stavagent.cz |
 | `Monolit-Planner` API | Concrete calculator backend | https://monolit-planner-api-1086027517695.europe-west3.run.app |
 | `Monolit-Planner` frontend | Calculator UI (*kalkulátor betonáže*) | https://kalkulator.stavagent.cz |
-| `URS_MATCHER_SERVICE` | OTSKP / ÚRS classifier | https://klasifikator.stavagent.cz |
+| `URS_MATCHER_SERVICE` | Construction code classifier | https://klasifikator.stavagent.cz |
 | `rozpocet-registry-backend` | BOQ registry backend | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
 | `rozpocet-registry` frontend | BOQ registry UI | https://registry.stavagent.cz |
 | MCP Server | 9 tools, mounted on `concrete-agent` | `https://concrete-agent-1086027517695.europe-west3.run.app/mcp` |
@@ -87,7 +87,7 @@ STAVAGENT treats AI as a **fallback**, not the default. Construction estimates m
 | Source | Confidence |
 |---|---|
 | Regex or catalog lookup | `1.0` |
-| OTSKP / ÚRS database match | `1.0` |
+| OTSKP catalog or professional pricing database match | `1.0` |
 | Human override | `0.99` |
 | Perplexity web-search | `0.85` |
 | LLM classification | `0.70` |
@@ -109,7 +109,7 @@ Mounted at `/mcp` on the `concrete-agent` Cloud Run service:
 | Tool | Purpose |
 |---|---|
 | `find_otskp_code` | 17,904 entries of the Czech transport infrastructure price catalog |
-| `find_urs_code` | ÚRS civil construction catalog lookup |
+| `find_urs_code` | Professional civil-construction pricing catalog lookup |
 | `classify_construction_element` | 22 element types (bridges × 11 + buildings × 11) |
 | `calculate_concrete_works` | 7-engine calculator: pour, formwork, props, rebar, curing, schedule, cost |
 | `parse_construction_budget` | Excel/XML parser for Czech budget formats (KROS, rozpočet) |
@@ -166,7 +166,7 @@ STAVAGENT/
 │   ├── shared/               # Calculation formulas (vitest)
 │   ├── backend/              # Express API
 │   └── frontend/             # React calculator UI
-├── URS_MATCHER_SERVICE/    # OTSKP / ÚRS classifier (Node.js)
+├── URS_MATCHER_SERVICE/    # Construction code classifier (Node.js)
 ├── rozpocet-registry/      # BOQ registry frontend (React/Vite)
 ├── rozpocet-registry-backend/  # BOQ registry backend (Node.js)
 ├── mineru_service/         # PDF OCR (Cloud Run europe-west1)
@@ -264,8 +264,8 @@ The domain is Czech/Slovak civil construction. Key terms kept untranslated (Engl
 | **stavbyvedoucí** | Site manager |
 | **ČSN** | Czech national standards |
 | **TKP** | Technical specifications for infrastructure (33 published documents) |
-| **OTSKP** | Czech transport-infrastructure price catalog (17,904 items) |
-| **ÚRS** | Czech civil-construction price catalog |
+| **OTSKP** | Public transport-infrastructure price catalog (17,904 items, maintained by ŘSD) |
+| **Civil-construction pricing catalogs** | Commercial catalogs covering building and civil works, parallel to OTSKP |
 | **mostovka** | Bridge deck |
 | **pilíř / opěra** | Bridge pier / abutment |
 | **bednění / skruž** | Formwork / falsework |
