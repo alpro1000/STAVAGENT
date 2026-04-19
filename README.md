@@ -2,9 +2,9 @@
 
 AI-powered construction cost estimation platform for Czech and Slovak markets. Five production services on Google Cloud Run and Vercel, with an MCP Server exposing nine domain-specific tools to Claude and ChatGPT.
 
-**Status:** Pre-hackathon prep (Apr 19, 2026) — Built with Opus 4.7
+**Status:** Production — active development
 **Last updated:** 2026-04-19
-**Maintainer:** Alexander Prokopyev — solo developer, full-time construction estimator at Berger Bohemia
+**Maintainer:** Alexander Prokopov — solo developer, construction estimator by profession
 
 ---
 
@@ -21,7 +21,6 @@ Upload a 200-page *Technická zpráva* (TZ / technical specification) → get an
 Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil construction, then exposed via MCP so Claude Code users get the same domain intelligence.
 
 ![Calculator preview — coming soon](docs/images/calculator.png)
-*Screenshot placeholder — see `docs/HACKATHON_FINAL_CHECKLIST.md`*
 
 ---
 
@@ -173,8 +172,7 @@ STAVAGENT/
 ├── mineru_service/         # PDF OCR (Cloud Run europe-west1)
 ├── docs/                   # ARCHITECTURE.md, DEPLOYMENT.md, 40+ guides
 │   ├── normy/              # Czech ČSN / TKP standards (PDFs)
-│   ├── archive/            # Historical sessions, audits, backlog
-│   └── HACKATHON_*         # Hackathon prep checklists
+│   └── archive/            # Historical sessions, audits, backlog
 ├── scripts/                # Helper scripts (dangerous/ subdir for destructive ops)
 ├── .github/workflows/      # GitHub Actions
 ├── .github/dependabot.yml  # Grouped minor+patch weekly
@@ -279,30 +277,10 @@ The domain is Czech/Slovak civil construction. Key terms kept untranslated (Engl
 - **Production live** — 5 backends on Cloud Run, 4 frontends on Vercel, MCP server operational
 - **CI/CD green** across all services (per-service Cloud Build triggers + GitHub Actions)
 - **1030+ tests** passing on every commit to `main`
-- **Pre-hackathon hardening** — April 2026: cleanup, Cloud SQL secured, `min-instances=1` on `concrete-agent` for demo stability, Dependabot configured with grouped minor/patch + major-bump ignore
+- **Recent hardening** — April 2026: root-level cleanup, Cloud SQL authorized networks cleared, `min-instances=1` on `concrete-agent` for in-memory state survival, Dependabot configured with grouped minor/patch and major-bump ignore
 - **Early pilots** with Czech construction estimators — small cohort, feedback loop open
 
-Built by Alexander Prokopyev as a solo project, approximately 1,700 commits over 6 months of active development. Primary user: Alexander himself in his day job at Berger Bohemia.
-
----
-
-## Built with Opus 4.7 Hackathon (April 2026)
-
-STAVAGENT is participating in the Built with Opus 4.7 hackathon hosted by Cerebral Valley × Anthropic. The pitch: *a domain-specific MCP server that makes general-purpose models useful for a specialized industry (Czech civil construction)*.
-
-### During hackathon week
-
-- Publish MCP server to the Anthropic MCP Directory
-- Publish MCP server to the OpenAI GPT Store (Actions via `/api/v1/mcp/tools/*`)
-- Add vision support for technical drawing ingestion
-- Live demo: 200-page TZ → actionable construction scenario in 10 minutes
-
-### Post-hackathon roadmap
-
-- PostgreSQL persistence for `project_store` (currently in-memory; `min-instances=1` mitigates risk)
-- VPC connector for Cloud SQL private IP
-- Integration endpoint authentication (`X-Service-Key`)
-- ~10 Dependabot minor/patch grouped PRs awaiting merge (April 22+)
+Built by Alexander Prokopov as a solo project, approximately 1,700 commits over 6 months of active development. The maintainer is a working construction estimator, so the primary user is also the author — feedback loop is immediate.
 
 ---
 
