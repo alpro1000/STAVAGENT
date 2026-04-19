@@ -43,20 +43,15 @@ Take and commit:
 
 ---
 
-## 4. Secrets rotation (5 min, low priority)
+## 4. Secrets — nothing urgent
 
-From `docs/archive/analyses/SECRETS_AUDIT_19042026.md` — the only actionable item:
+Per `docs/archive/analyses/SECRETS_AUDIT_19042026.md`:
 
-- [ ] Rotate DB password `StavagentPortal2026!` (historical leak flagged in CLAUDE.md)
-  ```bash
-  NEWPW=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-24)
-  gcloud sql users set-password postgres \
-    --instance=stavagent-db \
-    --password="$NEWPW" \
-    --project=project-947a512a-481d-49b5-81c
-  # Then patch DATABASE_URL secrets in Secret Manager and redeploy
-  ```
-  Full procedure in the audit report. **Recommended for week of Apr 28**, not before hackathon — rotation touches 4+ secrets and all 5 backends redeploy.
+- ✅ No live API keys leaked anywhere in the tree or history.
+- ✅ The historical `StavagentPortal2026!` password has **already been rotated** — nothing to do.
+- ✅ The two tracked `.env` files contain only public Vite `VITE_*` URLs (build-time config, public by design).
+
+No action required before hackathon.
 
 ---
 

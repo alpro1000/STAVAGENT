@@ -383,7 +383,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 ### Manual Actions
 - [ ] **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → GCP Secret Manager
 - [ ] **LEMONSQUEEZY_WEBHOOK_SECRET**: set in GCP Secret Manager (Lemon Squeezy → Settings → Webhooks → Signing secret)
-- [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
+- [x] ~~**Change DB password** — `StavagentPortal2026!` leaked in git history~~ ✅ **Rotated** (pre-hackathon). Historical string remains in git history but is no longer valid against any environment.
 
 ### TODO
 - [ ] **P0: Deploy MCP** — after merge, verify `/mcp` endpoint on Cloud Run, test with curl

@@ -10,8 +10,8 @@
 
 - **No live API keys leaked** in current code or git history (Google, AWS, Anthropic, OpenAI, Perplexity, GitHub, Lemon Squeezy).
 - **Two tracked `.env` files contain only public URLs** (Vite build-time vars that ship in the compiled bundle anyway) — not security issues.
-- **One historical password leak** flagged in `CLAUDE.md` as open TODO: `StavagentPortal2026!`. Rotation pending.
-- **No action required before hackathon.** Rotate the one DB password when convenient.
+- **One historical password leak** flagged in `CLAUDE.md`: `StavagentPortal2026!`. **Already rotated** — the historical string in git history is no longer valid against any environment. No action required.
+- **No action required before hackathon.** The one historical leak has already been rotated.
 
 ---
 
@@ -62,49 +62,23 @@ None found in source.
 
 ---
 
-## Historical leak: `StavagentPortal2026!`
+## Historical leak: `StavagentPortal2026!` — RESOLVED
 
-`CLAUDE.md` line 375 carries a long-standing open TODO:
+`CLAUDE.md` previously carried a long-standing open TODO flagging this password as leaked in git history. **It has already been rotated** — the string still appears in the git history commit that originally introduced it, but the password no longer authenticates against any database.
 
-> `Change DB password — StavagentPortal2026! leaked in git history; gcloud sql users set-password`
+No further action required. The CLAUDE.md entry has been marked resolved in this audit commit.
 
-The password string appears only in the CLAUDE.md warning itself in the current tree. History searches confirm the TODO-note was added after the fact — the actual leak happened earlier and was patched out of source, but git history presumably still contains the commit that introduced it (not located precisely in this pass; expensive to run full `git log -p` grep without accidentally leaking more).
-
-### Recommended action (post-hackathon, ~5 min)
+### If additional rotation is ever required (reference only)
 
 ```bash
-# 1. Generate a new password
 NEWPW=$(openssl rand -base64 32 | tr -d "=+/" | cut -c1-24)
-
-# 2. Rotate in Cloud SQL
 gcloud sql users set-password postgres \
   --instance=stavagent-db \
   --password="$NEWPW" \
   --project=project-947a512a-481d-49b5-81c
 
-# 3. Rotate per-service DB user passwords similarly for:
-#    stavagent_portal, monolit_planner, rozpocet_registry
-
-# 4. Update Secret Manager
-for secret in CONCRETE_DATABASE_URL PORTAL_DATABASE_URL MONOLIT_DATABASE_URL REGISTRY_DATABASE_URL; do
-  # construct new URL and patch
-  echo -n "postgresql+asyncpg://...:$NEWPW@..." | \
-    gcloud secrets versions add $secret --data-file=-
-done
-
-# 5. Redeploy services (they pull secrets on cold start; Cloud Run deploy forces refresh)
+# Then patch DATABASE_URL secrets in Secret Manager and redeploy the 5 services.
 ```
-
-### Why not now (before hackathon)
-
-- Rotating DB password requires coordinated update of 4+ Secret Manager entries + service redeploy.
-- If anything goes wrong with Secret Manager values, all 5 Cloud Run services crash on next cold start.
-- `concrete-agent` currently has `min-instances=1` (PR #914), so it would keep running on the old connection — but the other 4 services would fail when they next restart.
-- **Safer:** do this in the post-hackathon cleanup sprint, after the ~10 Dependabot grouped PRs are resolved.
-
-### Rotation-by-necessity ordering
-
-If external evidence suggests the password is actively being probed, rotate urgently. Otherwise schedule for week of Apr 28.
 
 ---
 
@@ -120,7 +94,7 @@ If external evidence suggests the password is actively being probed, rotate urge
 
 | # | Item | Severity | When |
 |---|------|----------|------|
-| 1 | Rotate `StavagentPortal2026!` DB password in Cloud SQL + Secret Manager | Medium | Post-hackathon (week of Apr 28) |
+| 1 | ~~Rotate `StavagentPortal2026!` DB password~~ | — | ✅ Already rotated pre-hackathon |
 | 2 | Leave two tracked `.env` files as-is (public Vite config) | None | — |
 | 3 | Keep `.gitignore` `.env` rules in place (already correct) | None | — |
 
