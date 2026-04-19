@@ -4,14 +4,23 @@
  * Extracts construction parameters from pasted/OCR'd TZ excerpts:
  *   - concrete_class, exposure_class, dimensions, spans, cables, etc.
  *   - confidence=1.0 for regex matches (deterministic)
+ *   - smeta-line parser: OTSKP (6 digits) / ÚRS (9 digits) code + MJ + quantity
  *
  * Designed for:
  *   1. Calculator textarea "Vložit text z TZ" (Phase 3)
  *   2. SmartInput document bridge pipeline (future Phase 1)
  *   3. MCP tool parameter enrichment (future)
  *
- * All patterns tested against SO-202/203/207 golden test TZ excerpts.
+ * All patterns tested against SO-202/203/207 golden test TZ excerpts
+ * and the VP4 opěrná zeď smeta excerpt (2026-04-17 live bug).
  */
+
+import {
+  detectCatalog,
+  detectWorkType,
+  type CatalogType,
+  type WorkType,
+} from '../calculators/position-linking.js';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -24,10 +33,37 @@ export interface ExtractedParam {
   label_cs: string;
   /** Source confidence: 1.0 for regex, 0.7-0.9 for heuristic */
   confidence: number;
-  /** Source: 'regex' | 'keyword' | 'heuristic' */
-  source: 'regex' | 'keyword' | 'heuristic';
+  /** Source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line' */
+  source: 'regex' | 'keyword' | 'heuristic' | 'smeta_line';
   /** Original matched text snippet */
   matched_text: string;
+  /** Catalog type when value originated from a budget/smeta line */
+  catalog?: CatalogType;
+  /** OTSKP/URS code that produced this value (smeta_line source only) */
+  code?: string;
+}
+
+/** A single parsed smeta/budget line: "<code> <description> <unit> <quantity>" */
+export interface SmetaLine {
+  /** OTSKP (6 digits) or URS (9 digits) code */
+  code: string;
+  /** Catalog type detected from the code format */
+  catalog: CatalogType;
+  /** Work type resolved from the code (d5 + suffix rules) */
+  work_type: WorkType;
+  /** Position description (everything between code and unit) */
+  description: string;
+  /** Normalized unit: 'm3' | 'm2' | 'm' | 'bm' | 't' | 'kg' | 'ks' */
+  unit: string;
+  /** Quantity parsed from Czech number format (comma decimal, space thousands) */
+  quantity: number;
+  /** Full original line as-is */
+  raw_line: string;
+}
+
+export interface ExtractOptions {
+  /** Current element type — enables smeta → form-field mapping */
+  element_type?: string;
 }
 
 // ─── Normalize ──────────────────────────────────────────────────────────────
@@ -36,15 +72,210 @@ function norm(text: string): string {
   return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
+// ─── Czech number parsing ───────────────────────────────────────────────────
+
+/**
+ * Parse a Czech-formatted number: comma=decimal, space=thousands separator.
+ * Falls back to US/EU formats when mixed punctuation is present.
+ *
+ *   "94,231"      → 94.231    (Czech decimal)
+ *   "547,400"     → 547.4     (Czech decimal — trailing zeros)
+ *   "1 456,78"    → 1456.78   (space thousands + comma decimal)
+ *   "1.456,78"    → 1456.78   (EU: period thousands, comma decimal)
+ *   "1,456.78"    → 1456.78   (US: comma thousands, period decimal)
+ *   "1,234,567"   → 1234567   (multiple commas → US thousands)
+ *   "94.231"      → 94.231    (single period → decimal)
+ */
+export function parseCzechNumber(s: string): number {
+  const cleaned = s.replace(/\s+/g, '');
+  if (!cleaned) return NaN;
+
+  const commas = (cleaned.match(/,/g) || []).length;
+  const periods = (cleaned.match(/\./g) || []).length;
+
+  if (commas === 0 && periods === 0) return parseFloat(cleaned);
+  if (commas === 1 && periods === 0) return parseFloat(cleaned.replace(',', '.'));
+  if (commas === 0 && periods === 1) return parseFloat(cleaned);
+  if (commas > 1 && periods <= 1) return parseFloat(cleaned.replace(/,/g, ''));
+
+  // Mixed: rightmost of comma/period is decimal
+  const lastComma = cleaned.lastIndexOf(',');
+  const lastPeriod = cleaned.lastIndexOf('.');
+  if (lastComma > lastPeriod) {
+    // Czech: period=thousands, comma=decimal
+    return parseFloat(cleaned.replace(/\./g, '').replace(',', '.'));
+  }
+  // US: comma=thousands, period=decimal
+  return parseFloat(cleaned.replace(/,/g, ''));
+}
+
+// ─── Smeta (budget) line parser ─────────────────────────────────────────────
+
+/**
+ * Regex for budget lines: "<6|9-digit code> <description> <unit> <quantity>".
+ *
+ * Captures:
+ *   [1] code (6 = OTSKP, 9 = URS)
+ *   [2] description (non-greedy, up to the unit)
+ *   [3] unit — longest alternatives first; lookahead `(?=\s|$)` replaces `\b`
+ *       because `\b` fails after Unicode superscripts (m², m³)
+ *   [4] quantity — ONE numeric token; no internal whitespace so a trailing
+ *       VV formula ("…5,654    94,231*0,06") doesn't get swallowed
+ */
+const SMETA_LINE_RE =
+  /^[\t ]*(\d{6}|\d{9})[\t ]+([^\n]+?)[\t ]+(m3|m2|m²|m³|mb|bm|ks|kg|m|t)(?=[\s,;]|$)[\t ]+([0-9]+(?:[.,][0-9]+)?)/gim;
+
+/** Normalize unit tokens: 'm²' → 'm2', 'm³' → 'm3', case-insensitive. */
+function normalizeUnit(raw: string): string {
+  const u = raw.toLowerCase();
+  if (u === 'm²') return 'm2';
+  if (u === 'm³') return 'm3';
+  return u;
+}
+
+/**
+ * Extract all budget/smeta lines from a text blob.
+ * Deterministic — regex only, confidence=1.0 for each line.
+ * Order preserved (source order in document).
+ */
+export function extractSmetaLines(text: string): SmetaLine[] {
+  const lines: SmetaLine[] = [];
+  if (!text) return lines;
+
+  // Re-build the regex each call (stateful g-flag).
+  const re = new RegExp(SMETA_LINE_RE.source, SMETA_LINE_RE.flags);
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    const code = m[1];
+    const description = m[2].trim();
+    const unit = normalizeUnit(m[3]);
+    const qtyRaw = m[4].trim().replace(/[\s]+$/, '');
+    const quantity = parseCzechNumber(qtyRaw);
+    if (!isFinite(quantity)) continue;
+
+    const catalog = detectCatalog(code);
+    const work_type = detectWorkType(code);
+
+    lines.push({
+      code,
+      catalog,
+      work_type,
+      description,
+      unit,
+      quantity,
+      raw_line: m[0].trim(),
+    });
+  }
+  return lines;
+}
+
+// ─── Smeta → form-field mapping ─────────────────────────────────────────────
+
+type FieldMapping = {
+  field: string;
+  label: (v: number, code: string) => string;
+  transform?: (v: number) => number;
+};
+
+/**
+ * Map (work_type × unit) → FormState field.
+ *
+ * Universal mapping — works for most concrete elements. Pile is the only
+ * element with its own volume/rebar pipeline; we still map volume_m3 for it
+ * (it is consumed by the pile-specific derivation).
+ */
+function mapSmetaToField(
+  wt: WorkType,
+  unit: string,
+  _elementType?: string,
+): FieldMapping | null {
+  if (wt === 'beton' && unit === 'm3') {
+    return {
+      field: 'volume_m3',
+      label: (v) => `Objem betonu: ${v} m³`,
+    };
+  }
+  if ((wt === 'bednění' || wt === 'bednění_zřízení') && unit === 'm2') {
+    return {
+      field: 'formwork_area_m2',
+      label: (v) => `Plocha bednění: ${v} m²`,
+    };
+  }
+  // 'výztuž' total mass — informational param (no direct FormState field yet;
+  // user sees it as a hint, follow-up task wires to rebar_index_kg_m3 ratio)
+  if (wt === 'výztuž' && unit === 't') {
+    return {
+      field: 'reinforcement_total_kg',
+      label: (v) => `Hmotnost výztuže: ${Math.round(v)} kg (${(v / 1000).toFixed(3)} t)`,
+      transform: (v) => v * 1000,
+    };
+  }
+  if (wt === 'výztuž' && unit === 'kg') {
+    return {
+      field: 'reinforcement_total_kg',
+      label: (v) => `Hmotnost výztuže: ${Math.round(v)} kg`,
+    };
+  }
+  return null;
+}
+
+/**
+ * Convert parsed smeta lines into ExtractedParam entries.
+ * Deduplicates by field — first occurrence wins (source order).
+ */
+function smetaLinesToParams(
+  lines: SmetaLine[],
+  elementType?: string,
+): ExtractedParam[] {
+  const params: ExtractedParam[] = [];
+  const seenFields = new Set<string>();
+  for (const line of lines) {
+    const mapping = mapSmetaToField(line.work_type, line.unit, elementType);
+    if (!mapping) continue;
+    if (seenFields.has(mapping.field)) continue;
+    const value = mapping.transform ? mapping.transform(line.quantity) : line.quantity;
+    params.push({
+      name: mapping.field,
+      value,
+      label_cs: mapping.label(value, line.code),
+      confidence: 1.0,
+      source: 'smeta_line',
+      matched_text: line.raw_line,
+      catalog: line.catalog,
+      code: line.code,
+    });
+    seenFields.add(mapping.field);
+  }
+  return params;
+}
+
 // ─── Pattern definitions ────────────────────────────────────────────────────
 
 /**
  * Extract all matching parameters from a TZ text excerpt.
- * Returns array of ExtractedParam sorted by confidence (highest first).
+ *
+ * Pipeline:
+ *   1. Smeta-line parser (OTSKP/URS codes → volume, formwork area, rebar mass)
+ *   2. Text regex (concrete class, exposure, spans, dimensions, …)
+ *   3. Keyword detection (prestressed, element type, subtype, …)
+ *   4. Merge: smeta_line (conf=1.0) wins over regex heuristic for the same field
+ *
+ * @param text    Pasted TZ / smeta excerpt
+ * @param options optional — element_type hint for field mapping
+ * @returns       ExtractedParam[] sorted by confidence (highest first)
  */
-export function extractFromText(text: string): ExtractedParam[] {
+export function extractFromText(
+  text: string,
+  options: ExtractOptions = {},
+): ExtractedParam[] {
   const results: ExtractedParam[] = [];
   const normalized = norm(text);
+
+  // ─── Smeta-line extraction (deterministic, catalog-aware) ────────────────
+  const smetaLines = extractSmetaLines(text);
+  const smetaParams = smetaLinesToParams(smetaLines, options.element_type);
+  const smetaFieldNames = new Set(smetaParams.map((p) => p.name));
+  results.push(...smetaParams);
 
   // 1. Concrete class: C12/15, C25/30, C35/45, etc.
   const concreteRe = /C(\d{2})\/(\d{2,3})/g;
@@ -147,14 +378,16 @@ export function extractFromText(text: string): ExtractedParam[] {
     });
   }
 
-  // 6. Volume: "605 m³" or "605m3"
-  const volMatch = text.match(/(\d+[.,]?\d*)\s*m[³3]/);
-  if (volMatch) {
-    results.push({
-      name: 'volume_m3', value: parseFloat(volMatch[1].replace(',', '.')),
-      label_cs: `Objem: ${volMatch[1]} m³`,
-      confidence: 0.9, source: 'regex', matched_text: volMatch[0],
-    });
+  // 6. Volume: "605 m³" or "605m3" — skipped if a smeta line already pinned volume_m3
+  if (!smetaFieldNames.has('volume_m3')) {
+    const volMatch = text.match(/(\d+[.,]?\d*)\s*m[³3]/);
+    if (volMatch) {
+      results.push({
+        name: 'volume_m3', value: parseFloat(volMatch[1].replace(',', '.')),
+        label_cs: `Objem: ${volMatch[1]} m³`,
+        confidence: 0.9, source: 'regex', matched_text: volMatch[0],
+      });
+    }
   }
 
   // 7. Height: "výšk* X m"
