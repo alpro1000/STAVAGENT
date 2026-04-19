@@ -21,7 +21,6 @@ Upload a 200-page *Technická zpráva* (TZ / technical specification) → get an
 Built as SaaS for *přípraváři* (cost estimators) in Czech and Slovak civil construction, then exposed via MCP so Claude Code users get the same domain intelligence.
 
 ![Calculator preview — coming soon](docs/images/calculator.png)
-*Screenshot placeholder — see `docs/HACKATHON_FINAL_CHECKLIST.md`*
 
 ---
 

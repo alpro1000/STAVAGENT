@@ -6,7 +6,7 @@
 #   - pip: concrete-agent (Python)
 #   - github-actions: CI workflows
 #
-# Safety strategy (hackathon hardening, Apr 2026):
+# Safety strategy (Apr 2026):
 #   - IGNORE major version bumps (semver-major) — too risky without dedicated
 #     testing cycle. Major bumps (express 4→5, react 18→19, vite 5→8,
 #     cryptography 41→46, etc.) must go through manual upgrade branches.
