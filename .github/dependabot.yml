@@ -2,17 +2,25 @@
 # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
 #
 # Ecosystems:
-#   - npm: 6 JS services (Monolit × 3 + Portal × 2 + URS backend + URS frontend + Registry × 2)
+#   - npm: 9 JS services (Monolit × 3 + Portal × 2 + URS × 2 + Registry × 2)
 #   - pip: concrete-agent (Python)
+#   - github-actions: CI workflows
 #
-# Strategy:
-#   - Weekly scan (Monday) to avoid daily noise
-#   - Grouped updates per ecosystem (minor + patch together) to shrink PR volume
-#   - open-pull-requests-limit: 5 per entry to prevent avalanche after first scan
-#   - Major version bumps stay ungrouped so they get explicit review
+# Safety strategy (hackathon hardening, Apr 2026):
+#   - IGNORE major version bumps (semver-major) — too risky without dedicated
+#     testing cycle. Major bumps (express 4→5, react 18→19, vite 5→8,
+#     cryptography 41→46, etc.) must go through manual upgrade branches.
+#   - GROUP all minor + patch updates into a single PR per ecosystem —
+#     one grouped PR per service per week instead of 20+ individual PRs.
+#   - open-pull-requests-limit: 3 per entry — hard cap against PR-storm.
+#   - Weekly (Monday) schedule.
 #
-# After enabling Dependabot alerts in repo Settings → Code security, the first
-# scan runs within ~24h and creates grouped PRs. Triage them in a single sweep.
+# After Dependabot re-scans with this config, it automatically:
+#   - Closes open PRs that now match an `ignore` rule (all current major bumps)
+#   - Replaces individual per-package PRs with the single grouped PR when
+#     `groups` captures them.
+# This takes 15–60 minutes. Old PRs can be bulk-closed manually in the UI
+# to speed the visual cleanup.
 
 version: 2
 
@@ -23,9 +31,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      monolit-shared-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   - package-ecosystem: "npm"
@@ -33,9 +45,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      monolit-backend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   - package-ecosystem: "npm"
@@ -43,9 +59,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      monolit-frontend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   # ─── stavagent-portal ───
@@ -54,9 +74,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      portal-backend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   - package-ecosystem: "npm"
@@ -64,9 +88,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      portal-frontend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   # ─── URS_MATCHER_SERVICE ───
@@ -75,9 +103,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      urs-backend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   - package-ecosystem: "npm"
@@ -85,9 +117,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      urs-frontend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   # ─── rozpocet-registry ───
@@ -96,9 +132,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      registry-frontend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   - package-ecosystem: "npm"
@@ -106,9 +146,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      registry-backend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
   # ─── concrete-agent (Python) ───
@@ -117,14 +161,25 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      concrete-backend-minor:
+      all-minor-patch:
+        patterns: ["*"]
         update-types: ["minor", "patch"]
 
-  # ─── GitHub Actions itself ───
+  # ─── GitHub Actions ───
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
