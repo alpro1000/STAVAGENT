@@ -49,7 +49,7 @@ google-auth-httplib2==0.2.0
 google-api-python-client==2.110.0
 
 # Credential encryption
-cryptography==41.0.7
+cryptography==46.0.7
 
 # ==========================================
 # PDF PARSING (MinerU → separate Cloud Run service)
