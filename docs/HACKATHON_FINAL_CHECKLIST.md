@@ -11,7 +11,7 @@ This file lists the manual actions that cannot be automated. Work top-to-bottom;
 Judges often click the maintainer's profile before they open the code.
 
 - [ ] Pin `STAVAGENT` repo to the top of https://github.com/alpro1000
-- [ ] Update profile bio to: *"Solo developer of STAVAGENT — AI for Czech civil construction. Cost estimator at Berger Bohemia by day."*
+- [ ] Update profile bio (suggestion, edit to taste): *"Solo developer of STAVAGENT — AI for Czech civil construction. Construction estimator by profession."*
 - [ ] Profile picture: professional headshot or STAVAGENT logo (avoid the default GitHub identicon)
 - [ ] Confirm public email / location / website fields match `README.md` contact info
 

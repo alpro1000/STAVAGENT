@@ -2,9 +2,9 @@
 
 AI-powered construction cost estimation platform for Czech and Slovak markets. Five production services on Google Cloud Run and Vercel, with an MCP Server exposing nine domain-specific tools to Claude and ChatGPT.
 
-**Status:** Pre-hackathon prep (Apr 19, 2026) — Built with Opus 4.7
+**Status:** Production — active development
 **Last updated:** 2026-04-19
-**Maintainer:** Alexander Prokopyev — solo developer, full-time construction estimator at Berger Bohemia
+**Maintainer:** Alexander Prokopov — solo developer, construction estimator by profession
 
 ---
 
@@ -282,7 +282,7 @@ The domain is Czech/Slovak civil construction. Key terms kept untranslated (Engl
 - **Pre-hackathon hardening** — April 2026: cleanup, Cloud SQL secured, `min-instances=1` on `concrete-agent` for demo stability, Dependabot configured with grouped minor/patch + major-bump ignore
 - **Early pilots** with Czech construction estimators — small cohort, feedback loop open
 
-Built by Alexander Prokopyev as a solo project, approximately 1,700 commits over 6 months of active development. Primary user: Alexander himself in his day job at Berger Bohemia.
+Built by Alexander Prokopov as a solo project, approximately 1,700 commits over 6 months of active development. The maintainer is a working construction estimator, so the primary user is also the author — feedback loop is immediate.
 
 ---
 
