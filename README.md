@@ -286,7 +286,7 @@ Built by Alexander Prokopov as a solo project, approximately 1,700 commits over 
 
 ## License
 
-Proprietary. Contact [alexander@stavagent.cz](mailto:alexander@stavagent.cz) for licensing discussions.
+Proprietary. Contact [info@stavagent.cz](mailto:info@stavagent.cz) for licensing discussions.
 
 ---
 
