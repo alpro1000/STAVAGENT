@@ -24,6 +24,7 @@
 
 ### To `docs/` (active reference)
 - `DESIGN_SYSTEM.md` → `docs/DESIGN_SYSTEM.md`
+- `STAVAGENT_ClaudeCode_Session_Mantra.md` → `docs/STAVAGENT_ClaudeCode_Session_Mantra.md` (extended operational checklist; CLAUDE.md only has one-line inline version on line 223)
 
 ### To `docs/archive/` (historical)
 Integrated into the existing `analyses/` / `completed-fixes/` / `completed-sessions/` / `future-planning/` convention; created `legacy/` only for genuinely miscellaneous items.
@@ -39,7 +40,7 @@ Integrated into the existing `analyses/` / `completed-fixes/` / `completed-sessi
 | `PLAN_CABINETS_ROLES_BILLING.md` | `docs/archive/future-planning/` |
 | `TASK_TZ_to_Soupis_Pipeline_v3.md` | `docs/archive/future-planning/` |
 | `TASK_VZ_Scraper_WorkPackages_v3.md` | `docs/archive/future-planning/` |
-| `STAVAGENT_ClaudeCode_Session_Mantra.md` | `docs/archive/completed-sessions/` |
+| `STAVAGENT_ClaudeCode_Session_Mantra.md` | `docs/STAVAGENT_ClaudeCode_Session_Mantra.md` (active reference, not archive) |
 | `CONCRETE_AGENT_MEMORY_ISSUE.txt` | `docs/archive/completed-fixes/` |
 | `MONOLIT_ERRORS_NOTE.txt` | `docs/archive/completed-fixes/` |
 | `MONOLIT_XLSX_IMPORT_DEBUG.txt` | `docs/archive/completed-fixes/` |
@@ -158,5 +159,6 @@ When this branch is merged to `main`, run the README + CLAUDE.md cleanup task. T
 2. Decide what to do with the `Monolit-Planner/CLAUDE.MD` vs `claude.md` duplication.
 3. Refresh `concrete-agent/CLAUDE.md` from v2.5.0 (Nov 2025) to current state.
 4. Rewrite root `README.md` for hackathon judges (currently 5.5 KB, minimal).
+5. Add a back-pointer in CLAUDE.md to `docs/STAVAGENT_ClaudeCode_Session_Mantra.md` (the extended operational checklist, currently un-linked).
 
 This file (`HACKATHON_CLEANUP_REPORT.md`) is meant to be deleted from `main` after the cleanup branch is merged.
