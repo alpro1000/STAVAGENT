@@ -122,7 +122,7 @@ alembic==1.14.0  # Database migrations
 # REDIS - Phase 4 Backend Infrastructure
 # ==========================================
 # Redis for caching, sessions, and Pub/Sub
-redis[hiredis]==5.0.1  # Redis client with C parser for performance
+redis[hiredis]==7.4.0  # Redis client with C parser for performance
 
 # ==========================================
 # CELERY - Phase 4 Backend Infrastructure
