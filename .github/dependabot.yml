@@ -1,0 +1,130 @@
+# Dependabot configuration for STAVAGENT monorepo
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+#
+# Ecosystems:
+#   - npm: 6 JS services (Monolit × 3 + Portal × 2 + URS backend + URS frontend + Registry × 2)
+#   - pip: concrete-agent (Python)
+#
+# Strategy:
+#   - Weekly scan (Monday) to avoid daily noise
+#   - Grouped updates per ecosystem (minor + patch together) to shrink PR volume
+#   - open-pull-requests-limit: 5 per entry to prevent avalanche after first scan
+#   - Major version bumps stay ungrouped so they get explicit review
+#
+# After enabling Dependabot alerts in repo Settings → Code security, the first
+# scan runs within ~24h and creates grouped PRs. Triage them in a single sweep.
+
+version: 2
+
+updates:
+  # ─── Monolit-Planner ───
+  - package-ecosystem: "npm"
+    directory: "/Monolit-Planner/shared"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      monolit-shared-minor:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/Monolit-Planner/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      monolit-backend-minor:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/Monolit-Planner/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      monolit-frontend-minor:
+        update-types: ["minor", "patch"]
+
+  # ─── stavagent-portal ───
+  - package-ecosystem: "npm"
+    directory: "/stavagent-portal/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      portal-backend-minor:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/stavagent-portal/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      portal-frontend-minor:
+        update-types: ["minor", "patch"]
+
+  # ─── URS_MATCHER_SERVICE ───
+  - package-ecosystem: "npm"
+    directory: "/URS_MATCHER_SERVICE/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      urs-backend-minor:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/URS_MATCHER_SERVICE/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      urs-frontend-minor:
+        update-types: ["minor", "patch"]
+
+  # ─── rozpocet-registry ───
+  - package-ecosystem: "npm"
+    directory: "/rozpocet-registry"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      registry-frontend-minor:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/rozpocet-registry-backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      registry-backend-minor:
+        update-types: ["minor", "patch"]
+
+  # ─── concrete-agent (Python) ───
+  - package-ecosystem: "pip"
+    directory: "/concrete-agent/packages/core-backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      concrete-backend-minor:
+        update-types: ["minor", "patch"]
+
+  # ─── GitHub Actions itself ───
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
