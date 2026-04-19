@@ -173,8 +173,7 @@ STAVAGENT/
 ├── mineru_service/         # PDF OCR (Cloud Run europe-west1)
 ├── docs/                   # ARCHITECTURE.md, DEPLOYMENT.md, 40+ guides
 │   ├── normy/              # Czech ČSN / TKP standards (PDFs)
-│   ├── archive/            # Historical sessions, audits, backlog
-│   └── HACKATHON_*         # Hackathon prep checklists
+│   └── archive/            # Historical sessions, audits, backlog
 ├── scripts/                # Helper scripts (dangerous/ subdir for destructive ops)
 ├── .github/workflows/      # GitHub Actions
 ├── .github/dependabot.yml  # Grouped minor+patch weekly
@@ -279,30 +278,10 @@ The domain is Czech/Slovak civil construction. Key terms kept untranslated (Engl
 - **Production live** — 5 backends on Cloud Run, 4 frontends on Vercel, MCP server operational
 - **CI/CD green** across all services (per-service Cloud Build triggers + GitHub Actions)
 - **1030+ tests** passing on every commit to `main`
-- **Pre-hackathon hardening** — April 2026: cleanup, Cloud SQL secured, `min-instances=1` on `concrete-agent` for demo stability, Dependabot configured with grouped minor/patch + major-bump ignore
+- **Recent hardening** — April 2026: root-level cleanup, Cloud SQL authorized networks cleared, `min-instances=1` on `concrete-agent` for in-memory state survival, Dependabot configured with grouped minor/patch and major-bump ignore
 - **Early pilots** with Czech construction estimators — small cohort, feedback loop open
 
 Built by Alexander Prokopov as a solo project, approximately 1,700 commits over 6 months of active development. The maintainer is a working construction estimator, so the primary user is also the author — feedback loop is immediate.
-
----
-
-## Built with Opus 4.7 Hackathon (April 2026)
-
-STAVAGENT is participating in the Built with Opus 4.7 hackathon hosted by Cerebral Valley × Anthropic. The pitch: *a domain-specific MCP server that makes general-purpose models useful for a specialized industry (Czech civil construction)*.
-
-### During hackathon week
-
-- Publish MCP server to the Anthropic MCP Directory
-- Publish MCP server to the OpenAI GPT Store (Actions via `/api/v1/mcp/tools/*`)
-- Add vision support for technical drawing ingestion
-- Live demo: 200-page TZ → actionable construction scenario in 10 minutes
-
-### Post-hackathon roadmap
-
-- PostgreSQL persistence for `project_store` (currently in-memory; `min-instances=1` mitigates risk)
-- VPC connector for Cloud SQL private IP
-- Integration endpoint authentication (`X-Service-Key`)
-- ~10 Dependabot minor/patch grouped PRs awaiting merge (April 22+)
 
 ---
 
