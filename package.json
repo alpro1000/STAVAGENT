@@ -1,20 +1,11 @@
 {
-  "name": "stavagent-monorepo",
+  "name": "stavagent",
   "version": "1.0.0",
   "private": true,
-  "description": "STAVAGENT Monorepo - Multi-service construction planning system",
+  "description": "STAVAGENT - Multi-service Czech construction planning platform (5 services, deployed independently to Cloud Run + Vercel)",
   "scripts": {
-    "test": "npm run test --workspaces",
     "prepare": "husky || true"
   },
-  "workspaces": [
-    "Monolit-Planner/backend",
-    "Monolit-Planner/frontend",
-    "Monolit-Planner/shared",
-    "concrete-agent",
-    "stavagent-portal",
-    "URS_MATCHER_SERVICE"
-  ],
   "devDependencies": {
     "husky": "^9.1.7"
   }
