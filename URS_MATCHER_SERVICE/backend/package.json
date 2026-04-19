@@ -36,7 +36,7 @@
     "express-rate-limit": "^8.3.1",
     "joi": "^17.11.0",
     "lodash": "^4.17.21",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^2.1.1",
     "node-cron": "^4.2.1",
     "p-map": "^7.0.1",
     "redis": "^4.6.0",
