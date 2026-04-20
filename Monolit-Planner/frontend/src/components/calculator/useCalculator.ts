@@ -16,7 +16,7 @@ import {
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
 import { getSuitableSystemsForElement, classifyElement, recommendFormwork } from '@stavagent/monolit-shared';
-import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure } from '@stavagent/monolit-shared';
+import { calculateCuring, calculateLateralPressure, suggestPourStages, inferPourMethod, calculateRebarLite, getElementProfile, filterFormworkByPressure, getMostRestrictive } from '@stavagent/monolit-shared';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
 import type { ConcreteClass } from '@stavagent/monolit-shared';
@@ -128,6 +128,14 @@ export default function useCalculator() {
         merged.use_per_profession_wages =
           !!(merged.wage_formwork_czk_h || merged.wage_rebar_czk_h || merged.wage_pour_czk_h);
       }
+      // Task 2 (2026-04-20): migrate LS from legacy single-string
+      // `exposure_class` to `exposure_classes` array. Old LS entries either
+      // miss the array field entirely or have a non-array default.
+      if (!Array.isArray(merged.exposure_classes)) {
+        merged.exposure_classes = merged.exposure_class
+          ? [merged.exposure_class]
+          : [];
+      }
       // A2 (2026-04-15): volume_m3 is the GATE — on every fresh mount
       // (no positionContext) it resets to 0 regardless of LS. Otherwise
       // the KPI cards would carry stale numbers from the previous session
@@ -181,6 +189,15 @@ export default function useCalculator() {
 
     // Clear start_date in Monolit mode (ordinal days only)
     f.start_date = '';
+
+    // Task 2 (2026-04-20): seed exposure_classes array from the legacy
+    // singular field (either URL param or part_name regex) so the
+    // checkbox grid shows the ticked class on first load. Downstream
+    // smart-defaults useEffect respects non-empty arrays.
+    if (positionContext.exposure_class && f.exposure_classes.length === 0) {
+      f.exposure_classes = [positionContext.exposure_class];
+      f.exposure_class = positionContext.exposure_class;
+    }
 
     return f;
   }, [positionContext]);
@@ -655,7 +672,17 @@ export default function useCalculator() {
     setForm(prev => {
       const updates: Partial<typeof prev> = {};
       // Only fill empty fields — user overrides are preserved
-      if (!prev.exposure_class) updates.exposure_class = defaults.exposure_class;
+      // Task 2 (2026-04-20): auto-suggest full exposure_classes array when
+      // user hasn't picked any yet. The legacy singular stays in sync via
+      // the write-through set at save time (see handleCalculate path).
+      if (!prev.exposure_classes || prev.exposure_classes.length === 0) {
+        if (defaults.exposure_classes.length > 0) {
+          updates.exposure_classes = [...defaults.exposure_classes];
+          // Keep legacy singular mirrored so anyone still reading it
+          // (advisor prompt, docs facts) sees the most-restrictive class.
+          updates.exposure_class = defaults.exposure_class;
+        }
+      }
       if (!prev.curing_class) updates.curing_class = defaults.curing_class;
       // Concrete class: only override if still at the generic C30/37 default
       if (prev.concrete_class === 'C30/37' && defaults.typical_concrete !== 'C30/37') {
@@ -1081,11 +1108,19 @@ export default function useCalculator() {
       const lostArea = parseFloat(form.lost_formwork_area_m2);
       if (lostArea > 0) input.lost_formwork_area_m2 = lostArea;
     }
-    // Exposure class: form field takes precedence over URL context
-    if (form.exposure_class) {
+    // Exposure classes: Task 2 (2026-04-20) — forward full array so engine
+    // applies ČSN EN 206+A2 combined rules. Singular `exposure_class` is
+    // kept for legacy consumers (advisor prompt, docs facts) — set to the
+    // most-restrictive class so the single-value view is still meaningful.
+    if (form.exposure_classes && form.exposure_classes.length > 0) {
+      input.exposure_classes = [...form.exposure_classes];
+      input.exposure_class = getMostRestrictive(form.exposure_classes) ?? form.exposure_class ?? undefined;
+    } else if (form.exposure_class) {
       input.exposure_class = form.exposure_class;
+      input.exposure_classes = [form.exposure_class];
     } else if (positionContext?.exposure_class) {
       input.exposure_class = positionContext.exposure_class;
+      input.exposure_classes = [positionContext.exposure_class];
     }
     // Curing class: '' = auto from element_type (engine default)
     if (form.curing_class) {

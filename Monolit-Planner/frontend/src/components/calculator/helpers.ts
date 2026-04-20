@@ -53,44 +53,50 @@ import type { StructuralElementType, ConcreteClass } from '@stavagent/monolit-sh
  * Values sourced from TKP18, ČSN EN 206, SO-202/203/207 golden tests.
  */
 export interface SmartDefaults {
-  exposure_class: string;       // typical exposure
+  /** Legacy singular — derived from `exposure_classes[0]` when array is non-empty. */
+  exposure_class: string;
+  /** Task 2 (2026-04-20): full multi-class suggestion per ČSN EN 206+A2.
+   *  Applied only when the user's current selection is empty (auto-fill). */
+  exposure_classes: string[];
   curing_class: '' | '2' | '3' | '4';  // '' = auto from engine
   typical_concrete: ConcreteClass;
   is_prestressed: boolean;
 }
 
+// Task 2 (2026-04-20): auto-suggested combinations per element_type,
+// from task spec "Scenario B" table (ŘSD real practice).
 const SMART_DEFAULTS_MAP: Partial<Record<StructuralElementType, SmartDefaults>> = {
   // ─── Bridge superstructure (class 4) ───
-  mostovkova_deska: { exposure_class: 'XF2', curing_class: '4', typical_concrete: 'C35/45', is_prestressed: false },
-  rimsa:            { exposure_class: 'XF4', curing_class: '4', typical_concrete: 'C30/37', is_prestressed: false },
-  rigel:            { exposure_class: 'XF2', curing_class: '4', typical_concrete: 'C35/45', is_prestressed: false },
+  mostovkova_deska: { exposure_class: 'XF2', exposure_classes: ['XF2', 'XD1', 'XC4'], curing_class: '4', typical_concrete: 'C35/45', is_prestressed: false },
+  rimsa:            { exposure_class: 'XF4', exposure_classes: ['XF4', 'XD3'],        curing_class: '4', typical_concrete: 'C30/37', is_prestressed: false },
+  rigel:            { exposure_class: 'XF2', exposure_classes: ['XF2', 'XD1', 'XC4'], curing_class: '4', typical_concrete: 'C35/45', is_prestressed: false },
   // ─── Bridge substructure (class 3) ───
-  driky_piliru:         { exposure_class: 'XF4', curing_class: '3', typical_concrete: 'C35/45', is_prestressed: false },
-  opery_ulozne_prahy:   { exposure_class: 'XF4', curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
-  zaklady_piliru:       { exposure_class: 'XF1', curing_class: '3', typical_concrete: 'C25/30', is_prestressed: false },
-  kridla_opery:         { exposure_class: 'XF4', curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
-  mostni_zavirne_zidky: { exposure_class: 'XF4', curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
-  podlozkovy_blok:      { exposure_class: 'XF2', curing_class: '3', typical_concrete: 'C35/45', is_prestressed: false },
-  operne_zdi:           { exposure_class: 'XC4', curing_class: '3', typical_concrete: 'C25/30', is_prestressed: false },
+  driky_piliru:         { exposure_class: 'XF4', exposure_classes: ['XF4', 'XD3'],        curing_class: '3', typical_concrete: 'C35/45', is_prestressed: false },
+  opery_ulozne_prahy:   { exposure_class: 'XF2', exposure_classes: ['XC4', 'XF2'],        curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
+  zaklady_piliru:       { exposure_class: 'XC2', exposure_classes: ['XC2', 'XA1'],        curing_class: '3', typical_concrete: 'C25/30', is_prestressed: false },
+  kridla_opery:         { exposure_class: 'XF2', exposure_classes: ['XC4', 'XF2'],        curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
+  mostni_zavirne_zidky: { exposure_class: 'XF4', exposure_classes: ['XF4', 'XD3'],        curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
+  podlozkovy_blok:      { exposure_class: 'XF2', exposure_classes: ['XF2', 'XC4'],        curing_class: '3', typical_concrete: 'C35/45', is_prestressed: false },
+  operne_zdi:           { exposure_class: 'XC4', exposure_classes: ['XC4', 'XF1'],        curing_class: '3', typical_concrete: 'C25/30', is_prestressed: false },
   // ─── Bridge other (class 2) ───
-  prechodova_deska:     { exposure_class: 'XC4', curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  podkladni_beton:      { exposure_class: '',    curing_class: '2', typical_concrete: 'C12/15', is_prestressed: false },
-  pilota:               { exposure_class: 'XA2', curing_class: '2', typical_concrete: 'C30/37', is_prestressed: false },
+  prechodova_deska:     { exposure_class: 'XC4', exposure_classes: ['XC4', 'XF1'],        curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  podkladni_beton:      { exposure_class: 'X0',  exposure_classes: ['X0'],                curing_class: '2', typical_concrete: 'C12/15', is_prestressed: false },
+  pilota:               { exposure_class: 'XA1', exposure_classes: ['XC2', 'XA1'],        curing_class: '2', typical_concrete: 'C30/37', is_prestressed: false },
   // ─── Building elements (class 2) ───
-  stena:            { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  sloup:            { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  stropni_deska:    { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  zakladova_deska:  { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  zakladovy_pas:    { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  zakladova_patka:  { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  pruvlak:          { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  schodiste:        { exposure_class: '',    curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
-  nadrz:            { exposure_class: '',    curing_class: '2', typical_concrete: 'C30/37', is_prestressed: false },
-  podzemni_stena:   { exposure_class: '',    curing_class: '2', typical_concrete: 'C30/37', is_prestressed: false },
+  stena:            { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  sloup:            { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  stropni_deska:    { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  zakladova_deska:  { exposure_class: 'XC2', exposure_classes: ['XC2'], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  zakladovy_pas:    { exposure_class: 'XC2', exposure_classes: ['XC2'], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  zakladova_patka:  { exposure_class: 'XC2', exposure_classes: ['XC2'], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  pruvlak:          { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  schodiste:        { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C25/30', is_prestressed: false },
+  nadrz:            { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C30/37', is_prestressed: false },
+  podzemni_stena:   { exposure_class: '',    exposure_classes: [], curing_class: '2', typical_concrete: 'C30/37', is_prestressed: false },
 };
 
 const FALLBACK_DEFAULTS: SmartDefaults = {
-  exposure_class: '', curing_class: '', typical_concrete: 'C30/37', is_prestressed: false,
+  exposure_class: '', exposure_classes: [], curing_class: '', typical_concrete: 'C30/37', is_prestressed: false,
 };
 
 /** Get smart defaults for an element type. Falls back to generic defaults for 'other'. */

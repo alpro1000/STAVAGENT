@@ -28,8 +28,9 @@ import {
 export interface ExtractedParam {
   /** Parameter name matching FormState / PlannerInput field */
   name: string;
-  /** Extracted value (string, number, or boolean) */
-  value: string | number | boolean;
+  /** Extracted value (string, number, boolean, or string[] for multi-value
+   *  fields like `exposure_classes` — Task 2, 2026-04-20). */
+  value: string | number | boolean | string[];
   /** Display label in Czech */
   label_cs: string;
   /** Source confidence: 1.0 for regex, 0.7-0.9 for heuristic */
@@ -350,28 +351,52 @@ export function extractFromText(
     });
   }
 
-  // 2. Exposure class: XF2, XC4, XA2, etc.
-  const exposureRe = /X[CDFAS][12345]?\d/g;
+  // 2. Exposure classes — Task 2 (2026-04-20): find ALL occurrences and
+  // emit `exposure_classes` (array, all distinct) + `exposure_class`
+  // (singular, most-restrictive) for backward compatibility.
+  //
+  // Regex enumerates the 20 valid ČSN EN 206+A2 classes explicitly so we
+  // don't over-match (old pattern /X[CDFAS][12345]?\d/ missed X0 entirely
+  // and happily emitted nonsense like "XD9"). Word boundary via lookahead
+  // to tolerate unicode / punctuation around the token.
+  const exposureRe = /\bX(?:0|C[1-4]|D[1-3]|F[1-4]|A[1-3]|M[1-3]|S[1-3])\b/g;
   const exposures = new Set<string>();
   while ((m = exposureRe.exec(text)) !== null) {
     exposures.add(m[0]);
   }
-  if (exposures.size === 1) {
-    const exp = [...exposures][0];
+  if (exposures.size > 0) {
+    const all = [...exposures];
+    // Most-restrictive rule: XF > XD/XS > XA > XM > XC > X0. Within a
+    // category, the numeric suffix breaks ties (XF4 > XF2).
+    const prefixRank: Record<string, number> = {
+      XF: 60, XD: 50, XS: 50, XA: 40, XM: 30, XC: 20, X0: 0,
+    };
+    const rankOf = (c: string) => {
+      if (c === 'X0') return prefixRank.X0;
+      const pre = c.slice(0, 2);
+      const digit = parseInt(c.slice(-1), 10);
+      return (prefixRank[pre] ?? 0) + (Number.isNaN(digit) ? 0 : digit);
+    };
+    const sorted = [...all].sort((a, b) => rankOf(b) - rankOf(a));
+    const primary = sorted[0];
+
+    // Emit the full array — new API. Task 2 UI binds to this.
     results.push({
-      name: 'exposure_class', value: exp, label_cs: `Třída prostředí: ${exp}`,
-      confidence: 1.0, source: 'regex', matched_text: exp,
+      name: 'exposure_classes', value: all,
+      label_cs: `Třídy prostředí: ${all.join(', ')}`,
+      confidence: 1.0, source: 'regex', matched_text: all.join(', '),
     });
-  } else if (exposures.size > 1) {
-    // Multiple — pick the most restrictive (XF > XD > XA > XC)
-    const priority: Record<string, number> = { XF: 4, XD: 3, XA: 2, XS: 2, XC: 1 };
-    const sorted = [...exposures].sort((a, b) =>
-      (priority[b.slice(0, 2)] ?? 0) - (priority[a.slice(0, 2)] ?? 0)
-    );
+    // Emit the singular — legacy API. Older code (advisor prompt, Task 1
+    // compat map) reads this. When more than one class is present the
+    // confidence drops to 0.8 since the single-string view is lossy.
     results.push({
-      name: 'exposure_class', value: sorted[0],
-      label_cs: `Třída prostředí: ${sorted[0]} (z ${exposures.size}: ${sorted.join(', ')})`,
-      confidence: 0.8, source: 'heuristic', matched_text: sorted.join(', '),
+      name: 'exposure_class', value: primary,
+      label_cs: exposures.size === 1
+        ? `Třída prostředí: ${primary}`
+        : `Třída prostředí: ${primary} (nejpřísnější z ${exposures.size}: ${sorted.join(', ')})`,
+      confidence: exposures.size === 1 ? 1.0 : 0.8,
+      source: exposures.size === 1 ? 'regex' : 'heuristic',
+      matched_text: sorted.join(', '),
     });
   }
 

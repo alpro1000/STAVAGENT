@@ -11,6 +11,8 @@ import type { PlannerOutput } from '@stavagent/monolit-shared';
 import type { CuringResult, SeasonMode, ConcreteClass, CementType } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure, getElementProfile, getRebarNormForDiameter } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge } from './ui';
+import { ExposureClassesPicker } from './ExposureClassesPicker';
+import { getMostRestrictive } from '@stavagent/monolit-shared';
 import { formatCZK, formatNum, inputStyle, labelStyle } from './helpers';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState } from './types';
 import { ELEMENT_TYPES, SEASONS, CONCRETE_CLASSES, CEMENT_TYPES } from './types';
@@ -1083,22 +1085,28 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               {/* ─── Expert: exposure, curing, cement (moved from Beton section) ─── */}
               {!wizardMode && (
               <Section title="Prostředí a ošetřování">
-                <Field label="Třída prostředí" hint="XF2, XF4, XC4… — ovlivňuje min. dobu ošetřování">
-                  <select style={inputStyle} value={form.exposure_class}
-                    onChange={e => update('exposure_class', e.target.value)}>
-                    <option value="">— (auto dle typu prvku)</option>
-                    <option value="XC1">XC1 — sucho</option>
-                    <option value="XC2">XC2 — mokro, bez mrazu</option>
-                    <option value="XC4">XC4 — cyklické mokro/sucho</option>
-                    <option value="XD1">XD1 — vlhko + chloridy</option>
-                    <option value="XD3">XD3 — střídavě mokro + chloridy</option>
-                    <option value="XF1">XF1 — mráz, bez solí</option>
-                    <option value="XF2">XF2 — mráz + soli (mostovka)</option>
-                    <option value="XF3">XF3 — silný mráz, bez solí</option>
-                    <option value="XF4">XF4 — silný mráz + soli (římsy)</option>
-                    <option value="XA1">XA1 — slabě agresivní</option>
-                    <option value="XA2">XA2 — středně agresivní</option>
-                  </select>
+                {/* Task 2 (2026-04-20): multi-select checkbox grid per
+                    ČSN EN 206+A2. Concrete is typically exposed to
+                    multiple environmental actions simultaneously (XF2 +
+                    XD1 + XC4 for bridge decks) — the picker applies
+                    combined rules over the selection and writes a single
+                    array to FormState. Legacy singular `exposure_class`
+                    is derived here as the most-restrictive class so
+                    downstream readers (advisor prompt, calculator-
+                    suggestions payload) still see a meaningful value. */}
+                <Field label="Třídy prostředí" hint="Vyberte vše, co pro konstrukci platí (ČSN EN 206+A2). Motor použije přísnější pravidlo z každé kategorie.">
+                  <ExposureClassesPicker
+                    value={form.exposure_classes ?? []}
+                    onChange={next => {
+                      update('exposure_classes', next);
+                      const primary = getMostRestrictive(next) ?? '';
+                      update('exposure_class', primary);
+                    }}
+                    cement_type_is_sulfate_resistant={
+                      // CEM with 'SV' / 'SR' in identifier is sulfate-resistant
+                      /SR|SV/i.test(form.cement_type ?? '')
+                    }
+                  />
                 </Field>
                 <Field label="Třída ošetřování" hint="TKP18 §7.8.3. Auto = dle typu prvku">
                   <select style={inputStyle} value={form.curing_class}

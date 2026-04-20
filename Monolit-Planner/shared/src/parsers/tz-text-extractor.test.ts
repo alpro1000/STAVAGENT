@@ -507,4 +507,75 @@ Celkový objem 605 m³ dle rozpočtu.
       expect(vol!.value).toBe(605);
     });
   });
+
+  // ─── Task 2 (2026-04-20): exposure_classes multi-match ───────────────
+
+  describe('exposure_classes — ČSN EN 206+A2 multi-match', () => {
+    it('SO 204 TZ: "Expozice: XF2 (mostovka), XD1, XC4 (opěry v zemi)" → all 3', () => {
+      const r = extractFromText('Expozice: XF2 (mostovka), XD1, XC4 (opěry v zemi).');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr).toBeDefined();
+      expect(arr!.value).toEqual(expect.arrayContaining(['XF2', 'XD1', 'XC4']));
+      expect((arr!.value as string[]).length).toBe(3);
+      expect(arr!.confidence).toBe(1.0);
+    });
+
+    it('single class → array with one element', () => {
+      const r = extractFromText('Beton C30/37 XF2.');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr).toBeDefined();
+      expect(arr!.value).toEqual(['XF2']);
+    });
+
+    it('deduplicates repeated occurrences', () => {
+      const r = extractFromText('XF2 na mostovce. Ve spodní stavbě také XF2 a XC4.');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr!.value).toEqual(expect.arrayContaining(['XF2', 'XC4']));
+      expect((arr!.value as string[]).length).toBe(2);
+    });
+
+    it('recognises X0 (no catalog match before Task 2)', () => {
+      const r = extractFromText('Podkladní beton X0 — bez rizika koroze.');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr).toBeDefined();
+      expect(arr!.value).toEqual(['X0']);
+    });
+
+    it('exposure_class singular = most-restrictive (XF4 > XD1 > XC4)', () => {
+      const r = extractFromText('Betonáž XC4, XD1 a XF4 dle specifikace.');
+      const single = findParam(r, 'exposure_class');
+      expect(single!.value).toBe('XF4');
+    });
+
+    it('singular confidence drops to 0.8 when multi-match collapsed', () => {
+      const r = extractFromText('XC4, XF2');
+      const single = findParam(r, 'exposure_class');
+      expect(single!.confidence).toBe(0.8);
+    });
+
+    it('does NOT match invented "XD9" or stray "XG1"', () => {
+      const r = extractFromText('Nějaký XD9 nebo XG1 nepatří do normy.');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr).toBeUndefined();
+    });
+
+    it('does NOT match inside a longer identifier like "XF2A" (word boundary)', () => {
+      const r = extractFromText('Označení XF2A je interní kód, ne norma.');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr).toBeUndefined();
+    });
+
+    it('mostovka reálně: "C30/37 XF2 XD1 XC4 — LP" → 3 classes + C30/37', () => {
+      const r = extractFromText('Mostovka: beton C30/37 XF2 XD1 XC4 — s provzdušněním (LP).');
+      expect(findParam(r, 'concrete_class')?.value).toBe('C30/37');
+      const arr = findParam(r, 'exposure_classes');
+      expect(arr!.value).toEqual(expect.arrayContaining(['XF2', 'XD1', 'XC4']));
+    });
+
+    it('empty text → no exposure params at all', () => {
+      const r = extractFromText('');
+      expect(findParam(r, 'exposure_classes')).toBeUndefined();
+      expect(findParam(r, 'exposure_class')).toBeUndefined();
+    });
+  });
 });

@@ -17,6 +17,7 @@ export * from './pour-decision.js';
 export * from './pour-task-engine.js';
 export * from './pert.js';
 export * from './maturity.js';
+export * from './exposure-combination.js';
 export * from './calendar-engine.js';
 export * from './pump-engine.js';
 export * from './tariff-versioning.js';

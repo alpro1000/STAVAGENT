@@ -1677,7 +1677,9 @@ export type TzParamName =
   | 'prestress_tensioning'
   | 'prestress_cables_count'
   | 'prestress_strands_per_cable'
-  | 'pile_diameter_mm';
+  | 'pile_diameter_mm'
+  // Task 2 (2026-04-20): array-form exposure classes (ČSN EN 206+A2).
+  | 'exposure_classes';
 
 /**
  * Parameters that are meaningful for ANY structural element — always
@@ -1686,6 +1688,9 @@ export type TzParamName =
 const UNIVERSAL_TZ_PARAMS: readonly TzParamName[] = [
   'concrete_class',
   'exposure_class',
+  // Task 2 (2026-04-20): multi-class selection is universal for every
+  // element type (same rationale as the singular).
+  'exposure_classes',
   'volume_m3',
   'formwork_area_m2',
   'reinforcement_total_kg',

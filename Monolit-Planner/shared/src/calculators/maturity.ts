@@ -69,8 +69,16 @@ export interface CuringParams {
    * TKP18 §7.8.3 mandates minimum curing days independent of maturity:
    *   XF1 → min 5 dní, XF3/XF4 → min 7 dní (freeze-thaw cycles).
    * When given, min_curing_days = max(maturity_result, TKP18_minimum).
+   * Legacy single-string API — prefer `exposure_classes`.
    */
   exposure_class?: string;
+  /**
+   * Task 2 (2026-04-20): full multi-class selection per ČSN EN 206+A2.
+   * Concrete is typically exposed to multiple actions simultaneously
+   * (XF2 + XD1 + XC4 for a bridge deck). `getExposureMinCuringDays` picks
+   * the strictest across the array.
+   */
+  exposure_classes?: string[];
 }
 
 /**
@@ -95,10 +103,22 @@ const EXPOSURE_MIN_CURING_DAYS: Record<string, number> = {
   XA3: 7,
 };
 
-/** Return the TKP18 minimum curing days for a given exposure class (0 if none). */
-export function getExposureMinCuringDays(exposureClass: string | undefined): number {
-  if (!exposureClass) return 0;
-  return EXPOSURE_MIN_CURING_DAYS[exposureClass.toUpperCase()] ?? 0;
+/** Return the TKP18 minimum curing days for a given exposure class (0 if none).
+ *  Task 2 (2026-04-20): accepts an array — picks the max across all classes
+ *  so a bridge deck (XF2+XD1+XC4) correctly uses 5d (XF2 max) not 0d
+ *  (XC4 alone). Kept backward-compatible with single-string input. */
+export function getExposureMinCuringDays(
+  exposure: string | string[] | undefined,
+): number {
+  if (!exposure) return 0;
+  const arr = Array.isArray(exposure) ? exposure : [exposure];
+  let max = 0;
+  for (const c of arr) {
+    if (!c) continue;
+    const v = EXPOSURE_MIN_CURING_DAYS[c.toUpperCase()] ?? 0;
+    if (v > max) max = v;
+  }
+  return max;
 }
 
 /** Result of curing calculation */
@@ -273,7 +293,10 @@ export function calculateCuring(params: CuringParams): CuringResult {
 
   // BUG-Z2 (2026-04-15): enforce TKP18 §7.8.3 exposure-class minimum.
   // Example: XF3 patka zima → maturity says 1.5d, TKP18 says ≥7d → 7d wins.
-  const exposureMin = getExposureMinCuringDays(params.exposure_class);
+  // Task 2 (2026-04-20): array-aware — strictest across selected classes.
+  const exposureMin = getExposureMinCuringDays(
+    params.exposure_classes ?? params.exposure_class,
+  );
   if (exposureMin > minDays) {
     minDays = exposureMin;
   }

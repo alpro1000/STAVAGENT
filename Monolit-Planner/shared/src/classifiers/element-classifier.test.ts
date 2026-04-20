@@ -747,8 +747,12 @@ describe('Element Classifier', () => {
   // ─── Task 1 (2026-04-20): TZ-parameter compatibility ────────────────────
   describe('isParamCompatibleWith() — TZ context compatibility', () => {
     it('universal params compatible with every element type', () => {
-      const universal = ['concrete_class', 'exposure_class', 'volume_m3',
-        'formwork_area_m2', 'reinforcement_total_kg', 'reinforcement_ratio_kg_m3'];
+      // Task 2 (2026-04-20): `exposure_classes` (plural) is universal for
+      // the same reason as `exposure_class` (singular) — every element
+      // can have an environmental-exposure selection.
+      const universal = ['concrete_class', 'exposure_class', 'exposure_classes',
+        'volume_m3', 'formwork_area_m2', 'reinforcement_total_kg',
+        'reinforcement_ratio_kg_m3'];
       for (const et of Object.keys(ELEMENT_TZ_COMPATIBILITY)) {
         for (const p of universal) {
           expect(isParamCompatibleWith(p, et as any)).toBe(true);
