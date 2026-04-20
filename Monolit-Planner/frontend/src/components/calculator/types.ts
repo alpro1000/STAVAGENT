@@ -207,8 +207,17 @@ export interface FormState {
   target_pour_window_h: string;
   /** BUG-1 + HINT: concrete consistency for DIN 18218 k-factor */
   concrete_consistency: 'standard' | 'plastic' | 'scc';
-  /** Exposure class (XF2, XF4, XC4 etc.) — for curing floor + validation warnings. */
+  /** Legacy single-string exposure class. Task 2 (2026-04-20): derived
+   *  from `exposure_classes[0]` after migration; kept in FormState for
+   *  legacy consumers (advisor prompt, calculator-suggestions payload) that
+   *  still expect one string. UI writes to `exposure_classes`. */
   exposure_class: string;
+  /** Task 2 (2026-04-20): full multi-class selection per ČSN EN 206+A2.
+   *  Concrete is typically exposed to multiple environmental actions
+   *  simultaneously (e.g. XF2 + XD1 + XC4 for a bridge deck). Engine uses
+   *  max/min rules over this array to derive min C class, max w/c, min
+   *  cement, air content, sulfate-resistant cement requirement. */
+  exposure_classes: string[];
   /** Curing class per TKP18 §7.8.3. '' = auto from element_type. */
   curing_class: '' | '2' | '3' | '4';
   /** BUG-4: working joints allowed when no dilatation joints */
@@ -436,6 +445,7 @@ export const DEFAULT_FORM: FormState = {
   target_pour_window_h: '',
   concrete_consistency: 'standard',
   exposure_class: '',
+  exposure_classes: [],
   curing_class: '',   // auto from element_type
   working_joints_allowed: '',
   preferred_manufacturer: '',

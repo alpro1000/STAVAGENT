@@ -267,9 +267,15 @@ export interface PlannerInput {
   /** MSS monthly rental override (Kč/month). */
   mss_rental_czk_month?: number;
 
-  // --- Exposure class ---
-  /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). For validation warnings. */
+  // --- Exposure classes ---
+  /** Concrete exposure class (e.g. 'XF2', 'XD3', 'XF4'). Legacy single-string
+   *  API — prefer `exposure_classes`. If only this is set, the engine auto-
+   *  wraps it into `[exposure_class]` before running combined-rules logic. */
   exposure_class?: string;
+  /** Task 2 (2026-04-20): full selection per ČSN EN 206+A2 — concrete is
+   *  typically exposed to multiple simultaneous actions (e.g. XF2 + XD1 +
+   *  XC4 for bridge decks). Engine uses max/min rules across the array. */
+  exposure_classes?: string[];
 
   // --- Options ---
   /** Run Monte Carlo simulation. Default: false */
@@ -596,21 +602,30 @@ const RECOMMENDED_EXPOSURE: Partial<Record<StructuralElementType, string[]>> = {
   zakladova_patka: ['XC2', 'XC4', 'XA1', 'XA2'],
 };
 
-/** Emits the "⚠️ Třída prostředí …" warning when the user-provided
- *  exposure class is outside the typical set for the element type.
+/** Emits the "⚠️ Třída prostředí …" warning when ANY of the user-provided
+ *  exposure classes is outside the typical set for the element type.
  *  Shared by both the main orchestrator path and the pilota early
- *  branch so piloty (XA1/XA2 typical) correctly flag XF4 etc. */
+ *  branch so piloty (XA1/XA2 typical) correctly flag XF4 etc.
+ *
+ *  Task 2 (2026-04-20): accepts an array of classes. Single-string callers
+ *  can pass a 1-element array. When every selected class is OK, no
+ *  warning is emitted. When some are OK and some not, each rogue one is
+ *  flagged individually so the user knows which to revisit. */
 function pushExposureWarning(
   elementType: StructuralElementType,
-  exposure_class: string | undefined,
+  exposure_classes: readonly string[] | undefined,
   labelCs: string,
   warnings: string[],
 ): void {
-  if (!exposure_class) return;
+  if (!exposure_classes || exposure_classes.length === 0) return;
   const recommended = RECOMMENDED_EXPOSURE[elementType];
-  if (!recommended || recommended.includes(exposure_class)) return;
+  if (!recommended) return;
+  const rogue = exposure_classes.filter(c => !recommended.includes(c));
+  if (rogue.length === 0) return;
+  // Phrasing kept compatible with earlier assertions ("Vyberte jednu z: …")
+  // while the array-aware path simply lists each rogue class up front.
   warnings.push(
-    `⚠️ Třída prostředí ${exposure_class} je neobvyklá pro ${labelCs}. ` +
+    `⚠️ Třída prostředí ${rogue.join(', ')} ${rogue.length > 1 ? 'jsou neobvyklé' : 'je neobvyklá'} pro ${labelCs}. ` +
     `Vyberte jednu z: ${recommended.join(', ')}. Ověřte s projektem.`
   );
 }
@@ -1308,7 +1323,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // 2026-04-17: RECOMMENDED_EXPOSURE + pushExposureWarning extracted to
   // module level so the pilota early branch (runPilePath) shares the
   // same allow-list. Warning text uses the "⚠️" prefix convention.
-  pushExposureWarning(elementType, input.exposure_class, profile.label_cs, warnings);
+  // Task 2 (2026-04-20): array-aware — legacy string wrapped in [x].
+  const effectiveExposureClasses = input.exposure_classes
+    ?? (input.exposure_class ? [input.exposure_class] : []);
+  pushExposureWarning(elementType, effectiveExposureClasses, profile.label_cs, warnings);
 
   // Concrete class validation
   if (input.concrete_class && elementType === 'mostovkova_deska') {
@@ -1441,7 +1459,10 @@ export function planElement(input: PlannerInput): PlannerOutput {
     curing_class: effectiveCuringClass,
     // BUG-Z2 (2026-04-15): propagate exposure class so TKP18 §7.8.3 minimum
     // (XF1→5d, XF3/XF4→7d) overrides maturity when the envelope is harsh.
+    // Task 2 (2026-04-20): forward full array so combined bridge decks
+    // (XF2+XD1+XC4) correctly enforce XF2's 5-day floor.
     exposure_class: input.exposure_class,
+    exposure_classes: input.exposure_classes,
   } : undefined;
 
   // Map SeasonMode ('hot'|'normal'|'cold') → Season ('leto'|'podzim_jaro'|'zima') for PROPS_MIN_DAYS
@@ -1463,7 +1484,9 @@ export function planElement(input: PlannerInput): PlannerOutput {
       strip_strength_pct: profile.strip_strength_pct,
       curing_class: effectiveCuringClass,
       // BUG-Z2: TKP18 §7.8.3 minimum (XF1/XF3/XF4) floors the strip wait.
+      // Task 2 (2026-04-20): forward array so combined exposures work.
       exposure_class: input.exposure_class,
+      exposure_classes: input.exposure_classes,
     });
     stripWaitHours = maturityForStrip.min_curing_hours;
     log.push(`Maturity strip: ${(stripWaitHours / 24).toFixed(1)}d (${maturityForStrip.strip_strength_pct}% f_ck, ` +
@@ -2391,7 +2414,10 @@ function runPilePath(
   // path. Piles sit deep in ground and should use XA1/XA2/XA3/XC2 — an
   // XF4 entry (mráz, typical for bridge decks) is a user confusion with
   // the dřík or deck exposure.
-  pushExposureWarning(elementType, input.exposure_class, profile.label_cs, warnings);
+  // Task 2 (2026-04-20): array-aware — legacy string wrapped in [x].
+  const pileExposureClasses = input.exposure_classes
+    ?? (input.exposure_class ? [input.exposure_class] : []);
+  pushExposureWarning(elementType, pileExposureClasses, profile.label_cs, warnings);
 
   // ── 1. Pile drilling (productivity table → schedule + costs) ──────────
   const pile = calculatePileDrilling({
