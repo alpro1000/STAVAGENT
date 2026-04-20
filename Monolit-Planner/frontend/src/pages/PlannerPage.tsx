@@ -300,6 +300,11 @@ export default function PlannerPage() {
           fetchAdvisor={calc.fetchAdvisor}
           update={update}
           tzText={calc.tzText} setTzText={calc.setTzText}
+          tzPositionId={calc.tzPositionId}
+          tzLastAppliedAt={calc.tzLastAppliedAt}
+          tzHistory={calc.tzHistory}
+          appendTzHistoryCb={calc.appendTzHistoryCb}
+          clearTz={calc.clearTz}
           normsScraping={calc.normsScraping} setNormsScraping={calc.setNormsScraping}
           normsScrapeResult={calc.normsScrapeResult} setNormsScrapeResult={calc.setNormsScrapeResult}
           onSaveVariant={plan ? () => saveVariant(plan) : undefined}

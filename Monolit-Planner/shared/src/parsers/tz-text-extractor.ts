@@ -43,6 +43,17 @@ export interface ExtractedParam {
   catalog?: CatalogType;
   /** OTSKP/URS code that produced this value (smeta_line source only) */
   code?: string;
+  /**
+   * Task 3 (2026-04-20): competing values found in the same TZ pass.
+   * Populated when the extractor had to COLLAPSE multiple distinct matches
+   * (e.g. both "C30/37" and "C40/50" appear in the text; primary is the
+   * higher class, alternatives lists the rest). Consumer UI can surface a
+   * conflict picker so the user resolves ambiguity explicitly.
+   *
+   * Empty / undefined when the extractor is confident there was only one
+   * meaningful value.
+   */
+  alternatives?: (string | number)[];
 }
 
 /** A single parsed smeta/budget line: "<code> <description> <unit> <quantity>" */
@@ -338,7 +349,9 @@ export function extractFromText(
       confidence: 1.0, source: 'regex', matched_text: cls,
     });
   } else if (concreteClasses.size > 1) {
-    // Multiple classes found — take the highest (most likely NK)
+    // Multiple classes found — primary = highest (most likely NK).
+    // Task 3 (2026-04-20): expose the remaining candidates as
+    // `alternatives` so the consumer UI can render a conflict picker.
     const sorted = [...concreteClasses].sort((a, b) => {
       const na = parseInt(a.replace(/C(\d+)\/.*/, '$1'));
       const nb = parseInt(b.replace(/C(\d+)\/.*/, '$1'));
@@ -348,6 +361,7 @@ export function extractFromText(
       name: 'concrete_class', value: sorted[0],
       label_cs: `Třída betonu: ${sorted[0]} (nejvyšší z ${concreteClasses.size})`,
       confidence: 0.8, source: 'heuristic', matched_text: sorted.join(', '),
+      alternatives: sorted.slice(1),
     });
   }
 
@@ -389,6 +403,9 @@ export function extractFromText(
     // Emit the singular — legacy API. Older code (advisor prompt, Task 1
     // compat map) reads this. When more than one class is present the
     // confidence drops to 0.8 since the single-string view is lossy.
+    // Task 3 (2026-04-20): populate `alternatives` so Task 3's incremental-
+    // mode UI can surface a conflict picker ("TZ contains XF2 AND XF4 —
+    // choose one") instead of silently taking the strictest.
     results.push({
       name: 'exposure_class', value: primary,
       label_cs: exposures.size === 1
@@ -397,6 +414,7 @@ export function extractFromText(
       confidence: exposures.size === 1 ? 1.0 : 0.8,
       source: exposures.size === 1 ? 'regex' : 'heuristic',
       matched_text: sorted.join(', '),
+      alternatives: exposures.size > 1 ? sorted.slice(1) : undefined,
     });
   }
 
