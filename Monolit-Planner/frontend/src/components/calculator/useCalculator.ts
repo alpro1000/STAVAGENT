@@ -91,6 +91,24 @@ export default function useCalculator() {
   /** Mode A = opened from Monolit position (ordinal days, no date picker) */
   const isMonolitMode = !!positionContext?.position_id || !!positionContext?.part_name;
 
+  // Task 1 (2026-04-20): strict "opened from Monolit Planner" marker.
+  // When `position_id` is in the URL, the parent context (element_type,
+  // volume, position code) is authoritative — Smart Extractor / AI advisor
+  // must not overwrite these fields. See `LOCKED_FIELDS` below.
+  const isTzContextLocked = !!positionContext?.position_id;
+
+  /**
+   * FormState keys that are locked from the parent Monolit Planner context
+   * when `isTzContextLocked` is true. Matches user design decision (Task 1,
+   * 2026-04-20): "Core 3 — element_type + volume_m3 + position code".
+   * Position code is read-only display (not a FormState field), so the
+   * locking here covers the two writable form fields.
+   */
+  const LOCKED_FIELDS = ['element_type', 'volume_m3'] as const;
+  const lockedFieldSet: ReadonlySet<string> = new Set(
+    isTzContextLocked ? LOCKED_FIELDS : [],
+  );
+
   /** Portal mode: opened from Portal (back-link → Portal, not Monolit) */
   const isPortalMode = !!localStorage.getItem('monolit-portal-project');
 
@@ -1311,6 +1329,9 @@ export default function useCalculator() {
     positionContext,
     isMonolitMode,
     isPortalMode,
+    // Task 1: strict marker for TZ context lock (position_id present)
+    isTzContextLocked,
+    lockedFieldSet,
 
     // Form state
     form, setForm,

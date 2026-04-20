@@ -73,6 +73,10 @@ export interface CalculatorSidebarProps {
   // Context
   positionContext: any;
   isMonolitMode: boolean;
+  /** Task 1 (2026-04-20): strict marker — opened from Monolit Planner. */
+  isTzContextLocked?: boolean;
+  /** Task 1: FormState keys locked from parent context. */
+  lockedFieldSet?: ReadonlySet<string>;
   autoClassification: { source?: string; confidence: number; element_type: string } | null;
 
   // TZ text input (Phase 3)
@@ -114,7 +118,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     advisor, advisorLoading, setAdvisor, setAdvisorLoading,
     docSuggestions, docSugLoading, acceptedParams, onAcceptSuggestion, onDismissSuggestion,
     comparison, setComparison, showComparison, setShowComparison,
-    positionContext, isMonolitMode, autoClassification,
+    positionContext, isMonolitMode, isTzContextLocked, lockedFieldSet, autoClassification,
     handleCalculate, handleCompare, fetchAdvisor, canCalculate,
     update, tzText, setTzText,
     normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
@@ -167,9 +171,24 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
                 position-context load via useCalculator.initialForm. The
                 badge below the dropdown still surfaces that result. */}
             <Field label="Typ elementu">
+              {/* Task 1 (2026-04-20): when opened from Monolit Planner
+                  (position_id URL param), element_type is locked from
+                  parent context — user must change it via the source
+                  position, not here. */}
               <select
-                style={inputStyle}
+                style={{
+                  ...inputStyle,
+                  ...(isTzContextLocked && lockedFieldSet?.has('element_type') ? {
+                    background: 'var(--r0-slate-100, #f1f5f9)',
+                    color: 'var(--r0-slate-500)',
+                    cursor: 'not-allowed',
+                  } : {}),
+                }}
                 value={form.element_type}
+                disabled={isTzContextLocked && lockedFieldSet?.has('element_type')}
+                title={isTzContextLocked && lockedFieldSet?.has('element_type')
+                  ? 'Typ elementu je převzat z pozice v Monolit Planner. Změňte v původní pozici.'
+                  : undefined}
                 onChange={e => {
                   const next = e.target.value as StructuralElementType;
                   if (next === form.element_type) return;
@@ -459,6 +478,9 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
             setTzText={setTzText}
             form={form}
             update={update}
+            isTzContextLocked={isTzContextLocked}
+            lockedFieldSet={lockedFieldSet}
+            positionCode={positionContext?.otskp_code || positionContext?.position_id || null}
           />
 
           {/* ─── AI Advisor Button ─── */}

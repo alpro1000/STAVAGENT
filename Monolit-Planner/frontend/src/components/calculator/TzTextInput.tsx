@@ -8,12 +8,26 @@
  *   1. User copies text from TZ PDF
  *   2. Pastes into textarea
  *   3. Regex extracts params (realtime, debounced 500ms)
- *   4. User clicks "Převzít vše" or selects individual params
+ *   4. User clicks "Převzít" or selects individual params
  *   5. Form pre-filled, ready for calculation
+ *
+ * Task 1 (2026-04-20) — TZ context lock:
+ *   When the calculator is opened from Monolit Planner (`position_id` URL
+ *   param), the parent context is authoritative. Smart Extractor then:
+ *     • skips LOCKED fields (element_type, volume_m3)
+ *     • skips parameters NOT compatible with current element_type
+ *     • fills non-locked fields ONLY IF CURRENTLY EMPTY / DEFAULT
+ *   Rejected params surface in an expandable "ignored" list with reasons.
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { extractFromText, type ExtractedParam } from '@stavagent/monolit-shared';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import {
+  extractFromText,
+  explainIncompatibility,
+  isParamCompatibleWith,
+  type ExtractedParam,
+  type StructuralElementType,
+} from '@stavagent/monolit-shared';
 import type { FormState } from './types';
 
 interface TzTextInputProps {
@@ -21,35 +35,57 @@ interface TzTextInputProps {
   setTzText: (v: string) => void;
   form: FormState;
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+  /** Task 1: calculator opened from Monolit Planner (position_id present). */
+  isTzContextLocked?: boolean;
+  /** Task 1: FormState keys locked from parent context — never overwrite. */
+  lockedFieldSet?: ReadonlySet<string>;
+  /** Task 1: position code displayed in lock banner (e.g. "272325"). */
+  positionCode?: string | null;
+}
+
+// ─── Field-value helpers ─────────────────────────────────────────────────────
+
+/**
+ * Return `true` when a FormState field is considered "empty/default" for
+ * the purpose of "fill only if empty" policy (Task 1 decision).
+ * Numbers: 0 / NaN counts as empty. Strings: '' counts as empty. Booleans:
+ * false counts as empty. Undefined/null counts as empty.
+ */
+function isFieldEmpty(value: unknown): boolean {
+  if (value === undefined || value === null) return true;
+  if (typeof value === 'string') return value.trim() === '';
+  if (typeof value === 'number') return value === 0 || Number.isNaN(value);
+  if (typeof value === 'boolean') return value === false;
+  return false;
 }
 
 /**
- * Params that only apply to specific element types.
- * Universal params (concrete_class, exposure_class, volume_m3, height_m) apply to ALL.
+ * Ignored-param record — why a TZ extraction was not applied to the form.
+ * Surfaced in an expandable UI list so the user understands what the
+ * filter dropped (trust signal, not a silent skip).
  */
-const ELEMENT_SPECIFIC_PARAMS: Record<string, string[]> = {
-  is_prestressed: ['mostovkova_deska', 'rigel'],
-  prestress_tensioning: ['mostovkova_deska', 'rigel'],
-  prestress_cables_count: ['mostovkova_deska', 'rigel'],
-  prestress_strands_per_cable: ['mostovkova_deska', 'rigel'],
-  span_m: ['mostovkova_deska', 'rigel'],
-  num_spans: ['mostovkova_deska', 'rigel'],
-  nk_width_m: ['mostovkova_deska'],
-  bridge_deck_subtype: ['mostovkova_deska'],
-  pile_diameter_mm: ['pilota'],
-};
-
-/** Check if an extracted param is relevant for the current element_type. */
-function isRelevantForElement(paramName: string, elementType: string): boolean {
-  const allowed = ELEMENT_SPECIFIC_PARAMS[paramName];
-  if (!allowed) return true; // universal param
-  return allowed.includes(elementType);
+interface IgnoredParam {
+  param: ExtractedParam;
+  reason: 'locked' | 'incompatible' | 'already_filled';
+  reasonText: string;
 }
 
-export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProps) {
+// ─── Component ───────────────────────────────────────────────────────────────
+
+export function TzTextInput({
+  tzText,
+  setTzText,
+  form,
+  update,
+  isTzContextLocked = false,
+  lockedFieldSet,
+  positionCode,
+}: TzTextInputProps) {
   const [expanded, setExpanded] = useState(false);
   const [extracted, setExtracted] = useState<ExtractedParam[]>([]);
   const [checked, setChecked] = useState<Set<string>>(new Set());
+  const [lastApplied, setLastApplied] = useState<{ applied: number; ignored: IgnoredParam[] } | null>(null);
+  const [ignoredOpen, setIgnoredOpen] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Debounced extraction on text change
@@ -57,6 +93,7 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
     if (!tzText.trim()) {
       setExtracted([]);
       setChecked(new Set());
+      setLastApplied(null);
       return;
     }
     clearTimeout(debounceRef.current);
@@ -64,20 +101,59 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
       const params = extractFromText(tzText, { element_type: form.element_type });
       setExtracted(params);
       setChecked(new Set(params.map(p => p.name)));
+      setLastApplied(null);
     }, 500);
     return () => clearTimeout(debounceRef.current);
   }, [tzText, form.element_type]);
 
-  const applyParams = (params: ExtractedParam[]) => {
-    for (const p of params) {
+  /**
+   * Classify every extracted param against three filters (in order):
+   *   1. Locked: field is in `lockedFieldSet` (parent-context source of truth)
+   *   2. Incompatible: param is not meaningful for the current element_type
+   *   3. Already filled: non-locked & compatible, but target field is not empty
+   * Returns the subset that is APPLICABLE (will be filled) + the rejection list.
+   */
+  const triage = useMemo(() => {
+    const applicable: ExtractedParam[] = [];
+    const ignored: IgnoredParam[] = [];
+    const lockSet = lockedFieldSet ?? new Set<string>();
+    const elemType = form.element_type as StructuralElementType;
+    for (const p of extracted) {
+      // Lock filter (Scenario A only — lockedFieldSet is empty in Scenario B)
+      if (lockSet.has(p.name)) {
+        ignored.push({
+          param: p, reason: 'locked',
+          reasonText: `Pole je uzamčeno z pozice${positionCode ? ` ${positionCode}` : ''} (Monolit Planner).`,
+        });
+        continue;
+      }
+      // Compatibility filter (both scenarios)
+      const reasonCs = explainIncompatibility(p.name, elemType);
+      if (reasonCs !== null) {
+        ignored.push({ param: p, reason: 'incompatible', reasonText: reasonCs });
+        continue;
+      }
+      // Fill-only-if-empty filter (both scenarios — user design decision Task 1)
+      const currentValue = (form as Record<string, unknown>)[p.name];
+      if (!isFieldEmpty(currentValue)) {
+        ignored.push({
+          param: p, reason: 'already_filled',
+          reasonText: `Pole je již vyplněné (${String(currentValue)}). Pro přepsání nejprve vymažte ručně.`,
+        });
+        continue;
+      }
+      applicable.push(p);
+    }
+    return { applicable, ignored };
+  }, [extracted, form, lockedFieldSet, positionCode]);
+
+  const applyParams = () => {
+    let appliedCount = 0;
+    for (const p of triage.applicable) {
       if (!checked.has(p.name)) continue;
-      // Skip params not relevant for current element_type (e.g., prestress for základ)
-      if (!isRelevantForElement(p.name, form.element_type)) continue;
       switch (p.name) {
-        case 'element_type': update('element_type', p.value as any); break;
-        case 'concrete_class': update('concrete_class', p.value as any); break;
+        case 'concrete_class': update('concrete_class', p.value as FormState['concrete_class']); break;
         case 'exposure_class': update('exposure_class', String(p.value)); break;
-        case 'volume_m3': update('volume_m3', Number(p.value)); break;
         case 'formwork_area_m2': update('formwork_area_m2', String(p.value)); break;
         case 'height_m': update('height_m', String(p.value)); break;
         case 'nk_width_m': update('nk_width_m', String(p.value)); break;
@@ -87,18 +163,25 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
         case 'is_prestressed': update('is_prestressed', Boolean(p.value)); break;
         case 'bridge_deck_subtype': update('bridge_deck_subtype', String(p.value)); break;
         case 'pile_diameter_mm': update('pile_diameter_mm', String(p.value)); break;
+        // element_type / volume_m3 are in lockedFieldSet when isTzContextLocked;
+        // in Scenario B the applicable filter still accepts them:
+        case 'element_type': update('element_type', p.value as FormState['element_type']); break;
+        case 'volume_m3': update('volume_m3', Number(p.value)); break;
         case 'prestress_tensioning':
-          // This field doesn't exist in FormState yet — skip for now
-          break;
         case 'prestress_cables_count':
         case 'prestress_strands_per_cable':
         case 'thickness_mm':
         case 'reinforcement_total_kg':
         case 'reinforcement_ratio_kg_m3':
-          // These are informational — shown but not directly mappable to form fields
+          // Informational — no direct FormState binding (surfaced in UI only)
+          break;
+        default:
+          // Unknown future param — skip silently (forward compat)
           break;
       }
+      appliedCount += 1;
     }
+    setLastApplied({ applied: appliedCount, ignored: triage.ignored });
   };
 
   const toggleParam = (name: string) => {
@@ -126,6 +209,9 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
     );
   }
 
+  // Build a lookup set of "applicable" names for rendering state
+  const applicableNames = new Set(triage.applicable.map(p => p.name));
+
   return (
     <div style={{
       marginBottom: 10, padding: '8px 10px',
@@ -133,11 +219,25 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
       border: '1px solid var(--r0-slate-200, #e2e8f0)',
       borderRadius: 6,
     }}>
+      {/* Task 1: Lock banner — shown only in Scenario A (position_id present) */}
+      {isTzContextLocked && (
+        <div style={{
+          marginBottom: 6, padding: '4px 8px',
+          background: 'var(--r0-amber-bg, #fef3c7)',
+          border: '1px solid var(--r0-amber-border, #fcd34d)',
+          borderRadius: 4, fontSize: 10, color: 'var(--r0-amber-text, #92400e)',
+          lineHeight: 1.4,
+        }}>
+          🔒 Z pozice{positionCode ? ` ${positionCode}` : ''} (Monolit Planner).
+          Typ elementu a objem jsou uzamčené — TZ je pouze doplňkový zdroj.
+        </div>
+      )}
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
         <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--r0-slate-600)' }}>
           Text z TZ (technická zpráva)
         </span>
-        <button onClick={() => { setExpanded(false); setTzText(''); }}
+        <button onClick={() => { setExpanded(false); setTzText(''); setLastApplied(null); }}
           style={{ background: 'none', border: 'none', fontSize: 10, color: 'var(--r0-slate-400)', cursor: 'pointer' }}>
           Zavřít
         </button>
@@ -159,28 +259,36 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
         <div style={{ marginTop: 6 }}>
           <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--r0-slate-600)', marginBottom: 4 }}>
             Nalezeno ({extracted.length} parametrů):
+            {triage.ignored.length > 0 && (
+              <span style={{ marginLeft: 6, fontWeight: 400, color: 'var(--r0-slate-400)' }}>
+                {triage.applicable.length} použitelných · {triage.ignored.length} přeskočeno
+              </span>
+            )}
           </div>
           {extracted.map((p, i) => {
-            const relevant = isRelevantForElement(p.name, form.element_type);
+            const isApplicable = applicableNames.has(p.name);
+            const ignoredEntry = triage.ignored.find(x => x.param.name === p.name);
             return (
               <label key={`${p.name}-${i}`} style={{
                 display: 'flex', alignItems: 'center', gap: 4, fontSize: 11,
-                color: relevant ? 'var(--r0-slate-700)' : 'var(--r0-slate-400)',
-                cursor: 'pointer', padding: '1px 0',
-                opacity: relevant ? 1 : 0.5,
+                color: isApplicable ? 'var(--r0-slate-700)' : 'var(--r0-slate-400)',
+                cursor: isApplicable ? 'pointer' : 'not-allowed', padding: '1px 0',
+                opacity: isApplicable ? 1 : 0.5,
               }}>
-                <input type="checkbox" checked={checked.has(p.name) && relevant}
-                  disabled={!relevant}
+                <input type="checkbox" checked={checked.has(p.name) && isApplicable}
+                  disabled={!isApplicable}
                   onChange={() => toggleParam(p.name)} style={{ margin: 0 }} />
                 <span style={{ opacity: p.confidence >= 1 ? 1 : 0.7 }}>
                   {p.label_cs}
                 </span>
-                {!relevant && (
+                {ignoredEntry && (
                   <span style={{ fontSize: 9, color: 'var(--r0-slate-400)' }}>
-                    (jiný typ)
+                    ({ignoredEntry.reason === 'locked' ? 'uzamčeno'
+                      : ignoredEntry.reason === 'incompatible' ? 'jiný typ'
+                      : 'už vyplněno'})
                   </span>
                 )}
-                {p.confidence < 1 && relevant && (
+                {p.confidence < 1 && isApplicable && (
                   <span style={{ fontSize: 9, color: 'var(--r0-slate-400)' }}>
                     ({Math.round(p.confidence * 100)}%)
                   </span>
@@ -190,17 +298,21 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
           })}
           <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
             <button
-              onClick={() => applyParams(extracted)}
+              onClick={applyParams}
+              disabled={triage.applicable.length === 0}
               style={{
                 padding: '4px 10px', fontSize: 11, fontWeight: 600,
-                background: 'var(--r0-blue, #3b82f6)', color: 'white',
-                border: 'none', borderRadius: 4, cursor: 'pointer', fontFamily: 'inherit',
+                background: triage.applicable.length > 0 ? 'var(--r0-blue, #3b82f6)' : 'var(--r0-slate-200)',
+                color: triage.applicable.length > 0 ? 'white' : 'var(--r0-slate-400)',
+                border: 'none', borderRadius: 4,
+                cursor: triage.applicable.length > 0 ? 'pointer' : 'not-allowed',
+                fontFamily: 'inherit',
               }}
             >
-              Převzít ({checked.size})
+              Převzít ({triage.applicable.filter(p => checked.has(p.name)).length})
             </button>
             <button
-              onClick={() => { setTzText(''); setExtracted([]); }}
+              onClick={() => { setTzText(''); setExtracted([]); setLastApplied(null); }}
               style={{
                 padding: '4px 10px', fontSize: 11,
                 background: 'none', border: '1px solid var(--r0-slate-300)',
@@ -210,6 +322,44 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
               Vymazat
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Post-apply feedback: applied + ignored badges + expandable list */}
+      {lastApplied && (
+        <div style={{ marginTop: 8, padding: '6px 8px',
+          background: 'white', border: '1px solid var(--r0-slate-200)', borderRadius: 4 }}>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center', fontSize: 11 }}>
+            <span style={{
+              padding: '2px 6px', borderRadius: 3,
+              background: 'var(--r0-emerald-bg, #d1fae5)',
+              color: 'var(--r0-emerald-text, #065f46)', fontWeight: 600,
+            }}>
+              ✓ Aplikováno: {lastApplied.applied}
+            </span>
+            {lastApplied.ignored.length > 0 && (
+              <button
+                onClick={() => setIgnoredOpen(o => !o)}
+                style={{
+                  padding: '2px 6px', borderRadius: 3, border: 'none',
+                  background: 'var(--r0-slate-100, #f1f5f9)',
+                  color: 'var(--r0-slate-600)', fontWeight: 600, fontSize: 11,
+                  cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >
+                ⊘ Ignorováno: {lastApplied.ignored.length} {ignoredOpen ? '▴' : '▾'}
+              </button>
+            )}
+          </div>
+          {ignoredOpen && lastApplied.ignored.length > 0 && (
+            <ul style={{ margin: '6px 0 0 0', paddingLeft: 16, fontSize: 10, color: 'var(--r0-slate-600)', lineHeight: 1.6 }}>
+              {lastApplied.ignored.map((ig, i) => (
+                <li key={`ig-${i}`}>
+                  <strong>{ig.param.label_cs}</strong> — {ig.reasonText}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

@@ -153,7 +153,7 @@ export default function PlannerPage() {
   }, []);
 
   const {
-    positionContext, isMonolitMode, isPortalMode,
+    positionContext, isMonolitMode, isPortalMode, isTzContextLocked, lockedFieldSet,
     form, setForm, result, setResult, error, setError, plan,
     showAdvanced, setShowAdvanced, showLog, setShowLog, showHelp, setShowHelp,
     showNorms, setShowNorms, showProductivityNorms, setShowProductivityNorms,
@@ -293,6 +293,7 @@ export default function PlannerPage() {
           comparison={comparison} setComparison={setComparison}
           showComparison={showComparison} setShowComparison={setShowComparison}
           positionContext={positionContext} isMonolitMode={isMonolitMode}
+          isTzContextLocked={isTzContextLocked} lockedFieldSet={lockedFieldSet}
           autoClassification={autoClassification}
           handleCalculate={handleCalculate} handleCompare={handleCompare}
           canCalculate={calc.canCalculate}
