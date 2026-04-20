@@ -61,12 +61,12 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
     }
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      const params = extractFromText(tzText);
+      const params = extractFromText(tzText, { element_type: form.element_type });
       setExtracted(params);
       setChecked(new Set(params.map(p => p.name)));
     }, 500);
     return () => clearTimeout(debounceRef.current);
-  }, [tzText]);
+  }, [tzText, form.element_type]);
 
   const applyParams = (params: ExtractedParam[]) => {
     for (const p of params) {
@@ -78,6 +78,7 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
         case 'concrete_class': update('concrete_class', p.value as any); break;
         case 'exposure_class': update('exposure_class', String(p.value)); break;
         case 'volume_m3': update('volume_m3', Number(p.value)); break;
+        case 'formwork_area_m2': update('formwork_area_m2', String(p.value)); break;
         case 'height_m': update('height_m', String(p.value)); break;
         case 'nk_width_m': update('nk_width_m', String(p.value)); break;
         case 'total_length_m': update('total_length_m', Number(p.value)); break;
@@ -92,6 +93,8 @@ export function TzTextInput({ tzText, setTzText, form, update }: TzTextInputProp
         case 'prestress_cables_count':
         case 'prestress_strands_per_cable':
         case 'thickness_mm':
+        case 'reinforcement_total_kg':
+        case 'reinforcement_ratio_kg_m3':
           // These are informational — shown but not directly mappable to form fields
           break;
       }

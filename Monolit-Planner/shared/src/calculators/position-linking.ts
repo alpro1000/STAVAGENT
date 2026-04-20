@@ -343,8 +343,10 @@ export function detectWorkTypeFromName(name: string): WorkType {
   if (/osetrov|zrani(?!\s*v)|curing|kropeni/.test(lower)) return 'zrání';
   // Výztuž / armování
   if (/vyztuz|armovan|armatura|ocel\s*b500|kari\s*sit/.test(lower)) return 'výztuž';
-  // Beton (generic) — comes last to avoid swallowing the more specific ones
-  if (/beton|zelezobet|prosty\s*bet/.test(lower)) return 'beton';
+  // Beton (generic) — comes last to avoid swallowing the more specific ones.
+  // "zb" / "žb" (normalized → "zb") = železobeton abbreviation common in smeta
+  // descriptions like "Opěrné zdi a valy ze ŽB tř. C 25/30".
+  if (/beton|zelezobet|\bzb\b|prosty\s*bet/.test(lower)) return 'beton';
 
   return 'unknown';
 }
