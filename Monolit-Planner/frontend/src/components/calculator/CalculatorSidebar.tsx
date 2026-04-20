@@ -9,6 +9,7 @@
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
 import { TzTextInput } from './TzTextInput';
+import type { TzHistoryEntry } from './tzStorage';
 import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, recommendBridgeTechnology, getMSSTactDays } from '@stavagent/monolit-shared';
@@ -79,9 +80,22 @@ export interface CalculatorSidebarProps {
   lockedFieldSet?: ReadonlySet<string>;
   autoClassification: { source?: string; confidence: number; element_type: string } | null;
 
-  // TZ text input (Phase 3)
+  // TZ text input (Phase 3 + Task 3 incremental mode)
   tzText: string;
   setTzText: (v: string) => void;
+  /** Task 3: position_id marker (enables per-element persistence + history). */
+  tzPositionId?: string | null;
+  /** Task 3: ISO timestamp of last TZ apply for this position. */
+  tzLastAppliedAt?: string | null;
+  /** Task 3: persisted history ring buffer (most-recent-last). */
+  tzHistory?: TzHistoryEntry[];
+  /** Task 3: append a history entry (no-op in standalone). */
+  appendTzHistoryCb?: (entry: {
+    method: 'doplnit' | 'prepsat';
+    added: string[]; kept: string[]; conflicts: string[]; ignored: string[];
+  }) => void;
+  /** Task 3: clear text + history for this position (confirm dialog in UI). */
+  clearTz?: () => void;
 
   // Actions
   handleCalculate: () => void;
@@ -121,6 +135,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     positionContext, isMonolitMode, isTzContextLocked, lockedFieldSet, autoClassification,
     handleCalculate, handleCompare, fetchAdvisor, canCalculate,
     update, tzText, setTzText,
+    tzPositionId, tzLastAppliedAt, tzHistory, appendTzHistoryCb, clearTz,
     normsScraping, setNormsScraping, normsScrapeResult, setNormsScrapeResult,
     onSaveVariant,
     apiUrl, isAdmin,
@@ -472,7 +487,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
             </div>
           )}
 
-          {/* ─── TZ Text Input (Phase 3) ─── */}
+          {/* ─── TZ Text Input (Phase 3 + Task 3 incremental mode) ─── */}
           <TzTextInput
             tzText={tzText}
             setTzText={setTzText}
@@ -481,6 +496,11 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
             isTzContextLocked={isTzContextLocked}
             lockedFieldSet={lockedFieldSet}
             positionCode={positionContext?.otskp_code || positionContext?.position_id || null}
+            tzPositionId={tzPositionId}
+            tzLastAppliedAt={tzLastAppliedAt}
+            tzHistory={tzHistory}
+            appendTzHistoryCb={appendTzHistoryCb}
+            clearTz={clearTz}
           />
 
           {/* ─── AI Advisor Button ─── */}

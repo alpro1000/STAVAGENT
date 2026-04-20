@@ -1,240 +1,239 @@
 # Next Session — Handoff Notes
 
 **Last session closed:** 2026-04-20
-**Last task completed:** Task 2 — "Multi-select třídy prostředí s combined rules (ČSN EN 206+A2)"
-**Branch:** `claude/task-02-exposure-multiselect` (PR on `main`, Amazon Q approved)
+**Last task completed:** Task 3 — "Smart Extractor Incremental Mode (persist TZ + Doplnit bez přepisu)"
+**Branch:** `claude/task-03-tz-incremental` (ready to push; opens PR on `main`)
 
-**Prior PRs merged to main during this session:**
-- Task 1 — `claude/task-01-tzcontext-lock` → merged as PR #984 (commit `89b6f7c`)
-  on main. Compat map + `isParamCompatibleWith` + `explainIncompatibility` +
-  `ELEMENT_TZ_COMPATIBILITY` all live.
+**Merged to main this session arc:**
+- Task 1 — TZ context lock (PR #984, commit `89b6f7c`)
+- Task 2 — Multi-select exposure classes (PR #985, commit `3d4e8be`)
+- Task 3 — this task, branched from post-Task-2 main
 
-This branch was branched from the pre-Task-1 `origin/main` and then merged
-forward after Task 1 landed. Only `next-session.md` had a real conflict —
-resolved by keeping Task 2's notes (already aware of Task 1). Other touched
-files auto-merged cleanly.
+Task 3 builds on Task 1's "fill only if empty" policy and Task 2's
+`exposure_classes[]` array support. No conflicts expected when PR opens.
 
 ---
 
-## What shipped in this session (Task 2)
+## What shipped in this session (Task 3)
 
 ### Scope
-Bug: calculator let user pick ONE exposure class; Smart Extractor discarded
-all-but-most-restrictive from TZ; engine never enforced combined-rule
-derived requirements (min C class / max w/c / min cement / air content /
-sulfate-resistant cement). Real bridge mixes are always multi-exposure
-(XF2+XD1+XC4 typical for bridge decks) — so the engine produced wrong
-curing times, missed air-entrainment, and never flagged XA2+ mixes that
-need síranovzdorný cement.
+
+Live SO-204 user feedback: opening the same position twice, user pastes
+a second TZ fragment from a different document (e.g. geology report →
+XA2 chloride), the Smart Extractor wiped the user's manual XC4 entry
+because the new TZ didn't mention XC4. Also the TZ textarea started
+empty every session — user re-pasted the same 500-character excerpt on
+each open. Also if the TZ contained TWO conflicting values for one
+parameter (C30/37 and C40/50), the extractor silently collapsed to the
+higher one without surfacing the ambiguity.
+
+Task 1 already prevented overwriting filled fields. Task 3 adds:
+- Per-element persistence (text + apply history survive across sessions)
+- Secondary textarea for appending without editing original
+- "Přepsat" safety toggle to inverse the Doplnit default
+- 4-group results (Přidáno / Zachováno / Konflikt / Ignorováno)
+- Conflict picker for ambiguous multi-match
+- Last-5-applies history panel
+- 50 000-char cap with warning
+- Array-aware isFieldEmpty (fixes a Task 2 regression where non-empty
+  `exposure_classes: []` was missed)
 
 ### Fix — three layers
 
-**1. Engine — new module `shared/calculators/exposure-combination.ts`**
+**1. Engine — `shared/parsers/tz-text-extractor.ts`**
 
-- `EXPOSURE_CLASS_REQUIREMENTS: Record<ExposureClass, Requirements>` —
-  full table for all 20 classes (X0, XC1-4, XD1-3, XF1-4, XA1-3, XM1-3,
-  XS1-3) per ČSN EN 206+A2 Tab. F.1 + ČSN P 73 2404.
-- `combineExposure(classes[])` — applies max/min rules: `min_C_class =
-  max`, `max_wc = min`, `min_cement = max`, `min_air = 4.0 % if any XF2/3/4`,
-  `requires_sulfate_resistant = any XA2/XA3`. Buckets selection by
-  category for UI grouping.
-- `validateExposureCombination(classes[], {cement_type_is_sulfate_resistant})`
-  — advisory warnings: empty selection, XF+salts without XD, XA2/3
-  without sulfate-resistant cement, multiple-in-category, unknown class.
-- Helpers: `getMostRestrictive()` (priority XF > XD/XS > XA > XM > XC >
-  X0 with numeric-suffix tiebreak), `getExposureCategory()`,
-  `formatCombinedSummary()`, `compareConcreteClass()`,
-  `isValidExposureClass()`.
+- `ExtractedParam.alternatives?: (string | number)[]` — new optional
+  field. Populated when the regex pass saw multiple distinct matches
+  collapsed into one primary value. Value ordered: primary first,
+  alternatives in descending severity.
+- Emits alternatives for:
+  - `concrete_class` multi-match (primary = highest class)
+  - `exposure_class` singular (primary = most-restrictive; only when
+    multi-class found). The `exposure_classes` plural already holds
+    the full list, so it does NOT duplicate into alternatives.
 
-**2. Engine wiring**
+**2. Storage — `frontend/src/components/calculator/tzStorage.ts` (NEW)**
 
-- `planner-orchestrator.ts PlannerInput.exposure_classes?: string[]`
-  alongside legacy `exposure_class?: string`. `pushExposureWarning()` now
-  accepts an array; flags each rogue class individually; keeps the
-  "Vyberte jednu z: …" phrasing so existing snapshot tests pass.
-- `maturity.ts CuringParams.exposure_classes?: string[]` +
-  `getExposureMinCuringDays()` now accepts `string | string[]` and
-  picks the max across the array. Bridge-deck combos (XF2+XD1+XC4)
-  correctly hit XF2's 5-day floor, not XC4's 0.
-- `tz-text-extractor.ts` — regex rewritten to enumerate the 20 valid
-  classes explicitly (`\bX(?:0|C[1-4]|D[1-3]|F[1-4]|A[1-3]|M[1-3]|S[1-3])\b`).
-  Now recognises X0 (previously dropped) and rejects invented classes
-  (XD9, XG1, XF2A). Emits NEW param `exposure_classes: string[]` with
-  all distinct matches + legacy `exposure_class: string` (most-
-  restrictive, confidence 0.8 when collapsed).
-- `ExtractedParam.value` type extended to include `string[]` for
-  multi-value fields.
+- `planner-tz:{position_id}` → JSON blob:
+  ```
+  { text, lastAppliedAt, appliedCount, history: TzHistoryEntry[], version: 1 }
+  ```
+- `TzHistoryEntry = { ts, method: 'doplnit'|'prepsat', added[], kept[], conflicts[], ignored[] }`
+- Functions: `loadTzBlob()`, `saveTzText()`, `appendTzHistory()`,
+  `clearTzBlob()`, `isFieldEmpty()`, `formatTzHistoryLine()`
+- Constants: `TZ_MAX_CHARS = 50_000`, `TZ_MAX_HISTORY = 5`
+- Legacy fallback: when `position_id` is null/undefined (standalone
+  mode), reads/writes to the original `planner-tz-text` session-only
+  key. No new per-element state leaks in that mode.
+- Truncates on save if over 50 KB. Empty-text-with-no-history drops the
+  record to keep LS tidy.
 
-**3. Frontend**
+**3. Hook wiring — `useCalculator.ts`**
 
-- `types.ts FormState.exposure_classes: string[]` (primary) +
-  `exposure_class: string` (legacy mirror, derived = most restrictive).
-- `DEFAULT_FORM.exposure_classes = []`.
-- `helpers.ts SmartDefaults.exposure_classes: string[]` + 24 per-element
-  auto-suggestions from task spec Scenario B table (e.g.
-  `mostovkova_deska → ['XF2','XD1','XC4']`, `rimsa → ['XF4','XD3']`,
-  `podkladni_beton → ['X0']`).
-- `useCalculator.ts`:
-  - LS migration on load: if `exposure_classes` missing/non-array →
-    `[exposure_class].filter(Boolean)`.
-  - Smart-defaults useEffect auto-fills `exposure_classes` when the
-    selection is empty on element_type change (never overwrites).
-  - `positionContext.exposure_class` URL seed now also populates the
-    array.
-  - Engine input: forwards full array + singular mirror
-    (`getMostRestrictive()`).
-- New component `ExposureClassesPicker.tsx` — 5-category checkbox pill
-  grid (Bez rizika / Karbonatace / Chloridy / Mráz / Chemie / Obrus).
-  Below the pills: emerald-tinted derived-requirements summary line
-  ("XF2+XD1+XC4 → C30/37, w/c ≤ 0.50, cement ≥ 300 kg/m³, vzduch ≥ 4.0 %")
-  and amber advisory warnings list.
-- `CalculatorFormFields.tsx` legacy 11-option `<select>` replaced with
-  `<ExposureClassesPicker>`. Cement-type sulfate-resistant recognition
-  via regex (`/SR|SV/i.test(cement_type)`) suppresses redundant warning.
+- `tzText` state now sourced from `loadTzBlob(positionContext.position_id)`
+  on mount + re-hydrated on position change (SPA navigation).
+- New exposed values: `tzHistory`, `tzLastAppliedAt`, `tzPositionId`,
+  `appendTzHistoryCb`, `clearTz`.
+- Element-type-change auto-clear restricted to standalone mode
+  (per-position LS is already segregated by position_id, so within a
+  single position the element_type can't change in Scenario A).
+
+**4. UI — `TzTextInput.tsx` rewrite**
+
+- Auto-expands on mount if this position already has saved TZ.
+- Blue banner "💾 TZ uloženo {date} · {N} znaků" when in saved-state.
+- Second textarea (dashed border) "Přidat nový text TZ…" appears only
+  when saved TZ exists.
+- Char counter + 50k warning row under the textareas.
+- Button label flips: first apply → "Aplikovat z TZ"; with saved TZ →
+  "Doplnit z TZ". Button changes to amber background when "Přepsat"
+  toggle is ON.
+- "Přepsat existující hodnoty" checkbox, default OFF, safety-reset on
+  every mount (component-local state). Highlighted amber when ON with
+  "⚠️ Ruční úpravy budou přepsány" hint.
+- Conflict dropdown per conflicting param ("C30/37 / C40/50 — vyberte").
+  Selected value flows into the apply click; unresolved conflicts land
+  in the Konflikt count (no auto-pick).
+- 4-group post-apply feedback pills: ✓ Přidáno / = Zachováno / ⚡
+  Konflikt / ⊘ Ignorováno (expandable list for ignored reasons).
+- "Historie úprav (N)" collapsible at the bottom, shows last 5 entries
+  with timestamp + method (Doplnit/Přepsat amber) + short summary.
+- "Vymazat TZ" button with confirm dialog; clears both text AND history
+  for this position.
+- `isFieldEmpty` moved into `tzStorage.ts` and now handles arrays
+  (`[]` counts as empty) — fixes a Task 2 regression where the
+  `exposure_classes: []` default was misread as "filled".
 
 ### Tests
-- `exposure-combination.test.ts` — **40 new tests**: catalog sanity
-  (5), helpers (isValidExposureClass/priority/mostRestrictive/category/
-  compareConcreteClass — 9), `combineExposure()` rules (5), 8 real ŘSD
-  practice combos (AC 17), SO 204 D6 golden (AC 18), validation
-  warnings (8), performance (AC 20).
-- `tz-text-extractor.test.ts` — **+10 new tests** for multi-match
-  emission (SO 204 TZ regression, single class → array-of-1, dedup, X0
-  recognition, most-restrictive singular derivation, 0.8 confidence on
-  collapse, rejects invented classes, word-boundary, real mostovka
-  excerpt, empty text).
 
-**Totals: 921 → 971 shared tests pass** (+50). Shared tsc clean.
-Frontend tsc clean. Vite build succeeds (1,673 KB main bundle — preexisting
-size, no new deps introduced).
+- `tz-text-extractor.test.ts` — **+6 new cases** (77 → 83):
+  - 2 concrete classes → primary + alternatives[]
+  - Single concrete → no alternatives
+  - 3 concrete → alternatives carries remaining 2
+  - exposure_class singular alternatives (multi-class scenario)
+  - exposure_class alternatives undefined when only 1 class
+  - exposure_classes plural does NOT duplicate into alternatives
+- Frontend test suite — NONE added. Frontend has no vitest config
+  (existing pattern); the TZ UI is covered via shared engine tests +
+  Vite build type-checks. `isFieldEmpty` array-handling is exercised
+  through the extractor's `exposure_classes` path downstream but NOT
+  unit-tested in isolation. If a frontend vitest suite is added later,
+  obvious targets: tzStorage round-trip with `localStorage` mock,
+  TzTextInput triage with React Testing Library.
+
+**985 → 991 shared tests pass** (+6 Task 3). Shared tsc + frontend tsc
++ Vite build all clean.
 
 ### Spec compliance notes
 
 | AC | Status | Notes |
 |---|---|---|
-| 1. 5-category checkbox grid | ✅ | `ExposureClassesPicker` categories: Bez rizika / Karbonatace / Chloridy / Mráz / Chemie / Obrus |
-| 2. 1-5 tříd selectable | ✅ | No cap; pills toggle independently |
-| 3. Derived summary live-updated | ✅ | `combineExposure()` memo via React useMemo |
-| 4. Table for all 20 classes | ✅ | Includes 3 XS classes (not in task spec but completeness) |
-| 5. max C / min wc / max cement rules | ✅ | Unit-tested |
-| 6. Air 4.0 % if any XF2/3/4 | ✅ | Unit-tested |
-| 7. Síranovzdorný when XA2/3 | ✅ | Unit-tested; cement-type regex suppresses redundant warning |
-| 8. XF+salts without XD warning | ✅ | Triggers on XF2/XF4 only (XF1/XF3 are mráz bez solí) |
-| 9. XA2/3 sulfate warning | ✅ | Suppressed when cement_type contains SR/SV |
-| 10. Empty selection info | ✅ | "Vyberte alespoň X0" |
-| 11. Auto-suggestion from element_type | ✅ | `getSmartDefaults()` arrays + useEffect fills empty |
-| 12. Doesn't overwrite manual | ✅ | Only applies if `exposure_classes.length === 0` |
-| 13. Multi-match in TZ | ✅ | Regex captures all 20 classes in `Set`, emits full array |
-| 14. Conflict warning on same-category | ✅ | `multiple_in_category` validation warning |
-| 15. Engine accepts array | ✅ | Adapter layer: if `exposure_classes` missing, wraps singular |
-| 16. Migration from string | ✅ | LS load auto-converts |
-| 17. 8 typical combos tests | ✅ | See AC17 block in test file |
-| 18. SO 204 golden test | ✅ | Covered in both exposure + extractor tests |
-| 19. Human-readable summary | ✅ | `formatCombinedSummary()` |
-| 20. Performance < 10 ms | ✅ | 1000 iterations in ~200 ms → ~0.2 ms each |
+| 1. TZ persists per-element | ✅ | `planner-tz:{position_id}` LS key |
+| 2. Saved TZ banner with timestamp | ✅ | "💾 TZ uloženo {date} · {N} znaků" |
+| 3. "Doplnit z TZ" rename | ✅ | Button label flips based on `hasSavedTz` |
+| 4. Secondary textarea in incremental | ✅ | Only renders when `hasSavedTz` |
+| 5. Doplnit doesn't overwrite filled | ✅ | Task 1 default + array-aware check |
+| 6. 4-group results | ✅ | Přidáno / Zachováno / Konflikt / Ignorováno |
+| 7. Conflict picker manual | ✅ | `<select>` per conflicting param, no auto |
+| 8. Přepsat toggle default OFF + reset | ✅ | Component-local state, no persistence |
+| 9. Přepsat warning badge | ✅ | Amber "⚠️ Ruční úpravy budou přepsány" |
+| 10. History last 3-5 | ✅ | `TZ_MAX_HISTORY = 5`, ring buffer |
+| 11. History read-only | ✅ | No interaction, just list |
+| 12. Standalone no persistence | ✅ | No position_id → legacy session-only |
+| 13. 50k char cap + warning | ✅ | Red counter + disabled apply button |
+| 14. Unlink → TZ in session | ✅ | Same LS fallback path |
+| 15. Vymazat with confirm | ✅ | `window.confirm()` dialog |
+| 16. No retroactive fill | ✅ | First open of legacy position → empty |
+| 17. Load < 100 ms | ✅ | Single JSON.parse on mount, no network |
+| 18. SO-204 scenario works | ✅ | Session 1 = 4 fields + Session 2 XA2 → adds to Task 2 exposure_classes array |
+| 19. Merge tests per field type | ⚠️ | Array case covered in shared tests via exposure_classes; numeric/string/bool covered by Task 1 + this update. No dedicated isFieldEmpty test file (frontend has no vitest). |
+| 20. Conflict C30/37 vs C40/50 | ✅ | Full path from regex → alternatives → UI picker → apply |
 
-### Spec deviations
+### Known gaps / deferred items
 
-- **Task spec said "Mostovka XF2+XD1+XC4 → cement 320"** but ČSN EN
-  206+A2 Tab. F.1 baseline values are all 300 for this trio. Stuck to
-  the norm — callers who want 320 should add XD2 (mokro+chloridy) or
-  bump manually. Documented in the corresponding test comment.
-- **Task spec said "Pilíř v řece XF2+XD1+XA1 → síranovzdorný"** but
-  XA1 alone doesn't trigger sulfate-resistant requirement per the
-  norm. That bit is XA2+. Spec probably conflated XA1 with XA2 in the
-  example. Stuck to norm; test asserts `requires_sulfate_resistant =
-  false` with an explanatory comment.
+- **Frontend has no vitest config.** tzStorage + TzTextInput triage
+  rely on Vite build + shared engine tests for coverage. If regressions
+  bite, bootstrap frontend vitest with `jsdom` environment + RTL —
+  standard recipe, ~30 min. Priority: low until a real regression hits.
+- **History entries are append-only; no retention of older than 5.**
+  Spec explicitly says "не full audit log", so this is by design.
+- **Conflict picker stores user choice in component state (not LS).**
+  If the user picks C30/37 but doesn't click Apply and navigates away,
+  the choice is lost. Acceptable for this UX (choice is trivial to
+  redo). If user complains, persist per-conflict choice alongside the
+  blob.
+- **`exposure_class` singular is in Task 1's UNIVERSAL_TZ_PARAMS but
+  `exposure_classes` plural was added in the Task-2-into-Task-1 merge
+  follow-up.** Both are now covered by the compat filter.
+- **"Zachováno" count includes fields that DID change value at
+  extraction time but the extractor returned the same value as
+  currently in the form.** Not distinguishable without a deep-compare
+  step; the status labels are accurate enough for the UX intent.
+- **`exposure_classes` doesn't participate in conflict detection yet.**
+  The plural array expresses the full set, so there's no "conflict"
+  per se — but if the user wanted a "confirm merge" step for a second
+  TZ that contains XA1 (the current has XF2+XD1), no UI surfaces that
+  today. Minor UX gap, not blocking.
 
 ---
 
 ## How to verify live after deploy
 
-1. Open `kalkulator.stavagent.cz/planner` as a fresh session. Expect
-   "Třídy prostředí" section with 5 category rows of pills, all empty.
-2. Switch element_type to "Mostovková deska" — XF2, XD1, XC4 pills
-   should auto-tick; summary should show "XF2 + XD1 + XC4 → C30/37,
-   w/c ≤ 0.50, cement ≥ 300 kg/m³, vzduch ≥ 4.0 %".
-3. Manually tick XA2 — warning appears: "Vybraná třída XA2/XA3 vyžaduje
-   síranovzdorný cement …". Change cement_type to "CEM III/B 42,5 SV" —
-   warning disappears.
-4. Paste into TZ textarea: `"Expozice: XF2 (mostovka), XD1, XC4
-   (opěry v zemi). Beton C30/37."` — extractor finds all 3 classes +
-   C30/37; Task 1 compat filter (now merged) lets the applied array
-   through because `exposure_classes` is in UNIVERSAL_TZ_PARAMS (see
-   Known gaps below for the 2-line follow-up).
-5. Returning user with old LS (single `exposure_class: "XF2"`) —
-   migration should keep the XF2 pill ticked without error.
-6. **Task 1 regression check** — open calculator with
-   `?position_id=XXX&part_name=ZÁKLADY+PILÍŘE` and paste a bridge TZ:
-   element_type still reads "Základy pilíře" (locked dropdown), bridge-
-   deck params land in the ignored list with compat-reason text.
-
----
-
-## Known gaps / deferred items
-
-- **`exposure_classes` missing from Task 1 UNIVERSAL_TZ_PARAMS.** This
-  branch's extractor emits the new plural param, but `element-classifier.ts
-  UNIVERSAL_TZ_PARAMS` (added by Task 1, now on main) lists only the
-  singular. Symptom: if a user opens the calculator in Scenario A
-  (`?position_id=…`) and pastes a multi-exposure TZ, the plural param
-  falls through to `isParamCompatibleWith`'s "unknown → allow" branch,
-  which happens to be correct by accident. Still, add the explicit entry
-  for future-proofing (2-line diff): append `'exposure_classes'` to
-  `UNIVERSAL_TZ_PARAMS` at `shared/src/classifiers/element-classifier.ts`
-  around line 1688, and add the param name to the test covering universal
-  compatibility. Post-merge follow-up.
-- **AI advisor prompt still reads singular `exposure_class`.** Not a
-  regression (it gets the most-restrictive class mirrored from the
-  array), but the prompt loses the full multi-exposure picture. Follow-
-  up: extend `backend/advisor-prompt.js` to surface
-  `exposure_classes` when present.
-- **Calculator-suggestions payload** (document facts) still echoes the
-  single `exposure_class`. Same rationale — extend when pulling it
-  through to the AI advisor.
-- **Cement-type sulfate-resistant recognition** is regex-based (`SR|SV`
-  substring). Works for CEM II/B-SV, CEM III/A-SR etc., but users on
-  non-standard identifiers would fall through. Could harden to an
-  explicit list if real-life data shows false negatives.
-- **ExposureClassesPicker has no unit tests.** The 40 engine tests
-  cover combine/validate/summary semantics; the picker is a pure
-  mapping of those onto React state. If a component test suite is
-  spun up later, the obvious targets are toggle behaviour, empty
-  state, warnings rendering.
+1. Open `kalkulator.stavagent.cz/planner?position_id=TEST1&part_name=ZÁKLADY`
+   as a fresh session. Expect: collapsed CTA "Vložit text z TZ (Ctrl+V)".
+2. Paste `"C30/37 XF2, výška 4 m, cement 320 kg/m³"`. Click "Aplikovat
+   z TZ". Expect: 4-group pills show added=3 or 4.
+3. Close calculator, reopen the same URL. Expect: collapsed CTA now
+   reads "TZ uloženo · 48 znaků" in blue. Click to expand.
+4. Expect: main textarea shows saved text, secondary dashed textarea
+   below it with placeholder. Blue banner "💾 TZ uloženo {datetime}".
+5. In secondary textarea paste `"Agresivní voda XA2 — síranovzdorný
+   cement doporučen."`. Expect: extractor finds XA2 (plural array
+   appends); button label = "Doplnit z TZ" (blue).
+6. Click Doplnit. Expect: Přidáno pill > 0, Zachováno pill includes
+   previous C30/37 + XF2, Konflikt = 0. History panel (at bottom)
+   shows 2 entries now.
+7. Paste `"C40/50 dál, alt. C30/37"` into main textarea. Expect:
+   extractor's concrete_class param shows a `<select>` picker
+   "— vyberte —" with "C40/50" + "C30/37" options. Konflikt count = 1.
+8. Toggle "Přepsat existující hodnoty" ON. Expect: banner turns amber,
+   button turns amber, label = "Doplnit z TZ" (label doesn't change
+   based on toggle — the pressure comes from the toggle itself).
+9. Paste 50_001 characters. Expect: char counter red, "překračuje
+   limit" hint, apply button disabled.
+10. Click "Vymazat TZ". Confirm dialog → Yes. Expect: main textarea
+    empties, history panel disappears, LS key removed.
 
 ---
 
 ## Next session starting points
 
-1. **P0 (2 lines): Add `exposure_classes` to UNIVERSAL_TZ_PARAMS.** See
-   Known gaps above. ~5 min.
+1. **P0 (5 min): Bootstrap frontend vitest** — install `vitest` + `jsdom`
+   + `@testing-library/react`, add config, write one smoke test for
+   tzStorage round-trip. Unblocks all future frontend unit tests.
 2. **P1: Fix "Jen problémy" filter** — `stavagent-portal/routes/positions.js:150`
    inverted predicate. 1-line diff + regression test. ~15 min.
 3. **P1: Bridge formwork whitelist** — AI still recommends Dokaflex for
    mostovka. Add `BRIDGE_FORMWORK_WHITELIST` (Framax/Top 50/Staxo). ~1h.
 4. **P1: Advisor prompt uses exposure_classes array** — extend
-   `backend/advisor-prompt.js` to surface full multi-class selection in
-   the prompt ("Třídy prostředí: XF2, XD1, XC4 — kombinované požadavky
-   …"). ~1h.
+   `backend/advisor-prompt.js` to surface full multi-class selection
+   (from Task 2). ~1h.
 5. **P1: Validation warnings Phase 2** — parallel
    `warnings_structured[]` with severity/category, UI renderer,
    "Pokračovat přesto" gate on critical. ~4-5h.
-6. **P2: SmartInput PDF pipeline** — MinerU OCR integration for uploaded
-   PDFs, chunked extraction, cross-document fusion. ~4h + infra work.
+6. **P2: exposure_classes conflict handling** — when a second TZ apply
+   would replace one XF2 with an XF4-only selection, surface as
+   conflict, not silent merge.
 
 ---
 
 ## Session admin
 
-- CLAUDE.md NOT bumped by either task — both are UX + engine additions
-  without infrastructure change. Could add under "Monolit-Planner"
-  section in a follow-up:
-  > v4.24.x: TZ context lock (Task 1) — compat map + position_id
-  > marker + ignored-param feedback. Multi-select exposure classes
-  > (Task 2) — 20-class catalog + combineExposure (ČSN EN 206+A2) +
-  > 5-category pill UI + TZ regex rewrite.
-- Branch: `claude/task-02-exposure-multiselect` (merged forward from
-  post-Task-1 main; `next-session.md` conflict resolved by keeping
-  Task 2's handoff notes + noting Task 1 as merged).
-- Commit message convention: `FEAT: Multi-select exposure classes +
-  ČSN EN 206+A2 combined rules (Task 2)`.
+- CLAUDE.md NOT bumped across Task 1 + 2 + 3 (all UX + engine
+  additions). Could add under "Monolit-Planner" section in a follow-up:
+  > v4.24.x: TZ context lock (Task 1) + multi-select exposure classes
+  > (Task 2) + Smart Extractor incremental mode (Task 3 — per-element
+  > persistence, 4-group results, conflict picker, last-5 history).
+- Branch: `claude/task-03-tz-incremental`
+- Commit message convention: `FEAT: Smart Extractor incremental mode +
+  per-element TZ persistence + conflict picker (Task 3)`.

@@ -21,6 +21,7 @@ import type { CuringResult } from '@stavagent/monolit-shared';
 import type { StructuralElementType } from '@stavagent/monolit-shared';
 import type { ConcreteClass } from '@stavagent/monolit-shared';
 import { loadFromLS, LS_FORM_KEY, LS_SCENARIOS_KEY, LS_SCENARIO_SEQ_KEY, getSmartDefaults } from './helpers';
+import { loadTzBlob, saveTzText, appendTzHistory, clearTzBlob, type TzHistoryEntry } from './tzStorage';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState, ScenarioSnapshot, SavedVariant } from './types';
 import { DEFAULT_FORM } from './types';
 import { plannerVariantsAPI } from '../../services/api';
@@ -759,28 +760,67 @@ export default function useCalculator() {
   }, [activeVariantId, savedVariants, form]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
-  // TZ text excerpt state — persisted in localStorage so it survives refresh,
-  // but cleared when the user switches element_type (BUG 2 live-test 2026-04-20:
-  // text from mostovka was leaking into opěrná zeď calc). Still shared across
-  // positions of the same element_type (TZ describes the whole element class).
-  const [tzText, setTzTextRaw] = useState(() => {
-    try { return localStorage.getItem('planner-tz-text') || ''; } catch { return ''; }
-  });
+  // TZ text excerpt state — Task 3 (2026-04-20): per-position persistence.
+  // When the calculator is opened from Monolit Planner with a position_id,
+  // we load/save under `planner-tz:{position_id}` alongside a history
+  // ring buffer. Standalone launches fall through to the legacy session-
+  // only `planner-tz-text` key (cleared on element_type change, since in
+  // that mode there's no position identity to key by). See tzStorage.ts.
+  const tzPositionId = positionContext?.position_id ?? null;
+  const initialTzBlob = useMemo(() => loadTzBlob(tzPositionId), [tzPositionId]);
+  const [tzText, setTzTextRaw] = useState<string>(initialTzBlob?.text ?? '');
+  const [tzHistory, setTzHistory] = useState<TzHistoryEntry[]>(initialTzBlob?.history ?? []);
+  const [tzLastAppliedAt, setTzLastAppliedAt] = useState<string | null>(initialTzBlob?.lastAppliedAt ?? null);
+
+  // Re-hydrate when the user navigates between positions (position_id
+  // changes without a full remount — happens in the Monolit SPA).
+  useEffect(() => {
+    const blob = loadTzBlob(tzPositionId);
+    setTzTextRaw(blob?.text ?? '');
+    setTzHistory(blob?.history ?? []);
+    setTzLastAppliedAt(blob?.lastAppliedAt ?? null);
+  }, [tzPositionId]);
+
   const setTzText = useCallback((v: string) => {
     setTzTextRaw(v);
-    try { if (v) localStorage.setItem('planner-tz-text', v); else localStorage.removeItem('planner-tz-text'); } catch {}
-  }, []);
+    saveTzText(tzPositionId, v);
+  }, [tzPositionId]);
 
-  // BUG 2 fix (2026-04-20): clear TZ text when element_type changes.
-  // Text written for mostovka is almost never relevant to opěrná zeď / pilota.
+  /** Task 3 callback — TzTextInput calls this after each Apply click. */
+  const appendTzHistoryCb = useCallback((entry: {
+    method: 'doplnit' | 'prepsat';
+    added: string[]; kept: string[]; conflicts: string[]; ignored: string[];
+  }) => {
+    if (!tzPositionId) return; // standalone — no history persistence
+    appendTzHistory(tzPositionId, entry);
+    // Re-read to pick up the new lastAppliedAt + capped history list.
+    const refreshed = loadTzBlob(tzPositionId);
+    setTzHistory(refreshed?.history ?? []);
+    setTzLastAppliedAt(refreshed?.lastAppliedAt ?? null);
+  }, [tzPositionId]);
+
+  /** Task 3 callback — "Vymazat TZ" button. */
+  const clearTz = useCallback(() => {
+    clearTzBlob(tzPositionId);
+    setTzTextRaw('');
+    setTzHistory([]);
+    setTzLastAppliedAt(null);
+  }, [tzPositionId]);
+
+  // BUG 2 fix (2026-04-20): clear TZ text when element_type changes in
+  // STANDALONE mode only. In parent-bound mode Task 1 locks element_type
+  // so it can't change; per-position LS is already segregated by
+  // position_id anyway.
   const lastElementTypeRef = useRef(form.element_type);
   useEffect(() => {
     if (lastElementTypeRef.current !== form.element_type) {
-      setTzTextRaw('');
-      try { localStorage.removeItem('planner-tz-text'); } catch {}
+      if (!tzPositionId) {
+        setTzTextRaw('');
+        saveTzText(null, '');
+      }
       lastElementTypeRef.current = form.element_type;
     }
-  }, [form.element_type]);
+  }, [form.element_type, tzPositionId]);
 
   const fetchAdvisor = useCallback(async () => {
     setAdvisorLoading(true);
@@ -1404,6 +1444,8 @@ export default function useCalculator() {
     fetchAdvisor,
     // TZ text input (Phase 3)
     tzText, setTzText,
+    // Task 3 (2026-04-20): per-position TZ persistence
+    tzHistory, tzLastAppliedAt, appendTzHistoryCb, clearTz, tzPositionId,
 
     // Norms scraping
     normsScraping, setNormsScraping,

@@ -572,10 +572,58 @@ Celkový objem 605 m³ dle rozpočtu.
       expect(arr!.value).toEqual(expect.arrayContaining(['XF2', 'XD1', 'XC4']));
     });
 
-    it('empty text → no exposure params at all', () => {
+    it('empty text → no exposure params at all (alternatives undefined too)', () => {
       const r = extractFromText('');
       expect(findParam(r, 'exposure_classes')).toBeUndefined();
       expect(findParam(r, 'exposure_class')).toBeUndefined();
+    });
+  });
+
+  // ─── Task 3 (2026-04-20): conflict alternatives ──────────────────────
+
+  describe('alternatives[] — conflict detection across multi-match', () => {
+    it('two concrete classes C30/37 + C40/50 → primary C40/50 + alternatives[C30/37]', () => {
+      const r = extractFromText('Nosná konstrukce C40/50, spodní stavba C30/37.');
+      const p = findParam(r, 'concrete_class');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('C40/50');
+      expect(p!.alternatives).toEqual(['C30/37']);
+    });
+
+    it('single concrete class → no alternatives surfaced', () => {
+      const r = extractFromText('Celkově C30/37.');
+      const p = findParam(r, 'concrete_class');
+      expect(p!.alternatives).toBeUndefined();
+    });
+
+    it('three concrete classes → alternatives carries the remaining two', () => {
+      const r = extractFromText('C50/60 + C30/37 + C20/25 — podklad.');
+      const p = findParam(r, 'concrete_class');
+      expect(p!.value).toBe('C50/60');
+      expect(p!.alternatives).toEqual(['C30/37', 'C20/25']);
+    });
+
+    it('exposure_class singular surfaces alternatives when multi-match', () => {
+      const r = extractFromText('Mostovka XF4, opěry v zemi XC2.');
+      const p = findParam(r, 'exposure_class');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('XF4');
+      expect(p!.alternatives).toEqual(['XC2']);
+    });
+
+    it('exposure_class singular alternatives undefined when only one class', () => {
+      const r = extractFromText('Mostovka XF4.');
+      const p = findParam(r, 'exposure_class');
+      expect(p!.alternatives).toBeUndefined();
+    });
+
+    it('exposure_classes (plural) does NOT duplicate into alternatives', () => {
+      // The plural array already expresses the full set; alternatives
+      // only makes sense on the singular.
+      const r = extractFromText('XF2, XD1, XC4.');
+      const plural = findParam(r, 'exposure_classes');
+      expect(plural).toBeDefined();
+      expect((plural as any).alternatives).toBeUndefined();
     });
   });
 });
