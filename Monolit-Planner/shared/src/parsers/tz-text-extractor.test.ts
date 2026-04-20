@@ -339,6 +339,150 @@ Všechny piloty jsou navrženy z betonu C30/37 XA2.`;
     });
   });
 
+  // ─── Codeless smeta rows (live bug 2026-04-20) ──────────────────────────
+
+  describe('extractSmetaLines — codeless (no OTSKP/URS code prefix)', () => {
+    // Exact text pasted by the user on 2026-04-20 — same VP4 opěrná zeď as
+    // the 2026-04-17 case, but the OTSKP codes were stripped during copy.
+    // Extractor had to classify each line purely from description + unit.
+    const VP4_CODELESS = `- základní popis viz B – Souhrnná technická zpráva oddíl B 3.1.4.
+- průřez opěrné stěny je znázorněn na samostatném výkresu VP3 – Přístřešek II – schéma
+- železobetonová monolitická opěrná stěna – podrobně řešeno v DPS
+- beton C25/30, XC4, XF1, XA1, výztuž B500B (10 505 (R)), 150 kg/m3
+
+Opěrné zdi a valy ze ŽB tř. C 25/30 94,231 m3 'VP4' (0,8*0,3+1,45*0,25)*156,4
+Bednění opěrných zdí a valů svislých i skloněných zřízení 547,400 m2 'VP4' 1,75*2*156,4
+Výztuž opěrných zdí a valů D 12 mm z betonářské oceli 10 505 - 5,654 t
+`;
+
+    const lines = extractSmetaLines(VP4_CODELESS);
+
+    it('extracts all 3 codeless smeta rows', () => {
+      expect(lines).toHaveLength(3);
+    });
+
+    it('line 1 "Opěrné zdi … ze ŽB … 94,231 m3" → beton + m3 + 94.231', () => {
+      expect(lines[0].code).toBe('');
+      expect(lines[0].catalog).toBe('unknown');
+      expect(lines[0].work_type).toBe('beton');
+      expect(lines[0].unit).toBe('m3');
+      expect(lines[0].quantity).toBeCloseTo(94.231, 3);
+    });
+
+    it('line 2 "Bednění … zřízení 547,400 m2" → bednění_zřízení + m2 + 547.4', () => {
+      expect(lines[1].work_type).toBe('bednění_zřízení');
+      expect(lines[1].unit).toBe('m2');
+      expect(lines[1].quantity).toBeCloseTo(547.4, 1);
+    });
+
+    it('line 3 "Výztuž … - 5,654 t" → výztuž + t + 5.654', () => {
+      expect(lines[2].work_type).toBe('výztuž');
+      expect(lines[2].unit).toBe('t');
+      expect(lines[2].quantity).toBeCloseTo(5.654, 3);
+    });
+
+    it('prose lines (no qty+unit or no work-type keyword) rejected', () => {
+      // "- železobetonová monolitická opěrná stěna …" has no quantity — reject.
+      // "150 kg/m3" line has "kg/m3" which is caught by rebar-ratio regex,
+      // not codeless smeta (no standalone work-type classification).
+      // Only the 3 real smeta rows should be returned.
+      expect(lines.every(l => /^(Opěrné|Bednění|Výztuž)/.test(l.description)))
+        .toBe(true);
+    });
+  });
+
+  describe('extractFromText — VP4 codeless live bug (2026-04-20)', () => {
+    const VP4_CODELESS = `- základní popis viz B – Souhrnná technická zpráva oddíl B 3.1.4.
+- železobetonová monolitická opěrná stěna – podrobně řešeno v DPS
+- beton C25/30, XC4, XF1, XA1, výztuž B500B (10 505 (R)), 150 kg/m3
+
+Opěrné zdi a valy ze ŽB tř. C 25/30 94,231 m3 'VP4' (0,8*0,3+1,45*0,25)*156,4
+Bednění opěrných zdí a valů svislých i skloněných zřízení 547,400 m2 'VP4' 1,75*2*156,4
+Výztuž opěrných zdí a valů D 12 mm z betonářské oceli 10 505 - 5,654 t
+`;
+
+    const results = extractFromText(VP4_CODELESS, { element_type: 'operne_zdi' });
+
+    it('volume_m3 = 94.231 from codeless smeta', () => {
+      const p = findParam(results, 'volume_m3');
+      expect(p).toBeDefined();
+      expect(p!.value).toBeCloseTo(94.231, 3);
+      expect(p!.source).toBe('smeta_line');
+      expect(p!.catalog).toBe('unknown'); // codeless → no catalog
+    });
+
+    it('formwork_area_m2 = 547.4 from codeless smeta', () => {
+      const p = findParam(results, 'formwork_area_m2');
+      expect(p).toBeDefined();
+      expect(p!.value).toBeCloseTo(547.4, 1);
+      expect(p!.source).toBe('smeta_line');
+    });
+
+    it('reinforcement_total_kg = 5654 kg from codeless smeta', () => {
+      const p = findParam(results, 'reinforcement_total_kg');
+      expect(p).toBeDefined();
+      expect(p!.value as number).toBeCloseTo(5654, 0);
+    });
+
+    it('reinforcement_ratio_kg_m3 = 150 from "150 kg/m3" free text', () => {
+      const p = findParam(results, 'reinforcement_ratio_kg_m3');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe(150);
+      expect(p!.source).toBe('regex');
+    });
+
+    it('element_type = operne_zdi from "opěrná stěna" keyword', () => {
+      const p = findParam(results, 'element_type');
+      expect(p).toBeDefined();
+      expect(p!.value).toBe('operne_zdi');
+    });
+
+    it('concrete_class C25/30 detected', () => {
+      expect(findParam(results, 'concrete_class')?.value).toBe('C25/30');
+    });
+
+    it('≥6 params extracted (vs only 3 before the codeless fix)', () => {
+      expect(results.length).toBeGreaterThanOrEqual(6);
+    });
+  });
+
+  describe('codeless regex — false-positive guards', () => {
+    it('prose "výška 1,75 m" does NOT match (no work-type keyword)', () => {
+      const r = extractSmetaLines('výška stěny je 1,75 m nad terénem');
+      expect(r).toEqual([]);
+    });
+
+    it('prose "200 kg/m3 cement" does NOT match as smeta line', () => {
+      // Line has no work-type keyword ('beton'/'bednění'/etc.). Also "kg/m3"
+      // has "/" after "kg" so the unit lookahead fails anyway.
+      const r = extractSmetaLines('dávka cementu 200 kg/m3');
+      expect(r).toEqual([]);
+    });
+
+    it('"D 12 mm" does NOT trigger as "12 m" (mm not a valid unit)', () => {
+      const r = extractSmetaLines('Výztuž D 12 mm z oceli');
+      // No quantity+unit pair satisfies the regex → no smeta row extracted
+      expect(r).toEqual([]);
+    });
+  });
+
+  describe('rebar ratio extraction', () => {
+    it('extracts "150 kg/m3" → 150', () => {
+      const r = extractFromText('výztuž 150 kg/m3');
+      expect(findParam(r, 'reinforcement_ratio_kg_m3')?.value).toBe(150);
+    });
+
+    it('extracts "140 kg/m³" (Unicode superscript) → 140', () => {
+      const r = extractFromText('norma 140 kg/m³');
+      expect(findParam(r, 'reinforcement_ratio_kg_m3')?.value).toBe(140);
+    });
+
+    it('extracts decimal "87,5 kg/m3" → 87.5', () => {
+      const r = extractFromText('index 87,5 kg/m3 pro beton');
+      expect(findParam(r, 'reinforcement_ratio_kg_m3')?.value).toBeCloseTo(87.5, 1);
+    });
+  });
+
   describe('extractFromText — smeta wins over free-text volume regex', () => {
     it('when text has both free-text "605 m³" AND smeta beton line → smeta wins', () => {
       const text = `

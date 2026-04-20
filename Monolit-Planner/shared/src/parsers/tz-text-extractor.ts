@@ -18,6 +18,7 @@
 import {
   detectCatalog,
   detectWorkType,
+  detectWorkTypeFromName,
   type CatalogType,
   type WorkType,
 } from '../calculators/position-linking.js';
@@ -123,7 +124,27 @@ export function parseCzechNumber(s: string): number {
  *       VV formula ("…5,654    94,231*0,06") doesn't get swallowed
  */
 const SMETA_LINE_RE =
-  /^[\t ]*(\d{6}|\d{9})[\t ]+([^\n]+?)[\t ]+(m3|m2|m²|m³|mb|bm|ks|kg|m|t)(?=[\s,;]|$)[\t ]+([0-9]+(?:[.,][0-9]+)?)/gim;
+  /^[\t ]*(\d{6}|\d{9})[\t ]+([^\n]+?)[\t ]+(m3|m2|m²|m³|mb|bm|ks|kg|m|t)(?=[\s,;]|$)[\t ]+([0-9]+(?:[.,][0-9]+)?)/i;
+
+/**
+ * Regex for codeless budget lines: "<description> <quantity> <unit>".
+ *
+ * Real-world smeta copy-pastes often strip the OTSKP/URS code column, leaving
+ * only description + quantity + unit. We fall back to `detectWorkTypeFromName`
+ * to classify the line — if classification fails ('unknown'), the line is
+ * rejected (safer than false positives from prose containing "1,5 m" etc.).
+ *
+ * Qty-before-unit is the standard Czech export order:
+ *   "Bednění opěrných zdí a valů svislých i skloněných zřízení 547,400 m2"
+ *   "Výztuž opěrných zdí a valů D 12 mm z betonářské oceli 10 505 - 5,654 t"
+ *
+ * Captures:
+ *   [1] description (non-greedy, up to qty+unit pair)
+ *   [2] quantity
+ *   [3] unit
+ */
+const CODELESS_SMETA_LINE_RE =
+  /^(.+?)\s+([0-9]+(?:[.,][0-9]+)?)\s*(m3|m2|m²|m³|mb|bm|ks|kg|m|t)(?=[\s,;]|$)/i;
 
 /** Normalize unit tokens: 'm²' → 'm2', 'm³' → 'm3', case-insensitive. */
 function normalizeUnit(raw: string): string {
@@ -137,34 +158,59 @@ function normalizeUnit(raw: string): string {
  * Extract all budget/smeta lines from a text blob.
  * Deterministic — regex only, confidence=1.0 for each line.
  * Order preserved (source order in document).
+ *
+ * Two passes per line:
+ *   1. With-code: "<6|9-digit code> <desc> <unit> <qty>" (KROS/URS export format)
+ *   2. Codeless:  "<desc> <qty> <unit>" — classified via `detectWorkTypeFromName`.
+ *                 Rejected if work type is 'unknown' to avoid false positives.
  */
 export function extractSmetaLines(text: string): SmetaLine[] {
   const lines: SmetaLine[] = [];
   if (!text) return lines;
 
-  // Re-build the regex each call (stateful g-flag).
-  const re = new RegExp(SMETA_LINE_RE.source, SMETA_LINE_RE.flags);
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(text)) !== null) {
-    const code = m[1];
-    const description = m[2].trim();
-    const unit = normalizeUnit(m[3]);
-    const qtyRaw = m[4].trim().replace(/[\s]+$/, '');
-    const quantity = parseCzechNumber(qtyRaw);
-    if (!isFinite(quantity)) continue;
+  for (const rawLine of text.split(/\r?\n/)) {
+    const line = rawLine.replace(/\s+$/, '');
+    if (!line) continue;
 
-    const catalog = detectCatalog(code);
-    const work_type = detectWorkType(code);
+    // Pass 1: with code (OTSKP 6-digit / URS 9-digit)
+    const m1 = line.match(SMETA_LINE_RE);
+    if (m1) {
+      const code = m1[1];
+      const description = m1[2].trim();
+      const unit = normalizeUnit(m1[3]);
+      const quantity = parseCzechNumber(m1[4]);
+      if (!isFinite(quantity)) continue;
+      lines.push({
+        code,
+        catalog: detectCatalog(code),
+        work_type: detectWorkType(code),
+        description,
+        unit,
+        quantity,
+        raw_line: line.trim(),
+      });
+      continue;
+    }
 
-    lines.push({
-      code,
-      catalog,
-      work_type,
-      description,
-      unit,
-      quantity,
-      raw_line: m[0].trim(),
-    });
+    // Pass 2: codeless (description + qty + unit, classify by description)
+    const m2 = line.match(CODELESS_SMETA_LINE_RE);
+    if (m2) {
+      const description = m2[1].trim();
+      const work_type = detectWorkTypeFromName(description);
+      if (work_type === 'unknown') continue; // reject prose false positives
+      const quantity = parseCzechNumber(m2[2]);
+      if (!isFinite(quantity)) continue;
+      const unit = normalizeUnit(m2[3]);
+      lines.push({
+        code: '',
+        catalog: 'unknown',
+        work_type,
+        description,
+        unit,
+        quantity,
+        raw_line: line.trim(),
+      });
+    }
   }
   return lines;
 }
@@ -440,6 +486,19 @@ export function extractFromText(
     });
   }
 
+  // 12. Rebar ratio: "150 kg/m³" / "150 kg/m3" — informational, no FormState
+  //     binding yet (user sees it as a hint alongside volume + rebar total).
+  const rebarRatioMatch = text.match(/(\d+[.,]?\d*)\s*kg\s*\/\s*m\s*[³3]/i);
+  if (rebarRatioMatch) {
+    const ratio = parseFloat(rebarRatioMatch[1].replace(',', '.'));
+    results.push({
+      name: 'reinforcement_ratio_kg_m3',
+      value: ratio,
+      label_cs: `Norma výztuže: ${ratio} kg/m³`,
+      confidence: 1.0, source: 'regex', matched_text: rebarRatioMatch[0],
+    });
+  }
+
   // ─── Keyword-based detection ────────────────────────────────────────────
 
   // Prestressed — covers: předpjatý, předepne, předpětí, předpínací
@@ -478,6 +537,13 @@ export function extractFromText(
     results.push({
       name: 'element_type', value: 'rimsa', label_cs: 'Typ: římsa',
       confidence: 0.9, source: 'keyword', matched_text: 'římsa',
+    });
+  } else if (/opern\w*\s+(zd|zed|sten)/i.test(normalized)) {
+    // "opěrná zeď", "opěrné zdi", "opěrných stěn" — bridge abutment wall /
+    // civil retaining wall. Diacritics already stripped by `norm()`.
+    results.push({
+      name: 'element_type', value: 'operne_zdi', label_cs: 'Typ: opěrná zeď',
+      confidence: 0.9, source: 'keyword', matched_text: 'opěrná zeď / stěna',
     });
   }
 

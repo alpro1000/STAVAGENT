@@ -714,8 +714,10 @@ export default function useCalculator() {
   }, [activeVariantId, savedVariants, form]);
 
   // ── AI Advisor call ─────────────────────────────────────────────────────
-  // TZ text excerpt state — persisted at project level in localStorage
-  // so it survives across position navigation (TZ describes the whole bridge).
+  // TZ text excerpt state — persisted in localStorage so it survives refresh,
+  // but cleared when the user switches element_type (BUG 2 live-test 2026-04-20:
+  // text from mostovka was leaking into opěrná zeď calc). Still shared across
+  // positions of the same element_type (TZ describes the whole element class).
   const [tzText, setTzTextRaw] = useState(() => {
     try { return localStorage.getItem('planner-tz-text') || ''; } catch { return ''; }
   });
@@ -723,6 +725,17 @@ export default function useCalculator() {
     setTzTextRaw(v);
     try { if (v) localStorage.setItem('planner-tz-text', v); else localStorage.removeItem('planner-tz-text'); } catch {}
   }, []);
+
+  // BUG 2 fix (2026-04-20): clear TZ text when element_type changes.
+  // Text written for mostovka is almost never relevant to opěrná zeď / pilota.
+  const lastElementTypeRef = useRef(form.element_type);
+  useEffect(() => {
+    if (lastElementTypeRef.current !== form.element_type) {
+      setTzTextRaw('');
+      try { localStorage.removeItem('planner-tz-text'); } catch {}
+      lastElementTypeRef.current = form.element_type;
+    }
+  }, [form.element_type]);
 
   const fetchAdvisor = useCallback(async () => {
     setAdvisorLoading(true);
