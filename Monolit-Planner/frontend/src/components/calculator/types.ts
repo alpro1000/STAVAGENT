@@ -100,6 +100,13 @@ export interface FormState {
   formwork_area_m2: string;
   rebar_mass_kg: string;
   rebar_norm_kg_m3: string;
+  /**
+   * Main-bar diameter (mm). Optional — when empty, engine uses the element's
+   * `rebar_default_diameter_mm` (D12 walls, D20 slabs, D25 pilíře, D10 římsy).
+   * When provided, drives `REBAR_RATES_MATRIX[category][diameter]` lookup
+   * for an accurate h/t rate. v4.24 BUG A fix.
+   */
+  rebar_diameter_mm: string;
   height_m: string;
   /**
    * Mostovka A1 (2026-04-16): deck cross-section thickness (m). Separate
@@ -362,6 +369,7 @@ export const DEFAULT_FORM: FormState = {
   formwork_area_m2: '',
   rebar_mass_kg: '',
   rebar_norm_kg_m3: '',
+  rebar_diameter_mm: '',
   height_m: '',
   deck_thickness_m: '',
   length_m_input: '',

@@ -18,6 +18,25 @@ import { FORMWORK_SYSTEMS } from '../constants-data/formwork-systems.js';
 import type { PourMethod, FormworkFilterResult, ConcreteConsistency } from '../calculators/lateral-pressure.js';
 import { calculateLateralPressure, filterFormworkByPressure, inferPourMethod } from '../calculators/lateral-pressure.js';
 
+// ─── Rebar labor-rate category (BUG A, v4.24) ────────────────────────────────
+
+/**
+ * Four rebar-category buckets matching methvin.co production-rate tables.
+ * Labor norm (h/t) depends on element category × bar diameter.
+ *
+ *   slabs_foundations — horizontal, open access, fastest (slabs, patky, mostovka)
+ *   walls             — vertical, moderate (opěrné zdi, stěny, opěry, křídla)
+ *   beams_columns     — complex cages, slowest for main bars (pilíře, trámy)
+ *   staircases        — tight geometry (schody, římsy — most labor per tonne)
+ *
+ * See `REBAR_RATES_MATRIX` at bottom of file for rates.
+ */
+export type RebarCategory =
+  | 'slabs_foundations'
+  | 'walls'
+  | 'beams_columns'
+  | 'staircases';
+
 // ─── Element Profile ─────────────────────────────────────────────────────────
 
 export interface ElementProfile {
@@ -47,8 +66,23 @@ export interface ElementProfile {
   rebar_ratio_kg_m3: number;
   /** Min–max rebar ratio range */
   rebar_ratio_range: [number, number];
-  /** Rebar labor norm (h/t) — element-specific */
+  /**
+   * Legacy per-element rebar labor norm (h/t) — used as fallback when no
+   * diameter+category match in `REBAR_RATES_MATRIX`. Kept for backward compat.
+   */
   rebar_norm_h_per_t: number;
+  /**
+   * Rebar labor-rate category (v4.24 — BUG A fix). Maps to `REBAR_RATES_MATRIX`
+   * for diameter-aware lookup. Sources: methvin.co production rates (April 2026),
+   * ČSN 73 0210, RSMeans labor-hour norms.
+   */
+  rebar_category: RebarCategory;
+  /**
+   * Default rebar main-bar diameter (mm) when user doesn't specify.
+   * Values per typical Czech civil engineering practice — e.g. opěrné zdi D12,
+   * mostovky D20, mostní pilíře D25, piloty longitudinal D20.
+   */
+  rebar_default_diameter_mm: number;
 
   // --- Curing ---
   /** Required strip strength as % of f_ck */
@@ -82,6 +116,8 @@ export interface ElementProfile {
 const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'element_type' | 'confidence'>> = {
   zaklady_piliru: {
     label_cs: 'Základy pilířů / patky',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
     recommended_formwork: ['Frami Xlife', 'DOMINO', 'Tradiční tesařské'],
     difficulty_factor: 0.9,
     needs_supports: false,
@@ -102,6 +138,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   driky_piliru: {
     label_cs: 'Dříky pilířů / sloupy',
+    rebar_category: 'beams_columns',
+    rebar_default_diameter_mm: 25,
     recommended_formwork: ['VARIO GT 24', 'TRIO', 'QUATTRO', 'SL-1 Sloupové', 'Framax Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
@@ -117,6 +155,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   rimsa: {
     label_cs: 'Římsa',
+    rebar_category: 'staircases',
+    rebar_default_diameter_mm: 10,
     recommended_formwork: ['Římsové bednění T', 'Římsový vozík TU', 'Římsový vozík T'],
     difficulty_factor: 1.15,
     needs_supports: false,
@@ -132,8 +172,13 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   operne_zdi: {
     label_cs: 'Opěrné zdi',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 12,
     recommended_formwork: ['TRIO', 'Framax Xlife', 'MAXIMO', 'Frami Xlife'],
-    difficulty_factor: 1.0,
+    // v4.24 BUG D (2026-04-20): 1.0 → 1.2. Opěrné zdi mají inverted-T průřez
+    // + často římsy + šikmé stěny (dle sklonu rubové hrany) → vyšší pracnost
+    // bednění než rovná stěna budovy. User spec: 1.0–1.2 range, 1.2 default.
+    difficulty_factor: 1.2,
     needs_supports: false,
     needs_platforms: true,
     needs_crane: true,
@@ -147,6 +192,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   mostovkova_deska: {
     label_cs: 'Mostovková deska',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 20,
     recommended_formwork: ['MULTIFLEX', 'Top 50', 'Dokaflex'],
     difficulty_factor: 1.2,
     needs_supports: true,
@@ -162,6 +209,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   rigel: {
     label_cs: 'Příčník / hlavice pilíře',
+    rebar_category: 'beams_columns',
+    rebar_default_diameter_mm: 25,
     recommended_formwork: ['VARIO GT 24', 'Framax Xlife', 'TRIO', 'Tradiční tesařské'],
     difficulty_factor: 1.1,
     needs_supports: true,
@@ -177,6 +226,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   opery_ulozne_prahy: {
     label_cs: 'Opěry, úložné prahy',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 16,
     recommended_formwork: ['TRIO', 'Framax Xlife', 'DOMINO', 'Frami Xlife'],
     difficulty_factor: 1.0,
     needs_supports: false,
@@ -193,6 +244,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   kridla_opery: {
     label_cs: 'Křídla mostních opěr',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 12,
     recommended_formwork: ['Frami Xlife', 'Framax Xlife'],
     difficulty_factor: 0.9,
     needs_supports: false,
@@ -208,6 +261,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   mostni_zavirne_zidky: {
     label_cs: 'Mostní závěrné zídky',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 12,
     recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
     difficulty_factor: 0.85,
     needs_supports: false,
@@ -223,6 +278,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   prechodova_deska: {
     label_cs: 'Přechodová deska',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
     recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
     difficulty_factor: 0.9,
     needs_supports: false,
@@ -240,6 +297,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
 
   zakladova_deska: {
     label_cs: 'Základová deska',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
     recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
     difficulty_factor: 0.85,
     needs_supports: false,
@@ -255,6 +314,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   zakladovy_pas: {
     label_cs: 'Základový pás',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
     recommended_formwork: ['Frami Xlife', 'DOMINO', 'Tradiční tesařské'],
     difficulty_factor: 0.8,
     needs_supports: false,
@@ -270,6 +331,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   zakladova_patka: {
     label_cs: 'Základová patka',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
     recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
     difficulty_factor: 0.8,
     needs_supports: false,
@@ -285,6 +348,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   stropni_deska: {
     label_cs: 'Stropní deska / podlahová deska',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 12,
     recommended_formwork: ['Dokaflex', 'SKYDECK', 'Top 50'],
     difficulty_factor: 1.0,
     needs_supports: true,   // stojky / podpěry
@@ -300,6 +365,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   stena: {
     label_cs: 'Monolitická stěna',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 12,
     recommended_formwork: ['Framax Xlife', 'MAXIMO', 'TRIO', 'Frami Xlife'],
     difficulty_factor: 1.0,
     needs_supports: false,
@@ -315,6 +382,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   sloup: {
     label_cs: 'Sloup',
+    rebar_category: 'beams_columns',
+    rebar_default_diameter_mm: 16,
     recommended_formwork: ['SL-1 Sloupové', 'QUATTRO', 'SRS', 'Framax Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
@@ -330,6 +399,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   pruvlak: {
     label_cs: 'Průvlak / trám',
+    rebar_category: 'beams_columns',
+    rebar_default_diameter_mm: 16,
     recommended_formwork: ['Dokaflex', 'Tradiční tesařské'],
     difficulty_factor: 1.15,
     needs_supports: true,   // skruž / podpěry
@@ -345,6 +416,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   schodiste: {
     label_cs: 'Schodiště',
+    rebar_category: 'staircases',
+    rebar_default_diameter_mm: 10,
     recommended_formwork: ['Tradiční tesařské', 'Dokaflex'],
     difficulty_factor: 1.3,   // complex formwork (sloped + steps)
     needs_supports: true,
@@ -360,6 +433,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   nadrz: {
     label_cs: 'Nádrž / jímka / bazén',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 16,
     recommended_formwork: ['Framax Xlife', 'RUNDFLEX', 'Frami Xlife'],
     difficulty_factor: 1.1,
     needs_supports: false,
@@ -375,6 +450,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   podzemni_stena: {
     label_cs: 'Podzemní stěna (milánská)',
+    rebar_category: 'walls',
+    rebar_default_diameter_mm: 16,
     recommended_formwork: ['Tradiční tesařské'],  // usually no traditional formwork — guide walls + bentonite
     difficulty_factor: 1.3,
     needs_supports: false,
@@ -390,6 +467,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   pilota: {
     label_cs: 'Pilota / mikropilota',
+    rebar_category: 'beams_columns',
+    rebar_default_diameter_mm: 20,
     recommended_formwork: ['Tradiční tesařské'],  // no formwork — bored pile
     difficulty_factor: 0.7,   // no formwork work
     needs_supports: false,
@@ -406,6 +485,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   // ─── BUG 11: New bridge element types ──────────────────────────────────────
   podkladni_beton: {
     label_cs: 'Podkladní beton',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 10,
     recommended_formwork: ['Tradiční tesařské'],
     difficulty_factor: 0.5,   // simple plain concrete, no rebar
     needs_supports: false,
@@ -422,6 +503,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   podlozkovy_blok: {
     label_cs: 'Podložiskový blok',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
     recommended_formwork: ['Frami Xlife', 'Tradiční tesařské'],
     difficulty_factor: 1.2,   // small but precisely placed, dense rebar
     needs_supports: false,
@@ -437,6 +520,8 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
   },
   other: {
     label_cs: 'Jiný monolitický prvek',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 12,
     recommended_formwork: ['Frami Xlife'],
     difficulty_factor: 1.0,
     needs_supports: false,
@@ -1475,4 +1560,93 @@ export function getAllElementTypes(): Array<{ type: StructuralElementType; label
 function roundTo(value: number, decimals: number): number {
   const factor = Math.pow(10, decimals);
   return Math.round(value * factor) / factor;
+}
+
+// ─── Rebar labor-rate matrix (BUG A fix, v4.24, 2026-04-20) ──────────────────
+
+/**
+ * Rebar labor norm (h/t) by category × bar diameter (mm).
+ *
+ * Source: methvin.co production rates (April 2026 update), cross-validated
+ * against RSMeans labor-hour norms and IJERT academic measurements for
+ * precast-fly-over-bridge construction. "Average speed" column.
+ *   https://methvin.co/production-rates/concrete-work/reinforcement-steel/
+ *
+ * Context:
+ *   Old engine used a blanket per-element rate (e.g. 45 h/t for opěrné zdi)
+ *   which matches stirrup-rate, not main-bar rate. Real productivity for
+ *   D12mm main bars in walls is 17.3 h/t — ~3× faster. See BUG A audit
+ *   (REBAR_NORMS_AUDIT.md, 2026-04-20).
+ *
+ * Fallback: if a (category, diameter) pair is missing, engine falls back to
+ * `ElementProfile.rebar_norm_h_per_t` (legacy). See `getRebarNormForDiameter`.
+ *
+ * All rates are per tradesman, NOT per crew (Methvin convention). Czech
+ * practice of 4–8 železářů per crew maps 1:1.
+ */
+export const REBAR_RATES_MATRIX: Record<RebarCategory, Record<number, number>> = {
+  slabs_foundations: {
+    6: 38.4, 8: 26.9, 10: 20.6, 12: 16.3, 14: 14.0, 16: 11.5,
+    20: 8.6, 25: 6.7, 32: 5.5, 40: 5.1, 50: 4.9,
+  },
+  walls: {
+    6: 40.8, 8: 28.6, 10: 22.0, 12: 17.3, 14: 14.8, 16: 12.2,
+    20: 9.2, 25: 7.2, 32: 6.8, 40: 6.1, 50: 5.1,
+  },
+  beams_columns: {
+    6: 52.8, 8: 37.0, 10: 28.4, 12: 22.4, 14: 19.1, 16: 15.8,
+    20: 11.9, 25: 9.2, 32: 6.6, 40: 5.9, 50: 5.9,
+  },
+  staircases: {
+    6: 48.0, 8: 33.6, 10: 25.8, 12: 20.4, 14: 17.4, 16: 14.4,
+    20: 10.8, 25: 8.4,
+  },
+};
+
+export interface RebarNormLookup {
+  /** Final h/t rate used */
+  norm_h_per_t: number;
+  /** 'matrix' = looked up in REBAR_RATES_MATRIX, 'legacy' = fell back to profile.rebar_norm_h_per_t */
+  source: 'matrix' | 'legacy';
+  /** Category used for lookup (undefined on legacy fallback) */
+  category?: RebarCategory;
+  /** Diameter used for lookup (user-provided or element default) */
+  used_diameter_mm?: number;
+}
+
+/**
+ * Resolve rebar labor norm (h/t) for an element + optional user-provided
+ * diameter. Falls back to the element's legacy per-element rate when the
+ * (category, diameter) pair is missing in the matrix.
+ *
+ * Usage:
+ *   // User specified diameter:
+ *   getRebarNormForDiameter('operne_zdi', 12)
+ *   // → { norm_h_per_t: 17.3, source: 'matrix', category: 'walls', used_diameter_mm: 12 }
+ *
+ *   // No diameter → element default (D12 for walls):
+ *   getRebarNormForDiameter('operne_zdi')
+ *   // → { norm_h_per_t: 17.3, source: 'matrix', category: 'walls', used_diameter_mm: 12 }
+ */
+export function getRebarNormForDiameter(
+  element_type: StructuralElementType,
+  diameter_mm?: number,
+): RebarNormLookup {
+  const profile = getElementProfile(element_type);
+  // Pile armokoš is prefabricated in "armovna" (shop) + transported + lowered
+  // into the bore — entirely different workflow from in-situ rebar tying.
+  // Methvin rates don't cover this case, so pile always falls back to the
+  // legacy per-element rate (30 h/t via pile-engine tuning).
+  if (element_type === 'pilota') {
+    return { norm_h_per_t: profile.rebar_norm_h_per_t, source: 'legacy' };
+  }
+  const category = profile.rebar_category;
+  const d = diameter_mm ?? profile.rebar_default_diameter_mm;
+  const matrix = REBAR_RATES_MATRIX[category];
+  const rate = matrix ? matrix[d] : undefined;
+  if (rate !== undefined) {
+    return { norm_h_per_t: rate, source: 'matrix', category, used_diameter_mm: d };
+  }
+  // Unusual diameter (e.g. D18 not in matrix) → legacy per-element rate
+  return { norm_h_per_t: profile.rebar_norm_h_per_t, source: 'legacy' };
 }

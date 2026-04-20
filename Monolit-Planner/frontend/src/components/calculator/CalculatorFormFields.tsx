@@ -9,7 +9,7 @@
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
 import type { CuringResult, SeasonMode, ConcreteClass, CementType } from '@stavagent/monolit-shared';
-import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure } from '@stavagent/monolit-shared';
+import { FORMWORK_SYSTEMS, ELEMENT_DIMENSION_HINTS, getSuitableSystemsForElement, filterFormworkByPressure, getElementProfile, getRebarNormForDiameter } from '@stavagent/monolit-shared';
 import { Section, Field, NumInput, SuggestionBadge } from './ui';
 import { formatCZK, formatNum, inputStyle, labelStyle } from './helpers';
 import type { AIAdvisorResult, DocSuggestion, DocSuggestionsResponse, FormState } from './types';
@@ -263,6 +263,48 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
                   }
                 }} placeholder="automatický odhad" />
             </Field>
+            {/*
+              v4.24 BUG A fix: rebar main-bar diameter. Drives
+              REBAR_RATES_MATRIX[category][diameter] h/t lookup.
+              Empty = element default (D12 walls, D20 slabs, D25 pilíře, …).
+            */}
+            {(() => {
+              const elemType = form.element_type;
+              if (elemType === 'pilota') return null; // pile has own armokoš workflow
+              const profile = getElementProfile(elemType);
+              const defaultD = profile.rebar_default_diameter_mm;
+              const selectedD = form.rebar_diameter_mm
+                ? parseFloat(form.rebar_diameter_mm)
+                : defaultD;
+              const norm = getRebarNormForDiameter(elemType, selectedD).norm_h_per_t;
+              return (
+                <Field
+                  label="Průměr hlavní výztuže (mm)"
+                  hint={`prázdné = výchozí ${defaultD} mm pro ${profile.label_cs}`}
+                >
+                  <select
+                    style={inputStyle}
+                    value={form.rebar_diameter_mm}
+                    onChange={e => update('rebar_diameter_mm', e.target.value)}
+                  >
+                    <option value="">auto — D{defaultD} ({norm} h/t)</option>
+                    <option value="6">D6</option>
+                    <option value="8">D8</option>
+                    <option value="10">D10</option>
+                    <option value="12">D12</option>
+                    <option value="14">D14</option>
+                    <option value="16">D16</option>
+                    <option value="20">D20</option>
+                    <option value="25">D25</option>
+                    <option value="32">D32</option>
+                    <option value="40">D40</option>
+                  </select>
+                  <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 2 }}>
+                    Norma {norm} h/t ({profile.rebar_category} D{selectedD}) — methvin.co, ČSN 73&nbsp;0210
+                  </div>
+                </Field>
+              );
+            })()}
 
             {/* Wizard hint: rebar calculation */}
             {wizardMode && wizardStep === 4 && wizardHint4 && (

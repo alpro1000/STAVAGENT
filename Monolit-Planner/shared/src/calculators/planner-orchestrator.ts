@@ -86,6 +86,13 @@ export interface PlannerInput {
   // --- Rebar ---
   /** Exact rebar mass (kg). If not given, estimated from element type. */
   rebar_mass_kg?: number;
+  /**
+   * Main-bar diameter (mm). Optional. When provided, `calculateRebarLite`
+   * looks up h/t norm in `REBAR_RATES_MATRIX[category][diameter]` instead of
+   * the legacy per-element default. Typical values: D12 walls, D20 slabs,
+   * D25 pilíře, D10 římsy.
+   */
+  rebar_diameter_mm?: number;
 
   // --- Pour constraints ---
   /** Does the element have dilatation joints? */
@@ -609,44 +616,113 @@ function pushExposureWarning(
 }
 
 /**
- * MEGA pour Bug 1 (2026-04-16): pour-front crew size as a function of
- * how many concrete pumps are on site. Until now `effectivePourCrew`
- * was only scaled by pour_hours / shift_h, so 1 pump and 4 pumps got
- * the same 4–5 person crew — a number that cannot run a moving-front
- * pour behind 4 pump booms at once.
+ * Pour-front crew size (direct labor only).
  *
- * Reality on site (per CZ concreting practice):
- *   - 2 dělníci za každým čerpadlem (vedení hadice + rozprostření)
- *   - vibraceři ≈ 1.5 × čerpadla (překrývání zón)
- *   - finišeři  ≈ 1.0 × čerpadla (uhlazování za frontou)
- *   - řízení     = 3 (stavbyvedoucí + geodet + laborant, fixní)
+ * INCLUDED: úkladka (placers), vibrace (vibrator operators), finiš (finishers).
+ * EXCLUDED: stavbyvedoucí, mistr, technický dozor.
+ *           → These belong to "Zařízení staveniště" (VRN) category, typically
+ *             3–5 % of direct costs per ČSN 73 0212. They are salaried across
+ *             the whole project duration, not per pour — including them in a
+ *             per-pour headcount double-counts vs. the ZS line item.
  *
- * Universal application (per user decision): applied even for 1 pump
- * small pours so the breakdown is consistent across all plans. For 1
- * pump this yields 2+2+1+3 = 8 people, which matches the task spec
- * example "100 m³, 1 čerpadlo → 8 lidí/směna".
+ * DESIGN DECISION v4.24 (2026-04-20):
+ *   Reconsidered v4.20 formula that added a flat "+3 řízení" per pour.
+ *   Issue: double-counting with monthly-salaried site management.
+ *   Fix: pour crew = workers only. Management in separate overhead category.
+ *
+ * VOLUME-SCALED LOGIC:
+ *   - podkladní beton (plain concrete base, no structural vibration):
+ *       <20 m³ → 2 lidi (rozhrnout + zarovnat)
+ *       <50 m³ → 3 lidi (přidat zhutnění)
+ *       ≥50 m³ → max(3, 2 × pumps)
+ *   - Malé objemy (<20 m³) pro ostatní elementy: 3 lidi (2 úkladka + 1 vibrace)
+ *   - Střední (20–80 m³): max(4, pumps × 2 + 2)
+ *   - Velké (80+ m³): full pump-based formula:
+ *       úkladka  = pumps × 2  (hadice + rozprostření)
+ *       vibrace  = ceil(pumps × 1.5)  (překrývající zóny)
+ *       finišeři = ceil(pumps × 1.0)  (uhlazování za frontou)
+ *       total    = úkladka + vibrace + finišeři  (řízení výše NENÍ zahrnuto)
+ *
+ * Checked points:
+ *   VP4 opěrná zeď, 94 m³, 1 pump → Level 3 path → 2+2+1 = 5 ✓
+ *   200 m³, 2 pumps  → 4+3+2 = 9 ✓
+ *   400 m³, 3 pumps  → 6+5+3 = 14 ✓
+ *   1000 m³, 5 pumps → 10+8+5 = 23 ✓
+ *   Podkladní beton 10 m³ → 2 ✓
+ *   Malá patka 15 m³ → 3 ✓
  */
-export function computePourCrewByPumps(n_pump: number): {
+export interface PourCrewBreakdown {
   ukladani: number;
   vibrace: number;
   finiseri: number;
+  /**
+   * Always 0 in v4.24+. Retained in the shape so downstream UI code that
+   * dereferences `breakdown.rizeni` doesn't crash. New callers should read
+   * via the dedicated ZS (Zařízení staveniště) overhead line, not this field.
+   */
   rizeni: number;
   total: number;
   pumps_used: number;
-} {
+}
+
+export function computePourCrew(
+  volume_m3: number,
+  n_pump: number,
+  element_type: StructuralElementType,
+): PourCrewBreakdown {
   const pumps = Math.max(1, Math.floor(n_pump));
+  const isPodkladni = element_type === 'podkladni_beton';
+
+  // Level 0 — podkladní beton: no structural vibration, just rozhrnout + zarovnat
+  if (isPodkladni) {
+    let ukladani: number;
+    if (volume_m3 < 20) ukladani = 2;
+    else if (volume_m3 < 50) ukladani = 3;
+    else ukladani = Math.max(3, pumps * 2);
+    return {
+      ukladani, vibrace: 0, finiseri: 0, rizeni: 0,
+      total: ukladani, pumps_used: pumps,
+    };
+  }
+
+  // Level 1 — malé objemy (<20 m³): minimální osádka
+  if (volume_m3 < 20) {
+    return {
+      ukladani: 2, vibrace: 1, finiseri: 0, rizeni: 0,
+      total: 3, pumps_used: pumps,
+    };
+  }
+
+  // Level 2 — střední objemy (20–80 m³): přidat finišera
+  if (volume_m3 < 80) {
+    const ukladani = Math.max(2, pumps * 2);
+    const vibrace = 1;
+    const finiseri = 1;
+    const total = Math.max(4, ukladani + vibrace + finiseri);
+    return { ukladani, vibrace, finiseri, rizeni: 0, total, pumps_used: pumps };
+  }
+
+  // Level 3 — velké objemy (80+ m³): full pump-based formula (řízení NENÍ
+  // zahrnuto — patří do "Zařízení staveniště" per ČSN 73 0212).
   const ukladani = pumps * 2;
   const vibrace = Math.ceil(pumps * 1.5);
   const finiseri = Math.ceil(pumps * 1.0);
-  const rizeni = 3;
   return {
-    ukladani,
-    vibrace,
-    finiseri,
-    rizeni,
-    total: ukladani + vibrace + finiseri + rizeni,
+    ukladani, vibrace, finiseri, rizeni: 0,
+    total: ukladani + vibrace + finiseri,
     pumps_used: pumps,
   };
+}
+
+/**
+ * @deprecated Use {@link computePourCrew} — this wrapper exists only so
+ *   external callers importing the v4.20 name keep compiling. It forwards
+ *   to the v4.24 volume+element-aware formula with a large-pour default
+ *   (volume=100, element_type='other') that matches the old "+řízení-free"
+ *   numbers for pump counts ≥2. For new code, pass volume + element_type.
+ */
+export function computePourCrewByPumps(n_pump: number): PourCrewBreakdown {
+  return computePourCrew(100, n_pump, 'other');
 }
 
 // ─── Main Orchestrator ──────────────────────────────────────────────────────
@@ -1490,6 +1566,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
     element_type: elementType,
     volume_m3: pourDecision.tact_volume_m3,
     mass_kg: rebarMassOverride,
+    rebar_diameter_mm: input.rebar_diameter_mm,
     crew_size: crewRebar,
     shift_h: shift,
     k,
@@ -1559,7 +1636,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // previous crew = form.crew_size baseline couldn't run a moving-front
   // pour behind 2+ pumps. User configured crew_size now drives only the
   // tesaři/železáři branches — pour crew is derived from pumps_required.
-  const pourCrewBreakdown = computePourCrewByPumps(pourDecision.pumps_required);
+  //
+  // v4.24 BUG C: formula reworked — management (stavbyvedoucí + mistr)
+  // dropped from per-pour headcount, moved to "Zařízení staveniště" (VRN,
+  // ČSN 73 0212) overhead. Formula now volume- + element-scaled: small
+  // pours (<20 m³) get 3-person crew, podkladní beton gets 2, 80+ m³ uses
+  // the original pump-based formula (without the old "+3 řízení" line).
+  const pourCrewBreakdown = computePourCrew(
+    pourDecision.tact_volume_m3,
+    pourDecision.pumps_required,
+    elementType,
+  );
   let effectivePourCrew = pourCrewBreakdown.total;
 
   // Night shift premium (§ 116 ZP: min. +10%)
