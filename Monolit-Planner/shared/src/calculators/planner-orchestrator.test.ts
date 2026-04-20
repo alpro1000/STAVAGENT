@@ -5,7 +5,7 @@
  * rebar → pour task → scheduling → costs.
  */
 import { describe, it, expect } from 'vitest';
-import { planElement, computePourCrewByPumps } from './planner-orchestrator.js';
+import { planElement, computePourCrew, computePourCrewByPumps } from './planner-orchestrator.js';
 import type { PlannerInput } from './planner-orchestrator.js';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -861,41 +861,86 @@ describe('Planner Orchestrator', () => {
     });
   });
 
-  // ─── MEGA pour Bug 1 (2026-04-16): crew size scales with pump count ──
-  describe('computePourCrewByPumps', () => {
-    it('1 pump yields 8 lidí (task spec table row: 100 m³)', () => {
-      const b = computePourCrewByPumps(1);
+  // ─── v4.24 BUG C (2026-04-20): pour crew reworked — volume + element aware ──
+  //
+  // OLD v4.20 behaviour: pumps-only formula with "+3 řízení" flat (1 pump = 8).
+  // NEW v4.24 behaviour: management dropped (moved to "Zařízení staveniště"
+  // overhead per ČSN 73 0212) + volume/element scaling for small/podkladní pours.
+  describe('computePourCrew (v4.24)', () => {
+    it('large pour (80+ m³), 1 pump → 5 lidí (2+2+1, no řízení)', () => {
+      const b = computePourCrew(100, 1, 'other');
       expect(b).toEqual({
-        ukladani: 2, vibrace: 2, finiseri: 1, rizeni: 3,
-        total: 8, pumps_used: 1,
+        ukladani: 2, vibrace: 2, finiseri: 1, rizeni: 0,
+        total: 5, pumps_used: 1,
       });
     });
 
-    it('2 pumps yields 12 lidí (task spec table row: 300 m³)', () => {
-      const b = computePourCrewByPumps(2);
-      expect(b.ukladani).toBe(4);
-      expect(b.vibrace).toBe(3);
-      expect(b.finiseri).toBe(2);
-      expect(b.rizeni).toBe(3);
-      expect(b.total).toBe(12);
+    it('2 pumps (>=80 m³) → 9 lidí (4+3+2)', () => {
+      const b = computePourCrew(300, 2, 'other');
+      expect(b).toMatchObject({
+        ukladani: 4, vibrace: 3, finiseri: 2, rizeni: 0, total: 9,
+      });
     });
 
-    it('3 pumps yields 17 lidí (task spec table row: 664 m³)', () => {
-      expect(computePourCrewByPumps(3).total).toBe(17);
+    it('3 pumps → 14 lidí (6+5+3)', () => {
+      expect(computePourCrew(664, 3, 'other').total).toBe(14);
     });
 
-    it('4 pumps yields 21 lidí (task spec table row: 1000+ m³)', () => {
-      expect(computePourCrewByPumps(4).total).toBe(21);
+    it('4 pumps → 18 lidí (8+6+4)', () => {
+      expect(computePourCrew(1200, 4, 'other').total).toBe(18);
     });
 
     it('clamps invalid pump count to 1 (0/negative/float)', () => {
-      expect(computePourCrewByPumps(0).pumps_used).toBe(1);
-      expect(computePourCrewByPumps(-3).pumps_used).toBe(1);
-      expect(computePourCrewByPumps(1.7).pumps_used).toBe(1);
+      expect(computePourCrew(100, 0, 'other').pumps_used).toBe(1);
+      expect(computePourCrew(100, -3, 'other').pumps_used).toBe(1);
+      expect(computePourCrew(100, 1.7, 'other').pumps_used).toBe(1);
+    });
+
+    it('podkladní beton 10 m³ → 2 lidi (rozhrnout + zarovnat, no vibrace)', () => {
+      const b = computePourCrew(10, 1, 'podkladni_beton');
+      expect(b).toEqual({
+        ukladani: 2, vibrace: 0, finiseri: 0, rizeni: 0,
+        total: 2, pumps_used: 1,
+      });
+    });
+
+    it('podkladní beton 30 m³ → 3 lidi', () => {
+      expect(computePourCrew(30, 1, 'podkladni_beton').total).toBe(3);
+    });
+
+    it('malá patka 15 m³ → 3 lidi (2 úkladka + 1 vibrace)', () => {
+      const b = computePourCrew(15, 1, 'zakladova_patka');
+      expect(b).toEqual({
+        ukladani: 2, vibrace: 1, finiseri: 0, rizeni: 0,
+        total: 3, pumps_used: 1,
+      });
+    });
+
+    it('střední patka 40 m³ → 4 lidi', () => {
+      expect(computePourCrew(40, 1, 'zakladova_patka').total).toBe(4);
+    });
+
+    it('VP4 opěrná zeď 94 m³, 1 pump → 5 lidí (full formula, no řízení)', () => {
+      expect(computePourCrew(94, 1, 'operne_zdi').total).toBe(5);
+    });
+
+    it('rizeni field always 0 in v4.24 (moved to ZS overhead)', () => {
+      for (const p of [1, 2, 3, 4, 5]) {
+        expect(computePourCrew(500, p, 'other').rizeni).toBe(0);
+      }
     });
   });
 
-  describe('planElement — pour crew derived from pumps (Bug 1)', () => {
+  // Legacy wrapper still exported — forwards to new formula with
+  // volume=100, element='other' default.
+  describe('computePourCrewByPumps (deprecated wrapper)', () => {
+    it('forwards to computePourCrew with large-pour default', () => {
+      expect(computePourCrewByPumps(1).total)
+        .toBe(computePourCrew(100, 1, 'other').total);
+    });
+  });
+
+  describe('planElement — pour crew derived from pumps (Bug 1 v2)', () => {
     it('exposes pour_crew_breakdown on resources', () => {
       const plan = planElement({
         element_type: 'mostovkova_deska',
@@ -908,12 +953,13 @@ describe('Planner Orchestrator', () => {
       });
       expect(plan.resources.pour_crew_breakdown).toBeDefined();
       expect(plan.resources.pour_crew_breakdown.total).toBeGreaterThan(0);
-      // total = ukladani + vibrace + finiseri + rizeni
+      // v4.24: rizeni is always 0 (moved to ZS overhead per ČSN 73 0212)
       const b = plan.resources.pour_crew_breakdown;
-      expect(b.ukladani + b.vibrace + b.finiseri + b.rizeni).toBe(b.total);
+      expect(b.rizeni).toBe(0);
+      expect(b.ukladani + b.vibrace + b.finiseri).toBe(b.total);
     });
 
-    it('small pour (1 pump) gets 8-person pour crew (universal formula)', () => {
+    it('small pour (1 pump, 50 m³) gets 4-person pour crew (v4.24: no řízení)', () => {
       const plan = planElement({
         element_type: 'zakladova_deska',
         volume_m3: 50,
@@ -922,7 +968,8 @@ describe('Planner Orchestrator', () => {
         working_joints_allowed: 'no',
       });
       expect(plan.resources.pour_crew_breakdown.pumps_used).toBe(1);
-      expect(plan.resources.pour_simultaneous_headcount).toBe(8);
+      // 50 m³ falls in Level 2 (20-80 m³) → 4 lidi (2 ukladka + 1 vibrace + 1 finiš)
+      expect(plan.resources.pour_simultaneous_headcount).toBe(4);
     });
 
     it('large monolithic pour (multi-pump) scales crew proportionally', () => {

@@ -627,6 +627,24 @@ export default function CalculatorResult({ plan, startDate, showLog, onToggleLog
               : `${recommended} doporučeno (ukládka + vibrace + finiš)`;
             return <Row label="Betonáři / záběr" value={value} />;
           })()}
+          {/*
+            v4.24 BUG C: info note explaining why pour crew doesn't include
+            stavbyvedoucí / mistr. Czech smeta accounting separates direct
+            labor from "Zařízení staveniště" (VRN) per ČSN 73 0212 — so the
+            kalkulátor stays on direct costs and leaves overhead to the ZS
+            line item (typically 3–5 % of přímé náklady).
+          */}
+          <div style={{
+            marginTop: 8, padding: '6px 8px', fontSize: 10, lineHeight: 1.5,
+            background: 'var(--r0-info-bg, #eff6ff)',
+            border: '1px solid var(--r0-info-border, #bfdbfe)',
+            borderRadius: 4, color: 'var(--r0-slate-600)',
+          }}>
+            ℹ️ Kalkulátor počítá <strong>jen přímé náklady</strong> (dělníci na záběru).
+            Stavbyvedoucí, mistr a další řízení se počítají zvlášť v položce
+            <em> „Zařízení staveniště“</em> (VRN) — typicky 3–5&nbsp;% z přímých
+            nákladů dle ČSN 73 0212.
+          </div>
         </Card>
       </div>
 

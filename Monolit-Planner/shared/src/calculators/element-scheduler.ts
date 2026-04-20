@@ -391,8 +391,13 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
     });
   }
 
-  // Critical path (backward pass — FS only for simplicity)
-  const critical_path = computeCriticalPath(nodes, sched, total_days);
+  // Critical path (backward pass — FS only for simplicity).
+  // IMPORTANT: pass the UNROUNDED max finish, not the rounded `total_days`,
+  // otherwise the backward-pass LS and forward-pass ES drift by up to ~0.5 d
+  // and everything fails the `|LS−ES| < 0.01` critical test (v4.24 BUG A
+  // exposure: shorter rebar duration triggers this precision gap).
+  const unroundedEnd = Math.max(...Array.from(sched.values()).map(s => s.finish));
+  const critical_path = computeCriticalPath(nodes, sched, unroundedEnd);
 
   // Utilization
   const utilization = computeUtilization(nodes, sched, total_days, num_formwork_crews, num_rebar_crews, num_sets);
@@ -511,12 +516,19 @@ function computeCriticalPath(
     ls.set(node.id, latestStart);
   }
 
-  // Slack = LS - ES; critical = slack ≈ 0
+  // Slack = LS - ES; critical = slack ≈ 0 (within rounding noise).
+  //
+  // Tolerance is half a day (0.5) — construction scheduling rounds to 0.1 d
+  // both in forward and backward passes, but floating-point drift (e.g.
+  // `round(9.05)` collapses to 9.0 instead of 9.1 in JS) can push the
+  // cumulative delta to ~0.05 d even when nodes are truly on the critical
+  // path. v4.24 exposed this: shorter rebar durations (methvin matrix)
+  // compounded the 0.01-threshold edge case.
   const critical: string[] = [];
   for (const node of nodes) {
     const es = sched.get(node.id)!.start;
     const nodeLS = ls.get(node.id) ?? 0;
-    if (Math.abs(nodeLS - es) < 0.01) {
+    if (Math.abs(nodeLS - es) < 0.5) {
       critical.push(node.id);
     }
   }

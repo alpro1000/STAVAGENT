@@ -15,7 +15,12 @@
 import type { StructuralElementType } from './pour-decision.js';
 import type { RebarCalculatorResult } from './types.js';
 import { calculateRebar } from './rebar.js';
-import { getElementProfile, estimateRebarMass } from '../classifiers/element-classifier.js';
+import {
+  getElementProfile,
+  estimateRebarMass,
+  getRebarNormForDiameter,
+  type RebarCategory,
+} from '../classifiers/element-classifier.js';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -25,6 +30,12 @@ export interface RebarLiteInput {
   volume_m3: number;
   /** Exact rebar mass (kg) — if known, overrides estimation */
   mass_kg?: number;
+  /**
+   * Main-bar diameter (mm). When provided, engine looks up the labor norm
+   * in `REBAR_RATES_MATRIX[category][diameter]` (v4.24). When omitted, the
+   * element's `rebar_default_diameter_mm` is used (D12 walls, D20 slabs, …).
+   */
+  rebar_diameter_mm?: number;
   /** Crew size (default: 4) */
   crew_size?: number;
   /** Shift hours (default: 10) */
@@ -45,6 +56,12 @@ export interface RebarLiteResult {
 
   // --- Labor ---
   norm_h_per_t: number;
+  /** Source of the h/t norm used: 'matrix' (diameter×category) or 'legacy' (per-element fallback) */
+  norm_source: 'matrix' | 'legacy';
+  /** Category used for matrix lookup (undefined on legacy) */
+  norm_category?: RebarCategory;
+  /** Diameter used for matrix lookup (user-provided OR element default) */
+  norm_diameter_mm?: number;
   labor_hours: number;
   duration_days: number;
   cost_labor: number;
@@ -110,7 +127,10 @@ export function calculateRebarLite(input: RebarLiteInput): RebarLiteResult {
   }
 
   const mass_t = mass_kg / 1000;
-  const norm_h_per_t = profile.rebar_norm_h_per_t;
+  // Diameter-aware norm lookup (v4.24 BUG A): matrix[category][diameter]
+  // with fallback to legacy per-element `profile.rebar_norm_h_per_t`.
+  const normLookup = getRebarNormForDiameter(input.element_type, input.rebar_diameter_mm);
+  const norm_h_per_t = normLookup.norm_h_per_t;
 
   // --- Base calculation ---
   const base: RebarCalculatorResult = calculateRebar({
@@ -137,11 +157,15 @@ export function calculateRebarLite(input: RebarLiteInput): RebarLiteResult {
   const recommended_crew = Math.max(2, Math.min(8, Math.ceil(labor_hours / (5 * shift * k))));
 
   // --- Build result ---
+  const normTag =
+    normLookup.source === 'matrix'
+      ? `${norm_h_per_t}h/t (${normLookup.category} D${normLookup.used_diameter_mm})`
+      : `${norm_h_per_t}h/t (legacy ${input.element_type})`;
   const assumptions: string[] = [
     `element=${input.element_type}`,
     `vol=${input.volume_m3}m³`,
     `mass=${mass_t.toFixed(3)}t (${mass_source})`,
-    `norm=${norm_h_per_t}h/t`,
+    `norm=${normTag}`,
     `crew=${crew}`,
     `shift=${shift}h`,
   ];
@@ -152,6 +176,9 @@ export function calculateRebarLite(input: RebarLiteInput): RebarLiteResult {
     mass_source,
     mass_range_kg,
     norm_h_per_t,
+    norm_source: normLookup.source,
+    norm_category: normLookup.category,
+    norm_diameter_mm: normLookup.used_diameter_mm,
     labor_hours: base.labor_hours,
     duration_days: base.duration_days,
     cost_labor: base.cost_labor,
@@ -175,12 +202,13 @@ export function crewForTargetDays(
   target_days: number,
   mass_kg?: number,
   shift_h: number = DEFAULTS.shift_h,
-  k: number = DEFAULTS.k
+  k: number = DEFAULTS.k,
+  rebar_diameter_mm?: number,
 ): number {
-  const profile = getElementProfile(element_type);
   const actual_mass_kg = mass_kg ?? estimateRebarMass(element_type, volume_m3).estimated_kg;
   const mass_t = actual_mass_kg / 1000;
-  const labor_hours = mass_t * profile.rebar_norm_h_per_t;
+  const norm = getRebarNormForDiameter(element_type, rebar_diameter_mm).norm_h_per_t;
+  const labor_hours = mass_t * norm;
   return Math.max(2, Math.ceil(labor_hours / (target_days * shift_h * k)));
 }
 

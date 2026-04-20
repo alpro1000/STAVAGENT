@@ -998,6 +998,10 @@ export default function useCalculator() {
     input.element_type = form.element_type;
     if (form.formwork_area_m2) input.formwork_area_m2 = parseFloat(form.formwork_area_m2);
     if (form.rebar_mass_kg) input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
+    if (form.rebar_diameter_mm) {
+      const d = parseFloat(form.rebar_diameter_mm);
+      if (d > 0) input.rebar_diameter_mm = d;
+    }
     // Block A: adjacent sections still drives chess scheduling (delegated via
     // scheduling_mode_override path so the scheduler reorders neighbours).
     if (form.has_dilatation_joints && numSections > 1 && form.adjacent_sections) {
@@ -1160,6 +1164,10 @@ export default function useCalculator() {
       if (f.formwork_area_m2) input.formwork_area_m2 = parseFloat(f.formwork_area_m2);
       if (f.height_m) input.height_m = parseFloat(f.height_m);
       if (f.rebar_mass_kg) input.rebar_mass_kg = parseFloat(f.rebar_mass_kg);
+      if (f.rebar_diameter_mm) {
+        const d = parseFloat(f.rebar_diameter_mm);
+        if (d > 0) input.rebar_diameter_mm = d;
+      }
       return planElement(input);
     } catch {
       return null;
