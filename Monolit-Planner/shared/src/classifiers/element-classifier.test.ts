@@ -15,6 +15,9 @@ import {
   getSuitableSystemsForElement,
   checkVolumeGeometry,
   estimateExpectedVolume,
+  isParamCompatibleWith,
+  explainIncompatibility,
+  ELEMENT_TZ_COMPATIBILITY,
 } from './element-classifier.js';
 
 describe('Element Classifier', () => {
@@ -738,6 +741,127 @@ describe('Element Classifier', () => {
       expect(issue!.severity).toBe('critical');
       expect(issue!.ratio).toBeGreaterThan(3);
       expect(issue!.message_cs).toContain('větší');
+    });
+  });
+
+  // ─── Task 1 (2026-04-20): TZ-parameter compatibility ────────────────────
+  describe('isParamCompatibleWith() — TZ context compatibility', () => {
+    it('universal params compatible with every element type', () => {
+      // Task 2 (2026-04-20): `exposure_classes` (plural) is universal for
+      // the same reason as `exposure_class` (singular) — every element
+      // can have an environmental-exposure selection.
+      const universal = ['concrete_class', 'exposure_class', 'exposure_classes',
+        'volume_m3', 'formwork_area_m2', 'reinforcement_total_kg',
+        'reinforcement_ratio_kg_m3'];
+      for (const et of Object.keys(ELEMENT_TZ_COMPATIBILITY)) {
+        for (const p of universal) {
+          expect(isParamCompatibleWith(p, et as any)).toBe(true);
+        }
+      }
+    });
+
+    it('bridge-deck params (span_m, num_spans, nk_width_m, is_prestressed) NOT compatible with foundations', () => {
+      const bridgeOnly = ['span_m', 'num_spans', 'nk_width_m', 'is_prestressed',
+        'prestress_cables_count', 'prestress_tensioning', 'bridge_deck_subtype'];
+      const foundations: any[] = ['zaklady_piliru', 'zakladova_deska',
+        'zakladovy_pas', 'zakladova_patka'];
+      for (const et of foundations) {
+        for (const p of bridgeOnly) {
+          expect(isParamCompatibleWith(p, et)).toBe(false);
+        }
+      }
+    });
+
+    it('bridge-deck params ARE compatible with mostovkova_deska and rigel', () => {
+      const bridgeOnly = ['span_m', 'num_spans', 'is_prestressed',
+        'prestress_cables_count', 'bridge_deck_subtype'];
+      for (const p of bridgeOnly) {
+        expect(isParamCompatibleWith(p, 'mostovkova_deska')).toBe(true);
+        expect(isParamCompatibleWith(p, 'rigel')).toBe(true);
+      }
+    });
+
+    it('pile_diameter_mm compatible only with pilota (+ "other" fallback)', () => {
+      expect(isParamCompatibleWith('pile_diameter_mm', 'pilota')).toBe(true);
+      expect(isParamCompatibleWith('pile_diameter_mm', 'other')).toBe(true);
+      expect(isParamCompatibleWith('pile_diameter_mm', 'zaklady_piliru')).toBe(false);
+      expect(isParamCompatibleWith('pile_diameter_mm', 'mostovkova_deska')).toBe(false);
+    });
+
+    it('total_length_m compatible with walls but not foundations', () => {
+      expect(isParamCompatibleWith('total_length_m', 'operne_zdi')).toBe(true);
+      expect(isParamCompatibleWith('total_length_m', 'stena')).toBe(true);
+      expect(isParamCompatibleWith('total_length_m', 'kridla_opery')).toBe(true);
+      expect(isParamCompatibleWith('total_length_m', 'zakladova_patka')).toBe(false);
+    });
+
+    it('height_m compatible with most elements but not pure slabs', () => {
+      expect(isParamCompatibleWith('height_m', 'driky_piliru')).toBe(true);
+      expect(isParamCompatibleWith('height_m', 'operne_zdi')).toBe(true);
+      expect(isParamCompatibleWith('height_m', 'pilota')).toBe(true);
+      expect(isParamCompatibleWith('height_m', 'rimsa')).toBe(true);
+    });
+
+    it('element_type is NEVER in any compatibility list (lock-only field)', () => {
+      for (const et of Object.keys(ELEMENT_TZ_COMPATIBILITY)) {
+        const list = ELEMENT_TZ_COMPATIBILITY[et as any];
+        expect(list).not.toContain('element_type');
+      }
+    });
+
+    it('unknown param defaults to allow (forward-compat)', () => {
+      expect(isParamCompatibleWith('future_param_xyz', 'zaklady_piliru')).toBe(true);
+    });
+
+    it('all 24 element types have a compatibility entry', () => {
+      const allTypes = getAllElementTypes();
+      for (const t of allTypes) {
+        expect(ELEMENT_TZ_COMPATIBILITY).toHaveProperty(t.type);
+      }
+    });
+  });
+
+  describe('explainIncompatibility() — Czech reasons for ignored TZ params', () => {
+    it('returns null for compatible params', () => {
+      expect(explainIncompatibility('concrete_class', 'zaklady_piliru')).toBeNull();
+      expect(explainIncompatibility('span_m', 'mostovkova_deska')).toBeNull();
+    });
+
+    it('bridge-deck reason mentions "mostní nosné konstrukce"', () => {
+      const reason = explainIncompatibility('span_m', 'zaklady_piliru');
+      expect(reason).not.toBeNull();
+      expect(reason).toMatch(/mostní/i);
+    });
+
+    it('pile reason mentions "pilot" + element label', () => {
+      const reason = explainIncompatibility('pile_diameter_mm', 'zaklady_piliru');
+      expect(reason).not.toBeNull();
+      expect(reason).toMatch(/pilot/i);
+    });
+
+    it('VP4 live regression — opěrná zeď: bridge deck params rejected, reinforcement_ratio accepted', () => {
+      // Scenario: user calculates opěrná zeď, TZ extracted {reinforcement_ratio_kg_m3, span_m}
+      // Expected: ratio compatible (universal), span_m NOT compatible → explains why.
+      expect(isParamCompatibleWith('reinforcement_ratio_kg_m3', 'operne_zdi')).toBe(true);
+      expect(isParamCompatibleWith('span_m', 'operne_zdi')).toBe(false);
+      const reason = explainIncompatibility('span_m', 'operne_zdi');
+      // Label from ELEMENT_CATALOG is "Opěrné zdi" (plural)
+      expect(reason).toContain('Opěrné zdi');
+    });
+
+    it('AC 10 regression — ZÁKLADY pozice + most TZ: span_m/num_spans/prestress/deck_subtype rejected', () => {
+      // Replicates bug: user opens calculator from position "272325 ZÁKLADY ŽELEZOBETON",
+      // pastes TZ of whole bridge object ("rozpětí 32 m, L=160 m, 5 polí, předpjatý").
+      // Expected: element_type stays zaklady_piliru, all bridge-deck params rejected.
+      const bridgeParams = ['span_m', 'num_spans', 'is_prestressed',
+        'prestress_cables_count', 'prestress_tensioning', 'bridge_deck_subtype', 'nk_width_m'];
+      for (const p of bridgeParams) {
+        expect(isParamCompatibleWith(p, 'zaklady_piliru')).toBe(false);
+        expect(explainIncompatibility(p, 'zaklady_piliru')).not.toBeNull();
+      }
+      // Universal params still apply (concrete class from TZ is legit)
+      expect(isParamCompatibleWith('concrete_class', 'zaklady_piliru')).toBe(true);
+      expect(isParamCompatibleWith('exposure_class', 'zaklady_piliru')).toBe(true);
     });
   });
 });

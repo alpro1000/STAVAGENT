@@ -2,16 +2,17 @@
 
 **Last session closed:** 2026-04-20
 **Last task completed:** Task 2 — "Multi-select třídy prostředí s combined rules (ČSN EN 206+A2)"
-**Branch:** `claude/task-02-exposure-multiselect` (PR pending on `main`)
+**Branch:** `claude/task-02-exposure-multiselect` (PR on `main`, Amazon Q approved)
 
-**Open PRs at time of writing:**
-- Task 1 — `claude/task-01-tzcontext-lock` (commit `b11bba8`) — TZ context lock. Not yet merged.
-- Task 2 — `claude/task-02-exposure-multiselect` — this task.
+**Prior PRs merged to main during this session:**
+- Task 1 — `claude/task-01-tzcontext-lock` → merged as PR #984 (commit `89b6f7c`)
+  on main. Compat map + `isParamCompatibleWith` + `explainIncompatibility` +
+  `ELEMENT_TZ_COMPATIBILITY` all live.
 
-Task 2 was branched from fresh `origin/main` so it is independent of Task 1.
-When both PRs land, rebase the later one and replay its changes; the two
-touch disjoint concerns (Task 1 = lock gate + compat map; Task 2 =
-exposure multi-select + ČSN EN 206+A2 rules).
+This branch was branched from the pre-Task-1 `origin/main` and then merged
+forward after Task 1 landed. Only `next-session.md` had a real conflict —
+resolved by keeping Task 2's notes (already aware of Task 1). Other touched
+files auto-merged cleanly.
 
 ---
 
@@ -157,16 +158,32 @@ size, no new deps introduced).
    síranovzdorný cement …". Change cement_type to "CEM III/B 42,5 SV" —
    warning disappears.
 4. Paste into TZ textarea: `"Expozice: XF2 (mostovka), XD1, XC4
-   (opěry v zemi). Beton C30/37."` — extractor should find all 3
-   classes + C30/37; Task 1 `exposure_class` compat-filter (once Task 1
-   merges) should let the applied array through.
+   (opěry v zemi). Beton C30/37."` — extractor finds all 3 classes +
+   C30/37; Task 1 compat filter (now merged) lets the applied array
+   through because `exposure_classes` is in UNIVERSAL_TZ_PARAMS (see
+   Known gaps below for the 2-line follow-up).
 5. Returning user with old LS (single `exposure_class: "XF2"`) —
    migration should keep the XF2 pill ticked without error.
+6. **Task 1 regression check** — open calculator with
+   `?position_id=XXX&part_name=ZÁKLADY+PILÍŘE` and paste a bridge TZ:
+   element_type still reads "Základy pilíře" (locked dropdown), bridge-
+   deck params land in the ignored list with compat-reason text.
 
 ---
 
 ## Known gaps / deferred items
 
+- **`exposure_classes` missing from Task 1 UNIVERSAL_TZ_PARAMS.** This
+  branch's extractor emits the new plural param, but `element-classifier.ts
+  UNIVERSAL_TZ_PARAMS` (added by Task 1, now on main) lists only the
+  singular. Symptom: if a user opens the calculator in Scenario A
+  (`?position_id=…`) and pastes a multi-exposure TZ, the plural param
+  falls through to `isParamCompatibleWith`'s "unknown → allow" branch,
+  which happens to be correct by accident. Still, add the explicit entry
+  for future-proofing (2-line diff): append `'exposure_classes'` to
+  `UNIVERSAL_TZ_PARAMS` at `shared/src/classifiers/element-classifier.ts`
+  around line 1688, and add the param name to the test covering universal
+  compatibility. Post-merge follow-up.
 - **AI advisor prompt still reads singular `exposure_class`.** Not a
   regression (it gets the most-restrictive class mirrored from the
   array), but the prompt loses the full multi-exposure picture. Follow-
@@ -175,10 +192,6 @@ size, no new deps introduced).
 - **Calculator-suggestions payload** (document facts) still echoes the
   single `exposure_class`. Same rationale — extend when pulling it
   through to the AI advisor.
-- **Task 1 interaction** — once Task 1 lands, add `exposure_classes` to
-  `UNIVERSAL_TZ_PARAMS` in `element-classifier.ts` (same treatment as
-  `exposure_class`) so the compat gate doesn't reject the new param.
-  Estimated 2-line diff.
 - **Cement-type sulfate-resistant recognition** is regex-based (`SR|SV`
   substring). Works for CEM II/B-SV, CEM III/A-SR etc., but users on
   non-standard identifiers would fall through. Could harden to an
@@ -193,27 +206,35 @@ size, no new deps introduced).
 
 ## Next session starting points
 
-1. **P1: Fix "Jen problémy" filter** — `stavagent-portal/routes/positions.js:150`
+1. **P0 (2 lines): Add `exposure_classes` to UNIVERSAL_TZ_PARAMS.** See
+   Known gaps above. ~5 min.
+2. **P1: Fix "Jen problémy" filter** — `stavagent-portal/routes/positions.js:150`
    inverted predicate. 1-line diff + regression test. ~15 min.
-2. **P1: Bridge formwork whitelist** — AI still recommends Dokaflex for
+3. **P1: Bridge formwork whitelist** — AI still recommends Dokaflex for
    mostovka. Add `BRIDGE_FORMWORK_WHITELIST` (Framax/Top 50/Staxo). ~1h.
-3. **P1: Advisor prompt uses exposure_classes array** — extend
+4. **P1: Advisor prompt uses exposure_classes array** — extend
    `backend/advisor-prompt.js` to surface full multi-class selection in
    the prompt ("Třídy prostředí: XF2, XD1, XC4 — kombinované požadavky
    …"). ~1h.
-4. **P1: Validation warnings Phase 2** — parallel
+5. **P1: Validation warnings Phase 2** — parallel
    `warnings_structured[]` with severity/category, UI renderer,
    "Pokračovat přesto" gate on critical. ~4-5h.
+6. **P2: SmartInput PDF pipeline** — MinerU OCR integration for uploaded
+   PDFs, chunked extraction, cross-document fusion. ~4h + infra work.
 
 ---
 
 ## Session admin
 
-- CLAUDE.md NOT bumped (UX + engine addition, no infrastructure change).
-  Could add under "Monolit-Planner" section in a follow-up:
-  > v4.24.x: multi-select exposure classes — 20-class catalog +
-  > combineExposure (ČSN EN 206+A2) + 5-category pill UI + TZ regex
-  > rewrite.
-- Branch: `claude/task-02-exposure-multiselect`
+- CLAUDE.md NOT bumped by either task — both are UX + engine additions
+  without infrastructure change. Could add under "Monolit-Planner"
+  section in a follow-up:
+  > v4.24.x: TZ context lock (Task 1) — compat map + position_id
+  > marker + ignored-param feedback. Multi-select exposure classes
+  > (Task 2) — 20-class catalog + combineExposure (ČSN EN 206+A2) +
+  > 5-category pill UI + TZ regex rewrite.
+- Branch: `claude/task-02-exposure-multiselect` (merged forward from
+  post-Task-1 main; `next-session.md` conflict resolved by keeping
+  Task 2's handoff notes + noting Task 1 as merged).
 - Commit message convention: `FEAT: Multi-select exposure classes +
   ČSN EN 206+A2 combined rules (Task 2)`.

@@ -34,9 +34,17 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
     advisor, docSuggestions, acceptedParams,
     onAcceptSuggestion, onDismissSuggestion,
     positionContext, isMonolitMode,
+    isTzContextLocked, lockedFieldSet,
     getSuggestion, apiUrl, isAdmin,
     update,
   } = props;
+
+  // Task 1 (2026-04-20): field-level lock helpers.
+  const isFieldLocked = (name: string) =>
+    !!(isTzContextLocked && lockedFieldSet?.has(name));
+  const lockedTitle = positionContext?.otskp_code
+    ? `Převzato z pozice ${positionContext.otskp_code} (Monolit Planner). Pro změnu upravte v původní pozici.`
+    : 'Převzato z Monolit Planner. Pro změnu upravte v původní pozici.';
 
   // B1 (2026-04-15): for bored piles the formwork-related fields are
   // still RENDERED but DISABLED (with a tooltip) so the user sees they
@@ -61,20 +69,29 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
             {/* ── Step 2: Volume ── */}
             <div style={wizardVisible.objemy_volume ? undefined : { display: 'none' }}>
             <Field label="Objem betonu (m³)">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div
+                style={{ display: 'flex', alignItems: 'center' }}
+                title={isFieldLocked('volume_m3') ? lockedTitle : undefined}
+              >
                 <NumInput
                   // E1 (2026-04-15): read-only for pilota (volume is always
                   // derived from Ø×L×count via the pile engine).
+                  // Task 1 (2026-04-20): read-only when locked from Monolit.
+                  // NumInput has no `disabled` prop — we use
+                  // pointerEvents:none + onChange guard instead.
                   style={{
                     ...inputStyle, flex: 1,
-                    ...(isPile ? {
+                    ...((isPile || isFieldLocked('volume_m3')) ? {
                       background: 'var(--r0-slate-100, #f1f5f9)',
                       color: 'var(--r0-slate-500)',
+                      cursor: 'not-allowed',
+                      pointerEvents: 'none',
                     } : {}),
                   }}
                   value={form.volume_m3} min={0} fallback={0}
                   onChange={v => {
                     if (isPile) return; // pile volume is locked to geometry
+                    if (isFieldLocked('volume_m3')) return; // locked from Monolit
                     // Typing into volume → flip to manual mode so the
                     // L×W×H useEffect stops overwriting this value.
                     update('volume_m3', v as number);
@@ -98,6 +115,11 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               {isPile && (
                 <div style={{ marginTop: 3, fontSize: 10, color: 'var(--r0-slate-500)' }}>
                   Pilota: objem je vždy odvozen z geometrie v kroku 3.
+                </div>
+              )}
+              {isFieldLocked('volume_m3') && !isPile && (
+                <div style={{ marginTop: 3, fontSize: 10, color: 'var(--r0-amber-text, #92400e)' }}>
+                  🔒 Objem převzat z pozice{positionContext?.otskp_code ? ` ${positionContext.otskp_code}` : ''}.
                 </div>
               )}
             </Field>

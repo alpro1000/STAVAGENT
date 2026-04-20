@@ -1650,3 +1650,179 @@ export function getRebarNormForDiameter(
   // Unusual diameter (e.g. D18 not in matrix) → legacy per-element rate
   return { norm_h_per_t: profile.rebar_norm_h_per_t, source: 'legacy' };
 }
+
+// ─── TZ parameter compatibility per element type (Task 1, 2026-04-20) ────────
+
+/**
+ * Known TZ-parameter field names emitted by `tz-text-extractor.ts`
+ * (includes smeta-line derived fields). Used to type the compatibility
+ * map — extractor can emit other names too, which default to "universal".
+ */
+export type TzParamName =
+  | 'element_type'
+  | 'concrete_class'
+  | 'exposure_class'
+  | 'volume_m3'
+  | 'height_m'
+  | 'thickness_mm'
+  | 'formwork_area_m2'
+  | 'reinforcement_total_kg'
+  | 'reinforcement_ratio_kg_m3'
+  | 'span_m'
+  | 'num_spans'
+  | 'nk_width_m'
+  | 'total_length_m'
+  | 'bridge_deck_subtype'
+  | 'is_prestressed'
+  | 'prestress_tensioning'
+  | 'prestress_cables_count'
+  | 'prestress_strands_per_cable'
+  | 'pile_diameter_mm'
+  // Task 2 (2026-04-20): array-form exposure classes (ČSN EN 206+A2).
+  | 'exposure_classes';
+
+/**
+ * Parameters that are meaningful for ANY structural element — always
+ * compatible. Represents the minimum fill every element accepts from TZ.
+ */
+const UNIVERSAL_TZ_PARAMS: readonly TzParamName[] = [
+  'concrete_class',
+  'exposure_class',
+  // Task 2 (2026-04-20): multi-class selection is universal for every
+  // element type (same rationale as the singular).
+  'exposure_classes',
+  'volume_m3',
+  'formwork_area_m2',
+  'reinforcement_total_kg',
+  'reinforcement_ratio_kg_m3',
+];
+
+/** Bridge-deck / beam specific params (mostovky, rigely, komory). */
+const BRIDGE_DECK_TZ_PARAMS: readonly TzParamName[] = [
+  'span_m',
+  'num_spans',
+  'nk_width_m',
+  'total_length_m',
+  'bridge_deck_subtype',
+  'is_prestressed',
+  'prestress_tensioning',
+  'prestress_cables_count',
+  'prestress_strands_per_cable',
+  'thickness_mm',
+];
+
+/**
+ * Per-element TZ-compatibility map — which TZ params are meaningful for each
+ * structural element type. Used by `TzTextInput.applyParams` to filter out
+ * parameters extracted from the TZ of the whole object that don't apply to
+ * the specific element the user is calculating (e.g. "rozpětí 32 m" when
+ * user is computing základy).
+ *
+ * Includes UNIVERSAL_TZ_PARAMS implicitly (via `isParamCompatibleWith`).
+ * This array only lists ADDITIONAL element-specific params.
+ *
+ * Note: `element_type` is intentionally excluded from all entries. When
+ * user opens calculator from Monolit Planner, the element type is locked
+ * from parent context — Smart Extractor must never overwrite it. In
+ * standalone (Scenario B) the caller bypasses this filter.
+ */
+export const ELEMENT_TZ_COMPATIBILITY: Record<
+  StructuralElementType,
+  readonly TzParamName[]
+> = {
+  // ── Foundations (horizontal, no bridge-deck params) ──────────────────────
+  zaklady_piliru: ['height_m', 'thickness_mm'],
+  zakladova_deska: ['height_m', 'thickness_mm'],
+  zakladovy_pas: ['height_m', 'thickness_mm'],
+  zakladova_patka: ['height_m', 'thickness_mm'],
+  prechodova_deska: ['height_m', 'thickness_mm', 'total_length_m'],
+
+  // ── Retaining walls / abutments (vertical, length-relevant) ──────────────
+  operne_zdi: ['height_m', 'total_length_m', 'thickness_mm'],
+  kridla_opery: ['height_m', 'total_length_m', 'thickness_mm'],
+  opery_ulozne_prahy: ['height_m', 'total_length_m', 'thickness_mm'],
+  mostni_zavirne_zidky: ['height_m', 'total_length_m', 'thickness_mm'],
+  stena: ['height_m', 'total_length_m', 'thickness_mm'],
+  podzemni_stena: ['height_m', 'total_length_m', 'thickness_mm'],
+  nadrz: ['height_m', 'total_length_m', 'thickness_mm'],
+
+  // ── Piers / columns / beams (vertical or beam, height-relevant) ──────────
+  driky_piliru: ['height_m', 'thickness_mm'],
+  sloup: ['height_m', 'thickness_mm'],
+  pruvlak: ['height_m', 'total_length_m', 'thickness_mm'],
+
+  // ── Bridge deck / rigels (full bridge geometry relevant) ─────────────────
+  mostovkova_deska: [...BRIDGE_DECK_TZ_PARAMS],
+  rigel: [...BRIDGE_DECK_TZ_PARAMS],
+
+  // ── Slab-like ceilings ───────────────────────────────────────────────────
+  stropni_deska: ['height_m', 'thickness_mm', 'total_length_m'],
+
+  // ── Stairs / edge beams ──────────────────────────────────────────────────
+  schodiste: ['height_m', 'thickness_mm'],
+  rimsa: ['height_m', 'total_length_m', 'thickness_mm'],
+
+  // ── Piles (own diameter, no formwork) ────────────────────────────────────
+  pilota: ['pile_diameter_mm', 'height_m'],
+
+  // ── Small plain concrete (minimal geometry) ──────────────────────────────
+  podkladni_beton: ['thickness_mm'],
+  podlozkovy_blok: ['thickness_mm'],
+
+  // ── Fallback: accept everything (universal only) ─────────────────────────
+  other: [...BRIDGE_DECK_TZ_PARAMS, 'pile_diameter_mm', 'height_m', 'thickness_mm'],
+};
+
+/**
+ * Check whether a TZ parameter is compatible with (meaningful for) a
+ * structural element type. Returns `true` for universal params regardless
+ * of element type, plus any element-specific params from
+ * `ELEMENT_TZ_COMPATIBILITY`. Unknown param names default to `true`
+ * (conservative — better to apply a legit value than silently drop one).
+ *
+ * Does NOT handle lock state — the caller is responsible for filtering
+ * locked fields separately (element_type, volume_m3, position code when
+ * calculator is opened from Monolit Planner).
+ */
+export function isParamCompatibleWith(
+  param_name: string,
+  element_type: StructuralElementType,
+): boolean {
+  // Universal params — always compatible
+  if ((UNIVERSAL_TZ_PARAMS as readonly string[]).includes(param_name)) return true;
+  // Element-specific list
+  const specific = ELEMENT_TZ_COMPATIBILITY[element_type];
+  if (specific && (specific as readonly string[]).includes(param_name)) return true;
+  // Unknown param (not in our typed list) — default to allow for forward
+  // compatibility (new extractor features won't be silently dropped).
+  const allKnown = new Set<string>([
+    ...UNIVERSAL_TZ_PARAMS,
+    ...BRIDGE_DECK_TZ_PARAMS,
+    'pile_diameter_mm',
+    'height_m',
+    'thickness_mm',
+    'element_type',
+  ]);
+  return !allKnown.has(param_name);
+}
+
+/**
+ * Human-readable reason why a param is NOT compatible with element_type.
+ * Used in UI "ignored params" expandable list. Returns `null` when the
+ * param IS compatible (caller should check compat first).
+ */
+export function explainIncompatibility(
+  param_name: string,
+  element_type: StructuralElementType,
+): string | null {
+  if (isParamCompatibleWith(param_name, element_type)) return null;
+  const label = getElementProfile(element_type).label_cs;
+  const bridgeOnly: readonly string[] = BRIDGE_DECK_TZ_PARAMS;
+  if (bridgeOnly.includes(param_name)) {
+    return `Parametr mostní nosné konstrukce — nepoužije se pro „${label}".`;
+  }
+  if (param_name === 'pile_diameter_mm') {
+    return `Průměr piloty — nepoužije se pro „${label}".`;
+  }
+  return `Parametr není relevantní pro „${label}".`;
+}
