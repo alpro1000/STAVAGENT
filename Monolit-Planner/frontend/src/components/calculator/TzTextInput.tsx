@@ -134,7 +134,7 @@ export function TzTextInput({
         continue;
       }
       // Fill-only-if-empty filter (both scenarios — user design decision Task 1)
-      const currentValue = (form as Record<string, unknown>)[p.name];
+      const currentValue = (form as unknown as Record<string, unknown>)[p.name];
       if (!isFieldEmpty(currentValue)) {
         ignored.push({
           param: p, reason: 'already_filled',
