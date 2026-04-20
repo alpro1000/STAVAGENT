@@ -2,3 +2,44 @@ node_modules/
 package-lock.json
 *.db
 .claude/
+
+# Environment files (keep .env.example tracked)
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+.next/
+.vercel/
+.turbo/
+
+# Logs
+*.log
+logs/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Coverage
+coverage/
+.coverage
+htmlcov/
+
+# Local-only outputs (regenerated from extract_all_pdfs.py)
+extracted_data/

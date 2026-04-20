@@ -3,7 +3,7 @@
 
 echo "🚀 Running pre-push checks..."
 
-REPO_ROOT="/home/user/STAVAGENT"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check branch name (should start with claude/ and end with session ID)
 BRANCH=$(git branch --show-current)

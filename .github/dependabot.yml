@@ -1,0 +1,185 @@
+# Dependabot configuration for STAVAGENT monorepo
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+#
+# Ecosystems:
+#   - npm: 9 JS services (Monolit × 3 + Portal × 2 + URS × 2 + Registry × 2)
+#   - pip: concrete-agent (Python)
+#   - github-actions: CI workflows
+#
+# Safety strategy (Apr 2026):
+#   - IGNORE major version bumps (semver-major) — too risky without dedicated
+#     testing cycle. Major bumps (express 4→5, react 18→19, vite 5→8,
+#     cryptography 41→46, etc.) must go through manual upgrade branches.
+#   - GROUP all minor + patch updates into a single PR per ecosystem —
+#     one grouped PR per service per week instead of 20+ individual PRs.
+#   - open-pull-requests-limit: 3 per entry — hard cap against PR-storm.
+#   - Weekly (Monday) schedule.
+#
+# After Dependabot re-scans with this config, it automatically:
+#   - Closes open PRs that now match an `ignore` rule (all current major bumps)
+#   - Replaces individual per-package PRs with the single grouped PR when
+#     `groups` captures them.
+# This takes 15–60 minutes. Old PRs can be bulk-closed manually in the UI
+# to speed the visual cleanup.
+
+version: 2
+
+updates:
+  # ─── Monolit-Planner ───
+  - package-ecosystem: "npm"
+    directory: "/Monolit-Planner/shared"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/Monolit-Planner/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/Monolit-Planner/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ─── stavagent-portal ───
+  - package-ecosystem: "npm"
+    directory: "/stavagent-portal/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/stavagent-portal/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ─── URS_MATCHER_SERVICE ───
+  - package-ecosystem: "npm"
+    directory: "/URS_MATCHER_SERVICE/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/URS_MATCHER_SERVICE/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ─── rozpocet-registry ───
+  - package-ecosystem: "npm"
+    directory: "/rozpocet-registry"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/rozpocet-registry-backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ─── concrete-agent (Python) ───
+  - package-ecosystem: "pip"
+    directory: "/concrete-agent/packages/core-backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ─── GitHub Actions ───
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      all-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]

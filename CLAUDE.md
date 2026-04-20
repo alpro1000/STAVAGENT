@@ -6,6 +6,16 @@
 
 ---
 
+> **English TL;DR for external readers**
+>
+> This is the operational reference for Claude Code sessions working on STAVAGENT. It contains architecture decisions, coding conventions, and business-logic invariants. The document below is written in Russian and Czech for the primary maintainer — if you opened this repo from GitHub, start with [README.md](README.md) instead.
+>
+> **What STAVAGENT is:** an AI-powered construction cost estimation SaaS for Czech and Slovak civil-construction markets, with an MCP Server exposing nine domain-specific tools. Five production backends on Google Cloud Run plus four frontends on Vercel. Architecture is deterministic-first: regex and catalog lookups run before LLM fallback, and higher-confidence results never get overwritten by lower-confidence ones.
+>
+> **Changelog — v4.24.0 (2026-04-19):** root cleanup (PR #911) moved archives and domain-knowledge PDFs into `docs/`. Infrastructure hardening (PR #914, #967): `concrete-agent` runs with `--min-instances=1` to preserve in-memory state; Cloud SQL authorized networks cleared; Dependabot configured with grouped minor/patch and major-bump ignore. README rewritten in English (PR #973). Extended operational checklist lives at [`docs/STAVAGENT_ClaudeCode_Session_Mantra.md`](docs/STAVAGENT_ClaudeCode_Session_Mantra.md).
+
+---
+
 ## Правила ведения этого файла
 
 > Справочник, не журнал. Лимит ~300 строк. Один факт = одна строка.
@@ -27,7 +37,8 @@ STAVAGENT/
 ├── Monolit-Planner/       ← Kiosk: Concrete Calculator (Node.js/React, port 3001/5173)
 ├── URS_MATCHER_SERVICE/   ← Kiosk: URS Matching (Node.js, port 3001/3000)
 ├── rozpocet-registry/     ← Kiosk: BOQ Registry (React/Vite + Vercel serverless, port 5173)
-├── shared/                ← Cross-kiosk shared code (icon-registry.ts)
+├── scripts/               ← Helper scripts (dangerous/ subdir for destructive ops)
+├── docs/                  ← ARCHITECTURE.md, normy/, archive/
 ├── mineru_service/        ← MinerU PDF parser (Python FastAPI, Cloud Run europe-west1, port 8080)
 └── .github/workflows/     ← CI/CD
 ```
@@ -240,7 +251,7 @@ cd rozpocet-registry && npm install && npm run dev               # Vite :5173
 **Key rules:**
 - Determinism > AI: if regex can do it, don't use LLM
 - Confidence: never overwrite higher with lower
-- Icons: `lucide-react` only, no emojis in JSX; `shared/icon-registry.ts`
+- Icons: `lucide-react` only, no emojis in JSX (per-service imports, no shared registry)
 - Monolit subtypes: beton, bednění, odbednění (Tesař), výztuž, jiné
 - Negative context: `_safe_search()` skips stávající/demolition matches
 - Element classifier v3: 22 types, bridge context, 5 early-exits, 7 BRIDGE_EQUIVALENT mappings
@@ -373,7 +384,7 @@ Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `
 ### Manual Actions
 - [ ] **MASTER_ENCRYPTION_KEY**: `openssl rand -hex 32` → GCP Secret Manager
 - [ ] **LEMONSQUEEZY_WEBHOOK_SECRET**: set in GCP Secret Manager (Lemon Squeezy → Settings → Webhooks → Signing secret)
-- [ ] **Change DB password** — `StavagentPortal2026!` leaked in git history; `gcloud sql users set-password`
+- [x] ~~**Change DB password** — `StavagentPortal2026!` leaked in git history~~ ✅ **Rotated** (Apr 2026). Historical string remains in git history but is no longer valid against any environment.
 
 ### TODO
 - [ ] **P0: Deploy MCP** — after merge, verify `/mcp` endpoint on Cloud Run, test with curl

@@ -15,7 +15,7 @@
   "dependencies": {
     "@stavagent/monolit-shared": "file:../shared",
     "@tanstack/react-query": "^5.17.9",
-    "axios": "^1.6.5",
+    "axios": "^1.15.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "lucide-react": "^0.562.0",

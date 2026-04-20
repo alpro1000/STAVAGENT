@@ -3,7 +3,7 @@
 
 echo "🔍 Running pre-commit checks..."
 
-REPO_ROOT="/home/user/STAVAGENT"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 # Run tests in shared package (critical formulas) - ONLY CRITICAL TESTS
 echo "📊 Testing shared formulas (critical business logic)..."
