@@ -890,4 +890,94 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 ---
 
-*Разделы 4.3.2, 4.3.5–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+#### 4.3.5 Что добавляется в detail panel
+
+**Что это.** Inline-раскрывающаяся панель под строкой, показывающая контекстные действия и подробности **одной** конкретной položky. Полноценный `<tr>`-блок, добавляемый сразу под активной строкой (паттерн аналогичный `.flat-el-info + .flat-el-colheader + .flat-work-row + .flat-el-add` иерархии в Planner Part A, § 2.3.3 — один element рендерится как стек из 4 слоёв; в Registry detail panel = один дополнительный слой под "главной" строкой položky).
+
+**Когда открывается.** Клик по cell с текстовым телом строки — конкретно `kod` (`ItemsTable.tsx:600-611`) или `popis` (`ItemsTable.tsx:614-625`). Эти две ячейки — естественное "тело" строки: содержат идентифицирующую информацию, сейчас не-кликабельны (только cursor sort при клике на th). Остальные cells либо интерактивны как click-cell-edit (`EditablePriceCell`, `SkupinaAutocomplete`), либо являются данными (MJ, Množství, Cena celkem), либо уже заняты под inline-действия из § 4.3.3 (chevron, BarChart3, checkbox).
+
+**Когда закрывается.** Три пути: (1) повторный клик по той же строке на `kod`/`popis`; (2) клик на кнопку закрытия `<X>` 13 px внутри панели (паттерн § 1.6 — TOVModal `FlatTOVSection.tsx:224` как `X` 11 px, здесь 13 px ради туча-цели); (3) клик по `kod`/`popis` **другой** строки — текущая панель схлопывается, новая разворачивается (single-open семантика: максимум одна detail-панель на таблицу одновременно, чтобы не плодить визуальный шум и не ломать вертикальный ритм).
+
+**Inventory-контроль — полное распределение 17 row-level элементов § 1.2:**
+
+| # | Элемент Inventory § 1.2 | Куда уходит в Variant B | Подсекция |
+|---|---|---|---|
+| 1 | `select` checkbox | bulk-режим (активируется long-press / Shift-click) | § 4.3.6 |
+| 2 | `MoveUp` 11 px | detail panel | **здесь** |
+| 3 | `MoveDown` 11 px | detail panel | **здесь** |
+| 4 | role-trigger (CircleHelp / ClipboardList / FileText / ↳) | detail panel | **здесь** |
+| 5 | `Link2` 12 px (subordinate only) | detail panel | **здесь** |
+| 6 | `TOVButton` (BarChart3 16 px) | inline — action (13 px, без tinted-bg статуса) | § 4.3.3 |
+| 7 | `HardHat` 14 px (monolit) | inline — как status badge 11 px; **click-navigate to Monolit kalkulátor** → detail panel | **здесь** |
+| 8 | Poř. chevron + `+N` badge + line number | inline (chevron + non-interactive badge) | § 4.3.3 |
+| 9 | `kod` | inline data cell; **click → открывает detail panel** | **здесь** (trigger) |
+| 10 | `popis` | inline data cell; **click → открывает detail panel** | **здесь** (trigger) |
+| 11 | `mj` | inline data cell | — |
+| 12 | `mnozstvi` | inline data cell | — |
+| 13 | `cenaJednotkova` (EditablePriceCell) | inline click-cell-to-edit | — (pattern уже применён) |
+| 14 | `cenaCelkem` | inline data cell (secular + section total) | — |
+| 15 | `SkupinaAutocomplete` | inline click-cell-to-edit (cell-level) | — (pattern уже применён) |
+| 16 | `Sparkles` (applyToSimilar) | toolbar skupiny | § 4.3.4 |
+| 17 | `Globe` (applyToAllSheets) | toolbar skupiny | § 4.3.4 |
+
+Каждый из 17 элементов размещён ровно один раз. Ничто не дублируется на двух уровнях. Ничто не потеряно.
+
+**Действия, переезжающие в detail panel (из таблицы выше — 4 per-item действия + 1 navigation):**
+
+| Действие | Источник в Registry | Почему в detail, а не inline / toolbar |
+|---|---|---|
+| `<MoveUp>` 13 px + `<MoveDown>` 13 px (вертикально или горизонтально — подряд, с `.flat-el-info__sep` разделителем 1×24 px) | `RowActionsCell.tsx:164-177` + handlers `moveItemUp` / `moveItemDown` `:153-159` | Per-item reorder — действие **редкое** (§ 3.2.3 зафиксировал: порядок строк определяется источником Excel/XML, ручная коррекция нужна при ошибке парсера). Две кнопки, всегда видимые в row, не окупают место: ×2 иконки на 2 000 строк = 4 000 visible icons за редкое действие. В detail — два button в стороне "Reorder", доступны когда пользователь явно вызвал контекст позиции. |
+| Role-trigger 13 px (портал-dropdown меняет `rowRole` на `main / subordinate / section`) | `RowActionsCell.tsx:36-41, 180-205` + `updateItemRoleUndoable` | Per-item role — **редкое**: `rowRole` присваивается парсером при импорте, ручная коррекция только при ошибке (§ 3.2.3). В detail — в информационном блоке "Role: [Hlavní ▼]" с inline dropdown, рядом с "Parent: …" (для subordinate). Role-change **должен быть виден рядом с полным контекстом** (код, название, родитель), а не в узкой action-зоне строки, где семантика иконки (ClipboardList = main? FileText = section?) не считывается без tooltip. |
+| `<Link2>` 13 px "Připojit k nadřazené položce" + resizable parent-picker modal | `RowActionsCell.tsx:252-405` + handler `:148-151` + 550 × 500 модалка | Conditional (только `rowRole === 'subordinate'`). Привязка к родителю — **редкое** конфигурационное действие, ставится один раз при классификации и дальше не меняется. В detail — одна кнопка "Změnit rodiče" рядом с показом текущего родителя (`parentItemId` resolved в `kod` + `popis`). Modal-picker `RowActionsCell.tsx:262-405` остаётся как вторичная подмодалка; мобильный overflow § 3.4.3 резолвится отдельно (detail panel сам по себе full-width / bottom-sheet, ограничитель 400 px становится неактуален). |
+| `<HardHat>` click → `window.open(monolit_url)` navigate в Monolit kalkulátor | `ItemsTable.tsx:530-548` | HardHat как **status-индикатор** (цвет = severity из `conflictMap` — match/info/warning/conflict) остаётся inline как 11 px badge с tooltip — чистый паттерн `AlertCircle` из § 3.5.2 ("только цвет + tooltip, не кликабелен"). **Action** же ("открыть в Monolit kalkulátor в новой вкладке") переезжает в detail panel как explicit button `↗ Otevřít v Monolitu` — видим полный контекст `mp.part_name`, `kros_total_czk`, `days`, `crew_size` рядом с кнопкой, и пользователь осознанно нажимает, а не попадает на иконку в тесной группе action'ов. Это прямое применение § 3.5.3 — раздельный путь A (status inline) + путь B (action в detail) для одного элемента, который сейчас совмещает обе роли. |
+| Delete положки (сейчас отсутствует single-delete, есть только bulk) | нет в § 1.2 — добавляется в Variant B | § 2.4.5 "opacity 0.4 паттерн для destructive" применим только если single-delete существует. В Registry сейчас удалить одну положку можно ТОЛЬКО через selectedIds → BulkActionsBar "Smazat". В detail panel появляется `<Trash2>` 13 px с `opacity: 0.4` + `:hover → var(--red-500)` + `title="Smazat pozici"` + `confirm()` перед удалением. Одна семантика на паттерн — иконка всегда означает необратимое удаление **текущей** položky. |
+
+**Информационное содержимое detail panel (не действия, а данные, которые сейчас либо обрезаются в ячейке, либо не показываются вообще):**
+
+| Поле | Источник | Почему в detail |
+|---|---|---|
+| Полный `popis` без horizontal-scroll clip | `ParsedItem.popis` | Сейчас `popis` cell имеет `cell-scrollable` класс (`ItemsTable.tsx:617` + `ItemsTable.css:7-31`) — длинные описания (часто 150+ символов) scrollable в 300 px cell. В detail panel — полный текст без обрезки, `font-size: 13 px, line-height: 1.5`, max-width: none. |
+| Полный `kod` + классификация каталога (OTSKP 6-digit / ÚRS 9-digit) | `detectCatalog()` в `src/utils/position-linking.ts` | Мета-бейдж `[OTSKP]` / `[ÚRS]` 11 px с `.flat-badge` паттерном § 2.3.5. Сейчас каталог вычисляется, но в строке не показан (§ 1.1 отмечает: "классификация детерминирована `detectCatalog()`, а не действие пользователя"). В detail — explicit. |
+| Полный `rowRole` + parent info (если subordinate) | `ParsedItem.rowRole` + `parentItemId` | Sekce "Role: [Hlavní ▼] · Rodič: 001 — Beton C30/37" с dropdown role + link на parent. Решает проблему § 1.3 "секционные строки визуально читаются как строки с дырами". |
+| Subordinate-count `+N` развёрнутый список | `subordinateCounts.get(item.id)` (`ItemsTable.tsx:214-222`) | Сейчас только badge `+3`; в detail — компактный список с kod + popis первых 5 подчинённых, "Zobrazit všech N" link. |
+| Monolit payload детализация | `ParsedItem.monolith_payload` (`ItemsTable.tsx:502-527`) | Сейчас всё за HardHat tooltip: `part_name`, `kros_total_czk`, `days`, `crew_size`, severity. В detail — явные строки данных + action-кнопка `↗ Otevřít v Monolitu`. |
+| TOV-summary | `getItemTOV(item.id)` + inline chart-icon в § 4.3.3 | Inline бейдж "▥ 45 h · 180 kg · 3 t" из § 4.3.3 дублируется в detail как full-table view + кнопка `[ Celý rozpis → ]` открывающая существующий `<TOVModal>` `TOVModal.tsx:196` (модалка сохраняется без изменений — она уже стандартный fixed-inset-0 pattern, конфликтов в § 3.4 не имеет). |
+| BOQ line-number `Poř.` + оригинальные поля импорта | `item.boqLineNumber` + raw-parser поля | Сейчас только цифра в 50 px cell; в detail — explicit "Pořadové číslo: 001 · Import: Stavba_202.xlsx, list 3, řádek 142". Помогает при аудите импорта. |
+
+**Схема desktop (ASCII):**
+
+```
+обычная строка (detail закрыта):
+┌──┬──┬─────┬────────┬──────────────────────────────┬──┬─────┬──────────┬──────────┬──────────────┐
+│☐ │› │ 001 │21341   │DRENÁŽNÍ VRSTVA Z KAMENIVA    │m³│94,2 │ 3 240,00 │30 587,40 │ beton ▼  ▥45h│
+└──┴──┴─────┴────────┴──────────────────────────────┴──┴─────┴──────────┴──────────┴──────────────┘
+                     ↑ click kod или popis — открывает detail panel
+
+ строка с раскрытой detail (чуть темнее фон — var(--stone-100) как .flat-el-info):
+┌──┬──┬─────┬────────┬──────────────────────────────┬──┬─────┬──────────┬──────────┬──────────────┐
+│☐ │▾ │ 001 │21341   │DRENÁŽNÍ VRSTVA Z KAMENIVA    │m³│94,2 │ 3 240,00 │30 587,40 │ beton ▼  ▥45h│
+├──┴──┴─────┴────────┴──────────────────────────────┴──┴─────┴──────────┴──────────┴──────────────┤
+│                                                                                              [×]│
+│  DRENÁŽNÍ VRSTVA Z KAMENIVA HRUBÉHO DRCENÉHO FRAKCE 16/32 MM   [OTSKP]   Poř. 001              │
+│                                                                                                 │
+│  Role:   [● Hlavní ▼]        Rodič:  —              Podřízené: 3  → Zobrazit                   │
+│  TOV:    ▥ 45 h · 180 kg · 3 t                            [ Celý rozpis → ]                    │
+│  Monolit: ⛑ 142 500 Kč · 3,5 dn · 6 lidí          [ ↗ Otevřít v Monolitu ]                     │
+│  Import: Stavba_202.xlsx · list 3 · řádek 142                                                  │
+│  ────────────────────────────────────────────────────────────────────────────────────────────  │
+│  Reorder: [ ↑ Nahoru ]  [ ↓ Dolů ]                                          [ 🗑 Smazat pozici ]│
+│                                                                              ↑ opacity 0.4     │
+└─────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+ Legend: bg var(--stone-100) (как .flat-el-info)
+         borders: top = 2 px stone-300 (как .flat-el-info bottom)
+                  bottom = 2 px stone-200 (как .flat-el-add завершитель)
+         font 13 px body · 11 px labels uppercase · 11 px badges
+         no box-shadow · no zebra · warm hover var(--flat-hover) #F5F3F0 на внутренних action'ах
+```
+
+`▾` — тот же chevron из § 4.3.3, но при открытой detail панели он меняется `ChevronRight → ChevronDown` для визуального совпадения с состоянием. Chevron продолжает отвечать **только** за expand/collapse subordinates, открытие detail panel — click на `kod`/`popis`, не на chevron. Две разные interaction-zones, независимые друг от друга (если у main row есть subordinates И открыта detail panel — оба состояния активны одновременно: subordinates видны ниже detail-блока, detail-блок остаётся приклеен к своему main row).
+
+---
+
+*Разделы 4.3.2, 4.3.6–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
