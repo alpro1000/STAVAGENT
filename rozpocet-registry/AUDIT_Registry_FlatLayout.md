@@ -834,4 +834,60 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 ---
 
-*Разделы 4.3.2, 4.3.4–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+#### 4.3.4 Что добавляется в toolbar заголовка skupiny
+
+Новый компонент — горизонтальный toolbar, привязанный к заголовку текущей skupiny (напр. "SO 202202", "SO 301 — Mostní svršek"), отрисовывается **над блоком položek этой skupiny** и прокручивается вместе с ним. Действует на всю skupinу как единицу, не на отдельную položku. Заменяет собой row с `rowRole === 'section'` в визуальной роли заголовка-раздела (§ 1.3 — сейчас секционные строки содержат 10 пустых ячеек и 7 активных; в Variant B секция становится полноценным блоком `<header>` + toolbar, а не `<tr>` с дырами).
+
+**Предварительная проверка Inventory по каждому кандидату:**
+
+**MoveUp / MoveDown (`RowActionsCell.tsx:164-177`)** — проверено дословно: оба button вызывают `moveItemUp(projectId, sheetId, item.id)` и `moveItemDown(projectId, sheetId, item.id)` (`RowActionsCell.tsx:153-159`) → это **per-item manual reorder внутри листа**, не skupina-level sort. В toolbar skupiny **не переезжают**. Судьба этих двух button'ов решается в § 4.3.6 (bulk bar) — вариант из § 2.5.3 "либо в bulk-режим, либо в DnD-handle". Column-sort по Kód / Popis / Množství / Cena через клик на th уже есть (`ItemsTable.tsx:1015-1030`) и тоже остаётся, но это отдельный механизм.
+
+**CircleHelp / role-trigger (`RowActionsCell.tsx:36-41, 180-205`)** — проверено: это НЕ help-тултип о skupine/каталоге, это trigger смены `rowRole` на текущей строке (`ROLE_ICONS.unknown` = `CircleHelp` только когда `rowRole === 'unknown'`). **Per-item**, не skupina-level. В toolbar skupiny **не переезжает** — отправляется в detail panel (§ 4.3.5).
+
+**Skupina-management в Inventory 1.4** — сейчас размазано по трём местам: column-header Filter dropdown (`ItemsTable.tsx:714-810`), отдельный `<GroupManager>` collapsible card (`src/components/groups/GroupManager.tsx`), inline `<SkupinaAutocomplete>` в каждой строке. Filter и GroupManager остаются на своих местах (out-of-scope per task), но в toolbar skupiny поднимаются **быстрые действия над ТЕКУЩЕЙ skupinой**, чтобы не требовать открытия GroupManager для типового case "применить / переименовать / удалить эту одну группу".
+
+**Что переезжает из row-level § 1.2 в toolbar skupiny:**
+
+| # | Действие | Источник | Роль в toolbar skupiny |
+|---|---|---|---|
+| 16 | `Sparkles` — applyToSimilar | `ItemsTable.tsx:867-874` + handler `:301-358` | "Aplikovat na podobné" — применить текущую skupinu ко всем položkам с кодом ≥40 % similarity во всех листах проекта. Это skupina-level batch operation: семантика "присвоить THIS skupina-значение другим" живёт логически на уровне самой skupiny, а не отдельной стройки. Перенос одной кнопки вместо отрисовки на каждой строке снимает дублирование § 3.2.2. |
+| 17 | `Globe` — applyToAllSheets | `ItemsTable.tsx:875-882` + handler `:361-383` | "Aplikovat globálně" — применить текущую skupinu ко всем položkам с точным `kod` во всех проектах всех листов. Та же семантика batch-operation skupina-уровня; сейчас дублируется на каждой row с одинаковой skupinой. В toolbar — один контрол для всей группы. |
+
+**Что поднимается из существующего `<GroupManager>`** (быстрый доступ к частым skupina-management-действиям, без удаления GroupManager как полной CRUD-панели):
+
+| Действие | Источник | Роль в toolbar skupiny |
+|---|---|---|
+| Rename skupiny | `GroupManager.tsx` (CRUD) | Inline-редактируемое имя (click → input). Frequent, сейчас за двумя кликами (открыть GroupManager → найти строку → редактировать). |
+| Delete skupiny | `GroupManager.tsx:232-245` | Trash2 13 px с паттерном `opacity: 0.4` из § 2.4.5, `:hover → var(--red-500)`. Семантика "удалить ЭТУ группу" чётко скеширована на toolbar ЭТОЙ группы. Двухступенчатый confirm сохраняется. |
+
+**Что добавляется нового** (не переезжает, а появляется как скупиная-уровня UI):
+
+| Действие | Назначение |
+|---|---|
+| Chevron 11 px expand/collapse всех položek skupiny | Структурный toggle: свернуть skupinу целиком одним кликом. Аналог chevron на INFO row Planner (`components/flat/FlatPositionsTable.tsx:500-502`). Заменяет `rowRole === 'section'` визуальную роль. |
+| Счётчик `N položek` + сумма `Σ Kč` | Информационные бейджи (не интерактивные, § 2.3.5 паттерн "bg + color без border"). Сейчас info-счётчик есть только в `groupStats` внутри filter-dropdown (`ItemsTable.tsx:172-185`) и в section total (`sectionTotals` at `:225-240`). В toolbar — всегда видимы без открытия вложенного UI. |
+
+**ASCII-схема desktop:**
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│ ▼  SO 202202 — Mostní nosná konstrukce    ·    13 položek    ·   850 240,00 Kč          │
+│                                                          [ ✦ Podobné ]  [ ⊕ Globálně ]  │
+│                                                                           [ ✎ ] [ 🗑 ] │
+└──────────────────────────────────────────────────────────────────────────────────────────┘
+  │  ↑ name (click to rename)       ↑ info badges       ↑ batch-apply       ↑ rename  delete
+  │                                                                                0.4 opacity
+  └─ chevron 11 px (expand / collapse all 13 rows below)
+
+ padding 0 8px   font 13 px (name) + 11 px label uppercase letter-spacing 0.05 em (info)
+ background var(--stone-50) (= .flat-el-colheader паттерн из § 2.3.3)
+ bottom border 2 px stone-200 (= .flat-el-add завершитель элемента из § 2.3.4)
+```
+
+На узком desktop / планшете ряд `[Podobné] [Globálně] [✎] [🗑]` схлопывается в один overflow-свободный flex-row с переносом через `flex-wrap: wrap` (паттерн `.flat-toolbar` — `gap: 8px; padding: 8px 0; flex-wrap: wrap`, § 2.2, `styles/flat-design.css:979-984`), не через `⋯`-меню (запрещено § 4.1.2).
+
+**Состояние для filtered/single-group view**: когда пользователь применил Skupina filter к одной группе, toolbar показывает только её; когда фильтр off — toolbar рендерится над КАЖДОЙ skupinой в скроллируемой таблице, не глобально (повторяемая "заголовочная полоса" для каждого блока položek, аналог повторяющихся INFO row на каждый element в Planner).
+
+---
+
+*Разделы 4.3.2, 4.3.5–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
