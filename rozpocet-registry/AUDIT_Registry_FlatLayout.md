@@ -199,4 +199,144 @@ Subordinate rows render the same cells but with `className="opacity-70"` (`Items
 
 ---
 
-*Подсекции 2.3 (Цвета), 2.4 (Иконки), 2.5 (Как Planner решает проблему множества действий в строке), разделы 3 (Conflicts), 4 (Proposals), 5 (Recommendation) будут добавлены в следующих коммитах.*
+### 2.3 Цветовая палитра
+
+Раздельная таблица по ролям. Все значения — дословно из кода (hex или CSS custom property), не перефразированы.
+
+#### 2.3.1 Базовая палитра (из которой всё остальное выводится)
+
+| Токен | Значение | Источник |
+|-------|----------|----------|
+| `--stone-50` | `#FAFAF9` | `styles/flat-design.css:19` |
+| `--stone-100` | `#F5F5F4` | `styles/flat-design.css:20` |
+| `--stone-200` | `#E7E5E4` | `styles/flat-design.css:21` |
+| `--stone-300` | `#D6D3D1` | `styles/flat-design.css:22` |
+| `--stone-400` | `#A8A29E` | `styles/flat-design.css:23` |
+| `--stone-500` | `#78716C` | `styles/flat-design.css:24` |
+| `--stone-600` | `#57534E` | `styles/flat-design.css:25` |
+| `--stone-700` | `#44403C` | `styles/flat-design.css:26` |
+| `--stone-800` | `#292524` | `styles/flat-design.css:27` |
+| `--stone-900` | `#1C1917` | `styles/flat-design.css:28` |
+| `--orange-500` | `#F97316` | `styles/flat-design.css:31` |
+| `--orange-100` | `#FFF7ED` | `styles/flat-design.css:32` |
+| `--orange-200` | `#FFEDD5` | `styles/flat-design.css:33` |
+| `--orange-600` | `#EA580C` | `styles/flat-design.css:34` |
+| `--green-500` | `#22C55E` | `styles/flat-design.css:37` |
+| `--green-100` | `#F0FDF4` | `styles/flat-design.css:38` |
+| `--red-500` | `#EF4444` | `styles/flat-design.css:39` |
+| `--red-100` | `#FEF2F2` | `styles/flat-design.css:40` |
+| `--blue-50` | `#EFF6FF` | `styles/flat-design.css:41` |
+| `--blue-100` | `#DBEAFE` | `styles/flat-design.css:42` |
+| `--blue-500` | `#3B82F6` | `styles/flat-design.css:43` |
+| `--yellow-500` | `#EAB308` | `styles/flat-design.css:44` |
+| `--yellow-100` | `#FEF9C3` | `styles/flat-design.css:45` |
+
+#### 2.3.2 Семантические alias'ы (как ими пользуются компоненты)
+
+| Alias | Значение | Источник |
+|-------|----------|----------|
+| `--flat-bg` | `var(--stone-50)` — фон `.flat-app` shell | `styles/flat-design.css:48` |
+| `--flat-surface` | `#FFFFFF` — фон data-row и add-row | `styles/flat-design.css:49` |
+| `--flat-header-bg` | `var(--stone-100)` — фон sticky table header | `styles/flat-design.css:50` |
+| `--flat-border` | `var(--stone-200)` — все межстрочные и обрамляющие границы | `styles/flat-design.css:51` |
+| `--flat-text` | `var(--stone-900)` — основной текст | `styles/flat-design.css:52` |
+| `--flat-text-secondary` | `var(--stone-400)` — вторичный / muted | `styles/flat-design.css:53` |
+| `--flat-text-label` | `var(--stone-600)` — подпись (column header) | `styles/flat-design.css:54` |
+| `--flat-accent` | `var(--orange-500)` — единственный акцент | `styles/flat-design.css:55` |
+| `--flat-hover` | `#F5F3F0` — подсветка строки при hover (не stone-100, а чуть теплее) | `styles/flat-design.css:56` |
+| `--flat-selected` | `#EDEBE8` — подсветка выбранной строки | `styles/flat-design.css:57` |
+
+#### 2.3.3 Фон строк в табличной части (потоке данных)
+
+| Строка | Значение фона | Источник |
+|--------|---------------|----------|
+| **Layer 1 — INFO row** (`.flat-el-info`) | `var(--stone-100)` (`#F5F5F4`) с `!important` | `styles/flat-design.css:490-492` |
+| **Layer 2 — column header** (`.flat-el-colheader`) | `var(--stone-50)` (`#FAFAF9`) с `!important` | `styles/flat-design.css:624-626` |
+| **Layer 3 — work row** (`.flat-work-row`) | `var(--flat-surface)` (`#FFFFFF`) | `styles/flat-design.css:642-644` |
+| **Layer 4 — "Přidat práci"** (`.flat-el-add`) | `var(--flat-surface)` (`#FFFFFF`) | `styles/flat-design.css:666-668` |
+| Work row hover (`.flat-work-row:hover`) | `var(--flat-hover)` (`#F5F3F0`) | `styles/flat-design.css:661-663` |
+| Generic row hover (`.flat-table tr.flat-row:hover`) | `var(--flat-hover)` | `styles/flat-design.css:476-478` |
+| Generic row selected (`.flat-table tr.flat-row--selected`) | `var(--flat-selected)` (`#EDEBE8`) | `styles/flat-design.css:481-483` |
+| **RFI warning row** (`.flat-row--rfi`) | `var(--orange-100)` (`#FFF7ED`) с `!important` + левая граница 3 px `var(--orange-500)` | `styles/flat-design.css:813-816` |
+| Sticky first column (для горизонтального скролла) | `background: inherit` — наследует цвет слоя, в котором строка живёт (и `--flat-header-bg` у th) | `styles/flat-design.css:1492-1503` |
+
+**Alternating rows (zebra):** в Planner Part A **нет**. Поиск `nth-child(even)` / `nth-child(odd)` / `--data-surface-alt` по `components/flat/` и `styles/flat-design.css` — результат пустой. Различение строк делается через **уровни вложенности** (INFO/colheader/work/add — четыре разных фона) и hover-состояние, а не через alternating stripes. (Для сравнения: в Registry `rozpocet-registry/src/index.css:135-137` висит `.table tbody tr:nth-child(even) { background: var(--data-surface-alt) }` — alternating включён.)
+
+#### 2.3.4 Границы
+
+Planner использует границы экономно: снизу между строками и по периметру обёртки, больше почти нигде.
+
+| Где | Значение | Источник |
+|-----|----------|----------|
+| Обёртка таблицы (`.flat-table-wrap`) | `border: 1px solid var(--flat-border)` + `border-radius: 8px` | `styles/flat-design.css:422-427` |
+| Header cell bottom (`.flat-table th`) | `border-bottom: 1px solid var(--flat-border)` | `styles/flat-design.css:448` |
+| Data cell bottom (`.flat-table td`) | `border-bottom: 1px solid var(--flat-border)` | `styles/flat-design.css:468` |
+| INFO row bottom (`.flat-el-info td`) | `border-bottom: 1px solid var(--stone-300)` — темнее обычного разделителя | `styles/flat-design.css:495-498` |
+| Layer-2 column header bottom (`.flat-el-colheader th`) | `border-bottom: 1px solid var(--flat-border)` | `styles/flat-design.css:636` |
+| Work row bottom (`.flat-work-row td`) | `border-bottom: 1px solid var(--flat-border)` | `styles/flat-design.css:650` |
+| **Завершитель элемента** (`.flat-el-add td`) | `border-bottom: 2px solid var(--stone-200)` — толще, визуально закрывает блок | `styles/flat-design.css:673` |
+| RFI строка (`.flat-row--rfi`) | `border-left: 3px solid var(--orange-500)` | `styles/flat-design.css:814` |
+| Info-row separator между метриками (`.flat-el-info__sep`) | `1 px × 24 px`, цвет `var(--flat-border)` | `styles/flat-design.css:537-540` |
+| Badge (`.flat-badge`) | **без** border; только `background` + `color` | `styles/flat-design.css:821-829` |
+| Editable cell display (`.flat-ecell`) | `border: 1px solid transparent` (невидимо, но резервирует место под edit-state) | `styles/flat-design.css:1018` |
+| Editable cell edit-mode (`.flat-ecell-input`) | `border: 1px solid var(--orange-500)` + `box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15)` на focus | `styles/flat-design.css:1052, 1063-1066` |
+
+Толщины используемые: **1 px** (99% случаев), **2 px** (завершитель элемента), **3 px** (RFI left-bar). Нет 4+ px рамок и нет двойных (`double`) рамок.
+
+#### 2.3.5 Акцентные цвета
+
+Один основной акцент — **orange-500**. Danger — **red-500** (опасные действия + ошибка валидации). Success — **green-500** (статусные индикаторы в ячейке, не фон). Warning как таковой не используется как фон: в желтом (`--yellow-*`) нет ни одного применения в таблице — переменные определены, но вызовов нет (grep `yellow-500|yellow-100` по `components/flat/` и `styles/flat-design.css` даёт только определения).
+
+| Роль | Значение | Использование в коде |
+|------|----------|----------------------|
+| **Primary action fill** | `var(--flat-accent)` = `var(--orange-500)` (`#F97316`) | `.flat-btn--primary { background/border }` `styles/flat-design.css:393-397` |
+| Primary action hover | `var(--orange-600)` (`#EA580C`) | `.flat-btn--primary:hover` `styles/flat-design.css:399-402` |
+| Primary focus halo (input) | `box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.15)` | `.flat-ecell-input:focus` `styles/flat-design.css:1063-1066` |
+| Primary inline indicator (filter-check) | `accent-color: var(--flat-accent)` | `.flat-filter-check input[type="checkbox"]` `styles/flat-design.css:1000-1002` |
+| Primary border on edit | `border-color: var(--orange-500)` | `.flat-ecell-input`, `.flat-otskp-input:focus` `styles/flat-design.css:1052, 577` |
+| Primary resize hover | `background: var(--orange-500); opacity: 0.3` | `.sb__resize:hover` `styles/flat-design.css:212-213` |
+| RFI status icon fill | `color: 'var(--orange-500)'` (inline JSX style) | `components/flat/FlatPositionsTable.tsx:805` |
+| Výpočet > Katalog (перерасход) | `color: 'var(--red-500)'` (JSX inline) | `components/flat/FlatPositionsTable.tsx:489-491` |
+| **Danger hover** (icon button) | `color: var(--red-500)` | `.sb__icon-btn--danger:hover` `styles/flat-design.css:233` |
+| Validation shake border | `border-color: #dc2626 !important` (магия: не через переменную) | `.flat-ecell--shake` `styles/flat-design.css:1033-1036` |
+| **Success status text** | `color: 'var(--green-500)'` (inline JSX, не фон) | `components/flat/FlatPositionsTable.tsx:811` + катализатор "OK" 11 px/600 weight |
+| Success metric (Katalog cena) | `color: 'var(--green-500)'` (inline JSX) | `components/flat/FlatPositionsTable.tsx:527`, `:540` |
+| Warning (yellow) | **не используется** в потоке таблицы; `--yellow-100/-500` определены в палитре, но вызовов в `components/flat/` и `styles/flat-design.css` нет | — |
+
+Кроме orange/red/green в ячейках встречаются **subtype badge bg+fg** — каждый с своей парой из палитры (не акценты UI, а категориальные маркеры):
+
+| Badge | Background | Color | Источник |
+|-------|-----------|-------|----------|
+| beton | `var(--stone-200)` | `var(--stone-700)` | `styles/flat-design.css:831-834` |
+| bednění | `var(--orange-100)` | `var(--orange-600)` | `styles/flat-design.css:836-839` |
+| odbednění | `var(--orange-100)` | `var(--orange-600)` | `styles/flat-design.css:841-844` |
+| výztuž | `var(--blue-100)` | `var(--blue-500)` | `styles/flat-design.css:846-849` |
+| zrání | `#EEF2FF` (inline, вне палитры) | `#4338CA` | `styles/flat-design.css:851-854` |
+| podpěrná konstr. | `#FDF4FF` | `#7E22CE` | `styles/flat-design.css:856-859` |
+| předpětí | `#FFF1F2` | `#BE123C` | `styles/flat-design.css:861-864` |
+| jiné | `var(--stone-100)` | `var(--stone-500)` | `styles/flat-design.css:866-869` |
+
+#### 2.3.6 Текст
+
+| Роль | Значение | Источник |
+|------|----------|----------|
+| Primary text | `var(--flat-text)` = `var(--stone-900)` (`#1C1917`) | `styles/flat-design.css:52, 82` |
+| Secondary / muted | `var(--flat-text-secondary)` = `var(--stone-400)` (`#A8A29E`) | `styles/flat-design.css:53` |
+| Label (meta / column header) | `var(--flat-text-label)` = `var(--stone-600)` (`#57534E`) | `styles/flat-design.css:54, 446, 706` |
+| Element INFO metric label | `var(--stone-500)` (`#78716C`) — ещё на полшага светлее label | `styles/flat-design.css:557` |
+| Placeholder (OTSKP input) | `var(--stone-400)` | `styles/flat-design.css:580-583` |
+| Override marker (wage/shift differs from project default) | `var(--stone-500)` — не красный, не badge, просто приглушённое число | `styles/flat-design.css:1028-1030` |
+| Disabled / muted number (`Katalog —` когда пусто) | `var(--stone-400)` | `components/flat/FlatPositionsTable.tsx:527, 542, 554, 565` |
+
+**Наблюдения для переноса в Registry:**
+
+- Палитра — **моно-стоун + один оранжевый + три статусных**. Нет тёплых/холодных нейтральных смешений, нет тинтов типа `gray-blue` / `stone-warm`. Registry сейчас держит двойной стек: свой `--app-bg #D7D8D9` / `--panel-clean #EAEBEC` / `--data-surface #F5F6F7` (`tokens.css:22-40`) плюс отдельный оранжевый `--accent-orange #FF9F1C` (`tokens.css:49`, **другой hex** чем Planner `#F97316`). При миграции либо принять Planner-oranж, либо оставить Registry-oranж — смешивать нельзя (два разных "официальных" акцента путают глаз).
+- **Hover `#F5F3F0`** — теплее stone-100. Это сознательный подбор, не случайный: эффект "тёплый шум" на тотально-холодной шкале стоуна. Registry hover сейчас `var(--data-surface-alt)` = `#ECEDEF` (`tokens.css:40`, `index.css:131-133`) — холоднее, рядом с основным фоном, менее заметен.
+- **Alternating rows не используются**. Каждая строка читается по своему background (4 уровня) и hover. Перенос в Registry потребует **отключения** `.table tbody tr:nth-child(even)` (`index.css:135-137`).
+- Границы всегда `--flat-border` (stone-200) и почти всегда 1 px. Два исключения — 2 px завершитель элемента и 3 px RFI-left-bar. В Registry сейчас вся вертикальная разметка висит на `--edge-light: rgba(255, 255, 255, 0.5)` (`tokens.css:91`) — полупрозрачный белый, что в плоском стиле на белом же фоне исчезает.
+- Тени на строках **нет**. Тень есть только у обёртки таблицы косвенно (через radius+border) и у dropdown'ов (`0 8px 24px rgba(0,0,0,0.12)` — `styles/flat-design.css:596-597`). Это самый заметный контраст с текущей неоморф-картой Registry: `--shadow-panel` — четырёхслойная тень с `rgba(80, 83, 87, 0.50)` + inset highlights (`tokens.css:74-77`), даёт объёмный "pillow" эффект на `.card`.
+- Уровень муированности текста в Registry и Planner близок численно, но разный семантически. Planner: stone-900 (body) / stone-600 (label) / stone-400 (muted) — **три уровня**. Registry: `text-primary #1A1C1E` / `text-secondary #4A4D50` / `text-muted #7A7D80` / `text-code #5A5D61` (`tokens.css:43-46`) — **четыре уровня**. Лишний `text-code` — артефакт старого неоморф-дизайна, в плоской таблице он не нужен: код (OTSKP/ÚRS) должен рендериться `mono font + primary text`, а не цветом-специализацией.
+
+---
+
+*Подсекции 2.4 (Иконки), 2.5 (Как Planner решает проблему множества действий в строке), разделы 3 (Conflicts), 4 (Proposals), 5 (Recommendation) будут добавлены в следующих коммитах.*
