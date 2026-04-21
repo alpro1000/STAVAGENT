@@ -822,7 +822,15 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 #### 4.3.3 Что остаётся в строке
 
-По принципу из § 4.3.1 row-level фильтруется до элементов, которые нужны при одном быстром визуальном сканировании списка. Лимит из § 2.4.4 — не более 3 интерактивных иконок (Part A INFO row: chevron + Zap + Trash2). В Variant B на row-level остаются **три элемента**: два интерактивных и один индикатор.
+По принципу из § 4.3.1 row-level фильтруется до элементов, которые нужны при одном быстром визуальном сканировании списка. Лимит из § 2.4.4 — не более 3 интерактивных иконок (Part A INFO row: chevron + Zap + Trash2).
+
+**Терминологическое уточнение для этой подсекции и для баланса в § 4.3.6.** Inline-содержимое строки состоит из трёх категорий с разными лимитами:
+
+- **Interactive icons** — кнопки-иконки с explicit action (`<button><Icon/></button>`). Лимит ≤ 3 по § 2.4.4 — строгий, это эталон Part A.
+- **Click-cells** — data cell с click-to-edit или click-trigger affordance (паттерн § 2.5.2; примеры в Part A — `<EditableNum>`, в Registry уже — `<EditablePriceCell>` `ItemsTable.tsx:30-76`). Без лимита количества, visual weight несёт data, affordance вторична — не считаются в лимит иконок.
+- **Non-interactive display** — бейджи и read-only data cells (текст, числа, subtype-badge без border). Без лимита, не создают action-веса.
+
+В Variant B на row-level остаются **три interactive icons** + 4 click-cells + 4 non-interactive display (детально в балансе § 4.3.6). Ниже — только три interactive:
 
 1. **Chevron expand/collapse** — 11 px (`ItemsTable.tsx:572-573`, условно при `rowRole === 'main' && subCount > 0`; на section-строке по расширению Variant B — для сворачивания всех položek внутри skupiny одним касанием). Остаётся inline, потому что это **структурный scan**: пользователь, пробегая глазами по 2 000-строчному документу, должен видеть, где есть подчинённые позиции и где сгруппированные секции, без открытия detail panel. Прямой аналог в Part A — chevron 14 px на INFO row (`components/flat/FlatPositionsTable.tsx:500-502`), который тоже живёт в row-level именно ради "одного взгляда на иерархию".
 
@@ -1034,15 +1042,19 @@ Store, типы, undoable actions, backend sync — без изменений.
 | 16 | `Sparkles` | toolbar skupiny | § 4.3.4 |
 | 17 | `Globe` | toolbar skupiny | § 4.3.4 |
 
-**Суммы по размещениям** (действие может быть двойным как #7, #1, #4 — это легитимные dual-role применения):
+**Суммы по размещениям** (действие может быть двойным как #7, #1, #4 — это легитимные dual-role применения). Inline размещения дополнительно разнесены по трём категориям с разными лимитами:
 
-- **Inline (§ 4.3.3)** primary placement: **11 элементов** (#1, #6, #7 status, #8, #9, #10, #11, #12, #13, #14, #15). Из них только **3 интерактивные иконки-кнопки** (#6 BarChart3, #8 chevron, checkbox #1 — form-control) — укладывается в лимит § 2.4.4.
+- **Inline — interactive icons (кнопки-иконки в строке)** · лимит ≤ 3 (§ 2.4.4) · **счёт: 3** — #1 `select` checkbox (form-control), #6 BarChart3 (action), #8 Poř. chevron (toggle). В Variant B ровно этот предел; добавление четвёртой кнопки-иконки в row нарушило бы эталон Part A.
+- **Inline — click-cells** (data cell с `click-to-edit` / `click-trigger` affordance, паттерн § 2.5.2) · без лимита количества · **счёт: 4** — #9 `kod` (click-trigger → detail), #10 `popis` (click-trigger → detail), #13 `EditablePriceCell`, #15 `SkupinaAutocomplete`. Считаются частью content-area, не action-toolbar — visual weight несёт data, click-affordance вторичен.
+- **Inline — non-interactive display** (badges / read-only cells) · без лимита · **счёт: 4** — #7 HardHat status badge (color + tooltip only), #11 `mj`, #12 `mnozstvi`, #14 `cenaCelkem`. Чистая информация, action-веса в строке не создают.
 - **Toolbar skupiny (§ 4.3.4)**: **2 элемента** (#16, #17).
 - **Detail panel (§ 4.3.5)**: **5 элементов** (#2, #3, #4, #5, #7 action-half).
 - **Bulk bar (§ 4.3.6)**: **2 элемента** — #1 как trigger + #4 как массовое дополнение к per-item detail-handler.
-- **Cell-click / уже-паттерн § 2.5.2**: #13, #15 — не мигрируют, уже реализованы.
+- **Cell-click / уже-паттерн § 2.5.2**: #13, #15 — не мигрируют, уже реализованы (подмножество inline click-cells выше).
 
-Сумма: 11 + 2 + 5 + 2 = 20 "размещений" для 17 уникальных элементов. Разница 3 = три элемента с dual-role: #1 (inline-trigger + bulk-consequence), #4 (detail + bulk), #7 (inline-status + detail-action). Каждая дублирующая роль — осознанное решение из § 3.5.3 (путь A + путь B для элементов, сейчас совмещающих status и action) или из mechanic-based separation (checkbox как form-control ≠ bulk-bar как floating panel).
+Сумма уникальных элементов: **17**. Сумма размещений с учётом dual-role (#1 inline + bulk, #4 detail + bulk, #7 inline-status + detail-action): **20**. Разница 3 = три элемента с осознанной двойной ролью из § 3.5.3 (путь A + путь B для status+action-совмещений) или из mechanic-based separation (checkbox как form-control ≠ bulk-bar как floating panel).
+
+**Вариант B соблюдает лимит § 2.4.4 (≤ 3 интерактивные иконки в строке); click-cells и display-cells не входят в этот лимит, потому что не увеличивают action-вес строки** — они содержат данные, а affordance (click-to-edit / click-trigger) активируется прямо на content-cell без отдельной иконки-кнопки.
 
 **Вне row-level § 1.2**, из § 1.4 (skupina-management, 4 места) и § 1.6 (floating panels, 7 компонентов) — ничего не мигрирует в Variant B, за исключением быстрых rename+delete уже существующих в `<GroupManager>`, которые в toolbar skupiny § 4.3.4 получают **дополнительную** surface (не заменяя GroupManager как полную CRUD-панель). Navigator (§ 1.5 Rozpočet-document) — целиком out-of-scope.
 
