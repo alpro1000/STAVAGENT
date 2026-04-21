@@ -820,4 +820,18 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 ---
 
-*Разделы 4.3.2–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+#### 4.3.3 Что остаётся в строке
+
+По принципу из § 4.3.1 row-level фильтруется до элементов, которые нужны при одном быстром визуальном сканировании списка. Лимит из § 2.4.4 — не более 3 интерактивных иконок (Part A INFO row: chevron + Zap + Trash2). В Variant B на row-level остаются **три элемента**: два интерактивных и один индикатор.
+
+1. **Chevron expand/collapse** — 11 px (`ItemsTable.tsx:572-573`, условно при `rowRole === 'main' && subCount > 0`; на section-строке по расширению Variant B — для сворачивания всех položek внутри skupiny одним касанием). Остаётся inline, потому что это **структурный scan**: пользователь, пробегая глазами по 2 000-строчному документу, должен видеть, где есть подчинённые позиции и где сгруппированные секции, без открытия detail panel. Прямой аналог в Part A — chevron 14 px на INFO row (`components/flat/FlatPositionsTable.tsx:500-502`), который тоже живёт в row-level именно ради "одного взгляда на иерархию".
+
+2. **BarChart3 (chart icon)** — 13 px (в Variant B — уменьшен с текущих 16 px, `TOVButton.tsx:31`, `ItemsTable.tsx:484`). Остаётся inline как **первичное действие анализа**: согласно Domain rules (CLAUDE.md → "Kiosk: BOQ Registry" + TOV modal workflow) просмотр rozpis zdrojů — ключевая пользовательская задача киоска после присвоения skupiny. Один клик должен вести к полному breakdown ресурсов. Этот выбор резолвит § 3.5 для Variant B по пути B (action остаётся точкой входа), но **статусная роль** (сейчас реализованная через тинт фона при `hasData`) выносится в отдельный inline-текстовый бейдж — см. пункт 3 ниже. Chart-icon становится чистой кнопкой-действием без индикаторного оттенка, однозначной по семантике (паттерн § 3.5.2 — иконки Part A не совмещают status + action).
+
+3. **Inline status badge `▥ 45h · 180kg · 3t`** или `+N` subordinate count — **не интерактивный**, не считается в лимит 3 иконки. Реализует путь A из § 3.5.3 для информационной части TOV (или для subordinate-count, `ItemsTable.tsx:574-575`): данные, которые сейчас скрыты за кликом на TOVButton tinted-bg, становятся всегда видимым текстом. Прямой прецедент в Part A — subtype-badge (`.flat-badge`, `styles/flat-design.css:821-829`, 11 px, без border, только `background + color`) и `AlertCircle` как чистый status-индикатор (§ 3.5.2). Бейдж несёт **информацию без действия**; action живёт в соседнем chart-icon из пункта 2.
+
+Четвёртое row-level состояние — `select` checkbox — отдельный случай: он не считается "иконкой действия", а является form-контролом для bulk-режима. Его судьба и то, всегда ли он виден, или появляется только после включения "режима выделения" — решается в § 4.3.6 вместе с расширением bulk bar. Всё остальное из списка 17 row-level элементов § 1.2 — MoveUp/Down, role-trigger, Link2, HardHat click-to-navigate, Sparkles, Globe, editable cells, skupina-autocomplete — распределяется между toolbar skupiny (§ 4.3.4), detail panel (§ 4.3.5), bulk bar (§ 4.3.6) или остаётся как cell-click-to-edit в data-ячейках (skupina и cena jednotková — уже реализованы как click-cell, не мигрируют).
+
+---
+
+*Разделы 4.3.2, 4.3.4–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
