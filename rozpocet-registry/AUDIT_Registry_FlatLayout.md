@@ -548,4 +548,26 @@ Dropdown "Nastavit skupinu" внутри `BulkActionsBar` (`BulkActionsBar.tsx:1
 
 ---
 
-*Разделы 3.3–3.5, 4 (Proposals), 5 (Recommendation) будут добавлены в следующих коммитах.*
+### 3.3 Quantitative gap — Registry vs Planner
+
+Все значения цитируются дословно из разделов 1–2.5 настоящего документа.
+
+| Параметр | Registry | Planner | Источник в аудите |
+|---|---|---|---|
+| Макс. иконок-кнопок в строке таблицы | **9** | **3** | § 2.4.4 |
+| Диапазон размеров иконок в строке | 11–16 px (Sparkles/Globe/BarChart3 = 16 px; MoveUp/Down = 11 px) | 11–14 px (только 11 / 13 / 14 в потоке) | § 2.4.2 |
+| Hover цвет строки | `#ECEDEF` (`var(--data-surface-alt)`) | `#F5F3F0` (`var(--flat-hover)`) | § 2.3 (строка о hover), § 2.3.2 |
+| Alternating rows (zebra) | **да** (`index.css:135-137`) | **нет** | § 2.3.3 |
+| Box-shadow layers на строке | **4** (`--shadow-panel`: 4-layer neomorph, `tokens.css:74-77`) | **0** | § 2.2 (observations) |
+| Font-family (body) | `Inter` (`tokens.css:17`) | `DM Sans` (`flat-design.css:60`) | § 2.1 |
+| Типографическая шкала в потоке таблицы | 13 px (th) / 14 px (td) (`index.css:112, 120`) | **9 / 11 / 12 / 13 px** | § 2.1 (observations) |
+| Горизонтальный padding ячейки | `16 / 16 px` (все `<td>`, `var(--space-md)`, `index.css:120`) | `8 / 16 px` (`<td>` / `td:first-child`, `flat-design.css:468, 657`) | § 2.2 |
+| Row height (оценка) | `40 px` (`ROW_HEIGHT = 40`, `ItemsTable.tsx:943`) | **28 / 32 / 36 / 40 px** (4 слоя) | § 2.2 (observations) |
+| Sticky первый столбец при горизонтальном скролле | **нет** | **да** (`position:sticky; left:0`, `flat-design.css:1492-1503`) | § 2.2, § 3.1 |
+| Акцентный оранжевый | `#FF9F1C` (`--accent-orange`, `tokens.css:49`) | `#F97316` (`--orange-500`, `flat-design.css:31`) | § 2.3.1, § 2.3 (observations) |
+
+Разрыв по числу иконок (9 vs 3), padding (16 vs 8 px) и shadow layers (4 vs 0) — количественный, не стилистический: он переводится напрямую в ширину строки (~1160 vs ~900 px), визуальный вес action-зоны и ощущение "тяжести" интерфейса независимо от цветовой схемы или шрифта.
+
+---
+
+*Разделы 3.4–3.5, 4 (Proposals), 5 (Recommendation) будут добавлены в следующих коммитах.*
