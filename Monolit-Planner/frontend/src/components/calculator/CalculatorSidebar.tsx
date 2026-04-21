@@ -8,6 +8,7 @@
  */
 
 import type { PlannerOutput } from '@stavagent/monolit-shared';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { TzTextInput } from './TzTextInput';
 import type { TzHistoryEntry } from './tzStorage';
 import type { CuringResult } from '@stavagent/monolit-shared';
@@ -151,8 +152,116 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
     return docSuggestions.suggestions.find(s => s.param === param && !acceptedParams.has(param));
   };
 
+  // ─── Resizable sidebar width (2026-04-20) ────────────────────────────
+  //
+  // Drag the right edge to change the calculator sidebar width. Pattern
+  // mirrors `components/Sidebar.tsx` (main app navigation) so the UX is
+  // consistent: 6 px hit zone, col-resize cursor, accent-orange highlight
+  // while dragging. Width persists to localStorage; mobile viewports
+  // skip resize entirely (CSS `@media (max-width: 768px)` in r0.css
+  // already collapses the sidebar to a full-width column).
+  const SIDEBAR_MIN_WIDTH = 260;
+  const SIDEBAR_MAX_WIDTH = 600;
+  const SIDEBAR_DEFAULT_WIDTH = 340;
+  const SIDEBAR_LS_KEY = 'monolit-calculator-sidebar-width';
+
+  const sidebarRef = useRef<HTMLElement>(null);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth <= 768 : false,
+  );
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const [isResizing, setIsResizing] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem(SIDEBAR_LS_KEY);
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        if (!Number.isNaN(parsed) && parsed >= SIDEBAR_MIN_WIDTH && parsed <= SIDEBAR_MAX_WIDTH) {
+          return parsed;
+        }
+      }
+    } catch { /* private-mode LS — fall through */ }
+    return SIDEBAR_DEFAULT_WIDTH;
+  });
+
+  const handleResizeMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  }, []);
+
+  const handleResizeMouseMove = useCallback((e: MouseEvent) => {
+    if (!sidebarRef.current) return;
+    // Width = pointer X relative to sidebar's left edge.
+    const rect = sidebarRef.current.getBoundingClientRect();
+    const next = Math.round(e.clientX - rect.left);
+    if (next >= SIDEBAR_MIN_WIDTH && next <= SIDEBAR_MAX_WIDTH) {
+      setSidebarWidth(next);
+      try { localStorage.setItem(SIDEBAR_LS_KEY, String(next)); } catch { /* ignore */ }
+    }
+  }, []);
+
+  const handleResizeMouseUp = useCallback(() => {
+    setIsResizing(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isResizing) return;
+    document.addEventListener('mousemove', handleResizeMouseMove);
+    document.addEventListener('mouseup', handleResizeMouseUp);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    return () => {
+      document.removeEventListener('mousemove', handleResizeMouseMove);
+      document.removeEventListener('mouseup', handleResizeMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing, handleResizeMouseMove, handleResizeMouseUp]);
+
   return (
-    <aside className="r0-planner-sidebar">
+    <aside
+      ref={sidebarRef}
+      className="r0-planner-sidebar"
+      style={isMobile ? undefined : {
+        width: `${sidebarWidth}px`,
+        position: 'relative',
+        transition: isResizing ? 'none' : 'width 0.15s ease',
+      }}
+    >
+      {/* Resize handle (desktop only) */}
+      {!isMobile && (
+        <div
+          onMouseDown={handleResizeMouseDown}
+          onMouseEnter={(e) => {
+            if (!isResizing) {
+              (e.currentTarget as HTMLElement).style.background = 'var(--r0-slate-300, #cbd5e1)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isResizing) {
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+            }
+          }}
+          title="Tažením změníte šířku"
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '6px',
+            height: '100%',
+            cursor: 'col-resize',
+            background: isResizing ? 'var(--r0-orange, #f59e0b)' : 'transparent',
+            transition: 'background 0.15s ease',
+            zIndex: 20,
+          }}
+        />
+      )}
+
       {/* ── Wizard step indicator ── */}
       {wizardMode && (
         <div style={{ marginBottom: 16 }}>
