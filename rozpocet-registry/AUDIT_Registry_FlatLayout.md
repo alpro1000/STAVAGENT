@@ -1086,4 +1086,106 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 ---
 
-*Разделы 4.3.2, 4.3.7–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+#### 4.3.7 Схема desktop (ASCII, четыре состояния)
+
+В каждой схеме три inline-категории из § 4.3.3 / § 4.3.6 визуально размечены: **ICN** (interactive icon, лимит ≤ 3) в `[квадратных]` скобках, **CCL** (click-cell с edit-affordance, паттерн § 2.5.2) в `{фигурных}` скобках с пунктирной линией `········` снизу (сигнал "click here to edit"), **DSP** (non-interactive display) — обычный текст без скобок и без подчёркивания.
+
+---
+
+**Состояние 1 — Заголовок skupiny с toolbar (§ 4.3.4)**
+
+```
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│  [▸]   SO 202202 — Mostní nosná konstrukce          13 položek         850 240,00 Kč                          │
+│   ICN    {rename on click}                          DSP                DSP                                    │
+│         ·······························                                                                       │
+│                                                                       [✦ Podobné] [⊕ Globálně] [✎] [🗑 0.4]  │
+│                                                                        ICN         ICN         ICN   ICN      │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+ bg var(--stone-50) (.flat-el-colheader paттерн § 2.3.3)  · border-bottom 2px stone-200  · no shadow
+ padding 8px 10px  · font 13px body · 11px uppercase info-badges  · chevron 11px  · action icons 13px
+```
+
+*Изменилось относительно текущего Registry:* сейчас skupina-заголовки — это `<tr rowRole="section">` строки с 10 пустыми ячейками из 17 (§ 1.3); в Variant B они превращаются в полноценный `<header>`-блок с skupina-уровневым toolbar. Действия `Sparkles` + `Globe`, которые сейчас дублируются на каждой строке внутри skupiny (`ItemsTable.tsx:865-884`), уходят одним экземпляром в этот toolbar. `✎ Rename` и `🗑 Delete` — быстрые surface для действий из `<GroupManager>`, сам GroupManager как полная CRUD-панель остаётся.
+
+---
+
+**Состояние 2 — Обычная строка (selection пустой, detail закрыт)**
+
+```
+Layer 2 column header (.flat-el-colheader 28px, 11px uppercase, letter-spacing 0.05em):
+┌──┬──┬─────┬──────────┬─────────────────────────────────┬───┬──────┬──────────┬──────────┬────────────┬───┬────┐
+│  │  │POŘ. │   KÓD    │  POPIS                          │MJ │MNOŽ. │CENA JEDN.│ CELKEM   │  SKUPINA   │MON│TOV │
+└──┴──┴─────┴──────────┴─────────────────────────────────┴───┴──────┴──────────┴──────────┴────────────┴───┴────┘
+
+Layer 3 data row (.flat-work-row 32px, padding 0 8px):
+┌──┬──┬─────┬──────────┬─────────────────────────────────┬───┬──────┬──────────┬──────────┬────────────┬───┬────┐
+│[☐]│[›]│ 001 │ {21341}  │ {DRENÁŽNÍ VRSTVA Z KAMENIVA}    │m³ │ 94,2 │{3 240,00}│30 587,40 │ {beton ▼}  │ ⛑ │[▥] │
+│   │  │ +3  │ ········ │ ··················              │   │      │ ········ │          │ ·········  │   │    │
+└──┴──┴─────┴──────────┴─────────────────────────────────┴───┴──────┴──────────┴──────────┴────────────┴───┴────┘
+ ICN ICN  DSP    CCL              CCL                      DSP  DSP     CCL        DSP        CCL       DSP  ICN
+  #1  #8  #8     #9               #10                     #11  #12      #13        #14        #15       #7   #6
+
+ Inventory-refs: #1 checkbox  #6 BarChart3 13px  #7 HardHat 11px status badge (color-only tooltip)
+                 #8 chevron 11px + +N non-interactive badge + line number
+                 #9 kod click→detail   #10 popis click→detail   #13 EditablePriceCell   #15 SkupinaAutocomplete
+                 #11 mj   #12 množství   #14 cena celkem — все DSP
+ Counts: 3 ICN (within § 2.4.4 limit) + 4 CCL + 4 DSP
+```
+
+*Изменилось:* строка содержит **3 interactive icons** вместо 9 (gap ×3 из § 3.3 закрыт). Пунктирное подчёркивание под четырьмя click-cells — единый визуальный маркер "click here to edit / open", прямой перенос паттерна `<EditableNum>` из Part A (`components/flat/FlatPositionsTable.tsx:893-963`, где click на ячейку превращает её в input). `MoveUp` + `MoveDown` + role-trigger + `Link2` + `HardHat click-navigate` + `Sparkles` + `Globe` убраны из строки — они живут в detail (§ 4.3.5) / toolbar skupiny (§ 4.3.4) / bulk bar (§ 4.3.6).
+
+---
+
+**Состояние 3 — Строка при selection (3 položky выбраны → bulk bar активен)**
+
+```
+Layer 3 data row, selected (bg var(--flat-selected) #EDEBE8, § 2.3.2):
+┌──┬──┬─────┬──────────┬─────────────────────────────────┬───┬──────┬──────────┬──────────┬────────────┬───┬────┐
+│[▣]│[›]│ 001 │ {21341}  │ {DRENÁŽNÍ VRSTVA Z KAMENIVA}    │m³ │ 94,2 │{3 240,00}│30 587,40 │ {beton ▼}  │ ⛑ │[▥] │
+│   │  │ +3  │ ········ │ ··················              │   │      │ ········ │          │ ·········  │   │    │
+└──┴──┴─────┴──────────┴─────────────────────────────────┴───┴──────┴──────────┴──────────┴────────────┴───┴────┘
+(…ещё 2 selected row с таким же highlightом ниже по списку…)
+
+BulkActionsBar (fixed bottom-6 left-1/2 -translate-x-1/2 z-50 — геометрия из § 4.3.6 сохранена):
+                          ┌─────────────────────────────────────────────────────────────────────────┐
+                          │  3 vybrány   │  Vymazat skupiny  │  Smazat  │  Nastavit skupinu ▼       │
+                          │              │  Změnit roli ▼    │  × Zrušit                            │
+                          └─────────────────────────────────────────────────────────────────────────┘
+                           icons 13px  · font 13px labels  · bg orange-500  · 1px border stone-200
+                           no heavy shadow (заменена с rgba(0,0,0,0.4) на flat-border по § 2.3.4)
+```
+
+*Изменилось:* checkbox `▣` (checked-state) остаётся inline в том же 20 px столбце — § 4.3.6 финализировал, что checkbox это form-control, не action-icon, не входит в лимит 3. BulkActionsBar расширен: добавлена `Změnit roli ▼` (новый dropdown — bulk-fix для misclassified parser результатов). Heavy shadow убран. Позиция `fixed bottom-6` и z-index 50 не менялись — § 3.4.1 overlap с последними 96 px таблицы остаётся archit-проблемой, её решение (sticky bottom внутри scroll-container вместо page-fixed) — за пределами Variant B scope.
+
+---
+
+**Состояние 4 — Строка с открытым detail panel (§ 4.3.5)**
+
+```
+Main row (chevron флипнулся в ▾ для индикации что detail открыт):
+┌──┬──┬─────┬──────────┬─────────────────────────────────┬───┬──────┬──────────┬──────────┬────────────┬───┬────┐
+│[☐]│[▾]│ 001 │ {21341}  │ {DRENÁŽNÍ VRSTVA Z KAMENIVA}    │m³ │ 94,2 │{3 240,00}│30 587,40 │ {beton ▼}  │ ⛑ │[▥] │
+│   │  │ +3  │ ········ │ ··················              │   │      │ ········ │          │ ·········  │   │    │
+├──┴──┴─────┴──────────┴─────────────────────────────────┴───┴──────┴──────────┴──────────┴────────────┴───┴────┤
+│                                                                                                           [×] │
+│  DRENÁŽNÍ VRSTVA Z KAMENIVA HRUBÉHO DRCENÉHO FRAKCE 16/32 MM          [OTSKP]       Poř. 001                  │
+│                                                                                                               │
+│  Role:     [● Hlavní ▼]          Rodič:  —             Podřízené: 3  → Zobrazit                              │
+│  TOV:      ▥ 45 h · 180 kg · 3 t                                         [ Celý rozpis → ]                   │
+│  Monolit:  ⛑ 142 500 Kč · 3,5 dn · 6 lidí                                [ ↗ Otevřít v Monolitu ]            │
+│  Import:   Stavba_202.xlsx · list 3 · řádek 142                                                               │
+│  ───────────────────────────────────────────────────────────────────────────────────────────────────────────  │
+│  Reorder:  [ ↑ Nahoru ]  [ ↓ Dolů ]                                              [ 🗑 Smazat pozici ]         │
+│                                                                                     opacity 0.4 § 2.4.5       │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+ bg var(--stone-100) (как .flat-el-info § 2.3.3)  · border-top 2px stone-300  · border-bottom 2px stone-200 (завершитель)
+ font 13px body · 11px labels uppercase · 11px [OTSKP]/[ÚRS] badge (.flat-badge § 2.3.5)
+ [×] 13px top-right  · Esc closes  · click другой row → сворачивается эта, открывается новая (single-open)
+```
+
+*Изменилось:* 5 per-item действий (#2 MoveUp, #3 MoveDown, #4 role-trigger, #5 Link2, #7 HardHat action-half) переехали сюда из строки — в строке от них только chevron-флип индикатор. Добавлена новая функция: **single-item delete** с opacity 0.4 (§ 2.4.5) — сейчас в Registry удалить одну položku вне bulk-режима нельзя. Информационное содержимое (полный `popis` без clipping, каталог-бейдж, parent/subordinate info, Monolit payload разбивка, import-trace) сейчас либо обрезается в ячейке, либо скрыто в tooltip — теперь развёрнуто. Click-триггер панели — `kod` или `popis` cell (оба теперь CCL с пунктиром); chevron `[▾]` отвечает только за expand subordinates, не за detail panel (две независимые interaction-zones по § 4.3.5).
+
+---
+
+*Разделы 4.3.2, 4.3.8–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
