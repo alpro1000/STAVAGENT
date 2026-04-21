@@ -570,4 +570,48 @@ Dropdown "Nastavit skupinu" внутри `BulkActionsBar` (`BulkActionsBar.tsx:1
 
 ---
 
-*Разделы 3.4–3.5, 4 (Proposals), 5 (Recommendation) будут добавлены в следующих коммитах.*
+### 3.4 Floating panels conflicts
+
+Из семи компонентов секции 1.6 три позиционированы как `fixed` viewport-relative (BulkActionsBar, role-dropdown portal, attach-to-parent modal), один — `absolute` внутри sticky-контейнера с собственным stacking-context (column filter dropdown), один — `fixed inset-0` полноэкранный (TOVModal), один — static (Undo/Redo toolbar). Остальные (`ImportModal` / `AlertModal` / `MonolitCompareDrawer`) — стандартные `fixed` full-screen оверлеи без специфических конфликтов с row-level UI.
+
+#### 3.4.1 BulkActionsBar (`BulkActionsBar.tsx:78`)
+
+Появляется при `selectedIds.size > 0`. Позиция: `fixed bottom-6 left-1/2 -translate-x-1/2 z-50`. Пилюля содержит 4 кнопки с текстовыми лейблами (Eraser/Trash2/Tag/X) + счётчик + разделитель; минимальная ширина ~480 px в зависимости от контента (`BulkActionsBar.tsx:80-156`).
+
+Скроллируемый контейнер таблицы задан как `maxHeight: calc(100vh - 260px)` + `overflow-auto` (`ItemsTable.tsx:1006`). BulkActionsBar позиционирован **вне** этого контейнера — на уровне viewport. Это означает: при появлении пилюли последние ~96 px видимой области таблицы (`bottom-6` = 24 px отступ + ~72 px высота пилюли с padding) перекрываются постоянно. Пользователь, выделивший строки в середине длинного списка и прокрутивший вниз, видит последние 1–2 строки под пилюлей без возможности взаимодействия.
+
+На мобильном (375 px): пилюля шириной ~480 px выходит за оба края экрана без media-query адаптации (§ 3.1). Кнопки Eraser и Trash2 (левый край пилюли) на 375 px недостижимы без горизонтального скролла контейнера, которого нет — пилюля `fixed`, скролл страницы её не двигает.
+
+Dropdown "Nastavit skupinu" внутри пилюли (`BulkActionsBar.tsx:125-144`): `absolute bottom-full left-0 mb-2 min-w-[280px]`. Открывается вверх от пилюли — в сторону таблицы. На 375 px пилюля сама смещена вправо из-за overflow, поэтому `left-0` выравнивает dropdown по смещённому краю пилюли, а не по экрану.
+
+На desktop конфликт геометрического перекрытия остаётся: последние строки таблицы скрыты под пилюлей при активном выделении. Проблема не мобильно-специфична.
+
+#### 3.4.2 Role dropdown portal (`RowActionsCell.tsx:208-249`)
+
+Рендерится через `createPortal(..., document.body)`, `position: fixed`, `zIndex: 9999`. Auto-flip: если места снизу < 130 px (`spaceBelow < 130` at `:188`), dropdown открывается вверх. Триггер — клик на role-icon в любой строке.
+
+`zIndex: 9999` ставит dropdown выше BulkActionsBar (`z-50` = z-index 50) и выше sticky thead (`z-index: 10`). Геометрического конфликта по z-порядку нет. Однако backdrop отсутствует — нет `fixed inset-0` закрывающего слоя. При активном BulkActionsBar (строки выделены) role dropdown и пилюля одновременно присутствуют в DOM без взаимного блокирования. Клик на кнопку в BulkActionsBar не закрывает role dropdown; закрытие происходит только через `mousedown` outside handler (`RowActionsCell.tsx:114-134`) или scroll listener.
+
+На мобильном: auto-flip логика (`flip` по `window.innerHeight - rect.bottom`) работает корректно в вертикальной плоскости. Горизонтального repositioning нет — dropdown `min-w-[120px]` (`RowActionsCell.tsx:211`) может уйти за правый край viewport, если role-trigger находится в крайнем правом столбце.
+
+#### 3.4.3 Attach-to-parent modal (`RowActionsCell.tsx:262-405`)
+
+Центрирован: `fixed, left:50%, top:50%, transform:translate(-50%,-50%)`. Backdrop: `fixed inset-0 z-[99998]`, модал: `z-[99999]`. Ширина по умолчанию 550 px, минимум `minWidth: 400px` (`RowActionsCell.tsx:279`). Высота по умолчанию 500 px, минимум 300 px.
+
+На мобильном (375 px): `minWidth: 400px` без `max-width: 100vw` и без горизонтального `margin` — модал шириной 400 px центрируется, левый/правый край выходит за экран на 12.5 px с каждой стороны (`(400 - 375) / 2 = 12.5 px`). Кнопки внутри модала в зоне overflow нажать невозможно. Backdrop корректно закрывает всё позади модала, но сам модал обрезан.
+
+На desktop конфликтов нет: 550 px модал вписывается в типичный 1280+ px viewport.
+
+#### 3.4.4 Column filter dropdown Skupina (`ItemsTable.tsx:740-807`)
+
+Позиция: `absolute right-0 top-full` — относительно родительского `<div>` в `<thead>`, который имеет `position: sticky; top: 0; z-index: 10` (`ItemsTable.tsx:1009`). Тем самым стекинг-контекст dropdown'а определяется sticky-thead (z-index 10 на уровне страницы). BulkActionsBar с `z-50` (Tailwind = z-index 50) на уровне страницы теоретически перекрывает весь стекинг-контекст thead, включая dropdown (z-50 внутри z-10 родителя). Геометрически оба элемента редко пересекаются — dropdown открывается вниз от header, BulkActionsBar прибит к нижней кромке экрана — но при коротком списке или маленьком экране overlap возможен.
+
+На мобильном: dropdown `min-w-[240px]` (`ItemsTable.tsx:742`) с `right-0` на viewport 375 px выравнивается по правому краю родительского div; если родитель `<div>` внутри горизонтально скроллируемой таблицы сдвинут, dropdown может выйти за левый край экрана.
+
+#### 3.4.5 Undo/Redo toolbar (`ItemsTable.tsx:966-1001`)
+
+Static `border-b` внутри `.card`, всегда видим при рендере таблицы. Высота ~40 px (padding `py-2` + icons 16 px + text 12 px). Не floating — geometric конфликтов нет. Вместе со sticky thead (~40 px) образует фиксированную зону ~80 px в верхней части таблицы. На мобильном с `maxHeight: calc(100vh - 260px)` итоговая высота скроллируемой data-области уменьшается дополнительно. Явного конфликта с другими floating panels нет; undo/redo доступны также через Ctrl+Z / Ctrl+Shift+Z (`ItemsTable.tsx:114-133`).
+
+---
+
+*Разделы 3.5, 4 (Proposals), 5 (Recommendation) будут добавлены в следующих коммитах.*
