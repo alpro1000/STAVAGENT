@@ -1188,4 +1188,148 @@ Main row (chevron флипнулся в ▾ для индикации что det
 
 ---
 
-*Разделы 4.3.2, 4.3.8–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+#### 4.3.8 Схема mobile (ASCII, viewport 375 px)
+
+Ширина ASCII в этой подсекции = физическая ширина viewport (`width ≈ 39 моноширинных символов`), не растянута. Те же четыре состояния что в § 4.3.7, но mobile-адаптированные по паттерну Part A § 2.2: `.flat-col--hide-mobile { display: none }` (`styles/flat-design.css:1467-1469`) на breakpoint 640 px + `.flat-el-info__inner { min-height: 44px; flex-wrap: wrap }` (`styles/flat-design.css:1471-1476`) для touch-target через рост контейнера, а не размера иконки.
+
+---
+
+**Состояние 1 — Заголовок skupiny с toolbar на 375 px**
+
+На этом вьюпорте одна строка не вмещает name + 2 info-бейджа + 4 action-кнопки. Применяется Part A паттерн `.flat-toolbar { gap: 8px; padding: 8px 0; flex-wrap: wrap }` (§ 2.2, `styles/flat-design.css:979-984`) — content переносится на несколько строк, без overflow-меню:
+
+```
+┌─────────────────────────────────────┐
+│ [▸] SO 202202                       │
+│     Mostní nosná konstrukce         │
+│                                     │
+│     13 položek · 850 240,00 Kč      │
+│                                     │
+│ [✦ Podobné]  [⊕ Globálně]           │
+│ [✎ Rename]   [🗑 0.4]               │
+└─────────────────────────────────────┘
+ width 100%  padding 12px
+ flex-wrap: wrap  gap 8px
+ chevron [▸] 13px (≥ 13px иконка
+ в mobile-контейнере с min-height
+ 44px достигает touch-target)
+ name 13px bold; info 11px uppercase
+ action icons 13px + text labels
+```
+
+*Против § 3.1:* на текущем Registry секционной строки нет такой — `rowRole === 'section'` рендерится как `<tr>` с 10 пустыми cells, не wrap. Variant B заменяет её на wrap-based toolbar. Breakpoint 640 px из § 2.2 применяется: на ≤ 640 px row-actions wrap на вторую строку, инфо-бейджи на третью.
+
+---
+
+**Состояние 2 — Обычная строка на 375 px**
+
+Design decision: mobile row = **subset** desktop row. Столбцы с низким информационным приоритетом при первом взгляде — MJ, Množství, Cena jedn., Cena celkem, HardHat status, line-number, `+N` badge — hide через `.flat-col--hide-mobile` (§ 2.2). Эти данные доступны в detail panel (§ 4.3.5), который открывается одним тапом на `kod`/`popis`. На mobile detail-панель становится "default way to see full data", а row — быстрым сканером.
+
+Оставлены на 375 px (6 cells):
+
+```
+┌──┬──┬──────────────────────────┬────────┬───┐
+│[☐]│[›]│ {21341 · DRENÁŽNÍ VR…}   │{beton▼}│[▥]│
+│   │  │ ························ │········│   │
+└──┴──┴──────────────────────────┴────────┴───┘
+ ICN ICN   CCL (kod + popis          CCL     ICN
+  20 24    combined, ellipsis)       ~80     32
+           ~200 px
+ Cell min-height 44px (§ 2.2 mobile pattern)
+ Hidden via .flat-col--hide-mobile:
+   Poř./+N  ·  MJ  ·  Množství
+   Cena jedn.  ·  Cena celkem  ·  HardHat
+ (все 6 доступны в detail panel — состояние 4)
+```
+
+*Против § 3.1:* текущая ширина строки Registry на 375 px = ~1 160 px горизонтального скролла (§ 3.1). В Variant B — **всё помещается в 375 px без горизонтального скролла**. Checkbox всегда виден (sticky не нужен, потому что overflow нет). Hit-area chevron и checkbox достигают 44 × 44 px через `min-height` контейнера — паттерн из § 2.2 mobile `.flat-el-info__inner`, не через рост самой иконки (иконка остаётся 13 px). `kod` и `popis` объединены в одну CCL-ячейку с `text-overflow: ellipsis` — клик по ней открывает detail panel с полным текстом.
+
+Это осознанный trade-off: на mobile первичный сценарий = "найти строку → открыть детали → присвоить skupinu / посмотреть TOV". Read-at-a-glance metrics (cena, množství) переезжают в detail, потому что на 375 px их не прочесть без scroll даже если оставить inline.
+
+---
+
+**Состояние 3 — Строка при selection → bulk bar на 375 px**
+
+```
+Row selected (bg #EDEBE8):
+┌──┬──┬──────────────────────────┬────────┬───┐
+│[▣]│[›]│ {21341 · DRENÁŽNÍ VR…}   │{beton▼}│[▥]│
+│   │  │ ························ │········│   │
+└──┴──┴──────────────────────────┴────────┴───┘
+
+BulkActionsBar (Variant B: media-query full-width на ≤ 640 px):
+┌─────────────────────────────────────┐
+│ 3 vybrány                        ×  │
+│ [Vymazat sk.]  [Smazat]             │
+│ [Nastavit ▼]   [Role ▼]             │
+└─────────────────────────────────────┘
+ fixed bottom-0 left-0 right-0 w-full
+ padding-bottom: env(safe-area-inset-bottom)
+ z-50 · bg orange-500 · 1px top border
+ кнопки wrap через flex-wrap (Part A
+ pattern § 2.2 .flat-toolbar)
+ × 13px top-right — закрывает selection
+```
+
+*Против § 3.4.1:* текущая BulkActionsBar — пилюля ~480 px `fixed bottom-6 left-1/2 -translate-x-1/2` (`BulkActionsBar.tsx:78`), перекрывающая оба края viewport 375 px (§ 3.1, § 3.4.1). Variant B добавляет media-query `@media (max-width: 640px)` где bar переключается на full-width bottom sheet без translate-x. `safe-area-inset-bottom` учитывает home-indicator на iPhone. Overflow исчезает.
+
+*Против live-кейса пользователя (SO 202202, 13 položek, плавающая корзина + папка + навигатор Stavba_Prodejna):* "плавающая корзина" = BulkActionsBar → в Variant B теперь не плавает пилюлей, а full-width. "папка" (вероятно, folder-icon в project-level UI или `FolderOpen` из ImportModal-trigger) и "навигатор Stavba_Prodejna" = sheet tabs strip (`App.tsx:1187-1263`, § 1.5) — **остаются out-of-scope** аудита. Их конфликты (whitespace-nowrap + counter, § 3.1) Variant B не адресует — они document/project navigation уровень, не row-level. Фиксируется как отдельный issue для последующей работы.
+
+---
+
+**Состояние 4 — Строка с открытым detail panel на 375 px**
+
+```
+Main row (chevron флип в ▾):
+┌──┬──┬──────────────────────────┬────────┬───┐
+│[☐]│[▾]│ {21341 · DRENÁŽNÍ VR…}   │{beton▼}│[▥]│
+│   │  │ ························ │········│   │
+├──┴──┴──────────────────────────┴────────┴───┤
+│                                          [×]│
+│ DRENÁŽNÍ VRSTVA Z KAMENIVA                  │
+│ HRUBÉHO DRCENÉHO FRAKCE 16/32 MM            │
+│ [OTSKP]  ·  Poř. 001                        │
+│                                             │
+│ Role:      [● Hlavní ▼]                     │
+│ Rodič:     —                                │
+│ Podřízené: 3  →  Zobrazit                   │
+│                                             │
+│ MJ:        m³                               │
+│ Množství:  94,2                             │
+│ Cena j.:   {3 240,00}                       │
+│ Celkem:    30 587,40                        │
+│                                             │
+│ TOV:       ▥ 45 h · 180 kg · 3 t            │
+│            [ Celý rozpis →  ]               │
+│                                             │
+│ Monolit:   ⛑ 142 500 Kč · 3,5 dn            │
+│            [ ↗ Otevřít v Monolitu ]         │
+│                                             │
+│ Import:    Stavba_202.xlsx                  │
+│            list 3 · řádek 142               │
+│ ───────────────────────────────────────     │
+│ Reorder:   [ ↑ Nahoru ]  [ ↓ Dolů ]         │
+│                                             │
+│            [ 🗑 Smazat pozici ]             │
+│              opacity 0.4 § 2.4.5            │
+└─────────────────────────────────────────────┘
+ width 100%  padding 16px
+ bg var(--stone-100)  · border-top 2px stone-300
+ single-column layout (две колонки label/value
+ не помещаются на 375 px — вертикальный стек
+ label-over-value или label: value inline)
+ scroll внутри detail-block при overflow
+ [×] 13px top-right  ·  Esc / swipe-down closes
+```
+
+*Против § 3.1 / § 3.4:* все 4 per-item действия из § 4.3.5 (MoveUp, MoveDown, role, Link2) + новый single-delete с opacity 0.4 + все hidden-from-row cells (MJ, Množství, Cena jedn., Cena celkem, HardHat, Import trace) помещаются в одну вертикально-прокручиваемую панель. Никаких collision'ов с floating panels (§ 3.4) — detail panel это inline expansion `<tr>` внутри обёртки таблицы, а не `fixed` overlay, ему не нужен z-index выше BulkActionsBar. Bulk bar и detail panel mutually exclusive на практике: если пользователь открыл detail — он работает с одной положкой, selection не активен; если activated selection для bulk — detail закрыт.
+
+---
+
+**Итоговый ответ по mobile-конфликтам:**
+
+**Variant B закрывает row-level mobile conflicts из § 3.1** — horizontal scroll ~1 160 px устранён (всё в 375 px), checkbox всегда виден (sticky не требуется), MoveUp/Down 11 px hit-area устранена (эти кнопки уехали в detail panel, где кнопки 13 px с 44 px min-height контейнером), BulkActionsBar 480 px overflow устранён (full-width media-query). **Не закрывает конфликты уровня document/project navigation** (§ 3.1 sheet tabs whitespace-nowrap, § 3.4 прочие floating panels кроме BulkActionsBar) — они out-of-scope per task spec, фиксируются как отдельные issues для последующих сессий.
+
+---
+
+*Разделы 4.3.2, 4.3.9–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
