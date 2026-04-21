@@ -980,4 +980,98 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 ---
 
-*Разделы 4.3.2, 4.3.6–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+#### 4.3.6 Bulk actions bar — расширение существующего компонента
+
+**Что существует сейчас.** `<BulkActionsBar>` уже реализован в `src/components/items/BulkActionsBar.tsx:78-158`. Variant B расширяет состав кнопок, **не** трогает позиционирование (`fixed bottom-6 left-1/2 -translate-x-1/2 z-50`), z-index, или логику появления (`selectedCount === 0 → return null`, `:32-34`). Геометрические конфликты из § 3.4.1 (overflow на 375 px, перекрытие последних 96 px таблицы) — отдельная задача, которая в рамках Variant B решается стилизацией (уплощение orange pill + переход на full-width bar на mobile через media-query), но сам архитектурный паттерн "fixed bottom bar при selection" сохраняется.
+
+**Что в bar уже есть** (из `BulkActionsBar.tsx`):
+
+| # | Кнопка | Icon | Handler | Источник |
+|---|---|---|---|---|
+| 1 | "Vymazat skupiny" | `Eraser` 16 px | `handleBulkClearSkupiny` → `bulkSetSkupinaUndoable(updates, null)` | `BulkActionsBar.tsx:95-102` + `:49-56` |
+| 2 | "Smazat" | `Trash2` 16 px | `handleBulkDelete` → `deleteItem(...)` в цикле с `confirm()` | `BulkActionsBar.tsx:104-112` + `:36-47` |
+| 3 | "Nastavit skupinu" + inline dropdown с `<SkupinaAutocomplete>` | `Tag` 16 px | `handleBulkSetSkupina(skupina)` → `bulkSetSkupinaUndoable(updates, skupina)` | `BulkActionsBar.tsx:114-145` + `:58-75` |
+| 4 | "Zrušit" (clear selection) | `X` 18 px | `onClearSelection()` callback | `BulkActionsBar.tsx:147-155` |
+
+Эти четыре действия не трогаются в Variant B — только размеры иконок приводятся к шкале § 2.4.2 (16 → 13 px, 18 → 13 px) и убирается heavy shadow `0 8px 32px rgba(0,0,0,0.4)` (`BulkActionsBar.tsx:81`) → заменяется на `1 px solid var(--flat-border)` по паттерну § 2.3.4.
+
+**Что расширяется из row-level § 1.2.**
+
+Сначала механика `select` checkbox (#1 из Inventory § 1.2). Checkbox **остаётся inline** в том же положении (column `select` 20 px, `ItemsTable.tsx:435-455`) — он не мигрирует в другую плоскость, потому что без visible-в-строке контрола пользователь не имеет точки входа в multi-select режим. Семантическая связка: **checkbox — входная точка, BulkActionsBar — следствие**. Variant B не меняет пару (form-control + floating bar). В § 4.3.3 checkbox был явно отложен сюда: finalized — остаётся inline как form-control, не считается "иконкой действия" в лимит 3, активирует `<BulkActionsBar>` при `selectedIds.size > 0`.
+
+**Новое действие, поднятое из row-level** (один пункт, остальные per-item не имеют bulk-смысла — обосновано ниже):
+
+| Новая кнопка | Icon | Источник в row-level | Почему имеет смысл массово |
+|---|---|---|---|
+| "Změnit roli" + inline dropdown (main / subordinate / section / unknown) | role-icon 13 px (динамический: ClipboardList / ↳ / FileText / CircleHelp) + ChevronDown 11 px | `RowActionsCell.tsx:36-41, 180-205` + `updateItemRoleUndoable` | Частый кейс: парсер при импорте classifier'ом `detectCatalog()` неверно определил `rowRole` у целой группы строк (напр. 20 строк без 6-значного kod маркированы как `unknown`). В row-level (сейчас и в detail panel § 4.3.5) это решается один клик на строку. Bulk-действие сворачивает 20 кликов в 1 + 20 selections. Это прямой перенос паттерна из `BulkActionsBar.tsx:104-112` где Trash2 аналогично сокращает N индивидуальных удалений. |
+
+**Что НЕ переезжает в bulk** (и почему, для полноты inventory-контроля):
+
+- **MoveUp / MoveDown (#2, #3)**. Bulk-reorder "переместить N выбранных на P позиций" семантически мутный — что значит "переместить 7 выделенных на 3 вверх" когда между ними есть невыделенные? Требует гораздо более сложной UI-модели (DnD, "sort by field X among selection"). Не стоит кнопки. Остаются в detail panel § 4.3.5 как per-item explicit reorder.
+- **Link2 (#5)**. Bulk-attach "прикрепить N выбранных subordinate к одному parent" теоретически возможен, но реально редкий: subordinate-rows обычно уже корректно привязаны парсером по proximity (`detectCatalog` + heuristics). Если парсер ошибся у 10 subordinate подряд — они обычно принадлежат **разным** parent'ам, не одному. Bulk-pick-parent с единственным целевым kod неудобен. Остаётся в detail panel § 4.3.5 как per-item modal.
+- **HardHat click-navigate (#7 action-half)**. Bulk-open в новых вкладках — anti-pattern (20 tabs одновременно). Остаётся в detail panel § 4.3.5 как explicit button.
+- **Sparkles / Globe (#16, #17)**. Уже живут в toolbar skupiny § 4.3.4 с семантикой "применить THIS skupina к похожим položkам". В bulk они бы пересеклись с существующим `Tag` "Nastavit skupinu" (#3 в текущем BulkActionsBar). Дублирование § 3.2.2 решаем не тиражированием, а концентрацией: Sparkles/Globe = skupina-уровень, Tag = selection-уровень, непересекающиеся контексты.
+
+**Inventory-контроль — финальный баланс 17 row-level элементов § 1.2:**
+
+| # | Элемент | Основное размещение | Дополнительное (если применимо) |
+|---|---|---|---|
+| 1 | `select` checkbox | **inline (trigger)** + bulk bar (consequence) | § 4.3.6 |
+| 2 | `MoveUp` | detail panel | § 4.3.5 |
+| 3 | `MoveDown` | detail panel | § 4.3.5 |
+| 4 | role-trigger | detail panel | bulk bar (массовое изменение) — § 4.3.6 |
+| 5 | `Link2` (subordinate only) | detail panel | § 4.3.5 |
+| 6 | `TOVButton` (BarChart3) | inline — action | § 4.3.3 |
+| 7 | `HardHat` | **inline — status badge** + detail panel — action button | § 4.3.3 + § 4.3.5 |
+| 8 | Poř. chevron + `+N` + line number | inline — chevron + non-interactive badge | § 4.3.3 |
+| 9 | `kod` cell | inline data + click-trigger для detail | § 4.3.5 (trigger) |
+| 10 | `popis` cell | inline data + click-trigger для detail | § 4.3.5 (trigger) |
+| 11 | `mj` cell | inline data | — |
+| 12 | `mnozstvi` cell | inline data | — |
+| 13 | `EditablePriceCell` | inline click-cell-to-edit | — (паттерн § 2.5.2 уже применён) |
+| 14 | `cenaCelkem` cell | inline data (+ section-total когда row = section) | — |
+| 15 | `SkupinaAutocomplete` cell | inline click-cell-to-edit | — (паттерн § 2.5.2 уже применён) |
+| 16 | `Sparkles` | toolbar skupiny | § 4.3.4 |
+| 17 | `Globe` | toolbar skupiny | § 4.3.4 |
+
+**Суммы по размещениям** (действие может быть двойным как #7, #1, #4 — это легитимные dual-role применения):
+
+- **Inline (§ 4.3.3)** primary placement: **11 элементов** (#1, #6, #7 status, #8, #9, #10, #11, #12, #13, #14, #15). Из них только **3 интерактивные иконки-кнопки** (#6 BarChart3, #8 chevron, checkbox #1 — form-control) — укладывается в лимит § 2.4.4.
+- **Toolbar skupiny (§ 4.3.4)**: **2 элемента** (#16, #17).
+- **Detail panel (§ 4.3.5)**: **5 элементов** (#2, #3, #4, #5, #7 action-half).
+- **Bulk bar (§ 4.3.6)**: **2 элемента** — #1 как trigger + #4 как массовое дополнение к per-item detail-handler.
+- **Cell-click / уже-паттерн § 2.5.2**: #13, #15 — не мигрируют, уже реализованы.
+
+Сумма: 11 + 2 + 5 + 2 = 20 "размещений" для 17 уникальных элементов. Разница 3 = три элемента с dual-role: #1 (inline-trigger + bulk-consequence), #4 (detail + bulk), #7 (inline-status + detail-action). Каждая дублирующая роль — осознанное решение из § 3.5.3 (путь A + путь B для элементов, сейчас совмещающих status и action) или из mechanic-based separation (checkbox как form-control ≠ bulk-bar как floating panel).
+
+**Вне row-level § 1.2**, из § 1.4 (skupina-management, 4 места) и § 1.6 (floating panels, 7 компонентов) — ничего не мигрирует в Variant B, за исключением быстрых rename+delete уже существующих в `<GroupManager>`, которые в toolbar skupiny § 4.3.4 получают **дополнительную** surface (не заменяя GroupManager как полную CRUD-панель). Navigator (§ 1.5 Rozpočet-document) — целиком out-of-scope.
+
+**ASCII-схема desktop:**
+
+```
+состояние без selection (selectedCount === 0):
+ [bulk bar не отрендерен, return null — BulkActionsBar.tsx:32-34]
+
+состояние с 3 выбранными (selectedCount === 3):
+                          ┌─────────────────────────────────────────────────────────────────────┐
+                          │  3  vybrány  │  Vymazat skupiny  │  Smazat  │  Nastavit skupinu ▼  │ 
+                          │              │  Změnit roli ▼    │  ×  Zrušit                       │
+                          └─────────────────────────────────────────────────────────────────────┘
+                           fixed bottom-6  left-1/2  -translate-x-1/2  z-50
+                           1 px solid stone-200 border  · no shadow  · bg orange-500  · text white
+                           icons 13 px  font 13 px (labels)  · padding 8px 16px
+
+состояние с 3 выбранными на mobile 375 px (media-query full-width адаптация):
+┌──────────────────────────────────────────────────────────────────────────────┐
+│  3 vybrány                                                               ×   │
+│  [Vymazat skupiny] [Smazat] [Nastavit ▼] [Role ▼]                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+ fixed bottom-0 left-0 right-0 w-full · z-50 · padding-bottom safe-area-inset
+ кнопки wrap в 2-3 строки через flex-wrap; bar не overflow за края viewport
+```
+
+"Změnit roli ▼" открывает dropdown абсолютно-позиционированный `bottom-full` относительно своей кнопки (паттерн из существующего "Nastavit skupinu" в `BulkActionsBar.tsx:125-144`), min-w-280 px на desktop / полная ширина bar'а на mobile. `bulkSetRole(updates)` — новый store-метод по аналогии с `bulkSetSkupinaUndoable` и `updateItemRoleUndoable`, интегрируется в `useUndoableActions` как undo-able операция.
+
+---
+
+*Разделы 4.3.2, 4.3.7–4.3.10, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
