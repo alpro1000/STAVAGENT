@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -21,6 +21,7 @@ import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
+import { SkupinaToolbar } from '../groups/SkupinaToolbar';
 import { TOVButton, TOVModal } from '../tov';
 import { useUndoStore, MAX_UNDO } from '../../stores/undoStore';
 import { useUndoableActions } from '../../hooks/useUndoableActions';
@@ -207,6 +208,53 @@ export function ItemsTable({
         next.add(mainId);
       }
       return next;
+    });
+  };
+
+  // Active skupina context for SkupinaToolbar (PR 2 — AUDIT §4.3.4).
+  // Lives at table level so filter-lock, picker, and row-level state stay in sync.
+  const [activeSkupina, setActiveSkupina] = useState<string | null>(null);
+
+  // When the column filter narrows to exactly one skupina, lock the toolbar to it.
+  // When a multi-select filter is active and the current activeSkupina isn't part
+  // of it, clear activeSkupina so the toolbar never targets a skupina whose items
+  // are hidden from the user. (Empty filter = show-all, activeSkupina is free.)
+  const isFilterLocked = filterGroups.size === 1;
+  useEffect(() => {
+    if (isFilterLocked) {
+      const [single] = Array.from(filterGroups);
+      if (single && single !== activeSkupina) {
+        setActiveSkupina(single);
+      }
+    } else if (activeSkupina && filterGroups.size > 0 && !filterGroups.has(activeSkupina)) {
+      setActiveSkupina(null);
+    }
+  }, [isFilterLocked, filterGroups, activeSkupina]);
+
+  // Reset active skupina when the sheet changes so we don't point at a group
+  // that doesn't exist in the newly-loaded sheet.
+  useEffect(() => {
+    setActiveSkupina(null);
+  }, [sheetId]);
+
+  // Collapse every expanded main row whose skupina matches the target.
+  const collapseAllInSkupina = (skupina: string) => {
+    setExpandedMainIds(prev => {
+      if (prev.size === 0) return prev;
+      const mainInSkupina = new Set(
+        items
+          .filter(it => it.rowRole === 'main' && it.skupina === skupina)
+          .map(it => it.id)
+      );
+      const next = new Set(prev);
+      let changed = false;
+      mainInSkupina.forEach(id => {
+        if (next.has(id)) {
+          next.delete(id);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
     });
   };
 
@@ -816,73 +864,48 @@ export function ItemsTable({
             return null;
           }
           const currentSkupina = info.getValue();
-          const isApplying = applyingToSimilar === item.id;
 
           return (
-            <div className="flex items-center gap-1">
-              <div className="flex-1">
-                <SkupinaAutocomplete
-                  value={currentSkupina}
-                  memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
-                  onChange={async (value, shouldLearn = false) => {
-                    if (value === null) {
-                      setItemSkupinaUndoable(item.id, null);
-                    } else {
-                      setItemSkupinaUndoable(item.id, value);
+            <SkupinaAutocomplete
+              value={currentSkupina}
+              memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
+              onChange={async (value, shouldLearn = false) => {
+                if (value === null) {
+                  setItemSkupinaUndoable(item.id, null);
+                } else {
+                  setItemSkupinaUndoable(item.id, value);
 
-                      // Always record to browser localStorage memory (persistent, works offline)
-                      if (item.kod) {
-                        recordSkupinaMemory(item.kod, value);
-                      }
+                  // Always record to browser localStorage memory (persistent, works offline)
+                  if (item.kod) {
+                    recordSkupinaMemory(item.kod, value);
+                  }
 
-                      // Server-side learning (best-effort, AI mode only)
-                      if (shouldLearn) {
-                        try {
-                          await fetch('/api/ai-agent', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              operation: 'record-correction',
-                              projectId,
-                              sheetId,
-                              itemId: item.id,
-                              newSkupina: value,
-                              allItems: items,
-                            }),
-                          });
-                        } catch (error) {
-                          // Don't block the UI - browser memory was already recorded
-                        }
-                      }
+                  // Server-side learning (best-effort, AI mode only)
+                  if (shouldLearn) {
+                    try {
+                      await fetch('/api/ai-agent', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          operation: 'record-correction',
+                          projectId,
+                          sheetId,
+                          itemId: item.id,
+                          newSkupina: value,
+                          allItems: items,
+                        }),
+                      });
+                    } catch (error) {
+                      // Don't block the UI - browser memory was already recorded
                     }
-                  }}
-                  allGroups={allGroups}
-                  onAddGroup={addCustomGroup}
-                  itemId={item.id}
-                  enableLearning={true}
-                />
-              </div>
-              {currentSkupina && item.kod && (
-                <>
-                  <button
-                    onClick={() => applyToSimilar(item)}
-                    disabled={isApplying}
-                    title="Aplikovat na podobné položky v celém projektu (všechny listy)"
-                    className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
-                  >
-                    <Sparkles size={13} className="text-accent-primary w-[13px] h-[13px]" />
-                  </button>
-                  <button
-                    onClick={() => applyToAllSheets(item)}
-                    disabled={applyingGlobal === item.id}
-                    title="Aplikovat na VŠECHNY listy se stejným kódem"
-                    className="p-1 rounded hover:bg-blue-500/20 transition-colors disabled:opacity-50"
-                  >
-                    <Globe size={13} className="text-blue-500 w-[13px] h-[13px]" />
-                  </button>
-                </>
-              )}
-            </div>
+                  }
+                }
+              }}
+              allGroups={allGroups}
+              onAddGroup={addCustomGroup}
+              itemId={item.id}
+              enableLearning={true}
+            />
           );
         },
         size: 200,
@@ -891,7 +914,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
   );
 
   const table = useReactTable({
@@ -999,6 +1022,21 @@ export function ItemsTable({
             </p>
           )}
         </div>
+
+        {/* Skupina toolbar — PR 2 of §5.3.1 (AUDIT §4.3.4).
+            Targets the active skupina; filter-locked when exactly one
+            group is selected in the column filter. */}
+        <SkupinaToolbar
+          items={items}
+          activeSkupina={activeSkupina}
+          onActiveSkupinaChange={setActiveSkupina}
+          isFilterLocked={isFilterLocked}
+          onApplyToSimilar={applyToSimilar}
+          onApplyToAllSheets={applyToAllSheets}
+          onCollapseAllInSkupina={collapseAllInSkupina}
+          applyingSimilar={applyingToSimilar !== null}
+          applyingGlobal={applyingGlobal !== null}
+        />
 
         <div
           ref={tableContainerRef}

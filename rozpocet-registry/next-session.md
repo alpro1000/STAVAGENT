@@ -142,6 +142,38 @@ remote:   - Changes must be made through a pull request.
 
 ---
 
+## 8. PR 2-B — per-group inline toolbars inside virtualized ItemsTable
+
+PR 2 ship в ветке `claude/registry-toolbar-group-Qophc` реализовал **Variant B (single active-skupina toolbar above table)** из трёх рассмотренных в AskUserQuestion. AUDIT §4.3.4 идеально описывает **inline per-group toolbars** ("когда фильтр off — toolbar рендерится над КАЖДОЙ skupinой в скроллируемой таблице"), но это требует:
+
+1. **Принудительная сортировка по `item.skupina`** — пересекается с существующим click-to-sort по колонкам (`ItemsTable.tsx:1056-1072`). Нужно решить: либо skupina-группировка перекрывает сортировку (как в Excel PivotTable), либо toolbars остаются sticky по скроллу + ручная сортировка оставляет visual несоответствие (item выпадает "не из своей секции").
+2. **Variable-height virtualizer rows** — `useVirtualizer` сейчас с `estimateSize: () => ROW_HEIGHT` (32 px константа, `ItemsTable.tsx:980`). Для toolbar-рядов нужен `measureElement` + mixed row kinds (item vs toolbar). react-virtual это поддерживает, но требует переписывания `rowVirtualizer.getVirtualItems()` цикла — увеличенная поверхность риска регрессий в существующей таблице.
+3. **Синтетические rows в data stream** — нужно выстроить derived list `[{ kind: 'toolbar', skupina, count, total }, { kind: 'item', ... }, …]` вместо плоского `visibleItems`.
+
+**Scope PR 2-B** (когда брать):
+- Ввести режим "group by skupina" с toggle в toolbar (по умолчанию off → текущее поведение, on → синтетические toolbar rows). Toggle разблокирует visual хаос при ручной сортировке.
+- Переписать `rowVirtualizer` на variable heights + 2 row kinds.
+- Скопировать action set из текущего `SkupinaToolbar` в inline вариант (per-row activeSkupina = the header's own skupina).
+- Оставить текущий single-toolbar above-table surface как fallback при group-by-off.
+
+**Estimate**: M-L, 2-4 дня. Не блокирует PR 3 (detail panel), PR 4 (extend bulk bar), PR 5 (click-cells) — те работают с текущим плоским рендерингом таблицы.
+
+---
+
+## 9. Floating panel geometry conflicts (Conflicts § 3.4) — Mobile 375 px
+
+PR 2 single-toolbar above-table решает §4.3.4 но не трогает геометрию уже существующих floating overlays, которые на mobile 375 px могут накладываться друг на друга при одновременной активации:
+
+- `<BulkActionsBar>` `fixed bottom-6 left-1/2 z-50` + `<TOVModal>` `fixed inset-0 z-50` + `<ImportModal>` + `AlertModal` + Role dropdown portal (`RowActionsCell.tsx:208-249`) + Attach-to-parent modal (`RowActionsCell.tsx:262-405`).
+- z-index collisions когда 2+ overlays открыты одновременно (selection + TOV + import).
+- "Корзина" / "папка" навигаторы проекта из live-кейса пользователя (out-of-scope PR 2 — упоминание в task spec).
+
+**Scope**: отдельный UX-таск с скриншотами пользователя, audit z-index стека, возможно переход на bottom-sheet pattern на mobile вместо fixed pills.
+
+**Estimate**: M, 1-2 дня. Не блокирует PR 3-5.
+
+---
+
 ## Приоритизация — обновлённая после сессии 2026-04-22
 
 1. **П. 6** (PR 990 validation) — блокирует Registry production UX для не-Chrome пользователей.
@@ -152,4 +184,4 @@ remote:   - Changes must be made through a pull request.
 6. **П. 1** (document navigation) — UX improvement.
 7. **П. 7** (branch protection) — process decision, не код.
 
-PR 2–5 Variant B rollout (toolbar skupiny, detail panel, extend BulkActionsBar, click-cells) остаются за рамками этого next-session — их отдельный план в `AUDIT_Registry_FlatLayout.md` §5.3.1.
+PR 2 Variant B (single active-skupina toolbar above table) отправлен в ветке `claude/registry-toolbar-group-Qophc`. PR 2-B (п. 8 выше — per-group inline rendering), PR 3 (detail panel), PR 4 (extend BulkActionsBar), PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1 и идут отдельными тасками.
