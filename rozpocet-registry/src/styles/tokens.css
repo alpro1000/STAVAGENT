@@ -46,9 +46,12 @@
   --text-code: #5A5D61; /* For technical codes */
 
   /* === ACCENTS === */
-  --accent-orange: #FF9F1C;
-  --accent-orange-glow: rgba(255, 159, 28, 0.5);
-  --accent-orange-strong: rgba(255, 159, 28, 0.7);
+  /* Part A accent #F97316 (flat-design.css:31, --orange-500).
+     Previously #FF9F1C -- single source of truth switched so Registry
+     and Monolit Planner read as one design language. */
+  --accent-orange: #F97316;
+  --accent-orange-glow: rgba(249, 115, 22, 0.5);
+  --accent-orange-strong: rgba(249, 115, 22, 0.7);
 
   /* Legacy aliases (for backward compatibility) */
   --app-bg-concrete: var(--app-bg);
@@ -199,8 +202,8 @@
   --text-code: #8A9099;
 
   /* === ACCENTS (Enhanced glow for dark!) === */
-  --accent-orange-glow: rgba(255, 159, 28, 0.6);
-  --accent-orange-strong: rgba(255, 159, 28, 0.8);
+  --accent-orange-glow: rgba(249, 115, 22, 0.6);
+  --accent-orange-strong: rgba(249, 115, 22, 0.8);
 
   --accent-green: #66BB6A;
   --accent-green-glow: rgba(102, 187, 106, 0.5);

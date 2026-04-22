@@ -49,8 +49,8 @@ const LIGHT = {
   borderLight: '#E5E7EB',
   text: '#1A1C1E',
   textMuted: '#6B7280',
-  accent: '#FF9F1C',
-  accentHover: '#E68A00',
+  accent: '#F97316',      // Part A --orange-500 (flat-design.css:31)
+  accentHover: '#EA580C', // Part A --orange-600 (flat-design.css:34)
   shadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
   backdrop: 'rgba(0, 0, 0, 0.4)',
 };
@@ -324,7 +324,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                       backgroundColor: !item.parentItemId ? LIGHT.accent : LIGHT.panelBg,
                       borderColor: !item.parentItemId ? LIGHT.accentHover : LIGHT.border,
                       color: !item.parentItemId ? '#ffffff' : LIGHT.text,
-                      boxShadow: !item.parentItemId ? '0 4px 12px rgba(255, 159, 28, 0.3)' : 'none',
+                      boxShadow: !item.parentItemId ? '0 4px 12px rgba(249, 115, 22, 0.3)' : 'none',
                     }}
                   >
                     <div className="flex items-center gap-4">
@@ -349,7 +349,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                               backgroundColor: isSelected ? LIGHT.accent : LIGHT.panelBg,
                               borderColor: isSelected ? LIGHT.accentHover : LIGHT.border,
                               color: isSelected ? '#ffffff' : LIGHT.text,
-                              boxShadow: isSelected ? '0 4px 12px rgba(255, 159, 28, 0.3)' : 'none',
+                              boxShadow: isSelected ? '0 4px 12px rgba(249, 115, 22, 0.3)' : 'none',
                             }}
                           >
                             <div className="flex flex-col gap-2">
