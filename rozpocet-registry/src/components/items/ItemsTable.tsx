@@ -211,31 +211,15 @@ export function ItemsTable({
     });
   };
 
-  // Active skupina context for SkupinaToolbar (PR 2 — AUDIT §4.3.4).
-  // Lives at table level so filter-lock, picker, and row-level state stay in sync.
-  const [activeSkupina, setActiveSkupina] = useState<string | null>(null);
-
-  // When the column filter narrows to exactly one skupina, lock the toolbar to it.
-  // When a multi-select filter is active and the current activeSkupina isn't part
-  // of it, clear activeSkupina so the toolbar never targets a skupina whose items
-  // are hidden from the user. (Empty filter = show-all, activeSkupina is free.)
-  const isFilterLocked = filterGroups.size === 1;
-  useEffect(() => {
-    if (isFilterLocked) {
-      const [single] = Array.from(filterGroups);
-      if (single && single !== activeSkupina) {
-        setActiveSkupina(single);
-      }
-    } else if (activeSkupina && filterGroups.size > 0 && !filterGroups.has(activeSkupina)) {
-      setActiveSkupina(null);
-    }
-  }, [isFilterLocked, filterGroups, activeSkupina]);
-
-  // Reset active skupina when the sheet changes so we don't point at a group
-  // that doesn't exist in the newly-loaded sheet.
-  useEffect(() => {
-    setActiveSkupina(null);
-  }, [sheetId]);
+  // Active skupina for SkupinaToolbar (PR 2 — AUDIT §4.3.4).
+  // Derived purely from the column-Skupina filter: when it pins exactly one
+  // group, that group is the toolbar's target. Otherwise the toolbar hides.
+  // No separate picker state — the existing filter UI is already the picker.
+  const activeSkupina: string | null = useMemo(() => {
+    if (filterGroups.size !== 1) return null;
+    const [single] = Array.from(filterGroups);
+    return single || null;
+  }, [filterGroups]);
 
   // Collapse every expanded main row whose skupina matches the target.
   const collapseAllInSkupina = (skupina: string) => {
@@ -255,6 +239,27 @@ export function ItemsTable({
         }
       });
       return changed ? next : prev;
+    });
+  };
+
+  // After rename/delete via toolbar, sync the column-filter set so that the
+  // filter keeps pointing at the same data (or clears, for delete).
+  const handleSkupinaRenamed = (oldName: string, newName: string) => {
+    setFilterGroups(prev => {
+      if (!prev.has(oldName)) return prev;
+      const next = new Set(prev);
+      next.delete(oldName);
+      next.add(newName);
+      return next;
+    });
+  };
+
+  const handleSkupinaDeleted = (name: string) => {
+    setFilterGroups(prev => {
+      if (!prev.has(name)) return prev;
+      const next = new Set(prev);
+      next.delete(name);
+      return next;
     });
   };
 
@@ -1049,18 +1054,16 @@ export function ItemsTable({
         </div>
 
         {/* Skupina toolbar — PR 2 of §5.3.1 (AUDIT §4.3.4).
-            Targets the active skupina; filter-locked when exactly one
-            group is selected in the column filter. */}
+            Management surface (rename / delete / collapse-all / info) for
+            the active skupina. Renders only when the column-Skupina filter
+            pins exactly one group; otherwise activeSkupina=null and the
+            toolbar returns null. Sparkles + Globe stay row-level. */}
         <SkupinaToolbar
           items={items}
           activeSkupina={activeSkupina}
-          onActiveSkupinaChange={setActiveSkupina}
-          isFilterLocked={isFilterLocked}
-          onApplyToSimilar={applyToSimilar}
-          onApplyToAllSheets={applyToAllSheets}
           onCollapseAllInSkupina={collapseAllInSkupina}
-          applyingSimilar={applyingToSimilar !== null}
-          applyingGlobal={applyingGlobal !== null}
+          onSkupinaRenamed={handleSkupinaRenamed}
+          onSkupinaDeleted={handleSkupinaDeleted}
         />
 
         <div
