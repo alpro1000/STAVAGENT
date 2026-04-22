@@ -492,7 +492,10 @@ export function ItemsTable({
 
   const columns = useMemo(
     () => [
-      // Checkbox (для массовых операций) - компактный
+      // Checkbox (для массовых операций) - компактный.
+      // size=36: first-cell padding (16px left + 8px right) + checkbox 12px
+      // + 1px vertical divider border = 37px, so 36 is the tight minimum
+      // that keeps the checkbox from overflowing into the right border.
       columnHelper.display({
         id: 'select',
         header: ({ table }) => (
@@ -511,7 +514,7 @@ export function ItemsTable({
             className="cursor-pointer w-3 h-3"
           />
         ),
-        size: 20,
+        size: 36,
         enableResizing: false,
       }),
 
