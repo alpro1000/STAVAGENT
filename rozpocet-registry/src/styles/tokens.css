@@ -139,6 +139,11 @@
   --flat-surface:        #FFFFFF;
   --flat-header-bg:      var(--stone-100);
   --flat-border:         var(--stone-200);
+  /* Vertical divider between table columns — aliased to --flat-border so the
+     column grid reads as the same light lattice as the horizontal row
+     borders. Kept as a separate token so a future iteration can soften it
+     independently (e.g. --stone-100) without touching row borders. */
+  --flat-col-divider:    var(--flat-border);
   --flat-text:           var(--stone-900);
   --flat-text-secondary: var(--stone-400);
   --flat-text-label:     var(--stone-600);

@@ -118,6 +118,7 @@
     letter-spacing: 0.05em;
     color: var(--flat-text-label);
     border-bottom: 1px solid var(--flat-border);
+    border-right: 1px solid var(--flat-col-divider);
     font-family: var(--font-body);
   }
 
@@ -127,9 +128,16 @@
     font-size: 13px;
     color: var(--flat-text);
     border-bottom: 1px solid var(--flat-border);
+    border-right: 1px solid var(--flat-col-divider);
     font-family: var(--font-body);
     font-variant-numeric: tabular-nums;
     vertical-align: middle;
+  }
+
+  /* Last column has no right divider to avoid a double line on the table edge. */
+  .table th:last-child,
+  .table td:last-child {
+    border-right: none;
   }
 
   /* First cell indent per Part A (flat-design.css:657) */
