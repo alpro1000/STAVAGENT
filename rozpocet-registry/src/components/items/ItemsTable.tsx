@@ -247,16 +247,37 @@ export function ItemsTable({
     });
   };
 
+  // Effective parent map: item.id → parent main's id.
+  // Falls back to proximity (nearest 'main' row above in source order) when
+  // the classifier left parentItemId null, so the chevron + collapse logic
+  // still work on imports where parser didn't link subordinates correctly.
+  // Source order comes from the input array order — the importer already
+  // preserves Excel row order through parsing + classification.
+  const effectiveParentMap = useMemo(() => {
+    const map = new Map<string, string>();
+    let currentMainId: string | null = null;
+    items.forEach(item => {
+      if (item.rowRole === 'main') {
+        currentMainId = item.id;
+      } else if (item.rowRole === 'subordinate') {
+        const parent = item.parentItemId || currentMainId;
+        if (parent) map.set(item.id, parent);
+      }
+    });
+    return map;
+  }, [items]);
+
   // Count subordinate rows per main item (always from ALL items, not group-filtered)
   const subordinateCounts = useMemo(() => {
     const counts = new Map<string, number>();
     items.forEach(item => {
-      if (item.rowRole === 'subordinate' && item.parentItemId) {
-        counts.set(item.parentItemId, (counts.get(item.parentItemId) || 0) + 1);
-      }
+      if (item.rowRole !== 'subordinate') return;
+      const parent = effectiveParentMap.get(item.id);
+      if (!parent) return;
+      counts.set(parent, (counts.get(parent) || 0) + 1);
     });
     return counts;
-  }, [items]);
+  }, [items, effectiveParentMap]);
 
   // Calculate section totals (sum of all main items in each section)
   const sectionTotals = useMemo(() => {
@@ -300,18 +321,21 @@ export function ItemsTable({
         return hasKod && hasQuantityOrPrice;
       }
 
-      // Subordinate rows: show only when their parent is expanded (only when showOnlyWorkItems is OFF)
-      if (item.rowRole === 'subordinate' && item.parentItemId) {
-        return expandedMainIds.has(item.parentItemId);
+      // Subordinate rows: hide when their (effective) parent main is collapsed.
+      if (item.rowRole === 'subordinate') {
+        const parent = effectiveParentMap.get(item.id);
+        if (parent) return expandedMainIds.has(parent);
       }
 
       return true;
     });
-  }, [filteredItems, expandedMainIds, showOnlyWorkItems]);
+  }, [filteredItems, expandedMainIds, showOnlyWorkItems, effectiveParentMap]);
 
-  const hiddenSubordinateCount = items.filter(
-    item => item.rowRole === 'subordinate' && item.parentItemId && !expandedMainIds.has(item.parentItemId)
-  ).length;
+  const hiddenSubordinateCount = items.filter(item => {
+    if (item.rowRole !== 'subordinate') return false;
+    const parent = effectiveParentMap.get(item.id);
+    return parent ? !expandedMainIds.has(parent) : false;
+  }).length;
 
   const toggleGroupFilter = (group: string) => {
     setFilterGroups(prev => {
