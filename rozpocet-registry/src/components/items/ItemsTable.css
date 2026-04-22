@@ -49,6 +49,30 @@
   background: rgba(0, 0, 0, 0.12);
 }
 
+/* Subordinate row — visual distinction from main rows.
+   - Faint inset background so subs read as "tucked under" the main.
+   - Italic Popis so the row text itself signals derivation.
+   - Slightly muted primary text (matches Part A opacity-70 intent but
+     keeps the borders at full opacity so the column grid still reads).
+   - 2px accent border on the left edge hints at the parent relationship. */
+.row-subordinate {
+  background: var(--stone-50);
+}
+
+.row-subordinate td {
+  color: var(--flat-text-label);
+  font-style: italic;
+}
+
+.row-subordinate td:first-child {
+  box-shadow: inset 2px 0 0 var(--flat-border);
+}
+
+/* Keep hover readable on subordinate rows. */
+.table tbody tr.row-subordinate:hover {
+  background: var(--flat-hover);
+}
+
 /* Resizable columns */
 .resizable-th {
   position: relative;
