@@ -84,13 +84,15 @@
     box-shadow: 0 0 0 3px var(--accent-orange-glow);
   }
 
-  /* Card base (Level 2: Clean Panels) */
+  /* Card base — Part A flat wrapper (flat-design.css:422-427)
+     Neomorph 4-layer --shadow-panel replaced by a single 1px border +
+     8px radius. Audit 2.2 observations: no box-shadow on rows, only
+     the wrapper's border+radius carries structure. */
   .card {
     background: var(--panel-clean);
-    border: 1px solid var(--edge-light);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--flat-border);
+    border-radius: var(--radius-md);
     padding: var(--space-lg);
-    box-shadow: var(--shadow-panel);
   }
 
   /* Table base — Part A flat surface (flat-design.css:422-427) */
