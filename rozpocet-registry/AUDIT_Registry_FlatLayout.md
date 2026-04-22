@@ -820,6 +820,47 @@ Store, типы, undoable actions, backend sync — без изменений.
 
 ---
 
+#### 4.3.2 Классификация row-level действий — consolidated view
+
+Сводка § 4.3.3 / § 4.3.4 / § 4.3.5 / § 4.3.6 в единой таблице. Каждая строка — один из 17 row-level элементов § 1.2 Inventory. Категории: **icon** (interactive icon-button, лимит ≤ 3), **click-cell** (data cell с edit-affordance / click-trigger, паттерн § 2.5.2), **display** (non-interactive info). Обоснования цитируют уже зафиксированные решения подсекций — новых аргументов не вводится.
+
+| # | Элемент Inventory § 1.2 | file:line | Категория | Новое размещение | Обоснование (цитата) |
+|---|---|---|---|---|---|
+| 1 | `select` checkbox | `ItemsTable.tsx:435-455` | icon (form-control) | **row-level inline** + bulk bar (trigger → consequence) | § 4.3.6: "checkbox это form-control, не action-icon, не входит в лимит 3, активирует BulkActionsBar при `selectedIds.size > 0`" |
+| 2 | `MoveUp` 11 px | `RowActionsCell.tsx:164-170` | icon | detail panel | § 4.3.5: "Per-item reorder — действие редкое (§ 3.2.3 зафиксировал: порядок определяется источником Excel/XML)" |
+| 3 | `MoveDown` 11 px | `RowActionsCell.tsx:171-177` | icon | detail panel | § 4.3.5: "Per-item reorder — действие редкое" (та же мотивировка что #2) |
+| 4 | role-trigger (ClipboardList / ↳ / FileText / CircleHelp) | `RowActionsCell.tsx:180-205` + `:36-41` | icon | detail panel + bulk bar (bulk role change) | § 4.3.5: "Per-item role — редкое, `rowRole` присваивается парсером при импорте" + § 4.3.6: "bulk-fix misclassified parser результатов" |
+| 5 | `Link2` 12 px (subordinate only) | `RowActionsCell.tsx:252-405` | icon (conditional) | detail panel | § 4.3.5: "Conditional (только `rowRole === 'subordinate'`). Привязка к родителю — редкое конфигурационное действие, ставится один раз при классификации" |
+| 6 | `TOVButton` / BarChart3 | `ItemsTable.tsx:473-493` + `TOVButton.tsx` | icon | **row-level inline** | § 4.3.3: "первичное действие анализа — согласно Domain rules просмотр rozpis zdrojů — ключевая пользовательская задача киоска" |
+| 7 | `HardHat` 14 px (monolit) | `ItemsTable.tsx:497-552` | icon + display (dual-role) | **row-level inline** (status badge) + detail panel (action) | § 4.3.5: "HardHat как status-индикатор остаётся inline как badge с tooltip — чистый паттерн AlertCircle из § 3.5.2; action (открыть в Monolit) переезжает в detail panel" |
+| 8 | Poř. chevron + `+N` badge + line number | `ItemsTable.tsx:555-597` + `:201-211` | icon (chevron) + display (+N badge + number) | **row-level inline** | § 4.3.3: "структурный scan: пользователь должен видеть, где есть подчинённые позиции, без открытия detail panel" |
+| 9 | `kod` cell | `ItemsTable.tsx:600-611` | click-cell | **row-level inline** (data + click-trigger для detail) | § 4.3.5: "click-target — `kod` cell. Эта ячейка — естественное тело строки: содержит идентифицирующую информацию" |
+| 10 | `popis` cell | `ItemsTable.tsx:614-625` | click-cell | **row-level inline** (data + click-trigger для detail) | § 4.3.5: "click-target — `popis` cell. Эта ячейка — естественное тело строки" (та же мотивировка что #9) |
+| 11 | `mj` cell | `ItemsTable.tsx:628-637` | display | **row-level inline** | § 4.3.6 balance: "inline data cell" (read-only) |
+| 12 | `mnozstvi` cell | `ItemsTable.tsx:640-655` | display | **row-level inline** | § 4.3.6 balance: "inline data cell" (read-only, tabular-nums) |
+| 13 | `EditablePriceCell` (cenaJednotkova) | `ItemsTable.tsx:30-76` + `:658-679` | click-cell | **row-level inline** (уже паттерн § 2.5.2) | § 4.3.6 balance: "паттерн § 2.5.2 уже применён" — не мигрирует, cell-edit сохраняется |
+| 14 | `cenaCelkem` cell | `ItemsTable.tsx:682-712` + `sectionTotals :225-240` | display | **row-level inline** | § 4.3.6 balance: "inline data (+ section-total когда row = section)" (read-only) |
+| 15 | `SkupinaAutocomplete` cell | `ItemsTable.tsx:820-863` + `SkupinaAutocomplete.tsx` | click-cell | **row-level inline** (уже паттерн § 2.5.2) | § 4.3.3: "SkupinaAutocomplete — остаётся как cell-click-to-edit в data-ячейках — уже реализованы как click-cell, не мигрируют" |
+| 16 | `Sparkles` (applyToSimilar) | `ItemsTable.tsx:865-874` + handler `:301-358` | icon | toolbar skupiny | § 4.3.4: "skupina-level batch operation: семантика присвоить THIS skupina-значение другим живёт на уровне самой skupiny, не отдельной строки" |
+| 17 | `Globe` (applyToAllSheets) | `ItemsTable.tsx:875-882` + handler `:361-383` | icon | toolbar skupiny | § 4.3.4: "та же семантика batch-operation skupina-уровня; сейчас дублируется на каждой row с одинаковой skupinой" |
+
+**Финальный баланс (совпадает с § 4.3.6):**
+
+| Слой | Количество |
+|---|---|
+| Row-level inline — **icons** (лимит ≤ 3) | **3** (#1 checkbox, #6 BarChart3, #8 chevron) |
+| Row-level inline — **click-cells** (без лимита) | **4** (#9 kod, #10 popis, #13 EditablePriceCell, #15 SkupinaAutocomplete) |
+| Row-level inline — **display** (без лимита) | **4** (#7 HardHat status, #11 mj, #12 mnozstvi, #14 cenaCelkem) |
+| Toolbar skupiny (§ 4.3.4) | **2** (#16, #17) |
+| Bulk bar (§ 4.3.6) | **2** (#1 trigger, #4 bulk role change) |
+| Detail panel (§ 4.3.5) | **5** (#2, #3, #4 primary, #5, #7 action-half) |
+| **Сумма уникальных элементов** | **17** |
+| **Сумма размещений с учётом dual-role** | **20** (разница 3 = dual-role #1, #4, #7) |
+
+**Проверка согласованности с § 4.3.3 / § 4.3.5 / § 4.3.6:** все 17 элементов имеют primary placement ровно в одном слое; dual-role у #1 (inline trigger + bulk consequence), #4 (detail primary + bulk complement), #7 (inline status + detail action) — каждое осознанное решение из § 3.5.3 (путь A + путь B для status+action совмещений) или mechanic-based separation. 3 interactive icons в row укладываются в лимит § 2.4.4. Нет дублирования и нет потерянных элементов.
+
+---
+
 #### 4.3.3 Что остаётся в строке
 
 По принципу из § 4.3.1 row-level фильтруется до элементов, которые нужны при одном быстром визуальном сканировании списка. Лимит из § 2.4.4 — не более 3 интерактивных иконок (Part A INFO row: chevron + Zap + Trash2).
