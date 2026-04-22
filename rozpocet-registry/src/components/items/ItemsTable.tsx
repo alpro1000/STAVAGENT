@@ -216,6 +216,9 @@ export function ItemsTable({
   const [activeSkupina, setActiveSkupina] = useState<string | null>(null);
 
   // When the column filter narrows to exactly one skupina, lock the toolbar to it.
+  // When a multi-select filter is active and the current activeSkupina isn't part
+  // of it, clear activeSkupina so the toolbar never targets a skupina whose items
+  // are hidden from the user. (Empty filter = show-all, activeSkupina is free.)
   const isFilterLocked = filterGroups.size === 1;
   useEffect(() => {
     if (isFilterLocked) {
@@ -223,6 +226,8 @@ export function ItemsTable({
       if (single && single !== activeSkupina) {
         setActiveSkupina(single);
       }
+    } else if (activeSkupina && filterGroups.size > 0 && !filterGroups.has(activeSkupina)) {
+      setActiveSkupina(null);
     }
   }, [isFilterLocked, filterGroups, activeSkupina]);
 
