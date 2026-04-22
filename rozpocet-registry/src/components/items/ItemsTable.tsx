@@ -3,7 +3,7 @@
  * Tabulka položek s podporou třídění, výběru a filtrování podle skupiny
  */
 
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -21,6 +21,7 @@ import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
+import { SkupinaFilterDropdown } from './SkupinaFilterDropdown';
 import { SkupinaToolbar } from '../groups/SkupinaToolbar';
 import { TOVButton, TOVModal } from '../tov';
 import { useUndoStore, MAX_UNDO } from '../../stores/undoStore';
@@ -91,9 +92,6 @@ interface ItemsTableProps {
 
 const columnHelper = createColumnHelper<ParsedItem>();
 
-/** Label for items with no skupina assigned */
-const NO_GROUP_LABEL = '(Bez skupiny)';
-
 export function ItemsTable({
   items,
   projectId,
@@ -139,22 +137,8 @@ export function ItemsTable({
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
 
-  // Excel-style filter state
+  // Excel-style filter state (dropdown UI lives in <SkupinaFilterDropdown>).
   const [filterGroups, setFilterGroups] = useState<Set<string>>(new Set()); // empty = show all
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const filterDropdownRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    if (!showFilterDropdown) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (filterDropdownRef.current && !filterDropdownRef.current.contains(e.target as Node)) {
-        setShowFilterDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showFilterDropdown]);
 
   // Модальное окно для уведомлений
   const [alertModal, setAlertModal] = useState<{
@@ -211,31 +195,15 @@ export function ItemsTable({
     });
   };
 
-  // Active skupina context for SkupinaToolbar (PR 2 — AUDIT §4.3.4).
-  // Lives at table level so filter-lock, picker, and row-level state stay in sync.
-  const [activeSkupina, setActiveSkupina] = useState<string | null>(null);
-
-  // When the column filter narrows to exactly one skupina, lock the toolbar to it.
-  // When a multi-select filter is active and the current activeSkupina isn't part
-  // of it, clear activeSkupina so the toolbar never targets a skupina whose items
-  // are hidden from the user. (Empty filter = show-all, activeSkupina is free.)
-  const isFilterLocked = filterGroups.size === 1;
-  useEffect(() => {
-    if (isFilterLocked) {
-      const [single] = Array.from(filterGroups);
-      if (single && single !== activeSkupina) {
-        setActiveSkupina(single);
-      }
-    } else if (activeSkupina && filterGroups.size > 0 && !filterGroups.has(activeSkupina)) {
-      setActiveSkupina(null);
-    }
-  }, [isFilterLocked, filterGroups, activeSkupina]);
-
-  // Reset active skupina when the sheet changes so we don't point at a group
-  // that doesn't exist in the newly-loaded sheet.
-  useEffect(() => {
-    setActiveSkupina(null);
-  }, [sheetId]);
+  // Active skupina for SkupinaToolbar (PR 2 — AUDIT §4.3.4).
+  // Derived purely from the column-Skupina filter: when it pins exactly one
+  // group, that group is the toolbar's target. Otherwise the toolbar hides.
+  // No separate picker state — the existing filter UI is already the picker.
+  const activeSkupina: string | null = useMemo(() => {
+    if (filterGroups.size !== 1) return null;
+    const [single] = Array.from(filterGroups);
+    return single || null;
+  }, [filterGroups]);
 
   // Collapse every expanded main row whose skupina matches the target.
   const collapseAllInSkupina = (skupina: string) => {
@@ -255,6 +223,27 @@ export function ItemsTable({
         }
       });
       return changed ? next : prev;
+    });
+  };
+
+  // After rename/delete via toolbar, sync the column-filter set so that the
+  // filter keeps pointing at the same data (or clears, for delete).
+  const handleSkupinaRenamed = (oldName: string, newName: string) => {
+    setFilterGroups(prev => {
+      if (!prev.has(oldName)) return prev;
+      const next = new Set(prev);
+      next.delete(oldName);
+      next.add(newName);
+      return next;
+    });
+  };
+
+  const handleSkupinaDeleted = (name: string) => {
+    setFilterGroups(prev => {
+      if (!prev.has(name)) return prev;
+      const next = new Set(prev);
+      next.delete(name);
+      return next;
     });
   };
 
@@ -625,9 +614,18 @@ export function ItemsTable({
             );
           }
 
-          // Subordinate row — indent marker
+          // Subordinate row — indent marker + its own ordinal so every
+          // row in the Poř. column carries a visible number (the parent
+          // main row is identified by the chevron + subCount badge).
           if (item.rowRole === 'subordinate') {
-            return <span className="pl-2 text-[10px] text-text-muted select-none">↳</span>;
+            return (
+              <span className="flex items-center gap-0.5 pl-2 font-mono tabular-nums select-none">
+                <span className="text-[10px] text-text-muted">↳</span>
+                {value ? (
+                  <span className="text-[11px] text-text-muted">{value}</span>
+                ) : null}
+              </span>
+            );
           }
 
           // Main row without subordinates, section, or unknown
@@ -765,95 +763,15 @@ export function ItemsTable({
           <div className="flex items-center gap-2">
             <span>Skupina</span>
             {groupStats.length > 0 && (
-              <div className="relative" ref={filterDropdownRef}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowFilterDropdown(!showFilterDropdown);
-                  }}
-                  className={`px-2 py-1 text-xs rounded flex items-center gap-1 transition-colors ${
-                    isFilterActive
-                      ? 'bg-accent-primary text-white'
-                      : 'bg-bg-secondary hover:bg-bg-tertiary'
-                  }`}
-                  title="Filtr podle skupiny"
-                >
-                  <Filter size={13} className="w-[13px] h-[13px]" />
-                  {isFilterActive && (
-                    <span>{filterGroups.size}/{groupStats.length}</span>
-                  )}
-                </button>
-
-                {/* Excel-style filter dropdown */}
-                {showFilterDropdown && (
-                  <div
-                    className="absolute right-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[240px] max-h-[340px] overflow-y-auto"
-                    style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)' }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {/* Select all / Clear */}
-                    <div className="border-b border-border-color px-3 py-2 flex items-center gap-2">
-                      <button
-                        onClick={selectAllGroups}
-                        className="text-xs text-accent-primary hover:underline"
-                      >
-                        Zobrazit vše
-                      </button>
-                      <span className="text-text-muted text-xs">
-                        ({items.length} položek)
-                      </span>
-                    </div>
-
-                    {/* Group checkboxes */}
-                    <div className="py-1">
-                      {groupStats.map(([group, count]) => {
-                        const label = group || NO_GROUP_LABEL;
-                        const isChecked = filterGroups.size === 0 || filterGroups.has(group);
-                        return (
-                          <div
-                            key={group}
-                            className="flex items-center gap-2 px-3 py-1.5 hover:bg-bg-secondary cursor-pointer text-sm"
-                            onClick={() => toggleGroupFilter(group)}
-                          >
-                            <div className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
-                              isChecked
-                                ? 'bg-accent-primary border-accent-primary'
-                                : 'border-border-color'
-                            }`}>
-                              {isChecked && <Check size={11} className="text-white w-[11px] h-[11px]" />}
-                            </div>
-                            <span className={`flex-1 truncate ${group ? 'font-medium text-accent-primary' : 'text-text-muted italic'}`}>
-                              {label}
-                            </span>
-                            <span className="text-text-muted text-xs flex-shrink-0">
-                              {count}
-                            </span>
-                            {group && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  selectOnlyGroup(group);
-                                }}
-                                className="text-[10px] text-text-muted hover:text-accent-primary px-1"
-                                title={`Zobrazit pouze ${label}`}
-                              >
-                                pouze
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Footer with count */}
-                    {isFilterActive && (
-                      <div className="border-t border-border-color px-3 py-2 text-xs text-text-muted">
-                        Zobrazeno {filteredItems.length} z {items.length} položek
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <SkupinaFilterDropdown
+                groupStats={groupStats}
+                filterGroups={filterGroups}
+                toggleGroupFilter={toggleGroupFilter}
+                selectAllGroups={selectAllGroups}
+                selectOnlyGroup={selectOnlyGroup}
+                itemsCount={items.length}
+                filteredCount={filteredItems.length}
+              />
             )}
           </div>
         ),
@@ -864,48 +782,73 @@ export function ItemsTable({
             return null;
           }
           const currentSkupina = info.getValue();
+          const isApplying = applyingToSimilar === item.id;
 
           return (
-            <SkupinaAutocomplete
-              value={currentSkupina}
-              memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
-              onChange={async (value, shouldLearn = false) => {
-                if (value === null) {
-                  setItemSkupinaUndoable(item.id, null);
-                } else {
-                  setItemSkupinaUndoable(item.id, value);
+            <div className="flex items-center gap-1">
+              <div className="flex-1">
+                <SkupinaAutocomplete
+                  value={currentSkupina}
+                  memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
+                  onChange={async (value, shouldLearn = false) => {
+                    if (value === null) {
+                      setItemSkupinaUndoable(item.id, null);
+                    } else {
+                      setItemSkupinaUndoable(item.id, value);
 
-                  // Always record to browser localStorage memory (persistent, works offline)
-                  if (item.kod) {
-                    recordSkupinaMemory(item.kod, value);
-                  }
+                      // Always record to browser localStorage memory (persistent, works offline)
+                      if (item.kod) {
+                        recordSkupinaMemory(item.kod, value);
+                      }
 
-                  // Server-side learning (best-effort, AI mode only)
-                  if (shouldLearn) {
-                    try {
-                      await fetch('/api/ai-agent', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          operation: 'record-correction',
-                          projectId,
-                          sheetId,
-                          itemId: item.id,
-                          newSkupina: value,
-                          allItems: items,
-                        }),
-                      });
-                    } catch (error) {
-                      // Don't block the UI - browser memory was already recorded
+                      // Server-side learning (best-effort, AI mode only)
+                      if (shouldLearn) {
+                        try {
+                          await fetch('/api/ai-agent', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              operation: 'record-correction',
+                              projectId,
+                              sheetId,
+                              itemId: item.id,
+                              newSkupina: value,
+                              allItems: items,
+                            }),
+                          });
+                        } catch (error) {
+                          // Don't block the UI - browser memory was already recorded
+                        }
+                      }
                     }
-                  }
-                }
-              }}
-              allGroups={allGroups}
-              onAddGroup={addCustomGroup}
-              itemId={item.id}
-              enableLearning={true}
-            />
+                  }}
+                  allGroups={allGroups}
+                  onAddGroup={addCustomGroup}
+                  itemId={item.id}
+                  enableLearning={true}
+                />
+              </div>
+              {currentSkupina && item.kod && (
+                <>
+                  <button
+                    onClick={() => applyToSimilar(item)}
+                    disabled={isApplying}
+                    title="Aplikovat na podobné položky v celém projektu (všechny listy)"
+                    className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
+                  >
+                    <Sparkles size={13} className="text-accent-primary w-[13px] h-[13px]" />
+                  </button>
+                  <button
+                    onClick={() => applyToAllSheets(item)}
+                    disabled={applyingGlobal === item.id}
+                    title="Aplikovat na VŠECHNY listy se stejným kódem"
+                    className="p-1 rounded hover:bg-blue-500/20 transition-colors disabled:opacity-50"
+                  >
+                    <Globe size={13} className="text-blue-500 w-[13px] h-[13px]" />
+                  </button>
+                </>
+              )}
+            </div>
           );
         },
         size: 200,
@@ -914,7 +857,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, filterGroups, toggleGroupFilter, selectAllGroups, selectOnlyGroup, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
   );
 
   const table = useReactTable({
@@ -974,6 +917,40 @@ export function ItemsTable({
     overscan: 20,
   });
 
+  // Fill the remaining viewport below everything above the scroll container
+  // (app header, project tabs, AI panel, GroupManager, filter controls, undo
+  // toolbar, skupina toolbar). Replaces the static calc(100vh - 260px) which
+  // assumed a fixed pre-card stack; AI panel and GroupManager expand / collapse
+  // and changed the real offset by 200–500 px. ResizeObserver on document.body
+  // re-measures whenever anything in the layout changes size.
+  const [scrollMaxHeight, setScrollMaxHeight] = useState<string>('calc(100vh - 260px)');
+
+  useLayoutEffect(() => {
+    const el = tableContainerRef.current;
+    if (!el) return;
+
+    const updateHeight = () => {
+      // Math.max(0, top) keeps the computed height stable when the user scrolls
+      // the page down — the container doesn't "grow" past the viewport.
+      const top = Math.max(0, el.getBoundingClientRect().top);
+      // 80 px below = card footer ("Zobrazeno X z Y") + page padding.
+      const available = window.innerHeight - top - 80;
+      const h = Math.max(400, available); // 400 px guardrail for short screens.
+      setScrollMaxHeight(`${h}px`);
+    };
+
+    updateHeight();
+
+    const ro = new ResizeObserver(updateHeight);
+    ro.observe(document.body);
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   if (items.length === 0) {
     return (
       <div className="card text-center py-12">
@@ -1024,24 +1001,22 @@ export function ItemsTable({
         </div>
 
         {/* Skupina toolbar — PR 2 of §5.3.1 (AUDIT §4.3.4).
-            Targets the active skupina; filter-locked when exactly one
-            group is selected in the column filter. */}
+            Management surface (rename / delete / collapse-all / info) for
+            the active skupina. Renders only when the column-Skupina filter
+            pins exactly one group; otherwise activeSkupina=null and the
+            toolbar returns null. Sparkles + Globe stay row-level. */}
         <SkupinaToolbar
           items={items}
           activeSkupina={activeSkupina}
-          onActiveSkupinaChange={setActiveSkupina}
-          isFilterLocked={isFilterLocked}
-          onApplyToSimilar={applyToSimilar}
-          onApplyToAllSheets={applyToAllSheets}
           onCollapseAllInSkupina={collapseAllInSkupina}
-          applyingSimilar={applyingToSimilar !== null}
-          applyingGlobal={applyingGlobal !== null}
+          onSkupinaRenamed={handleSkupinaRenamed}
+          onSkupinaDeleted={handleSkupinaDeleted}
         />
 
         <div
           ref={tableContainerRef}
           className="overflow-auto scrollbar-thin"
-          style={{ maxHeight: 'calc(100vh - 260px)' }}
+          style={{ maxHeight: scrollMaxHeight }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
           <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--flat-header-bg)' }}>
