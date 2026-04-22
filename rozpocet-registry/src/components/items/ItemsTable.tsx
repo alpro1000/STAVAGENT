@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -864,48 +864,73 @@ export function ItemsTable({
             return null;
           }
           const currentSkupina = info.getValue();
+          const isApplying = applyingToSimilar === item.id;
 
           return (
-            <SkupinaAutocomplete
-              value={currentSkupina}
-              memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
-              onChange={async (value, shouldLearn = false) => {
-                if (value === null) {
-                  setItemSkupinaUndoable(item.id, null);
-                } else {
-                  setItemSkupinaUndoable(item.id, value);
+            <div className="flex items-center gap-1">
+              <div className="flex-1">
+                <SkupinaAutocomplete
+                  value={currentSkupina}
+                  memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
+                  onChange={async (value, shouldLearn = false) => {
+                    if (value === null) {
+                      setItemSkupinaUndoable(item.id, null);
+                    } else {
+                      setItemSkupinaUndoable(item.id, value);
 
-                  // Always record to browser localStorage memory (persistent, works offline)
-                  if (item.kod) {
-                    recordSkupinaMemory(item.kod, value);
-                  }
+                      // Always record to browser localStorage memory (persistent, works offline)
+                      if (item.kod) {
+                        recordSkupinaMemory(item.kod, value);
+                      }
 
-                  // Server-side learning (best-effort, AI mode only)
-                  if (shouldLearn) {
-                    try {
-                      await fetch('/api/ai-agent', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          operation: 'record-correction',
-                          projectId,
-                          sheetId,
-                          itemId: item.id,
-                          newSkupina: value,
-                          allItems: items,
-                        }),
-                      });
-                    } catch (error) {
-                      // Don't block the UI - browser memory was already recorded
+                      // Server-side learning (best-effort, AI mode only)
+                      if (shouldLearn) {
+                        try {
+                          await fetch('/api/ai-agent', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              operation: 'record-correction',
+                              projectId,
+                              sheetId,
+                              itemId: item.id,
+                              newSkupina: value,
+                              allItems: items,
+                            }),
+                          });
+                        } catch (error) {
+                          // Don't block the UI - browser memory was already recorded
+                        }
+                      }
                     }
-                  }
-                }
-              }}
-              allGroups={allGroups}
-              onAddGroup={addCustomGroup}
-              itemId={item.id}
-              enableLearning={true}
-            />
+                  }}
+                  allGroups={allGroups}
+                  onAddGroup={addCustomGroup}
+                  itemId={item.id}
+                  enableLearning={true}
+                />
+              </div>
+              {currentSkupina && item.kod && (
+                <>
+                  <button
+                    onClick={() => applyToSimilar(item)}
+                    disabled={isApplying}
+                    title="Aplikovat na podobné položky v celém projektu (všechny listy)"
+                    className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
+                  >
+                    <Sparkles size={13} className="text-accent-primary w-[13px] h-[13px]" />
+                  </button>
+                  <button
+                    onClick={() => applyToAllSheets(item)}
+                    disabled={applyingGlobal === item.id}
+                    title="Aplikovat na VŠECHNY listy se stejným kódem"
+                    className="p-1 rounded hover:bg-blue-500/20 transition-colors disabled:opacity-50"
+                  >
+                    <Globe size={13} className="text-blue-500 w-[13px] h-[13px]" />
+                  </button>
+                </>
+              )}
+            </div>
           );
         },
         size: 200,
@@ -914,7 +939,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
   );
 
   const table = useReactTable({
