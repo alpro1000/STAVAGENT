@@ -88,3 +88,68 @@ Scope нового таска:
 4. **П. 1** (document navigation) — UX improvement, важно, но не блокирует бизнес-логику.
 
 Каждый пункт — отдельная сессия с собственным audit / design / implementation циклом, чтобы не раздувать scope одной ветки.
+
+---
+
+## 5. `text-text-muted` — undefined Tailwind class (~50 uses)
+
+Обнаружено при диагностике cross-browser chevron'а. Класс `text-text-muted` используется в ~50 местах (`App.tsx`, `ItemsTable.tsx`, и другие), но **не определён** — нет ни записи в `tailwind.config.js`, ни hand-written `.text-text-muted` rule в `index.css` / `tokens.css`. Tailwind JIT не генерирует CSS для этого класса; он молчаливо игнорируется во всех браузерах. Color падает на `inherit` от родителя (обычно `.table td { color: var(--flat-text) }` = stone-900, работает), но класс бесполезен.
+
+Scope cleanup-таска:
+
+- **Grep по `text-text-muted`** → полный список 50+ мест.
+- **Решение** (один из вариантов):
+  - (a) Заменить на работающий эквивалент `text-[var(--text-muted)]` или `text-stone-500` (если введён stone-палитра в Tailwind config). Семантически точнее — использует задуманный "muted" оттенок.
+  - (b) Удалить класс полностью, положиться на `color` инheritance от родителя. Быстрее, меньше шума в JSX.
+  - (c) Добавить `.text-text-muted { color: var(--text-muted); }` в `@layer utilities`. Делает существующий код работающим без правок JSX.
+- **Рекомендация — вариант (c)** если хочется сохранить "muted" оттенок в `Poř.` столбце, или **(a)** если начинаем миграцию на именованные stone-тон'ы. Вариант (b) теряет семантику.
+
+**Не блокирует**: ничего — JSX работает, просто игнорируется класс. Но накапливает tech-debt и путает читающего код (выглядит как именованная Tailwind utility, которой нет).
+
+---
+
+## 6. PR 990 — cross-browser icons — Safari/Firefox validation pending
+
+`fix/registry-icons-cross-browser` (PR #990) применил `w-[Npx] h-[Npx]` пары ко всем 19 lucide иконкам в `ItemsTable.tsx` + `RowActionsCell.tsx`. Root cause зафиксирован: lucide emit'ит SVG width/height как HTML-атрибуты, Safari/Firefox collapse flex-basis до 0 в virtualized row'е.
+
+**Ждёт подтверждения на Vercel preview**:
+
+- Chevron виден в main-row с `subCount > 0` в Safari + Firefox.
+- Row ordinal number (`Poř.`) виден рядом с chevron.
+- Role indicators (ClipboardList / FileText / CircleHelp) видны в actions-колонке.
+
+**Conditional follow-ups (применить ТОЛЬКО если preview покажет что проблема не решена)**:
+
+- **Step 2 — ordinal number clipping.** Если после фикса chevron'а номер всё ещё не виден — проблема в `Poř.` колонке: `size: 50` + overflow при переполнении контента `<button>` (chevron 11 + gap 2 + "001" ~22 + gap 2 + "+3" ~16 = 53px ≥ 50px). Решение: увеличить `size: 50 → 60` в `ItemsTable.tsx:592`, или перенести counter `+N` в отдельную колонку, или убрать counter на mobile.
+- **Step 3 — `↳` character (`U+21B3`).** Если subordinate индикатор не виден — проверить font-fallback; не все sans-serif font'ы содержат глиф U+21B3. Решение: обернуть в `<span style={{ fontFamily: '"Apple Symbols","Segoe UI Symbol","Noto Sans Symbols","Symbola",sans-serif' }}>↳</span>` в `RowActionsCell.tsx:38`.
+
+**Если preview работает — PR мержится, секция удаляется отсюда.**
+
+---
+
+## 7. Branch protection на main — пуши bypass'ятся
+
+Последние 3 commit'а (accent unify, accentDark unify) пушились напрямую в `origin/main` и получали предупреждение от remote:
+
+```
+remote: Bypassed rule violations for refs/heads/main:
+remote:   - Changes must be made through a pull request.
+```
+
+Это означает: правило "require PR" на main существует, но мой access bypass'ит его. Если хочется enforce'ить PR-flow для всех, включая меня — настроить rule в GitHub repo settings: **Settings → Branches → main → Restrict who can bypass required pull requests → снять все галочки**. После этого прямые пуши будут отклоняться; останется только PR → review → merge путь.
+
+**Не cleanup-таск, а process decision**: решить, нужен ли такой enforce или текущий режим (user explicitly authorizes прямой push через чат) удобнее.
+
+---
+
+## Приоритизация — обновлённая после сессии 2026-04-22
+
+1. **П. 6** (PR 990 validation) — блокирует Registry production UX для не-Chrome пользователей.
+2. **П. 3** (классификатор) — блокирующий для п. 2 и п. 4.
+3. **П. 4** (фильтр импорта в Monolit) — дешёвая победа после п. 3.
+4. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
+5. **П. 2** (каталожная цена) — новая feature.
+6. **П. 1** (document navigation) — UX improvement.
+7. **П. 7** (branch protection) — process decision, не код.
+
+PR 2–5 Variant B rollout (toolbar skupiny, detail panel, extend BulkActionsBar, click-cells) остаются за рамками этого next-session — их отдельный план в `AUDIT_Registry_FlatLayout.md` §5.3.1.

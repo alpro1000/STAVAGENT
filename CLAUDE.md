@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
-**Version:** 4.24.0
-**Last Updated:** 2026-04-20
+**Version:** 4.24.1
+**Last Updated:** 2026-04-22
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -186,6 +186,8 @@ BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemi
 - **UI:** Portal-rendered dropdowns (RowActionsCell, SkupinaAutocomplete) escape `overflow:auto`, resizable GroupManager (min 480px, localStorage persist)
 - **Backend sync (v4.17):** `backendSync.ts` pushes IndexedDB projects to `rozpocet-registry-backend` PostgreSQL via UPSERT POST (no GET-first 404 noise). Debounce 2s + beforeunload keepalive flush for project header. `BackendSyncBadge.tsx` renders idle/pending/syncing/synced/offline/error pill next to "Projekty" title via module-level pub/sub (subscribeBackendSync). `portalAutoSync.ts` parses structured Portal error bodies (409/400/500 with error_type+constraint+column).
 - **Import dedupe (v4.17):** `ImportModal.tsx` resolveDuplicate() checks existing projects by projectName (case-insensitive). Dialog "AKTUALIZOVAT existující / VYTVOŘIT NOVÝ" before addProject(). Prevents N× duplicate imports of same Excel.
+- **Flat style tokens (v4.24.1):** Part A layer added to `tokens.css` alongside Digital Concrete. New `--stone-50..900`, `--orange-{100,200,500,600}`, `--flat-{bg,surface,header-bg,border,text,text-label,accent,hover,selected}`, `--flat-row-h 32px / --flat-header-h 36px`, `.flat-el-info__sep` utility. `--accent-orange` `#FF9F1C → #F97316` across tokens + AIPanel + PriceRequestPanel + RowActionsCell + ItemsTable.css resize handle. `--font-body` Inter → DM Sans. `.table th` 11px uppercase 0.05em letter-spacing stone-600, `.table td` 13px tabular-nums stone-900, padding `0 8px` (first cell 16px), height 32/36. Alternating rows removed, hover `#F5F3F0` warm, `.card` dropped 4-layer `--shadow-panel`. Icon scale **11 px** chevrons + 13 actions + 14 table-header chevrons. 24px `.flat-el-info__sep` between MoveUp/Down → role → Link2 groups in `RowActionsCell`. Ref `rozpocet-registry/AUDIT_Registry_FlatLayout.md` §2 + §5.3.1. PR 1/5 of Variant B rollout; PRs 2–5 (toolbar skupiny, detail panel, extended BulkActionsBar, click-cells) queued.
+- **Lucide cross-browser fix (v4.24.1):** Every `<IconFromLucide size={N}>` in `ItemsTable.tsx` + `RowActionsCell.tsx` (19 usages) must pair the `size` prop with Tailwind `w-[Npx] h-[Npx]`. lucide-react emits `<svg width="11" height="11">` as HTML attributes, not CSS — Chrome treats as CSS size, Safari/Firefox treat as hints, and in a virtualized flex `<tr>` the SVG's flex-basis can collapse to 0 (chevron + row ordinal + role indicator disappear). Pre-existing bug, surfaced more after flat-style PR reduced chevron 12 → 11. Expansion logic (`expandedMainIds`, `toggleExpanded`) untouched — fix is cosmetic only.
 
 ## Totals
 
