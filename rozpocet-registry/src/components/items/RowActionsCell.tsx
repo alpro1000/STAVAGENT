@@ -34,10 +34,10 @@ const ROLE_LABELS: Record<RowRole, string> = {
 };
 
 const ROLE_ICONS: Record<RowRole, React.ReactNode> = {
-  main: <ClipboardList size={13} className="inline" />,
+  main: <ClipboardList size={13} className="inline w-[13px] h-[13px]" />,
   subordinate: '↳',
-  section: <FileText size={13} className="inline" />,
-  unknown: <CircleHelp size={13} className="inline" />,
+  section: <FileText size={13} className="inline w-[13px] h-[13px]" />,
+  unknown: <CircleHelp size={13} className="inline w-[13px] h-[13px]" />,
 };
 
 // Light theme colors
@@ -166,14 +166,14 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
         title="Přesunout nahoru"
         className="p-0.5 rounded hover:bg-bg-secondary transition-colors text-text-muted"
       >
-        <MoveUp size={11} />
+        <MoveUp size={11} className="w-[11px] h-[11px]" />
       </button>
       <button
         onClick={handleMoveDown}
         title="Přesunout dolů"
         className="p-0.5 rounded hover:bg-bg-secondary transition-colors text-text-muted"
       >
-        <MoveDown size={11} />
+        <MoveDown size={11} className="w-[11px] h-[11px]" />
       </button>
 
       {/* Separator between reorder and role groups (flat-design.css:537-540) */}
@@ -262,7 +262,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
             title="Připojit k hlavní položce"
             className="p-0.5 rounded hover:bg-blue-500/20 transition-colors text-blue-500"
           >
-            <Link2 size={13} />
+            <Link2 size={13} className="w-[13px] h-[13px]" />
           </button>
 
           {showParentMenu && (
@@ -313,7 +313,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     title="Zavřít"
                   >
-                    <X size={24} strokeWidth={2} />
+                    <X size={24} strokeWidth={2} className="w-[24px] h-[24px]" />
                   </button>
                 </div>
 
@@ -402,7 +402,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                   onMouseDown={handleResizeStart}
                   title="Změnit velikost"
                 >
-                  <GripVertical size={14} style={{ color: LIGHT.textMuted }} className="rotate-45" />
+                  <GripVertical size={14} style={{ color: LIGHT.textMuted }} className="rotate-45 w-[14px] h-[14px]" />
                 </div>
               </div>
             </>
