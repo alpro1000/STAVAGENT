@@ -940,7 +940,7 @@ export function ItemsTable({
 
   // Virtualization: scroll container ref and virtualizer
   const tableContainerRef = useRef<HTMLDivElement>(null);
-  const ROW_HEIGHT = 40; // estimated row height in px
+  const ROW_HEIGHT = 32; // Part A data row height (flat-design.css:64 --flat-row-h)
 
   const rows = table.getRowModel().rows;
 

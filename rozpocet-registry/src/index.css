@@ -107,7 +107,8 @@
 
   .table th {
     background: var(--flat-header-bg);
-    padding: var(--space-md);
+    height: var(--flat-header-h);
+    padding: 0 var(--space-sm);
     text-align: left;
     font-size: 11px;
     font-weight: 600;
@@ -119,12 +120,20 @@
   }
 
   .table td {
-    padding: var(--space-md);
+    height: var(--flat-row-h);
+    padding: 0 var(--space-sm);
     font-size: 13px;
     color: var(--flat-text);
     border-bottom: 1px solid var(--flat-border);
     font-family: var(--font-body);
     font-variant-numeric: tabular-nums;
+    vertical-align: middle;
+  }
+
+  /* First cell indent per Part A (flat-design.css:657) */
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: var(--space-md);
   }
 
   .table tbody tr {
