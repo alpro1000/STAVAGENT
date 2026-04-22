@@ -51,7 +51,7 @@ const LIGHT = {
   borderLight: '#E5E7EB',
   text: '#1A1C1E',
   textMuted: '#6B7280',
-  accent: '#FF9F1C',
+  accent: '#F97316',
   accentDark: '#E68A00',
   success: '#10B981',
   error: '#EF4444',
