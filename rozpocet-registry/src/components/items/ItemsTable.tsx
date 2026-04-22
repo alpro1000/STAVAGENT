@@ -543,7 +543,7 @@ export function ItemsTable({
               }}
               style={{ cursor: mp.monolit_url ? 'pointer' : 'default' }}
             >
-              <HardHat size={13} className={iconClass} />
+              <HardHat size={13} className={`${iconClass} w-[13px] h-[13px]`} />
             </button>
           );
         },
@@ -569,8 +569,8 @@ export function ItemsTable({
                 title={isExpanded ? 'Sbalit podřízené řádky' : `Rozbalit ${subCount} podřízených řádků`}
               >
                 {isExpanded
-                  ? <ChevronDown size={11} className="text-text-muted flex-shrink-0" />
-                  : <ChevronRight size={11} className="text-text-muted flex-shrink-0" />}
+                  ? <ChevronDown size={11} className="text-text-muted flex-shrink-0 w-[11px] h-[11px]" />
+                  : <ChevronRight size={11} className="text-text-muted flex-shrink-0 w-[11px] h-[11px]" />}
                 <span className="text-text-muted text-[11px]">{value}</span>
                 <span className="text-text-muted opacity-60 text-[9px]">+{subCount}</span>
               </button>
@@ -730,7 +730,7 @@ export function ItemsTable({
                   }`}
                   title="Filtr podle skupiny"
                 >
-                  <Filter size={13} />
+                  <Filter size={13} className="w-[13px] h-[13px]" />
                   {isFilterActive && (
                     <span>{filterGroups.size}/{groupStats.length}</span>
                   )}
@@ -772,7 +772,7 @@ export function ItemsTable({
                                 ? 'bg-accent-primary border-accent-primary'
                                 : 'border-border-color'
                             }`}>
-                              {isChecked && <Check size={11} className="text-white" />}
+                              {isChecked && <Check size={11} className="text-white w-[11px] h-[11px]" />}
                             </div>
                             <span className={`flex-1 truncate ${group ? 'font-medium text-accent-primary' : 'text-text-muted italic'}`}>
                               {label}
@@ -870,7 +870,7 @@ export function ItemsTable({
                     title="Aplikovat na podobné položky v celém projektu (všechny listy)"
                     className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
                   >
-                    <Sparkles size={13} className="text-accent-primary" />
+                    <Sparkles size={13} className="text-accent-primary w-[13px] h-[13px]" />
                   </button>
                   <button
                     onClick={() => applyToAllSheets(item)}
@@ -878,7 +878,7 @@ export function ItemsTable({
                     title="Aplikovat na VŠECHNY listy se stejným kódem"
                     className="p-1 rounded hover:bg-blue-500/20 transition-colors disabled:opacity-50"
                   >
-                    <Globe size={13} className="text-blue-500" />
+                    <Globe size={13} className="text-blue-500 w-[13px] h-[13px]" />
                   </button>
                 </>
               )}
@@ -974,7 +974,7 @@ export function ItemsTable({
                 : 'Nic k vrácení (Ctrl+Z)'
               }
             >
-              <Undo2 size={16} className="text-text-secondary" />
+              <Undo2 size={16} className="text-text-secondary w-[16px] h-[16px]" />
               <span className="text-xs text-text-muted hidden sm:inline">Zpět</span>
             </button>
             <button
@@ -986,7 +986,7 @@ export function ItemsTable({
                 : 'Nic k opakování (Ctrl+Shift+Z)'
               }
             >
-              <Redo2 size={16} className="text-text-secondary" />
+              <Redo2 size={16} className="text-text-secondary w-[16px] h-[16px]" />
               <span className="text-xs text-text-muted hidden sm:inline">Znovu</span>
             </button>
             {undoStack.length > 0 && (
@@ -1029,9 +1029,9 @@ export function ItemsTable({
                       {header.column.getIsSorted() && (
                         <span className="text-accent-primary">
                           {header.column.getIsSorted() === 'asc' ? (
-                            <ChevronUp size={14} />
+                            <ChevronUp size={14} className="w-[14px] h-[14px]" />
                           ) : (
-                            <ChevronDown size={14} />
+                            <ChevronDown size={14} className="w-[14px] h-[14px]" />
                           )}
                         </span>
                       )}
