@@ -172,6 +172,23 @@
 }
 
 /* ============================================
+   FLAT UTILITY CLASSES — Part A row primitives
+   ============================================ */
+
+/* 1 x 24 px vertical divider between semantic groups of row actions
+   (flat-design.css:537-540 .flat-el-info__sep). Used in the Registry
+   row action cluster so MoveUp/Down, role trigger and Link2 don't
+   read as one undifferentiated strip. */
+.flat-el-info__sep {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  background: var(--flat-border);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* ============================================
    DARK THEME
    Метафора: "Ночная стройка / Индустриальный бункер"
    ============================================ */

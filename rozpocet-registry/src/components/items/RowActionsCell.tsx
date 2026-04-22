@@ -176,6 +176,9 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
         <MoveDown size={11} />
       </button>
 
+      {/* Separator between reorder and role groups (flat-design.css:537-540) */}
+      <span className="flat-el-info__sep mx-1" aria-hidden="true" />
+
       {/* Role dropdown - compact, LIGHT theme, rendered via Portal */}
       <div className="relative">
         <button
@@ -203,6 +206,9 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
           <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>
         </button>
       </div>
+
+      {/* Separator between role and attach group (flat-design.css:537-540) */}
+      <span className="flat-el-info__sep mx-1" aria-hidden="true" />
 
       {/* Portal dropdown for role selection */}
       {showRoleMenu && dropdownPos && createPortal(
