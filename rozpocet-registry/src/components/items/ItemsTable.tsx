@@ -3,7 +3,7 @@
  * Tabulka položek s podporou třídění, výběru a filtrování podle skupiny
  */
 
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -917,6 +917,40 @@ export function ItemsTable({
     overscan: 20,
   });
 
+  // Fill the remaining viewport below everything above the scroll container
+  // (app header, project tabs, AI panel, GroupManager, filter controls, undo
+  // toolbar, skupina toolbar). Replaces the static calc(100vh - 260px) which
+  // assumed a fixed pre-card stack; AI panel and GroupManager expand / collapse
+  // and changed the real offset by 200–500 px. ResizeObserver on document.body
+  // re-measures whenever anything in the layout changes size.
+  const [scrollMaxHeight, setScrollMaxHeight] = useState<string>('calc(100vh - 260px)');
+
+  useLayoutEffect(() => {
+    const el = tableContainerRef.current;
+    if (!el) return;
+
+    const updateHeight = () => {
+      // Math.max(0, top) keeps the computed height stable when the user scrolls
+      // the page down — the container doesn't "grow" past the viewport.
+      const top = Math.max(0, el.getBoundingClientRect().top);
+      // 80 px below = card footer ("Zobrazeno X z Y") + page padding.
+      const available = window.innerHeight - top - 80;
+      const h = Math.max(400, available); // 400 px guardrail for short screens.
+      setScrollMaxHeight(`${h}px`);
+    };
+
+    updateHeight();
+
+    const ro = new ResizeObserver(updateHeight);
+    ro.observe(document.body);
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   if (items.length === 0) {
     return (
       <div className="card text-center py-12">
@@ -982,7 +1016,7 @@ export function ItemsTable({
         <div
           ref={tableContainerRef}
           className="overflow-auto scrollbar-thin"
-          style={{ maxHeight: 'calc(100vh - 260px)' }}
+          style={{ maxHeight: scrollMaxHeight }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
           <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--flat-header-bg)' }}>
