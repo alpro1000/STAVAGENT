@@ -1398,4 +1398,166 @@ Main row (chevron флип в ▾):
 
 ---
 
-*Разделы 4.3.2, 4.4 (Вариант C), 5 (Recommendation) будут добавлены в следующих коммитах.*
+### 4.4 Вариант C — Row-as-primary (row как единая click-surface, все edits в detail)
+
+#### 4.4.1 Описание варианта
+
+Variant C отличается от Variant B ровно одним структурным решением: **на row-level нет click-cells с per-cell edit**. Вся строка целиком — единый click-target, открывающий detail panel; всё редактирование (kod, popis, EditablePriceCell, SkupinaAutocomplete) происходит внутри detail. Row становится read-only data-линией + 3 icons.
+
+Row-level состав в Variant C:
+
+- **Interactive icons** (лимит ≤ 3): те же что в Variant B — #1 checkbox, #6 BarChart3, #8 chevron (§ 4.3.3).
+- **Click-cells**: **отсутствуют**. Все 4 CCL из таблицы § 4.3.2 (#9 kod, #10 popis, #13 EditablePriceCell, #15 SkupinaAutocomplete) конвертируются в **display-cells** — read-only текст / число / value-label без edit-affordance.
+- **Non-interactive display**: 8 ячеек (4 из Variant B — #7 HardHat status, #11 mj, #12 mnozstvi, #14 cenaCelkem — плюс 4 из бывших click-cells: #9, #10, #13, #15).
+
+Toolbar skupiny (§ 4.3.4), bulk bar (§ 4.3.6) — идентичны Variant B. Detail panel (§ 4.3.5) **расширен**: содержит inline edit-поля для всех 4 конвертированных cells поверх уже зафиксированных action'ов.
+
+#### 4.4.2 Что меняется относительно Variant B
+
+Короткий diff по таблице § 4.3.2. Четыре строки мутируют, остальные 13 не меняются:
+
+| # | Элемент | В Variant B | В Variant C |
+|---|---|---|---|
+| 9 | `kod` | click-cell (click → detail) | display-cell (edit в detail через `<input>`) |
+| 10 | `popis` | click-cell (click → detail) | display-cell (edit в detail через `<textarea>`) |
+| 13 | `EditablePriceCell` | click-cell (inline edit on click, паттерн § 2.5.2) | display-cell (edit в detail через `<input type="number">`) |
+| 15 | `SkupinaAutocomplete` | click-cell (inline autocomplete) | display-cell текстовое значение (autocomplete в detail) |
+
+Click-target для открытия detail panel в C расширяется с "клик по `kod` / `popis`" до "клик в любое место строки, кроме зоны checkbox / chevron / BarChart3". Эти три icon-зоны остаются raise-preventing (`stopPropagation` в handler'е).
+
+Detail panel в C — то же расположение и поведение как в § 4.3.5, но с дополнительным блоком "Pole" в верхней части, содержащим 4 edit-контрола. Action-блок (MoveUp/Down, role, parent, HardHat navigate, delete) без изменений относительно B.
+
+**Баланс по слоям (совпадает с § 4.3.2, только inline-раздел перераспределён):**
+
+| Слой | Variant B | Variant C |
+|---|---|---|
+| Row-level inline — icons | 3 | 3 |
+| Row-level inline — click-cells | **4** | **0** |
+| Row-level inline — display | 4 | **8** |
+| Toolbar skupiny | 2 | 2 |
+| Bulk bar | 2 | 2 |
+| Detail panel (actions) | 5 | 5 |
+| Detail panel (edit fields) | — | **4** (новые inline `<input>` / `<textarea>` / `<autocomplete>`) |
+| **Уникальных элементов** | 17 | 17 |
+
+#### 4.4.3 Схема desktop (ASCII — только обычная строка и строка с detail; остальные 2 состояния идентичны § 4.3.7)
+
+**Обычная строка (selection пустой, detail закрыт):**
+
+```
+Layer 3 data row (.flat-work-row 32px, padding 0 8px):
+┌──┬──┬─────┬──────────┬─────────────────────────────────┬───┬──────┬──────────┬──────────┬────────────┬───┬────┐
+│[☐]│[›]│ 001 │ 21341    │ DRENÁŽNÍ VRSTVA Z KAMENIVA      │m³ │ 94,2 │ 3 240,00 │30 587,40 │  beton     │ ⛑ │[▥] │
+│   │  │ +3  │          │                                 │   │      │          │          │            │   │    │
+└──┴──┴─────┴──────────┴─────────────────────────────────┴───┴──────┴──────────┴──────────┴────────────┴───┴────┘
+ ICN ICN  DSP   DSP              DSP                       DSP  DSP     DSP        DSP         DSP       DSP  ICN
+  #1  #8  #8    #9               #10                       #11 #12      #13        #14         #15       #7   #6
+
+ No braces {}, no dotted underline — все ячейки кроме трёх icons рендерятся как plain text.
+ Click anywhere на row body (mimo зоны [☐]/[›]/[▥]) → открывает detail panel.
+ Counts: 3 ICN (лимит § 2.4.4) + 0 CCL + 8 DSP
+```
+
+**Строка с открытым detail panel (expanded):**
+
+```
+Main row (chevron ▾):
+┌──┬──┬─────┬──────────┬─────────────────────────────────┬───┬──────┬──────────┬──────────┬────────────┬───┬────┐
+│[☐]│[▾]│ 001 │ 21341    │ DRENÁŽNÍ VRSTVA Z KAMENIVA      │m³ │ 94,2 │ 3 240,00 │30 587,40 │  beton     │ ⛑ │[▥] │
+│   │  │ +3  │          │                                 │   │      │          │          │            │   │    │
+├──┴──┴─────┴──────────┴─────────────────────────────────┴───┴──────┴──────────┴──────────┴────────────┴───┴────┤
+│                                                                                                           [×] │
+│  Pole                                                                                                         │
+│  Kód:     [ 21341                                     ]       [OTSKP]                                         │
+│  Popis:   [ DRENÁŽNÍ VRSTVA Z KAMENIVA HRUBÉHO DRCENÉHO FRAKCE 16/32 MM                    ]                  │
+│  MJ:       m³    (read-only — import field)                                                                   │
+│  Množ.:    94,2  (read-only — import field)                                                                   │
+│  Cena j.: [ 3 240,00 ] Kč                                                                                     │
+│  Celkem:   30 587,40 Kč  (computed)                                                                           │
+│  Skupina: [ beton                            ▼ ]                                                              │
+│                                                                                                               │
+│  Kontext                                                                                                      │
+│  Role:    [● Hlavní ▼]          Rodič: —              Podřízené: 3  → Zobrazit                               │
+│  TOV:     ▥ 45 h · 180 kg · 3 t                                              [ Celý rozpis → ]                │
+│  Monolit: ⛑ 142 500 Kč · 3,5 dn · 6 lidí                                     [ ↗ Otevřít v Monolitu ]         │
+│  Import:  Stavba_202.xlsx · list 3 · řádek 142                                                                │
+│  ───────────────────────────────────────────────────────────────────────────────────────────────────────────  │
+│  Reorder: [ ↑ Nahoru ]  [ ↓ Dolů ]                                                 [ 🗑 Smazat pozici ]       │
+│                                                                                       opacity 0.4 § 2.4.5     │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+ bg var(--stone-100) · border-top 2px stone-300 · border-bottom 2px stone-200
+ секция "Pole" вверху с 4 input-контролами (edit-поля, которых нет в Variant B detail)
+ секция "Kontext" ниже — идентична § 4.3.5 (Variant B detail)
+```
+
+#### 4.4.4 Схема mobile (ASCII, viewport 375 px)
+
+**Обычная строка на 375 px** (те же hide-mobile столбцы что в § 4.3.8, но без edit-affordance):
+
+```
+┌──┬──┬──────────────────────────────┬────────┬───┐
+│[☐]│[›]│ 21341 · DRENÁŽNÍ VR…         │ beton  │[▥]│
+│   │  │                              │        │   │
+└──┴──┴──────────────────────────────┴────────┴───┘
+ ICN ICN   DSP (combined kod + popis    DSP      ICN
+           ellipsis)                    plain
+ Hidden (→ detail): Poř./+N · MJ · Množ. · Cena jedn. · Celkem · HardHat
+ Tap row body → detail panel full-width
+```
+
+**Detail panel на 375 px** — расширенный относительно § 4.3.8:
+
+```
+┌─────────────────────────────────────┐
+│                                 [×] │
+│ Pole                                │
+│ Kód:     [ 21341           ]        │
+│ Popis:   [ DRENÁŽNÍ VRSTVA          │
+│            Z KAMENIVA HR…   ]       │
+│ MJ:      m³     (read-only)         │
+│ Množ.:   94,2   (read-only)         │
+│ Cena j.: [ 3 240,00 ] Kč            │
+│ Celkem:  30 587,40 Kč               │
+│ Skupina: [ beton           ▼ ]      │
+│                                     │
+│ Kontext                             │
+│ Role:    [● Hlavní ▼]               │
+│ Rodič:   —                          │
+│ Podř.:   3 → Zobrazit               │
+│                                     │
+│ TOV: ▥ 45h · 180kg · 3t             │
+│      [ Celý rozpis → ]              │
+│                                     │
+│ Monolit: ⛑ 142 500 Kč · 3,5 dn      │
+│          [ ↗ Otevřít Monolit ]      │
+│                                     │
+│ Import: Stavba_202.xlsx             │
+│         list 3 · řádek 142          │
+│ ─────────────────────────────────── │
+│ Reorder: [ ↑ Nahoru ]  [ ↓ Dolů ]   │
+│                                     │
+│            [ 🗑 Smazat pozici ]     │
+│              opacity 0.4            │
+└─────────────────────────────────────┘
+ width 100% · padding 16px · scroll внутри detail-block
+```
+
+На mobile detail panel в Variant C делает **больше работы** чем в B: она одновременно показывает hidden cells (MJ, Množství, Cena, Celkem — те же что в B) **плюс** edit-поля для kod/popis/cena/skupina (которых в B детали нет — редактирование живёт в row click-cell). Вертикальный scroll внутри панели длиннее.
+
+#### 4.4.5 Плюсы
+
+1. **Ещё ниже визуальный шум в строке** — 0 edit-affordance indicators (нет пунктирных подчёркиваний из § 4.3.7, нет `{фигурных скобок}`, нет hover-border на cell). Строка выглядит как чистая data-линия как в табличных отчётах (Excel-like read view). Для пользователей, сканирующих 2 000-строчный документ, информационный сигнал/шум максимальный.
+2. **Единый UX для редактирования**: всегда через detail, никаких двух разных способов "для skupiny click прямо на ячейке, а для kod/popis click открывает панель". Меньше ментальная модель для пользователя и для документации.
+3. **Простота реализации**: не нужно отдельно решать какая cell click-editable, а какая click-trigger. В `ItemsTable.tsx` строка получает один общий `onClick` handler на `<tr>` с проверкой `e.target` против raise-preventing зон. EditablePriceCell (`ItemsTable.tsx:30-76`) и SkupinaAutocomplete в row удаляются — заменяются простым rendering'ом значения.
+4. **Строка становится Excel-export-ready view** — то, что видит пользователь в интерфейсе, 1-в-1 совпадает с тем, что попадает в XLSX export. Нет UI-only widgets (autocomplete, number inputs), которые в экспорт не переносятся. Упрощает коммуникацию между пользователем и экспортным файлом.
+
+#### 4.4.6 Минусы
+
+1. **Больше кликов для быстрого редактирования**. В Variant B изменить цену = один click на cell → input появляется → type → Enter. В Variant C это же действие = click на row → detail открывается → найти Cena j. поле → click в input → type → save / close detail. 2–3 лишних клика на операцию, которая в жизни происходит часто (prvomyslá коррекция цен).
+2. **Detail panel становится перегруженным**: edit-поля + info-поля + actions в одном месте. В § 4.4.3 ASCII-схема desktop detail содержит 17 строк (Pole 7 + Kontext 4 + action 2 + separators) vs 10 строк в Variant B detail (§ 4.3.7). Вертикальный scroll внутри панели обязателен даже на desktop 1080p. На mobile — ещё больше.
+3. **Теряется паттерн § 2.5.2 "click-cell-to-edit"**, который в Part A явно присутствует и доказан через grep (§ 2.5.1). `<EditableNum>` в `components/flat/FlatPositionsTable.tsx:893-963` — прямой прецедент: value + input совмещены в одном cell-level компоненте, click превращает display в input. Variant C вручную отказывается от этого паттерна. Это отход от эталона Part A в сторону классического "card/master-detail" паттерна, который в Planner **не применяется**. По критерию § 4.1.4 "соответствие Part A" Variant C получает **−** за click-cells (но **+** за row-icons, как и B).
+4. **Discoverability edit-полей хуже**: строка в Variant C выглядит полностью read-only (0 визуальных подсказок "тут можно что-то редактировать"). Пользователь, впервые видящий интерфейс, может не догадаться, что clicking row открывает editable detail. В Variant B пунктир `········` под click-cells — единый сигнал "click here to edit" (§ 4.3.7). В C этого сигнала нет. Mitigation: onboarding + hover highlight row (warm `#F5F3F0` из § 2.3.2) + cursor pointer на `<tr>` — но это indirect сигналы, слабее прямого паттерна.
+
+---
+
+*Раздел 5 (Recommendation) будет добавлен в следующем коммите.*
