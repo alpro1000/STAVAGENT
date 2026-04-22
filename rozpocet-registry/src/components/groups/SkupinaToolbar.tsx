@@ -1,31 +1,30 @@
 /**
- * SkupinaToolbar — Part A flat-style toolbar for the active skupina.
+ * SkupinaToolbar — Part A flat-style management surface for one skupina.
  *
  * Scope (AUDIT_Registry_FlatLayout.md §4.3.4, PR 2 of §5.3.1 rollout):
- *   - Lifts Sparkles (applyToSimilar) and Globe (applyToAllSheets) from
- *     row-level into a single toolbar above the table.
- *   - Surfaces rename + delete from <GroupManager> without replacing it.
- *   - Adds collapse-all chevron + non-interactive info badges (N, Σ Kč).
+ *   - Surfaces rename + delete + collapse-all for the currently-active
+ *     skupina without requiring the user to open <GroupManager>.
+ *   - Shows count + sum info badges (§4.3.4 "N položek · Σ Kč").
  *
- * "Active skupina" model (PR 2 interpretation of §4.3.4):
- *   - When the column-Skupina filter is narrowed to exactly 1 group,
- *     that group is locked as the active skupina (inline label, no picker).
- *   - Otherwise the toolbar renders a native <select> populated from the
- *     skupiny actually present in the current sheet. Actions always target
- *     the selected group — the picker is the single point of context.
+ * Scope reversal vs. initial PR 2 attempt:
+ *   - Sparkles (applyToSimilar) and Globe (applyToAllSheets) stay on
+ *     row-level (where each row already carries the source item those
+ *     handlers need). The earlier lift into the toolbar required a
+ *     picker and duplicated the existing column-filter; per-row was
+ *     faster in practice.
+ *   - No picker. Active skupina is driven entirely by the column-Skupina
+ *     filter — when the filter pins exactly one group, the parent passes
+ *     that group as activeSkupina; otherwise it passes null and this
+ *     component returns null.
  *
- * Per-group inline rendering (one toolbar per skupina block inside the
- * virtualized list) is out of PR 2 scope: it requires sort-by-skupina
- * enforcement + variable-height virtualizer rows — tracked in
- * next-session.md for PR-2-B.
+ * Contract: parent owns the filter-lock decision. This component never
+ * renders its own skupina-selection UI.
  */
 
 import { useMemo, useRef, useState } from 'react';
 import {
   ChevronDown,
   ChevronRight,
-  Sparkles,
-  Globe,
   Pencil,
   Trash2,
   Check,
@@ -36,33 +35,27 @@ import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 
 interface SkupinaToolbarProps {
-  /** All items in the current sheet — source for picker, counts and totals. */
+  /** All items in the current sheet — source for counts and totals. */
   items: ParsedItem[];
-  /** Currently active skupina (null = toolbar hidden / no active group). */
+  /**
+   * Active skupina, or null to hide the toolbar. Parent derives this from
+   * the column-Skupina filter (exactly one selected = that skupina).
+   */
   activeSkupina: string | null;
-  onActiveSkupinaChange: (skupina: string | null) => void;
-  /** True when column filter pins the picker to exactly one skupina. */
-  isFilterLocked: boolean;
-  /** Apply activeSkupina to similar items across all sheets in the project. */
-  onApplyToSimilar: (sourceItem: ParsedItem) => void;
-  /** Apply activeSkupina globally to items with matching kod. */
-  onApplyToAllSheets: (sourceItem: ParsedItem) => void;
-  /** Collapse every main row inside the active skupina. */
+  /** Collapse every expanded main row inside the active skupina. */
   onCollapseAllInSkupina: (skupina: string) => void;
-  applyingSimilar: boolean;
-  applyingGlobal: boolean;
+  /** Parent syncs filterGroups from old → new name after rename. */
+  onSkupinaRenamed: (oldName: string, newName: string) => void;
+  /** Parent clears filterGroups entry after delete. */
+  onSkupinaDeleted: (name: string) => void;
 }
 
 export function SkupinaToolbar({
   items,
   activeSkupina,
-  onActiveSkupinaChange,
-  isFilterLocked,
-  onApplyToSimilar,
-  onApplyToAllSheets,
   onCollapseAllInSkupina,
-  applyingSimilar,
-  applyingGlobal,
+  onSkupinaRenamed,
+  onSkupinaDeleted,
 }: SkupinaToolbarProps) {
   const { renameGroup, deleteGroup } = useRegistryStore();
 
@@ -72,40 +65,24 @@ export function SkupinaToolbar({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const editInputRef = useRef<HTMLInputElement>(null);
 
-  // Skupiny actually present in this sheet, sorted with named first.
-  const skupinyInSheet = useMemo(() => {
-    const counts = new Map<string, { count: number; total: number; firstWithKod: ParsedItem | null }>();
+  // Count + sum for the active skupina, derived from the current sheet.
+  const activeStats = useMemo(() => {
+    if (!activeSkupina) return null;
+    let count = 0;
+    let total = 0;
     items.forEach((item) => {
-      if (!item.skupina) return;
+      if (item.skupina !== activeSkupina) return;
       if (item.rowRole === 'section') return;
-      const existing = counts.get(item.skupina);
-      const total = item.cenaCelkem || 0;
-      if (existing) {
-        existing.count += 1;
-        existing.total += total;
-        if (!existing.firstWithKod && item.kod) existing.firstWithKod = item;
-      } else {
-        counts.set(item.skupina, {
-          count: 1,
-          total,
-          firstWithKod: item.kod ? item : null,
-        });
-      }
+      count += 1;
+      total += item.cenaCelkem || 0;
     });
-    return Array.from(counts.entries())
-      .map(([skupina, stats]) => ({ skupina, ...stats }))
-      .sort((a, b) => a.skupina.localeCompare(b.skupina));
-  }, [items]);
+    return { count, total };
+  }, [items, activeSkupina]);
 
-  const activeStats = activeSkupina
-    ? skupinyInSheet.find((s) => s.skupina === activeSkupina)
-    : undefined;
-
-  // Nothing to show when the sheet has no skupiny assigned at all.
-  if (skupinyInSheet.length === 0) return null;
+  // Hide entirely when parent hasn't locked the filter to a single skupina.
+  if (!activeSkupina) return null;
 
   const handleStartRename = () => {
-    if (!activeSkupina) return;
     setEditValue(activeSkupina);
     setIsEditing(true);
     setConfirmDelete(false);
@@ -113,7 +90,6 @@ export function SkupinaToolbar({
   };
 
   const handleSaveRename = () => {
-    if (!activeSkupina) return;
     const trimmed = editValue.trim();
     if (!trimmed || trimmed === activeSkupina) {
       setIsEditing(false);
@@ -121,7 +97,7 @@ export function SkupinaToolbar({
     }
     const affected = renameGroup(activeSkupina, trimmed);
     if (affected > 0) {
-      onActiveSkupinaChange(trimmed);
+      onSkupinaRenamed(activeSkupina, trimmed);
     }
     setIsEditing(false);
   };
@@ -132,32 +108,18 @@ export function SkupinaToolbar({
   };
 
   const handleDelete = () => {
-    if (!activeSkupina) return;
     if (!confirmDelete) {
       setConfirmDelete(true);
       return;
     }
     deleteGroup(activeSkupina);
     setConfirmDelete(false);
-    onActiveSkupinaChange(null);
+    onSkupinaDeleted(activeSkupina);
   };
 
   const handleCollapseAll = () => {
-    if (activeSkupina) onCollapseAllInSkupina(activeSkupina);
+    onCollapseAllInSkupina(activeSkupina);
   };
-
-  const handleApplySimilar = () => {
-    if (!activeStats?.firstWithKod) return;
-    onApplyToSimilar(activeStats.firstWithKod);
-  };
-
-  const handleApplyAllSheets = () => {
-    if (!activeStats?.firstWithKod) return;
-    onApplyToAllSheets(activeStats.firstWithKod);
-  };
-
-  const actionsDisabled = !activeSkupina || !activeStats?.firstWithKod;
-  const hasActiveSkupina = activeSkupina !== null;
 
   return (
     <div
@@ -181,17 +143,16 @@ export function SkupinaToolbar({
           setIsCollapsed((c) => !c);
           handleCollapseAll();
         }}
-        disabled={!hasActiveSkupina}
-        className="p-1 rounded transition-colors disabled:opacity-30"
+        className="p-1 rounded transition-colors"
         style={{ color: 'var(--flat-text-label)' }}
-        title={hasActiveSkupina ? `Sbalit všechny řádky ve skupině "${activeSkupina}"` : 'Vyberte skupinu'}
+        title={`Sbalit všechny řádky ve skupině "${activeSkupina}"`}
       >
         {isCollapsed
           ? <ChevronRight size={11} className="w-[11px] h-[11px]" />
           : <ChevronDown size={11} className="w-[11px] h-[11px]" />}
       </button>
 
-      {/* Skupina picker OR locked label (when filter narrows to single skupina) */}
+      {/* Active skupina label / inline rename input */}
       {isEditing ? (
         <div className="flex items-center gap-1">
           <input
@@ -224,7 +185,7 @@ export function SkupinaToolbar({
             <X size={13} className="w-[13px] h-[13px]" />
           </button>
         </div>
-      ) : isFilterLocked && activeSkupina ? (
+      ) : (
         <span
           className="text-[13px] font-medium"
           style={{ color: 'var(--flat-text)' }}
@@ -232,21 +193,6 @@ export function SkupinaToolbar({
         >
           {activeSkupina}
         </span>
-      ) : (
-        <select
-          value={activeSkupina ?? ''}
-          onChange={(e) => onActiveSkupinaChange(e.target.value || null)}
-          className="text-[13px] font-medium bg-white border rounded px-2 py-1 focus:outline-none cursor-pointer"
-          style={{ borderColor: 'var(--flat-border)', color: 'var(--flat-text)' }}
-          title="Vybrat aktivní skupinu"
-        >
-          <option value="">— vyberte skupinu —</option>
-          {skupinyInSheet.map((s) => (
-            <option key={s.skupina} value={s.skupina}>
-              {s.skupina}
-            </option>
-          ))}
-        </select>
       )}
 
       {/* Info badges (non-interactive, tabular) */}
@@ -274,7 +220,7 @@ export function SkupinaToolbar({
       <div style={{ flex: '1 1 auto' }} />
 
       {/* Delete confirm inline message */}
-      {confirmDelete && activeSkupina && (
+      {confirmDelete && (
         <span
           className="text-[11px] flex items-center gap-1"
           style={{ color: 'var(--red-500)' }}
@@ -284,39 +230,11 @@ export function SkupinaToolbar({
         </span>
       )}
 
-      {/* Actions cluster */}
+      {/* Actions cluster — management only (per-row Sparkles/Globe live in the cell) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <button
-          onClick={handleApplySimilar}
-          disabled={actionsDisabled || applyingSimilar}
-          className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30"
-          title="Aplikovat na podobné položky v celém projektu (všechny listy)"
-        >
-          <Sparkles
-            size={13}
-            className="w-[13px] h-[13px]"
-            style={{ color: 'var(--flat-accent)' }}
-          />
-        </button>
-        <button
-          onClick={handleApplyAllSheets}
-          disabled={actionsDisabled || applyingGlobal}
-          className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30"
-          title="Aplikovat na VŠECHNY listy se stejným kódem"
-        >
-          <Globe
-            size={13}
-            className="w-[13px] h-[13px]"
-            style={{ color: 'var(--blue-500)' }}
-          />
-        </button>
-
-        <span className="flat-el-info__sep" aria-hidden />
-
-        <button
           onClick={handleStartRename}
-          disabled={!hasActiveSkupina}
-          className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30"
+          className="p-1 rounded hover:bg-bg-secondary transition-colors"
           style={{ color: 'var(--flat-text-label)' }}
           title="Přejmenovat skupinu (ovlivní všechny položky)"
         >
@@ -324,8 +242,7 @@ export function SkupinaToolbar({
         </button>
         <button
           onClick={handleDelete}
-          disabled={!hasActiveSkupina}
-          className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30"
+          className="p-1 rounded hover:bg-bg-secondary transition-colors"
           style={{
             color: confirmDelete ? 'var(--red-500)' : 'var(--flat-text-label)',
             opacity: confirmDelete ? 1 : 0.5,
