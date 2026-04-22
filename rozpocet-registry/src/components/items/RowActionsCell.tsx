@@ -34,10 +34,10 @@ const ROLE_LABELS: Record<RowRole, string> = {
 };
 
 const ROLE_ICONS: Record<RowRole, React.ReactNode> = {
-  main: <ClipboardList size={12} className="inline" />,
+  main: <ClipboardList size={13} className="inline" />,
   subordinate: '↳',
-  section: <FileText size={12} className="inline" />,
-  unknown: <CircleHelp size={12} className="inline" />,
+  section: <FileText size={13} className="inline" />,
+  unknown: <CircleHelp size={13} className="inline" />,
 };
 
 // Light theme colors
@@ -256,7 +256,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
             title="Připojit k hlavní položce"
             className="p-0.5 rounded hover:bg-blue-500/20 transition-colors text-blue-500"
           >
-            <Link2 size={12} />
+            <Link2 size={13} />
           </button>
 
           {showParentMenu && (
