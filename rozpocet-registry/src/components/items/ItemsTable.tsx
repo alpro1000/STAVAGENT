@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat, Undo2, Redo2 } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -21,6 +21,7 @@ import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
+import { SkupinaFilterDropdown } from './SkupinaFilterDropdown';
 import { SkupinaToolbar } from '../groups/SkupinaToolbar';
 import { TOVButton, TOVModal } from '../tov';
 import { useUndoStore, MAX_UNDO } from '../../stores/undoStore';
@@ -91,9 +92,6 @@ interface ItemsTableProps {
 
 const columnHelper = createColumnHelper<ParsedItem>();
 
-/** Label for items with no skupina assigned */
-const NO_GROUP_LABEL = '(Bez skupiny)';
-
 export function ItemsTable({
   items,
   projectId,
@@ -139,22 +137,8 @@ export function ItemsTable({
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
 
-  // Excel-style filter state
+  // Excel-style filter state (dropdown UI lives in <SkupinaFilterDropdown>).
   const [filterGroups, setFilterGroups] = useState<Set<string>>(new Set()); // empty = show all
-  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const filterDropdownRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    if (!showFilterDropdown) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (filterDropdownRef.current && !filterDropdownRef.current.contains(e.target as Node)) {
-        setShowFilterDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showFilterDropdown]);
 
   // Модальное окно для уведомлений
   const [alertModal, setAlertModal] = useState<{
@@ -770,95 +754,15 @@ export function ItemsTable({
           <div className="flex items-center gap-2">
             <span>Skupina</span>
             {groupStats.length > 0 && (
-              <div className="relative" ref={filterDropdownRef}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowFilterDropdown(!showFilterDropdown);
-                  }}
-                  className={`px-2 py-1 text-xs rounded flex items-center gap-1 transition-colors ${
-                    isFilterActive
-                      ? 'bg-accent-primary text-white'
-                      : 'bg-bg-secondary hover:bg-bg-tertiary'
-                  }`}
-                  title="Filtr podle skupiny"
-                >
-                  <Filter size={13} className="w-[13px] h-[13px]" />
-                  {isFilterActive && (
-                    <span>{filterGroups.size}/{groupStats.length}</span>
-                  )}
-                </button>
-
-                {/* Excel-style filter dropdown */}
-                {showFilterDropdown && (
-                  <div
-                    className="absolute right-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[240px] max-h-[340px] overflow-y-auto"
-                    style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)' }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    {/* Select all / Clear */}
-                    <div className="border-b border-border-color px-3 py-2 flex items-center gap-2">
-                      <button
-                        onClick={selectAllGroups}
-                        className="text-xs text-accent-primary hover:underline"
-                      >
-                        Zobrazit vše
-                      </button>
-                      <span className="text-text-muted text-xs">
-                        ({items.length} položek)
-                      </span>
-                    </div>
-
-                    {/* Group checkboxes */}
-                    <div className="py-1">
-                      {groupStats.map(([group, count]) => {
-                        const label = group || NO_GROUP_LABEL;
-                        const isChecked = filterGroups.size === 0 || filterGroups.has(group);
-                        return (
-                          <div
-                            key={group}
-                            className="flex items-center gap-2 px-3 py-1.5 hover:bg-bg-secondary cursor-pointer text-sm"
-                            onClick={() => toggleGroupFilter(group)}
-                          >
-                            <div className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
-                              isChecked
-                                ? 'bg-accent-primary border-accent-primary'
-                                : 'border-border-color'
-                            }`}>
-                              {isChecked && <Check size={11} className="text-white w-[11px] h-[11px]" />}
-                            </div>
-                            <span className={`flex-1 truncate ${group ? 'font-medium text-accent-primary' : 'text-text-muted italic'}`}>
-                              {label}
-                            </span>
-                            <span className="text-text-muted text-xs flex-shrink-0">
-                              {count}
-                            </span>
-                            {group && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  selectOnlyGroup(group);
-                                }}
-                                className="text-[10px] text-text-muted hover:text-accent-primary px-1"
-                                title={`Zobrazit pouze ${label}`}
-                              >
-                                pouze
-                              </button>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Footer with count */}
-                    {isFilterActive && (
-                      <div className="border-t border-border-color px-3 py-2 text-xs text-text-muted">
-                        Zobrazeno {filteredItems.length} z {items.length} položek
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <SkupinaFilterDropdown
+                groupStats={groupStats}
+                filterGroups={filterGroups}
+                toggleGroupFilter={toggleGroupFilter}
+                selectAllGroups={selectAllGroups}
+                selectOnlyGroup={selectOnlyGroup}
+                itemsCount={items.length}
+                filteredCount={filteredItems.length}
+              />
             )}
           </div>
         ),
@@ -944,7 +848,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, filterGroups, toggleGroupFilter, selectAllGroups, selectOnlyGroup, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
   );
 
   const table = useReactTable({
