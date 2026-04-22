@@ -52,7 +52,7 @@ const LIGHT = {
   text: '#1A1C1E',
   textMuted: '#6B7280',
   accent: '#F97316',
-  accentDark: '#E68A00',
+  accentDark: '#EA580C',
   success: '#10B981',
   error: '#EF4444',
   errorBg: '#FEF2F2',
