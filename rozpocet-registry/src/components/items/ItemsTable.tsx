@@ -1006,7 +1006,7 @@ export function ItemsTable({
           style={{ maxHeight: 'calc(100vh - 260px)' }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
-          <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--bg-secondary, #f8f9fa)' }}>
+          <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--flat-header-bg)' }}>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} style={{ display: 'flex', width: '100%' }}>
                 {headerGroup.headers.map((header) => (

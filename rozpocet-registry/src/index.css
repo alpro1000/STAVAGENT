@@ -93,13 +93,13 @@
     box-shadow: var(--shadow-panel);
   }
 
-  /* Table base (Level 3: Data Surfaces) */
+  /* Table base — Part A flat surface (flat-design.css:422-427) */
   .table {
     width: 100%;
     table-layout: auto; /* Allow natural column widths based on content */
     border-collapse: separate;
     border-spacing: 0;
-    background: var(--data-surface);
+    background: var(--flat-surface);
     border-radius: var(--radius-md);
     overflow: hidden;
     min-width: max-content; /* Prevent table from shrinking below content width */
@@ -140,13 +140,16 @@
     transition: background-color var(--transition-fast);
   }
 
+  /* Part A warm hover (flat-design.css:56, :476-478) — replaces the cool
+     var(--data-surface-alt) so the hover signal reads on a tonally-cold
+     stone palette. */
   .table tbody tr:hover {
-    background: var(--data-surface-alt);
+    background: var(--flat-hover);
   }
 
-  .table tbody tr:nth-child(even) {
-    background: var(--data-surface-alt);
-  }
+  /* Alternating rows removed — Part A differentiates rows via row-level
+     role (main/subordinate/section) + hover, not zebra striping.
+     Audit 2.3.3: grep nth-child(even|odd) in components/flat = 0. */
 
   /* Select input (for skupina dropdown) */
   select.input {
