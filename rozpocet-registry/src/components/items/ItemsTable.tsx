@@ -614,9 +614,18 @@ export function ItemsTable({
             );
           }
 
-          // Subordinate row — indent marker
+          // Subordinate row — indent marker + its own ordinal so every
+          // row in the Poř. column carries a visible number (the parent
+          // main row is identified by the chevron + subCount badge).
           if (item.rowRole === 'subordinate') {
-            return <span className="pl-2 text-[10px] text-text-muted select-none">↳</span>;
+            return (
+              <span className="flex items-center gap-0.5 pl-2 font-mono tabular-nums select-none">
+                <span className="text-[10px] text-text-muted">↳</span>
+                {value ? (
+                  <span className="text-[11px] text-text-muted">{value}</span>
+                ) : null}
+              </span>
+            );
           }
 
           // Main row without subordinates, section, or unknown
