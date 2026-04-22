@@ -300,7 +300,7 @@ function App() {
                 const row = document.querySelector(`[data-item-id="${item.id}"]`) as HTMLElement;
                 if (row) {
                   row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                  row.style.outline = '3px solid #FF9F1C';
+                  row.style.outline = '3px solid var(--accent-orange)';
                   row.style.outlineOffset = '2px';
                   setTimeout(() => {
                     row.style.outline = '';

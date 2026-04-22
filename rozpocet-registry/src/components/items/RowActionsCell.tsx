@@ -34,10 +34,10 @@ const ROLE_LABELS: Record<RowRole, string> = {
 };
 
 const ROLE_ICONS: Record<RowRole, React.ReactNode> = {
-  main: <ClipboardList size={12} className="inline" />,
+  main: <ClipboardList size={13} className="inline" />,
   subordinate: '↳',
-  section: <FileText size={12} className="inline" />,
-  unknown: <CircleHelp size={12} className="inline" />,
+  section: <FileText size={13} className="inline" />,
+  unknown: <CircleHelp size={13} className="inline" />,
 };
 
 // Light theme colors
@@ -49,8 +49,8 @@ const LIGHT = {
   borderLight: '#E5E7EB',
   text: '#1A1C1E',
   textMuted: '#6B7280',
-  accent: '#FF9F1C',
-  accentHover: '#E68A00',
+  accent: '#F97316',      // Part A --orange-500 (flat-design.css:31)
+  accentHover: '#EA580C', // Part A --orange-600 (flat-design.css:34)
   shadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
   backdrop: 'rgba(0, 0, 0, 0.4)',
 };
@@ -176,6 +176,9 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
         <MoveDown size={11} />
       </button>
 
+      {/* Separator between reorder and role groups (flat-design.css:537-540) */}
+      <span className="flat-el-info__sep mx-1" aria-hidden="true" />
+
       {/* Role dropdown - compact, LIGHT theme, rendered via Portal */}
       <div className="relative">
         <button
@@ -203,6 +206,9 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
           <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>
         </button>
       </div>
+
+      {/* Separator between role and attach group (flat-design.css:537-540) */}
+      <span className="flat-el-info__sep mx-1" aria-hidden="true" />
 
       {/* Portal dropdown for role selection */}
       {showRoleMenu && dropdownPos && createPortal(
@@ -256,7 +262,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
             title="Připojit k hlavní položce"
             className="p-0.5 rounded hover:bg-blue-500/20 transition-colors text-blue-500"
           >
-            <Link2 size={12} />
+            <Link2 size={13} />
           </button>
 
           {showParentMenu && (
@@ -324,7 +330,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                       backgroundColor: !item.parentItemId ? LIGHT.accent : LIGHT.panelBg,
                       borderColor: !item.parentItemId ? LIGHT.accentHover : LIGHT.border,
                       color: !item.parentItemId ? '#ffffff' : LIGHT.text,
-                      boxShadow: !item.parentItemId ? '0 4px 12px rgba(255, 159, 28, 0.3)' : 'none',
+                      boxShadow: !item.parentItemId ? '0 4px 12px rgba(249, 115, 22, 0.3)' : 'none',
                     }}
                   >
                     <div className="flex items-center gap-4">
@@ -349,7 +355,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                               backgroundColor: isSelected ? LIGHT.accent : LIGHT.panelBg,
                               borderColor: isSelected ? LIGHT.accentHover : LIGHT.border,
                               color: isSelected ? '#ffffff' : LIGHT.text,
-                              boxShadow: isSelected ? '0 4px 12px rgba(255, 159, 28, 0.3)' : 'none',
+                              boxShadow: isSelected ? '0 4px 12px rgba(249, 115, 22, 0.3)' : 'none',
                             }}
                           >
                             <div className="flex flex-col gap-2">

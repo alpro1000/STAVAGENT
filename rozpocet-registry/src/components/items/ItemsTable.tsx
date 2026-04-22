@@ -543,7 +543,7 @@ export function ItemsTable({
               }}
               style={{ cursor: mp.monolit_url ? 'pointer' : 'default' }}
             >
-              <HardHat size={14} className={iconClass} />
+              <HardHat size={13} className={iconClass} />
             </button>
           );
         },
@@ -569,8 +569,8 @@ export function ItemsTable({
                 title={isExpanded ? 'Sbalit podřízené řádky' : `Rozbalit ${subCount} podřízených řádků`}
               >
                 {isExpanded
-                  ? <ChevronDown size={12} className="text-text-muted flex-shrink-0" />
-                  : <ChevronRight size={12} className="text-text-muted flex-shrink-0" />}
+                  ? <ChevronDown size={11} className="text-text-muted flex-shrink-0" />
+                  : <ChevronRight size={11} className="text-text-muted flex-shrink-0" />}
                 <span className="text-text-muted text-[11px]">{value}</span>
                 <span className="text-text-muted opacity-60 text-[9px]">+{subCount}</span>
               </button>
@@ -730,7 +730,7 @@ export function ItemsTable({
                   }`}
                   title="Filtr podle skupiny"
                 >
-                  <Filter size={14} />
+                  <Filter size={13} />
                   {isFilterActive && (
                     <span>{filterGroups.size}/{groupStats.length}</span>
                   )}
@@ -772,7 +772,7 @@ export function ItemsTable({
                                 ? 'bg-accent-primary border-accent-primary'
                                 : 'border-border-color'
                             }`}>
-                              {isChecked && <Check size={12} className="text-white" />}
+                              {isChecked && <Check size={11} className="text-white" />}
                             </div>
                             <span className={`flex-1 truncate ${group ? 'font-medium text-accent-primary' : 'text-text-muted italic'}`}>
                               {label}
@@ -870,7 +870,7 @@ export function ItemsTable({
                     title="Aplikovat na podobné položky v celém projektu (všechny listy)"
                     className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
                   >
-                    <Sparkles size={16} className="text-accent-primary" />
+                    <Sparkles size={13} className="text-accent-primary" />
                   </button>
                   <button
                     onClick={() => applyToAllSheets(item)}
@@ -878,7 +878,7 @@ export function ItemsTable({
                     title="Aplikovat na VŠECHNY listy se stejným kódem"
                     className="p-1 rounded hover:bg-blue-500/20 transition-colors disabled:opacity-50"
                   >
-                    <Globe size={16} className="text-blue-500" />
+                    <Globe size={13} className="text-blue-500" />
                   </button>
                 </>
               )}
@@ -940,7 +940,7 @@ export function ItemsTable({
 
   // Virtualization: scroll container ref and virtualizer
   const tableContainerRef = useRef<HTMLDivElement>(null);
-  const ROW_HEIGHT = 40; // estimated row height in px
+  const ROW_HEIGHT = 32; // Part A data row height (flat-design.css:64 --flat-row-h)
 
   const rows = table.getRowModel().rows;
 
@@ -1006,7 +1006,7 @@ export function ItemsTable({
           style={{ maxHeight: 'calc(100vh - 260px)' }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
-          <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--bg-secondary, #f8f9fa)' }}>
+          <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--flat-header-bg)' }}>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} style={{ display: 'flex', width: '100%' }}>
                 {headerGroup.headers.map((header) => (

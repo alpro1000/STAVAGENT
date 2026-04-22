@@ -27,7 +27,7 @@ export function TOVButton({ hasData, onClick }: TOVButtonProps) {
       }`}
       title={hasData ? 'Zobrazit rozpis zdrojů' : 'Přidat zdroje'}
     >
-      <BarChart3 size={16} />
+      <BarChart3 size={13} />
     </button>
   );
 }

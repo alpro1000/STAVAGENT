@@ -84,57 +84,74 @@
     box-shadow: 0 0 0 3px var(--accent-orange-glow);
   }
 
-  /* Card base (Level 2: Clean Panels) */
+  /* Card base — Part A flat wrapper (flat-design.css:422-427)
+     Neomorph 4-layer --shadow-panel replaced by a single 1px border +
+     8px radius. Audit 2.2 observations: no box-shadow on rows, only
+     the wrapper's border+radius carries structure. */
   .card {
     background: var(--panel-clean);
-    border: 1px solid var(--edge-light);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--flat-border);
+    border-radius: var(--radius-md);
     padding: var(--space-lg);
-    box-shadow: var(--shadow-panel);
   }
 
-  /* Table base (Level 3: Data Surfaces) */
+  /* Table base — Part A flat surface (flat-design.css:422-427) */
   .table {
     width: 100%;
     table-layout: auto; /* Allow natural column widths based on content */
     border-collapse: separate;
     border-spacing: 0;
-    background: var(--data-surface);
+    background: var(--flat-surface);
     border-radius: var(--radius-md);
     overflow: hidden;
     min-width: max-content; /* Prevent table from shrinking below content width */
   }
 
   .table th {
-    background: var(--panel-clean);
-    padding: var(--space-md);
+    background: var(--flat-header-bg);
+    height: var(--flat-header-h);
+    padding: 0 var(--space-sm);
     text-align: left;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 600;
-    color: var(--text-secondary);
-    border-bottom: 1px solid var(--divider);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--flat-text-label);
+    border-bottom: 1px solid var(--flat-border);
     font-family: var(--font-body);
   }
 
   .table td {
-    padding: var(--space-md);
-    font-size: 14px;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--divider);
+    height: var(--flat-row-h);
+    padding: 0 var(--space-sm);
+    font-size: 13px;
+    color: var(--flat-text);
+    border-bottom: 1px solid var(--flat-border);
     font-family: var(--font-body);
+    font-variant-numeric: tabular-nums;
+    vertical-align: middle;
+  }
+
+  /* First cell indent per Part A (flat-design.css:657) */
+  .table th:first-child,
+  .table td:first-child {
+    padding-left: var(--space-md);
   }
 
   .table tbody tr {
     transition: background-color var(--transition-fast);
   }
 
+  /* Part A warm hover (flat-design.css:56, :476-478) — replaces the cool
+     var(--data-surface-alt) so the hover signal reads on a tonally-cold
+     stone palette. */
   .table tbody tr:hover {
-    background: var(--data-surface-alt);
+    background: var(--flat-hover);
   }
 
-  .table tbody tr:nth-child(even) {
-    background: var(--data-surface-alt);
-  }
+  /* Alternating rows removed — Part A differentiates rows via row-level
+     role (main/subordinate/section) + hover, not zebra striping.
+     Audit 2.3.3: grep nth-child(even|odd) in components/flat = 0. */
 
   /* Select input (for skupina dropdown) */
   select.input {

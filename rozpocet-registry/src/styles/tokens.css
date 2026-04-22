@@ -14,7 +14,7 @@
 /* ============================================
    GOOGLE FONTS IMPORT
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================
    LIGHT THEME (DEFAULT)
@@ -46,9 +46,12 @@
   --text-code: #5A5D61; /* For technical codes */
 
   /* === ACCENTS === */
-  --accent-orange: #FF9F1C;
-  --accent-orange-glow: rgba(255, 159, 28, 0.5);
-  --accent-orange-strong: rgba(255, 159, 28, 0.7);
+  /* Part A accent #F97316 (flat-design.css:31, --orange-500).
+     Previously #FF9F1C -- single source of truth switched so Registry
+     and Monolit Planner read as one design language. */
+  --accent-orange: #F97316;
+  --accent-orange-glow: rgba(249, 115, 22, 0.5);
+  --accent-orange-strong: rgba(249, 115, 22, 0.7);
 
   /* Legacy aliases (for backward compatibility) */
   --app-bg-concrete: var(--app-bg);
@@ -93,8 +96,59 @@
   --divider: rgba(0, 0, 0, 0.08);
 
   /* === FONTS === */
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* ============================================
+     FLAT DESIGN TOKENS — Monolit Planner Part A
+     Source: Monolit-Planner/frontend/src/styles/flat-design.css
+     Applied to Registry table (PR 1 of 5, Variant B rollout)
+     ============================================ */
+
+  /* Stone palette (flat-design.css:19-28) */
+  --stone-50:  #FAFAF9;
+  --stone-100: #F5F5F4;
+  --stone-200: #E7E5E4;
+  --stone-300: #D6D3D1;
+  --stone-400: #A8A29E;
+  --stone-500: #78716C;
+  --stone-600: #57534E;
+  --stone-700: #44403C;
+  --stone-800: #292524;
+  --stone-900: #1C1917;
+
+  /* Accent (flat-design.css:31-34) */
+  --orange-500: #F97316;
+  --orange-100: #FFF7ED;
+  --orange-200: #FFEDD5;
+  --orange-600: #EA580C;
+
+  /* Status (flat-design.css:37-45) */
+  --green-500: #22C55E;
+  --green-100: #F0FDF4;
+  --red-500:   #EF4444;
+  --red-100:   #FEF2F2;
+  --blue-50:   #EFF6FF;
+  --blue-100:  #DBEAFE;
+  --blue-500:  #3B82F6;
+  --yellow-500: #EAB308;
+  --yellow-100: #FEF9C3;
+
+  /* Semantic aliases (flat-design.css:48-57) */
+  --flat-bg:             var(--stone-50);
+  --flat-surface:        #FFFFFF;
+  --flat-header-bg:      var(--stone-100);
+  --flat-border:         var(--stone-200);
+  --flat-text:           var(--stone-900);
+  --flat-text-secondary: var(--stone-400);
+  --flat-text-label:     var(--stone-600);
+  --flat-accent:         var(--orange-500);
+  --flat-hover:          #F5F3F0;
+  --flat-selected:       #EDEBE8;
+
+  /* Table dimensions (flat-design.css:64-65) */
+  --flat-row-h:    32px;
+  --flat-header-h: 36px;
 
   /* === SPACING === */
   --space-xs: 4px;
@@ -115,6 +169,23 @@
   --transition-fast: 0.15s ease-out;
   --transition-normal: 0.25s ease-out;
   --transition-slow: 0.4s ease-out;
+}
+
+/* ============================================
+   FLAT UTILITY CLASSES — Part A row primitives
+   ============================================ */
+
+/* 1 x 24 px vertical divider between semantic groups of row actions
+   (flat-design.css:537-540 .flat-el-info__sep). Used in the Registry
+   row action cluster so MoveUp/Down, role trigger and Link2 don't
+   read as one undifferentiated strip. */
+.flat-el-info__sep {
+  display: inline-block;
+  width: 1px;
+  height: 24px;
+  background: var(--flat-border);
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 /* ============================================
@@ -148,8 +219,8 @@
   --text-code: #8A9099;
 
   /* === ACCENTS (Enhanced glow for dark!) === */
-  --accent-orange-glow: rgba(255, 159, 28, 0.6);
-  --accent-orange-strong: rgba(255, 159, 28, 0.8);
+  --accent-orange-glow: rgba(249, 115, 22, 0.6);
+  --accent-orange-strong: rgba(249, 115, 22, 0.8);
 
   --accent-green: #66BB6A;
   --accent-green-glow: rgba(102, 187, 106, 0.5);
