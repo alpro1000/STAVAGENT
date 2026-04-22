@@ -21,6 +21,7 @@ import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
+import { SkupinaToolbar } from '../groups/SkupinaToolbar';
 import { TOVButton, TOVModal } from '../tov';
 import { useUndoStore, MAX_UNDO } from '../../stores/undoStore';
 import { useUndoableActions } from '../../hooks/useUndoableActions';
@@ -207,6 +208,48 @@ export function ItemsTable({
         next.add(mainId);
       }
       return next;
+    });
+  };
+
+  // Active skupina context for SkupinaToolbar (PR 2 — AUDIT §4.3.4).
+  // Lives at table level so filter-lock, picker, and row-level state stay in sync.
+  const [activeSkupina, setActiveSkupina] = useState<string | null>(null);
+
+  // When the column filter narrows to exactly one skupina, lock the toolbar to it.
+  const isFilterLocked = filterGroups.size === 1;
+  useEffect(() => {
+    if (isFilterLocked) {
+      const [single] = Array.from(filterGroups);
+      if (single && single !== activeSkupina) {
+        setActiveSkupina(single);
+      }
+    }
+  }, [isFilterLocked, filterGroups, activeSkupina]);
+
+  // Reset active skupina when the sheet changes so we don't point at a group
+  // that doesn't exist in the newly-loaded sheet.
+  useEffect(() => {
+    setActiveSkupina(null);
+  }, [sheetId]);
+
+  // Collapse every expanded main row whose skupina matches the target.
+  const collapseAllInSkupina = (skupina: string) => {
+    setExpandedMainIds(prev => {
+      if (prev.size === 0) return prev;
+      const mainInSkupina = new Set(
+        items
+          .filter(it => it.rowRole === 'main' && it.skupina === skupina)
+          .map(it => it.id)
+      );
+      const next = new Set(prev);
+      let changed = false;
+      mainInSkupina.forEach(id => {
+        if (next.has(id)) {
+          next.delete(id);
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
     });
   };
 
@@ -999,6 +1042,21 @@ export function ItemsTable({
             </p>
           )}
         </div>
+
+        {/* Skupina toolbar — PR 2 of §5.3.1 (AUDIT §4.3.4).
+            Targets the active skupina; filter-locked when exactly one
+            group is selected in the column filter. */}
+        <SkupinaToolbar
+          items={items}
+          activeSkupina={activeSkupina}
+          onActiveSkupinaChange={setActiveSkupina}
+          isFilterLocked={isFilterLocked}
+          onApplyToSimilar={applyToSimilar}
+          onApplyToAllSheets={applyToAllSheets}
+          onCollapseAllInSkupina={collapseAllInSkupina}
+          applyingSimilar={applyingToSimilar !== null}
+          applyingGlobal={applyingGlobal !== null}
+        />
 
         <div
           ref={tableContainerRef}
