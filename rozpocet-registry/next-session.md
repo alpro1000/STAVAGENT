@@ -174,14 +174,85 @@ PR 2 single-toolbar above-table решает §4.3.4 но не трогает г
 
 ---
 
-## Приоритизация — обновлённая после сессии 2026-04-22
+## 10. AI Klasifikace + GroupManager — `max-height + overflow-y` внутри панелей
 
-1. **П. 6** (PR 990 validation) — блокирует Registry production UX для не-Chrome пользователей.
-2. **П. 3** (классификатор) — блокирующий для п. 2 и п. 4.
-3. **П. 4** (фильтр импорта в Monolit) — дешёвая победа после п. 3.
-4. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
-5. **П. 2** (каталожная цена) — новая feature.
-6. **П. 1** (document navigation) — UX improvement.
-7. **П. 7** (branch protection) — process decision, не код.
+Контекст: в сессии 2026-04-23 пытались убрать двойной scroll через flex-1 chain от `<main>` до scroll container таблицы (commit `3106ab2`). Chain сломался потому что `AIPanel` и `GroupManager` — **expandable** компоненты с натуральной растущей высотой. Когда оба развёрнуты одновременно (AI Mode panel + 47 skupin в GroupManager), их сумма превышает высоту main → `flex-1 min-h-0` на ItemsTable схлопывал карточку в `0 px`. `main: overflow-hidden` не давал доскроллить — таблица исчезала с экрана. Откатили на `6ed4180`, вернулись к двойному scroll (`main: overflow-y-auto` + table internal scroll через `useLayoutEffect` maxHeight).
 
-PR 2 Variant B (single active-skupina toolbar above table) отправлен в ветке `claude/registry-toolbar-group-Qophc`. PR 2-B (п. 8 выше — per-group inline rendering), PR 3 (detail panel), PR 4 (extend BulkActionsBar), PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1 и идут отдельными тасками.
+**Правильное решение — ограничить вертикальный рост самих панелей:**
+
+- `AIPanel` (`src/components/ai/AIPanel.tsx:303`) и `GroupManager` (`src/components/groups/GroupManager.tsx:160`): при `isExpanded=true` содержимое может занимать 400-600 px. Добавить `max-height: min(50vh, 500px); overflow-y: auto` на раскрытое состояние. Обе панели покажут свой scrollbar внутри — не пушат card ниже viewport.
+- После этого можно вернуть **flex-1 chain** вариант из `3106ab2`: outer `h-screen flex flex-col` + main `flex-1 min-h-0 overflow-hidden` + sheet-items wrapper `flex-1 min-h-0 flex flex-col gap-4` + ItemsTable wrapper+card+scroll container с `flex-1 min-h-0`. Card больше не схлопнется в 0 — siblings теперь имеют bounded height.
+- Удалить useLayoutEffect+ResizeObserver (те ~30 строк JS) — flex распределит пространство сам.
+
+**Scope**: 2 файла (`AIPanel.tsx`, `GroupManager.tsx`) — добавить max-height на expanded panel body. Плюс revert revert commit = restore flex-1 chain. Test: развернуть обе панели, убедиться что таблица видна и единственный scroll внутри таблицы.
+
+**Estimate**: S, 1-2 часа. Не блокирует classifier rewrite. Низкий риск регрессий — только CSS.
+
+---
+
+## 11. Classifier rewrite по спеке `docs/ROW_CLASSIFICATION_SPEC.md`
+
+Формат-aware детерминистический классификатор заменит текущий `classifyRows` (regex + эвристика) в `rowClassificationService.ts`. Full spec в `rozpocet-registry/docs/ROW_CLASSIFICATION_SPEC.md` с cross-link на baseline audit `ROW_CLASSIFICATION_CURRENT.md`.
+
+**Ключевые изменения:**
+
+- **3 формата Excel** вместо template-agnostic pass: **EstiCon** (первая колонка `Typ` = `SD/P/PP/VV/TS/SO`), **Komplet** (`Typ` колонка = `D/K/PP/PSC/VV`), **RTSROZP** / custom (content heuristics как сейчас, но как fallback).
+- **Format detection** перед column mapping: сканировать лист на EstiCon header (col 0 enum) или Komplet header row (`PČ + Typ + Kód + Popis + MJ + Množství`). RTSROZP — если ни то ни другое.
+- **`parentItemId` всегда заполнен** для subordinate rows. Orphan subordinate (нет main выше в source) downgrade'ится в `unknown` с warning. UI fallback `effectiveParentMap` в `ItemsTable.tsx:252` станет no-op, оставляем как safety net.
+- Новое поле `sectionId: string | null` на `ParsedItem` для section-group tracking (миграция persist storage для legacy items).
+- Новое поле `originalTyp: string | null` для traceability EstiCon/Komplet.
+- Extend `ImportConfig.columns` чтобы читать `Poř. Č.` column (EstiCon col 1, Komplet col 2) в `item.boqLineNumber` напрямую из импорта, а не генерировать счётчиком.
+
+**Stashed preview**: `stash@{0}: classifier-migration WIP — user paused` содержит `classifyMissingRowRoles` store action + effect в ItemsTable.tsx для one-time migration legacy items без `rowRole`. Это **бандейд**, не замена — legacy items получают роли через существующий `classifyRows` без изменения parser/format detection. Решить при rewrite: забрать stash как bandage-before-rewrite или дропнуть.
+
+**Scope**: L, 2-3 дня. Файлы: `rowClassificationService.ts` (rewrite), `excelParser.ts` (format detection + Poř. column read), `types/item.ts` (sectionId + originalTyp fields), `stores/registryStore.ts` (migration для persist), `config/templates.ts` (update column mapping defaults), новые тесты.
+
+**Пререквизиты**: `ROW_CLASSIFICATION_SPEC.md` open questions (§Open questions 1-9) — нужен corpus реальных проблемных Excel'ей от пользователя для golden tests. Без corpus rewrite делается вслепую.
+
+**Блокирующая для**: п. 2 (каталожная цена, зависит от корректного main/subordinate split), п. 4 (фильтр импорта в Monolit — нужна надёжная классификация).
+
+---
+
+## 12. Read `Poř. Č.` column from source Excel
+
+Сейчас `item.boqLineNumber` генерируется классификатором как sequential counter main rows (1, 2, 3...). В импортируемом Excel (EstiCon col 1, Komplet col 2) уже есть свой `Poř. Č.` — нумерация которая может не совпадать с нашим счётчиком (пропуски, reset по section'ам, etc.). User показал что в UI ожидает видеть **то число что было в оригинальном файле**, не наш счётчик.
+
+**Scope**:
+- Добавить `Poř.` в `ImportConfig.columns` (строка column letter).
+- Парсер (`excelParser.ts`) читает эту колонку и складывает в `item.por` (новое поле на `ParsedItem`) ИЛИ напрямую в `item.boqLineNumber` если классификатор этот же путь использует.
+- Классификатор `classifyRows`: вместо `boqLineNumber = ++boqCounter` на main — `boqLineNumber = item.por ?? ++boqCounter` (fallback на счётчик если исходник не содержит).
+- Обновить built-in templates в `config/templates.ts` (урs-standard, otskp, rts) с sensible defaults для Poř. column.
+
+**Estimate**: S, 0.5-1 день. Блокирован п. 11 (format detection) — логично делать вместе.
+
+---
+
+## 13. Sticky header — проверка реальных браузеров
+
+Fix `b5db134` перенёс `position: sticky; top: 0` с `<thead>` на `<th>` (Chrome игнорирует sticky на row-group). Протестировано в build, но живое поведение в разных браузерах не проверялось на этой ветке.
+
+**Scope**: Safari, Firefox, Chrome + mobile 375 px — убедиться что при скролле внутри table scroll container header остаётся видимым. Если в каком-то браузере sticky-th тоже не работает — fallback на `display: block` hack для thead + separate table layout, или `<div>`-based grid вместо `<table>`.
+
+**Estimate**: 30 минут проверки + фикс если нужен.
+
+---
+
+## Приоритизация — обновлённая после сессии 2026-04-23
+
+1. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
+2. **П. 11** (classifier rewrite) — **блокирующая для п. 2 каталожная цена и п. 4 фильтр Monolit**. Ждёт corpus реальных Excel'ей от пользователя (ответ на open questions §ROW_CLASSIFICATION_SPEC.md).
+3. **П. 12** (read Poř. Č. from Excel) — делается вместе с п. 11.
+4. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
+5. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
+6. **П. 4** (фильтр импорта в Monolit) — после п. 11.
+7. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
+8. **П. 2** (каталожная цена) — новая feature, после п. 11.
+9. **П. 1** (document navigation) — UX improvement.
+10. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
+11. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
+12. **П. 7** (branch protection) — process decision, не код.
+13. **П. 3** — пересекается с п. 11, дроп после rewrite.
+
+PR 2 Variant B (single active-skupina toolbar above table) + compensation pack (subordinate visual distinction, vertical column dividers, sticky header fix, split Poř. column, hide empty monolit column) отправлен через ветку `claude/registry-toolbar-group-Qophc`. Двойной scroll сознательно принят как меньшее зло до реализации п. 10. PR-2-B / PR 3 (detail panel) / PR 4 (extend BulkActionsBar) / PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1.
+
+**Stashed на ветке**: `stash@{0}: classifier-migration WIP — user paused` — one-time migration для legacy items без `rowRole`. Ждёт решения при реализации п. 11: забрать как bandage или дропнуть в пользу полного rewrite.
