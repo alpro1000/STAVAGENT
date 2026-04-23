@@ -490,6 +490,15 @@ export function ItemsTable({
     };
   }, [items]);
 
+  // Only render the monolit indicator column when at least one item in
+  // the sheet has monolith_payload — otherwise the column shows up as
+  // a 28-px-wide empty strip next to Poř. Č. for sheets that don't use
+  // Monolit integration at all.
+  const hasAnyMonolitData = useMemo(
+    () => items.some((item) => item.monolith_payload),
+    [items]
+  );
+
   const columns = useMemo(
     () => [
       // Checkbox (для массовых операций) - компактный.
@@ -558,7 +567,10 @@ export function ItemsTable({
 
       // Monolit indicator — shows when item has calculation data from Monolit-Planner
       // Color reflects conflict severity: green=match, blue=info, amber=warning, red=conflict
-      columnHelper.display({
+      // Column is only included when at least one item in this sheet has a
+      // monolith_payload; otherwise the 28 px strip shows as an empty column
+      // next to Poř. Č. on sheets that don't use Monolit integration.
+      ...(hasAnyMonolitData ? [columnHelper.display({
         id: 'monolit',
         header: '',
         cell: ({ row }) => {
@@ -613,7 +625,7 @@ export function ItemsTable({
         },
         size: 28,
         enableResizing: false,
-      }),
+      })] : []),
 
       // Poř. Č. — ordinal from the imported BOQ. Main rows only
       // (subordinate / section / unknown stay empty per spec).
@@ -893,7 +905,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, filterGroups, toggleGroupFilter, selectAllGroups, selectOnlyGroup, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, filterGroups, toggleGroupFilter, selectAllGroups, selectOnlyGroup, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem, hasAnyMonolitData, conflictMap]
   );
 
   const table = useReactTable({
