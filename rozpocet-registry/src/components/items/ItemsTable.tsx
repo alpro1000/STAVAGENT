@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2 } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -103,7 +103,33 @@ export function ItemsTable({
   showOnlyWorkItems = false,
   conflictMap,
 }: ItemsTableProps) {
-  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny } = useRegistryStore();
+  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny, reclassifySheet } = useRegistryStore();
+
+  // Re-classify all — gated on items having _rawCells (captured on fresh
+  // imports after the v1.1 classifier rewrite). Legacy items in IndexedDB
+  // don't have raw cells and the button stays disabled with a tooltip
+  // explaining why. See ROW_CLASSIFICATION_ALGORITHM v1.1 Q5 answer.
+  const reclassifyAvailable = items.some(i => i._rawCells !== undefined);
+  const [reclassifyStatus, setReclassifyStatus] = useState<string | null>(null);
+  const handleReclassifyAll = () => {
+    const r = reclassifySheet(projectId, sheetId);
+    if (!r.success) {
+      const msg =
+        r.reason === 'no-raw-cells'
+          ? 'Překlasifikace vyžaduje nový import — raw data nejsou uložena u starších položek.'
+          : r.reason === 'empty'
+          ? 'List je prázdný.'
+          : 'List nebyl nalezen.';
+      setReclassifyStatus(msg);
+    } else if (r.stats) {
+      const s = r.stats;
+      setReclassifyStatus(
+        `Překlasifikováno ${s.upgraded} pol. · sekce ${s.sections} / hlavní ${s.mains} / podřízené ${s.subordinates} / neznámé ${s.unknowns}` +
+          (s.orphans > 0 ? ` · ${s.orphans} osiřelých downgradováno` : ''),
+      );
+    }
+    window.setTimeout(() => setReclassifyStatus(null), 6000);
+  };
 
   // Undo/Redo
   const { undoStack, redoStack } = useUndoStore();
@@ -1014,7 +1040,26 @@ export function ItemsTable({
             {undoStack.length > 0 && (
               <span className="text-xs text-text-muted tabular-nums">{undoStack.length}/{MAX_UNDO}</span>
             )}
+            {/* Re-classify all — ROW_CLASSIFICATION_ALGORITHM v1.1 §10.
+                Only enabled when the current sheet has at least one item
+                with persisted _rawCells (fresh imports post-rewrite).
+                Legacy items show the button disabled with a tooltip. */}
+            <button
+              onClick={handleReclassifyAll}
+              disabled={!reclassifyAvailable}
+              className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1 ml-1"
+              title={reclassifyAvailable
+                ? 'Znovu klasifikovat všechny řádky pomocí v1.1 klasifikátoru'
+                : 'Překlasifikace vyžaduje nový import (raw data nejsou uložena u starších položek)'
+              }
+            >
+              <Wand2 size={16} className="text-text-secondary w-[16px] h-[16px]" />
+              <span className="text-xs text-text-muted hidden sm:inline">Překlasifikovat</span>
+            </button>
           </div>
+          {reclassifyStatus && (
+            <p className="text-xs text-text-muted italic">{reclassifyStatus}</p>
+          )}
           {selectedIds.size > 0 && (
             <p className="text-sm font-medium text-accent-primary">
               Vybráno: {selectedIds.size}
