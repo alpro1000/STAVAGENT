@@ -190,7 +190,12 @@ PR 2 single-toolbar above-table решает §4.3.4 но не трогает г
 
 ---
 
-## 11. Classifier rewrite по спеке `docs/ROW_CLASSIFICATION_SPEC.md`
+## 11. Classifier rewrite по спеке `docs/ROW_CLASSIFICATION_SPEC.md` — ✅ RESOLVED (2026-04-23, v4.25.0)
+
+**Shipped:** Rewrite выполнен по спеке `rozpocet-registry/docs/ROW_CLASSIFICATION_ALGORITHM.md` v1.1 (не SPEC.md — спека переписана в ходе pre-implementation interview). Format-gated path (EstiCon/Komplet/RTSROZP) заменён на **universal column auto-detection + optional Typ-column fast-path**. PR #1006 (core module, 6 commits) + PR #1008/#1009 (integration + 87 tests, twin merge auto-dedup). Verified на 3 real fixtures: D6_202 + Kyšice + Veselí — **482 mains + 2097 subs + 70 sections + 0 orphans** across 2649 items. Follow-ups §14-17 ниже.
+
+<details>
+<summary>Original scope (pre-rewrite snapshot)</summary>
 
 Формат-aware детерминистический классификатор заменит текущий `classifyRows` (regex + эвристика) в `rowClassificationService.ts`. Full spec в `rozpocet-registry/docs/ROW_CLASSIFICATION_SPEC.md` с cross-link на baseline audit `ROW_CLASSIFICATION_CURRENT.md`.
 
@@ -210,6 +215,8 @@ PR 2 single-toolbar above-table решает §4.3.4 но не трогает г
 **Пререквизиты**: `ROW_CLASSIFICATION_SPEC.md` open questions (§Open questions 1-9) — нужен corpus реальных проблемных Excel'ей от пользователя для golden tests. Без corpus rewrite делается вслепую.
 
 **Блокирующая для**: п. 2 (каталожная цена, зависит от корректного main/subordinate split), п. 4 (фильтр импорта в Monolit — нужна надёжная классификация).
+
+</details>
 
 ---
 
@@ -325,21 +332,26 @@ cases (v2 не производит matching row для некоторого Par
 
 ---
 
-## Приоритизация — обновлённая после сессии 2026-04-23
+## Приоритизация — обновлённая после сессии 2026-04-23 (post-classifier-merge)
 
-1. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
-2. **П. 11** (classifier rewrite) — **блокирующая для п. 2 каталожная цена и п. 4 фильтр Monolit**. Ждёт corpus реальных Excel'ей от пользователя (ответ на open questions §ROW_CLASSIFICATION_SPEC.md).
-3. **П. 12** (read Poř. Č. from Excel) — делается вместе с п. 11.
-4. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
-5. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
-6. **П. 4** (фильтр импорта в Monolit) — после п. 11.
-7. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
-8. **П. 2** (каталожная цена) — новая feature, после п. 11.
-9. **П. 1** (document navigation) — UX improvement.
-10. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
-11. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
-12. **П. 7** (branch protection) — process decision, не код.
-13. **П. 3** — пересекается с п. 11, дроп после rewrite.
+**✅ Closed**: п. 11 (classifier rewrite) — shipped v4.25.0, follow-ups разнесены в §14-17.
+
+1. **П. 15** (CI workflow rozpocet-registry tests) — P2, **сделать в ближайшее время**. 1-2 часа. Protects 87-test investment от regressions. Без этого следующий PR может сломать classifier silently.
+2. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
+3. **П. 14** (persist ColumnMapping per Sheet) — P1, 0.5-1 день. Устраняет degradation "Překlasifikovat" — currently templateHint теряется.
+4. **П. 12** (read Poř. Č. from Excel) — частично решено в v4.25.0 (classifier extracts `por` в ClassifiedRowBase), остаётся проверить что parser пишет в `item.boqLineNumber` из Excel column, а не из счётчика. Быстрая проверка.
+5. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
+6. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
+7. **П. 4** (фильтр импорта в Monolit) — **разблокирован** после v4.25.0 classifier. Можно делать сразу.
+8. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
+9. **П. 2** (каталожная цена) — **разблокирован** после v4.25.0. Можно делать сразу.
+10. **П. 1** (document navigation) — UX improvement.
+11. **П. 16** (classificationConfidence type cleanup) — P3, 2-3 часа. Не срочно пока нет багов.
+12. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
+13. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
+14. **П. 17** (remove legacy classifyRows fallback) — P3, 1 час. Заблокировано временем — 2-3 недели после 2026-04-23 (т.е. ~2026-05-07).
+15. **П. 7** (branch protection) — process decision, не код.
+16. **П. 3** — **закрыто**, заменено v4.25.0 classifier + п. 14 persist mapping.
 
 PR 2 Variant B (single active-skupina toolbar above table) + compensation pack (subordinate visual distinction, vertical column dividers, sticky header fix, split Poř. column, hide empty monolit column) отправлен через ветку `claude/registry-toolbar-group-Qophc`. Двойной scroll сознательно принят как меньшее зло до реализации п. 10. PR-2-B / PR 3 (detail panel) / PR 4 (extend BulkActionsBar) / PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1.
 
