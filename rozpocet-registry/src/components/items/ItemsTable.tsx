@@ -1046,7 +1046,11 @@ export function ItemsTable({
           style={{ maxHeight: scrollMaxHeight }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
-          <thead style={{ position: 'sticky', top: 0, zIndex: 10, background: 'var(--flat-header-bg)' }}>
+          {/* thead itself can't be position:sticky reliably in Chrome (the
+              table layout treats <thead> as a row-group, not a positioning
+              context). Moving sticky + background to each <th> so the
+              header row stays visible when the scroll container scrolls. */}
+          <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} style={{ display: 'flex', width: '100%' }}>
                 {headerGroup.headers.map((header) => (
@@ -1058,7 +1062,14 @@ export function ItemsTable({
                         ? 'cursor-pointer select-none hover:bg-bg-secondary transition-colors'
                         : ''
                     }`}
-                    style={{ width: header.getSize(), position: 'relative', flexShrink: 0 }}
+                    style={{
+                      width: header.getSize(),
+                      position: 'sticky',
+                      top: 0,
+                      zIndex: 10,
+                      background: 'var(--flat-header-bg)',
+                      flexShrink: 0,
+                    }}
                     title={header.column.getCanSort() ? 'Klikněte pro seřazení' : undefined}
                   >
                     <div className="flex items-center gap-1">
