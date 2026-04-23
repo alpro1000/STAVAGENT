@@ -963,8 +963,8 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 flex-1 min-h-0 overflow-hidden w-full flex flex-col">
-        <div className="flex flex-col gap-6 min-w-0 flex-1 min-h-0">
+      <main className="container mx-auto px-4 py-8 flex-1 min-h-0 overflow-y-auto w-full">
+        <div className="grid gap-6 min-w-0">
           {/* Search Results */}
           {searchResults.length > 0 && (
             <div className="card">
@@ -1266,7 +1266,7 @@ function App() {
 
               {/* Selected Sheet Items */}
               {selectedProject && selectedSheet && (
-                <div className="flex flex-col gap-4 min-w-0 overflow-hidden flex-1 min-h-0">
+                <div className="space-y-4 min-w-0 overflow-hidden">
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-1">
                       <h2 className="text-lg font-semibold">

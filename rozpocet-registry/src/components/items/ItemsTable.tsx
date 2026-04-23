@@ -3,7 +3,7 @@
  * Tabulka položek s podporou třídění, výběru a filtrování podle skupiny
  */
 
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef, useEffect, useLayoutEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -965,10 +965,39 @@ export function ItemsTable({
     overscan: 20,
   });
 
-  // Scroll container height is now governed by a flex-1 chain from
-  // <main> down through the card, so the JS-driven maxHeight measurement
-  // used before is no longer needed — flex distributes the remaining
-  // viewport space automatically when AI panel / GroupManager expand.
+  // Fill the remaining viewport below everything above the scroll container
+  // (app header, project tabs, AI panel, GroupManager, filter controls, undo
+  // toolbar, skupina toolbar). Replaces the static calc(100vh - 260px) which
+  // assumed a fixed pre-card stack; AI panel and GroupManager expand / collapse
+  // and changed the real offset by 200–500 px. ResizeObserver on document.body
+  // re-measures whenever anything in the layout changes size.
+  const [scrollMaxHeight, setScrollMaxHeight] = useState<string>('calc(100vh - 260px)');
+
+  useLayoutEffect(() => {
+    const el = tableContainerRef.current;
+    if (!el) return;
+
+    const updateHeight = () => {
+      // Math.max(0, top) keeps the computed height stable when the user scrolls
+      // the page down — the container doesn't "grow" past the viewport.
+      const top = Math.max(0, el.getBoundingClientRect().top);
+      // 80 px below = card footer ("Zobrazeno X z Y") + page padding.
+      const available = window.innerHeight - top - 80;
+      const h = Math.max(400, available); // 400 px guardrail for short screens.
+      setScrollMaxHeight(`${h}px`);
+    };
+
+    updateHeight();
+
+    const ro = new ResizeObserver(updateHeight);
+    ro.observe(document.body);
+    window.addEventListener('resize', updateHeight);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
 
   if (items.length === 0) {
     return (
@@ -979,8 +1008,8 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full overflow-hidden flex-1 min-h-0 flex flex-col">
-      <div className="card flex-1 min-h-0 flex flex-col">
+    <div className="w-full overflow-hidden">
+      <div className="card">
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
           <div className="flex items-center gap-2">
@@ -1034,7 +1063,8 @@ export function ItemsTable({
 
         <div
           ref={tableContainerRef}
-          className="overflow-auto scrollbar-thin flex-1 min-h-0"
+          className="overflow-auto scrollbar-thin"
+          style={{ maxHeight: scrollMaxHeight }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
           {/* thead itself can't be position:sticky reliably in Chrome (the
