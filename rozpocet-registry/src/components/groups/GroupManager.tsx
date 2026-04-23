@@ -31,7 +31,21 @@ export function GroupManager() {
     getAllGroups, addCustomGroup, renameGroup, deleteGroup, getGroupItemCounts,
   } = useRegistryStore();
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('registry-groups-panel-expanded') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('registry-groups-panel-expanded', String(isExpanded));
+    } catch {
+      // ignore (storage unavailable / quota)
+    }
+  }, [isExpanded]);
   const [editingGroup, setEditingGroup] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
   const [newGroupValue, setNewGroupValue] = useState('');
