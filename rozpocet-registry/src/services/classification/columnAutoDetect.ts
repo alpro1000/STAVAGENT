@@ -94,53 +94,74 @@ function emptyMapping(dataStartRow: number = 0): ColumnMapping {
 }
 
 /**
+ * Track a cell tentatively flagged as a bare 'Cena' header — resolved after
+ * a two-row merge in scanHeaderPair when the subheader row disambiguates
+ * Jednotková vs Celkem.
+ */
+type CenaCandidate = { col: number };
+
+/**
  * Scan a single row for header keywords and return a partial mapping.
  * Returns null if fewer than HEADER_MIN_HITS cells matched.
+ *
+ * The bareCena output captures columns where only "Cena" appeared (no
+ * "jednotková"/"celkem" qualifier) — EstiCon uses this pattern where the
+ * next row holds subheaders. scanHeaderPair() resolves these candidates
+ * by scanning row+1.
  */
-function matchHeaderRow(row: unknown[]): Partial<ColumnMapping> | null {
+function matchHeaderRow(row: unknown[]): { mapping: Partial<ColumnMapping>; hits: number; bareCena: CenaCandidate[] } | null {
   const hit: Partial<ColumnMapping> = {};
+  const bareCena: CenaCandidate[] = [];
   let hits = 0;
 
   for (let colIdx = 0; colIdx < row.length; colIdx++) {
     const norm = normalize(row[colIdx]);
     if (!norm) continue;
 
-    // kod
-    if (hit.kod === undefined && (norm === 'kod' || norm === 'kód'.normalize('NFD').replace(/[̀-ͯ]/g, ''))) {
+    // kod / kód / kód položky / kód pol.
+    if (hit.kod === undefined && norm.startsWith('kod')) {
       hit.kod = colIdx; hits++;
       continue;
     }
-    // popis / název / text položky
+    // popis / název / název položky / text / text položky
     if (hit.popis === undefined && (
-      norm === 'popis' || norm === 'nazev' || norm === 'název'.normalize('NFD').replace(/[̀-ͯ]/g, '') ||
-      norm === 'text polozky' || norm === 'text'
+      norm.startsWith('popis') || norm.startsWith('nazev') || norm.startsWith('text')
     )) {
       hit.popis = colIdx; hits++;
       continue;
     }
-    // mj / jednotka
-    if (hit.mj === undefined && (norm === 'mj' || norm === 'm.j.' || norm === 'jednotka' || norm === 'j')) {
+    // mj / m.j. / jednotka / měrná jednotka
+    if (hit.mj === undefined && (
+      norm === 'mj' || norm === 'm.j.' || norm.startsWith('jednotka') || norm === 'j' ||
+      norm.startsWith('merna') || norm === 'm j'
+    )) {
       hit.mj = colIdx; hits++;
       continue;
     }
-    // mnozstvi / počet
-    if (hit.mnozstvi === undefined && (norm === 'mnozstvi' || norm === 'pocet')) {
+    // množství / počet
+    if (hit.mnozstvi === undefined && (norm.startsWith('mnozstvi') || norm === 'pocet' || norm === 'počet')) {
       hit.mnozstvi = colIdx; hits++;
       continue;
     }
-    // cena jednotková / j.cena
+    // cena jednotková (qualified) — includes 'j.cena' / 'jednotkova cena' / 'cena jedn*'
     if (hit.cenaJednotkova === undefined && (
       (norm.includes('cena') && (norm.includes('jedn') || norm.includes('j.'))) ||
-      norm === 'j.cena' || norm === 'jednotkova cena' || norm === 'j cena'
+      norm === 'j.cena' || norm.startsWith('jednotkova') || norm === 'j cena'
     )) {
       hit.cenaJednotkova = colIdx; hits++;
       continue;
     }
-    // cena celkem
+    // cena celkem (qualified)
     if (hit.cenaCelkem === undefined && (
       norm === 'cena celkem' || norm === 'celkem' || (norm.includes('cena') && norm.includes('celk'))
     )) {
       hit.cenaCelkem = colIdx; hits++;
+      continue;
+    }
+    // bare "cena" — ambiguous; queue for two-row resolution
+    if (norm === 'cena' && hit.cenaJednotkova === undefined && hit.cenaCelkem === undefined) {
+      bareCena.push({ col: colIdx });
+      hits++;
       continue;
     }
     // typ
@@ -148,30 +169,99 @@ function matchHeaderRow(row: unknown[]): Partial<ColumnMapping> | null {
       hit.typ = colIdx; hits++;
       continue;
     }
-    // Poř. číslo — 'pč' / 'por' / 'č' / 'poř.' / 'poř. číslo'
+    // Poř. číslo — 'pč' / 'por' / 'č' / 'poř.' / 'poř. číslo' / 'pořadové'
     if (hit.por === undefined && (
       norm === 'pc' || norm === 'por' || norm === 'c' ||
-      norm === 'por.' || norm === 'por. cislo' || norm === 'por cislo'
+      norm.startsWith('por.') || norm.startsWith('por cislo') || norm.startsWith('poradove')
     )) {
       hit.por = colIdx; hits++;
       continue;
     }
     // Cenová soustava
     if (hit.cenovaSoustava === undefined && (
-      norm === 'cenova soustava' || norm === 'cs' || norm === 'soustava'
+      norm.startsWith('cenova') || norm === 'cs' || norm === 'soustava'
     )) {
       hit.cenovaSoustava = colIdx; hits++;
       continue;
     }
     // Varianta (EstiCon)
-    if (hit.varianta === undefined && (norm === 'varianta' || norm === 'var')) {
+    if (hit.varianta === undefined && (norm.startsWith('varianta') || norm === 'var')) {
       hit.varianta = colIdx; hits++;
       continue;
     }
   }
 
   if (hits < HEADER_MIN_HITS) return null;
-  return hit;
+  return { mapping: hit, hits, bareCena };
+}
+
+/**
+ * Resolve EstiCon-style 2-row headers where primary row has "Cena" and
+ * subheader row has "Jednotková" / "Celkem" directly under it. Also
+ * scans for stray keywords in the subheader row to fill gaps.
+ *
+ * Returns the augmented mapping + the additional row offset consumed
+ * by the subheader (0 if no subheader was found).
+ */
+function resolveHeaderPair(
+  primaryResult: { mapping: Partial<ColumnMapping>; hits: number; bareCena: CenaCandidate[] },
+  subRow: unknown[] | undefined,
+): { mapping: Partial<ColumnMapping>; hits: number; subheaderConsumed: boolean } {
+  const { mapping, bareCena } = primaryResult;
+  let hits = primaryResult.hits;
+  if (!subRow || subRow.length === 0) {
+    return { mapping, hits, subheaderConsumed: false };
+  }
+
+  let resolvedAny = false;
+
+  // Resolve bare Cena columns against the subheader.
+  for (const cena of bareCena) {
+    const below = normalize(subRow[cena.col]);
+    if (below.startsWith('jedn')) {
+      if (mapping.cenaJednotkova === undefined) { mapping.cenaJednotkova = cena.col; resolvedAny = true; }
+    } else if (below.startsWith('celk')) {
+      if (mapping.cenaCelkem === undefined) { mapping.cenaCelkem = cena.col; resolvedAny = true; }
+    }
+  }
+
+  // Also look in subheader's adjacent columns for the OTHER cena value.
+  // EstiCon sometimes splits "Cena" across two columns: row 5 has 'Cena' at
+  // col 7, row 6 has 'Jednotková' at col 7 AND 'Celkem' at col 8.
+  for (let c = 0; c < subRow.length; c++) {
+    const below = normalize(subRow[c]);
+    if (!below) continue;
+    if (below.startsWith('jedn') && mapping.cenaJednotkova === undefined) {
+      mapping.cenaJednotkova = c; resolvedAny = true;
+    } else if (below.startsWith('celk') && mapping.cenaCelkem === undefined) {
+      mapping.cenaCelkem = c; resolvedAny = true;
+    }
+  }
+
+  if (resolvedAny) hits += 1; // bump confidence slightly for successful two-row merge
+  return { mapping, hits, subheaderConsumed: resolvedAny };
+}
+
+/**
+ * Detect whether a row is a "column-number" placeholder row that some
+ * producers (EstiCon) emit between the header and data — cells contain
+ * short integer strings '0','1','2',... mirroring column indices. These
+ * rows should be skipped when computing dataStartRow.
+ */
+function isColumnNumberRow(row: unknown[] | undefined): boolean {
+  if (!row || row.length === 0) return false;
+  let numeric = 0;
+  let nonEmpty = 0;
+  for (let i = 0; i < row.length; i++) {
+    const v = row[i];
+    if (v === '' || v === null || v === undefined) continue;
+    nonEmpty++;
+    const s = String(v).trim();
+    // Match only short ordinal tokens (0..99). Anything else (like a real
+    // data value) disqualifies the row.
+    if (/^[0-9]{1,2}$/.test(s) && Number(s) === i) numeric++;
+  }
+  return nonEmpty >= 3 && numeric >= 3 && numeric === nonEmpty;
 }
 
 /**
@@ -339,21 +429,31 @@ export function detectColumns(rows: unknown[][], templateHint: TemplateHint = nu
     // Hint didn't match — fall through.
   }
 
-  // Step 2: header-row scan
+  // Step 2: header-row scan. Two-row headers supported — some producers
+  // (EstiCon) put "Cena" on row N and "Jednotková"/"Celkem" subheaders on
+  // row N+1, and follow that with a column-number placeholder row
+  // ('0'|'1'|'2'...). dataStartRow must clear all header/sub-header noise.
   const scanDepth = Math.min(HEADER_SCAN_DEPTH, rows.length);
   for (let rowIdx = 0; rowIdx < scanDepth; rowIdx++) {
     const row = rows[rowIdx];
     if (!Array.isArray(row)) continue;
-    const match = matchHeaderRow(row);
-    if (!match || match.popis === undefined) continue;
-    const hits = Object.keys(match).filter(k => match[k as keyof ColumnMapping] !== undefined).length;
+    const primary = matchHeaderRow(row);
+    if (!primary || primary.mapping.popis === undefined) continue;
+
+    const subRow = rows[rowIdx + 1];
+    const resolved = resolveHeaderPair(primary, subRow);
+    let dataStartRow = rowIdx + 1 + (resolved.subheaderConsumed ? 1 : 0);
+
+    // Skip an optional column-number placeholder row.
+    if (isColumnNumberRow(rows[dataStartRow])) dataStartRow++;
+
     return {
       ...emptyMapping(),
-      ...match,
-      popis: match.popis,
+      ...resolved.mapping,
+      popis: resolved.mapping.popis!,
       headerRowIndex: rowIdx,
-      dataStartRow: rowIdx + 1,
-      detectionConfidence: Math.min(1.0, 0.5 + 0.1 * hits),
+      dataStartRow,
+      detectionConfidence: Math.min(1.0, 0.5 + 0.1 * resolved.hits),
       detectionSource: 'header-match',
     };
   }
