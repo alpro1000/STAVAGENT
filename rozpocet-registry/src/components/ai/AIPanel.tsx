@@ -17,7 +17,7 @@
  * LIGHT THEME - легкий читаемый стиль
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sparkles, Loader2, ChevronDown, ChevronUp, Zap, Power, Brain, Eraser } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
 import { useUndoableActions } from '../../hooks/useUndoableActions';
@@ -60,7 +60,21 @@ const LIGHT = {
 };
 
 export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIPanelProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('registry-ai-panel-expanded') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('registry-ai-panel-expanded', String(isExpanded));
+    } catch {
+      // ignore (storage unavailable / quota)
+    }
+  }, [isExpanded]);
   const [isClassifying, setIsClassifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
