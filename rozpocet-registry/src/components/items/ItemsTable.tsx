@@ -979,11 +979,8 @@ export function ItemsTable({
   }
 
   return (
-    <div
-      className="w-full flex flex-col"
-      style={{ height: 'clamp(800px, calc(200vh - 440px), 1800px)' }}
-    >
-      <div className="card flex flex-col" style={{ flex: '1 1 0%', minHeight: 0 }}>
+    <div className="w-full flex flex-col">
+      <div className="card flex flex-col">
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
           <div className="flex items-center gap-2">
@@ -1037,7 +1034,8 @@ export function ItemsTable({
 
         <div
           ref={tableContainerRef}
-          className="overflow-auto scrollbar-thin flex-1 min-h-0"
+          className="overflow-auto scrollbar-thin"
+          style={{ maxHeight: 'min(900px, calc(100vh - 240px))' }}
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
           {/* thead itself can't be position:sticky reliably in Chrome (the
