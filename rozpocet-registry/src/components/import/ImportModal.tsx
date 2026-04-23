@@ -12,6 +12,13 @@ import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/pa
 import { detectExcelStructure, detectAllSheetsStartRows, type DetectionResult } from '../../services/autoDetect/structureDetector';
 import { classifyItems, applyClassificationsWithCascade } from '../../services/classification/classificationService';
 import { classifyRows } from '../../services/classification/rowClassificationService';
+import { classifySheet } from '../../services/classification/rowClassifierV2';
+import {
+  extractRawRows,
+  getTemplateHint,
+  mergeV2IntoParsedItems,
+  summarizeV2Result,
+} from '../../services/classification/importAdapter';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
@@ -323,9 +330,26 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
       }
 
       // Row classification FIRST: assign rowRole, parentItemId, boqLineNumber
-      // (must run before cascade so cascade can use rowRole)
+      // (must run before cascade so cascade can use rowRole).
+      // Legacy classifier runs to seed all fields; v1.1 classifier then
+      // upgrades in place using raw rows from the workbook so rowRole /
+      // parentItemId / sectionId / originalTyp / _rawCells are populated
+      // deterministically for fresh imports. Any parser items without a
+      // v2 match (alignment edge cases) keep the legacy classification.
       const rowClassification = classifyRows(result.items);
       const classifiedRowItems = rowClassification.items;
+
+      const v2RawRows = extractRawRows(workbook, selectedSheet);
+      const v2Result = classifySheet(v2RawRows, {
+        sheetName: selectedSheet,
+        templateHint: getTemplateHint(selectedTemplate.metadata.type),
+        preserveRawCells: true,
+      });
+      mergeV2IntoParsedItems(classifiedRowItems, v2Result);
+      const v2Summary = summarizeV2Result(v2Result, selectedSheet);
+      if (v2Summary) {
+        setWarnings(prev => [...prev, v2Summary]);
+      }
 
       // Auto-classification (if enabled)
       if (autoClassify) {
@@ -468,9 +492,23 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
             allWarnings.push(...result.warnings.map(w => `[${sheetName}] ${w}`));
           }
 
-          // Row classification FIRST (so cascade can use rowRole)
+          // Row classification FIRST (so cascade can use rowRole).
+          // Legacy first, v1.1 upgrade in place — same pattern as
+          // single-sheet branch above.
           const rowClassification = classifyRows(result.items);
           const classifiedRowItems = rowClassification.items;
+
+          const v2RawRows = extractRawRows(workbook, sheetName);
+          const v2Result = classifySheet(v2RawRows, {
+            sheetName,
+            templateHint: getTemplateHint(selectedTemplate.metadata.type),
+            preserveRawCells: true,
+          });
+          mergeV2IntoParsedItems(classifiedRowItems, v2Result);
+          const v2Summary = summarizeV2Result(v2Result, sheetName);
+          if (v2Summary) {
+            allWarnings.push(v2Summary);
+          }
 
           // Auto-classification (if enabled)
           if (autoClassify) {

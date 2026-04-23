@@ -19,6 +19,8 @@ import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
 import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
+import { classifySheet } from '../services/classification/rowClassifierV2';
+import { mergeV2IntoParsedItems } from '../services/classification/importAdapter';
 import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback } from '../services/portalAutoSync';
 import { writeBackDOV } from '../services/dovWriteBack';
 import { fetchMonolithData } from '../services/portalMonolithFetch';
@@ -69,6 +71,30 @@ interface RegistryState {
   removeSheet: (projectId: string, sheetId: string) => void;
   setSelectedSheet: (projectId: string | null, sheetId: string | null) => void;
   getSheet: (projectId: string, sheetId: string) => Sheet | undefined;
+  /**
+   * Re-run the v1.1 classifier on an existing sheet using each item's
+   * persisted `_rawCells`. Only items imported after commit 6c13c34 have
+   * raw cells; legacy items are skipped and the action returns
+   * `reason: 'no-raw-cells'`. Mutates items in place (rowRole /
+   * parentItemId / sectionId / originalTyp / classificationConfidence /
+   * classificationSource / _rawCells) and returns per-sheet stats.
+   */
+  reclassifySheet: (
+    projectId: string,
+    sheetId: string,
+  ) => {
+    success: boolean;
+    reason?: 'no-sheet' | 'no-raw-cells' | 'empty';
+    stats?: {
+      upgraded: number;
+      skipped: number;
+      orphans: number;
+      sections: number;
+      mains: number;
+      subordinates: number;
+      unknowns: number;
+    };
+  };
 
   // Действия с items (теперь на уровне листа)
   setItemSkupina: (projectId: string, sheetId: string, itemId: string, skupina: string) => void;
@@ -363,6 +389,68 @@ export const useRegistryStore = create<RegistryState>()(
       getSheet: (projectId, sheetId) => {
         const project = get().projects.find(p => p.id === projectId);
         return project?.sheets.find(s => s.id === sheetId);
+      },
+
+      reclassifySheet: (projectId, sheetId) => {
+        const project = get().projects.find(p => p.id === projectId);
+        const sheet = project?.sheets.find(s => s.id === sheetId);
+        if (!sheet) return { success: false, reason: 'no-sheet' };
+        if (sheet.items.length === 0) return { success: false, reason: 'empty' };
+
+        const itemsWithRaw = sheet.items.filter(i => i._rawCells !== undefined);
+        if (itemsWithRaw.length === 0) return { success: false, reason: 'no-raw-cells' };
+
+        // Reconstruct a dense rows[] from each item's _rawCells indexed by
+        // source_row_index. Rows without a classified item stay empty — the
+        // classifier will skip them per edge §6.8. detectColumns will fall
+        // back to content heuristics (headers were dropped by the parser at
+        // import time; persisting ColumnMapping per sheet is follow-up work).
+        const maxIdx = Math.max(
+          0,
+          ...itemsWithRaw.map(i => i.source_row_index ?? 0),
+        );
+        const rows: unknown[][] = Array.from({ length: maxIdx + 1 }, () => []);
+        for (const item of itemsWithRaw) {
+          if (item.source_row_index !== undefined && item._rawCells) {
+            rows[item.source_row_index] = item._rawCells.slice();
+          }
+        }
+
+        // Run classifier. Clone items first so the merge can overwrite in
+        // place without leaking mutations to zustand's pre-set snapshot.
+        const clonedItems = sheet.items.map(it => ({ ...it }));
+        const v2 = classifySheet(rows, {
+          sheetName: sheet.name,
+          templateHint: null,
+          preserveRawCells: false, // items already have _rawCells from import
+        });
+        const merge = mergeV2IntoParsedItems(clonedItems, v2);
+
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((s) => {
+                if (s.id !== sheetId) return s;
+                return { ...s, items: clonedItems };
+              }),
+            };
+          }),
+        }));
+
+        return {
+          success: true,
+          stats: {
+            upgraded: merge.upgraded,
+            skipped: merge.unmatched,
+            orphans: v2.orphanCount,
+            sections: v2.sectionCount,
+            mains: v2.mainCount,
+            subordinates: v2.subordinateCount,
+            unknowns: v2.unknownCount,
+          },
+        };
       },
 
       // Items (работа на уровне листа)
