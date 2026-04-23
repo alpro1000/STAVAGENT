@@ -3,7 +3,7 @@
  * Tabulka položek s podporou třídění, výběru a filtrování podle skupiny
  */
 
-import { useMemo, useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -490,6 +490,15 @@ export function ItemsTable({
     };
   }, [items]);
 
+  // Only render the monolit indicator column when at least one item in
+  // the sheet has monolith_payload — otherwise the column shows up as
+  // a 28-px-wide empty strip next to Poř. Č. for sheets that don't use
+  // Monolit integration at all.
+  const hasAnyMonolitData = useMemo(
+    () => items.some((item) => item.monolith_payload),
+    [items]
+  );
+
   const columns = useMemo(
     () => [
       // Checkbox (для массовых операций) - компактный.
@@ -558,7 +567,10 @@ export function ItemsTable({
 
       // Monolit indicator — shows when item has calculation data from Monolit-Planner
       // Color reflects conflict severity: green=match, blue=info, amber=warning, red=conflict
-      columnHelper.display({
+      // Column is only included when at least one item in this sheet has a
+      // monolith_payload; otherwise the 28 px strip shows as an empty column
+      // next to Poř. Č. on sheets that don't use Monolit integration.
+      ...(hasAnyMonolitData ? [columnHelper.display({
         id: 'monolit',
         header: '',
         cell: ({ row }) => {
@@ -613,7 +625,7 @@ export function ItemsTable({
         },
         size: 28,
         enableResizing: false,
-      }),
+      })] : []),
 
       // Poř. Č. — ordinal from the imported BOQ. Main rows only
       // (subordinate / section / unknown stay empty per spec).
@@ -893,7 +905,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, filterGroups, toggleGroupFilter, selectAllGroups, selectOnlyGroup, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, filterGroups, toggleGroupFilter, selectAllGroups, selectOnlyGroup, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem, hasAnyMonolitData, conflictMap]
   );
 
   const table = useReactTable({
@@ -953,39 +965,10 @@ export function ItemsTable({
     overscan: 20,
   });
 
-  // Fill the remaining viewport below everything above the scroll container
-  // (app header, project tabs, AI panel, GroupManager, filter controls, undo
-  // toolbar, skupina toolbar). Replaces the static calc(100vh - 260px) which
-  // assumed a fixed pre-card stack; AI panel and GroupManager expand / collapse
-  // and changed the real offset by 200–500 px. ResizeObserver on document.body
-  // re-measures whenever anything in the layout changes size.
-  const [scrollMaxHeight, setScrollMaxHeight] = useState<string>('calc(100vh - 260px)');
-
-  useLayoutEffect(() => {
-    const el = tableContainerRef.current;
-    if (!el) return;
-
-    const updateHeight = () => {
-      // Math.max(0, top) keeps the computed height stable when the user scrolls
-      // the page down — the container doesn't "grow" past the viewport.
-      const top = Math.max(0, el.getBoundingClientRect().top);
-      // 80 px below = card footer ("Zobrazeno X z Y") + page padding.
-      const available = window.innerHeight - top - 80;
-      const h = Math.max(400, available); // 400 px guardrail for short screens.
-      setScrollMaxHeight(`${h}px`);
-    };
-
-    updateHeight();
-
-    const ro = new ResizeObserver(updateHeight);
-    ro.observe(document.body);
-    window.addEventListener('resize', updateHeight);
-
-    return () => {
-      ro.disconnect();
-      window.removeEventListener('resize', updateHeight);
-    };
-  }, []);
+  // Scroll container height is now governed by a flex-1 chain from
+  // <main> down through the card, so the JS-driven maxHeight measurement
+  // used before is no longer needed — flex distributes the remaining
+  // viewport space automatically when AI panel / GroupManager expand.
 
   if (items.length === 0) {
     return (
@@ -996,8 +979,8 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full overflow-hidden">
-      <div className="card">
+    <div className="w-full overflow-hidden flex-1 min-h-0 flex flex-col">
+      <div className="card flex-1 min-h-0 flex flex-col">
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
           <div className="flex items-center gap-2">
@@ -1051,8 +1034,7 @@ export function ItemsTable({
 
         <div
           ref={tableContainerRef}
-          className="overflow-auto scrollbar-thin"
-          style={{ maxHeight: scrollMaxHeight }}
+          className="overflow-auto scrollbar-thin flex-1 min-h-0"
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
           {/* thead itself can't be position:sticky reliably in Chrome (the
