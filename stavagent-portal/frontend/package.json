@@ -15,11 +15,11 @@
   "dependencies": {
     "@stavagent/portal-shared": "file:../shared",
     "@tanstack/react-query": "^5.17.9",
-    "axios": "^1.6.5",
+    "axios": "^1.15.2",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.9.5",
+    "react-router-dom": "^7.14.2",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
