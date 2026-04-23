@@ -237,6 +237,94 @@ Fix `b5db134` перенёс `position: sticky; top: 0` с `<thead>` на `<th>`
 
 ---
 
+## 14. Persist ColumnMapping per Sheet (P1) — follow-up из review PR #1009
+
+При нажатии «Překlasifikovat» в `ItemsTable` `reclassifySheet()` вызывает
+`classifySheet(rows, { templateHint: null, preserveRawCells: false })` —
+templateHint теряется, classifier падает на content-heuristic. Sparse
+reconstructed rows не содержат header row (parser его выбросил при import),
+поэтому detection не находит header-match и качество re-classification хуже
+первичного импорта. Edge case specifically for EstiCon — если первый import
+шёл по шаблону `esticon` (pre-filled column positions), re-run теряет это
+знание.
+
+Fix: сохранять либо полный `ColumnMapping` из первого detectColumns(),
+либо `templateHint` string в `Sheet.config` при import; читать обратно в
+`reclassifySheet()`. Также пересмотреть: поскольку `_rawCells` уже есть
+per-item, может быть проще сохранять `templateHint` + `headerRowCells`
+отдельно.
+
+Размер: 0.5-1 день.
+
+---
+
+## 15. CI workflow для rozpocet-registry tests (P2) — **сделать в ближайшее время**
+
+87 тестов passed локально (`npm run test:run`), но **нет автоматического
+gate на PR'ах**. В `.github/workflows/` нет файла под registry — существующий
+`test-coverage.yml` и compagnons покрывают URS_MATCHER, Monolit-Planner,
+concrete-agent. Следующий PR может случайно сломать classifier, и никто не
+узнает до smoke test в dev.
+
+Fix: создать `.github/workflows/rozpocet-registry-test.yml` по паттерну
+существующих CI:
+
+- триггер: `pull_request` с `paths: rozpocet-registry/**`
+- steps: `npm ci` → `npm run test:run` → fail-on-red
+- не нужен jsdom / browser (тесты pure TS в environment='node')
+
+Размер: 1-2 часа.
+
+---
+
+## 16. classificationConfidence type cleanup (P3)
+
+Текущий type в `ParsedItem.classificationConfidence`:
+
+```ts
+classificationConfidence?: number | 'high' | 'medium' | 'low';
+```
+
+Union string|number требует `typeof === 'number'` branch у всех consumers.
+Legacy код писал строки ('high'/'medium'/'low'), v1.1 classifier пишет
+numeric 0.0-1.0. `unifiedMapper.mapConfidenceToNumber` уже обрабатывает оба
+варианта, но если какой-то UI-компонент читает поле и сравнивает со строкой
+без проверки типа — silent misbehavior (числа не будут == `'high'`).
+
+Fix:
+
+1. `grep -rn "classificationConfidence" rozpocet-registry/src/` — составить
+   список consumers.
+2. Убедиться что каждый либо проверяет `typeof`, либо вызывает helper.
+3. Опционально: переименовать numeric поле в `classificationScore: number`
+   + оставить легаси `classificationConfidence?: 'high'|'medium'|'low'`
+   под старым name для обратной совместимости (tech debt, но без риска
+   silent bugs).
+
+Размер: 2-3 часа. Не срочно пока нет багов.
+
+---
+
+## 17. Remove legacy classifyRows fallback (P3) — отложено
+
+В `ImportModal.tsx:327, 472` на каждый импорт сначала запускается legacy
+`classifyRows(result.items)`, затем v1.1 `classifySheet()` upgrade'ит
+поля additive. Legacy остался как safety net на случай alignment edge
+cases (v2 не производит matching row для некоторого ParsedItem).
+
+После 2-3 недель production confirm'а что v2 strictly better:
+
+1. Удалить импорт `classifyRows` + вызов на обоих branches.
+2. Удалить сам файл `rowClassificationService.ts` (оставить только
+   `isMainCodeExported` который нужен `registryStore.ts:21` для других
+   целей — или перенести этот хелпер в другой модуль).
+3. Проверить что `unmatched` count в mergeV2IntoParsedItems остаётся
+   околонулевым на реальных импортах.
+
+Размер: 1 час. Заблокировано временем — 2-3 недели после 2026-04-23.
+
+---
+
 ## Приоритизация — обновлённая после сессии 2026-04-23
 
 1. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
