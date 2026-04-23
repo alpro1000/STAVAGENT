@@ -615,58 +615,67 @@ export function ItemsTable({
         enableResizing: false,
       }),
 
-      // Poř. (BOQ line number + expand/collapse toggle) - moved left
+      // Poř. Č. — ordinal from the imported BOQ. Main rows only
+      // (subordinate / section / unknown stay empty per spec).
       columnHelper.accessor('boqLineNumber', {
-        header: 'Poř.',
+        header: 'Poř. Č.',
         cell: (info) => {
           const item = info.row.original;
           const value = info.getValue();
+          if (item.rowRole !== 'main') return null;
+          if (value === null || value === undefined) return null;
+          return (
+            <span className="font-mono text-[11px] text-text-muted tabular-nums">
+              {value}
+            </span>
+          );
+        },
+        size: 60,
+        minSize: 40,
+        maxSize: 100,
+        enableSorting: true,
+        sortingFn: 'basic',
+      }),
+
+      // Expand — chevron-only column for hierarchy toggle.
+      // Sits to the right of Poř. Č. so the ordinal is visible even on
+      // collapsed rows. Renders:
+      //  - chevron + +N badge on main rows that have subordinates
+      //  - ↳ indent marker on subordinate rows
+      //  - nothing on other rows
+      columnHelper.display({
+        id: 'expand',
+        header: '',
+        cell: ({ row }) => {
+          const item = row.original;
           const subCount = subordinateCounts.get(item.id) || 0;
           const isExpanded = expandedMainIds.has(item.id);
 
-          // Main row with subordinates — show toggle
           if (item.rowRole === 'main' && subCount > 0) {
             return (
               <button
                 onClick={(e) => { e.stopPropagation(); toggleExpanded(item.id); }}
-                className="flex items-center gap-0.5 font-mono text-xs tabular-nums hover:text-accent-primary transition-colors"
+                className="flex items-center gap-0.5 font-mono tabular-nums hover:text-accent-primary transition-colors"
                 title={isExpanded ? 'Sbalit podřízené řádky' : `Rozbalit ${subCount} podřízených řádků`}
               >
                 {isExpanded
                   ? <ChevronDown size={11} className="text-text-muted flex-shrink-0 w-[11px] h-[11px]" />
                   : <ChevronRight size={11} className="text-text-muted flex-shrink-0 w-[11px] h-[11px]" />}
-                <span className="text-text-muted text-[11px]">{value}</span>
                 <span className="text-text-muted opacity-60 text-[9px]">+{subCount}</span>
               </button>
             );
           }
 
-          // Subordinate row — indent marker + its own ordinal so every
-          // row in the Poř. column carries a visible number (the parent
-          // main row is identified by the chevron + subCount badge).
           if (item.rowRole === 'subordinate') {
             return (
-              <span className="flex items-center gap-0.5 pl-2 font-mono tabular-nums select-none">
-                <span className="text-[10px] text-text-muted">↳</span>
-                {value ? (
-                  <span className="text-[11px] text-text-muted">{value}</span>
-                ) : null}
-              </span>
+              <span className="text-[10px] text-text-muted select-none">↳</span>
             );
           }
 
-          // Main row without subordinates, section, or unknown
-          return value ? (
-            <span className="font-mono text-[11px] text-text-muted tabular-nums pl-2">
-              {value}
-            </span>
-          ) : null;
+          return null;
         },
-        size: 50,
-        minSize: 40,
-        maxSize: 100,
-        enableSorting: true,
-        sortingFn: 'basic',
+        size: 36,
+        enableResizing: false,
       }),
 
       // Kód
