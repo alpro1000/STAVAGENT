@@ -979,8 +979,11 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full overflow-hidden flex-1 flex flex-col min-h-[60vh]">
-      <div className="card flex-1 min-h-0 flex flex-col">
+    <div
+      className="w-full flex flex-col"
+      style={{ height: 'clamp(400px, calc(100vh - 220px), 900px)' }}
+    >
+      <div className="card flex flex-col" style={{ flex: '1 1 0%', minHeight: 0 }}>
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
           <div className="flex items-center gap-2">
