@@ -338,7 +338,10 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
       </div>
 
       {isExpanded && (
-        <div className="mt-4 space-y-4">
+        <div
+          className="mt-4 space-y-4 overflow-y-auto scrollbar-thin"
+          style={{ maxHeight: 'min(50vh, 500px)' }}
+        >
           {/* AI Toggle */}
           <div
             className="flex items-center gap-3 p-3 rounded-lg border"

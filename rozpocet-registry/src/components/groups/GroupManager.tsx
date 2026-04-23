@@ -181,7 +181,10 @@ export function GroupManager() {
       </div>
 
       {isExpanded && (
-        <div className="mt-4 space-y-3">
+        <div
+          className="mt-4 space-y-3 overflow-y-auto scrollbar-thin"
+          style={{ maxHeight: 'min(50vh, 500px)' }}
+        >
           {/* Action feedback */}
           {lastAction && (
             <div className="text-sm text-green-400 bg-green-900/20 px-3 py-2 rounded">
