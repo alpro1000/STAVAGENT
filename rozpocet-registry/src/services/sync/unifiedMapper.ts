@@ -186,11 +186,19 @@ export function mapUnifiedToItems(
 // ============================================================================
 
 /**
- * Convert confidence string to number (0-100)
+ * Convert confidence to number (0-100).
+ * Accepts legacy string buckets ('high'|'medium'|'low') OR new numeric 0.0-1.0
+ * scores written by ROW_CLASSIFICATION_ALGORITHM v1.1 classifier. Numeric 0-1
+ * inputs are scaled to 0-100 so the downstream UnifiedItem contract (0-100
+ * percentage) stays unchanged.
  */
 function mapConfidenceToNumber(
-  confidence?: 'high' | 'medium' | 'low'
+  confidence?: number | 'high' | 'medium' | 'low'
 ): number | null {
+  if (typeof confidence === 'number') {
+    // v1.1 classifier scores: 0.0 — 1.0 → 0 — 100
+    return Math.round(Math.max(0, Math.min(1, confidence)) * 100);
+  }
   switch (confidence) {
     case 'high':
       return 90;

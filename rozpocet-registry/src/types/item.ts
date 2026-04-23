@@ -32,8 +32,37 @@ export interface ParsedItem {
   subordinateType?: 'repeat' | 'note' | 'calculation' | 'other';
   parentItemId?: string | null;  // ID of parent main item (for subordinate rows)
   boqLineNumber?: number | null; // Sequential BOQ line number (main items only)
-  classificationConfidence?: 'high' | 'medium' | 'low';
+  // Legacy bucket ('high'|'medium'|'low') OR new numeric 0.0-1.0 score per
+  // ROW_CLASSIFICATION_ALGORITHM v1.1. Old imports remain on string buckets;
+  // fresh imports after classifier rewrite write numeric confidence.
+  classificationConfidence?: number | 'high' | 'medium' | 'low';
   classificationWarnings?: string[];
+
+  // New fields from ROW_CLASSIFICATION_ALGORITHM v1.1 (all optional — legacy
+  // items in IndexedDB have them undefined; UI fallbacks keep working).
+  /** Groups multiple main rows under one section header for future skupina inheritance. */
+  sectionId?: string | null;
+  /** Producer hint inferred from column auto-detection. Not a gate for classification. */
+  source_format?: 'EstiCon' | 'Komplet' | 'RTSROZP' | null;
+  /** Original Excel row index (0-based) for debug + re-classify. */
+  source_row_index?: number;
+  /** Raw Typ column value when present (e.g. 'SD', 'K', 'PP'). Preserves traceability. */
+  originalTyp?: string | null;
+  /** Poř. číslo from source (main items only). */
+  por?: number | null;
+  /** Cenová soustava per item ('OTSKP 2025', 'CS ÚRS 2025 02'...). */
+  cenovaSoustava?: string | null;
+  /** Varianta column — EstiCon only ('kn', 'pvh'...). */
+  varianta?: string | null;
+  /** Which classifier path produced rowRole. 'rules' = legacy pre-rewrite classifier. */
+  classificationSource?: 'typ-column' | 'content-heuristic' | 'ai-fallback' | 'rules';
+  /**
+   * Raw Excel row cells captured at import time. Enables the "Re-classify all"
+   * button to reconstruct classification from scratch without re-reading the
+   * .xlsx file. Populated only for items imported after the classifier rewrite;
+   * legacy items have this undefined and cannot be re-classified in place.
+   */
+  _rawCells?: unknown[];
 
   // Portal PositionInstance link (for DOV write-back)
   position_instance_id?: string | null;
