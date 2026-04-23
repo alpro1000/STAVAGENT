@@ -674,6 +674,7 @@ router.post('/import-from-registry', async (req, res) => {
           insertErrors.push({ kod: item.kod, error: 'Missing object_id (sheet create failed)' });
           continue;
         }
+        await client.query('SAVEPOINT insert_row_basic');
         try {
           await client.query(
             `INSERT INTO portal_positions (
@@ -693,10 +694,18 @@ router.post('/import-from-registry', async (req, res) => {
               item.cenaCelkem != null ? Number(item.cenaCelkem) : null,
             ]
           );
+          await client.query('RELEASE SAVEPOINT insert_row_basic');
           totalItems++;
         } catch (insertErr) {
+          await client.query('ROLLBACK TO SAVEPOINT insert_row_basic').catch(() => {});
           console.warn(`[Integration] Basic INSERT failed for ${item.kod}: ${insertErr.message}`);
-          insertErrors.push({ kod: item.kod, error: insertErr.message });
+          insertErrors.push({
+            kod: item.kod,
+            stage: 'insert_basic',
+            error: insertErr.message,
+            code: insertErr.code,
+            column: insertErr.column,
+          });
         }
       }
     } else {
@@ -730,65 +739,91 @@ router.post('/import-from-registry', async (req, res) => {
       }
 
       // Step 3: UPDATE existing positions (individual — preserves position_instance_id)
+      // Each UPDATE runs inside its own SAVEPOINT so one bad row (e.g. skupina
+      // exceeding VARCHAR(50), row_index out of range, FK drift) does not
+      // abort the outer transaction and cascade "current transaction is
+      // aborted" errors across every subsequent INSERT. The row is logged
+      // as a partial-success failure and sync continues.
       for (const { item, itemTov, dovPayload, dbObjectId, sheetName, itemIdx, existingRow, registryItemId } of toUpdate) {
-        let result;
-        if (hasPhase8Columns) {
-          result = await client.query(
-            `UPDATE portal_positions
-             SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
-                 cena_jednotkova = $6, cena_celkem = $7,
-                 tov_labor = $8, tov_machinery = $9, tov_materials = $10,
-                 dov_payload = COALESCE($11, dov_payload),
-                 sheet_name = $12, row_index = $13, skupina = $14,
-                 last_sync_from = 'registry', last_sync_at = NOW(),
-                 updated_by = 'registry_sync', updated_at = NOW()
-             WHERE position_instance_id = $15
-             RETURNING position_instance_id, monolith_payload`,
-            [
-              dbObjectId,
-              item.kod || '', item.popis || '',
-              item.mnozstvi || 0, item.mj || '',
-              item.cenaJednotkova || 0, item.cenaCelkem || 0,
-              JSON.stringify(itemTov.labor || []),
-              JSON.stringify(itemTov.machinery || []),
-              JSON.stringify(itemTov.materials || []),
-              dovPayload,
-              sheetName, itemIdx, item.skupina || null,
-              existingRow.position_instance_id
-            ]
-          );
-        } else {
-          result = await client.query(
-            `UPDATE portal_positions
-             SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
-                 cena_jednotkova = $6, cena_celkem = $7,
-                 tov_labor = $8, tov_machinery = $9, tov_materials = $10,
-                 last_sync_from = 'registry', last_sync_at = NOW(), updated_at = NOW()
-             WHERE position_id = $11
-             RETURNING position_id AS position_instance_id`,
-            [
-              dbObjectId,
-              item.kod || '', item.popis || '',
-              item.mnozstvi || 0, item.mj || '',
-              item.cenaJednotkova || 0, item.cenaCelkem || 0,
-              JSON.stringify(itemTov.labor || []),
-              JSON.stringify(itemTov.machinery || []),
-              JSON.stringify(itemTov.materials || []),
-              existingRow.position_id
-            ]
-          );
-        }
-        updatedItems++;
-        totalItems++;
-
-        if (registryItemId && result.rows[0]?.position_instance_id) {
-          const row = result.rows[0];
-          const mapping = { registry_item_id: registryItemId, position_instance_id: row.position_instance_id };
-          if (row.monolith_payload) {
-            mapping.monolith_payload = typeof row.monolith_payload === 'string'
-              ? JSON.parse(row.monolith_payload) : row.monolith_payload;
+        await client.query('SAVEPOINT update_row');
+        try {
+          let result;
+          if (hasPhase8Columns) {
+            result = await client.query(
+              `UPDATE portal_positions
+               SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
+                   cena_jednotkova = $6, cena_celkem = $7,
+                   tov_labor = $8, tov_machinery = $9, tov_materials = $10,
+                   dov_payload = COALESCE($11, dov_payload),
+                   sheet_name = $12, row_index = $13, skupina = $14,
+                   last_sync_from = 'registry', last_sync_at = NOW(),
+                   updated_by = 'registry_sync', updated_at = NOW()
+               WHERE position_instance_id = $15
+               RETURNING position_instance_id, monolith_payload`,
+              [
+                dbObjectId,
+                (item.kod || '').toString().slice(0, 100),
+                item.popis || '',
+                item.mnozstvi || 0,
+                (item.mj || '').toString().slice(0, 50),
+                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                JSON.stringify(itemTov.labor || []),
+                JSON.stringify(itemTov.machinery || []),
+                JSON.stringify(itemTov.materials || []),
+                dovPayload,
+                (sheetName || '').toString().slice(0, 255),
+                Number.isFinite(itemIdx) ? itemIdx : 0,
+                item.skupina ? item.skupina.toString().slice(0, 50) : null,
+                existingRow.position_instance_id
+              ]
+            );
+          } else {
+            result = await client.query(
+              `UPDATE portal_positions
+               SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
+                   cena_jednotkova = $6, cena_celkem = $7,
+                   tov_labor = $8, tov_machinery = $9, tov_materials = $10,
+                   last_sync_from = 'registry', last_sync_at = NOW(), updated_at = NOW()
+               WHERE position_id = $11
+               RETURNING position_id AS position_instance_id`,
+              [
+                dbObjectId,
+                (item.kod || '').toString().slice(0, 100),
+                item.popis || '',
+                item.mnozstvi || 0,
+                (item.mj || '').toString().slice(0, 50),
+                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                JSON.stringify(itemTov.labor || []),
+                JSON.stringify(itemTov.machinery || []),
+                JSON.stringify(itemTov.materials || []),
+                existingRow.position_id
+              ]
+            );
           }
-          instanceMapping.push(mapping);
+          await client.query('RELEASE SAVEPOINT update_row');
+          updatedItems++;
+          totalItems++;
+
+          if (registryItemId && result.rows[0]?.position_instance_id) {
+            const row = result.rows[0];
+            const mapping = { registry_item_id: registryItemId, position_instance_id: row.position_instance_id };
+            if (row.monolith_payload) {
+              mapping.monolith_payload = typeof row.monolith_payload === 'string'
+                ? JSON.parse(row.monolith_payload) : row.monolith_payload;
+            }
+            instanceMapping.push(mapping);
+          }
+        } catch (updateErr) {
+          await client.query('ROLLBACK TO SAVEPOINT update_row').catch(() => {});
+          console.warn(`[Integration] UPDATE failed for ${registryItemId || item.kod}: ${updateErr.message}`);
+          insertErrors.push({
+            registry_item_id: registryItemId,
+            kod: item.kod,
+            stage: 'update',
+            error: updateErr.message,
+            code: updateErr.code,
+            column: updateErr.column,
+          });
         }
       }
 
@@ -800,6 +835,7 @@ router.post('/import-from-registry', async (req, res) => {
             insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: 'Missing object_id' });
             continue;
           }
+          await client.query('SAVEPOINT insert_row');
           try {
             const result = await client.query(
               `INSERT INTO portal_positions (
@@ -832,9 +868,10 @@ router.post('/import-from-registry', async (req, res) => {
                 registryItemId,
                 (sheetName || '').toString().slice(0, 255),
                 Number.isFinite(itemIdx) ? itemIdx : 0,
-                item.skupina || null,
+                item.skupina ? item.skupina.toString().slice(0, 50) : null,
               ]
             );
+            await client.query('RELEASE SAVEPOINT insert_row');
             totalItems++;
             if (registryItemId && result.rows[0]?.position_instance_id) {
               instanceMapping.push({
@@ -843,8 +880,16 @@ router.post('/import-from-registry', async (req, res) => {
               });
             }
           } catch (insertErr) {
+            await client.query('ROLLBACK TO SAVEPOINT insert_row').catch(() => {});
             console.warn(`[Integration] Failed to insert position ${registryItemId || item.kod}: ${insertErr.message}`);
-            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: insertErr.message });
+            insertErrors.push({
+              registry_item_id: registryItemId,
+              kod: item.kod,
+              stage: 'insert',
+              error: insertErr.message,
+              code: insertErr.code,
+              column: insertErr.column,
+            });
           }
         }
       } else {
@@ -855,6 +900,7 @@ router.post('/import-from-registry', async (req, res) => {
             insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: 'Missing object_id' });
             continue;
           }
+          await client.query('SAVEPOINT insert_row_fallback');
           try {
             const result = await client.query(
               `INSERT INTO portal_positions (
@@ -882,6 +928,7 @@ router.post('/import-from-registry', async (req, res) => {
                 registryItemId,
               ]
             );
+            await client.query('RELEASE SAVEPOINT insert_row_fallback');
             totalItems++;
             if (registryItemId && result.rows[0]?.position_instance_id) {
               instanceMapping.push({
@@ -890,8 +937,16 @@ router.post('/import-from-registry', async (req, res) => {
               });
             }
           } catch (insertErr) {
+            await client.query('ROLLBACK TO SAVEPOINT insert_row_fallback').catch(() => {});
             console.warn(`[Integration] Fallback INSERT failed for ${registryItemId || item.kod}: ${insertErr.message}`);
-            insertErrors.push({ registry_item_id: registryItemId, kod: item.kod, error: insertErr.message });
+            insertErrors.push({
+              registry_item_id: registryItemId,
+              kod: item.kod,
+              stage: 'insert_fallback',
+              error: insertErr.message,
+              code: insertErr.code,
+              column: insertErr.column,
+            });
           }
         }
       }

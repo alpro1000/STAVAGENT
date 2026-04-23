@@ -981,7 +981,7 @@ export function ItemsTable({
   return (
     <div
       className="w-full flex flex-col"
-      style={{ height: 'clamp(400px, calc(100vh - 220px), 900px)' }}
+      style={{ height: 'clamp(800px, calc(200vh - 440px), 1800px)' }}
     >
       <div className="card flex flex-col" style={{ flex: '1 1 0%', minHeight: 0 }}>
         {/* Toolbar: Undo/Redo */}
