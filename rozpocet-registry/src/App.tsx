@@ -797,9 +797,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-primary overflow-x-hidden">
+    <div className="h-screen flex flex-col bg-bg-primary overflow-x-hidden overflow-y-hidden">
       {/* Header */}
-      <header className="border-b border-border-color bg-bg-secondary">
+      <header className="border-b border-border-color bg-bg-secondary flex-shrink-0">
         {/* Back to StavAgent bar */}
         <div style={{
           background: '#1e293b', padding: '6px 16px',
@@ -963,7 +963,7 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 flex-1 min-h-0 overflow-y-auto w-full">
         <div className="grid gap-6 min-w-0">
           {/* Search Results */}
           {searchResults.length > 0 && (
@@ -1359,7 +1359,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border-color bg-bg-secondary mt-12">
+      <footer className="border-t border-border-color bg-bg-secondary flex-shrink-0">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-sm text-text-muted">
             STAVAGENT Ecosystem • Registr Rozpočtů v1.0 • {new Date().getFullYear()}
