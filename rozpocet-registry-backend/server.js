@@ -355,58 +355,87 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
     await client.query('BEGIN');
 
     let created = 0;
+    const itemErrors = [];
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const itemId = item.item_id || `item_${uuidv4()}`;
 
-      await client.query(
-        `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, skupina, sync_metadata, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
-         ON CONFLICT (item_id) DO UPDATE SET
-           kod = EXCLUDED.kod, popis = EXCLUDED.popis, mnozstvi = EXCLUDED.mnozstvi,
-           mj = EXCLUDED.mj, cena_jednotkova = EXCLUDED.cena_jednotkova,
-           cena_celkem = EXCLUDED.cena_celkem, item_order = EXCLUDED.item_order,
-           skupina = COALESCE(EXCLUDED.skupina, registry_items.skupina),
-           sync_metadata = EXCLUDED.sync_metadata, updated_at = NOW()`,
-        [
-          itemId,
-          req.params.id,
-          item.kod || '',
-          item.popis || '',
-          item.mnozstvi || 0,
-          item.mj || '',
-          item.cena_jednotkova ?? null,
-          item.cena_celkem ?? null,
-          item.item_order ?? i,
-          item.skupina || null,
-          item.sync_metadata ? JSON.stringify(item.sync_metadata) : null,
-        ]
-      );
+      // Per-item SAVEPOINT so a single bad row (e.g. kod/mj/skupina exceeding
+      // its VARCHAR limit, NOT NULL violation on popis, FK drift) does not
+      // abort the outer transaction and fail the whole bulk insert with a
+      // generic 500. Failed rows accumulate in itemErrors[] and the response
+      // reports partial success.
+      await client.query('SAVEPOINT bulk_item');
+      try {
+        await client.query(
+          `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, skupina, sync_metadata, created_at, updated_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
+           ON CONFLICT (item_id) DO UPDATE SET
+             kod = EXCLUDED.kod, popis = EXCLUDED.popis, mnozstvi = EXCLUDED.mnozstvi,
+             mj = EXCLUDED.mj, cena_jednotkova = EXCLUDED.cena_jednotkova,
+             cena_celkem = EXCLUDED.cena_celkem, item_order = EXCLUDED.item_order,
+             skupina = COALESCE(EXCLUDED.skupina, registry_items.skupina),
+             sync_metadata = EXCLUDED.sync_metadata, updated_at = NOW()`,
+          [
+            itemId,
+            req.params.id,
+            (item.kod || '').toString().slice(0, 50),      // VARCHAR(50)
+            item.popis || '',                              // TEXT
+            item.mnozstvi || 0,
+            (item.mj || '').toString().slice(0, 20),       // VARCHAR(20)
+            item.cena_jednotkova ?? null,
+            item.cena_celkem ?? null,
+            item.item_order ?? i,
+            item.skupina ? item.skupina.toString().slice(0, 50) : null,  // VARCHAR(50)
+            item.sync_metadata ? JSON.stringify(item.sync_metadata) : null,
+          ]
+        );
 
-      if (item.tov_data) {
-        // Delete existing TOV data for this item before inserting new data
-        // This prevents duplicates from retries (each insert uses a new UUID)
-        await client.query('DELETE FROM registry_tov WHERE item_id = $1', [itemId]);
-        for (const [type, data] of Object.entries(item.tov_data)) {
-          if (Array.isArray(data) && data.length > 0) {
-            await client.query(
-              `INSERT INTO registry_tov (tov_id, item_id, tov_type, tov_data, created_at, updated_at)
-               VALUES ($1, $2, $3, $4, NOW(), NOW())`,
-              [`tov_${uuidv4()}`, itemId, type, JSON.stringify(data)]
-            );
+        if (item.tov_data) {
+          // Delete existing TOV data for this item before inserting new data
+          // This prevents duplicates from retries (each insert uses a new UUID)
+          await client.query('DELETE FROM registry_tov WHERE item_id = $1', [itemId]);
+          for (const [type, data] of Object.entries(item.tov_data)) {
+            if (Array.isArray(data) && data.length > 0) {
+              await client.query(
+                `INSERT INTO registry_tov (tov_id, item_id, tov_type, tov_data, created_at, updated_at)
+                 VALUES ($1, $2, $3, $4, NOW(), NOW())`,
+                [`tov_${uuidv4()}`, itemId, type, JSON.stringify(data)]
+              );
+            }
           }
         }
+        await client.query('RELEASE SAVEPOINT bulk_item');
+        created++;
+      } catch (itemErr) {
+        await client.query('ROLLBACK TO SAVEPOINT bulk_item').catch(() => {});
+        console.warn(`[BULK ITEMS] Row ${i} (kod=${item.kod}) failed: ${itemErr.message}`);
+        itemErrors.push({
+          index: i,
+          item_id: itemId,
+          kod: item.kod,
+          error: itemErr.message,
+          code: itemErr.code,
+          column: itemErr.column,
+          detail: itemErr.detail,
+        });
       }
-      created++;
     }
 
     await client.query('COMMIT');
-    res.json({ success: true, created });
+    res.json({ success: true, created, failed: itemErrors.length, errors: itemErrors.slice(0, 50) });
   } catch (error) {
     await client.query('ROLLBACK').catch(() => {});
     console.error(`[BULK ITEMS] Error for sheet ${req.params.id}:`, error.message);
     console.error(`[BULK ITEMS] Detail:`, error.detail || error.hint || 'no detail');
-    res.status(500).json({ success: false, error: 'Bulk insert failed' });
+    res.status(500).json({
+      success: false,
+      error: 'Bulk insert failed',
+      message: error.message,
+      code: error.code,
+      column: error.column,
+      detail: error.detail,
+    });
   } finally {
     client.release();
   }
