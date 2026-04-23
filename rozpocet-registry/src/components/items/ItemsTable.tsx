@@ -979,7 +979,7 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full overflow-hidden flex-1 min-h-0 flex flex-col">
+    <div className="w-full overflow-hidden flex-1 flex flex-col min-h-[60vh]">
       <div className="card flex-1 min-h-0 flex flex-col">
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
