@@ -1091,6 +1091,28 @@ setAutoLinkCallback((projectId: string, portalProjectId: string) => {
 });
 
 /**
+ * Serialize a value to JSON with object keys sorted alphabetically at
+ * every nesting level. Used by `applyInstanceMappingsToProjects` to
+ * compare `monolith_payload` values across server responses without
+ * treating a key-order difference as a content change.
+ *
+ * Arrays preserve their index order (semantically significant); only
+ * plain objects are reordered. `undefined` / functions / symbols are
+ * omitted the same way `JSON.stringify` normally omits them.
+ */
+function stableStringify(value: unknown): string {
+  return JSON.stringify(value, (_key, v) => {
+    if (v && typeof v === 'object' && !Array.isArray(v)) {
+      const src = v as Record<string, unknown>;
+      const sorted: Record<string, unknown> = {};
+      for (const k of Object.keys(src).sort()) sorted[k] = src[k];
+      return sorted;
+    }
+    return v;
+  });
+}
+
+/**
  * Apply Portal's instance-mapping response to a projects array, producing
  * a new projects array ONLY when something actually changed — otherwise
  * returns the same reference chain (project / sheet / item) so Zustand's
@@ -1105,8 +1127,13 @@ setAutoLinkCallback((projectId: string, portalProjectId: string) => {
  *
  * `monolith_payload` comparison: Portal returns a fresh object every
  * response, so strict reference equality would always read as "changed"
- * and keep the loop alive. Compare by JSON — payload is small (~15
- * fields per item).
+ * and keep the loop alive. Compared via a key-sorted JSON string so
+ * payloads that differ ONLY in property insertion order (server may
+ * re-serialize in a different order across deploys) read as equal —
+ * the earlier plain `JSON.stringify` was susceptible to false-positive
+ * "changed" on identical data with shuffled keys (Amazon Q review flag
+ * on PR #1019). Payload is small (~15 fields per item) so the sorted
+ * serialization cost is negligible.
  *
  * Exported so the callback below can use it AND a regression test can
  * exercise the ref-preservation contract directly (without mocking
@@ -1135,7 +1162,7 @@ export function applyInstanceMappingsToProjects(
         if (mapping.monolith_payload) {
           const curr = item.monolith_payload;
           const next = mapping.monolith_payload;
-          if (!curr || JSON.stringify(curr) !== JSON.stringify(next)) {
+          if (!curr || stableStringify(curr) !== stableStringify(next)) {
             updates.monolith_payload = next;
             monolithCount++;
           }
