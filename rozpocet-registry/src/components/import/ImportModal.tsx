@@ -17,6 +17,7 @@ import {
   extractRawRows,
   getTemplateHint,
   mergeV2IntoParsedItems,
+  appendMissingSubordinates,
   summarizeV2Result,
 } from '../../services/classification/importAdapter';
 import { useRegistryStore } from '../../stores/registryStore';
@@ -347,6 +348,16 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
         preserveRawCells: true,
       });
       mergeV2IntoParsedItems(classifiedRowItems, v2Result);
+      // Append synthetic rows for v2 subordinates / sections / unknown
+      // items without a matching parsed row. Parser's standard mode only
+      // creates items for main-code rows; PP / VV / TS were absorbed
+      // into popisDetail[]. This pass moves them into the store as
+      // first-class rows so ItemsTable can render the parent/child tree.
+      appendMissingSubordinates(classifiedRowItems, v2Result, {
+        projectId,
+        fileName: file.name,
+        sheetName: selectedSheet,
+      });
       const v2Summary = summarizeV2Result(v2Result, selectedSheet);
       if (v2Summary) {
         setWarnings(prev => [...prev, v2Summary]);
@@ -509,6 +520,14 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
             preserveRawCells: true,
           });
           mergeV2IntoParsedItems(classifiedRowItems, v2Result);
+          // Append synthetic rows for v2 subordinates / sections / unknown
+          // items without a matching parsed row — mirrors the single-sheet
+          // branch above. See importAdapter.ts for rationale.
+          appendMissingSubordinates(classifiedRowItems, v2Result, {
+            projectId,
+            fileName: file.name,
+            sheetName,
+          });
           const v2Summary = summarizeV2Result(v2Result, sheetName);
           if (v2Summary) {
             allWarnings.push(v2Summary);
