@@ -941,10 +941,15 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content — no page scroll; flex chain delegates remaining
-          height to ItemsTable so the table has exactly one scroll context. */}
-      <main className="container mx-auto px-4 py-4 flex-1 min-h-0 overflow-hidden w-full flex flex-col">
-        <div className="flex flex-col gap-4 min-w-0 flex-1 min-h-0">
+      {/* Main Content — natural page scroll. Earlier `overflow-hidden
+          flex-col` chain (PR #1016) tried to give the table the full
+          remaining viewport, but it collapsed the table to 0 px when
+          AI Klasifikace + Správa skupin were both expanded or when many
+          project tiles pushed content below the fold. Reverting to
+          page scroll; ItemsTable carries its own user-resizable height
+          (quick fix branch `fix/fixed-height-table-quick`). */}
+      <main className="container mx-auto px-4 py-4 flex-1 min-h-0 overflow-y-auto w-full">
+        <div className="flex flex-col gap-4 min-w-0">
           {/* Search Results */}
           {searchResults.length > 0 && (
             <div className="card">
@@ -1244,10 +1249,12 @@ function App() {
               )}
 
 
-              {/* Selected Sheet Items — claims remaining viewport height so
-                  ItemsTable's internal scroll is the only scroll context. */}
+              {/* Selected Sheet Items. Height is no longer delegated
+                  through a flex chain — ItemsTable sets its own fixed
+                  height (resizable via handle + persisted in
+                  localStorage). */}
               {selectedProject && selectedSheet && (
-                <div className="min-w-0 flex flex-col gap-3 flex-1 min-h-0">
+                <div className="min-w-0 flex flex-col gap-3">
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-1">
                       <h2 className="text-lg font-semibold">

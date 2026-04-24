@@ -3,7 +3,7 @@
  * Tabulka položek s podporou třídění, výběru a filtrování podle skupiny
  */
 
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2, ClipboardList } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2, ClipboardList, GripHorizontal } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -95,6 +95,49 @@ interface ItemsTableProps {
 
 const columnHelper = createColumnHelper<ParsedItem>();
 
+/**
+ * Fixed-height card — user-resizable via a handle in the bottom-right
+ * corner, persisted to localStorage. Default differs per viewport so
+ * mobile sessions start with a smaller card and don't dwarf the screen.
+ *
+ * Chosen here (not in a shared const) because ItemsTable is the only
+ * consumer; exporting would invite drift from other fixed-height surfaces.
+ */
+const TABLE_HEIGHT_LS_KEY = 'registry-table-height';
+const TABLE_HEIGHT_MIN = 400;
+const TABLE_HEIGHT_MAX = 5000;
+const TABLE_HEIGHT_DESKTOP_DEFAULT = 2000;
+const TABLE_HEIGHT_MOBILE_DEFAULT = 1200;
+const MOBILE_BREAKPOINT_PX = 768;
+
+function getDefaultTableHeight(): number {
+  // `window` may be undefined in SSR / test (node env). Fall back to desktop.
+  if (typeof window === 'undefined') return TABLE_HEIGHT_DESKTOP_DEFAULT;
+  return window.innerWidth < MOBILE_BREAKPOINT_PX
+    ? TABLE_HEIGHT_MOBILE_DEFAULT
+    : TABLE_HEIGHT_DESKTOP_DEFAULT;
+}
+
+function loadTableHeight(): number {
+  if (typeof window === 'undefined') return TABLE_HEIGHT_DESKTOP_DEFAULT;
+  try {
+    const raw = window.localStorage.getItem(TABLE_HEIGHT_LS_KEY);
+    if (!raw) return getDefaultTableHeight();
+    const n = parseInt(raw, 10);
+    if (Number.isFinite(n) && n >= TABLE_HEIGHT_MIN && n <= TABLE_HEIGHT_MAX) {
+      return n;
+    }
+  } catch { /* localStorage unavailable / quota exceeded */ }
+  return getDefaultTableHeight();
+}
+
+function persistTableHeight(height: number): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(TABLE_HEIGHT_LS_KEY, String(Math.round(height)));
+  } catch { /* ignore */ }
+}
+
 export function ItemsTable({
   items,
   projectId,
@@ -115,6 +158,51 @@ export function ItemsTable({
   // explaining why. See ROW_CLASSIFICATION_ALGORITHM v1.1 Q5 answer.
   const reclassifyAvailable = items.some(i => i._rawCells !== undefined);
   const [reclassifyStatus, setReclassifyStatus] = useState<string | null>(null);
+
+  // Fixed, user-resizable card height (quick fix for the flex-1 collapse
+  // regression — see branch `fix/fixed-height-table-quick`). Drag handle
+  // below mutates this state; `mouseup` persists it to localStorage.
+  const [tableHeight, setTableHeight] = useState<number>(loadTableHeight);
+
+  // Drag-to-resize the card height. Captures the starting pointer Y +
+  // current height, then attaches document-level listeners so the drag
+  // tracks even when the cursor leaves the small handle.
+  const resizeStartRef = useRef<{ startY: number; startHeight: number } | null>(null);
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    resizeStartRef.current = { startY: e.clientY, startHeight: tableHeight };
+    document.body.style.cursor = 'ns-resize';
+    // Block text selection while dragging so the cursor doesn't stick
+    // on highlighted table cells passing under it.
+    document.body.style.userSelect = 'none';
+
+    const onMove = (ev: MouseEvent) => {
+      const start = resizeStartRef.current;
+      if (!start) return;
+      const delta = ev.clientY - start.startY;
+      const next = Math.max(
+        TABLE_HEIGHT_MIN,
+        Math.min(TABLE_HEIGHT_MAX, start.startHeight + delta),
+      );
+      setTableHeight(next);
+    };
+
+    const onUp = () => {
+      resizeStartRef.current = null;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      // Persist on release — no debounce needed, one write per drag.
+      setTableHeight(h => {
+        persistTableHeight(h);
+        return h;
+      });
+    };
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  }, [tableHeight]);
   const handleReclassifyAll = () => {
     const r = reclassifySheet(projectId, sheetId);
     if (!r.success) {
@@ -1009,15 +1097,20 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full flex flex-col flex-1 min-h-0">
+    <div className="w-full flex flex-col">
       {/* Not using the generic `.card` class here — its `padding: 16px`
           inserted a gap between the toolbar and the scroll container's
           border which pushed the sticky `<th>` below the visible card
           edge on scroll. Bare border + radius + overflow-hidden wrapper
           gives the sticky header a clean top edge to stick to, while
-          the inner scroll container is a direct sticky ancestor. */}
+          the inner scroll container is a direct sticky ancestor.
+          Height is now fixed (user-resizable, persisted) — the earlier
+          `flex-1 min-h-0` chain from main → card collapsed the card to
+          0 px when siblings (AI + GroupManager expanded, many tiles)
+          consumed the viewport. */}
       <div
-        className="relative flex flex-col flex-1 min-h-0 bg-panel-clean border border-flat-border rounded-md overflow-hidden"
+        className="relative flex flex-col bg-panel-clean border border-flat-border rounded-md overflow-hidden"
+        style={{ height: `${tableHeight}px` }}
       >
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color flex-shrink-0">
@@ -1265,6 +1358,21 @@ export function ItemsTable({
           }}
         />
       )}
+
+      {/* Resize handle — drag vertically to grow / shrink the card
+          height. Rendered inside the card (which has `position: relative`)
+          and pinned to the bottom-right corner. Deliberately narrow so
+          it doesn't cover data rows; the `ns-resize` cursor + GripHori
+          icon signal affordance. */}
+      <div
+        onMouseDown={handleResizeStart}
+        className="absolute bottom-0 right-0 flex items-center justify-center w-8 h-4 cursor-ns-resize text-text-muted hover:text-accent-primary hover:bg-bg-secondary transition-colors"
+        title={`Změnit výšku tabulky (aktuálně ${tableHeight} px — drag nahoru/dolů)`}
+        role="separator"
+        aria-orientation="horizontal"
+      >
+        <GripHorizontal size={14} className="w-[14px] h-[14px]" />
+      </div>
       </div>
     </div>
   );
