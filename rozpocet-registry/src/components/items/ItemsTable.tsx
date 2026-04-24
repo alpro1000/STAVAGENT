@@ -1009,15 +1009,19 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full flex flex-col flex-1 min-h-0">
+    <div className="w-full flex flex-col">
       {/* Not using the generic `.card` class here — its `padding: 16px`
           inserted a gap between the toolbar and the scroll container's
           border which pushed the sticky `<th>` below the visible card
           edge on scroll. Bare border + radius + overflow-hidden wrapper
           gives the sticky header a clean top edge to stick to, while
-          the inner scroll container is a direct sticky ancestor. */}
+          the inner scroll container is a direct sticky ancestor.
+          Height is now fixed (user-resizable, persisted) — the earlier
+          `flex-1 min-h-0` chain from main → card collapsed the card to
+          0 px when siblings (AI + GroupManager expanded, many tiles)
+          consumed the viewport. */}
       <div
-        className="relative flex flex-col flex-1 min-h-0 bg-panel-clean border border-flat-border rounded-md overflow-hidden"
+        className="relative flex flex-col bg-panel-clean border border-flat-border rounded-md overflow-hidden"
       >
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color flex-shrink-0">
