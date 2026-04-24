@@ -151,6 +151,21 @@
   --flat-hover:          #F5F3F0;
   --flat-selected:       #EDEBE8;
 
+  /* Ribbon-refactor tokens (SPEC_Registry_RibbonRefactor §5).
+     Aliased to the existing stone / orange palette wherever the spec's
+     raw hex coincides with a token we already ship — keeps a single
+     source of truth per color. Genuinely new values (bg-dark, accent-light,
+     green-700) are defined as raw hex. Used by the AppRibbon, tab strips,
+     context bar, and chip buttons. */
+  --flat-bg-dark:        #0F172A;            /* app ribbon Row 1 */
+  --flat-surface-2:      var(--stone-100);   /* Row 3 sheet-tabs bg */
+  --flat-accent-hover:   var(--orange-600);  /* hover on primary actions */
+  --flat-accent-light:   #FED7AA;            /* active sheet tab bg */
+  --flat-border-muted:   var(--stone-300);   /* chip default border */
+  --green-50:            var(--green-100);   /* chip active-green bg alias */
+  --green-700:           #15803D;            /* chip active-green text */
+  --red-50:              var(--red-100);     /* destructive hover alias */
+
   /* Table dimensions (flat-design.css:64-65) */
   --flat-row-h:    32px;
   --flat-header-h: 36px;
