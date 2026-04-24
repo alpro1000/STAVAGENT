@@ -6,7 +6,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import * as XLSX from 'xlsx';
-import { Sparkles, Check, Loader2, ArrowDown } from 'lucide-react';
+import { Sparkles, Check, Loader2, ArrowDown, HelpCircle, RefreshCw } from 'lucide-react';
 
 interface RawExcelViewerProps {
   workbook: XLSX.WorkBook;
@@ -301,7 +301,7 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
       )}
 
       {/* Sheet Selector */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 flex-shrink-0">
         {workbook.SheetNames.map((sheetName, idx) => (
           <button
             key={sheetName}
@@ -315,6 +315,86 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
             {idx + 1}. {sheetName}
           </button>
         ))}
+      </div>
+
+      {/* Column Mapping Form — moved up from below the preview table so
+          the user can see all dropdowns + the current mapping state at
+          the same time the preview scrolls. 7 fields (6 columns + data
+          start row) laid out with flex-wrap so they fit on 1 row at
+          1200 px+ viewport and wrap to 2 rows on narrower screens.
+          Auto-detect status indicator per field: green + Check when
+          mapped, amber + HelpCircle when blank. "Obnovit automaticky"
+          button re-runs detection from scratch. */}
+      <div className="flex flex-wrap items-end gap-2 p-3 bg-bg-tertiary rounded-lg border border-border-color flex-shrink-0">
+        {(['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'] as const).map(field => {
+          const labels: Record<string, string> = {
+            kod: 'Kód',
+            popis: 'Popis',
+            mj: 'MJ',
+            mnozstvi: 'Množství',
+            cenaJednotkova: 'Cena jedn.',
+            cenaCelkem: 'Cena celkem',
+          };
+          const mapped = !!selectedColumns[field];
+          return (
+            <div key={field} className="flex flex-col gap-1" style={{ width: 140 }}>
+              <label className="text-xs text-text-secondary flex items-center gap-1">
+                {mapped ? (
+                  <Check size={12} className="text-green-500" />
+                ) : (
+                  <HelpCircle size={12} className="text-amber-500" />
+                )}
+                {labels[field]}
+              </label>
+              <select
+                value={selectedColumns[field] || ''}
+                onChange={(e) => setSelectedColumns(prev => ({ ...prev, [field]: e.target.value }))}
+                className={`w-full bg-bg-primary border rounded px-2 py-1 text-sm transition-colors ${
+                  mapped
+                    ? 'border-green-500/50 focus:border-green-500'
+                    : 'border-amber-500/50 focus:border-amber-500'
+                }`}
+              >
+                <option value="">—</option>
+                {Array.from({ length: maxCols }, (_, i) => (
+                  <option key={i} value={colToLetter(i)}>
+                    {colToLetter(i)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          );
+        })}
+        <div className="flex flex-col gap-1" style={{ width: 140 }}>
+          <label className="text-xs text-text-secondary flex items-center gap-1">
+            {selectedColumns.dataStartRow ? (
+              <Check size={12} className="text-green-500" />
+            ) : (
+              <HelpCircle size={12} className="text-amber-500" />
+            )}
+            Začátek dat
+          </label>
+          <input
+            type="number"
+            min={1}
+            max={sheetData.length}
+            value={selectedColumns.dataStartRow || 1}
+            onChange={(e) => setSelectedColumns(prev => ({ ...prev, dataStartRow: parseInt(e.target.value) || 1 }))}
+            className={`w-full bg-bg-primary border rounded px-2 py-1 text-sm transition-colors ${
+              selectedColumns.dataStartRow
+                ? 'border-green-500/50 focus:border-green-500'
+                : 'border-amber-500/50 focus:border-amber-500'
+            }`}
+          />
+        </div>
+        <button
+          onClick={() => setSelectedColumns(autoDetectColumns(sheetData))}
+          className="h-[32px] px-3 text-xs rounded border border-border-color bg-bg-primary hover:bg-bg-secondary transition-colors flex items-center gap-1.5 self-end"
+          title="Znovu spustit automatickou detekci sloupců a počátečního řádku"
+        >
+          <RefreshCw size={12} />
+          Obnovit automaticky
+        </button>
       </div>
 
       {/* Column Mapping Toolbar */}
@@ -426,49 +506,6 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
               })}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* Quick Column Mapping */}
-      <div className="grid grid-cols-3 gap-2">
-        {(['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'] as const).map(field => {
-          const labels: Record<string, string> = {
-            kod: 'Kód',
-            popis: 'Popis',
-            mj: 'MJ',
-            mnozstvi: 'Množství',
-            cenaJednotkova: 'Cena jedn.',
-            cenaCelkem: 'Cena celkem'
-          };
-
-          return (
-            <div key={field} className="flex items-center gap-2">
-              <label className="text-sm text-text-secondary w-24">{labels[field]}:</label>
-              <select
-                value={selectedColumns[field] || ''}
-                onChange={(e) => setSelectedColumns(prev => ({ ...prev, [field]: e.target.value }))}
-                className="flex-1 bg-bg-tertiary border border-border-color rounded px-2 py-1 text-sm"
-              >
-                <option value="">-</option>
-                {Array.from({ length: maxCols }, (_, i) => (
-                  <option key={i} value={colToLetter(i)}>
-                    {colToLetter(i)}
-                  </option>
-                ))}
-              </select>
-            </div>
-          );
-        })}
-        <div className="flex items-center gap-2">
-          <label className="text-sm text-text-secondary w-24">Začátek dat:</label>
-          <input
-            type="number"
-            min={1}
-            max={sheetData.length}
-            value={selectedColumns.dataStartRow || 1}
-            onChange={(e) => setSelectedColumns(prev => ({ ...prev, dataStartRow: parseInt(e.target.value) || 1 }))}
-            className="flex-1 bg-bg-tertiary border border-border-color rounded px-2 py-1 text-sm"
-          />
         </div>
       </div>
 
