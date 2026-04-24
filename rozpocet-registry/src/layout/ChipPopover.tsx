@@ -61,6 +61,15 @@ export function ChipPopover({
   const [pos, setPos] = useState<PositionState | null>(null);
 
   const updatePosition = useCallback(() => {
+    // SSR / test-environment guard. Symmetric to the `typeof document`
+    // check in the render branch below — without it, accessing
+    // window.innerWidth crashes before the rect guard runs in any env
+    // where the component module is imported but `window` isn't
+    // defined (vitest 'node' env, server-side render, etc.).
+    if (typeof window === 'undefined') {
+      setPos(null);
+      return;
+    }
     const rect = anchorRef.current?.getBoundingClientRect();
     if (!rect) {
       setPos(null);
