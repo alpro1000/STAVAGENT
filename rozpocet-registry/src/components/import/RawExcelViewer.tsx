@@ -275,7 +275,7 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
     // flex-shrink-0.
     <div className="flex flex-col flex-1 min-h-0 gap-3">
       {/* Detection Status */}
-      <div className="flex items-center justify-between bg-bg-tertiary p-3 rounded-lg">
+      <div className="flex items-center justify-between bg-bg-tertiary p-3 rounded-lg flex-shrink-0">
         <div className="flex items-center gap-2">
           {isDetecting ? (
             <Loader2 className="animate-spin text-purple-400" size={20} />
@@ -297,7 +297,7 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
       </div>
 
       {detectedType && detectedType.reason && (
-        <p className="text-sm text-text-secondary">{detectedType.reason}</p>
+        <p className="text-sm text-text-secondary flex-shrink-0">{detectedType.reason}</p>
       )}
 
       {/* Sheet Selector */}
@@ -397,9 +397,16 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
         </button>
       </div>
 
-      {/* Column Mapping Toolbar */}
-      <div className="flex flex-wrap gap-2 p-2 bg-bg-tertiary rounded-lg">
-        <span className="text-sm text-text-secondary self-center">Mapování:</span>
+      {/* Mapping State Badges — one-line summary of the current mapping
+          decisions. Green when a column letter is assigned, amber when
+          still pending. Kept as a separate surface below the mapping
+          form so the user can confirm "which column letter went where"
+          at a glance while scrolling through the preview below. Color
+          per badge reflects STATUS (defined / pending), not field
+          identity — the earlier per-field hue palette was decorative
+          but carried no signal about completeness. */}
+      <div className="flex flex-wrap items-center gap-1.5 p-2 bg-bg-tertiary rounded-lg flex-shrink-0">
+        <span className="text-xs text-text-secondary self-center mr-1">Mapování:</span>
         {(['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'] as const).map(field => {
           const labels: Record<string, string> = {
             kod: 'Kód',
@@ -407,36 +414,40 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
             mj: 'MJ',
             mnozstvi: 'Množství',
             cenaJednotkova: 'Cena jedn.',
-            cenaCelkem: 'Cena celkem'
+            cenaCelkem: 'Cena celkem',
           };
-          const colors: Record<string, string> = {
-            kod: 'bg-blue-500/20 text-blue-300 border-blue-500/50',
-            popis: 'bg-green-500/20 text-green-300 border-green-500/50',
-            mj: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50',
-            mnozstvi: 'bg-purple-500/20 text-purple-300 border-purple-500/50',
-            cenaJednotkova: 'bg-pink-500/20 text-pink-300 border-pink-500/50',
-            cenaCelkem: 'bg-orange-500/20 text-orange-300 border-orange-500/50',
-          };
-
+          const value = selectedColumns[field];
+          const defined = !!value;
+          const cls = defined
+            ? 'bg-green-500/20 text-green-300 border-green-500/50'
+            : 'bg-amber-500/20 text-amber-300 border-amber-500/50';
           return (
             <div
               key={field}
-              className={`px-2 py-1 text-xs rounded border ${colors[field]}`}
+              className={`px-2 py-0.5 text-xs rounded border ${cls}`}
             >
-              {labels[field]}: <strong>{selectedColumns[field] || '?'}</strong>
+              {labels[field]}: <strong>{value || '?'}</strong>
             </div>
           );
         })}
-        <div className="px-2 py-1 text-xs rounded border bg-gray-500/20 text-gray-300 border-gray-500/50">
-          Začátek: <strong>řádek {selectedColumns.dataStartRow || '?'}</strong>
-        </div>
+        {(() => {
+          const v = selectedColumns.dataStartRow;
+          const cls = v
+            ? 'bg-green-500/20 text-green-300 border-green-500/50'
+            : 'bg-amber-500/20 text-amber-300 border-amber-500/50';
+          return (
+            <div className={`px-2 py-0.5 text-xs rounded border ${cls}`}>
+              Začátek: <strong>řádek {v || '?'}</strong>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Jump to data button - show when header is large */}
       {selectedColumns.dataStartRow && selectedColumns.dataStartRow > 5 && (
         <button
           onClick={scrollToDataRow}
-          className="flex items-center gap-2 px-3 py-1.5 text-sm bg-green-500/20 text-green-300 border border-green-500/50 rounded-lg hover:bg-green-500/30 transition-colors"
+          className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 text-sm bg-green-500/20 text-green-300 border border-green-500/50 rounded-lg hover:bg-green-500/30 transition-colors self-start"
         >
           <ArrowDown size={14} />
           Přejít na data (řádek {selectedColumns.dataStartRow})
