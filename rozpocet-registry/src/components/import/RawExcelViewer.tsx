@@ -267,7 +267,13 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
   const maxCols = Math.max(...sheetData.map(row => row.length), 0);
 
   return (
-    <div className="space-y-4">
+    // Flat-modal layout (flat-import-modal PR): component fills its flex
+    // parent, surrounds fixed-height header surfaces (detection status,
+    // sheet tabs, mapping form, badges) above the scroll-grow preview
+    // table, and a fixed-height action bar at the bottom. The preview
+    // table is the only scroll context — all other surfaces are
+    // flex-shrink-0.
+    <div className="flex flex-col flex-1 min-h-0 gap-3">
       {/* Detection Status */}
       <div className="flex items-center justify-between bg-bg-tertiary p-3 rounded-lg">
         <div className="flex items-center gap-2">
