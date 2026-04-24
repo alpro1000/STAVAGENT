@@ -1005,8 +1005,8 @@ export function ItemsTable({
   }
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="card flex flex-col">
+    <div className="w-full flex flex-col flex-1 min-h-0">
+      <div className="card flex flex-col flex-1 min-h-0">
         {/* Toolbar: Undo/Redo */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
           <div className="flex items-center gap-2">

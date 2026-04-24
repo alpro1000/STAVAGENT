@@ -962,9 +962,10 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 flex-1 min-h-0 overflow-y-auto w-full">
-        <div className="grid gap-6 min-w-0">
+      {/* Main Content — no page scroll; flex chain delegates remaining
+          height to ItemsTable so the table has exactly one scroll context. */}
+      <main className="container mx-auto px-4 py-4 flex-1 min-h-0 overflow-hidden w-full flex flex-col">
+        <div className="flex flex-col gap-4 min-w-0 flex-1 min-h-0">
           {/* Search Results */}
           {searchResults.length > 0 && (
             <div className="card">
@@ -1264,9 +1265,10 @@ function App() {
               )}
 
 
-              {/* Selected Sheet Items */}
+              {/* Selected Sheet Items — claims remaining viewport height so
+                  ItemsTable's internal scroll is the only scroll context. */}
               {selectedProject && selectedSheet && (
-                <div className="space-y-4 min-w-0 overflow-hidden">
+                <div className="min-w-0 flex flex-col gap-3 flex-1 min-h-0">
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-1">
                       <h2 className="text-lg font-semibold">
