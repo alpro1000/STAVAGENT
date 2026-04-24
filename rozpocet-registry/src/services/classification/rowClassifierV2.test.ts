@@ -210,6 +210,57 @@ describe('classifySheet — mappingOverride (persisted mapping path)', () => {
     // Override is echoed back so caller can inspect it even on empty input.
     expect(r.mapping).toEqual(savedMapping);
   });
+
+  it('reclassify scenario: sparse rows + saved mapping match original dense-stream classification', () => {
+    // Original dense rows as the parser sees them on first import — header
+    // row present, full stream.
+    const denseRows: unknown[][] = [
+      ['Krycí list — SO 202'],
+      [],
+      ['Typ', 'Poř.', 'Kód', 'Varianta', 'Popis', 'MJ', 'Množství', 'J.cena', 'Celkem'],
+      ['P', 1, '121101', 'kn', 'Výkop jámy', 'm3', 45, 150, 6750],
+      ['PP', null, null, null, 'Včetně odvozu', null, null, null, null],
+      ['P', 2, '231112', 'kn', 'Beton C25/30', 'm3', 12, 3200, 38400],
+    ];
+    const original = classifySheet(denseRows, { sheetName: 'SO202' });
+
+    // Reclassify scenario: parser dropped the header rows, only data rows
+    // survive on items as _rawCells indexed by source_row_index.
+    const reconstructed: unknown[][] = [];
+    for (const item of original.items) {
+      if (item.rawCells) reconstructed[item.sourceRowIndex] = item.rawCells;
+    }
+
+    const replayed = classifySheet(reconstructed, {
+      sheetName: 'SO202',
+      mappingOverride: original.mapping,
+    });
+    expect(replayed.mainCount).toBe(original.mainCount);
+    expect(replayed.subordinateCount).toBe(original.subordinateCount);
+    expect(replayed.mapping.typ).toBe(original.mapping.typ);
+    expect(replayed.mapping.dataStartRow).toBe(original.mapping.dataStartRow);
+  });
+
+  it('reclassify scenario: sparse rows WITHOUT saved mapping still classify via content heuristic (legacy compat)', () => {
+    // Legacy sheet imported before mapping persistence — no `mappingOverride`.
+    // detectColumns runs on the reconstructed stream and degrades to content
+    // heuristics; rows still classify (possibly with lower precision) so
+    // the button doesn't regress to an error state.
+    // Same sparse-dense pattern reclassifySheet() uses — holes filled with
+    // [] via Array.from so downstream detectColumns sees uniform shape.
+    // Content heuristic needs ≥ 3 non-empty data rows to score columns.
+    const reconstructed: unknown[][] = Array.from({ length: 7 }, () => []);
+    reconstructed[3] = ['P', 1, '121101', 'kn', 'Výkop jámy', 'm3', 45, 150, 6750];
+    reconstructed[4] = ['P', 2, '231112', 'kn', 'Beton C25/30', 'm3', 12, 3200, 38400];
+    reconstructed[5] = ['P', 3, '174101', 'kn', 'Zásyp', 'm3', 32, 80, 2560];
+
+    const r = classifySheet(reconstructed, { sheetName: 'Legacy' });
+    // Content heuristic can't read a Typ column without a header row, so
+    // falls through to kod/mj/mnozstvi analysis. Rows with valid OTSKP
+    // codes + MJ + mnozstvi classify as main.
+    expect(r.mapping.detectionSource).not.toBe('header-match');
+    expect(r.mainCount).toBeGreaterThanOrEqual(3);
+  });
 });
 
 describe('classifySheet — per-sheet isolation (edge §6.13)', () => {

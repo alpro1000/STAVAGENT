@@ -340,9 +340,10 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
       const classifiedRowItems = rowClassification.items;
 
       const v2RawRows = extractRawRows(workbook, selectedSheet);
+      const templateHint = getTemplateHint(selectedTemplate.metadata.type);
       const v2Result = classifySheet(v2RawRows, {
         sheetName: selectedSheet,
-        templateHint: getTemplateHint(selectedTemplate.metadata.type),
+        templateHint,
         preserveRawCells: true,
       });
       mergeV2IntoParsedItems(classifiedRowItems, v2Result);
@@ -394,6 +395,8 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
           ...selectedTemplate.config,
           sheetName: selectedSheet,
         },
+        classifierMapping: v2Result.mapping,
+        classifierTemplateHint: templateHint,
       };
 
       // Create project with single sheet
@@ -499,9 +502,10 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
           const classifiedRowItems = rowClassification.items;
 
           const v2RawRows = extractRawRows(workbook, sheetName);
+          const templateHint = getTemplateHint(selectedTemplate.metadata.type);
           const v2Result = classifySheet(v2RawRows, {
             sheetName,
-            templateHint: getTemplateHint(selectedTemplate.metadata.type),
+            templateHint,
             preserveRawCells: true,
           });
           mergeV2IntoParsedItems(classifiedRowItems, v2Result);
@@ -551,6 +555,8 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
               sheetName, // Store sheet name in metadata
             },
             config: sheetConfig,
+            classifierMapping: v2Result.mapping,
+            classifierTemplateHint: templateHint,
           };
 
           sheets.push(sheet);
