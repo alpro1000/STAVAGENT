@@ -61,26 +61,7 @@ interface Service {
 
 // Dostupné služby STAVAGENT
 const SERVICES: Service[] = [
-  // ===== ANALÝZA =====
-  {
-    id: 'document-analysis',
-    name: 'Analýza dokumentů',
-    description: 'Nahrajte PDF/XLSX → automatický passport, soupis prací, AI audit, shrnutí. Univerzální modul: 4 taby (Soupis, Passport, AI Audit, Shrnutí). Multi-SO merge s detekcí rozporů.',
-    icon: 'BarChart3',
-    url: '#document-analysis',
-    status: 'active',
-    tags: ['Soupis prací', 'Passport', 'AI Audit', 'Shrnutí', 'Multi-SO']
-  },
-  {
-    id: 'drawing-analysis',
-    name: 'Analýza výkresů',
-    description: 'Nahrajte PDF výkres → AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice. Automatická klasifikace prací.',
-    icon: 'Ruler',
-    url: '#drawing-analysis',
-    status: 'active',
-    tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
-  },
-  // ===== KALKULACE =====
+  // ===== FLAGSHIP (AKTIVNÍ) =====
   {
     id: 'monolit-calculator',
     name: 'Monolit Planner',
@@ -100,34 +81,6 @@ const SERVICES: Service[] = [
     tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
   },
   {
-    id: 'objednavka-betonu',
-    name: 'Objednávka betonu',
-    description: 'Najít betonárny → spočítat cenu (beton + doprava + čerpadlo) → porovnat dodavatele. Ruční zadání cen od prořaba. Jeden flow pro objednávku.',
-    icon: 'Building2',
-    url: '/objednavka-betonu',
-    status: 'active',
-    tags: ['Betonárny', 'Kalkulačka', 'Porovnání', 'Prořab']
-  },
-  {
-    id: 'pump-module',
-    name: 'Kalkulačka čerpadel',
-    description: 'Detailní porovnání čerpadel: 3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář. Mobilní verze.',
-    icon: 'Settings',
-    url: '/pump',
-    status: 'active',
-    tags: ['Čerpadlo', 'Mobilní', 'Příplatky', 'Kalendář']
-  },
-  {
-    id: 'price-parser',
-    name: 'Ceníky dodavatelů',
-    description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
-    icon: 'FileText',
-    url: '/price-parser',
-    status: 'active' as const,
-    tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
-  },
-  // ===== KLASIFIKACE =====
-  {
     id: 'urs-matcher',
     name: 'Klasifikátor stavebních prací',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
@@ -145,17 +98,61 @@ const SERVICES: Service[] = [
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
-  // ===== GENEROVÁNÍ =====
+  // ===== PŘIPRAVUJEME =====
+  {
+    id: 'document-analysis',
+    name: 'Analýza dokumentů',
+    description: 'Nahrajte PDF/XLSX → automatický passport, soupis prací, AI audit, shrnutí. Univerzální modul: 4 taby (Soupis, Passport, AI Audit, Shrnutí). Multi-SO merge s detekcí rozporů.',
+    icon: 'BarChart3',
+    url: '#document-analysis',
+    status: 'coming_soon',
+    tags: ['Soupis prací', 'Passport', 'AI Audit', 'Shrnutí', 'Multi-SO']
+  },
+  {
+    id: 'drawing-analysis',
+    name: 'Analýza výkresů',
+    description: 'Nahrajte PDF výkres → AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice. Automatická klasifikace prací.',
+    icon: 'Ruler',
+    url: '#drawing-analysis',
+    status: 'coming_soon',
+    tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
+  },
+  {
+    id: 'objednavka-betonu',
+    name: 'Objednávka betonu',
+    description: 'Najít betonárny → spočítat cenu (beton + doprava + čerpadlo) → porovnat dodavatele. Ruční zadání cen od prořaba. Jeden flow pro objednávku.',
+    icon: 'Building2',
+    url: '/objednavka-betonu',
+    status: 'coming_soon',
+    tags: ['Betonárny', 'Kalkulačka', 'Porovnání', 'Prořab']
+  },
+  {
+    id: 'pump-module',
+    name: 'Kalkulačka čerpadel',
+    description: 'Detailní porovnání čerpadel: 3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář. Mobilní verze.',
+    icon: 'Settings',
+    url: '/pump',
+    status: 'coming_soon',
+    tags: ['Čerpadlo', 'Mobilní', 'Příplatky', 'Kalendář']
+  },
+  {
+    id: 'price-parser',
+    name: 'Ceníky dodavatelů',
+    description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
+    icon: 'FileText',
+    url: '/price-parser',
+    status: 'coming_soon',
+    tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
+  },
   {
     id: 'scenario-b',
     name: 'Generátor výkazu výměr',
     description: 'Nahraje TZ (PDF/DOCX) → AI extrahuje konstrukce a objemy → vygeneruje výkaz výměr (beton + výztuž + bednění). Objemy pouze z dokumentu.',
     icon: 'Ruler',
     url: '/portal/scenario-b',
-    status: 'active' as const,
+    status: 'coming_soon',
     tags: ['TZ', 'Výkaz výměr', 'AI', 'Konstrukce']
   },
-  // ===== PŘIPRAVUJEME =====
   {
     id: 'formwork-calculator',
     name: 'Kalkulačka bednění',
