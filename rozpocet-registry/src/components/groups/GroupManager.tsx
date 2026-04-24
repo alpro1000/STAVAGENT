@@ -38,14 +38,27 @@ export interface GroupManagerProps {
    * mode — the grid column controls width.
    */
   standalone?: boolean;
+  /**
+   * Layout mode.
+   *   'card' (default) — outer card wrapper with its own collapsible
+   *      header + localStorage persistence. Used by the legacy layout.
+   *   'popover' — skips the card wrapper + the header; the groups list
+   *      is rendered directly. Used by the ribbon ContextBar chip →
+   *      ChipPopover, where the popover panel replaces the card.
+   *      `standalone` is implicitly treated as false in popover mode.
+   */
+  variant?: 'card' | 'popover';
 }
 
-export function GroupManager({ standalone = true }: GroupManagerProps = {}) {
+export function GroupManager({ standalone = true, variant = 'card' }: GroupManagerProps = {}) {
+  const isPopover = variant === 'popover';
+  const isStandalone = !isPopover && standalone;
   const {
     getAllGroups, addCustomGroup, renameGroup, deleteGroup, getGroupItemCounts,
   } = useRegistryStore();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(() => {
+    if (isPopover) return true;
     try {
       return localStorage.getItem('registry-groups-panel-expanded') === 'true';
     } catch {
@@ -54,6 +67,7 @@ export function GroupManager({ standalone = true }: GroupManagerProps = {}) {
   });
 
   useEffect(() => {
+    if (isPopover) return;
     try {
       localStorage.setItem('registry-groups-panel-expanded', String(isExpanded));
     } catch {
@@ -185,17 +199,19 @@ export function GroupManager({ standalone = true }: GroupManagerProps = {}) {
 
   return (
     <div
-      className="card relative"
-      style={standalone ? {
+      className={isPopover ? 'p-4 relative' : 'card relative'}
+      style={isStandalone ? {
         borderLeft: '3px solid var(--text-muted)',
         minWidth: `${MIN_WIDTH}px`,
         width: isExpanded ? `${panelWidth}px` : undefined,
         maxWidth: '80vw',
-      } : {
+      } : isPopover ? undefined : {
         borderLeft: '3px solid var(--text-muted)',
       }}
     >
-      {/* Header */}
+      {/* Header — card mode only. Popover mode delegates open/close to
+          the parent ChipButton; an inline header would just duplicate it. */}
+      {!isPopover && (
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -209,11 +225,12 @@ export function GroupManager({ standalone = true }: GroupManagerProps = {}) {
         </div>
         {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </div>
+      )}
 
       {isExpanded && (
         <div
-          className="mt-4 space-y-3 overflow-y-auto scrollbar-thin"
-          style={{ maxHeight: 'min(50vh, 500px)' }}
+          className={isPopover ? 'space-y-3' : 'mt-4 space-y-3 overflow-y-auto scrollbar-thin'}
+          style={isPopover ? undefined : { maxHeight: 'min(50vh, 500px)' }}
         >
           {/* Action feedback */}
           {lastAction && (
@@ -345,7 +362,7 @@ export function GroupManager({ standalone = true }: GroupManagerProps = {}) {
 
       {/* Resize handle — right edge (only when expanded in standalone
           mode). In grid/flex-managed mode the parent column sets width. */}
-      {standalone && isExpanded && (
+      {isStandalone && isExpanded && (
         <div
           className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize flex items-center justify-center hover:bg-accent-primary/10 transition-colors"
           onMouseDown={handleResizeStart}

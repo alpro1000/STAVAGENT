@@ -29,6 +29,16 @@ interface AIPanelProps {
   projectId: string;
   sheetId: string;
   selectedItemIds?: string[];
+  /**
+   * Layout mode.
+   *   'card' (default) — self-contained card with its own expand/collapse
+   *      header + localStorage state. Used by the legacy layout.
+   *   'popover' — skips the outer card wrapper and the header; renders
+   *      the full classification UI directly. Used by the ribbon
+   *      ContextBar chip → ChipPopover, where the popover panel is
+   *      itself the card and the chip is the "header" toggle.
+   */
+  variant?: 'card' | 'popover';
 }
 
 interface ClassificationResult {
@@ -59,8 +69,14 @@ const LIGHT = {
   warningBg: '#FFFBEB',
 };
 
-export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIPanelProps) {
+export function AIPanel({ items, projectId, sheetId, selectedItemIds = [], variant = 'card' }: AIPanelProps) {
+  const isPopover = variant === 'popover';
+
+  // Card mode keeps the legacy collapse/expand behavior + localStorage
+  // persistence. Popover mode is always "expanded" — the ChipPopover
+  // wrapper handles open/close, so there's nothing to collapse here.
   const [isExpanded, setIsExpanded] = useState<boolean>(() => {
+    if (isPopover) return true;
     try {
       return localStorage.getItem('registry-ai-panel-expanded') === 'true';
     } catch {
@@ -69,12 +85,13 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
   });
 
   useEffect(() => {
+    if (isPopover) return;
     try {
       localStorage.setItem('registry-ai-panel-expanded', String(isExpanded));
     } catch {
       // ignore (storage unavailable / quota)
     }
-  }, [isExpanded]);
+  }, [isExpanded, isPopover]);
   const [isClassifying, setIsClassifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
@@ -314,8 +331,14 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
   const memoryCount = getSkupinyMemoryCount();
 
   return (
-    <div className="card" style={{ borderLeft: '3px solid var(--accent-orange)' }}>
-      {/* Header */}
+    <div
+      className={isPopover ? 'p-4' : 'card'}
+      style={isPopover ? undefined : { borderLeft: '3px solid var(--accent-orange)' }}
+    >
+      {/* Header — card mode only. Popover mode delegates the open/close
+          affordance to the parent ChipButton; showing a second header
+          inside the panel would just duplicate it. */}
+      {!isPopover && (
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -350,11 +373,12 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
         </div>
         {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </div>
+      )}
 
       {isExpanded && (
         <div
-          className="mt-4 space-y-4 overflow-y-auto scrollbar-thin"
-          style={{ maxHeight: 'min(50vh, 500px)' }}
+          className={isPopover ? 'space-y-4' : 'mt-4 space-y-4 overflow-y-auto scrollbar-thin'}
+          style={isPopover ? undefined : { maxHeight: 'min(50vh, 500px)' }}
         >
           {/* AI Toggle */}
           <div
