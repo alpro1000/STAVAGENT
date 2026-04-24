@@ -24,6 +24,9 @@ import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, 
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
 import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows, Building2 } from 'lucide-react';
+import { useRibbonFlag } from './layout/ribbonFeatureFlag';
+import { RibbonFlagToggle } from './layout/RibbonFlagToggle';
+import { RibbonLayout } from './layout/RibbonLayout';
 import { PORTAL_API_URL } from './utils/config.js';
 
 /**
@@ -653,6 +656,11 @@ function App() {
     ? getSheet(selectedProjectId, selectedSheetId)
     : null;
 
+  // Ribbon layout feature flag — gates the SPEC_Registry_RibbonRefactor
+  // layout behind `localStorage.registry-ribbon-enabled`. When false (the
+  // default) the legacy layout renders verbatim.
+  const [ribbonEnabled] = useRibbonFlag();
+
   // `showOnlyWorkItems` is still owned here (URL-shareable state) but the
   // filter's UI and counter live inside ItemsTable's toolbar now — the
   // former local `getFilteredItems()` helper was only read by the counter,
@@ -798,6 +806,10 @@ function App() {
             <span>StavAgent</span>
           </a>
         </div>
+        {/* Legacy brand + search + actions row. Hidden when the ribbon
+            layout is enabled — RibbonLayout renders its own AppRibbon
+            with the same brand / search / action cluster. */}
+        {!ribbonEnabled && (
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -939,7 +951,86 @@ function App() {
             />
           )}
         </div>
+        )}
       </header>
+
+      {/* Ribbon layout branch — feature-flagged, renders in parallel with
+          the legacy layout until PR B removes the flag. Mounts inside the
+          outer flex-col so the StavAgent back-bar above + modals below
+          continue to render normally. */}
+      {ribbonEnabled && (
+        <main className="flex-1 min-h-0 flex flex-col overflow-y-auto w-full">
+          <RibbonLayout
+            projects={projects}
+            activeProject={selectedProject ?? null}
+            activeSheet={selectedSheet ?? null}
+            items={selectedSheet?.items ?? []}
+            selectedItemIds={selectedItemIds}
+            onSelectProject={(id) => setSelectedProject(id)}
+            onRemoveProject={(id) => {
+              const p = projects.find((x) => x.id === id);
+              if (p && window.confirm(`Opravdu smazat projekt "${p.projectName}"?`)) {
+                removeProject(id);
+              }
+            }}
+            onRemoveAllProjects={() => {
+              if (window.confirm('Opravdu smazat všechny projekty? Tato akce je nevratná.')) {
+                removeAllProjects();
+              }
+            }}
+            onAddProject={() => setIsImportModalOpen(true)}
+            onSelectSheet={(sheetId) => selectedProjectId && setSelectedSheet(selectedProjectId, sheetId)}
+            onSearch={handleSearch}
+            onClearSearch={handleClearSearch}
+            onOpenPriceRequest={() => setIsPriceRequestOpen(true)}
+            onExport={handleExportProject}
+            onImport={() => setIsImportModalOpen(true)}
+            onEditMapping={() => {
+              if (selectedProject) {
+                setReimportProject(selectedProject);
+                setIsImportModalOpen(true);
+              }
+            }}
+          >
+            {/* Body slot — table or empty-state. SearchResults still show
+                inline when a search is active (reuses legacy behavior). */}
+            {searchResults.length > 0 && (
+              <div className="card">
+                <h2 className="text-lg font-semibold mb-4">Výsledky vyhledávání</h2>
+                <SearchResults
+                  results={searchResults}
+                  onSelectItem={handleSelectSearchResult}
+                  isLoading={isSearching}
+                />
+              </div>
+            )}
+            {projects.length === 0 && (
+              <div className="card text-center py-12">
+                <p className="text-text-secondary">
+                  Žádné projekty. Klikněte na "Importovat" v horním panelu.
+                </p>
+              </div>
+            )}
+            {selectedProject && !selectedSheet && (
+              <div className="card text-center py-8">
+                <p className="text-text-secondary">Vyberte list pro zobrazení položek</p>
+              </div>
+            )}
+            {selectedProject && selectedSheet && (
+              <ItemsTable
+                items={selectedSheet.items}
+                projectId={selectedProject.id}
+                sheetId={selectedSheet.id}
+                selectedIds={selectedItemIds}
+                onSelectionChange={setSelectedItemIds}
+                showOnlyWorkItems={showOnlyWorkItems}
+                onShowOnlyWorkItemsChange={setShowOnlyWorkItems}
+                conflictMap={conflictMap.current}
+              />
+            )}
+          </RibbonLayout>
+        </main>
+      )}
 
       {/* Main Content — natural page scroll. Earlier `overflow-hidden
           flex-col` chain (PR #1016) tried to give the table the full
@@ -948,6 +1039,7 @@ function App() {
           project tiles pushed content below the fold. Reverting to
           page scroll; ItemsTable carries its own user-resizable height
           (quick fix branch `fix/fixed-height-table-quick`). */}
+      {!ribbonEnabled && (
       <main className="container mx-auto px-4 py-4 flex-1 min-h-0 overflow-y-auto w-full">
         <div className="flex flex-col gap-4 min-w-0">
           {/* Search Results */}
@@ -1329,6 +1421,7 @@ function App() {
           )}
         </div>
       </main>
+      )}
 
       {/* Footer */}
       <footer className="border-t border-border-color bg-bg-secondary flex-shrink-0">
@@ -1362,6 +1455,10 @@ function App() {
         onAcceptPrice={handleAcceptMonolitPrice}
         onRefresh={handleCompareRefresh}
       />
+
+      {/* Dev-only toggle to flip between legacy and ribbon layouts at
+          runtime. Renders nothing for regular users. */}
+      <RibbonFlagToggle />
 
     </div>
   );
