@@ -12,6 +12,10 @@ interface RawExcelViewerProps {
   workbook: XLSX.WorkBook;
   onColumnMapping: (mapping: ColumnMapping) => void;
   onDetectedType: (type: DetectedFileType) => void;
+  /** Optional back action. When provided, renders "Zpět k šablonám" in
+   *  the viewer's bottom action bar (flat-import-modal PR). Callers
+   *  that still render their own back button can omit this. */
+  onBack?: () => void;
 }
 
 interface ColumnMapping {
@@ -189,7 +193,7 @@ function autoDetectColumns(data: string[][]): Partial<ColumnMapping> {
   return mapping;
 }
 
-export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: RawExcelViewerProps) {
+export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBack }: RawExcelViewerProps) {
   const [selectedSheet, setSelectedSheet] = useState(workbook.SheetNames[0]);
   const [selectedColumns, setSelectedColumns] = useState<Partial<ColumnMapping>>({});
   const [isDetecting, setIsDetecting] = useState(true);
@@ -533,14 +537,41 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
         </div>
       </div>
 
-      {/* Apply Button */}
-      <button
-        onClick={handleApplyMapping}
-        className="w-full btn btn-primary flex items-center justify-center gap-2"
-      >
-        <Check size={16} />
-        Použít mapování a importovat
-      </button>
+      {/* Bottom Action Bar — anchored at the foot of the flat modal.
+          Primary "Použít mapování a importovat" is gated on the `popis`
+          column being assigned (the one field the importer cannot
+          reconstruct from content alone); the button goes disabled +
+          surfaces the reason via `title` tooltip when it's unmapped.
+          Secondary "Zpět k šablonám" renders only when the host passes
+          `onBack` — older call-sites that still render their own back
+          button omit the prop and get the original behavior. */}
+      <div className="flex items-center justify-between gap-2 pt-2 border-t border-border-color flex-shrink-0">
+        <div className="flex-shrink-0">
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="btn btn-secondary"
+            >
+              Zpět k šablonám
+            </button>
+          )}
+        </div>
+        <div className="flex-shrink-0">
+          <button
+            onClick={handleApplyMapping}
+            disabled={!selectedColumns.popis}
+            className="btn btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            title={
+              selectedColumns.popis
+                ? 'Použít toto mapování a pokračovat v importu'
+                : 'Chybí mapování pro Popis — přiřaďte sloupec ve formuláři výše'
+            }
+          >
+            <Check size={16} />
+            Použít mapování a importovat
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

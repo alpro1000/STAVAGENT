@@ -911,14 +911,8 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
               onDetectedType={(detected) => {
                 console.log('Detected file type:', detected);
               }}
+              onBack={() => setStep('template')}
             />
-
-            <button
-              onClick={() => setStep('template')}
-              className="btn btn-secondary flex-shrink-0"
-            >
-              Zpět k šablonám
-            </button>
           </div>
         )}
 
