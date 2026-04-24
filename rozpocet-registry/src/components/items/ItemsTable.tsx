@@ -1010,9 +1010,17 @@ export function ItemsTable({
 
   return (
     <div className="w-full flex flex-col flex-1 min-h-0">
-      <div className="card flex flex-col flex-1 min-h-0">
+      {/* Not using the generic `.card` class here — its `padding: 16px`
+          inserted a gap between the toolbar and the scroll container's
+          border which pushed the sticky `<th>` below the visible card
+          edge on scroll. Bare border + radius + overflow-hidden wrapper
+          gives the sticky header a clean top edge to stick to, while
+          the inner scroll container is a direct sticky ancestor. */}
+      <div
+        className="relative flex flex-col flex-1 min-h-0 bg-panel-clean border border-flat-border rounded-md overflow-hidden"
+      >
         {/* Toolbar: Undo/Redo */}
-        <div className="flex items-center justify-between px-4 py-2 border-b border-border-color">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-border-color flex-shrink-0">
           <div className="flex items-center gap-2">
             <button
               onClick={undo}
@@ -1106,10 +1114,14 @@ export function ItemsTable({
           onSkupinaDeleted={handleSkupinaDeleted}
         />
 
+        {/* Scroll container — the ONLY scroll context on the page after
+            §10 proper fix. `flex-1 min-h-0` makes it fill the remaining
+            card height; sticky <th> inside the <table> anchors to this
+            wrapper's top edge (it's now the nearest scrolling ancestor
+            since `.table { overflow: hidden }` was removed). */}
         <div
           ref={tableContainerRef}
-          className="overflow-auto scrollbar-thin"
-          style={{ maxHeight: 'min(900px, calc(100vh - 240px))' }}
+          className="overflow-auto scrollbar-thin flex-1 min-h-0"
         >
           <table className="table" style={{ tableLayout: 'fixed' }}>
           {/* thead itself can't be position:sticky reliably in Chrome (the

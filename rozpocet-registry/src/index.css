@@ -95,15 +95,20 @@
     padding: var(--space-lg);
   }
 
-  /* Table base — Part A flat surface (flat-design.css:422-427) */
+  /* Table base — Part A flat surface (flat-design.css:422-427).
+     `overflow: hidden` was intentionally dropped here — it made the
+     `<table>` a scroll container, which in turn anchored the sticky
+     header to the table edge instead of the surrounding overflow-auto
+     wrapper. With it removed, `position: sticky` on `<th>` correctly
+     sticks to the scroll container above (see ItemsTable.tsx scroll
+     div). Border-radius on the table is dropped too because it can no
+     longer clip content; the scroll-container wrapper handles rounding. */
   .table {
     width: 100%;
     table-layout: auto; /* Allow natural column widths based on content */
     border-collapse: separate;
     border-spacing: 0;
     background: var(--flat-surface);
-    border-radius: var(--radius-md);
-    overflow: hidden;
     min-width: max-content; /* Prevent table from shrinking below content width */
   }
 
