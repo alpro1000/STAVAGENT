@@ -402,9 +402,12 @@ export const useRegistryStore = create<RegistryState>()(
 
         // Reconstruct a dense rows[] from each item's _rawCells indexed by
         // source_row_index. Rows without a classified item stay empty — the
-        // classifier will skip them per edge §6.8. detectColumns will fall
-        // back to content heuristics (headers were dropped by the parser at
-        // import time; persisting ColumnMapping per sheet is follow-up work).
+        // classifier will skip them per edge §6.8. The header row was
+        // consumed by the parser at import time and is NOT in _rawCells,
+        // so `detectColumns()` would fall back to content heuristics and
+        // lose producer-specific column positions (esp. Typ for EstiCon).
+        // We prefer the saved per-sheet mapping, then the saved template
+        // hint, then content heuristics — in that priority order.
         const maxIdx = Math.max(
           0,
           ...itemsWithRaw.map(i => i.source_row_index ?? 0),
@@ -421,7 +424,11 @@ export const useRegistryStore = create<RegistryState>()(
         const clonedItems = sheet.items.map(it => ({ ...it }));
         const v2 = classifySheet(rows, {
           sheetName: sheet.name,
-          templateHint: null,
+          // Saved mapping wins; classifySheet will skip detectColumns().
+          mappingOverride: sheet.classifierMapping,
+          // Fallback hint — used when mapping is absent (legacy sheets
+          // imported before persistence was introduced).
+          templateHint: sheet.classifierTemplateHint ?? null,
           preserveRawCells: false, // items already have _rawCells from import
         });
         const merge = mergeV2IntoParsedItems(clonedItems, v2);

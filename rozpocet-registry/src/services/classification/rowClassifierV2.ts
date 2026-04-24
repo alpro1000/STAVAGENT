@@ -47,6 +47,15 @@ export interface ClassifySheetOptions {
    * access to raw cells should pass false.
    */
   preserveRawCells?: boolean;
+  /**
+   * Pre-resolved column mapping. When provided, `detectColumns` is skipped
+   * and this mapping is used directly. Enables re-classification of a sheet
+   * whose header row was already consumed at import time (and is therefore
+   * absent from the reconstructed `_rawCells` row stream), preserving the
+   * column indices and dataStartRow that the first import resolved.
+   * Takes precedence over `templateHint`.
+   */
+  mappingOverride?: ColumnMapping;
 }
 
 /**
@@ -58,13 +67,13 @@ export interface ClassifySheetOptions {
  * @returns ClassificationResult with items, mapping, counters, and warnings.
  */
 export function classifySheet(rows: unknown[][], options: ClassifySheetOptions): ClassificationResult {
-  const { sheetName, templateHint = null, preserveRawCells = true } = options;
+  const { sheetName, templateHint = null, preserveRawCells = true, mappingOverride } = options;
 
   // Guard against degenerate input.
   if (!Array.isArray(rows) || rows.length === 0) {
     return {
       items: [],
-      mapping: emptyResultMapping(),
+      mapping: mappingOverride ?? emptyResultMapping(),
       sheetName,
       sourceFormat: null,
       orphanCount: 0,
@@ -75,8 +84,8 @@ export function classifySheet(rows: unknown[][], options: ClassifySheetOptions):
     };
   }
 
-  // §1. Column auto-detection
-  const mapping = detectColumns(rows, templateHint);
+  // §1. Column auto-detection (skipped when caller provided a mapping override).
+  const mapping = mappingOverride ?? detectColumns(rows, templateHint);
 
   // If detection produced an invalid mapping (no popis column), bail out
   // gracefully — returning zero items prevents the ImportModal from adding

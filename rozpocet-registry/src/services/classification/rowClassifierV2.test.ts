@@ -142,6 +142,127 @@ describe('classifySheet — degenerate inputs', () => {
   });
 });
 
+describe('classifySheet — mappingOverride (persisted mapping path)', () => {
+  // Reconstructed sparse stream — header row intentionally absent, mirroring
+  // what reclassifySheet() produces from per-item _rawCells (parser drops the
+  // header at import time, so the stream starts straight at data rows).
+  const sparseRows: unknown[][] = [];
+  sparseRows[3] = ['P', 1, '121101', 'kn', 'Výkop jámy', 'm3', 45, 150, 6750];
+  sparseRows[4] = ['PP', null, null, null, 'Včetně odvozu', null, null, null, null];
+  sparseRows[5] = ['P', 2, '231112', 'kn', 'Beton C25/30', 'm3', 12, 3200, 38400];
+
+  const savedMapping = {
+    headerRowIndex: 2,
+    dataStartRow: 3,
+    kod: 2,
+    popis: 4,
+    mj: 5,
+    mnozstvi: 6,
+    cenaJednotkova: 7,
+    cenaCelkem: 8,
+    typ: 0,
+    por: 1,
+    cenovaSoustava: null,
+    varianta: 3,
+    detectionConfidence: 0.9,
+    detectionSource: 'header-match' as const,
+  };
+
+  it('skips detectColumns and uses the provided mapping verbatim', () => {
+    const r = classifySheet(sparseRows, {
+      sheetName: 'SparseEstiCon',
+      mappingOverride: savedMapping,
+    });
+    expect(r.mapping).toEqual(savedMapping);
+    expect(r.mapping.typ).toBe(0);
+    expect(r.mapping.dataStartRow).toBe(3);
+  });
+
+  it('classifies correctly through Typ fast path with pre-resolved mapping', () => {
+    const r = classifySheet(sparseRows, {
+      sheetName: 'SparseEstiCon',
+      mappingOverride: savedMapping,
+    });
+    expect(r.mainCount).toBe(2);
+    expect(r.subordinateCount).toBe(1);
+    expect(r.sourceFormat).toBe('EstiCon');
+  });
+
+  it('mappingOverride takes precedence over templateHint', () => {
+    // Deliberately misleading hint — if override were ignored we would get
+    // urs-standard positions (kod=0) which collide with the Typ column in
+    // these rows.
+    const r = classifySheet(sparseRows, {
+      sheetName: 'SparseEstiCon',
+      mappingOverride: savedMapping,
+      templateHint: 'urs-standard',
+    });
+    expect(r.mapping.detectionSource).toBe('header-match');
+    expect(r.mapping.kod).toBe(2);
+  });
+
+  it('degrades gracefully on empty input with override provided', () => {
+    const r = classifySheet([], {
+      sheetName: 'Empty',
+      mappingOverride: savedMapping,
+    });
+    expect(r.items).toEqual([]);
+    // Override is echoed back so caller can inspect it even on empty input.
+    expect(r.mapping).toEqual(savedMapping);
+  });
+
+  it('reclassify scenario: sparse rows + saved mapping match original dense-stream classification', () => {
+    // Original dense rows as the parser sees them on first import — header
+    // row present, full stream.
+    const denseRows: unknown[][] = [
+      ['Krycí list — SO 202'],
+      [],
+      ['Typ', 'Poř.', 'Kód', 'Varianta', 'Popis', 'MJ', 'Množství', 'J.cena', 'Celkem'],
+      ['P', 1, '121101', 'kn', 'Výkop jámy', 'm3', 45, 150, 6750],
+      ['PP', null, null, null, 'Včetně odvozu', null, null, null, null],
+      ['P', 2, '231112', 'kn', 'Beton C25/30', 'm3', 12, 3200, 38400],
+    ];
+    const original = classifySheet(denseRows, { sheetName: 'SO202' });
+
+    // Reclassify scenario: parser dropped the header rows, only data rows
+    // survive on items as _rawCells indexed by source_row_index.
+    const reconstructed: unknown[][] = [];
+    for (const item of original.items) {
+      if (item.rawCells) reconstructed[item.sourceRowIndex] = item.rawCells;
+    }
+
+    const replayed = classifySheet(reconstructed, {
+      sheetName: 'SO202',
+      mappingOverride: original.mapping,
+    });
+    expect(replayed.mainCount).toBe(original.mainCount);
+    expect(replayed.subordinateCount).toBe(original.subordinateCount);
+    expect(replayed.mapping.typ).toBe(original.mapping.typ);
+    expect(replayed.mapping.dataStartRow).toBe(original.mapping.dataStartRow);
+  });
+
+  it('reclassify scenario: sparse rows WITHOUT saved mapping still classify via content heuristic (legacy compat)', () => {
+    // Legacy sheet imported before mapping persistence — no `mappingOverride`.
+    // detectColumns runs on the reconstructed stream and degrades to content
+    // heuristics; rows still classify (possibly with lower precision) so
+    // the button doesn't regress to an error state.
+    // Same sparse-dense pattern reclassifySheet() uses — holes filled with
+    // [] via Array.from so downstream detectColumns sees uniform shape.
+    // Content heuristic needs ≥ 3 non-empty data rows to score columns.
+    const reconstructed: unknown[][] = Array.from({ length: 7 }, () => []);
+    reconstructed[3] = ['P', 1, '121101', 'kn', 'Výkop jámy', 'm3', 45, 150, 6750];
+    reconstructed[4] = ['P', 2, '231112', 'kn', 'Beton C25/30', 'm3', 12, 3200, 38400];
+    reconstructed[5] = ['P', 3, '174101', 'kn', 'Zásyp', 'm3', 32, 80, 2560];
+
+    const r = classifySheet(reconstructed, { sheetName: 'Legacy' });
+    // Content heuristic can't read a Typ column without a header row, so
+    // falls through to kod/mj/mnozstvi analysis. Rows with valid OTSKP
+    // codes + MJ + mnozstvi classify as main.
+    expect(r.mapping.detectionSource).not.toBe('header-match');
+    expect(r.mainCount).toBeGreaterThanOrEqual(3);
+  });
+});
+
 describe('classifySheet — per-sheet isolation (edge §6.13)', () => {
   it('does not leak currentMainId across classifySheet calls', () => {
     // Header rows need ≥ 3 known-keyword hits to be detected; using 4

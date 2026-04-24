@@ -10,6 +10,10 @@
 
 import type { ParsedItem } from './item';
 import type { ImportConfig } from './config';
+import type {
+  ColumnMapping as ClassifierColumnMapping,
+  TemplateHint,
+} from '../services/classification/classifierTypes';
 
 export interface ProjectMetadata {
   projectNumber: string;       // "SO 201-1"
@@ -39,6 +43,20 @@ export interface Sheet {
   stats: SheetStats;             // статистика листа
   metadata: ProjectMetadata;     // метаданные листа
   config: ImportConfig;          // использованная конфигурация
+
+  /**
+   * ColumnMapping resolved by the v1.1 classifier at import time. Persisted
+   * so `reclassifySheet()` can skip `detectColumns()` (the header row is
+   * already consumed by the parser and absent from the reconstructed
+   * `_rawCells` stream). Undefined for sheets imported before persistence
+   * was introduced — reclassify falls back to content-heuristic detection.
+   */
+  classifierMapping?: ClassifierColumnMapping;
+  /**
+   * TemplateHint used at import time (derived from the ImportModal preset).
+   * Secondary fallback for reclassify when the full mapping is absent.
+   */
+  classifierTemplateHint?: TemplateHint;
 }
 
 /**
