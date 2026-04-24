@@ -454,35 +454,48 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
         </button>
       )}
 
-      {/* Raw Table View */}
-      <div className="border border-border-color rounded-lg overflow-hidden">
-        <div ref={tableContainerRef} className="overflow-x-auto max-h-[600px] overflow-y-auto">
+      {/* Raw Table View — single scroll context for the flat layout.
+          Drops `max-h-[600px]` in favor of `flex-1 min-h-0` so the
+          preview grows to fill the remaining modal height. Sticky
+          positioning is applied to each `<th>` rather than `<thead>`:
+          Chrome treats `<thead>` as a row-group and the sticky spec
+          doesn't bind reliably there (same fix as the main-page flat
+          layout, #1016). Each `<th>` gets an opaque background so
+          column-highlighted cells scrolling under it don't bleed
+          through. */}
+      <div className="border border-border-color rounded-lg overflow-hidden flex-1 min-h-0 flex flex-col">
+        <div ref={tableContainerRef} className="flex-1 min-h-0 overflow-auto">
           <table className="w-full text-xs font-mono">
-            <thead className="bg-bg-tertiary sticky top-0">
+            <thead>
               <tr>
-                <th className="px-2 py-1 text-left text-text-muted border-r border-border-color w-10">#</th>
-                {Array.from({ length: maxCols }, (_, i) => (
-                  <th
-                    key={i}
-                    className={`px-2 py-1 text-center border-r border-border-color min-w-[80px] cursor-pointer hover:bg-accent-primary/20 ${
-                      Object.values(selectedColumns).includes(colToLetter(i))
-                        ? 'bg-accent-primary/30'
-                        : ''
-                    }`}
-                    title={`Klikněte pro mapování sloupce ${colToLetter(i)}`}
-                  >
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="font-bold">{colToLetter(i)}</span>
-                      {Object.entries(selectedColumns).map(([field, col]) =>
-                        col === colToLetter(i) ? (
-                          <span key={field} className="text-[10px] text-accent-primary">
-                            {field}
+                <th className="sticky top-0 z-10 px-2 py-1 text-left text-text-muted border-r border-border-color w-10 bg-bg-tertiary">#</th>
+                {Array.from({ length: maxCols }, (_, i) => {
+                  const letter = colToLetter(i);
+                  const mappedAsField = Object.entries(selectedColumns).find(
+                    ([, col]) => col === letter,
+                  )?.[0];
+                  const isMapped = !!mappedAsField;
+                  return (
+                    <th
+                      key={i}
+                      className={`sticky top-0 z-10 px-2 py-1 text-center border-r border-border-color min-w-[80px] cursor-pointer transition-colors ${
+                        isMapped
+                          ? 'bg-accent-primary/30 hover:bg-accent-primary/40'
+                          : 'bg-bg-tertiary hover:bg-accent-primary/20'
+                      }`}
+                      title={`Klikněte pro mapování sloupce ${letter}`}
+                    >
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="font-bold">{letter}</span>
+                        {mappedAsField && (
+                          <span className="text-[10px] text-accent-primary">
+                            {mappedAsField}
                           </span>
-                        ) : null
-                      )}
-                    </div>
-                  </th>
-                ))}
+                        )}
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
