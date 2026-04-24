@@ -673,7 +673,12 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
       minWidth={800}
       minHeight={600}
     >
-      <div className="space-y-6">
+      {/* Root wrapper — for most steps `space-y-6` gives a stacked body
+          that can scroll in the outer ResizableModal. For `raw-view` we
+          switch to a flex column that fills the modal body height so the
+          preview table inside RawExcelViewer becomes the single scroll
+          context (see `fix/flat-import-modal` PR). */}
+      <div className={step === 'raw-view' ? 'h-full flex flex-col overflow-hidden' : 'space-y-6'}>
         {/* Upload step */}
         {step === 'upload' && (
           <div>
@@ -853,11 +858,14 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
           </div>
         )}
 
-        {/* Raw Excel View */}
+        {/* Raw Excel View — flat layout: single scroll context lives
+            inside RawExcelViewer's preview table. Header info, mapping
+            form, badges, and action buttons are all fixed surfaces that
+            stay visible while the user scrolls through preview rows. */}
         {step === 'raw-view' && workbook && (
-          <div className="space-y-4">
-            <div>
-              <p className="text-sm text-text-secondary mb-2">
+          <div className="flex flex-col flex-1 min-h-0 gap-3">
+            <div className="flex-shrink-0">
+              <p className="text-sm text-text-secondary mb-1">
                 Soubor: <span className="font-semibold text-text-primary">{file?.name}</span>
               </p>
               <p className="text-xs text-text-muted">
@@ -903,14 +911,8 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
               onDetectedType={(detected) => {
                 console.log('Detected file type:', detected);
               }}
+              onBack={() => setStep('template')}
             />
-
-            <button
-              onClick={() => setStep('template')}
-              className="btn btn-secondary"
-            >
-              Zpět k šablonám
-            </button>
           </div>
         )}
 

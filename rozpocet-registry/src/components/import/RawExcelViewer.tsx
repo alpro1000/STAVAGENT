@@ -6,12 +6,16 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import * as XLSX from 'xlsx';
-import { Sparkles, Check, Loader2, ArrowDown } from 'lucide-react';
+import { Sparkles, Check, Loader2, ArrowDown, HelpCircle, RefreshCw } from 'lucide-react';
 
 interface RawExcelViewerProps {
   workbook: XLSX.WorkBook;
   onColumnMapping: (mapping: ColumnMapping) => void;
   onDetectedType: (type: DetectedFileType) => void;
+  /** Optional back action. When provided, renders "Zpět k šablonám" in
+   *  the viewer's bottom action bar (flat-import-modal PR). Callers
+   *  that still render their own back button can omit this. */
+  onBack?: () => void;
 }
 
 interface ColumnMapping {
@@ -189,7 +193,7 @@ function autoDetectColumns(data: string[][]): Partial<ColumnMapping> {
   return mapping;
 }
 
-export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: RawExcelViewerProps) {
+export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBack }: RawExcelViewerProps) {
   const [selectedSheet, setSelectedSheet] = useState(workbook.SheetNames[0]);
   const [selectedColumns, setSelectedColumns] = useState<Partial<ColumnMapping>>({});
   const [isDetecting, setIsDetecting] = useState(true);
@@ -267,9 +271,15 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
   const maxCols = Math.max(...sheetData.map(row => row.length), 0);
 
   return (
-    <div className="space-y-4">
+    // Flat-modal layout (flat-import-modal PR): component fills its flex
+    // parent, surrounds fixed-height header surfaces (detection status,
+    // sheet tabs, mapping form, badges) above the scroll-grow preview
+    // table, and a fixed-height action bar at the bottom. The preview
+    // table is the only scroll context — all other surfaces are
+    // flex-shrink-0.
+    <div className="flex flex-col flex-1 min-h-0 gap-3">
       {/* Detection Status */}
-      <div className="flex items-center justify-between bg-bg-tertiary p-3 rounded-lg">
+      <div className="flex items-center justify-between bg-bg-tertiary p-3 rounded-lg flex-shrink-0">
         <div className="flex items-center gap-2">
           {isDetecting ? (
             <Loader2 className="animate-spin text-purple-400" size={20} />
@@ -291,11 +301,11 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
       </div>
 
       {detectedType && detectedType.reason && (
-        <p className="text-sm text-text-secondary">{detectedType.reason}</p>
+        <p className="text-sm text-text-secondary flex-shrink-0">{detectedType.reason}</p>
       )}
 
       {/* Sheet Selector */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 flex-shrink-0">
         {workbook.SheetNames.map((sheetName, idx) => (
           <button
             key={sheetName}
@@ -311,9 +321,15 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
         ))}
       </div>
 
-      {/* Column Mapping Toolbar */}
-      <div className="flex flex-wrap gap-2 p-2 bg-bg-tertiary rounded-lg">
-        <span className="text-sm text-text-secondary self-center">Mapování:</span>
+      {/* Column Mapping Form — moved up from below the preview table so
+          the user can see all dropdowns + the current mapping state at
+          the same time the preview scrolls. 7 fields (6 columns + data
+          start row) laid out with flex-wrap so they fit on 1 row at
+          1200 px+ viewport and wrap to 2 rows on narrower screens.
+          Auto-detect status indicator per field: green + Check when
+          mapped, amber + HelpCircle when blank. "Obnovit automaticky"
+          button re-runs detection from scratch. */}
+      <div className="flex flex-wrap items-end gap-2 p-3 bg-bg-tertiary rounded-lg border border-border-color flex-shrink-0">
         {(['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'] as const).map(field => {
           const labels: Record<string, string> = {
             kod: 'Kód',
@@ -321,71 +337,169 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
             mj: 'MJ',
             mnozstvi: 'Množství',
             cenaJednotkova: 'Cena jedn.',
-            cenaCelkem: 'Cena celkem'
+            cenaCelkem: 'Cena celkem',
           };
-          const colors: Record<string, string> = {
-            kod: 'bg-blue-500/20 text-blue-300 border-blue-500/50',
-            popis: 'bg-green-500/20 text-green-300 border-green-500/50',
-            mj: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50',
-            mnozstvi: 'bg-purple-500/20 text-purple-300 border-purple-500/50',
-            cenaJednotkova: 'bg-pink-500/20 text-pink-300 border-pink-500/50',
-            cenaCelkem: 'bg-orange-500/20 text-orange-300 border-orange-500/50',
-          };
-
+          const mapped = !!selectedColumns[field];
           return (
-            <div
-              key={field}
-              className={`px-2 py-1 text-xs rounded border ${colors[field]}`}
-            >
-              {labels[field]}: <strong>{selectedColumns[field] || '?'}</strong>
+            <div key={field} className="flex flex-col gap-1" style={{ width: 140 }}>
+              <label className="text-xs text-text-secondary flex items-center gap-1">
+                {mapped ? (
+                  <Check size={12} className="text-green-500" />
+                ) : (
+                  <HelpCircle size={12} className="text-amber-500" />
+                )}
+                {labels[field]}
+              </label>
+              <select
+                value={selectedColumns[field] || ''}
+                onChange={(e) => setSelectedColumns(prev => ({ ...prev, [field]: e.target.value }))}
+                className={`w-full bg-bg-primary border rounded px-2 py-1 text-sm transition-colors ${
+                  mapped
+                    ? 'border-green-500/50 focus:border-green-500'
+                    : 'border-amber-500/50 focus:border-amber-500'
+                }`}
+              >
+                <option value="">—</option>
+                {Array.from({ length: maxCols }, (_, i) => (
+                  <option key={i} value={colToLetter(i)}>
+                    {colToLetter(i)}
+                  </option>
+                ))}
+              </select>
             </div>
           );
         })}
-        <div className="px-2 py-1 text-xs rounded border bg-gray-500/20 text-gray-300 border-gray-500/50">
-          Začátek: <strong>řádek {selectedColumns.dataStartRow || '?'}</strong>
+        <div className="flex flex-col gap-1" style={{ width: 140 }}>
+          <label className="text-xs text-text-secondary flex items-center gap-1">
+            {selectedColumns.dataStartRow ? (
+              <Check size={12} className="text-green-500" />
+            ) : (
+              <HelpCircle size={12} className="text-amber-500" />
+            )}
+            Začátek dat
+          </label>
+          <input
+            type="number"
+            min={1}
+            max={sheetData.length}
+            value={selectedColumns.dataStartRow || 1}
+            onChange={(e) => setSelectedColumns(prev => ({ ...prev, dataStartRow: parseInt(e.target.value) || 1 }))}
+            className={`w-full bg-bg-primary border rounded px-2 py-1 text-sm transition-colors ${
+              selectedColumns.dataStartRow
+                ? 'border-green-500/50 focus:border-green-500'
+                : 'border-amber-500/50 focus:border-amber-500'
+            }`}
+          />
         </div>
+        <button
+          onClick={() => setSelectedColumns(autoDetectColumns(sheetData))}
+          className="h-[32px] px-3 text-xs rounded border border-border-color bg-bg-primary hover:bg-bg-secondary transition-colors flex items-center gap-1.5 self-end"
+          title="Znovu spustit automatickou detekci sloupců a počátečního řádku"
+        >
+          <RefreshCw size={12} />
+          Obnovit automaticky
+        </button>
+      </div>
+
+      {/* Mapping State Badges — one-line summary of the current mapping
+          decisions. Green when a column letter is assigned, amber when
+          still pending. Kept as a separate surface below the mapping
+          form so the user can confirm "which column letter went where"
+          at a glance while scrolling through the preview below. Color
+          per badge reflects STATUS (defined / pending), not field
+          identity — the earlier per-field hue palette was decorative
+          but carried no signal about completeness. */}
+      <div className="flex flex-wrap items-center gap-1.5 p-2 bg-bg-tertiary rounded-lg flex-shrink-0">
+        <span className="text-xs text-text-secondary self-center mr-1">Mapování:</span>
+        {(['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'] as const).map(field => {
+          const labels: Record<string, string> = {
+            kod: 'Kód',
+            popis: 'Popis',
+            mj: 'MJ',
+            mnozstvi: 'Množství',
+            cenaJednotkova: 'Cena jedn.',
+            cenaCelkem: 'Cena celkem',
+          };
+          const value = selectedColumns[field];
+          const defined = !!value;
+          const cls = defined
+            ? 'bg-green-500/20 text-green-300 border-green-500/50'
+            : 'bg-amber-500/20 text-amber-300 border-amber-500/50';
+          return (
+            <div
+              key={field}
+              className={`px-2 py-0.5 text-xs rounded border ${cls}`}
+            >
+              {labels[field]}: <strong>{value || '?'}</strong>
+            </div>
+          );
+        })}
+        {(() => {
+          const v = selectedColumns.dataStartRow;
+          const cls = v
+            ? 'bg-green-500/20 text-green-300 border-green-500/50'
+            : 'bg-amber-500/20 text-amber-300 border-amber-500/50';
+          return (
+            <div className={`px-2 py-0.5 text-xs rounded border ${cls}`}>
+              Začátek: <strong>řádek {v || '?'}</strong>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Jump to data button - show when header is large */}
       {selectedColumns.dataStartRow && selectedColumns.dataStartRow > 5 && (
         <button
           onClick={scrollToDataRow}
-          className="flex items-center gap-2 px-3 py-1.5 text-sm bg-green-500/20 text-green-300 border border-green-500/50 rounded-lg hover:bg-green-500/30 transition-colors"
+          className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 text-sm bg-green-500/20 text-green-300 border border-green-500/50 rounded-lg hover:bg-green-500/30 transition-colors self-start"
         >
           <ArrowDown size={14} />
           Přejít na data (řádek {selectedColumns.dataStartRow})
         </button>
       )}
 
-      {/* Raw Table View */}
-      <div className="border border-border-color rounded-lg overflow-hidden">
-        <div ref={tableContainerRef} className="overflow-x-auto max-h-[600px] overflow-y-auto">
+      {/* Raw Table View — single scroll context for the flat layout.
+          Drops `max-h-[600px]` in favor of `flex-1 min-h-0` so the
+          preview grows to fill the remaining modal height. Sticky
+          positioning is applied to each `<th>` rather than `<thead>`:
+          Chrome treats `<thead>` as a row-group and the sticky spec
+          doesn't bind reliably there (same fix as the main-page flat
+          layout, #1016). Each `<th>` gets an opaque background so
+          column-highlighted cells scrolling under it don't bleed
+          through. */}
+      <div className="border border-border-color rounded-lg overflow-hidden flex-1 min-h-0 flex flex-col">
+        <div ref={tableContainerRef} className="flex-1 min-h-0 overflow-auto">
           <table className="w-full text-xs font-mono">
-            <thead className="bg-bg-tertiary sticky top-0">
+            <thead>
               <tr>
-                <th className="px-2 py-1 text-left text-text-muted border-r border-border-color w-10">#</th>
-                {Array.from({ length: maxCols }, (_, i) => (
-                  <th
-                    key={i}
-                    className={`px-2 py-1 text-center border-r border-border-color min-w-[80px] cursor-pointer hover:bg-accent-primary/20 ${
-                      Object.values(selectedColumns).includes(colToLetter(i))
-                        ? 'bg-accent-primary/30'
-                        : ''
-                    }`}
-                    title={`Klikněte pro mapování sloupce ${colToLetter(i)}`}
-                  >
-                    <div className="flex flex-col items-center gap-1">
-                      <span className="font-bold">{colToLetter(i)}</span>
-                      {Object.entries(selectedColumns).map(([field, col]) =>
-                        col === colToLetter(i) ? (
-                          <span key={field} className="text-[10px] text-accent-primary">
-                            {field}
+                <th className="sticky top-0 z-10 px-2 py-1 text-left text-text-muted border-r border-border-color w-10 bg-bg-tertiary">#</th>
+                {Array.from({ length: maxCols }, (_, i) => {
+                  const letter = colToLetter(i);
+                  const mappedAsField = Object.entries(selectedColumns).find(
+                    ([, col]) => col === letter,
+                  )?.[0];
+                  const isMapped = !!mappedAsField;
+                  return (
+                    <th
+                      key={i}
+                      className={`sticky top-0 z-10 px-2 py-1 text-center border-r border-border-color min-w-[80px] cursor-pointer transition-colors ${
+                        isMapped
+                          ? 'bg-accent-primary/30 hover:bg-accent-primary/40'
+                          : 'bg-bg-tertiary hover:bg-accent-primary/20'
+                      }`}
+                      title={`Klikněte pro mapování sloupce ${letter}`}
+                    >
+                      <div className="flex flex-col items-center gap-1">
+                        <span className="font-bold">{letter}</span>
+                        {mappedAsField && (
+                          <span className="text-[10px] text-accent-primary">
+                            {mappedAsField}
                           </span>
-                        ) : null
-                      )}
-                    </div>
-                  </th>
-                ))}
+                        )}
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
@@ -423,57 +537,41 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
         </div>
       </div>
 
-      {/* Quick Column Mapping */}
-      <div className="grid grid-cols-3 gap-2">
-        {(['kod', 'popis', 'mj', 'mnozstvi', 'cenaJednotkova', 'cenaCelkem'] as const).map(field => {
-          const labels: Record<string, string> = {
-            kod: 'Kód',
-            popis: 'Popis',
-            mj: 'MJ',
-            mnozstvi: 'Množství',
-            cenaJednotkova: 'Cena jedn.',
-            cenaCelkem: 'Cena celkem'
-          };
-
-          return (
-            <div key={field} className="flex items-center gap-2">
-              <label className="text-sm text-text-secondary w-24">{labels[field]}:</label>
-              <select
-                value={selectedColumns[field] || ''}
-                onChange={(e) => setSelectedColumns(prev => ({ ...prev, [field]: e.target.value }))}
-                className="flex-1 bg-bg-tertiary border border-border-color rounded px-2 py-1 text-sm"
-              >
-                <option value="">-</option>
-                {Array.from({ length: maxCols }, (_, i) => (
-                  <option key={i} value={colToLetter(i)}>
-                    {colToLetter(i)}
-                  </option>
-                ))}
-              </select>
-            </div>
-          );
-        })}
-        <div className="flex items-center gap-2">
-          <label className="text-sm text-text-secondary w-24">Začátek dat:</label>
-          <input
-            type="number"
-            min={1}
-            max={sheetData.length}
-            value={selectedColumns.dataStartRow || 1}
-            onChange={(e) => setSelectedColumns(prev => ({ ...prev, dataStartRow: parseInt(e.target.value) || 1 }))}
-            className="flex-1 bg-bg-tertiary border border-border-color rounded px-2 py-1 text-sm"
-          />
+      {/* Bottom Action Bar — anchored at the foot of the flat modal.
+          Primary "Použít mapování a importovat" is gated on the `popis`
+          column being assigned (the one field the importer cannot
+          reconstruct from content alone); the button goes disabled +
+          surfaces the reason via `title` tooltip when it's unmapped.
+          Secondary "Zpět k šablonám" renders only when the host passes
+          `onBack` — older call-sites that still render their own back
+          button omit the prop and get the original behavior. */}
+      <div className="flex items-center justify-between gap-2 pt-2 border-t border-border-color flex-shrink-0">
+        <div className="flex-shrink-0">
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="btn btn-secondary"
+            >
+              Zpět k šablonám
+            </button>
+          )}
+        </div>
+        <div className="flex-shrink-0">
+          <button
+            onClick={handleApplyMapping}
+            disabled={!selectedColumns.popis}
+            className="btn btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            title={
+              selectedColumns.popis
+                ? 'Použít toto mapování a pokračovat v importu'
+                : 'Chybí mapování pro Popis — přiřaďte sloupec ve formuláři výše'
+            }
+          >
+            <Check size={16} />
+            Použít mapování a importovat
+          </button>
         </div>
       </div>
-
-      {/* Apply Button */}
-      <button
-        onClick={handleApplyMapping}
-        className="w-full btn btn-primary flex items-center justify-center gap-2"
-      >
-        <Check size={16} />
-        Použít mapování a importovat
-      </button>
     </div>
   );
 }
