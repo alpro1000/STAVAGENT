@@ -335,6 +335,71 @@ cases (v2 не производит matching row для некоторого Par
 
 ---
 
+## 18. Quick fix polish — PR #1020 follow-ups (P3, low priority)
+
+Review PR #1020 (fixed-height ItemsTable card, merged 2026-04-24)
+flagged 5 non-blocking nits. None affect functional correctness;
+each is either a small robustness hardening or a UX refinement.
+
+**L1 — Side effect inside state updater.** `onUp` handler does:
+
+```tsx
+setTableHeight(h => {
+  persistTableHeight(h);
+  return h;
+});
+```
+
+React documents updater functions as pure. In strict mode / concurrent
+mode the updater can be invoked twice, which would fire
+`persistTableHeight` twice per drag-end. Harmless (idempotent
+`localStorage.setItem`), but conceptually impure. Move persist into a
+`useEffect` keyed on `tableHeight`, OR hold the latest height in a
+ref inside `onMove` and read from the ref in `onUp` to call
+`persistTableHeight(latestHeightRef.current)` directly.
+
+**L2 — Default viewport lock-in.** `getDefaultTableHeight` reads
+`window.innerWidth` only at mount time. If the user rotates a
+tablet or resizes the browser across the 768 px mobile breakpoint,
+state doesn't update — the card stays at 2000 px on a shrunken
+viewport. Add a `matchMedia('(max-width: 768px)')` listener +
+debounced re-clamp.
+
+**L3 — Runaway heights after device change.** If user sets height
+to 4800 px on a 4K monitor then opens same session on a 768-px-tall
+laptop, card is 4800 px → giant page scroll. Add
+`Math.min(persisted, window.innerHeight * 4)` clamp in
+`loadTableHeight` to prevent absurd values after cross-device use.
+
+**L4 — Handle hit area is small** (32 × 16 px, `w-8 h-4`). Easy
+to miss with a mouse, harder on touch. Increase to `w-12 h-5`
+(48 × 20 px) for better discoverability, especially on tablets.
+
+**L5 — `useCallback` rebuilds at 60 Hz during drag.** Deps
+`[tableHeight]` means the callback identity changes on every
+pixel of drag (state updates per mousemove). Not a perf
+concern (callback is just attached to `onMouseDown`), but cleaner
+to read `tableHeight` via a ref at drag-start so deps become `[]`
+and the callback is stable across renders.
+
+**Plus: unit tests for `loadTableHeight` clamping.** Three cases:
+
+1. Empty localStorage → returns default (desktop or mobile).
+2. Corrupted value (non-numeric, out-of-range) → returns default.
+3. Valid persisted value inside [MIN, MAX] → returned verbatim.
+
+Simple, non-DOM, pure-utility tests. Would bring `registryStore`-
+related coverage to 14 cases.
+
+**Size:** 1-2 hours all together. Single commit per concern is fine;
+bundle works too since all five touch the same ~80 lines of
+ItemsTable.tsx.
+
+**When:** next UI polish session. No urgency — current quick fix
+is stable in production.
+
+---
+
 ## Приоритизация — обновлённая после сессии 2026-04-23 (post-classifier-merge)
 
 **✅ Closed**: п. 11 (classifier rewrite) — shipped v4.25.0, follow-ups разнесены в §14-17. п. 15 (CI workflow) — shipped 2026-04-24 через PR #1013.
