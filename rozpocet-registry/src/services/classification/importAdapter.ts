@@ -258,7 +258,7 @@ export function appendMissingSubordinates(
     const cells = v2.rawCells ?? [];
     const kod = String(cellAt(cells, mapping.kod) ?? '').trim();
     const popis = String(cellAt(cells, mapping.popis) ?? '').trim();
-    const mj = String(cellAt(cells, mapping.mj) ?? '').toString().trim().toLowerCase();
+    const mj = String(cellAt(cells, mapping.mj) ?? '').trim().toLowerCase();
     const mnozstvi = parseNumber(
       cellAt(cells, mapping.mnozstvi) as string | number | null | undefined,
     );
