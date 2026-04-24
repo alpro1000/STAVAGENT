@@ -142,6 +142,76 @@ describe('classifySheet — degenerate inputs', () => {
   });
 });
 
+describe('classifySheet — mappingOverride (persisted mapping path)', () => {
+  // Reconstructed sparse stream — header row intentionally absent, mirroring
+  // what reclassifySheet() produces from per-item _rawCells (parser drops the
+  // header at import time, so the stream starts straight at data rows).
+  const sparseRows: unknown[][] = [];
+  sparseRows[3] = ['P', 1, '121101', 'kn', 'Výkop jámy', 'm3', 45, 150, 6750];
+  sparseRows[4] = ['PP', null, null, null, 'Včetně odvozu', null, null, null, null];
+  sparseRows[5] = ['P', 2, '231112', 'kn', 'Beton C25/30', 'm3', 12, 3200, 38400];
+
+  const savedMapping = {
+    headerRowIndex: 2,
+    dataStartRow: 3,
+    kod: 2,
+    popis: 4,
+    mj: 5,
+    mnozstvi: 6,
+    cenaJednotkova: 7,
+    cenaCelkem: 8,
+    typ: 0,
+    por: 1,
+    cenovaSoustava: null,
+    varianta: 3,
+    detectionConfidence: 0.9,
+    detectionSource: 'header-match' as const,
+  };
+
+  it('skips detectColumns and uses the provided mapping verbatim', () => {
+    const r = classifySheet(sparseRows, {
+      sheetName: 'SparseEstiCon',
+      mappingOverride: savedMapping,
+    });
+    expect(r.mapping).toEqual(savedMapping);
+    expect(r.mapping.typ).toBe(0);
+    expect(r.mapping.dataStartRow).toBe(3);
+  });
+
+  it('classifies correctly through Typ fast path with pre-resolved mapping', () => {
+    const r = classifySheet(sparseRows, {
+      sheetName: 'SparseEstiCon',
+      mappingOverride: savedMapping,
+    });
+    expect(r.mainCount).toBe(2);
+    expect(r.subordinateCount).toBe(1);
+    expect(r.sourceFormat).toBe('EstiCon');
+  });
+
+  it('mappingOverride takes precedence over templateHint', () => {
+    // Deliberately misleading hint — if override were ignored we would get
+    // urs-standard positions (kod=0) which collide with the Typ column in
+    // these rows.
+    const r = classifySheet(sparseRows, {
+      sheetName: 'SparseEstiCon',
+      mappingOverride: savedMapping,
+      templateHint: 'urs-standard',
+    });
+    expect(r.mapping.detectionSource).toBe('header-match');
+    expect(r.mapping.kod).toBe(2);
+  });
+
+  it('degrades gracefully on empty input with override provided', () => {
+    const r = classifySheet([], {
+      sheetName: 'Empty',
+      mappingOverride: savedMapping,
+    });
+    expect(r.items).toEqual([]);
+    // Override is echoed back so caller can inspect it even on empty input.
+    expect(r.mapping).toEqual(savedMapping);
+  });
+});
+
 describe('classifySheet — per-sheet isolation (edge §6.13)', () => {
   it('does not leak currentMainId across classifySheet calls', () => {
     // Header rows need ≥ 3 known-keyword hits to be detected; using 4
