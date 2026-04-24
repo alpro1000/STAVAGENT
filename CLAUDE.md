@@ -1,7 +1,7 @@
 # CLAUDE.md - STAVAGENT System Context
 
 **Version:** 4.25.0
-**Last Updated:** 2026-04-23
+**Last Updated:** 2026-04-24
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -381,7 +381,7 @@ VITE_DISABLE_AUTH=true  # local dev only
 
 **Cloud Build:** `cloudbuild-{concrete,monolit,portal,urs,registry,mineru}.yaml` + `triggers/*.yaml`
 Guard step (git diff), Docker → Artifact Registry, Cloud Run deploy. Region: `europe-west3`. MinerU: `europe-west1`.
-**GitHub Actions:** keep-alive, monolit-planner-ci, test-coverage, test-urs-matcher, **test-mcp-compatibility** (17 tests, triggers on concrete-agent/ changes).
+**GitHub Actions:** keep-alive, monolit-planner-ci, test-coverage, test-urs-matcher, **test-mcp-compatibility** (17 tests, triggers on concrete-agent/ changes), **rozpocet-registry-test** (87 vitest + `tsc -b && vite build`, triggers on rozpocet-registry/ changes).
 
 ---
 

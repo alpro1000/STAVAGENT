@@ -265,22 +265,25 @@ per-item, может быть проще сохранять `templateHint` + `he
 
 ---
 
-## 15. CI workflow для rozpocet-registry tests (P2) — **сделать в ближайшее время**
+## 15. CI workflow для rozpocet-registry tests (P2) — ✅ RESOLVED (2026-04-24, PR #1013)
 
-87 тестов passed локально (`npm run test:run`), но **нет автоматического
-gate на PR'ах**. В `.github/workflows/` нет файла под registry — существующий
-`test-coverage.yml` и compagnons покрывают URS_MATCHER, Monolit-Planner,
-concrete-agent. Следующий PR может случайно сломать classifier, и никто не
-узнает до smoke test в dev.
+Workflow `.github/workflows/rozpocet-registry-test.yml` (44 строки) замерджен
+в main. Триггеры `pull_request` + `push` на `main` с path filter
+`rozpocet-registry/**` + сам workflow-файл. Шаги: checkout → Node 20.x + npm
+cache → `npm ci` → `npm run test:run` (87 vitest) → `npm run build`
+(`tsc -b && vite build`). Fail-on-red на обоих.
 
-Fix: создать `.github/workflows/rozpocet-registry-test.yml` по паттерну
-существующих CI:
+Self-test пройден на собственном PR за 42s (run `24848951369`, job
+`test (20.x)` success). Caching, path filter и build-step — все корректны.
 
-- триггер: `pull_request` с `paths: rozpocet-registry/**`
-- steps: `npm ci` → `npm run test:run` → fail-on-red
-- не нужен jsdom / browser (тесты pure TS в environment='node')
+**Не провалидировано пока (Test Plan остаток)**:
 
-Размер: 1-2 часа.
+1. Открыть trivial PR, трогающий только `stavagent-portal/` → подтвердить,
+   что `Test Rozpočet Registry` workflow НЕ триггерится (path-filter
+   exclusion).
+2. Второй запуск должен hit'нуть npm cache (быстрее ~30s).
+
+Secrets не требуются (тесты pure unit, без API).
 
 ---
 
@@ -334,24 +337,23 @@ cases (v2 не производит matching row для некоторого Par
 
 ## Приоритизация — обновлённая после сессии 2026-04-23 (post-classifier-merge)
 
-**✅ Closed**: п. 11 (classifier rewrite) — shipped v4.25.0, follow-ups разнесены в §14-17.
+**✅ Closed**: п. 11 (classifier rewrite) — shipped v4.25.0, follow-ups разнесены в §14-17. п. 15 (CI workflow) — shipped 2026-04-24 через PR #1013.
 
-1. **П. 15** (CI workflow rozpocet-registry tests) — P2, **сделать в ближайшее время**. 1-2 часа. Protects 87-test investment от regressions. Без этого следующий PR может сломать classifier silently.
+1. **П. 14** (persist ColumnMapping per Sheet) — P1, 0.5-1 день. Устраняет degradation "Překlasifikovat" — currently templateHint теряется.
 2. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
-3. **П. 14** (persist ColumnMapping per Sheet) — P1, 0.5-1 день. Устраняет degradation "Překlasifikovat" — currently templateHint теряется.
-4. **П. 12** (read Poř. Č. from Excel) — частично решено в v4.25.0 (classifier extracts `por` в ClassifiedRowBase), остаётся проверить что parser пишет в `item.boqLineNumber` из Excel column, а не из счётчика. Быстрая проверка.
-5. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
-6. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
-7. **П. 4** (фильтр импорта в Monolit) — **разблокирован** после v4.25.0 classifier. Можно делать сразу.
-8. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
-9. **П. 2** (каталожная цена) — **разблокирован** после v4.25.0. Можно делать сразу.
-10. **П. 1** (document navigation) — UX improvement.
-11. **П. 16** (classificationConfidence type cleanup) — P3, 2-3 часа. Не срочно пока нет багов.
-12. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
-13. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
-14. **П. 17** (remove legacy classifyRows fallback) — P3, 1 час. Заблокировано временем — 2-3 недели после 2026-04-23 (т.е. ~2026-05-07).
-15. **П. 7** (branch protection) — process decision, не код.
-16. **П. 3** — **закрыто**, заменено v4.25.0 classifier + п. 14 persist mapping.
+3. **П. 12** (read Poř. Č. from Excel) — частично решено в v4.25.0 (classifier extracts `por` в ClassifiedRowBase), остаётся проверить что parser пишет в `item.boqLineNumber` из Excel column, а не из счётчика. Быстрая проверка.
+4. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
+5. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
+6. **П. 4** (фильтр импорта в Monolit) — **разблокирован** после v4.25.0 classifier. Можно делать сразу.
+7. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
+8. **П. 2** (каталожная цена) — **разблокирован** после v4.25.0. Можно делать сразу.
+9. **П. 1** (document navigation) — UX improvement.
+10. **П. 16** (classificationConfidence type cleanup) — P3, 2-3 часа. Не срочно пока нет багов.
+11. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
+12. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
+13. **П. 17** (remove legacy classifyRows fallback) — P3, 1 час. Заблокировано временем — 2-3 недели после 2026-04-23 (т.е. ~2026-05-07).
+14. **П. 7** (branch protection) — process decision, не код.
+15. **П. 3** — **закрыто**, заменено v4.25.0 classifier + п. 14 persist mapping.
 
 PR 2 Variant B (single active-skupina toolbar above table) + compensation pack (subordinate visual distinction, vertical column dividers, sticky header fix, split Poř. column, hide empty monolit column) отправлен через ветку `claude/registry-toolbar-group-Qophc`. Двойной scroll сознательно принят как меньшее зло до реализации п. 10. PR-2-B / PR 3 (detail panel) / PR 4 (extend BulkActionsBar) / PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1.
 
