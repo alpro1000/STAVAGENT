@@ -1299,16 +1299,21 @@ function App() {
                     )}
                   </div>
 
-                  {/* AI Panel */}
-                  <AIPanel
-                    items={selectedSheet.items}
-                    projectId={selectedProject.id}
-                    sheetId={selectedSheet.id}
-                    selectedItemIds={Array.from(selectedItemIds)}
-                  />
-
-                  {/* Group Manager */}
-                  <GroupManager />
+                  {/* AI Klasifikace + Správa skupin — side-by-side on md+
+                      viewports (grid-cols-2), stack on mobile (<768px).
+                      Collapsed-state total height is ~50px instead of the
+                      previous stacked ~100px, freeing vertical room for
+                      the table. GroupManager runs in non-standalone mode
+                      so the grid column controls its width. */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
+                    <AIPanel
+                      items={selectedSheet.items}
+                      projectId={selectedProject.id}
+                      sheetId={selectedSheet.id}
+                      selectedItemIds={Array.from(selectedItemIds)}
+                    />
+                    <GroupManager standalone={false} />
+                  </div>
 
                   {/* Filter Controls */}
                   <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg border border-border-color">
