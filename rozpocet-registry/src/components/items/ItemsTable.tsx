@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2 } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2, ClipboardList } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -86,6 +86,9 @@ interface ItemsTableProps {
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
   showOnlyWorkItems?: boolean;
+  /** Setter for the "Jen pracovní" filter — renders as a compact checkbox
+   *  in the toolbar when provided (§10 proper fix — point 3). */
+  onShowOnlyWorkItemsChange?: (value: boolean) => void;
   /** Conflict severity per itemId from Monolit comparison polling */
   conflictMap?: Map<string, 'match' | 'info' | 'warning' | 'conflict'>;
 }
@@ -101,6 +104,7 @@ export function ItemsTable({
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
+  onShowOnlyWorkItemsChange,
   conflictMap,
 }: ItemsTableProps) {
   const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny, reclassifySheet } = useRegistryStore();
@@ -1053,6 +1057,31 @@ export function ItemsTable({
               <Wand2 size={16} className="text-text-secondary w-[16px] h-[16px]" />
               <span className="text-xs text-text-muted hidden sm:inline">Překlasifikovat</span>
             </button>
+
+            {/* "Jen pracovní" filter — moved into the toolbar from the
+                former standalone filter card above the table (§10 proper
+                fix — point 3). Only rendered when the host provides a
+                setter, so legacy call-sites keep the prior behavior. */}
+            {onShowOnlyWorkItemsChange && (
+              <label
+                className="flex items-center gap-1.5 ml-2 pl-2 border-l border-border-color cursor-pointer select-none"
+                title="Skrýt popisné řádky (zobrazí se jen položky s kódem a množstvím)"
+              >
+                <input
+                  type="checkbox"
+                  checked={showOnlyWorkItems}
+                  onChange={(e) => onShowOnlyWorkItemsChange(e.target.checked)}
+                  className="w-3.5 h-3.5 cursor-pointer"
+                />
+                <ClipboardList size={14} className="text-text-secondary w-[14px] h-[14px]" />
+                <span className="text-xs text-text-muted hidden sm:inline">Jen pracovní</span>
+                {showOnlyWorkItems && (
+                  <span className="text-[10px] px-1 py-0 rounded bg-accent-primary text-white tabular-nums">
+                    {visibleItems.length}/{items.length}
+                  </span>
+                )}
+              </label>
+            )}
           </div>
           {reclassifyStatus && (
             <p className="text-xs text-text-muted italic">{reclassifyStatus}</p>
