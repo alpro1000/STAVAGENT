@@ -16,11 +16,15 @@
 
 import { describe, it, expect } from 'vitest';
 import { applyInstanceMappingsToProjects } from './registryStore';
-import type { Project } from '../types';
+import type { Project, ParsedItem } from '../types';
 import type { InstanceMapping } from '../services/portalAutoSync';
 
-/** Minimal sheet + item scaffolding — only fields the helper reads. */
-function makeItem(id: string, overrides: Partial<Parameters<typeof Object>[0]> = {}) {
+/** Minimal sheet + item scaffolding — only fields the helper reads.
+ *  `overrides` is a proper `Partial<ParsedItem>` so callers get type
+ *  checking on the fields they pass (the previous
+ *  `Partial<Parameters<typeof Object>[0]>` resolved to `Partial<any>`
+ *  and silently accepted nonsense). */
+function makeItem(id: string, overrides: Partial<ParsedItem> = {}): ParsedItem {
   return {
     id,
     kod: '',
@@ -45,7 +49,7 @@ function makeItem(id: string, overrides: Partial<Parameters<typeof Object>[0]> =
   };
 }
 
-function makeProject(id: string, items: ReturnType<typeof makeItem>[]): Project {
+function makeProject(id: string, items: ParsedItem[]): Project {
   return {
     id,
     fileName: 't.xlsx',
@@ -177,6 +181,106 @@ describe('applyInstanceMappingsToProjects — monolith_payload deep equality', (
     const r = applyInstanceMappingsToProjects([project], mappings);
     expect(r.anyChanged).toBe(true);
     expect(r.monolithCount).toBe(1);
+  });
+
+  it('no-op when server returns the same payload with a different key order', () => {
+    // Amazon Q review flag on PR #1019: naïve `JSON.stringify(a) !==
+    // JSON.stringify(b)` produces false-positive "changed" when a server
+    // serializes the same content with a different insertion order (e.g.
+    // a deploy switching from alphabetical to schema-defined order, or
+    // a JSON library that doesn't guarantee stable key order).
+    // Verify the stable-stringify comparison handles it.
+    const item = makeItem('i1', { position_instance_id: 'inst_abc', monolith_payload: payload });
+    const project = makeProject('p1', [item]);
+
+    // Manually build an equivalent payload with keys inserted in a
+    // different order. Same values, same keys, reshuffled.
+    const shuffledPayload = {
+      calculated_at: payload.calculated_at,
+      confidence: payload.confidence,
+      source_tag: payload.source_tag,
+      cost_czk: payload.cost_czk,
+      labor_hours: payload.labor_hours,
+      days: payload.days,
+      shift_hours: payload.shift_hours,
+      wage_czk_ph: payload.wage_czk_ph,
+      crew_size: payload.crew_size,
+      subtype: payload.subtype,
+      part_name: payload.part_name,
+      monolit_project_id: payload.monolit_project_id,
+      monolit_position_id: payload.monolit_position_id,
+    };
+
+    const mappings: InstanceMapping[] = [{
+      registry_item_id: 'i1',
+      position_instance_id: 'inst_abc',
+      monolith_payload: shuffledPayload,
+    }];
+    const r = applyInstanceMappingsToProjects([project], mappings);
+    expect(r.anyChanged).toBe(false);
+    expect(r.monolithCount).toBe(0);
+    // Full ref chain must be preserved — that's the whole point of the
+    // stable compare. A false-positive here would leak into the
+    // Zustand subscriber and reopen the infinite-sync loop.
+    expect(r.nextProjects[0]).toBe(project);
+  });
+
+  it('no-op when nested-object properties (e.g. costs) differ only in key order', () => {
+    const nestedPayload = {
+      ...payload,
+      costs: {
+        formwork_labor_czk: 10000,
+        rebar_labor_czk: 8000,
+        pour_labor_czk: 4000,
+        pour_night_premium_czk: 500,
+        total_labor_czk: 22500,
+        formwork_rental_czk: 5000,
+        props_labor_czk: 2000,
+        props_rental_czk: 1500,
+      },
+    };
+    const item = makeItem('i1', {
+      position_instance_id: 'inst_abc',
+      monolith_payload: nestedPayload,
+    });
+    const project = makeProject('p1', [item]);
+
+    const shuffledNested = {
+      // Top-level fields in different order:
+      calculated_at: payload.calculated_at,
+      monolit_position_id: payload.monolit_position_id,
+      cost_czk: payload.cost_czk,
+      monolit_project_id: payload.monolit_project_id,
+      part_name: payload.part_name,
+      subtype: payload.subtype,
+      crew_size: payload.crew_size,
+      wage_czk_ph: payload.wage_czk_ph,
+      shift_hours: payload.shift_hours,
+      days: payload.days,
+      labor_hours: payload.labor_hours,
+      source_tag: payload.source_tag,
+      confidence: payload.confidence,
+      // Nested `costs` object ALSO in different key order:
+      costs: {
+        total_labor_czk: 22500,
+        props_rental_czk: 1500,
+        props_labor_czk: 2000,
+        formwork_rental_czk: 5000,
+        pour_night_premium_czk: 500,
+        pour_labor_czk: 4000,
+        rebar_labor_czk: 8000,
+        formwork_labor_czk: 10000,
+      },
+    };
+
+    const mappings: InstanceMapping[] = [{
+      registry_item_id: 'i1',
+      position_instance_id: 'inst_abc',
+      monolith_payload: shuffledNested,
+    }];
+    const r = applyInstanceMappingsToProjects([project], mappings);
+    expect(r.anyChanged).toBe(false);
+    expect(r.nextProjects[0]).toBe(project);
   });
 });
 
