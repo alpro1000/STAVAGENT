@@ -21,7 +21,7 @@ import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
 import { classifySheet } from '../services/classification/rowClassifierV2';
 import { mergeV2IntoParsedItems } from '../services/classification/importAdapter';
-import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback } from '../services/portalAutoSync';
+import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback, type InstanceMapping } from '../services/portalAutoSync';
 import { writeBackDOV } from '../services/dovWriteBack';
 import { fetchMonolithData } from '../services/portalMonolithFetch';
 import { deleteProjectFromBackend, deleteAllProjectsFromBackend } from '../services/backendSync';
@@ -1091,40 +1091,96 @@ setAutoLinkCallback((projectId: string, portalProjectId: string) => {
 });
 
 /**
- * Register instance mapping callback: when sync returns position_instance_id mappings
- * (+ optional monolith_payload), store them on ParsedItem objects.
+ * Apply Portal's instance-mapping response to a projects array, producing
+ * a new projects array ONLY when something actually changed — otherwise
+ * returns the same reference chain (project / sheet / item) so Zustand's
+ * reference-equality subscriber doesn't fire.
+ *
+ * Ref-preservation is critical here: the auto-sync subscriber keys on
+ * `state.projects !== prevState.projects`, so a callback that produces a
+ * fresh `projects` array on every server response (even when the data is
+ * unchanged) kicks off an infinite sync → response → update → sync loop.
+ * Walk the projects/sheets/items tree bottom-up and only wrap a new
+ * reference at each level when something below it changed.
+ *
+ * `monolith_payload` comparison: Portal returns a fresh object every
+ * response, so strict reference equality would always read as "changed"
+ * and keep the loop alive. Compare by JSON — payload is small (~15
+ * fields per item).
+ *
+ * Exported so the callback below can use it AND a regression test can
+ * exercise the ref-preservation contract directly (without mocking
+ * Zustand persist / IndexedDB).
+ */
+export function applyInstanceMappingsToProjects(
+  projects: Project[],
+  mappings: InstanceMapping[],
+): { nextProjects: Project[]; anyChanged: boolean; monolithCount: number } {
+  const mappingMap = new Map(mappings.map(m => [m.registry_item_id, m]));
+  let monolithCount = 0;
+  let anyProjectChanged = false;
+
+  const nextProjects = projects.map(p => {
+    let anySheetChanged = false;
+    const nextSheets = p.sheets.map(sheet => {
+      let anyItemChanged = false;
+      const nextItems = sheet.items.map(item => {
+        const mapping = mappingMap.get(item.id);
+        if (!mapping) return item;
+
+        const updates: Partial<typeof item> = {};
+        if (mapping.position_instance_id && item.position_instance_id !== mapping.position_instance_id) {
+          updates.position_instance_id = mapping.position_instance_id;
+        }
+        if (mapping.monolith_payload) {
+          const curr = item.monolith_payload;
+          const next = mapping.monolith_payload;
+          if (!curr || JSON.stringify(curr) !== JSON.stringify(next)) {
+            updates.monolith_payload = next;
+            monolithCount++;
+          }
+        }
+        if (Object.keys(updates).length === 0) return item;
+        anyItemChanged = true;
+        return { ...item, ...updates };
+      });
+      if (!anyItemChanged) return sheet;
+      anySheetChanged = true;
+      return { ...sheet, items: nextItems };
+    });
+    if (!anySheetChanged) return p;
+    anyProjectChanged = true;
+    return { ...p, sheets: nextSheets };
+  });
+
+  return { nextProjects, anyChanged: anyProjectChanged, monolithCount };
+}
+
+/**
+ * Register instance mapping callback: when sync returns
+ * position_instance_id mappings (+ optional monolith_payload), apply them
+ * to ParsedItem objects via `applyInstanceMappingsToProjects`, then
+ * dispatch setState inside a `suppressAutoSync` window so a server-driven
+ * update never triggers a client-driven sync back to the server.
  */
 setInstanceMappingCallback((mappings) => {
   const state = useRegistryStore.getState();
-  // Build lookups: registry_item_id → { position_instance_id, monolith_payload }
-  const mappingMap = new Map(mappings.map(m => [m.registry_item_id, m]));
+  const { nextProjects, anyChanged, monolithCount } =
+    applyInstanceMappingsToProjects(state.projects, mappings);
 
-  let monolithCount = 0;
+  if (!anyChanged) {
+    // No-op: every mapping was already applied. Skip setState entirely
+    // so the subscriber doesn't fire and schedule another round-trip.
+    return;
+  }
 
-  // Update items across all projects/sheets
-  useRegistryStore.setState({
-    projects: state.projects.map(p => ({
-      ...p,
-      sheets: p.sheets.map(sheet => ({
-        ...sheet,
-        items: sheet.items.map(item => {
-          const mapping = mappingMap.get(item.id);
-          if (!mapping) return item;
-
-          const updates: Partial<typeof item> = {};
-          if (mapping.position_instance_id && item.position_instance_id !== mapping.position_instance_id) {
-            updates.position_instance_id = mapping.position_instance_id;
-          }
-          if (mapping.monolith_payload) {
-            updates.monolith_payload = mapping.monolith_payload;
-            monolithCount++;
-          }
-
-          return Object.keys(updates).length > 0 ? { ...item, ...updates } : item;
-        }),
-      })),
-    })),
-  });
+  const prevSuppress = suppressAutoSync;
+  suppressAutoSync = true;
+  try {
+    useRegistryStore.setState({ projects: nextProjects });
+  } finally {
+    suppressAutoSync = prevSuppress;
+  }
 
   console.log(`[RegistryStore] Updated ${mappings.length} instance mappings` +
     (monolithCount > 0 ? `, ${monolithCount} with Monolit data` : ''));
