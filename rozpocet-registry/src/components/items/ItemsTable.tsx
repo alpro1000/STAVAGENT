@@ -110,6 +110,15 @@ const TABLE_HEIGHT_DESKTOP_DEFAULT = 2000;
 const TABLE_HEIGHT_MOBILE_DEFAULT = 1200;
 const MOBILE_BREAKPOINT_PX = 768;
 
+/** Height presets for the Výška S/M/L pills on the toolbar right
+ *  (SPEC_Registry_RibbonRefactor §4 Row 5). Values cover typical use:
+ *  S = small monitor / laptop, M = desktop default, L = 4K-tall session. */
+const TABLE_HEIGHT_PRESETS: Array<{ label: string; value: number }> = [
+  { label: 'S', value: 800 },
+  { label: 'M', value: 2000 },
+  { label: 'L', value: 4000 },
+];
+
 function getDefaultTableHeight(): number {
   // `window` may be undefined in SSR / test (node env). Fall back to desktop.
   if (typeof window === 'undefined') return TABLE_HEIGHT_DESKTOP_DEFAULT;
@@ -1142,6 +1151,9 @@ export function ItemsTable({
             {undoStack.length > 0 && (
               <span className="text-xs text-text-muted tabular-nums">{undoStack.length}/{MAX_UNDO}</span>
             )}
+            {/* Visual separator between the Undo/Redo pair and Reclassify
+                (SPEC §4 Row 5). 1 px × 20 px rule in the border color. */}
+            <div className="w-px h-5 bg-border-color mx-1" aria-hidden="true" />
             {/* Re-classify all — ROW_CLASSIFICATION_ALGORITHM v1.1 §10.
                 Only enabled when the current sheet has at least one item
                 with persisted _rawCells (fresh imports post-rewrite).
@@ -1149,7 +1161,7 @@ export function ItemsTable({
             <button
               onClick={handleReclassifyAll}
               disabled={!reclassifyAvailable}
-              className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1 ml-1"
+              className="p-1.5 rounded hover:bg-bg-secondary transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1"
               title={reclassifyAvailable
                 ? 'Znovu klasifikovat všechny řádky pomocí v1.1 klasifikátoru'
                 : 'Překlasifikace vyžaduje nový import (raw data nejsou uložena u starších položek)'
@@ -1184,14 +1196,49 @@ export function ItemsTable({
               </label>
             )}
           </div>
-          {reclassifyStatus && (
-            <p className="text-xs text-text-muted italic">{reclassifyStatus}</p>
-          )}
-          {selectedIds.size > 0 && (
-            <p className="text-sm font-medium text-accent-primary">
-              Vybráno: {selectedIds.size}
-            </p>
-          )}
+
+          {/* Right group: status / selection count / Výška presets.
+              S / M / L preset pills jump the card height to one of three
+              common sizes (800 / 2000 / 4000 px). Click persists to the
+              same localStorage key used by the drag handle. Highlights
+              the button whose value matches the current height. */}
+          <div className="flex items-center gap-3 ml-auto">
+            {reclassifyStatus && (
+              <p className="text-xs text-text-muted italic">{reclassifyStatus}</p>
+            )}
+            {selectedIds.size > 0 && (
+              <p className="text-sm font-medium text-accent-primary">
+                Vybráno: {selectedIds.size}
+              </p>
+            )}
+            <div className="flex items-center gap-1">
+              <span className="text-[10px] uppercase tracking-wide text-text-muted hidden sm:inline">
+                Výška:
+              </span>
+              {TABLE_HEIGHT_PRESETS.map((preset) => {
+                const isActive = tableHeight === preset.value;
+                return (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => {
+                      setTableHeight(preset.value);
+                      persistTableHeight(preset.value);
+                    }}
+                    className={`h-6 w-6 text-[11px] rounded border font-semibold tabular-nums transition-colors ${
+                      isActive
+                        ? 'bg-accent-primary text-white border-accent-primary'
+                        : 'border-border-color text-text-secondary hover:bg-bg-secondary'
+                    }`}
+                    title={`${preset.label} — ${preset.value} px`}
+                    aria-pressed={isActive}
+                  >
+                    {preset.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Skupina toolbar — PR 2 of §5.3.1 (AUDIT §4.3.4).
