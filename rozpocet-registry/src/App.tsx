@@ -23,7 +23,7 @@ import { searchProjects, type SearchResultItem, type SearchFilters } from './ser
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
-import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows, Building2, ClipboardList } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows, Building2 } from 'lucide-react';
 import { PORTAL_API_URL } from './utils/config.js';
 
 /**
@@ -653,31 +653,10 @@ function App() {
     ? getSheet(selectedProjectId, selectedSheetId)
     : null;
 
-  // Filter items based on showOnlyWorkItems flag
-  const getFilteredItems = () => {
-    if (!selectedSheet) return [];
-    if (!showOnlyWorkItems) return selectedSheet.items;
-
-    // Work items = main or section items (NOT subordinate rows)
-    // Use rowRole if available, otherwise fallback to old logic
-    return selectedSheet.items.filter(item => {
-      // Primary check: rowRole (main or section = work items, subordinate = skip)
-      const isMainRow = item.rowRole
-        ? (item.rowRole === 'main' || item.rowRole === 'section')
-        : null;
-
-      // If rowRole is defined, use it
-      if (isMainRow !== null) {
-        return isMainRow;
-      }
-
-      // Fallback for items without rowRole: old logic (kod + quantity check)
-      const hasKod = item.kod && item.kod.trim().length > 0;
-      const hasQuantityOrPrice = (item.mnozstvi !== null && item.mnozstvi !== 0) ||
-                                  (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
-      return hasKod && hasQuantityOrPrice;
-    });
-  };
+  // `showOnlyWorkItems` is still owned here (URL-shareable state) but the
+  // filter's UI and counter live inside ItemsTable's toolbar now — the
+  // former local `getFilteredItems()` helper was only read by the counter,
+  // which has been replaced by ItemsTable's own `visibleItems` length.
 
   const handleSearch = (query: string, filters: SearchFilters) => {
     setIsSearching(true);
@@ -962,9 +941,10 @@ function App() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 flex-1 min-h-0 overflow-y-auto w-full">
-        <div className="grid gap-6 min-w-0">
+      {/* Main Content — no page scroll; flex chain delegates remaining
+          height to ItemsTable so the table has exactly one scroll context. */}
+      <main className="container mx-auto px-4 py-4 flex-1 min-h-0 overflow-hidden w-full flex flex-col">
+        <div className="flex flex-col gap-4 min-w-0 flex-1 min-h-0">
           {/* Search Results */}
           {searchResults.length > 0 && (
             <div className="card">
@@ -1264,9 +1244,10 @@ function App() {
               )}
 
 
-              {/* Selected Sheet Items */}
+              {/* Selected Sheet Items — claims remaining viewport height so
+                  ItemsTable's internal scroll is the only scroll context. */}
               {selectedProject && selectedSheet && (
-                <div className="space-y-4 min-w-0 overflow-hidden">
+                <div className="min-w-0 flex flex-col gap-3 flex-1 min-h-0">
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-1">
                       <h2 className="text-lg font-semibold">
@@ -1297,42 +1278,25 @@ function App() {
                     )}
                   </div>
 
-                  {/* AI Panel */}
-                  <AIPanel
-                    items={selectedSheet.items}
-                    projectId={selectedProject.id}
-                    sheetId={selectedSheet.id}
-                    selectedItemIds={Array.from(selectedItemIds)}
-                  />
-
-                  {/* Group Manager */}
-                  <GroupManager />
-
-                  {/* Filter Controls */}
-                  <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg border border-border-color">
-                    <input
-                      type="checkbox"
-                      id="show-only-work"
-                      checked={showOnlyWorkItems}
-                      onChange={(e) => setShowOnlyWorkItems(e.target.checked)}
-                      className="w-4 h-4 text-accent-primary bg-panel-clean border-border-color rounded
-                                 focus:ring-2 focus:ring-accent-primary cursor-pointer"
+                  {/* AI Klasifikace + Správa skupin — side-by-side on md+
+                      viewports (grid-cols-2), stack on mobile (<768px).
+                      Collapsed-state total height is ~50px instead of the
+                      previous stacked ~100px, freeing vertical room for
+                      the table. GroupManager runs in non-standalone mode
+                      so the grid column controls its width. */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
+                    <AIPanel
+                      items={selectedSheet.items}
+                      projectId={selectedProject.id}
+                      sheetId={selectedSheet.id}
+                      selectedItemIds={Array.from(selectedItemIds)}
                     />
-                    <label htmlFor="show-only-work" className="flex-1 cursor-pointer select-none">
-                      <div className="text-sm font-medium text-text-primary">
-                        <ClipboardList size={16} className="inline" /> Zobrazit pouze pracovní položky
-                      </div>
-                      <div className="text-xs text-text-secondary">
-                        Skrýt popisné řádky (zobrazí se pouze položky s kódem a množstvím)
-                      </div>
-                    </label>
-                    {showOnlyWorkItems && (
-                      <span className="px-2 py-1 text-xs bg-accent-primary text-white rounded">
-                        {getFilteredItems().length} / {selectedSheet.items.length}
-                      </span>
-                    )}
+                    <GroupManager standalone={false} />
                   </div>
 
+                  {/* Filter moved into ItemsTable toolbar (§10 proper fix —
+                      point 3). The large filter card here was eating ~70px
+                      of vertical space for a single checkbox. */}
                   <ItemsTable
                     items={selectedSheet.items}
                     projectId={selectedProject.id}
@@ -1340,6 +1304,7 @@ function App() {
                     selectedIds={selectedItemIds}
                     onSelectionChange={setSelectedItemIds}
                     showOnlyWorkItems={showOnlyWorkItems}
+                    onShowOnlyWorkItemsChange={setShowOnlyWorkItems}
                     conflictMap={conflictMap.current}
                   />
                 </div>

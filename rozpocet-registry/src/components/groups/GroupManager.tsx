@@ -26,7 +26,21 @@ function loadPersistedWidth(): number {
   return MIN_WIDTH;
 }
 
-export function GroupManager() {
+export interface GroupManagerProps {
+  /**
+   * Standalone = component owns its own width and exposes the resize handle
+   * on the right edge. Default (true) preserves the original behavior.
+   *
+   * When the manager is rendered inside a parent grid / flex column that
+   * already sets the card's width (e.g. AI + Správa side-by-side row),
+   * pass `standalone={false}` so the inline `width` / `minWidth` / `maxWidth`
+   * styles don't override the grid track. Resize handle is hidden in that
+   * mode — the grid column controls width.
+   */
+  standalone?: boolean;
+}
+
+export function GroupManager({ standalone = true }: GroupManagerProps = {}) {
   const {
     getAllGroups, addCustomGroup, renameGroup, deleteGroup, getGroupItemCounts,
   } = useRegistryStore();
@@ -172,11 +186,13 @@ export function GroupManager() {
   return (
     <div
       className="card relative"
-      style={{
+      style={standalone ? {
         borderLeft: '3px solid var(--text-muted)',
         minWidth: `${MIN_WIDTH}px`,
         width: isExpanded ? `${panelWidth}px` : undefined,
         maxWidth: '80vw',
+      } : {
+        borderLeft: '3px solid var(--text-muted)',
       }}
     >
       {/* Header */}
@@ -327,8 +343,9 @@ export function GroupManager() {
         </div>
       )}
 
-      {/* Resize handle — right edge (only when expanded) */}
-      {isExpanded && (
+      {/* Resize handle — right edge (only when expanded in standalone
+          mode). In grid/flex-managed mode the parent column sets width. */}
+      {standalone && isExpanded && (
         <div
           className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize flex items-center justify-center hover:bg-accent-primary/10 transition-colors"
           onMouseDown={handleResizeStart}
