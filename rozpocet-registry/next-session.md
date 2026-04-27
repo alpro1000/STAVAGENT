@@ -400,25 +400,80 @@ is stable in production.
 
 ---
 
+## 19. Poptávka cen modal — фильтр скупин regression + bulk-select toolbar (medium-high)
+
+Live-bug + UX-feature на одной поверхности; closely связаны (фикс фильтра делает кнопку «Vybrat vše» работающей), поэтому один PR закроет обе.
+
+**Файлы**: `src/components/priceRequest/PriceRequestPanel.tsx` (или ближайший modal/panel компонент с тремя списками: Projekty / Skupiny / Položky).
+
+### Проблема 1 — regression filter (bug)
+
+При выборе проекта в левом списке скупины полностью пропадают.
+
+- Текущее поведение: project selected → counter показывает «0 položek в 0 skupinách», список skupin пуст.
+- Ожидаемое: project selected → список skupin **фильтруется** до тех, что присутствуют в выбранном проекте; видимые скупины остаются, остальные скрыты.
+- Симметрично: skupina selected → položky фильтруются по project ∩ skupina.
+
+Гипотеза причины: filter predicate сравнивает по неправильному ключу (project_id vs project name), либо `selectedProjects` интерпретируется как «whitelist всего» вместо «intersection», либо downstream `derived(skupiny)` пересчитывается через empty set когда `selectedProjects.size > 0`.
+
+### Проблема 2 — bulk-select toolbar (feature)
+
+Над списками Projekty и Skupiny добавить inline-кнопки управления выделением:
+
+- «Vybrat vše projekty» / «Zrušit vše projekty»
+- «Vybrat vše skupiny» / «Zrušit vše skupiny»
+
+States:
+- «Vybrat vše» disabled когда все элементы списка уже выбраны.
+- «Zrušit vše» disabled когда `selected.size === 0`.
+
+Иконки: `lucide-react` `CheckSquare` / `Square`, размер 13–16 px (соответствует flat-style токенам — см. CLAUDE.md v4.24.1 «Flat style tokens»). Без emoji.
+
+### Acceptance criteria
+
+1. Click на проект → скупины фильтруются (не пропадают), показывается subset проекта.
+2. Click на скупину → položky фильтруются по project ∩ skupina.
+3. «Vybrat vše projekty» → все проекты в `selectedProjects`.
+4. «Zrušit vše projekty» → `selectedProjects.clear()`.
+5. То же поведение для скупин.
+6. Counter «Nalezeno X položek в Y skupinách» обновляется live при каждом изменении selection.
+7. Disabled states работают корректно (нельзя кликнуть «Vybrat vše» когда уже всё выбрано).
+
+### Scope
+
+- Один PR; не входит в ribbon refactor scope.
+- Размер: 2-3 часа.
+- Приоритет: **medium-high** — модалка важна для рабочего флоу (создание поптавки на каталожные позиции).
+
+### Из чего НЕ состоит
+
+- Не трогает ribbon / AppRibbon layout.
+- Не меняет priceRequestService API / экспорт XLSX.
+- Не добавляет «select inverse» / «select by filter» — только bulk all/none.
+
+---
+
 ## Приоритизация — обновлённая после сессии 2026-04-23 (post-classifier-merge)
 
 **✅ Closed**: п. 11 (classifier rewrite) — shipped v4.25.0, follow-ups разнесены в §14-17. п. 15 (CI workflow) — shipped 2026-04-24 через PR #1013.
 
-1. **П. 14** (persist ColumnMapping per Sheet) — P1, 0.5-1 день. Устраняет degradation "Překlasifikovat" — currently templateHint теряется.
-2. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
-3. **П. 12** (read Poř. Č. from Excel) — частично решено в v4.25.0 (classifier extracts `por` в ClassifiedRowBase), остаётся проверить что parser пишет в `item.boqLineNumber` из Excel column, а не из счётчика. Быстрая проверка.
-4. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
-5. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
-6. **П. 4** (фильтр импорта в Monolit) — **разблокирован** после v4.25.0 classifier. Можно делать сразу.
-7. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
-8. **П. 2** (каталожная цена) — **разблокирован** после v4.25.0. Можно делать сразу.
-9. **П. 1** (document navigation) — UX improvement.
-10. **П. 16** (classificationConfidence type cleanup) — P3, 2-3 часа. Не срочно пока нет багов.
-11. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
-12. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
-13. **П. 17** (remove legacy classifyRows fallback) — P3, 1 час. Заблокировано временем — 2-3 недели после 2026-04-23 (т.е. ~2026-05-07).
-14. **П. 7** (branch protection) — process decision, не код.
-15. **П. 3** — **закрыто**, заменено v4.25.0 classifier + п. 14 persist mapping.
+1. **П. 19** (Poptávka cen modal filter regression + bulk-select) — medium-high, 2-3 часа. Live bug блокирует рабочий флоу создания поптавки.
+2. **П. 14** (persist ColumnMapping per Sheet) — P1, 0.5-1 день. Устраняет degradation "Překlasifikovat" — currently templateHint теряется.
+3. **П. 10** (AI/GroupManager max-height) — 1-2 часа, разблокирует возврат flex-1 chain и устраняет двойной scroll окончательно. Низкий риск.
+4. **П. 12** (read Poř. Č. from Excel) — частично решено в v4.25.0 (classifier extracts `por` в ClassifiedRowBase), остаётся проверить что parser пишет в `item.boqLineNumber` из Excel column, а не из счётчика. Быстрая проверка.
+5. **П. 6** (PR 990 validation) — проверка cross-browser, независимо от всего.
+6. **П. 13** (sticky header cross-browser) — быстрая проверка 30 мин.
+7. **П. 4** (фильтр импорта в Monolit) — **разблокирован** после v4.25.0 classifier. Можно делать сразу.
+8. **П. 5** (`text-text-muted` cleanup) — tech-debt, не блокирует.
+9. **П. 2** (каталожная цена) — **разблокирован** после v4.25.0. Можно делать сразу.
+10. **П. 1** (document navigation) — UX improvement.
+11. **П. 16** (classificationConfidence type cleanup) — P3, 2-3 часа. Не срочно пока нет багов.
+12. **П. 9** (floating panel geometry mobile) — отдельный UX-аудит.
+13. **П. 8** (PR 2-B per-group inline toolbars) — возможен после появления use-case.
+14. **П. 17** (remove legacy classifyRows fallback) — P3, 1 час. Заблокировано временем — 2-3 недели после 2026-04-23 (т.е. ~2026-05-07).
+15. **П. 18** (PR #1020 polish — 5 nits) — P3, 1-2 часа. UI polish, без urgency.
+16. **П. 7** (branch protection) — process decision, не код.
+17. **П. 3** — **закрыто**, заменено v4.25.0 classifier + п. 14 persist mapping.
 
 PR 2 Variant B (single active-skupina toolbar above table) + compensation pack (subordinate visual distinction, vertical column dividers, sticky header fix, split Poř. column, hide empty monolit column) отправлен через ветку `claude/registry-toolbar-group-Qophc`. Двойной scroll сознательно принят как меньшее зло до реализации п. 10. PR-2-B / PR 3 (detail panel) / PR 4 (extend BulkActionsBar) / PR 5 (click-cells) остаются в плане `AUDIT_Registry_FlatLayout.md` §5.3.1.
 
