@@ -30,8 +30,6 @@ export interface ProjectTabsBarProps {
 
 /** How far one click of ◀ / ▶ scrolls the strip horizontally (px). */
 const SCROLL_STEP_PX = 240;
-/** Minimum project count at which the nav buttons start to render. */
-const NAV_BUTTONS_THRESHOLD = 4;
 
 export function ProjectTabsBar({
   projects,
@@ -50,7 +48,6 @@ export function ProjectTabsBar({
     if (!el) return;
     el.scrollTo({ left: edge === 'start' ? 0 : el.scrollWidth, behavior: 'smooth' });
   };
-  const showNav = projects.length >= NAV_BUTTONS_THRESHOLD;
 
   return (
     <nav
@@ -68,30 +65,31 @@ export function ProjectTabsBar({
         Projekty:
       </span>
 
-      {/* Leading nav buttons — start + step-back. Hidden when there
-          are too few projects to bother with overflow controls. */}
-      {showNav && (
-        <div className="flex items-center gap-0.5 flex-shrink-0">
-          <button
-            type="button"
-            onClick={() => scrollToEdge('start')}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Na začátek"
-            aria-label="Posunout na začátek seznamu projektů"
-          >
-            <ChevronsLeft size={14} className="w-[14px] h-[14px]" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollBy(-SCROLL_STEP_PX)}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Předchozí"
-            aria-label="Posunout o krok vlevo"
-          >
-            <ChevronLeft size={14} className="w-[14px] h-[14px]" />
-          </button>
-        </div>
-      )}
+      {/* Leading nav buttons — start + step-back. Always rendered so
+          users have a predictable click target regardless of project
+          count (Excel-style affordance, not contextual). */}
+      <div className="flex items-center gap-0.5 flex-shrink-0">
+        <button
+          type="button"
+          onClick={() => scrollToEdge('start')}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Na začátek"
+          aria-label="Posunout na začátek seznamu projektů"
+        >
+          <ChevronsLeft size={14} className="w-[14px] h-[14px]" />
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollBy(-SCROLL_STEP_PX)}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Předchozí"
+          aria-label="Posunout o krok vlevo"
+        >
+          <ChevronLeft size={14} className="w-[14px] h-[14px]" />
+        </button>
+      </div>
 
       {/* Scrollable tab strip. Scrollbar hidden for visual calm —
           native horizontal scroll (wheel / touchpad / touch) still
@@ -152,28 +150,28 @@ export function ProjectTabsBar({
       </div>
 
       {/* Trailing nav buttons — step-forward + jump-to-end. */}
-      {showNav && (
-        <div className="flex items-center gap-0.5 flex-shrink-0">
-          <button
-            type="button"
-            onClick={() => scrollBy(SCROLL_STEP_PX)}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Další"
-            aria-label="Posunout o krok vpravo"
-          >
-            <ChevronRight size={14} className="w-[14px] h-[14px]" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToEdge('end')}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Na konec"
-            aria-label="Posunout na konec seznamu projektů"
-          >
-            <ChevronsRight size={14} className="w-[14px] h-[14px]" />
-          </button>
-        </div>
-      )}
+      <div className="flex items-center gap-0.5 flex-shrink-0">
+        <button
+          type="button"
+          onClick={() => scrollBy(SCROLL_STEP_PX)}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Další"
+          aria-label="Posunout o krok vpravo"
+        >
+          <ChevronRight size={14} className="w-[14px] h-[14px]" />
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToEdge('end')}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Na konec"
+          aria-label="Posunout na konec seznamu projektů"
+        >
+          <ChevronsRight size={14} className="w-[14px] h-[14px]" />
+        </button>
+      </div>
 
       {/* Right-side actions */}
       <div className="flex items-center gap-1 ml-auto flex-shrink-0">

@@ -24,7 +24,6 @@ export interface SheetTabsBarProps {
 }
 
 const SCROLL_STEP_PX = 240;
-const NAV_BUTTONS_THRESHOLD = 4;
 
 export function SheetTabsBar({ sheets, activeSheetId, onSelect }: SheetTabsBarProps) {
   const stripRef = useRef<HTMLDivElement>(null);
@@ -34,7 +33,6 @@ export function SheetTabsBar({ sheets, activeSheetId, onSelect }: SheetTabsBarPr
     if (!el) return;
     el.scrollTo({ left: edge === 'start' ? 0 : el.scrollWidth, behavior: 'smooth' });
   };
-  const showNav = sheets.length >= NAV_BUTTONS_THRESHOLD;
 
   if (sheets.length === 0) return null;
 
@@ -54,29 +52,31 @@ export function SheetTabsBar({ sheets, activeSheetId, onSelect }: SheetTabsBarPr
         Listy:
       </span>
 
-      {/* Leading nav (start + step-back) — only when overflow likely. */}
-      {showNav && (
-        <div className="flex items-center gap-0.5 flex-shrink-0">
-          <button
-            type="button"
-            onClick={() => scrollToEdge('start')}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Na začátek"
-            aria-label="Posunout na začátek seznamu listů"
-          >
-            <ChevronsLeft size={14} className="w-[14px] h-[14px]" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollBy(-SCROLL_STEP_PX)}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Předchozí"
-            aria-label="Posunout o krok vlevo"
-          >
-            <ChevronLeft size={14} className="w-[14px] h-[14px]" />
-          </button>
-        </div>
-      )}
+      {/* Leading nav (start + step-back) — always rendered so users have
+          a predictable click target. Excel-style: arrows are part of the
+          tab strip's affordance, not a contextual extra. */}
+      <div className="flex items-center gap-0.5 flex-shrink-0">
+        <button
+          type="button"
+          onClick={() => scrollToEdge('start')}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Na začátek"
+          aria-label="Posunout na začátek seznamu listů"
+        >
+          <ChevronsLeft size={14} className="w-[14px] h-[14px]" />
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollBy(-SCROLL_STEP_PX)}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Předchozí"
+          aria-label="Posunout o krok vlevo"
+        >
+          <ChevronLeft size={14} className="w-[14px] h-[14px]" />
+        </button>
+      </div>
 
       <div
         ref={stripRef}
@@ -116,28 +116,28 @@ export function SheetTabsBar({ sheets, activeSheetId, onSelect }: SheetTabsBarPr
       </div>
 
       {/* Trailing nav (step-forward + jump-to-end). */}
-      {showNav && (
-        <div className="flex items-center gap-0.5 flex-shrink-0">
-          <button
-            type="button"
-            onClick={() => scrollBy(SCROLL_STEP_PX)}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Další"
-            aria-label="Posunout o krok vpravo"
-          >
-            <ChevronRight size={14} className="w-[14px] h-[14px]" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToEdge('end')}
-            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
-            title="Na konec"
-            aria-label="Posunout na konec seznamu listů"
-          >
-            <ChevronsRight size={14} className="w-[14px] h-[14px]" />
-          </button>
-        </div>
-      )}
+      <div className="flex items-center gap-0.5 flex-shrink-0">
+        <button
+          type="button"
+          onClick={() => scrollBy(SCROLL_STEP_PX)}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Další"
+          aria-label="Posunout o krok vpravo"
+        >
+          <ChevronRight size={14} className="w-[14px] h-[14px]" />
+        </button>
+        <button
+          type="button"
+          onClick={() => scrollToEdge('end')}
+          className="h-7 w-7 rounded border text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] hover:border-[var(--flat-accent)] flex items-center justify-center transition-colors"
+          style={{ borderColor: 'var(--flat-border)' }}
+          title="Na konec"
+          aria-label="Posunout na konec seznamu listů"
+        >
+          <ChevronsRight size={14} className="w-[14px] h-[14px]" />
+        </button>
+      </div>
     </nav>
   );
 }
