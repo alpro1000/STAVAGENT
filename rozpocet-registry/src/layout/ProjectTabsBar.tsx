@@ -6,14 +6,16 @@
  * text). Clicking a tab selects; clicking the trailing × removes.
  *
  * The legacy App.tsx renders a double-height project strip with
- * `◀◀ ◀ ▶ ▶▶` navigation buttons around a scrolling tab container —
- * the ribbon replaces that with a single horizontal-scroll strip
- * (`overflow-x-auto`) + a trailing "Přidat" pill and "Smazat vše"
- * destructive action. No explicit nav buttons: native horizontal
- * scroll + the small overflow cue is enough at ribbon scale.
+ * `◀◀ ◀ ▶ ▶▶` navigation buttons around a scrolling tab container.
+ * The first ribbon iteration dropped those buttons in favor of native
+ * horizontal scroll only — a regression for users who relied on
+ * step-by-one and jump-to-end click navigation. The buttons are now
+ * back, but render only when the strip would actually overflow
+ * (≥4 projects) so single-project sessions stay clean.
  */
 
-import { FileSpreadsheet, Plus, Trash2, X } from 'lucide-react';
+import { useRef } from 'react';
+import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, FileSpreadsheet, Plus, Trash2, X } from 'lucide-react';
 import type { Project } from '../types';
 import { PortalLinkBadge } from '../components/portal/PortalLinkBadge';
 
@@ -26,6 +28,11 @@ export interface ProjectTabsBarProps {
   onRemoveAll: () => void;
 }
 
+/** How far one click of ◀ / ▶ scrolls the strip horizontally (px). */
+const SCROLL_STEP_PX = 240;
+/** Minimum project count at which the nav buttons start to render. */
+const NAV_BUTTONS_THRESHOLD = 4;
+
 export function ProjectTabsBar({
   projects,
   activeProjectId,
@@ -34,6 +41,17 @@ export function ProjectTabsBar({
   onAdd,
   onRemoveAll,
 }: ProjectTabsBarProps) {
+  const stripRef = useRef<HTMLDivElement>(null);
+  const scrollBy = (delta: number) => {
+    stripRef.current?.scrollBy({ left: delta, behavior: 'smooth' });
+  };
+  const scrollToEdge = (edge: 'start' | 'end') => {
+    const el = stripRef.current;
+    if (!el) return;
+    el.scrollTo({ left: edge === 'start' ? 0 : el.scrollWidth, behavior: 'smooth' });
+  };
+  const showNav = projects.length >= NAV_BUTTONS_THRESHOLD;
+
   return (
     <nav
       className="h-10 flex items-center px-4 gap-2 border-b flex-shrink-0"
@@ -50,11 +68,36 @@ export function ProjectTabsBar({
         Projekty:
       </span>
 
+      {/* Leading nav buttons — start + step-back. Hidden when there
+          are too few projects to bother with overflow controls. */}
+      {showNav && (
+        <div className="flex items-center gap-0.5 flex-shrink-0">
+          <button
+            type="button"
+            onClick={() => scrollToEdge('start')}
+            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
+            title="Na začátek"
+            aria-label="Posunout na začátek seznamu projektů"
+          >
+            <ChevronsLeft size={14} className="w-[14px] h-[14px]" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollBy(-SCROLL_STEP_PX)}
+            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
+            title="Předchozí"
+            aria-label="Posunout o krok vlevo"
+          >
+            <ChevronLeft size={14} className="w-[14px] h-[14px]" />
+          </button>
+        </div>
+      )}
+
       {/* Scrollable tab strip. Scrollbar hidden for visual calm —
           native horizontal scroll (wheel / touchpad / touch) still
-          works, and the trailing action buttons cap the visual width
-          so the strip rarely exceeds the viewport in practice. */}
+          works; the nav buttons above offer keyboard / mouse alts. */}
       <div
+        ref={stripRef}
         className="flex items-center gap-1 flex-1 overflow-x-auto min-w-0"
         style={{ scrollbarWidth: 'none' }}
       >
@@ -107,6 +150,30 @@ export function ProjectTabsBar({
           );
         })}
       </div>
+
+      {/* Trailing nav buttons — step-forward + jump-to-end. */}
+      {showNav && (
+        <div className="flex items-center gap-0.5 flex-shrink-0">
+          <button
+            type="button"
+            onClick={() => scrollBy(SCROLL_STEP_PX)}
+            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
+            title="Další"
+            aria-label="Posunout o krok vpravo"
+          >
+            <ChevronRight size={14} className="w-[14px] h-[14px]" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToEdge('end')}
+            className="h-7 w-7 rounded text-[var(--flat-text-label)] hover:bg-[var(--flat-hover)] flex items-center justify-center transition-colors"
+            title="Na konec"
+            aria-label="Posunout na konec seznamu projektů"
+          >
+            <ChevronsRight size={14} className="w-[14px] h-[14px]" />
+          </button>
+        </div>
+      )}
 
       {/* Right-side actions */}
       <div className="flex items-center gap-1 ml-auto flex-shrink-0">
