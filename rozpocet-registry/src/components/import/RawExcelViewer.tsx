@@ -414,8 +414,12 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBa
         <p className="text-sm text-text-secondary flex-shrink-0">{detectedType.reason}</p>
       )}
 
-      {/* Sheet Selector */}
-      <div className="flex flex-wrap gap-2 flex-shrink-0">
+      {/* Sheet Selector — cap to ~120 px (≈3 rows) with internal
+          scroll. Some workbooks ship with 100+ sheets (live test:
+          E_Soupis MOSTY +PHS.xlsx had 132 SO sheets) — without the
+          cap the picker eats ~5 rows of vertical space and pushes
+          the data preview off-screen entirely. */}
+      <div className="flex flex-wrap gap-2 flex-shrink-0 max-h-[120px] overflow-y-auto pr-1">
         {workbook.SheetNames.map((sheetName, idx) => (
           <button
             key={sheetName}

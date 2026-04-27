@@ -800,19 +800,37 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
             </button>
 
             {/* Detection Results */}
-            {detectionResults && detectionResults.length > 0 && (
+            {detectionResults && detectionResults.length > 0 && (() => {
+              // Dedupe identical detections — when the structure detector
+              // finds the same column mapping for every PREDEFINED_TEMPLATE
+              // (the common case for files that don't have template-
+              // specific keywords), showing 3 cards with identical
+              // "Standardní ÚRS / OTSKP Katalog / RTS Standard" labels and
+              // identical 67% scores is misleading: there's no actual
+              // choice to make. Collapse to a single "auto-detect" card
+              // when fingerprints (columns + start row) match across all
+              // visible results.
+              const top3 = detectionResults.slice(0, 3);
+              const fingerprint = (r: DetectionResult) =>
+                JSON.stringify(r.detectedColumns) + '|' + r.detectedStartRow;
+              const allIdentical = top3.length > 1 &&
+                top3.every(r => fingerprint(r) === fingerprint(top3[0]));
+              const visibleResults = allIdentical ? top3.slice(0, 1) : top3;
+              return (
               <div className="space-y-4 p-4 bg-[var(--data-surface)] rounded-lg border-2 border-[var(--accent-orange)]">
                 <div>
                   <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2">
                     Výsledky auto-detekce
                   </h4>
                   <p className="text-xs text-[var(--text-secondary)]">
-                    Klikněte na šablonu pro výběr
+                    {allIdentical
+                      ? 'Stejné mapování pro všechny šablony — pokračovat kliknutím'
+                      : 'Klikněte na šablonu pro výběr'}
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  {detectionResults.slice(0, 3).map((result) => (
+                  {visibleResults.map((result) => (
                     <button
                       key={result.template.metadata.id}
                       onClick={() => handleApplyDetectedTemplate(result)}
@@ -827,9 +845,9 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-2xl">{result.template.metadata.icon}</span>
+                          <span className="text-2xl">{allIdentical ? '🔍' : result.template.metadata.icon}</span>
                           <span className="font-semibold text-[var(--text-primary)]">
-                            {result.template.metadata.name}
+                            {allIdentical ? 'Auto-detekované sloupce' : result.template.metadata.name}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -879,7 +897,8 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
                   Zavřít výsledky
                 </button>
               </div>
-            )}
+              );
+            })()}
 
             <div className="flex gap-3 justify-end pt-4 border-t border-[var(--divider)]">
               <button onClick={() => setStep('upload')} className="btn btn-secondary">
