@@ -16,7 +16,7 @@ interface MaterialsTabProps {
   resources: MaterialResource[];
   onChange: (resources: MaterialResource[]) => void;
   itemQuantity: number | null;
-  /** Item skupina — shows FormworkRentalSection only for BEDNENI */
+  /** Item skupina — shows FormworkRentalSection only for BEDNĚNÍ */
   itemSkupina?: string | null;
   itemPopis?: string;
   formworkRental?: FormworkRentalRow[];
@@ -43,7 +43,7 @@ export function MaterialsTab({
   formworkRental = [],
   onFormworkRentalChange,
 }: MaterialsTabProps) {
-  const isBedneni = itemSkupina === 'BEDNENI';
+  const isBedneni = itemSkupina === 'BEDNĚNÍ';
   const [showAddForm, setShowAddForm] = useState(false);
   const [newMaterial, setNewMaterial] = useState({ name: '', unit: '', price: 0 });
 
@@ -255,7 +255,7 @@ export function MaterialsTab({
         </div>
       )}
 
-      {/* Formwork rental table — only for BEDNENI positions */}
+      {/* Formwork rental table — only for BEDNĚNÍ positions */}
       {isBedneni && onFormworkRentalChange && (
         <FormworkRentalSection
           rows={formworkRental}
