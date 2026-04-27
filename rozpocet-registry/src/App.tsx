@@ -762,6 +762,26 @@ function App() {
     }
   };
 
+  // Re-check whenever the active project changes. The legacy export
+  // menu lazily ran `checkOriginalFile` inside `handleOpenExportMenu`
+  // — that's never called from the ribbon's ChipPopover-based Export
+  // dropdown, which is why "Vrátit do původního" rows stayed disabled
+  // forever in ribbon mode even though the original .xlsx was sitting
+  // in IndexedDB. Running it on selection change makes both legacy
+  // and ribbon modes correct (and also covers freshly-imported
+  // projects where the user goes straight to Export without first
+  // touching the legacy menu).
+  useEffect(() => {
+    if (selectedProjectId) {
+      checkOriginalFile();
+    } else {
+      setHasOriginalFile(false);
+    }
+    // checkOriginalFile only reads selectedProject + writes setHasOriginalFile;
+    // pulling it into the deps would loop on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProjectId]);
+
   const handleExportToOriginal = async () => {
     if (!selectedProject) return;
     setIsExportMenuOpen(false);
