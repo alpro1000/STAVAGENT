@@ -7,7 +7,12 @@ import { REGISTRY_API_URL } from '../utils/config.js';
 
 const API_URL = REGISTRY_API_URL;
 const USER_ID = 1; // Default user for now (no auth)
-const FETCH_TIMEOUT = 8000; // 8s timeout for backend calls
+const FETCH_TIMEOUT = 30000; // 30s timeout — was 8 s but Cloud Run cold-starts on the
+                             // registry backend regularly exceeded that, causing user-visible
+                             // bugs (DELETEs that never reach the backend → projects re-appear
+                             // on next loadFromBackend; bulkCreateItems on 605-item sheets
+                             // aborting mid-flight). The backend itself caps requests well below
+                             // 30 s, so this just adds slack for cold starts.
 
 /** Check if the backend is reachable (cached for 60s) */
 let _backendAvailable: boolean | null = null;
