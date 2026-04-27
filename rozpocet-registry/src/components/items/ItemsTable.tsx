@@ -13,7 +13,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2, ClipboardList, GripHorizontal } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, HardHat, Undo2, Redo2, Wand2, ClipboardList, GripHorizontal, Maximize2 } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -96,48 +96,78 @@ interface ItemsTableProps {
 const columnHelper = createColumnHelper<ParsedItem>();
 
 /**
- * Fixed-height card — user-resizable via a handle in the bottom-right
- * corner, persisted to localStorage. Default differs per viewport so
- * mobile sessions start with a smaller card and don't dwarf the screen.
+ * Fixed-height card. Two modes:
  *
- * Chosen here (not in a shared const) because ItemsTable is the only
- * consumer; exporting would invite drift from other fixed-height surfaces.
+ *   1. AUTO-FIT (default) — height = viewport height − card top − bottom-
+ *      padding. Recomputed on mount + on every window resize. No
+ *      localStorage involvement; users always get the largest possible
+ *      table out of the box (matches the user's "I always pick L"
+ *      feedback that retired the prior S/M/L preset triplet).
+ *
+ *   2. MANUAL — once the user drags the bottom-right resize handle, we
+ *      switch to manual mode and persist the explicit height to
+ *      localStorage. Window resize stops auto-tracking until the user
+ *      clicks the "Roztáhnout" button in the toolbar, which clears the
+ *      override and snaps back to auto-fit.
+ *
+ * The two-mode model preserves the existing drag-to-shrink ergonomics
+ * while making the common case (max-height) a zero-click default.
  */
 const TABLE_HEIGHT_LS_KEY = 'registry-table-height';
+const TABLE_HEIGHT_AUTOFIT_LS_KEY = 'registry-table-autofit';
 const TABLE_HEIGHT_MIN = 400;
 const TABLE_HEIGHT_MAX = 5000;
-const TABLE_HEIGHT_DESKTOP_DEFAULT = 2000;
-const TABLE_HEIGHT_MOBILE_DEFAULT = 1200;
-const MOBILE_BREAKPOINT_PX = 768;
+/** px subtracted from `window.innerHeight` to leave room for the
+ *  ribbon strips above + the page footer + a small bottom margin. */
+const TABLE_AUTOFIT_BOTTOM_OFFSET = 80;
+/** Fallback for the auto-fit calc when we can't measure the card top
+ *  (SSR / first-render / detached). Roughly = page-chrome height. */
+const TABLE_AUTOFIT_FALLBACK_TOP = 280;
 
-/** Height presets for the Výška S/M/L pills on the toolbar right
- *  (SPEC_Registry_RibbonRefactor §4 Row 5). Values cover typical use:
- *  S = small monitor / laptop, M = desktop default, L = 4K-tall session. */
-const TABLE_HEIGHT_PRESETS: Array<{ label: string; value: number }> = [
-  { label: 'S', value: 800 },
-  { label: 'M', value: 2000 },
-  { label: 'L', value: 4000 },
-];
+/** Compute the auto-fit height for the current viewport. The card-
+ *  top offset is provided by the caller (measured via DOMRect once
+ *  the card is mounted) so the table sits flush below the ribbon
+ *  rows + project + sheet tabs + context bar. */
+function computeAutofitHeight(cardTopPx: number): number {
+  if (typeof window === 'undefined') return 800;
+  const top = cardTopPx > 0 ? cardTopPx : TABLE_AUTOFIT_FALLBACK_TOP;
+  const fit = window.innerHeight - top - TABLE_AUTOFIT_BOTTOM_OFFSET;
+  return Math.max(TABLE_HEIGHT_MIN, Math.min(TABLE_HEIGHT_MAX, fit));
+}
 
-function getDefaultTableHeight(): number {
-  // `window` may be undefined in SSR / test (node env). Fall back to desktop.
-  if (typeof window === 'undefined') return TABLE_HEIGHT_DESKTOP_DEFAULT;
-  return window.innerWidth < MOBILE_BREAKPOINT_PX
-    ? TABLE_HEIGHT_MOBILE_DEFAULT
-    : TABLE_HEIGHT_DESKTOP_DEFAULT;
+function loadAutofitFlag(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    // Default true — first-time visitors land in auto-fit mode.
+    return window.localStorage.getItem(TABLE_HEIGHT_AUTOFIT_LS_KEY) !== 'false';
+  } catch {
+    return true;
+  }
+}
+
+function persistAutofitFlag(autofit: boolean): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (autofit) {
+      window.localStorage.removeItem(TABLE_HEIGHT_AUTOFIT_LS_KEY);
+      window.localStorage.removeItem(TABLE_HEIGHT_LS_KEY);
+    } else {
+      window.localStorage.setItem(TABLE_HEIGHT_AUTOFIT_LS_KEY, 'false');
+    }
+  } catch { /* ignore */ }
 }
 
 function loadTableHeight(): number {
-  if (typeof window === 'undefined') return TABLE_HEIGHT_DESKTOP_DEFAULT;
+  if (typeof window === 'undefined') return TABLE_HEIGHT_MAX;
   try {
     const raw = window.localStorage.getItem(TABLE_HEIGHT_LS_KEY);
-    if (!raw) return getDefaultTableHeight();
+    if (!raw) return computeAutofitHeight(0);
     const n = parseInt(raw, 10);
     if (Number.isFinite(n) && n >= TABLE_HEIGHT_MIN && n <= TABLE_HEIGHT_MAX) {
       return n;
     }
   } catch { /* localStorage unavailable / quota exceeded */ }
-  return getDefaultTableHeight();
+  return computeAutofitHeight(0);
 }
 
 function persistTableHeight(height: number): void {
@@ -168,14 +198,36 @@ export function ItemsTable({
   const reclassifyAvailable = items.some(i => i._rawCells !== undefined);
   const [reclassifyStatus, setReclassifyStatus] = useState<string | null>(null);
 
-  // Fixed, user-resizable card height (quick fix for the flex-1 collapse
-  // regression — see branch `fix/fixed-height-table-quick`). Drag handle
-  // below mutates this state; `mouseup` persists it to localStorage.
+  // Two-mode card height (see TABLE_HEIGHT_LS_KEY block above):
+  // AUTO-FIT (default) tracks the viewport; MANUAL persists a dragged
+  // value. `autofit` flag wins on mount + window resize; drag flips it
+  // off; the toolbar's Roztáhnout button flips it back on.
+  const [autofit, setAutofit] = useState<boolean>(loadAutofitFlag);
   const [tableHeight, setTableHeight] = useState<number>(loadTableHeight);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Sync the height to the viewport whenever we're in auto-fit mode —
+  // both on mount (the cardRef just got attached so the DOMRect is
+  // measurable) and on every window resize. Uses the live cardRef.top
+  // so the table stays flush below the ribbon rows above. Skipped
+  // entirely in manual mode so the user's dragged value isn't blown
+  // away on browser resize / dev-tools open.
+  useEffect(() => {
+    if (!autofit) return;
+    const recompute = () => {
+      const top = cardRef.current?.getBoundingClientRect().top ?? 0;
+      setTableHeight(computeAutofitHeight(top));
+    };
+    recompute();
+    window.addEventListener('resize', recompute);
+    return () => window.removeEventListener('resize', recompute);
+  }, [autofit]);
 
   // Drag-to-resize the card height. Captures the starting pointer Y +
   // current height, then attaches document-level listeners so the drag
-  // tracks even when the cursor leaves the small handle.
+  // tracks even when the cursor leaves the small handle. Drag flips
+  // the mode to MANUAL (auto-fit off) and persists the explicit value
+  // — the user can return to AUTO-FIT via the Roztáhnout toolbar button.
   const resizeStartRef = useRef<{ startY: number; startHeight: number } | null>(null);
   const handleResizeStart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -203,6 +255,10 @@ export function ItemsTable({
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp);
       // Persist on release — no debounce needed, one write per drag.
+      // Also flip out of auto-fit mode so window resize doesn't
+      // immediately overwrite the value the user just set.
+      setAutofit(false);
+      persistAutofitFlag(false);
       setTableHeight(h => {
         persistTableHeight(h);
         return h;
@@ -212,6 +268,16 @@ export function ItemsTable({
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
   }, [tableHeight]);
+
+  // Toolbar handler: snap back to AUTO-FIT mode + recompute immediately
+  // so the user gets visual feedback without needing to wait for the
+  // useEffect's next tick.
+  const handleResetAutofit = useCallback(() => {
+    setAutofit(true);
+    persistAutofitFlag(true);
+    const top = cardRef.current?.getBoundingClientRect().top ?? 0;
+    setTableHeight(computeAutofitHeight(top));
+  }, []);
   const handleReclassifyAll = () => {
     const r = reclassifySheet(projectId, sheetId);
     if (!r.success) {
@@ -1118,6 +1184,7 @@ export function ItemsTable({
           0 px when siblings (AI + GroupManager expanded, many tiles)
           consumed the viewport. */}
       <div
+        ref={cardRef}
         className="relative flex flex-col bg-panel-clean border border-flat-border rounded-md overflow-hidden"
         style={{ height: `${tableHeight}px` }}
       >
@@ -1211,33 +1278,29 @@ export function ItemsTable({
                 Vybráno: {selectedIds.size}
               </p>
             )}
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] uppercase tracking-wide text-text-muted hidden sm:inline">
-                Výška:
-              </span>
-              {TABLE_HEIGHT_PRESETS.map((preset) => {
-                const isActive = tableHeight === preset.value;
-                return (
-                  <button
-                    key={preset.label}
-                    type="button"
-                    onClick={() => {
-                      setTableHeight(preset.value);
-                      persistTableHeight(preset.value);
-                    }}
-                    className={`h-6 w-6 text-[11px] rounded border font-semibold tabular-nums transition-colors ${
-                      isActive
-                        ? 'bg-accent-primary text-white border-accent-primary'
-                        : 'border-border-color text-text-secondary hover:bg-bg-secondary'
-                    }`}
-                    title={`${preset.label} — ${preset.value} px`}
-                    aria-pressed={isActive}
-                  >
-                    {preset.label}
-                  </button>
-                );
-              })}
-            </div>
+            {/* Height: AUTO-FIT toggle. Replaces the SPEC v1.0 S/M/L
+                triplet — user feedback was "I always pick L, kill the
+                others". The single Roztáhnout button snaps the card
+                back to viewport-fit and keeps tracking on browser
+                resize. Active state (no manual override pending) shows
+                a soft accent fill so the user knows auto-fit is on. */}
+            <button
+              type="button"
+              onClick={handleResetAutofit}
+              disabled={autofit}
+              className={`h-6 px-2 text-[11px] rounded border font-medium transition-colors flex items-center gap-1 ${
+                autofit
+                  ? 'bg-[var(--flat-accent-light)] border-[var(--flat-accent)] text-[var(--flat-accent)] cursor-default'
+                  : 'border-border-color text-text-secondary hover:bg-bg-secondary'
+              }`}
+              title={autofit
+                ? `Auto-fit aktivní — výška sleduje viewport (${tableHeight} px)`
+                : `Roztáhnout na celou výšku obrazovky (aktuálně ${tableHeight} px)`}
+              aria-pressed={autofit}
+            >
+              <Maximize2 size={12} className="w-[12px] h-[12px]" />
+              <span className="hidden sm:inline">Roztáhnout</span>
+            </button>
           </div>
         </div>
 
