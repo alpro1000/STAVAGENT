@@ -39,7 +39,15 @@ export interface RibbonLayoutProps {
   onSearch: (query: string, filters: SearchFilters) => void;
   onClearSearch: () => void;
   onOpenPriceRequest: () => void;
-  onExport: () => void;
+  /** Whether App has cached the source XLSX so "Vrátit do původního"
+   *  is meaningful. Forwarded to the Export dropdown's gating. */
+  hasOriginalFile: boolean;
+  onExportSheet: () => void;
+  onExportProject: () => void;
+  onExportSheetWithTOV: () => void;
+  onExportProjectWithTOV: () => void;
+  onExportToOriginal: () => void;
+  onExportToOriginalWithSkupiny: () => void;
   onImport: () => void;
   onEditMapping: () => void;
   /** The ItemsTable (or any other body content) rendered below the ribbon. */
@@ -60,7 +68,13 @@ export function RibbonLayout({
   onSearch,
   onClearSearch,
   onOpenPriceRequest,
-  onExport,
+  hasOriginalFile,
+  onExportSheet,
+  onExportProject,
+  onExportSheetWithTOV,
+  onExportProjectWithTOV,
+  onExportToOriginal,
+  onExportToOriginalWithSkupiny,
   onImport,
   onEditMapping,
   children,
@@ -73,7 +87,18 @@ export function RibbonLayout({
         onSearch={onSearch}
         onClearSearch={onClearSearch}
         onOpenPriceRequest={onOpenPriceRequest}
-        onExport={onExport}
+        exportProps={{
+          hasSheet: !!activeSheet,
+          hasOriginalFile,
+          sheetCount: activeProject?.sheets.length ?? 0,
+          sheetName: activeSheet?.name,
+          onExportSheet,
+          onExportProject,
+          onExportSheetWithTOV,
+          onExportProjectWithTOV,
+          onExportToOriginal,
+          onExportToOriginalWithSkupiny,
+        }}
         onImport={onImport}
         hasProjects={hasProjects}
       />
