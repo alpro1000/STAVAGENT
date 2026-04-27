@@ -38,6 +38,14 @@ export interface ChipPopoverProps {
   maxHeight?: number;
   /** Breakpoint below which we switch to bottom-sheet mode (default 768). */
   mobileBreakpoint?: number;
+  /**
+   * Allow the user to drag-resize the popover from its bottom-right
+   * corner (CSS `resize: both`). Useful for content-heavy popovers
+   * (Skupiny groups list, AI classification panel) where long names
+   * truncate at the default width. Off by default — most chips host
+   * compact UI that doesn't need user-adjustable size.
+   */
+  resizable?: boolean;
 }
 
 interface PositionState {
@@ -56,6 +64,7 @@ export function ChipPopover({
   width = 420,
   maxHeight = 500,
   mobileBreakpoint = 768,
+  resizable = false,
 }: ChipPopoverProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<PositionState | null>(null);
@@ -154,14 +163,35 @@ export function ChipPopover({
         top: pos.openUp ? undefined : pos.top,
         bottom: pos.openUp ? window.innerHeight - pos.top : undefined,
         left: pos.left,
-        width,
-        maxHeight,
+        // When resizable, treat the configured width/maxHeight as the
+        // INITIAL size + minimums. CSS `resize: both` respects min-/
+        // max-width when present, so we widen the cap to ~viewport so
+        // the user can actually drag larger. When non-resizable, keep
+        // the strict width/height (legacy behaviour).
+        width: resizable ? undefined : width,
+        height: undefined,
+        minWidth: resizable ? width : undefined,
+        minHeight: resizable ? Math.min(maxHeight, 240) : undefined,
+        maxWidth: resizable ? '95vw' : undefined,
+        maxHeight: resizable ? '90vh' : maxHeight,
+        // Default sizing in resizable mode — px so the resize handle
+        // measures from a known starting point. The non-resizable
+        // branch above sets width directly.
+        ...(resizable ? { width, height: maxHeight } : {}),
         zIndex: 70,
       };
 
+  // `resize: both` requires overflow ≠ visible on both axes — switch
+  // to `overflow: auto` so dragging the bottom-right corner enlarges
+  // both width and height. Non-resizable popovers keep the
+  // y-only-scroll behavior (no horizontal scrollbar appears unless
+  // the inner content actively overflows). The browser-native
+  // bottom-right resize handle is sufficient — no custom drag UI.
   const className = pos.isMobile
     ? 'bg-[var(--flat-surface)] border-t border-[var(--flat-border)] rounded-t-lg shadow-xl overflow-y-auto'
-    : 'bg-[var(--flat-surface)] border border-[var(--flat-border)] rounded-lg shadow-xl overflow-y-auto';
+    : resizable
+      ? 'bg-[var(--flat-surface)] border border-[var(--flat-border)] rounded-lg shadow-xl overflow-auto resize'
+      : 'bg-[var(--flat-surface)] border border-[var(--flat-border)] rounded-lg shadow-xl overflow-y-auto';
 
   return createPortal(
     <>

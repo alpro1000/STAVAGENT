@@ -144,8 +144,9 @@ export function ContextBar({
         anchorRef={aiChipRef}
         open={openPopover === 'ai'}
         onClose={close}
-        width={480}
-        maxHeight={540}
+        width={520}
+        maxHeight={600}
+        resizable
       >
         <AIPanel
           items={items}
@@ -159,8 +160,13 @@ export function ContextBar({
         anchorRef={groupsChipRef}
         open={openPopover === 'groups'}
         onClose={close}
-        width={520}
-        maxHeight={540}
+        // Wider default + drag-resize so long skupina names (e.g.
+        // "BEDNĚNÍ PILÍŘŮ HORNÍ STAVBY") are readable. User can
+        // drag the bottom-right corner up to ~viewport size; min
+        // stays at the configured 640 px.
+        width={640}
+        maxHeight={600}
+        resizable
       >
         <GroupManager variant="popover" />
       </ChipPopover>
