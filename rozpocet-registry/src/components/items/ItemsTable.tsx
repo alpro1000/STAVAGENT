@@ -138,6 +138,45 @@ function persistTableHeight(height: number): void {
   } catch { /* ignore */ }
 }
 
+/**
+ * Excel-style auto-fit: measure the widest cell in a column (header
+ * text + every visible row's value) using the table's body font and
+ * return that width in px, padded for the cell's left/right padding +
+ * sort caret. Triggered by double-clicking the column resize handle.
+ *
+ * Uses canvas measurement (no DOM mutation) so it works for off-screen
+ * virtualized rows too — the only requirement is that the items array
+ * holds the value, which ItemsTable always does. Returns null when
+ * `document` is unavailable (SSR / tests) so the caller can fall back
+ * to a no-op.
+ */
+function measureColumnAutofitWidth<T>(
+  items: T[],
+  columnId: string,
+  headerText: string,
+): number | null {
+  if (typeof document === 'undefined') return null;
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+  // Match the table body font (DM Sans 13px from tokens.css). Header
+  // is bold but uppercase + 11px so its measured width is similar
+  // — pad the header by 32 px to cover sort caret + cell padding.
+  ctx.font = '13px "DM Sans", sans-serif';
+  let maxWidth = ctx.measureText(headerText).width + 32;
+  const cellPadding = 24;
+  for (const item of items) {
+    const value = (item as Record<string, unknown>)[columnId];
+    if (value == null) continue;
+    const text = typeof value === 'number'
+      ? value.toLocaleString('cs-CZ')
+      : String(value);
+    const w = ctx.measureText(text).width + cellPadding;
+    if (w > maxWidth) maxWidth = w;
+  }
+  return Math.ceil(maxWidth);
+}
+
 export function ItemsTable({
   items,
   projectId,
@@ -822,7 +861,10 @@ export function ItemsTable({
         enableSorting: true,
       }),
 
-      // Popis
+      // Popis — wider default to make typical 60-80 character item
+      // descriptions readable without horizontal scroll. Was 300 →
+      // 480; cap raised 600 → 900 so dblclick auto-fit can stretch
+      // far on long descriptions.
       columnHelper.accessor('popis', {
         header: 'Popis',
         cell: (info) => (
@@ -830,9 +872,9 @@ export function ItemsTable({
             {info.getValue()}
           </div>
         ),
-        size: 300,
-        minSize: 150,
-        maxSize: 600,
+        size: 480,
+        minSize: 200,
+        maxSize: 900,
         enableSorting: true,
       }),
 
@@ -1237,9 +1279,19 @@ export function ItemsTable({
                       width: header.getSize(),
                       position: 'sticky',
                       top: 0,
-                      zIndex: 10,
+                      // z-index bumped from 10 → 30 so the sticky
+                      // header sits above virtualized <tr>s
+                      // (`position: absolute` + `transform: translateY`
+                      // can create their own stacking context that
+                      // bleeds through low z-indexes in some browsers).
+                      zIndex: 30,
                       background: 'var(--flat-header-bg)',
                       flexShrink: 0,
+                      // Bottom edge shadow + 1px line so the user sees
+                      // the header float above the rows scrolling
+                      // underneath — without this it can visually
+                      // blend into the next row's top border.
+                      boxShadow: '0 1px 0 var(--flat-border), 0 2px 6px rgba(0,0,0,0.04)',
                     }}
                     title={header.column.getCanSort() ? 'Klikněte pro seřazení' : undefined}
                   >
@@ -1264,6 +1316,29 @@ export function ItemsTable({
                         onTouchStart={header.getResizeHandler()}
                         className={`resize-handle ${header.column.getIsResizing() ? 'resizing' : ''}`}
                         onClick={(e) => e.stopPropagation()}
+                        // Excel-style: double-click the resize handle
+                        // → auto-fit the column to the widest visible
+                        // cell value (header + all rows). Falls back to
+                        // no-op when measurement is unavailable.
+                        onDoubleClick={(e) => {
+                          e.stopPropagation();
+                          const headerText = typeof header.column.columnDef.header === 'string'
+                            ? header.column.columnDef.header
+                            : header.column.id;
+                          const fit = measureColumnAutofitWidth(items, header.column.id, headerText);
+                          if (fit == null) return;
+                          const min = header.column.columnDef.minSize ?? 50;
+                          const max = header.column.columnDef.maxSize ?? 1000;
+                          const next = Math.max(min, Math.min(max, fit));
+                          // `table` is the local useReactTable() instance
+                          // — setColumnSizing accepts an updater fn or a
+                          // partial object. Patch only this column's id.
+                          table.setColumnSizing((prev: Record<string, number>) => ({
+                            ...prev,
+                            [header.column.id]: next,
+                          }));
+                        }}
+                        title="Drag = změnit šířku · Dvojklik = přizpůsobit obsahu"
                       />
                     )}
                   </th>
