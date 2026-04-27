@@ -78,21 +78,32 @@ export function SkupinaFilterDropdown({
 
   const isFilterActive = filterGroups.size > 0;
 
-  const updatePosition = useCallback(() => {
+  // Pure position calculator — takes the panel's intended size as
+  // explicit args so callers can re-clamp synchronously with the
+  // freshly-observed dimensions during a drag-resize, without waiting
+  // for the next render's `useCallback` to capture the new size in its
+  // closure. Used both by `updatePosition()` (the React-state-driven
+  // path) and by the ResizeObserver callback below.
+  const computePosition = useCallback((w: number, h: number) => {
     const rect = buttonRef.current?.getBoundingClientRect();
-    if (!rect) return;
+    if (!rect) return null;
     const spaceBelow = window.innerHeight - rect.bottom;
-    const openUp = spaceBelow < size.h && rect.top > size.h;
+    const openUp = spaceBelow < h && rect.top > h;
     // Right-anchor to the filter button + clamp horizontally so the
     // panel stays inside the viewport after the user drag-resizes wider.
-    const wantLeft = rect.right - size.w;
-    const clampedLeft = Math.max(8, Math.min(wantLeft, window.innerWidth - size.w - 8));
-    setPos({
+    const wantLeft = rect.right - w;
+    const clampedLeft = Math.max(8, Math.min(wantLeft, window.innerWidth - w - 8));
+    return {
       top: openUp ? rect.top : rect.bottom,
       left: clampedLeft,
       openUp,
-    });
-  }, [size.w, size.h]);
+    };
+  }, []);
+
+  const updatePosition = useCallback(() => {
+    const next = computePosition(size.w, size.h);
+    if (next) setPos(next);
+  }, [computePosition, size.w, size.h]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -118,13 +129,41 @@ export function SkupinaFilterDropdown({
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, [isOpen]);
 
-  // Track drag-resize via ResizeObserver. Debounce localStorage writes
-  // so we only persist after the user releases the resize handle (at
-  // 60 Hz the raw observer would hammer storage on every pixel).
+  // Track drag-resize via ResizeObserver.
+  //
+  // Both `setSize(next)` and `setPos(computePosition(next.w, next.h))`
+  // run inside the same 200-ms debounced timeout — they're batched into
+  // a single render so the panel's clamped `left` and its new `width`
+  // / `height` reconcile in one pass. The position re-clamp addresses
+  // the case where the user drags wider than the available space to the
+  // right of the filter button: without it, the panel anchors to its
+  // pre-drag `left` and extends past the viewport edge until the dep
+  // chain (line 97 effect) eventually re-clamps via the new
+  // `updatePosition` identity — one render cycle later.
+  //
+  // Why call `computePosition(next.w, next.h)` explicitly instead of
+  // `updatePosition()`: `updatePosition` is captured in the RO closure
+  // from the previous render, so its `size.w` / `size.h` are STALE
+  // (they're the values from before this drag). Passing `next.w/h`
+  // explicitly bypasses the closure and uses the freshly-observed
+  // dimensions directly.
+  //
+  // We deliberately do NOT update state on every RO fire (i.e. during
+  // the drag itself) — React would then write inline `width` /
+  // `height` from React state on every render, which can fight the
+  // browser-managed CSS `resize: both` mid-drag (snap-back / jitter).
+  // Letting the browser own the size during the drag and reconciling
+  // once on release is the correct dance.
+  //
   // `getBoundingClientRect()` returns border-box dimensions, matching
   // the inline `width` / `height` we apply (Tailwind defaults to
   // `box-sizing: border-box`); reading `entries[0].contentRect` would
-  // drift by the 4px border each round-trip.
+  // drift by the 4 px border each round-trip.
+  //
+  // Effect deps: `[isOpen, computePosition]`. `computePosition` is
+  // stable (`useCallback` with `[]`) so this effectively re-runs only
+  // when the dropdown opens / closes — no observer thrash on every
+  // size change.
   useEffect(() => {
     if (!isOpen) return;
     const el = dropdownRef.current;
@@ -139,6 +178,8 @@ export function SkupinaFilterDropdown({
       if (timer !== undefined) window.clearTimeout(timer);
       timer = window.setTimeout(() => {
         setSize(next);
+        const newPos = computePosition(next.w, next.h);
+        if (newPos) setPos(newPos);
         try {
           window.localStorage.setItem(SIZE_LS_KEY, JSON.stringify(next));
         } catch {
@@ -151,7 +192,7 @@ export function SkupinaFilterDropdown({
       ro.disconnect();
       if (timer !== undefined) window.clearTimeout(timer);
     };
-  }, [isOpen]);
+  }, [isOpen, computePosition]);
 
   return (
     <>
