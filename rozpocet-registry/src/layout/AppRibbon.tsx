@@ -36,9 +36,16 @@ export function AppRibbon({
     <header
       className="h-12 flex items-center gap-4 px-4 border-b flex-shrink-0"
       style={{
-        background: 'var(--flat-bg-dark)',
-        borderColor: 'rgba(255,255,255,0.08)',
-        color: '#FFFFFF',
+        // Monolit-Planner / Beton Calculator-style "concrete" surface —
+        // light grey gradient (panel-clean → panel-clean-end) so the
+        // ribbon reads as part of the unified STAVAGENT visual brand
+        // instead of the dark navy from SPEC v1.0 (which felt disjoint
+        // from the rest of the ecosystem). Tokens are hardcoded here
+        // for visual parity with Monolit's `c-header` rule —
+        // tokens.css will get aliases in a follow-up commit.
+        background: 'linear-gradient(145deg, #EAEBEC 0%, #DCDEE0 100%)',
+        borderColor: 'var(--flat-border)',
+        color: 'var(--flat-text)',
       }}
     >
       {/* Brand */}
@@ -46,7 +53,7 @@ export function AppRibbon({
         <Building2 className="w-5 h-5" style={{ color: 'var(--flat-accent)' }} />
         <h1
           className="hidden md:block font-semibold text-[14px] tracking-wider uppercase"
-          style={{ fontFamily: 'var(--font-body)' }}
+          style={{ fontFamily: 'var(--font-body)', color: 'var(--flat-text)' }}
         >
           Registr rozpočtů
         </h1>
@@ -70,11 +77,12 @@ export function AppRibbon({
           type="button"
           onClick={onOpenPriceRequest}
           disabled={!hasProjects}
-          className="h-8 px-3 text-[13px] rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/10"
+          className="h-8 px-3 text-[13px] rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[var(--flat-hover)]"
           style={{
-            borderColor: 'rgba(255,255,255,0.15)',
-            color: '#FFFFFF',
+            borderColor: 'var(--flat-border)',
+            color: 'var(--flat-text)',
             fontFamily: 'var(--font-body)',
+            background: 'rgba(255,255,255,0.6)',
           }}
         >
           Poptávka cen
@@ -83,11 +91,12 @@ export function AppRibbon({
           type="button"
           onClick={onExport}
           disabled={!hasProjects}
-          className="h-8 px-3 text-[13px] rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/10"
+          className="h-8 px-3 text-[13px] rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[var(--flat-hover)]"
           style={{
-            borderColor: 'rgba(255,255,255,0.15)',
-            color: '#FFFFFF',
+            borderColor: 'var(--flat-border)',
+            color: 'var(--flat-text)',
             fontFamily: 'var(--font-body)',
+            background: 'rgba(255,255,255,0.6)',
           }}
         >
           Export Excel
@@ -95,7 +104,7 @@ export function AppRibbon({
         <button
           type="button"
           onClick={onImport}
-          className="h-8 px-3 text-[13px] rounded-md transition-colors"
+          className="h-8 px-3 text-[13px] rounded-md transition-colors hover:bg-[var(--flat-accent-hover)]"
           style={{
             background: 'var(--flat-accent)',
             color: '#FFFFFF',
