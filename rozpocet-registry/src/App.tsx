@@ -983,7 +983,13 @@ function App() {
             onSearch={handleSearch}
             onClearSearch={handleClearSearch}
             onOpenPriceRequest={() => setIsPriceRequestOpen(true)}
-            onExport={handleExportProject}
+            hasOriginalFile={hasOriginalFile}
+            onExportSheet={handleExportSheet}
+            onExportProject={handleExportProject}
+            onExportSheetWithTOV={handleExportSheetWithTOV}
+            onExportProjectWithTOV={handleExportProjectWithTOV}
+            onExportToOriginal={handleExportToOriginal}
+            onExportToOriginalWithSkupiny={handleExportToOriginalWithSkupiny}
             onImport={() => setIsImportModalOpen(true)}
             onEditMapping={() => {
               if (selectedProject) {

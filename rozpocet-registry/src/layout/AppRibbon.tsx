@@ -10,15 +10,29 @@
  * nothing except its layout.
  */
 
-import { Building2 } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Building2, ChevronDown } from 'lucide-react';
 import { SearchBar } from '../components/search/SearchBar';
+import { ChipPopover } from './ChipPopover';
+import { ExportMenu, type ExportMenuProps } from './ExportMenu';
 import type { SearchFilters } from '../services/search/searchService';
 
 export interface AppRibbonProps {
   onSearch: (query: string, filters: SearchFilters) => void;
   onClearSearch: () => void;
   onOpenPriceRequest: () => void;
-  onExport: () => void;
+  /**
+   * Six export options surfaced through a dropdown anchored to the
+   * Export Excel button (see `ExportMenu` for the full row list).
+   * Mirrors the legacy App.tsx export menu 1:1 so flipping the ribbon
+   * flag doesn't read as a regression.
+   */
+  exportProps: Omit<ExportMenuProps, 'sheetCount' | 'hasSheet' | 'hasOriginalFile' | 'sheetName'> & {
+    sheetCount: number;
+    hasSheet: boolean;
+    hasOriginalFile: boolean;
+    sheetName?: string;
+  };
   onImport: () => void;
   /** Disable the secondary actions when there are no projects to act on. */
   hasProjects: boolean;
@@ -28,10 +42,24 @@ export function AppRibbon({
   onSearch,
   onClearSearch,
   onOpenPriceRequest,
-  onExport,
+  exportProps,
   onImport,
   hasProjects,
 }: AppRibbonProps) {
+  const exportBtnRef = useRef<HTMLButtonElement>(null);
+  const [isExportOpen, setIsExportOpen] = useState(false);
+  const closeExport = () => setIsExportOpen(false);
+  // Wrap each export callback so picking a row also dismisses the popover —
+  // matches the legacy menu's "click row → menu closes + action fires".
+  const wrappedExport = {
+    ...exportProps,
+    onExportSheet: () => { closeExport(); exportProps.onExportSheet(); },
+    onExportProject: () => { closeExport(); exportProps.onExportProject(); },
+    onExportSheetWithTOV: () => { closeExport(); exportProps.onExportSheetWithTOV(); },
+    onExportProjectWithTOV: () => { closeExport(); exportProps.onExportProjectWithTOV(); },
+    onExportToOriginal: () => { closeExport(); exportProps.onExportToOriginal(); },
+    onExportToOriginalWithSkupiny: () => { closeExport(); exportProps.onExportToOriginalWithSkupiny(); },
+  };
   return (
     <header
       className="h-12 flex items-center gap-4 px-4 border-b flex-shrink-0"
@@ -88,19 +116,35 @@ export function AppRibbon({
           Poptávka cen
         </button>
         <button
+          ref={exportBtnRef}
           type="button"
-          onClick={onExport}
+          onClick={() => setIsExportOpen((v) => !v)}
           disabled={!hasProjects}
-          className="h-8 px-3 text-[13px] rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[var(--flat-hover)]"
+          aria-haspopup="menu"
+          aria-expanded={isExportOpen}
+          className="h-8 px-3 text-[13px] rounded-md border transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[var(--flat-hover)] flex items-center gap-1.5"
           style={{
-            borderColor: 'var(--flat-border)',
+            borderColor: isExportOpen ? 'var(--flat-accent)' : 'var(--flat-border)',
             color: 'var(--flat-text)',
             fontFamily: 'var(--font-body)',
-            background: 'rgba(255,255,255,0.6)',
+            background: isExportOpen ? 'var(--flat-accent-light)' : 'rgba(255,255,255,0.6)',
           }}
         >
           Export Excel
+          <ChevronDown
+            size={12}
+            className={`w-[12px] h-[12px] opacity-60 transition-transform ${isExportOpen ? 'rotate-180' : ''}`}
+          />
         </button>
+        <ChipPopover
+          anchorRef={exportBtnRef}
+          open={isExportOpen}
+          onClose={closeExport}
+          width={320}
+          maxHeight={420}
+        >
+          <ExportMenu {...wrappedExport} />
+        </ChipPopover>
         <button
           type="button"
           onClick={onImport}
