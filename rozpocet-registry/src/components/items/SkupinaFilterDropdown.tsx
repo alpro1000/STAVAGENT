@@ -16,6 +16,41 @@ import { Filter, Check } from 'lucide-react';
 
 const NO_GROUP_LABEL = '(Bez skupiny)';
 
+/**
+ * Drag-resize bounds. The user can drag the bottom-right corner to widen
+ * the panel for long group names or to lengthen it when many skupiny are
+ * defined. Initial size is restored from localStorage on every open.
+ */
+const SIZE_LS_KEY = 'registry-skupina-filter-size';
+const DEFAULT_WIDTH = 280;
+const DEFAULT_HEIGHT = 340;
+const MIN_WIDTH = 240;
+const MIN_HEIGHT = 200;
+const MAX_WIDTH = 1200;
+const MAX_HEIGHT = 1000;
+
+interface PersistedSize {
+  w: number;
+  h: number;
+}
+
+function loadPersistedSize(): PersistedSize {
+  if (typeof window === 'undefined') return { w: DEFAULT_WIDTH, h: DEFAULT_HEIGHT };
+  try {
+    const raw = window.localStorage.getItem(SIZE_LS_KEY);
+    if (!raw) return { w: DEFAULT_WIDTH, h: DEFAULT_HEIGHT };
+    const parsed = JSON.parse(raw) as Partial<PersistedSize>;
+    const w = typeof parsed.w === 'number' ? parsed.w : DEFAULT_WIDTH;
+    const h = typeof parsed.h === 'number' ? parsed.h : DEFAULT_HEIGHT;
+    return {
+      w: Math.max(MIN_WIDTH, Math.min(w, MAX_WIDTH)),
+      h: Math.max(MIN_HEIGHT, Math.min(h, MAX_HEIGHT)),
+    };
+  } catch {
+    return { w: DEFAULT_WIDTH, h: DEFAULT_HEIGHT };
+  }
+}
+
 interface SkupinaFilterDropdownProps {
   groupStats: Array<[string, number]>;
   filterGroups: Set<string>;
@@ -37,6 +72,7 @@ export function SkupinaFilterDropdown({
 }: SkupinaFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [pos, setPos] = useState<{ top: number; left: number; openUp: boolean } | null>(null);
+  const [size, setSize] = useState<PersistedSize>(loadPersistedSize);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -45,15 +81,18 @@ export function SkupinaFilterDropdown({
   const updatePosition = useCallback(() => {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (!rect) return;
-    const dropdownHeight = 340; // max-h of the dropdown
     const spaceBelow = window.innerHeight - rect.bottom;
-    const openUp = spaceBelow < dropdownHeight && rect.top > dropdownHeight;
+    const openUp = spaceBelow < size.h && rect.top > size.h;
+    // Right-anchor to the filter button + clamp horizontally so the
+    // panel stays inside the viewport after the user drag-resizes wider.
+    const wantLeft = rect.right - size.w;
+    const clampedLeft = Math.max(8, Math.min(wantLeft, window.innerWidth - size.w - 8));
     setPos({
       top: openUp ? rect.top : rect.bottom,
-      left: Math.min(rect.right - 240, window.innerWidth - 260), // 240 = min-w, clamp right edge
+      left: clampedLeft,
       openUp,
     });
-  }, []);
+  }, [size.w, size.h]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -77,6 +116,41 @@ export function SkupinaFilterDropdown({
     };
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
+  }, [isOpen]);
+
+  // Track drag-resize via ResizeObserver. Debounce localStorage writes
+  // so we only persist after the user releases the resize handle (at
+  // 60 Hz the raw observer would hammer storage on every pixel).
+  // `getBoundingClientRect()` returns border-box dimensions, matching
+  // the inline `width` / `height` we apply (Tailwind defaults to
+  // `box-sizing: border-box`); reading `entries[0].contentRect` would
+  // drift by the 4px border each round-trip.
+  useEffect(() => {
+    if (!isOpen) return;
+    const el = dropdownRef.current;
+    if (!el) return;
+    let timer: number | undefined;
+    const ro = new ResizeObserver(() => {
+      const rect = el.getBoundingClientRect();
+      const next = {
+        w: Math.max(MIN_WIDTH, Math.min(Math.round(rect.width), MAX_WIDTH)),
+        h: Math.max(MIN_HEIGHT, Math.min(Math.round(rect.height), MAX_HEIGHT)),
+      };
+      if (timer !== undefined) window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        setSize(next);
+        try {
+          window.localStorage.setItem(SIZE_LS_KEY, JSON.stringify(next));
+        } catch {
+          /* ignore quota / disabled storage */
+        }
+      }, 200);
+    });
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
   }, [isOpen]);
 
   return (
@@ -103,12 +177,24 @@ export function SkupinaFilterDropdown({
       {isOpen && pos && createPortal(
         <div
           ref={dropdownRef}
-          className="bg-bg-primary border-2 border-border-color rounded-lg min-w-[240px] max-h-[340px] overflow-y-auto"
+          // `resize` (= CSS `resize: both`) enables the browser-native
+          // drag handle in the bottom-right corner. Pairs with the
+          // ResizeObserver above to persist the chosen size in
+          // localStorage so subsequent opens preserve it. `overflow-auto`
+          // (instead of overflow-y-only) is required for `resize` to
+          // actually take effect.
+          className="bg-bg-primary border-2 border-border-color rounded-lg overflow-auto resize"
           style={{
             position: 'fixed',
             left: pos.left,
             top: pos.openUp ? undefined : pos.top + 4,
             bottom: pos.openUp ? window.innerHeight - pos.top + 4 : undefined,
+            width: size.w,
+            height: size.h,
+            minWidth: MIN_WIDTH,
+            minHeight: MIN_HEIGHT,
+            maxWidth: '95vw',
+            maxHeight: '90vh',
             zIndex: 9999,
             boxShadow: '0 8px 30px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)',
           }}
