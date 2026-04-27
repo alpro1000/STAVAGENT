@@ -2,7 +2,7 @@
  * FormworkRentalSection
  *
  * Tabuľka nájmu bednění — vložená sekce v záložce "Materiály" TOV modalu.
- * Zobrazuje se pouze pro pozice skupiny BEDNENI.
+ * Zobrazuje se pouze pro pozice skupiny BEDNĚNÍ.
  *
  * Struktura sloupců:
  * Konstrukce | Celkem m2 | Sada m2 | Taktů | Sad | Dní/takt | Dem.d |

@@ -345,7 +345,7 @@ export interface TOVData {
     itemCount: number;
   };
 
-  // === NÁJEM BEDNĚNÍ (only for BEDNENI positions) ===
+  // === NÁJEM BEDNĚNÍ (only for BEDNĚNÍ positions) ===
   formworkRental?: FormworkRentalRow[];
 
   // === KALKULÁTOR BETONOČERPADLA (only for BETON_MONOLIT / BETON_PREFAB) ===
