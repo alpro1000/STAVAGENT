@@ -38,7 +38,10 @@ export async function checkPortalLink(registryProjectId: string): Promise<string
 
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
+    // 5 s → 15 s. The status check is a tiny GET but Portal Cloud
+    // Run cold-starts can exceed 5 s; failing the status check
+    // silently was masking real auto-link state.
+    const timeout = setTimeout(() => controller.abort(), 15000);
 
     const response = await fetch(
       `${PORTAL_API_URL}/api/integration/registry-status/${registryProjectId}`,
@@ -94,7 +97,13 @@ export async function syncProjectToPortal(
     };
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    // 15 s → 30 s. The full registry-import POST sends the entire
+    // sheet payload (605+ items) and on Cloud Run cold-start the
+    // first request after idle reliably exceeded 15 s — every
+    // subsequent debounced auto-sync then aborted, so the user
+    // saw "Auto-linked" in the logs but the project was still in
+    // PostgreSQL with 0 instance mappings on the Portal side.
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     const response = await fetch(
       `${PORTAL_API_URL}/api/integration/import-from-registry`,
