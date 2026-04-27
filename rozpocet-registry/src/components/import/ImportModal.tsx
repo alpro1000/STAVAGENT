@@ -101,6 +101,14 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
   // Auto-detection state
   const [detectionResults, setDetectionResults] = useState<DetectionResult[] | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
+  // Pre-detected column mapping forwarded into <RawExcelViewer prefilledMapping>
+  // so the manual-mapping screen lands with dropdowns already populated when
+  // the user picks the "Raw Data" path. The structure detector that
+  // produces this mapping is much more robust than the viewer's own
+  // mount-time keyword-scan heuristic, which silently failed on EstiCon-
+  // style 2-row headers — leaving users with an empty form and a
+  // "Obnovit automaticky" button to discover.
+  const [prefilledMapping, setPrefilledMapping] = useState<Partial<DetectionResult['detectedColumns']> | null>(null);
 
   // Auto-classification state
   const [autoClassify, setAutoClassify] = useState(true); // enabled by default
@@ -707,9 +715,32 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
               </p>
             </div>
 
-            {/* Primary Action: Raw Data Mapping */}
+            {/* Primary Action: Raw Data Mapping. Run the structure
+                detector synchronously before switching steps so the
+                viewer mounts with a populated mapping — turns the
+                two-step "open form → click Obnovit" dance into a
+                single click. Detector failures fall back to the
+                viewer's own keyword-scan heuristic. */}
             <button
-              onClick={() => setStep('raw-view')}
+              onClick={async () => {
+                if (workbook) {
+                  try {
+                    const results = await detectExcelStructure(
+                      workbook,
+                      selectedSheet || sheetNames[0],
+                    );
+                    // Take the highest-scoring result's detected
+                    // columns. Even matchScore=0 results carry an
+                    // empty `detectedColumns` map, which is harmless —
+                    // the viewer's mount effect treats empty as "no
+                    // prefill, run keyword scan".
+                    setPrefilledMapping(results[0]?.detectedColumns ?? null);
+                  } catch {
+                    setPrefilledMapping(null);
+                  }
+                }
+                setStep('raw-view');
+              }}
               className="w-full py-6 px-6 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange)]/90
                        text-white rounded-lg transition-all
                        flex items-center justify-between group"
@@ -875,6 +906,7 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
 
             <RawExcelViewer
               workbook={workbook}
+              prefilledMapping={prefilledMapping ?? undefined}
               onColumnMapping={(mapping) => {
                 // Create a flexible template with the mapping
                 const flexibleConfig: ImportConfig = {
