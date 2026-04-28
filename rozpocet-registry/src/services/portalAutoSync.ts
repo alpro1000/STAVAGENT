@@ -18,6 +18,7 @@ export interface InstanceMapping {
 }
 
 import { PORTAL_API_URL } from '../utils/config.js';
+import { getPortalJwt, portalAuthHeader } from './portalAuth';
 
 // Debounce timers per project
 const syncTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -45,7 +46,10 @@ export async function checkPortalLink(registryProjectId: string): Promise<string
 
     const response = await fetch(
       `${PORTAL_API_URL}/api/integration/registry-status/${registryProjectId}`,
-      { signal: controller.signal }
+      {
+        signal: controller.signal,
+        headers: { ...portalAuthHeader() },
+      }
     );
     clearTimeout(timeout);
 
@@ -69,6 +73,16 @@ export async function syncProjectToPortal(
   project: Project,
   tovData: Record<string, TOVData>
 ): Promise<string | null> {
+  // Auth gate. Portal backend now requires a Bearer JWT on
+  // `/api/integration/import-from-registry` (was anonymous + hardcoded
+  // owner_id=1). Without a token the sync would 401 — surface that
+  // intent explicitly: skip the network round-trip and let UI render
+  // a "Pro propojení projektu se přihlaste v Portálu" banner instead
+  // of stacking AbortError logs.
+  if (!getPortalJwt()) {
+    console.log(`[PortalAutoSync] Skip "${project.projectName}" — not logged in to Portal`);
+    return null;
+  }
   try {
     // Check if already linked
     const existingPortalId = project.portalLink?.portalProjectId
@@ -109,7 +123,15 @@ export async function syncProjectToPortal(
       `${PORTAL_API_URL}/api/integration/import-from-registry`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          // Bearer JWT from the cross-subdomain cookie. Without it
+          // the backend's requireAuth middleware returns 401 — we
+          // already skip the call earlier in this function (see
+          // `getPortalJwt()` gate above), but the header guarantees
+          // ownership ends up correct on the backend side.
+          ...portalAuthHeader(),
+        },
         body: JSON.stringify(body),
         signal: controller.signal,
       }

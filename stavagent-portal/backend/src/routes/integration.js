@@ -489,8 +489,13 @@ router.post('/sync-tov', async (req, res) => {
  * - portal_project_id: string
  * - items_imported: number
  */
-router.post('/import-from-registry', async (req, res) => {
-  console.log('[Integration] POST /import-from-registry - Request received');
+router.post('/import-from-registry', requireAuth, async (req, res) => {
+  // requireAuth populates req.user from a Bearer JWT. Without a valid
+  // JWT this returns 401 before we ever touch the database — Registry
+  // anonymous syncs are no longer accepted (used to silently insert
+  // with owner_id=1, leaving projects orphaned + invisible to the
+  // logged-in user in /portal Projekty).
+  console.log('[Integration] POST /import-from-registry - Request received from user', req.user?.userId);
 
   const pool = safeGetPool();
   if (!pool) {
@@ -529,19 +534,31 @@ router.post('/import-from-registry', async (req, res) => {
       projectId = `proj_${uuidv4()}`;
       console.log('[Integration] Creating new portal project for Registry:', projectId);
       await client.query(
+        // owner_id pulled from the authenticated user's JWT (req.user.userId).
+        // Was hardcoded to 1 — that left every Registry-imported project
+        // owned by user_id=1, which is invisible to any logged-in user
+        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
+        // updated_at; owner_id of an existing project is preserved (so a
+        // re-import doesn't change ownership of someone else's project).
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', 1, NOW(), NOW())
+         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
          ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
-        [projectId, project_name]
+        [projectId, project_name, req.user.userId]
       );
     } else {
       // UPSERT — the portal_project_id may be stale (from localStorage after a DB reset).
       // Using INSERT ... ON CONFLICT ensures the project row exists before kiosk_links FK insert.
       await client.query(
+        // owner_id pulled from the authenticated user's JWT (req.user.userId).
+        // Was hardcoded to 1 — that left every Registry-imported project
+        // owned by user_id=1, which is invisible to any logged-in user
+        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
+        // updated_at; owner_id of an existing project is preserved (so a
+        // re-import doesn't change ownership of someone else's project).
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', 1, NOW(), NOW())
+         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
          ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
-        [projectId, project_name]
+        [projectId, project_name, req.user.userId]
       );
     }
 
@@ -566,10 +583,16 @@ router.post('/import-from-registry', async (req, res) => {
     // UPSERT done above — causing FK constraint failures when portal_objects is inserted later.
     const reEnsureProjectRows = async () => {
       await client.query(
+        // owner_id pulled from the authenticated user's JWT (req.user.userId).
+        // Was hardcoded to 1 — that left every Registry-imported project
+        // owned by user_id=1, which is invisible to any logged-in user
+        // whose own user_id ≠ 1. ON CONFLICT only updates project_name +
+        // updated_at; owner_id of an existing project is preserved (so a
+        // re-import doesn't change ownership of someone else's project).
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'registry', 1, NOW(), NOW())
+         VALUES ($1, $2, 'registry', $3, NOW(), NOW())
          ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
-        [projectId, project_name]
+        [projectId, project_name, req.user.userId]
       );
       if (registry_project_id) {
         await client.query(
