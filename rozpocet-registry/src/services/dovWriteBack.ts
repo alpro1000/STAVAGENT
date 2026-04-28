@@ -14,6 +14,7 @@
 import type { TOVData } from '../types';
 
 import { PORTAL_API_URL } from '../utils/config.js';
+import { portalAuthHeader } from './portalAuth';
 const WRITE_BACK_TIMEOUT = 5000;
 
 /**
@@ -139,9 +140,18 @@ export async function writeBackDOV(
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), WRITE_BACK_TIMEOUT);
 
+    // Auth wiring (PR-1 of cross-subdomain auth fix series). Without
+    // this every DOV write-back silently 401'd against Portal's
+    // requireAuth — Registry users could edit DOV cells but their
+    // changes never reached the server (writeBackDOV() returns false
+    // and the failure is logged but not surfaced to the UI).
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...portalAuthHeader(),
+      },
       body: JSON.stringify({ payload }),
       signal: controller.signal,
     });

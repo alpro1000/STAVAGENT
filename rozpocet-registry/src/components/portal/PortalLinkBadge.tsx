@@ -28,6 +28,7 @@ interface PortalProjectItem {
 
 const PORTAL_URL = import.meta.env.VITE_PORTAL_FRONTEND_URL || 'https://www.stavagent.cz/portal';
 import { PORTAL_API_URL } from '../../utils/config.js';
+import { portalAuthHeader } from '../../services/portalAuth';
 
 export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgeProps) {
   const { linkToPortal, unlinkFromPortal, tovData } = useRegistryStore();
@@ -55,8 +56,18 @@ export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgePro
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
 
+      // Auth wiring (PR-1 of cross-subdomain auth fix series):
+      //   `credentials: 'include'` lets the browser attach the
+      //   cross-subdomain `stavagent_jwt` cookie set by Portal frontend
+      //   on login (domain=.stavagent.cz). `portalAuthHeader()` reads
+      //   the same cookie via document.cookie and attaches a Bearer
+      //   header — backend's requireAuth accepts either path. Without
+      //   these two flags this endpoint 401'd silently and the badge
+      //   showed "Portal vrátil chybu" with no projects to link.
       const response = await fetch(`${PORTAL_API_URL}/api/portal-projects`, {
         signal: controller.signal,
+        credentials: 'include',
+        headers: { ...portalAuthHeader() },
       });
       clearTimeout(timeout);
 

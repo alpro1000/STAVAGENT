@@ -14,6 +14,7 @@
 import type { MonolithPayload } from '../types';
 
 import { PORTAL_API_URL } from '../utils/config.js';
+import { portalAuthHeader } from './portalAuth';
 const FETCH_TIMEOUT = 10_000;
 
 /**
@@ -31,9 +32,16 @@ export async function fetchMonolithData(
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
+    // Auth wiring (PR-1 of cross-subdomain auth fix series). Without
+    // it, Monolit data fetch silently 401s and the comparison drawer
+    // shows "Portal vrátil chybu" with no Monolit prices to compare.
     const response = await fetch(
       `${PORTAL_API_URL}/api/integration/for-registry/${portalProjectId}`,
-      { signal: controller.signal }
+      {
+        signal: controller.signal,
+        credentials: 'include',
+        headers: { ...portalAuthHeader() },
+      }
     );
     clearTimeout(timeout);
 
