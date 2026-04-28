@@ -1,19 +1,44 @@
 /**
  * ItemsTable Styles
- * Горизонтальная прокрутка для длинных текстов в ячейках
+ * Popis cell wraps + grows; row height auto-fits content.
  */
 
-/* Ячейка с прокруткой (Popis) */
+/* Popis cell — fills the column width and wraps long text across
+ * multiple lines instead of a horizontal mini-scroll. The legacy
+ * `max-width: 400px` cap meant widening the column had no visual
+ * effect (text stayed clipped at 400 px regardless of how wide the
+ * user dragged the column). Now the cell respects the column width
+ * set by react-table's resize handle / dblclick auto-fit.
+ *
+ * `word-break: break-word` handles unusual long tokens (e.g. URLs,
+ * concrete grades like "C30/37-XF4-XD3-XA2-XC4") that would
+ * otherwise overflow even after wrap.
+ */
 .cell-scrollable {
-  max-width: 400px;
-  overflow-x: auto;
-  white-space: nowrap;
+  width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
   display: block;
+  /* Cap cell height per row at ~3 wrapped lines so a single very long
+   * description doesn't stretch the row to 200 px. Subordinate rows
+   * (italic, .row-subordinate) can grow further — see below. */
+  max-height: 3.6em;
+  overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
+/* Subordinate rows often hold the work-method narrative the user
+ * specifically called out — let them grow up to ~6 lines before the
+ * inner overflow kicks in, so the wrap is actually useful. */
+.row-subordinate .cell-scrollable {
+  max-height: 6em;
+}
+
 .cell-scrollable::-webkit-scrollbar {
+  width: 3px;
   height: 3px;
 }
 

@@ -5,6 +5,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import * as XLSX from 'xlsx';
 import { ResizableModal } from '../ui/ResizableModal';
 import { FileUploader } from './FileUploader';
 import { ConfigEditor } from '../config/ConfigEditor';
@@ -120,6 +121,38 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
 
   // Store original file data for "return to original" export
   const originalFileData = useRef<ArrayBuffer | null>(null);
+
+  /**
+   * Read the first ~5 non-empty cells from a given 1-based row of a
+   * sheet and join with " · " separators. Returned string is what the
+   * per-sheet config picker shows under each sheet's row-number badge,
+   * so the user can SEE what's actually on row N before committing
+   * (the badge label "Řádek 9: nalezen kód + MJ" tells them WHY the
+   * detector picked row 9, but not what's there). Empty string when
+   * the workbook isn't loaded yet or the sheet is missing.
+   */
+  const previewRow = (sheetName: string, rowNum: number): string => {
+    if (!workbook) return '';
+    const sheet = workbook.Sheets[sheetName];
+    if (!sheet || !sheet['!ref']) return '';
+    try {
+      const range = XLSX.utils.decode_range(sheet['!ref']);
+      const cells: string[] = [];
+      const maxCol = Math.min(range.e.c, 6); // up to 7 cells (A..G)
+      for (let col = 0; col <= maxCol; col++) {
+        const ref = XLSX.utils.encode_cell({ r: rowNum - 1, c: col });
+        const cell = sheet[ref];
+        const v = cell?.v;
+        if (v === undefined || v === null || v === '') continue;
+        const text = String(v).trim();
+        if (text) cells.push(text.length > 24 ? text.slice(0, 24) + '…' : text);
+        if (cells.length >= 5) break;
+      }
+      return cells.join(' · ');
+    } catch {
+      return '';
+    }
+  };
 
   // Auto-detect per-sheet start rows when workbook & sheet selection changes
   const runPerSheetDetection = (wb: any, sheets: string[]) => {
@@ -1148,38 +1181,59 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
                     <label className="block text-xs font-semibold mb-2 text-[var(--text-secondary)]">
                       Řádek začátku dat (per-sheet):
                     </label>
-                    <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                    {/* max-h bumped 48 → 96 (192 → 384 px). On a 132-sheet
+                        workbook the user could only see 5-6 entries before
+                        having to scroll; doubled cap fits ~12 rows. */}
+                    <div className="space-y-1.5 max-h-96 overflow-y-auto">
                       {selectedSheets.map(name => {
                         const info = perSheetStartRows[name];
                         if (!info) return null;
+                        // Live preview of what the picked row contains —
+                        // user-callout: "не понятно что показано в окне".
+                        // The "Řádek N: nalezen kód + MJ" reason text tells
+                        // WHY the detector picked the row; the preview tells
+                        // WHAT's actually there so the user can verify the
+                        // pick before committing the import.
+                        const preview = previewRow(name, info.dataStartRow);
                         return (
-                          <div key={name} className="flex items-center gap-2 text-sm">
-                            <span className="flex-1 truncate text-[var(--text-primary)]" title={name}>{name}</span>
-                            <input
-                              type="number"
-                              min={1}
-                              value={info.dataStartRow}
-                              onChange={(e) => {
-                                const val = parseInt(e.target.value, 10);
-                                if (val >= 1) {
-                                  setPerSheetStartRows(prev => ({
-                                    ...prev,
-                                    [name]: { ...prev[name], dataStartRow: val, confidence: 'high', reason: 'Ručně nastaveno' },
-                                  }));
-                                }
-                              }}
-                              className="w-16 px-2 py-1 text-xs bg-[var(--panel-clean)] border border-[var(--divider)] rounded text-center focus:border-[var(--accent-orange)] focus:outline-none"
-                            />
-                            <span className={`text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap ${
-                              info.confidence === 'high' ? 'bg-green-100 text-green-700' :
-                              info.confidence === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-700'
-                            }`}>
-                              {info.confidence === 'high' ? '✓' : info.confidence === 'medium' ? '⚠' : '✗'}
-                            </span>
-                            <span className="text-[10px] text-[var(--text-muted)] hidden sm:inline" title={info.reason}>
-                              {info.reason.length > 30 ? info.reason.slice(0, 30) + '…' : info.reason}
-                            </span>
+                          <div key={name} className="text-sm">
+                            <div className="flex items-center gap-2">
+                              <span className="flex-1 truncate text-[var(--text-primary)]" title={name}>{name}</span>
+                              <input
+                                type="number"
+                                min={1}
+                                value={info.dataStartRow}
+                                onChange={(e) => {
+                                  const val = parseInt(e.target.value, 10);
+                                  if (val >= 1) {
+                                    setPerSheetStartRows(prev => ({
+                                      ...prev,
+                                      [name]: { ...prev[name], dataStartRow: val, confidence: 'high', reason: 'Ručně nastaveno' },
+                                    }));
+                                  }
+                                }}
+                                className="w-16 px-2 py-1 text-xs bg-[var(--panel-clean)] border border-[var(--divider)] rounded text-center focus:border-[var(--accent-orange)] focus:outline-none"
+                              />
+                              <span className={`text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap ${
+                                info.confidence === 'high' ? 'bg-green-100 text-green-700' :
+                                info.confidence === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                                'bg-red-100 text-red-700'
+                              }`}>
+                                {info.confidence === 'high' ? '✓' : info.confidence === 'medium' ? '⚠' : '✗'}
+                              </span>
+                              <span className="text-[10px] text-[var(--text-muted)] hidden sm:inline" title={info.reason}>
+                                {info.reason.length > 30 ? info.reason.slice(0, 30) + '…' : info.reason}
+                              </span>
+                            </div>
+                            {preview && (
+                              <div
+                                className="text-[10px] text-[var(--text-muted)] truncate pl-1 mt-0.5"
+                                title={`Řádek ${info.dataStartRow}: ${preview}`}
+                              >
+                                <span className="opacity-60">→ ř. {info.dataStartRow}:</span>{' '}
+                                <span className="font-mono">{preview}</span>
+                              </div>
+                            )}
                           </div>
                         );
                       })}
