@@ -7,6 +7,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import db, { USE_POSTGRES } from './index.js';
+import { splitSqlStatements } from './splitSqlStatements.js';
 import { normalizeForSearch } from '../utils/text.js';
 import { getAllTemplates, getTemplateSummary } from '../constants/objectTemplates.js';
 
@@ -33,12 +34,15 @@ async function initPostgresSchema() {
   const schemaPath = join(__dirname, 'schema-postgres.sql');
   const schema = fs.readFileSync(schemaPath, 'utf-8');
 
-  // Split by semicolons and execute each statement
-  const allStatements = schema
-    .split(';')
+  // Split via $$-aware splitter — naive `split(';')` chopped any
+  // `DO $$ BEGIN ... ; ... END $$;` block apart on its inner
+  // semicolons (same regression as the Portal backend fix
+  // documented in docs/migration-recovery.md). The new splitter
+  // keeps dollar-quoted bodies, single-quoted strings, and
+  // comments intact.
+  const allStatements = splitSqlStatements(schema)
     .map(s => {
-      // Trim and remove comment lines
-      const lines = s.trim().split('\n');
+      const lines = s.split('\n');
       const cleanedLines = lines.filter(line => !line.trim().startsWith('--'));
       return cleanedLines.join('\n').trim();
     })
