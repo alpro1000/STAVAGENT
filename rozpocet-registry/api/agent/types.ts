@@ -79,14 +79,15 @@ export interface GeminiResponse {
   reason: string;
 }
 
-// Allowed work groups (synced with constants.ts)
+// Allowed work groups (kept in sync with src/utils/constants.ts DEFAULT_GROUPS).
+// 11 entries — diacritics match the canonical names there.
 export const ALLOWED_SKUPINY = [
-  'ZEMNÍ_PRACE',
+  'ZEMNÍ_PRÁCE',
   'BETON_MONOLIT',
   'BETON_PREFAB',
-  'VYZTUŽ',
+  'VÝZTUŽ',
   'KOTVENÍ',
-  'BEDNENI',
+  'BEDNĚNÍ',
   'PILOTY',
   'IZOLACE',
   'KOMUNIKACE',

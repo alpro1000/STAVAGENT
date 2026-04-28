@@ -101,6 +101,14 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
   // Auto-detection state
   const [detectionResults, setDetectionResults] = useState<DetectionResult[] | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
+  // Pre-detected column mapping forwarded into <RawExcelViewer prefilledMapping>
+  // so the manual-mapping screen lands with dropdowns already populated when
+  // the user picks the "Raw Data" path. The structure detector that
+  // produces this mapping is much more robust than the viewer's own
+  // mount-time keyword-scan heuristic, which silently failed on EstiCon-
+  // style 2-row headers — leaving users with an empty form and a
+  // "Obnovit automaticky" button to discover.
+  const [prefilledMapping, setPrefilledMapping] = useState<Partial<DetectionResult['detectedColumns']> | null>(null);
 
   // Auto-classification state
   const [autoClassify, setAutoClassify] = useState(true); // enabled by default
@@ -707,9 +715,32 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
               </p>
             </div>
 
-            {/* Primary Action: Raw Data Mapping */}
+            {/* Primary Action: Raw Data Mapping. Run the structure
+                detector synchronously before switching steps so the
+                viewer mounts with a populated mapping — turns the
+                two-step "open form → click Obnovit" dance into a
+                single click. Detector failures fall back to the
+                viewer's own keyword-scan heuristic. */}
             <button
-              onClick={() => setStep('raw-view')}
+              onClick={async () => {
+                if (workbook) {
+                  try {
+                    const results = await detectExcelStructure(
+                      workbook,
+                      selectedSheet || sheetNames[0],
+                    );
+                    // Take the highest-scoring result's detected
+                    // columns. Even matchScore=0 results carry an
+                    // empty `detectedColumns` map, which is harmless —
+                    // the viewer's mount effect treats empty as "no
+                    // prefill, run keyword scan".
+                    setPrefilledMapping(results[0]?.detectedColumns ?? null);
+                  } catch {
+                    setPrefilledMapping(null);
+                  }
+                }
+                setStep('raw-view');
+              }}
               className="w-full py-6 px-6 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange)]/90
                        text-white rounded-lg transition-all
                        flex items-center justify-between group"
@@ -769,19 +800,37 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
             </button>
 
             {/* Detection Results */}
-            {detectionResults && detectionResults.length > 0 && (
+            {detectionResults && detectionResults.length > 0 && (() => {
+              // Dedupe identical detections — when the structure detector
+              // finds the same column mapping for every PREDEFINED_TEMPLATE
+              // (the common case for files that don't have template-
+              // specific keywords), showing 3 cards with identical
+              // "Standardní ÚRS / OTSKP Katalog / RTS Standard" labels and
+              // identical 67% scores is misleading: there's no actual
+              // choice to make. Collapse to a single "auto-detect" card
+              // when fingerprints (columns + start row) match across all
+              // visible results.
+              const top3 = detectionResults.slice(0, 3);
+              const fingerprint = (r: DetectionResult) =>
+                JSON.stringify(r.detectedColumns) + '|' + r.detectedStartRow;
+              const allIdentical = top3.length > 1 &&
+                top3.every(r => fingerprint(r) === fingerprint(top3[0]));
+              const visibleResults = allIdentical ? top3.slice(0, 1) : top3;
+              return (
               <div className="space-y-4 p-4 bg-[var(--data-surface)] rounded-lg border-2 border-[var(--accent-orange)]">
                 <div>
                   <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2">
                     Výsledky auto-detekce
                   </h4>
                   <p className="text-xs text-[var(--text-secondary)]">
-                    Klikněte na šablonu pro výběr
+                    {allIdentical
+                      ? 'Stejné mapování pro všechny šablony — pokračovat kliknutím'
+                      : 'Klikněte na šablonu pro výběr'}
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  {detectionResults.slice(0, 3).map((result) => (
+                  {visibleResults.map((result) => (
                     <button
                       key={result.template.metadata.id}
                       onClick={() => handleApplyDetectedTemplate(result)}
@@ -796,9 +845,9 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-2xl">{result.template.metadata.icon}</span>
+                          <span className="text-2xl">{allIdentical ? '🔍' : result.template.metadata.icon}</span>
                           <span className="font-semibold text-[var(--text-primary)]">
-                            {result.template.metadata.name}
+                            {allIdentical ? 'Auto-detekované sloupce' : result.template.metadata.name}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -848,7 +897,8 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
                   Zavřít výsledky
                 </button>
               </div>
-            )}
+              );
+            })()}
 
             <div className="flex gap-3 justify-end pt-4 border-t border-[var(--divider)]">
               <button onClick={() => setStep('upload')} className="btn btn-secondary">
@@ -875,6 +925,7 @@ export function ImportModal({ isOpen, onClose, reimportProject }: ImportModalPro
 
             <RawExcelViewer
               workbook={workbook}
+              prefilledMapping={prefilledMapping ?? undefined}
               onColumnMapping={(mapping) => {
                 // Create a flexible template with the mapping
                 const flexibleConfig: ImportConfig = {

@@ -97,8 +97,9 @@ const MODULES = [
   {
     icon: FileSearch, title: 'AI analýza stavební dokumentace',
     desc: 'Nahrajte TZ, statiku, geologii nebo výkres — systém extrahuje klíčové parametry a porovná je s ostatními dokumenty v projektu.',
+    note: 'Modul je v přípravě. Brzy k dispozici.',
     bullets: ['12+ typů stavební dokumentace (D.1.2 statika, D.1.3 PBŘS, D.1.4 profese, C geologie…)', 'Cross-document kontrola: geologie → statika → rozpočet', 'Determinismus: regex extrakce (conf. 1.0) první, AI pouze jako doplněk'],
-    cta: 'Nahrát dokument', href: '/portal/analysis', external: false,
+    cta: 'Brzy k dispozici', href: '/portal/analysis', external: false, comingSoon: true,
   },
   {
     icon: Link, title: 'Párování s kataložními kódy',
@@ -311,10 +312,20 @@ export default function LandingPage() {
               </ul>
               <div>
                 <button
-                  onClick={() => m.external ? openExternal(m.href) : navigate(m.href)}
-                  style={{ ...orangeBtn(), background: 'transparent', color: 'var(--accent-orange)', border: '1px solid var(--accent-orange)', padding: '8px 16px', fontSize: 13 }}
+                  onClick={() => { if ((m as any).comingSoon) return; m.external ? openExternal(m.href) : navigate(m.href); }}
+                  disabled={(m as any).comingSoon}
+                  style={{
+                    ...orangeBtn(),
+                    background: 'transparent',
+                    color: (m as any).comingSoon ? 'var(--text-muted, #9ca3af)' : 'var(--accent-orange)',
+                    border: `1px solid ${(m as any).comingSoon ? 'var(--border-default, #d1d5db)' : 'var(--accent-orange)'}`,
+                    padding: '8px 16px',
+                    fontSize: 13,
+                    cursor: (m as any).comingSoon ? 'not-allowed' : 'pointer',
+                    opacity: (m as any).comingSoon ? 0.7 : 1,
+                  }}
                 >
-                  {m.cta} <ArrowRight size={14} />
+                  {m.cta} {!(m as any).comingSoon && <ArrowRight size={14} />}
                 </button>
               </div>
             </div>

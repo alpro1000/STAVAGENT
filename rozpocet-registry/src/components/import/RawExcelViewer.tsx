@@ -4,7 +4,8 @@
  * Allows column selection and auto-detection of file type
  */
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import * as XLSX from 'xlsx';
 import { Sparkles, Check, Loader2, ArrowDown, HelpCircle, RefreshCw } from 'lucide-react';
 
@@ -16,6 +17,16 @@ interface RawExcelViewerProps {
    *  the viewer's bottom action bar (flat-import-modal PR). Callers
    *  that still render their own back button can omit this. */
   onBack?: () => void;
+  /**
+   * Optional pre-detected column mapping injected from the parent
+   * (typically from `detectExcelStructure` run when the user picked
+   * the "Raw Data" path). When provided AND non-empty, this wins over
+   * the viewer's own mount-time `autoDetectColumns()` heuristic — the
+   * structure detector is more robust (handles 2-row headers and
+   * non-standard header positions that the viewer's keyword scan
+   * would miss). User can still override via the dropdowns afterward.
+   */
+  prefilledMapping?: Partial<ColumnMapping>;
 }
 
 interface ColumnMapping {
@@ -193,13 +204,105 @@ function autoDetectColumns(data: string[][]): Partial<ColumnMapping> {
   return mapping;
 }
 
-export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBack }: RawExcelViewerProps) {
+/**
+ * Field options surfaced in the column-header click popover (D2). Order
+ * matches the existing dropdown above the table — so clicking a column
+ * letter feels like the inverse of picking from the dropdown.
+ *
+ * `field` is the key on `ColumnMapping`; `label` is the user-visible
+ * label (Czech). The 7th "Odmapovat" option clears whatever field is
+ * currently mapped to the clicked column.
+ */
+type MappingField = 'kod' | 'popis' | 'mj' | 'mnozstvi' | 'cenaJednotkova' | 'cenaCelkem';
+const MAPPING_FIELD_OPTIONS: ReadonlyArray<{ field: MappingField; label: string }> = [
+  { field: 'kod',            label: 'Kód' },
+  { field: 'popis',          label: 'Popis' },
+  { field: 'mj',             label: 'MJ' },
+  { field: 'mnozstvi',       label: 'Množství' },
+  { field: 'cenaJednotkova', label: 'Cena jedn.' },
+  { field: 'cenaCelkem',     label: 'Cena celkem' },
+];
+
+export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBack, prefilledMapping }: RawExcelViewerProps) {
   const [selectedSheet, setSelectedSheet] = useState(workbook.SheetNames[0]);
   const [selectedColumns, setSelectedColumns] = useState<Partial<ColumnMapping>>({});
   const [isDetecting, setIsDetecting] = useState(true);
   const [detectedType, setDetectedType] = useState<DetectedFileType | null>(null);
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const dataRowRef = useRef<HTMLTableRowElement>(null);
+
+  // D2: column-header click popover. Anchor is the <th> the user
+  // clicked; `pos` is the popover's fixed-position rectangle below it.
+  const [popoverLetter, setPopoverLetter] = useState<string | null>(null);
+  const [popoverPos, setPopoverPos] = useState<{ top: number; left: number } | null>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  const openColumnPopover = useCallback((letter: string, anchor: HTMLElement) => {
+    const rect = anchor.getBoundingClientRect();
+    // Place the popover directly below the clicked header. Clamp to
+    // viewport so right-edge columns don't push it off-screen.
+    setPopoverPos({
+      top: rect.bottom + 4,
+      left: Math.min(rect.left, window.innerWidth - 240),
+    });
+    setPopoverLetter(letter);
+  }, []);
+
+  const closeColumnPopover = useCallback(() => {
+    setPopoverLetter(null);
+    setPopoverPos(null);
+  }, []);
+
+  // Click-outside + Escape dismiss for the column popover.
+  useEffect(() => {
+    if (!popoverLetter) return;
+    const onMouseDown = (e: MouseEvent) => {
+      if (popoverRef.current?.contains(e.target as Node)) return;
+      // Don't dismiss if the user is clicking another column header —
+      // the new <th>'s onClick will replace `popoverLetter` anyway, so
+      // letting the dismiss fire first would race against the open.
+      if ((e.target as HTMLElement).closest('th[data-column-letter]')) return;
+      closeColumnPopover();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeColumnPopover();
+    };
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [popoverLetter, closeColumnPopover]);
+
+  // Field assignment: writing `letter` to `field` automatically
+  // unmaps that letter from any other field that previously held it
+  // (single-source-of-truth — a column can serve only one role).
+  const assignField = useCallback((field: MappingField, letter: string) => {
+    setSelectedColumns(prev => {
+      const next: Partial<ColumnMapping> = { ...prev };
+      // Unmap the column from any other field it currently holds.
+      for (const opt of MAPPING_FIELD_OPTIONS) {
+        if (opt.field !== field && next[opt.field] === letter) {
+          delete next[opt.field];
+        }
+      }
+      next[field] = letter;
+      return next;
+    });
+    closeColumnPopover();
+  }, [closeColumnPopover]);
+
+  const unassignColumn = useCallback((letter: string) => {
+    setSelectedColumns(prev => {
+      const next: Partial<ColumnMapping> = { ...prev };
+      for (const opt of MAPPING_FIELD_OPTIONS) {
+        if (next[opt.field] === letter) delete next[opt.field];
+      }
+      return next;
+    });
+    closeColumnPopover();
+  }, [closeColumnPopover]);
 
   // Convert sheet to 2D array
   const sheetData = useMemo(() => {
@@ -240,8 +343,15 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBa
     setDetectedType(detected);
     onDetectedType(detected);
 
-    // Auto-detect columns
-    const autoMapping = autoDetectColumns(sheetData);
+    // Column mapping: prefer the parent's pre-detected mapping when
+    // present (more robust — uses `detectExcelStructure` which scans
+    // multiple potential header rows). Fall back to the viewer's own
+    // keyword-scan heuristic for unstructured / non-standard files
+    // where the structure detector returned nothing.
+    const prefilled = prefilledMapping && Object.keys(prefilledMapping).length > 0
+      ? prefilledMapping
+      : null;
+    const autoMapping = prefilled ?? autoDetectColumns(sheetData);
     setSelectedColumns(autoMapping);
 
     setIsDetecting(false);
@@ -252,7 +362,7 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBa
         scrollToDataRow();
       }, 100);
     }
-  }, [sheetData, onDetectedType]);
+  }, [sheetData, onDetectedType, prefilledMapping]);
 
   // Apply mapping
   const handleApplyMapping = () => {
@@ -304,8 +414,12 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBa
         <p className="text-sm text-text-secondary flex-shrink-0">{detectedType.reason}</p>
       )}
 
-      {/* Sheet Selector */}
-      <div className="flex flex-wrap gap-2 flex-shrink-0">
+      {/* Sheet Selector — cap to ~120 px (≈3 rows) with internal
+          scroll. Some workbooks ship with 100+ sheets (live test:
+          E_Soupis MOSTY +PHS.xlsx had 132 SO sheets) — without the
+          cap the picker eats ~5 rows of vertical space and pushes
+          the data preview off-screen entirely. */}
+      <div className="flex flex-wrap gap-2 flex-shrink-0 max-h-[120px] overflow-y-auto pr-1">
         {workbook.SheetNames.map((sheetName, idx) => (
           <button
             key={sheetName}
@@ -479,13 +593,18 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBa
                     ([, col]) => col === letter,
                   )?.[0];
                   const isMapped = !!mappedAsField;
+                  const isOpen = popoverLetter === letter;
                   return (
                     <th
                       key={i}
+                      data-column-letter={letter}
+                      onClick={(e) => openColumnPopover(letter, e.currentTarget)}
                       className={`sticky top-0 z-10 px-2 py-1 text-center border-r border-border-color min-w-[80px] cursor-pointer transition-colors ${
-                        isMapped
-                          ? 'bg-accent-primary/30 hover:bg-accent-primary/40'
-                          : 'bg-bg-tertiary hover:bg-accent-primary/20'
+                        isOpen
+                          ? 'bg-accent-primary/50 ring-2 ring-accent-primary ring-inset'
+                          : isMapped
+                            ? 'bg-accent-primary/30 hover:bg-accent-primary/40'
+                            : 'bg-bg-tertiary hover:bg-accent-primary/20'
                       }`}
                       title={`Klikněte pro mapování sloupce ${letter}`}
                     >
@@ -572,6 +691,67 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType, onBa
           </button>
         </div>
       </div>
+
+      {/* D2: column-header click popover. Portaled to body so it
+          escapes the table's overflow-auto container, positioned
+          via fixed coordinates set by `openColumnPopover`. */}
+      {popoverLetter && popoverPos && createPortal(
+        <div
+          ref={popoverRef}
+          role="menu"
+          aria-label={`Přiřadit sloupec ${popoverLetter}`}
+          className="fixed z-[80] bg-[var(--panel-clean)] border border-[var(--divider)] rounded-md shadow-lg py-1 min-w-[220px]"
+          style={{ top: popoverPos.top, left: popoverPos.left }}
+        >
+          <div className="px-3 py-1.5 text-xs uppercase tracking-wide text-[var(--text-muted)] border-b border-[var(--divider)]">
+            Sloupec {popoverLetter} →
+          </div>
+          {MAPPING_FIELD_OPTIONS.map((opt) => {
+            const currentLetter = selectedColumns[opt.field];
+            const isCurrent = currentLetter === popoverLetter;
+            const heldByOther = !isCurrent && currentLetter !== undefined;
+            return (
+              <button
+                key={opt.field}
+                type="button"
+                role="menuitem"
+                onClick={() => assignField(opt.field, popoverLetter)}
+                className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between transition-colors ${
+                  isCurrent
+                    ? 'bg-accent-primary/20 text-[var(--text-primary)] font-semibold'
+                    : 'hover:bg-[var(--data-surface)] text-[var(--text-primary)]'
+                }`}
+              >
+                <span>{opt.label}</span>
+                {isCurrent && (
+                  <span className="text-[11px] text-accent-primary">aktuální</span>
+                )}
+                {heldByOther && (
+                  <span className="text-[11px] text-[var(--text-muted)]">
+                    nyní {currentLetter}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+          {/* Unmap row — only render when this column is currently
+              mapped to something, otherwise the option is meaningless. */}
+          {Object.values(selectedColumns).includes(popoverLetter) && (
+            <>
+              <div className="border-t border-[var(--divider)] my-1" />
+              <button
+                type="button"
+                role="menuitem"
+                onClick={() => unassignColumn(popoverLetter)}
+                className="w-full text-left px-3 py-2 text-sm hover:bg-red-500/10 text-red-500 transition-colors"
+              >
+                Odmapovat sloupec
+              </button>
+            </>
+          )}
+        </div>,
+        document.body,
+      )}
     </div>
   );
 }

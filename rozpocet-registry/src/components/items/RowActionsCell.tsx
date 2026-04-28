@@ -196,11 +196,22 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
             }
             setShowRoleMenu(!showRoleMenu);
           }}
-          title={`Role: ${ROLE_LABELS[currentRole]}`}
+          title={
+            currentRole === 'unknown'
+              ? `Role: Neznámý — klikni pro přiřazení`
+              : `Role: ${ROLE_LABELS[currentRole]}`
+          }
           className="px-1 py-0.5 rounded text-xs font-medium transition-colors flex items-center gap-0.5"
           style={{
-            backgroundColor: showRoleMenu ? LIGHT.headerBg : 'transparent',
-            color: LIGHT.textMuted,
+            // Unknown rows render with a red "?" icon so the user can
+            // spot unclassified items at a glance — matches the user
+            // ask "если позиция не определилась знак вопроса надо
+            // обозначить красным для информативности". Other roles
+            // keep the muted-text styling so the table stays calm.
+            backgroundColor: showRoleMenu
+              ? LIGHT.headerBg
+              : currentRole === 'unknown' ? '#FEE2E2' : 'transparent',
+            color: currentRole === 'unknown' ? '#DC2626' : LIGHT.textMuted,
           }}
         >
           <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>

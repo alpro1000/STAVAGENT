@@ -10,6 +10,7 @@
  */
 
 import { isBackendAvailable, registryAPI } from './registryAPI';
+import { tombstoneProject, isTombstoned, dropTombstoned, forgetTombstone } from './tombstoneStore';
 import type { Project, Sheet } from '../types';
 
 let _syncInProgress = false;
@@ -121,7 +122,13 @@ export async function loadFromBackend(): Promise<Project[]> {
   }
 
   try {
-    const apiProjects = await registryAPI.getProjects();
+    const apiProjectsRaw = await registryAPI.getProjects();
+    // Drop projects the user has deleted locally — without this filter
+    // a backend DELETE that timed out (or was never received) lets the
+    // project re-appear on the next loadFromBackend, silently undoing
+    // the user's delete. Tombstones are cleared by a successful DELETE
+    // round-trip in `deleteProjectFromBackend`.
+    const apiProjects = dropTombstoned(apiProjectsRaw);
     if (apiProjects.length === 0) return [];
 
     // Convert API projects to local Project format
@@ -216,6 +223,15 @@ export async function loadFromBackend(): Promise<Project[]> {
 export async function pushProjectToBackend(project: Project): Promise<void> {
   if (_syncInProgress) return;
 
+  // Race guard: a debounced push that fired BEFORE the user clicked
+  // delete (or fires after delete because Zustand re-emitted the
+  // previous snapshot) would re-create the project on the backend.
+  // The tombstone outranks any pending push — skip silently.
+  if (isTombstoned(project.id)) {
+    console.log(`[BackendSync] Skip push for tombstoned project "${project.projectName}" (${project.id})`);
+    return;
+  }
+
   const available = await isBackendAvailable();
   if (!available) {
     setState({ status: 'offline', lastError: 'Backend unreachable' });
@@ -307,14 +323,26 @@ export function debouncedPushToBackend(project: Project): void {
  * Delete a project from the backend (fire-and-forget).
  */
 export async function deleteProjectFromBackend(projectId: string): Promise<void> {
+  // Tombstone IMMEDIATELY (sync, persisted to localStorage) so the
+  // next loadFromBackend filters this id out even if the DELETE
+  // below times out / 5xx / never reaches the backend. Without this
+  // the user's delete silently un-deletes on next reload.
+  tombstoneProject(projectId);
+
   const available = await isBackendAvailable();
   if (!available) return;
 
   try {
     await registryAPI.deleteProject(projectId);
     console.log(`[BackendSync] Deleted project ${projectId} from backend`);
+    // Backend confirmed delete → clear the tombstone so the local
+    // store no longer needs to filter against this id.
+    forgetTombstone(projectId);
   } catch (err) {
-    console.warn(`[BackendSync] Failed to delete project ${projectId} from backend:`, err);
+    // DELETE failed — keep the tombstone so the project doesn't
+    // re-appear on the next loadFromBackend. Worst case: the
+    // tombstone outlives the backend record. Acceptable trade-off.
+    console.warn(`[BackendSync] Failed to delete project ${projectId} from backend (tombstoned locally):`, err);
   }
 }
 

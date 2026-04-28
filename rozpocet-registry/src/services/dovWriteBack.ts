@@ -74,7 +74,7 @@ export function buildDOVPayload(tov: TOVData): Record<string, unknown> {
       item_count: tov.materialsSummary?.itemCount || 0,
     },
 
-    // Formwork rental (only for BEDNENI positions)
+    // Formwork rental (only for BEDNĚNÍ positions)
     formwork_rental: tov.formworkRental || null,
     formwork_rental_summary: tov.formworkRental ? {
       total_rental_czk: (tov.formworkRental || []).reduce((s, r) => s + (r.najem_naklady || 0), 0),

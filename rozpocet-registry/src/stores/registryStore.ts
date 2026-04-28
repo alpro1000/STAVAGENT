@@ -20,7 +20,7 @@ import { DEFAULT_GROUPS } from '../utils/constants';
 import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
 import { classifySheet } from '../services/classification/rowClassifierV2';
-import { mergeV2IntoParsedItems } from '../services/classification/importAdapter';
+import { mergeV2IntoParsedItems, appendMissingSubordinates } from '../services/classification/importAdapter';
 import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback, type InstanceMapping } from '../services/portalAutoSync';
 import { writeBackDOV } from '../services/dovWriteBack';
 import { fetchMonolithData } from '../services/portalMonolithFetch';
@@ -93,6 +93,10 @@ interface RegistryState {
       mains: number;
       subordinates: number;
       unknowns: number;
+      /** Subordinates the v1.1 classifier discovered that the legacy
+       *  parser had dropped. Usually 0 on re-classify of an already-
+       *  imported sheet — non-zero means v1.1 found new rows. */
+      appended: number;
     };
   };
 
@@ -433,6 +437,32 @@ export const useRegistryStore = create<RegistryState>()(
         });
         const merge = mergeV2IntoParsedItems(clonedItems, v2);
 
+        // CRITICAL: `mergeV2IntoParsedItems` writes raw v2-internal UUIDs
+        // into `parsed.parentItemId` / `parsed.sectionId`. Those UUIDs do
+        // NOT match any `parsed.id` in the cloned items array — they're
+        // the classifier's own ID space. Without translation, ItemsTable's
+        // `effectiveParentMap` walks `item.parentItemId || currentMainId`,
+        // hits the truthy-but-broken v2 UUID, and skips the proximity
+        // fallback to `currentMainId` — collapsing the whole chevron +
+        // subordinate display even though the status counter shows the
+        // right `mains/subordinates` numbers.
+        //
+        // The initial-import flow (`appendMissingSubordinates` at
+        // importAdapter.ts:206-342) already builds a `v2IdToParsedId`
+        // map and retranslates all refs at the end. Reusing that
+        // function on the reclassify path closes the same gap. At
+        // reclassify time most subordinates already exist in `clonedItems`
+        // (created at import OR by a previous `appendMissingSubordinates`
+        // call), so the append loop short-circuits via `parsedByRow.has()`
+        // and only the retranslate-refs sweep at lines 335-342 runs in
+        // practice. The append branch is still useful when v1.1
+        // re-discovers a subordinate that the legacy parser dropped.
+        const append = appendMissingSubordinates(clonedItems, v2, {
+          projectId,
+          fileName: '<reclassify>',
+          sheetName: sheet.name,
+        });
+
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
@@ -456,6 +486,10 @@ export const useRegistryStore = create<RegistryState>()(
             mains: v2.mainCount,
             subordinates: v2.subordinateCount,
             unknowns: v2.unknownCount,
+            // Surfaced for diagnostics — usually 0 on a re-classify of an
+            // already-imported sheet, but non-zero if v1.1 picked up
+            // subordinates the legacy parser missed.
+            appended: append.appended,
           },
         };
       },
