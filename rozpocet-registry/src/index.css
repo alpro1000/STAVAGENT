@@ -128,8 +128,14 @@
   }
 
   .table td {
-    height: var(--flat-row-h);
-    padding: 0 var(--space-sm);
+    /* min-height instead of fixed height — lets the row grow when a
+     * cell (typically Popis) wraps to multiple lines. The virtualizer
+     * already calls `measureElement` on every row, so variable heights
+     * propagate to scroll calculations automatically. Vertical padding
+     * (4 px top/bottom) gives wrapped content breathing room without
+     * stretching single-line rows. */
+    min-height: var(--flat-row-h);
+    padding: 4px var(--space-sm);
     font-size: 13px;
     color: var(--flat-text);
     border-bottom: 1px solid var(--flat-border);
