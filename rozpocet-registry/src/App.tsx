@@ -29,6 +29,7 @@ import { useRibbonFlag } from './layout/ribbonFeatureFlag';
 import { RibbonFlagToggle } from './layout/RibbonFlagToggle';
 import { RibbonLayout } from './layout/RibbonLayout';
 import { PORTAL_API_URL } from './utils/config.js';
+import { portalAuthHeader } from './services/portalAuth';
 
 /**
  * Convert portal item data (tov_labor/tov_machinery/tov_materials OR dov_payload)
@@ -399,8 +400,18 @@ function App() {
     window.history.replaceState({}, '', window.location.pathname);
 
     try {
+      // Auth wiring (PR-1 of cross-subdomain auth fix series). Portal
+      // handoff URL flow lands on Registry with `?portal_file_id=...`
+      // and we then fetch the parsed XLSX data from Portal's
+      // `portal-files` route — protected by requireAuth, so a bare
+      // fetch silently 401s and the user sees "Failed to load file"
+      // instead of the imported sheet.
       const response = await fetch(
-        `${portalApi}/api/portal-files/${portalFileId}/parsed-data/for-kiosk/registry`
+        `${portalApi}/api/portal-files/${portalFileId}/parsed-data/for-kiosk/registry`,
+        {
+          credentials: 'include',
+          headers: { ...portalAuthHeader() },
+        }
       );
       if (!response.ok) throw new Error(`Portal fetch failed: ${response.status}`);
       const data = await response.json();
