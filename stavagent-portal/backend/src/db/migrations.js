@@ -7,6 +7,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import db, { USE_POSTGRES } from './index.js';
+import { splitSqlStatements } from './splitSqlStatements.js';
 import { normalizeForSearch } from '../utils/text.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,12 +33,22 @@ async function initPostgresSchema() {
   const schemaPath = join(__dirname, 'schema-postgres.sql');
   const schema = fs.readFileSync(schemaPath, 'utf-8');
 
-  // Split by semicolons and execute each statement
-  const allStatements = schema
-    .split(';')
+  // Split via $$-aware splitter — naive `split(';')` chopped any
+  // `DO $$ BEGIN ... ; ... END $$;` block apart on its inner
+  // semicolons, which broke the production migration on
+  // 2026-04-28 (Cloud Run revision stavagent-portal-backend-00255-srx
+  // logged "unterminated dollar-quoted string", every subsequent
+  // statement skipped, schema partial). The new splitter keeps
+  // dollar-quoted bodies, single-quoted strings, and comments
+  // intact.
+  //
+  // Comment-line stripping is preserved here for backward compat
+  // with the previous behaviour (some schema files have leading
+  // `--` decorative blocks per statement that we want trimmed
+  // from the actual SQL sent to PG).
+  const allStatements = splitSqlStatements(schema)
     .map(s => {
-      // Trim and remove comment lines
-      const lines = s.trim().split('\n');
+      const lines = s.split('\n');
       const cleanedLines = lines.filter(line => !line.trim().startsWith('--'));
       return cleanedLines.join('\n').trim();
     })
@@ -690,10 +701,10 @@ async function runPhase8Migrations() {
 
     const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
 
-    // Split into individual statements and execute one by one
-    // This handles IF NOT EXISTS and IF NOT EXISTS gracefully
-    const statements = migrationSQL
-      .split(';')
+    // Split via $$-aware splitter (was naive split(';'), see header
+    // comment of splitSqlStatements.js for the production-breaking
+    // regression this fixes).
+    const statements = splitSqlStatements(migrationSQL)
       .map(s => s.trim())
       .filter(s => s.length > 0 && !s.startsWith('--'));
 
@@ -741,8 +752,8 @@ async function runPhase9Migrations() {
 
     const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
 
-    const statements = migrationSQL
-      .split(';')
+    // $$-aware split — see splitSqlStatements.js header for context.
+    const statements = splitSqlStatements(migrationSQL)
       .map(s => s.trim())
       .filter(s => s.length > 0 && !s.startsWith('--'));
 
@@ -789,8 +800,8 @@ async function runPhase10Migrations() {
 
     const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
 
-    const statements = migrationSQL
-      .split(';')
+    // $$-aware split — see splitSqlStatements.js header for context.
+    const statements = splitSqlStatements(migrationSQL)
       .map(s => s.trim())
       .filter(s => s.length > 0 && !s.startsWith('--'));
 
