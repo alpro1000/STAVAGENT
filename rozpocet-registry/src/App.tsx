@@ -497,8 +497,16 @@ function App() {
 
     try {
       const PORTAL_API = PORTAL_API_URL;
+      // Auth wiring (PR-1 of cross-subdomain auth fix series). The
+      // existing `credentials: 'include'` only attaches the cookie —
+      // backend's requireAuth at the route level still needs a Bearer
+      // header for the cookie-fallback (PR #1045) path to work
+      // end-to-end on browsers that strip cookies on cross-subdomain
+      // POSTs (rare but observed). Spread `portalAuthHeader()` so
+      // both channels reach the backend.
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
-        credentials: 'include'
+        credentials: 'include',
+        headers: { ...portalAuthHeader() },
       });
 
       if (!response.ok) throw new Error('Failed to load from Portal');
