@@ -152,8 +152,21 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
       const data = await response.json();
 
       if (data.success) {
+        // Defensive: API contract is `{success: true, results: [...], stats: {...}}`
+        // but the live backend has been observed returning `{success: true}`
+        // with no `results` array (Portal cold-start partial responses,
+        // edge cases where the agent returns 0 classifications). Without a
+        // guard this throws "Cannot read properties of undefined (reading
+        // 'map')" and the user sees a red Chyba banner inside AIPanel
+        // instead of a clean "0 položek klasifikováno" outcome.
+        const results: ClassificationResult[] = Array.isArray(data.results)
+          ? data.results
+          : [];
+        if (!Array.isArray(data.results)) {
+          console.warn('[AIPanel] API returned success without `results` array — treating as empty', data);
+        }
         // Apply classifications
-        const updates = data.results.map((r: ClassificationResult) => ({
+        const updates = results.map((r: ClassificationResult) => ({
           itemId: r.itemId,
           skupina: r.skupina,
         }));
@@ -230,8 +243,17 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
       const data = await response.json();
 
       if (data.success) {
+        // Same defensive guard as `handleClassifyEmpty` — API can return
+        // success with no `results` field on edge cases (Portal partial
+        // responses, 0-match runs). Treat missing array as empty.
+        const results: ClassificationResult[] = Array.isArray(data.results)
+          ? data.results
+          : [];
+        if (!Array.isArray(data.results)) {
+          console.warn('[AIPanel] API returned success without `results` array — treating as empty', data);
+        }
         // Apply classifications (filter out 'kept' actions)
-        const updates = data.results
+        const updates = results
           .filter((r: ClassificationResult) => r.action !== 'kept')
           .map((r: ClassificationResult) => ({
             itemId: r.itemId,
