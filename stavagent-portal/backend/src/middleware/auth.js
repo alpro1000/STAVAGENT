@@ -35,29 +35,42 @@ export function requireAuth(req, res, next) {
       return next();
     }
 
+    // Token resolution priority:
+    //   1. Authorization: Bearer <jwt>  — explicit header (legacy + cross-origin)
+    //   2. req.cookies.stavagent_jwt    — cross-subdomain cookie set by
+    //                                      Portal frontend on login
+    //
+    // The cookie fallback covers the case where a kiosk on a sibling
+    // subdomain (registry.stavagent.cz, kalkulator.stavagent.cz) calls
+    // a protected Portal endpoint via `credentials: 'include'` but
+    // hasn't yet been wired to extract the cookie into a Bearer header
+    // at the call site. Without this fallback those requests 401 even
+    // though the user IS logged in to Portal — the cookie is right
+    // there in `req.cookies`, the middleware just wasn't reading it.
     const authHeader = req.headers.authorization;
+    const headerToken = authHeader && authHeader.startsWith('Bearer ')
+      ? authHeader.slice('Bearer '.length).trim()
+      : null;
+    const cookieToken = req.cookies && req.cookies.stavagent_jwt
+      ? String(req.cookies.stavagent_jwt).trim()
+      : null;
+    const token = headerToken || cookieToken;
 
-    if (!authHeader) {
-      logger.warn(`Unauthorized access attempt to ${req.method} ${req.path} - no token provided`);
+    if (!token) {
+      logger.warn(`Unauthorized access attempt to ${req.method} ${req.path} - no token provided (header or cookie)`);
       return res.status(401).json({
         error: 'Unauthorized',
         message: 'Chybí autorizační token'
       });
     }
 
-    const token = authHeader.split(' ')[1];
-
-    if (!token) {
-      logger.warn(`Unauthorized access attempt to ${req.method} ${req.path} - invalid format`);
-      return res.status(401).json({
-        error: 'Unauthorized',
-        message: 'Neplatný formát tokenu (očekáváno: Bearer <token>)'
-      });
-    }
-
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
       req.user = decoded;
+      // Surface which channel authenticated this request — useful for
+      // debugging cross-subdomain auth issues without exposing token
+      // contents in logs.
+      req.authSource = headerToken ? 'header' : 'cookie';
       next();
     } catch (err) {
       if (err.name === 'TokenExpiredError') {
