@@ -112,6 +112,20 @@ function isOriginAllowed(origin) {
 app.use(helmet({
   crossOriginResourcePolicy: false, // Don't block cross-origin requests
 }));
+// CORS — required contract for cross-subdomain cookie auth:
+//   • `origin` MUST be a specific echoed origin (NOT '*'). Browsers
+//     refuse to send credentials when the response Access-Control-
+//     Allow-Origin header is '*'. We therefore reflect the request's
+//     own origin if it's in `ALLOWED_ORIGINS` (above).
+//   • `credentials: true` makes the browser include cookies on
+//     cross-origin requests AND populates `req.cookies` after the
+//     `cookie-parser` middleware below runs. Without this, the
+//     `requireAuth` cookie fallback (src/middleware/auth.js) would
+//     never see `stavagent_jwt` even when it's set with
+//     `domain=.stavagent.cz`.
+//   • `ALLOWED_ORIGINS` already covers all four kiosks
+//     (registry/kalkulator/klasifikator/www) on stavagent.cz plus
+//     localhost dev ports + the Vercel preview pattern.
 app.use(cors({
   origin: (origin, callback) => {
     if (isOriginAllowed(origin)) {
