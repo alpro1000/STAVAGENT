@@ -9,6 +9,13 @@ yarn-error.log*
 dist/
 build/
 *.local
+# TypeScript incremental build cache + auto-generated config artifacts
+# (vite.config.ts → vite.config.js/.d.ts when `tsc -b` runs without
+# `noEmit`). Pre-existing gap that polluted working trees on every
+# `npx vite build` run; ignoring keeps git status clean.
+*.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
 
 # Environment variables
 .env
