@@ -6,6 +6,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ImportModal } from './components/import/ImportModal';
 import { BackendSyncBadge } from './components/BackendSyncBadge';
+import { PortalAuthBanner } from './components/PortalAuthBanner';
 import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
 import { SearchResults } from './components/search/SearchResults';
@@ -798,6 +799,11 @@ function App() {
             <span>StavAgent</span>
           </a>
         </div>
+        {/* Portal auth banner — visible only when the user is not
+            logged in to Portal (cross-subdomain stavagent_jwt cookie
+            absent). Auto-syncs to Portal are skipped while this is
+            visible; projects stay local-only in IndexedDB. */}
+        <PortalAuthBanner />
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">

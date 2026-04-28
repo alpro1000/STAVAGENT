@@ -237,3 +237,71 @@ Task 1 already prevented overwriting filled fields. Task 3 adds:
 - Branch: `claude/task-03-tz-incremental`
 - Commit message convention: `FEAT: Smart Extractor incremental mode +
   per-element TZ persistence + conflict picker (Task 3)`.
+
+---
+
+## Migration plan — owner_id=1 orphan reclaim (deferred from `feat/portal-jwt-registry-sync`)
+
+**Context.** Before PR `feat/portal-jwt-registry-sync` shipped, every Registry
+auto-sync to Portal was anonymous. The Portal backend's
+`/api/integration/import-from-registry` route hardcoded `owner_id = 1`,
+so all Registry-imported `portal_projects` rows ended up owned by
+user_id=1. Real user accounts (whose own user_id ≠ 1) couldn't see
+their own projects in `/portal/projekty`.
+
+The PR fixes the new flow (requireAuth + JWT-derived owner_id) but
+deliberately does NOT migrate existing rows — that's a separate ops
+task with its own UX considerations.
+
+**Reclaim flow proposal:**
+
+1. New endpoint `POST /api/integration/claim-registry-project`
+   { portal_project_id } → requireAuth → if existing project's owner_id
+   is 1 (anonymous marker) AND there's a kiosk_link with kiosk_type=
+   'registry' AND kiosk_project_id matches a Registry project the
+   caller currently has open in their browser → set owner_id =
+   req.user.userId. Return 200 + claimed=true. Otherwise return
+   403 + claimed=false (already-owned project, can't be reclaimed).
+2. Registry frontend: on first sync after this PR, if backend returns
+   200 with `data.claimed=true`, log + show toast "Projekt převzat
+   pod váš účet". If backend returns 200 with `data.claimed=false`
+   (no orphan to claim — project newly created OR already owned by
+   someone else), continue silently.
+3. SQL audit query for ops:
+   ```sql
+   SELECT pp.portal_project_id, pp.project_name, pp.created_at,
+          kl.kiosk_project_id AS registry_id
+     FROM portal_projects pp
+     LEFT JOIN kiosk_links kl ON kl.portal_project_id = pp.portal_project_id
+                              AND kl.kiosk_type = 'registry'
+    WHERE pp.owner_id = 1
+      AND pp.project_type = 'registry'
+    ORDER BY pp.created_at DESC;
+   ```
+
+**Open questions:**
+- Should the reclaim be automatic (first sync claims) or explicit
+  ("Převzít projekt" button in Registry)? Automatic is friendlier;
+  explicit is auditable. Lean automatic.
+- What happens if TWO different users had the same Registry project
+  open before the PR? Currently the orphan would go to whoever syncs
+  first. Acceptable — user_id=1 is functionally a "free agent" state.
+
+**Scope:** ~2-3 h for backend + Registry wiring + 2-3 vitest cases on
+the claim endpoint. Tracked separately from the auth-fix PR per user
+instruction.
+
+## Cross-kiosk login indicator (deferred follow-up)
+
+User asked to surface "user is logged in" state in every kiosk
+(Monolit Planner, URS Matcher, Beton Calculator, Registry). With
+the shared cookie now in place (`stavagent_jwt`, domain=.stavagent.cz),
+each kiosk can read `getPortalJwt()` and show:
+
+  - `Přihlášen jako <email>` — green chip top-right
+  - `Nepřihlášen` + login link — orange chip
+
+Each kiosk reads its own JWT, decodes the email claim (no roundtrip),
+renders a ~50-line `<UserBadge />` component. ~1 h per kiosk × 4
+= half-day total. Tracked as a separate PR after the auth-fix
+lands and bake-tests.

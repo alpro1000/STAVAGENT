@@ -8,6 +8,69 @@ import axios from 'axios';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
+/**
+ * Cross-subdomain JWT cookie. Written alongside `localStorage.auth_token`
+ * (kept for backward compatibility with the existing 50+ consumers in
+ * the Portal frontend) so other STAVAGENT apps on `*.stavagent.cz`
+ * subdomains (Registry, Monolit Planner, URS Matcher, Beton
+ * Calculator) can read the JWT and authenticate their own backend
+ * calls without forcing each kiosk to ship its own login UI.
+ *
+ * Cookie attributes:
+ *   - domain=.stavagent.cz — the leading dot is critical (without it
+ *     the cookie scopes to www.stavagent.cz only, not subdomains).
+ *   - secure=true — HTTPS-only. Skipped on localhost during dev so the
+ *     cookie still lands in dev mode.
+ *   - sameSite=lax — lets the cookie ride along with same-origin GETs;
+ *     'strict' would block kiosk reads on first visit.
+ *   - max-age = 24 h, matches JWT_EXPIRY in Portal backend.
+ *   - httpOnly=false — Registry needs to read it from JS. The token is
+ *     short-lived and the same JWT used to sit in localStorage (which
+ *     is also JS-readable), so this is not a regression.
+ */
+const SHARED_COOKIE_NAME = 'stavagent_jwt';
+const COOKIE_MAX_AGE_S = 86400;
+
+function isSecureContext(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.protocol === 'https:';
+}
+
+function cookieDomain(): string | null {
+  if (typeof window === 'undefined') return null;
+  const host = window.location.hostname;
+  // Production / staging — share across subdomains.
+  if (host.endsWith('stavagent.cz')) return '.stavagent.cz';
+  // Localhost / preview deploys — no domain attribute = host-only cookie.
+  return null;
+}
+
+function setSharedJwtCookie(token: string): void {
+  if (typeof document === 'undefined') return;
+  const domain = cookieDomain();
+  const parts = [
+    `${SHARED_COOKIE_NAME}=${encodeURIComponent(token)}`,
+    'path=/',
+    `max-age=${COOKIE_MAX_AGE_S}`,
+    'samesite=lax',
+  ];
+  if (domain) parts.push(`domain=${domain}`);
+  if (isSecureContext()) parts.push('secure');
+  document.cookie = parts.join('; ');
+}
+
+function clearSharedJwtCookie(): void {
+  if (typeof document === 'undefined') return;
+  const domain = cookieDomain();
+  // RFC: deleting requires same path + domain attributes that were used to set
+  // it, with max-age=0. Setting max-age=0 with no domain on a domain-scoped
+  // cookie is a no-op, hence the explicit branch.
+  const baseParts = [`${SHARED_COOKIE_NAME}=`, 'path=/', 'max-age=0', 'samesite=lax'];
+  if (domain) baseParts.push(`domain=${domain}`);
+  if (isSecureContext()) baseParts.push('secure');
+  document.cookie = baseParts.join('; ');
+}
+
 interface User {
   id: number;
   email: string;
@@ -76,15 +139,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.data.success) {
         setUser(response.data.user);
         setToken(tokenToVerify);
+        // Mirror to the shared cookie on every successful verify so a
+        // user who logged in BEFORE this PR lands (token only in
+        // localStorage) gets the cross-subdomain cookie populated on
+        // their next visit without needing to re-login.
+        setSharedJwtCookie(tokenToVerify);
       } else {
         // Invalid token
         localStorage.removeItem('auth_token');
+        clearSharedJwtCookie();
         setToken(null);
         setUser(null);
       }
     } catch (error) {
       console.error('Token verification failed:', error);
       localStorage.removeItem('auth_token');
+      clearSharedJwtCookie();
       setToken(null);
       setUser(null);
     } finally {
@@ -103,6 +173,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.data.success) {
         const { token: newToken, user: newUser } = response.data;
         localStorage.setItem('auth_token', newToken);
+        // Mirror to a cross-subdomain cookie so Registry / Monolit /
+        // URS / Beton Calculator can read it on their own subdomains.
+        setSharedJwtCookie(newToken);
         setToken(newToken);
         setUser(newUser);
       } else {
@@ -146,6 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Logout
   const logout = () => {
     localStorage.removeItem('auth_token');
+    clearSharedJwtCookie();
     setToken(null);
     setUser(null);
   };
