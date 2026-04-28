@@ -305,3 +305,165 @@ Each kiosk reads its own JWT, decodes the email claim (no roundtrip),
 renders a ~50-line `<UserBadge />` component. ~1 h per kiosk × 4
 = half-day total. Tracked as a separate PR after the auth-fix
 lands and bake-tests.
+
+---
+
+## PR-2 (deferred): SQL migration splitter $$-aware
+
+**Latent bug**, surfaced during cross-subdomain auth diagnosis 2026-04-28.
+Production Cloud Run revision `stavagent-portal-backend-00255-srx`
+boots, listens on port 3001 (Cloud Run marks ready), then DB
+initialization fails on the first `DO $$ ... END $$;` block in
+`schema-postgres.sql`. Server stays alive thanks to try/catch in
+`server.js:314-323`, but every migration **after** the failing
+DO block silently never runs.
+
+### Root cause
+
+`stavagent-portal/backend/src/db/migrations.js:37` — the schema
+splitter:
+
+```js
+const allStatements = schema
+  .split(';')          // <-- naive split on ANY semicolon
+  .map(s => …)
+  .filter(s => s.length > 0);
+```
+
+Splits on EVERY `;`, including ones INSIDE `$$ ... $$` quoted blocks.
+The `DO $$ ... fk_users_org_id ... END $$;` block at
+`schema-postgres.sql:359-366` contains two semicolons inside the
+quoted body (`SET NULL;` after the FK definition + `END IF;`). The
+splitter chops the block into 2-3 fragments, sends each fragment
+to PostgreSQL as a separate statement. PG parser sees:
+
+```
+DO $$ BEGIN
+  IF NOT EXISTS (...) THEN
+    ALTER TABLE users ADD CONSTRAINT fk_users_org_id
+      FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE SET NULL
+```
+
+— no closing `END $$;` — and throws **error code 42601**:
+`unterminated dollar-quoted string at or near "$$ BEGIN..."`.
+
+The error is logged. `initDatabase()` aborts. Server keeps running
+on partial-DB state. **Every migration statement after line 366 of
+schema-postgres.sql is missing in production.**
+
+Live evidence (Cloud Run logs, 2026-04-28T10:36:31Z):
+```
+[PostgreSQL] Error executing statement: DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_users_org_id') ...
+[ERROR] ❌ Database initialization failed: error: unterminated dollar-quoted string at or near "$$ BEGIN...
+  code: '42601' position: '4'
+  at async bootstrap (file:///app/backend/server.js:315:5)
+[INFO] SIGTERM received, shutting down gracefully
+```
+
+### Affected files (5 sites with `split(';')`)
+
+```
+stavagent-portal/backend/src/db/migrations.js:37   ← main schema runner
+stavagent-portal/backend/src/db/migrations.js:696  ← additional migration runner
+stavagent-portal/backend/src/db/migrations.js:745  ← additional migration runner
+stavagent-portal/backend/src/db/migrations.js:793  ← additional migration runner
+Monolit-Planner/backend/src/db/migrations.js:38    ← Monolit has same bug
+```
+
+### Required changes
+
+1. **New helper** `splitSqlStatements(sql)` in shared module (or
+   per-package since these are separate npm packages):
+
+   - Walk `sql` character by character.
+   - Track whether we're inside a `$tag$ ... $tag$` block (where
+     `tag` is empty for `$$` or `[a-zA-Z_]*` for tagged forms like
+     `$body$`, `$func$`).
+   - Inside a quoted block: NEVER split, even on `;`.
+   - Outside: split on `;` as before.
+   - Return non-empty trimmed statements.
+
+   Sketch (~30 lines, no deps):
+
+   ```js
+   export function splitSqlStatements(sql) {
+     const out = [];
+     let buf = '';
+     let dollarTag = null;  // '$$' or '$tag$' when inside, null when outside
+     for (let i = 0; i < sql.length; i++) {
+       if (dollarTag === null) {
+         const m = sql.slice(i).match(/^(\$[a-zA-Z_]*\$)/);
+         if (m) { dollarTag = m[1]; buf += dollarTag; i += dollarTag.length - 1; continue; }
+         if (sql[i] === ';') { if (buf.trim()) out.push(buf); buf = ''; continue; }
+       } else {
+         if (sql.slice(i, i + dollarTag.length) === dollarTag) {
+           buf += dollarTag; i += dollarTag.length - 1; dollarTag = null; continue;
+         }
+       }
+       buf += sql[i];
+     }
+     if (buf.trim()) out.push(buf);
+     return out;
+   }
+   ```
+
+2. **Replace** all 5 `split(';')` call sites with `splitSqlStatements(...)`.
+
+3. **Vitest cases** (in both repos):
+   - Single statement → 1 element
+   - Two statements split by `;` → 2 elements
+   - `DO $$ ... ; ... END $$;` → kept as 1 atomic element (THE regression case)
+   - Tagged dollar quote `$body$ ... ; ... $body$;` → 1 element
+   - Mixed: `CREATE TABLE foo (...); DO $$ ... ; ... END $$;` → 2 elements
+   - Nested dollar tags (rare but valid PG) — at minimum document the
+     limitation if not implemented
+
+4. **Manual recovery in Cloud SQL** (one-time, post-deploy):
+
+   ```bash
+   gcloud sql connect stavagent-db --user=postgres --database=stavagent_portal
+   ```
+
+   Then in psql, apply every statement after line 366 of
+   `schema-postgres.sql` that the broken splitter never ran. Diff the
+   live schema against the file to identify gaps:
+
+   ```sql
+   \d users  -- check fk_users_org_id constraint exists
+   \di       -- check expected indexes exist
+   SELECT count(*) FROM organizations;  -- check default rows seeded
+   ```
+
+   Apply manually any missing pieces. Same exercise for
+   `monolith_planner` DB if Monolit also affected.
+
+### Effort
+
+- Splitter + tests: ~1 h
+- Replace 5 sites: ~30 min
+- Manual DB recovery: ~30 min depending on what's missing
+- **Total: 2 h**
+
+### Priority
+
+**Medium-but-blocks-deploy-quality**: production right now is
+serving from this broken-bootstrap revision. Auth (in-memory JWT
+verify) keeps working. DB-dependent endpoints partial. Symptoms
+look like:
+- Random 5xx on routes that hit missing constraints / indexes
+- "Foreign-key violations" in Portal logs that shouldn't fire
+- Migrations that "ran but aren't there" when comparing schema to
+  the SQL file
+
+Not blocking PR-3 / PR-4 / PR-5 of the auth-fix series, but
+**should land before any production-grade rollout** (claim flow,
+cross-kiosk UserBadge, PR-X classification roundtrip) so the DB
+matches what the application code assumes.
+
+### Branch suggestion
+
+`fix/sql-migration-dollar-quoted-splitter`
+
+Single PR, both backends touched. After merge: deploy + connect to
+Cloud SQL + manual recovery + verify schema diff is empty.
