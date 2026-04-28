@@ -175,17 +175,36 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           bulkSetSkupinaUndoable(updates, `AI klasifikace prázdných (${updates.length} položek)`, 'ai_classify');
         }
 
+        // Same defensive treatment as `data.results` above. The API
+        // contract is `{success, results, changed, unchanged, unknown,
+        // stats: {total, bySource, byConfidence, unknown}}` but partial
+        // responses on Cloud Run cold-start have shipped without the
+        // counters. Without these defaults, undefined propagates into
+        // classificationStats state and the success-card renderer
+        // (lines 526-531) shows "Změněno: " with nothing after, while
+        // `Object.entries(stats.bySource)` would crash on a stats
+        // object missing its bySource map.
+        const changed = typeof data.changed === 'number' ? data.changed : 0;
+        const unchanged = typeof data.unchanged === 'number' ? data.unchanged : 0;
+        const unknown = typeof data.unknown === 'number' ? data.unknown : 0;
+        const stats = data.stats && typeof data.stats === 'object' ? {
+          total: typeof data.stats.total === 'number' ? data.stats.total : 0,
+          bySource: data.stats.bySource ?? {},
+          byConfidence: data.stats.byConfidence ?? {},
+          unknown: typeof data.stats.unknown === 'number' ? data.stats.unknown : 0,
+        } : { total: 0, bySource: {}, byConfidence: {}, unknown: 0 };
+
         setClassificationStats({
-          classified: data.changed,
-          changed: data.changed,
-          unchanged: data.unchanged,
-          unknown: data.unknown,
-          stats: data.stats,
+          classified: changed,
+          changed,
+          unchanged,
+          unknown,
+          stats,
         });
 
         const modeText = aiEnabled ? 'AI + Rules' : 'Rules only';
         setLastAction(
-          `Klasifikováno ${data.changed} prázdných položek (${modeText})`
+          `Klasifikováno ${changed} prázdných položek (${modeText})`
         );
       } else {
         throw new Error(data.message || 'Classification failed');
@@ -264,19 +283,34 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           bulkSetSkupinaUndoable(updates, `AI překlasifikace (${updates.length} položek)`, 'ai_classify');
         }
 
+        // Defensive defaults — same reasoning as `handleClassifyEmpty`.
+        // `keptExisting` is optional on the state type but the
+        // template-string consumer below would render "undefined
+        // ponecháno", so we coalesce here too.
+        const changed = typeof data.changed === 'number' ? data.changed : 0;
+        const unchanged = typeof data.unchanged === 'number' ? data.unchanged : 0;
+        const unknown = typeof data.unknown === 'number' ? data.unknown : 0;
+        const keptExisting = typeof data.keptExisting === 'number' ? data.keptExisting : 0;
+        const stats = data.stats && typeof data.stats === 'object' ? {
+          total: typeof data.stats.total === 'number' ? data.stats.total : 0,
+          bySource: data.stats.bySource ?? {},
+          byConfidence: data.stats.byConfidence ?? {},
+          unknown: typeof data.stats.unknown === 'number' ? data.stats.unknown : 0,
+        } : { total: 0, bySource: {}, byConfidence: {}, unknown: 0 };
+
         setClassificationStats({
-          classified: data.changed,
-          changed: data.changed,
-          unchanged: data.unchanged,
-          unknown: data.unknown,
-          keptExisting: data.keptExisting,
-          stats: data.stats,
+          classified: changed,
+          changed,
+          unchanged,
+          unknown,
+          keptExisting,
+          stats,
         });
 
         const modeText = aiEnabled ? 'AI + Rules' : 'Rules only';
         setLastAction(
-          `Překlasifikováno ${data.changed} položek, ` +
-          `${data.keptExisting} ponecháno (${modeText})`
+          `Překlasifikováno ${changed} položek, ` +
+          `${keptExisting} ponecháno (${modeText})`
         );
       } else {
         throw new Error(data.message || 'Classification failed');
