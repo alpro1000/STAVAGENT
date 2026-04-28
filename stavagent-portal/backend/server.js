@@ -17,6 +17,7 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { fileURLToPath } from 'url';
@@ -122,6 +123,15 @@ app.use(cors({
   },
   credentials: true
 }));
+
+// Cookie parser — exposes req.cookies. Required by `requireAuth`
+// middleware's fallback path: when a request comes from a *.stavagent.cz
+// kiosk that holds the JWT in the `stavagent_jwt` cookie (set by Portal
+// frontend on login, see `AuthContext.tsx::setSharedJwtCookie`) but
+// hasn't yet been retrofitted to also send the Bearer header, the
+// middleware reads the cookie instead. Mounted before all route
+// handlers so every protected route benefits.
+app.use(cookieParser());
 
 // Logging (exclude healthcheck requests from logs)
 app.use(morgan('combined', {
