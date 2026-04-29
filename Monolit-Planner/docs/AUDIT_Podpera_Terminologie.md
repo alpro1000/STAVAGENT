@@ -163,4 +163,49 @@ Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovní
 
 - `planner-orchestrator.ts:1498–1513` interně používá var prefix `skruz*` (`skruzConstructionType`, `skruzMinDays`, `skruzTableLookup`) pro výpočet minimální doby ponechání podpěr (`PROPS_MIN_DAYS` lookup). Codebase intermixuje **„skruz" naming na element-level** s **„props" naming na system-level** pro tentýž koncept. Není gap, ale signál pro Gate 2 — budoucí cleanup by měl zvolit jednu axis konzistentně.
 
-<!-- CONTINUED — sections D, E, F, G, H, migration plan to follow -->
+---
+
+## D) Inventář — Pricing structure (current state + gap vs §8)
+
+### D.1) Cost fields na `PlannerOutput.costs` (`planner-orchestrator.ts:382–411`)
+
+- `formwork_labor_czk` — assembly + disassembly labor for formwork (tesaři); **bundled** (3-phase model vrací `initial + middle + final` phase labor jako jeden agregát, bez zřízení/odstranění splitu)
+- `formwork_rental_czk` — `rental_czk_m2_month × adjusted_area_m2 × (total_days / 30)` (computed v `formwork.ts:190–220` přes `calculateThreePhaseFormwork`)
+- `props_labor_czk` — assembly + disassembly labor for props (0 pokud `needs_supports=false`); **bundled**, ne split
+- `props_rental_czk` — `rental_czk_per_prop_day × num_props × rental_days` (computed v `props-calculator.ts:38–115` přes `calculateProps`, `rental_days` z maturity / ČSN EN 13670 hold time, vyvoláno na `planner-orchestrator.ts:~1882–1890`)
+- `is_mss_path: boolean` — true když plan používá MSS (form/skruž/stojky integrated)
+- `mss_mobilization_czk` — one-off MSS setup labor (tesaři vlastní síly); **flowuje do `formwork_labor_czk`**, ne samostatný row
+- `mss_demobilization_czk` — MSS teardown labor; **flowuje do `formwork_labor_czk`**
+- `mss_rental_czk` — MSS machine monthly rental × měsíců (separate od labor); odvozeno z `bridge-technology.ts calculateMSSCost.rental_total_czk` přes `planner-orchestrator.ts:~2047`
+- *(rebar / pour fields: `rebar_labor_czk`, `pour_labor_czk`, `pour_night_premium_czk`, `total_labor_czk` — mimo scope tohoto auditu)*
+
+### D.2) Excel export current shape (`frontend/src/utils/exportPlanXLSX.ts`)
+
+- L20–21 — payload type referencuje `props_labor_czk` + `props_rental_czk` jako povinná fields (pokud rename → frontend export selže na type-check)
+- L273–282 sekce **„Podpěrná konstrukce (stojky / skruž)"**: Row `'Pronájem celkem'` (`plan.props.rental_days` v dnech) + Row `'Pronájem — náklady'` (`plan.props.rental_cost_czk` v Kč)
+- L345 row `'Bednění — pronájem'` (`formwork_rental_czk`); L347 row `'Podpěry — pronájem'` (`props_rental_czk`, podmíněně)
+- L356 total row `formwork_labor + formwork_rental + props_labor + props_rental`
+- L566–600 strategy comparison columns: `'Formwork'`, `'Crew'`, `'Sets'`, `'Days'`, `'Formwork Labor (Kč)'`, `'Rental (Kč)'`, `'Total Labor (Kč)'`
+- **Žádný řádek „Zřízení"** ani **„Odstranění"** jako samostatná položka; **žádný řádek „Statický návrh / projekt od výrobce"**
+
+### D.3) CalculatorResult cost summary (`frontend/src/components/calculator/CalculatorResult.tsx:990–1160`)
+
+- L1009–1016 cost-row labels per `pour_role`: `'Skruž (nosníky — práce)'` / `'Bednění + stojky (práce)'` / `'Bednění (práce)'` + analogické rental rows (`'Pronájem skruže (nosníky)'` / `'Pronájem bednění + stojky'` / `'Pronájem bednění'`)
+- L1118 subtotal row `'↳ Tesařské práce (skruž + stojky)'` když je formwork i props nenulové
+- L1144 italický row `'↳ Pronájem skruže'` (props_rental_czk pod falsework path)
+- Všechny tyto labely renderují **z agregátu** `formwork_labor_czk` / `props_labor_czk` — není underlying split na zřízení vs. odstranění
+
+### D.4) Gap vs canonical doc §8
+
+Canonical doc §8 specifikuje, že pronájem skruže / stojek se v rozpočtu **rozděluje do 3 řádků** (Zřízení / Pronájem / Odstranění) **s volitelným 4. řádkem „Statický návrh / projekt od výrobce"** (typicky 15–50 tis. Kč běžná mostovka, 100+ tis. Kč demolice). Current state:
+
+- **Zřízení vs Odstranění:** nejsou separate; **assembly + disassembly labor je sloučeno** v `formwork_labor_czk` (3-phase model) a v `props_labor_czk` (calculateProps vrací jeden agregátní `labor_cost_czk`).
+- **Pronájem:** ✓ je separate (`formwork_rental_czk`, `props_rental_czk`, `mss_rental_czk`).
+- **Statický návrh od výrobce:** **neexistuje žádný field** na `PlannerOutput.costs` ani v `FormworkSystemSpec`. Canonical doc §6 + §8 vyžaduje pro skruž a demolici samostatnou pricing položku.
+- **MSS mobilization/demobilization:** existují jako separate fields, ale **flowují do agregátu `formwork_labor_czk`** — Excel ani cost-summary je nezobrazí jako samostatné řádky.
+
+### D.5) Migrační princip pro Gate 4
+
+Current state má pronájem oddělený, ale labor (zřízení + odstranění) sloučený, a chybí field pro statický návrh od výrobce. Canonical §8 vyžaduje 3 řádky labor/rental + volitelný 4. řádek statický návrh. Gate 4 task navrhne split s **dual-write přes deprecation aliasy do 2026-07-29** — staré agregáty (`formwork_labor_czk`, `props_labor_czk`) zůstanou populované jako součet nových rozdělených fieldů, downstream konzumenti (Portal, Registry, MCP) tak neselžou. Konkrétní field names + Excel sloupce + Portal sync schema = scope Gate 4 task spec, ne tohoto auditu.
+
+<!-- CONTINUED — sections E, F, G, H, migration plan to follow -->
