@@ -11,7 +11,12 @@
 
 import { isBackendAvailable, registryAPI } from './registryAPI';
 import { tombstoneProject, isTombstoned, dropTombstoned, forgetTombstone } from './tombstoneStore';
-import type { Project, Sheet } from '../types';
+import {
+  serializeClassification,
+  deserializeClassification,
+  applyClassificationBlob,
+} from './classificationCodec';
+import type { Project, Sheet, ParsedItem } from '../types';
 
 let _syncInProgress = false;
 let _syncTimer: ReturnType<typeof setTimeout> | null = null;
@@ -145,27 +150,41 @@ export async function loadFromBackend(): Promise<Project[]> {
             id: s.sheet_id,
             name: s.sheet_name,
             projectId: ap.project_id,
-            items: items.map((i, idx) => ({
-              id: i.item_id,
-              kod: i.kod || '',
-              popis: i.popis || '',
-              popisDetail: [],
-              popisFull: i.popis || '',
-              mnozstvi: i.mnozstvi || 0,
-              mj: i.mj || '',
-              cenaJednotkova: i.cena_jednotkova ?? null,
-              cenaCelkem: i.cena_celkem ?? null,
-              skupina: i.skupina || null,
-              skupinaSuggested: null,
-              source: {
-                projectId: ap.project_id,
-                fileName: `${ap.project_name}.xlsx`,
-                sheetName: s.sheet_name,
-                rowStart: i.item_order ?? idx,
-                rowEnd: i.item_order ?? idx,
-                cellRef: 'A1',
-              },
-            })),
+            items: items.map((i, idx) => {
+              const item: ParsedItem = {
+                id: i.item_id,
+                kod: i.kod || '',
+                popis: i.popis || '',
+                popisDetail: [],
+                popisFull: i.popis || '',
+                mnozstvi: i.mnozstvi || 0,
+                mj: i.mj || '',
+                cenaJednotkova: i.cena_jednotkova ?? null,
+                cenaCelkem: i.cena_celkem ?? null,
+                skupina: i.skupina || null,
+                skupinaSuggested: null,
+                source: {
+                  projectId: ap.project_id,
+                  fileName: `${ap.project_name}.xlsx`,
+                  sheetName: s.sheet_name,
+                  rowStart: i.item_order ?? idx,
+                  rowEnd: i.item_order ?? idx,
+                  cellRef: 'A1',
+                },
+              };
+              // Restore classifier output from sync_metadata. Legacy items
+              // pre-classifier-rewrite have no blob and stay as a flat list
+              // with rowRole/parentItemId/sectionId undefined — the UI
+              // already handles that case via per-row defaults.
+              applyClassificationBlob(item, deserializeClassification(i.sync_metadata));
+              // popisFull was reconstructed above from `popis` only — if
+              // the blob restored detail lines, append them to keep the
+              // search-index column consistent with the rendered text.
+              if (item.popisDetail && item.popisDetail.length > 0) {
+                item.popisFull = [item.popis, ...item.popisDetail].filter(Boolean).join('\n');
+              }
+              return item;
+            }),
             stats: {
               totalItems: items.length,
               classifiedItems: 0,
@@ -260,7 +279,11 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
 
       await registryAPI.createSheet(project.id, sheet.name, si, sheet.id);
 
-      // Bulk upsert items
+      // Bulk upsert items. Pack the row-classifier output (rowRole,
+      // parentItemId, sectionId, _rawCells, popisDetail, originalTyp,
+      // …) into the `sync_metadata` JSON column so a localStorage wipe
+      // or cross-device load can reconstruct hierarchy on the next pull
+      // — pre-codec, those fields silently dropped on push.
       if (sheet.items.length > 0) {
         const bulkItems = sheet.items.map((item, idx) => ({
           item_id: item.id,
@@ -272,6 +295,7 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
           cena_celkem: item.cenaCelkem ?? undefined,
           item_order: idx,
           skupina: item.skupina || undefined,
+          sync_metadata: serializeClassification(item) ?? undefined,
         }));
         await registryAPI.bulkCreateItems(sheet.id, bulkItems);
       }

@@ -518,7 +518,16 @@ function App() {
 
       // --- Deduplicate: if a project with this Portal ID already exists, just re-select it ---
       // This prevents skupiny and other local edits from being wiped on repeated portal opens.
-      const existingProject = projects.find(p => p.id === portalProject.id);
+      // Match either by direct id (when Portal echoes the original Registry id back) OR by
+      // an existing portalLink — without the second branch, every project that was first
+      // imported as Excel and then synced to Portal lands here with mismatching ids
+      // (Registry uses its own UUID, `portalProject.id` is the `portal_project_id` returned
+      // by /for-registry/), so addProject() below silently created a second copy with the
+      // classification dropped (Portal's `for-registry` payload echoes only kod/popis/cena/
+      // skupina/row_role — popisDetail/parentItemId/_rawCells/sectionId never make the trip).
+      const existingProject = projects.find(p =>
+        p.id === portalProject.id || p.portalLink?.portalProjectId === portalProjectId
+      );
       if (existingProject) {
         setSelectedProject(existingProject.id);
         linkToPortal(existingProject.id, portalProjectId, portalProject.name);

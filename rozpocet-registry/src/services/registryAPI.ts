@@ -87,6 +87,16 @@ export interface RegistryItem {
   cena_celkem?: number;
   item_order: number;
   skupina?: string;
+  /**
+   * JSON-encoded classifier output (rowRole, parentItemId, sectionId,
+   * popisDetail, _rawCells, originalTyp, classification confidence/source,
+   * source_format/row_index, por, cenovaSoustava, varianta).
+   * Backend column is `sync_metadata TEXT` and round-trips opaquely — only
+   * the frontend codec interprets it. Optional both ways: legacy items
+   * pre-classifier-rewrite carry `null` and continue to render as flat lists.
+   * See services/classificationCodec.ts.
+   */
+  sync_metadata?: string | object | null;
   created_at: string;
   updated_at: string;
   tov_data?: any[];
