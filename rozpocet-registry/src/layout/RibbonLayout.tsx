@@ -1,8 +1,8 @@
 /**
  * RibbonLayout — full 5-row composition for the ribbon-style main
- * content area. Host (App.tsx) gates rendering behind the
- * `useRibbonFlag()` flag from `ribbonFeatureFlag.ts`; when the flag is
- * on this component replaces the legacy layout end-to-end.
+ * content area. Mounted unconditionally by App.tsx; the legacy layout
+ * and the `registry-ribbon-enabled` localStorage flag that toggled
+ * between the two were removed in chore/remove-ribbon-feature-flag.
  *
  *   Row 1:  AppRibbon        — brand + search + global actions
  *   Row 2:  ProjectTabsBar   — project tab strip + add/delete
