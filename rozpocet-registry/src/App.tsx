@@ -5,18 +5,12 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { ImportModal } from './components/import/ImportModal';
-import { BackendSyncBadge } from './components/BackendSyncBadge';
 import { PortalAuthBanner } from './components/PortalAuthBanner';
 import { ItemsTable } from './components/items/ItemsTable';
-import { SearchBar } from './components/search/SearchBar';
 import { SearchResults } from './components/search/SearchResults';
-import { AIPanel } from './components/ai/AIPanel';
-import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
-import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
 import { MonolitCompareDrawer } from './components/comparison/MonolitCompareDrawer';
 import { startPolling, stopPolling, refreshNow, type PollState, type ComparisonItem } from './services/monolithPolling';
-// FormworkRentalCalculator removed from header — now integrated into TOV/Materiály tab
 import { useRegistryStore } from './stores/registryStore';
 import { loadFromBackend, mergeProjects, debouncedPushToBackend, pushProjectToBackend } from './services/backendSync';
 import { setSuppressAutoSync } from './stores/registryStore';
@@ -24,9 +18,6 @@ import { searchProjects, type SearchResultItem, type SearchFilters } from './ser
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, exportToOriginalFileWithSkupiny, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import type { TOVData } from './types/unified';
-import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows, Building2 } from 'lucide-react';
-import { useRibbonFlag } from './layout/ribbonFeatureFlag';
-import { RibbonFlagToggle } from './layout/RibbonFlagToggle';
 import { RibbonLayout } from './layout/RibbonLayout';
 import { PORTAL_API_URL } from './utils/config.js';
 import { portalAuthHeader } from './services/portalAuth';
@@ -614,81 +605,15 @@ function App() {
   // Filter state - show only work items (hide descriptions)
   const [showOnlyWorkItems, setShowOnlyWorkItems] = useState(false);
 
-  // Export dropdown state
-  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
 
   // Original file availability for "return to original" export
   const [hasOriginalFile, setHasOriginalFile] = useState(false);
 
-  // Refs for horizontal scrolling (Excel-style navigation)
-  const projectTabsScrollRef = useRef<HTMLDivElement>(null);
-  const sheetTabsScrollRef = useRef<HTMLDivElement>(null);
-
-  // Excel-style navigation functions for PROJECT tabs
-  const scrollProjectTabsToStart = () => {
-    if (projectTabsScrollRef.current) {
-      projectTabsScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-    }
-  };
-
-  const scrollProjectTabsLeft = () => {
-    if (projectTabsScrollRef.current) {
-      const scrollAmount = 200; // Scroll by ~1 tab width
-      projectTabsScrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  const scrollProjectTabsRight = () => {
-    if (projectTabsScrollRef.current) {
-      const scrollAmount = 200; // Scroll by ~1 tab width
-      projectTabsScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  const scrollProjectTabsToEnd = () => {
-    if (projectTabsScrollRef.current) {
-      const maxScroll = projectTabsScrollRef.current.scrollWidth - projectTabsScrollRef.current.clientWidth;
-      projectTabsScrollRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
-    }
-  };
-
-  // Excel-style navigation functions for SHEET tabs
-  const scrollSheetTabsToStart = () => {
-    if (sheetTabsScrollRef.current) {
-      sheetTabsScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-    }
-  };
-
-  const scrollSheetTabsLeft = () => {
-    if (sheetTabsScrollRef.current) {
-      const scrollAmount = 200; // Scroll by ~1 tab width
-      sheetTabsScrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  const scrollSheetTabsRight = () => {
-    if (sheetTabsScrollRef.current) {
-      const scrollAmount = 200; // Scroll by ~1 tab width
-      sheetTabsScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  const scrollSheetTabsToEnd = () => {
-    if (sheetTabsScrollRef.current) {
-      const maxScroll = sheetTabsScrollRef.current.scrollWidth - sheetTabsScrollRef.current.clientWidth;
-      sheetTabsScrollRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
-    }
-  };
 
   const selectedProject = projects.find(p => p.id === selectedProjectId);
   const selectedSheet = selectedProject && selectedProjectId && selectedSheetId
     ? getSheet(selectedProjectId, selectedSheetId)
     : null;
-
-  // Ribbon layout feature flag — gates the SPEC_Registry_RibbonRefactor
-  // layout behind `localStorage.registry-ribbon-enabled`. When false (the
-  // default) the legacy layout renders verbatim.
-  const [ribbonEnabled] = useRibbonFlag();
 
   // `showOnlyWorkItems` is still owned here (URL-shareable state) but the
   // filter's UI and counter live inside ItemsTable's toolbar now — the
@@ -715,7 +640,6 @@ function App() {
 
   const handleExportSheet = () => {
     if (!selectedProject || !selectedSheet) return;
-    setIsExportMenuOpen(false);
     const sheetAsProject = {
       ...selectedProject,
       items: selectedSheet.items,
@@ -733,7 +657,6 @@ function App() {
 
   const handleExportProject = () => {
     if (!selectedProject) return;
-    setIsExportMenuOpen(false);
     exportFullProjectAndDownload(selectedProject, {
       groupBySkupina: true,
       addHyperlinks: true,
@@ -742,7 +665,6 @@ function App() {
 
   const handleExportSheetWithTOV = () => {
     if (!selectedProject || !selectedSheet) return;
-    setIsExportMenuOpen(false);
     const sheetAsProject = {
       ...selectedProject,
       items: selectedSheet.items,
@@ -762,7 +684,6 @@ function App() {
 
   const handleExportProjectWithTOV = () => {
     if (!selectedProject) return;
-    setIsExportMenuOpen(false);
     exportFullProjectAndDownload(selectedProject, {
       groupBySkupina: true,
       addHyperlinks: true,
@@ -782,24 +703,12 @@ function App() {
     }
   };
 
-  // Run check when selected project changes (called manually after import)
-  // Using a simple approach: check when opening the export menu
-  const handleOpenExportMenu = async () => {
-    setIsExportMenuOpen(!isExportMenuOpen);
-    if (!isExportMenuOpen && selectedProject) {
-      checkOriginalFile();
-    }
-  };
 
-  // Re-check whenever the active project changes. The legacy export
-  // menu lazily ran `checkOriginalFile` inside `handleOpenExportMenu`
-  // — that's never called from the ribbon's ChipPopover-based Export
-  // dropdown, which is why "Vrátit do původního" rows stayed disabled
-  // forever in ribbon mode even though the original .xlsx was sitting
-  // in IndexedDB. Running it on selection change makes both legacy
-  // and ribbon modes correct (and also covers freshly-imported
-  // projects where the user goes straight to Export without first
-  // touching the legacy menu).
+  // Re-check whenever the active project changes so the ribbon's
+  // ChipPopover-based Export dropdown can enable/disable the
+  // "Vrátit do původního" rows based on whether the original .xlsx
+  // sits in IndexedDB. Also covers freshly-imported projects where
+  // the user opens Export before any other action.
   useEffect(() => {
     if (selectedProjectId) {
       checkOriginalFile();
@@ -813,7 +722,6 @@ function App() {
 
   const handleExportToOriginal = async () => {
     if (!selectedProject) return;
-    setIsExportMenuOpen(false);
     const result = await exportToOriginalFile(selectedProject);
     if (!result.success) {
       // Show error - for now just log it
@@ -824,7 +732,6 @@ function App() {
 
   const handleExportToOriginalWithSkupiny = async () => {
     if (!selectedProject) return;
-    setIsExportMenuOpen(false);
     const result = await exportToOriginalFileWithSkupiny(selectedProject);
     if (!result.success) {
       console.error('Export to original with skupiny failed:', result.errors);
@@ -862,159 +769,8 @@ function App() {
             Portal are skipped while this is visible; projects stay
             local-only in IndexedDB. */}
         <PortalAuthBanner />
-        {/* Legacy brand + search + actions row. Hidden when the ribbon
-            layout is enabled — RibbonLayout renders its own AppRibbon
-            with the same brand / search / action cluster. */}
-        {!ribbonEnabled && (
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="text-2xl"><Building2 size={28} className="inline" /></div>
-              <div>
-                <h1 className="text-xl font-bold text-text-primary font-mono">
-                  REGISTR ROZPOČTŮ
-                </h1>
-                <p className="text-sm text-text-secondary">
-                  Systém pro správu stavebních položek
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {projects.length > 0 && (
-                <>
-                  {pollState.itemsWithMonolit > 0 && (
-                    <button
-                      onClick={() => setIsCompareOpen(true)}
-                      className="btn btn-secondary text-sm flex items-center gap-2 relative"
-                      title="Srovnání cen Registry vs Monolit"
-                    >
-                      <GitCompareArrows size={16} />
-                      Srovnání
-                      {pollState.conflictCount > 0 && (
-                        <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
-                          {pollState.conflictCount}
-                        </span>
-                      )}
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setIsPriceRequestOpen(true)}
-                    className="btn btn-secondary text-sm flex items-center gap-2"
-                    title="Vytvořit poptávku cen pro dodavatele"
-                  >
-                    <Package size={16} />
-                    Poptávka cen
-                  </button>
-                </>
-              )}
-              {selectedProject && (
-                <div className="relative">
-                  <button
-                    onClick={handleOpenExportMenu}
-                    onBlur={() => setTimeout(() => setIsExportMenuOpen(false), 200)}
-                    className="btn btn-secondary text-sm flex items-center gap-2"
-                    title="Exportovat do Excel"
-                  >
-                    <Download size={16} />
-                    Export Excel
-                    <ChevronDown size={14} />
-                  </button>
-                  {isExportMenuOpen && (
-                    <div className="absolute right-0 top-full mt-1 bg-panel-clean border border-edge-light rounded-lg shadow-panel z-50 min-w-[240px] overflow-hidden">
-                      <button
-                        onMouseDown={(e) => { e.preventDefault(); handleExportSheet(); }}
-                        disabled={!selectedSheet}
-                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-                      >
-                        <FileSpreadsheet size={14} />
-                        Export list
-                        {selectedSheet && (
-                          <span className="text-xs text-text-muted ml-auto">({selectedSheet.name})</span>
-                        )}
-                      </button>
-                      <div className="border-t border-divider" />
-                      <button
-                        onMouseDown={(e) => { e.preventDefault(); handleExportProject(); }}
-                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2"
-                      >
-                        <Download size={14} />
-                        Export projekt
-                        <span className="text-xs text-text-muted ml-auto">({selectedProject.sheets.length} {selectedProject.sheets.length === 1 ? 'list' : 'listy'})</span>
-                      </button>
-                      <div className="border-t border-divider" />
-                      <button
-                        onMouseDown={(e) => { e.preventDefault(); handleExportSheetWithTOV(); }}
-                        disabled={!selectedSheet}
-                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-                        title="Export listu s rozpisem TOV (práce, materiál, mechanizace, bednění)"
-                      >
-                        <FileSpreadsheet size={14} />
-                        Export list + TOV rozpis
-                        {selectedSheet && (
-                          <span className="text-xs text-text-muted ml-auto">({selectedSheet.name})</span>
-                        )}
-                      </button>
-                      <button
-                        onMouseDown={(e) => { e.preventDefault(); handleExportProjectWithTOV(); }}
-                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2"
-                        title="Export celého projektu s rozpisem TOV (práce, materiál, mechanizace, bednění)"
-                      >
-                        <Download size={14} />
-                        Export projekt + TOV rozpis
-                        <span className="text-xs text-text-muted ml-auto">({selectedProject.sheets.length} {selectedProject.sheets.length === 1 ? 'list' : 'listy'})</span>
-                      </button>
-                      <div className="border-t border-divider" />
-                      <button
-                        onMouseDown={(e) => { e.preventDefault(); handleExportToOriginal(); }}
-                        disabled={!hasOriginalFile}
-                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-                        title={hasOriginalFile ? 'Zapsat ceny zpět do originálního souboru' : 'Originální soubor není k dispozici'}
-                      >
-                        <RotateCcw size={14} />
-                        Vrátit do původního
-                        <span className="text-xs text-text-muted ml-auto">(ceny)</span>
-                      </button>
-                      <button
-                        onMouseDown={(e) => { e.preventDefault(); handleExportToOriginalWithSkupiny(); }}
-                        disabled={!hasOriginalFile}
-                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
-                        title={hasOriginalFile ? 'Zapsat ceny + skupiny zpět do originálního souboru' : 'Originální soubor není k dispozici'}
-                      >
-                        <RotateCcw size={14} />
-                        Vrátit do původního
-                        <span className="text-xs text-text-muted ml-auto">(ceny + skupiny)</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-              <button
-                onClick={() => setIsImportModalOpen(true)}
-                className="btn btn-primary text-sm"
-              >
-                📁 Importovat
-              </button>
-            </div>
-          </div>
-
-          {/* Search bar (show when projects exist) */}
-          {projects.length > 0 && (
-            <SearchBar
-              onSearch={handleSearch}
-              onClear={handleClearSearch}
-              placeholder="Hledat v projektech... (kód, popis, skupina)"
-              showFilters={true}
-            />
-          )}
-        </div>
-        )}
       </header>
 
-      {/* Ribbon layout branch — feature-flagged, renders in parallel with
-          the legacy layout until PR B removes the flag. Mounts inside the
-          outer flex-col so the StavAgent back-bar above + modals below
-          continue to render normally. */}
-      {ribbonEnabled && (
         <main className="flex-1 min-h-0 flex flex-col overflow-y-auto w-full">
           <RibbonLayout
             projects={projects}
@@ -1092,398 +848,6 @@ function App() {
             )}
           </RibbonLayout>
         </main>
-      )}
-
-      {/* Main Content — natural page scroll. Earlier `overflow-hidden
-          flex-col` chain (PR #1016) tried to give the table the full
-          remaining viewport, but it collapsed the table to 0 px when
-          AI Klasifikace + Správa skupin were both expanded or when many
-          project tiles pushed content below the fold. Reverting to
-          page scroll; ItemsTable carries its own user-resizable height
-          (quick fix branch `fix/fixed-height-table-quick`). */}
-      {!ribbonEnabled && (
-      <main className="container mx-auto px-4 py-4 flex-1 min-h-0 overflow-y-auto w-full">
-        <div className="flex flex-col gap-4 min-w-0">
-          {/* Search Results */}
-          {searchResults.length > 0 && (
-            <div className="card">
-              <h2 className="text-lg font-semibold mb-4">Výsledky vyhledávání</h2>
-              <SearchResults
-                results={searchResults}
-                onSelectItem={handleSelectSearchResult}
-                isLoading={isSearching}
-              />
-            </div>
-          )}
-
-          {projects.length === 0 ? (
-            // Welcome screen
-            <>
-              <div className="card">
-                <h2 className="text-lg font-semibold mb-4">
-                  Vítejte v Registru Rozpočtů
-                </h2>
-                <p className="text-text-secondary mb-4">
-                  Systém pro import, klasifikaci a vyhledávání položek ze stavebních rozpočtů.
-                </p>
-                <div className="flex gap-3">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setIsImportModalOpen(true)}
-                  >
-                    📁 Importovat rozpočet
-                  </button>
-                </div>
-              </div>
-
-              {/* Features Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="card">
-                  <div className="text-3xl mb-2">📥</div>
-                  <h3 className="font-semibold mb-1">Import Excel</h3>
-                  <p className="text-sm text-text-secondary">
-                    Načítání .xlsx/.xls souborů s flexibilní konfigurací
-                  </p>
-                </div>
-
-                <div className="card">
-                  <div className="text-3xl mb-2">🔍</div>
-                  <h3 className="font-semibold mb-1">Pokročilé vyhledávání</h3>
-                  <p className="text-sm text-text-secondary">
-                    Fulltextové vyhledávání napříč všemi projekty
-                  </p>
-                </div>
-
-                <div className="card">
-                  <div className="text-3xl mb-2">📊</div>
-                  <h3 className="font-semibold mb-1">Automatická klasifikace</h3>
-                  <p className="text-sm text-text-secondary">
-                    AI-asistované třídění položek do skupin
-                  </p>
-                </div>
-
-                <div className="card">
-                  <div className="text-3xl mb-2">🔗</div>
-                  <h3 className="font-semibold mb-1">Traceability</h3>
-                  <p className="text-sm text-text-secondary">
-                    Hyperlinky na původní soubory a řádky
-                  </p>
-                </div>
-
-                <div className="card">
-                  <div className="text-3xl mb-2">📤</div>
-                  <h3 className="font-semibold mb-1">Export se odkazy</h3>
-                  <p className="text-sm text-text-secondary">
-                    Export do Excel s funkcemi a odkazy
-                  </p>
-                </div>
-
-                <div className="card">
-                  <div className="text-3xl mb-2">📁</div>
-                  <h3 className="font-semibold mb-1">Multi-projekt</h3>
-                  <p className="text-sm text-text-secondary">
-                    Práce s více projekty současně
-                  </p>
-                </div>
-              </div>
-
-              {/* Status Info */}
-              <div className="card bg-bg-tertiary">
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">ℹ️</div>
-                  <div>
-                    <h3 className="font-semibold">Status: MVP v1.0 - Fáze 1 Complete!</h3>
-                    <p className="text-sm text-text-secondary">
-                      Import Excel + Tabulka položek + Klasifikace
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            // Projects view
-            <>
-              {/* Project Tabs - Horizontal navigation */}
-              <div className="mb-4 min-w-0">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-lg font-semibold">
-                      Projekty ({projects.length})
-                    </h2>
-                    {/* Phase 3 (2026-04-15): backend sync indicator.
-                        Shows syncing/pending/offline/error status so users
-                        know whether their changes have reached PostgreSQL. */}
-                    <BackendSyncBadge />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {projects.length > 1 && (
-                      <button
-                        className="btn border border-red-400 text-red-600 hover:bg-red-50 transition-colors"
-                        onClick={() => {
-                          if (window.confirm(`Opravdu smazat všech ${projects.length} projektů?`)) {
-                            removeAllProjects();
-                          }
-                        }}
-                      >
-                        🗑️ Smazat vše
-                      </button>
-                    )}
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => setIsImportModalOpen(true)}
-                    >
-                      📁 Přidat projekt
-                    </button>
-                  </div>
-                </div>
-
-                {/* Project Tabs (Excel-style navigation) */}
-                <div className="flex items-center gap-2 min-w-0">
-                  {/* Navigation: Start */}
-                  <button
-                    onClick={scrollProjectTabsToStart}
-                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                    title="Přejít na začátek"
-                  >
-                    <ChevronsLeft size={16} className="text-text-secondary" />
-                  </button>
-
-                  {/* Navigation: Left */}
-                  <button
-                    onClick={scrollProjectTabsLeft}
-                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                    title="Posunout vlevo"
-                  >
-                    <ChevronLeft size={16} className="text-text-secondary" />
-                  </button>
-
-                  {/* Scrollable Tabs Container */}
-                  <div className="flex-1 overflow-hidden min-w-0">
-                    <div
-                      ref={projectTabsScrollRef}
-                      className="flex items-center gap-2 overflow-x-auto pb-2"
-                      style={{ scrollbarWidth: 'none' }} // Hide scrollbar
-                    >
-                      {projects.map((project) => (
-                        <div
-                          key={project.id}
-                          className={`
-                            relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
-                            whitespace-nowrap flex-shrink-0
-                            ${selectedProjectId === project.id
-                              ? 'border-accent-primary bg-white/80 text-text-primary font-semibold'
-                              : 'border-gray-400 hover:border-accent-primary bg-white/60 text-text-primary'
-                            }
-                          `}
-                          onClick={() => setSelectedProject(project.id)}
-                        >
-                          <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
-                          <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
-                            {project.projectName}
-                          </span>
-                          {/* Portal Link Badge (compact mode in tabs) */}
-                          <PortalLinkBadge project={project} compact />
-                          <span className="text-xs text-text-muted ml-1">
-                            ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
-                          </span>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (window.confirm(`Opravdu smazat projekt "${project.projectName}"?`)) {
-                                removeProject(project.id);
-                              }
-                            }}
-                            className="ml-1 p-1 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
-                            title="Smazat projekt"
-                          >
-                            <Trash2 size={14} className="text-red-500" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Navigation: Right */}
-                  <button
-                    onClick={scrollProjectTabsRight}
-                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                    title="Posunout vpravo"
-                  >
-                    <ChevronRight size={16} className="text-text-secondary" />
-                  </button>
-
-                  {/* Navigation: End */}
-                  <button
-                    onClick={scrollProjectTabsToEnd}
-                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                    title="Přejít na konec"
-                  >
-                    <ChevronsRight size={16} className="text-text-secondary" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Sheet Tabs (Excel-style navigation) */}
-              {selectedProject && selectedProject.sheets.length > 0 && (
-                <div className="mb-4 min-w-0">
-                  <h3 className="text-sm font-medium text-text-secondary mb-2">
-                    Listy projektu:
-                  </h3>
-                  {/* Excel-style navigation: ◀◀ ◀ [tabs] ▶ ▶▶ */}
-                  <div className="flex items-center gap-2 min-w-0">
-                    {/* Navigation: Start */}
-                    <button
-                      onClick={scrollSheetTabsToStart}
-                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                      title="Přejít na začátek"
-                    >
-                      <ChevronsLeft size={16} className="text-text-secondary" />
-                    </button>
-
-                    {/* Navigation: Left */}
-                    <button
-                      onClick={scrollSheetTabsLeft}
-                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                      title="Posunout vlevo"
-                    >
-                      <ChevronLeft size={16} className="text-text-secondary" />
-                    </button>
-
-                    {/* Scrollable Tabs Container */}
-                    <div className="flex-1 overflow-hidden min-w-0">
-                      <div
-                        ref={sheetTabsScrollRef}
-                        className="flex items-center gap-2 overflow-x-auto pb-2"
-                        style={{ scrollbarWidth: 'none' }} // Hide scrollbar
-                      >
-                        {selectedProject.sheets.map((sheet) => (
-                          <div
-                            key={sheet.id}
-                            className={`
-                              flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
-                              whitespace-nowrap flex-shrink-0
-                              ${selectedSheetId === sheet.id
-                                ? 'text-white font-medium shadow-md'
-                                : 'border-gray-400 hover:border-accent-orange bg-white/60 text-text-primary'
-                              }
-                            `}
-                            style={selectedSheetId === sheet.id ? { background: 'var(--accent-orange)', borderColor: 'var(--accent-orange)' } : undefined}
-                            onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
-                          >
-                            <span className="text-sm" title={sheet.name}>
-                              {sheet.name}
-                            </span>
-                            <span className={`text-xs ${selectedSheetId === sheet.id ? 'text-white/80' : 'text-text-muted'}`}>
-                              ({sheet.stats.totalItems} položek)
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Navigation: Right */}
-                    <button
-                      onClick={scrollSheetTabsRight}
-                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                      title="Posunout vpravo"
-                    >
-                      <ChevronRight size={16} className="text-text-secondary" />
-                    </button>
-
-                    {/* Navigation: End */}
-                    <button
-                      onClick={scrollSheetTabsToEnd}
-                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
-                      title="Přejít na konec"
-                    >
-                      <ChevronsRight size={16} className="text-text-secondary" />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-
-              {/* Selected Sheet Items. Height is no longer delegated
-                  through a flex chain — ItemsTable sets its own fixed
-                  height (resizable via handle + persisted in
-                  localStorage). */}
-              {selectedProject && selectedSheet && (
-                <div className="min-w-0 flex flex-col gap-3">
-                  <div className="mb-4">
-                    <div className="flex items-center gap-3 mb-1">
-                      <h2 className="text-lg font-semibold">
-                        {selectedProject.projectName}
-                      </h2>
-                      {/* Portal Link Badge (full mode) */}
-                      <PortalLinkBadge project={selectedProject} />
-                      {/* Reimport button */}
-                      <button
-                        onClick={() => {
-                          setReimportProject(selectedProject);
-                          setIsImportModalOpen(true);
-                        }}
-                        className="text-xs px-2 py-1 rounded border border-border-color text-text-muted hover:text-text-primary hover:border-accent-primary transition-colors"
-                        title="Upravit mapování a reimportovat soubor"
-                      >
-                        <RotateCcw size={12} className="inline mr-1" />
-                        Upravit mapování
-                      </button>
-                    </div>
-                    <p className="text-sm text-text-secondary">
-                      List: {selectedSheet.name}
-                    </p>
-                    {selectedSheet.metadata.oddil && (
-                      <p className="text-sm text-text-secondary">
-                        Oddíl: {selectedSheet.metadata.oddil}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* AI Klasifikace + Správa skupin — side-by-side on md+
-                      viewports (grid-cols-2), stack on mobile (<768px).
-                      Collapsed-state total height is ~50px instead of the
-                      previous stacked ~100px, freeing vertical room for
-                      the table. GroupManager runs in non-standalone mode
-                      so the grid column controls its width. */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
-                    <AIPanel
-                      items={selectedSheet.items}
-                      projectId={selectedProject.id}
-                      sheetId={selectedSheet.id}
-                      selectedItemIds={Array.from(selectedItemIds)}
-                    />
-                    <GroupManager standalone={false} />
-                  </div>
-
-                  {/* Filter moved into ItemsTable toolbar (§10 proper fix —
-                      point 3). The large filter card here was eating ~70px
-                      of vertical space for a single checkbox. */}
-                  <ItemsTable
-                    items={selectedSheet.items}
-                    projectId={selectedProject.id}
-                    sheetId={selectedSheet.id}
-                    selectedIds={selectedItemIds}
-                    onSelectionChange={setSelectedItemIds}
-                    showOnlyWorkItems={showOnlyWorkItems}
-                    onShowOnlyWorkItemsChange={setShowOnlyWorkItems}
-                    conflictMap={conflictMap.current}
-                  />
-                </div>
-              )}
-
-              {/* No sheet selected message */}
-              {selectedProject && !selectedSheet && (
-                <div className="card text-center py-8">
-                  <p className="text-text-secondary">
-                    Vyberte list pro zobrazení položek
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </main>
-      )}
 
       {/* Footer */}
       <footer className="border-t border-border-color bg-bg-secondary flex-shrink-0">
@@ -1517,10 +881,6 @@ function App() {
         onAcceptPrice={handleAcceptMonolitPrice}
         onRefresh={handleCompareRefresh}
       />
-
-      {/* Dev-only toggle to flip between legacy and ribbon layouts at
-          runtime. Renders nothing for regular users. */}
-      <RibbonFlagToggle />
 
     </div>
   );
