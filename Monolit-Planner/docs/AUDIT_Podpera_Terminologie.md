@@ -105,4 +105,29 @@
 - **Žádný „statický návrh od výrobce"** atribut na žádném systému (canonical §6 + §8 vyžaduje pro skruž / demolici).
 - **Žádný `kategorie: 'skruz'|'stojky'|'podperne_leseni'`** na úrovni katalogu — odvozuje se až per-render z `pour_role`.
 
-<!-- CONTINUED — sections B, C, D, E, F, G, H, migration plan to follow -->
+---
+
+## B) Inventář — Element types & bridge classification
+
+### B.1) 22 kanonických element types (`element-classifier.ts:117–510`)
+
+**Mostní (10) — `BRIDGE_ELEMENT_TYPES`, L783:** `zaklady_piliru`, `driky_piliru`, `rimsa`, `operne_zdi`, `mostovkova_deska` ★, `rigel` ★, `opery_ulozne_prahy`, `kridla_opery`, `mostni_zavirne_zidky`, `prechodova_deska`
+
+**Budovní (9):** `zakladova_deska`, `zakladovy_pas`, `zakladova_patka`, `stropni_deska` ★, `stena`, `sloup`, `pruvlak` ★, `schodiste` ★, `nadrz`
+
+**Speciální (3):** `podzemni_stena`, `pilota` (no formwork, no supports), `podkladni_beton` / `podlozkovy_blok`
+
+★ = `needs_supports=true` (5 typů: mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste — jediné, které triggerují `calculateProps()` v orchestrátoru).
+
+### B.2) BRIDGE_EQUIVALENT remap (`element-classifier.ts:790–798`)
+
+Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovních typů na mostní ekvivalenty: `sloup→driky_piliru`, `zakladova_deska→zaklady_piliru`, `zakladovy_pas→zaklady_piliru`, `zakladova_patka→zaklady_piliru`, `stropni_deska→mostovkova_deska`, `pruvlak→rigel`, `stena→operne_zdi`.
+
+### B.3) Klíčová pozorování
+
+- **Žádný explicit `BRIDGE_ELEMENT_ORDER` ani `BUILDING_ELEMENT_ORDER`** konstanta — klasifikace je context-driven přes `is_bridge` flag + `BRIDGE_EQUIVALENT` map.
+- **Pile path je separate:** `pilota` má `needs_formwork=false` + `needs_supports=false` + early-branch v `runPilePath()` v orchestrátoru → **out of scope pro skruž/stojky terminology** (zemina = forma).
+- **Gate 2a (mostní) skutečný scope:** pouze **mostovkova_deska + rigel** mají `needs_supports=true`. Ostatních 8 mostních typů (opěry, křídla, římsy, závěrné zídky, přechodová deska, opěrné zdi, dříky pilířů, základy pilířů) nepodléhá props/skruž rozhodování — řeší se přes `recommended_formwork` allow-list.
+- **Gate 2b (budovní) skutečný scope:** stropni_deska + pruvlak + schodiste mají `needs_supports=true` — to je terén pro „stojky" rozhodování.
+
+<!-- CONTINUED — sections C, D, E, F, G, H, migration plan to follow -->
