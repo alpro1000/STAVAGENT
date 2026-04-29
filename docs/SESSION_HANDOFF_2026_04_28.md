@@ -54,15 +54,13 @@ PR #1023 (ribbon), #1028 (reclassify), #1029 (import D1+D2), #1031 (template ded
 
 After PR #1051 deploys (Cloud Build auto-trigger on main):
 
-```bash
-# 1. Get DB password
-gcloud secrets versions access latest --secret=PORTAL_DATABASE_URL \
-  | sed -E 's|.*://[^:]+:([^@]+)@.*|\1|'
+Full procedure: see [`docs/MIGRATION_RECOVERY_2026_04.md`](MIGRATION_RECOVERY_2026_04.md). Short form below.
 
-# 2. Connect
+```bash
+# 1. Connect (gcloud handles auth — do NOT extract secrets to shell)
 gcloud sql connect stavagent-db --user=postgres --database=stavagent_portal
 
-# 3. In psql — diagnose what's actually missing:
+# 2. In psql — diagnose what's actually missing:
 SELECT conname FROM pg_constraint WHERE conname = 'fk_users_org_id';
 SELECT indexname FROM pg_indexes
   WHERE indexname IN ('idx_organizations_owner','idx_organizations_slug',
@@ -70,7 +68,7 @@ SELECT indexname FROM pg_indexes
 SELECT tablename FROM pg_tables
   WHERE tablename IN ('portal_objects','portal_positions','position_templates','position_audit_log');
 
-# 4. Apply missing items. Likely just:
+# 3. Apply missing items. Likely just:
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'fk_users_org_id') THEN
     ALTER TABLE users ADD CONSTRAINT fk_users_org_id
@@ -84,11 +82,9 @@ CREATE INDEX IF NOT EXISTS idx_org_members_org ON org_members(org_id);
 CREATE INDEX IF NOT EXISTS idx_org_members_user ON org_members(user_id);
 CREATE INDEX IF NOT EXISTS idx_org_members_invite_token ON org_members(invite_token_hash);
 
-# 5. Repeat connect to monolith_planner DB. Likely no missing items there
+# 4. Repeat connect to monolith_planner DB. Likely no missing items there
 #    (no DO blocks in Monolit schema), but verify.
 ```
-
-Full procedure documented in `docs/MIGRATION_RECOVERY_2026_04.md` (created by PR #1051).
 
 ---
 
