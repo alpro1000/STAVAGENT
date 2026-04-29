@@ -142,7 +142,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
 
         const importRes = await fetch(`${API_URL}/api/integration/import-from-monolit`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', ...authHeader() },
           body: JSON.stringify({
             portal_project_id: projectId,
             project_name: kioskData.project_name || 'Monolit import',
@@ -156,26 +156,19 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
         }
         const result = await importRes.json();
         alert(`Import z ${label} dokončen: ${result.objects_imported || 0} objektů`);
-
-      } else if (link.kiosk_type === 'registry') {
-        // Fetch from Registry kiosk (browser-only, uses auto-sync endpoint)
-        const importRes = await fetch(`${API_URL}/api/integration/import-from-registry`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            portal_project_id: projectId,
-            registry_project_id: link.kiosk_project_id,
-            project_name: 'Registry sync',
-            sheets: [],
-          }),
-        });
-        if (!importRes.ok) {
-          const d = await importRes.json().catch(() => ({}));
-          throw new Error(d.error || `Import selhal (${importRes.status})`);
-        }
-        const result = await importRes.json();
-        alert(`Sync z ${label} dokončen: ${result.items_total || 0} položek`);
       }
+      // Registry kiosk has no manual pull — Registry auto-syncs every 3 s
+      // via portalAutoSync.ts on its own side, so a Portal-side button
+      // can only either (a) re-trigger that same push with no payload
+      // (the previous broken implementation: empty `sheets: []` arriving
+      // at /import-from-registry) or (b) reach into Registry's own
+      // backend to re-fetch project data, which has its own auth domain
+      // and lives on a different Cloud Run service. Both paths are
+      // unnecessary while auto-sync runs, and the broken (a) path was
+      // surfacing as a 401 + "0 položek" alert that confused users into
+      // thinking the link was severed. Removed in
+      // chore/portal-remove-broken-registry-pull; the kiosk row now
+      // only exposes "Otevřít" + "Odpojit" for registry links.
 
       await loadLinks();
       onRefresh?.();
@@ -511,7 +504,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
                         Otevrit
                       </button>
 
-                      {(link.kiosk_type === 'monolit' || link.kiosk_type === 'registry') && (
+                      {link.kiosk_type === 'monolit' && (
                         <button
                           onClick={() => handleImportFromKiosk(link)}
                           disabled={importing === link.link_id}
@@ -551,7 +544,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
                           ) : (
                             <Download style={{ width: '13px', height: '13px' }} />
                           )}
-                          {link.kiosk_type === 'monolit' ? 'Stáhnout z Monolitu' : 'Stáhnout z Registru'}
+                          Stáhnout z Monolitu
                         </button>
                       )}
 
