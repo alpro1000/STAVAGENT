@@ -130,4 +130,37 @@ Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovní
 - **Gate 2a (mostní) skutečný scope:** pouze **mostovkova_deska + rigel** mají `needs_supports=true`. Ostatních 8 mostních typů (opěry, křídla, římsy, závěrné zídky, přechodová deska, opěrné zdi, dříky pilířů, základy pilířů) nepodléhá props/skruž rozhodování — řeší se přes `recommended_formwork` allow-list.
 - **Gate 2b (budovní) skutečný scope:** stropni_deska + pruvlak + schodiste mají `needs_supports=true` — to je terén pro „stojky" rozhodování.
 
-<!-- CONTINUED — sections C, D, E, F, G, H, migration plan to follow -->
+---
+
+## C) Inventář — Terminology mismatches v kódu & UI
+
+### C.1) Code-level gaps
+
+1. **Žádný element-driven `klasifikujPodperu()` API.** Canonical doc §5 specifikuje signature vracející `'skruz' | 'stojky' | 'podperne_leseni'` na základě element type + výška + zatížení + kontext. V kódu **neexistuje žádný takový selector** — display je odvozen od *systému* (`fwSystem.pour_role`). Důsledek: pokud uživatel manuálně nasadí lehký systém pod most, kalkulátor nezná „element vs. systém" rozpor. Hledání symbolů `klasifikujPodperu`, `kategorie_podpery`, `support_category` napříč `shared/src/calculators/planner-orchestrator.ts` a `shared/src/classifiers/element-classifier.ts` vrací 0 výsledků.
+
+2. **Žádný `kategorie` field na `FormworkSystemSpec`.** `shared/src/constants-data/formwork-systems.ts:40–110` exponuje `pour_role: 'formwork'|'falsework'|'props'|'formwork_props'|'mss_integrated'` (L89) + `formwork_category: 'wall'|'slab'|'column'|'special'|'universal'|'support_tower'` (L82). Ani jeden není canonical axis `skruz/stojky/podperne_leseni` z doc §5 — taxonomie je překryvná, ne přímá.
+
+### C.2) UI-level gaps
+
+3. **System-driven labelling se rozchází s TKP 18 kontextem.** `frontend/src/components/calculator/CalculatorResult.tsx:802–808` props card je vždy titulkován `"Stojky 🔩"` ze `pour_role='props'`. Když mostovka používá Top 50 (`falsework`) + Staxo 100 (`props`) zespoda, canonical TKP 18 + canonical doc §3 nazývá celou sestavu **„skruž"** — aktuální Staxo card jako „Stojky" mostní kontext nezachytí.
+
+4. **Žádný user-facing výběr kategorie podpěry.** `frontend/src/components/calculator/CalculatorFormFields.tsx:1361` má dropdown `Výrobce bednění` (DOKA/PERI/ULMA/NOE/Místní) a L1377 má select `Systém bednění`. **Nikde není field `auto / skruž / stojky`** — uživatel nemá explicitní override kategorie (per task answer #2 → scope Gate 3).
+
+5. **Žádný tooltip s nosností / kategorií u systémů.** `formwork-systems.ts` má kompletní data (nosnost, `max_assembly_height_m`, `applicable_element_types`). UI je neexponuje — nejblíž je `CalculatorResult.tsx:1207` jediný Row `"Skruž"` s `plan.norms_sources.skruz` (TKP 18 reference string), žádný per-system info popover.
+
+6. **HelpPanel L239 — nepřesný překlad normy.** `frontend/src/components/calculator/HelpPanel.tsx:239`: literál `"ČSN EN 12812 — falešné bednění a dočasné konstrukce"`. Canonical doc §1 + §7: ČSN EN 12812 v české terminologii pokrývá **„podpěrná lešení / podpěrná konstrukce"**. „Falešné bednění" je doslovný překlad anglického *falsework* a v ČSN se nevyskytuje.
+
+7. **Žádný odkaz z UI na canonical doc.** `HelpPanel.tsx:234–239` cituje normy jen jménem, žádný link na `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md`. `CalculatorResult.tsx` ani `CalculatorFormFields.tsx` neobsahují žádný tooltip / „info ⓘ" odkaz na kanonický slovník pojmů.
+
+### C.3) Verified consistent — no action needed
+
+- `frontend/src/components/calculator/applyPlanToPositions.ts:298` profession `'Tesař (podpěry)'`, L569 BOM item `'podpěrná konstr.'`, L301 note `'podpěrná konstr. — montáž + demontáž'` — všechny používají kanonickou českou terminologii, žádný gap.
+- `CalculatorResult.tsx:662–673` card titles `'Skruž (nosníky)'` / `'Bednění + stojky'` / `'Posuvná skruž (MSS) — vše integrováno'` / `'Bednění'` — kanonický pour_role-driven branching už funguje.
+- `CalculatorResult.tsx:1009–1016` cost-row labels `'Skruž (nosníky — práce)'` / `'Pronájem skruže (nosníky)'` — kanonické.
+- `HelpPanel.tsx:235` `"ČSN 73 6244 — skruž mostovek, minimální doba ponechání podpěr"` — kanonické.
+
+### C.4) Observation (not gap)
+
+- `planner-orchestrator.ts:1498–1513` interně používá var prefix `skruz*` (`skruzConstructionType`, `skruzMinDays`, `skruzTableLookup`) pro výpočet minimální doby ponechání podpěr (`PROPS_MIN_DAYS` lookup). Codebase intermixuje **„skruz" naming na element-level** s **„props" naming na system-level** pro tentýž koncept. Není gap, ale signál pro Gate 2 — budoucí cleanup by měl zvolit jednu axis konzistentně.
+
+<!-- CONTINUED — sections D, E, F, G, H, migration plan to follow -->
