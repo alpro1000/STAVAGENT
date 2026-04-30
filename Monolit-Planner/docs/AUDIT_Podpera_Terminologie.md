@@ -12,7 +12,6 @@
 
 **Co je v kódu už kanonické (good news):**
 - 5-hodnotové `pour_role` taxonomy je nasazena: `formwork | falsework | props | formwork_props | mss_integrated` (formwork-systems.ts:123–656).
-- Top 50 (DOKA) + VARIOKIT HD 200 (PERI) jsou klasifikované jako `falsework` (skruž / nosníková konstrukce).
 - Staxo 100 (DOKA) + UP Rosett Flex (PERI) jsou klasifikované jako `props`.
 - DOKA MSS + VARIOKIT Mobile jsou `mss_integrated` se správným `mss_reuse_factor=0.35`.
 - UI v `CalculatorResult.tsx` už **switchuje card title podle `fwSystem.pour_role`** — `'Skruž (nosníky)' 🏗️ / 'Bednění + stojky' 📦 / 'Posuvná skruž (MSS)' 🌉 / 'Bednění' 📦` (L662–673).
@@ -31,6 +30,7 @@
 7. **Žádný odkaz** z UI tooltipů na kanonický dokument `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md`.
 8. **Tooltip s nosností/kategorií u jednotlivých systémů chybí** v UI (data v katalogu jsou, ale neexponují se).
 9. **Warnings shape je `string[]`** bez severity field (planner-orchestrator.ts:767). Pro UI red/orange/info gradient v Gate 3 je nutné zavést `warnings_structured` (deferred backlog item P1 z v4.22 už existuje pro tento účel).
+10. **⚠️ Top 50 (DOKA) a VARIOKIT HD 200 (PERI) mají v kódu `pour_role: 'falsework'`** (`formwork-systems.ts:178, :511`), což je v rozporu s DOKA katalogem (Top 50 = Nosníkové bednění) a canonical doc §7. Bug je systematický — header doc-comment (`formwork-systems.ts:25`) explicitně dokumentuje tuto klasifikaci jako záměrnou. Detail viz Gap #8 v sekci C. Vyžaduje opravu v Gate 2/3.
 
 **Migrační složitost:** **STŘEDNÍ.** Převážná infrastruktura (`pour_role`, allow-list, MSS path) je hotová. Hlavní práce je: (a) přidat element-driven klasifikaci jako 2. zdroj pravdy, (b) cross-validovat element vs systém + emit warnings, (c) rozdělit rental do 3 řádků + přidat statický návrh, (d) UI explicit kategorie + tooltipy + cleanup HelpPanel.
 
@@ -54,10 +54,12 @@
 
 ### A.1) Formwork systémy (28 entries; `formwork-systems.ts:123–656`)
 
+> **Poznámka k sloupci „Kanonická kategorie":** Tento sloupec reflektuje klasifikaci podle canonical dokumentu §7 TL;DR. Většinou se shoduje s code-derived `pour_role`, kromě dvou case-ů označených ⚠️ (viz Gap #8 v sekci C — Top 50 a VARIOKIT HD 200 jsou v kódu mis-classified).
+
 | Systém | Výrobce | pour_role | Kanonická kategorie | Nosnost / pressure | applicable_element_types |
 |---|---|---|---|---|---|
-| **Top 50** | DOKA | `falsework` | **Skruž (nosníky H20/GT24)** | nosníkové bednění mostovky | [mostovkova_deska, rigel] |
-| **VARIOKIT HD 200** | PERI | `falsework` | **Skruž (PERI ekvivalent Top 50)** | bridge engineering kit | [mostovkova_deska, rigel] |
+| **Top 50** | DOKA | `falsework` ⚠️ | **Bednění (nosníkové) ⚠️** | nosníkové bednění mostovky (NE skruž — je to bednění stěn/svislých konstrukcí, použitelné jako stěnové bednění mostovky pouze ve formě svislé desky) | [mostovkova_deska, rigel] ⚠️ — viz Gap #8 |
+| **VARIOKIT HD 200** | PERI | `falsework` ⚠️ | **Nosník (Heavy-Duty Truss Girder) ⚠️** | primárně horizontální nosník nad falsework věží (VARIOKIT VST), ne falsework sám o sobě | [mostovkova_deska, rigel] ⚠️ — pouze ve smyslu „horizontální překlenutí nad falsework", ne sám falsework |
 | **Staxo 100** | DOKA | `props` | **Stojky / pod mostem skruž** | 100 kN/noha (1000 kN/věž) | [mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste] |
 | **UP Rosett Flex** | PERI | `props` | **Stojky / heavy shoring** | max 25 m výška | [mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste] |
 | **Dokaflex** | DOKA | `formwork_props` | **Stojky + bednění** (Dokaflex 20 = budovní strop) | <5.5 m | [stropni_deska, zakladova_deska, zakladovy_pas, pruvlak] |
@@ -152,14 +154,40 @@ Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovní
 
 7. **Žádný odkaz z UI na canonical doc.** `HelpPanel.tsx:234–239` cituje normy jen jménem, žádný link na `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md`. `CalculatorResult.tsx` ani `CalculatorFormFields.tsx` neobsahují žádný tooltip / „info ⓘ" odkaz na kanonický slovník pojmů.
 
-### C.3) Verified consistent — no action needed
+### C.3) Catalog data quality
+
+8. **Gap #8: Systematic misclassification of Top 50 and VARIOKIT HD 200 as `falsework`**
+
+   **File:line:**
+   - `formwork-systems.ts:178` — Top 50 has `pour_role: 'falsework'`
+   - `formwork-systems.ts:511` — VARIOKIT HD 200 has `pour_role: 'falsework'`
+   - `formwork-systems.ts:25` — header doc-comment dokumentuje tuto klasifikaci jako záměrnou: `'falsework' — nosníková skruž (Top 50, VARIOKIT engineering...)`
+   - `formwork-systems.ts:170` — Top 50 description repeats wrong term: `"Nosníková skruž Top 50 — mostovky + stropy..."`
+   - `formwork-systems.ts:504` — VARIOKIT HD 200 description repeats: `"...PERI ekvivalent nosníkové skruže Top 50"`
+
+   **Verified facts:**
+   - DOKA Xpress 2/2020 + asb-portal: Top 50 = „Nosníkové bednění Top 50" (bednění)
+   - DOKA categorization: Staxo 100 = falsework, Top 50 = bednění
+   - PERI catalog: VARIOKIT HD 200 = Heavy-Duty Truss Girder (nosník), used ABOVE falsework (VST), not as falsework itself
+   - Canonical doc §7 TL;DR: „Top 50 je skruž? — NE. Top 50 je nosníkové bednění (stěn)."
+
+   **Impact:** This systematic misclassification causes calculator to select Top 50 as falsework for horizontal load-bearing scenarios (e.g., základy pilířů), which is technically incorrect and was reported by user as a real bug.
+
+   **Recommendation for Gate 2/3 (NOT to be implemented in Gate 1):**
+   - Top 50 should have `pour_role: 'formwork'` (with attribute indicating „nosníkové, primárně stěnové")
+   - VARIOKIT HD 200 should have `pour_role: 'formwork'` or new enum value for horizontal-truss systems
+   - Header doc-comment L25 must be updated
+   - Descriptions L170, L504 must be updated to remove „skruž" / „nosníková skruž" wording
+   - Existing tests using these systems may need fixture updates
+
+### C.4) Verified consistent — no action needed
 
 - `frontend/src/components/calculator/applyPlanToPositions.ts:298` profession `'Tesař (podpěry)'`, L569 BOM item `'podpěrná konstr.'`, L301 note `'podpěrná konstr. — montáž + demontáž'` — všechny používají kanonickou českou terminologii, žádný gap.
-- `CalculatorResult.tsx:662–673` card titles `'Skruž (nosníky)'` / `'Bednění + stojky'` / `'Posuvná skruž (MSS) — vše integrováno'` / `'Bednění'` — kanonický pour_role-driven branching už funguje.
+- `CalculatorResult.tsx:662–673` card titles `'Skruž (nosníky)'` / `'Bednění + stojky'` / `'Posuvná skruž (MSS) — vše integrováno'` / `'Bednění'` — kanonický pour_role-driven branching už funguje *jako mechanismus* (data o tom, které systémy spadají do `falsework`, jsou bug — viz Gap #8).
 - `CalculatorResult.tsx:1009–1016` cost-row labels `'Skruž (nosníky — práce)'` / `'Pronájem skruže (nosníky)'` — kanonické.
 - `HelpPanel.tsx:235` `"ČSN 73 6244 — skruž mostovek, minimální doba ponechání podpěr"` — kanonické.
 
-### C.4) Observation (not gap)
+### C.5) Observation (not gap)
 
 - `planner-orchestrator.ts:1498–1513` interně používá var prefix `skruz*` (`skruzConstructionType`, `skruzMinDays`, `skruzTableLookup`) pro výpočet minimální doby ponechání podpěr (`PROPS_MIN_DAYS` lookup). Codebase intermixuje **„skruz" naming na element-level** s **„props" naming na system-level** pro tentýž koncept. Není gap, ale signál pro Gate 2 — budoucí cleanup by měl zvolit jednu axis konzistentně.
 
