@@ -280,4 +280,44 @@ Current state má pronájem oddělený, ale labor (zřízení + odstranění) sl
 
 `warnings: string[]` plain array bez `severity` field. UI rendering v `frontend/src/components/calculator/CalculatorResult.tsx:576–579` mapuje na flat `<li>` (`plan.warnings.map((w, i) => <li>{w}</li>)`), nelze stylovat RED/ORANGE/INFO bez severity. Implementace W1-W4 v Gate 3 závisí na zavedení paralelního `warnings_structured` field — viz gap #9 v sekci 0 + deferred backlog item P1 z v4.22 Phase 2.
 
-<!-- CONTINUED — sections F, G, H, migration plan to follow -->
+---
+
+## F) Inventář — Tests
+
+### F.1) Test discovery summary (Monolit-Planner)
+
+- **Framework:** Vitest 4.0.16 (`Monolit-Planner/shared/package.json` → `"vitest": "^4.0.16"`).
+- **Test files:** 21 v `shared/src/**/*.test.ts` + 7 v `backend/tests/**/*.test.js`. Žádné frontend testy, žádné `__snapshots__/` ani `__fixtures__/` adresáře.
+- **Total `it / test / describe` blocks v shared:** 1075 (`grep -rEc "^\s*(it|test|describe)\(" shared/src --include="*.test.ts"`). CLAUDE.md cituje **921**; rozdíl jsou `describe` wrapper bloky a `test.each` parametrizace.
+- **Files dotčené terminologií** (`skruz|stojky|falsework|top 50|variokit|podpera|pour_role|formwork_category`): **5 z 21**:
+  - `shared/src/classifiers/element-classifier.test.ts`
+  - `shared/src/calculators/lateral-pressure.test.ts`
+  - `shared/src/calculators/planner-orchestrator.test.ts`
+  - `shared/src/calculators/position-linking.test.ts`
+  - `shared/src/constants-data/formwork-systems.test.ts`
+- **Files testující `pour_role` klasifikaci přímo:** 3 z 5 výše (`element-classifier`, `planner-orchestrator`, `formwork-systems`).
+- **Backend testy** (`backend/tests/`): 0 hits na terminology — Portal sync + DB integration testy nejsou ovlivněny.
+
+### F.2) Affected tests classified (per Variant 3 — per-test rozhodnutí post-Gate-1)
+
+**A) Auto-pass (žádná změna nutná):** **~16 z 21 shared test souborů + všech 7 backend.** Reprezentativní:
+- `formulas.test.ts`, `pump-engine.test.ts`, `exposure-combination.test.ts`, `maturity.test.ts`, `rebar-lite.test.ts`, `pert.test.ts`, `bridge-technology.test.ts`, `calendar-engine.test.ts`, `tariff-versioning.test.ts`, `pile-engine.test.ts`, `element-scheduler.test.ts`, `formwork-3phase.test.ts`, `pour-task-engine.test.ts`, `pour-decision.test.ts`, `element-audit.test.ts`, `tz-text-extractor.test.ts` — logic / math / scheduling nezávislé na skruž/stojky terminology.
+
+**B) Fixture update needed (Gate 3 UI label changes):** **0 souborů.** Žádné frontend testy, žádné snapshot testy, žádné UI label assertions v shared testech — UI label změny v `CalculatorResult.tsx` (Gate 3) se neprojeví v existujících test fixtures.
+
+**C) Manual review needed (assertions závislé na klasifikaci nebo cost shape):** **5 souborů:**
+- `shared/src/constants-data/formwork-systems.test.ts:23–26` — explicit assert `top50.pour_role === 'falsework'` (popisek: *„Top 50 is classified as falsework (nosníková skruž), not slab formwork"*) → **invert v Gap #8 fix**
+- `shared/src/constants-data/formwork-systems.test.ts:66–67` — `variokit.pour_role === 'falsework'` (popisek *„VARIOKIT HD 200 ... (bridge falsework)"*) → **invert v Gap #8 fix**
+- `shared/src/classifiers/element-classifier.test.ts:633–642` — 2 testy: *„mostovka with clearance > 4 m returns Top 50 (falsework)"* + *„mostovka with clearance ≥ 8 m STILL returns Top 50"* → **assertions po Gate 2/3 vrátí jiný systém + jiný `pour_role`**
+- `shared/src/classifiers/element-classifier.test.ts:672` — popisek *„VARIOKIT HD 200 (PERI bridge falsework) is available for mostovka"* → **invert popisek + asserce**
+- `shared/src/calculators/lateral-pressure.test.ts` — sort stability MOCK_SYSTEMS using `formwork_category` (per sub-agent inventory F); pokud Gate 2 přidá `kategorie` axis nebo přejmenuje category, sort order může selhat
+- `shared/src/calculators/planner-orchestrator.test.ts` — strategy comparison test L100–136 + cost-split assertions L115–128 (pokud Gate 4 split rozdělí `formwork_labor_czk`/`props_labor_czk` na zřízení+pronájem+odstranění+statický návrh, struktura se rozšíří — současná assertions zůstanou, dual-write je zachytí)
+
+### F.3) Testing infrastructure observations
+
+- **Žádné committed snapshots** (žádný `__snapshots__/` adresář v repu).
+- **Žádný explicit fixtures adresář** — test data inlinováno v každém souboru.
+- **Tests asserting `pour_role` directly:** Ano — `formwork-systems.test.ts` (4 explicitní pour_role assertions) + `element-classifier.test.ts` (recommend-formwork pour_role-aware tests L630+).
+- **⚠️ Historický důvod Gap #8 nalezen:** `element-classifier.test.ts:630` komentář *„Terminology Commit 2 (2026-04-17): selector honors pour_role +"* + tests na L633–642 + L672 + `formwork-systems.test.ts:23–26` + L66–67 — kombinace explicitně **enforces** Top 50 / VARIOKIT HD 200 → `falsework` jako canonical. Tyto testy byly napsány pod jinou interpretací canonical doc (před externím review proti DOKA Xpress 2/2020 + asb-portal + canonical doc §7 TL;DR). Bug je tedy **systémový a synchronní** — kódová klasifikace + tests + popisy + komentáře byly postaveny pod nesprávnou interpretací společně. Gap #8 fix v Gate 2/3 vyžaduje invertovat assertions v dotčených testech (per Category C).
+
+<!-- CONTINUED — sections G, H, migration plan to follow -->
