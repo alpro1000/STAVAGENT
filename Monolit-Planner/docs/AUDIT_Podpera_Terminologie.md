@@ -320,4 +320,46 @@ Current state má pronájem oddělený, ale labor (zřízení + odstranění) sl
 - **Tests asserting `pour_role` directly:** Ano — `formwork-systems.test.ts` (4 explicitní pour_role assertions) + `element-classifier.test.ts` (recommend-formwork pour_role-aware tests L630+).
 - **⚠️ Historický důvod Gap #8 nalezen:** `element-classifier.test.ts:630` komentář *„Terminology Commit 2 (2026-04-17): selector honors pour_role +"* + tests na L633–642 + L672 + `formwork-systems.test.ts:23–26` + L66–67 — kombinace explicitně **enforces** Top 50 / VARIOKIT HD 200 → `falsework` jako canonical. Tyto testy byly napsány pod jinou interpretací canonical doc (před externím review proti DOKA Xpress 2/2020 + asb-portal + canonical doc §7 TL;DR). Bug je tedy **systémový a synchronní** — kódová klasifikace + tests + popisy + komentáře byly postaveny pod nesprávnou interpretací společně. Gap #8 fix v Gate 2/3 vyžaduje invertovat assertions v dotčených testech (per Category C).
 
-<!-- CONTINUED — sections G, H, migration plan to follow -->
+---
+
+## G) Inventář — Golden tests & fixtures
+
+### G.1) Golden test discovery
+
+- **Monolit-Planner:** **žádný** `test-data/` adresář, **žádné** `*.snap`, `*.golden.*`, `*-golden-*` soubory. **Žádné** `__fixtures__/` ani `__snapshots__/`. CLAUDE.md cituje cestu `test-data/tz/SO-202_D6_most_golden_test.md` — **tato cesta v repu NEEXISTUJE** (stale reference).
+- **Veškeré „golden" data jsou inlinovaná v test souborech:**
+  - `shared/src/classifiers/element-classifier.test.ts:241–275` — describe block *„classifyElement — real bridge project mapping"* (15 testů; real D6 most position names: *„MOSTNÍ PILÍŘE A STATIVA"*, *„MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET"*, *„MOSTNÍ OPĚRY A KŘÍDLA"*, atd.)
+  - `shared/src/classifiers/element-classifier.test.ts:681,692` — 2 testy *„SO-207 bug — V=605 m³"* + *„SO-207 correct — V=4000 m³"*
+  - `shared/src/classifiers/element-classifier.test.ts:842` — single test *„VP4 live regression — opěrná zeď"*
+  - `shared/src/parsers/tz-text-extractor.test.ts:19+` — 3 describe bloky *„SO-202 mostovka excerpt"* / *„SO-202 prestress excerpt"* / *„SO-202 pile excerpt"* (TZ text extraction parametry)
+  - `shared/src/calculators/element-audit.test.ts:31–56` — `FIXTURES` array (22 element types s typickými parametry)
+- **concrete-agent:** má 1 standalone golden test `concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py` — Python, scope = MCP tool testing, **NE Monolit-Planner calculator**.
+
+### G.2) Per-inline-golden analysis (Variant 3 decision flag)
+
+| Inline golden | Co testuje | Coupling na skruž/stojky terminologii | Decision flag |
+|---|---|---|---|
+| element-classifier 15-bridge mapping (L241–275) | `element_type` assignment z position names | žádný — netestuje pour_role ani formwork system | **OVERWRITE** |
+| element-classifier SO-207 sanity (L681, L692) | volume-vs-geometry kritický rozpor (mostovka) | žádný | **OVERWRITE** |
+| element-classifier VP4 regression (L842) | param extraction rejection (bridge params na opěrnou zeď) | žádný | **OVERWRITE** |
+| tz-text-extractor SO-202 (L19+) | param extraction (concrete class, span, exposure, pilota Ø) | žádný | **OVERWRITE** |
+| element-audit FIXTURES 22-type (L31) | basic profile invariants per element_type | žádný — neasertuje formwork system jméno ani pour_role | **OVERWRITE** |
+
+**Konzistentní zjištění:** všech 5 inlined golden datasetů **netestuje `pour_role` klasifikaci ani formwork system labels**. Testy, které tyto věci testují (per Section F.2 Category C — `formwork-systems.test.ts`, `element-classifier.test.ts:633–642`), jsou unit tests klasifikátoru, ne golden tests. **Žádný z inline goldenů není ohrožen Gate 2/3 terminology change.**
+
+### G.3) Reference projects status
+
+- **SO-202_D6_most_golden_test:** **NEEXISTUJE jako automatizovaný golden test.** CLAUDE.md + `tz-text-extractor.test.ts:4` (komentář *„Tested against real SO-202/203/207 TZ excerpts from golden test data"*) referují název, ale samotný .md spec / runner v repu chybí. Existující SO-202 testy jsou jen TZ-excerpt parsing v `tz-text-extractor.test.ts`, **ne end-to-end calculator output verification**.
+- **VP4 FORESTINA:** **NEEXISTUJE jako golden test.** Pouze 1 regression test (`element-classifier.test.ts:842`) ověřuje param-extraction rejection, žádný end-to-end calculator output verifier.
+- **⚠️ Gap pro Gate 2:** Gate 2/3 fix Gap #8 (Top 50 + VARIOKIT HD 200 reclassification) změní formwork-selection chain pro mostovka. **Bez automatizovaného golden testu pro mostovka end-to-end output není možné mechanicky verify, že kalkulátor po opravě produkuje correct výsledek.** Manual inspection per scenario only.
+
+### G.4) Coverage matrix
+
+- **22 element types — basic profile invariants:** všech 22 pokryté v `element-audit.test.ts:31` FIXTURES.
+- **Formwork-selection chain coverage:** velmi úzká:
+  - `mostovkova_deska` — `element-classifier.test.ts:265, 633–642` (3 testy, ale per F.2 Category C jsou enforce-buggy)
+  - `operne_zdi` — VP4 regression L842 (jen rejection, ne formwork verification)
+  - **ostatních 20 typů:** bez end-to-end formwork-selection golden testu
+- **Risk pro Gap #8 fix:** Top 50 / VARIOKIT HD 200 reclassification ovlivní mostovka selection chain (currently locked by tests v F.2 Category C). Tests L633–642 budou invertovány. **Pro 20 ostatních element types pokrytých Top 50 fallback path neexistuje golden test, který by post-fix reverify output.** Gate 2 bez automated golden = manual smoke testing only.
+
+<!-- CONTINUED — section H, migration plan to follow -->
