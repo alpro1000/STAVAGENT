@@ -102,7 +102,7 @@
 ### A.3) Klíčová pozorování — gap vs. canonical doc
 
 - **Globální `pour_role` na Staxo 100 = `props`** (správně z hlediska systému), ale z hlediska kontextu (mostovka) by měl být **„skruž (stojky pod skruží)"**. Aktuálně UI label jen „Stojky 🔩" nezachytí TKP 18 kontext.
-- **Top 50 jako falsework je correct** (DOKA katalog: „nosníkové bednění" = canonical „skruž" v mostním rozpočtu).
+- **⚠️ Top 50 jako falsework v kódu — NESPRÁVNÉ.** Code říká `falsework`, DOKA katalog („Nosníkové bednění Top 50") a canonical doc §7 říkají **bednění**. Detail v Gap #8 (sekce C.3).
 - **MSS positivně mapováno** (`mss_integrated` + reuse 0.35 + applicable [mostovkova_deska, rigel]).
 - **Žádný „statický návrh od výrobce"** atribut na žádném systému (canonical §6 + §8 vyžaduje pro skruž / demolici).
 - **Žádný `kategorie: 'skruz'|'stojky'|'podperne_leseni'`** na úrovni katalogu — odvozuje se až per-render z `pour_role`.
