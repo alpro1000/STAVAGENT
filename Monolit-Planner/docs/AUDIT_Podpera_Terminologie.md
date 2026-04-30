@@ -236,4 +236,48 @@ Canonical doc §8 specifikuje, že pronájem skruže / stojek se v rozpočtu **r
 
 Current state má pronájem oddělený, ale labor (zřízení + odstranění) sloučený, a chybí field pro statický návrh od výrobce. Canonical §8 vyžaduje 3 řádky labor/rental + volitelný 4. řádek statický návrh. Gate 4 task navrhne split s **dual-write přes deprecation aliasy do 2026-07-29** — staré agregáty (`formwork_labor_czk`, `props_labor_czk`) zůstanou populované jako součet nových rozdělených fieldů, downstream konzumenti (Portal, Registry, MCP) tak neselžou. Konkrétní field names + Excel sloupce + Portal sync schema = scope Gate 4 task spec, ne tohoto auditu.
 
-<!-- CONTINUED — sections E, F, G, H, migration plan to follow -->
+---
+
+## E) Inventář — Warnings (canonical-required vs. existing)
+
+### E.1) Canonical-required warnings (z task spec „Warnings" + canonical doc §6)
+
+| # | Warning | Závažnost | Trigger condition | Status v kódu |
+|---|---|---|---|---|
+| W1 | Stojky pod mostem | **RED** | mostní element + selected system má lehký pour_role (`formwork_props`) nebo prop systém pod limit nosnosti pro skruž | ❌ chybí |
+| W2 | Lehký systém při výšce > 5 m | **ORANGE** | `height_m > 5` + selected system mimo {Staxo 100, UP Rosett, MSS, ekvivalent} | ❌ chybí |
+| W3 | Skruž bez statického návrhu od výrobce | **INFO** | `pour_role='falsework'` nebo bridge context + missing design reference | ❌ chybí (Gate 4 — pricing field neexistuje) |
+| W4 | Mix DOKA + PERI v jedné položce | **YELLOW** | formwork manufacturer ≠ props manufacturer | ❌ chybí |
+
+### E.2) Existing warnings v kódu (`shared/src/calculators/planner-orchestrator.ts`)
+
+`warnings: string[]` flat array — `PlannerOutput` typ deklaruje na L513, function param L618, init L767. Celkem ~21 push/unshift sites. **Žádný z nich neimplementuje W1-W4.** Representative seznam:
+
+- L627 — exposure class neodpovídá element type
+- L794 — nízká classification confidence (<60%)
+- L826 (`unshift`) — volume-vs-geometry kritický rozpor (top of list)
+- L892 — formwork system nenalezen, použit fallback
+- L899–902 — lateral pressure exceedance (DIN 18218)
+- L934–937 — preferred manufacturer empty pool, fallback
+- L958–961 — crane needed (item weight > limit)
+- L964–966 — height > 1.2 m → lateral supports IB
+- L969–972 — Frami Xlife pressure edge
+- L1098–1105 — staged pouring DIN 18218 per-záběr
+- L1127 — merged z `pourDecision.warnings`
+- L1133–1148 — rimsa-specific (záběr spacing, construction sequence, bridge length missing)
+- L1168–1170 — deck thickness sanity (mostovka)
+- L1174–1177 — mostovka construction sequence
+- L1190–1223 — mostní subtype reminders (předpětí auto, komorový nosník, přechodová deska sequence)
+
+### E.3) Verified consistent — existing warnings v souladu s ČSN / DIN
+
+- L958–961 crane needed → konsistentní s TKP 18 + DOKA katalogem (pro skruže nad N kg vyžaduje jeřáb).
+- L964–966 height > 1.2 m → lateral support IB → konsistentní s DIN 18218.
+- L1098–1105 staged pouring → konsistentní s DIN 18218 + canonical doc §6 (max-stage formula `sys.pressure / full_pressure × h`, min 1.5 m).
+- Tyto warnings nejsou předmětem skruž/stojky terminology tasku, ale nejsou v rozporu s canonical doc — orthogonal coverage.
+
+### E.4) Observation — warnings shape gap (cross-ref Sec 0 #9)
+
+`warnings: string[]` plain array bez `severity` field. UI rendering v `frontend/src/components/calculator/CalculatorResult.tsx:576–579` mapuje na flat `<li>` (`plan.warnings.map((w, i) => <li>{w}</li>)`), nelze stylovat RED/ORANGE/INFO bez severity. Implementace W1-W4 v Gate 3 závisí na zavedení paralelního `warnings_structured` field — viz gap #9 v sekci 0 + deferred backlog item P1 z v4.22 Phase 2.
+
+<!-- CONTINUED — sections F, G, H, migration plan to follow -->
