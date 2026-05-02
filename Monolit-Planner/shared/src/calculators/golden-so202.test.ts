@@ -3,11 +3,13 @@
  *
  * Reference: `test-data/tz/SO-202_D6_most_golden_test.md` (audit Section G).
  *
- * Phase 2 (Gate 2.1) state: §5f mostovka assertions inverted to post-Gap-8
- * canonical (Top 50 = formwork + nosnikove subtype per canonical §9.1).
- * §5b zaklady_piliru + §5c opery_ulozne_prahy still snapshot CURRENT
- * (incorrect-per-canonical) behavior — pending Phase 3 (Gate 2a mostní
- * verification) revisit. See per-test comments for canonical-expected.
+ * Phase 3 Gate 2a state (commit 2 of 4):
+ *   - §5b zaklady_piliru: now asserts canonical Frami Xlife (was Top 50
+ *     in Phase 1 baseline; horizontal selector fix in Phase 3 commit 2).
+ *   - §5f mostovka: post-Gap-8 canonical (Top 50 = formwork + nosnikove
+ *     subtype per Phase 2 + canonical §9.1).
+ *   - §5c opery_ulozne_prahy: still snapshots CURRENT (COMAIN) behavior
+ *     pending Phase 3 commit 3 (vertical typové elements verification).
  *
  * Per `docs/CALCULATOR_PHILOSOPHY.md` §3, numeric assertions use ±10–15 %
  * tolerance. Classification (system name + pour_role) is exact.
@@ -37,14 +39,19 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       expect(plan.element.type).toBe('zaklady_piliru');
     });
 
-    it('formwork system: current returns Top 50 (Phase 1 baseline; canonical §9.4 says Frami Xlife — revisit Phase 3)', () => {
+    it('formwork system: Frami Xlife (rámové, pour_role=formwork) — Phase 3 RESOLVED per canonical §9.4', () => {
       const plan = planElement(input);
-      // ⚠️ Phase 1 baseline snapshot: current selector returns Top 50 for
-      // zaklady_piliru. Per canonical §9.4 + SO-202 §5b expected output, the
-      // canonical answer is Frami Xlife (rámové, lehké). This mismatch is a
-      // separate classification bug from Gap #8 (Top 50 pour_role) and will
-      // be revisited in Phase 3 (Gate 2a mostní verification).
-      expect(plan.formwork.system.name).toBe('Top 50');
+      // ✅ Phase 3 Gate 2a (commit 2 of 4) resolved: horizontal selector now
+      // respects ELEMENT_CATALOG.recommended_formwork[0] over cheapest sort.
+      // Frami Xlife is canonical for foundation elements per §9.4 + SO-202
+      // §5b expected output + DOKA katalog. Top 50 (mostovka-class
+      // nosníkové bednění) was previously chosen by cheapest-rental sort
+      // because Frami Xlife (formwork_category='wall') was excluded from
+      // the horizontal pool by ELEMENT_SUITABLE_CATEGORIES['horizontal'] =
+      // {'slab', 'universal'}. Selector now bypasses pool filter when
+      // recommended[0] is universal-applicable.
+      expect(plan.formwork.system.name).toBe('Frami Xlife');
+      expect(plan.formwork.system.pour_role).toBe('formwork');
       expect(plan.formwork.system.manufacturer).toBe('DOKA');
     });
 

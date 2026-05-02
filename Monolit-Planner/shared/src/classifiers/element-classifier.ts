@@ -1028,6 +1028,40 @@ export function recommendFormwork(
   // Horizontal elements: lateral pressure is irrelevant (concrete sits ON formwork).
   // Select by category compatibility and rental price — no pressure filtering needed.
   if (profile.orientation === 'horizontal') {
+    // Phase 3 Gate 2a (2026-04-30): respect canonical recommended_formwork[0]
+    // over cheapest sort, when the recommended system is applicable.
+    //
+    // Background: prior to this fix, the horizontal branch returned the
+    // cheapest-rental system from the category-compatible pool. For
+    // foundations (zaklady_piliru, zaklady_oper, zakladova_deska),
+    // Top 50 (380 Kč/m²/mo, formwork_category='slab') won over Frami Xlife
+    // (~507 Kč/m²/mo, formwork_category='wall' — excluded from horizontal
+    // pool by ELEMENT_SUITABLE_CATEGORIES). Result: foundations got Top 50
+    // (mostovka-class nosníkové bednění) instead of Frami Xlife (rámové,
+    // canonical per §9.4 + DOKA katalog).
+    //
+    // Fix: prefer ELEMENT_CATALOG[type].recommended_formwork[0] when:
+    //  1. recommendation exists in profile,
+    //  2. corresponding system exists in FORMWORK_SYSTEMS catalog,
+    //  3. system is applicable for this element (allow-list logic):
+    //     applicable_element_types absence = universal applicability
+    //     (Frami Xlife, Top 50 etc. may be used for various element types);
+    //     applicable_element_types as array = explicit allow-list
+    //     (e.g., Top 50 Cornice for rimsa only).
+    // Falls back to cheapest sort if any check fails.
+    const recommendedName = profile.recommended_formwork?.[0];
+    if (recommendedName) {
+      const recommendedSystem = FORMWORK_SYSTEMS.find(s => s.name === recommendedName);
+      if (recommendedSystem) {
+        const isApplicable =
+          !recommendedSystem.applicable_element_types
+          || recommendedSystem.applicable_element_types.includes(type);
+        if (isApplicable) {
+          return recommendedSystem;
+        }
+      }
+    }
+
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
     if (compatibleSystems.length > 0) {
       // Sort: cheapest rental first, 0-price (tradiční) last

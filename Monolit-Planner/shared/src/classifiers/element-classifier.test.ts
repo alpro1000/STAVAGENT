@@ -168,6 +168,31 @@ describe('Element Classifier', () => {
       expect(system.name).toBe('Frami Xlife');
     });
 
+    // Phase 3 Gate 2a (commit 2 of 4) — regression tests for horizontal
+    // selector fix. Before this commit, recommendFormwork('zaklady_piliru',
+    // height_m) returned Top 50 (cheapest from category-compatible pool)
+    // because Frami Xlife (formwork_category='wall') was excluded from
+    // horizontal pool. The selector now respects recommended_formwork[0]
+    // when system is universal-applicable. These tests exercise the
+    // with-height path (the buggy path; the no-height tests always
+    // returned Frami via short-circuit at L1023).
+    it('recommends Frami for zaklady_piliru WITH height_m (post-Phase-3 horizontal fix)', () => {
+      const system = recommendFormwork('zaklady_piliru', 1.2);
+      expect(system.name).toBe('Frami Xlife');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends Frami for zaklady_oper WITH height_m (Phase 3 — paralelní k zaklady_piliru)', () => {
+      const system = recommendFormwork('zaklady_oper', 1.5);
+      expect(system.name).toBe('Frami Xlife');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends Frami for zakladova_deska WITH height_m (Phase 3 horizontal fix side-effect — pre-empts Phase 4)', () => {
+      const system = recommendFormwork('zakladova_deska', 0.8);
+      expect(system.name).toBe('Frami Xlife');
+    });
+
     it('recommends cornice formwork for rimsa', () => {
       const system = recommendFormwork('rimsa');
       expect(system.name).toBe('Římsové bednění T');
