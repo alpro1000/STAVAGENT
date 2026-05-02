@@ -250,7 +250,7 @@ Current state má pronájem oddělený, ale labor (zřízení + odstranění) sl
 | W1 | Stojky pod mostem | **RED** | mostní element + selected system má lehký pour_role (`formwork_props`) nebo prop systém pod limit nosnosti pro skruž | ❌ chybí |
 | W2 | Lehký systém při výšce > 5 m | **ORANGE** | `height_m > 5` + selected system mimo {Staxo 100, UP Rosett, MSS, ekvivalent} | ❌ chybí |
 | W3 | Skruž bez statického návrhu od výrobce | **INFO** | `pour_role='falsework'` nebo bridge context + missing design reference | ❌ chybí (Gate 4 — pricing field neexistuje) |
-| W4 | Mix DOKA + PERI v jedné položce | **YELLOW** | formwork manufacturer ≠ props manufacturer | ❌ chybí |
+| W4 | Mix DOKA + PERI v jedné položce | **INFO** | formwork system a podpěrný system jsou od různých výrobců (DOKA × PERI) AND vyžadují kompatibilní spojovací prvky (např. DOKA WU matice vs. PERI RB šroub) AND uživatel pracuje v rámci jedné položky rozpočtu. V praxi je mix DOKA bednění + PERI stojky často zcela běžný (různé stavby, různé smlouvy) — proto INFO, ne WARNING. | ❌ chybí |
 
 ### E.2) Existing warnings v kódu (`shared/src/calculators/planner-orchestrator.ts`)
 
