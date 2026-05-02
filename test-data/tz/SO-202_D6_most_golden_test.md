@@ -36,6 +36,58 @@ props labor already accounted separately. Magnitude is within the
 
 ---
 
+## v4.22.0 Re-Snapshot Notes (Gate 2.1 — 2026-04-29)
+
+**Gap #8 (CRITICAL) — terminology correction:**
+
+Per Gate 1 audit Section C.3 Gap #8 + canonical doc §9.1 + DOKA katalog
+(„Nosníkové bednění Top 50"), Top 50 + VARIOKIT HD 200 reclassified.
+The v4.21.0 section above documented the SELECTOR fix (Top 50 chosen
+instead of Staxo 100); v4.22.0 corrects the TERMINOLOGY of that selection
+per canonical taxonomy.
+
+Changes in `formwork-systems.ts`:
+- Top 50: `pour_role` `'falsework'` → `'formwork'`; `formwork_subtype`
+  `'nosnikove'` added (Vrstva 1 per canonical §9.2 — kontaktní povrch)
+- VARIOKIT HD 200: `pour_role` `'falsework'` → `'formwork_beam'`
+  (NEW enum value, Vrstva 2 per §9.2 — horizontální nosníky)
+- `PourRole` enum expanded with `'formwork_beam'`
+- `FormworkSubtype` type alias added:
+  `'ramove' | 'nosnikove' | 'stropni' | 'beam'`
+
+Output shape changes for SO-202 §5f mostovka:
+- `plan.formwork.system.name` = `'Top 50'` (unchanged)
+- `plan.formwork.system.pour_role` = `'formwork'` (was `'falsework'`)
+- `plan.formwork.system.formwork_subtype` = `'nosnikove'` (NEW field)
+
+Out of scope (Phase 2 narrow per Variant B decision):
+- Staxo 100 reclassification (`'props'` → `'falsework'` per canonical
+  Vrstva 3) — deferred to Phase 3 mostní review or Gate 3
+- `plan.falsework.system` field (multi-layer output) — deferred, would
+  require `recommendFormwork` return-shape refactor
+- UI card title changes („Bednění nosníkové" vs „Skruž (nosníky)") —
+  Gate 3 UI scope
+
+Test assertions inverted in lockstep:
+- `formwork-systems.test.ts:23-30` (Top 50 pour_role + subtype)
+- `formwork-systems.test.ts:71-82` (VARIOKIT HD pour_role)
+- `element-classifier.test.ts:630-647` (mostovka → Top 50 formwork +
+  nosnikove)
+- `golden-so202.test.ts:95-105` (§5f mostovka post-Gap-8 state)
+
+References:
+- Gate 1 audit: `Monolit-Planner/docs/AUDIT_Podpera_Terminologie.md`
+  Section C.3 Gap #8
+- Migration plan:
+  `Monolit-Planner/docs/MIGRATION_PLAN_GATE2_TO_GATE4.md` Phase 2
+- Canonical: `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md`
+  §9.1, §9.2, §9.3
+- Calculator philosophy: `docs/CALCULATOR_PHILOSOPHY.md`
+- Phase 2 commits: `6d2784f` (types), `b60d24d` (Top 50),
+  `b2fc701` (VARIOKIT HD)
+
+---
+
 ## 1. Stavba
 
 - D6 Karlovy Vary – Olšová Vrata, SO202 Most na sil. I/6 v km 0,900

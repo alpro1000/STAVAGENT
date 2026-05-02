@@ -627,19 +627,25 @@ describe('Element Classifier', () => {
     });
   });
 
-  // ─── Terminology Commit 2 (2026-04-17): selector honors pour_role +
-  // applicable_element_types allow-list. ───
+  // ─── Terminology Commit 3 (Gate 2.1 — 2026-04-29): canonical correction.
+  // Per DOKA katalog + canonical doc §9.1, Top 50 is nosníkové bednění
+  // (Vrstva 1 per §9.2), NOT falsework (Vrstva 3). Selector still returns
+  // Top 50 for mostovka — only its pour_role classification is corrected.
+  // The actual falsework under deck is Staxo 100 (Vrstva 3), separately
+  // calculated by the orchestrator via calculateProps(). ───
   describe('recommendFormwork — pour_role aware', () => {
-    it('mostovka with clearance > 4 m returns Top 50 (falsework), NOT Staxo (props)', () => {
+    it('mostovka with clearance > 4 m returns Top 50 (formwork, nosnikove)', () => {
       const sys = recommendFormwork('mostovkova_deska', 8);
       expect(sys.name).toBe('Top 50');
-      expect(sys.pour_role).toBe('falsework');
+      expect(sys.pour_role).toBe('formwork');
+      expect(sys.formwork_subtype).toBe('nosnikove');
     });
 
     it('mostovka with clearance ≥ 8 m STILL returns Top 50 (not Staxo 100)', () => {
       const sys = recommendFormwork('mostovkova_deska', 12);
       expect(sys.name).toBe('Top 50');
-      expect(sys.pour_role).toBe('falsework');
+      expect(sys.pour_role).toBe('formwork');
+      expect(sys.formwork_subtype).toBe('nosnikove');
     });
   });
 

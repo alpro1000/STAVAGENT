@@ -10,31 +10,60 @@
 import type { StructuralElementType } from '../calculators/pour-decision.js';
 
 /**
- * Pour role (2026-04-17): layer role in the concreting assembly. Drives UI
- * card labels so users see "🏗️ Skruž" (falsework — nosníky) vs "🔩 Stojky"
- * (props — věže) vs "📦 Bednění" (formwork — forma/desky) explicitly
- * instead of one generic "Bednění" card. Parallel to `formwork_category`
- * which stays a technical filter (wall/slab/column/…).
+ * Pour role (2026-04-17, expanded 2026-04-29 Gate 2.1): layer role in the
+ * concreting assembly. Drives UI card labels so users see "🏗️ Skruž"
+ * (falsework — věže) vs "🔩 Stojky" (props — věže) vs "📦 Bednění"
+ * (formwork — forma/desky) explicitly instead of one generic "Bednění"
+ * card. Parallel to `formwork_category` which stays a technical filter
+ * (wall/slab/column/…).
  *
- *  - 'formwork'        — pure side/face form (Framax, MAXIMO, Frami).
- *                        Vertical or cornice. No integrated props.
+ *  - 'formwork'        — pure side/face form (Framax, MAXIMO, Frami, Top 50,
+ *                        VARIO GT 24). Vertical, cornice or deck-side.
+ *                        Sub-classified via `formwork_subtype` (rámové vs
+ *                        nosníkové).
  *  - 'formwork_props'  — slab form with built-in props (Dokaflex,
  *                        MULTIFLEX, SKYDECK, CC-4). Applies up to
  *                        ~5 m clear height; above that a falsework +
  *                        separate props is needed.
- *  - 'falsework'       — nosníková skruž (Top 50, VARIOKIT engineering
- *                        kit). Carries the deck formwork. Combined
- *                        with `props` pour_role systems underneath.
- *  - 'props'           — stojky / věže (Staxo 40/100, UP Rosett, VST).
- *                        Carry the falsework. Grid-spaced towers.
+ *  - 'formwork_beam'   — horizontal load-spreading beam component
+ *                        (VARIOKIT HD 200, Top 50 H20 accessory beams).
+ *                        Sits ABOVE falsework towers and BELOW deck
+ *                        formwork; distributes deck load into towers.
+ *  - 'falsework'       — těžká podpěrná skruž (Staxo 100, UniKit, VARIOKIT
+ *                        VST). Carries deck formwork load into the ground.
+ *                        Statický návrh od výrobce nutný.
+ *  - 'props'           — stojky / lehké věže (Staxo 40, MULTIPROP, Eurex).
+ *                        Stropní podepření v budovách. Grid-spaced.
  *  - 'mss_integrated'  — MSS / movable scaffolding system. Carries form
  *                        + falsework + props in one unit; per-tact labor
  *                        collapses by `mss_reuse_factor` (0.35 of full
  *                        mount) and rental of individual components
  *                        (bednění/skruž/stojky) is 0 — bundled in MSS
  *                        mobilization + monthly rental.
+ *
+ * Canonical reference: docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md
  */
-export type PourRole = 'formwork' | 'formwork_props' | 'falsework' | 'props' | 'mss_integrated';
+export type PourRole = 'formwork' | 'formwork_props' | 'formwork_beam' | 'falsework' | 'props' | 'mss_integrated';
+
+/**
+ * Formwork sub-taxonomy (2026-04-29 Gate 2.1, canonical doc §9.1):
+ * sub-classification of `formwork` and `formwork_beam` pour_roles per
+ * DOKA/PERI catalog conventions.
+ *
+ *  - 'ramove'    — rámové (frame-based, fixed grid, plug-and-play): Frami,
+ *                  Framax, TRIO, MAXIMO, DUO. Economical for typical
+ *                  walls and abutments.
+ *  - 'nosnikove' — nosníkové (beam-supported, custom geometry): Top 50,
+ *                  VARIO GT 24. Tailor-made; integrates with falsework
+ *                  for bridge decks and tall walls.
+ *  - 'stropni'   — stropní / tablovací (slab/table form with built-in
+ *                  props): Dokaflex, MULTIFLEX, SKYDECK, CC-4. Building
+ *                  slabs only — NOT for bridge decks.
+ *  - 'beam'      — horizontal load-spreading beam component (VARIOKIT
+ *                  HD 200, Top 50 H20). Used as accessory on top of
+ *                  falsework towers.
+ */
+export type FormworkSubtype = 'ramove' | 'nosnikove' | 'stropni' | 'beam';
 
 /** Formwork system specification */
 export interface FormworkSystemSpec {
@@ -87,6 +116,12 @@ export interface FormworkSystemSpec {
    * Drives UI card labels and cost-summary bucketing.
    */
   pour_role?: PourRole;
+  /**
+   * Sub-classification of `formwork` and `formwork_beam` pour_roles per
+   * DOKA/PERI catalog (canonical doc §9.1). Optional — only set on
+   * those two pour_roles. Drives UI sub-taxonomy display in Gate 3.
+   */
+  formwork_subtype?: FormworkSubtype;
   /**
    * Optional element-type allow-list. When set, the selector only offers
    * this system for the listed element types. Undefined = universal
@@ -167,15 +202,17 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 380.00,
     unit: 'm2',
-    description: 'Nosníková skruž Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24',
+    description: 'Nosníkové bednění Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24',
     weight_kg_m2: 25,
     pressure_kn_m2: 75,
     needs_crane: true,
     formwork_category: 'slab',
-    // Pour role: falsework (nosníky). Top 50 nese bednění (desky) — není
-    // to forma samotná, je to skruž. Pro most ho engine kombinuje s
-    // props (Staxo) od stejného výrobce.
-    pour_role: 'falsework',
+    // Pour role: formwork (nosníkové). Top 50 is the deck-side form
+    // (Vrstva 1 per canonical doc §9.2), distinct from the falsework
+    // tower below (Staxo 100 = Vrstva 3). Gate 2.1 Gap #8 corrected
+    // from 'falsework' to 'formwork' per DOKA katalog + canonical §9.1.
+    pour_role: 'formwork',
+    formwork_subtype: 'nosnikove',
   },
   {
     name: 'Dokaflex',
@@ -501,14 +538,19 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 850.00,
     unit: 'm2',
-    description: 'Inženýrská stavebnice PERI HD 200 pro mosty a tunely (VGK, VGB, VST moduly) — PERI ekvivalent nosníkové skruže Top 50',
+    description: 'Inženýrská stavebnice PERI HD 200 pro mosty a tunely (VGK, VGB, VST moduly) — horizontální nosníky NAD falsework věží (Vrstva 2 per canonical §9.2), PERI ekvivalent Top 50 H20 accessory',
     weight_kg_m2: 80,
     needs_crane: true,
     // Slab category so it passes the horizontal suitableCategories gate
     // for mostovka. applicable_element_types allow-list still keeps it
     // out of building stropni_deska pool.
     formwork_category: 'slab',
-    pour_role: 'falsework',
+    // Pour role: formwork_beam (Vrstva 2 per canonical §9.2). VARIOKIT
+    // HD 200 is the horizontal load-spreading beam component sitting
+    // ABOVE falsework towers (Staxo 100 / VARIOKIT VST) and BELOW deck
+    // formwork. Gate 2.1 Gap #8 corrected from 'falsework' to
+    // 'formwork_beam' per DOKA / PERI catalog distinction.
+    pour_role: 'formwork_beam',
     applicable_element_types: ['mostovkova_deska', 'rigel'],
   },
   {

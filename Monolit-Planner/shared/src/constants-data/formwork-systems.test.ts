@@ -20,10 +20,15 @@ describe('Formwork Systems Catalog — pour_role taxonomy', () => {
     expect(missing).toEqual([]);
   });
 
-  it('Top 50 is classified as falsework (nosníková skruž), not slab formwork', () => {
+  it('Top 50 is classified as formwork with subtype nosnikove (Gate 2.1 canonical §9.1)', () => {
     const top50 = findFormworkSystem('Top 50');
     expect(top50).toBeDefined();
-    expect(top50!.pour_role).toBe('falsework');
+    // Gate 2.1 Gap #8 fix: Top 50 is nosníkové bednění (Vrstva 1 per
+    // canonical §9.2), NOT falsework. DOKA katalog: Top 50 = "Nosníkové
+    // bednění Top 50". Real falsework under bridge decks is Staxo 100
+    // (Vrstva 3, pour_role='props' currently — separately classified).
+    expect(top50!.pour_role).toBe('formwork');
+    expect(top50!.formwork_subtype).toBe('nosnikove');
   });
 
   it('Dokaflex is formwork_props (slab form + integrated props)', () => {
@@ -63,8 +68,14 @@ describe('Formwork Systems Catalog — applicable_element_types allow-list', () 
     expect(isApplicableForElement(top50, 'stropni_deska')).toBe(true);
   });
 
-  it('VARIOKIT HD 200 is applicable for mostovka + rigel (bridge falsework)', () => {
+  it('VARIOKIT HD 200 is applicable for mostovka + rigel (formwork_beam, Vrstva 2)', () => {
     const variokit = findFormworkSystem('VARIOKIT HD 200')!;
+    // Gate 2.1 Gap #8 fix: VARIOKIT HD 200 is a horizontal load-spreading
+    // beam component (Vrstva 2 per canonical §9.2), NOT falsework
+    // (Vrstva 3). The actual PERI falsework under bridge decks is
+    // VARIOKIT VST. Selector keeps VARIOKIT HD applicable for mostovka
+    // + rigel via allow-list — only its pour_role classification corrected.
+    expect(variokit.pour_role).toBe('formwork_beam');
     expect(isApplicableForElement(variokit, 'mostovkova_deska')).toBe(true);
     expect(isApplicableForElement(variokit, 'rigel')).toBe(true);
     expect(isApplicableForElement(variokit, 'stena')).toBe(false);
@@ -112,21 +123,28 @@ describe('Formwork Systems Catalog — MSS entries', () => {
 });
 
 describe('Formwork Systems Catalog — helper integrity', () => {
-  it('getSystemsByPourRole returns every role populated in the catalog', () => {
+  it('getSystemsByPourRole returns expected populations per pour_role', () => {
     const formwork = getSystemsByPourRole('formwork');
+    const formworkBeam = getSystemsByPourRole('formwork_beam');
     const formworkProps = getSystemsByPourRole('formwork_props');
     const falsework = getSystemsByPourRole('falsework');
     const props = getSystemsByPourRole('props');
     const mss = getSystemsByPourRole('mss_integrated');
 
     expect(formwork.length).toBeGreaterThan(0);
+    expect(formworkBeam.length).toBe(1); // VARIOKIT HD 200 (Gate 2.1)
     expect(formworkProps.length).toBeGreaterThan(0);
-    expect(falsework.length).toBeGreaterThan(0);
+    // Gate 2.1 Gap #8: falsework category currently empty in catalog.
+    // Top 50 + VARIOKIT HD 200 reclassified to formwork / formwork_beam.
+    // Staxo 100 reclassification (props → falsework per canonical Vrstva 3)
+    // is deferred to Phase 3 / Gate 3 — when done, this assertion changes
+    // to .toBeGreaterThan(0) and Staxo 100 moves out of props bucket.
+    expect(falsework.length).toBe(0);
     expect(props.length).toBeGreaterThanOrEqual(2); // Staxo 100 + UP Rosett
     expect(mss.length).toBe(2); // DOKA MSS + VARIOKIT Mobile
 
     // No overlap: each system in exactly one bucket.
-    const total = formwork.length + formworkProps.length + falsework.length + props.length + mss.length;
+    const total = formwork.length + formworkBeam.length + formworkProps.length + falsework.length + props.length + mss.length;
     expect(total).toBe(FORMWORK_SYSTEMS.length);
   });
 });
