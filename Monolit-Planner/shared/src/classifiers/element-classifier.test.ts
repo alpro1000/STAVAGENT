@@ -277,6 +277,33 @@ describe('Element Classifier', () => {
         .toBe('zaklady_piliru');
     });
 
+    // Phase 3 Gate 2a (2026-04-30): zaklady_oper recognition tests.
+    // Higher-priority KEYWORD_RULES entry (priority 11 vs zaklady_piliru's 10)
+    // ensures "základ opěry" specifically matches zaklady_oper, not zaklady_piliru
+    // via generic "základy" keyword fall-through.
+    it('ZÁKLAD OPĚRY → zaklady_oper (specific match, not zaklady_piliru)', () => {
+      expect(classifyElement('ZÁKLAD OPĚRY OP1 ZE ŽELEZOBETONU C25/30').element_type)
+        .toBe('zaklady_oper');
+    });
+
+    it('ZÁKLADY OPĚR → zaklady_oper', () => {
+      expect(classifyElement('ZÁKLADY OPĚR MOSTNÍCH').element_type)
+        .toBe('zaklady_oper');
+    });
+
+    it('OPĚRA ZÁKLAD → zaklady_oper', () => {
+      expect(classifyElement('Opěra základ železobeton').element_type)
+        .toBe('zaklady_oper');
+    });
+
+    // Negative: generic "základy" without "opěr" still matches zaklady_piliru
+    // (existing behavior preserved — Phase 3 commit 1 only adds new type, does
+    // not reroute existing matches)
+    it('ZÁKLADY (without opěr) + bridge context → zaklady_piliru (unchanged)', () => {
+      expect(classifyElement('ZÁKLADY PILÍŘŮ', { is_bridge: true }).element_type)
+        .toBe('zaklady_piliru');
+    });
+
     // Building elements in a bridge project
     it('SCHODIŠŤOVÉ STUPNĚ → schodiste', () => {
       expect(classifyElement('SCHODIŠŤOVÉ STUPNĚ, Z DÍLCŮ ŽELEZOBETON DO C30/37').element_type)
@@ -489,9 +516,10 @@ describe('Element Classifier', () => {
 
   describe('getAllElementTypes', () => {
     // BUG 11: +2 new types (podkladni_beton, podlozkovy_blok)
-    it('returns 24 element types (13 bridge + 11 building)', () => {
+    // Phase 3 Gate 2a (2026-04-30): +1 zaklady_oper → 25 types (14 bridge + 11 building)
+    it('returns 25 element types (14 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(24);
+      expect(types).toHaveLength(25);
     });
 
     it('includes prechodova_deska', () => {

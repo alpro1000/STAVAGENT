@@ -136,6 +136,29 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     max_pour_rate_m3_h: 40,
     pump_typical: true,
   },
+  // Phase 3 Gate 2a (2026-04-30): zaklady_oper added as separate mostní type
+  // paralelní k zaklady_piliru. Logic identical (same horizontal foundation
+  // characteristics — Frami Xlife rámové bednění, no supports, same rebar
+  // ratios). Only label_cs differs ("Základy opěr" vs "Základy pilířů /
+  // patky"). Per Option α (full literal parallel entry per existing
+  // convention — no shared profile constants in catalog).
+  zaklady_oper: {
+    label_cs: 'Základy opěr',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
+    recommended_formwork: ['Frami Xlife', 'DOMINO', 'Tradiční tesařské'],
+    difficulty_factor: 0.9,
+    needs_supports: false,
+    needs_platforms: false,
+    needs_crane: false,
+    rebar_ratio_kg_m3: 120,
+    rebar_ratio_range: [100, 150],
+    rebar_norm_h_per_t: 40,
+    strip_strength_pct: 50,
+    orientation: 'horizontal',
+    max_pour_rate_m3_h: 40,
+    pump_typical: true,
+  },
   driky_piliru: {
     label_cs: 'Dříky pilířů / sloupy',
     rebar_category: 'beams_columns',
@@ -675,6 +698,17 @@ const KEYWORD_RULES: KeywordRule[] = [
     'plosny zaklad most', 'plošný základ most',
     'фундамент опор', 'фундамент пилон',
   ], priority: 10 },
+  // Phase 3 Gate 2a: zaklady_oper recognition. Higher priority than
+  // zaklady_piliru so "základ opěry" specifically matches zaklady_oper
+  // instead of falling through to the generic "základy" keyword. Other
+  // "opěr"-related keywords (e.g. "blok opěr") stay with zaklady_piliru
+  // to avoid changing existing classification behavior in this commit.
+  { element_type: 'zaklady_oper', keywords: [
+    'zaklad oper', 'základ opěr', 'zaklady oper', 'základy opěr',
+    'opera zaklad', 'opěra základ', 'opery zaklad', 'opěry základ',
+    'mostni opera zaklad', 'mostní opěra základ',
+    'zaklad mostni opery', 'základ mostní opěry',
+  ], priority: 11 },
   { element_type: 'driky_piliru', keywords: [
     'drik', 'dřík', 'driky pilir', 'dříky pilíř',
     'pilir most', 'pilíř most',
@@ -781,7 +815,7 @@ function normalize(text: string): string {
 
 /** Bridge element types — get priority boost in bridge context */
 const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
-  'zaklady_piliru', 'driky_piliru', 'rimsa', 'operne_zdi',
+  'zaklady_piliru', 'zaklady_oper', 'driky_piliru', 'rimsa', 'operne_zdi',
   'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'kridla_opery',
   'mostni_zavirne_zidky', 'prechodova_deska',
 ]);
@@ -1207,6 +1241,11 @@ export const REQUIRED_FIELDS: Record<StructuralElementType, RequiredFieldSpec[]>
     { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry a náklady' },
     { field: 'height_m', label_cs: 'Výška základu', severity: 'optional', reason_cs: 'ovlivňuje boční tlak a volbu bednění' },
   ],
+  // Phase 3 Gate 2a: zaklady_oper required-fields parallel zaklady_piliru
+  zaklady_oper: [
+    { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry a náklady' },
+    { field: 'height_m', label_cs: 'Výška základu', severity: 'optional', reason_cs: 'ovlivňuje boční tlak a volbu bednění' },
+  ],
   driky_piliru: [
     { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
     { field: 'height_m', label_cs: 'Výška pilíře', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak a záběry' },
@@ -1335,6 +1374,7 @@ export interface SanityRanges {
 // pozemní stavby BOQs and kept as-is.
 export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
   zaklady_piliru:   { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] },
+  zaklady_oper:     { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] }, // Phase 3 Gate 2a — same ranges as zaklady_piliru
   driky_piliru:     { volume_m3: [1, 800],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
   rimsa:            { volume_m3: [0.5, 500], height_m: [0.3, 0.8],  rebar_kg_m3: [80, 180] },
   operne_zdi:       { volume_m3: [10, 500],  height_m: [2.0, 12.0], rebar_kg_m3: [50, 130] },
@@ -1732,6 +1772,7 @@ export const ELEMENT_TZ_COMPATIBILITY: Record<
 > = {
   // ── Foundations (horizontal, no bridge-deck params) ──────────────────────
   zaklady_piliru: ['height_m', 'thickness_mm'],
+  zaklady_oper:   ['height_m', 'thickness_mm'], // Phase 3 Gate 2a — same TZ params as zaklady_piliru
   zakladova_deska: ['height_m', 'thickness_mm'],
   zakladovy_pas: ['height_m', 'thickness_mm'],
   zakladova_patka: ['height_m', 'thickness_mm'],

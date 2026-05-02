@@ -74,6 +74,7 @@ const SMART_DEFAULTS_MAP: Partial<Record<StructuralElementType, SmartDefaults>> 
   driky_piliru:         { exposure_class: 'XF4', exposure_classes: ['XF4', 'XD3'],        curing_class: '3', typical_concrete: 'C35/45', is_prestressed: false },
   opery_ulozne_prahy:   { exposure_class: 'XF2', exposure_classes: ['XC4', 'XF2'],        curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
   zaklady_piliru:       { exposure_class: 'XC2', exposure_classes: ['XC2', 'XA1'],        curing_class: '3', typical_concrete: 'C25/30', is_prestressed: false },
+  zaklady_oper:         { exposure_class: 'XC2', exposure_classes: ['XC2', 'XA1'],        curing_class: '3', typical_concrete: 'C25/30', is_prestressed: false }, // Phase 3 Gate 2a — same defaults as zaklady_piliru
   kridla_opery:         { exposure_class: 'XF2', exposure_classes: ['XC4', 'XF2'],        curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
   mostni_zavirne_zidky: { exposure_class: 'XF4', exposure_classes: ['XF4', 'XD3'],        curing_class: '3', typical_concrete: 'C30/37', is_prestressed: false },
   podlozkovy_blok:      { exposure_class: 'XF2', exposure_classes: ['XF2', 'XC4'],        curing_class: '3', typical_concrete: 'C35/45', is_prestressed: false },
