@@ -467,3 +467,100 @@ matches what the application code assumes.
 
 Single PR, both backends touched. After merge: deploy + connect to
 Cloud SQL + manual recovery + verify schema diff is empty.
+
+---
+
+## Catalog gap discovered Phase 2 (2026-04-30)
+
+After Gap #8 fix (Gate 2 Phase 2):
+
+- Catalog has 0 systems with `pour_role: 'falsework'`
+- Top 50 + VARIOKIT HD 200 moved to `formwork` / `formwork_beam`
+- Staxo 100 still `'props'` (deferred to Gate 3)
+- Catalog integrity test (`formwork-systems.test.ts:138`) updated
+  to reflect current reality: `expect(falsework.length).toBe(0)`
+  with comment marking it for Phase 3 / Gate 3 revisit
+
+**Resolution:** Reclassify Staxo 100 → `'falsework'` in Gate 3 UI
+labels work. Natural fit because UI cards distinguish „Skruž"
+(falsework, Vrstva 3b per canonical §9.3) vs „Stojky" (props,
+Vrstva 3a) anyway. Coupling Staxo 100 reclass with UI work means
+atomic refactor — no internal-only state where backend says
+„falsework" but UI still shows „Stojky".
+
+**Cascading consequences for Gate 3 implementation** (track when
+Staxo 100 reclass happens):
+
+- Catalog integrity test needs `falsework.length` ≥ 1, `props.length`
+  ≥ 1 (was ≥ 2 with Staxo 100 + UP Rosett)
+- Multiple test assertions across suite assert `Staxo 100.pour_role
+  === 'props'` — invert in lockstep
+- Orchestrator `calculateProps()` selection logic — if it filters
+  by `pour_role: 'props'`, Staxo 100 reclass changes selection
+  chain. Either expand filter to `['props', 'falsework']` or
+  restructure `output.props` field (currently holds Staxo 100 for
+  mostovka path)
+- UI cards in Gate 3 map naturally: Vrstva 3b (Staxo 100) → 🏗️
+  Skruž card; Vrstva 3a (Staxo 40 from PROP_SYSTEMS) → 🔩 Stojky
+  card
+
+**Catalog systems NOT available for falsework reclassification:**
+
+- UniKit — not in catalog
+- VARIOKIT VST — not in catalog (only VARIOKIT HD 200 + VARIOKIT
+  Mobile MSS exist)
+- Adding these = scope expansion (separate task — pull DOKA / PERI
+  catalog entries for missing falsework systems)
+
+---
+
+## Lessons learned z Gate 1 + Gate 2 stop-and-ask pattern
+
+9 stop-and-ask instances total. Each prevented downstream issues:
+
+- 6 in Gate 1 (truncations, cross-refs, scope, architectural)
+- 3 in Gate 2 (architecture refactor question, commit ordering,
+  catalog integrity test)
+
+**Pattern principle:** task specs are starting hypotheses, not
+implementation contracts. Implementation reality is authoritative.
+Stop-and-ask is fastest path because each catch prevents 1–3
+broken commits.
+
+**Concrete examples (Gate 1 + Gate 2 retrospective):**
+
+1. Gate 1 Section G — task spec said `test-data/` doesn't exist;
+   reality: it does, in repo root (not under `Monolit-Planner/`).
+   Stop-and-ask led to full Section G rewrite + decision flag
+   reassessment (KEEP_AND_ADD_V2 instead of OVERWRITE).
+
+2. Gate 1 Top 50 misclassification artifact — initial audit had
+   stale „Top 50 jako falsework je correct" line in A.3 from
+   pre-external-review draft. Caught and removed; Section A.1
+   table also annotated.
+
+3. Gate 2 Phase 2 architecture refactor question — task spec
+   example test code (`result.falsework.system.name`) implied
+   multi-layer architectural refactor (recommendFormwork return
+   shape change). Stop-and-ask landed on Variant B (narrow
+   scope), avoiding ~+200 LOC of architectural sprawl in
+   Phase 2.
+
+4. Gate 2 Phase 2 commit ordering — user-specified 7-commit
+   order had TypeScript compilation breakage between commits
+   1–3 (assigning new enum values before they exist). Stop-and-
+   ask led to corrected 4-commit atomic ordering with each
+   commit boundary green.
+
+5. Gate 2 Phase 2 catalog integrity test — predictable failure
+   after Top 50 + VARIOKIT HD reclassification (no `'falsework'`
+   systems left). Caught by full test suite run; relaxed
+   assertion with explicit deferred-to-Gate-3 comment instead
+   of guessing fix.
+
+**Practical implication for next sessions:** when a task spec
+gives example code (TypeScript snippets, expected return shapes,
+file:line references), treat it as documentation of intent — but
+verify against current code state before implementing. Mismatches
+between intent and reality are the most common source of stop-
+and-ask catches.
