@@ -202,15 +202,17 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 380.00,
     unit: 'm2',
-    description: 'Nosníková skruž Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24',
+    description: 'Nosníkové bednění Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24',
     weight_kg_m2: 25,
     pressure_kn_m2: 75,
     needs_crane: true,
     formwork_category: 'slab',
-    // Pour role: falsework (nosníky). Top 50 nese bednění (desky) — není
-    // to forma samotná, je to skruž. Pro most ho engine kombinuje s
-    // props (Staxo) od stejného výrobce.
-    pour_role: 'falsework',
+    // Pour role: formwork (nosníkové). Top 50 is the deck-side form
+    // (Vrstva 1 per canonical doc §9.2), distinct from the falsework
+    // tower below (Staxo 100 = Vrstva 3). Gate 2.1 Gap #8 corrected
+    // from 'falsework' to 'formwork' per DOKA katalog + canonical §9.1.
+    pour_role: 'formwork',
+    formwork_subtype: 'nosnikove',
   },
   {
     name: 'Dokaflex',

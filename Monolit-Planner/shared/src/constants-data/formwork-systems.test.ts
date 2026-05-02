@@ -20,10 +20,15 @@ describe('Formwork Systems Catalog — pour_role taxonomy', () => {
     expect(missing).toEqual([]);
   });
 
-  it('Top 50 is classified as falsework (nosníková skruž), not slab formwork', () => {
+  it('Top 50 is classified as formwork with subtype nosnikove (Gate 2.1 canonical §9.1)', () => {
     const top50 = findFormworkSystem('Top 50');
     expect(top50).toBeDefined();
-    expect(top50!.pour_role).toBe('falsework');
+    // Gate 2.1 Gap #8 fix: Top 50 is nosníkové bednění (Vrstva 1 per
+    // canonical §9.2), NOT falsework. DOKA katalog: Top 50 = "Nosníkové
+    // bednění Top 50". Real falsework under bridge decks is Staxo 100
+    // (Vrstva 3, pour_role='props' currently — separately classified).
+    expect(top50!.pour_role).toBe('formwork');
+    expect(top50!.formwork_subtype).toBe('nosnikove');
   });
 
   it('Dokaflex is formwork_props (slab form + integrated props)', () => {

@@ -3,10 +3,11 @@
  *
  * Reference: `test-data/tz/SO-202_D6_most_golden_test.md` (audit Section G).
  *
- * Phase 1 baseline (Gate 2.0): tests assert CURRENT behavior, including the
- * known Gap #8 BUG (Top 50 / VARIOKIT HD 200 misclassified as `pour_role:
- * 'falsework'`). Phase 2 of Gate 2 will INVERT the buggy assertions when
- * Gap #8 is fixed in `formwork-systems.ts`.
+ * Phase 2 (Gate 2.1) state: §5f mostovka assertions inverted to post-Gap-8
+ * canonical (Top 50 = formwork + nosnikove subtype per canonical §9.1).
+ * §5b zaklady_piliru + §5c opery_ulozne_prahy still snapshot CURRENT
+ * (incorrect-per-canonical) behavior — pending Phase 3 (Gate 2a mostní
+ * verification) revisit. See per-test comments for canonical-expected.
  *
  * Per `docs/CALCULATOR_PHILOSOPHY.md` §3, numeric assertions use ±10–15 %
  * tolerance. Classification (system name + pour_role) is exact.
@@ -92,15 +93,16 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       expect(plan.element.profile.needs_supports).toBe(true);
     });
 
-    it('formwork system: Top 50 (Phase 1 baseline — Gap #8 BUG documents pour_role)', () => {
+    it('formwork system: Top 50 (formwork, nosnikove) — Gap #8 RESOLVED in Gate 2.1', () => {
       const plan = planElement(input);
-      // ⚠️ Phase 1 baseline assertion. Gap #8 documents that:
-      //   - fwSystem.name = 'Top 50' (correct)
-      //   - fwSystem.pour_role = 'falsework' (BUG per canonical §9.1 — should be 'formwork')
-      // Phase 2 of Gate 2 INVERTS the pour_role assertion to 'formwork' as part
-      // of Gap #8 fix. See: AUDIT_Podpera_Terminologie.md Section C.3 Gap #8.
+      // ✅ Gap #8 resolved per canonical doc §9.1: Top 50 is nosníkové
+      // bednění (Vrstva 1), pour_role='formwork', formwork_subtype='nosnikove'.
+      // DOKA katalog: "Nosníkové bednění Top 50". The actual falsework
+      // (Vrstva 3) under bridge decks is Staxo 100, separately calculated
+      // by orchestrator via calculateProps().
       expect(plan.formwork.system.name).toBe('Top 50');
-      expect(plan.formwork.system.pour_role).toBe('falsework');
+      expect(plan.formwork.system.pour_role).toBe('formwork');
+      expect(plan.formwork.system.formwork_subtype).toBe('nosnikove');
       expect(plan.formwork.system.manufacturer).toBe('DOKA');
     });
 
