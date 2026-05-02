@@ -51,7 +51,7 @@ Bez tohoto: Gap #8 fix bude implementován bez automated regression coverage.
 
 ---
 
-## 4) Phase 3 — Gate 2a: Mostní (9 typů)
+## 4) Phase 3 — Gate 2a: Mostní (9 typů v applicable_element_types allow-list, z toho 2 s needs_supports=true — viz audit B.3)
 
 **Scope:** mostovka, dříky, opěry, křídla, přechodová deska, mostní závěr, ložisko, izolace, římsy.
 
@@ -128,6 +128,8 @@ Scope:
 | 6 | Gate 4 | Pricing split + MSS P1 + dual-write | 5-7 dní |
 | 7 | Cleanup | Remove deprecated aliases | 2-3 dny |
 
+> *Note: Duration estimates jsou orientační, ±30 % variance per philosophy doc §3 (calculator philosophy applies to project estimates also). Solo work assumed; pair / team work může zkrátit. Phase 1 P0 prerequisite je hard blocker pro Phase 2.*
+
 **Critical dependencies:**
 - Phase 1 (P0 prereq) blocks Phase 2 (no automated regression baseline = no safe Gap #8 fix)
 - Phase 5 `warnings_structured` shape blocks W1 (RED) impl
@@ -152,6 +154,8 @@ Po merge audit PR vytvořit GitHub issue:
   - Checklist míst kde existují deprecation aliases (vyplněno průběžně v Phase 6 implementation — Gate 4 work doplňuje konkrétní file:line items do checklistu)
   - Blocker dependency: public MCP launch nesmí proběhnout dokud cleanup task není closed
   - Reference na canonical sources: `docs/CALCULATOR_PHILOSOPHY.md` §7.3 + `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md`
+
+**Blocker owner:** Project owner (user) — PR merge do `main` pro MCP public launch vyžaduje manual sign-off na closed cleanup issue. Bez sign-off PR zůstává v review state, ne auto-merged. Tento manuální gate zabraňuje cleanup driftu do „nice-to-have" zóny.
 
 ### 10.2) Grep-able deprecation comments
 
@@ -193,6 +197,7 @@ Tyto items jsou tracked v `next-session.md` v root repu pro Phase 2 addressing. 
 2. **External notification ownership** (Gate 4): kdo notifikuje Portal + Registry teams? — pending
 3. **Pozemní golden coverage** (Gate 2b): vytvořit synthetic test? — pending
 4. **Section 9 cleanup timing** (Phase 7): cleanup před nebo po public MCP launch? — pending
+5. **Gate 2a scope interpretace** — Phase 3 task spec bude postavena na 9 typech (allow-list scope) nebo 2 typech (props/skruž rozhodovací scope)? Obě interpretace validní, liší se rozsah práce a duration estimate (3-5 dní pro 9, 1-2 dny pro 2). Doporučuji explicitně rozhodnout v Gate 2a task spec preamble. — pending user sign-off
 
 ---
 
