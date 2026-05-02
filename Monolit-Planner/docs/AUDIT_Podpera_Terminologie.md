@@ -30,7 +30,7 @@
 7. **Žádný odkaz** z UI tooltipů na kanonický dokument `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md`.
 8. **Tooltip s nosností/kategorií u jednotlivých systémů chybí** v UI (data v katalogu jsou, ale neexponují se).
 9. **Warnings shape je `string[]`** bez severity field (planner-orchestrator.ts:767). Pro UI red/orange/info gradient v Gate 3 je nutné zavést `warnings_structured` (deferred backlog item P1 z v4.22 už existuje pro tento účel).
-10. **⚠️ Top 50 (DOKA) a VARIOKIT HD 200 (PERI) mají v kódu `pour_role: 'falsework'`** (`formwork-systems.ts:178, :511`), což je v rozporu s DOKA katalogem (Top 50 = Nosníkové bednění) a canonical doc §7. Bug je systematický — header doc-comment (`formwork-systems.ts:25`) explicitně dokumentuje tuto klasifikaci jako záměrnou. Detail viz Gap #8 v sekci C. Vyžaduje opravu v Gate 2/3.
+10. **⚠️ CRITICAL BUG** — Top 50 (DOKA) a VARIOKIT HD 200 (PERI) mají v kódu `pour_role: 'falsework'` (`formwork-systems.ts:178, :511`), což je v rozporu s DOKA katalogem (Top 50 = Nosníkové bednění) a canonical doc §7. Bug je systematický — header doc-comment (`formwork-systems.ts:25`) explicitně dokumentuje tuto klasifikaci jako záměrnou. Detail viz Gap #8 v sekci C. Vyžaduje opravu v Gate 2/3.
 
 **Migrační složitost:** **STŘEDNÍ.** Převážná infrastruktura (`pour_role`, allow-list, MSS path) je hotová. Hlavní práce je: (a) přidat element-driven klasifikaci jako 2. zdroj pravdy, (b) cross-validovat element vs systém + emit warnings, (c) rozdělit rental do 3 řádků + přidat statický návrh, (d) UI explicit kategorie + tooltipy + cleanup HelpPanel.
 
@@ -38,7 +38,8 @@
 - 28 formwork systémů + 7 props systémů
 - 22 element types (10 mostních + 12 budovních/speciálních)
 - 21 testovacích souborů v `shared/src` (~7 907 LOC); **5 flagged**, ~3 100 LOC dotčených
-- 0 standalone golden snapshotů (vše inlined v test souborech)
+- 0 automated golden fixtures (3 manual MD reference docs v `test-data/tz/` — viz Section G)
+- ~3 100 LOC dotčených v Gate 2 fix (5 test files + `formwork-systems.ts` core, viz Section F.1 detail)
 - Externí konzumenti: 2 export sites (XLSX) + Portal sync + Registry tovPrefill; **MCP nekonzumuje formwork/props**
 
 **Doporučený split (per task answers):**
