@@ -236,7 +236,7 @@ export default function HelpPanel({ onClose }: HelpPanelProps) {
                 <li><strong>ČSN 73 0210</strong> — výztuž, oborové normy pracnosti (40–55 h/t)</li>
                 <li><strong>ČSN EN 206+A2</strong> — trvanlivost betonu, třídy expozice XC/XD/XF</li>
                 <li><strong>DIN 18218</strong> — boční tlak čerstvého betonu na bednění</li>
-                <li><strong>ČSN EN 12812</strong> — falešné bednění a dočasné konstrukce</li>
+                <li><strong>ČSN EN 12812</strong> — Podpěrná lešení — Požadavky na provedení a obecný návrh</li>
                 <li><strong>Zákoník práce §83/§116</strong> — max. směna, příplatky noc / přesčas</li>
                 <li><strong>Katalogy DOKA / PERI / NOE / ULMA</strong> — normy montáže/demontáže (h/m²)</li>
                 <li><strong>OTSKP (17 904 položek)</strong> — katalog prací pro mosty (regex 11 pravidel)</li>

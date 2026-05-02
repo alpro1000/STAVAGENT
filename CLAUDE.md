@@ -32,6 +32,43 @@
 
 ---
 
+## 📐 Calculator Philosophy (POVINNÉ ČTENÍ)
+
+**Před úpravou kalkulátoru, golden tests, acceptance criteria, nebo UI textů** — přečti:
+
+```
+docs/CALCULATOR_PHILOSOPHY.md
+```
+
+**TL;DR pozicování:**
+
+- Kalkulátor je nástroj pro **přípraváře a rozpočtáře**, ne engineering software
+- Cíl: **±10–15% přesnost** pro tendrovou kalkulaci, technologicky správný stack
+- Detailní statický návrh + přesná specifikace = **odpovědnost dodavatele** (DOKA/PERI/ULMA)
+- Spotřební materiály se počítají **procentem** (různé per element type), ne přesně
+- UI musí obsahovat **disclaimer** o orientačním odhadu
+- Acceptance criteria neváží na absolutní přesnost — váží na technologickou správnost + rule-of-thumb percentile
+
+**Důsledek pro Claude Code práci:**
+
+- ❌ Neimplementuj acceptance criteria typu „kalkulátor musí vrátit přesně X Kč"
+- ✅ Implementuj acceptance criteria typu „kalkulátor musí vrátit X v rozmezí ±15%"
+- ❌ Neabsolutuj v UI textech („NIKDY", „NUTNO", „NEPOUŽITELNÉ")
+- ✅ Používej recommendation language („doporučený", „v běžné praxi", „obvykle")
+- ❌ Nepřidávej do UI seznamu detailních komponentů (šrouby, anchory, custom adaptéry)
+- ✅ Přidávej hlavní systémy + procenta spotřebních materiálů per element type
+- ❌ Negarantuj exact pricing — kalkulátor je estimate
+- ✅ Vždy zobrazuj disclaimer „Detail u dodavatele"
+
+**Související dokumenty:**
+
+- `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md` — kanonická terminologie skruž / stojky / podpěrná konstrukce
+- `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md` — rozšíření o 3-vrstvý stack a sub-taxonomii bednění
+- `Monolit-Planner/docs/AUDIT_Podpera_Terminologie.md` — Gate 1 audit terminologie
+- `test-data/tz/` — golden test reference projekty (SO-202, SO-203, SO-207)
+
+---
+
 ## Quick Reference
 
 ```
