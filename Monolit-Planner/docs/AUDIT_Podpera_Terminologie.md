@@ -153,6 +153,7 @@ Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovní
 5. **Žádný tooltip s nosností / kategorií u systémů.** `formwork-systems.ts` má kompletní data (nosnost, `max_assembly_height_m`, `applicable_element_types`). UI je neexponuje — nejblíž je `CalculatorResult.tsx:1207` jediný Row `"Skruž"` s `plan.norms_sources.skruz` (TKP 18 reference string), žádný per-system info popover.
 
 6. **HelpPanel L239 — nepřesný překlad normy.** `frontend/src/components/calculator/HelpPanel.tsx:239`: literál `"ČSN EN 12812 — falešné bednění a dočasné konstrukce"`. Canonical doc §1 + §7: ČSN EN 12812 v české terminologii pokrývá **„podpěrná lešení / podpěrná konstrukce"**. „Falešné bednění" je doslovný překlad anglického *falsework* a v ČSN se nevyskytuje.
+   - **Status: FIXED in Gate 1 cleanup (commit ahead)** — single-string change, no logic involved, doesn't require Gate 3 UI labels work. Original wording „falešné bednění" was incorrect literal translation of English „falsework"; canonical Czech ČSN registry uses „Podpěrná lešení — Požadavky na provedení a obecný návrh".
 
 7. **Žádný odkaz z UI na canonical doc.** `HelpPanel.tsx:234–239` cituje normy jen jménem, žádný link na `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md`. `CalculatorResult.tsx` ani `CalculatorFormFields.tsx` neobsahují žádný tooltip / „info ⓘ" odkaz na kanonický slovník pojmů.
 
