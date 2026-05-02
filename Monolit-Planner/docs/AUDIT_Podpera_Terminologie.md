@@ -322,44 +322,96 @@ Current state má pronájem oddělený, ale labor (zřízení + odstranění) sl
 
 ---
 
-## G) Inventář — Golden tests & fixtures
+## G) Golden tests — inventory
 
-### G.1) Golden test discovery
+Reference: `docs/CALCULATOR_PHILOSOPHY.md` (acceptance criteria philosophy), `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md` (3-layer stack pro mostovku).
 
-- **Monolit-Planner:** **žádný** `test-data/` adresář, **žádné** `*.snap`, `*.golden.*`, `*-golden-*` soubory. **Žádné** `__fixtures__/` ani `__snapshots__/`. CLAUDE.md cituje cestu `test-data/tz/SO-202_D6_most_golden_test.md` — **tato cesta v repu NEEXISTUJE** (stale reference).
-- **Veškeré „golden" data jsou inlinovaná v test souborech:**
-  - `shared/src/classifiers/element-classifier.test.ts:241–275` — describe block *„classifyElement — real bridge project mapping"* (15 testů; real D6 most position names: *„MOSTNÍ PILÍŘE A STATIVA"*, *„MOSTNÍ NOSNÉ TRÁM KONSTR Z PŘEDPJ BET"*, *„MOSTNÍ OPĚRY A KŘÍDLA"*, atd.)
-  - `shared/src/classifiers/element-classifier.test.ts:681,692` — 2 testy *„SO-207 bug — V=605 m³"* + *„SO-207 correct — V=4000 m³"*
-  - `shared/src/classifiers/element-classifier.test.ts:842` — single test *„VP4 live regression — opěrná zeď"*
-  - `shared/src/parsers/tz-text-extractor.test.ts:19+` — 3 describe bloky *„SO-202 mostovka excerpt"* / *„SO-202 prestress excerpt"* / *„SO-202 pile excerpt"* (TZ text extraction parametry)
-  - `shared/src/calculators/element-audit.test.ts:31–56` — `FIXTURES` array (22 element types s typickými parametry)
-- **concrete-agent:** má 1 standalone golden test `concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py` — Python, scope = MCP tool testing, **NE Monolit-Planner calculator**.
+### G.1) Discovery
 
-### G.2) Per-inline-golden analysis (Variant 3 decision flag)
+**OPRAVA předchozí discovery:** Section G v commit `8d98863` nesprávně tvrdila, že `test-data/` neexistuje. Discovery byla provedena s prefixem `Monolit-Planner/`, ale `test-data/` je v ROOT repu jako sourozenec `Monolit-Planner/`. CLAUDE.md cesta `test-data/tz/SO-202_D6_most_golden_test.md` je správná.
 
-| Inline golden | Co testuje | Coupling na skruž/stojky terminologii | Decision flag |
+**Skutečná existence golden specs:**
+
+| Soubor | Velikost | Datum | Pokrytí |
 |---|---|---|---|
-| element-classifier 15-bridge mapping (L241–275) | `element_type` assignment z position names | žádný — netestuje pour_role ani formwork system | **OVERWRITE** |
-| element-classifier SO-207 sanity (L681, L692) | volume-vs-geometry kritický rozpor (mostovka) | žádný | **OVERWRITE** |
-| element-classifier VP4 regression (L842) | param extraction rejection (bridge params na opěrnou zeď) | žádný | **OVERWRITE** |
-| tz-text-extractor SO-202 (L19+) | param extraction (concrete class, span, exposure, pilota Ø) | žádný | **OVERWRITE** |
-| element-audit FIXTURES 22-type (L31) | basic profile invariants per element_type | žádný — neasertuje formwork system jméno ani pour_role | **OVERWRITE** |
+| `test-data/tz/SO-202_D6_most_golden_test.md` | 12 KB | 2026-04-26 | D6 most, ~8 element types |
+| `test-data/tz/SO-203_D6_most_golden_test_v2.md` | 39 KB | 2026-04-26 | D6 most, ~12 element types, 3-way TZ↔B3↔TKP |
+| `test-data/tz/SO-207_D6_estakada_golden_test_v2.md` | 41 KB | 2026-04-26 | D6 estakáda, ~15 element types, MSS path |
 
-**Konzistentní zjištění:** všech 5 inlined golden datasetů **netestuje `pour_role` klasifikaci ani formwork system labels**. Testy, které tyto věci testují (per Section F.2 Category C — `formwork-systems.test.ts`, `element-classifier.test.ts:633–642`), jsou unit tests klasifikátoru, ne golden tests. **Žádný z inline goldenů není ohrožen Gate 2/3 terminology change.**
+**Format:** Markdown reference docs s explicit golden assertions, **ne** automated test fixtures. Manual verification proti calculator output.
+
+**Žádné:** `*.snap`, `*.golden.*`, `__fixtures__/`, `__snapshots__/` adresáře. Žádný automated golden test framework v Monolit-Planner scope.
+
+**Existuje v jiném scope:** `URS_MATCHER_SERVICE/backend/tests/fixtures` (URS classifier scope, ne calculator scope) + `concrete-agent/packages/core-backend/tests/test_mcp_golden_so202.py` (Python, MCP tool scope).
+
+### G.2) Per-test analysis
+
+**SO-202 — D6 Karlovy Vary, Most na I/6 km 0.900**
+- ~8 element types: pilota Ø900, zaklady_piliru, opery_ulozne_prahy, kridla_opery, driky_piliru, mostovkova_deska, prechodova_deska, rimsa
+- 24 known bugs registered (P0 / P1 / P2 priorities)
+- Section 5 obsahuje explicit golden assertions per prvek (curing days per třída ošetř., lateral pressure, costs)
+- **v4.21.0 Re-Snapshot section (L18–30)** explicitně dokumentuje Top 50 jako `pour_role='falsework'` — viz Gap #8 (sekce C.3)
+
+**SO-203 — D6, Most na I/6 km 2.450**
+- ~12 element types, three-way cross-check (TZ ↔ B3 ↔ TKP)
+- 47+ YAML assertion blocks
+- **v4.21.0 Re-Snapshot** stejná Top 50 `'falsework'` classification jako SO-202 (Gap #8)
+
+**SO-207 — D6, Estakáda I/6 km 4.450–4.650**
+- ~15 element types, MSS path (posuvná skruž), asymetrický most LM 9 polí + PM 10 polí
+- `pour_role='mss_integrated'` je canonical-correct (per Section 9.2 — MSS je samostatná vrstva integrující všechny 3 layers)
+- **NENÍ ovlivněn Gap #8** — Top 50 falsework classification se netýká MSS path
+
+**Decision flag per Variant 3 (per-test rozhodnutí post-Gate-1):**
+
+| Soubor | Flag | Důvod |
+|---|---|---|
+| SO-202 | KEEP_AND_ADD_V2 | v4.21.0 Re-Snapshot section codifies buggy terminology — fix v Gate 2 vyžaduje v4.22.0 Re-Snapshot section dokumentující terminology correction |
+| SO-203 | KEEP_AND_ADD_V2 | Stejně jako SO-202 |
+| SO-207 | OVERWRITE | MSS path není ovlivněn Gap #8, lze přepsat bez problémů |
 
 ### G.3) Reference projects status
 
-- **SO-202_D6_most_golden_test:** **NEEXISTUJE jako automatizovaný golden test.** CLAUDE.md + `tz-text-extractor.test.ts:4` (komentář *„Tested against real SO-202/203/207 TZ excerpts from golden test data"*) referují název, ale samotný .md spec / runner v repu chybí. Existující SO-202 testy jsou jen TZ-excerpt parsing v `tz-text-extractor.test.ts`, **ne end-to-end calculator output verification**.
-- **VP4 FORESTINA:** **NEEXISTUJE jako golden test.** Pouze 1 regression test (`element-classifier.test.ts:842`) ověřuje param-extraction rejection, žádný end-to-end calculator output verifier.
-- **⚠️ Gap pro Gate 2:** Gate 2/3 fix Gap #8 (Top 50 + VARIOKIT HD 200 reclassification) změní formwork-selection chain pro mostovka. **Bez automatizovaného golden testu pro mostovka end-to-end output není možné mechanicky verify, že kalkulátor po opravě produkuje correct výsledek.** Manual inspection per scenario only.
+SO-202, SO-203, SO-207 **existují** jako Markdown reference dokumenty v `test-data/tz/`, **ne** jako automated tests.
+
+**Format:** TZ source + golden assertion blocks (YAML / Markdown) + bug registry per project.
+
+**Coverage:** 3 mostní projekty (D6 dálnice), všechny předpjaté betonové, varieta technologií (pevná skruž, MSS).
+
+**Reproducibilita:** NEAUTOMATIZOVANÁ — manual verification proti calculator output. **Gap pro Gate 2:** žádný automated framework, který by parsoval tyto MD soubory a verifikoval calculator output proti nim.
+
+**Doporučení (consistent s Calculator Philosophy):**
+- V rámci Gate 2.0 zvážit konverzi 3 MD specs na automated Vitest fixtures pro regression coverage Gap #8 fix a budoucích změn
+- Acceptance criteria: technologická správnost (správný stack per element type per Section 9.2) + tolerance ±10–15 % pro numerické hodnoty
+- Bez exact precision (per philosophy §3 — kalkulátor je orientační odhad pro tendrovou kalkulaci)
 
 ### G.4) Coverage matrix
 
-- **22 element types — basic profile invariants:** všech 22 pokryté v `element-audit.test.ts:31` FIXTURES.
-- **Formwork-selection chain coverage:** velmi úzká:
-  - `mostovkova_deska` — `element-classifier.test.ts:265, 633–642` (3 testy, ale per F.2 Category C jsou enforce-buggy)
-  - `operne_zdi` — VP4 regression L842 (jen rejection, ne formwork verification)
-  - **ostatních 20 typů:** bez end-to-end formwork-selection golden testu
-- **Risk pro Gap #8 fix:** Top 50 / VARIOKIT HD 200 reclassification ovlivní mostovka selection chain (currently locked by tests v F.2 Category C). Tests L633–642 budou invertovány. **Pro 20 ostatních element types pokrytých Top 50 fallback path neexistuje golden test, který by post-fix reverify output.** Gate 2 bez automated golden = manual smoke testing only.
+Pokrytí 22 element types golden specs:
+
+| Element type | SO-202 | SO-203 | SO-207 | Coverage |
+|---|---|---|---|---|
+| pilota | ✅ Ø900 | ✅ Ø1200 | ✅ mix | Plné |
+| zaklady_piliru | ✅ §5b | ✅ | ✅ | Plné |
+| opery_ulozne_prahy | ✅ §5c | ✅ | ✅ | Plné |
+| kridla_opery | ✅ | ✅ | ✅ | Plné |
+| driky_piliru | ✅ §5d–e | ✅ | — | Částečné |
+| mostovkova_deska | ✅ §5f fixed | ✅ fixed | ✅ MSS | Plné |
+| prechodova_deska | ✅ | ✅ | ✅ | Plné |
+| rimsa | ✅ | ✅ | ✅ | Plné |
+| mostni_zaver | — | ✅ | ✅ | Částečné |
+| lozisko | — | ✅ | — | Slabé |
+| izolace_mostovky | — | ✅ | — | Slabé |
+| vozovka | — | ✅ | ✅ | Částečné |
+| svodidlo | — | ✅ | ✅ | Částečné |
+| odvodneni | — | ✅ | — | Slabé |
+| PHS | — | — | ✅ | Slabé |
+| monitoring | — | — | ✅ | Slabé |
+| **Pozemní stavby** (zakladova_deska, sloup pozemní, monolitická stěna, schodiště, atd.) | — | — | — | **Žádné** |
+
+**Pozorování:**
+- Mostní prvky pokryté 1–3 referenčními projekty (relativně dobré)
+- Pozemní prvky bez golden coverage — pro Gate 2b (budovní) nutno spoléhat na manual smoke testing nebo vytvořit nový golden spec (např. VP4 FORESTINA pokud bude dostupný)
+- Risk pro Gate 2: prvky bez goldenu (zejména pozemní) budou fix-nuty bez automated verification
 
 <!-- CONTINUED — section H, migration plan to follow -->
