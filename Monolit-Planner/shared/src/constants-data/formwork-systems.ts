@@ -538,14 +538,19 @@ export const FORMWORK_SYSTEMS: FormworkSystemSpec[] = [
     disassembly_ratio: 0.35,
     rental_czk_m2_month: 850.00,
     unit: 'm2',
-    description: 'Inženýrská stavebnice PERI HD 200 pro mosty a tunely (VGK, VGB, VST moduly) — PERI ekvivalent nosníkové skruže Top 50',
+    description: 'Inženýrská stavebnice PERI HD 200 pro mosty a tunely (VGK, VGB, VST moduly) — horizontální nosníky NAD falsework věží (Vrstva 2 per canonical §9.2), PERI ekvivalent Top 50 H20 accessory',
     weight_kg_m2: 80,
     needs_crane: true,
     // Slab category so it passes the horizontal suitableCategories gate
     // for mostovka. applicable_element_types allow-list still keeps it
     // out of building stropni_deska pool.
     formwork_category: 'slab',
-    pour_role: 'falsework',
+    // Pour role: formwork_beam (Vrstva 2 per canonical §9.2). VARIOKIT
+    // HD 200 is the horizontal load-spreading beam component sitting
+    // ABOVE falsework towers (Staxo 100 / VARIOKIT VST) and BELOW deck
+    // formwork. Gate 2.1 Gap #8 corrected from 'falsework' to
+    // 'formwork_beam' per DOKA / PERI catalog distinction.
+    pour_role: 'formwork_beam',
     applicable_element_types: ['mostovkova_deska', 'rigel'],
   },
   {
