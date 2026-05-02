@@ -218,6 +218,8 @@ Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovní
 - L566–600 strategy comparison columns: `'Formwork'`, `'Crew'`, `'Sets'`, `'Days'`, `'Formwork Labor (Kč)'`, `'Rental (Kč)'`, `'Total Labor (Kč)'`
 - **Žádný řádek „Zřízení"** ani **„Odstranění"** jako samostatná položka; **žádný řádek „Statický návrh / projekt od výrobce"**
 
+**Open item pro Gate 4 task spec:** Field names mezi internal `PlannerOutput.costs` (flat `props_rental_czk`) a Excel export (nested `plan.props.rental_cost_czk`) se liší. Před implementací dual-write deprecation aliasů v Gate 4 je nutné disambiguovat — buď konsolidovat na jeden naming convention, nebo explicitně mapovat oba do alias matrix. Bez tohoto kroku Gate 4 dual-write nebude kompletní.
+
 ### D.3) CalculatorResult cost summary (`frontend/src/components/calculator/CalculatorResult.tsx:990–1160`)
 
 - L1009–1016 cost-row labels per `pour_role`: `'Skruž (nosníky — práce)'` / `'Bednění + stojky (práce)'` / `'Bednění (práce)'` + analogické rental rows (`'Pronájem skruže (nosníky)'` / `'Pronájem bednění + stojky'` / `'Pronájem bednění'`)
