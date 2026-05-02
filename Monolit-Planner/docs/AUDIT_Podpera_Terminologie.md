@@ -58,9 +58,9 @@
 
 | Systém | Výrobce | pour_role | Kanonická kategorie | Nosnost / pressure | applicable_element_types |
 |---|---|---|---|---|---|
-| **Top 50** | DOKA | `falsework` ⚠️ | **Bednění (nosníkové) ⚠️** | nosníkové bednění mostovky (NE skruž — je to bednění stěn/svislých konstrukcí, použitelné jako stěnové bednění mostovky pouze ve formě svislé desky) | [mostovkova_deska, rigel] ⚠️ — viz Gap #8 |
-| **VARIOKIT HD 200** | PERI | `falsework` ⚠️ | **Nosník (Heavy-Duty Truss Girder) ⚠️** | primárně horizontální nosník nad falsework věží (VARIOKIT VST), ne falsework sám o sobě | [mostovkova_deska, rigel] ⚠️ — pouze ve smyslu „horizontální překlenutí nad falsework", ne sám falsework |
-| **Staxo 100** | DOKA | `props` | **Stojky / pod mostem skruž** | 100 kN/noha (1000 kN/věž) | [mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste] |
+| **Top 50** | DOKA | `falsework` ⚠️ | **Bednění (Vrstva 1, nosníkové) ⚠️ — viz canonical §9.2** | nosníkové bednění mostovky (NE skruž — je to bednění stěn/svislých konstrukcí, použitelné jako stěnové bednění mostovky pouze ve formě svislé desky) | [mostovkova_deska, rigel] ⚠️ — viz Gap #8 |
+| **VARIOKIT HD 200** | PERI | `falsework` ⚠️ | **Nosné nosníky (Vrstva 2) ⚠️ — viz canonical §9.2** | primárně horizontální nosník nad falsework věží (VARIOKIT VST), ne falsework sám o sobě | [mostovkova_deska, rigel] ⚠️ — pouze ve smyslu „horizontální překlenutí nad falsework", ne sám falsework |
+| **Staxo 100** | DOKA | `props` | **Stojky / pod mostem skruž (Vrstva 3, těžká podpěra / skruž)** | 100 kN/noha (1000 kN/věž) | [mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste] |
 | **UP Rosett Flex** | PERI | `props` | **Stojky / heavy shoring** | max 25 m výška | [mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste] |
 | **Dokaflex** | DOKA | `formwork_props` | **Stojky + bednění** (Dokaflex 20 = budovní strop) | <5.5 m | [stropni_deska, zakladova_deska, zakladovy_pas, pruvlak] |
 | **SKYDECK** | PERI | `formwork_props` | **Stojky + bednění** | <6 m | [stropni_deska, zakladova_deska, pruvlak] |
@@ -69,7 +69,7 @@
 | **DOKA MSS** | DOKA | `mss_integrated` | **Posuvná skruž (MSS dolní)** | reuse 0.35 | [mostovkova_deska, rigel] |
 | **VARIOKIT Mobile** | PERI | `mss_integrated` | **Posuvná skruž (MSS dolní)** | reuse 0.35 | [mostovkova_deska, rigel] |
 | Frami Xlife | DOKA | `formwork` | Bednění (stěnové, 60 kN/m²) | — | wall-default |
-| Framax Xlife | DOKA | `formwork` | Bednění (120 kN/m²) | — | wall |
+| Framax Xlife | DOKA | `formwork` | Bednění (Vrstva 1, rámové, 120 kN/m²) | — | wall |
 | TRIO | PERI | `formwork` | Bednění (stěny mostů, opěry) | — | wall |
 | MAXIMO | PERI | `formwork` | Bednění (stěny budov) | — | wall |
 | DOMINO | PERI | `formwork` | Bednění (lehké manuální 24 kg/m²) | — | wall |
