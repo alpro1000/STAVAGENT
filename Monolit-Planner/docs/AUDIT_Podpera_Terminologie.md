@@ -437,4 +437,50 @@ Pokrytí 22 element types golden specs:
 - Pozemní prvky bez golden coverage — pro Gate 2b (budovní) nutno spoléhat na manual smoke testing nebo vytvořit nový golden spec (např. VP4 FORESTINA pokud bude dostupný)
 - Risk pro Gate 2: prvky bez goldenu (zejména pozemní) budou fix-nuty bez automated verification
 
-<!-- CONTINUED — section H, migration plan to follow -->
+## H) External interfaces — inventory
+
+Reference: `docs/CALCULATOR_PHILOSOPHY.md` §7.3 (MCP responses disclaimer), Variant 3 z pre-implementation interview (dual-write deprecation aliases do 2026-07-29).
+
+### H.1) Excel export
+
+Calculator output exposuje terminology přes Excel export (`exportPlanXLSX.ts:L20-21, L273-356`). Field names a labels:
+
+- **Cost columns** — `formwork_labor_czk`, `formwork_rental_czk`, `props_labor_czk`, `props_rental_czk` (z `PlannerOutput.costs`)
+- **System labels** — switched per `pour_role`: 'Skruž (nosníky)' 🏗️, 'Bednění + stojky' 📦, 'Posuvná skruž (MSS)' 🌉, 'Bednění' 📦
+- **Excel-specific naming** — `plan.props.rental_days`, `plan.props.rental_cost_czk` (viz Open item Gate 4 prerequisite v Section D.2)
+
+### H.2) Portal sync (`/api/portal-projects`)
+
+Aktuální status z paměti: 401 issue (cookie SameSite). Schema zatím nepřesně dokumentován — out-of-scope tohoto auditu, připraveno pro Gate 4 detail.
+
+Známé exposed fields (z code analysis):
+- `formwork_system_name` (string, current naming convention)
+- `pour_role` (string, viz Gap #8)
+- Cost aggregates (subset z `PlannerOutput.costs`)
+
+### H.3) MCP responses
+
+Calculator MCP tool responses obsahují plný `PlannerOutput` JSON, včetně:
+- `costs.*` (10 fields)
+- `formwork.system.name`, `formwork.system.pour_role`
+- `props.system.name`, `props.system.pour_role`
+- `warnings: string[]` (no severity, viz Gap #9 v Section 0 / cross-ref Section E.4)
+
+Per `CALCULATOR_PHILOSOPHY.md` §7.3, MCP responses **musí obsahovat** `accuracy_note` field — aktuálně **nikde neimplementováno** (gap pro Gate 4).
+
+### H.4) Deprecation strategy (Variant 3 z pre-implementation interview)
+
+Per uživatelské rozhodnutí v pre-implementation interview:
+- Excel/JSON/MCP outputy: **staré klíče zůstávají** + nové klíče jsou **přidány vedle** (dual-write)
+- Každý starý klíč v kódu označen komentářem `// DEPRECATED until 2026-07-29`
+- Cleanup task = **blocking prerequisite pro public MCP launch**
+- Detail v `Monolit-Planner/docs/MIGRATION_PLAN_GATE2_TO_GATE4.md` (separate document)
+
+### H.5) Open items pro Gate 4 task spec
+
+1. **Excel field names disambiguation** (D.2 already flagged)
+2. **MCP `accuracy_note` field** — implementovat per philosophy §7.3
+3. **External consumer notification ownership** — kdo notifikuje Portal sync + Registry teams o deprecation timeline 2026-07-29? Ownership decision needed před spuštěním Gate 4 implementation.
+4. **Portal sync schema documentation** — schema není přesně zdokumentované; před Gate 4 nutno provést detailní inventory exposed fields.
+
+<!-- CONTINUED — Section I migration plan, J cleanup tracking to follow -->
