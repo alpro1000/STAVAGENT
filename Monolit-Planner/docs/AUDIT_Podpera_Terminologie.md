@@ -313,12 +313,29 @@ Current state má pronájem oddělený, ale labor (zřízení + odstranění) sl
 - `shared/src/calculators/lateral-pressure.test.ts` — sort stability MOCK_SYSTEMS using `formwork_category` (per sub-agent inventory F); pokud Gate 2 přidá `kategorie` axis nebo přejmenuje category, sort order může selhat
 - `shared/src/calculators/planner-orchestrator.test.ts` — strategy comparison test L100–136 + cost-split assertions L115–128 (pokud Gate 4 split rozdělí `formwork_labor_czk`/`props_labor_czk` na zřízení+pronájem+odstranění+statický návrh, struktura se rozšíří — současná assertions zůstanou, dual-write je zachytí)
 
-### F.3) Testing infrastructure observations
+### F.3) Critical observation — Historical root of Gap #8
 
-- **Žádné committed snapshots** (žádný `__snapshots__/` adresář v repu).
-- **Žádný explicit fixtures adresář** — test data inlinováno v každém souboru.
-- **Tests asserting `pour_role` directly:** Ano — `formwork-systems.test.ts` (4 explicitní pour_role assertions) + `element-classifier.test.ts` (recommend-formwork pour_role-aware tests L630+).
-- **⚠️ Historický důvod Gap #8 nalezen:** `element-classifier.test.ts:630` komentář *„Terminology Commit 2 (2026-04-17): selector honors pour_role +"* + tests na L633–642 + L672 + `formwork-systems.test.ts:23–26` + L66–67 — kombinace explicitně **enforces** Top 50 / VARIOKIT HD 200 → `falsework` jako canonical. Tyto testy byly napsány pod jinou interpretací canonical doc (před externím review proti DOKA Xpress 2/2020 + asb-portal + canonical doc §7 TL;DR). Bug je tedy **systémový a synchronní** — kódová klasifikace + tests + popisy + komentáře byly postaveny pod nesprávnou interpretací společně. Gap #8 fix v Gate 2/3 vyžaduje invertovat assertions v dotčených testech (per Category C).
+**Terminology Commit 2 (2026-04-17)** byl koordinovaný fix Bug #5 z SO-202 audit (2026-04-16), realizovaný uživatelem.
+
+**Před fix-em:** `recommendFormwork(mostovkova_deska, h=7.8)` vracel Staxo 100 jako primary `fwSystem`. To byl skutečný bug — Staxo 100 je load-bearing tower (DOKA term, viz canonical doc §9.3), ne formwork. Calculator míchal vrstvy.
+
+**Intent fix-u byl správný:** oddělit formwork pool (Top 50) od props pool (Staxo 100 / Staxo 40) pro mostovkovou desku.
+
+**Side-effect fix-u:** terminologie `'falsework'` přiřazená Top 50 v `pour_role` je v rozporu s:
+- DOKA katalogem (Top 50 = „Nosníkové bednění" = formwork, viz canonical doc §9.1)
+- Canonical doc §7 TL;DR (*„Top 50 je skruž? — NE. Je to bednění, ne podpora."*)
+
+**Codifying míst:**
+- `formwork-systems.test.ts:23–26` a :66–67 — explicit `pour_role` assertions pro Top 50 / VARIOKIT HD 200
+- `element-classifier.test.ts:630–642` — komentář *„Terminology Commit 2 (2026-04-17): selector honors pour_role + applicable_element_types allow-list"*
+- `formwork-systems.ts:25, 162–178, 170, 496–511, 504` — code + descriptions
+- 3 golden specs (`test-data/tz/SO-202_D6_most_golden_test.md`, `SO-203_D6_most_golden_test_v2.md`, `SO-207_D6_estakada_golden_test_v2.md`) v4.21.0 Re-Snapshot sekce
+
+**Implikace pro Gate 2 fix Gap #8:**
+
+Fix musí **zachovat intent** Terminology Commit 2 (oddělení vrstev — Top 50 nahoře pro bednění, Staxo 100 / Staxo 40 dole pro podpěru) a **opravit terminologii**.
+
+Plná 3-vrstvá taxonomie pro mostovku je definována v canonical doc Section 9.2. Konkrétní implementation strategy (jak měnit `pour_role` enum, jak invertovat assertions v testech, jak v4.22.0 Re-Snapshot v golden specs) je **scope Gate 2 task spec**, ne tohoto auditu.
 
 ---
 
