@@ -483,4 +483,48 @@ Per uživatelské rozhodnutí v pre-implementation interview:
 3. **External consumer notification ownership** — kdo notifikuje Portal sync + Registry teams o deprecation timeline 2026-07-29? Ownership decision needed před spuštěním Gate 4 implementation.
 4. **Portal sync schema documentation** — schema není přesně zdokumentované; před Gate 4 nutno provést detailní inventory exposed fields.
 
-<!-- CONTINUED — Section I migration plan, J cleanup tracking to follow -->
+---
+
+## Konec auditu — pointers k souvisejícím dokumentům
+
+Tento audit dokumentuje **současný stav** kódu, terminologie, testů a external interfaces (Gate 1 inventory).
+
+Pro **forward-looking content** (Phase 0-7 plan, migration strategy, cleanup tracking, decision log) viz separate document:
+
+📋 **Migration plan:** `Monolit-Planner/docs/MIGRATION_PLAN_GATE2_TO_GATE4.md`
+- Phase 0-7 detail s acceptance criteria a duration estimates
+- Cleanup tracking (GitHub issue spec, grep-able deprecation pattern, three independent reminders)
+- Decision log s 5 open items pro user sign-off před Phase 1 spuštěním
+
+📐 **Calculator philosophy:** `docs/CALCULATOR_PHILOSOPHY.md`
+- Pozicování (přípravář-tool, ±10–15 % accuracy, ne engineering software)
+- Filosofie spotřebních materiálů (procentem per element type)
+- Acceptance criteria philosophy pro Gate 2/3/4
+
+📚 **Canonical terminology:** `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md` + `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md`
+- Skruž / stojky / podpěrná konstrukce taxonomie (ČSN EN 12812 + TKP 18)
+- 3-vrstvý stack pro mostovku (Vrstva 1 bednění / Vrstva 2 nosníky / Vrstva 3 podpěra)
+- DOKA/PERI ekvivalenty per vrstva
+
+🧪 **Golden test references:**
+- `test-data/tz/SO-202_D6_most_golden_test.md`
+- `test-data/tz/SO-203_D6_most_golden_test_v2.md`
+- `test-data/tz/SO-207_D6_estakada_golden_test_v2.md`
+- Markdown reference docs (ne automated fixtures, viz Section G)
+- Pokrývají mostní element types, žádné pozemní coverage
+
+---
+
+**Status:** Gate 1 audit closed po merge tohoto PR. Migration plan aktivní jako separate document. 5 open items v Decision log čekají na user sign-off před Phase 1 spuštěním.
+
+**Datum closeout:** 2026-04-29
+**Branch:** `claude/add-terminology-docs-av2bX`
+**Commits Gate 1:** 26 total
+- 1 code change (`HelpPanel.tsx:239` string fix, Gap #6 FIXED in Gate 1 cleanup)
+- 25 docs commits (audit content přes 3 review rounds + migration plan separate file + calculator philosophy doc + canonical doc Section 9 + `CLAUDE.md` reference patch)
+
+Iterativní review process (3 external review rounds + 6 „stop-and-ask" instances) byl deliberate quality gate — předešel cementing 5+ critical issues do Gate 2 foundation.
+
+---
+
+**Konec auditu Gate 1.**
