@@ -233,6 +233,7 @@ Canonical doc §8 specifikuje, že pronájem skruže / stojek se v rozpočtu **r
 - **Pronájem:** ✓ je separate (`formwork_rental_czk`, `props_rental_czk`, `mss_rental_czk`).
 - **Statický návrh od výrobce:** **neexistuje žádný field** na `PlannerOutput.costs` ani v `FormworkSystemSpec`. Canonical doc §6 + §8 vyžaduje pro skruž a demolici samostatnou pricing položku.
 - **MSS mobilization/demobilization:** existují jako separate fields, ale **flowují do agregátu `formwork_labor_czk`** — Excel ani cost-summary je nezobrazí jako samostatné řádky.
+  - **Priorita: P1 (eskalováno z P2)** — toto není jen gap, je to pricing distortion bug. Pokud uživatel srovnává pevnou skruž vs. MSS v strategy comparison, MSS mobilizace se „schovává" do `formwork_labor_czk` a srovnání nákladů je zkreslené ve prospěch MSS. Fix v Gate 4 musí explicitně oddělit MSS mobilizační/demobilizační náklady do separate fields.
 
 ### D.5) Migrační princip pro Gate 4
 
