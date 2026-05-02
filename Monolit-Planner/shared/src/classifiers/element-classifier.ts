@@ -1094,7 +1094,34 @@ export function recommendFormwork(
   );
 
   if (filtered.suitable.length > 0) {
-    return filtered.suitable[0]; // Cheapest suitable
+    // Phase 3 Gate 2a (commit 3 of 4 — 2026-04-30): extend Option W
+    // principle to vertical branch with pressure-filter safety preserved.
+    //
+    // Background (parallel to Commit 2 horizontal fix): vertical elements
+    // returned the cheapest pressure-survivor (filtered.suitable[0]). For
+    // opery_ulozne_prahy this picked COMAIN (ULMA) over canonical TRIO
+    // (PERI) recommended[0]; for operne_zdi it picked DUO over TRIO.
+    //
+    // Fix: prefer ELEMENT_CATALOG.recommended_formwork[0] AMONG pressure-
+    // survivors. DIN 18218 safety filter still applied first (filtered.
+    // suitable is the pre-filtered pool); recommended[0] only wins if it
+    // SURVIVED the pressure filter. If it failed pressure → fall back to
+    // cheapest survivor (existing behavior preserved).
+    //
+    // Universal allow-list semantics not relevant here because filtered.
+    // suitable already excludes systems whose applicable_element_types
+    // exclude this type (handled upstream in getSuitableSystemsForElement
+    // + filterFormworkByPressure pipeline).
+    const recommendedName = profile.recommended_formwork?.[0];
+    if (recommendedName) {
+      const recommendedSurvivor = filtered.suitable.find(
+        s => s.name === recommendedName,
+      );
+      if (recommendedSurvivor) {
+        return recommendedSurvivor;
+      }
+    }
+    return filtered.suitable[0]; // Cheapest survivor (existing fallback)
   }
 
   // Fallback: static recommendation (should rarely happen — tradiční is always available)

@@ -70,14 +70,16 @@ describe('Golden — SO-202 D6 most na I/6 km 0,900', () => {
       concrete_class: 'C30/37',
     };
 
-    it('formwork system: current returns COMAIN (Phase 1 baseline; canonical §5c expects TRIO/Framax — revisit Phase 3)', () => {
+    it('formwork system: TRIO (rámové, pour_role=formwork) — Phase 3 RESOLVED per canonical §9.4', () => {
       const plan = planElement(input);
-      // ⚠️ Phase 1 baseline snapshot: current selector returns COMAIN (ULMA)
-      // for opery_ulozne_prahy. Per canonical SO-202 §5c expected output,
-      // canonical answer is TRIO or Framax Xlife (rámové vertikální). This
-      // is a separate classification bug from Gap #8 — manufacturer
-      // preference / vendor mix issue. Revisited in Phase 3.
-      expect(plan.formwork.system.name).toBe('COMAIN');
+      // ✅ Phase 3 Gate 2a (commit 3 of 4) resolved: vertical selector now
+      // respects ELEMENT_CATALOG.recommended_formwork[0] AMONG pressure-
+      // survivors. TRIO is canonical for opery_ulozne_prahy per §9.4 +
+      // SO-202 §5c expected output (PERI rámové vertikální). COMAIN was
+      // previously chosen by cheapest-among-pressure-survivors sort —
+      // selector now bypasses cheapest-sort when canonical recommended[0]
+      // survived pressure filter (DIN 18218 safety preserved).
+      expect(plan.formwork.system.name).toBe('TRIO');
       expect(plan.formwork.system.pour_role).toBe('formwork');
     });
   });

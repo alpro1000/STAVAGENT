@@ -193,6 +193,32 @@ describe('Element Classifier', () => {
       expect(system.name).toBe('Frami Xlife');
     });
 
+    // Phase 3 Gate 2a (commit 3 of 4) — vertical Option W extension
+    // regression tests. Before this commit, vertical branch returned
+    // cheapest pressure-survivor (COMAIN/DUO won over canonical TRIO/
+    // Frami Xlife). Selector now respects recommended_formwork[0] among
+    // pressure-survivors (DIN 18218 filter still applied first).
+    it('recommends TRIO for opery_ulozne_prahy WITH height_m (Phase 3 vertical fix)', () => {
+      const system = recommendFormwork('opery_ulozne_prahy', 4);
+      expect(system.name).toBe('TRIO');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends Frami for kridla_opery WITH height_m h<3m (Phase 3 vertical fix, Frami within max_pour_height)', () => {
+      // h<3m so Frami Xlife (max_pour_height_m: 3.0) survives pressure
+      // filter and wins as recommended[0]. For h>3m Frami fails pressure
+      // → fallback to cheapest survivor (design intent per Q3 decision).
+      const system = recommendFormwork('kridla_opery', 2.5);
+      expect(system.name).toBe('Frami Xlife');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends TRIO for operne_zdi WITH height_m (Phase 3 vertical fix — VP4 FORESTINA pre-empted from Phase 4)', () => {
+      const system = recommendFormwork('operne_zdi', 1.75);
+      expect(system.name).toBe('TRIO');
+      expect(system.pour_role).toBe('formwork');
+    });
+
     it('recommends cornice formwork for rimsa', () => {
       const system = recommendFormwork('rimsa');
       expect(system.name).toBe('Římsové bednění T');

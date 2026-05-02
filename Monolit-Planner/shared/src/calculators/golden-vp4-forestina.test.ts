@@ -48,15 +48,20 @@ describe('Golden — VP4 FORESTINA opěrná zeď', () => {
     expect(plan.element.type).toBe('operne_zdi');
   });
 
-  it('formwork system: current returns DUO (Phase 1 baseline; canonical §A.1 expects Framax Xlife — revisit Phase 4)', () => {
+  it('formwork system: TRIO (rámové, pour_role=formwork) — Phase 4 pre-empted by Phase 3 Commit 3 vertical Option W', () => {
     const plan = planElement(input);
-    // ⚠️ Phase 1 baseline snapshot: current selector returns DUO (PERI lehké
-    // rámové, 22 kg/m²) for operne_zdi. Per audit catalog A.1 + canonical
-    // §9.4, canonical answer is Framax Xlife (DOKA rámové). This is a
-    // classification choice (lightweight vs standard rámové) that will be
-    // revisited in Phase 4 (Gate 2b pozemní verification). Unaffected by
-    // Gap #8.
-    expect(plan.formwork.system.name).toBe('DUO');
+    // ✅ Phase 3 Commit 3 pre-emption: VP4 FORESTINA operne_zdi updated
+    // from Phase 1 baseline (DUO observed) to canonical TRIO per
+    // ELEMENT_CATALOG.recommended_formwork[0] = ['TRIO', 'Framax Xlife',
+    // 'MAXIMO', 'Frami Xlife']. Vertical Option W extension caused this
+    // pre-emption (was originally Phase 4 Gate 2b scope).
+    //
+    // Note: Audit Section A.1 mentioned Framax Xlife as canonical for
+    // opěrné zdi, but actual repo convention per ELEMENT_CATALOG is TRIO
+    // (PERI rámové) first, Framax (DOKA) second. Both valid; preference
+    // is repo-level decision. Audit Section 9.3 mapping table will be
+    // updated in Phase 5 closeout to reflect actual convention.
+    expect(plan.formwork.system.name).toBe('TRIO');
     expect(plan.formwork.system.pour_role).toBe('formwork');
   });
 
