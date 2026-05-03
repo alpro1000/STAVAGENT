@@ -1,7 +1,7 @@
 {
   "objekt": "D",
   "schema_version": "1.0",
-  "phase_1_step": 2,
+  "phase_1_step": 3,
   "rooms": [
     {
       "code": "S.D.09",
@@ -6717,5 +6717,1183 @@
       "summary": "starý VV missing ~2000 m² of cement screed: 4 objekty × ~930 m² floor each → komplex screed ≈ 3000 m², VV reports only 1058 m². Confirms customer's complaint that the VV is incomplete.",
       "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit"
     }
+  ],
+  "skladby": {
+    "CF10": {
+      "code": "CF10",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.ceiling_tag"
+      ],
+      "kind": "podhled",
+      "label": "podhled balkónu a objektových vstupů",
+      "celkova_tloustka_mm": 67.5,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Systémové zavěšení",
+          "tloustka_mm": 54.0,
+          "specifikace": "67.5",
+          "referencni_vyrobek": "Systémové zavěšení pro venkovní použití se zvýšenou odolností proti korozi"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Pevný podhled do vlhka",
+          "tloustka_mm": 12.5,
+          "specifikace": "",
+          "referencni_vyrobek": "Cementová deska"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 1.0,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        }
+      ]
+    },
+    "CF20": {
+      "code": "CF20",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.ceiling_tag",
+        "room.CF"
+      ],
+      "kind": "podhled",
+      "label": "podhled chodeb",
+      "celkova_tloustka_mm": 67.5,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Systémové zavěšení",
+          "tloustka_mm": 54.0,
+          "specifikace": "67.5",
+          "referencni_vyrobek": "Systémové zavěšení ve 2 vrstvách, 2 x CD 60x27"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Pevný SDK podhled",
+          "tloustka_mm": 12.5,
+          "specifikace": "",
+          "referencni_vyrobek": "SDK deska 12.5mm, neimpregnovaná"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 1.0,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        }
+      ]
+    },
+    "CF21": {
+      "code": "CF21",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.ceiling_tag",
+        "room.CF"
+      ],
+      "kind": "podhled",
+      "label": "podhled koupelen a wc",
+      "celkova_tloustka_mm": 67.5,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Systémové zavěšení",
+          "tloustka_mm": 54.0,
+          "specifikace": "67.5",
+          "referencni_vyrobek": "Systémové zavěšení ve 2 vrstvách, 2 x CD 60x27"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Pevný SDK podhled do vlhka",
+          "tloustka_mm": 12.5,
+          "specifikace": "",
+          "referencni_vyrobek": "SDK deska 12.5mm, impregnovaná"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 1.0,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        }
+      ]
+    },
+    "F01": {
+      "code": "F01",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podlahy"
+      ],
+      "kind": "povrch",
+      "label": "Povrch podlahy - společné prostory - nadzemní část",
+      "celkova_tloustka_mm": 15.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Keramická dlažba",
+          "tloustka_mm": 10.0,
+          "specifikace": "Slinutá keramická dlažba; formát 600x1200mm; tmavě šedá; protiskluznost tř. R 10 ; dlažba s vysokou pevností v tlaku a ohybu, odolností proti chemikáliím (kyselinám i louhům) a odolností proti hloubkovému opotřebení, , součinitel tření μ≥0,5,  spáry vyplněné vhodnou spárovací hmotou, vč. soklu 80mm a dilatačních profilů, dilatační spáry max. 6x6 m; dekor viz. architekt",
+          "referencni_vyrobek": "např. Rako Extra"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Flexibilní cementové lepidlou pro lepení keramických dlažeb",
+          "referencni_vyrobek": "např. Cemix lepidlo flex extra 045"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého sytému",
+          "referencni_vyrobek": "např. Cemix penetrace H"
+        }
+      ]
+    },
+    "F02": {
+      "code": "F02",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podlahy"
+      ],
+      "kind": "povrch",
+      "label": "Povrch podlahy - bytové jednotky - chodby a obchodní jednotky",
+      "celkova_tloustka_mm": 15.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Keramická dlažba",
+          "tloustka_mm": 10.0,
+          "specifikace": "Slinutá keramická dlažba; formát 600x600mm; světle šedá; protiskluznost tř. R 10 ; dlažba s vysokou pevností v tlaku a ohybu, odolností proti chemikáliím (kyselinám i louhům) a odolností proti hloubkovému opotřebení, součinitel tření μ≥0,5,  spáry vyplněné vhodnou spárovací hmotou, vč. soklu 80mm a dilatačních profilů; dilatační spáry max. 6x6 m; dekor viz. architekt",
+          "referencni_vyrobek": "např. Rako Extra"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Flexibilní cementové lepidlou pro lepení keramických dlažeb",
+          "referencni_vyrobek": "např. Cemix lepidlo flex extra 045"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého sytému",
+          "referencni_vyrobek": "např. Cemix penetrace H"
+        }
+      ]
+    },
+    "F03": {
+      "code": "F03",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podlahy"
+      ],
+      "kind": "povrch",
+      "label": "Povrch podlahy - bytové jednotky - pobytové místnosti",
+      "celkova_tloustka_mm": 7.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Vinylové dílce",
+          "tloustka_mm": 2.5,
+          "specifikace": "Vinylové dílce lepené; rozměr 230 x 1500 mm; protiskluznost tř. R 10;  třída reakce na oheň B; třída zátěže min. 31; vč. soklové lišty bílé, dekor viz. architekt",
+          "referencni_vyrobek": "např. Gerfloor Creation 55"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": null,
+          "specifikace": "Celoplošné přilepení.Universální disperzní lepidlo.",
+          "referencni_vyrobek": "např. Weberfloor 4815"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého sytému",
+          "referencni_vyrobek": "např. Cemix penetrace H"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Vyrovnávací vrstva",
+          "tloustka_mm": 4.5,
+          "specifikace": "Jednosložková samonivelační hmota na bázi cementu; pevnost v tlaku min. 20MPa",
+          "referencni_vyrobek": "např. Cemix 060"
+        }
+      ]
+    },
+    "F04": {
+      "code": "F04",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_sten"
+      ],
+      "kind": "povrch",
+      "label": "Povrch stěn - společné chodby a schodiště",
+      "celkova_tloustka_mm": 11.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Otěruvzdorný nátěr",
+          "tloustka_mm": 1.0,
+          "specifikace": "Vnitřní disperzní malířský nátěr e 2 vrstvách; světle šedý;  barevný odstín viz. architekt",
+          "referencni_vyrobek": "např. Primalex Inspiro"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Penetrační nátěr pro disperzní nátěry",
+          "referencni_vyrobek": "např. Primalex univerzální penetrace"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Sádrová omítka",
+          "tloustka_mm": 10.0,
+          "specifikace": "Sádrová omítka zrnitosti do 0,4mm, zahlazen nerezovým hladítkem, přechody mezi různými materiály a rohy vyztužit síťovinou",
+          "referencni_vyrobek": "např. Cemix 016 j"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Můstek",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého systému",
+          "referencni_vyrobek": "např. Cemix spojovací můstek"
+        }
+      ]
+    },
+    "F05": {
+      "code": "F05",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podhledu",
+        "room.F_povrch_sten"
+      ],
+      "kind": "povrch",
+      "label": "Povrch stěn a stropů - bytové jednotky - pobytové místnosti a obchodní jednotky",
+      "celkova_tloustka_mm": 11.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Otěruvzdorný nátěr",
+          "tloustka_mm": 1.0,
+          "specifikace": "Vnitřní disperzní malířský nátěr e 2 vrstvách; bílý;  odstín viz. architekt",
+          "referencni_vyrobek": "např. Primalex Polar"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Penetrační nátěr pro disperzní nátěry",
+          "referencni_vyrobek": "např. Primalex univerzální penetrace"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Sádrová omítka",
+          "tloustka_mm": 10.0,
+          "specifikace": "Sádrová omítka zrnitosti do 0,4mm, zahlazen nerezovým hladítkem, přechody mezi různými materiály a rohy vyztužit síťovinou",
+          "referencni_vyrobek": "např. Cemix 016 j"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Můstek",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého systému",
+          "referencni_vyrobek": "např. Cemix spojovací můstek"
+        }
+      ]
+    },
+    "F06": {
+      "code": "F06",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_sten"
+      ],
+      "kind": "povrch",
+      "label": "Povrch stěn - bytové jednotky - koupelny a wc",
+      "celkova_tloustka_mm": 25.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Keramický obklad",
+          "tloustka_mm": 10.0,
+          "specifikace": "Slinutý keramický obklad 30x60cm, formát 600x1200mm, bílá, vnější rohy opatřit nerezovou rohovou lištou a horní hrany opatřit nerezovou ukončovací lištou; hydroizolační stěrka vytažená 300mm nad podklahu, za sprchovým koutem do výšky 2000mm nad podlahu, dekor viz. architekt",
+          "referencni_vyrobek": "např. Rako Extra"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Flexibilní cementové lepidlo.",
+          "referencni_vyrobek": "např. Cemix Flex Extra Plus 045"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Hydroizolace",
+          "tloustka_mm": null,
+          "specifikace": "Jednosložková disperzní hydroizoalční stěrka. Hydroizolační stěrku vytáhnout min. 300 mm nad podlahu a zároveň po celé výšce za sprchpvým koutem a vanou.",
+          "referencni_vyrobek": "např. Cemix Cemelastik IN"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého sytému.",
+          "referencni_vyrobek": "např. Cemix penetrace H"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Jádrová omítka",
+          "tloustka_mm": 10.0,
+          "specifikace": "Jemná jádrová omítka zrnitosti do 1,2mm, povrch zahlazen filcovým hladítkem, max. nerovnosti povrchu do 3mm",
+          "referencni_vyrobek": "např. Cemix 082 j"
+        }
+      ]
+    },
+    "F07": {
+      "code": "F07",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podlahy"
+      ],
+      "kind": "povrch",
+      "label": "Povrch podlahy exteriérový - balkóny",
+      "celkova_tloustka_mm": 38.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Keramická dlažba exteriérová",
+          "tloustka_mm": 20.0,
+          "specifikace": "Slinutá keramická dlažba kalibrovaná 600x600mm; protiskluznost tř. R 11; Světle šedá; dekor viz. architekt",
+          "referencni_vyrobek": "např. Rako Quarzit Outdoor"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Rektifikovatelné terče pod dlažbu",
+          "tloustka_mm": 18.0,
+          "specifikace": "Teleskopické plastové terče pro dlažbu na pryžových podložkách.",
+          "referencni_vyrobek": "GUTTA"
+        }
+      ]
+    },
+    "F11": {
+      "code": "F11",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podlahy"
+      ],
+      "kind": "povrch",
+      "label": "Povrch podlahy 1PP - pochozí plocha chodby, sklady, technické místnosti",
+      "celkova_tloustka_mm": 0.3,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "2. Epoxidový nátěr",
+          "tloustka_mm": 0.2,
+          "specifikace": "Dvoukomponentní uzavírací barevný nátěr na bázi epoxidové pryskyřice, spotřeba 0,2–0,3 kg/m2",
+          "referencni_vyrobek": "např. Sikafloor®-2540 W"
+        },
+        {
+          "poradi": "2",
+          "nazev": "1. Epoxidový nátěr",
+          "tloustka_mm": 0.1,
+          "specifikace": "Dvoukomponentní uzavírací barevný nátěr na bázi epoxidové pryskyřice, spotřeba 0,2–0,3 kg/m2",
+          "referencni_vyrobek": "např. Sikafloor®-2540 W + 5% vody"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Penetrační nátěr na bázi akrylátové disperze, spotřeba  0,1–0,3 l směsi/m2, na jednu nátěrovou vrstvu, podle nasákavosti podkladu (při ředění vodou 1 : 3 = 0,025 l–0,075 l/m2)",
+          "referencni_vyrobek": "např. Sika® Level-01 Primer"
+        }
+      ]
+    },
+    "F13": {
+      "code": "F13",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_sten"
+      ],
+      "kind": "povrch",
+      "label": "Povrch fasády - probarvená omítka",
+      "celkova_tloustka_mm": 1.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Tenkovrstvá pastovitá omítka",
+          "tloustka_mm": 1.0,
+          "specifikace": "Tenkovrstvá pastovitá omítka připravená pro okamžité použití pro vytváření finálních povrchových úprav stěn ve vnějším i vnitřním prostředí. Barevnost SE10 antracitová  - specifikaci potvrdí architekt v rámci vzorkování",
+          "referencni_vyrobek": "např. Cemix ACTIVCEM"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Penetrace pro tenkovrstvé omítky",
+          "tloustka_mm": 0.0,
+          "specifikace": "Penetrace pro tenkovrstvé omítky",
+          "referencni_vyrobek": "např. Cemix ASN Top"
+        }
+      ]
+    },
+    "F15": {
+      "code": "F15",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podhledu"
+      ],
+      "kind": "povrch",
+      "label": "Povrch stropů 1PP - tepelná izolace",
+      "celkova_tloustka_mm": 105.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Tepelná izolace z minerální vlny",
+          "tloustka_mm": 100.0,
+          "specifikace": "Izolační fasádní desky s minerální čedičové vlny, min. součinitel tel. vodivosti λ = 0,040 W/mK, Pevnost v tahu TR 30 kPa",
+          "referencni_vyrobek": "např. ISOVER Top V Final"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Bezkotevní cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Superfix"
+        }
+      ]
+    },
+    "F17": {
+      "code": "F17",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podhledu"
+      ],
+      "kind": "povrch",
+      "label": "Povrch sádrokartonových konstrukcí - otěruvzdorná výmalba",
+      "celkova_tloustka_mm": 1.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Otěruvzdorný nátěr",
+          "tloustka_mm": 1.0,
+          "specifikace": "Vnitřní disperzní malířský nátěr e 2 vrstvách; bílý;  odstín viz. architekt",
+          "referencni_vyrobek": "např. Primalex Polar"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Penetrační nátěr pro disperzní nátěry",
+          "referencni_vyrobek": "např. Primalex univerzální penetrace"
+        }
+      ]
+    },
+    "F18": {
+      "code": "F18",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_podlahy"
+      ],
+      "kind": "povrch",
+      "label": "Povrch podlahy - bytové jednotky - koupelny",
+      "celkova_tloustka_mm": 15.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Keramická dlažba",
+          "tloustka_mm": 10.0,
+          "specifikace": "Slinutá keramická dlažba; formát 600x600mm; světle šedá; protiskluznost tř. R 10 ; dlažba s vysokou pevností v tlaku a ohybu a odolností proti hloubkovému opotřebení, součinitel tření μ≥0,5,  spáry vyplněné vhodnou spárovací hmotou, hydroizolační stěrka vytažená 300mm nad podklahu, za sprchovým koutem do výšky 2000mm nad podlahu,dilatační spáry max. 6x6 m; dekor viz. architekt",
+          "referencni_vyrobek": "např. Rako Extra"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Jednosložková hmota na bázi cementu pro lepení keramických dlažeb",
+          "referencni_vyrobek": "např. Cemix Flex Extra Plus 045"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Hydroizolace",
+          "tloustka_mm": null,
+          "specifikace": "Jednosložková disperzní hydroizoalční stěrka.",
+          "referencni_vyrobek": "např. Cemix Cemelastik IN"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Ředený podkladní nátěr na bázi akrylátové disperze.",
+          "referencni_vyrobek": "např. Cemix penetrace H"
+        }
+      ]
+    },
+    "F19": {
+      "code": "F19",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.F_povrch_sten"
+      ],
+      "kind": "povrch",
+      "label": "Povrch stěn a stropů - suterén - sklepy, tech. místnosti, garáže",
+      "celkova_tloustka_mm": 11.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Otěruvzdorný nátěr",
+          "tloustka_mm": 1.0,
+          "specifikace": "Vnitřní disperzní malířský nátěr e 2 vrstvách; bílý;  odstín viz. architekt",
+          "referencni_vyrobek": "např. Primalex Polar"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Penetrace",
+          "tloustka_mm": null,
+          "specifikace": "Penetrační nátěr pro disperzní nátěry",
+          "referencni_vyrobek": "např. Primalex univerzální penetrace"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Vápenocementová omítka",
+          "tloustka_mm": 10.0,
+          "specifikace": "Jednovrstvá vápenocementová omítka  zrnitosti do 0,7mm, přechody mezi různými materiály a rohy vyztužit síťovinou",
+          "referencni_vyrobek": "např. Cemix 073"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Můstek",
+          "tloustka_mm": null,
+          "specifikace": "Dle použitého systému",
+          "referencni_vyrobek": "např. Cemix spojovací můstek"
+        }
+      ]
+    },
+    "F20": {
+      "code": "F20",
+      "in_tabulka_skladeb": false,
+      "referenced_in": [
+        "room.FF",
+        "room.F_povrch_podhledu",
+        "room.F_povrch_sten"
+      ],
+      "vrstvy": [],
+      "celkova_tloustka_mm": null,
+      "warning": "Code referenced by Tabulka místností or DXF tags but not found in Tabulka skladeb"
+    },
+    "F30": {
+      "code": "F30",
+      "in_tabulka_skladeb": false,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "vrstvy": [],
+      "celkova_tloustka_mm": null,
+      "warning": "Code referenced by Tabulka místností or DXF tags but not found in Tabulka skladeb"
+    },
+    "FF01": {
+      "code": "FF01",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "podlaha",
+      "label": "podlaha na terénu",
+      "celkova_tloustka_mm": 3.8,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 3.8,
+          "specifikace": "3.8",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Železobetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Stavebně-konstrukční část projektu"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Podkladní beton",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "beton C12/15 X0"
+        }
+      ]
+    },
+    "FF03": {
+      "code": "FF03",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "podlaha",
+      "label": "podlaha na terénu s hydroizolací proti radonu",
+      "celkova_tloustka_mm": 11.8,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 3.8,
+          "specifikace": "11.8",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Železobetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Stavebně-konstrukční část projektu"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Ochranná vrstva hydroizolace proti radonu",
+          "tloustka_mm": 4.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Povlaková hydroizolace min. z jedné vrstvy asfaltového pásu"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Hydroizolační vrstva proti radonu",
+          "tloustka_mm": 4.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Povlaková hydroizolace min. z jedné vrstvy asfaltového pásu, hydroizolační vrstvu je nutné provést s přesahem do okolních místností do vzdálenosti 1,0m od úrovně vnějšího líce zdiva vymezující prostor společných prostor"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Asfaltová penetrační emulze"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Podkladní beton",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "beton C12/15 X0"
+        }
+      ]
+    },
+    "FF20": {
+      "code": "FF20",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "podlaha",
+      "label": "podlaha nad suterénem - dlažba",
+      "celkova_tloustka_mm": 130.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 15.0,
+          "specifikace": "130",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Roznášecí vrstva s kari sítí",
+          "tloustka_mm": 50.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Cementový potěr třídy pevnosti v tahu při ohybu F5 podle EN 13813, pevnost v tlaku 25 MPa, kari síť 150/150/4, vč. dilatační okrajové pásky, dilatovat v roztečích max. 6x6m nebo při proměru stran větších než 1:2."
+        },
+        {
+          "poradi": "3",
+          "nazev": "Separece",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "PE folie"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Kročejová izolace",
+          "tloustka_mm": 25.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Minerální hydrofobizovaná vlna, dynamická tuhost 23MN/m3"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Instalační vrstva",
+          "tloustka_mm": 40.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Polysterén beton PSB 50; max. 400 kg/m3 (v suchém stavu)"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Železebetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Stavebně-konstrukční část projektu"
+        },
+        {
+          "poradi": "7",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        }
+      ]
+    },
+    "FF21": {
+      "code": "FF21",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "podlaha",
+      "label": "podlaha nad suterénem - vinyl",
+      "celkova_tloustka_mm": 130.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 7.0,
+          "specifikace": "130",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Roznášecí vrstva s kari sítí",
+          "tloustka_mm": 58.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Cementový potěr třídy pevnosti v tahu při ohybu F5 podle EN 13813, pevnost v tlaku 25 MPa, kari síť 150/150/4, vč. dilatační okrajové pásky, dilatovat v roztečích max. 6x6m nebo při proměru stran větších než 1:2."
+        },
+        {
+          "poradi": "3",
+          "nazev": "Separece",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "PE folie"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Kročejová izolace",
+          "tloustka_mm": 25.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Minerální hydrofobizovaná vlna, dynamická tuhost 23MN/m3"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Instalační vrstva",
+          "tloustka_mm": 40.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Polysterén beton PSB 50; max. 400 kg/m3 (v suchém stavu)"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Železebetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Stavebně-konstrukční část projektu"
+        },
+        {
+          "poradi": "7",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        }
+      ]
+    },
+    "FF30": {
+      "code": "FF30",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "podlaha",
+      "label": "podlaha běžná - dlažba",
+      "celkova_tloustka_mm": 130.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 15.0,
+          "specifikace": "130",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Roznášecí vrstva s kari sítí",
+          "tloustka_mm": 50.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Cementový potěr třídy pevnosti v tahu při ohybu F5 podle EN 13813, pevnost v tlaku 25 MPa, kari síť 150/150/4, vč. dilatační okrajové pásky, dilatovat v roztečích max. 6x6m nebo při proměru stran větších než 1:2."
+        },
+        {
+          "poradi": "3",
+          "nazev": "Separece",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "PE folie"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Kročejová izolace",
+          "tloustka_mm": 25.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Minerální hydrofobizovaná vlna, dynamická tuhost 23MN/m3"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Instalační vrstva",
+          "tloustka_mm": 40.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Polysterén beton PSB 50; max. 400 kg/m3 (v suchém stavu)"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Železebetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": ""
+        }
+      ]
+    },
+    "FF31": {
+      "code": "FF31",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "podlaha",
+      "label": "podlaha běžná - vinyl",
+      "celkova_tloustka_mm": 130.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": 7.0,
+          "specifikace": "130",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Cementový potěr",
+          "tloustka_mm": 58.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Cementový potěr třídy pevnosti v tahu při ohybu F5 podle EN 13813, pevnost v tlaku 25 MPa, kari síť 150/150/4, vč. dilatační okrajové pásky, dilatovat v roztečích max. 6x6m nebo při proměru stran větších než 1:2."
+        },
+        {
+          "poradi": "3",
+          "nazev": "Separece",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "PE folie"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Kročejová izolace",
+          "tloustka_mm": 25.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Minerální hydrofobizovaná vlna, dynamická tuhost 23MN/m3"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Instalační vrstva",
+          "tloustka_mm": 40.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Polysterén beton PSB 50; max. 400 kg/m3 (v suchém stavu)"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Železebetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Stavebně-konstrukční část projektu"
+        }
+      ]
+    },
+    "RF20": {
+      "code": "RF20",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "room.FF"
+      ],
+      "kind": "strecha",
+      "label": "balkony",
+      "celkova_tloustka_mm": 220.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Pochozí vrstva na rektifikačních terčích",
+          "tloustka_mm": 47.0,
+          "specifikace": "220",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Separační textilie",
+          "tloustka_mm": 2.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Netkaná textilie ze 100% polypropylenu, 200 g/m2"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Hydroizolační fólie",
+          "tloustka_mm": 4.0,
+          "specifikace": "",
+          "referencni_vyrobek": "mPVC fólie 1,5mm s výztužnou tkaninou, určená pro zatěžovací vrstvy a odolná prorůstání kořenů"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Separační textilie",
+          "tloustka_mm": 3.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Netkaná textilie ze 100% polypropylenu, 300 g/m2"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 120.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Stabilizovaný pěnový polystyren s uzavřenou povrchovou strukturou; λ = 0,034 W/mK; napětí v tlaku při 10% stlačení 150 kPa"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Spádové klíny",
+          "tloustka_mm": 40.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Stabilizovaný pěnový polystyren EPS 150, spád min.2%, λ = 0,035 W/mK, trvalá zatížitelnost v tlaku max. 3000 kg/m2 při def. < 2%, tl. 20-40mm"
+        },
+        {
+          "poradi": "7",
+          "nazev": "Parozábrana",
+          "tloustka_mm": 4.0,
+          "specifikace": "",
+          "referencni_vyrobek": "SBS modifikovaný asfaltový pás celoplošně natavený"
+        },
+        {
+          "poradi": "8",
+          "nazev": "Asfaltová penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Asfaltová vodou ředitelná emulze"
+        },
+        {
+          "poradi": "9",
+          "nazev": "Nosná železobetonová deska",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Stavebně-konstrukční část projektu"
+        }
+      ]
+    },
+    "WF10": {
+      "code": "WF10",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.wall_tag"
+      ],
+      "kind": "stena",
+      "label": "nadzemní obvodová stěna - zdivo",
+      "celkova_tloustka_mm": 485.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": "485",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka povrchů"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Jádrová omítka",
+          "tloustka_mm": 12.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Vápenocementová jádrová omítka"
+        },
+        {
+          "poradi": "4",
+          "nazev": "Cementový postřik",
+          "tloustka_mm": 3.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Cementová malta pro úpravu podkladu"
+        },
+        {
+          "poradi": "5",
+          "nazev": "Obvodové zdivo keramické s vloženou minerální vatou",
+          "tloustka_mm": 440.0,
+          "specifikace": "",
+          "referencni_vyrobek": "keramické tvárnice broušené P+D vyplněné minerální vatou"
+        },
+        {
+          "poradi": "6",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "",
+          "referencni_vyrobek": "viz Tabulka Místností a Tabulka Povrchů"
+        }
+      ]
+    },
+    "WF32": {
+      "code": "WF32",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.wall_tag"
+      ],
+      "kind": "stena",
+      "label": "vnitřní zdivo podezdívek van",
+      "celkova_tloustka_mm": 50.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "50",
+          "referencni_vyrobek": "viz Tabulka Místností a Tabulka Povrchů"
+        },
+        {
+          "poradi": "2",
+          "nazev": "Příčkové zdivo pórobetonové pro podezdívky",
+          "tloustka_mm": 50.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Pórobetonové příčkové tvárnice na lepidlo"
+        },
+        {
+          "poradi": "3",
+          "nazev": "Neomítnutá vnitřní strana instalační šachty",
+          "tloustka_mm": 0.0,
+          "specifikace": "",
+          "referencni_vyrobek": ""
+        }
+      ]
+    },
+    "WF40": {
+      "code": "WF40",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.wall_tag"
+      ],
+      "kind": "stena",
+      "label": "SDK předstěna tl.100mm - v.1400mm",
+      "celkova_tloustka_mm": 100.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "SDK záklop",
+          "tloustka_mm": 25.0,
+          "specifikace": "100",
+          "referencni_vyrobek": "SDK desky 2 x 12.5mm, impregnované"
+        },
+        {
+          "poradi": "2",
+          "nazev": "ocelové systémové profily CW75",
+          "tloustka_mm": 75.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Profily UW75 + CW75"
+        }
+      ]
+    },
+    "WF41": {
+      "code": "WF41",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.wall_tag"
+      ],
+      "kind": "stena",
+      "label": "SDK předstěna tl.150mm - v.1400mm",
+      "celkova_tloustka_mm": 150.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "SDK záklop",
+          "tloustka_mm": 25.0,
+          "specifikace": "150",
+          "referencni_vyrobek": "SDK desky 2 x 12.5mm, impregnované"
+        },
+        {
+          "poradi": "2",
+          "nazev": "ocelové systémové profily CW100",
+          "tloustka_mm": 100.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Profily UW100 + CW100 vč.výztuh a prvků pro kotvení zařizovacích předmětů"
+        },
+        {
+          "poradi": "3",
+          "nazev": "odsazení od zděné stěny",
+          "tloustka_mm": 25.0,
+          "specifikace": "",
+          "referencni_vyrobek": ""
+        }
+      ]
+    },
+    "WF50": {
+      "code": "WF50",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.wall_tag"
+      ],
+      "kind": "stena",
+      "label": "SDK předstěna tl.100mm - v.100mm nad podhled",
+      "celkova_tloustka_mm": 100.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "SDK záklop",
+          "tloustka_mm": 25.0,
+          "specifikace": "100",
+          "referencni_vyrobek": "SDK desky 2 x 12.5mm, impregnované"
+        },
+        {
+          "poradi": "2",
+          "nazev": "ocelové systémové profily CW75",
+          "tloustka_mm": 75.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Profily UW75 + CW75"
+        }
+      ]
+    },
+    "WF51": {
+      "code": "WF51",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [
+        "dxf.wall_tag"
+      ],
+      "kind": "stena",
+      "label": "SDK předstěna tl.150mm - v.100mm nad podhled",
+      "celkova_tloustka_mm": 150.0,
+      "vrstvy": [
+        {
+          "poradi": "1",
+          "nazev": "SDK záklop",
+          "tloustka_mm": 25.0,
+          "specifikace": "150",
+          "referencni_vyrobek": "SDK desky 2 x 12.5mm, impregnované"
+        },
+        {
+          "poradi": "2",
+          "nazev": "ocelové systémové profily CW100",
+          "tloustka_mm": 100.0,
+          "specifikace": "",
+          "referencni_vyrobek": "Profily UW100 + CW100 vč.výztuh a prvků pro kotvení zařizovacích předmětů"
+        },
+        {
+          "poradi": "3",
+          "nazev": "odsazení od zděné stěny",
+          "tloustka_mm": 25.0,
+          "specifikace": "",
+          "referencni_vyrobek": ""
+        }
+      ]
+    }
+  },
+  "skladby_count": 31,
+  "skladby_missing_in_master": [
+    "F20",
+    "F30"
   ]
 }
