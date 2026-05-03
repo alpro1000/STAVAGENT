@@ -30,7 +30,7 @@
 7. **Žádný odkaz** z UI tooltipů na kanonický dokument `docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md`.
 8. **Tooltip s nosností/kategorií u jednotlivých systémů chybí** v UI (data v katalogu jsou, ale neexponují se).
 9. **Warnings shape je `string[]`** bez severity field (planner-orchestrator.ts:767). Pro UI red/orange/info gradient v Gate 3 je nutné zavést `warnings_structured` (deferred backlog item P1 z v4.22 už existuje pro tento účel).
-10. **⚠️ CRITICAL BUG** — Top 50 (DOKA) a VARIOKIT HD 200 (PERI) mají v kódu `pour_role: 'falsework'` (`formwork-systems.ts:178, :511`), což je v rozporu s DOKA katalogem (Top 50 = Nosníkové bednění) a canonical doc §7. Bug je systematický — header doc-comment (`formwork-systems.ts:25`) explicitně dokumentuje tuto klasifikaci jako záměrnou. Detail viz Gap #8 v sekci C. Vyžaduje opravu v Gate 2/3.
+10. **✅ RESOLVED in Gate 2 Phase 2** — Top 50 (DOKA) a VARIOKIT HD 200 (PERI) reclassified per canonical §9.1 / §9.2: Top 50 → `pour_role: 'formwork'` + `formwork_subtype: 'nosnikove'` (Vrstva 1 — kontaktní povrch); VARIOKIT HD 200 → `pour_role: 'formwork_beam'` (NEW enum, Vrstva 2 — horizontální nosníky nad falsework věží). Resolution commits: `6d2784f` (types) + `b60d24d` (Top 50) + `b2fc701` (VARIOKIT HD) + `0ccc371` (Re-Snapshot docs). Detail viz Gap #8 v sekci C.3.
 
 **Migrační složitost:** **STŘEDNÍ.** Převážná infrastruktura (`pour_role`, allow-list, MSS path) je hotová. Hlavní práce je: (a) přidat element-driven klasifikaci jako 2. zdroj pravdy, (b) cross-validovat element vs systém + emit warnings, (c) rozdělit rental do 3 řádků + přidat statický návrh, (d) UI explicit kategorie + tooltipy + cleanup HelpPanel.
 
@@ -84,7 +84,7 @@
 | MEGALITE | ULMA | `formwork` | Bednění (large-format wall) | — | wall |
 | COMAIN | ULMA | `formwork` | Bednění (frameworks foundations/walls) | — | foundation/wall |
 | NOEtop | NOE | `formwork` | Bednění (wall, simple locking) | — | wall |
-| **Top 50 Cornice** | DOKA | `formwork` | **Římsové bednění T (vozík)** | unit `bm` | [rimsa] |
+| **Římsové bednění T / Římsový vozík TU / Římsový vozík T** | DOKA | `formwork` | **Římsové specializované systémy** (3 separate catalog entries, `formwork-systems.ts` L255 / L270 / L285) | unit `bm` | [rimsa] |
 | CB 240 | PERI | `formwork` | Climbing console (240 kN, jednostranné) | — | climbing |
 | Tradiční tesařské | Local | `formwork` | Bednění (univerzální, 0 Kč rental) | — | universal |
 
@@ -103,8 +103,9 @@
 ### A.3) Klíčová pozorování — gap vs. canonical doc
 
 - **Globální `pour_role` na Staxo 100 = `props`** (správně z hlediska systému), ale z hlediska kontextu (mostovka) by měl být **„skruž (stojky pod skruží)"**. Aktuálně UI label jen „Stojky 🔩" nezachytí TKP 18 kontext.
-- **⚠️ Top 50 jako falsework v kódu — NESPRÁVNÉ.** Code říká `falsework`, DOKA katalog („Nosníkové bednění Top 50") a canonical doc §7 říkají **bednění**. Detail v Gap #8 (sekce C.3).
-  - **Historický kontext:** tato klasifikace pochází z koordinovaného fix-u Bug #5 v 2026-04-17 (Terminology Commit 2 by uživatel). Intent fix-u byl správný (oddělení formwork pool od props pool), terminologie unintentional mistake. Detail v F.3. Plná 3-vrstvá taxonomie v canonical doc Section 9.2.
+- **✅ Top 50 jako falsework v kódu — RESOLVED Gate 2 Phase 2** (commits `6d2784f` types + `b60d24d` Top 50 + `b2fc701` VARIOKIT HD + `0ccc371` Re-Snapshot). Top 50 reclassified to `pour_role: 'formwork'` + `formwork_subtype: 'nosnikove'`; VARIOKIT HD 200 → `pour_role: 'formwork_beam'` (NEW enum). Per DOKA katalog („Nosníkové bednění Top 50") + canonical doc §7 + §9.1.
+  - **Historický kontext:** tato klasifikace pocházela z koordinovaného fix-u Bug #5 v 2026-04-17 (Terminology Commit 2 by uživatel). Intent fix-u byl správný (oddělení formwork pool od props pool), terminologie unintentional mistake. Detail v F.3. Plná 3-vrstvá taxonomie v canonical doc Section 9.2.
+- **TRIO over Framax convention pro vertical mostní typové elements** — Canonical convention v repo (verified Gate 2 Phase 3): vertical typové mostní elements (`opery_ulozne_prahy`, `kridla_opery`, `operne_zdi`, `driky_piliru`, `rigel`) preferentially use TRIO/VARIO GT 24 (PERI) over Framax Xlife (DOKA). Both are valid rámové systems; preference is repo-level decision codified v `ELEMENT_CATALOG.recommended_formwork[0]`. Phase 3 Commits `06f744a` (horizontal Option W) + `18f36da` (vertical Option W) + `6849c45` (regression net) ensure selector respects this canonical recommendation across all 11 mostní types.
 - **MSS positivně mapováno** (`mss_integrated` + reuse 0.35 + applicable [mostovkova_deska, rigel]).
 - **Žádný „statický návrh od výrobce"** atribut na žádném systému (canonical §6 + §8 vyžaduje pro skruž / demolici).
 - **Žádný `kategorie: 'skruz'|'stojky'|'podperne_leseni'`** na úrovni katalogu — odvozuje se až per-render z `pour_role`.
@@ -113,15 +114,25 @@
 
 ## B) Inventář — Element types & bridge classification
 
-### B.1) 22 kanonických element types (`element-classifier.ts:117–510`)
+### B.1) 23 kanonických element types (`element-classifier.ts:117–510`)
 
-**Mostní (10) — `BRIDGE_ELEMENT_TYPES`, L783:** `zaklady_piliru`, `driky_piliru`, `rimsa`, `operne_zdi`, `mostovkova_deska` ★, `rigel` ★, `opery_ulozne_prahy`, `kridla_opery`, `mostni_zavirne_zidky`, `prechodova_deska`
+**Mostní (11) — `BRIDGE_ELEMENT_TYPES`, L818:** `zaklady_piliru`, **`zaklady_oper`** (added Gate 2 Phase 3 Commit 1, `78d5dd9` — paralelní k zaklady_piliru, lehké rámové bednění Frami Xlife per canonical §9.4), `driky_piliru`, `rimsa`, `operne_zdi`, `mostovkova_deska` ★, `rigel` ★, `opery_ulozne_prahy`, `kridla_opery`, `mostni_zavirne_zidky`, `prechodova_deska`
 
 **Budovní (9):** `zakladova_deska`, `zakladovy_pas`, `zakladova_patka`, `stropni_deska` ★, `stena`, `sloup`, `pruvlak` ★, `schodiste` ★, `nadrz`
 
 **Speciální (3):** `podzemni_stena`, `pilota` (no formwork, no supports), `podkladni_beton` / `podlozkovy_blok`
 
 ★ = `needs_supports=true` (5 typů: mostovkova_deska, rigel, stropni_deska, pruvlak, schodiste — jediné, které triggerují `calculateProps()` v orchestrátoru).
+
+**NOTE — terminology gaps NOT in `StructuralElementType` union:**
+
+- `mostni_zaver` (mostní závěry / dilatation joints) — **NOT in calculator scope.** Purchase items from specialized vendors (Maurer, Mageba, Reisner & Wolff). Calculator handles concrete elements only. Real concrete element `mostni_zavirne_zidky` (end walls) IS classified above. Note: G.4 coverage matrix entry „mostni_zaver" was Gate 1 audit terminology mistake — kept for historical record but flagged here.
+- `atrium`, `attika`, `vence`, `rampa` — terms mentioned in construction practice but NOT separate element types. Subsumed under existing types via parameters:
+  - `atrium` → `stena` + `stropni_deska` (open central space combination)
+  - `attika` → short `stena` (parapet wall above střecha)
+  - `vence` → `pruvlak` ring (concrete band on periphery)
+  - `rampa` → `stropni_deska` slope variant
+  - Calculator handles these via existing types with appropriate geometry parameters. No architectural addition needed.
 
 ### B.2) BRIDGE_EQUIVALENT remap (`element-classifier.ts:790–798`)
 
@@ -159,29 +170,35 @@ Když `ClassificationContext.is_bridge=true`, klasifikátor remappuje 7 budovní
 
 ### C.3) Catalog data quality
 
-8. **Gap #8: Systematic misclassification of Top 50 and VARIOKIT HD 200 as `falsework`**
+8. **Gap #8: Systematic misclassification of Top 50 and VARIOKIT HD 200 as `falsework`** — ✅ **RESOLVED in Gate 2** (PR pending)
 
-   **File:line:**
-   - `formwork-systems.ts:178` — Top 50 has `pour_role: 'falsework'`
-   - `formwork-systems.ts:511` — VARIOKIT HD 200 has `pour_role: 'falsework'`
-   - `formwork-systems.ts:25` — header doc-comment dokumentuje tuto klasifikaci jako záměrnou: `'falsework' — nosníková skruž (Top 50, VARIOKIT engineering...)`
-   - `formwork-systems.ts:170` — Top 50 description repeats wrong term: `"Nosníková skruž Top 50 — mostovky + stropy..."`
-   - `formwork-systems.ts:504` — VARIOKIT HD 200 description repeats: `"...PERI ekvivalent nosníkové skruže Top 50"`
+   **Resolution summary:**
+   - **Phase 2** (commits `6d2784f` → `0ccc371`): Top 50 + VARIOKIT HD 200 reclassified per canonical §9. Top 50 → `pour_role: 'formwork'` + `formwork_subtype: 'nosnikove'`; VARIOKIT HD 200 → `pour_role: 'formwork_beam'` (NEW enum). PourRole expanded with `'formwork_beam'`; FormworkSubtype type alias added (`'ramove' | 'nosnikove' | 'stropni' | 'beam'`). Header doc-comment + descriptions cleaned of „skruž" wording. 4 test files updated atomically (formwork-systems.test, element-classifier.test, golden-so202.test, formwork-systems.test catalog integrity).
+   - **Phase 3** (commits `06f744a` + `18f36da`): Option W principle applied to horizontal + vertical selectors — `recommended_formwork[0]` respected over algorithmic optimization (cheapest sort, pressure filter cheapest survivor). DIN 18218 safety preserved on vertical branch.
+   - **4 golden tests verify** post-fix state: SO-202 §5b/§5c/§5f, SO-203 v4.22.0 Re-Snapshot, SO-207 (MSS path unaffected), VP4 FORESTINA TRIO update.
+   - **1036 tests pass** (was 1002 baseline pre-Gate-2; +34 new from Phase 1-4 commits).
 
-   **Verified facts:**
+   **Original gap detail (preserved for historical context):**
+
+   **File:line (pre-Phase-2):**
+   - `formwork-systems.ts:178` — Top 50 had `pour_role: 'falsework'` → **NOW `'formwork'`**
+   - `formwork-systems.ts:511` — VARIOKIT HD 200 had `pour_role: 'falsework'` → **NOW `'formwork_beam'`**
+   - `formwork-systems.ts:25` — header doc-comment expanded with canonical taxonomy (5 pour_role values + new 'formwork_beam')
+   - `formwork-systems.ts:170` — Top 50 description: „Nosníková skruž" → „Nosníkové bednění"
+   - `formwork-systems.ts:504` — VARIOKIT HD 200 description: „nosníkové skruže" → „horizontální nosníky NAD falsework věží (Vrstva 2 per canonical §9.2)"
+
+   **Verified facts (basis for resolution):**
    - DOKA Xpress 2/2020 + asb-portal: Top 50 = „Nosníkové bednění Top 50" (bednění)
    - DOKA categorization: Staxo 100 = falsework, Top 50 = bednění
    - PERI catalog: VARIOKIT HD 200 = Heavy-Duty Truss Girder (nosník), used ABOVE falsework (VST), not as falsework itself
    - Canonical doc §7 TL;DR: „Top 50 je skruž? — NE. Top 50 je nosníkové bednění (stěn)."
 
-   **Impact:** This systematic misclassification causes calculator to select Top 50 as falsework for horizontal load-bearing scenarios (e.g., základy pilířů), which is technically incorrect and was reported by user as a real bug.
-
-   **Recommendation for Gate 2/3 (NOT to be implemented in Gate 1):**
-   - Top 50 should have `pour_role: 'formwork'` (with attribute indicating „nosníkové, primárně stěnové")
-   - VARIOKIT HD 200 should have `pour_role: 'formwork'` or new enum value for horizontal-truss systems
-   - Header doc-comment L25 must be updated
-   - Descriptions L170, L504 must be updated to remove „skruž" / „nosníková skruž" wording
-   - Existing tests using these systems may need fixture updates
+   **Original recommendations (now implemented in Gate 2):**
+   - ✅ Top 50 has `pour_role: 'formwork'` + `formwork_subtype: 'nosnikove'`
+   - ✅ VARIOKIT HD 200 has `pour_role: 'formwork_beam'` (NEW enum value for horizontal-truss systems)
+   - ✅ Header doc-comment L25 updated (5 pour_role roles documented + canonical §9.1 reference)
+   - ✅ Descriptions L170, L504 cleaned of „skruž" / „nosníková skruž" wording
+   - ✅ Existing tests inverted in lockstep with code change (atomic commits per logical unit)
 
 ### C.4) Verified consistent — no action needed
 
