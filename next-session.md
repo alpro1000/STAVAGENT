@@ -5,11 +5,48 @@
 
 **Sessions:**
 - Session 1 (2026-05-03, feasibility): Phase 0.0 + 0.5 setup ✅ commits `70de16e` + `84b24b7`
-- Session 2 (2026-05-03, libredwg pivot): **BLOCKED at apt install** ❌ (see below)
+- Session 2 (2026-05-03, libredwg apt pivot): apt package missing in noble ❌ commit `7594f5f`
+- Session 3 (2026-05-03, libredwg from-source): **PoC successful** ✅ (see below)
 
 ---
 
-## 🚨 Session 2 outcome — libredwg pivot BLOCKED
+## ✅ Session 3 outcome — libredwg from source, PoC PASSED
+
+Built `dwg2dxf` from `github.com/LibreDWG/libredwg` tag `0.13.4`
+(commit `e3774bd`) with `--enable-trace --disable-bindings`. Installed
+to `/usr/local/bin/dwg2dxf`. End-to-end pipeline validated.
+
+| Step | Result |
+|------|--------|
+| Build deps via apt | OK (build-essential + autoconf-archive + swig + texinfo + ...) |
+| autogen.sh + jsmn submodule | OK |
+| `./configure --enable-trace --disable-bindings` | OK |
+| `make -j4` | OK, ~4 min |
+| `make install` + `ldconfig` | OK |
+| `dwg2dxf --version` | `dwg2dxf 0.13.4` |
+| Convert objekt D / 1.NP DWG → DXF | OK, exit 0, 3.0 MB / 407 K lines, AC1027 |
+| ezdxf cross-check | OK — 58 layers (AIA discipline prefixes), 560 TEXT, 399 INSERT, 21 POLYLINE |
+| Spec regex room codes | **18 hits** including known edge case `D.1.3.01` |
+| Python wrapper smoke | `convert_one()` → 78 ms, status `ok` |
+
+Full PoC report: `test-data/libuse/outputs/phase_0_5_poc.md`.
+
+### Implementation landed
+
+`concrete-agent/packages/core-backend/app/services/dwg_to_dxf.py` is now
+**implemented** (no longer NotImplementedError):
+
+- `detect_backend()` — env override (`STAVAGENT_DWG_BACKEND`) → `which dwg2dxf` → `odafc.is_installed()` → `PDF_ONLY` sentinel.
+- `convert_one(dwg_path, dxf_dir, *, backend=None, timeout_s=60)` — `subprocess.run(['dwg2dxf','-y','-o', dxf, dwg], timeout=60)`. Treats exit code + non-empty output file as truth (libredwg prints harmless `Warning:` lines to stderr even on success).
+- `convert_batch()` — per-file isolated try/except, info-log per success / error-log per failure.
+- ODA path retained as `_convert_oda()` fallback (uses `ezdxf.addons.odafc`).
+- New `STAVAGENT_DWG_BACKEND` env var for explicit override.
+
+`dxf_parser.py` is still a skeleton — body is Session 4 work.
+
+---
+
+## (historical) Session 2 outcome — libredwg apt pivot BLOCKED
 
 **Decision tested:** switch DWG→DXF backend from ODA File Converter (registration
 gate) to `libredwg-tools` (open-source, apt-installable).
@@ -38,10 +75,10 @@ gate) to `libredwg-tools` (open-source, apt-installable).
 appears to have been **dropped from noble** (24.04). This is consistent with
 GH-LibreDWG/libredwg's own readme noting flaky packaging across distros.
 
-**Per task instructions ("ОСТАНОВИСЬ ЗДЕСЬ"), no fallback was attempted.**
-`app/services/dwg_to_dxf.py` still has the ODA-oriented skeleton from Session 1.
+**Per task instructions ("ОСТАНОВИСЬ ЗДЕСЬ"), no fallback was attempted in Session 2.**
+Resolved in Session 3 by building libredwg from source — option 1 below was picked.
 
-### Path-forward options for Session 3
+### Path-forward options that were on the table for Session 3
 
 Pick one — needs user confirmation before the next session proceeds:
 
@@ -67,6 +104,17 @@ Pick one — needs user confirmation before the next session proceeds:
 - No new commits.
 - No new files in `test-data/libuse/outputs/` (Session 1's `inventory_report.md`
   + `phase_0_5_poc.md` are still the only outputs).
+
+---
+
+## Pre-flight checklist for Session 4
+
+- [ ] User confirmation to proceed with Phase 0.5 batch (14 DWG → 14 DXF)
+- [ ] Implement bodies of `parse_dxf_drawing()` / `find_enclosing_polyline()` / `detect_units()` in `dxf_parser.py`
+- [ ] Ship `outputs/cad_extraction.json` for all 14 DWG (rooms + openings + layers)
+- [ ] Open question — DWG coverage gap for objekty A/B/C (only D + spol. 1.PP have DWG): hybrid PDF measurement OR wait for more DWG?
+- [ ] Acceptance gate Q4 (sample review of 5–10 rooms after triangulation)
+- [ ] CI consideration: `dwg2dxf` is not in noble apt — Cloud Run / Docker images need to either bundle the libredwg build or ship the .deb. Decision deferred to deploy session.
 
 ---
 
