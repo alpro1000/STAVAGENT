@@ -45,6 +45,7 @@ export type SeasonMode = 'hot' | 'normal' | 'cold';
 export type StructuralElementType =
   // ─── Bridge elements (mostní prvky) ───
   | 'zaklady_piliru'      // Základy pilířů mostu
+  | 'zaklady_oper'        // Základy opěr mostu (Phase 3 Gate 2a — paralelní k zaklady_piliru, lehké rámové bednění)
   | 'driky_piliru'        // Dříky pilířů / sloupy mostu
   | 'rimsa'               // Římsová deska
   | 'operne_zdi'          // Opěrné zdi (mostní i pozemní)

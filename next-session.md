@@ -260,3 +260,71 @@ nebo split na `chore: reorg test-data/libuse` + `feat: DWG/DXF skeleton + deps`)
 - [ ] Phase 0.5 KROK 5 output: `outputs/cad_extraction.json`
 - [ ] Phase 0.5 KROK 4: skeleton `triangulation_engine.py` + napojení na Tabulku místností XLSX
 - [ ] Acceptance gate Q4 + sample review (5–10 místností)
+
+---
+
+## Gate 2 (calculator element classification) — closed 2026-05-03
+
+**Branch:** `gate-2-element-classification` merged via PR `#1064`.
+**Tests:** 1036 passing. **Element types:** 23 classification-correct
+per canonical §9.4 (22 baseline + `zaklady_oper` added in Phase 3).
+
+Note: this Gate 2 work is on a **different branch / different topic**
+than Libuše DPS work above. Gate 2 = calculator element classification
+(Monolit-Planner shared/src/classifiers); Libuše DPS = parser pipeline
+(concrete-agent core-backend services). No overlap; both can progress
+in parallel.
+
+### Lessons learned (16 stop-and-ask instances Gate 1 + Gate 2)
+
+1. **Task specs are starting hypotheses, not implementation contracts.**
+   Multiple task spec details proved incorrect on verification (e.g.
+   `mostni_zaver` not in union, `Top 50 Cornice` not a real catalog
+   entry, `result.falsework.system` shape doesn't exist).
+
+2. **Implementation reality (TypeScript types, current architecture)
+   is authoritative.** When task spec example code conflicts with
+   current code, current code wins.
+
+3. **Stop-and-ask is fastest path** — each catch prevents 1–3 broken
+   commits. 16 instances caught truncations, broken cross-refs, scope
+   creep, architectural surprises, data inconsistencies.
+
+4. **Architectural fixes beat per-element fixes** — Option W principle
+   pre-empted Phase 4 entirely. 3–4 days estimated → ~10 minutes
+   actual because Option W extension auto-fixed 11 pozemní elements.
+
+5. **With-height vs without-height path coverage matters.**
+   `recommendFormwork()` has two branches; tests must exercise both.
+   Existing "recommends Frami for foundations" test always passed
+   because single-arg call short-circuited to `recommended[0]` —
+   never exercised the buggy with-height path.
+
+6. **`undefined` as universal applicability semantics.** Filter logic
+   must handle both: `!apt || apt.includes(type)`. Original guard
+   formulation `apt?.includes(type)` would have failed silently for
+   universal systems (Frami Xlife). Caught by stop-and-ask 13th
+   instance.
+
+7. **Atomic commits with code + tests together prevent broken
+   intermediate states.** Each Phase 2 commit (e.g. `b60d24d` Top 50)
+   bundled the data change + ALL corresponding test inversions in
+   lockstep so test suite stayed green at every commit boundary.
+
+### Next steps for Gate 3 / Gate 4 / Gate 7
+
+Currently no urgent action. All 5 decisions signed off (2026-04-30).
+Architectural foundation solid. When ready:
+
+- **Gate 3** (UI labels + W1-W4 warnings, ~5–7 days): Staxo 100
+  reclassification, `warnings_structured` shape, card titles per
+  canonical §9.3, tooltips with canonical doc references
+- **Gate 4** (Pricing split, ~5–7 days): 4 cost rows per system,
+  MSS P1 fix, Excel field names disambiguation, MCP `accuracy_note`,
+  dual-write deprecation aliases until 2026-07-29
+- **Gate 7** (Cleanup, deadline **2026-07-29**): remove deprecation
+  aliases (`grep -r "DEPRECATED until 2026-07-29"`), Section 9
+  cleanup, `atrium`/`attika`/`vence`/`rampa` final decision
+
+**Cleanup deadline: 2026-07-29** (3 months from Gate 1 closure
+2026-04-29). Tracked as blocking prerequisite for public MCP launch.

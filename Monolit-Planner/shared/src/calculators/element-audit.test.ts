@@ -31,6 +31,7 @@ interface Fixture {
 const FIXTURES: Fixture[] = [
   // Bridge elements
   { type: 'zaklady_piliru',  label: 'Základy pilířů', input: { volume_m3: 120, height_m: 2.0, has_dilatacni_spary: false, concrete_class: 'C30/37' } },
+  { type: 'zaklady_oper',    label: 'Základy opěr',   input: { volume_m3: 80,  height_m: 1.8, has_dilatacni_spary: false, concrete_class: 'C30/37' } },
   { type: 'driky_piliru',    label: 'Dříky pilířů',   input: { volume_m3: 80,  height_m: 8.0, has_dilatacni_spary: false, concrete_class: 'C30/37' } },
   { type: 'rimsa',           label: 'Římsa',          input: { volume_m3: 40,  has_dilatacni_spary: true, spara_spacing_m: 20, total_length_m: 100, adjacent_sections: true, concrete_class: 'C30/37' } },
   { type: 'operne_zdi',      label: 'Opěrné zdi',     input: { volume_m3: 100, height_m: 4.0, has_dilatacni_spary: true, spara_spacing_m: 10, total_length_m: 50, adjacent_sections: true, concrete_class: 'C25/30' } },
@@ -57,9 +58,9 @@ const FIXTURES: Fixture[] = [
 
 describe('22-type audit (Part D)', () => {
   // Sanity: full coverage of 22 types
-  it('fixture list has 22 unique element types', () => {
+  it('fixture list has 23 unique element types (includes Phase 3 zaklady_oper)', () => {
     const seen = new Set(FIXTURES.map(f => f.type));
-    expect(seen.size).toBe(22);
+    expect(seen.size).toBe(23);
   });
 
   for (const fx of FIXTURES) {

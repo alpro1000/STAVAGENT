@@ -168,9 +168,163 @@ describe('Element Classifier', () => {
       expect(system.name).toBe('Frami Xlife');
     });
 
+    // Phase 3 Gate 2a (commit 2 of 4) — regression tests for horizontal
+    // selector fix. Before this commit, recommendFormwork('zaklady_piliru',
+    // height_m) returned Top 50 (cheapest from category-compatible pool)
+    // because Frami Xlife (formwork_category='wall') was excluded from
+    // horizontal pool. The selector now respects recommended_formwork[0]
+    // when system is universal-applicable. These tests exercise the
+    // with-height path (the buggy path; the no-height tests always
+    // returned Frami via short-circuit at L1023).
+    it('recommends Frami for zaklady_piliru WITH height_m (post-Phase-3 horizontal fix)', () => {
+      const system = recommendFormwork('zaklady_piliru', 1.2);
+      expect(system.name).toBe('Frami Xlife');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends Frami for zaklady_oper WITH height_m (Phase 3 — paralelní k zaklady_piliru)', () => {
+      const system = recommendFormwork('zaklady_oper', 1.5);
+      expect(system.name).toBe('Frami Xlife');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends Frami for zakladova_deska WITH height_m (Phase 3 horizontal fix side-effect — pre-empts Phase 4)', () => {
+      const system = recommendFormwork('zakladova_deska', 0.8);
+      expect(system.name).toBe('Frami Xlife');
+    });
+
+    // Phase 3 Gate 2a (commit 3 of 4) — vertical Option W extension
+    // regression tests. Before this commit, vertical branch returned
+    // cheapest pressure-survivor (COMAIN/DUO won over canonical TRIO/
+    // Frami Xlife). Selector now respects recommended_formwork[0] among
+    // pressure-survivors (DIN 18218 filter still applied first).
+    it('recommends TRIO for opery_ulozne_prahy WITH height_m (Phase 3 vertical fix)', () => {
+      const system = recommendFormwork('opery_ulozne_prahy', 4);
+      expect(system.name).toBe('TRIO');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends Frami for kridla_opery WITH height_m h<3m (Phase 3 vertical fix, Frami within max_pour_height)', () => {
+      // h<3m so Frami Xlife (max_pour_height_m: 3.0) survives pressure
+      // filter and wins as recommended[0]. For h>3m Frami fails pressure
+      // → fallback to cheapest survivor (design intent per Q3 decision).
+      const system = recommendFormwork('kridla_opery', 2.5);
+      expect(system.name).toBe('Frami Xlife');
+      expect(system.pour_role).toBe('formwork');
+    });
+
+    it('recommends TRIO for operne_zdi WITH height_m (Phase 3 vertical fix — VP4 FORESTINA pre-empted from Phase 4)', () => {
+      const system = recommendFormwork('operne_zdi', 1.75);
+      expect(system.name).toBe('TRIO');
+      expect(system.pour_role).toBe('formwork');
+    });
+
     it('recommends cornice formwork for rimsa', () => {
       const system = recommendFormwork('rimsa');
       expect(system.name).toBe('Římsové bednění T');
+    });
+  });
+
+  // ─── Phase 3 Gate 2a verification regression net (Commit 4 of 4) ──────
+  // Locks canonical correctness pro 5 remaining mostní elements verified
+  // post-Option-W extension (Commit 2 horizontal + Commit 3 vertical).
+  // All 5 return their canonical recommended_formwork[0]. Rimsa uses
+  // dedicated special path at L955-961 (length-based selection) which
+  // canonically picks Římsové bednění T (short ≤ 150m) or Římsový vozík
+  // TU (long > 150m) — both are in rimsa.recommended_formwork list.
+  // No code changes needed; this block prevents future regression.
+  // recommendFormwork signature: (type, height_m, pour_method, total_length_m, consistency).
+  describe('Phase 3 Gate 2a — verification regression net', () => {
+    it('Phase 3 verify: driky_piliru with height → VARIO GT 24', () => {
+      expect(recommendFormwork('driky_piliru', 8).name).toBe('VARIO GT 24');
+    });
+
+    it('Phase 3 verify: rigel with height → VARIO GT 24', () => {
+      expect(recommendFormwork('rigel', 6).name).toBe('VARIO GT 24');
+    });
+
+    it('Phase 3 verify: prechodova_deska with height → Frami Xlife', () => {
+      expect(recommendFormwork('prechodova_deska', 0.4).name).toBe('Frami Xlife');
+    });
+
+    it('Phase 3 verify: mostni_zavirne_zidky with height → Frami Xlife', () => {
+      expect(recommendFormwork('mostni_zavirne_zidky', 1).name).toBe('Frami Xlife');
+    });
+
+    // rimsa special case (recommendFormwork L955-961) — length-based:
+    it('Phase 3 verify: rimsa short bridge L≤150m → Římsové bednění T', () => {
+      expect(recommendFormwork('rimsa', 0.4, undefined, 80).name).toBe('Římsové bednění T');
+    });
+
+    it('Phase 3 verify: rimsa long bridge L>150m → Římsový vozík TU', () => {
+      expect(recommendFormwork('rimsa', 0.4, undefined, 200).name).toBe('Římsový vozík TU');
+    });
+  });
+
+  // ─── Phase 4 Gate 2b verification regression net (single commit) ──────
+  // All 12 pozemní + speciální elements verified canonical post-Phase-3
+  // Option W extension. Architectural origin documented per element:
+  //   - Horizontal Option W (Phase 3 Commit 2): stropni_deska, pruvlak,
+  //     schodiste, podkladni_beton, podlozkovy_blok
+  //   - Vertical Option W (Phase 3 Commit 3): zakladovy_pas, zakladova_patka,
+  //     stena, sloup, nadrz, podzemni_stena
+  //   - Special path L1017 (recommendFormwork pilota branch): pilota
+  //     (bored pile bypasses pressure filter, returns recommended[0])
+  // No code changes; tests prevent future regression.
+  // (zakladova_deska + operne_zdi already pre-empted by Phase 3 — covered
+  // by Phase 3 regression tests at L191 + L213.)
+  describe('Phase 4 Gate 2b — verification regression net', () => {
+    // Vertical foundations (Frami Xlife per canonical §9.4)
+    it('Phase 4 verify: zakladovy_pas with height → Frami Xlife', () => {
+      expect(recommendFormwork('zakladovy_pas', 0.6).name).toBe('Frami Xlife');
+    });
+
+    it('Phase 4 verify: zakladova_patka with height → Frami Xlife', () => {
+      expect(recommendFormwork('zakladova_patka', 0.8).name).toBe('Frami Xlife');
+    });
+
+    // Horizontal slabs / floor (Dokaflex stropní per canonical §9.1)
+    it('Phase 4 verify: stropni_deska with height → Dokaflex', () => {
+      expect(recommendFormwork('stropni_deska', 3.0).name).toBe('Dokaflex');
+    });
+
+    it('Phase 4 verify: pruvlak with height → Dokaflex', () => {
+      expect(recommendFormwork('pruvlak', 3.0).name).toBe('Dokaflex');
+    });
+
+    // Vertical walls + columns (rámové / column-specific per canonical §9.4)
+    it('Phase 4 verify: stena with height → Framax Xlife', () => {
+      expect(recommendFormwork('stena', 3.0).name).toBe('Framax Xlife');
+    });
+
+    it('Phase 4 verify: sloup with height → SL-1 Sloupové', () => {
+      expect(recommendFormwork('sloup', 3.5).name).toBe('SL-1 Sloupové');
+    });
+
+    it('Phase 4 verify: nadrz with height → Framax Xlife', () => {
+      expect(recommendFormwork('nadrz', 4.0).name).toBe('Framax Xlife');
+    });
+
+    // Tradiční tesařské (universal fallback for special elements)
+    it('Phase 4 verify: schodiste with height → Tradiční tesařské', () => {
+      expect(recommendFormwork('schodiste', 3.0).name).toBe('Tradiční tesařské');
+    });
+
+    it('Phase 4 verify: podzemni_stena with height → Tradiční tesařské', () => {
+      expect(recommendFormwork('podzemni_stena', 6.0).name).toBe('Tradiční tesařské');
+    });
+
+    it('Phase 4 verify: pilota → Tradiční tesařské (special path L1017, bored pile bypasses pressure filter)', () => {
+      expect(recommendFormwork('pilota').name).toBe('Tradiční tesařské');
+    });
+
+    // Speciální (treated as horizontal small elements)
+    it('Phase 4 verify: podkladni_beton with height → Tradiční tesařské', () => {
+      expect(recommendFormwork('podkladni_beton', 0.1).name).toBe('Tradiční tesařské');
+    });
+
+    it('Phase 4 verify: podlozkovy_blok with height → Frami Xlife', () => {
+      expect(recommendFormwork('podlozkovy_blok', 0.4).name).toBe('Frami Xlife');
     });
   });
 
@@ -274,6 +428,33 @@ describe('Element Classifier', () => {
 
     it('ZÁKLADY + bridge context → zaklady_piliru', () => {
       expect(classifyElement('ZÁKLADY ZE ŽELEZOBETONU DO C25/30', { is_bridge: true }).element_type)
+        .toBe('zaklady_piliru');
+    });
+
+    // Phase 3 Gate 2a (2026-04-30): zaklady_oper recognition tests.
+    // Higher-priority KEYWORD_RULES entry (priority 11 vs zaklady_piliru's 10)
+    // ensures "základ opěry" specifically matches zaklady_oper, not zaklady_piliru
+    // via generic "základy" keyword fall-through.
+    it('ZÁKLAD OPĚRY → zaklady_oper (specific match, not zaklady_piliru)', () => {
+      expect(classifyElement('ZÁKLAD OPĚRY OP1 ZE ŽELEZOBETONU C25/30').element_type)
+        .toBe('zaklady_oper');
+    });
+
+    it('ZÁKLADY OPĚR → zaklady_oper', () => {
+      expect(classifyElement('ZÁKLADY OPĚR MOSTNÍCH').element_type)
+        .toBe('zaklady_oper');
+    });
+
+    it('OPĚRA ZÁKLAD → zaklady_oper', () => {
+      expect(classifyElement('Opěra základ železobeton').element_type)
+        .toBe('zaklady_oper');
+    });
+
+    // Negative: generic "základy" without "opěr" still matches zaklady_piliru
+    // (existing behavior preserved — Phase 3 commit 1 only adds new type, does
+    // not reroute existing matches)
+    it('ZÁKLADY (without opěr) + bridge context → zaklady_piliru (unchanged)', () => {
+      expect(classifyElement('ZÁKLADY PILÍŘŮ', { is_bridge: true }).element_type)
         .toBe('zaklady_piliru');
     });
 
@@ -489,9 +670,10 @@ describe('Element Classifier', () => {
 
   describe('getAllElementTypes', () => {
     // BUG 11: +2 new types (podkladni_beton, podlozkovy_blok)
-    it('returns 24 element types (13 bridge + 11 building)', () => {
+    // Phase 3 Gate 2a (2026-04-30): +1 zaklady_oper → 25 types (14 bridge + 11 building)
+    it('returns 25 element types (14 bridge + 11 building)', () => {
       const types = getAllElementTypes();
-      expect(types).toHaveLength(24);
+      expect(types).toHaveLength(25);
     });
 
     it('includes prechodova_deska', () => {

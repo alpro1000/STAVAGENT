@@ -136,6 +136,29 @@ const ELEMENT_CATALOG: Record<StructuralElementType, Omit<ElementProfile, 'eleme
     max_pour_rate_m3_h: 40,
     pump_typical: true,
   },
+  // Phase 3 Gate 2a (2026-04-30): zaklady_oper added as separate mostní type
+  // paralelní k zaklady_piliru. Logic identical (same horizontal foundation
+  // characteristics — Frami Xlife rámové bednění, no supports, same rebar
+  // ratios). Only label_cs differs ("Základy opěr" vs "Základy pilířů /
+  // patky"). Per Option α (full literal parallel entry per existing
+  // convention — no shared profile constants in catalog).
+  zaklady_oper: {
+    label_cs: 'Základy opěr',
+    rebar_category: 'slabs_foundations',
+    rebar_default_diameter_mm: 14,
+    recommended_formwork: ['Frami Xlife', 'DOMINO', 'Tradiční tesařské'],
+    difficulty_factor: 0.9,
+    needs_supports: false,
+    needs_platforms: false,
+    needs_crane: false,
+    rebar_ratio_kg_m3: 120,
+    rebar_ratio_range: [100, 150],
+    rebar_norm_h_per_t: 40,
+    strip_strength_pct: 50,
+    orientation: 'horizontal',
+    max_pour_rate_m3_h: 40,
+    pump_typical: true,
+  },
   driky_piliru: {
     label_cs: 'Dříky pilířů / sloupy',
     rebar_category: 'beams_columns',
@@ -675,6 +698,17 @@ const KEYWORD_RULES: KeywordRule[] = [
     'plosny zaklad most', 'plošný základ most',
     'фундамент опор', 'фундамент пилон',
   ], priority: 10 },
+  // Phase 3 Gate 2a: zaklady_oper recognition. Higher priority than
+  // zaklady_piliru so "základ opěry" specifically matches zaklady_oper
+  // instead of falling through to the generic "základy" keyword. Other
+  // "opěr"-related keywords (e.g. "blok opěr") stay with zaklady_piliru
+  // to avoid changing existing classification behavior in this commit.
+  { element_type: 'zaklady_oper', keywords: [
+    'zaklad oper', 'základ opěr', 'zaklady oper', 'základy opěr',
+    'opera zaklad', 'opěra základ', 'opery zaklad', 'opěry základ',
+    'mostni opera zaklad', 'mostní opěra základ',
+    'zaklad mostni opery', 'základ mostní opěry',
+  ], priority: 11 },
   { element_type: 'driky_piliru', keywords: [
     'drik', 'dřík', 'driky pilir', 'dříky pilíř',
     'pilir most', 'pilíř most',
@@ -781,7 +815,7 @@ function normalize(text: string): string {
 
 /** Bridge element types — get priority boost in bridge context */
 const BRIDGE_ELEMENT_TYPES = new Set<StructuralElementType>([
-  'zaklady_piliru', 'driky_piliru', 'rimsa', 'operne_zdi',
+  'zaklady_piliru', 'zaklady_oper', 'driky_piliru', 'rimsa', 'operne_zdi',
   'mostovkova_deska', 'rigel', 'opery_ulozne_prahy', 'kridla_opery',
   'mostni_zavirne_zidky', 'prechodova_deska',
 ]);
@@ -994,6 +1028,40 @@ export function recommendFormwork(
   // Horizontal elements: lateral pressure is irrelevant (concrete sits ON formwork).
   // Select by category compatibility and rental price — no pressure filtering needed.
   if (profile.orientation === 'horizontal') {
+    // Phase 3 Gate 2a (2026-04-30): respect canonical recommended_formwork[0]
+    // over cheapest sort, when the recommended system is applicable.
+    //
+    // Background: prior to this fix, the horizontal branch returned the
+    // cheapest-rental system from the category-compatible pool. For
+    // foundations (zaklady_piliru, zaklady_oper, zakladova_deska),
+    // Top 50 (380 Kč/m²/mo, formwork_category='slab') won over Frami Xlife
+    // (~507 Kč/m²/mo, formwork_category='wall' — excluded from horizontal
+    // pool by ELEMENT_SUITABLE_CATEGORIES). Result: foundations got Top 50
+    // (mostovka-class nosníkové bednění) instead of Frami Xlife (rámové,
+    // canonical per §9.4 + DOKA katalog).
+    //
+    // Fix: prefer ELEMENT_CATALOG[type].recommended_formwork[0] when:
+    //  1. recommendation exists in profile,
+    //  2. corresponding system exists in FORMWORK_SYSTEMS catalog,
+    //  3. system is applicable for this element (allow-list logic):
+    //     applicable_element_types absence = universal applicability
+    //     (Frami Xlife, Top 50 etc. may be used for various element types);
+    //     applicable_element_types as array = explicit allow-list
+    //     (e.g., Top 50 Cornice for rimsa only).
+    // Falls back to cheapest sort if any check fails.
+    const recommendedName = profile.recommended_formwork?.[0];
+    if (recommendedName) {
+      const recommendedSystem = FORMWORK_SYSTEMS.find(s => s.name === recommendedName);
+      if (recommendedSystem) {
+        const isApplicable =
+          !recommendedSystem.applicable_element_types
+          || recommendedSystem.applicable_element_types.includes(type);
+        if (isApplicable) {
+          return recommendedSystem;
+        }
+      }
+    }
+
     const { all: compatibleSystems } = getSuitableSystemsForElement(type);
     if (compatibleSystems.length > 0) {
       // Sort: cheapest rental first, 0-price (tradiční) last
@@ -1026,7 +1094,34 @@ export function recommendFormwork(
   );
 
   if (filtered.suitable.length > 0) {
-    return filtered.suitable[0]; // Cheapest suitable
+    // Phase 3 Gate 2a (commit 3 of 4 — 2026-04-30): extend Option W
+    // principle to vertical branch with pressure-filter safety preserved.
+    //
+    // Background (parallel to Commit 2 horizontal fix): vertical elements
+    // returned the cheapest pressure-survivor (filtered.suitable[0]). For
+    // opery_ulozne_prahy this picked COMAIN (ULMA) over canonical TRIO
+    // (PERI) recommended[0]; for operne_zdi it picked DUO over TRIO.
+    //
+    // Fix: prefer ELEMENT_CATALOG.recommended_formwork[0] AMONG pressure-
+    // survivors. DIN 18218 safety filter still applied first (filtered.
+    // suitable is the pre-filtered pool); recommended[0] only wins if it
+    // SURVIVED the pressure filter. If it failed pressure → fall back to
+    // cheapest survivor (existing behavior preserved).
+    //
+    // Universal allow-list semantics not relevant here because filtered.
+    // suitable already excludes systems whose applicable_element_types
+    // exclude this type (handled upstream in getSuitableSystemsForElement
+    // + filterFormworkByPressure pipeline).
+    const recommendedName = profile.recommended_formwork?.[0];
+    if (recommendedName) {
+      const recommendedSurvivor = filtered.suitable.find(
+        s => s.name === recommendedName,
+      );
+      if (recommendedSurvivor) {
+        return recommendedSurvivor;
+      }
+    }
+    return filtered.suitable[0]; // Cheapest survivor (existing fallback)
   }
 
   // Fallback: static recommendation (should rarely happen — tradiční is always available)
@@ -1207,6 +1302,11 @@ export const REQUIRED_FIELDS: Record<StructuralElementType, RequiredFieldSpec[]>
     { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry a náklady' },
     { field: 'height_m', label_cs: 'Výška základu', severity: 'optional', reason_cs: 'ovlivňuje boční tlak a volbu bednění' },
   ],
+  // Phase 3 Gate 2a: zaklady_oper required-fields parallel zaklady_piliru
+  zaklady_oper: [
+    { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry a náklady' },
+    { field: 'height_m', label_cs: 'Výška základu', severity: 'optional', reason_cs: 'ovlivňuje boční tlak a volbu bednění' },
+  ],
   driky_piliru: [
     { field: 'volume_m3', label_cs: 'Objem betonu', severity: 'critical', reason_cs: 'bez objemu nelze počítat záběry' },
     { field: 'height_m', label_cs: 'Výška pilíře', severity: 'critical', reason_cs: 'bez výšky nelze spočítat boční tlak a záběry' },
@@ -1335,6 +1435,7 @@ export interface SanityRanges {
 // pozemní stavby BOQs and kept as-is.
 export const SANITY_RANGES: Record<StructuralElementType, SanityRanges> = {
   zaklady_piliru:   { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] },
+  zaklady_oper:     { volume_m3: [10, 800],  height_m: [0.8, 3.0],  rebar_kg_m3: [60, 150] }, // Phase 3 Gate 2a — same ranges as zaklady_piliru
   driky_piliru:     { volume_m3: [1, 800],   height_m: [3.0, 30.0], rebar_kg_m3: [80, 220] },
   rimsa:            { volume_m3: [0.5, 500], height_m: [0.3, 0.8],  rebar_kg_m3: [80, 180] },
   operne_zdi:       { volume_m3: [10, 500],  height_m: [2.0, 12.0], rebar_kg_m3: [50, 130] },
@@ -1732,6 +1833,7 @@ export const ELEMENT_TZ_COMPATIBILITY: Record<
 > = {
   // ── Foundations (horizontal, no bridge-deck params) ──────────────────────
   zaklady_piliru: ['height_m', 'thickness_mm'],
+  zaklady_oper:   ['height_m', 'thickness_mm'], // Phase 3 Gate 2a — same TZ params as zaklady_piliru
   zakladova_deska: ['height_m', 'thickness_mm'],
   zakladovy_pas: ['height_m', 'thickness_mm'],
   zakladova_patka: ['height_m', 'thickness_mm'],

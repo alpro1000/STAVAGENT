@@ -65,6 +65,7 @@ const ELEMENT_TYPES: { value: StructuralElementType; label: string; group: strin
   { value: 'schodiste', label: 'Schodiště', group: 'Pozemní stavby', icon: '⌐' },
   { value: 'nadrz', label: 'Nádrž / bazén', group: 'Pozemní stavby', icon: '⊔' },
   { value: 'zaklady_piliru', label: 'Základy pilířů', group: 'Mostní prvky', icon: '▣' },
+  { value: 'zaklady_oper', label: 'Základy opěr', group: 'Mostní prvky', icon: '▣' },
   { value: 'driky_piliru', label: 'Dříky pilířů', group: 'Mostní prvky', icon: '║' },
   { value: 'operne_zdi', label: 'Opěrné zdi', group: 'Mostní prvky', icon: '▐' },
   { value: 'mostovkova_deska', label: 'Mostovková deska', group: 'Mostní prvky', icon: '▄' },
@@ -297,7 +298,7 @@ export default function CalculatorWizard({ onComplete, onCancel, initialElementT
   }, [elementType]);
 
   const isBridgeElement = useMemo(() => {
-    const bridgeTypes = ['zaklady_piliru', 'driky_piliru', 'operne_zdi', 'mostovkova_deska',
+    const bridgeTypes = ['zaklady_piliru', 'zaklady_oper', 'driky_piliru', 'operne_zdi', 'mostovkova_deska',
       'rimsa', 'rigel', 'opery_ulozne_prahy', 'mostni_zavirne_zidky', 'prechodova_deska'];
     return bridgeTypes.includes(elementType);
   }, [elementType]);

@@ -156,7 +156,7 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
               const elemType = form.element_type;
               // BUG 7: driky_piliru added — L×W×H for pier shaft, fw area = 2(L+W)×H
               const geomTypes = [
-                'zaklady_piliru', 'zakladova_patka', 'zakladovy_pas',
+                'zaklady_piliru', 'zaklady_oper', 'zakladova_patka', 'zakladovy_pas',
                 'opery_ulozne_prahy', 'driky_piliru',
               ];
               if (!geomTypes.includes(elemType)) return null;
