@@ -30,9 +30,14 @@ logger = logging.getLogger(__name__)
 # Module constants
 # ---------------------------------------------------------------------------
 
-# Room code patterns: D.1.4.02 (byt podlaží), D.1.S.01 (společné),
-# A.1.OB1.01 (obchodní jednotka v objektu A).
-ROOM_CODE_RE = re.compile(r"^[A-D]\.\d\.(?:\d|S|OB\d+)\.\d{2}$")
+# Room code patterns:
+#   D.1.4.02   — byt podlaží (objekt.podlaží.byt.místnost)
+#   D.1.S.01   — společné NP (objekt.podlaží.S.místnost)
+#   A.1.OB1.01 — obchodní jednotka (objekt.podlaží.OB#.místnost)
+#   S.D.18     — sklep / 1.PP (S.objekt.místnost) — used for the společný suterén
+ROOM_CODE_RE = re.compile(
+    r"^(?:[A-D]\.\d\.(?:\d|S|OB\d+)\.\d{2}|S\.[A-D]\.\d{2})$"
+)
 
 # Single-token tag codes: D21, FF20, OS04 (no split needed).
 SINGLE_TAG_RE = re.compile(r"^([A-Z]{1,3})(\d{2,3})$")
@@ -410,11 +415,22 @@ def _is_closed(ent) -> bool:
 
 
 def _split_room_code(code: str) -> tuple[str, str, str, str]:
-    """`D.1.4.02` → ('D', '1.NP', '4', '02'). Podlaží mapping: 0→1.PP, 1→1.NP, 2→2.NP, 3→3.NP."""
+    """Decompose a room code into (objekt, podlaží, byt_or_section, mistnost).
+
+    Supports three formats:
+      D.1.4.02  → ('D', '1.NP', '4', '02')   — byt podlaží
+      D.1.S.01  → ('D', '1.NP', 'S', '01')   — společné NP
+      A.1.OB1.01 → ('A', '1.NP', 'OB1', '01') — obchodní jednotka
+      S.D.18    → ('D', '1.PP', 'S', '18')   — sklep / 1.PP (suterén)
+    Podlaží digit map: 0→1.PP, 1→1.NP, 2→2.NP, 3→3.NP.
+    """
     parts = code.split(".")
+    floor_map = {"0": "1.PP", "1": "1.NP", "2": "2.NP", "3": "3.NP"}
+    if parts[0] == "S" and len(parts) == 3:
+        # Sklep / 1.PP suterén format: S.{objekt}.{místnost}
+        return parts[1], "1.PP", "S", parts[2]
     objekt = parts[0]
     raw_floor = parts[1] if len(parts) > 1 else ""
-    floor_map = {"0": "1.PP", "1": "1.NP", "2": "2.NP", "3": "3.NP"}
     podlazi = floor_map.get(raw_floor, raw_floor)
     byt = parts[2] if len(parts) > 2 else ""
     mist = parts[3] if len(parts) > 3 else ""
