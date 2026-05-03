@@ -1,7 +1,7 @@
 {
   "objekt": "D",
   "schema_version": "1.0",
-  "phase_1_step": 3,
+  "phase_1_step": 4,
   "rooms": [
     {
       "code": "S.D.09",
@@ -7895,5 +7895,368 @@
   "skladby_missing_in_master": [
     "F20",
     "F30"
-  ]
+  ],
+  "aggregates": {
+    "objekt": "D",
+    "by_FF_floor_skladba": {
+      "F20": 1.51,
+      "F30": 7.11,
+      "FF01": 240.15,
+      "FF03": 84.48,
+      "FF20": 69.66,
+      "FF21": 163.76,
+      "FF30": 170.71,
+      "FF31": 326.25,
+      "RF20": 49.14
+    },
+    "by_F_povrch_podlahy": {
+      "F01": 67.98,
+      "F02": 112.83,
+      "F03": 490.02,
+      "F07": 49.14,
+      "F11": 268.0,
+      "F18": 68.19
+    },
+    "by_F_povrch_sten": {
+      "F04": 515.73,
+      "F05": 1841.38,
+      "F06": 325.77,
+      "F13": 214.01,
+      "F19": 1204.36,
+      "F20": 409.42
+    },
+    "by_CF_typ_podhledu": {
+      "CF20": 184.39,
+      "CF21": 68.19
+    },
+    "by_F_povrch_podhledu": {
+      "F05": 335.05,
+      "F15": 268.0,
+      "F17": 252.58,
+      "F20": 151.39
+    },
+    "obvod_total_m": 1474.91,
+    "obvod_minus_door_widths_m": 1355.51,
+    "door_widths_total_m": 119.4,
+    "doors_by_type_code": {
+      "D04": 39,
+      "D34": 22,
+      "D31": 16,
+      "D21": 11,
+      "D02": 10,
+      "D33": 5,
+      "D03": 4,
+      "D01": 3,
+      "D35": 3,
+      "D05": 1,
+      "D10": 1,
+      "D20": 1,
+      "D11": 1,
+      "D42": 1
+    },
+    "windows_by_type_code": {
+      "W03": 17,
+      "W05": 9,
+      "W04": 4,
+      "W01": 3,
+      "W83": 2
+    },
+    "per_floor": {
+      "1.PP": {
+        "room_count": 41,
+        "sum_area_m2": 268.0,
+        "sum_perimeter_m": 462.82,
+        "openings": {
+          "door_count": 71,
+          "door_with_type_code": 57,
+          "window_count": 0,
+          "window_with_type_code": 0,
+          "curtain_wall_count": 0,
+          "door_total_area_m2": 143.01,
+          "window_total_area_m2": 0,
+          "curtain_total_area_m2": 0,
+          "door_area_known_count": 71,
+          "window_area_known_count": 0
+        },
+        "FF_breakdown": {
+          "FF01": 240.14800000000002,
+          "FF03": 84.48200000000001
+        },
+        "CF_breakdown": {}
+      },
+      "1.NP": {
+        "room_count": 20,
+        "sum_area_m2": 256.16,
+        "sum_perimeter_m": 317.69,
+        "openings": {
+          "door_count": 28,
+          "door_with_type_code": 22,
+          "window_count": 11,
+          "window_with_type_code": 11,
+          "curtain_wall_count": 6,
+          "door_total_area_m2": 46.19,
+          "window_total_area_m2": 15.38,
+          "curtain_total_area_m2": 0,
+          "door_area_known_count": 22,
+          "window_area_known_count": 11
+        },
+        "FF_breakdown": {
+          "FF20": 69.65899999999999,
+          "FF21": 163.76300000000003,
+          "FF30": 21.223,
+          "F20": 1.515
+        },
+        "CF_breakdown": {
+          "CF20": 69.65899999999999,
+          "CF21": 22.738
+        }
+      },
+      "2.NP": {
+        "room_count": 25,
+        "sum_area_m2": 289.28,
+        "sum_perimeter_m": 378.96,
+        "openings": {
+          "door_count": 26,
+          "door_with_type_code": 20,
+          "window_count": 17,
+          "window_with_type_code": 15,
+          "curtain_wall_count": 6,
+          "door_total_area_m2": 36.54,
+          "window_total_area_m2": 21.1,
+          "curtain_total_area_m2": 0,
+          "door_area_known_count": 20,
+          "window_area_known_count": 15
+        },
+        "FF_breakdown": {
+          "FF30": 80.83500000000001,
+          "FF31": 171.285,
+          "F30": 2.912,
+          "RF20": 34.245
+        },
+        "CF_breakdown": {
+          "CF20": 58.638999999999996,
+          "CF21": 25.108000000000004
+        }
+      },
+      "3.NP": {
+        "room_count": 23,
+        "sum_area_m2": 242.72,
+        "sum_perimeter_m": 315.45,
+        "openings": {
+          "door_count": 22,
+          "door_with_type_code": 19,
+          "window_count": 20,
+          "window_with_type_code": 9,
+          "curtain_wall_count": 3,
+          "door_total_area_m2": 32.55,
+          "window_total_area_m2": 12.83,
+          "curtain_total_area_m2": 0,
+          "door_area_known_count": 19,
+          "window_area_known_count": 9
+        },
+        "FF_breakdown": {
+          "FF30": 68.65299999999999,
+          "FF31": 154.97,
+          "F30": 4.202,
+          "RF20": 14.895
+        },
+        "CF_breakdown": {
+          "CF20": 56.086999999999996,
+          "CF21": 20.348
+        }
+      }
+    },
+    "facade_per_orientation": {
+      "1.PP": {
+        "total_facade_openings": 0,
+        "total_internal_doors": 71,
+        "facade_total_area_m2": 0.0,
+        "by_side": {
+          "+X": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          },
+          "-X": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          },
+          "+Y": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          },
+          "-Y": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          }
+        }
+      },
+      "1.NP": {
+        "total_facade_openings": 24,
+        "total_internal_doors": 21,
+        "facade_total_area_m2": 17.49,
+        "by_side": {
+          "+X": {
+            "count": 4,
+            "total_area_m2": 4.25,
+            "openings": [
+              "W03",
+              "W03",
+              "W05",
+              "W05"
+            ]
+          },
+          "-X": {
+            "count": 3,
+            "total_area_m2": 4.22,
+            "openings": [
+              "W04",
+              "W03",
+              "W05"
+            ]
+          },
+          "+Y": {
+            "count": 5,
+            "total_area_m2": 9.02,
+            "openings": [
+              "D11",
+              "W01",
+              "W03",
+              "W03",
+              "W03"
+            ]
+          },
+          "-Y": {
+            "count": 12,
+            "total_area_m2": 0.0,
+            "openings": [
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "Systémový panel - Sklo-2038694-DPS_1NP-D",
+              "Systémový panel - Sklo-1480324-DPS_1NP-D",
+              "Systémový panel - Sklo-1480324-DPS_1NP-D",
+              "Systémový panel - Sklo-1479875-DPS_1NP-D",
+              "Systémový panel - Sklo-1479875-DPS_1NP-D",
+              "Systémový panel - Sklo-1481686-DPS_1NP-D"
+            ]
+          }
+        }
+      },
+      "2.NP": {
+        "total_facade_openings": 23,
+        "total_internal_doors": 26,
+        "facade_total_area_m2": 21.1,
+        "by_side": {
+          "+X": {
+            "count": 5,
+            "total_area_m2": 4.85,
+            "openings": [
+              "W04",
+              "W05",
+              "W05",
+              "W03",
+              "Roof-Windows_VELUX_GLL_1061 - PK06-17547"
+            ]
+          },
+          "-X": {
+            "count": 5,
+            "total_area_m2": 4.85,
+            "openings": [
+              "W05",
+              "W05",
+              "W04",
+              "W03",
+              "Roof-Windows_VELUX_GLL_1061 - PK06-17547"
+            ]
+          },
+          "+Y": {
+            "count": 7,
+            "total_area_m2": 11.4,
+            "openings": [
+              "W03",
+              "W03",
+              "W03",
+              "W01",
+              "W03",
+              "W03",
+              "W03"
+            ]
+          },
+          "-Y": {
+            "count": 6,
+            "total_area_m2": 0.0,
+            "openings": [
+              "Systémový panel - Sklo-1688785-DPS_2NP-D",
+              "Systémový panel - Sklo-1690390-DPS_2NP-D",
+              "Systémový panel - Sklo-1480164-DPS_2NP-D",
+              "Systémový panel - Sklo-1480324-DPS_2NP-D",
+              "Systémový panel - Sklo-1690981-DPS_2NP-D",
+              "Systémový panel - Sklo-1480324-DPS_2NP-D"
+            ]
+          }
+        }
+      },
+      "3.NP": {
+        "total_facade_openings": 23,
+        "total_internal_doors": 22,
+        "facade_total_area_m2": 12.82,
+        "by_side": {
+          "+X": {
+            "count": 3,
+            "total_area_m2": 3.62,
+            "openings": [
+              "W03",
+              "W03",
+              "W05"
+            ]
+          },
+          "-X": {
+            "count": 14,
+            "total_area_m2": 4.22,
+            "openings": [
+              "W04",
+              "W03",
+              "W05",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17553",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17553",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V11-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V12-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17554",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17554",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V13-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V14-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17554",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17549",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17549"
+            ]
+          },
+          "+Y": {
+            "count": 3,
+            "total_area_m2": 4.98,
+            "openings": [
+              "W83",
+              "W83",
+              "W01"
+            ]
+          },
+          "-Y": {
+            "count": 3,
+            "total_area_m2": 0.0,
+            "openings": [
+              "Systémový panel - Sklo-1655971-DPS_3NP-D",
+              "Systémový panel - Sklo-1655971-DPS_3NP-D",
+              "Systémový panel - Sklo-1655971-DPS_3NP-D"
+            ]
+          }
+        }
+      }
+    }
+  }
 }
