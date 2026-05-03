@@ -1,0 +1,217 @@
+
+=== Doors (geometry) — layer `A-DOOR-____-OTLN` (28 total) ===
+
+  Block name: HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_1NP-D
+  Position: (4973.2, 64029.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_1NP-D
+  Position: (4823.2, 61872.4)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_1NP-D
+  Position: (2818.2, 61872.4)
+  Has attribs: True
+  Attribs count: 0
+
+=== Windows (geometry) — layer `A-GLAZ-____-OTLN` (11 total) ===
+
+  Block name: HA_WD_SinglePanel - 1000x2100-1653868-DPS_1NP-D
+  Position: (-5521.8, 58904.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D
+  Position: (-5521.8, 64279.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D
+  Position: (-5521.8, 61342.4)
+  Has attribs: True
+  Attribs count: 0
+
+=== Curtain walls — layer `A-GLAZ-CURT-OTLN` (6 total) ===
+
+  Block name: Systémový panel - Sklo-2038694-DPS_1NP-D
+  Position: (-3026.8, 57084.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: Systémový panel - Sklo-1480324-DPS_1NP-D
+  Position: (1598.2, 57084.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: Systémový panel - Sklo-1480324-DPS_1NP-D
+  Position: (5598.2, 57084.9)
+  Has attribs: True
+  Attribs count: 0
+
+=== Door tags — layer `A-DOOR-____-IDEN` (22 total) ===
+
+  Block name: HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble-921060-DPS_1NP-D
+  Position: (4973.2, 63939.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble-921060-DPS_1NP-D
+  Position: (4823.2, 61842.4)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble-921060-DPS_1NP-D
+  Position: (2818.2, 61842.4)
+  Has attribs: True
+  Attribs count: 0
+
+=== Window tags — layer `A-GLAZ-____-IDEN` (11 total) ===
+
+  Block name: HA_TAG_WD - Type Mark-1512533-DPS_1NP-D
+  Position: (-6093.9, 59004.9)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_TAG_WD - Type Mark-1512533-DPS_1NP-D
+  Position: (-6093.9, 61522.4)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_TAG_WD - Type Mark-1512533-DPS_1NP-D
+  Position: (-6111.4, 64175.5)
+  Has attribs: True
+  Attribs count: 0
+
+=== Wall tags (room/element marks) — layer `A-WALL-____-IDEN` (29 total) ===
+
+  Block name: HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D
+  Position: (-2802.4, 62399.4)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D
+  Position: (675.9, 62042.4)
+  Has attribs: True
+  Attribs count: 0
+
+  Block name: HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D
+  Position: (1674.9, 64509.9)
+  Has attribs: True
+  Attribs count: 0
+
+
+=== Unique block names per layer ===
+
+A-DOOR-____-OTLN (28 INSERTs, 16 unique blocks):
+  - ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_1NP-D
+  - ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_1NP-D
+  - ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529249-DPS_1NP-D
+  - ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-2038697-DPS_1NP-D
+  - HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_1NP-D
+  - HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_1NP-D
+  - HA_DR_Double_Swing_Solid_FrameButt - In_FAS_1600x2350_1000-1915407-DPS_1NP-D
+  - HA_DR_Double_Swing_Solid_wCasing - In_1800x2100_900-1806419-DPS_1NP-D
+  - HA_DR_Double_Swing_Solid_wCasing - In_OBJ_1500x2100_900-1771115-DPS_1NP-D
+  - HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D
+  - HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_1NP-D
+  - HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D
+  - HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_1NP-D
+  - HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_1NP-D
+  - HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_1NP-D
+  ... +1 more
+
+A-DOOR-____-IDEN (22 INSERTs, 2 unique blocks):
+  - HA_TAG_Door_TypeMark_wDimensions - Scale50_Left with Bouble-921048-DPS_1NP-D
+  - HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble-921060-DPS_1NP-D
+
+A-GLAZ-____-OTLN (11 INSERTs, 5 unique blocks):
+  - HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D
+  - HA_WD_SinglePanel - 1000x1500-1653875-DPS_1NP-D
+  - HA_WD_SinglePanel - 1000x2100-1653868-DPS_1NP-D
+  - HA_WD_SinglePanel - 1000x2400-1653873-DPS_1NP-D
+  - HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D
+
+A-GLAZ-CURT-OTLN (6 INSERTs, 4 unique blocks):
+  - Systémový panel - Sklo-1479875-DPS_1NP-D
+  - Systémový panel - Sklo-1480324-DPS_1NP-D
+  - Systémový panel - Sklo-1481686-DPS_1NP-D
+  - Systémový panel - Sklo-2038694-DPS_1NP-D
+
+A-GLAZ-CWMG-OTLN (24 INSERTs, 12 unique blocks):
+  - Obdélníková příčel - 50x70mm EXT-1479394-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1479396-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1479397-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1479461-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1479988-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1479989-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1479993-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1480163-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-1481680-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-2038693-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-2038695-DPS_1NP-D
+  - Obdélníková příčel - 50x70mm EXT-2038696-DPS_1NP-D
+
+
+=== Full attribs dump from *_IDEN inserts (first 5 per layer) ===
+
+--- A-DOOR-____-IDEN (showing 5 of 22) ---
+  block='HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble'  pos=(4973,63940)  attribs={}
+  block='HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble'  pos=(4823,61842)  attribs={}
+  block='HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble'  pos=(2818,61842)  attribs={}
+  block='HA_TAG_Door_TypeMark_wDimensions - Scale50_Left with Bouble-'  pos=(2286,62560)  attribs={}
+  block='HA_TAG_Door_TypeMark_wDimensions - Scale50_Right with Bouble'  pos=(11523,64030)  attribs={}
+
+--- A-GLAZ-____-IDEN (showing 5 of 11) ---
+  block='HA_TAG_WD - Type Mark-1512533-DPS_1NP-D'                       pos=(-6094,59005)  attribs={}
+  block='HA_TAG_WD - Type Mark-1512533-DPS_1NP-D'                       pos=(-6094,61522)  attribs={}
+  block='HA_TAG_WD - Type Mark-1512533-DPS_1NP-D'                       pos=(-6111,64176)  attribs={}
+  block='HA_TAG_WD - Type Mark-1512533-DPS_1NP-D'                       pos=(3098,69509)  attribs={}
+  block='HA_TAG_WD - Type Mark-1512533-DPS_1NP-D'                       pos=(13573,69533)  attribs={}
+
+--- A-WALL-____-IDEN (showing 5 of 29) ---
+  block='HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D'     pos=(-2802,62399)  attribs={}
+  block='HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D'     pos=(676,62042)  attribs={}
+  block='HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D'     pos=(1675,64510)  attribs={}
+  block='HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D'     pos=(14984,64400)  attribs={}
+  block='HA_TAG_WA_Partitions - Group _ Type Mark-556634-DPS_1NP-D'     pos=(15652,61354)  attribs={}
+
+
+=== Sample TEXT/MTEXT contents on *_IDEN layers ===
+
+--- A-DOOR-____-IDEN (100 TEXT/MTEXT) ---
+  pos=(4876,63532)  '900'
+  pos=(4995,63508)  '2100'
+  pos=(4893,62929)  'D21'
+  pos=(4903,62822)  '233'
+  pos=(4726,61411)  '1200'
+  pos=(4845,61411)  '2100'
+  pos=(4743,60832)  'D33'
+  pos=(4753,60725)  '234'
+  pos=(2721,61434)  '800'
+  pos=(2840,61411)  '2100'
+
+--- A-GLAZ-____-IDEN (33 TEXT/MTEXT) ---
+  pos=(-6142,58986)  '04'
+  pos=(-6136,59100)  'W'
+  pos=(-6142,61503)  '05'
+  pos=(-6136,61618)  'W'
+  pos=(-6160,64157)  '03'
+  pos=(-6153,64271)  'W'
+  pos=(3050,69490)  '01'
+  pos=(3056,69605)  'W'
+  pos=(13525,69514)  '03'
+  pos=(13531,69628)  'W'
+
+--- A-WALL-____-IDEN (64 TEXT/MTEXT) ---
+  pos=(-2864,62364)  '51'
+  pos=(-2890,62508)  'WF'
+  pos=(711,61981)  '40'
+  pos=(567,61954)  'WF'
+  pos=(1613,64474)  '51'
+  pos=(1587,64619)  'WF'
+  pos=(14923,64364)  '51'
+  pos=(14896,64509)  'WF'
+  pos=(15688,61293)  '40'
+  pos=(15543,61266)  'WF'
