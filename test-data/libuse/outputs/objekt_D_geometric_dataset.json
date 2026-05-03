@@ -6716,6 +6716,13 @@
       "severity": "critical",
       "summary": "starý VV missing ~2000 m² of cement screed: 4 objekty × ~930 m² floor each → komplex screed ≈ 3000 m², VV reports only 1058 m². Confirms customer's complaint that the VV is incomplete.",
       "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit"
+    },
+    {
+      "from_phase": "3a — PSV-781 obklady",
+      "severity": "critical",
+      "summary": "starý VV reports only 43 m² hydroizolace pod obklad komplex; F06 ground truth across komplex ~283 m² (D-side ≈ 71 m² for koupelny F06). Gap of ~240 m² komplex hydroizolace under F06 obklad. Persistuje až do Phase 5.",
+      "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit; verify F06 wall area against Tabulka skladeb step (F06 = obklad keramický + skladba pod ním uvedena samostatně)",
+      "parser_d_side_m2": 325.76
     }
   ],
   "skladby": {
