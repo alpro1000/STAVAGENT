@@ -261,6 +261,73 @@ describe('Element Classifier', () => {
     });
   });
 
+  // ─── Phase 4 Gate 2b verification regression net (single commit) ──────
+  // All 12 pozemní + speciální elements verified canonical post-Phase-3
+  // Option W extension. Architectural origin documented per element:
+  //   - Horizontal Option W (Phase 3 Commit 2): stropni_deska, pruvlak,
+  //     schodiste, podkladni_beton, podlozkovy_blok
+  //   - Vertical Option W (Phase 3 Commit 3): zakladovy_pas, zakladova_patka,
+  //     stena, sloup, nadrz, podzemni_stena
+  //   - Special path L1017 (recommendFormwork pilota branch): pilota
+  //     (bored pile bypasses pressure filter, returns recommended[0])
+  // No code changes; tests prevent future regression.
+  // (zakladova_deska + operne_zdi already pre-empted by Phase 3 — covered
+  // by Phase 3 regression tests at L191 + L213.)
+  describe('Phase 4 Gate 2b — verification regression net', () => {
+    // Vertical foundations (Frami Xlife per canonical §9.4)
+    it('Phase 4 verify: zakladovy_pas with height → Frami Xlife', () => {
+      expect(recommendFormwork('zakladovy_pas', 0.6).name).toBe('Frami Xlife');
+    });
+
+    it('Phase 4 verify: zakladova_patka with height → Frami Xlife', () => {
+      expect(recommendFormwork('zakladova_patka', 0.8).name).toBe('Frami Xlife');
+    });
+
+    // Horizontal slabs / floor (Dokaflex stropní per canonical §9.1)
+    it('Phase 4 verify: stropni_deska with height → Dokaflex', () => {
+      expect(recommendFormwork('stropni_deska', 3.0).name).toBe('Dokaflex');
+    });
+
+    it('Phase 4 verify: pruvlak with height → Dokaflex', () => {
+      expect(recommendFormwork('pruvlak', 3.0).name).toBe('Dokaflex');
+    });
+
+    // Vertical walls + columns (rámové / column-specific per canonical §9.4)
+    it('Phase 4 verify: stena with height → Framax Xlife', () => {
+      expect(recommendFormwork('stena', 3.0).name).toBe('Framax Xlife');
+    });
+
+    it('Phase 4 verify: sloup with height → SL-1 Sloupové', () => {
+      expect(recommendFormwork('sloup', 3.5).name).toBe('SL-1 Sloupové');
+    });
+
+    it('Phase 4 verify: nadrz with height → Framax Xlife', () => {
+      expect(recommendFormwork('nadrz', 4.0).name).toBe('Framax Xlife');
+    });
+
+    // Tradiční tesařské (universal fallback for special elements)
+    it('Phase 4 verify: schodiste with height → Tradiční tesařské', () => {
+      expect(recommendFormwork('schodiste', 3.0).name).toBe('Tradiční tesařské');
+    });
+
+    it('Phase 4 verify: podzemni_stena with height → Tradiční tesařské', () => {
+      expect(recommendFormwork('podzemni_stena', 6.0).name).toBe('Tradiční tesařské');
+    });
+
+    it('Phase 4 verify: pilota → Tradiční tesařské (special path L1017, bored pile bypasses pressure filter)', () => {
+      expect(recommendFormwork('pilota').name).toBe('Tradiční tesařské');
+    });
+
+    // Speciální (treated as horizontal small elements)
+    it('Phase 4 verify: podkladni_beton with height → Tradiční tesařské', () => {
+      expect(recommendFormwork('podkladni_beton', 0.1).name).toBe('Tradiční tesařské');
+    });
+
+    it('Phase 4 verify: podlozkovy_blok with height → Frami Xlife', () => {
+      expect(recommendFormwork('podlozkovy_blok', 0.4).name).toBe('Frami Xlife');
+    });
+  });
+
   // ─── getAdjustedAssemblyNorm ─────────────────────────────────────────
 
   describe('getAdjustedAssemblyNorm', () => {
