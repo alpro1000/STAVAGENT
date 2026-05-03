@@ -1,16 +1,76 @@
 # next-session.md — Libuše DPS / dokončovací práce
 
-**Předchozí session:** 2026-05-03 (feasibility, Session 1 částečná — Phase 0.0 + Phase 0.5 setup)
 **Branch:** `claude/phase-0-setup-c1tsZ`
 **Task spec:** `test-data/TASK_VykazVymer_Libuse_Dokoncovaci_Prace.md`
 
-> Předchozí handoff (Task 3 — Smart Extractor Incremental, branch `claude/task-03-tz-incremental`)
-> byl přepsán touto session. Plný obsah najdete v git history: `git show HEAD~1:next-session.md`
-> nebo na předchozí větvi.
+**Sessions:**
+- Session 1 (2026-05-03, feasibility): Phase 0.0 + 0.5 setup ✅ commits `70de16e` + `84b24b7`
+- Session 2 (2026-05-03, libredwg pivot): **BLOCKED at apt install** ❌ (see below)
 
 ---
 
-## Co bylo hotovo
+## 🚨 Session 2 outcome — libredwg pivot BLOCKED
+
+**Decision tested:** switch DWG→DXF backend from ODA File Converter (registration
+gate) to `libredwg-tools` (open-source, apt-installable).
+
+**Result:** `libredwg-tools` is **NOT available in Ubuntu 24.04 (noble) apt repos**.
+
+### Probe trail
+
+| Check | Result |
+|-------|--------|
+| `uname -a` | Linux vm 6.18.5 SMP x86_64 |
+| `lsb_release` | Ubuntu 24.04.4 LTS noble |
+| User | `root` (no sudo needed) |
+| `which apt` | `/usr/bin/apt` |
+| `which dwg2dxf` | empty (not installed) |
+| `apt update` | OK (3 unrelated PPAs 403, irrelevant) |
+| `apt-cache search libredwg` | **0 hits** |
+| `apt-cache madison libredwg-tools` | **empty** |
+| `apt install libredwg-tools` | `E: Unable to locate package libredwg-tools` |
+| `apt-cache search dwg` | only `dwgsim` (bioinformatics, unrelated) |
+| Components in `ubuntu.sources` | `main universe restricted multiverse` (universe IS enabled) |
+| `libdxflib3` (DXF read/write) | available but DXF-only, no DWG decoder |
+| `docker` | `/usr/bin/docker`, version 29.3.1 (could pull a prebuilt image) |
+
+`libredwg-tools` was packaged in Debian unstable + Ubuntu jammy (22.04) but
+appears to have been **dropped from noble** (24.04). This is consistent with
+GH-LibreDWG/libredwg's own readme noting flaky packaging across distros.
+
+**Per task instructions ("ОСТАНОВИСЬ ЗДЕСЬ"), no fallback was attempted.**
+`app/services/dwg_to_dxf.py` still has the ODA-oriented skeleton from Session 1.
+
+### Path-forward options for Session 3
+
+Pick one — needs user confirmation before the next session proceeds:
+
+1. **Build libredwg from source** (~5–10 min, deps: `git`, `autoconf`, `automake`,
+   `libtool`, `swig`, `python3-dev`, `texinfo`, `perl`). Clone
+   `github.com/LibreDWG/libredwg`, `./autogen.sh && ./configure --enable-release && make && make install`.
+   Pros: stays open-source, scriptable in CI. Cons: build-time fragility.
+2. **Run ODA File Converter inside Docker** (e.g. `gablerw/oda-file-converter` or
+   build a tiny image around the .deb). Docker IS present in env. User still
+   has to download the .deb once (registration gate), but conversion becomes
+   reproducible.
+3. **Manual ODA install** as originally planned in Session 1. User downloads
+   `ODAFileConverter_*.deb` from opendesign.com, runs `dpkg -i`, sets
+   `unix_exec_path`. Same path as Session 1's open question.
+4. **CloudConvert / ConvertCAD online API** — privacy concern (uploads DPS to
+   3rd party), but zero install. ~$0.01/file × 14 files = trivial cost.
+5. **PDF-only degraded mode** — skip DWG pipeline entirely. Accept ±50–100 mm
+   OCR tolerance. Confidence drops 1.0 → 0.7–0.85. Loses layer structure.
+
+### What did NOT change in Session 2
+
+- No `app/services/dwg_to_dxf.py` edits — backend choice still pending.
+- No new commits.
+- No new files in `test-data/libuse/outputs/` (Session 1's `inventory_report.md`
+  + `phase_0_5_poc.md` are still the only outputs).
+
+---
+
+## Co bylo hotovo (Session 1, 2026-05-03)
 
 ### Phase 0.0 — File reorganization ✅
 PRE-INTERVIEW Q1+Q2 odsouhlaseny. 58 souborů přesunuto z `test-data/` rootu
