@@ -1,0 +1,5432 @@
+{
+  "185-01_DPS_D_SO01_140_4410_00-OBJEKT D - Půdorys 1 .NP": {
+    "drawing_path": "test-data/libuse/inputs/dxf/185-01_DPS_D_SO01_140_4410_00-OBJEKT D - Půdorys 1 .NP.dxf",
+    "dxf_version": "AC1027",
+    "dxf_units": "mm",
+    "layers": [
+      {
+        "name": "A-GENM-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "CIRCLE": 79,
+          "HATCH": 79,
+          "LINE": 79,
+          "INSERT": 80,
+          "MTEXT": 169
+        },
+        "total_entities": 486
+      },
+      {
+        "name": "A-____-____-DIMS",
+        "color": -9,
+        "entity_count_by_type": {
+          "DIMENSION": 333
+        },
+        "total_entities": 333
+      },
+      {
+        "name": "I-WALL-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 228
+        },
+        "total_entities": 228
+      },
+      {
+        "name": "A-WALL-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 189
+        },
+        "total_entities": 189
+      },
+      {
+        "name": "G-____-____-TEXT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 43,
+          "MTEXT": 131
+        },
+        "total_entities": 174
+      },
+      {
+        "name": "A-DETL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 130
+        },
+        "total_entities": 130
+      },
+      {
+        "name": "A-DOOR-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 22,
+          "MTEXT": 100
+        },
+        "total_entities": 122
+      },
+      {
+        "name": "A-WALL-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 29,
+          "INSERT": 29,
+          "MTEXT": 64
+        },
+        "total_entities": 122
+      },
+      {
+        "name": "A-GENM-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 109
+        },
+        "total_entities": 109
+      },
+      {
+        "name": "A-WALL-____-PATT",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 76
+        },
+        "total_entities": 76
+      },
+      {
+        "name": "A-DETL-____-THIN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 60,
+          "CIRCLE": 5
+        },
+        "total_entities": 65
+      },
+      {
+        "name": "M-HVAC-DUCT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 60
+        },
+        "total_entities": 60
+      },
+      {
+        "name": "A-GLAZ-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 11,
+          "INSERT": 11,
+          "MTEXT": 33
+        },
+        "total_entities": 55
+      },
+      {
+        "name": "S-STRS-____-MBND",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 39
+        },
+        "total_entities": 39
+      },
+      {
+        "name": "A-FLOR-____-OVHD",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 32
+        },
+        "total_entities": 32
+      },
+      {
+        "name": "S-GRID-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 16,
+          "MTEXT": 16
+        },
+        "total_entities": 32
+      },
+      {
+        "name": "A-DOOR-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 28
+        },
+        "total_entities": 28
+      },
+      {
+        "name": "S-STRS-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 26
+        },
+        "total_entities": 26
+      },
+      {
+        "name": "A-GLAZ-CWMG-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 24
+        },
+        "total_entities": 24
+      },
+      {
+        "name": "S-GRID-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 24
+        },
+        "total_entities": 24
+      },
+      {
+        "name": "A-FLOR-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 22
+        },
+        "total_entities": 22
+      },
+      {
+        "name": "A-AREA-BNDY-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LWPOLYLINE": 21
+        },
+        "total_entities": 21
+      },
+      {
+        "name": "A-AREA-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "MTEXT": 21
+        },
+        "total_entities": 21
+      },
+      {
+        "name": "I-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 19
+        },
+        "total_entities": 19
+      },
+      {
+        "name": "P-SANR-FIXT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 18
+        },
+        "total_entities": 18
+      },
+      {
+        "name": "G-____-____-SYMB",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 4,
+          "MTEXT": 8,
+          "LINE": 4
+        },
+        "total_entities": 16
+      },
+      {
+        "name": "A-____-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 6,
+          "MTEXT": 10
+        },
+        "total_entities": 16
+      },
+      {
+        "name": "Q-SPCQ-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 12
+        },
+        "total_entities": 12
+      },
+      {
+        "name": "A-FLOR-HRAL-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 3,
+          "INSERT": 3,
+          "MTEXT": 6
+        },
+        "total_entities": 12
+      },
+      {
+        "name": "A-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 11
+        },
+        "total_entities": 11
+      },
+      {
+        "name": "A-GLAZ-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 11
+        },
+        "total_entities": 11
+      },
+      {
+        "name": "I-FURN-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 9
+        },
+        "total_entities": 9
+      },
+      {
+        "name": "A-DETL-GENF-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 2,
+          "HATCH": 6
+        },
+        "total_entities": 8
+      },
+      {
+        "name": "A-GLAZ-CURT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 6
+        },
+        "total_entities": 6
+      },
+      {
+        "name": "A-FLOR-HRAL-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "E-ELEC-FIXT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "Q-CASE-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "A-AREA-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 2
+        },
+        "total_entities": 2
+      },
+      {
+        "name": "A-DETL-____-HDLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 2
+        },
+        "total_entities": 2
+      },
+      {
+        "name": "G-____-____-DIMS",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 1,
+          "MTEXT": 1
+        },
+        "total_entities": 2
+      },
+      {
+        "name": "A-____-NOTE-TEXT",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 1,
+          "MTEXT": 1
+        },
+        "total_entities": 2
+      },
+      {
+        "name": "0",
+        "color": -7,
+        "entity_count_by_type": {
+          "INSERT": 1
+        },
+        "total_entities": 1
+      }
+    ],
+    "rooms": [
+      {
+        "code": "D.1.S.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "S",
+        "mistnost_num": "02",
+        "area_m2": 9.965499997594684,
+        "perimeter_m": 13.370000000000106,
+        "polygon_wkt": "POLYGON ((3948.205636021226 68729.90222208969, 223.2056360212354 68729.90222208967, 223.2056360212358 66779.90222438062, 1273.205636021208 66779.90222438062, 1273.20563602122 65769.90222208961, 3948.2…",
+        "code_position": [
+          2252.788328381156,
+          67795.42661331405
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.S.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "S",
+        "mistnost_num": "01",
+        "area_m2": 22.212499989669197,
+        "perimeter_m": 31.23999999811194,
+        "polygon_wkt": "POLYGON ((1273.205636021222 65654.9022220896, 1273.205636021241 64154.90222303351, 2225.705636021224 64154.90222303351, 3070.705636021227 64154.90222303352, 4335.705636021226 64154.90222303352, 5630.7…",
+        "code_position": [
+          7034.021028673145,
+          65064.5065500985
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "01",
+        "area_m2": 10.726000001347119,
+        "perimeter_m": 18.05000000000005,
+        "polygon_wkt": "POLYGON ((3.205636021233215 66529.90222438064, -1201.794363978768 66529.90222438064, -1201.794363978768 63529.90222438062, -1801.794363978755 63529.90222438063, -1801.794363978764 62872.4022230335, -1…",
+        "code_position": [
+          -642.1608605979362,
+          64985.08652610701
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "02",
+        "area_m2": 19.311375000002286,
+        "perimeter_m": 18.110000000001847,
+        "polygon_wkt": "POLYGON ((-1301.794363978757 57084.90222437968, -1301.794363978758 57279.90222438062, 23.205636021224 57279.90222438063, 23.20563602122224 60814.90222438061, -1859.294363978791 60814.90222438061, -530…",
+        "code_position": [
+          -2658.696980581216,
+          59350.79286399717
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "03",
+        "area_m2": 5.959724995440018,
+        "perimeter_m": 10.339999997305766,
+        "polygon_wkt": "POLYGON ((-5301.794363978772 62714.9022230335, -5301.794363978772 60929.90222438061, -1916.79436397879 60929.90222438062, -1916.794363978777 61887.40222438065, -1916.794363978767 62664.9022230335, -35…",
+        "code_position": [
+          -3590.719454712924,
+          61688.8869886271
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.04",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "04",
+        "area_m2": 13.341775004560086,
+        "perimeter_m": 15.170000002694277,
+        "polygon_wkt": "POLYGON ((-5301.794363978773 66529.90222438064, -5301.794363978772 63594.9022230335, -4436.794363978778 63594.9022230335, -4436.794363978776 62929.9022230335, -1916.794363978763 62929.9022230335, -191…",
+        "code_position": [
+          -3482.32135814668,
+          64914.87889207439
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "01",
+        "area_m2": 6.348249999999795,
+        "perimeter_m": 13.12999999999988,
+        "polygon_wkt": "POLYGON ((3013.205636021227 63904.90222303352, 2283.205636021225 63904.90222303352, 2283.205636021225 63829.9022230335, 2283.205636021226 61929.90222303358, 3965.70563602123 61929.90222303358, 5573.20…",
+        "code_position": [
+          3481.001207672238,
+          63503.07379299495
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "02",
+        "area_m2": 23.669540399852952,
+        "perimeter_m": 21.83999999730575,
+        "polygon_wkt": "POLYGON ((7323.205636021235 57084.90222438065, 7323.205636021233 57279.90222438064, 8123.205636021231 57279.90222438064, 8123.205636021228 63204.90222303352, 7408.049072272715 63204.90222303352, 7408.…",
+        "code_position": [
+          5758.349959541941,
+          59350.79286399717
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "03",
+        "area_m2": 15.243624995105607,
+        "perimeter_m": 16.729999997307715,
+        "polygon_wkt": "POLYGON ((3323.205636021232 57084.90222437972, 3323.20563602123 57279.90222438063, 3908.20563602123 57279.90222438063, 3908.20563602123 61814.90222303356, 2283.205636021226 61814.90222303356, 2283.205…",
+        "code_position": [
+          1999.399569668556,
+          59350.79286399717
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.04",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "04",
+        "area_m2": 4.33085000000001,
+        "perimeter_m": 8.96,
+        "polygon_wkt": "POLYGON ((1238.205636021225 63754.9022230335, 1238.205636021225 63189.90222303351, 780.7056360212191 63189.90222303351, 373.2056360212189 63189.90222303351, 373.2056360212176 61069.90222303351, 2168.2…",
+        "code_position": [
+          1043.374795267641,
+          62837.26931855384
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "01",
+        "area_m2": 6.34825000000001,
+        "perimeter_m": 13.130000000000084,
+        "polygon_wkt": "POLYGON ((12103.20563602123 63904.90222303353, 10923.20563602123 63904.90222303353, 10923.20563602122 61929.90222303354, 12565.70563602122 61929.90222303353, 14213.20563602123 61929.90222303353, 14213…",
+        "code_position": [
+          13135.05614235695,
+          62712.93504380388
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "02",
+        "area_m2": 23.82826539980564,
+        "perimeter_m": 21.90999999730578,
+        "polygon_wkt": "POLYGON ((11698.20563602124 57084.90222438062, 11698.20563602124 57279.90222438065, 12508.20563602122 57279.90222438065, 12508.20563602122 61814.90222303352, 10808.20563602122 61814.90222303353, 10808…",
+        "code_position": [
+          9495.961833686863,
+          59350.79286399717
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "03",
+        "area_m2": 15.084899995150366,
+        "perimeter_m": 16.659999997305793,
+        "polygon_wkt": "POLYGON ((15698.20563602124 57084.90222438062, 15698.20563602124 57279.90222438066, 16223.20563602123 57279.90222438066, 16223.20563602122 60954.9022230335, 16173.20563602124 60954.9022230335, 14213.2…",
+        "code_position": [
+          14011.97223283719,
+          59350.79286399717
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.04",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "04",
+        "area_m2": 4.330850000000019,
+        "perimeter_m": 8.960000000000019,
+        "polygon_wkt": "POLYGON ((15258.20563602123 63189.90222303351, 15258.20563602123 63754.90222303351, 14328.20563602123 63754.90222303351, 14328.20563602123 61872.40222303352, 14328.20563602123 61069.90222303351, 16123…",
+        "code_position": [
+          14835.57227706266,
+          62036.08871180476
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "01",
+        "area_m2": 14.060499992038762,
+        "perimeter_m": 20.829999995418177,
+        "polygon_wkt": "POLYGON ((12468.20563602123 64154.90222303352, 13425.70563602123 64154.90222303353, 14270.70563602123 64154.90222303353, 15315.70563602123 64154.90222303353, 15715.70563602123 64154.90222303353, 16473…",
+        "code_position": [
+          16849.11514786295,
+          64842.07263364591
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "02",
+        "area_m2": 27.24575000000238,
+        "perimeter_m": 23.510000000001906,
+        "polygon_wkt": "POLYGON ((21798.20563602123 57279.90222438067, 21798.20563602123 62799.90222438065, 20933.20563602123 62799.90222438065, 20933.20563602123 63514.90222438066, 19563.20563602122 63514.90222438066, 19563…",
+        "code_position": [
+          18414.63018970318,
+          59350.79286399717
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "03",
+        "area_m2": 1.5146999999999844,
+        "perimeter_m": 5.109999999999975,
+        "polygon_wkt": "POLYGON ((18413.20563602123 63364.90222438066, 18413.20563602123 61744.90222438067, 19348.20563602122 61744.90222438067, 19348.20563602123 63364.90222438066, 18413.20563602123 63364.90222438066))",
+        "code_position": [
+          18519.21494603001,
+          62563.4769152483
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.05",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "05",
+        "area_m2": 6.600749992245026,
+        "perimeter_m": 10.669999995418046,
+        "polygon_wkt": "POLYGON ((21798.20563602123 63779.90222438068, 21798.20563602123 65729.9022220897, 18413.20563602122 65729.90222208969, 18413.20563602122 63779.90222438068, 21798.20563602123 63779.90222438068))",
+        "code_position": [
+          19891.59142974619,
+          64859.5726336459
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.06",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "06",
+        "area_m2": 13.703750000000076,
+        "perimeter_m": 15.270000000000051,
+        "polygon_wkt": "POLYGON ((21798.20563602123 65844.9022220897, 21798.20563602123 68729.90222208972, 17048.20563602122 68729.9022220897, 17048.20563602122 65844.90222208969, 18355.70563602122 65844.9022220897, 21798.20…",
+        "code_position": [
+          18259.56501908375,
+          67739.64784933814
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.07",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "07",
+        "area_m2": 12.332525000000036,
+        "perimeter_m": 14.700000000000006,
+        "polygon_wkt": "POLYGON ((12468.20563602123 68729.9022220897, 12468.20563602123 66129.90222208964, 12468.20563602123 66044.90222208969, 15213.20563602122 66044.90222208969, 15213.20563602122 65844.90222208969, 16933.…",
+        "code_position": [
+          14326.87698498191,
+          67562.18089111186
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      }
+    ],
+    "openings": [
+      {
+        "otvor_type": "door",
+        "type_code": "D21",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_1NP-D",
+        "position": [
+          4973.205636021232,
+          64029.90222303352
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1104,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D33",
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_1NP-D",
+        "position": [
+          4823.205636021217,
+          61872.40222303358
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1044,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D31",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_1NP-D",
+        "position": [
+          2818.205636021221,
+          61872.40222303357
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1044,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D34",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_1NP-D",
+        "position": [
+          2225.705636021226,
+          62559.90222303352
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1132,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D21",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_1NP-D",
+        "position": [
+          11523.20563602121,
+          64029.90222303353
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1014,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D33",
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_1NP-D",
+        "position": [
+          11708.20563602123,
+          61872.40222303353
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1014,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D31",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D",
+        "position": [
+          13678.20563602123,
+          61872.40222303352
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1014,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D34",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+        "position": [
+          14270.70563602123,
+          62559.90222303352
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 939,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D21",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_1NP-D",
+        "position": [
+          1148.205636021233,
+          64784.90222303351
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1252,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D31",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D",
+        "position": [
+          -1259.294363978768,
+          64224.90222438063
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1192,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D33",
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_1NP-D",
+        "position": [
+          -776.7943639787692,
+          60872.40222438062
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 705,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D21",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_1NP-D",
+        "position": [
+          12343.20563602123,
+          64784.90222303353
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1014,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D31",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_1NP-D",
+        "position": [
+          15793.20563602123,
+          65787.40222208969
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1192,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D31",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D",
+        "position": [
+          17598.20563602121,
+          65787.40222208969
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1033,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D34",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+        "position": [
+          18355.70563602123,
+          62379.9022243807
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1192,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D34",
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_1NP-D",
+        "position": [
+          17273.20563602122,
+          61687.40222438066
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 622,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D10",
+        "block_name": "HA_DR_Double_Swing_Solid_FrameButt - In_FAS_1600x2350_1000-1915407-DPS_1NP-D",
+        "position": [
+          3.205636021235601,
+          67879.90222208967
+        ],
+        "width_mm": 1600,
+        "height_mm": 2350,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1014,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D20",
+        "block_name": "HA_DR_Double_Swing_Solid_wCasing - In_OBJ_1500x2100_900-1771115-DPS_1NP-D",
+        "position": [
+          2548.205636021236,
+          65712.40222208961
+        ],
+        "width_mm": 1500,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 998,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D34",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+        "position": [
+          -1859.294363978783,
+          61429.90222438063
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1192,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D34",
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+        "position": [
+          18355.70563602122,
+          65229.90222208968
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 1014,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-2038697-DPS_1NP-D",
+        "position": [
+          -1801.794363978757,
+          57084.90222437968
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_1NP-D",
+        "position": [
+          2823.205636021232,
+          57084.90222437972
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_1NP-D",
+        "position": [
+          6823.205636021235,
+          57084.90222438065
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_1NP-D",
+        "position": [
+          9698.20563602123,
+          57084.90222438065
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_1NP-D",
+        "position": [
+          13698.20563602123,
+          57084.90222438065
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529249-DPS_1NP-D",
+        "position": [
+          18356.79460446114,
+          57084.90222437972
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D11",
+        "block_name": "HA_DR_Single_Swing_Solid_ButtFrame - In_FAS_900x2350_Unik-1894043-DPS_1NP-D",
+        "position": [
+          7348.205636021229,
+          68949.90222208969
+        ],
+        "width_mm": 900,
+        "height_mm": 2350,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 698,
+        "warnings": []
+      },
+      {
+        "otvor_type": "door",
+        "type_code": "D42",
+        "block_name": "HA_DR_Double_Swing_Solid_wCasing - In_1800x2100_900-1806419-DPS_1NP-D",
+        "position": [
+          11168.20563602124,
+          65712.40222208964
+        ],
+        "width_mm": 1800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": 625,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W04",
+        "block_name": "HA_WD_SinglePanel - 1000x2100-1653868-DPS_1NP-D",
+        "position": [
+          -5521.79436397877,
+          58904.90222438062
+        ],
+        "width_mm": 1000,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 644,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W03",
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+        "position": [
+          -5521.794363978773,
+          64279.90222438064
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 631,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W05",
+        "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D",
+        "position": [
+          -5521.794363978771,
+          61342.40222438062
+        ],
+        "width_mm": 625,
+        "height_mm": 1000,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 673,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W01",
+        "block_name": "HA_WD_SinglePanel - 1000x2400-1653873-DPS_1NP-D",
+        "position": [
+          3098.205636021242,
+          68949.90222208969
+        ],
+        "width_mm": 1000,
+        "height_mm": 2400,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 656,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W03",
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+        "position": [
+          13423.20563602122,
+          68949.9022220897
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 687,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W03",
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+        "position": [
+          15798.20563602122,
+          68949.9022220897
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 597,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W03",
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+        "position": [
+          18298.20563602123,
+          68949.90222208972
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 707,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W03",
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653875-DPS_1NP-D",
+        "position": [
+          22018.20563602123,
+          66379.90222208967
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 603,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W03",
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+        "position": [
+          22018.20563602123,
+          59279.90222438065
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 522,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W05",
+        "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D",
+        "position": [
+          22018.20563602123,
+          64817.40222208966
+        ],
+        "width_mm": 625,
+        "height_mm": 1000,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 530,
+        "warnings": []
+      },
+      {
+        "otvor_type": "window",
+        "type_code": "W05",
+        "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D",
+        "position": [
+          22018.20563602123,
+          62217.40222438066
+        ],
+        "width_mm": 625,
+        "height_mm": 1000,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": 522,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-2038694-DPS_1NP-D",
+        "position": [
+          -3026.794363978751,
+          57084.90222437966
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1480324-DPS_1NP-D",
+        "position": [
+          1598.205636021238,
+          57084.90222437971
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1480324-DPS_1NP-D",
+        "position": [
+          5598.20563602124,
+          57084.90222438062
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1479875-DPS_1NP-D",
+        "position": [
+          10923.20563602124,
+          57084.90222438062
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1479875-DPS_1NP-D",
+        "position": [
+          14923.20563602124,
+          57084.90222438063
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1481686-DPS_1NP-D",
+        "position": [
+          19581.79460446114,
+          57084.9022243797
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      }
+    ],
+    "segment_tags": [
+      {
+        "code": "WF51",
+        "prefix": "WF",
+        "position": [
+          -2890.385817570566,
+          62508.29595996389
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF51",
+        "prefix": "WF",
+        "position": [
+          1586.95650820373,
+          64618.84102375312
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF51",
+        "prefix": "WF",
+        "position": [
+          14896.07057190426,
+          64508.52657749309
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF51",
+        "prefix": "WF",
+        "position": [
+          17856.2441916382,
+          63854.43901177141
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF41",
+        "prefix": "WF",
+        "position": [
+          19359.50827034508,
+          64219.06860943736
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF40",
+        "prefix": "WF",
+        "position": [
+          -3715.008721685851,
+          62558.87476105685
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "F08",
+        "prefix": "F",
+        "position": [
+          3663.770330766744,
+          56630.51736793906
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "floor_or_facade_finish",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF10",
+        "prefix": "WF",
+        "position": [
+          4024.437818664656,
+          56630.51736793906
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF10",
+        "prefix": "WF",
+        "position": [
+          11678.08698834148,
+          69666.53751201766
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "F08",
+        "prefix": "F",
+        "position": [
+          12254.37636053234,
+          69666.53751201768
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "floor_or_facade_finish",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF10",
+        "prefix": "WF",
+        "position": [
+          -3225.449780699388,
+          67445.32051591622
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "F08",
+        "prefix": "F",
+        "position": [
+          -2613.481587677323,
+          67445.32051591622
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "floor_or_facade_finish",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF32",
+        "prefix": "WF",
+        "position": [
+          1613.749359744644,
+          61672.76627481852
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "WF32",
+        "prefix": "WF",
+        "position": [
+          14608.00701796548,
+          61668.83595768959
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "wall_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP12",
+        "prefix": "OP",
+        "position": [
+          -5131.529947422514,
+          63969.91326004963
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP12",
+        "prefix": "OP",
+        "position": [
+          6591.520438368099,
+          63755.98309531615
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP12",
+        "prefix": "OP",
+        "position": [
+          9790.43741278985,
+          63755.98309531615
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP87",
+        "prefix": "OP",
+        "position": [
+          -6170.382569555964,
+          64834.56100530365
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP90",
+        "prefix": "OP",
+        "position": [
+          -6152.919129177019,
+          59384.63946434676
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP89",
+        "prefix": "OP",
+        "position": [
+          -3448.510972484805,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP89",
+        "prefix": "OP",
+        "position": [
+          1473.745195045809,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP89",
+        "prefix": "OP",
+        "position": [
+          5366.974527878143,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP89",
+        "prefix": "OP",
+        "position": [
+          10406.08794303159,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP89",
+        "prefix": "OP",
+        "position": [
+          14455.83360155726,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP89",
+        "prefix": "OP",
+        "position": [
+          19246.22941783573,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP87",
+        "prefix": "OP",
+        "position": [
+          22476.92366389716,
+          59773.6236744484
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP87",
+        "prefix": "OP",
+        "position": [
+          22558.52159033382,
+          66862.69314018586
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP87",
+        "prefix": "OP",
+        "position": [
+          18366.966212427,
+          69622.70150959067
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP87",
+        "prefix": "OP",
+        "position": [
+          15913.46664206474,
+          69527.44983940663
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP87",
+        "prefix": "OP",
+        "position": [
+          13234.32798706379,
+          69622.70150959067
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP20",
+        "prefix": "OP",
+        "position": [
+          794.1938825333004,
+          67540.0050203823
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP10",
+        "prefix": "OP",
+        "position": [
+          -5131.529947422514,
+          62515.03875862983
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP08",
+        "prefix": "OP",
+        "position": [
+          -1631.15163072288,
+          62716.01933321228
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP08",
+        "prefix": "OP",
+        "position": [
+          1960.38830103294,
+          64567.50502038224
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP08",
+        "prefix": "OP",
+        "position": [
+          14736.6102621104,
+          63580.08669502895
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP08",
+        "prefix": "OP",
+        "position": [
+          17885.20465617648,
+          63531.18516974859
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP08",
+        "prefix": "OP",
+        "position": [
+          19373.31306216424,
+          61565.83178734192
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP10",
+        "prefix": "OP",
+        "position": [
+          623.338463247057,
+          63003.83337633928
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP15",
+        "prefix": "OP",
+        "position": [
+          7577.867208538808,
+          62963.07099655451
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP15",
+        "prefix": "OP",
+        "position": [
+          8807.237156253663,
+          62963.07099655451
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP10",
+        "prefix": "OP",
+        "position": [
+          16628.21115069785,
+          63411.42472121401
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP10",
+        "prefix": "OP",
+        "position": [
+          21538.96181829828,
+          63263.36934229264
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP21",
+        "prefix": "OP",
+        "position": [
+          3494.833222134506,
+          67866.85626643093
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP19",
+        "prefix": "OP",
+        "position": [
+          -5316.981463514914,
+          56636.68136551207
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP19",
+        "prefix": "OP",
+        "position": [
+          -211.9814635149163,
+          56618.45578358413
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP19",
+        "prefix": "OP",
+        "position": [
+          7552.702261505981,
+          56618.45578358411
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          -2965.921713011618,
+          56636.68136551208
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          1914.07828698838,
+          56636.68136551207
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          5754.078286988377,
+          56636.68136551205
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          10774.07828698838,
+          56636.68136551203
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          14814.07828698837,
+          56636.68136551201
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          19614.07828698837,
+          56636.68136551201
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI05",
+        "prefix": "LI",
+        "position": [
+          10594.52102331082,
+          65992.3567055302
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          806.8222904657723,
+          65160.00502132609
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          5393.528842073953,
+          64735.00502132611
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          11174.3938825333,
+          64702.50502038223
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          12694.16407289738,
+          64637.0110692189
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI03",
+        "prefix": "LI",
+        "position": [
+          4399.393882533325,
+          62435.93376485105
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI02",
+        "prefix": "LI",
+        "position": [
+          3323.960171096452,
+          61628.93027239152
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          2582.237237420841,
+          62860.00502132609
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI03",
+        "prefix": "LI",
+        "position": [
+          -1287.223005697438,
+          60552.49171619214
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          -2478.478467730792,
+          61902.19781040547
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI02",
+        "prefix": "LI",
+        "position": [
+          -1662.651952305892,
+          64875.00502132613
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI02",
+        "prefix": "LI",
+        "position": [
+          15289.62274158851,
+          66380.1213911386
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI02",
+        "prefix": "LI",
+        "position": [
+          18141.20148597186,
+          66380.1213911386
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          17927.10758475185,
+          62913.23102830195
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI03",
+        "prefix": "LI",
+        "position": [
+          17805.57288770552,
+          61415.23500294177
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          18646.66366423899,
+          64820.00502038229
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI02",
+        "prefix": "LI",
+        "position": [
+          13378.31368763075,
+          62406.08252342974
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI03",
+        "prefix": "LI",
+        "position": [
+          10945.97939297355,
+          61678.3905155105
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          13966.83563480544,
+          62860.00502132609
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI04",
+        "prefix": "LI",
+        "position": [
+          2914.393882533319,
+          66113.1787206157
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI16",
+        "prefix": "LI",
+        "position": [
+          809.3938825333363,
+          68270.00502038229
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI22",
+        "prefix": "LI",
+        "position": [
+          22583.72159033382,
+          66250.00502038229
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI22",
+        "prefix": "LI",
+        "position": [
+          22502.12366389716,
+          59150.00502267329
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI22",
+        "prefix": "LI",
+        "position": [
+          -6127.71912917702,
+          58775.00502267323
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI11",
+        "prefix": "LI",
+        "position": [
+          -6127.719129177019,
+          61322.50502267321
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          7634.393882533327,
+          68622.14060460431
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI22",
+        "prefix": "LI",
+        "position": [
+          13811.84151655076,
+          69622.70150959067
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI22",
+        "prefix": "LI",
+        "position": [
+          15404.18880224693,
+          69527.44983940663
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI22",
+        "prefix": "LI",
+        "position": [
+          17828.50542785204,
+          69622.70150959067
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI11",
+        "prefix": "LI",
+        "position": [
+          22459.73707707481,
+          62133.38422598867
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI11",
+        "prefix": "LI",
+        "position": [
+          22459.73707707481,
+          64733.38422369766
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP96",
+        "prefix": "OP",
+        "position": [
+          -6170.382569555964,
+          64566.42460364412
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP25",
+        "prefix": "OP",
+        "position": [
+          -4372.163209104548,
+          62205.69152502475
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP25",
+        "prefix": "OP",
+        "position": [
+          1027.464377889476,
+          62093.98150021346
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP25",
+        "prefix": "OP",
+        "position": [
+          15807.46437788947,
+          62093.9815002134
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP25",
+        "prefix": "OP",
+        "position": [
+          20760.26785375106,
+          64594.79485007524
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP04",
+        "prefix": "OP",
+        "position": [
+          6751.286576657682,
+          68622.14060460431
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP03",
+        "prefix": "OP",
+        "position": [
+          6751.286576657682,
+          66796.65648614321
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP26",
+        "prefix": "OP",
+        "position": [
+          9037.418510454343,
+          65578.54381706056
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP24",
+        "prefix": "OP",
+        "position": [
+          8770.64581363609,
+          65578.54381706056
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP27",
+        "prefix": "OP",
+        "position": [
+          4642.491152694309,
+          65577.00326869375
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          9476.071668425691,
+          65578.54381706056
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LP20",
+        "prefix": "LP",
+        "position": [
+          9768.72084937788,
+          68580.31652767744
+        ],
+        "source_layer": "A-FLOR-HRAL-IDEN",
+        "category": "zamecnik_railing",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LP21",
+        "prefix": "LP",
+        "position": [
+          9773.514258173202,
+          67252.65970543155
+        ],
+        "source_layer": "A-FLOR-HRAL-IDEN",
+        "category": "zamecnik_railing",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LP20",
+        "prefix": "LP",
+        "position": [
+          9773.514258173209,
+          66593.30404425637
+        ],
+        "source_layer": "A-FLOR-HRAL-IDEN",
+        "category": "zamecnik_railing",
+        "extraction": "split_join"
+      }
+    ],
+    "unmatched_polygons": [
+      {
+        "centroid": [
+          5333.205636021208,
+          67709.90222208969
+        ],
+        "area_m2": 3.0879999999999828,
+        "perimeter_m": 7.0599999999999845,
+        "layer": "A-AREA-BNDY-OTLN"
+      }
+    ],
+    "skipped": false,
+    "skip_reason": null,
+    "parse_duration_ms": 519,
+    "warnings": [
+      "1 polygon(s) on A-AREA-BNDY-OTLN have no matching room code (probably objekt outline or unlabeled space)",
+      "6/28 door(s) without type code",
+      "3 F## tag(s) on A-WALL-____-IDEN — F08 may be facade Terca, F0x may be floor; verify against Tabulka skladeb in Phase 3"
+    ]
+  },
+  "185-01_DPS_D_SO01_140_5400_R01 - OBJEKT D - ŘEZY": {
+    "drawing_path": "test-data/libuse/inputs/dxf/185-01_DPS_D_SO01_140_5400_R01 - OBJEKT D - ŘEZY.dxf",
+    "dxf_version": "AC1027",
+    "dxf_units": "mm",
+    "layers": [
+      {
+        "name": "A-DETL-____-THIN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 792,
+          "CIRCLE": 11,
+          "ARC": 1
+        },
+        "total_entities": 804
+      },
+      {
+        "name": "A-DETL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 66,
+          "SPLINE": 288
+        },
+        "total_entities": 354
+      },
+      {
+        "name": "A-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 150,
+          "ARC": 111,
+          "LWPOLYLINE": 12,
+          "INSERT": 1
+        },
+        "total_entities": 274
+      },
+      {
+        "name": "G-____-____-TEXT",
+        "color": -9,
+        "entity_count_by_type": {
+          "MTEXT": 245
+        },
+        "total_entities": 245
+      },
+      {
+        "name": "S-STRS-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 3,
+          "LINE": 194
+        },
+        "total_entities": 197
+      },
+      {
+        "name": "A-GENM-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "CIRCLE": 28,
+          "HATCH": 28,
+          "LINE": 28,
+          "INSERT": 29,
+          "MTEXT": 58
+        },
+        "total_entities": 171
+      },
+      {
+        "name": "A-____-____-DIMS",
+        "color": -9,
+        "entity_count_by_type": {
+          "DIMENSION": 168
+        },
+        "total_entities": 168
+      },
+      {
+        "name": "G-____-____-DIMS",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 65,
+          "LINE": 22,
+          "MTEXT": 67
+        },
+        "total_entities": 154
+      },
+      {
+        "name": "A-WALL-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 145,
+          "ARC": 4
+        },
+        "total_entities": 149
+      },
+      {
+        "name": "A-FLOR-LEVL-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 21,
+          "SPLINE": 14,
+          "INSERT": 16,
+          "MTEXT": 37
+        },
+        "total_entities": 88
+      },
+      {
+        "name": "A-FLOR-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 65,
+          "ARC": 21
+        },
+        "total_entities": 86
+      },
+      {
+        "name": "I-WALL-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 85
+        },
+        "total_entities": 85
+      },
+      {
+        "name": "A-CLNG-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 82
+        },
+        "total_entities": 82
+      },
+      {
+        "name": "A-DETL-GENF-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 80
+        },
+        "total_entities": 80
+      },
+      {
+        "name": "A-CLNG-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 23,
+          "INSERT": 23,
+          "MTEXT": 23
+        },
+        "total_entities": 69
+      },
+      {
+        "name": "A-DETL-____-WIDE",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 61
+        },
+        "total_entities": 61
+      },
+      {
+        "name": "I-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 49
+        },
+        "total_entities": 49
+      },
+      {
+        "name": "A-FLOR-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 46
+        },
+        "total_entities": 46
+      },
+      {
+        "name": "A-GENM-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 39
+        },
+        "total_entities": 39
+      },
+      {
+        "name": "A-FLOR-HRAL-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 37
+        },
+        "total_entities": 37
+      },
+      {
+        "name": "A-WALL-____-PATT",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 33
+        },
+        "total_entities": 33
+      },
+      {
+        "name": "A-GLAZ-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 7,
+          "INSERT": 7,
+          "MTEXT": 14
+        },
+        "total_entities": 28
+      },
+      {
+        "name": "S-GRID-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 27
+        },
+        "total_entities": 27
+      },
+      {
+        "name": "S-STRS-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 25
+        },
+        "total_entities": 25
+      },
+      {
+        "name": "A-CLNG-____-PATT",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 21
+        },
+        "total_entities": 21
+      },
+      {
+        "name": "A-DETL-____-HDLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 21
+        },
+        "total_entities": 21
+      },
+      {
+        "name": "A-FLOR-____-PATT",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 19
+        },
+        "total_entities": 19
+      },
+      {
+        "name": "A-FLOR-____-OVHD",
+        "color": -9,
+        "entity_count_by_type": {
+          "CIRCLE": 17,
+          "ARC": 2
+        },
+        "total_entities": 19
+      },
+      {
+        "name": "S-GRID-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 9,
+          "MTEXT": 9
+        },
+        "total_entities": 18
+      },
+      {
+        "name": "0",
+        "color": -7,
+        "entity_count_by_type": {
+          "INSERT": 17
+        },
+        "total_entities": 17
+      },
+      {
+        "name": "G-____-____-SYMB",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 6,
+          "MTEXT": 6,
+          "LINE": 3
+        },
+        "total_entities": 15
+      },
+      {
+        "name": "A-DOOR-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 13
+        },
+        "total_entities": 13
+      },
+      {
+        "name": "S-BEAM-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 1,
+          "LINE": 7
+        },
+        "total_entities": 8
+      },
+      {
+        "name": "A-FLOR-HRAL-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 2,
+          "INSERT": 2,
+          "MTEXT": 4
+        },
+        "total_entities": 8
+      },
+      {
+        "name": "A-WALL-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 2,
+          "INSERT": 2,
+          "MTEXT": 4
+        },
+        "total_entities": 8
+      },
+      {
+        "name": "A-FLOR-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 2,
+          "INSERT": 2,
+          "MTEXT": 2
+        },
+        "total_entities": 6
+      },
+      {
+        "name": "A-DETL-____-CNTR",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "A-CLNG-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "A-AREA-BNDY-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LWPOLYLINE": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "A-DOOR-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 1,
+          "INSERT": 1,
+          "MTEXT": 2
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "S-BEAM-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 3
+        },
+        "total_entities": 3
+      },
+      {
+        "name": "C-PRKG-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 1
+        },
+        "total_entities": 1
+      },
+      {
+        "name": "E-ELEC-FIXT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 1
+        },
+        "total_entities": 1
+      }
+    ],
+    "rooms": [],
+    "openings": [
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP_CIP-2273793-ŘEZ 4-4 OBJEKT D",
+        "position": [
+          0.0,
+          0.0
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273760-ŘEZ 4-4 OBJEKT D",
+        "position": [
+          0.0,
+          0.0
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2273791-ŘEZ 4-4 OBJEKT D",
+        "position": [
+          0.0,
+          0.0
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273965-ŘEZ 4-4 OBJEKT D",
+        "position": [
+          0.0,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273963-ŘEZ 4-4 OBJEKT D",
+        "position": [
+          0.0,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2323771-ŘEZ D-D OBJEKT D",
+        "position": [
+          91150.41363089753,
+          0.0
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273963-ŘEZ D-D OBJEKT D",
+        "position": [
+          91150.41363089753,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273965-ŘEZ D-D OBJEKT D",
+        "position": [
+          91150.41363089753,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V21-ŘEZ D-D OBJEKT D",
+        "position": [
+          91150.41363089753,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V22-ŘEZ D-D OBJEKT D",
+        "position": [
+          91150.41363089753,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V22-ŘEZ D-D OBJEKT D",
+        "position": [
+          112890.4141923323,
+          600.0000000000063
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V22-ŘEZ D-D OBJEKT D",
+        "position": [
+          109460.4141923323,
+          600.0000000000063
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V23-ŘEZ D-D OBJEKT D",
+        "position": [
+          91150.41363089753,
+          0.0
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      }
+    ],
+    "segment_tags": [
+      {
+        "code": "OP98",
+        "prefix": "OP",
+        "position": [
+          56023.27375143614,
+          3683.831370209823
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI29",
+        "prefix": "LI",
+        "position": [
+          59656.62832759885,
+          10505.25656913017
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          68153.21894975303,
+          4025.152529587693
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          68153.21894975303,
+          7175.152529587692
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "TP25",
+        "prefix": "TP",
+        "position": [
+          64873.26534271867,
+          12794.39030874451
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "klempir",
+        "extraction": "split_join"
+      },
+      {
+        "code": "TP28",
+        "prefix": "TP",
+        "position": [
+          69639.97295738934,
+          13381.948522982
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "klempir",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          68153.21894975303,
+          10325.1525295877
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LP09",
+        "prefix": "LP",
+        "position": [
+          85006.82278800671,
+          2337.689495619164
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "zamecnik_railing",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          104096.2106825919,
+          3470.041158040005
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          95776.2106825676,
+          6620.041158040009
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          89893.71068255045,
+          6620.041158040028
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          102767.2066752293,
+          9466.879659366217
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI04",
+        "prefix": "LI",
+        "position": [
+          92968.71068255942,
+          9770.041158040029
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI11",
+        "prefix": "LI",
+        "position": [
+          87090.96131779275,
+          7369.256569130164
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI11",
+        "prefix": "LI",
+        "position": [
+          111500.9605180491,
+          4219.256569130159
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI11",
+        "prefix": "LI",
+        "position": [
+          111500.9605180491,
+          7369.256569130164
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI12",
+        "prefix": "LI",
+        "position": [
+          92827.57000581504,
+          3486.041158040017
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LI01",
+        "prefix": "LI",
+        "position": [
+          110021.551271805,
+          3470.041158040005
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "lista_or_internal",
+        "extraction": "split_join"
+      },
+      {
+        "code": "TP28",
+        "prefix": "TP",
+        "position": [
+          100308.0871740764,
+          13762.98478041209
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "klempir",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP04",
+        "prefix": "OP",
+        "position": [
+          237497.396186728,
+          2231.550198180928
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP04",
+        "prefix": "OP",
+        "position": [
+          237497.396186728,
+          5386.987599801446
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP04",
+        "prefix": "OP",
+        "position": [
+          237497.396186728,
+          8565.356651734579
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "TP28",
+        "prefix": "TP",
+        "position": [
+          234272.4274106352,
+          13111.97282531727
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "klempir",
+        "extraction": "split_join"
+      },
+      {
+        "code": "TP28",
+        "prefix": "TP",
+        "position": [
+          240680.7838894475,
+          13123.48433931399
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "klempir",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LP30",
+        "prefix": "LP",
+        "position": [
+          54845.23928604708,
+          8480.205596585272
+        ],
+        "source_layer": "A-FLOR-HRAL-IDEN",
+        "category": "zamecnik_railing",
+        "extraction": "split_join"
+      },
+      {
+        "code": "LP21",
+        "prefix": "LP",
+        "position": [
+          240360.7965317769,
+          9045.305679189687
+        ],
+        "source_layer": "A-FLOR-HRAL-IDEN",
+        "category": "zamecnik_railing",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CW12",
+        "prefix": "CW",
+        "position": [
+          59926.89821747197,
+          9184.66476310486
+        ],
+        "source_layer": "A-WALL-____-IDEN",
+        "category": "unknown",
+        "extraction": "split_join"
+      }
+    ],
+    "unmatched_polygons": [
+      {
+        "centroid": [
+          198083.90340420784,
+          13569.933667053992
+        ],
+        "area_m2": 2.7759999999999687,
+        "perimeter_m": 6.6699999999999635,
+        "layer": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "centroid": [
+          196179.94128612668,
+          53681.32484086208
+        ],
+        "area_m2": 2.7759999999999736,
+        "perimeter_m": 6.669999999999966,
+        "layer": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "centroid": [
+          160961.89636167808,
+          26360.599848025406
+        ],
+        "area_m2": 2.77600000000003,
+        "perimeter_m": 6.670000000000033,
+        "layer": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "centroid": [
+          151103.3516812184,
+          60213.073991276964
+        ],
+        "area_m2": 3.0879999999999934,
+        "perimeter_m": 7.0599999999999845,
+        "layer": "A-AREA-BNDY-OTLN"
+      }
+    ],
+    "skipped": false,
+    "skip_reason": null,
+    "parse_duration_ms": 1079,
+    "warnings": [
+      "4 polygon(s) on A-AREA-BNDY-OTLN have no matching room code (probably objekt outline or unlabeled space)",
+      "13/13 door(s) without type code"
+    ]
+  },
+  "185-01_DPS_D_SO01_140_7410_00-OBJEKT D - Výkres podhledů 1. NP": {
+    "drawing_path": "test-data/libuse/inputs/dxf/185-01_DPS_D_SO01_140_7410_00-OBJEKT D - Výkres podhledů 1. NP.dxf",
+    "dxf_version": "AC1027",
+    "dxf_units": "mm",
+    "layers": [
+      {
+        "name": "I-WALL-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 247
+        },
+        "total_entities": 247
+      },
+      {
+        "name": "A-____-____-DIMS",
+        "color": -9,
+        "entity_count_by_type": {
+          "DIMENSION": 203
+        },
+        "total_entities": 203
+      },
+      {
+        "name": "A-WALL-____-MCUT",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 194
+        },
+        "total_entities": 194
+      },
+      {
+        "name": "A-DETL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 58,
+          "CIRCLE": 8
+        },
+        "total_entities": 66
+      },
+      {
+        "name": "G-____-____-DIMS",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 32,
+          "MTEXT": 32
+        },
+        "total_entities": 64
+      },
+      {
+        "name": "G-____-____-TEXT",
+        "color": -9,
+        "entity_count_by_type": {
+          "MTEXT": 62
+        },
+        "total_entities": 62
+      },
+      {
+        "name": "M-HVAC-DUCT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 59
+        },
+        "total_entities": 59
+      },
+      {
+        "name": "A-GENM-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 56
+        },
+        "total_entities": 56
+      },
+      {
+        "name": "A-FLOR-____-OVHD",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 55
+        },
+        "total_entities": 55
+      },
+      {
+        "name": "A-FLOR-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 50
+        },
+        "total_entities": 50
+      },
+      {
+        "name": "A-GENM-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "CIRCLE": 8,
+          "HATCH": 8,
+          "LINE": 8,
+          "INSERT": 8,
+          "MTEXT": 16
+        },
+        "total_entities": 48
+      },
+      {
+        "name": "A-CLNG-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 16,
+          "MTEXT": 32
+        },
+        "total_entities": 48
+      },
+      {
+        "name": "E-LITE-EQPM-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 45
+        },
+        "total_entities": 45
+      },
+      {
+        "name": "E-LITE-EQPM-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "MTEXT": 44
+        },
+        "total_entities": 44
+      },
+      {
+        "name": "A-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 41
+        },
+        "total_entities": 41
+      },
+      {
+        "name": "A-DETL-____-THIN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 24,
+          "ARC": 10
+        },
+        "total_entities": 34
+      },
+      {
+        "name": "S-GRID-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 16,
+          "MTEXT": 16
+        },
+        "total_entities": 32
+      },
+      {
+        "name": "I-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 28
+        },
+        "total_entities": 28
+      },
+      {
+        "name": "A-DOOR-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 28
+        },
+        "total_entities": 28
+      },
+      {
+        "name": "S-GRID-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 24
+        },
+        "total_entities": 24
+      },
+      {
+        "name": "A-GLAZ-CWMG-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 23
+        },
+        "total_entities": 23
+      },
+      {
+        "name": "A-AREA-BNDY-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LWPOLYLINE": 21
+        },
+        "total_entities": 21
+      },
+      {
+        "name": "-UNDERLAY_I-WALL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 20
+        },
+        "total_entities": 20
+      },
+      {
+        "name": "A-AREA-____-IDEN",
+        "color": -9,
+        "entity_count_by_type": {
+          "MTEXT": 20
+        },
+        "total_entities": 20
+      },
+      {
+        "name": "A-CLNG-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 19
+        },
+        "total_entities": 19
+      },
+      {
+        "name": "A-CLNG-____-PATT",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 16
+        },
+        "total_entities": 16
+      },
+      {
+        "name": "G-____-____-SYMB",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 4,
+          "MTEXT": 8,
+          "LINE": 4
+        },
+        "total_entities": 16
+      },
+      {
+        "name": "-UNDERLAY_A-GLAZ-CWMG-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 12
+        },
+        "total_entities": 12
+      },
+      {
+        "name": "-UNDERLAY_A-GENM-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 11
+        },
+        "total_entities": 11
+      },
+      {
+        "name": "A-GLAZ-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 11
+        },
+        "total_entities": 11
+      },
+      {
+        "name": "A-DETL-GENF-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "HATCH": 8
+        },
+        "total_entities": 8
+      },
+      {
+        "name": "M-HVAC-CDFF-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 8
+        },
+        "total_entities": 8
+      },
+      {
+        "name": "S-STRS-____-MBND",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 7
+        },
+        "total_entities": 7
+      },
+      {
+        "name": "-UNDERLAY_A-AREA-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 6
+        },
+        "total_entities": 6
+      },
+      {
+        "name": "A-GLAZ-CURT-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 6
+        },
+        "total_entities": 6
+      },
+      {
+        "name": "-UNDERLAY_A-DETL-____-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "LINE": 4
+        },
+        "total_entities": 4
+      },
+      {
+        "name": "-UNDERLAY_A-FLOR-HRAL-OTLN",
+        "color": -9,
+        "entity_count_by_type": {
+          "INSERT": 3
+        },
+        "total_entities": 3
+      },
+      {
+        "name": "0",
+        "color": -7,
+        "entity_count_by_type": {
+          "INSERT": 1
+        },
+        "total_entities": 1
+      }
+    ],
+    "rooms": [
+      {
+        "code": "D.1.S.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "S",
+        "mistnost_num": "02",
+        "area_m2": 9.965499997594684,
+        "perimeter_m": 13.370000000000106,
+        "polygon_wkt": "POLYGON ((3948.205636021226 68729.90222208969, 223.2056360212354 68729.90222208967, 223.2056360212358 66779.90222438062, 1273.205636021208 66779.90222438062, 1273.20563602122 65769.90222208961, 3948.2…",
+        "code_position": [
+          2952.705723880024,
+          67126.85619393499
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.S.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "S",
+        "mistnost_num": "01",
+        "area_m2": 22.212499989669197,
+        "perimeter_m": 31.23999999811194,
+        "polygon_wkt": "POLYGON ((1273.205636021222 65654.9022220896, 1273.205636021241 64154.90222303351, 2225.705636021224 64154.90222303351, 3070.705636021227 64154.90222303352, 4335.705636021226 64154.90222303352, 5630.7…",
+        "code_position": [
+          7483.221758223472,
+          66023.86245879243
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "01",
+        "area_m2": 10.726000001347119,
+        "perimeter_m": 18.05000000000005,
+        "polygon_wkt": "POLYGON ((3.205636021233215 66529.90222438064, -1201.794363978768 66529.90222438064, -1201.794363978768 63529.90222438062, -1801.794363978755 63529.90222438063, -1801.794363978764 62872.4022230335, -1…",
+        "code_position": [
+          -592.8867066882334,
+          63831.34853207896
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "02",
+        "area_m2": 19.311375000002286,
+        "perimeter_m": 18.110000000001847,
+        "polygon_wkt": "POLYGON ((-1301.794363978757 57084.90222437968, -1301.794363978758 57279.90222438062, 23.205636021224 57279.90222438063, 23.20563602122224 60814.90222438061, -1859.294363978791 60814.90222438061, -530…",
+        "code_position": [
+          -2947.290892595823,
+          59962.70837884383
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "03",
+        "area_m2": 5.959724995440018,
+        "perimeter_m": 10.339999997305766,
+        "polygon_wkt": "POLYGON ((-5301.794363978772 62714.9022230335, -5301.794363978772 60929.90222438061, -1916.79436397879 60929.90222438062, -1916.794363978777 61887.40222438065, -1916.794363978767 62664.9022230335, -35…",
+        "code_position": [
+          -3186.853691122144,
+          62289.70855102048
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.1.04",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "1",
+        "mistnost_num": "04",
+        "area_m2": 13.341775004560086,
+        "perimeter_m": 15.170000002694277,
+        "polygon_wkt": "POLYGON ((-5301.794363978773 66529.90222438064, -5301.794363978772 63594.9022230335, -4436.794363978778 63594.9022230335, -4436.794363978776 62929.9022230335, -1916.794363978763 62929.9022230335, -191…",
+        "code_position": [
+          -3644.762251045462,
+          65164.38781380951
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "01",
+        "area_m2": 6.348249999999795,
+        "perimeter_m": 13.12999999999988,
+        "polygon_wkt": "POLYGON ((3013.205636021227 63904.90222303352, 2283.205636021225 63904.90222303352, 2283.205636021225 63829.9022230335, 2283.205636021226 61929.90222303358, 3965.70563602123 61929.90222303358, 5573.20…",
+        "code_position": [
+          3683.914059468049,
+          63558.79515459485
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "02",
+        "area_m2": 23.669540399852952,
+        "perimeter_m": 21.83999999730575,
+        "polygon_wkt": "POLYGON ((7323.205636021235 57084.90222438065, 7323.205636021233 57279.90222438064, 8123.205636021231 57279.90222438064, 8123.205636021228 63204.90222303352, 7408.049072272715 63204.90222303352, 7408.…",
+        "code_position": [
+          5706.809824821256,
+          60140.67533707012
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "03",
+        "area_m2": 15.243624995105607,
+        "perimeter_m": 16.729999997307715,
+        "polygon_wkt": "POLYGON ((3323.205636021232 57084.90222437972, 3323.20563602123 57279.90222438063, 3908.20563602123 57279.90222438063, 3908.20563602123 61814.90222303356, 2283.205636021226 61814.90222303356, 2283.205…",
+        "code_position": [
+          1936.202831086457,
+          60140.67533707012
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.2.04",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "2",
+        "mistnost_num": "04",
+        "area_m2": 4.33085000000001,
+        "perimeter_m": 8.96,
+        "polygon_wkt": "POLYGON ((1238.205636021225 63754.9022230335, 1238.205636021225 63189.90222303351, 780.7056360212191 63189.90222303351, 373.2056360212189 63189.90222303351, 373.2056360212176 61069.90222303351, 2168.2…",
+        "code_position": [
+          1498.494850800662,
+          63539.16198541976
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "01",
+        "area_m2": 6.34825000000001,
+        "perimeter_m": 13.130000000000084,
+        "polygon_wkt": "POLYGON ((12103.20563602123 63904.90222303353, 10923.20563602123 63904.90222303353, 10923.20563602122 61929.90222303354, 12565.70563602122 61929.90222303353, 14213.20563602123 61929.90222303353, 14213…",
+        "code_position": [
+          13462.77158301069,
+          62608.29521810051
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "02",
+        "area_m2": 23.82826539980564,
+        "perimeter_m": 21.90999999730578,
+        "polygon_wkt": "POLYGON ((11698.20563602124 57084.90222438062, 11698.20563602124 57279.90222438065, 12508.20563602122 57279.90222438065, 12508.20563602122 61814.90222303352, 10808.20563602122 61814.90222303353, 10808…",
+        "code_position": [
+          10214.44469079759,
+          60140.67533707012
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "03",
+        "area_m2": 15.084899995150366,
+        "perimeter_m": 16.659999997305793,
+        "polygon_wkt": "POLYGON ((15698.20563602124 57084.90222438062, 15698.20563602124 57279.90222438066, 16223.20563602123 57279.90222438066, 16223.20563602122 60954.9022230335, 16173.20563602124 60954.9022230335, 14213.2…",
+        "code_position": [
+          14121.78766500917,
+          60140.67533707012
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.3.04",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "3",
+        "mistnost_num": "04",
+        "area_m2": 4.330850000000019,
+        "perimeter_m": 8.960000000000019,
+        "polygon_wkt": "POLYGON ((15258.20563602123 63189.90222303351, 15258.20563602123 63754.90222303351, 14328.20563602123 63754.90222303351, 14328.20563602123 61872.40222303352, 14328.20563602123 61069.90222303351, 16123…",
+        "code_position": [
+          14885.12800372758,
+          61506.72290135284
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.01",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "01",
+        "area_m2": 14.060499992038762,
+        "perimeter_m": 20.829999995418177,
+        "polygon_wkt": "POLYGON ((12468.20563602123 64154.90222303352, 13425.70563602123 64154.90222303353, 14270.70563602123 64154.90222303353, 15315.70563602123 64154.90222303353, 15715.70563602123 64154.90222303353, 16473…",
+        "code_position": [
+          15537.22379577711,
+          65091.86624281519
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.02",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "02",
+        "area_m2": 27.24575000000238,
+        "perimeter_m": 23.510000000001906,
+        "polygon_wkt": "POLYGON ((21798.20563602123 57279.90222438067, 21798.20563602123 62799.90222438065, 20933.20563602123 62799.90222438065, 20933.20563602123 63514.90222438066, 19563.20563602122 63514.90222438066, 19563…",
+        "code_position": [
+          19078.01814179581,
+          60140.67533707012
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.03",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "03",
+        "area_m2": 1.5146999999999844,
+        "perimeter_m": 5.109999999999975,
+        "polygon_wkt": "POLYGON ((18413.20563602123 63364.90222438066, 18413.20563602123 61744.90222438067, 19348.20563602122 61744.90222438067, 19348.20563602123 63364.90222438066, 18413.20563602123 63364.90222438066))",
+        "code_position": [
+          18714.93046644462,
+          62430.81049975273
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.05",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "05",
+        "area_m2": 6.600749992245026,
+        "perimeter_m": 10.669999995418046,
+        "polygon_wkt": "POLYGON ((21798.20563602123 63779.90222438068, 21798.20563602123 65729.9022220897, 18413.20563602122 65729.90222208969, 18413.20563602122 63779.90222438068, 21798.20563602123 63779.90222438068))",
+        "code_position": [
+          19813.59576366204,
+          65298.30731358656
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.06",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "06",
+        "area_m2": 13.703750000000076,
+        "perimeter_m": 15.270000000000051,
+        "polygon_wkt": "POLYGON ((21798.20563602123 65844.9022220897, 21798.20563602123 68729.90222208972, 17048.20563602122 68729.9022220897, 17048.20563602122 65844.90222208969, 18355.70563602122 65844.9022220897, 21798.20…",
+        "code_position": [
+          17531.92843441639,
+          67354.10184491434
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      },
+      {
+        "code": "D.1.4.07",
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "byt_or_section": "4",
+        "mistnost_num": "07",
+        "area_m2": 12.332525000000036,
+        "perimeter_m": 14.700000000000006,
+        "polygon_wkt": "POLYGON ((12468.20563602123 68729.9022220897, 12468.20563602123 66129.90222208964, 12468.20563602123 66044.90222208969, 15213.20563602122 66044.90222208969, 15213.20563602122 65844.90222208969, 16933.…",
+        "code_position": [
+          13037.14707663363,
+          67354.10184491434
+        ],
+        "raw_layer_codes": "A-AREA-____-IDEN",
+        "raw_layer_polygon": "A-AREA-BNDY-OTLN"
+      }
+    ],
+    "openings": [
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_D - 1NP",
+        "position": [
+          4973.205636021232,
+          64029.90222303352
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_D - 1NP",
+        "position": [
+          4823.205636021217,
+          61872.40222303358
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_D - 1NP",
+        "position": [
+          2818.205636021221,
+          61872.40222303357
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_D - 1NP",
+        "position": [
+          2225.705636021226,
+          62559.90222303352
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_D - 1NP",
+        "position": [
+          11523.20563602121,
+          64029.90222303353
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_D - 1NP",
+        "position": [
+          11708.20563602123,
+          61872.40222303353
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_D - 1NP",
+        "position": [
+          13678.20563602123,
+          61872.40222303352
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_D - 1NP",
+        "position": [
+          14270.70563602123,
+          62559.90222303352
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_D - 1NP",
+        "position": [
+          1148.205636021233,
+          64784.90222303351
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_D - 1NP",
+        "position": [
+          -1259.294363978768,
+          64224.90222438063
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_D - 1NP",
+        "position": [
+          -776.7943639787692,
+          60872.40222438062
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_D - 1NP",
+        "position": [
+          12343.20563602123,
+          64784.90222303353
+        ],
+        "width_mm": 900,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_D - 1NP",
+        "position": [
+          15793.20563602123,
+          65787.40222208969
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_D - 1NP",
+        "position": [
+          17598.20563602121,
+          65787.40222208969
+        ],
+        "width_mm": 800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_D - 1NP",
+        "position": [
+          18355.70563602123,
+          62379.9022243807
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_D - 1NP",
+        "position": [
+          17273.20563602122,
+          61687.40222438066
+        ],
+        "width_mm": 1200,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid_FrameButt - In_FAS_1600x2350_1000-1915407-DPS_D - 1NP",
+        "position": [
+          3.205636021235601,
+          67879.90222208967
+        ],
+        "width_mm": 1600,
+        "height_mm": 2350,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid_wCasing - In_OBJ_1500x2100_900-1771115-DPS_D - 1NP",
+        "position": [
+          2548.205636021236,
+          65712.40222208961
+        ],
+        "width_mm": 1500,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_D - 1NP",
+        "position": [
+          -1859.294363978783,
+          61429.90222438063
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_D - 1NP",
+        "position": [
+          18355.70563602122,
+          65229.90222208968
+        ],
+        "width_mm": 700,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-2038697-DPS_D - 1NP",
+        "position": [
+          -1801.794363978757,
+          57084.90222437968
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_D - 1NP",
+        "position": [
+          2823.205636021232,
+          57084.90222437972
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_D - 1NP",
+        "position": [
+          6823.205636021235,
+          57084.90222438065
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_D - 1NP",
+        "position": [
+          9698.20563602123,
+          57084.90222438065
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_D - 1NP",
+        "position": [
+          13698.20563602123,
+          57084.90222438065
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529249-DPS_D - 1NP",
+        "position": [
+          18356.79460446114,
+          57084.90222437972
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Single_Swing_Solid_ButtFrame - In_FAS_900x2350_Unik-1894043-DPS_D - 1NP",
+        "position": [
+          7348.205636021229,
+          68949.90222208969
+        ],
+        "width_mm": 900,
+        "height_mm": 2350,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "door",
+        "type_code": null,
+        "block_name": "HA_DR_Double_Swing_Solid_wCasing - In_1800x2100_900-1806419-DPS_D - 1NP",
+        "position": [
+          11168.20563602124,
+          65712.40222208964
+        ],
+        "width_mm": 1800,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-DOOR-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No D## tag within 1500 mm of door insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x2100-1653868-DPS_D - 1NP",
+        "position": [
+          -5521.79436397877,
+          58904.90222438062
+        ],
+        "width_mm": 1000,
+        "height_mm": 2100,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_D - 1NP",
+        "position": [
+          -5521.794363978773,
+          64279.90222438064
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_D - 1NP",
+        "position": [
+          -5521.794363978771,
+          61342.40222438062
+        ],
+        "width_mm": 625,
+        "height_mm": 1000,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x2400-1653873-DPS_D - 1NP",
+        "position": [
+          3098.205636021242,
+          68949.90222208969
+        ],
+        "width_mm": 1000,
+        "height_mm": 2400,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_D - 1NP",
+        "position": [
+          13423.20563602122,
+          68949.9022220897
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_D - 1NP",
+        "position": [
+          15798.20563602122,
+          68949.9022220897
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_D - 1NP",
+        "position": [
+          18298.20563602123,
+          68949.90222208972
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653875-DPS_D - 1NP",
+        "position": [
+          22018.20563602123,
+          66379.90222208967
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_D - 1NP",
+        "position": [
+          22018.20563602123,
+          59279.90222438065
+        ],
+        "width_mm": 1000,
+        "height_mm": 1500,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_D - 1NP",
+        "position": [
+          22018.20563602123,
+          64817.40222208966
+        ],
+        "width_mm": 625,
+        "height_mm": 1000,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "window",
+        "type_code": null,
+        "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_D - 1NP",
+        "position": [
+          22018.20563602123,
+          62217.40222438066
+        ],
+        "width_mm": 625,
+        "height_mm": 1000,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-____-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": [
+          "No W## tag within 2000 mm of window insert"
+        ]
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-2038694-DPS_D - 1NP",
+        "position": [
+          -3026.794363978751,
+          57084.90222437966
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1480324-DPS_D - 1NP",
+        "position": [
+          1598.205636021238,
+          57084.90222437971
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1480324-DPS_D - 1NP",
+        "position": [
+          5598.20563602124,
+          57084.90222438062
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1479875-DPS_D - 1NP",
+        "position": [
+          10923.20563602124,
+          57084.90222438062
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1479875-DPS_D - 1NP",
+        "position": [
+          14923.20563602124,
+          57084.90222438063
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      },
+      {
+        "otvor_type": "curtain_wall",
+        "type_code": null,
+        "block_name": "Systémový panel - Sklo-1481686-DPS_D - 1NP",
+        "position": [
+          19581.79460446114,
+          57084.9022243797
+        ],
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "source_layer": "A-GLAZ-CURT-OTLN",
+        "tag_match_distance_mm": null,
+        "warnings": []
+      }
+    ],
+    "segment_tags": [
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          -360.0430640285048,
+          62018.70348142702
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          12946.4924915293,
+          63765.35007793274
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          2634.376362771805,
+          62834.66773728374
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          17839.46025008424,
+          64395.08580882897
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          -59.72400086214049,
+          65129.61565136554
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          4672.846468930154,
+          62972.32327365414
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          13840.69899394305,
+          65355.61167420244
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OP18",
+        "prefix": "OP",
+        "position": [
+          11144.29155742583,
+          63770.35007793274
+        ],
+        "source_layer": "A-GENM-____-IDEN",
+        "category": "other_product",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF21",
+        "prefix": "CF",
+        "position": [
+          -3667.716582004952,
+          62307.81796851692
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF20",
+        "prefix": "CF",
+        "position": [
+          3948.206262408532,
+          63798.02636568592
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF20",
+        "prefix": "CF",
+        "position": [
+          13683.17648676744,
+          62866.13645426274
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF20",
+        "prefix": "CF",
+        "position": [
+          15271.05373903067,
+          65044.25607130771
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF20",
+        "prefix": "CF",
+        "position": [
+          -427.2633602710949,
+          63462.75263285719
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF20",
+        "prefix": "CF",
+        "position": [
+          7659.977414100244,
+          66341.78525528061
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF21",
+        "prefix": "CF",
+        "position": [
+          1547.642163968267,
+          63082.58726561389
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF21",
+        "prefix": "CF",
+        "position": [
+          15131.86192328993,
+          61704.45921628049
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF21",
+        "prefix": "CF",
+        "position": [
+          20495.68581678232,
+          65156.7486798006
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF21",
+        "prefix": "CF",
+        "position": [
+          18981.88599265819,
+          62005.34022655876
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF10",
+        "prefix": "CF",
+        "position": [
+          -3541.727420020071,
+          68544.43766919145
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF10",
+        "prefix": "CF",
+        "position": [
+          -2313.043278792634,
+          56360.08184144107
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF10",
+        "prefix": "CF",
+        "position": [
+          5380.439271940038,
+          56386.15163851035
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF10",
+        "prefix": "CF",
+        "position": [
+          13012.20338833611,
+          56366.59929070833
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF10",
+        "prefix": "CF",
+        "position": [
+          20633.77614541096,
+          56380.26964054652
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "CF20",
+        "prefix": "CF",
+        "position": [
+          2027.283417995047,
+          67348.04613460161
+        ],
+        "source_layer": "A-CLNG-____-IDEN",
+        "category": "ceiling_finish_skladba",
+        "extraction": "split_join"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          -3002.206552002302,
+          58910.54784492937
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          1727.793447997691,
+          58980.54784492937
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          5712.793447997696,
+          59410.54784492939
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          10072.79344799769,
+          59410.54784492939
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          14062.79344799769,
+          58965.54784492941
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          18787.79344799769,
+          59320.5478449294
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          19532.79344799751,
+          55930.54784492942
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          11775.2934479976,
+          55930.5478449294
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          4000.293447997784,
+          55930.5478449294
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          -3757.206552002132,
+          55930.54784492942
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          -5062.206552002314,
+          67745.54784378389
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          -3362.206552002315,
+          67745.54784378389
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS04",
+        "prefix": "OS",
+        "position": [
+          -1662.206552002315,
+          67745.54784378389
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          -3672.206552002299,
+          64595.54784492938
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          14337.79344799768,
+          67265.54784263844
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          19062.79344799768,
+          67165.54784263842
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS21",
+        "prefix": "OS",
+        "position": [
+          20149.5080348085,
+          64776.64720300596
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          17279.91935627608,
+          65259.29956958985
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          14379.27059447079,
+          65265.02407418626
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          17268.09244106088,
+          63348.57913252877
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS21",
+        "prefix": "OS",
+        "position": [
+          19074.2839993612,
+          62681.53260924482
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS21",
+        "prefix": "OS",
+        "position": [
+          14904.87195329259,
+          62297.16145763724
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          12067.53516222457,
+          62691.72126242903
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          9227.79344799769,
+          62770.54784358226
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS23",
+        "prefix": "OS",
+        "position": [
+          6933.605636021224,
+          62613.25915590901
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          3826.422386422952,
+          63216.8988827951
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS21",
+        "prefix": "OS",
+        "position": [
+          -3381.041928432249,
+          61819.3921560353
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          -355.7538731833558,
+          62599.72074168231
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS20",
+        "prefix": "OS",
+        "position": [
+          -213.6572803011545,
+          65668.29188215962
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      },
+      {
+        "code": "OS21",
+        "prefix": "OS",
+        "position": [
+          1420.652193970918,
+          62331.33522272865
+        ],
+        "source_layer": "E-LITE-EQPM-IDEN",
+        "category": "lighting",
+        "extraction": "single_text"
+      }
+    ],
+    "unmatched_polygons": [
+      {
+        "centroid": [
+          5333.205636021208,
+          67709.90222208969
+        ],
+        "area_m2": 3.0879999999999828,
+        "perimeter_m": 7.0599999999999845,
+        "layer": "A-AREA-BNDY-OTLN"
+      }
+    ],
+    "skipped": false,
+    "skip_reason": null,
+    "parse_duration_ms": 376,
+    "warnings": [
+      "1 polygon(s) on A-AREA-BNDY-OTLN have no matching room code (probably objekt outline or unlabeled space)",
+      "28/28 door(s) without type code",
+      "11/11 window(s) without type code"
+    ]
+  }
+}
