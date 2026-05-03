@@ -225,6 +225,42 @@ describe('Element Classifier', () => {
     });
   });
 
+  // ─── Phase 3 Gate 2a verification regression net (Commit 4 of 4) ──────
+  // Locks canonical correctness pro 5 remaining mostní elements verified
+  // post-Option-W extension (Commit 2 horizontal + Commit 3 vertical).
+  // All 5 return their canonical recommended_formwork[0]. Rimsa uses
+  // dedicated special path at L955-961 (length-based selection) which
+  // canonically picks Římsové bednění T (short ≤ 150m) or Římsový vozík
+  // TU (long > 150m) — both are in rimsa.recommended_formwork list.
+  // No code changes needed; this block prevents future regression.
+  // recommendFormwork signature: (type, height_m, pour_method, total_length_m, consistency).
+  describe('Phase 3 Gate 2a — verification regression net', () => {
+    it('Phase 3 verify: driky_piliru with height → VARIO GT 24', () => {
+      expect(recommendFormwork('driky_piliru', 8).name).toBe('VARIO GT 24');
+    });
+
+    it('Phase 3 verify: rigel with height → VARIO GT 24', () => {
+      expect(recommendFormwork('rigel', 6).name).toBe('VARIO GT 24');
+    });
+
+    it('Phase 3 verify: prechodova_deska with height → Frami Xlife', () => {
+      expect(recommendFormwork('prechodova_deska', 0.4).name).toBe('Frami Xlife');
+    });
+
+    it('Phase 3 verify: mostni_zavirne_zidky with height → Frami Xlife', () => {
+      expect(recommendFormwork('mostni_zavirne_zidky', 1).name).toBe('Frami Xlife');
+    });
+
+    // rimsa special case (recommendFormwork L955-961) — length-based:
+    it('Phase 3 verify: rimsa short bridge L≤150m → Římsové bednění T', () => {
+      expect(recommendFormwork('rimsa', 0.4, undefined, 80).name).toBe('Římsové bednění T');
+    });
+
+    it('Phase 3 verify: rimsa long bridge L>150m → Římsový vozík TU', () => {
+      expect(recommendFormwork('rimsa', 0.4, undefined, 200).name).toBe('Římsový vozík TU');
+    });
+  });
+
   // ─── getAdjustedAssemblyNorm ─────────────────────────────────────────
 
   describe('getAdjustedAssemblyNorm', () => {
