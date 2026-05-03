@@ -4868,5 +4868,3378 @@
         "source_drawing": "185-01_DPS_D_SO01_140_4440_00-OBJEKT D - Půdorys střecha"
       }
     ]
+  },
+  "openings_classified": {
+    "facade_distance_threshold_mm": 800.0,
+    "per_podlazi_classified": {
+      "1.PP": {
+        "podlazi": "1.PP",
+        "openings": [
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2323124-1PP_GARAZ",
+            "position": [
+              8424.464049941707,
+              9405.008597616581
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 9817,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273781-1PP_GARAZ",
+            "position": [
+              19021.52584977665,
+              11355.11275136815
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5927,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273783-1PP_GARAZ",
+            "position": [
+              17731.3980785071,
+              12467.48986089506
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7217,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273963-1PP_GARAZ",
+            "position": [
+              7533.328697966841,
+              10062.07806461426
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 10474,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D01",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP_CIP-2273787-1PP_GARAZ",
+            "position": [
+              -10196.3161128789,
+              13270.63340938764
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13682,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D01",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP_CIP-2273789-1PP_GARAZ",
+            "position": [
+              -19441.41157842691,
+              29905.18360743755
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 22087,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273762-1PP_GARAZ",
+            "position": [
+              -32617.08217125618,
+              46909.13622371317
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8911,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273762-1PP_GARAZ",
+            "position": [
+              -29468.72889989755,
+              48881.21550171529
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 12059,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP_CIP-2273793-1PP_GARAZ",
+            "position": [
+              -26604.27827884984,
+              50675.46259717887
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 14924,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273760-1PP_GARAZ",
+            "position": [
+              -24087.28892074745,
+              52252.06538861961
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 17441,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273760-1PP_GARAZ",
+            "position": [
+              -22659.30096321332,
+              53146.53472467171
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 17223,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D03",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2273791-1PP_GARAZ",
+            "position": [
+              -27951.48605259558,
+              58044.61299951841
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 12325,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D03",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2323771-1PP_GARAZ",
+            "position": [
+              -23884.52818203259,
+              61417.95663805819
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8951,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D03",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-V8-1PP_GARAZ",
+            "position": [
+              16758.44549317285,
+              10074.38110517751
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8190,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              18302.63543622877,
+              6006.68105849695
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6418,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              18013.06080550928,
+              7580.258680746221
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6936,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              17696.33855315984,
+              9301.35920508136
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7252,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              17741.35409933936,
+              5285.691626632903
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5697,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              16487.05778104589,
+              8468.748843510326
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8462,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              16966.66576317503,
+              5862.51090665997
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6274,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-V10-1PP_GARAZ",
+            "position": [
+              10975.54773140679,
+              9010.194337283387
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 9422,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              10115.24689032995,
+              7372.447802302321
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7784,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              11922.31488315994,
+              7222.0141980465
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7634,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273965-1PP_GARAZ",
+            "position": [
+              12142.21061836254,
+              6027.078691150976
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6439,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              11336.09616503524,
+              4564.53228568656
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4976,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              10486.26438593929,
+              5356.301473795443
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5768,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V9-1PP_GARAZ",
+            "position": [
+              4903.030376776214,
+              7130.117416593562
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7542,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273965-1PP_GARAZ",
+            "position": [
+              5752.469329407644,
+              6312.856157416036
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6725,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2273967-1PP_GARAZ",
+            "position": [
+              6018.385394857073,
+              8072.542179448356
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8484,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-2390810-1PP_GARAZ",
+            "position": [
+              3075.755485379168,
+              9310.415038770354
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 9722,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -32870.70739005169,
+              48957.7494202643
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8657,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -33515.68082821387,
+              49987.42619676513
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8012,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D02",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -34225.07720547741,
+              48115.29324700553
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7303,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -34870.05064363958,
+              49144.97002350637
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6658,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -35926.42689215214,
+              50831.43651341314
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5602,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -34678.22554407956,
+              51843.38680652544
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6850,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -35917.57059423013,
+              53821.95637343283
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5610,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -37245.57009695303,
+              52937.40094930178
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4282,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -37125.23361328543,
+              55749.9467230873
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4403,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -38102.38156127444,
+              55807.56675051834
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3426,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V13-1PP_GARAZ",
+            "position": [
+              -29156.53693106476,
+              53200.75756053747
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 12371,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V14-1PP_GARAZ",
+            "position": [
+              -28378.40270008882,
+              55057.38628785196
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13150,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -31367.30874059659,
+              54253.1351846593
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 10161,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2273777-1PP_GARAZ",
+            "position": [
+              -31201.72282134694,
+              56008.80523877295
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 10326,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -24903.88989696262,
+              56617.09992379956
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13752,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -23708.91566779201,
+              57365.61310258808
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13004,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -22395.33624072187,
+              58188.41872345064
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 12181,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -21081.75681365175,
+              59011.22434431317
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 11358,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -19768.17738658162,
+              59834.02996517572
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 10535,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -18965.22862182632,
+              58749.90881181617
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 11619,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -20397.45583311241,
+              57852.78407347664
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 12516,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -21583.91645988446,
+              57109.60368215643
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13260,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -22927.14505399495,
+              56268.22628649903
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 14101,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -15059.86732980711,
+              59880.28848686344
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 10489,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -14830.42842410025,
+              60752.61815589322
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 9617,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -15475.38144179494,
+              61782.30772317381
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8587,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -16725.48039460397,
+              63778.13348793546
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6591,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -17370.43341229866,
+              64807.82305521603
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5561,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -18649.72293762153,
+              66850.25256808927
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3519,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -19460.50295383541,
+              67000.24678689426
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3369,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -19750.33155825841,
+              66101.88055843972
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4267,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -16233.05400466637,
+              60458.16868749692
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 9911,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -16878.00702236105,
+              61487.8582547775
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 8881,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V11-1PP_GARAZ",
+            "position": [
+              -17806.95169805301,
+              62970.95022411171
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7398,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -21470.26806693384,
+              63747.2721161855
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6622,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D04",
+            "block_name": "HA_DR_Single_Swing_Solid - In_800x2100_SKLEP-V12-1PP_GARAZ",
+            "position": [
+              -20545.45254821732,
+              63509.40922218751
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6860,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D01",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP_CIP-2273795-1PP_GARAZ",
+            "position": [
+              11462.30830692409,
+              50141.64544474611
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13486,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP-2273779-1PP_GARAZ",
+            "position": [
+              3949.962856614209,
+              12709.76960575495
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 13121,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D05",
+            "block_name": "HA_DR_Gate_wBox - Ex_5700x2100 Hoermann DD-2259350-1PP_GARAZ",
+            "position": [
+              -664.3875968039953,
+              23164.41245174304
+            ],
+            "width_mm": 5700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 23576,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D03",
+            "block_name": "HA_DR_Single_Swing_Solid - In_900x2100_SKLEP D03-2323124-1PP_GARAZ",
+            "position": [
+              17275.83817509386,
+              11033.86589541369
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 7673,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "WIP_DR_Gate_Roll_wBox - 2100x5400_VrataC_D-1971020-1PP_GARAZ",
+            "position": [
+              -15749.43939626244,
+              46778.12192919654
+            ],
+            "width_mm": 2100,
+            "height_mm": 5400,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 23591,
+            "facade_side": null
+          }
+        ],
+        "footprint_available": true
+      },
+      "1.NP": {
+        "podlazi": "1.NP",
+        "openings": [
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_1NP-D",
+            "position": [
+              4973.205636021232,
+              64029.90222303352
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5100,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D33",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_1NP-D",
+            "position": [
+              4823.205636021217,
+              61872.40222303358
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5187,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_1NP-D",
+            "position": [
+              2818.205636021221,
+              61872.40222303357
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5187,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_1NP-D",
+            "position": [
+              2225.705636021226,
+              62559.90222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5875,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_1NP-D",
+            "position": [
+              11523.20563602121,
+              64029.90222303353
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5100,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D33",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_1NP-D",
+            "position": [
+              11708.20563602123,
+              61872.40222303353
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5187,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D",
+            "position": [
+              13678.20563602123,
+              61872.40222303352
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5187,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+            "position": [
+              14270.70563602123,
+              62559.90222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5875,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_1NP-D",
+            "position": [
+              1148.205636021233,
+              64784.90222303351
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4345,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D",
+            "position": [
+              -1259.294363978768,
+              64224.90222438063
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4443,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D33",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_1NP-D",
+            "position": [
+              -776.7943639787692,
+              60872.40222438062
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4188,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_1NP-D",
+            "position": [
+              12343.20563602123,
+              64784.90222303353
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4345,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_1NP-D",
+            "position": [
+              15793.20563602123,
+              65787.40222208969
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3343,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_1NP-D",
+            "position": [
+              17598.20563602121,
+              65787.40222208969
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3343,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+            "position": [
+              18355.70563602123,
+              62379.9022243807
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3842,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_1NP-D",
+            "position": [
+              17273.20563602122,
+              61687.40222438066
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4925,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D10",
+            "block_name": "HA_DR_Double_Swing_Solid_FrameButt - In_FAS_1600x2350_1000-1915407-DPS_1NP-D",
+            "position": [
+              3.205636021235601,
+              67879.90222208967
+            ],
+            "width_mm": 1600,
+            "height_mm": 2350,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 1250,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D20",
+            "block_name": "HA_DR_Double_Swing_Solid_wCasing - In_OBJ_1500x2100_900-1771115-DPS_1NP-D",
+            "position": [
+              2548.205636021236,
+              65712.40222208961
+            ],
+            "width_mm": 1500,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3418,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+            "position": [
+              -1859.294363978783,
+              61429.90222438063
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3842,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_1NP-D",
+            "position": [
+              18355.70563602122,
+              65229.90222208968
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3843,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-2038697-DPS_1NP-D",
+            "position": [
+              -1801.794363978757,
+              57084.90222437968
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_1NP-D",
+            "position": [
+              2823.205636021232,
+              57084.90222437972
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_1NP-D",
+            "position": [
+              6823.205636021235,
+              57084.90222438065
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_1NP-D",
+            "position": [
+              9698.20563602123,
+              57084.90222438065
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529247-DPS_1NP-D",
+            "position": [
+              13698.20563602123,
+              57084.90222438065
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529249-DPS_1NP-D",
+            "position": [
+              18356.79460446114,
+              57084.90222437972
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D11",
+            "block_name": "HA_DR_Single_Swing_Solid_ButtFrame - In_FAS_900x2350_Unik-1894043-DPS_1NP-D",
+            "position": [
+              7348.205636021229,
+              68949.90222208969
+            ],
+            "width_mm": 900,
+            "height_mm": 2350,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D42",
+            "block_name": "HA_DR_Double_Swing_Solid_wCasing - In_1800x2100_900-1806419-DPS_1NP-D",
+            "position": [
+              11168.20563602124,
+              65712.40222208964
+            ],
+            "width_mm": 1800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3418,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W04",
+            "block_name": "HA_WD_SinglePanel - 1000x2100-1653868-DPS_1NP-D",
+            "position": [
+              -5521.79436397877,
+              58904.90222438062
+            ],
+            "width_mm": 1000,
+            "height_mm": 2100,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+            "position": [
+              -5521.794363978773,
+              64279.90222438064
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D",
+            "position": [
+              -5521.794363978771,
+              61342.40222438062
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W01",
+            "block_name": "HA_WD_SinglePanel - 1000x2400-1653873-DPS_1NP-D",
+            "position": [
+              3098.205636021242,
+              68949.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 2400,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+            "position": [
+              13423.20563602122,
+              68949.9022220897
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+            "position": [
+              15798.20563602122,
+              68949.9022220897
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+            "position": [
+              18298.20563602123,
+              68949.90222208972
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653875-DPS_1NP-D",
+            "position": [
+              22018.20563602123,
+              66379.90222208967
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_1NP-D",
+            "position": [
+              22018.20563602123,
+              59279.90222438065
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D",
+            "position": [
+              22018.20563602123,
+              64817.40222208966
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_1NP-D",
+            "position": [
+              22018.20563602123,
+              62217.40222438066
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-2038694-DPS_1NP-D",
+            "position": [
+              -3026.794363978751,
+              57084.90222437966
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1480324-DPS_1NP-D",
+            "position": [
+              1598.205636021238,
+              57084.90222437971
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1480324-DPS_1NP-D",
+            "position": [
+              5598.20563602124,
+              57084.90222438062
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1479875-DPS_1NP-D",
+            "position": [
+              10923.20563602124,
+              57084.90222438062
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1479875-DPS_1NP-D",
+            "position": [
+              14923.20563602124,
+              57084.90222438063
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1481686-DPS_1NP-D",
+            "position": [
+              19581.79460446114,
+              57084.9022243797
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 400,
+            "facade_side": "-Y"
+          }
+        ],
+        "footprint_available": true
+      },
+      "2.NP": {
+        "podlazi": "2.NP",
+        "openings": [
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_2NP-D",
+            "position": [
+              4973.205636021232,
+              64029.90222303352
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5100,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D33",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_2NP-D",
+            "position": [
+              4798.205636021211,
+              61867.39851310806
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6957,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_2NP-D",
+            "position": [
+              2818.205636021221,
+              61867.39851310806
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6957,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_2NP-D",
+            "position": [
+              2225.705636021225,
+              62559.90222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6570,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_2NP-D",
+            "position": [
+              11523.20563602121,
+              64029.90222303353
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5100,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D33",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_2NP-D",
+            "position": [
+              11698.20563602119,
+              61867.39851310805
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6957,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_2NP-D",
+            "position": [
+              13678.20563602123,
+              61867.39851310803
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6957,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_2NP-D",
+            "position": [
+              14270.70563602124,
+              62559.90222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6570,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_2NP-D",
+            "position": [
+              12343.20563602123,
+              64784.90222303353
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4345,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000314-DPS_2NP-D",
+            "position": [
+              4023.20563602122,
+              64784.9022230335
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4345,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_2NP-D",
+            "position": [
+              15793.20563602125,
+              65822.40222208967
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3308,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_2NP-D",
+            "position": [
+              17598.20563602123,
+              65822.40222208969
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3308,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_2NP-D",
+            "position": [
+              18355.70563602125,
+              62399.90222438071
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4013,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_2NP-D",
+            "position": [
+              17273.20563602121,
+              61742.40222438067
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5095,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_2NP-D",
+            "position": [
+              18355.70563602124,
+              65249.90222208969
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3880,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_2NP-D",
+            "position": [
+              703.2056360212189,
+              65842.40222208969
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3288,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_2NP-D",
+            "position": [
+              -1151.794363978768,
+              65842.4022220897
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3288,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_2NP-D",
+            "position": [
+              -1859.294363978781,
+              62379.9022243807
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4282,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_2NP-D",
+            "position": [
+              -776.7943639787703,
+              61722.40222438066
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5365,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_2NP-D",
+            "position": [
+              -1859.294363978769,
+              65234.90222208969
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3895,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1688786-DPS_2NP-D",
+            "position": [
+              -3303.919363978774,
+              57619.90222438061
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1690468-DPS_2NP-D",
+            "position": [
+              4497.205636021222,
+              57619.90222438062
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_2NP-D",
+            "position": [
+              3123.205636021224,
+              57619.90222438062
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_2NP-D",
+            "position": [
+              11998.20563602124,
+              57619.90222438063
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1688786-DPS_2NP-D",
+            "position": [
+              13371.08063602123,
+              57619.90222438065
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1529248-DPS_2NP-D",
+            "position": [
+              19798.20563602124,
+              57619.90222438065
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2570,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_2NP-D",
+            "position": [
+              -5521.794363978773,
+              64837.40222208968
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 620,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_2NP-D",
+            "position": [
+              -5521.794363978771,
+              62337.40222208968
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 620,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W04",
+            "block_name": "HA_WD_SinglePanel - 1000x2100-1653868-DPS_2NP-D",
+            "position": [
+              -5521.79436397877,
+              58904.90222438063
+            ],
+            "width_mm": 1000,
+            "height_mm": 2100,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 620,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              -5521.794363978773,
+              66399.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 620,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              -1651.794363978764,
+              68949.90222208967
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              723.2056360212396,
+              68949.90222208967
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              3098.205636021242,
+              68949.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W01",
+            "block_name": "HA_WD_SinglePanel - 1000x2400-1653873-DPS_2NP-D",
+            "position": [
+              7348.205636021242,
+              68949.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 2400,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              13423.2056360212,
+              68949.9022220897
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              15798.20563602121,
+              68949.9022220897
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              18298.20563602122,
+              68949.90222208972
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W04",
+            "block_name": "HA_WD_SinglePanel - 1000x2100-1653868-DPS_2NP-D",
+            "position": [
+              22018.20563602123,
+              66379.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 2100,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 350,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_2NP-D",
+            "position": [
+              22018.20563602123,
+              64817.40222208969
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 350,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_2NP-D",
+            "position": [
+              22018.20563602123,
+              62192.40222208969
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 350,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_2NP-D",
+            "position": [
+              22018.20563602123,
+              59279.90222438065
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 350,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK06-1754727-DPS_2NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 54910,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK06-1754727-DPS_2NP-D",
+            "position": [
+              14299.93912767832,
+              -0.01346446403449591
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 54910,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1688785-DPS_2NP-D",
+            "position": [
+              -2078.919363978774,
+              57619.9022243806
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1690390-DPS_2NP-D",
+            "position": [
+              5722.143136021218,
+              57619.90222438061
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1480164-DPS_2NP-D",
+            "position": [
+              2448.205636021224,
+              57619.90222438062
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1480324-DPS_2NP-D",
+            "position": [
+              10773.20563602124,
+              57619.90222438062
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1690981-DPS_2NP-D",
+            "position": [
+              14046.08063602123,
+              57619.90222438063
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1480324-DPS_2NP-D",
+            "position": [
+              18573.20563602122,
+              57619.90222438063
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2710,
+            "facade_side": "-Y"
+          }
+        ],
+        "footprint_available": true
+      },
+      "3.NP": {
+        "podlazi": "3.NP",
+        "openings": [
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000318-DPS_3NP-D",
+            "position": [
+              4023.323576956741,
+              64784.9022230335
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4345,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_3NP-D",
+            "position": [
+              12343.20563602123,
+              64754.90222303354
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4375,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_3NP-D",
+            "position": [
+              16463.20563602124,
+              65822.40222208972
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3307,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_3NP-D",
+            "position": [
+              17708.20563602122,
+              65822.40222208972
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3307,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_3NP-D",
+            "position": [
+              18790.70563602123,
+              64479.90222208964
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3408,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_3NP-D",
+            "position": [
+              15300.70563602122,
+              62729.90222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6400,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652965-DPS_3NP-D",
+            "position": [
+              14193.20563602121,
+              62222.40222303353
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6137,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_3NP-D",
+            "position": [
+              8180.705636021228,
+              62744.90222303353
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6385,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_3NP-D",
+            "position": [
+              7508.205636021217,
+              61997.40222303352
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5912,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_3NP-D",
+            "position": [
+              6293.205636021237,
+              61997.40222303352
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5912,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D35",
+            "block_name": "HA_DR_Single_SlidingToPocket_Solid - In_BJ_700x2100-1984230-DPS_3NP-D",
+            "position": [
+              4575.70563602124,
+              61997.40222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5912,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D35",
+            "block_name": "HA_DR_Single_SlidingToPocket_Solid - In_BJ_700x2100-1984229-DPS_3NP-D",
+            "position": [
+              15300.70563602122,
+              64597.4022230336
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4532,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000412-DPS_3NP-D",
+            "position": [
+              33.20563602120959,
+              65842.40222208966
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3288,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D31",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_800x2100-2000414-DPS_3NP-D",
+            "position": [
+              -1211.794363978772,
+              65842.40222208966
+            ],
+            "width_mm": 800,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3288,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000416-DPS_3NP-D",
+            "position": [
+              -2294.294363978777,
+              64479.90222208964
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 3407,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_700x2100-2000418-DPS_3NP-D",
+            "position": [
+              1215.705636021221,
+              62729.90222303352
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6400,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D34",
+            "block_name": "HA_DR_Double_Swing_Solid - In_BJ_1200x2100_800-1652993-DPS_3NP-D",
+            "position": [
+              2283.205636021235,
+              62222.40222303353
+            ],
+            "width_mm": 1200,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 6137,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D35",
+            "block_name": "HA_DR_Single_SlidingToPocket_Solid - In_BJ_700x2100-V9-DPS_3NP-D",
+            "position": [
+              1215.705636021223,
+              64597.40222303359
+            ],
+            "width_mm": 700,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 4532,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1691942-DPS_3NP-D",
+            "position": [
+              -13.04436397880006,
+              58934.90222303347
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2850,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1691942-DPS_3NP-D",
+            "position": [
+              7646.955636021211,
+              58934.90222303345
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2850,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": null,
+            "block_name": "ABMV_CW_Single_Swing_Generic - Ex_Glass_SKLOPNE-1691942-DPS_3NP-D",
+            "position": [
+              15301.95563602123,
+              58934.90222303344
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 2850,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "door",
+            "type_code": "D21",
+            "block_name": "HA_DR_Single_Swing_Solid - In_BJ_900x2100_Vstup-2000316-DPS_3NP-D",
+            "position": [
+              6038.323576956734,
+              64029.90222303352
+            ],
+            "width_mm": 900,
+            "height_mm": 2100,
+            "source_layer": "A-DOOR-____-OTLN",
+            "is_fasadni": false,
+            "distance_to_perimeter_mm": 5100,
+            "facade_side": null
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W04",
+            "block_name": "HA_WD_SinglePanel - 1000x2100-1653868-DPS_3NP-D",
+            "position": [
+              -5521.794363978773,
+              66399.90222208966
+            ],
+            "width_mm": 1000,
+            "height_mm": 2100,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_3NP-D",
+            "position": [
+              -5521.79436397877,
+              60399.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_3NP-D",
+            "position": [
+              22018.20563602123,
+              60379.90222208967
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W03",
+            "block_name": "HA_WD_SinglePanel - 1000x1500-1653870-DPS_3NP-D",
+            "position": [
+              22018.20563602123,
+              66379.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 1500,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_3NP-D",
+            "position": [
+              22018.20563602123,
+              64047.40222208968
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W05",
+            "block_name": "HA_WD_SinglePanel - 625x1000-1653871-DPS_3NP-D",
+            "position": [
+              -5521.794363978773,
+              64087.40222208967
+            ],
+            "width_mm": 625,
+            "height_mm": 1000,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W83",
+            "block_name": "Roof-Windows_VELUX_VFE - VFE size 940x1370 _PK38__31-1754040-DPS_3NP-D",
+            "position": [
+              723.2056360212374,
+              68947.40222208972
+            ],
+            "width_mm": 940,
+            "height_mm": 1370,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 182,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W83",
+            "block_name": "Roof-Windows_VELUX_VFE - VFE size 940x1370 _PK38__31-1754040-DPS_3NP-D",
+            "position": [
+              15797.30563602122,
+              68947.40222208973
+            ],
+            "width_mm": 940,
+            "height_mm": 1370,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 182,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": "W01",
+            "block_name": "HA_WD_SinglePanel - 1000x2400-1653873-DPS_3NP-D",
+            "position": [
+              7348.205636021242,
+              68949.90222208969
+            ],
+            "width_mm": 1000,
+            "height_mm": 2400,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 180,
+            "facade_side": "+Y"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1755341-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1755341-DPS_3NP-D",
+            "position": [
+              -4375.000000000019,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-V11-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-V12-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1755427-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1755427-DPS_3NP-D",
+            "position": [
+              -7969.368513075427,
+              0.1545731939014104
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56131,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-V13-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-V14-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1755427-DPS_3NP-D",
+            "position": [
+              -23141.75023597744,
+              0.185308413010921
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 58734,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1754960-DPS_3NP-D",
+            "position": [
+              0.0,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56085,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "window",
+            "type_code": null,
+            "block_name": "Roof-Windows_VELUX_GLL_1061 - PK08-1754960-DPS_3NP-D",
+            "position": [
+              -15074.09999999998,
+              0.0
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-____-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 56863,
+            "facade_side": "-X"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1655971-DPS_3NP-D",
+            "position": [
+              1061.9556360212,
+              58934.90222303346
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2850,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1655971-DPS_3NP-D",
+            "position": [
+              8721.955636021212,
+              58934.90222303343
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2850,
+            "facade_side": "-Y"
+          },
+          {
+            "otvor_type": "curtain_wall",
+            "type_code": null,
+            "block_name": "Systémový panel - Sklo-1655971-DPS_3NP-D",
+            "position": [
+              16376.95563602123,
+              58934.90222303342
+            ],
+            "width_mm": null,
+            "height_mm": null,
+            "source_layer": "A-GLAZ-CURT-OTLN",
+            "is_fasadni": true,
+            "distance_to_perimeter_mm": 2850,
+            "facade_side": "-Y"
+          }
+        ],
+        "footprint_available": true
+      }
+    },
+    "per_podlazi_facade_summary": {
+      "1.PP": {
+        "total_facade_openings": 0,
+        "total_internal_doors": 71,
+        "facade_total_area_m2": 0.0,
+        "by_side": {
+          "+X": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          },
+          "-X": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          },
+          "+Y": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          },
+          "-Y": {
+            "count": 0,
+            "total_area_m2": 0.0,
+            "openings": []
+          }
+        }
+      },
+      "1.NP": {
+        "total_facade_openings": 24,
+        "total_internal_doors": 21,
+        "facade_total_area_m2": 17.49,
+        "by_side": {
+          "+X": {
+            "count": 4,
+            "total_area_m2": 4.25,
+            "openings": [
+              "W03",
+              "W03",
+              "W05",
+              "W05"
+            ]
+          },
+          "-X": {
+            "count": 3,
+            "total_area_m2": 4.22,
+            "openings": [
+              "W04",
+              "W03",
+              "W05"
+            ]
+          },
+          "+Y": {
+            "count": 5,
+            "total_area_m2": 9.02,
+            "openings": [
+              "D11",
+              "W01",
+              "W03",
+              "W03",
+              "W03"
+            ]
+          },
+          "-Y": {
+            "count": 12,
+            "total_area_m2": 0.0,
+            "openings": [
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "ABMV_CW_Single_Swing_Generic - Ex_Glass_",
+              "Systémový panel - Sklo-2038694-DPS_1NP-D",
+              "Systémový panel - Sklo-1480324-DPS_1NP-D",
+              "Systémový panel - Sklo-1480324-DPS_1NP-D",
+              "Systémový panel - Sklo-1479875-DPS_1NP-D",
+              "Systémový panel - Sklo-1479875-DPS_1NP-D",
+              "Systémový panel - Sklo-1481686-DPS_1NP-D"
+            ]
+          }
+        }
+      },
+      "2.NP": {
+        "total_facade_openings": 23,
+        "total_internal_doors": 26,
+        "facade_total_area_m2": 21.1,
+        "by_side": {
+          "+X": {
+            "count": 5,
+            "total_area_m2": 4.85,
+            "openings": [
+              "W04",
+              "W05",
+              "W05",
+              "W03",
+              "Roof-Windows_VELUX_GLL_1061 - PK06-17547"
+            ]
+          },
+          "-X": {
+            "count": 5,
+            "total_area_m2": 4.85,
+            "openings": [
+              "W05",
+              "W05",
+              "W04",
+              "W03",
+              "Roof-Windows_VELUX_GLL_1061 - PK06-17547"
+            ]
+          },
+          "+Y": {
+            "count": 7,
+            "total_area_m2": 11.4,
+            "openings": [
+              "W03",
+              "W03",
+              "W03",
+              "W01",
+              "W03",
+              "W03",
+              "W03"
+            ]
+          },
+          "-Y": {
+            "count": 6,
+            "total_area_m2": 0.0,
+            "openings": [
+              "Systémový panel - Sklo-1688785-DPS_2NP-D",
+              "Systémový panel - Sklo-1690390-DPS_2NP-D",
+              "Systémový panel - Sklo-1480164-DPS_2NP-D",
+              "Systémový panel - Sklo-1480324-DPS_2NP-D",
+              "Systémový panel - Sklo-1690981-DPS_2NP-D",
+              "Systémový panel - Sklo-1480324-DPS_2NP-D"
+            ]
+          }
+        }
+      },
+      "3.NP": {
+        "total_facade_openings": 23,
+        "total_internal_doors": 22,
+        "facade_total_area_m2": 12.82,
+        "by_side": {
+          "+X": {
+            "count": 3,
+            "total_area_m2": 3.62,
+            "openings": [
+              "W03",
+              "W03",
+              "W05"
+            ]
+          },
+          "-X": {
+            "count": 14,
+            "total_area_m2": 4.22,
+            "openings": [
+              "W04",
+              "W03",
+              "W05",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17553",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17553",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V11-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V12-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17554",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17554",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V13-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-V14-D",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17554",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17549",
+              "Roof-Windows_VELUX_GLL_1061 - PK08-17549"
+            ]
+          },
+          "+Y": {
+            "count": 3,
+            "total_area_m2": 4.98,
+            "openings": [
+              "W83",
+              "W83",
+              "W01"
+            ]
+          },
+          "-Y": {
+            "count": 3,
+            "total_area_m2": 0.0,
+            "openings": [
+              "Systémový panel - Sklo-1655971-DPS_3NP-D",
+              "Systémový panel - Sklo-1655971-DPS_3NP-D",
+              "Systémový panel - Sklo-1655971-DPS_3NP-D"
+            ]
+          }
+        }
+      }
+    },
+    "total_facade_openings_count": 70,
+    "total_facade_openings_area_m2": 51.41
   }
 }
