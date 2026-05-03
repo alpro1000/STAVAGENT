@@ -564,3 +564,94 @@ file:line references), treat it as documentation of intent — but
 verify against current code state before implementing. Mismatches
 between intent and reality are the most common source of stop-
 and-ask catches.
+
+---
+
+## Gate 2 closed 2026-05-03
+
+Branch `gate-2-element-classification` merged via PR `#<TBD>`.
+**1036 tests passing.** 23 element types classification-correct
+per canonical §9.4 (22 baseline + `zaklady_oper` added in Phase 3
+Commit 1).
+
+### Lessons learned (16 stop-and-ask instances Gate 1 + Gate 2)
+
+1. **Task specs are starting hypotheses, not implementation
+   contracts.** Multiple task spec details proved incorrect on
+   verification (e.g., `mostni_zaver` not in union, `Top 50
+   Cornice` not a real catalog entry, `result.falsework.system`
+   shape doesn't exist).
+
+2. **Implementation reality (TypeScript types, current
+   architecture) is authoritative.** When task spec example code
+   conflicts with current code, current code wins. Verify
+   signatures + interfaces before implementing per spec.
+
+3. **Stop-and-ask is fastest path** — each catch prevents 1–3
+   broken commits. 16 instances in Gate 1 + Gate 2 caught
+   truncations, broken cross-refs, scope creep, architectural
+   surprises, data inconsistencies, broken intermediate commit
+   states.
+
+4. **Architectural fixes beat per-element fixes** — Option W
+   principle pre-empted Phase 4 entirely. Phase 4 reduced from
+   estimated 3–4 days to ~10 minutes work because Option W
+   extension (Phase 3 Commits 2+3) auto-fixed 11 pozemní
+   elements transparently. Don't add scope guards to artificially
+   limit fix reach.
+
+5. **With-height vs without-height path coverage matters.**
+   `recommendFormwork()` has two distinct branches; tests must
+   exercise both. Single-arg defaults can mask issues
+   (existing "recommends Frami for foundations" test always
+   passed because it called without `height_m` and short-
+   circuited to `recommended[0]`; the buggy with-height path
+   was never exercised before Gate 2 Phase 3).
+
+6. **`undefined` as universal applicability semantics.**
+   `applicable_element_types` undefined = no allow-list = applies
+   to all. Filter logic must handle both: `!apt || apt.includes
+   (type)`. Original Phase 3 Commit 2 guard formulation
+   `apt?.includes(type)` would have failed silently for
+   universal systems (Frami Xlife). Caught by stop-and-ask 13th
+   instance.
+
+7. **Atomic commits with code + tests together prevent broken
+   intermediate states.** Each Phase 2 commit (e.g., `b60d24d`
+   Top 50) bundled the data change + ALL corresponding test
+   inversions in lockstep so test suite stays green at every
+   commit boundary. Enables clean bisect / rollback.
+
+### Next steps (Gate 3 / Gate 4 / Gate 7)
+
+Currently **no urgent action**. All 5 decisions signed off
+(2026-04-30). Architectural foundation solid. When ready:
+
+- **Gate 3** (UI labels + W1-W4 warnings, ~5–7 days):
+  - Staxo 100 reclassification (`'props'` → `'falsework'` per
+    canonical Vrstva 3) — natural fit when UI cards split
+    „Skruž" vs „Stojky"
+  - `warnings_structured` shape (replaces `warnings: string[]`
+    per Gap #9 — prerequisite for W1 RED severity)
+  - UI card titles per canonical §9.3 (DOKA/PERI mapping)
+  - Tooltips with canonical doc references
+
+- **Gate 4** (Pricing split, ~5–7 days):
+  - 4 cost rows per system (setup_labor + rental + teardown_labor
+    + optional design_fee)
+  - MSS mobilization separate fields (P1 fix from audit D.4)
+  - Excel field names disambiguation (audit D.2 open item)
+  - MCP `accuracy_note` field per philosophy §7.3
+  - Dual-write deprecation aliases until 2026-07-29
+
+- **Gate 7** (Cleanup, deadline **2026-07-29**):
+  - Remove deprecation aliases (`grep -r "DEPRECATED until
+    2026-07-29"`)
+  - Section 9 cleanup (5 issues identified by external review)
+  - `atrium` / `attika` / `vence` / `rampa` final decision (currently
+    documented as subsumption per Phase 5 Commit 1; revisit if
+    user wants explicit types)
+
+**Cleanup deadline: 2026-07-29** (3 months from Gate 1 closure
+2026-04-29). Tracked as blocking prerequisite for public MCP
+launch.
