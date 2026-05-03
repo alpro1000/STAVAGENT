@@ -43,3 +43,7 @@ htmlcov/
 
 # Local-only outputs (regenerated from extract_all_pdfs.py)
 extracted_data/
+
+# Generated DXF (Phase 0.5 — produced from inputs/dwg/ by dwg2dxf, ~300 MB total,
+# regeneratable in <10s via convert_batch; some files exceed GitHub's 100 MB cap)
+test-data/libuse/inputs/dxf/*.dxf
