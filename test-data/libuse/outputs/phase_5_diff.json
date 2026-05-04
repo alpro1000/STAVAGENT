@@ -1,0 +1,437 @@
+{
+  "metadata": {
+    "items_total": 2277,
+    "old_items_processed": 1423,
+    "score_thresholds": {
+      "high": 0.45,
+      "med": 0.25
+    },
+    "vol_tolerance_pct": 5.0,
+    "d_share": 0.25,
+    "status_distribution": {
+      "NOVE": 1958,
+      "VYNECHANE_KRITICKE": 136,
+      "OPRAVENO_OBJEM": 11,
+      "OPRAVENO_POPIS": 74,
+      "VYNECHANE_DETAIL": 98
+    },
+    "orphan_old_count": 1055,
+    "new_findings": [],
+    "carry_forward_findings_total": 2
+  },
+  "per_kapitola": {
+    "Detail-dilatace": {
+      "VYNECHANE_DETAIL": 1
+    },
+    "Detail-ostení": {
+      "VYNECHANE_DETAIL": 1
+    },
+    "Detail-ostění": {
+      "VYNECHANE_DETAIL": 2
+    },
+    "Detail-parapet": {
+      "VYNECHANE_DETAIL": 2
+    },
+    "Detail-soklova-mrizka": {
+      "VYNECHANE_DETAIL": 2
+    },
+    "Detail-spara": {
+      "VYNECHANE_DETAIL": 2
+    },
+    "HSV-611": {
+      "NOVE": 133,
+      "OPRAVENO_OBJEM": 1
+    },
+    "HSV-612": {
+      "NOVE": 166,
+      "OPRAVENO_POPIS": 3,
+      "OPRAVENO_OBJEM": 1
+    },
+    "HSV-622": {
+      "NOVE": 2
+    },
+    "HSV-622.1": {
+      "NOVE": 4
+    },
+    "HSV-622.2": {
+      "NOVE": 2,
+      "OPRAVENO_POPIS": 1
+    },
+    "HSV-622.3": {
+      "OPRAVENO_POPIS": 1,
+      "NOVE": 1
+    },
+    "HSV-631": {
+      "NOVE": 207,
+      "VYNECHANE_KRITICKE": 104,
+      "OPRAVENO_POPIS": 1
+    },
+    "HSV-642": {
+      "NOVE": 72,
+      "OPRAVENO_POPIS": 12
+    },
+    "HSV-643": {
+      "NOVE": 2
+    },
+    "HSV-941": {
+      "NOVE": 10
+    },
+    "HSV-944": {
+      "NOVE": 4
+    },
+    "HSV-962": {
+      "NOVE": 1
+    },
+    "HSV-997": {
+      "OPRAVENO_POPIS": 1,
+      "NOVE": 2
+    },
+    "HSV-998": {
+      "NOVE": 4,
+      "OPRAVENO_POPIS": 1
+    },
+    "LI-detail": {
+      "VYNECHANE_DETAIL": 14
+    },
+    "OP-detail": {
+      "VYNECHANE_DETAIL": 63
+    },
+    "PSV-711": {
+      "NOVE": 1,
+      "OPRAVENO_POPIS": 1
+    },
+    "PSV-712": {
+      "NOVE": 11,
+      "OPRAVENO_POPIS": 7
+    },
+    "PSV-713": {
+      "OPRAVENO_POPIS": 5,
+      "NOVE": 12
+    },
+    "PSV-762": {
+      "OPRAVENO_POPIS": 1,
+      "NOVE": 3
+    },
+    "PSV-763.1": {
+      "NOVE": 133,
+      "OPRAVENO_POPIS": 3
+    },
+    "PSV-763.2": {
+      "NOVE": 213,
+      "OPRAVENO_POPIS": 2
+    },
+    "PSV-763.3": {
+      "NOVE": 7
+    },
+    "PSV-764": {
+      "NOVE": 15,
+      "OPRAVENO_POPIS": 11,
+      "OPRAVENO_OBJEM": 9
+    },
+    "PSV-765": {
+      "OPRAVENO_POPIS": 2,
+      "NOVE": 4
+    },
+    "PSV-766": {
+      "NOVE": 73,
+      "OPRAVENO_POPIS": 3
+    },
+    "PSV-767": {
+      "NOVE": 69,
+      "OPRAVENO_POPIS": 2
+    },
+    "PSV-768": {
+      "VYNECHANE_DETAIL": 11
+    },
+    "PSV-771": {
+      "NOVE": 168,
+      "OPRAVENO_POPIS": 1
+    },
+    "PSV-776": {
+      "NOVE": 140
+    },
+    "PSV-781": {
+      "NOVE": 104,
+      "VYNECHANE_KRITICKE": 32,
+      "OPRAVENO_POPIS": 8
+    },
+    "PSV-783": {
+      "NOVE": 10,
+      "OPRAVENO_POPIS": 5
+    },
+    "PSV-784": {
+      "NOVE": 360,
+      "OPRAVENO_POPIS": 2
+    },
+    "PSV-925": {
+      "NOVE": 5
+    },
+    "PSV-952": {
+      "NOVE": 9,
+      "OPRAVENO_POPIS": 1
+    },
+    "VRN-010": {
+      "NOVE": 1
+    },
+    "VRN-011": {
+      "NOVE": 1
+    },
+    "VRN-014": {
+      "NOVE": 2
+    },
+    "VRN-016": {
+      "NOVE": 2
+    },
+    "VRN-017": {
+      "NOVE": 3
+    },
+    "VRN-026": {
+      "NOVE": 1
+    },
+    "VRN-027": {
+      "NOVE": 1
+    }
+  },
+  "orphan_olds_top30": [
+    {
+      "code": "8800000",
+      "popis": "V01 - Vnitřní dveře",
+      "MJ": "",
+      "qty_komplex": 8800000.0,
+      "best_score": 0.04,
+      "best_new_popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)"
+    },
+    {
+      "code": "3673000",
+      "popis": "V03 - Prosklené příčky - exteriérové",
+      "MJ": "",
+      "qty_komplex": 3673000.0,
+      "best_score": 0.0,
+      "best_new_popis": "Záruční rezerva na opravy (% z ceny)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "Práce a dodávky HSV",
+      "MJ": "",
+      "qty_komplex": 137374714.07,
+      "best_score": 0.052,
+      "best_new_popis": "Pomocné žebříky pro výškové práce — pronájem"
+    },
+    {
+      "code": "131251207",
+      "popis": "Hloubení jam zapažených v hornině třídy těžitelnosti I skupiny 3 objem přes 5000",
+      "MJ": "m3",
+      "qty_komplex": 1.0,
+      "best_score": 0.105,
+      "best_new_popis": "Pojištění odpovědnosti zhotovitele (% z ceny)"
+    },
+    {
+      "code": "131351206",
+      "popis": "Hloubení jam zapažených v hornině třídy těžitelnosti II skupiny 4 objem do 5000 ",
+      "MJ": "m3",
+      "qty_komplex": 2.0,
+      "best_score": 0.008,
+      "best_new_popis": "Kotvení do nosné stěny + ke stropu (WF51)"
+    },
+    {
+      "code": "162351103",
+      "popis": "Vodorovné přemístění přes 50 do 500 m výkopku/sypaniny z horniny třídy těžitelno",
+      "MJ": "m3",
+      "qty_komplex": 3.0,
+      "best_score": 0.076,
+      "best_new_popis": "Cementový potěr F5 tl. 50 mm (FF01)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"odvoz zeminy pro zásyp na mezideponii\" 2956,354",
+      "MJ": "",
+      "qty_komplex": 2956.354,
+      "best_score": 0.044,
+      "best_new_popis": "Odpad odvoz po úklidu (kontejnery)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"odvoz zeminy pro zásyp z mezideponie k objektu\" 2956,354",
+      "MJ": "",
+      "qty_komplex": 2956.354,
+      "best_score": 0.043,
+      "best_new_popis": "Odpad odvoz po úklidu (kontejnery)"
+    },
+    {
+      "code": "162751117",
+      "popis": "Vodorovné přemístění přes 9 000 do 10000 m výkopku/sypaniny z horniny třídy těži",
+      "MJ": "m3",
+      "qty_komplex": 4.0,
+      "best_score": 0.054,
+      "best_new_popis": "Kotvení do nosné stěny + ke stropu (WF51)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"hloubení jam\" 9775",
+      "MJ": "",
+      "qty_komplex": 9775.0,
+      "best_score": 0.0,
+      "best_new_popis": "Záruční rezerva na opravy (% z ceny)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"odečet zeminy pro zásyp\" -2956,354",
+      "MJ": "",
+      "qty_komplex": 2.0,
+      "best_score": 0.017,
+      "best_new_popis": "Kari síť 150/150/4 mm pro potěr (FF01)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"vývrtek ze zápor\" 133,11",
+      "MJ": "",
+      "qty_komplex": 133.11,
+      "best_score": 0.119,
+      "best_new_popis": "Poštovní schránky (sada pro 11 bytů)"
+    },
+    {
+      "code": "162751119",
+      "popis": "Příplatek k vodorovnému přemístění výkopku/sypaniny z horniny třídy těžitelnosti",
+      "MJ": "m3",
+      "qty_komplex": 5.0,
+      "best_score": 0.011,
+      "best_new_popis": "Kontralatě 30×50 mm rozteč 1000 mm"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "6951,756*10 'Přepočtené koeficientem množství",
+      "MJ": "",
+      "qty_komplex": 69517.56,
+      "best_score": 0.027,
+      "best_new_popis": "Omítka sádrová vnitřních ploch tl. 10 mm"
+    },
+    {
+      "code": "162751137",
+      "popis": "Vodorovné přemístění přes 9 000 do 10000 m výkopku/sypaniny z horniny třídy těži",
+      "MJ": "m3",
+      "qty_komplex": 6.0,
+      "best_score": 0.08,
+      "best_new_popis": "Kotvení do nosné stěny + ke stropu (WF51)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"hloubení jam\" 1725",
+      "MJ": "",
+      "qty_komplex": 1725.0,
+      "best_score": 0.071,
+      "best_new_popis": "Technický dozor investora × 4 měs"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"zemina z vrtů\" 427*pi*0,315^2",
+      "MJ": "",
+      "qty_komplex": 133.106,
+      "best_score": 0.107,
+      "best_new_popis": "Autorský dozor projektanta × 4 měs"
+    },
+    {
+      "code": "162751139",
+      "popis": "Příplatek k vodorovnému přemístění výkopku/sypaniny z horniny třídy těžitelnosti",
+      "MJ": "m3",
+      "qty_komplex": 7.0,
+      "best_score": 0.015,
+      "best_new_popis": "Malba podhledu disperzní 2. nátěr (CF20/F17)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "1858,106*10 'Přepočtené koeficientem množství",
+      "MJ": "",
+      "qty_komplex": 18581.06,
+      "best_score": 0.027,
+      "best_new_popis": "Omítka sádrová vnitřních ploch tl. 10 mm"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"nakládání zásypu na mezideponii\" 2956,354",
+      "MJ": "",
+      "qty_komplex": 2956.354,
+      "best_score": 0.03,
+      "best_new_popis": "Lepidlo na vinyl (F03)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"zemina z vrtů\" 427*pi*0,315^2",
+      "MJ": "",
+      "qty_komplex": 133.106,
+      "best_score": 0.107,
+      "best_new_popis": "Autorský dozor projektanta × 4 měs"
+    },
+    {
+      "code": "171201231",
+      "popis": "Poplatek za uložení zeminy a kamení na recyklační skládce (skládkovné) kód odpad",
+      "MJ": "t",
+      "qty_komplex": 9.0,
+      "best_score": 0.114,
+      "best_new_popis": "Lepidlo na vinyl (F03)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "(9011,86*1750/1000)*0,8",
+      "MJ": "",
+      "qty_komplex": 12616.604,
+      "best_score": 0.022,
+      "best_new_popis": "Kontralatě 30×50 mm rozteč 1000 mm"
+    },
+    {
+      "code": "174151101",
+      "popis": "Zásyp jam, šachet rýh nebo kolem objektů sypaninou se zhutněním",
+      "MJ": "m3",
+      "qty_komplex": 10.0,
+      "best_score": 0.04,
+      "best_new_popis": "Mezerové lišty kolem obložek D33"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"kolem zápor\" 1,11*3,25*12,78",
+      "MJ": "",
+      "qty_komplex": 46.104,
+      "best_score": 0.152,
+      "best_new_popis": "Mezerové lišty kolem obložek D33"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"svahování\" (1,00+5,24)*4,24/2*(6,99+5,15+8,29+3,12+2*2,00)",
+      "MJ": "",
+      "qty_komplex": 364.453,
+      "best_score": 0.021,
+      "best_new_popis": "UW + CW profily 50 mm (WF51 h=0.15 m)"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"svahování\" (1,14+4,38)*3,24/2*(22,00+2*2,00)",
+      "MJ": "",
+      "qty_komplex": 232.502,
+      "best_score": 0.144,
+      "best_new_popis": "Autorský dozor projektanta × 4 měs"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"svahování\" (1,22+4,47)*3,25/2*(16,76+8,37+2,00)",
+      "MJ": "",
+      "qty_komplex": 250.851,
+      "best_score": 0.15,
+      "best_new_popis": "Autorský dozor projektanta × 4 měs"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "Mezisoučet Objekt A",
+      "MJ": "",
+      "qty_komplex": 893.91,
+      "best_score": 0.114,
+      "best_new_popis": "Technický dozor investora × 4 měs"
+    },
+    {
+      "code": "ROZPOCET",
+      "popis": "\"kolem zápor\" 0,94*3,6*17,52",
+      "MJ": "",
+      "qty_komplex": 59.288,
+      "best_score": 0.171,
+      "best_new_popis": "Mezerové lišty kolem obložek D33"
+    }
+  ]
+}
