@@ -2,14 +2,15 @@
   "metadata": {
     "objekt": "D",
     "phase": "3 (a + b + c) — complete",
-    "items_count": 2075,
+    "items_count": 2277,
     "items_per_source": {
       "items_phase_3a_vnitrni.json": 1425,
       "items_phase_3b_vnejsi_a_suteren.json": 104,
       "items_phase_3c_sdk.json": 358,
       "items_phase_3c_truhl_zamec.json": 76,
       "items_phase_3c_detaily.json": 87,
-      "items_phase_3d_leseni_pomocne.json": 25
+      "items_phase_3d_leseni_pomocne.json": 25,
+      "items_phase_3e_osazeni_specialni_uklid_vrn.json": 202
     },
     "items_per_kapitola": {
       "HSV-611": {
@@ -25,9 +26,10 @@
         }
       },
       "PSV-784": {
-        "count": 360,
+        "count": 362,
         "totals": {
-          "m2": 10649.18
+          "m2": 10741.23,
+          "m": 60.0
         }
       },
       "HSV-612": {
@@ -37,11 +39,11 @@
         }
       },
       "PSV-771": {
-        "count": 165,
+        "count": 169,
         "totals": {
-          "m2": 607.81,
+          "m2": 617.81,
           "kg": 871.5,
-          "m": 250.33
+          "m": 326.33
         }
       },
       "PSV-776": {
@@ -105,10 +107,11 @@
         }
       },
       "PSV-764": {
-        "count": 33,
+        "count": 35,
         "totals": {
           "bm": 427.67,
-          "ks": 32.5
+          "ks": 32.5,
+          "m": 93.0
         }
       },
       "PSV-765": {
@@ -157,17 +160,20 @@
         }
       },
       "PSV-766": {
-        "count": 45,
+        "count": 76,
         "totals": {
-          "ks": 357.0
+          "ks": 357.0,
+          "m": 1089.2
         }
       },
       "PSV-767": {
-        "count": 31,
+        "count": 71,
         "totals": {
           "bm": 330.08,
-          "ks": 117.5,
-          "kg": 1152.0
+          "ks": 431.5,
+          "kg": 1152.0,
+          "sady": 1.0,
+          "kpl": 1.0
         }
       },
       "OP-detail": {
@@ -244,10 +250,11 @@
         }
       },
       "HSV-998": {
-        "count": 3,
+        "count": 5,
         "totals": {
-          "m": 176.03,
-          "m2": 7073.85
+          "m": 326.03,
+          "m2": 7073.85,
+          "ks": 200.0
         }
       },
       "PSV-925": {
@@ -258,6 +265,90 @@
           "kpl": 1.0,
           "m-měs": 800.0,
           "ks": 4.0
+        }
+      },
+      "HSV-642": {
+        "count": 84,
+        "totals": {
+          "ks": 514.0,
+          "m": 2172.0
+        }
+      },
+      "HSV-643": {
+        "count": 2,
+        "totals": {
+          "ks": 12.0
+        }
+      },
+      "PSV-768": {
+        "count": 11,
+        "totals": {
+          "ks": 73.0
+        }
+      },
+      "PSV-952": {
+        "count": 10,
+        "totals": {
+          "m2": 6672.44,
+          "ks": 16.0,
+          "m3": 8.0,
+          "h": 40.0
+        }
+      },
+      "HSV-622": {
+        "count": 2,
+        "totals": {
+          "m": 150.0,
+          "ks": 30.0
+        }
+      },
+      "HSV-962": {
+        "count": 1,
+        "totals": {
+          "ks": 30.0
+        }
+      },
+      "VRN-010": {
+        "count": 1,
+        "totals": {
+          "m2": 100.0
+        }
+      },
+      "VRN-011": {
+        "count": 1,
+        "totals": {
+          "kpl": 1.0
+        }
+      },
+      "VRN-014": {
+        "count": 2,
+        "totals": {
+          "měs": 4.0,
+          "kpl": 1.0
+        }
+      },
+      "VRN-016": {
+        "count": 2,
+        "totals": {
+          "h": 24.0
+        }
+      },
+      "VRN-017": {
+        "count": 3,
+        "totals": {
+          "h": 208.0
+        }
+      },
+      "VRN-026": {
+        "count": 1,
+        "totals": {
+          "%": 0.5
+        }
+      },
+      "VRN-027": {
+        "count": 1,
+        "totals": {
+          "%": 1.5
         }
       }
     },
@@ -52241,6 +52332,4542 @@
       "warnings": [
         "general_site_overhead — k dořešení s hlavním dodavatelem"
       ]
+    },
+    {
+      "item_id": "c8e624bc-a386-45d9-9675-b965712b7d99",
+      "kapitola": "HSV-642",
+      "popis": "Osazení okenního rámu W03",
+      "MJ": "ks",
+      "mnozstvi": 17,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "bec0e693-c472-46c7-af7c-cf4e2ef0f802",
+      "kapitola": "HSV-642",
+      "popis": "Kotvení W03 (turbo expanzní 6 ks/okno)",
+      "MJ": "ks",
+      "mnozstvi": 102,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "06777f7f-09e4-4647-83e2-6eca16fe79fc",
+      "kapitola": "HSV-642",
+      "popis": "PUR pěna připojovací spáry W03",
+      "MJ": "m",
+      "mnozstvi": 91.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2×(W+H)/1000",
+      "warnings": []
+    },
+    {
+      "item_id": "ba27d9a2-7725-41dd-8267-8c14166304fe",
+      "kapitola": "HSV-642",
+      "popis": "Komprimační páska připojovací spáry W03",
+      "MJ": "m",
+      "mnozstvi": 91.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ac2229b9-d7cb-43a5-af6f-d5ce2c440011",
+      "kapitola": "HSV-642",
+      "popis": "Spárování okenního rámu silikon vnější + akrylát vnitřní W03",
+      "MJ": "m",
+      "mnozstvi": 183.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "m × 2 strany",
+      "warnings": []
+    },
+    {
+      "item_id": "23580203-9cff-4346-8424-0aa8c214e854",
+      "kapitola": "HSV-642",
+      "popis": "Osazení okenního rámu W05",
+      "MJ": "ks",
+      "mnozstvi": 9,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "debae26d-deaa-4b92-926b-3a53f6f46dc3",
+      "kapitola": "HSV-642",
+      "popis": "Kotvení W05 (turbo expanzní 6 ks/okno)",
+      "MJ": "ks",
+      "mnozstvi": 54,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f14b68f9-cf97-4e5a-a3ef-d2a5f138ac52",
+      "kapitola": "HSV-642",
+      "popis": "PUR pěna připojovací spáry W05",
+      "MJ": "m",
+      "mnozstvi": 48.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2×(W+H)/1000",
+      "warnings": []
+    },
+    {
+      "item_id": "c00ec596-3352-4b5f-b5ec-a898b3043fe5",
+      "kapitola": "HSV-642",
+      "popis": "Komprimační páska připojovací spáry W05",
+      "MJ": "m",
+      "mnozstvi": 48.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "457d6c8e-f279-4d64-9b2a-89e30bb607d6",
+      "kapitola": "HSV-642",
+      "popis": "Spárování okenního rámu silikon vnější + akrylát vnitřní W05",
+      "MJ": "m",
+      "mnozstvi": 97.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "m × 2 strany",
+      "warnings": []
+    },
+    {
+      "item_id": "79b298c7-20af-4331-82dc-9d762a207b08",
+      "kapitola": "HSV-642",
+      "popis": "Osazení okenního rámu W04",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "aa676f7e-3174-40f5-bbdc-57009dd22451",
+      "kapitola": "HSV-642",
+      "popis": "Kotvení W04 (turbo expanzní 6 ks/okno)",
+      "MJ": "ks",
+      "mnozstvi": 24,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d23f6da0-d318-4635-a1b0-d3216a6042d6",
+      "kapitola": "HSV-642",
+      "popis": "PUR pěna připojovací spáry W04",
+      "MJ": "m",
+      "mnozstvi": 21.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2×(W+H)/1000",
+      "warnings": []
+    },
+    {
+      "item_id": "8ad3bb05-0cde-4d39-a5ac-bcd0460c95cb",
+      "kapitola": "HSV-642",
+      "popis": "Komprimační páska připojovací spáry W04",
+      "MJ": "m",
+      "mnozstvi": 21.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "01571e8d-02cf-4388-8121-b65daaac6f0c",
+      "kapitola": "HSV-642",
+      "popis": "Spárování okenního rámu silikon vnější + akrylát vnitřní W04",
+      "MJ": "m",
+      "mnozstvi": 43.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "m × 2 strany",
+      "warnings": []
+    },
+    {
+      "item_id": "82186c83-b68e-4156-afbc-0218abfe24e9",
+      "kapitola": "HSV-642",
+      "popis": "Osazení okenního rámu W01",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3a005fd2-48c5-4ad3-b185-b87e1d4dacf7",
+      "kapitola": "HSV-642",
+      "popis": "Kotvení W01 (turbo expanzní 6 ks/okno)",
+      "MJ": "ks",
+      "mnozstvi": 18,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "086a6d5a-3fa1-4d68-8e65-9e0f8e88593e",
+      "kapitola": "HSV-642",
+      "popis": "PUR pěna připojovací spáry W01",
+      "MJ": "m",
+      "mnozstvi": 16.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2×(W+H)/1000",
+      "warnings": []
+    },
+    {
+      "item_id": "27b4663a-bdcc-4936-a3df-51d5f517374d",
+      "kapitola": "HSV-642",
+      "popis": "Komprimační páska připojovací spáry W01",
+      "MJ": "m",
+      "mnozstvi": 16.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d0963ff4-972a-4600-ac59-2d0373fbb2da",
+      "kapitola": "HSV-642",
+      "popis": "Spárování okenního rámu silikon vnější + akrylát vnitřní W01",
+      "MJ": "m",
+      "mnozstvi": 32.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "m × 2 strany",
+      "warnings": []
+    },
+    {
+      "item_id": "fb0a00e2-6ba8-484b-bca5-a20aea943028",
+      "kapitola": "HSV-642",
+      "popis": "Osazení okenního rámu W83",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W83"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "fd171a57-1d29-494b-aaf1-dd0df4749ad8",
+      "kapitola": "HSV-642",
+      "popis": "Kotvení W83 (turbo expanzní 6 ks/okno)",
+      "MJ": "ks",
+      "mnozstvi": 12,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W83"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a2f6d814-9217-43f9-863e-215194247def",
+      "kapitola": "HSV-642",
+      "popis": "PUR pěna připojovací spáry W83",
+      "MJ": "m",
+      "mnozstvi": 10.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W83"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2×(W+H)/1000",
+      "warnings": []
+    },
+    {
+      "item_id": "c3a1ba5a-fad5-4c19-8cf4-912faf7a492f",
+      "kapitola": "HSV-642",
+      "popis": "Komprimační páska připojovací spáry W83",
+      "MJ": "m",
+      "mnozstvi": 10.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W83"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "716b490f-834c-4601-b6c4-f4f3e6c7687e",
+      "kapitola": "HSV-642",
+      "popis": "Spárování okenního rámu silikon vnější + akrylát vnitřní W83",
+      "MJ": "m",
+      "mnozstvi": 21.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "W_type": "W83"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "m × 2 strany",
+      "warnings": []
+    },
+    {
+      "item_id": "653d44fa-628a-4cbc-a8fb-30cdadeb6f22",
+      "kapitola": "PSV-766",
+      "popis": "Vnitřní parapet umělý kámen Technistone (30 mm)",
+      "MJ": "m",
+      "mnozstvi": 42.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "Technistone Crystal Solid",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "35 oken × 1.2 m průměrná šířka",
+      "warnings": []
+    },
+    {
+      "item_id": "42d17d78-d6bc-4ed2-b13a-efe5598079f5",
+      "kapitola": "PSV-766",
+      "popis": "Lepení parapetu PUR pěnou + komprimační páska",
+      "MJ": "m",
+      "mnozstvi": 42.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "df6e90f3-1daf-4a06-9387-86468a5c255e",
+      "kapitola": "PSV-766",
+      "popis": "Spárování boků parapetu silikonem (oba boky)",
+      "MJ": "m",
+      "mnozstvi": 14.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 × 200 mm hloubka boku per okno",
+      "warnings": []
+    },
+    {
+      "item_id": "78948456-74d7-4c6e-ae77-1be04cd54a2d",
+      "kapitola": "PSV-764",
+      "popis": "Vnější parapet pozinkovaný plech 0.7 mm s povlakem",
+      "MJ": "m",
+      "mnozstvi": 49.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "poplastovaný ocelový plech RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "(W + 200 mm přesah) per okno; NEW — not in Phase 3b",
+      "warnings": []
+    },
+    {
+      "item_id": "f3b9bbb4-d544-48c6-91b7-14d61557fa7f",
+      "kapitola": "HSV-642",
+      "popis": "Lemování střešního okna (manžety)",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "216a185d-0f9a-4826-8a00-8bdd4ed9c9dd",
+      "kapitola": "HSV-642",
+      "popis": "Difuzní límec střešního okna",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a14f86ae-79ad-40c5-a35f-d0157c639bc8",
+      "kapitola": "HSV-642",
+      "popis": "Parotěsná manžeta střešního okna vnitřní",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3461e6ac-0229-4494-b258-28c0d62073c9",
+      "kapitola": "PSV-764",
+      "popis": "Krycí lemování plechové střešního okna",
+      "MJ": "m",
+      "mnozstvi": 44.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "~4 m perimeter per střešní okno",
+      "warnings": []
+    },
+    {
+      "item_id": "76a10446-e905-4b70-9e5b-10c60006ac5c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně ocelová D04",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "34361c3c-5de9-40fa-97e3-1e3540baaaf3",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D04",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7f07e469-368a-42ec-99bc-ed9ac0188fa3",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D04",
+      "MJ": "m",
+      "mnozstvi": 234.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3c19e6bb-0dc3-48b6-9857-7ad365a01c1f",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D04",
+      "MJ": "m",
+      "mnozstvi": 234.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "982be3cd-4e49-4552-a09b-beea3711d0a1",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D04",
+      "MJ": "m",
+      "mnozstvi": 163.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "b7bb1d63-81e2-4655-8027-9cc3693942a3",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D04",
+      "MJ": "m",
+      "mnozstvi": 163.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "20f94d09-6d9f-4ac1-9618-bf7b4b728fb7",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D04",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "7f635e95-a3d9-4bd3-a79b-856e92291b11",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D04",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "36b7cc52-a800-45f5-affd-baf8804f5f9b",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně ocelová D34",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8303d5da-a0d8-419d-8fdd-1f75227e0217",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D34",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "32cfcac3-902a-456c-8272-5331e739186f",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D34",
+      "MJ": "m",
+      "mnozstvi": 132.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "07e877e4-8697-4ef6-bb5d-5b12f2250bbd",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D34",
+      "MJ": "m",
+      "mnozstvi": 132.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "62b6f53a-233a-4495-97dc-e0cab3a1de09",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D34",
+      "MJ": "m",
+      "mnozstvi": 92.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "e18a13aa-f358-4c4b-ae98-b6cb3e488f09",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D34",
+      "MJ": "m",
+      "mnozstvi": 92.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6c43cd5d-92ff-4100-a15e-3cd2a9d17701",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D34",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "8faa3f85-6699-4ec4-9040-55131d59ba73",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D34",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ddbdeff2-fecc-4d0c-a976-adbe0fbccc8f",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D31",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e0f4a98c-fdb3-4d8b-83a5-8889f59efb2c",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D31",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "81c9ad57-d154-4c78-b90a-2bbc961af2cd",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D31",
+      "MJ": "m",
+      "mnozstvi": 96.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a2212c1f-499a-456e-aa1f-a21011ea56d1",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D31",
+      "MJ": "m",
+      "mnozstvi": 96.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f646879c-a601-4690-9749-e6ea93c8e511",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D31",
+      "MJ": "m",
+      "mnozstvi": 67.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "1e4a2dde-4007-4ab2-8da9-9c4bd1f813e8",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D31",
+      "MJ": "m",
+      "mnozstvi": 67.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6510d45a-74d0-4419-b293-805f15004ed3",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D31",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "ce6c8f15-6abe-4068-b1ff-c489a29707d0",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D31",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c8a0f8de-6707-4d4e-a863-94cdc2a401ae",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D21",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5cce6fa2-17e5-4bda-b09f-ef64bdda8a74",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D21",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "40c38427-8f32-4d2f-8382-3533d0e38873",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D21",
+      "MJ": "m",
+      "mnozstvi": 66.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "082d4bcd-bd5a-4b11-859b-d1fefc08eca8",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D21",
+      "MJ": "m",
+      "mnozstvi": 66.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "504997ea-2596-4087-91a5-69887ab33c4f",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D21",
+      "MJ": "m",
+      "mnozstvi": 46.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "5f9c5308-3b6b-4e97-a145-380138fb901f",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D21",
+      "MJ": "m",
+      "mnozstvi": 46.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "880b4fcf-2f63-4d50-89ee-65650cac2fd5",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D21",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "b4aa5b55-7e2c-442c-b0d7-b2ab67b04211",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D21",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2a4369c6-3f9f-4bd8-b704-91123f4f0dff",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D02",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "b2305c01-6fa4-42f2-a3d0-c9a9e6d2decc",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D02",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a41785a8-0c00-4118-a378-079969e5e1ce",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D02",
+      "MJ": "m",
+      "mnozstvi": 60.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a844dcd5-bb29-423a-9127-f3e854262022",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D02",
+      "MJ": "m",
+      "mnozstvi": 60.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "cceb10ce-fa40-403a-8d86-53e76bc89e3b",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D02",
+      "MJ": "m",
+      "mnozstvi": 42.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "795eae58-263a-4b38-bce9-7eca7552faa1",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D02",
+      "MJ": "m",
+      "mnozstvi": 42.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "25a450e9-16f0-4995-ae1b-25cf20957f4c",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D02",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "70ca4432-b8f0-41b4-8d61-3452513eea35",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D02",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "1b35ca0e-a515-4c8e-8f81-f4640fc78d07",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D33",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "eeeb3c73-f9c0-4de3-b113-df24f8428fd4",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D33",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "27c425e3-454b-49c5-ba02-8ad37cbf513a",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D33",
+      "MJ": "m",
+      "mnozstvi": 30.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7561c489-1f11-46f7-a62f-aa1f91b488a7",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D33",
+      "MJ": "m",
+      "mnozstvi": 30.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "66c31572-f3d0-40e9-9e37-6f547594ccd7",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D33",
+      "MJ": "m",
+      "mnozstvi": 21.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "52fcc933-e8db-49ff-be44-2b180a28b885",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D33",
+      "MJ": "m",
+      "mnozstvi": 21.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "1f09048b-763c-4aa9-8fe6-200665d7c717",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D33",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "a9a8733d-3707-4def-8729-053b5e335919",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D33",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "0643564d-b27c-4997-967e-d4fc2a4398cb",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D03",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6732a23e-20a0-49b7-9ba0-fa3e0fe7e298",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D03",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "bae57c7e-01f9-4cc7-a515-aeef2f35061b",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D03",
+      "MJ": "m",
+      "mnozstvi": 24.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c599d382-10c7-4e1b-a0dd-b6e475c971c0",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D03",
+      "MJ": "m",
+      "mnozstvi": 24.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "0401d570-69eb-42d6-bd4e-a4208a74a498",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D03",
+      "MJ": "m",
+      "mnozstvi": 16.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "02033d92-36dc-4469-bc43-f954e6abac8a",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D03",
+      "MJ": "m",
+      "mnozstvi": 16.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e6485f37-7e42-4a3f-9346-b722c77a3037",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D03",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "4079495d-ac97-488d-a5f4-2458b03f275b",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D03",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6ea3719a-e0d7-4d86-99f2-6cd70a71ba2c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D01",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c21d6177-3fad-482e-9ed3-21301e237202",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D01",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7653b61e-a0c4-4f4a-b3e1-3d863ea5ff5a",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D01",
+      "MJ": "m",
+      "mnozstvi": 18.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d12e8259-74a1-4a7f-865b-49608055550b",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D01",
+      "MJ": "m",
+      "mnozstvi": 18.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "602edd37-1c29-463e-872a-ad42a5834e40",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D01",
+      "MJ": "m",
+      "mnozstvi": 12.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "52e93150-f90c-48f2-94ae-6b1126ff9be6",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D01",
+      "MJ": "m",
+      "mnozstvi": 12.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8c6f49a3-dfe4-4914-95c3-0a8f5868da58",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D01",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "46bd920a-cf04-4e92-9f03-50b0d688b041",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D01",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "9d82304b-8375-41c3-8e18-8e91d2d3245b",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D35",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "eb4c57bc-8042-4864-b04b-63a6b3cbadbe",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D35",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d03e25a1-9622-4e03-bd41-76c768f70612",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D35",
+      "MJ": "m",
+      "mnozstvi": 18.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c8cc3177-9ddd-40d8-a7fd-eda95fc68f04",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D35",
+      "MJ": "m",
+      "mnozstvi": 18.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "cffd0fd4-929c-4d69-b9ea-dac1e917c3c3",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D35",
+      "MJ": "m",
+      "mnozstvi": 12.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "7f3e5b18-a862-475e-be25-727f09ae219e",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D35",
+      "MJ": "m",
+      "mnozstvi": 12.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3301f0f4-a987-4098-9068-ed2255072acd",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D35",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "6c4efaa2-e033-41b5-99d5-6e70da533833",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D35",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5d73e311-c695-41e3-9c5d-a132a305bb64",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D05",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2ecc8507-c30a-415b-a6a3-2d8a080b36d1",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D05",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c2466e12-37f3-4361-adc6-b9166a99dd66",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D05",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2edeb24c-6676-462c-b7e2-1514b104355f",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D05",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "b755cea9-b1fa-4b8c-bc36-beea9a170d5d",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D05",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "d55fe517-d484-4e7e-890d-ee1b5abda8f3",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D05",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ea685b08-0822-4c71-a367-bb1be74e3d10",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D05",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "34cf37b8-3707-4c15-a891-e3d9a79636c6",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D05",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "61b7c3bf-58d9-473f-a9ce-cb665f66ec81",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D10",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5b27bfa0-19fc-4f91-a420-27c176fa856a",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D10",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ffc74643-96d5-4e0a-a595-82dcceae770b",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D10",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ba1ccb22-f80b-445f-85f2-9f83674537ff",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D10",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ea7d3575-1f69-4289-86da-b96037dd9dee",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D10",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "d8e6885f-afee-49ea-bd4d-b9f1a24f66ae",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D10",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a3de32b1-1bad-4e80-aadd-fd43e1593a14",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D10",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "1081856f-bc59-4a69-b018-b5e087505843",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D10",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ab7125d2-f705-4040-bb9e-1c38b85106da",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D20",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "cf0898b6-faa3-4ee1-9682-3ea2430ec02d",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D20",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "744bdbe5-768c-4583-98b8-2ee2ee585af0",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D20",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "856aa02c-548e-4de1-8b57-89e31bf6b7c8",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D20",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "764198eb-93eb-4b13-9bcf-910948830532",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D20",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "f8a5d19f-4bde-4f46-9129-36b926770fcc",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D20",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "4465987c-5da6-41d3-98a5-e45a828f082b",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D20",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "9a2e40e7-b08c-4b56-9797-2c99073131db",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D20",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7a3ba1e6-12f8-4ab8-81ac-7f71086555a2",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D11",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "66795f52-4c36-47e0-ae8c-98bfb27e7bcd",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D11",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "4cf3cc63-5029-4409-bd69-18d4d0a30b0d",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D11",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2a1ceb28-b8d2-45b3-9306-daaab742d7e0",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D11",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "4763dedd-497c-4655-8827-b611316b90c7",
+      "kapitola": "HSV-643",
+      "popis": "Dodatečné kotvení vstupních dveří D11 (4 ks ankerov)",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "26a57d6e-f049-43ff-bbe2-92adf8a5b8dc",
+      "kapitola": "HSV-643",
+      "popis": "Rektifikační šrouby vstupních dveří D11",
+      "MJ": "ks",
+      "mnozstvi": 8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c1c82751-2eda-4fe0-9002-bff872e3b6a3",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D11",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "ad9e7ad9-01aa-43b9-9c93-33562cdf8ddc",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D11",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "53064c13-9260-4238-a5d3-8f2076e8f6db",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D11",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "1fdaf478-7f4e-469d-96e2-80f998e0f5e5",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D11",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6ffab1fe-b3f0-4bad-9467-ed4d581805c5",
+      "kapitola": "PSV-767",
+      "popis": "Cylinder bezpečnostní 5. třída D11",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "např. EVVA AirKey nebo MUL-T-LOCK",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "220efc3a-51c3-46ef-a90c-4c45111d533b",
+      "kapitola": "PSV-767",
+      "popis": "5 klíčů sady D11",
+      "MJ": "sady",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c98de9cd-8711-4f82-9d5d-02a86679cf1e",
+      "kapitola": "PSV-767",
+      "popis": "Pant pojistka bezpečnostní D11",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "3 panty per dveře",
+      "warnings": []
+    },
+    {
+      "item_id": "ae977350-014e-454c-b931-a3fbd1a66bd1",
+      "kapitola": "HSV-642",
+      "popis": "Osazení zárubně dřevěná D42",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2c314df1-df17-4cef-8602-38a2efc75a27",
+      "kapitola": "HSV-642",
+      "popis": "Plombrování + vyrovnání zárubně D42",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "07e3f953-1f7c-4bc8-91f7-f1b82f4601ab",
+      "kapitola": "HSV-642",
+      "popis": "Zazdění zárubně po obvodu D42",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5d88ed08-8a7c-4ef1-abdd-bd200ad6540e",
+      "kapitola": "HSV-642",
+      "popis": "Vyplnění spáry zárubeň ↔ stěna PUR pěnou D42",
+      "MJ": "m",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "fad84acf-f9d1-4b17-a2fb-3732e9c6a874",
+      "kapitola": "PSV-766",
+      "popis": "Mezerové lišty kolem obložek D42",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 strany × výška dveří",
+      "warnings": []
+    },
+    {
+      "item_id": "7e34ece1-224a-469d-8f8f-ace101805483",
+      "kapitola": "PSV-766",
+      "popis": "Spárování obložek silikonem/akrylem D42",
+      "MJ": "m",
+      "mnozstvi": 4.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "1cf15626-0a91-4087-a598-85730173a02f",
+      "kapitola": "PSV-767",
+      "popis": "Klika + zámek D42",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
+      "warnings": []
+    },
+    {
+      "item_id": "2d7148ab-3a26-447b-a02b-4b100579cdb3",
+      "kapitola": "PSV-767",
+      "popis": "Dveřní zarážka D42",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "262ace5c-5182-4a6a-87f2-9ecca962d7f4",
+      "kapitola": "PSV-768",
+      "popis": "Garážová sekční vrata 5700×2100 — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "např. Hörmann SPU 67 thermo",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "z TZ: 1 ks pro D (vstup do garáže)",
+      "warnings": []
+    },
+    {
+      "item_id": "e9f46d5b-d10e-4c0f-adf2-95f06ba1e8dc",
+      "kapitola": "PSV-768",
+      "popis": "Garážová vrata — elektrický pohon + ovládání",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "např. Hörmann SupraMatic E",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "bf7470fd-4b0e-45ca-be5c-0924e6caf9d6",
+      "kapitola": "PSV-768",
+      "popis": "Garážová vrata — osazení + kotvení",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "605cc951-f9e9-4f72-9741-0d9434a5841b",
+      "kapitola": "PSV-768",
+      "popis": "Protipožární vrata EI60 — dodávka (společný 1.PP, mezi A-B-C-D)",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "např. Hörmann T30 EI60",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "společný suterén — k upřesnění s sousedy",
+      "warnings": []
+    },
+    {
+      "item_id": "592f6f82-169a-4dcc-bcd1-764df03cf02f",
+      "kapitola": "PSV-768",
+      "popis": "Protipožární vrata — osazení + zárubeň",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "65169a2f-f651-47a1-86a9-04b1f448c65e",
+      "kapitola": "PSV-768",
+      "popis": "Protipožární vrata — samouzavírací mechanismus + doraz",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "209e8d31-afb2-4b26-b755-8233243a85b7",
+      "kapitola": "PSV-768",
+      "popis": "Tabulka označení 'POŽÁRNÍ DVEŘE'",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "81c74db3-8cac-45f1-88a6-151dd08e69cd",
+      "kapitola": "PSV-768",
+      "popis": "Revizní dvířka EI30 — dodávka (z OP## D-share)",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "VZT prostupy + vodoinstalace; již v OP-detail items, zde dodávka EI cert. variant",
+      "warnings": []
+    },
+    {
+      "item_id": "2318440a-96b2-4601-804a-bbbcbb38849a",
+      "kapitola": "PSV-768",
+      "popis": "Revizní dvířka EI30 — osazení + rám",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d35c6138-a96e-42d0-9587-de221d3c9a9e",
+      "kapitola": "PSV-768",
+      "popis": "Revizní dvířka EI30 — tmelení + finishing rámu",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "41d4e785-f1b8-477c-a453-85582daeb725",
+      "kapitola": "PSV-952",
+      "popis": "Hrubý úklid po stavbě před povrchovými úpravami",
+      "MJ": "m2",
+      "mnozstvi": 1056.16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "celá plocha 1× detailní hrubý úklid",
+      "warnings": []
+    },
+    {
+      "item_id": "25163350-b00d-41b3-bbe0-3e2bcbb78e95",
+      "kapitola": "PSV-952",
+      "popis": "Průběžný úklid během prací × 4 měsíce",
+      "MJ": "m2",
+      "mnozstvi": 2112.32,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "0.5 frekvence/měsíc průměr",
+      "warnings": []
+    },
+    {
+      "item_id": "834d19ea-4f3a-40d6-ab29-139a0badf353",
+      "kapitola": "PSV-952",
+      "popis": "Závěrečný úklid před předáním — celková plocha",
+      "MJ": "m2",
+      "mnozstvi": 1056.16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "detailní úklid před předáním",
+      "warnings": []
+    },
+    {
+      "item_id": "eac6acec-6160-4cf7-904b-56084210d2b6",
+      "kapitola": "PSV-952",
+      "popis": "Mytí oken (vnitřní + vnější × oba povrchy)",
+      "MJ": "m2",
+      "mnozstvi": 126.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "35 oken × 1.8 m² × 2 strany",
+      "warnings": []
+    },
+    {
+      "item_id": "1170cec4-f4dc-4e95-adf2-6973eda0386d",
+      "kapitola": "PSV-952",
+      "popis": "Vyleštění dlažby + obkladů",
+      "MJ": "m2",
+      "mnozstvi": 1911,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "dlažba PSV-771 (608 m²) + obklad PSV-781 (1303 m²)",
+      "warnings": []
+    },
+    {
+      "item_id": "37aa46e8-40ae-44ec-b8d5-50ae9349f24c",
+      "kapitola": "PSV-952",
+      "popis": "Mytí WC + sanity",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "11 bytů × 1 koupelna + společné WC",
+      "warnings": []
+    },
+    {
+      "item_id": "ae717434-10cc-4e18-ad9d-6896206d595c",
+      "kapitola": "PSV-952",
+      "popis": "Odpad odvoz po úklidu (kontejnery)",
+      "MJ": "m3",
+      "mnozstvi": 8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "12a6bf92-f8fc-436f-aecb-9b66e78ca99b",
+      "kapitola": "PSV-952",
+      "popis": "Odstranění samolepicích pásek + ochranných fólií (parapety, obklady, dveře)",
+      "MJ": "h",
+      "mnozstvi": 40,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "bf5e8e3f-dc65-482b-b35b-fca97fa4dd52",
+      "kapitola": "PSV-952",
+      "popis": "Čištění fasády po stavbě (ze země)",
+      "MJ": "m2",
+      "mnozstvi": 250,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "parter ~3 m výšky, dosažitelné ze země",
+      "warnings": []
+    },
+    {
+      "item_id": "8cc6d5a2-23e0-49cd-b0cc-917bff6d40bc",
+      "kapitola": "PSV-952",
+      "popis": "Strojní úklid garáže před předáním",
+      "MJ": "m2",
+      "mnozstvi": 160.8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "60 % 1.PP = parking area",
+      "warnings": []
+    },
+    {
+      "item_id": "214a71e1-50ee-4146-8b4a-07301604a42e",
+      "kapitola": "HSV-998",
+      "popis": "Vyboření drážek pro elektroinstalace v stěnách",
+      "MJ": "m",
+      "mnozstvi": 150,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_be_clarified_with_collegues",
+      "confidence": 0.6,
+      "poznamka": "50 % bytových místností × 5 m drážek; clarify with elektrikář",
+      "warnings": [
+        "Border-zone — vyjasnit s collegues (elektro/VZT/ZTI)"
+      ]
+    },
+    {
+      "item_id": "3d600ede-9d0d-407e-920c-42b333ab133d",
+      "kapitola": "HSV-622",
+      "popis": "Zazdění drážek po elektroinstalaci + finishing",
+      "MJ": "m",
+      "mnozstvi": 150,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "subcontractor_required",
+      "confidence": 0.85,
+      "poznamka": "po dokončení elektrikáře, před omítkou/malbou",
+      "warnings": [
+        "Předpokládá hotové elektro před omítkou"
+      ]
+    },
+    {
+      "item_id": "e9425942-93e7-4cd2-8e33-27e4f384c745",
+      "kapitola": "HSV-962",
+      "popis": "Vrtání prostupů pro potrubí ZTI/VZT (cca 30 prostupů)",
+      "MJ": "ks",
+      "mnozstvi": 30,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_be_clarified_with_collegues",
+      "confidence": 0.5,
+      "poznamka": "počet prostupů z Tabulky prostupů (TBD); clarify",
+      "warnings": [
+        "Border-zone — vyjasnit s collegues (elektro/VZT/ZTI)"
+      ]
+    },
+    {
+      "item_id": "71820121-b90e-43a6-bc0c-82b73d5053b8",
+      "kapitola": "HSV-622",
+      "popis": "Zazdění prostupů po instalacích ZTI/VZT",
+      "MJ": "ks",
+      "mnozstvi": 30,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "subcontractor_required",
+      "confidence": 0.85,
+      "poznamka": "po hotových instalacích, před finishing",
+      "warnings": []
+    },
+    {
+      "item_id": "be177f94-043c-46e4-a806-a54801bd6a0e",
+      "kapitola": "PSV-768",
+      "popis": "Osazení revizních dvířek OP18/OP24/OP26/OP27 — vyřezání + osazení rámu",
+      "MJ": "ks",
+      "mnozstvi": 50,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "subcontractor_required",
+      "confidence": 0.85,
+      "poznamka": "OP## items z Tabulky ostatních prvků; interface mezi VZT a finishing",
+      "warnings": []
+    },
+    {
+      "item_id": "3390a79b-9fc0-4f62-9840-02c42c4cc063",
+      "kapitola": "PSV-784",
+      "popis": "Lokální oprava povrchů po instalacích — touch-up omítka + malba",
+      "MJ": "m2",
+      "mnozstvi": 92.05,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "subcontractor_required",
+      "confidence": 0.85,
+      "poznamka": "5 % wall plaster F05 area; po instalacích",
+      "warnings": []
+    },
+    {
+      "item_id": "72d9c344-2187-46a2-aa9f-f442c6025e73",
+      "kapitola": "HSV-998",
+      "popis": "Příprava stěn po elektrikářích (vyrovnání + plombrování po krabicích)",
+      "MJ": "ks",
+      "mnozstvi": 200,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "subcontractor_required",
+      "confidence": 0.85,
+      "poznamka": "200 elektro-krabic odhadem",
+      "warnings": []
+    },
+    {
+      "item_id": "0db932b6-2b08-4f0f-8a23-0d36dc4324c4",
+      "kapitola": "PSV-767",
+      "popis": "Záchytný systém střecha — jistící body ABS Sicherheit",
+      "MJ": "ks",
+      "mnozstvi": 6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "ABS Sicherheit ABS-Lock SYS",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "6 bodů pro střechu D objektu (pro budoucí údržbu)",
+      "warnings": []
+    },
+    {
+      "item_id": "efed5c5c-9ab0-4de1-a4b6-39746af98bf3",
+      "kapitola": "PSV-767",
+      "popis": "Záchytný systém — osazení do nosné konstrukce",
+      "MJ": "ks",
+      "mnozstvi": 6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "849c483f-327b-49ab-8cd4-d75237ad5930",
+      "kapitola": "PSV-767",
+      "popis": "Záchytný systém — certifikát + revizní zpráva",
+      "MJ": "kpl",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "ČSN EN 795 typ A",
+      "warnings": []
+    },
+    {
+      "item_id": "e3f02b9a-6c0c-47d5-8c44-cd70190c98e1",
+      "kapitola": "PSV-767",
+      "popis": "Poštovní schránky (sada pro 11 bytů)",
+      "MJ": "ks",
+      "mnozstvi": 12,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "např. nerez Brabantia nebo dle architekta",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "11 bytů + 1 společná",
+      "warnings": []
+    },
+    {
+      "item_id": "24d0a0f4-bf32-4820-95e4-c20203bf56e2",
+      "kapitola": "PSV-767",
+      "popis": "Osazení poštovních schránek do stěny + číslování",
+      "MJ": "ks",
+      "mnozstvi": 12,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f5c6e3ee-ac3b-47db-8dac-412ebfe48dc3",
+      "kapitola": "PSV-767",
+      "popis": "Tabulky orientační podlažní (číslo + map)",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "4 podlaží: 1.PP, 1.NP, 2.NP, 3.NP",
+      "warnings": []
+    },
+    {
+      "item_id": "542c8ba3-b68c-49b2-af4a-9fd2ec9b9b02",
+      "kapitola": "PSV-767",
+      "popis": "Číslování dveří bytů",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "bb03833d-452f-4732-8aff-6c51e775b231",
+      "kapitola": "PSV-767",
+      "popis": "Označení nouzových východů + směrovky",
+      "MJ": "ks",
+      "mnozstvi": 8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f6c3d40a-78dc-4c6a-9889-03bbbc1cbcb7",
+      "kapitola": "PSV-767",
+      "popis": "Označení technických místností",
+      "MJ": "ks",
+      "mnozstvi": 15,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "rozvodny, výtah strojovna, sklepní sekce, atd.",
+      "warnings": []
+    },
+    {
+      "item_id": "ce03c516-0478-4612-8ee2-fad758660ad2",
+      "kapitola": "PSV-771",
+      "popis": "Čisticí rohož venkovní před vchodem",
+      "MJ": "m2",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "např. Geggus Aluclean",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "2 m² × 2 vchody",
+      "warnings": []
+    },
+    {
+      "item_id": "365130f4-8af3-4d60-b65a-2a5a5c2c5b3f",
+      "kapitola": "PSV-771",
+      "popis": "Čisticí rohož v zádveří D.1.S.02",
+      "MJ": "m2",
+      "mnozstvi": 6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "zádveří plocha",
+      "warnings": []
+    },
+    {
+      "item_id": "dd1065a2-80a2-4ac3-b3d2-8d097ec2869e",
+      "kapitola": "PSV-771",
+      "popis": "Rám pro rohož + úprava podlahy (zapuštěné)",
+      "MJ": "m",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "obvod rohoží 2× zádveří + 2× venkovní",
+      "warnings": []
+    },
+    {
+      "item_id": "a2239c7c-aae4-480d-b5e5-a9b4e6b5c1b5",
+      "kapitola": "PSV-784",
+      "popis": "Označení schodišťových stupňů kontrastním pruhem (1. + poslední stupeň)",
+      "MJ": "m",
+      "mnozstvi": 60,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "ČSN EN 81 / 1.+ poslední stupeň každého ramene × ~5 m × 6 ramen",
+      "warnings": []
+    },
+    {
+      "item_id": "72d4e6fe-d70e-4635-bbd4-9e925ec88b99",
+      "kapitola": "PSV-771",
+      "popis": "Protiskluzová úprava 1. + posledního stupně (R10 lišta)",
+      "MJ": "m",
+      "mnozstvi": 60,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f202f119-ea38-4fed-93a3-ce6fc18f10b9",
+      "kapitola": "VRN-010",
+      "popis": "Zpevnění příjezdových ploch dočasné (informativní)",
+      "MJ": "m2",
+      "mnozstvi": 100,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.7,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "cb371e41-a046-4e89-bc74-00e9d532d44e",
+      "kapitola": "VRN-011",
+      "popis": "Zařízení staveniště — REFERENCE na Phase 3d PSV-925",
+      "MJ": "kpl",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.6,
+      "poznamka": "overlap s Phase 3d PSV-925 5 items; tady jen reference, NE duplicate items",
+      "warnings": [
+        "VRN — k negociaci s investorem; reference na Phase 3d kde overlap s PSV-925"
+      ]
+    },
+    {
+      "item_id": "cfcaa355-2612-4c55-9826-d64dc8d22e13",
+      "kapitola": "VRN-014",
+      "popis": "Koordinátor BOZP × 4 měsíce",
+      "MJ": "měs",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7d567a19-b612-4d3a-b815-5e101649dc47",
+      "kapitola": "VRN-014",
+      "popis": "BOZP vybavení staveniště (cedule, výstražné pásky, hasicí přístroje)",
+      "MJ": "kpl",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.85,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "fae241ff-f3c8-4c88-9302-2b821ca3852c",
+      "kapitola": "VRN-016",
+      "popis": "Vytyčení dokončovacích prací (omezené)",
+      "MJ": "h",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.7,
+      "poznamka": "hrubá stavba je hotová, vytyčení omezené",
+      "warnings": []
+    },
+    {
+      "item_id": "f99f9dbe-9144-4a19-ae81-574d98bcc3d7",
+      "kapitola": "VRN-016",
+      "popis": "Kontrolní geodetická měření při předání",
+      "MJ": "h",
+      "mnozstvi": 8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.8,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5a3bfe4e-6712-4e3d-92c7-ae8f52eaa4ef",
+      "kapitola": "VRN-017",
+      "popis": "Autorský dozor projektanta × 4 měs",
+      "MJ": "h",
+      "mnozstvi": 64,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.8,
+      "poznamka": "4 h/týden × 4 týdny × harmonogram",
+      "warnings": []
+    },
+    {
+      "item_id": "6b4305d4-8db9-42aa-bb2a-a0bf7419d6a6",
+      "kapitola": "VRN-017",
+      "popis": "Technický dozor investora × 4 měs",
+      "MJ": "h",
+      "mnozstvi": 128,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.6,
+      "poznamka": "8 h/týden — pokud zákazník platí; jinak NE",
+      "warnings": [
+        "VRN — k negociaci s investorem; reference na Phase 3d kde overlap s PSV-925"
+      ]
+    },
+    {
+      "item_id": "6c757594-5c62-414c-91f6-69473c334f8d",
+      "kapitola": "VRN-017",
+      "popis": "Koordinace s BOZP",
+      "MJ": "h",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.7,
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e1da00cb-3b7a-427c-8a2a-b90e21a0e957",
+      "kapitola": "VRN-026",
+      "popis": "Pojištění odpovědnosti zhotovitele (% z ceny)",
+      "MJ": "%",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.8,
+      "poznamka": "0.5 % z celkové ceny díla",
+      "warnings": []
+    },
+    {
+      "item_id": "eaf218ed-8d38-4c33-a7e8-c6df2c29a1a1",
+      "kapitola": "VRN-027",
+      "popis": "Záruční rezerva na opravy (% z ceny)",
+      "MJ": "%",
+      "mnozstvi": 1.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "VRN",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "status": "to_be_negotiated_with_investor",
+      "confidence": 0.7,
+      "poznamka": "1.5 % z ceny — záruka 24 měsíců typicky",
+      "warnings": []
     }
   ]
 }

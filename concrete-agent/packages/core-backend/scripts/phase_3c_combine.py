@@ -13,6 +13,7 @@ SRCS = [
     OUT_DIR / "items_phase_3c_truhl_zamec.json",
     OUT_DIR / "items_phase_3c_detaily.json",
     OUT_DIR / "items_phase_3d_leseni_pomocne.json",
+    OUT_DIR / "items_phase_3e_osazeni_specialni_uklid_vrn.json",
 ]
 DS = OUT_DIR / "objekt_D_geometric_dataset.json"
 OUT = OUT_DIR / "items_objekt_D_complete.json"
