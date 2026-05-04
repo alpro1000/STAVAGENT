@@ -2,7 +2,7 @@
   "metadata": {
     "objekt": "D",
     "phase": "3 (a + b + c) — complete",
-    "items_count": 2277,
+    "items_count": 2332,
     "items_per_source": {
       "items_phase_3a_vnitrni.json": 1425,
       "items_phase_3b_vnejsi_a_suteren.json": 104,
@@ -368,7 +368,8 @@
       }
     ],
     "next_phase": "4 — ÚRS lookup batch",
-    "all_items_have_urs_code_null": true
+    "all_items_have_urs_code_null": true,
+    "phase_6_1_applied": true
   },
   "items": [
     {
@@ -39753,7 +39754,7 @@
       "kapitola": "PSV-713",
       "popis": "Talířové hmoždinky",
       "MJ": "ks",
-      "mnozstvi": 4719.54,
+      "mnozstvi": 4720,
       "misto": {
         "objekt": "D",
         "podlazi": "fasáda",
@@ -39769,7 +39770,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~6 ks/m² (větrná zóna)",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 4719.54 → 4720"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -39986,7 +39989,7 @@
       "kapitola": "PSV-713",
       "popis": "Hmoždinky soklové",
       "MJ": "ks",
-      "mnozstvi": 242.94,
+      "mnozstvi": 243,
       "misto": {
         "objekt": "D",
         "podlazi": "fasáda",
@@ -40002,7 +40005,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 242.94 → 243"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -40598,7 +40603,7 @@
       "kapitola": "PSV-764",
       "popis": "TP04: Žlabový kotlík",
       "MJ": "ks",
-      "mnozstvi": 9.0,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "fasáda",
@@ -40612,24 +40617,26 @@
       "vyrobce_ref": "RAL 7016",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=36.0 ks",
       "warnings": [
-        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF.",
+        "BUG_FIX_2: dxf_spatial_count TP: 9.0 → 10"
       ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.37 → old code ROZPOCET, popis_sim 0.34, vol_prox 0.00",
+      "audit_note": "Match score 0.37 → old code ROZPOCET, popis_sim 0.34, vol_prox 0.00; phase_6.1: dxf_spatial_count TP: 9.0 → 10",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 629.0,
-      "audit_vol_diff_pct": 94.3
+      "audit_vol_diff_pct": 94.3,
+      "data_source": "dxf_count"
     },
     {
       "item_id": "3dccf990-a969-46c8-8bfc-548f79650008",
       "kapitola": "PSV-764",
       "popis": "TP12: Průchodka a oplechování VZT",
       "MJ": "ks",
-      "mnozstvi": 20.5,
+      "mnozstvi": 21,
       "misto": {
         "objekt": "D",
         "podlazi": "fasáda",
@@ -40647,7 +40654,8 @@
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=82.0 ks",
       "warnings": [
-        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF.",
+        "BUG_FIX_1: ks item rounded up 20.5 → 21"
       ],
       "urs_status": "OPRAVENO_POPIS",
       "audit_note": "Match score 0.41 → old code ROZPOCET, popis_sim 0.39, vol_prox 0.11",
@@ -40660,7 +40668,7 @@
       "kapitola": "PSV-764",
       "popis": "TP13: Lemování do střechy pro komín 225/160",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 2.0,
       "misto": {
         "objekt": "D",
         "podlazi": "fasáda",
@@ -40674,24 +40682,26 @@
       "vyrobce_ref": "RAL3016",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=1.0 ks",
       "warnings": [
-        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF.",
+        "BUG_FIX_2: dxf_spatial_count TP: 0.25 → 2"
       ],
       "urs_status": "OPRAVENO_OBJEM",
-      "audit_note": "Match score 0.50 → old code ROZPOCET, popis_sim 0.60, vol_prox 0.00",
+      "audit_note": "Match score 0.50 → old code ROZPOCET, popis_sim 0.60, vol_prox 0.00; phase_6.1: dxf_spatial_count TP: 0.25 → 2",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 631.0,
-      "audit_vol_diff_pct": 99.8
+      "audit_vol_diff_pct": 99.8,
+      "data_source": "dxf_count"
     },
     {
       "item_id": "f5876522-5d6f-45cf-8cf4-abf0f4104825",
       "kapitola": "PSV-764",
       "popis": "TP14: Oplechování kruhových střešních prostupů do 0.3m2",
       "MJ": "ks",
-      "mnozstvi": 1.75,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "fasáda",
@@ -40705,17 +40715,19 @@
       "vyrobce_ref": "RAL3016",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=7.0 ks",
       "warnings": [
-        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF.",
+        "BUG_FIX_2: dxf_spatial_count TP: 1.75 → 3"
       ],
       "urs_status": "OPRAVENO_OBJEM",
-      "audit_note": "Match score 0.49 → old code ROZPOCET, popis_sim 0.58, vol_prox 0.00",
+      "audit_note": "Match score 0.49 → old code ROZPOCET, popis_sim 0.58, vol_prox 0.00; phase_6.1: dxf_spatial_count TP: 1.75 → 3",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 632.0,
-      "audit_vol_diff_pct": 98.9
+      "audit_vol_diff_pct": 98.9,
+      "data_source": "dxf_count"
     },
     {
       "item_id": "6f0ab875-1041-44e5-a3c4-8da28c8f5a31",
@@ -41985,7 +41997,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 14.947,
+      "mnozstvi": 15,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42003,7 +42015,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 14.947 → 15"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42093,7 +42107,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 33.318,
+      "mnozstvi": 34,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42111,7 +42125,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 33.318 → 34"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42204,7 +42220,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 16.089,
+      "mnozstvi": 17,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42222,7 +42238,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 16.089 → 17"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42312,7 +42330,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 8.94,
+      "mnozstvi": 9,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42330,7 +42348,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 8.94 → 9"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42420,7 +42440,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 9.522,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42438,7 +42458,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.522 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42528,7 +42550,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 6.497,
+      "mnozstvi": 7,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42546,7 +42568,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 6.497 → 7"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42636,7 +42660,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 9.522,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42654,7 +42678,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.522 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42744,7 +42770,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 6.497,
+      "mnozstvi": 7,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42762,7 +42788,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 6.497 → 7"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42855,7 +42883,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 21.09,
+      "mnozstvi": 22,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42873,7 +42901,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 21.09 → 22"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -42963,7 +42993,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 2.272,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -42981,7 +43011,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.272 → 3"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43071,7 +43103,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 9.902,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -43089,7 +43121,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.902 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43179,7 +43213,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 20.904,
+      "mnozstvi": 21,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43197,7 +43231,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 20.904 → 21"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43287,7 +43323,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 2.174,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43305,7 +43341,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.174 → 3"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43395,7 +43433,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 10.357,
+      "mnozstvi": 11,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43413,7 +43451,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 10.357 → 11"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43503,7 +43543,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 9.555,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43521,7 +43561,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.555 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43611,7 +43653,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 6.429,
+      "mnozstvi": 7,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43629,7 +43671,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 6.429 → 7"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43719,7 +43763,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 9.547,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43737,7 +43781,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.547 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43827,7 +43873,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 6.429,
+      "mnozstvi": 7,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43845,7 +43891,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 6.429 → 7"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -43935,7 +43983,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 21.102,
+      "mnozstvi": 22,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43953,7 +44001,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 21.102 → 22"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44043,7 +44093,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 2.195,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -44061,7 +44111,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.195 → 3"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44151,7 +44203,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 10.079,
+      "mnozstvi": 11,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -44169,7 +44221,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 10.079 → 11"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44259,7 +44313,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 26.85,
+      "mnozstvi": 27,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -44277,7 +44331,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 26.85 → 27"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44367,7 +44423,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 11.509,
+      "mnozstvi": 12,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -44385,7 +44441,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 11.509 → 12"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44475,7 +44533,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 3.165,
+      "mnozstvi": 4,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -44493,7 +44551,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 3.165 → 4"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44583,7 +44643,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 10.877,
+      "mnozstvi": 11,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -44601,7 +44661,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 10.877 → 11"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44691,7 +44753,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 9.558,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -44709,7 +44771,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.558 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44799,7 +44863,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 6.756,
+      "mnozstvi": 7,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -44817,7 +44881,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 6.756 → 7"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -44907,7 +44973,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 5.233,
+      "mnozstvi": 6,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -44925,7 +44991,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 5.233 → 6"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -45015,7 +45083,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 5.37,
+      "mnozstvi": 6,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -45033,7 +45101,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 5.37 → 6"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -45123,7 +45193,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 11.904,
+      "mnozstvi": 12,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -45141,7 +45211,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 11.904 → 12"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -45231,7 +45303,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 3.138,
+      "mnozstvi": 4,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -45249,7 +45321,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 3.138 → 4"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -45339,7 +45413,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 10.864,
+      "mnozstvi": 11,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -45357,7 +45431,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 10.864 → 11"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -45447,7 +45523,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF21)",
       "MJ": "ks",
-      "mnozstvi": 9.428,
+      "mnozstvi": 10,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -45465,7 +45541,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 9.428 → 10"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -45555,7 +45633,7 @@
       "kapitola": "PSV-763.1",
       "popis": "Závěsy posuvné podhled (CF20)",
       "MJ": "ks",
-      "mnozstvi": 26.85,
+      "mnozstvi": 27,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -45573,7 +45651,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "~1.5 ks/m²",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 26.85 → 27"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -51928,7 +52008,7 @@
       "kapitola": "PSV-763.3",
       "popis": "Závěsy posuvné podkroví",
       "MJ": "ks",
-      "mnozstvi": 292.5,
+      "mnozstvi": 293,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -51943,7 +52023,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 292.5 → 293"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -52048,7 +52130,7 @@
       "kapitola": "PSV-766",
       "popis": "Dveře D04 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52060,19 +52142,22 @@
       "vyrobce_ref": "S.A.20",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 39",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "014383bf-dc86-41c7-a1e1-233ba5755fef",
       "kapitola": "PSV-766",
       "popis": "Dveře D04 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52084,22 +52169,25 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.33 → old code ROZPOCET, popis_sim 0.04, vol_prox 0.72",
+      "audit_note": "Match score 0.33 → old code ROZPOCET, popis_sim 0.04, vol_prox 0.72; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 294.0,
-      "audit_vol_diff_pct": 46.9
+      "audit_vol_diff_pct": 46.9,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "8fb0c5d3-44fb-4fd3-a9c7-fd7a3c4cfd3b",
       "kapitola": "PSV-766",
       "popis": "Dveře D04 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52111,19 +52199,22 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "f2bf29f6-942c-46d2-8aff-fd4e872da3c2",
       "kapitola": "PSV-766",
       "popis": "Dveře D34 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52135,19 +52226,22 @@
       "vyrobce_ref": "A.2.4.04",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 22",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "7d67a51a-ff6e-45ee-9742-e05df2ff94ff",
       "kapitola": "PSV-766",
       "popis": "Dveře D34 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52159,22 +52253,25 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.30 → old code ROZPOCET, popis_sim 0.07, vol_prox 0.46",
+      "audit_note": "Match score 0.30 → old code ROZPOCET, popis_sim 0.07, vol_prox 0.46; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 304.0,
-      "audit_vol_diff_pct": 71.1
+      "audit_vol_diff_pct": 71.1,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "23a3c712-22ba-4a87-a040-ad6cd86086aa",
       "kapitola": "PSV-766",
       "popis": "Dveře D34 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52186,19 +52283,22 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "5f4417e4-1ff6-4e41-8fbf-2e37329b4410",
       "kapitola": "PSV-766",
       "popis": "Dveře D31 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52210,19 +52310,22 @@
       "vyrobce_ref": "A.2.4.05",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 16",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "ed1881eb-1d6d-4189-9713-5ccb4926a65f",
       "kapitola": "PSV-766",
       "popis": "Dveře D31 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52234,22 +52337,25 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.28 → old code ROZPOCET, popis_sim 0.07, vol_prox 0.33",
+      "audit_note": "Match score 0.28 → old code ROZPOCET, popis_sim 0.07, vol_prox 0.33; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 303.0,
-      "audit_vol_diff_pct": 78.9
+      "audit_vol_diff_pct": 78.9,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "85f59eed-4efd-4b67-ab66-1310dfaac5e8",
       "kapitola": "PSV-766",
       "popis": "Dveře D31 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52261,12 +52367,15 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "edac9d87-5366-4be6-8428-bffa061ecf59",
@@ -52345,7 +52454,7 @@
       "kapitola": "PSV-766",
       "popis": "Dveře D02 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52357,19 +52466,22 @@
       "vyrobce_ref": "S.A.23",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 10",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "d20e325d-397c-4f34-b57f-cc27b9595381",
       "kapitola": "PSV-766",
       "popis": "Dveře D02 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52381,19 +52493,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "4e70f33e-1c49-495b-b65d-54c70d16b4e7",
       "kapitola": "PSV-766",
       "popis": "Dveře D02 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52405,19 +52520,22 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "e5544c63-72b8-4e70-92f3-b3b40d474e3a",
       "kapitola": "PSV-766",
       "popis": "Dveře D33 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52429,19 +52547,22 @@
       "vyrobce_ref": "A.2.4.01",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 5",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "1153e903-34fc-46ee-b9f1-926078148e1b",
       "kapitola": "PSV-766",
       "popis": "Dveře D33 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52453,19 +52574,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "d63e3cb4-6f83-43a4-9c19-521248bf74a3",
       "kapitola": "PSV-766",
       "popis": "Dveře D33 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52477,19 +52601,22 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "2458361a-ff6c-4cac-bdcd-8f3761b1876d",
       "kapitola": "PSV-766",
       "popis": "Dveře D03 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52501,19 +52628,22 @@
       "vyrobce_ref": "S.A.21",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 4",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "13d8a1fe-56ab-4f8c-816e-b9c8fe94e749",
       "kapitola": "PSV-766",
       "popis": "Dveře D03 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52525,19 +52655,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "e9c66296-923c-4ed6-b90a-e2d2993ede4d",
       "kapitola": "PSV-766",
       "popis": "Dveře D03 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52549,19 +52682,22 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "33a2df74-f3a6-4380-8c5c-e5e2042dddc2",
       "kapitola": "PSV-766",
       "popis": "Dveře D01 — dodávka (rám + křídlo + obložky)",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52573,19 +52709,22 @@
       "vyrobce_ref": "S.A.02",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "DXF count = 3",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "a9328c7e-b748-4f19-9cbe-57596fa33f46",
       "kapitola": "PSV-766",
       "popis": "Dveře D01 — kotvení + spárování",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52597,19 +52736,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "b31738f2-0597-44ce-9656-cc5a6f0113bc",
       "kapitola": "PSV-766",
       "popis": "Dveře D01 — klika + zámek",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -52621,12 +52763,15 @@
       "vyrobce_ref": "standard nebo dle TZ",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 1.0,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "39ca0f8a-9c74-4044-b79d-57a0976d2a75",
@@ -53559,7 +53704,7 @@
       "kapitola": "PSV-767",
       "popis": "LP60: Skleněné zábradlí francouzských oken — dodávka",
       "MJ": "ks",
-      "mnozstvi": 5.0,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53573,19 +53718,22 @@
       "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=20.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LP: 5.0 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: dxf_spatial_count LP: 5.0 → 10",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "7754f610-44f3-4d96-9f62-125c43cf15d0",
       "kapitola": "PSV-767",
       "popis": "LP60: Skleněné zábradlí francouzských oken — montáž",
       "MJ": "ks",
-      "mnozstvi": 5.0,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53599,19 +53747,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LP: 5.0 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: dxf_spatial_count LP: 5.0 → 10",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "3a4a12a7-21f4-4dd8-8c0a-2972289ce518",
       "kapitola": "PSV-767",
       "popis": "LP61: Skleněné zábradlí francouzských oken — dodávka",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53628,7 +53779,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53637,7 +53790,7 @@
       "kapitola": "PSV-767",
       "popis": "LP61: Skleněné zábradlí francouzských oken — montáž",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53654,7 +53807,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53663,7 +53818,7 @@
       "kapitola": "PSV-767",
       "popis": "LP62: Skleněné zábradlí francouzských oken — dodávka",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53680,7 +53835,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53689,7 +53846,7 @@
       "kapitola": "PSV-767",
       "popis": "LP62: Skleněné zábradlí francouzských oken — montáž",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53706,7 +53863,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53715,7 +53874,7 @@
       "kapitola": "PSV-767",
       "popis": "LP63: Skleněné zábradlí francouzských oken — dodávka",
       "MJ": "ks",
-      "mnozstvi": 1.5,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53729,19 +53888,22 @@
       "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=6.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LP: 1.5 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: dxf_spatial_count LP: 1.5 → 4",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "6818aca7-125d-4355-8420-28e801cda883",
       "kapitola": "PSV-767",
       "popis": "LP63: Skleněné zábradlí francouzských oken — montáž",
       "MJ": "ks",
-      "mnozstvi": 1.5,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53755,19 +53917,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LP: 1.5 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: dxf_spatial_count LP: 1.5 → 4",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "a631cbd7-b43e-45d3-934b-93ca066621f1",
       "kapitola": "PSV-767",
       "popis": "LP64: Skleněné zábradlí francouzských oken — dodávka",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53784,7 +53949,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53793,7 +53960,7 @@
       "kapitola": "PSV-767",
       "popis": "LP64: Skleněné zábradlí francouzských oken — montáž",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53810,7 +53977,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53819,7 +53988,7 @@
       "kapitola": "PSV-767",
       "popis": "LP65: Skleněné zábradlí francouzských oken — dodávka",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53836,7 +54005,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -53845,7 +54016,7 @@
       "kapitola": "PSV-767",
       "popis": "LP65: Skleněné zábradlí francouzských oken — montáž",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -53862,7 +54033,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
     },
@@ -54045,7 +54218,7 @@
       "kapitola": "OP-detail",
       "popis": "OP05: Přenosný hasicí přístroj",
       "MJ": "ks",
-      "mnozstvi": 6.25,
+      "mnozstvi": 7,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54061,7 +54234,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=25.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 6.25 → 7"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54095,7 +54270,7 @@
       "kapitola": "OP-detail",
       "popis": "OP07: Přenosný hasicí přístroj",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54111,7 +54286,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54120,7 +54297,7 @@
       "kapitola": "OP-detail",
       "popis": "OP08: Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 11.25,
+      "mnozstvi": 15.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54133,19 +54310,22 @@
       "vyrobce_ref": "obklad",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=45.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 11.25 → 15"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 11.25 → 15",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "68092f1d-d5a6-4697-abf2-284d520b6369",
       "kapitola": "OP-detail",
       "popis": "OP09: Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 1.25,
+      "mnozstvi": 2,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54161,7 +54341,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 1.25 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54170,7 +54352,7 @@
       "kapitola": "OP-detail",
       "popis": "OP10: Revizní dvířka VOD 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 7.75,
+      "mnozstvi": 11.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54183,12 +54365,15 @@
       "vyrobce_ref": "obklad",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=31.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 7.75 → 11"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 7.75 → 11",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "f35da959-268e-4827-a08c-1ab72a3a86c1",
@@ -54220,7 +54405,7 @@
       "kapitola": "OP-detail",
       "popis": "OP101: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54236,7 +54421,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54245,7 +54432,7 @@
       "kapitola": "OP-detail",
       "popis": "OP102: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54261,7 +54448,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54270,7 +54459,7 @@
       "kapitola": "OP-detail",
       "popis": "OP103: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54286,7 +54475,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54320,7 +54511,7 @@
       "kapitola": "OP-detail",
       "popis": "OP12: Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 2.75,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54336,7 +54527,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=11.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.75 → 3"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54345,7 +54538,7 @@
       "kapitola": "OP-detail",
       "popis": "OP13: Revizní dvířka KAN 200 x 300",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54361,7 +54554,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54370,7 +54565,7 @@
       "kapitola": "OP-detail",
       "popis": "OP14: Revizní dvířka KAN 200 x 300",
       "MJ": "ks",
-      "mnozstvi": 1.25,
+      "mnozstvi": 2,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54386,7 +54581,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 1.25 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54395,7 +54592,7 @@
       "kapitola": "OP-detail",
       "popis": "OP15: Revizní dvířka VOD 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 4.5,
+      "mnozstvi": 5,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54411,7 +54608,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=18.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 4.5 → 5"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54420,7 +54619,7 @@
       "kapitola": "OP-detail",
       "popis": "OP16: Revizní dvířka VOD 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54436,7 +54635,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54445,7 +54646,7 @@
       "kapitola": "OP-detail",
       "popis": "OP17: Revizní dvířka VOD 200 x 300",
       "MJ": "ks",
-      "mnozstvi": 2.25,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54461,7 +54662,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.25 → 3"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54470,7 +54673,7 @@
       "kapitola": "OP-detail",
       "popis": "OP18: Revizní dvířka do podhledu 600 x 600",
       "MJ": "ks",
-      "mnozstvi": 15.5,
+      "mnozstvi": 21.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54483,19 +54686,22 @@
       "vyrobce_ref": "SDK",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=62.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 15.5 → 21"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 15.5 → 21",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "71505d46-5ec5-4197-bb31-f5768d9735a3",
       "kapitola": "OP-detail",
       "popis": "OP19: Revizní dvířka fasáda 200 x 200",
       "MJ": "ks",
-      "mnozstvi": 3.75,
+      "mnozstvi": 6.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54508,12 +54714,15 @@
       "vyrobce_ref": "nerez s kartáčovaným povrchem",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=15.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 3.75 → 6"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 3.75 → 6",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "622d8c64-de35-4f54-9806-997e11662adb",
@@ -54570,7 +54779,7 @@
       "kapitola": "OP-detail",
       "popis": "OP22: Zinkovaný rošt",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54586,7 +54795,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54595,7 +54806,7 @@
       "kapitola": "OP-detail",
       "popis": "OP23: Zinkovaný rošt",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54611,7 +54822,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54645,7 +54858,7 @@
       "kapitola": "OP-detail",
       "popis": "OP25: Vanová revizní dvířka 300 x 300",
       "MJ": "ks",
-      "mnozstvi": 8.5,
+      "mnozstvi": 11.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54658,12 +54871,15 @@
       "vyrobce_ref": "omítka",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=34.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 8.5 → 11"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 8.5 → 11",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "0221862e-1a9e-4a54-b804-f0b918cf1017",
@@ -54695,7 +54911,7 @@
       "kapitola": "OP-detail",
       "popis": "OP27: Revizní dvířka 600 x 600",
       "MJ": "ks",
-      "mnozstvi": 4.0,
+      "mnozstvi": 2.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54708,19 +54924,22 @@
       "vyrobce_ref": "omítka",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=16.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 4.0 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 4.0 → 2",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "4edc77b3-800b-4e84-a6a0-94dab6dbc45e",
       "kapitola": "OP-detail",
       "popis": "OP30: Stavební pouzdro posuvných dveří",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54736,7 +54955,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54745,7 +54966,7 @@
       "kapitola": "OP-detail",
       "popis": "OP31: Stavební pouzdro posuvných dveří",
       "MJ": "ks",
-      "mnozstvi": 2.25,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54758,19 +54979,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 2.25 → 3"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 2.25 → 3",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "05164e2c-4950-46b2-babd-321837c7fa64",
       "kapitola": "OP-detail",
       "popis": "OP32: Stavební pouzdro posuvných dveří",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54786,7 +55010,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54795,7 +55021,7 @@
       "kapitola": "OP-detail",
       "popis": "OP42: Pryžové rozpínací těsnění",
       "MJ": "ks",
-      "mnozstvi": 1.25,
+      "mnozstvi": 2,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54811,7 +55037,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 1.25 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54820,7 +55048,7 @@
       "kapitola": "OP-detail",
       "popis": "OP43: Pryžové rozpínací těsnění",
       "MJ": "ks",
-      "mnozstvi": 0.75,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54836,7 +55064,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=3.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.75 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54845,7 +55075,7 @@
       "kapitola": "OP-detail",
       "popis": "OP44: Pryžové rozpínací těsnění",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54861,7 +55091,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54870,7 +55102,7 @@
       "kapitola": "OP-detail",
       "popis": "OP45: Pryžové rozpínací těsnění",
       "MJ": "ks",
-      "mnozstvi": 3.75,
+      "mnozstvi": 4,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54886,7 +55118,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=15.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 3.75 → 4"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54895,7 +55129,7 @@
       "kapitola": "OP-detail",
       "popis": "OP47: Pryžové rozpínací těsnění",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54911,7 +55145,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54920,7 +55156,7 @@
       "kapitola": "OP-detail",
       "popis": "OP50: Průchodka, oplechování a keramický komplet Tondach bobrovka ",
       "MJ": "ks",
-      "mnozstvi": 4.75,
+      "mnozstvi": 2.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54933,12 +55169,15 @@
       "vyrobce_ref": "PVC",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=19.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 4.75 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 4.75 → 2",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "b8023bdc-e906-44ba-9923-7295e216c24d",
@@ -54970,7 +55209,7 @@
       "kapitola": "OP-detail",
       "popis": "OP52: Chrlič",
       "MJ": "ks",
-      "mnozstvi": 0.75,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -54986,7 +55225,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=3.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.75 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -54995,7 +55236,7 @@
       "kapitola": "OP-detail",
       "popis": "OP53: Bezpečnostní přepad",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55008,19 +55249,22 @@
       "vyrobce_ref": "not found",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 0.25 → 1",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "e456be54-1524-4760-8122-1117742073db",
       "kapitola": "OP-detail",
       "popis": "OP80: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55036,7 +55280,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55045,7 +55291,7 @@
       "kapitola": "OP-detail",
       "popis": "OP81: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55061,7 +55307,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55070,7 +55318,7 @@
       "kapitola": "OP-detail",
       "popis": "OP82: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55086,7 +55334,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55095,7 +55345,7 @@
       "kapitola": "OP-detail",
       "popis": "OP83: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55111,7 +55361,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55120,7 +55372,7 @@
       "kapitola": "OP-detail",
       "popis": "OP84: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.75,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55136,7 +55388,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=3.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.75 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55170,7 +55424,7 @@
       "kapitola": "OP-detail",
       "popis": "OP86: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 1.5,
+      "mnozstvi": 2,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55186,7 +55440,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=6.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 1.5 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55195,7 +55451,7 @@
       "kapitola": "OP-detail",
       "popis": "OP87: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 3.75,
+      "mnozstvi": 6.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55208,19 +55464,22 @@
       "vyrobce_ref": "RAL7016",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=15.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 3.75 → 6"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 3.75 → 6",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "2aad880f-6e4e-4ea6-a9b6-c75eac20b4ab",
       "kapitola": "OP-detail",
       "popis": "OP88: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55236,7 +55495,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55245,7 +55506,7 @@
       "kapitola": "OP-detail",
       "popis": "OP89: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 2.25,
+      "mnozstvi": 12.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55258,19 +55519,22 @@
       "vyrobce_ref": "RAL7016",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 2.25 → 12"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 2.25 → 12",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "c0b657cb-6772-48fa-bd96-261bb9589f7b",
       "kapitola": "OP-detail",
       "popis": "OP90: Žaluzie venkovní horizontální",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55283,19 +55547,22 @@
       "vyrobce_ref": "RAL7016",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 0.25 → 1",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "f6a788b2-9614-42ec-b164-3f373c03e997",
       "kapitola": "OP-detail",
       "popis": "OP91: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55311,7 +55578,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55320,7 +55589,7 @@
       "kapitola": "OP-detail",
       "popis": "OP92: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55336,7 +55605,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55345,7 +55616,7 @@
       "kapitola": "OP-detail",
       "popis": "OP93: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55361,7 +55632,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55370,7 +55643,7 @@
       "kapitola": "OP-detail",
       "popis": "OP94: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55386,7 +55659,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55420,7 +55695,7 @@
       "kapitola": "OP-detail",
       "popis": "OP96: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 5.25,
+      "mnozstvi": 6,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55436,7 +55711,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=21.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 5.25 → 6"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55445,7 +55722,7 @@
       "kapitola": "OP-detail",
       "popis": "OP97: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55461,7 +55738,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55470,7 +55749,7 @@
       "kapitola": "OP-detail",
       "popis": "OP98: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 2.75,
+      "mnozstvi": 7.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55483,19 +55762,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=11.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count OP: 2.75 → 7"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count OP: 2.75 → 7",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "1f9b4b9c-2895-47c1-a9bb-ec4fb4acf342",
       "kapitola": "OP-detail",
       "popis": "OP99: Žaluziový kastlík pro venkovní horizontální žaluzie",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55511,7 +55793,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.5 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55520,7 +55804,7 @@
       "kapitola": "LI-detail",
       "popis": "LI01: Porotherm KP11,5",
       "MJ": "ks",
-      "mnozstvi": 25.5,
+      "mnozstvi": 19.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55533,19 +55817,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=102.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 25.5 → 19"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 25.5 → 19",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "1e38362e-928f-4995-8802-16dbb614765b",
       "kapitola": "LI-detail",
       "popis": "LI02: Porotherm KP11,5",
       "MJ": "ks",
-      "mnozstvi": 28.75,
+      "mnozstvi": 30.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55558,19 +55845,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=115.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 28.75 → 30"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 28.75 → 30",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "0a1afe48-c678-40a2-be57-12905ba3fa80",
       "kapitola": "LI-detail",
       "popis": "LI03: Porotherm KP11,5",
       "MJ": "ks",
-      "mnozstvi": 7.75,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55583,19 +55873,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=31.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 7.75 → 10"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 7.75 → 10",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "c1439099-fa09-44f9-8e09-1598d116251e",
       "kapitola": "LI-detail",
       "popis": "LI04: Porotherm KP11,5",
       "MJ": "ks",
-      "mnozstvi": 3.0,
+      "mnozstvi": 5.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55608,19 +55901,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=12.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 3.0 → 5"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 3.0 → 5",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "63eb4c75-cb25-474d-8eca-acf6f721a362",
       "kapitola": "LI-detail",
       "popis": "LI05: Porotherm KP11,5",
       "MJ": "ks",
-      "mnozstvi": 1.25,
+      "mnozstvi": 2,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55636,7 +55932,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 1.25 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55645,7 +55943,7 @@
       "kapitola": "LI-detail",
       "popis": "LI06: Porotherm KP11,5",
       "MJ": "ks",
-      "mnozstvi": 0.25,
+      "mnozstvi": 1,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55661,7 +55959,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 0.25 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55670,7 +55970,7 @@
       "kapitola": "LI-detail",
       "popis": "LI11: Porotherm KP7",
       "MJ": "ks",
-      "mnozstvi": 24.75,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55683,19 +55983,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=99.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 24.75 → 10"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 24.75 → 10",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "e23ec3ab-1596-4411-ae6e-a92e60e28c7c",
       "kapitola": "LI-detail",
       "popis": "LI12: Porotherm KP7",
       "MJ": "ks",
-      "mnozstvi": 45.0,
+      "mnozstvi": 20.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55708,19 +56011,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=180.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 45.0 → 20"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 45.0 → 20",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "e2c78265-5a51-4202-bd62-3ab13536d953",
       "kapitola": "LI-detail",
       "popis": "LI14: Porotherm KP7",
       "MJ": "ks",
-      "mnozstvi": 2.25,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55736,7 +56042,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.25 → 3"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55745,7 +56053,7 @@
       "kapitola": "LI-detail",
       "popis": "LI16: Porotherm KP7",
       "MJ": "ks",
-      "mnozstvi": 5.0,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55758,19 +56066,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=20.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 5.0 → 1"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 5.0 → 1",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "22aae698-f369-4140-b0bf-1eebbf243a69",
       "kapitola": "LI-detail",
       "popis": "LI17: Porotherm KP7",
       "MJ": "ks",
-      "mnozstvi": 2.75,
+      "mnozstvi": 3,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55786,7 +56097,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=11.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_1: ks item rounded up 2.75 → 3"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
@@ -55795,7 +56108,7 @@
       "kapitola": "LI-detail",
       "popis": "LI22: Porotherm KP Vario UNI",
       "MJ": "ks",
-      "mnozstvi": 12.75,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55808,19 +56121,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=51.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 12.75 → 16"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 12.75 → 16",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "77426950-c7af-43f5-9a77-c4580b216fe7",
       "kapitola": "LI-detail",
       "popis": "LI23: Porotherm KP Vario UNI",
       "MJ": "ks",
-      "mnozstvi": 0.5,
+      "mnozstvi": 2.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55833,19 +56149,22 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 0.5 → 2"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 0.5 → 2",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "5f17daef-f2a6-48d7-bdc3-42ee0b14a578",
       "kapitola": "LI-detail",
       "popis": "LI29: Porotherm KP Vario UNI",
       "MJ": "ks",
-      "mnozstvi": 4.75,
+      "mnozstvi": 8.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -55858,12 +56177,15 @@
       "vyrobce_ref": "",
       "urs_code": null,
       "urs_description": null,
-      "confidence": 0.85,
+      "confidence": 0.95,
       "status": "to_audit",
       "poznamka": "komplex × 0.25 D-share; tabulka_qty=19.0 ks",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: dxf_spatial_count LI: 4.75 → 8"
+      ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
+      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV; phase_6.1: dxf_spatial_count LI: 4.75 → 8",
+      "data_source": "dxf_count"
     },
     {
       "item_id": "871f28d6-4491-4d68-98bc-ceaad8e75635",
@@ -57531,7 +57853,7 @@
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně ocelová D04",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57545,21 +57867,24 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.28 → old code ROZPOCET, popis_sim 0.05, vol_prox 0.38",
+      "audit_note": "Match score 0.28 → old code ROZPOCET, popis_sim 0.05, vol_prox 0.38; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 658.0,
-      "audit_vol_diff_pct": 76.3
+      "audit_vol_diff_pct": 76.3,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "34361c3c-5de9-40fa-97e3-1e3540baaaf3",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D04",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57573,14 +57898,17 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.36 → old code ROZPOCET, popis_sim 0.07, vol_prox 0.85",
+      "audit_note": "Match score 0.36 → old code ROZPOCET, popis_sim 0.07, vol_prox 0.85; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
       "audit_old_code": "ROZPOCET",
       "audit_old_qty_komplex": 220.0,
-      "audit_vol_diff_pct": 29.1
+      "audit_vol_diff_pct": 29.1,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "7f07e469-368a-42ec-99bc-ed9ac0188fa3",
@@ -57687,7 +58015,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D04",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57701,18 +58029,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "7f635e95-a3d9-4bd3-a79b-856e92291b11",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D04",
       "MJ": "ks",
-      "mnozstvi": 39,
+      "mnozstvi": 35.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57726,18 +58057,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 39 → 35"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 39 → 35",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "36b7cc52-a800-45f5-affd-baf8804f5f9b",
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně ocelová D34",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57751,18 +58085,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "8303d5da-a0d8-419d-8fdd-1f75227e0217",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D34",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57776,11 +58113,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "32cfcac3-902a-456c-8272-5331e739186f",
@@ -57887,7 +58227,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D34",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57901,18 +58241,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "8faa3f85-6699-4ec4-9040-55131d59ba73",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D34",
       "MJ": "ks",
-      "mnozstvi": 22,
+      "mnozstvi": 16.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57926,18 +58269,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 22 → 16"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 22 → 16",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "ddbdeff2-fecc-4d0c-a976-adbe0fbccc8f",
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně dřevěná D31",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57951,21 +58297,24 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.30 → old code R-9532411, popis_sim 0.05, vol_prox 0.48",
+      "audit_note": "Match score 0.30 → old code R-9532411, popis_sim 0.05, vol_prox 0.48; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
       "audit_old_code": "R-9532411",
       "audit_old_qty_komplex": 210.0,
-      "audit_vol_diff_pct": 69.5
+      "audit_vol_diff_pct": 69.5,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "e0f4a98c-fdb3-4d8b-83a5-8889f59efb2c",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D31",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -57979,11 +58328,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "81c9ad57-d154-4c78-b90a-2bbc961af2cd",
@@ -58090,7 +58442,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D31",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58104,18 +58456,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "ce6c8f15-6abe-4068-b1ff-c489a29707d0",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D31",
       "MJ": "ks",
-      "mnozstvi": 16,
+      "mnozstvi": 17.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58129,11 +58484,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 16 → 17"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 16 → 17",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "c8a0f8de-6707-4d4e-a863-94cdc2a401ae",
@@ -58343,7 +58701,7 @@
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně dřevěná D02",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58357,21 +58715,24 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "OPRAVENO_POPIS",
-      "audit_note": "Match score 0.28 → old code 8800000, popis_sim 0.09, vol_prox 0.27",
+      "audit_note": "Match score 0.28 → old code 8800000, popis_sim 0.09, vol_prox 0.27; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
       "audit_old_code": "8800000",
       "audit_old_qty_komplex": 216.0,
-      "audit_vol_diff_pct": 81.5
+      "audit_vol_diff_pct": 81.5,
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "b2305c01-6fa4-42f2-a3d0-c9a9e6d2decc",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D02",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58385,11 +58746,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "a41785a8-0c00-4118-a378-079969e5e1ce",
@@ -58496,7 +58860,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D02",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58510,18 +58874,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "70ca4432-b8f0-41b4-8d61-3452513eea35",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D02",
       "MJ": "ks",
-      "mnozstvi": 10,
+      "mnozstvi": 4.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58535,18 +58902,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 10 → 4"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 10 → 4",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "1b35ca0e-a515-4c8e-8f81-f4640fc78d07",
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně dřevěná D33",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58560,18 +58930,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "eeeb3c73-f9c0-4de3-b113-df24f8428fd4",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D33",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58585,11 +58958,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "27c425e3-454b-49c5-ba02-8ad37cbf513a",
@@ -58696,7 +59072,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D33",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58710,18 +59086,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "a9a8733d-3707-4def-8729-053b5e335919",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D33",
       "MJ": "ks",
-      "mnozstvi": 5,
+      "mnozstvi": 10.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58735,18 +59114,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 5 → 10"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 5 → 10",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "0643564d-b27c-4997-967e-d4fc2a4398cb",
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně dřevěná D03",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58760,18 +59142,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "6732a23e-20a0-49b7-9ba0-fa3e0fe7e298",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D03",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58785,11 +59170,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "bae57c7e-01f9-4cc7-a515-aeef2f35061b",
@@ -58896,7 +59284,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D03",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58910,18 +59298,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "4079495d-ac97-488d-a5f4-2458b03f275b",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D03",
       "MJ": "ks",
-      "mnozstvi": 4,
+      "mnozstvi": 3.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58935,18 +59326,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 4 → 3"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 4 → 3",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "6ea3719a-e0d7-4d86-99f2-6cd70a71ba2c",
       "kapitola": "HSV-642",
       "popis": "Osazení zárubně dřevěná D01",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58960,18 +59354,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "c21d6177-3fad-482e-9ed3-21301e237202",
       "kapitola": "HSV-642",
       "popis": "Plombrování + vyrovnání zárubně D01",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -58985,11 +59382,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "7653b61e-a0c4-4f4a-b3e1-3d863ea5ff5a",
@@ -59096,7 +59496,7 @@
       "kapitola": "PSV-767",
       "popis": "Klika + zámek D01",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -59110,18 +59510,21 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "standardní rozetová klika; bezpečnostní pro D11 entry",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "46bd920a-cf04-4e92-9f03-50b0d688b041",
       "kapitola": "PSV-767",
       "popis": "Dveřní zarážka D01",
       "MJ": "ks",
-      "mnozstvi": 3,
+      "mnozstvi": 1.0,
       "misto": {
         "objekt": "D",
         "podlazi": "ALL",
@@ -59135,11 +59538,14 @@
       "urs_description": null,
       "category": "subcontractor_required",
       "status": "to_audit",
-      "confidence": 0.85,
+      "confidence": 1.0,
       "poznamka": "",
-      "warnings": [],
+      "warnings": [
+        "BUG_FIX_2: tabulka_dveri_per_objekt: 3 → 1"
+      ],
       "urs_status": "NOVE",
-      "audit_note": "Bez match v starém VV — novy item"
+      "audit_note": "Bez match v starém VV — novy item; phase_6.1: tabulka_dveri_per_objekt: 3 → 1",
+      "data_source": "tabulka_per_objekt"
     },
     {
       "item_id": "9d82304b-8375-41c3-8e18-8e91d2d3245b",
@@ -60628,75 +61034,6 @@
       "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
     },
     {
-      "item_id": "81c74db3-8cac-45f1-88a6-151dd08e69cd",
-      "kapitola": "PSV-768",
-      "popis": "Revizní dvířka EI30 — dodávka (z OP## D-share)",
-      "MJ": "ks",
-      "mnozstvi": 4,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {},
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "poznamka": "VZT prostupy + vodoinstalace; již v OP-detail items, zde dodávka EI cert. variant",
-      "warnings": [],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
-    },
-    {
-      "item_id": "2318440a-96b2-4601-804a-bbbcbb38849a",
-      "kapitola": "PSV-768",
-      "popis": "Revizní dvířka EI30 — osazení + rám",
-      "MJ": "ks",
-      "mnozstvi": 4,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {},
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "poznamka": "",
-      "warnings": [],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
-    },
-    {
-      "item_id": "d35c6138-a96e-42d0-9587-de221d3c9a9e",
-      "kapitola": "PSV-768",
-      "popis": "Revizní dvířka EI30 — tmelení + finishing rámu",
-      "MJ": "ks",
-      "mnozstvi": 4,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {},
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "poznamka": "",
-      "warnings": [],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Stykový detail / Tabulka prvku — typicky chybí ve starém VV"
-    },
-    {
       "item_id": "41d4e785-f1b8-477c-a453-85582daeb725",
       "kapitola": "PSV-952",
       "popis": "Hrubý úklid po stavbě před povrchovými úpravami",
@@ -61677,6 +62014,1688 @@
       "warnings": [],
       "urs_status": "NOVE",
       "audit_note": "Bez match v starém VV — novy item"
+    },
+    {
+      "item_id": "54456788-6ddc-4ee8-b3d2-8c73c397547d",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP05 (OP05: Přenosný hasicí přístroj)",
+      "MJ": "ks",
+      "mnozstvi": 7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP05",
+        "paired_with": "68983935-40ac-417d-989d-4e5335bc2c7d"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP05",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "9bcb8f59-1c91-43c1-9be3-2e075669002c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP06 (OP06: Přenosný hasicí přístroj)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP06",
+        "paired_with": "a6948951-aa6b-4e25-a853-f606155560cd"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP06",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "42921500-9495-41c9-9d74-bcd7a94f5df9",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP07 (OP07: Přenosný hasicí přístroj)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP07",
+        "paired_with": "4392ae16-b27c-4057-a72d-1f089850da94"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP07",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "5909e84d-f5e6-400b-adb7-dffc9167dba2",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP08 (OP08: Revizní dvířka KAN 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 15.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP08",
+        "paired_with": "1725b226-c997-4781-88a8-1f0cca7bd3e4"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP08",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "94ba9419-e1d1-44a5-a8d6-3548e7f18ffa",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP09 (OP09: Revizní dvířka KAN 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP09",
+        "paired_with": "68092f1d-d5a6-4697-abf2-284d520b6369"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP09",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "ee0915a4-b1ff-4968-b159-a0dff7ca6327",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP10 (OP10: Revizní dvířka VOD 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 11.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP10",
+        "paired_with": "37b80f19-b36c-4656-a133-6609864bcca0"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP10",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "0df2a441-139e-4429-aece-d53ba71a4251",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP100 (OP100: Žaluziový kastlík pro v)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP100",
+        "paired_with": "f35da959-268e-4827-a08c-1ab72a3a86c1"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP100",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "3f544665-40bd-4583-85a1-afd93cbf7ff5",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP101 (OP101: Žaluziový kastlík pro v)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP101",
+        "paired_with": "7cd7787a-3dd1-4212-8453-c3147e94fcc3"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP101",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "d4794049-138a-4f46-b5dc-7f505faa46de",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP102 (OP102: Žaluziový kastlík pro v)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP102",
+        "paired_with": "b7daec8e-d769-4a0c-95f2-fd07864bf180"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP102",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "54c691dc-4a92-4421-979f-96b5b42497ac",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP103 (OP103: Žaluzie venkovní horizo)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP103",
+        "paired_with": "56fbebea-e79d-43f8-9575-5f3e07139df7"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP103",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "53458d0b-d2ac-490b-9cfe-567fab21c798",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP11 (OP11: Revizní dvířka KAN 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 2.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP11",
+        "paired_with": "dadede52-7acb-4b71-8276-ab1f6e3f85ff"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP11",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "82b0c5b3-e24a-42c5-9fc0-0edc45a7bd98",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP12 (OP12: Revizní dvířka KAN 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP12",
+        "paired_with": "77c65888-cd27-4249-90da-211fae1fe370"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP12",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "7c68ce6d-e7de-4400-a6f1-dc7de4d12c20",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP13 (OP13: Revizní dvířka KAN 200 x)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP13",
+        "paired_with": "70846f80-8616-4392-83a1-e71eaa940da8"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP13",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "e324ff32-f0dc-43ed-955e-c487a4379fec",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP14 (OP14: Revizní dvířka KAN 200 x)",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP14",
+        "paired_with": "140936b9-2984-483e-8d52-7ebce9b21dcf"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP14",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "6caa2bc1-b3b7-4b4a-b418-db0244144d08",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP15 (OP15: Revizní dvířka VOD 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP15",
+        "paired_with": "e9870e67-f021-4605-a9c0-f6f58635572a"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP15",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "682caee9-ea54-419b-bb65-58c2d6ae621a",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP16 (OP16: Revizní dvířka VOD 300 x)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP16",
+        "paired_with": "f08c559a-e52b-44e7-a549-f42091e098ce"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP16",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "9401ea3b-531a-471e-a82c-f2a2db1b2453",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP17 (OP17: Revizní dvířka VOD 200 x)",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP17",
+        "paired_with": "63f715a0-b6ad-407c-8892-629a37952bc2"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP17",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "16cbbd7c-bc1b-4f52-a863-ae2906a5aa1e",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP18 (OP18: Revizní dvířka do podhle)",
+      "MJ": "ks",
+      "mnozstvi": 21.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP18",
+        "paired_with": "265195c7-bcc1-45ca-aee4-1c23464fa76e"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP18",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "91bfc749-f143-4e96-976e-2726e78fff92",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP19 (OP19: Revizní dvířka fasáda 20)",
+      "MJ": "ks",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP19",
+        "paired_with": "71505d46-5ec5-4197-bb31-f5768d9735a3"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP19",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "2867d4e4-a9b4-4d7e-be04-27f180d4b1c8",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP20 (OP20: Vnitřní čistící zóna)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP20",
+        "paired_with": "622d8c64-de35-4f54-9806-997e11662adb"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP20",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "854ace28-7ea7-451b-8683-bb2721f1d4b0",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP22 (OP22: Zinkovaný rošt)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP22",
+        "paired_with": "01e90367-270c-4bbe-abcb-8ab1198c1b68"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP22",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "133342cc-5e12-4e85-98fe-0af077a6df08",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP23 (OP23: Zinkovaný rošt)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP23",
+        "paired_with": "d58404a6-cc80-455b-888b-03b17b5303b7"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP23",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "f6e47401-453d-4ed3-82be-6af77f874e8e",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP24 (OP24: Revizní dvířka 600 x 900)",
+      "MJ": "ks",
+      "mnozstvi": 3.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP24",
+        "paired_with": "fee61970-ec2a-465d-ac3a-d2f97451ad09"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP24",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "7409365b-519a-423d-8390-95ff6d2e503c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP25 (OP25: Vanová revizní dvířka 30)",
+      "MJ": "ks",
+      "mnozstvi": 11.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP25",
+        "paired_with": "dff27b9f-8698-47ee-b979-8a44bd2668e0"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP25",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "7a89cee2-4bf2-4ebf-9cdd-b103b3ca5df0",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP26 (OP26: Revizní dvířka 600 x 900)",
+      "MJ": "ks",
+      "mnozstvi": 3.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP26",
+        "paired_with": "0221862e-1a9e-4a54-b804-f0b918cf1017"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP26",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "df34d73c-dfca-4a77-b219-81b5143e88ac",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP27 (OP27: Revizní dvířka 600 x 600)",
+      "MJ": "ks",
+      "mnozstvi": 2.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP27",
+        "paired_with": "6571b504-56af-46c7-9124-00d0b4be36c6"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP27",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "03f97be8-6cb1-4312-8243-69cfc72693f4",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP30 (OP30: Stavební pouzdro posuvný)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP30",
+        "paired_with": "4edc77b3-800b-4e84-a6a0-94dab6dbc45e"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP30",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "94602e87-3ba8-4e43-bce8-e8a1a93f4b73",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP31 (OP31: Stavební pouzdro posuvný)",
+      "MJ": "ks",
+      "mnozstvi": 3.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP31",
+        "paired_with": "53f684b3-0249-4bf7-bea3-d40992d759e4"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP31",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "cc7baaa4-217b-4e7e-a28d-581073073883",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP32 (OP32: Stavební pouzdro posuvný)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP32",
+        "paired_with": "05164e2c-4950-46b2-babd-321837c7fa64"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP32",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "012eec01-fb2c-4cfe-b280-222ca8e15eae",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP42 (OP42: Pryžové rozpínací těsněn)",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP42",
+        "paired_with": "aeba0f37-ac3f-4ee5-abec-b637498a1e90"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP42",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "2b503396-aed0-4005-8c75-cf8240c663a3",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP43 (OP43: Pryžové rozpínací těsněn)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP43",
+        "paired_with": "5e6656d7-4946-4d34-8f5e-36be8e35197a"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP43",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "e5c8ddb7-a5db-4a15-9a13-755d0663ba51",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP44 (OP44: Pryžové rozpínací těsněn)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP44",
+        "paired_with": "038a3b21-dbfa-4faa-89e6-403ab3612573"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP44",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "e33cac3c-db38-4136-aa37-cfc3c6f4e40c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP45 (OP45: Pryžové rozpínací těsněn)",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP45",
+        "paired_with": "71645e52-6d73-44a6-b70c-ead05bc671aa"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP45",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "0622bcb1-d826-45b7-a4ae-41dad9579ff3",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP47 (OP47: Pryžové rozpínací těsněn)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP47",
+        "paired_with": "d897665f-4596-45e9-95fb-f502a6b316ba"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP47",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "a065bf4f-40f8-4c9b-8e0e-b3d78791b0f8",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP50 (OP50: Průchodka, oplechování a)",
+      "MJ": "ks",
+      "mnozstvi": 2.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP50",
+        "paired_with": "9731628f-b1eb-4edf-8fa6-a519213dbec8"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP50",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "279de28e-601a-491e-9218-b82639d061a3",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP51 (OP51: Průchodka, oplechování a)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP51",
+        "paired_with": "b8023bdc-e906-44ba-9923-7295e216c24d"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP51",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "01e597ce-a7fd-4503-9708-de88db626bbc",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP52 (OP52: Chrlič)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP52",
+        "paired_with": "716292a9-3c6d-4d5d-8330-c82a551bead9"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP52",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "1f22a793-4ad0-4789-ba5b-7b6c26ba91fc",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP53 (OP53: Bezpečnostní přepad)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP53",
+        "paired_with": "1552e72b-e6e0-4a67-9e26-77b8364938f1"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP53",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "c67e0a39-708b-4929-9d15-a3d75934702c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP80 (OP80: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP80",
+        "paired_with": "e456be54-1524-4760-8122-1117742073db"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP80",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "1564869e-11e5-4bb0-837f-0290e805118f",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP81 (OP81: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP81",
+        "paired_with": "0b1d385d-bd55-4db1-b995-190f0d22baec"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP81",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "7abf03ad-dc2a-4326-97d1-4da8688e9078",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP82 (OP82: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP82",
+        "paired_with": "8081d051-b8fa-4cd8-b1fc-cc2f24352307"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP82",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "9f25966d-59ab-418c-b0cc-856dc9e5890a",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP83 (OP83: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP83",
+        "paired_with": "2aefb63b-7376-438a-83b6-2acecbbf399f"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP83",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "27b64063-b71c-44ea-b2a7-2c94dca8d0e2",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP84 (OP84: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP84",
+        "paired_with": "1f192d83-5801-452f-b933-852fe3224837"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP84",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "392cff6a-6262-48a2-aaaf-921535c9e8ec",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP85 (OP85: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP85",
+        "paired_with": "ea5dc8b4-51ac-4d4f-a3d5-35f2ac82bd34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP85",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "9c86bfd8-6908-45da-aeef-2c81b5622e08",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP86 (OP86: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP86",
+        "paired_with": "59a5b5b1-5c78-4f15-ae45-5df27fe79f2c"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP86",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "5e48ff4c-4a79-449e-814f-61ba6a872890",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP87 (OP87: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 6.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP87",
+        "paired_with": "78bd136f-834a-478d-982b-c9f6c99fa6c3"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP87",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "ce095946-264c-440b-a899-fbee33c32d1c",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP88 (OP88: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP88",
+        "paired_with": "2aad880f-6e4e-4ea6-a9b6-c75eac20b4ab"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP88",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "587531ac-aa2d-4aca-964e-38ebcfba4104",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP89 (OP89: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 12.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP89",
+        "paired_with": "899560dd-c139-421d-8d12-44d03afceeeb"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP89",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "381c20c5-45aa-46c6-854b-911f43d61f7d",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP90 (OP90: Žaluzie venkovní horizon)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP90",
+        "paired_with": "c0b657cb-6772-48fa-bd96-261bb9589f7b"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP90",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "8cd791f5-58d2-4fb8-90c7-8823b65a3b23",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP91 (OP91: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP91",
+        "paired_with": "f6a788b2-9614-42ec-b164-3f373c03e997"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP91",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "3086bcee-8b18-4249-92aa-147af3212baf",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP92 (OP92: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP92",
+        "paired_with": "49b97614-9b01-4c16-89d2-75ad555dc3f4"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP92",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "b29dfe0c-89fa-40df-8470-1ff0fd79cdda",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP93 (OP93: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP93",
+        "paired_with": "0388dc45-75be-4e2a-99a1-5550270ce78a"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP93",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "66f4ead8-4a1e-4574-9f06-0ed74e5453c2",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP94 (OP94: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP94",
+        "paired_with": "562bbf4b-c6ed-42ae-a074-226c947f8c02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP94",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "3c69cf9b-ac7a-4c6c-a2dd-fce51dbffef0",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP95 (OP95: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP95",
+        "paired_with": "a17feb26-731d-4eb3-ac0c-81b87ec0624c"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP95",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "24fc66e4-3a14-461a-bf7e-fb150310f24e",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP96 (OP96: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP96",
+        "paired_with": "956b3843-398f-4782-980f-710997ce0087"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP96",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "962cae68-ab53-49f2-aaf8-792b9d1e9eb0",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP97 (OP97: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP97",
+        "paired_with": "6bc97192-acb9-4f93-9689-eeba060a56ff"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP97",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "52a35e39-ae0f-4b36-9ea0-ab531d87c535",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP98 (OP98: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 7.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP98",
+        "paired_with": "e80d9391-6698-4ecf-bc88-7066db80116b"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.95,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP98",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
+    },
+    {
+      "item_id": "5ea51f56-ecff-4956-8908-b44ed467b066",
+      "kapitola": "HSV-642",
+      "popis": "Osazení revizních dvířek / OP OP99 (OP99: Žaluziový kastlík pro ve)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP99",
+        "paired_with": "1f9b4b9c-2895-47c1-a9bb-ec4fb4acf342"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "status": "to_audit",
+      "confidence": 0.85,
+      "data_source": "paired_with_op_dodavka",
+      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP99",
+      "warnings": [
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+      ],
+      "urs_status": "VYNECHANE_DETAIL",
+      "audit_note": "Phase 6.1: paired osazení created"
     }
   ]
 }
