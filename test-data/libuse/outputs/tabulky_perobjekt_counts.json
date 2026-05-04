@@ -1,0 +1,735 @@
+{
+  "dvere": {
+    "has_per_objekt_data": true,
+    "method": "from_room / to_room columns → filter by D.* / S.D. prefix",
+    "komplex_total_per_type": {
+      "D02": 9,
+      "D03": 5,
+      "D04": 51,
+      "D01": 4,
+      "D10": 2,
+      "D20": 4,
+      "D22": 3,
+      "D23": 7,
+      "D25": 3,
+      "D24": 1,
+      "D11": 3,
+      "D21": 37,
+      "D31": 56,
+      "D34": 54,
+      "D33": 34,
+      "D35": 8,
+      "D36": 1,
+      "D32": 2,
+      "D42": 4,
+      "D06": 1,
+      "D05": 1
+    },
+    "objekt_d_per_type": {
+      "D02": 4,
+      "D04": 35,
+      "D01": 1,
+      "D03": 3,
+      "D21": 11,
+      "D20": 1,
+      "D31": 17,
+      "D34": 16,
+      "D33": 10,
+      "D35": 3,
+      "D42": 1
+    }
+  },
+  "okna": {
+    "has_per_objekt_data": false,
+    "method": "use DXF spatial counts from objekt D drawings (Phase 1 windows_by_type_code)",
+    "komplex_total_per_type": {
+      "W01": 16,
+      "W02": 3,
+      "W03": 49,
+      "W04": 12,
+      "W05": 28,
+      "W06": 1,
+      "W07": 1,
+      "W18": 1,
+      "W19": 1,
+      "W20": 1,
+      "W81": 34,
+      "W82": 19,
+      "W83": 8,
+      "W84": 6,
+      "W85": 4,
+      "W86": 1,
+      "W91": 4
+    },
+    "objekt_d_per_type_from_dxf": {
+      "W03": 17,
+      "W05": 9,
+      "W04": 4,
+      "W01": 3,
+      "W83": 2
+    }
+  },
+  "klempirske": {
+    "has_per_objekt_data": false,
+    "method": "fallback uniform 0.25 D-share; refine via DXF roof drawing in future",
+    "komplex": {
+      "TP01": {
+        "nazev": "",
+        "umisteni": "",
+        "mnozstvi_komplex": null
+      },
+      "TP01A": {
+        "nazev": "Nové zaatikové okapové žlaby",
+        "umisteni": "Žlab ve 2np",
+        "mnozstvi_komplex": 39.882000000000005
+      },
+      "TP01B": {
+        "nazev": "Okapnice navazující na zaatikové okapové",
+        "umisteni": "Žlab ve 2np",
+        "mnozstvi_komplex": 39.88
+      },
+      "TP01C": {
+        "nazev": "Čelní lišta navazující na zaatikové okap",
+        "umisteni": "Žlab ve 2np",
+        "mnozstvi_komplex": 39.88
+      },
+      "TP02A": {
+        "nazev": "Nové zaatikové okapové žlaby",
+        "umisteni": "Žlab ve 3np",
+        "mnozstvi_komplex": 83.246
+      },
+      "TP02B": {
+        "nazev": "Okapnice navazující na zaatikové okapové",
+        "umisteni": "Žlab ve 2np",
+        "mnozstvi_komplex": 83.246
+      },
+      "TP02C": {
+        "nazev": "Čelní lišta navazující na zaatikové okap",
+        "umisteni": "Žlab ve 2np",
+        "mnozstvi_komplex": 83.246
+      },
+      "TP03A": {
+        "nazev": "Nové okapové žlaby nadpraží balkónů a te",
+        "umisteni": "",
+        "mnozstvi_komplex": 61.96999999999999
+      },
+      "TP03B": {
+        "nazev": "Okapnice navazující na okapové žlaby nad",
+        "umisteni": "",
+        "mnozstvi_komplex": 62.5
+      },
+      "TP04": {
+        "nazev": "Žlabový kotlík",
+        "umisteni": "",
+        "mnozstvi_komplex": 36.0
+      },
+      "TP12": {
+        "nazev": "Průchodka a oplechování VZT",
+        "umisteni": "",
+        "mnozstvi_komplex": 82.0
+      },
+      "TP13": {
+        "nazev": "Lemování do střechy pro komín 225/160",
+        "umisteni": "",
+        "mnozstvi_komplex": 1.0
+      },
+      "TP14": {
+        "nazev": "Oplechování kruhových střešních prostupů",
+        "umisteni": "rovné střechy objektů",
+        "mnozstvi_komplex": 7.0
+      },
+      "TP22": {
+        "nazev": "Oplechování odvětrání výtahové šachty",
+        "umisteni": "ploché střechy objektů",
+        "mnozstvi_komplex": 4.0
+      },
+      "TP23": {
+        "nazev": "Oplechování prostupu VZT na plochou stře",
+        "umisteni": "ploché střechy objektů",
+        "mnozstvi_komplex": 2.856
+      },
+      "TP24": {
+        "nazev": "Oplechování prostupu VZT na plochou stře",
+        "umisteni": "ploché střechy objektů",
+        "mnozstvi_komplex": 1.8
+      },
+      "TP25": {
+        "nazev": "Dešťový svod ø75mm",
+        "umisteni": "Střechy nad schodišťovým prostorem",
+        "mnozstvi_komplex": 8.0
+      },
+      "TP26": {
+        "nazev": "Soklová lišta",
+        "umisteni": "ukončení hydroizolace vparteru na ŽB stě",
+        "mnozstvi_komplex": 420.0
+      },
+      "TP27A": {
+        "nazev": "Dešťový žlab zakončení šikmé střechy u p",
+        "umisteni": "Ukončení šikmé střechy nad schodištěm",
+        "mnozstvi_komplex": 20.615000000000002
+      },
+      "TP27B": {
+        "nazev": "Okapnice navazující na dešťový žlab",
+        "umisteni": "Ukončení šikmé střechy nad schodištěm",
+        "mnozstvi_komplex": 20.8
+      },
+      "TP28": {
+        "nazev": "Oplechování koruny zdiva",
+        "umisteni": "Atika",
+        "mnozstvi_komplex": 63.81400000000001
+      },
+      "TP29A": {
+        "nazev": "Boční lemování - lišta",
+        "umisteni": "Lemování svislé konstrukce procházející ",
+        "mnozstvi_komplex": 49.922000000000004
+      },
+      "TP29B": {
+        "nazev": "Boční lemování - rohový profil",
+        "umisteni": "Lemování svislé konstrukce procházející ",
+        "mnozstvi_komplex": 46.88
+      },
+      "TP29C": {
+        "nazev": "Boční lemování - napojení na krytinu",
+        "umisteni": "Lemování svislé konstrukce procházející ",
+        "mnozstvi_komplex": 46.88
+      }
+    }
+  },
+  "zamecnicke": {
+    "has_per_objekt_data": false,
+    "method": "fallback uniform 0.25; refine via DXF segment tag spatial joining (LP## tags found on A-FLOR-HRAL-IDEN per Phase 1)",
+    "komplex": {
+      "LP20": {
+        "umisteni": "Vnitřní schodiště",
+        "mnozstvi_komplex": 66.18599999999998
+      },
+      "LP21": {
+        "umisteni": "Vnitřní schodiště",
+        "mnozstvi_komplex": 73.17899999999999
+      },
+      "LP22": {
+        "umisteni": "Vnitřní schodiště",
+        "mnozstvi_komplex": 30.729999999999997
+      },
+      "LP23": {
+        "umisteni": "Vnitřní schodiště",
+        "mnozstvi_komplex": 1.9649999999999999
+      },
+      "LP30": {
+        "umisteni": "Balkóny",
+        "mnozstvi_komplex": 158.85899999999998
+      },
+      "LP34": {
+        "umisteni": "3. NP",
+        "mnozstvi_komplex": 224.17800000000005
+      },
+      "LP35": {
+        "umisteni": "3. NP",
+        "mnozstvi_komplex": 105.06899999999999
+      },
+      "LP40": {
+        "umisteni": "Střecha schodišťové věže",
+        "mnozstvi_komplex": 4.0
+      },
+      "LP60": {
+        "umisteni": "Francouzská okna",
+        "mnozstvi_komplex": 20.0
+      },
+      "LP61": {
+        "umisteni": "Francouzská okna",
+        "mnozstvi_komplex": 1.0
+      },
+      "LP62": {
+        "umisteni": "Francouzská okna",
+        "mnozstvi_komplex": 2.0
+      },
+      "LP63": {
+        "umisteni": "Francouzská okna",
+        "mnozstvi_komplex": 6.0
+      },
+      "LP64": {
+        "umisteni": "Francouzská okna",
+        "mnozstvi_komplex": 1.0
+      },
+      "LP65": {
+        "umisteni": "Francouzská okna",
+        "mnozstvi_komplex": 1.0
+      }
+    }
+  },
+  "ostatni": {
+    "has_per_objekt_data": false,
+    "method": "DXF spatial count per OP## occurrence on objekt-D drawings",
+    "komplex": {
+      "OP01": {
+        "nazev": "Dilatační lišta",
+        "umisteni": "1.PP, rampa",
+        "mnozstvi_komplex": 26.360999999999997,
+        "mj": "bm"
+      },
+      "OP02": {
+        "nazev": "Krycí dilatační lišta-gumová",
+        "umisteni": "rampa",
+        "mnozstvi_komplex": 8.412,
+        "mj": "bm"
+      },
+      "OP03": {
+        "nazev": "Krycí dilatační lišta-rovná",
+        "umisteni": "1.PP, výtahy",
+        "mnozstvi_komplex": 85.43400000000001,
+        "mj": "bm"
+      },
+      "OP04": {
+        "nazev": "Krycí dilatační lišta-rohová",
+        "umisteni": "výtahy",
+        "mnozstvi_komplex": 46.059999999999995,
+        "mj": "bm"
+      },
+      "OP05": {
+        "nazev": "Přenosný hasicí přístroj",
+        "umisteni": "Sklady a úniky",
+        "mnozstvi_komplex": 25.0,
+        "mj": "ks"
+      },
+      "OP06": {
+        "nazev": "Přenosný hasicí přístroj",
+        "umisteni": "Garáže",
+        "mnozstvi_komplex": 4.0,
+        "mj": "ks"
+      },
+      "OP07": {
+        "nazev": "Přenosný hasicí přístroj",
+        "umisteni": "Technické místnosti",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP08": {
+        "nazev": "Revizní dvířka KAN 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 45.0,
+        "mj": "ks"
+      },
+      "OP09": {
+        "nazev": "Revizní dvířka KAN 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 5.0,
+        "mj": "ks"
+      },
+      "OP10": {
+        "nazev": "Revizní dvířka VOD 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 31.0,
+        "mj": "ks"
+      },
+      "OP100": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 4.0,
+        "mj": "ks"
+      },
+      "OP101": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP102": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP103": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP11": {
+        "nazev": "Revizní dvířka KAN 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 8.0,
+        "mj": "ks"
+      },
+      "OP12": {
+        "nazev": "Revizní dvířka KAN 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 11.0,
+        "mj": "ks"
+      },
+      "OP13": {
+        "nazev": "Revizní dvířka KAN 200 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP14": {
+        "nazev": "Revizní dvířka KAN 200 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 5.0,
+        "mj": "ks"
+      },
+      "OP15": {
+        "nazev": "Revizní dvířka VOD 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 18.0,
+        "mj": "ks"
+      },
+      "OP16": {
+        "nazev": "Revizní dvířka VOD 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP17": {
+        "nazev": "Revizní dvířka VOD 200 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 9.0,
+        "mj": "ks"
+      },
+      "OP18": {
+        "nazev": "Revizní dvířka do podhledu 600 x 600",
+        "umisteni": "",
+        "mnozstvi_komplex": 62.0,
+        "mj": "ks"
+      },
+      "OP19": {
+        "nazev": "Revizní dvířka fasáda 200 x 200",
+        "umisteni": "",
+        "mnozstvi_komplex": 15.0,
+        "mj": "ks"
+      },
+      "OP20": {
+        "nazev": "Vnitřní čistící zóna",
+        "umisteni": "1.NP",
+        "mnozstvi_komplex": 4.0,
+        "mj": "ks"
+      },
+      "OP21": {
+        "nazev": "Poštovní schránky",
+        "umisteni": "1.NP",
+        "mnozstvi_komplex": 4.0,
+        "mj": "kpl"
+      },
+      "OP22": {
+        "nazev": "Zinkovaný rošt",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP23": {
+        "nazev": "Zinkovaný rošt",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP24": {
+        "nazev": "Revizní dvířka 600 x 900 k hydrantu",
+        "umisteni": "",
+        "mnozstvi_komplex": 12.0,
+        "mj": "ks"
+      },
+      "OP25": {
+        "nazev": "Vanová revizní dvířka 300 x 300",
+        "umisteni": "",
+        "mnozstvi_komplex": 34.0,
+        "mj": "ks"
+      },
+      "OP26": {
+        "nazev": "Revizní dvířka 600 x 900",
+        "umisteni": "",
+        "mnozstvi_komplex": 12.0,
+        "mj": "ks"
+      },
+      "OP27": {
+        "nazev": "Revizní dvířka 600 x 600",
+        "umisteni": "",
+        "mnozstvi_komplex": 16.0,
+        "mj": "ks"
+      },
+      "OP30": {
+        "nazev": "Stavební pouzdro posuvných dveří",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP31": {
+        "nazev": "Stavební pouzdro posuvných dveří",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 9.0,
+        "mj": "ks"
+      },
+      "OP32": {
+        "nazev": "Stavební pouzdro posuvných dveří",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP42": {
+        "nazev": "Pryžové rozpínací těsnění",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 5.0,
+        "mj": "ks"
+      },
+      "OP43": {
+        "nazev": "Pryžové rozpínací těsnění",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 3.0,
+        "mj": "ks"
+      },
+      "OP44": {
+        "nazev": "Pryžové rozpínací těsnění",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP45": {
+        "nazev": "Pryžové rozpínací těsnění",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 15.0,
+        "mj": "ks"
+      },
+      "OP47": {
+        "nazev": "Pryžové rozpínací těsnění",
+        "umisteni": "1.PP",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP50": {
+        "nazev": "Průchodka, oplechování a keramický kompl",
+        "umisteni": "Střecha",
+        "mnozstvi_komplex": 19.0,
+        "mj": "ks"
+      },
+      "OP51": {
+        "nazev": "Průchodka, oplechování a keramický solár",
+        "umisteni": "Střecha výtahu",
+        "mnozstvi_komplex": 4.0,
+        "mj": "ks"
+      },
+      "OP52": {
+        "nazev": "Chrlič",
+        "umisteni": "Střecha výtahu",
+        "mnozstvi_komplex": 3.0,
+        "mj": "ks"
+      },
+      "OP53": {
+        "nazev": "Bezpečnostní přepad",
+        "umisteni": "Střecha výtahu",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP80": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP81": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP82": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP83": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP84": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 3.0,
+        "mj": "ks"
+      },
+      "OP85": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 4.0,
+        "mj": "ks"
+      },
+      "OP86": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 6.0,
+        "mj": "ks"
+      },
+      "OP87": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 15.0,
+        "mj": "ks"
+      },
+      "OP88": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP89": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 9.0,
+        "mj": "ks"
+      },
+      "OP90": {
+        "nazev": "Žaluzie venkovní horizontální",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP91": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP92": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP93": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP94": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 1.0,
+        "mj": "ks"
+      },
+      "OP95": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 4.0,
+        "mj": "ks"
+      },
+      "OP96": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 21.0,
+        "mj": "ks"
+      },
+      "OP97": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      },
+      "OP98": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 11.0,
+        "mj": "ks"
+      },
+      "OP99": {
+        "nazev": "Žaluziový kastlík pro venkovní horizontá",
+        "umisteni": "byty",
+        "mnozstvi_komplex": 2.0,
+        "mj": "ks"
+      }
+    }
+  },
+  "preklady": {
+    "has_per_objekt_data": false,
+    "method": "DXF spatial count per LI## occurrence on objekt-D drawings",
+    "komplex": {
+      "LI01": {
+        "nazev": "Porotherm KP11,5",
+        "umisteni": "příčky",
+        "mnozstvi_komplex": 102.0
+      },
+      "LI02": {
+        "nazev": "Porotherm KP11,5",
+        "umisteni": "příčky",
+        "mnozstvi_komplex": 115.0
+      },
+      "LI03": {
+        "nazev": "Porotherm KP11,5",
+        "umisteni": "příčky",
+        "mnozstvi_komplex": 31.0
+      },
+      "LI04": {
+        "nazev": "Porotherm KP11,5",
+        "umisteni": "příčky",
+        "mnozstvi_komplex": 12.0
+      },
+      "LI05": {
+        "nazev": "Porotherm KP11,5",
+        "umisteni": "příčky",
+        "mnozstvi_komplex": 5.0
+      },
+      "LI06": {
+        "nazev": "Porotherm KP11,5",
+        "umisteni": "příčky",
+        "mnozstvi_komplex": 1.0
+      },
+      "LI11": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 99.0
+      },
+      "LI12": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 180.0
+      },
+      "LI13": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 0.0
+      },
+      "LI14": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 9.0
+      },
+      "LI15": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 0.0
+      },
+      "LI16": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 20.0
+      },
+      "LI17": {
+        "nazev": "Porotherm KP7",
+        "umisteni": "nosné stěny",
+        "mnozstvi_komplex": 11.0
+      },
+      "LI21": {
+        "nazev": "Porotherm KP Vario UNI",
+        "umisteni": "obvodové stěny",
+        "mnozstvi_komplex": 0.0
+      },
+      "LI22": {
+        "nazev": "Porotherm KP Vario UNI",
+        "umisteni": "obvodové stěny",
+        "mnozstvi_komplex": 51.0
+      },
+      "LI23": {
+        "nazev": "Porotherm KP Vario UNI",
+        "umisteni": "obvodové stěny",
+        "mnozstvi_komplex": 2.0
+      },
+      "LI29": {
+        "nazev": "Porotherm KP Vario UNI",
+        "umisteni": "balkony",
+        "mnozstvi_komplex": 19.0
+      }
+    }
+  }
+}
