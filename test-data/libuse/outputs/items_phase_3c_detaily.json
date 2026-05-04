@@ -1,0 +1,2053 @@
+{
+  "metadata": {
+    "phase": "3c",
+    "part": "C — detaily (OP/LI + Kniha detailů)",
+    "items_count": 87,
+    "summary_per_kapitola": {
+      "OP-detail": {
+        "count": 63,
+        "totals": {
+          "bm": 41.57,
+          "ks": 121.0,
+          "kpl": 1.0
+        }
+      },
+      "LI-detail": {
+        "count": 14,
+        "totals": {
+          "ks": 164.25
+        }
+      },
+      "Detail-parapet": {
+        "count": 2,
+        "totals": {
+          "m": 84.0
+        }
+      },
+      "Detail-ostení": {
+        "count": 1,
+        "totals": {
+          "m": 147.0
+        }
+      },
+      "Detail-ostění": {
+        "count": 2,
+        "totals": {
+          "m": 147.0,
+          "kg": 7.35
+        }
+      },
+      "Detail-spara": {
+        "count": 2,
+        "totals": {
+          "m": 378.0
+        }
+      },
+      "Detail-dilatace": {
+        "count": 1,
+        "totals": {
+          "m": 176.03
+        }
+      },
+      "Detail-soklova-mrizka": {
+        "count": 2,
+        "totals": {
+          "ks": 32.0
+        }
+      }
+    }
+  },
+  "items": [
+    {
+      "item_id": "356fb7a0-9308-42d6-b571-83ae16fa9fb1",
+      "kapitola": "OP-detail",
+      "popis": "OP01: Dilatační lišta",
+      "MJ": "bm",
+      "mnozstvi": 6.59,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP01",
+        "tabulka_qty_komplex": 26.360999999999997
+      },
+      "vyrobce_ref": "hliník, pryž",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=26.360999999999997 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "7cba5730-9a06-4209-8636-00887d9f5c34",
+      "kapitola": "OP-detail",
+      "popis": "OP02: Krycí dilatační lišta-gumová",
+      "MJ": "bm",
+      "mnozstvi": 2.103,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP02",
+        "tabulka_qty_komplex": 8.412
+      },
+      "vyrobce_ref": "pryž",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=8.412 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "1c899519-e7b0-4506-b836-398acc5a2e93",
+      "kapitola": "OP-detail",
+      "popis": "OP03: Krycí dilatační lišta-rovná",
+      "MJ": "bm",
+      "mnozstvi": 21.359,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP03",
+        "tabulka_qty_komplex": 85.43400000000001
+      },
+      "vyrobce_ref": "hliník",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=85.43400000000001 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "860d14bc-26ea-4899-98bd-172e3b2f582c",
+      "kapitola": "OP-detail",
+      "popis": "OP04: Krycí dilatační lišta-rohová",
+      "MJ": "bm",
+      "mnozstvi": 11.515,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP04",
+        "tabulka_qty_komplex": 46.059999999999995
+      },
+      "vyrobce_ref": "hliník",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=46.059999999999995 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "68983935-40ac-417d-989d-4e5335bc2c7d",
+      "kapitola": "OP-detail",
+      "popis": "OP05: Přenosný hasicí přístroj",
+      "MJ": "ks",
+      "mnozstvi": 6.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP05",
+        "tabulka_qty_komplex": 25.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=25.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "a6948951-aa6b-4e25-a853-f606155560cd",
+      "kapitola": "OP-detail",
+      "popis": "OP06: Přenosný hasicí přístroj",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP06",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "4392ae16-b27c-4057-a72d-1f089850da94",
+      "kapitola": "OP-detail",
+      "popis": "OP07: Přenosný hasicí přístroj",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP07",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "1725b226-c997-4781-88a8-1f0cca7bd3e4",
+      "kapitola": "OP-detail",
+      "popis": "OP08: Revizní dvířka KAN 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 11.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP08",
+        "tabulka_qty_komplex": 45.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=45.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "68092f1d-d5a6-4697-abf2-284d520b6369",
+      "kapitola": "OP-detail",
+      "popis": "OP09: Revizní dvířka KAN 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 1.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP09",
+        "tabulka_qty_komplex": 5.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "37b80f19-b36c-4656-a133-6609864bcca0",
+      "kapitola": "OP-detail",
+      "popis": "OP10: Revizní dvířka VOD 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 7.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP10",
+        "tabulka_qty_komplex": 31.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=31.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "f35da959-268e-4827-a08c-1ab72a3a86c1",
+      "kapitola": "OP-detail",
+      "popis": "OP100: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP100",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "7cd7787a-3dd1-4212-8453-c3147e94fcc3",
+      "kapitola": "OP-detail",
+      "popis": "OP101: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP101",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "b7daec8e-d769-4a0c-95f2-fd07864bf180",
+      "kapitola": "OP-detail",
+      "popis": "OP102: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP102",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "56fbebea-e79d-43f8-9575-5f3e07139df7",
+      "kapitola": "OP-detail",
+      "popis": "OP103: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP103",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "dadede52-7acb-4b71-8276-ab1f6e3f85ff",
+      "kapitola": "OP-detail",
+      "popis": "OP11: Revizní dvířka KAN 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 2.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP11",
+        "tabulka_qty_komplex": 8.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=8.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "77c65888-cd27-4249-90da-211fae1fe370",
+      "kapitola": "OP-detail",
+      "popis": "OP12: Revizní dvířka KAN 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 2.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP12",
+        "tabulka_qty_komplex": 11.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=11.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "70846f80-8616-4392-83a1-e71eaa940da8",
+      "kapitola": "OP-detail",
+      "popis": "OP13: Revizní dvířka KAN 200 x 300",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP13",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "140936b9-2984-483e-8d52-7ebce9b21dcf",
+      "kapitola": "OP-detail",
+      "popis": "OP14: Revizní dvířka KAN 200 x 300",
+      "MJ": "ks",
+      "mnozstvi": 1.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP14",
+        "tabulka_qty_komplex": 5.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "e9870e67-f021-4605-a9c0-f6f58635572a",
+      "kapitola": "OP-detail",
+      "popis": "OP15: Revizní dvířka VOD 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 4.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP15",
+        "tabulka_qty_komplex": 18.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=18.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "f08c559a-e52b-44e7-a549-f42091e098ce",
+      "kapitola": "OP-detail",
+      "popis": "OP16: Revizní dvířka VOD 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP16",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "63f715a0-b6ad-407c-8892-629a37952bc2",
+      "kapitola": "OP-detail",
+      "popis": "OP17: Revizní dvířka VOD 200 x 300",
+      "MJ": "ks",
+      "mnozstvi": 2.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP17",
+        "tabulka_qty_komplex": 9.0
+      },
+      "vyrobce_ref": "obklad",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "265195c7-bcc1-45ca-aee4-1c23464fa76e",
+      "kapitola": "OP-detail",
+      "popis": "OP18: Revizní dvířka do podhledu 600 x 600",
+      "MJ": "ks",
+      "mnozstvi": 15.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP18",
+        "tabulka_qty_komplex": 62.0
+      },
+      "vyrobce_ref": "SDK",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=62.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "71505d46-5ec5-4197-bb31-f5768d9735a3",
+      "kapitola": "OP-detail",
+      "popis": "OP19: Revizní dvířka fasáda 200 x 200",
+      "MJ": "ks",
+      "mnozstvi": 3.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP19",
+        "tabulka_qty_komplex": 15.0
+      },
+      "vyrobce_ref": "nerez s kartáčovaným povrchem",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=15.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "622d8c64-de35-4f54-9806-997e11662adb",
+      "kapitola": "OP-detail",
+      "popis": "OP20: Vnitřní čistící zóna",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP20",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "609b4aa6-44d4-4d44-8781-8eddf5a342a4",
+      "kapitola": "OP-detail",
+      "popis": "OP21: Poštovní schránky",
+      "MJ": "kpl",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP21",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 kpl",
+      "warnings": []
+    },
+    {
+      "item_id": "01e90367-270c-4bbe-abcb-8ab1198c1b68",
+      "kapitola": "OP-detail",
+      "popis": "OP22: Zinkovaný rošt",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP22",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "pozink",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "d58404a6-cc80-455b-888b-03b17b5303b7",
+      "kapitola": "OP-detail",
+      "popis": "OP23: Zinkovaný rošt",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP23",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "pozink",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "fee61970-ec2a-465d-ac3a-d2f97451ad09",
+      "kapitola": "OP-detail",
+      "popis": "OP24: Revizní dvířka 600 x 900 k hydrantu",
+      "MJ": "ks",
+      "mnozstvi": 3.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP24",
+        "tabulka_qty_komplex": 12.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=12.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "dff27b9f-8698-47ee-b979-8a44bd2668e0",
+      "kapitola": "OP-detail",
+      "popis": "OP25: Vanová revizní dvířka 300 x 300",
+      "MJ": "ks",
+      "mnozstvi": 8.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP25",
+        "tabulka_qty_komplex": 34.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=34.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "0221862e-1a9e-4a54-b804-f0b918cf1017",
+      "kapitola": "OP-detail",
+      "popis": "OP26: Revizní dvířka 600 x 900",
+      "MJ": "ks",
+      "mnozstvi": 3.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP26",
+        "tabulka_qty_komplex": 12.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=12.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "6571b504-56af-46c7-9124-00d0b4be36c6",
+      "kapitola": "OP-detail",
+      "popis": "OP27: Revizní dvířka 600 x 600",
+      "MJ": "ks",
+      "mnozstvi": 4.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP27",
+        "tabulka_qty_komplex": 16.0
+      },
+      "vyrobce_ref": "omítka",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=16.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "4edc77b3-800b-4e84-a6a0-94dab6dbc45e",
+      "kapitola": "OP-detail",
+      "popis": "OP30: Stavební pouzdro posuvných dveří",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP30",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "53f684b3-0249-4bf7-bea3-d40992d759e4",
+      "kapitola": "OP-detail",
+      "popis": "OP31: Stavební pouzdro posuvných dveří",
+      "MJ": "ks",
+      "mnozstvi": 2.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP31",
+        "tabulka_qty_komplex": 9.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "05164e2c-4950-46b2-babd-321837c7fa64",
+      "kapitola": "OP-detail",
+      "popis": "OP32: Stavební pouzdro posuvných dveří",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP32",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "aeba0f37-ac3f-4ee5-abec-b637498a1e90",
+      "kapitola": "OP-detail",
+      "popis": "OP42: Pryžové rozpínací těsnění",
+      "MJ": "ks",
+      "mnozstvi": 1.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP42",
+        "tabulka_qty_komplex": 5.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "5e6656d7-4946-4d34-8f5e-36be8e35197a",
+      "kapitola": "OP-detail",
+      "popis": "OP43: Pryžové rozpínací těsnění",
+      "MJ": "ks",
+      "mnozstvi": 0.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP43",
+        "tabulka_qty_komplex": 3.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=3.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "038a3b21-dbfa-4faa-89e6-403ab3612573",
+      "kapitola": "OP-detail",
+      "popis": "OP44: Pryžové rozpínací těsnění",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP44",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "71645e52-6d73-44a6-b70c-ead05bc671aa",
+      "kapitola": "OP-detail",
+      "popis": "OP45: Pryžové rozpínací těsnění",
+      "MJ": "ks",
+      "mnozstvi": 3.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP45",
+        "tabulka_qty_komplex": 15.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=15.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "d897665f-4596-45e9-95fb-f502a6b316ba",
+      "kapitola": "OP-detail",
+      "popis": "OP47: Pryžové rozpínací těsnění",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP47",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "9731628f-b1eb-4edf-8fa6-a519213dbec8",
+      "kapitola": "OP-detail",
+      "popis": "OP50: Průchodka, oplechování a keramický komplet Tondach bobrovka ",
+      "MJ": "ks",
+      "mnozstvi": 4.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP50",
+        "tabulka_qty_komplex": 19.0
+      },
+      "vyrobce_ref": "PVC",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=19.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "b8023bdc-e906-44ba-9923-7295e216c24d",
+      "kapitola": "OP-detail",
+      "popis": "OP51: Průchodka, oplechování a keramický solární komplet Tondach b",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP51",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "PVC",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "716292a9-3c6d-4d5d-8330-c82a551bead9",
+      "kapitola": "OP-detail",
+      "popis": "OP52: Chrlič",
+      "MJ": "ks",
+      "mnozstvi": 0.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP52",
+        "tabulka_qty_komplex": 3.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=3.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "1552e72b-e6e0-4a67-9e26-77b8364938f1",
+      "kapitola": "OP-detail",
+      "popis": "OP53: Bezpečnostní přepad",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP53",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "not found",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "e456be54-1524-4760-8122-1117742073db",
+      "kapitola": "OP-detail",
+      "popis": "OP80: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP80",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "0b1d385d-bd55-4db1-b995-190f0d22baec",
+      "kapitola": "OP-detail",
+      "popis": "OP81: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP81",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "8081d051-b8fa-4cd8-b1fc-cc2f24352307",
+      "kapitola": "OP-detail",
+      "popis": "OP82: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP82",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "2aefb63b-7376-438a-83b6-2acecbbf399f",
+      "kapitola": "OP-detail",
+      "popis": "OP83: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP83",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "1f192d83-5801-452f-b933-852fe3224837",
+      "kapitola": "OP-detail",
+      "popis": "OP84: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP84",
+        "tabulka_qty_komplex": 3.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=3.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "ea5dc8b4-51ac-4d4f-a3d5-35f2ac82bd34",
+      "kapitola": "OP-detail",
+      "popis": "OP85: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP85",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "59a5b5b1-5c78-4f15-ae45-5df27fe79f2c",
+      "kapitola": "OP-detail",
+      "popis": "OP86: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 1.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP86",
+        "tabulka_qty_komplex": 6.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=6.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "78bd136f-834a-478d-982b-c9f6c99fa6c3",
+      "kapitola": "OP-detail",
+      "popis": "OP87: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 3.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP87",
+        "tabulka_qty_komplex": 15.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=15.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "2aad880f-6e4e-4ea6-a9b6-c75eac20b4ab",
+      "kapitola": "OP-detail",
+      "popis": "OP88: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP88",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "899560dd-c139-421d-8d12-44d03afceeeb",
+      "kapitola": "OP-detail",
+      "popis": "OP89: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 2.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP89",
+        "tabulka_qty_komplex": 9.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "c0b657cb-6772-48fa-bd96-261bb9589f7b",
+      "kapitola": "OP-detail",
+      "popis": "OP90: Žaluzie venkovní horizontální",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP90",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "RAL7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "f6a788b2-9614-42ec-b164-3f373c03e997",
+      "kapitola": "OP-detail",
+      "popis": "OP91: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP91",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "49b97614-9b01-4c16-89d2-75ad555dc3f4",
+      "kapitola": "OP-detail",
+      "popis": "OP92: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP92",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "0388dc45-75be-4e2a-99a1-5550270ce78a",
+      "kapitola": "OP-detail",
+      "popis": "OP93: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP93",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "562bbf4b-c6ed-42ae-a074-226c947f8c02",
+      "kapitola": "OP-detail",
+      "popis": "OP94: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP94",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "a17feb26-731d-4eb3-ac0c-81b87ec0624c",
+      "kapitola": "OP-detail",
+      "popis": "OP95: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP95",
+        "tabulka_qty_komplex": 4.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "956b3843-398f-4782-980f-710997ce0087",
+      "kapitola": "OP-detail",
+      "popis": "OP96: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 5.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP96",
+        "tabulka_qty_komplex": 21.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=21.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "6bc97192-acb9-4f93-9689-eeba060a56ff",
+      "kapitola": "OP-detail",
+      "popis": "OP97: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP97",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "e80d9391-6698-4ecf-bc88-7066db80116b",
+      "kapitola": "OP-detail",
+      "popis": "OP98: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 2.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP98",
+        "tabulka_qty_komplex": 11.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=11.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "1f9b4b9c-2895-47c1-a9bb-ec4fb4acf342",
+      "kapitola": "OP-detail",
+      "popis": "OP99: Žaluziový kastlík pro venkovní horizontální žaluzie",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "OP": "OP99",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "4e3890d8-a257-4e8c-92cc-e63ba128d813",
+      "kapitola": "LI-detail",
+      "popis": "LI01: Porotherm KP11,5",
+      "MJ": "ks",
+      "mnozstvi": 25.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI01",
+        "tabulka_qty_komplex": 102.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=102.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "1e38362e-928f-4995-8802-16dbb614765b",
+      "kapitola": "LI-detail",
+      "popis": "LI02: Porotherm KP11,5",
+      "MJ": "ks",
+      "mnozstvi": 28.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI02",
+        "tabulka_qty_komplex": 115.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=115.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "0a1afe48-c678-40a2-be57-12905ba3fa80",
+      "kapitola": "LI-detail",
+      "popis": "LI03: Porotherm KP11,5",
+      "MJ": "ks",
+      "mnozstvi": 7.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI03",
+        "tabulka_qty_komplex": 31.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=31.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "c1439099-fa09-44f9-8e09-1598d116251e",
+      "kapitola": "LI-detail",
+      "popis": "LI04: Porotherm KP11,5",
+      "MJ": "ks",
+      "mnozstvi": 3.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI04",
+        "tabulka_qty_komplex": 12.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=12.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "63eb4c75-cb25-474d-8eca-acf6f721a362",
+      "kapitola": "LI-detail",
+      "popis": "LI05: Porotherm KP11,5",
+      "MJ": "ks",
+      "mnozstvi": 1.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI05",
+        "tabulka_qty_komplex": 5.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=5.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "90ba4735-db25-45a5-a214-d061a826384d",
+      "kapitola": "LI-detail",
+      "popis": "LI06: Porotherm KP11,5",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI06",
+        "tabulka_qty_komplex": 1.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "60398b4a-7ab1-49d9-8740-046fbc504386",
+      "kapitola": "LI-detail",
+      "popis": "LI11: Porotherm KP7",
+      "MJ": "ks",
+      "mnozstvi": 24.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI11",
+        "tabulka_qty_komplex": 99.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=99.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "e23ec3ab-1596-4411-ae6e-a92e60e28c7c",
+      "kapitola": "LI-detail",
+      "popis": "LI12: Porotherm KP7",
+      "MJ": "ks",
+      "mnozstvi": 45.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI12",
+        "tabulka_qty_komplex": 180.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=180.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "e2c78265-5a51-4202-bd62-3ab13536d953",
+      "kapitola": "LI-detail",
+      "popis": "LI14: Porotherm KP7",
+      "MJ": "ks",
+      "mnozstvi": 2.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI14",
+        "tabulka_qty_komplex": 9.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=9.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "c8730bc9-ffeb-45f9-8c54-15ee29c5c4d9",
+      "kapitola": "LI-detail",
+      "popis": "LI16: Porotherm KP7",
+      "MJ": "ks",
+      "mnozstvi": 5.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI16",
+        "tabulka_qty_komplex": 20.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=20.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "22aae698-f369-4140-b0bf-1eebbf243a69",
+      "kapitola": "LI-detail",
+      "popis": "LI17: Porotherm KP7",
+      "MJ": "ks",
+      "mnozstvi": 2.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI17",
+        "tabulka_qty_komplex": 11.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=11.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "45fdca0d-4cc6-445a-ac7d-ababf4727235",
+      "kapitola": "LI-detail",
+      "popis": "LI22: Porotherm KP Vario UNI",
+      "MJ": "ks",
+      "mnozstvi": 12.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI22",
+        "tabulka_qty_komplex": 51.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=51.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "77426950-c7af-43f5-9a77-c4580b216fe7",
+      "kapitola": "LI-detail",
+      "popis": "LI23: Porotherm KP Vario UNI",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI23",
+        "tabulka_qty_komplex": 2.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "5f17daef-f2a6-48d7-bdc3-42ee0b14a578",
+      "kapitola": "LI-detail",
+      "popis": "LI29: Porotherm KP Vario UNI",
+      "MJ": "ks",
+      "mnozstvi": 4.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LI": "LI29",
+        "tabulka_qty_komplex": 19.0
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=19.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "871f28d6-4491-4d68-98bc-ceaad8e75635",
+      "kapitola": "Detail-parapet",
+      "popis": "Vnitřní parapet umělý kámen Technistone",
+      "MJ": "m",
+      "mnozstvi": 42.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "vnitřní parapet"
+      },
+      "vyrobce_ref": "Technistone Crystal Solid",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~35 oken × 1.2 m průměr",
+      "warnings": []
+    },
+    {
+      "item_id": "62540188-6619-4966-aa43-a0fb0c523e74",
+      "kapitola": "Detail-parapet",
+      "popis": "Lepení parapetu PUR pěnou + silikon",
+      "MJ": "m",
+      "mnozstvi": 42.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "vnitřní parapet"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "966eef33-fe09-45d3-853c-f8ba1d0c4fac",
+      "kapitola": "Detail-ostení",
+      "popis": "Komprimační páska ostění oken",
+      "MJ": "m",
+      "mnozstvi": 147.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "ostění oken"
+      },
+      "vyrobce_ref": "např. Illbruck TP652",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "466b97a5-0dda-46b4-a042-74d5e95ab112",
+      "kapitola": "Detail-ostění",
+      "popis": "APU lišta ostění oken",
+      "MJ": "m",
+      "mnozstvi": 147.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "ostění oken"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c62c9c23-3ff0-436a-9e7c-07ba39f5f281",
+      "kapitola": "Detail-ostění",
+      "popis": "Tmel akrylový ostění oken",
+      "MJ": "kg",
+      "mnozstvi": 7.35,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "ostění oken"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a72bad69-f848-425c-8403-3705f554473c",
+      "kapitola": "Detail-spara",
+      "popis": "Parotěsná fólie vnitřní (připojovací spára)",
+      "MJ": "m",
+      "mnozstvi": 189.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "spára okna"
+      },
+      "vyrobce_ref": "např. Illbruck ME501 BG1",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7ddba6ad-3651-4a75-98ba-a145a4c0421e",
+      "kapitola": "Detail-spara",
+      "popis": "Paropropustná fólie vnější (připojovací spára)",
+      "MJ": "m",
+      "mnozstvi": 189.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "spára okna"
+      },
+      "vyrobce_ref": "např. Illbruck ME501 BG2",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "58b17168-6c12-42ff-9779-28084a14fc24",
+      "kapitola": "Detail-dilatace",
+      "popis": "Dilatační lišta hliníková podlah (grid 6 × 6 m)",
+      "MJ": "m",
+      "mnozstvi": 176.027,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "dilatace podlahy"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "floor area D = 1056 m² → ~29 dilatace × 6 m",
+      "warnings": []
+    },
+    {
+      "item_id": "1a9d9f33-e259-47b3-adeb-e003e98663f9",
+      "kapitola": "Detail-soklova-mrizka",
+      "popis": "Větrací mřížka soklu nerez",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "soklová mřížka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "obvod 81.0 m / 5 m = 16 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "24fac81b-5ba8-4dfa-839b-d5dca010c147",
+      "kapitola": "Detail-soklova-mrizka",
+      "popis": "Osazení mřížky soklu",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "detail": "soklová mřížka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    }
+  ]
+}
