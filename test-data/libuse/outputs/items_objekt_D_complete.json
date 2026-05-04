@@ -2,7 +2,7 @@
   "metadata": {
     "objekt": "D",
     "phase": "3 (a + b + c) — complete",
-    "items_count": 2332,
+    "items_count": 2327,
     "items_per_source": {
       "items_phase_3a_vnitrni.json": 1425,
       "items_phase_3b_vnejsi_a_suteren.json": 104,
@@ -369,7 +369,8 @@
     ],
     "next_phase": "4 — ÚRS lookup batch",
     "all_items_have_urs_code_null": true,
-    "phase_6_1_applied": true
+    "phase_6_1_applied": true,
+    "phase_6_2_applied": true
   },
   "items": [
     {
@@ -62017,8 +62018,8 @@
     },
     {
       "item_id": "54456788-6ddc-4ee8-b3d2-8c73c397547d",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP05 (OP05: Přenosný hasicí přístroj)",
+      "kapitola": "PSV-952",
+      "popis": "Montáž hasicího přístroje na stěnu — Přenosný hasicí přístroj",
       "MJ": "ks",
       "mnozstvi": 7,
       "misto": {
@@ -62039,15 +62040,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP05",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-952"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-952"
     },
     {
       "item_id": "9bcb8f59-1c91-43c1-9be3-2e075669002c",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP06 (OP06: Přenosný hasicí přístroj)",
+      "kapitola": "PSV-952",
+      "popis": "Montáž hasicího přístroje na stěnu — Přenosný hasicí přístroj",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -62068,15 +62070,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP06",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-952"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-952"
     },
     {
       "item_id": "42921500-9495-41c9-9d74-bcd7a94f5df9",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP07 (OP07: Přenosný hasicí přístroj)",
+      "kapitola": "PSV-952",
+      "popis": "Montáž hasicího přístroje na stěnu — Přenosný hasicí přístroj",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62097,15 +62100,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP07",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-952"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-952"
     },
     {
       "item_id": "5909e84d-f5e6-400b-adb7-dffc9167dba2",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP08 (OP08: Revizní dvířka KAN 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
       "mnozstvi": 15.0,
       "misto": {
@@ -62126,15 +62130,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP08",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "94ba9419-e1d1-44a5-a8d6-3548e7f18ffa",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP09 (OP09: Revizní dvířka KAN 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
       "mnozstvi": 2,
       "misto": {
@@ -62155,15 +62160,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP09",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "ee0915a4-b1ff-4968-b159-a0dff7ca6327",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP10 (OP10: Revizní dvířka VOD 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka VOD 300 x 300",
       "MJ": "ks",
       "mnozstvi": 11.0,
       "misto": {
@@ -62184,15 +62190,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP10",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "0df2a441-139e-4429-aece-d53ba71a4251",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP100 (OP100: Žaluziový kastlík pro v)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -62213,15 +62220,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP100",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "3f544665-40bd-4583-85a1-afd93cbf7ff5",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP101 (OP101: Žaluziový kastlík pro v)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62242,15 +62250,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP101",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "d4794049-138a-4f46-b5dc-7f505faa46de",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP102 (OP102: Žaluziový kastlík pro v)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62271,15 +62280,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP102",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "54c691dc-4a92-4421-979f-96b5b42497ac",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP103 (OP103: Žaluzie venkovní horizo)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62300,15 +62310,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP103",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "53458d0b-d2ac-490b-9cfe-567fab21c798",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP11 (OP11: Revizní dvířka KAN 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
       "mnozstvi": 2.0,
       "misto": {
@@ -62329,15 +62340,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP11",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "82b0c5b3-e24a-42c5-9fc0-0edc45a7bd98",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP12 (OP12: Revizní dvířka KAN 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka KAN 300 x 300",
       "MJ": "ks",
       "mnozstvi": 3,
       "misto": {
@@ -62358,15 +62370,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP12",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "7c68ce6d-e7de-4400-a6f1-dc7de4d12c20",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP13 (OP13: Revizní dvířka KAN 200 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka KAN 200 x 300",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62387,15 +62400,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP13",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "e324ff32-f0dc-43ed-955e-c487a4379fec",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP14 (OP14: Revizní dvířka KAN 200 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka KAN 200 x 300",
       "MJ": "ks",
       "mnozstvi": 2,
       "misto": {
@@ -62416,15 +62430,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP14",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "6caa2bc1-b3b7-4b4a-b418-db0244144d08",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP15 (OP15: Revizní dvířka VOD 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka VOD 300 x 300",
       "MJ": "ks",
       "mnozstvi": 5,
       "misto": {
@@ -62445,15 +62460,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP15",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "682caee9-ea54-419b-bb65-58c2d6ae621a",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP16 (OP16: Revizní dvířka VOD 300 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka VOD 300 x 300",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62474,15 +62490,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP16",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "9401ea3b-531a-471e-a82c-f2a2db1b2453",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP17 (OP17: Revizní dvířka VOD 200 x)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka VOD 200 x 300",
       "MJ": "ks",
       "mnozstvi": 3,
       "misto": {
@@ -62503,15 +62520,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP17",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "16cbbd7c-bc1b-4f52-a863-ae2906a5aa1e",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP18 (OP18: Revizní dvířka do podhle)",
+      "kapitola": "PSV-763",
+      "popis": "Osazení revizní dvířka v SDK podhledu — Revizní dvířka do podhledu 600 x 600",
       "MJ": "ks",
       "mnozstvi": 21.0,
       "misto": {
@@ -62532,15 +62550,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP18",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-763"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-763"
     },
     {
       "item_id": "91bfc749-f143-4e96-976e-2726e78fff92",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP19 (OP19: Revizní dvířka fasáda 20)",
+      "kapitola": "HSV-622",
+      "popis": "Osazení revizní dvířka ve fasádě — Revizní dvířka fasáda 200 x 200",
       "MJ": "ks",
       "mnozstvi": 6.0,
       "misto": {
@@ -62561,15 +62580,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP19",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-622"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-622"
     },
     {
       "item_id": "2867d4e4-a9b4-4d7e-be04-27f180d4b1c8",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP20 (OP20: Vnitřní čistící zóna)",
+      "popis": "Osazení / montáž — Vnitřní čistící zóna",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -62590,15 +62610,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP20",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "854ace28-7ea7-451b-8683-bb2721f1d4b0",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP22 (OP22: Zinkovaný rošt)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení zinkovaného roštu — Zinkovaný rošt",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62619,15 +62640,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP22",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "133342cc-5e12-4e85-98fe-0af077a6df08",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP23 (OP23: Zinkovaný rošt)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení zinkovaného roštu — Zinkovaný rošt",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62648,15 +62670,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP23",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "f6e47401-453d-4ed3-82be-6af77f874e8e",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP24 (OP24: Revizní dvířka 600 x 900)",
+      "popis": "Osazení revizní dvířka k hydrantu — Revizní dvířka 600 x 900 k hydrantu",
       "MJ": "ks",
       "mnozstvi": 3.0,
       "misto": {
@@ -62677,15 +62700,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP24",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "7409365b-519a-423d-8390-95ff6d2e503c",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP25 (OP25: Vanová revizní dvířka 30)",
+      "popis": "Osazení vanové revizní dvířka — Vanová revizní dvířka 300 x 300",
       "MJ": "ks",
       "mnozstvi": 11.0,
       "misto": {
@@ -62706,15 +62730,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP25",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "7a89cee2-4bf2-4ebf-9cdd-b103b3ca5df0",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP26 (OP26: Revizní dvířka 600 x 900)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka 600 x 900",
       "MJ": "ks",
       "mnozstvi": 3.0,
       "misto": {
@@ -62735,15 +62760,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP26",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "df34d73c-dfca-4a77-b219-81b5143e88ac",
       "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP27 (OP27: Revizní dvířka 600 x 600)",
+      "popis": "Osazení revizní dvířka — Revizní dvířka 600 x 600",
       "MJ": "ks",
       "mnozstvi": 2.0,
       "misto": {
@@ -62764,15 +62790,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP27",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → HSV-642"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → HSV-642"
     },
     {
       "item_id": "03f97be8-6cb1-4312-8243-69cfc72693f4",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP30 (OP30: Stavební pouzdro posuvný)",
+      "kapitola": "PSV-766",
+      "popis": "Osazení stavebního pouzdra posuvných dveří — Stavební pouzdro posuvných dveří",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62793,15 +62820,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP30",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-766"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-766"
     },
     {
       "item_id": "94602e87-3ba8-4e43-bce8-e8a1a93f4b73",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP31 (OP31: Stavební pouzdro posuvný)",
+      "kapitola": "PSV-766",
+      "popis": "Osazení stavebního pouzdra posuvných dveří — Stavební pouzdro posuvných dveří",
       "MJ": "ks",
       "mnozstvi": 3.0,
       "misto": {
@@ -62822,15 +62850,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP31",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-766"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-766"
     },
     {
       "item_id": "cc7baaa4-217b-4e7e-a28d-581073073883",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP32 (OP32: Stavební pouzdro posuvný)",
+      "kapitola": "PSV-766",
+      "popis": "Osazení stavebního pouzdra posuvných dveří — Stavební pouzdro posuvných dveří",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -62851,160 +62880,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP32",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-766"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
-    },
-    {
-      "item_id": "012eec01-fb2c-4cfe-b280-222ca8e15eae",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP42 (OP42: Pryžové rozpínací těsněn)",
-      "MJ": "ks",
-      "mnozstvi": 2,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {
-        "OP": "OP42",
-        "paired_with": "aeba0f37-ac3f-4ee5-abec-b637498a1e90"
-      },
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "data_source": "paired_with_op_dodavka",
-      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP42",
-      "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
-      ],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
-    },
-    {
-      "item_id": "2b503396-aed0-4005-8c75-cf8240c663a3",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP43 (OP43: Pryžové rozpínací těsněn)",
-      "MJ": "ks",
-      "mnozstvi": 1,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {
-        "OP": "OP43",
-        "paired_with": "5e6656d7-4946-4d34-8f5e-36be8e35197a"
-      },
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "data_source": "paired_with_op_dodavka",
-      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP43",
-      "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
-      ],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
-    },
-    {
-      "item_id": "e5c8ddb7-a5db-4a15-9a13-755d0663ba51",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP44 (OP44: Pryžové rozpínací těsněn)",
-      "MJ": "ks",
-      "mnozstvi": 1,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {
-        "OP": "OP44",
-        "paired_with": "038a3b21-dbfa-4faa-89e6-403ab3612573"
-      },
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "data_source": "paired_with_op_dodavka",
-      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP44",
-      "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
-      ],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
-    },
-    {
-      "item_id": "e33cac3c-db38-4136-aa37-cfc3c6f4e40c",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP45 (OP45: Pryžové rozpínací těsněn)",
-      "MJ": "ks",
-      "mnozstvi": 4,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {
-        "OP": "OP45",
-        "paired_with": "71645e52-6d73-44a6-b70c-ead05bc671aa"
-      },
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "data_source": "paired_with_op_dodavka",
-      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP45",
-      "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
-      ],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
-    },
-    {
-      "item_id": "0622bcb1-d826-45b7-a4ae-41dad9579ff3",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP47 (OP47: Pryžové rozpínací těsněn)",
-      "MJ": "ks",
-      "mnozstvi": 1,
-      "misto": {
-        "objekt": "D",
-        "podlazi": "ALL",
-        "mistnosti": []
-      },
-      "skladba_ref": {
-        "OP": "OP47",
-        "paired_with": "d897665f-4596-45e9-95fb-f502a6b316ba"
-      },
-      "vyrobce_ref": "",
-      "urs_code": null,
-      "urs_description": null,
-      "category": "subcontractor_required",
-      "status": "to_audit",
-      "confidence": 0.85,
-      "data_source": "paired_with_op_dodavka",
-      "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP47",
-      "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
-      ],
-      "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-766"
     },
     {
       "item_id": "a065bf4f-40f8-4c9b-8e0e-b3d78791b0f8",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP50 (OP50: Průchodka, oplechování a)",
+      "kapitola": "PSV-765",
+      "popis": "Montáž průchodky v krytině — Průchodka, oplechování a keramický komplet Tondach",
       "MJ": "ks",
       "mnozstvi": 2.0,
       "misto": {
@@ -63025,15 +62910,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP50",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-765"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-765"
     },
     {
       "item_id": "279de28e-601a-491e-9218-b82639d061a3",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP51 (OP51: Průchodka, oplechování a)",
+      "kapitola": "PSV-765",
+      "popis": "Montáž průchodky v krytině — Průchodka, oplechování a keramický solární komplet",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -63054,15 +62940,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP51",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-765"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-765"
     },
     {
       "item_id": "01e597ce-a7fd-4503-9708-de88db626bbc",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP52 (OP52: Chrlič)",
+      "kapitola": "PSV-764",
+      "popis": "Montáž chrliče v atice — Chrlič",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63083,15 +62970,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP52",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-764"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-764"
     },
     {
       "item_id": "1f22a793-4ad0-4789-ba5b-7b6c26ba91fc",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP53 (OP53: Bezpečnostní přepad)",
+      "kapitola": "PSV-764",
+      "popis": "Montáž bezpečnostního přepadu — Bezpečnostní přepad",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -63112,15 +63000,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP53",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-764"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-764"
     },
     {
       "item_id": "c67e0a39-708b-4929-9d15-a3d75934702c",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP80 (OP80: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63141,15 +63030,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP80",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "1564869e-11e5-4bb0-837f-0290e805118f",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP81 (OP81: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63170,15 +63060,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP81",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "7abf03ad-dc2a-4326-97d1-4da8688e9078",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP82 (OP82: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63199,15 +63090,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP82",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "9f25966d-59ab-418c-b0cc-856dc9e5890a",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP83 (OP83: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63228,15 +63120,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP83",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "27b64063-b71c-44ea-b2a7-2c94dca8d0e2",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP84 (OP84: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63257,15 +63150,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP84",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "392cff6a-6262-48a2-aaaf-921535c9e8ec",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP85 (OP85: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -63286,15 +63180,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP85",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "9c86bfd8-6908-45da-aeef-2c81b5622e08",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP86 (OP86: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 2,
       "misto": {
@@ -63315,15 +63210,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP86",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "5e48ff4c-4a79-449e-814f-61ba6a872890",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP87 (OP87: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 6.0,
       "misto": {
@@ -63344,15 +63240,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP87",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "ce095946-264c-440b-a899-fbee33c32d1c",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP88 (OP88: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63373,15 +63270,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP88",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "587531ac-aa2d-4aca-964e-38ebcfba4104",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP89 (OP89: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 12.0,
       "misto": {
@@ -63402,15 +63300,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP89",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "381c20c5-45aa-46c6-854b-911f43d61f7d",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP90 (OP90: Žaluzie venkovní horizon)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluzie venkovní horizontální",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -63431,15 +63330,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP90",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "8cd791f5-58d2-4fb8-90c7-8823b65a3b23",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP91 (OP91: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63460,15 +63360,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP91",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "3086bcee-8b18-4249-92aa-147af3212baf",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP92 (OP92: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63489,15 +63390,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP92",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "b29dfe0c-89fa-40df-8470-1ff0fd79cdda",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP93 (OP93: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63518,15 +63420,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP93",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "66f4ead8-4a1e-4574-9f06-0ed74e5453c2",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP94 (OP94: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63547,15 +63450,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP94",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "3c69cf9b-ac7a-4c6c-a2dd-fce51dbffef0",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP95 (OP95: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1.0,
       "misto": {
@@ -63576,15 +63480,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP95",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "24fc66e4-3a14-461a-bf7e-fb150310f24e",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP96 (OP96: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 6,
       "misto": {
@@ -63605,15 +63510,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP96",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "962cae68-ab53-49f2-aaf8-792b9d1e9eb0",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP97 (OP97: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63634,15 +63540,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP97",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "52a35e39-ae0f-4b36-9ea0-ab531d87c535",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP98 (OP98: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 7.0,
       "misto": {
@@ -63663,15 +63570,16 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP98",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     },
     {
       "item_id": "5ea51f56-ecff-4956-8908-b44ed467b066",
-      "kapitola": "HSV-642",
-      "popis": "Osazení revizních dvířek / OP OP99 (OP99: Žaluziový kastlík pro ve)",
+      "kapitola": "PSV-767",
+      "popis": "Osazení venkovní žaluzie — Žaluziový kastlík pro venkovní horizontální žaluzi",
       "MJ": "ks",
       "mnozstvi": 1,
       "misto": {
@@ -63692,10 +63600,11 @@
       "data_source": "paired_with_op_dodavka",
       "poznamka": "Phase 6.1: pair osazení s OP## dodávka OP99",
       "warnings": [
-        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail"
+        "Phase 6.1 BUG fix: HSV-642 osazení item paired with OP-detail",
+        "BUG_FIX_6.2: Reclassified osazení HSV-642 → PSV-767"
       ],
       "urs_status": "VYNECHANE_DETAIL",
-      "audit_note": "Phase 6.1: paired osazení created"
+      "audit_note": "Phase 6.1: paired osazení created; phase_6.2: reclassified HSV-642 → PSV-767"
     }
   ]
 }
