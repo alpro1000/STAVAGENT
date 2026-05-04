@@ -6723,6 +6723,22 @@
       "summary": "starý VV reports only 43 m² hydroizolace pod obklad komplex; F06 ground truth across komplex ~283 m² (D-side ≈ 71 m² for koupelny F06). Gap of ~240 m² komplex hydroizolace under F06 obklad. Persistuje až do Phase 5.",
       "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit; verify F06 wall area against Tabulka skladeb step (F06 = obklad keramický + skladba pod ním uvedena samostatně)",
       "parser_d_side_m2": 325.76
+    },
+    {
+      "id": "PROBE_3",
+      "from_phase": "6.3 audit — Cihelné pásky Terca chybějící materiál",
+      "title": "Cihelné pásky Terca — chybějící materiál (HSV-622.1)",
+      "severity": "critical",
+      "discovered_in": "Phase_6.3_audit",
+      "kapitola": "HSV-622.1",
+      "summary": "Old VV obsahuje POUZE kladení cihelných pásků Terca, NE dodávku materiálu. Objekt D plocha F08 = 542 m² × ~1800 Kč/m² = ~975 600 Kč gap pro D. Komplex × 4 ≈ 3.9 mil Kč. Phase 6.4 part A přidalo explicit dodávka řádek; Phase 7a ÚRS lookup ověří jestli ÚRS kladení m² cena obsahuje material — pokud ne, je to kritická chybějící položka.",
+      "objekt_D_amount_m2": 542,
+      "unit_price_estimate_kc_per_m2": 1800,
+      "objekt_D_cost_impact_kc": 975600,
+      "komplex_estimate_cost_impact_kc": 3902400,
+      "status_in_old_VV": "absent (only kladení, ne dodávka)",
+      "status_in_new_VV": "explicit dodávka row added v Phase 6.4 part A",
+      "next_action": "Investor should verify with contractor whether quoted m² price for kladení includes Terca pásky material. If labor+lepidlo only, this 976 tis Kč material cost is missing from old VV."
     }
   ],
   "skladby": {
