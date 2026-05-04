@@ -1,0 +1,1929 @@
+{
+  "metadata": {
+    "phase": "3b",
+    "kapitoly_present": [
+      "HSV-622.1",
+      "HSV-622.2",
+      "HSV-622.3",
+      "PSV-712",
+      "PSV-713",
+      "PSV-762",
+      "PSV-764",
+      "PSV-765"
+    ],
+    "kapitoly_pending": [
+      "PSV-783 vnější + suterén"
+    ],
+    "items_count": 78,
+    "summary_per_kapitola": {
+      "HSV-622.1": {
+        "count": 4,
+        "totals_per_mj": {
+          "m2": 1085.16,
+          "kg": 4883.22
+        }
+      },
+      "HSV-622.2": {
+        "count": 3,
+        "totals_per_mj": {
+          "m2": 663.43
+        }
+      },
+      "HSV-622.3": {
+        "count": 2,
+        "totals_per_mj": {
+          "m2": 60.0
+        }
+      },
+      "PSV-712": {
+        "count": 12,
+        "totals_per_mj": {
+          "m2": 948.67,
+          "ks": 560.0,
+          "m3": 6.95
+        }
+      },
+      "PSV-713": {
+        "count": 14,
+        "totals_per_mj": {
+          "m2": 2559.9,
+          "kg": 9641.53,
+          "ks": 4962.48,
+          "m": 533.92
+        }
+      },
+      "PSV-762": {
+        "count": 4,
+        "totals_per_mj": {
+          "m2": 334.4,
+          "m": 1225.12,
+          "kg": 152.0
+        }
+      },
+      "PSV-764": {
+        "count": 33,
+        "totals_per_mj": {
+          "bm": 427.67,
+          "ks": 32.5
+        }
+      },
+      "PSV-765": {
+        "count": 6,
+        "totals_per_mj": {
+          "m2": 304.0,
+          "ks": 10954.0,
+          "m": 68.49
+        }
+      }
+    },
+    "carry_forward_findings": [
+      {
+        "from_phase": "0.7 step 4 PROBE 1",
+        "severity": "critical",
+        "summary": "starý VV missing ~2000 m² of cement screed: 4 objekty × ~930 m² floor each → komplex screed ≈ 3000 m², VV reports only 1058 m². Confirms customer's complaint that the VV is incomplete.",
+        "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit"
+      },
+      {
+        "from_phase": "3a — PSV-781 obklady",
+        "severity": "critical",
+        "summary": "starý VV reports only 43 m² hydroizolace pod obklad komplex; F06 ground truth across komplex ~283 m² (D-side ≈ 71 m² for koupelny F06). Gap of ~240 m² komplex hydroizolace under F06 obklad. Persistuje až do Phase 5.",
+        "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit; verify F06 wall area against Tabulka skladeb step (F06 = obklad keramický + skladba pod ním uvedena samostatně)",
+        "parser_d_side_m2": 325.76
+      }
+    ],
+    "ground_truth_used": {
+      "facade_brutto_m2": 838.0,
+      "facade_openings_m2": 51.41,
+      "facade_netto_m2": 786.59,
+      "roof_skat_31_m2": 195.0,
+      "roof_skat_67_m2": 109.0,
+      "roof_flat_central_m2": 139.0,
+      "F08_pasky_m2_estimate": 542.58,
+      "F13_m2_phase1": 214.01,
+      "F16_podhledy_m2_estimate": 30.0,
+      "D_share_for_komplex_items": 0.25,
+      "sokl_height_m": 0.5,
+      "obvod_m": 80.98
+    }
+  },
+  "items": [
+    {
+      "item_id": "4d1d125e-7cea-4337-9d3d-c7edfb827600",
+      "kapitola": "HSV-622.1",
+      "popis": "Penetrace pod cihelné pásky",
+      "MJ": "m2",
+      "mnozstvi": 542.58,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F08",
+        "vrstva": "cihelné pásky Terca"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "F08 plocha = facade_netto 786.6 − F13 214.0 − F16_podhledy 30.0 = 542.6 m² (estimate; verify in Phase 4 against Tabulka skladeb)",
+      "warnings": []
+    },
+    {
+      "item_id": "b8c05a8a-1b3a-42da-8366-b42bdc7469c2",
+      "kapitola": "HSV-622.1",
+      "popis": "Lepidlo flexibilní pro cihelné pásky",
+      "MJ": "kg",
+      "mnozstvi": 2712.9,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F08",
+        "vrstva": "cihelné pásky Terca"
+      },
+      "vyrobce_ref": "Terca / nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~5 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "411ae1dd-d93c-4cbb-9da0-1ca173099799",
+      "kapitola": "HSV-622.1",
+      "popis": "Cihelné pásky Terca — kladení",
+      "MJ": "m2",
+      "mnozstvi": 542.58,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F08",
+        "vrstva": "cihelné pásky Terca"
+      },
+      "vyrobce_ref": "Terca / Wienerberger",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~50 ks/m² vazba běžná",
+      "warnings": []
+    },
+    {
+      "item_id": "fa6fc751-4345-4478-aa1c-3674fa4c069a",
+      "kapitola": "HSV-622.1",
+      "popis": "Spárovací hmota Polyblend S",
+      "MJ": "kg",
+      "mnozstvi": 2170.32,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F08",
+        "vrstva": "cihelné pásky Terca"
+      },
+      "vyrobce_ref": "Polyblend S",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~4 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "6544e591-a220-4e8f-8226-1ba7a149a1e1",
+      "kapitola": "HSV-622.2",
+      "popis": "Penetrace pod tenkovrstvou omítku (F13)",
+      "MJ": "m2",
+      "mnozstvi": 214.01,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F13",
+        "vrstva": "tenkovrstvá silikonová omítka 2 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3458c137-196f-49e4-9ed9-4a51d309706e",
+      "kapitola": "HSV-622.2",
+      "popis": "Armovací síť do první vrstvy (F13)",
+      "MJ": "m2",
+      "mnozstvi": 235.411,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F13",
+        "vrstva": "tenkovrstvá silikonová omítka 2 mm"
+      },
+      "vyrobce_ref": "sklotextilní 145 g/m²",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "overlap 10 %",
+      "warnings": []
+    },
+    {
+      "item_id": "7e4c96f7-01ec-4cbc-a240-694fec995c8a",
+      "kapitola": "HSV-622.2",
+      "popis": "Tenkovrstvá silikonová omítka 1.5–2 mm (F13)",
+      "MJ": "m2",
+      "mnozstvi": 214.01,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F13",
+        "vrstva": "tenkovrstvá silikonová omítka 2 mm"
+      },
+      "vyrobce_ref": "např. Cemix Silikonová pastovitá",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d0b284b6-355e-4bd1-989f-c8bf27ea8c2d",
+      "kapitola": "HSV-622.3",
+      "popis": "Penetrace pod betonovou stěrku (F16)",
+      "MJ": "m2",
+      "mnozstvi": 30.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F16",
+        "vrstva": "betonová stěrka strukturovaná"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "F16 plocha 30.0 m² je odhad (balkónové podhledy + atik podhled). Ověřit v Phase 4 spočítáním z DXF balkónových polygonů.",
+      "warnings": []
+    },
+    {
+      "item_id": "c3c502b2-7f24-4046-a329-d7f1b4f222a6",
+      "kapitola": "HSV-622.3",
+      "popis": "Betonová stěrka strukturovaná (F16)",
+      "MJ": "m2",
+      "mnozstvi": 30.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F16",
+        "vrstva": "betonová stěrka strukturovaná"
+      },
+      "vyrobce_ref": "např. Cemix BetonContact",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ddb19b16-7402-4f39-9e6f-8e05f26eacf6",
+      "kapitola": "PSV-712",
+      "popis": "Parozábrana (RF13)",
+      "MJ": "m2",
+      "mnozstvi": 152.9,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "SBS modifikovaný asfaltový pás",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c81702eb-4fbb-424f-9333-8624df02095c",
+      "kapitola": "PSV-712",
+      "popis": "EPS 200 mm tepelná izolace (RF13)",
+      "MJ": "m2",
+      "mnozstvi": 139.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "EPS 100/150 dle skladby",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "objem ≈ 0.20 m³/m² → ~28 m³",
+      "warnings": []
+    },
+    {
+      "item_id": "8ddaa4f7-dde6-44f3-b38d-f13ee74403ec",
+      "kapitola": "PSV-712",
+      "popis": "Spádová klín EPS prům. tl. 100 mm (RF13)",
+      "MJ": "m2",
+      "mnozstvi": 139.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "objem ≈ 0.10 m³/m² → ~14 m³",
+      "warnings": []
+    },
+    {
+      "item_id": "b3c498b6-eb21-4b40-9f16-42c5c2f1d8c4",
+      "kapitola": "PSV-712",
+      "popis": "PVC fólie DEKPLAN 77 (RF13)",
+      "MJ": "m2",
+      "mnozstvi": 152.9,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "DEKPLAN 77 / Sika Sarnafil",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "overlap 10 %",
+      "warnings": []
+    },
+    {
+      "item_id": "0ecb6d60-6499-42c2-9450-d498b61beb17",
+      "kapitola": "PSV-712",
+      "popis": "Mechanické kotvení PVC fólie (RF13)",
+      "MJ": "ks",
+      "mnozstvi": 556.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~4 ks/m² (větrná zóna II)",
+      "warnings": []
+    },
+    {
+      "item_id": "660766ac-75c1-49fc-8295-aa1c58790bc5",
+      "kapitola": "PSV-712",
+      "popis": "Geotextilie pod chodník (RF13)",
+      "MJ": "m2",
+      "mnozstvi": 152.9,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "cd35f2c8-c188-4ee2-8bb1-cd2a9c11cd0a",
+      "kapitola": "PSV-712",
+      "popis": "Štěrkový posyp 50 mm (RF13)",
+      "MJ": "m3",
+      "mnozstvi": 6.95,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF13",
+        "kind": "plochá střecha centrální"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a6735d8b-6b6e-4e85-9297-1b5444bb0a5f",
+      "kapitola": "PSV-712",
+      "popis": "Hydroizolace balkóny (RF20)",
+      "MJ": "m2",
+      "mnozstvi": 59.64,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF20",
+        "kind": "balkóny — terasová dlažba na podstavcích"
+      },
+      "vyrobce_ref": "SBS pás",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "plocha + nahoru 0.3 m × přibližný balkón obvod 35 m",
+      "warnings": []
+    },
+    {
+      "item_id": "746cb40c-9caa-4c5b-b684-4aa7cb0ccfce",
+      "kapitola": "PSV-712",
+      "popis": "XPS 80 mm tepelná izolace (RF20)",
+      "MJ": "m2",
+      "mnozstvi": 49.14,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF20",
+        "kind": "balkóny — terasová dlažba na podstavcích"
+      },
+      "vyrobce_ref": "XPS Synthos / Stiroduro",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "99792230-4ff4-4ef6-b344-2aecc0a30105",
+      "kapitola": "PSV-712",
+      "popis": "Geotextilie pod terasovou dlažbu (RF20)",
+      "MJ": "m2",
+      "mnozstvi": 54.054,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF20",
+        "kind": "balkóny — terasová dlažba na podstavcích"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8e4a5a28-82d1-4921-8d39-e44dd6f73ee3",
+      "kapitola": "PSV-712",
+      "popis": "Terasová dlažba 60×60 cm na podstavcích (RF20)",
+      "MJ": "m2",
+      "mnozstvi": 49.14,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF20",
+        "kind": "balkóny — terasová dlažba na podstavcích"
+      },
+      "vyrobce_ref": "betonová dlažba dle architekta + plast. podstavce",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6e673d47-0efe-482e-8779-91aa67ce5417",
+      "kapitola": "PSV-712",
+      "popis": "Odvodňovač terasy + napojení na svod (RF20)",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF20",
+        "kind": "balkóny — terasová dlažba na podstavcích"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "odhadem 1 odvodňovač / 12 m² balkónu",
+      "warnings": []
+    },
+    {
+      "item_id": "80fbcfcb-dd5a-40ff-ba0e-f51c287d5e26",
+      "kapitola": "PSV-713",
+      "popis": "Penetrace podkladu ETICS",
+      "MJ": "m2",
+      "mnozstvi": 786.59,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "ETICS pod celou facade netto, vč. F08 cihelných pásků a F13 omítky",
+      "warnings": []
+    },
+    {
+      "item_id": "2b9b6dce-c045-491b-914a-930cb1a7c4fa",
+      "kapitola": "PSV-713",
+      "popis": "Lepicí stěrka pod EPS",
+      "MJ": "kg",
+      "mnozstvi": 3932.95,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~5 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "1144bff4-7e5a-4c0e-b1f7-65201cb12e47",
+      "kapitola": "PSV-713",
+      "popis": "EPS 200 mm tepelná izolace fasáda",
+      "MJ": "m2",
+      "mnozstvi": 786.59,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "Isover EPS Greywall",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "objem ≈ 0.20 m³/m² → ~157 m³",
+      "warnings": []
+    },
+    {
+      "item_id": "a133b138-b5c4-4159-8aa4-5a922e823435",
+      "kapitola": "PSV-713",
+      "popis": "Talířové hmoždinky",
+      "MJ": "ks",
+      "mnozstvi": 4719.54,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~6 ks/m² (větrná zóna)",
+      "warnings": []
+    },
+    {
+      "item_id": "eee987b7-bfa6-4c96-add6-621e54496c09",
+      "kapitola": "PSV-713",
+      "popis": "Armovací síť do výztužné stěrky",
+      "MJ": "m2",
+      "mnozstvi": 865.249,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "sklotextilní 160 g/m²",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "overlap 10 %",
+      "warnings": []
+    },
+    {
+      "item_id": "59ece28a-2367-457b-b53f-739c1aec90c2",
+      "kapitola": "PSV-713",
+      "popis": "Výztužná stěrka pod finální vrstvu",
+      "MJ": "kg",
+      "mnozstvi": 5506.13,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~7 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "856a89f7-57fd-4005-897d-1751150c418b",
+      "kapitola": "PSV-713",
+      "popis": "Soklový profil hliníkový",
+      "MJ": "m",
+      "mnozstvi": 80.98,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "9d9905d1-934e-4203-86b7-6f75cdd28faf",
+      "kapitola": "PSV-713",
+      "popis": "Rohové lišty fasády hliníkové",
+      "MJ": "m",
+      "mnozstvi": 242.94,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "obvod / 4 × výška ~12 m",
+      "warnings": []
+    },
+    {
+      "item_id": "c75b27b1-392f-4861-962c-ff61da22e9ee",
+      "kapitola": "PSV-713",
+      "popis": "Lišty okolo otvorů (rohové + okenní)",
+      "MJ": "m",
+      "mnozstvi": 210.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Σ obvody fasádních otvorů (rough estimate)",
+      "warnings": []
+    },
+    {
+      "item_id": "e2f0a1c4-3ba0-4af3-b2f4-8676fd713c66",
+      "kapitola": "PSV-713",
+      "popis": "Penetrace soklu ETICS",
+      "MJ": "m2",
+      "mnozstvi": 40.49,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS sokl",
+        "vrstva": "XPS 100"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "03e28d84-5461-455c-9021-1664d29680ba",
+      "kapitola": "PSV-713",
+      "popis": "XPS 100 mm sokl ETICS",
+      "MJ": "m2",
+      "mnozstvi": 40.49,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS sokl"
+      },
+      "vyrobce_ref": "XPS Synthos",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f750efa3-41e0-4c83-81c9-329b81852515",
+      "kapitola": "PSV-713",
+      "popis": "Lepicí stěrka soklová",
+      "MJ": "kg",
+      "mnozstvi": 202.45,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "1567bb22-c5f4-4620-8586-d98a9afbeaa6",
+      "kapitola": "PSV-713",
+      "popis": "Hmoždinky soklové",
+      "MJ": "ks",
+      "mnozstvi": 242.94,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e6220130-d60c-4191-9cbc-16c06cad0c91",
+      "kapitola": "PSV-713",
+      "popis": "Mozaiková omítka soklová",
+      "MJ": "m2",
+      "mnozstvi": 40.49,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "system": "ETICS",
+        "vrstva": "EPS 200 + výztužná stěrka"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "876d4ef4-61f6-44f1-b141-ef9aba25e2c4",
+      "kapitola": "PSV-762",
+      "popis": "Difuzní fólie podkrokevní",
+      "MJ": "m2",
+      "mnozstvi": 334.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "podstřešní konstrukce pod Tondach"
+      },
+      "vyrobce_ref": "např. Jutadach 150",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "overlap 10 %",
+      "warnings": []
+    },
+    {
+      "item_id": "d6861ecf-68f3-405a-b45a-891eb19478ba",
+      "kapitola": "PSV-762",
+      "popis": "Latě 30×50 mm rozteč 330 mm pod bobrovku",
+      "MJ": "m",
+      "mnozstvi": 921.12,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "podstřešní konstrukce pod Tondach"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "3.03 m latí na m² střechy",
+      "warnings": []
+    },
+    {
+      "item_id": "66a6671d-510f-442b-b7f7-a66ad14f5f24",
+      "kapitola": "PSV-762",
+      "popis": "Kontralatě 30×50 mm rozteč 1000 mm",
+      "MJ": "m",
+      "mnozstvi": 304.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "podstřešní konstrukce pod Tondach"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "1 m kontralatě na m² střechy",
+      "warnings": []
+    },
+    {
+      "item_id": "1510aa5b-bf78-4189-9383-5782735cc60b",
+      "kapitola": "PSV-762",
+      "popis": "Spojovací materiál (vruty + svorky)",
+      "MJ": "kg",
+      "mnozstvi": 152.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "podstřešní konstrukce pod Tondach"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~0.5 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "6a2951cf-7d0f-42c5-ad45-63c3146a913e",
+      "kapitola": "PSV-764",
+      "popis": "TP01A: Nové zaatikové okapové žlaby",
+      "MJ": "bm",
+      "mnozstvi": 9.971,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP01A",
+        "tabulka_qty_komplex": 39.882000000000005,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=39.882000000000005 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "db41fedb-3764-4307-9df7-84880bb3b478",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP01A (Nové zaatikové okapové žlaby)",
+      "MJ": "bm",
+      "mnozstvi": 9.971,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP01A",
+        "tabulka_qty_komplex": 39.882000000000005,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e813878e-1f00-4c86-a140-bc124a34ab01",
+      "kapitola": "PSV-764",
+      "popis": "TP01B: Okapnice navazující na zaatikové okapové žlaby",
+      "MJ": "bm",
+      "mnozstvi": 9.97,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP01B",
+        "tabulka_qty_komplex": 39.88,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=39.88 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "1ba1c0d7-0ad6-4eec-84d2-c112b450c4f0",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP01B (Okapnice navazující na zaatikové okapové žlaby)",
+      "MJ": "bm",
+      "mnozstvi": 9.97,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP01B",
+        "tabulka_qty_komplex": 39.88,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "9d5e1629-58c6-40ed-89c4-5d8896b44df6",
+      "kapitola": "PSV-764",
+      "popis": "TP01C: Čelní lišta navazující na zaatikové okapové žlaby",
+      "MJ": "bm",
+      "mnozstvi": 9.97,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP01C",
+        "tabulka_qty_komplex": 39.88,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=39.88 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "698d9841-16b9-41fc-a50e-bbd2655e61af",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP01C (Čelní lišta navazující na zaatikové okapové žlaby)",
+      "MJ": "bm",
+      "mnozstvi": 9.97,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP01C",
+        "tabulka_qty_komplex": 39.88,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "fdf6f506-2b45-40fa-8775-391678433490",
+      "kapitola": "PSV-764",
+      "popis": "TP02A: Nové zaatikové okapové žlaby",
+      "MJ": "bm",
+      "mnozstvi": 20.811,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP02A",
+        "tabulka_qty_komplex": 83.246,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=83.246 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "bd435159-f73c-4bd2-8ebc-da8204b84a9d",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP02A (Nové zaatikové okapové žlaby)",
+      "MJ": "bm",
+      "mnozstvi": 20.811,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP02A",
+        "tabulka_qty_komplex": 83.246,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "38797edf-2ced-4374-b550-e220804bd68d",
+      "kapitola": "PSV-764",
+      "popis": "TP02B: Okapnice navazující na zaatikové okapové žlaby",
+      "MJ": "bm",
+      "mnozstvi": 20.811,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP02B",
+        "tabulka_qty_komplex": 83.246,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=83.246 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "fa45ad8c-cb7a-4bfb-be12-c15cc0b32a22",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP02B (Okapnice navazující na zaatikové okapové žlaby)",
+      "MJ": "bm",
+      "mnozstvi": 20.811,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP02B",
+        "tabulka_qty_komplex": 83.246,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e7f64c9a-7b09-4cc6-a9b3-8be78a8977bc",
+      "kapitola": "PSV-764",
+      "popis": "TP02C: Čelní lišta navazující na zaatikové okapové žlaby",
+      "MJ": "bm",
+      "mnozstvi": 20.811,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP02C",
+        "tabulka_qty_komplex": 83.246,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=83.246 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "01b4948f-25fa-48b0-8e35-fe31f3aef85e",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP02C (Čelní lišta navazující na zaatikové okapové žlaby)",
+      "MJ": "bm",
+      "mnozstvi": 20.811,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP02C",
+        "tabulka_qty_komplex": 83.246,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "bcbe84d7-3b79-4093-a54e-060a46efe318",
+      "kapitola": "PSV-764",
+      "popis": "TP03A: Nové okapové žlaby nadpraží balkónů a teras",
+      "MJ": "bm",
+      "mnozstvi": 15.492,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP03A",
+        "tabulka_qty_komplex": 61.96999999999999,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=61.96999999999999 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "ad026054-029b-4e41-b626-c2fefce08509",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP03A (Nové okapové žlaby nadpraží balkónů a teras)",
+      "MJ": "bm",
+      "mnozstvi": 15.492,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP03A",
+        "tabulka_qty_komplex": 61.96999999999999,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "9415bb2c-5243-41fd-840e-e1f0c80458d3",
+      "kapitola": "PSV-764",
+      "popis": "TP03B: Okapnice navazující na okapové žlaby nadpraží balkónů a tera",
+      "MJ": "bm",
+      "mnozstvi": 15.625,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP03B",
+        "tabulka_qty_komplex": 62.5,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=62.5 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "aeb8dc07-8ee0-4417-a5b6-d7475a43d553",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP03B (Okapnice navazující na okapové žlaby nadpraží balk)",
+      "MJ": "bm",
+      "mnozstvi": 15.625,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP03B",
+        "tabulka_qty_komplex": 62.5,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8cd0b09d-d465-4278-bc5c-350e498a9ebd",
+      "kapitola": "PSV-764",
+      "popis": "TP04: Žlabový kotlík",
+      "MJ": "ks",
+      "mnozstvi": 9.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP04",
+        "tabulka_qty_komplex": 36.0,
+        "tabulka_mj": "ks"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=36.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "8e32bd0e-4d7d-4fc0-a038-8bbcbe315b64",
+      "kapitola": "PSV-764",
+      "popis": "TP12: Průchodka a oplechování VZT",
+      "MJ": "ks",
+      "mnozstvi": 20.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP12",
+        "tabulka_qty_komplex": 82.0,
+        "tabulka_mj": "ks"
+      },
+      "vyrobce_ref": "RAL3016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=82.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "a8f8c8f3-833b-46c9-881b-3687d49eb523",
+      "kapitola": "PSV-764",
+      "popis": "TP13: Lemování do střechy pro komín 225/160",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP13",
+        "tabulka_qty_komplex": 1.0,
+        "tabulka_mj": "ks"
+      },
+      "vyrobce_ref": "RAL3016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "c53a6ed1-1bf4-4026-b3f1-cc59cb822b0a",
+      "kapitola": "PSV-764",
+      "popis": "TP14: Oplechování kruhových střešních prostupů do 0.3m2",
+      "MJ": "ks",
+      "mnozstvi": 1.75,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP14",
+        "tabulka_qty_komplex": 7.0,
+        "tabulka_mj": "ks"
+      },
+      "vyrobce_ref": "RAL3016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=7.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "a6dfd6b3-9515-4e5a-a193-ee75da693cc6",
+      "kapitola": "PSV-764",
+      "popis": "TP22: Oplechování odvětrání výtahové šachty",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP22",
+        "tabulka_qty_komplex": 4.0,
+        "tabulka_mj": "ks"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "6adb3795-81e3-4991-afa8-5b6fbc4af4be",
+      "kapitola": "PSV-764",
+      "popis": "TP23: Oplechování prostupu VZT na plochou střechu v objektu B",
+      "MJ": "bm",
+      "mnozstvi": 0.714,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP23",
+        "tabulka_qty_komplex": 2.856,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=2.856 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "eed44fa6-651a-4908-82ae-bbac5f01c35e",
+      "kapitola": "PSV-764",
+      "popis": "TP24: Oplechování prostupu VZT na plochou střechu v objektu C",
+      "MJ": "bm",
+      "mnozstvi": 0.45,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP24",
+        "tabulka_qty_komplex": 1.8,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=1.8 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "af61ecc8-0972-44e8-bcee-e1e728080cc3",
+      "kapitola": "PSV-764",
+      "popis": "TP25: Dešťový svod ø75mm",
+      "MJ": "bm",
+      "mnozstvi": 2.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP25",
+        "tabulka_qty_komplex": 8.0,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=8.0 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "fbd57083-e9ec-45ad-aaed-cc0d9d7ce613",
+      "kapitola": "PSV-764",
+      "popis": "TP26: Soklová lišta",
+      "MJ": "bm",
+      "mnozstvi": 105.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP26",
+        "tabulka_qty_komplex": 420.0,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=420.0 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "ed65dd60-bd50-4e3b-b93a-5e550019b6a6",
+      "kapitola": "PSV-764",
+      "popis": "TP27A: Dešťový žlab zakončení šikmé střechy u ploché střechy",
+      "MJ": "bm",
+      "mnozstvi": 5.154,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP27A",
+        "tabulka_qty_komplex": 20.615000000000002,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=20.615000000000002 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "e6053ce9-413c-40ed-8abd-511971b24d06",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP27A (Dešťový žlab zakončení šikmé střechy u ploché stře)",
+      "MJ": "bm",
+      "mnozstvi": 5.154,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP27A",
+        "tabulka_qty_komplex": 20.615000000000002,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "4c173784-c1cf-4b14-8a06-54df9a3c8f90",
+      "kapitola": "PSV-764",
+      "popis": "TP27B: Okapnice navazující na dešťový žlab",
+      "MJ": "bm",
+      "mnozstvi": 5.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP27B",
+        "tabulka_qty_komplex": 20.8,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=20.8 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "d0ae2f8a-e3b2-4887-9c61-d44cc0bdadd2",
+      "kapitola": "PSV-764",
+      "popis": "Montáž TP27B (Okapnice navazující na dešťový žlab)",
+      "MJ": "bm",
+      "mnozstvi": 5.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP27B",
+        "tabulka_qty_komplex": 20.8,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "dbec8adf-1483-4a0c-816e-212a19ffe4a2",
+      "kapitola": "PSV-764",
+      "popis": "TP28: Oplechování koruny zdiva",
+      "MJ": "bm",
+      "mnozstvi": 15.954,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP28",
+        "tabulka_qty_komplex": 63.81400000000001,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=63.81400000000001 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "01727dd1-664f-4aa0-b7c0-e9d1cc545bdf",
+      "kapitola": "PSV-764",
+      "popis": "TP29A: Boční lemování - lišta",
+      "MJ": "bm",
+      "mnozstvi": 12.481,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP29A",
+        "tabulka_qty_komplex": 49.922000000000004,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=49.922000000000004 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "62923ac9-d3cb-440c-973a-f9af7e8c73a5",
+      "kapitola": "PSV-764",
+      "popis": "TP29B: Boční lemování - rohový profil",
+      "MJ": "bm",
+      "mnozstvi": 11.72,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP29B",
+        "tabulka_qty_komplex": 46.88,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=46.88 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "81a81f6c-f0b8-4644-89fc-e74deffa0537",
+      "kapitola": "PSV-764",
+      "popis": "TP29C: Boční lemování - napojení na krytinu",
+      "MJ": "bm",
+      "mnozstvi": 11.72,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "TP": "TP29C",
+        "tabulka_qty_komplex": 46.88,
+        "tabulka_mj": "bm"
+      },
+      "vyrobce_ref": "RAL 7016",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=46.88 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "27076ce5-8cbe-48bb-b91a-21b1abc5b817",
+      "kapitola": "PSV-765",
+      "popis": "Tondach bobrovka 19×40 cm — kladení šupinové",
+      "MJ": "m2",
+      "mnozstvi": 304.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "Tondach bobrovka 19×40 šupinová"
+      },
+      "vyrobce_ref": "Tondach Bobrovka 19×40",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~36 ks/m² → ~10 944 ks pro D",
+      "warnings": []
+    },
+    {
+      "item_id": "6c69c273-ab85-494f-b64d-763e5f1fe30b",
+      "kapitola": "PSV-765",
+      "popis": "Tondach bobrovka — počet kusů",
+      "MJ": "ks",
+      "mnozstvi": 10944.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "Tondach bobrovka 19×40 šupinová"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "1f1b0dbe-0e93-4801-a3f4-550d0f693014",
+      "kapitola": "PSV-765",
+      "popis": "Hřebenáče Tondach",
+      "MJ": "m",
+      "mnozstvi": 28.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "Tondach bobrovka 19×40 šupinová"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "hřeben délka cca 28 m (footprint long axis)",
+      "warnings": []
+    },
+    {
+      "item_id": "41717c74-5ff9-4afa-bb3c-6c8d21af9561",
+      "kapitola": "PSV-765",
+      "popis": "Větrací prvky hřebene",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "Tondach bobrovka 19×40 šupinová"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "1 ks / 5 m hřebene",
+      "warnings": []
+    },
+    {
+      "item_id": "b2fd735c-c01d-44c2-9e37-1edbc81fc979",
+      "kapitola": "PSV-765",
+      "popis": "Prostupová taška Tondach OP50",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "Tondach bobrovka 19×40 šupinová"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "z Phase 1.5 PROBE: ~5 ks pro D",
+      "warnings": [
+        "OP50 quantity from manual proof-of-concept"
+      ]
+    },
+    {
+      "item_id": "7781e6f0-c772-43f5-9506-091f4ecdd934",
+      "kapitola": "PSV-765",
+      "popis": "Sněhové zachytávače",
+      "MJ": "m",
+      "mnozstvi": 40.49,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "Tondach bobrovka 19×40 šupinová"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    }
+  ]
+}
