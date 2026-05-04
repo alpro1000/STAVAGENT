@@ -1,11 +1,10 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-04
+Last updated: 2026-05-04 (Phase 8 List 11 added)
 
 ## Status
 
-Phase 7a Part 1 complete. Awaiting user confirmation to proceed Part 2
-(ÚRS lookup) + Phase 8 (final Excel).
+Phase 8 List 11 Sumarizace complete. Excel ready for KROS manual ÚRS pricing.
 
 ## Project metadata
 
@@ -39,8 +38,8 @@ Phase 7a Part 1 complete. Awaiting user confirmation to proceed Part 2
 - ✅ Phase 6.3      — audit (10 HIGH gaps + 28 OP edge cases found)
 - ✅ Phase 6.4      — fix gaps + +221 material dodávka items (final 2548 items)
 - ✅ Phase 7a Part 1 — 579 query groups built (group-first approach)
-- ⏳ Phase 7a Part 2 — ÚRS lookup per group (NEXT)
-- ⏳ Phase 8        — final Excel s List 11 sumarizace
+- ⏸️ Phase 7a Part 2 — DEFERRED (manual KROS ÚRS pricing instead)
+- ✅ Phase 8        — List 11 sumarizace added (manual KROS workflow)
 
 ## Critical findings (persistent in carry_forward_findings)
 
@@ -109,3 +108,70 @@ Differences vs objekt D:
 2. Check latest `test-data/libuse/outputs/phase_*_scorecard.md` for most
    recent state
 3. Continue from "Next phase" section above
+
+---
+
+## Phase 8 — List 11 Sumarizace (KROS workflow ready) — 2026-05-04
+
+### Status
+
+✅ List 11 added to existing Excel (in-place, single file). All 11 sheets
+preserved. Excel size 298 KB → 450 KB.
+
+### List 11 structure
+
+- **579 master rows** (one per group_id, sorted G001…G579)
+- **2548 detail rows** (collapsed by default via Excel outline groups)
+- Header columns: `# | ÚRS kód | Popis | MJ | Total množství | Components | Skladby | Kapitola | Status mix | Group ID | Note`
+- Column B (ÚRS kód) — **empty placeholder, yellow highlight** (manual KROS entry needed per master row)
+- AutoFilter on header
+- Freeze pane row 1 + column A
+- Outline summaryBelow=False (master row above details)
+
+### Master row color coding (by status mix purity)
+
+- Pure VYNECHANE_KRITICKE → red bg
+- Pure NOVE → yellow bg
+- Pure SHODA → light green bg
+- Pure VYNECHANE_DETAIL → orange bg
+- Mixed statuses → light blue bg
+
+### Approach
+
+**Manual ÚRS entry** via KROS programu — no automation. User workflow:
+
+1. Open Excel List 11
+2. For each master row (579 total):
+   - Read `Popis` (col C), `Skladby` (col G), `Kapitola` (col H)
+   - Lookup ÚRS code v KROS programu
+   - Paste code into column B (yellow highlight)
+3. KROS picks up unit prices from its catalog automatically
+4. Total cost = sum across all 579 master rows
+
+### Estimated user effort
+
+~3-5 hours KROS pricing (~30-40 sec per master row at experienced pace).
+
+### Files updated this phase (in-place)
+
+- `Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx` — 11 sheets, 450 KB
+  - List 11 added (new)
+  - List 0 "Souhrn" — appended note about List 11 + manual KROS workflow
+  - List 9 "Metadata" — appended Phase 8 info
+- `Vykaz_vymer_pre_list11.xlsx` — single backup before destructive write (298 KB)
+- `next-session-libuse.md` — this file (status updated, section appended)
+
+### Verdict
+
+✅ **Pipeline complete pro objekt D.** Excel ready k odeslání investorovi
++ KROS pricing.
+
+### Future work — objekty A/B/C
+
+A/B/C komplexu Libuše need separate run. Pipeline z objektu D je reusable
+(see "Future scope" + "Reusable patterns" sections above).
+
+### Repository hygiene
+
+- ✅ NO new `.md` / `.json` / `.xlsx` files created (only in-place updates + 1 backup)
+- ✅ Phase 8 scorecard NOT a separate file — appended to this section above
