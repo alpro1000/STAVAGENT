@@ -1,10 +1,11 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-04 (Phase 8 List 11 added)
+Last updated: 2026-05-04 (Phase 6.5 špalety actual measurement)
 
 ## Status
 
-Phase 8 List 11 Sumarizace complete. Excel ready for KROS manual ÚRS pricing.
+Phase 6.5 špalety actual measurement complete (L2.5 project-aware per-room).
+Phase 8 List 11 regenerated. Excel ready for KROS manual ÚRS pricing.
 
 ## Project metadata
 
@@ -37,6 +38,7 @@ Phase 8 List 11 Sumarizace complete. Excel ready for KROS manual ÚRS pricing.
 - ✅ Phase 6.2      — osazení reclassification
 - ✅ Phase 6.3      — audit (10 HIGH gaps + 28 OP edge cases found)
 - ✅ Phase 6.4      — fix gaps + +221 material dodávka items (final 2548 items)
+- ✅ Phase 6.5      — špalety actual measurement L2.5 (replaces 30/70 heuristika)
 - ✅ Phase 7a Part 1 — 579 query groups built (group-first approach)
 - ⏸️ Phase 7a Part 2 — DEFERRED (manual KROS ÚRS pricing instead)
 - ✅ Phase 8        — List 11 sumarizace added (manual KROS workflow)
@@ -175,3 +177,123 @@ A/B/C komplexu Libuše need separate run. Pipeline z objektu D je reusable
 
 - ✅ NO new `.md` / `.json` / `.xlsx` files created (only in-place updates + 1 backup)
 - ✅ Phase 8 scorecard NOT a separate file — appended to this section above
+
+---
+
+## Phase 6.5 — Špalety actual measurement (L2.5) — 2026-05-04
+
+### Status
+
+✅ Replaces Phase 6.4 Part D2 global 30/70 heuristic with L2.5 project-aware
+per-room actual measurement. 132 items recalculated using
+`obvod × tloušťka × faktor` formula (fasádní × 1, vnitřní × 2 — both špalety).
+
+### Source method used
+
+**L2.5_project_aware_per_room** — uses per-room `wall_segment_tags` from
+`objekt_D_geometric_dataset.json` mapped to WF skladba thicknesses, with
+project-wide WF averages as fallback when room has no tags.
+
+WF prefix → category mapping:
+- `WF03/10–22/90` → obvodová (project avg 485 mm, from 1 detected skladba)
+- `WF20–25` → vnitřní nosné (fallback 220 mm — 0 skladeb detected)
+- `WF30–32` → vnitřní příčky (project avg 50 mm, from 1 skladba)
+- `WF40/41/50/51` → SDK předstěny (125 mm)
+
+Per-opening assignment via nearest-room distance (Phase 6.4 pattern,
+`is_fasadni` flag from `objekt_D_per_podlazi_aggregates.json`).
+
+### Results
+
+- Items affected: **132** (HSV-611 + HSV-612 špalety)
+- Items zeroed (kept w/ warning): **63** (rooms with 0 fasádních openings
+  previously assigned 30 % share by heuristic)
+- Items confidence < 0.7: **0** (all matched to L2.5 path or documented fallback)
+- Edge stops (room w/ fasádní opening but no obvodový WF tag): **12 rooms**
+  (e.g. D.1.1.03, D.1.2.03, D.1.3.03, D.1.4.05, D.2.1.03 — fallback
+  PROJ_AVG_OBVODOVA applied)
+
+### Aggregate delta
+
+| | Před (Phase 6.4 30/70) | Po (Phase 6.5 L2.5) | Δ |
+|---|---:|---:|---:|
+| Σ fasádní špalety m² | 85.52 | 57.49 | **−28.02 (−32.8 %)** |
+| Σ vnitřní špalety m² | 114.02 | 80.99 | **−33.03 (−29.0 %)** |
+
+### Golden case verification — D.1.1.01 chodba
+
+| Metric | Hodnota |
+|---|---|
+| Fasádních špalet m² | **0.000** ✅ (expected ~0) |
+| Vnitřních špalet m² | 2.950 |
+| Fasádních openings | 0 |
+| Vnitřních openings | 2 |
+| tl. obvodová | 0 mm (room has 0 obvod. WF tags) |
+| tl. vnitřní | 125.0 mm (SDK předstěna) |
+
+Match confirmed — chodba se 0 fasádními otvory teď returnuje 0 m² fasádních
+špalet (Phase 6.4 heuristika dávala 1.24 m²).
+
+### Sample 5 fixed items (variety)
+
+| Item | Popis | Před → Po | Δ % |
+|------|-------|-----------|-----|
+| S.D.09 | Špalety vnitřní (chodba) | 1.218 → 0.000 m² | −100 % |
+| S.D.09 | Špalety vápeno hl. 200 mm | 1.624 → 1.160 m² | −28.6 % |
+| S.D.10 | Špalety vnitřní (chodba) | 1.869 → 0.000 m² | −100 % |
+| S.D.10 | Špalety vápeno hl. 200 mm | 2.492 → 1.780 m² | −28.6 % |
+| S.D.11 | Špalety vnitřní (chodba) | 0.609 → 0.000 m² | −100 % |
+
+### Items s L2.5 measurement (confidence 0.80) — top 5 by mnozstvi for spot-check
+
+| # | Item | Popis | Po m² | Detail |
+|---|------|-------|------:|--------|
+| 1 | S.D.27 | Špalety vápenocementová | 7.400 | tl. 50 mm × 11 otvorů (PROJ_AVG_PRICKY fallback) |
+| 2 | S.D.40 | Špalety vápenocementová | 5.280 | tl. 50 mm × 9 otvorů (PROJ_AVG_PRICKY fallback) |
+| 3 | D.1.4.07 | Špalety sádrová | 4.850 | tl. 485 mm × 2 otvorů (PROJ_AVG_OBVODOVA — room sans wall_segment_tags) |
+| 4 | D.2.1.07 | Špalety sádrová | 4.850 | tl. 485 mm × 2 otvorů (PROJ_AVG_OBVODOVA fallback) |
+| 5 | D.2.4.07 | Špalety sádrová | 4.850 | tl. 485 mm × 2 otvorů (PROJ_AVG_OBVODOVA fallback) |
+
+⚠️ Spot-check note: WF skladby v `geometric_dataset.json` jsou sparse
+(jen 1 obvodová a 1 příčka detected), proto mnoho miestností spadá do
+PROJ_AVG fallback. Pro vyšší přesnost je nutné Phase L1 extrakce
+(Tabulka výplní → per-opening tloušťka).
+
+### Edge case handling
+
+- Room w/ fasádní opening but no obvodový WF tag → recorded v `EDGE_STOPS`
+  + fallback `PROJ_AVG_OBVODOVA` (485 mm)
+- Room w/ `wall_segment_tags=[]` → fallback `PROJ_AVG_OBVODOVA` /
+  `PROJ_AVG_VNITRNI` + warning v item.note
+- Room w/ pouze SDK předstěny → `PROJ_AVG_SDK` (125 mm) + warning
+
+### Files updated this phase (in-place)
+
+- `items_objekt_D_complete.json` — 132 items s novou `mnozstvi` + `note`
+  (carry_forward_findings appended s Phase 6.5 source_method)
+- `Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx` — 11 sheets
+  (regenerated od Phase 6 → Phase 8 List 11 refreshed s novými hodnotami,
+  450 KB)
+- `Vykaz_vymer_pre_phase6_5.xlsx` — single backup před destructive write
+  (450 KB pre-regen)
+- `next-session-libuse.md` — this file (status + section appended)
+
+### Verdict
+
+✅ **L2.5 measurement applied successfully.** D.1.1.01 chodba golden case
+verified 0 m² fasádních (was 1.24 m² under heuristics). Net reduction
+−61 m² across 132 items reflects realistic stripping of fictitious
+fasádní share from interior-only rooms.
+
+### Backlog — Phase L1 extract (post-submission)
+
+Detected sparse WF coverage v `geometric_dataset.json`: jen 1 obvodová +
+1 příčka skladba má parsed thickness. Per-opening L1 extract from
+**Tabulka výplní** by reduced PROJ_AVG fallback share (currently affects
+~30 % items). Schedule for follow-up session — not blocker pro KROS
+manual pricing.
+
+Acceptance criteria pro L1 extract:
+- Per-opening `wall_thickness_mm` populated from Tabulka výplní
+- Fallback path (L2.5) zachovat pro rooms not covered by Tabulka
+- Re-run Phase 6.5 → expect Δ < 5 % od current L2.5 baseline (sanity)
