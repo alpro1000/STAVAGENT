@@ -74,7 +74,8 @@
         "next_action": "catalogue as VYNECHANE_KRITICKE in Phase 5 audit; verify F06 wall area against Tabulka skladeb step (F06 = obklad keramický + skladba pod ním uvedena samostatně)",
         "parser_d_side_m2": 325.76
       }
-    ]
+    ],
+    "phase_3c_refined": true
   },
   "items": [
     {
@@ -128,11 +129,11 @@
       "warnings": []
     },
     {
-      "item_id": "516db89f-00a0-4596-bb22-e62757e4033a",
+      "item_id": "516db89f-00a0-4596-bb22-e62757e4033a-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -149,7 +150,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "516db89f-00a0-4596-bb22-e62757e4033a-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.09"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -353,11 +379,11 @@
       "warnings": []
     },
     {
-      "item_id": "fbaa6d44-83f5-4d07-82cc-9b66b21f3af7",
+      "item_id": "fbaa6d44-83f5-4d07-82cc-9b66b21f3af7-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.56,
+      "mnozstvi": 1.869,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -374,7 +400,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "fbaa6d44-83f5-4d07-82cc-9b66b21f3af7-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.492,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.10"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -578,11 +629,11 @@
       "warnings": []
     },
     {
-      "item_id": "21d0af88-5d20-4f61-a992-a2e4fa2422ac",
+      "item_id": "21d0af88-5d20-4f61-a992-a2e4fa2422ac-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -599,7 +650,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "21d0af88-5d20-4f61-a992-a2e4fa2422ac-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.11"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -803,11 +879,11 @@
       "warnings": []
     },
     {
-      "item_id": "6adeb189-e16f-4afa-9dbe-7d03a9763da2",
+      "item_id": "6adeb189-e16f-4afa-9dbe-7d03a9763da2-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -824,7 +900,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "6adeb189-e16f-4afa-9dbe-7d03a9763da2-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.12"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -1028,11 +1129,11 @@
       "warnings": []
     },
     {
-      "item_id": "25f72bd7-4d09-4886-b48b-090ccbf982e3",
+      "item_id": "25f72bd7-4d09-4886-b48b-090ccbf982e3-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -1049,7 +1150,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "25f72bd7-4d09-4886-b48b-090ccbf982e3-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.18"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -1253,11 +1379,11 @@
       "warnings": []
     },
     {
-      "item_id": "2faed4e8-42a0-4741-a299-8f6063af015a",
+      "item_id": "2faed4e8-42a0-4741-a299-8f6063af015a-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.36,
+      "mnozstvi": 1.239,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -1274,7 +1400,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "2faed4e8-42a0-4741-a299-8f6063af015a-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.652,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.19"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -1478,11 +1629,11 @@
       "warnings": []
     },
     {
-      "item_id": "35c54478-a755-4473-b626-dbc355c594ac",
+      "item_id": "35c54478-a755-4473-b626-dbc355c594ac-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.2,
+      "mnozstvi": 0.63,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -1499,7 +1650,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "35c54478-a755-4473-b626-dbc355c594ac-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.84,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -1903,11 +2079,11 @@
       "warnings": []
     },
     {
-      "item_id": "85316c0f-7df3-42a1-9da9-0b4519448e9b",
+      "item_id": "85316c0f-7df3-42a1-9da9-0b4519448e9b-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -1924,7 +2100,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "85316c0f-7df3-42a1-9da9-0b4519448e9b-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.17"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -2128,11 +2329,11 @@
       "warnings": []
     },
     {
-      "item_id": "d5097360-79b0-4e2c-9cc4-159985708ec1",
+      "item_id": "d5097360-79b0-4e2c-9cc4-159985708ec1-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -2149,7 +2350,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d5097360-79b0-4e2c-9cc4-159985708ec1-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.08"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -2553,11 +2779,11 @@
       "warnings": []
     },
     {
-      "item_id": "925c21dc-a5ab-4298-b4ec-e4f5ff762dd1",
+      "item_id": "925c21dc-a5ab-4298-b4ec-e4f5ff762dd1-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -2574,7 +2800,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "925c21dc-a5ab-4298-b4ec-e4f5ff762dd1-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.14"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -2778,11 +3029,11 @@
       "warnings": []
     },
     {
-      "item_id": "31cc948d-e25b-49fc-ae5d-74849dde4466",
+      "item_id": "31cc948d-e25b-49fc-ae5d-74849dde4466-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -2799,7 +3050,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "31cc948d-e25b-49fc-ae5d-74849dde4466-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.15"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -3278,11 +3554,11 @@
       "warnings": []
     },
     {
-      "item_id": "5b798e21-e064-47bc-a6c9-edc9b93a0af4",
+      "item_id": "5b798e21-e064-47bc-a6c9-edc9b93a0af4-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.2,
+      "mnozstvi": 0.63,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -3299,7 +3575,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "5b798e21-e064-47bc-a6c9-edc9b93a0af4-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.84,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F04",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -4053,11 +4354,11 @@
       "warnings": []
     },
     {
-      "item_id": "38eb8e61-b2de-4efd-a197-d6aaf33cd31c",
+      "item_id": "38eb8e61-b2de-4efd-a197-d6aaf33cd31c-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -4074,7 +4375,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "38eb8e61-b2de-4efd-a197-d6aaf33cd31c-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.33"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -4678,11 +5004,11 @@
       "warnings": []
     },
     {
-      "item_id": "70ffcf13-38f6-4426-9414-f6205ed92b51",
+      "item_id": "70ffcf13-38f6-4426-9414-f6205ed92b51-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -4699,7 +5025,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "70ffcf13-38f6-4426-9414-f6205ed92b51-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.35"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -4903,11 +5254,11 @@
       "warnings": []
     },
     {
-      "item_id": "9a23a2a7-03d4-469e-b175-2e7683cec0ca",
+      "item_id": "9a23a2a7-03d4-469e-b175-2e7683cec0ca-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -4924,7 +5275,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "9a23a2a7-03d4-469e-b175-2e7683cec0ca-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.36"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -5128,11 +5504,11 @@
       "warnings": []
     },
     {
-      "item_id": "2ca61e6f-e64e-4b92-991c-03d5cdf95bf9",
+      "item_id": "2ca61e6f-e64e-4b92-991c-03d5cdf95bf9-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -5149,7 +5525,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "2ca61e6f-e64e-4b92-991c-03d5cdf95bf9-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.37"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -5353,11 +5754,11 @@
       "warnings": []
     },
     {
-      "item_id": "543801dd-373b-4a1a-a617-1dbd2a4dc157",
+      "item_id": "543801dd-373b-4a1a-a617-1dbd2a4dc157-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -5374,7 +5775,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "543801dd-373b-4a1a-a617-1dbd2a4dc157-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.38"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -5578,11 +6004,11 @@
       "warnings": []
     },
     {
-      "item_id": "2489bb63-5553-4965-83ee-900a850ad081",
+      "item_id": "2489bb63-5553-4965-83ee-900a850ad081-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 4.72,
+      "mnozstvi": 2.478,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -5599,7 +6025,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "2489bb63-5553-4965-83ee-900a850ad081-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 3.304,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.39"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -5803,11 +6254,11 @@
       "warnings": []
     },
     {
-      "item_id": "ef878308-07ac-4035-89b9-10b13b447b6e",
+      "item_id": "ef878308-07ac-4035-89b9-10b13b447b6e-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 10.56,
+      "mnozstvi": 5.544,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -5824,7 +6275,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "ef878308-07ac-4035-89b9-10b13b447b6e-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 7.392,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.40"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -6028,11 +6504,11 @@
       "warnings": []
     },
     {
-      "item_id": "bb5a694d-aa4d-4b1c-b26b-eec06e5278a0",
+      "item_id": "bb5a694d-aa4d-4b1c-b26b-eec06e5278a0-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -6049,7 +6525,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "bb5a694d-aa4d-4b1c-b26b-eec06e5278a0-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.41"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -6253,11 +6754,11 @@
       "warnings": []
     },
     {
-      "item_id": "e33f92aa-ac97-4747-980d-aec642fb9b43",
+      "item_id": "e33f92aa-ac97-4747-980d-aec642fb9b43-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -6274,7 +6775,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "e33f92aa-ac97-4747-980d-aec642fb9b43-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.43"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -6478,11 +7004,11 @@
       "warnings": []
     },
     {
-      "item_id": "053b91f0-d029-4498-b320-f04514fbe577",
+      "item_id": "053b91f0-d029-4498-b320-f04514fbe577-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -6499,7 +7025,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "053b91f0-d029-4498-b320-f04514fbe577-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.25"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -6703,11 +7254,11 @@
       "warnings": []
     },
     {
-      "item_id": "1b76ed01-1787-4c80-98af-194577b790b4",
+      "item_id": "1b76ed01-1787-4c80-98af-194577b790b4-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.16,
+      "mnozstvi": 0.609,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -6724,7 +7275,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "1b76ed01-1787-4c80-98af-194577b790b4-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.812,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.24"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -6928,11 +7504,11 @@
       "warnings": []
     },
     {
-      "item_id": "aa9ed019-a45d-4464-b9aa-fa6338c78b98",
+      "item_id": "aa9ed019-a45d-4464-b9aa-fa6338c78b98-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.36,
+      "mnozstvi": 1.239,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -6949,7 +7525,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "aa9ed019-a45d-4464-b9aa-fa6338c78b98-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.652,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.23"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -7503,11 +8104,11 @@
       "warnings": []
     },
     {
-      "item_id": "acba9f91-1829-4d43-9a16-9cd744ca3269",
+      "item_id": "acba9f91-1829-4d43-9a16-9cd744ca3269-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.52,
+      "mnozstvi": 1.848,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -7524,7 +8125,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "acba9f91-1829-4d43-9a16-9cd744ca3269-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.464,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.26"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -7728,11 +8354,11 @@
       "warnings": []
     },
     {
-      "item_id": "d80c17b5-38da-4589-9d1f-6d73a003bd93",
+      "item_id": "d80c17b5-38da-4589-9d1f-6d73a003bd93-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 14.8,
+      "mnozstvi": 7.77,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -7749,7 +8375,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d80c17b5-38da-4589-9d1f-6d73a003bd93-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 10.36,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.27"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -7953,11 +8604,11 @@
       "warnings": []
     },
     {
-      "item_id": "4913da83-9e6d-4583-991c-3fca7565bca9",
+      "item_id": "4913da83-9e6d-4583-991c-3fca7565bca9-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 6.48,
+      "mnozstvi": 3.402,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -7974,7 +8625,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "4913da83-9e6d-4583-991c-3fca7565bca9-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 4.536,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.28"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -8178,11 +8854,11 @@
       "warnings": []
     },
     {
-      "item_id": "d44ec160-b099-4df7-b33a-b5bfd166988f",
+      "item_id": "d44ec160-b099-4df7-b33a-b5bfd166988f-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.36,
+      "mnozstvi": 1.239,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -8199,7 +8875,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d44ec160-b099-4df7-b33a-b5bfd166988f-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.652,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.29"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -8403,11 +9104,11 @@
       "warnings": []
     },
     {
-      "item_id": "51e22632-5cd2-4284-9c45-51e5184b235c",
+      "item_id": "51e22632-5cd2-4284-9c45-51e5184b235c-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -8424,7 +9125,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "51e22632-5cd2-4284-9c45-51e5184b235c-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.20"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -8628,11 +9354,11 @@
       "warnings": []
     },
     {
-      "item_id": "ce39cffe-e5af-4596-91c3-ecf0e986460f",
+      "item_id": "ce39cffe-e5af-4596-91c3-ecf0e986460f-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.2,
+      "mnozstvi": 0.63,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -8649,7 +9375,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "ce39cffe-e5af-4596-91c3-ecf0e986460f-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.84,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F04",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -8928,11 +9679,11 @@
       "warnings": []
     },
     {
-      "item_id": "454f4e70-177b-4aa8-8dab-c9656a5ae6cb",
+      "item_id": "454f4e70-177b-4aa8-8dab-c9656a5ae6cb-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -8949,7 +9700,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "454f4e70-177b-4aa8-8dab-c9656a5ae6cb-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -9153,11 +9929,11 @@
       "warnings": []
     },
     {
-      "item_id": "a16b4704-6dda-438c-addb-b1488b17a8c5",
+      "item_id": "a16b4704-6dda-438c-addb-b1488b17a8c5-fas",
       "kapitola": "HSV-611",
-      "popis": "Špalety vápenocementová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.4,
+      "mnozstvi": 1.26,
       "misto": {
         "objekt": "D",
         "podlazi": "1.PP",
@@ -9174,7 +9950,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "a16b4704-6dda-438c-addb-b1488b17a8c5-vnt",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.68,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F19",
+        "vrstva": "omítka vápenocementová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -9653,11 +10454,11 @@
       "warnings": []
     },
     {
-      "item_id": "c7c4e99a-2b75-4103-9e64-4867fcfd77ad",
+      "item_id": "c7c4e99a-2b75-4103-9e64-4867fcfd77ad-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 4.38,
+      "mnozstvi": 2.299,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -9674,7 +10475,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "c7c4e99a-2b75-4103-9e64-4867fcfd77ad-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 3.066,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.S.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F04",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -10081,11 +10907,11 @@
       "warnings": []
     },
     {
-      "item_id": "d9746e29-17e4-43be-9161-607b91efde6d",
+      "item_id": "d9746e29-17e4-43be-9161-607b91efde6d-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.3,
+      "mnozstvi": 0.682,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -10102,7 +10928,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d9746e29-17e4-43be-9161-607b91efde6d-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.91,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.S.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F04",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -10509,11 +11360,11 @@
       "warnings": []
     },
     {
-      "item_id": "12ac01c1-2c5d-4ca8-8c99-6c75fc937631",
+      "item_id": "12ac01c1-2c5d-4ca8-8c99-6c75fc937631-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.36,
+      "mnozstvi": 1.239,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -10530,7 +11381,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "12ac01c1-2c5d-4ca8-8c99-6c75fc937631-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.652,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.1.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -10937,11 +11813,11 @@
       "warnings": []
     },
     {
-      "item_id": "18d95e16-8dc3-43ff-84db-d37f26d32749",
+      "item_id": "18d95e16-8dc3-43ff-84db-d37f26d32749-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.56,
+      "mnozstvi": 1.344,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -10958,7 +11834,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "18d95e16-8dc3-43ff-84db-d37f26d32749-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.792,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.1.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -11443,7 +12344,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 24.816,
+      "mnozstvi": 22.33,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -11460,17 +12361,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "2e9c92df-47c8-45e5-aba6-3e5075c1bd51",
+      "item_id": "2e9c92df-47c8-45e5-aba6-3e5075c1bd51-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 24.816,
+      "mnozstvi": 6.699,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -11487,7 +12388,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "2e9c92df-47c8-45e5-aba6-3e5075c1bd51-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 15.631,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.1.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.40 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -11522,7 +12450,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 24.816,
+      "mnozstvi": 22.33,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -11539,7 +12467,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -11572,7 +12500,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.40 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 24.816,
+      "mnozstvi": 22.33,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -11589,7 +12517,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -11771,11 +12699,11 @@
       "warnings": []
     },
     {
-      "item_id": "d3f6d08e-c8f9-4420-a71a-07b26207b73c",
+      "item_id": "d3f6d08e-c8f9-4420-a71a-07b26207b73c-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -11792,7 +12720,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d3f6d08e-c8f9-4420-a71a-07b26207b73c-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.1.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -12121,11 +13074,11 @@
       "warnings": []
     },
     {
-      "item_id": "65efd865-e064-46a0-ab43-2a1b04ade5d6",
+      "item_id": "65efd865-e064-46a0-ab43-2a1b04ade5d6-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.68,
+      "mnozstvi": 1.932,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -12142,7 +13095,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "65efd865-e064-46a0-ab43-2a1b04ade5d6-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.576,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.2.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -13355,7 +14333,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 18.543,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -13372,17 +14350,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "5dcb1fcb-54a5-4469-a52a-fefa0aa68328",
+      "item_id": "5dcb1fcb-54a5-4469-a52a-fefa0aa68328-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 5.563,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -13399,7 +14377,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "5dcb1fcb-54a5-4469-a52a-fefa0aa68328-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 12.98,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.2.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -13434,7 +14439,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 18.543,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -13451,7 +14456,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -13484,7 +14489,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 18.543,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -13501,7 +14506,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -13683,11 +14688,11 @@
       "warnings": []
     },
     {
-      "item_id": "f419807c-e783-4795-9d2d-f9f40d740c4e",
+      "item_id": "f419807c-e783-4795-9d2d-f9f40d740c4e-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 6.44,
+      "mnozstvi": 3.381,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -13704,7 +14709,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "f419807c-e783-4795-9d2d-f9f40d740c4e-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 4.508,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.3.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -14917,7 +15947,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 18.543,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -14934,17 +15964,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "b72eaf34-88f0-45b9-8448-9a372b4d6d4d",
+      "item_id": "b72eaf34-88f0-45b9-8448-9a372b4d6d4d-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 5.563,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -14961,7 +15991,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "b72eaf34-88f0-45b9-8448-9a372b4d6d4d-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 12.98,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.3.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -14996,7 +16053,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 18.543,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -15013,7 +16070,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -15046,7 +16103,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.608,
+      "mnozstvi": 18.543,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -15063,7 +16120,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -15245,11 +16302,11 @@
       "warnings": []
     },
     {
-      "item_id": "f8345ec5-09e0-43af-927d-c0652435a0ed",
+      "item_id": "f8345ec5-09e0-43af-927d-c0652435a0ed-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.44,
+      "mnozstvi": 1.806,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -15266,7 +16323,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "f8345ec5-09e0-43af-927d-c0652435a0ed-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.408,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.4.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -15673,11 +16755,11 @@
       "warnings": []
     },
     {
-      "item_id": "9013107e-877f-44c2-974c-616f9bd1ad84",
+      "item_id": "9013107e-877f-44c2-974c-616f9bd1ad84-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -15694,7 +16776,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "9013107e-877f-44c2-974c-616f9bd1ad84-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.4.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -16104,7 +17211,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.753,
+      "mnozstvi": 10.575,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16121,17 +17228,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "15f11a30-f690-485a-8ae4-2de048a9a294",
+      "item_id": "15f11a30-f690-485a-8ae4-2de048a9a294-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 11.753,
+      "mnozstvi": 3.172,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16148,7 +17255,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "15f11a30-f690-485a-8ae4-2de048a9a294-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 7.402,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.4.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -16183,7 +17317,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.753,
+      "mnozstvi": 10.575,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16200,7 +17334,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -16233,7 +17367,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.753,
+      "mnozstvi": 10.575,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16250,7 +17384,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -16588,7 +17722,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 25.608,
+      "mnozstvi": 23.042,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16605,17 +17739,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "a957a5b9-8586-4578-84ef-cf9bd6971a0a",
+      "item_id": "a957a5b9-8586-4578-84ef-cf9bd6971a0a-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 25.608,
+      "mnozstvi": 6.913,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16632,7 +17766,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "a957a5b9-8586-4578-84ef-cf9bd6971a0a-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 16.129,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.4.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.40 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -16667,7 +17828,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 25.608,
+      "mnozstvi": 23.042,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16684,7 +17845,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -16717,7 +17878,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.40 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 25.608,
+      "mnozstvi": 23.042,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16734,7 +17895,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -16916,11 +18077,11 @@
       "warnings": []
     },
     {
-      "item_id": "a1613122-5cac-4360-a253-3eb92c14f04a",
+      "item_id": "a1613122-5cac-4360-a253-3eb92c14f04a-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -16937,7 +18098,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "a1613122-5cac-4360-a253-3eb92c14f04a-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.4.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -17266,11 +18452,11 @@
       "warnings": []
     },
     {
-      "item_id": "30738a48-b901-459e-82d6-c0db2dda9432",
+      "item_id": "30738a48-b901-459e-82d6-c0db2dda9432-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.0,
+      "mnozstvi": 1.05,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -17287,7 +18473,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "30738a48-b901-459e-82d6-c0db2dda9432-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.NP",
+        "mistnosti": [
+          "D.1.4.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -17616,11 +18827,11 @@
       "warnings": []
     },
     {
-      "item_id": "a5e1fee4-b82b-4ca4-9108-971af07e9746",
+      "item_id": "a5e1fee4-b82b-4ca4-9108-971af07e9746-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -17637,7 +18848,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "a5e1fee4-b82b-4ca4-9108-971af07e9746-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.1.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -18044,11 +19280,11 @@
       "warnings": []
     },
     {
-      "item_id": "161df219-5d11-4710-9155-b7561790aa02",
+      "item_id": "161df219-5d11-4710-9155-b7561790aa02-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.24,
+      "mnozstvi": 0.651,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -18065,7 +19301,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "161df219-5d11-4710-9155-b7561790aa02-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.868,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.1.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -18475,7 +19736,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.431,
+      "mnozstvi": 10.286,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -18492,17 +19753,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "b5a5c825-7d24-41eb-9882-94a4bef56c65",
+      "item_id": "b5a5c825-7d24-41eb-9882-94a4bef56c65-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 11.431,
+      "mnozstvi": 3.086,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -18519,7 +19780,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "b5a5c825-7d24-41eb-9882-94a4bef56c65-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 7.2,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.1.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -18554,7 +19842,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.431,
+      "mnozstvi": 10.286,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -18571,7 +19859,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -18604,7 +19892,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.431,
+      "mnozstvi": 10.286,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -18621,7 +19909,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -18959,7 +20247,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 26.04,
+      "mnozstvi": 23.431,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -18976,17 +20264,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "bb1617b9-e576-4ca1-95d0-7b9e88d78691",
+      "item_id": "bb1617b9-e576-4ca1-95d0-7b9e88d78691-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 26.04,
+      "mnozstvi": 7.029,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -19003,7 +20291,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "bb1617b9-e576-4ca1-95d0-7b9e88d78691-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 16.402,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.1.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.40 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -19038,7 +20353,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 26.04,
+      "mnozstvi": 23.431,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -19055,7 +20370,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -19088,7 +20403,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.40 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 26.04,
+      "mnozstvi": 23.431,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -19105,7 +20420,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -19287,11 +20602,11 @@
       "warnings": []
     },
     {
-      "item_id": "a0fb6e9d-395e-48f4-8d01-a9bf6aec48b3",
+      "item_id": "a0fb6e9d-395e-48f4-8d01-a9bf6aec48b3-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -19308,7 +20623,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "a0fb6e9d-395e-48f4-8d01-a9bf6aec48b3-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.1.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -19637,11 +20977,11 @@
       "warnings": []
     },
     {
-      "item_id": "2a00b60b-c5a2-4041-8f96-c7d51575eb10",
+      "item_id": "2a00b60b-c5a2-4041-8f96-c7d51575eb10-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.0,
+      "mnozstvi": 1.05,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -19658,7 +20998,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "2a00b60b-c5a2-4041-8f96-c7d51575eb10-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.1.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -19987,11 +21352,11 @@
       "warnings": []
     },
     {
-      "item_id": "8136b1bb-a810-41a4-a73b-45b300d2c47d",
+      "item_id": "8136b1bb-a810-41a4-a73b-45b300d2c47d-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 4.88,
+      "mnozstvi": 2.562,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -20008,7 +21373,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "8136b1bb-a810-41a4-a73b-45b300d2c47d-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 3.416,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.2.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -21221,7 +22611,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 18.44,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -21238,17 +22628,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "17e620ab-7ae1-462e-b7d1-489950bda536",
+      "item_id": "17e620ab-7ae1-462e-b7d1-489950bda536-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 5.532,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -21265,7 +22655,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "17e620ab-7ae1-462e-b7d1-489950bda536-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 12.908,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.2.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -21300,7 +22717,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 18.44,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -21317,7 +22734,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -21350,7 +22767,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 18.44,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -21367,7 +22784,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -21549,11 +22966,11 @@
       "warnings": []
     },
     {
-      "item_id": "4580e448-665e-4a86-8edc-665b8a298403",
+      "item_id": "4580e448-665e-4a86-8edc-665b8a298403-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.72,
+      "mnozstvi": 1.953,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -21570,7 +22987,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "4580e448-665e-4a86-8edc-665b8a298403-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.604,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.3.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -22783,7 +24225,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 18.44,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -22800,17 +24242,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "59180c14-6527-4d09-b11f-52430e284c6e",
+      "item_id": "59180c14-6527-4d09-b11f-52430e284c6e-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 5.532,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -22827,7 +24269,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "59180c14-6527-4d09-b11f-52430e284c6e-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 12.908,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.3.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -22862,7 +24331,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 18.44,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -22879,7 +24348,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -22912,7 +24381,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 20.493,
+      "mnozstvi": 18.44,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -22929,7 +24398,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -23111,11 +24580,11 @@
       "warnings": []
     },
     {
-      "item_id": "c1f97606-3888-47c3-b7b8-5e62baa61b19",
+      "item_id": "c1f97606-3888-47c3-b7b8-5e62baa61b19-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -23132,7 +24601,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "c1f97606-3888-47c3-b7b8-5e62baa61b19-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.4.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -23539,11 +25033,11 @@
       "warnings": []
     },
     {
-      "item_id": "71606142-00f0-4197-841d-09bc31004d3c",
+      "item_id": "71606142-00f0-4197-841d-09bc31004d3c-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -23560,7 +25054,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "71606142-00f0-4197-841d-09bc31004d3c-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.4.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -23970,7 +25489,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.5,
+      "mnozstvi": 10.348,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -23987,17 +25506,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "04e283f7-165a-4252-882a-f8df686f48ad",
+      "item_id": "04e283f7-165a-4252-882a-f8df686f48ad-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 11.5,
+      "mnozstvi": 3.104,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24014,7 +25533,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "04e283f7-165a-4252-882a-f8df686f48ad-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 7.244,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.4.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -24049,7 +25595,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.5,
+      "mnozstvi": 10.348,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24066,7 +25612,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -24099,7 +25645,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 11.5,
+      "mnozstvi": 10.348,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24116,7 +25662,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -24454,7 +26000,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 25.776,
+      "mnozstvi": 23.193,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24471,17 +26017,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "3b372909-f8d1-4551-9e82-36a19be07c9d",
+      "item_id": "3b372909-f8d1-4551-9e82-36a19be07c9d-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 25.776,
+      "mnozstvi": 6.958,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24498,7 +26044,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "3b372909-f8d1-4551-9e82-36a19be07c9d-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 16.235,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.4.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.40 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -24533,7 +26106,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 25.776,
+      "mnozstvi": 23.193,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24550,7 +26123,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -24583,7 +26156,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.40 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 25.776,
+      "mnozstvi": 23.193,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24600,7 +26173,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -24782,11 +26355,11 @@
       "warnings": []
     },
     {
-      "item_id": "37824aec-8211-44ba-a2d1-431e154faa64",
+      "item_id": "37824aec-8211-44ba-a2d1-431e154faa64-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -24803,7 +26376,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "37824aec-8211-44ba-a2d1-431e154faa64-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.4.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -25132,11 +26730,11 @@
       "warnings": []
     },
     {
-      "item_id": "44c82397-3c2b-4c79-8ca2-6c52ac15ada2",
+      "item_id": "44c82397-3c2b-4c79-8ca2-6c52ac15ada2-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.0,
+      "mnozstvi": 1.05,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -25153,7 +26751,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "44c82397-3c2b-4c79-8ca2-6c52ac15ada2-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.4.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -25482,11 +27105,11 @@
       "warnings": []
     },
     {
-      "item_id": "6ecaf3b0-2aac-47ab-a0f3-3168b8279240",
+      "item_id": "6ecaf3b0-2aac-47ab-a0f3-3168b8279240-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.36,
+      "mnozstvi": 0.714,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -25503,7 +27126,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "6ecaf3b0-2aac-47ab-a0f3-3168b8279240-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.952,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "2.NP",
+        "mistnosti": [
+          "D.2.S.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F04",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -25910,11 +27558,11 @@
       "warnings": []
     },
     {
-      "item_id": "7c53c9ac-3bd5-46dd-919e-569534ccadc6",
+      "item_id": "7c53c9ac-3bd5-46dd-919e-569534ccadc6-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.56,
+      "mnozstvi": 1.869,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -25931,7 +27579,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "7c53c9ac-3bd5-46dd-919e-569534ccadc6-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.492,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.1.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -26338,11 +28011,11 @@
       "warnings": []
     },
     {
-      "item_id": "8538599a-050c-4d0e-a931-0812c2887824",
+      "item_id": "8538599a-050c-4d0e-a931-0812c2887824-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -26359,7 +28032,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "8538599a-050c-4d0e-a931-0812c2887824-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.1.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -26769,7 +28467,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 14.927,
+      "mnozstvi": 13.431,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -26786,17 +28484,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "b23068f0-77f9-409d-8bfa-37efb8a41831",
+      "item_id": "b23068f0-77f9-409d-8bfa-37efb8a41831-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 14.927,
+      "mnozstvi": 4.029,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -26813,7 +28511,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "b23068f0-77f9-409d-8bfa-37efb8a41831-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 9.402,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.1.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -26848,7 +28573,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 14.927,
+      "mnozstvi": 13.431,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -26865,7 +28590,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -26898,7 +28623,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 14.927,
+      "mnozstvi": 13.431,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -26915,7 +28640,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -27097,11 +28822,11 @@
       "warnings": []
     },
     {
-      "item_id": "d9241cb5-fac1-4154-8717-f70914473502",
+      "item_id": "d9241cb5-fac1-4154-8717-f70914473502-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.28,
+      "mnozstvi": 1.197,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -27118,7 +28843,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d9241cb5-fac1-4154-8717-f70914473502-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.596,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.1.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -27681,7 +29431,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 29.136,
+      "mnozstvi": 26.217,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -27698,17 +29448,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "5e6b0c60-1c89-4a9b-a29f-a1a67ffe760c",
+      "item_id": "5e6b0c60-1c89-4a9b-a29f-a1a67ffe760c-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 29.136,
+      "mnozstvi": 7.865,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -27725,7 +29475,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "5e6b0c60-1c89-4a9b-a29f-a1a67ffe760c-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 18.352,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.1.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.40 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -27760,7 +29537,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 29.136,
+      "mnozstvi": 26.217,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -27777,7 +29554,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -27810,7 +29587,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.40 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 29.136,
+      "mnozstvi": 26.217,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -27827,7 +29604,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -28334,11 +30111,11 @@
       "warnings": []
     },
     {
-      "item_id": "d690d5e0-7065-4f21-be71-2bdbcd7bc543",
+      "item_id": "d690d5e0-7065-4f21-be71-2bdbcd7bc543-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.084,
+      "mnozstvi": 1.094,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -28355,7 +30132,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d690d5e0-7065-4f21-be71-2bdbcd7bc543-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.459,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.1.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -28684,11 +30486,11 @@
       "warnings": []
     },
     {
-      "item_id": "7c1d3e9f-bc27-42b2-851f-c3fb6d1099ba",
+      "item_id": "7c1d3e9f-bc27-42b2-851f-c3fb6d1099ba-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 3.52,
+      "mnozstvi": 1.848,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -28705,7 +30507,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "7c1d3e9f-bc27-42b2-851f-c3fb6d1099ba-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 2.464,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.2.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -29268,7 +31095,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 18.837,
+      "mnozstvi": 16.95,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -29285,17 +31112,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "96a513c0-701d-436a-ba29-c741e54b3255",
+      "item_id": "96a513c0-701d-436a-ba29-c741e54b3255-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 18.837,
+      "mnozstvi": 5.085,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -29312,7 +31139,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "96a513c0-701d-436a-ba29-c741e54b3255-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 11.865,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.2.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -29347,7 +31201,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 18.837,
+      "mnozstvi": 16.95,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -29364,7 +31218,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -29397,7 +31251,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 18.837,
+      "mnozstvi": 16.95,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -29414,7 +31268,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -30246,11 +32100,11 @@
       "warnings": []
     },
     {
-      "item_id": "d63e2c16-f721-4e7c-bda7-c5950bf4ab4c",
+      "item_id": "d63e2c16-f721-4e7c-bda7-c5950bf4ab4c-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -30267,7 +32121,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d63e2c16-f721-4e7c-bda7-c5950bf4ab4c-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.2.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -30674,11 +32553,11 @@
       "warnings": []
     },
     {
-      "item_id": "d59b5d6a-20c8-4347-944c-844c7ed8ece6",
+      "item_id": "d59b5d6a-20c8-4347-944c-844c7ed8ece6-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -30695,7 +32574,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "d59b5d6a-20c8-4347-944c-844c7ed8ece6-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -31102,11 +33006,11 @@
       "warnings": []
     },
     {
-      "item_id": "85ee6f0e-9e11-4f4b-8a70-e163dd09afaf",
+      "item_id": "85ee6f0e-9e11-4f4b-8a70-e163dd09afaf-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.32,
+      "mnozstvi": 0.693,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -31123,7 +33027,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "85ee6f0e-9e11-4f4b-8a70-e163dd09afaf-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.924,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -31533,7 +33462,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 14.835,
+      "mnozstvi": 13.349,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -31550,17 +33479,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "3538cab1-8cb1-4bde-b0a8-c3a7b54d1ca7",
+      "item_id": "3538cab1-8cb1-4bde-b0a8-c3a7b54d1ca7-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 14.835,
+      "mnozstvi": 4.005,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -31577,7 +33506,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "3538cab1-8cb1-4bde-b0a8-c3a7b54d1ca7-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 9.344,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.30 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -31612,7 +33568,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 14.835,
+      "mnozstvi": 13.349,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -31629,7 +33585,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -31662,7 +33618,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.30 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 14.835,
+      "mnozstvi": 13.349,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -31679,7 +33635,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -31861,11 +33817,11 @@
       "warnings": []
     },
     {
-      "item_id": "7aba2ab2-303a-41e3-882a-d59b120588b5",
+      "item_id": "7aba2ab2-303a-41e3-882a-d59b120588b5-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 2.32,
+      "mnozstvi": 1.218,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -31882,7 +33838,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "7aba2ab2-303a-41e3-882a-d59b120588b5-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.624,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -32445,7 +34426,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod hydroizolaci stěn (F06)",
       "MJ": "m2",
-      "mnozstvi": 28.896,
+      "mnozstvi": 26.001,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -32462,17 +34443,17 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": [
         "PROBE 2: starý VV reports only 43 m² hydroizolace pod obklad komplex; ground truth ~283 m² komplex — significant gap"
       ]
     },
     {
-      "item_id": "719bf875-8472-478a-92a3-f4bfadeb6411",
+      "item_id": "719bf875-8472-478a-92a3-f4bfadeb6411-full",
       "kapitola": "PSV-781",
-      "popis": "Hydroizolační stěrka 2× pod obklad (F06)",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (full-height sprcha wall)",
       "MJ": "m2",
-      "mnozstvi": 28.896,
+      "mnozstvi": 7.8,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -32489,7 +34470,34 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 30 % full-height",
+      "warnings": [
+        "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
+      ]
+    },
+    {
+      "item_id": "719bf875-8472-478a-92a3-f4bfadeb6411-partial",
+      "kapitola": "PSV-781",
+      "popis": "Hydroizolační stěrka 2× pod obklad (F06) (partial-height do 2.1 m)",
+      "MJ": "m2",
+      "mnozstvi": 18.201,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F06",
+        "vrstva": "keramický obklad ~2.40 m"
+      },
+      "vyrobce_ref": "např. Schomburg AquaFin 1K nebo Cemix 1K",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna); D1 split: 70 % partial 2.1 m",
       "warnings": [
         "⚠️ KRITICKÉ — VYNECHANE_KRITICKE in starý VV (PROBE 2)"
       ]
@@ -32524,7 +34532,7 @@
       "kapitola": "PSV-781",
       "popis": "Penetrace pod lepidlo obkladu (F06)",
       "MJ": "m2",
-      "mnozstvi": 28.896,
+      "mnozstvi": 26.001,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -32541,7 +34549,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -32574,7 +34582,7 @@
       "kapitola": "PSV-781",
       "popis": "Obklad keramický — kladení do výšky ~2.40 m (F06)",
       "MJ": "m2",
-      "mnozstvi": 28.896,
+      "mnozstvi": 26.001,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -32591,7 +34599,7 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "Phase 3c D3: opening areas subtracted (door 0.8×2.1 + win 0.6×0.6 per koupelna)",
       "warnings": []
     },
     {
@@ -32773,11 +34781,11 @@
       "warnings": []
     },
     {
-      "item_id": "664248a9-da98-47e3-963b-572e9ad06a2d",
+      "item_id": "664248a9-da98-47e3-963b-572e9ad06a2d-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.0,
+      "mnozstvi": 0.525,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -32794,7 +34802,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "664248a9-da98-47e3-963b-572e9ad06a2d-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.7,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -33123,11 +35156,11 @@
       "warnings": []
     },
     {
-      "item_id": "1dc7e0d2-818b-47ec-bc82-0b42a0879193",
+      "item_id": "1dc7e0d2-818b-47ec-bc82-0b42a0879193-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 0.924,
+      "mnozstvi": 0.485,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -33144,7 +35177,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "1dc7e0d2-818b-47ec-bc82-0b42a0879193-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.647,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.3.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F05",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {
@@ -33473,11 +35531,11 @@
       "warnings": []
     },
     {
-      "item_id": "771565d1-a6fa-4949-85f4-367cefdb7e22",
+      "item_id": "771565d1-a6fa-4949-85f4-367cefdb7e22-fas",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka ~200 mm)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 350 mm fasádní)",
       "MJ": "m2",
-      "mnozstvi": 1.36,
+      "mnozstvi": 0.714,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -33494,7 +35552,32 @@
       "urs_description": null,
       "confidence": 0.9,
       "status": "to_audit",
-      "poznamka": "",
+      "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
+      "warnings": []
+    },
+    {
+      "item_id": "771565d1-a6fa-4949-85f4-367cefdb7e22-vnt",
+      "kapitola": "HSV-612",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 200 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 0.952,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": [
+          "D.3.S.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F04",
+        "vrstva": "omítka sádrová 10 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.9,
+      "status": "to_audit",
+      "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": []
     },
     {

@@ -117,7 +117,8 @@
       "D_share_for_komplex_items": 0.25,
       "sokl_height_m": 0.5,
       "obvod_m": 80.98
-    }
+    },
+    "phase_3c_refined": true
   },
   "items": [
     {
@@ -1034,7 +1035,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=39.882000000000005 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "2056133f-1057-4daa-bca6-87b695ecfd9f",
@@ -1058,7 +1061,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "8f9c406c-128e-4566-b294-fd7ba00ca845",
@@ -1082,7 +1087,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=39.88 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "39232c03-87b0-4ff3-9497-241dacbf0c23",
@@ -1106,7 +1113,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "6bddf961-39d7-499f-9290-3dab016d8bd7",
@@ -1130,7 +1139,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=39.88 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "486f4042-814a-4745-a223-cda424cadbdc",
@@ -1154,7 +1165,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "a30ec354-39a5-419b-84ad-ba6cb0d0af54",
@@ -1178,7 +1191,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=83.246 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "25b1e3c3-af19-4c0e-a718-06f8058e516e",
@@ -1202,7 +1217,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "1b9a3308-8711-446b-990a-17a9852d159b",
@@ -1226,7 +1243,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=83.246 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "0614f756-3985-45aa-9cfb-17fc64f56725",
@@ -1250,7 +1269,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "8d9459ee-ec40-4599-bed5-5a6056466d3c",
@@ -1274,7 +1295,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=83.246 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "62f4ec82-4983-45c5-9bfb-c0b649657668",
@@ -1298,7 +1321,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "32d1f6a1-c45f-4d5c-a781-b09d72a94e70",
@@ -1322,7 +1347,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=61.96999999999999 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "63a4a5a1-6f13-4615-926e-a02eaba78cdb",
@@ -1346,7 +1373,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "09d459f3-f8d2-4af1-ac16-095cef2364a2",
@@ -1370,7 +1399,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=62.5 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "ebc3d989-39dd-49da-9b49-61d832a7fd7b",
@@ -1394,7 +1425,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "71929fb5-f260-49c6-9203-adf97240bc86",
@@ -1418,7 +1451,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=36.0 ks",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "3dccf990-a969-46c8-8bfc-548f79650008",
@@ -1442,7 +1477,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=82.0 ks",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "d21b0967-ac2e-4833-9a61-e7ce7ced579e",
@@ -1466,7 +1503,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=1.0 ks",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "f5876522-5d6f-45cf-8cf4-abf0f4104825",
@@ -1490,7 +1529,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=7.0 ks",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "6f0ab875-1041-44e5-a3c4-8da28c8f5a31",
@@ -1514,7 +1555,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=4.0 ks",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "e1e9bae0-13d3-4bac-8664-3a2df5d59da4",
@@ -1538,7 +1581,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=2.856 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "187538a2-3f15-46da-b50b-4afce2fcd323",
@@ -1562,7 +1607,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=1.8 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "4a60c25e-42dc-46e4-bdf0-a96e1e0ec8f2",
@@ -1586,7 +1633,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=8.0 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "bcc31543-e843-4db9-932d-e0571f6091f9",
@@ -1610,7 +1659,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=420.0 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "108fd777-cca0-4c9a-8d09-518d11834f4d",
@@ -1634,7 +1685,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=20.615000000000002 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "1e7a4900-b5a6-4c7c-8282-4e9e7b8fa1e2",
@@ -1658,7 +1711,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "35c6aa56-df0f-4318-893f-a509c29dc2ae",
@@ -1682,7 +1737,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=20.8 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "e7bbbce7-0ad6-4229-9742-740d5d3f7fc5",
@@ -1706,7 +1763,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "800f0620-61e6-4f9d-a28b-a9287920765c",
@@ -1730,7 +1789,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=63.81400000000001 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "4c23b8e1-d21b-4bdb-9a67-a4d4f6d13359",
@@ -1754,7 +1815,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=49.922000000000004 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "899bf18d-d245-4335-9d8a-c1c2d1ca53d8",
@@ -1778,7 +1841,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=46.88 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "c99e9a4d-9416-45b8-9057-203d3f67d6de",
@@ -1802,7 +1867,9 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "Quantity from Tabulka klempířských (komplex A+B+C+D) × 0.25 D-share (4 equal objekty); tabulka_qty=46.88 bm",
-      "warnings": []
+      "warnings": [
+        "D-share 0.25 uniform across A/B/C/D — per-objekt distribution not extractable from komplex Tabulka klempířských; refine in Phase 4 from DXF."
+      ]
     },
     {
       "item_id": "d9494713-75e1-4d8f-95b1-cb8d07329833",
@@ -2395,6 +2462,156 @@
       "status": "to_audit",
       "poznamka": "overlap 10 %",
       "warnings": []
+    },
+    {
+      "item_id": "16e4db35-e852-4a81-bbe9-fc87cac4f664",
+      "kapitola": "PSV-712",
+      "popis": "Hydroizolace SBS pás (RF11 vegetační)",
+      "MJ": "m2",
+      "mnozstvi": 147.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF11",
+        "kind": "vegetační střecha nad 1.PP"
+      },
+      "vyrobce_ref": "např. Glastek 40",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.7,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D9: RF11 area estimate 134 m²",
+      "warnings": [
+        "RF11 vegetační střecha — area estimate; refine via 1.PP DXF roof boundary in Phase 4"
+      ]
+    },
+    {
+      "item_id": "9565b505-f3bb-4ef8-81de-0222a7b1b646",
+      "kapitola": "PSV-712",
+      "popis": "Tepelná izolace EPS 200 mm (RF11)",
+      "MJ": "m2",
+      "mnozstvi": 134.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF11",
+        "kind": "vegetační střecha nad 1.PP"
+      },
+      "vyrobce_ref": "EPS 100/150",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.7,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D9: RF11 area estimate 134 m²",
+      "warnings": [
+        "RF11 vegetační střecha — area estimate; refine via 1.PP DXF roof boundary in Phase 4"
+      ]
+    },
+    {
+      "item_id": "2b1fbcbf-63e4-4bb9-bb62-3d1a209413fd",
+      "kapitola": "PSV-712",
+      "popis": "Spádová klín EPS prům. tl. 100 mm (RF11)",
+      "MJ": "m2",
+      "mnozstvi": 134.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF11",
+        "kind": "vegetační střecha nad 1.PP"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.7,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D9: RF11 area estimate 134 m²",
+      "warnings": [
+        "RF11 vegetační střecha — area estimate; refine via 1.PP DXF roof boundary in Phase 4"
+      ]
+    },
+    {
+      "item_id": "f024a57c-1515-4ffc-8b33-588695013577",
+      "kapitola": "PSV-712",
+      "popis": "Geotextilie + drenážní vrstva (RF11)",
+      "MJ": "m2",
+      "mnozstvi": 147.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF11",
+        "kind": "vegetační střecha nad 1.PP"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.7,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D9: RF11 area estimate 134 m²",
+      "warnings": [
+        "RF11 vegetační střecha — area estimate; refine via 1.PP DXF roof boundary in Phase 4"
+      ]
+    },
+    {
+      "item_id": "343b548d-3565-4ada-a9d5-78a14ea4a2b0",
+      "kapitola": "PSV-712",
+      "popis": "Substrát extenzivní 100 mm (RF11)",
+      "MJ": "m3",
+      "mnozstvi": 13.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF11",
+        "kind": "vegetační střecha nad 1.PP"
+      },
+      "vyrobce_ref": "extenzivní substrát Sedum",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.7,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D9: RF11 area estimate 134 m²",
+      "warnings": [
+        "RF11 vegetační střecha — area estimate; refine via 1.PP DXF roof boundary in Phase 4"
+      ]
+    },
+    {
+      "item_id": "8856a2d1-5a06-4ac1-ae40-eee4af43f130",
+      "kapitola": "PSV-712",
+      "popis": "Vegetace Sedum mat (RF11)",
+      "MJ": "m2",
+      "mnozstvi": 134.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "RF": "RF11",
+        "kind": "vegetační střecha nad 1.PP"
+      },
+      "vyrobce_ref": "rozchodník mix",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.7,
+      "status": "to_audit",
+      "poznamka": "Phase 3c D9: RF11 area estimate 134 m²",
+      "warnings": [
+        "RF11 vegetační střecha — area estimate; refine via 1.PP DXF roof boundary in Phase 4"
+      ]
     }
   ]
 }
