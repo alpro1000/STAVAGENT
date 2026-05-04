@@ -9,12 +9,12 @@
       "PSV-713",
       "PSV-762",
       "PSV-764",
-      "PSV-765"
+      "PSV-765",
+      "PSV-783",
+      "PSV-711 (FF03 radon)"
     ],
-    "kapitoly_pending": [
-      "PSV-783 vnější + suterén"
-    ],
-    "items_count": 78,
+    "kapitoly_pending": [],
+    "items_count": 98,
     "summary_per_kapitola": {
       "HSV-622.1": {
         "count": 4,
@@ -44,11 +44,11 @@
         }
       },
       "PSV-713": {
-        "count": 14,
+        "count": 17,
         "totals_per_mj": {
-          "m2": 2559.9,
-          "kg": 9641.53,
-          "ks": 4962.48,
+          "m2": 2827.9,
+          "kg": 9775.53,
+          "ks": 6034.48,
           "m": 533.92
         }
       },
@@ -73,6 +73,19 @@
           "m2": 304.0,
           "ks": 10954.0,
           "m": 68.49
+        }
+      },
+      "PSV-783": {
+        "count": 15,
+        "totals_per_mj": {
+          "kg": 3913.33,
+          "m2": 2599.44
+        }
+      },
+      "PSV-711": {
+        "count": 2,
+        "totals_per_mj": {
+          "m2": 177.41
         }
       }
     },
@@ -108,7 +121,7 @@
   },
   "items": [
     {
-      "item_id": "4d1d125e-7cea-4337-9d3d-c7edfb827600",
+      "item_id": "1d721a72-5d6c-462c-80a7-72a611c2e358",
       "kapitola": "HSV-622.1",
       "popis": "Penetrace pod cihelné pásky",
       "MJ": "m2",
@@ -131,7 +144,7 @@
       "warnings": []
     },
     {
-      "item_id": "b8c05a8a-1b3a-42da-8366-b42bdc7469c2",
+      "item_id": "32e9deb1-d992-4b1b-80f1-3555df47be98",
       "kapitola": "HSV-622.1",
       "popis": "Lepidlo flexibilní pro cihelné pásky",
       "MJ": "kg",
@@ -154,7 +167,7 @@
       "warnings": []
     },
     {
-      "item_id": "411ae1dd-d93c-4cbb-9da0-1ca173099799",
+      "item_id": "d42db1fc-33fa-4181-9b06-2f8b61f3a73e",
       "kapitola": "HSV-622.1",
       "popis": "Cihelné pásky Terca — kladení",
       "MJ": "m2",
@@ -177,7 +190,7 @@
       "warnings": []
     },
     {
-      "item_id": "fa6fc751-4345-4478-aa1c-3674fa4c069a",
+      "item_id": "51371cce-042c-4074-9f1b-236bfd4aeef4",
       "kapitola": "HSV-622.1",
       "popis": "Spárovací hmota Polyblend S",
       "MJ": "kg",
@@ -200,7 +213,7 @@
       "warnings": []
     },
     {
-      "item_id": "6544e591-a220-4e8f-8226-1ba7a149a1e1",
+      "item_id": "4c8b94ef-0f9f-4981-9f29-800bc19d62cf",
       "kapitola": "HSV-622.2",
       "popis": "Penetrace pod tenkovrstvou omítku (F13)",
       "MJ": "m2",
@@ -223,7 +236,7 @@
       "warnings": []
     },
     {
-      "item_id": "3458c137-196f-49e4-9ed9-4a51d309706e",
+      "item_id": "64bd6788-4ef9-4ae3-b899-4cc3f1dd0055",
       "kapitola": "HSV-622.2",
       "popis": "Armovací síť do první vrstvy (F13)",
       "MJ": "m2",
@@ -246,7 +259,7 @@
       "warnings": []
     },
     {
-      "item_id": "7e4c96f7-01ec-4cbc-a240-694fec995c8a",
+      "item_id": "0f8e6d6b-63d2-43c6-9c3d-cda353e79bde",
       "kapitola": "HSV-622.2",
       "popis": "Tenkovrstvá silikonová omítka 1.5–2 mm (F13)",
       "MJ": "m2",
@@ -269,7 +282,7 @@
       "warnings": []
     },
     {
-      "item_id": "d0b284b6-355e-4bd1-989f-c8bf27ea8c2d",
+      "item_id": "174d3925-96d1-448f-9f64-506b8c171f12",
       "kapitola": "HSV-622.3",
       "popis": "Penetrace pod betonovou stěrku (F16)",
       "MJ": "m2",
@@ -292,7 +305,7 @@
       "warnings": []
     },
     {
-      "item_id": "c3c502b2-7f24-4046-a329-d7f1b4f222a6",
+      "item_id": "6bfb47ab-e0b8-44a5-a61f-9bbc0b0b4345",
       "kapitola": "HSV-622.3",
       "popis": "Betonová stěrka strukturovaná (F16)",
       "MJ": "m2",
@@ -315,7 +328,7 @@
       "warnings": []
     },
     {
-      "item_id": "ddb19b16-7402-4f39-9e6f-8e05f26eacf6",
+      "item_id": "ae9ec6ae-06b6-4639-bd82-6045551d55e3",
       "kapitola": "PSV-712",
       "popis": "Parozábrana (RF13)",
       "MJ": "m2",
@@ -338,7 +351,7 @@
       "warnings": []
     },
     {
-      "item_id": "c81702eb-4fbb-424f-9333-8624df02095c",
+      "item_id": "9c62ddad-375e-4367-917e-1800a243bf06",
       "kapitola": "PSV-712",
       "popis": "EPS 200 mm tepelná izolace (RF13)",
       "MJ": "m2",
@@ -361,7 +374,7 @@
       "warnings": []
     },
     {
-      "item_id": "8ddaa4f7-dde6-44f3-b38d-f13ee74403ec",
+      "item_id": "d03c5278-29ba-4520-aaa3-d0a6fd9a4a5d",
       "kapitola": "PSV-712",
       "popis": "Spádová klín EPS prům. tl. 100 mm (RF13)",
       "MJ": "m2",
@@ -384,7 +397,7 @@
       "warnings": []
     },
     {
-      "item_id": "b3c498b6-eb21-4b40-9f16-42c5c2f1d8c4",
+      "item_id": "6718b782-85ae-4fdf-93c9-d000bfb9506a",
       "kapitola": "PSV-712",
       "popis": "PVC fólie DEKPLAN 77 (RF13)",
       "MJ": "m2",
@@ -407,7 +420,7 @@
       "warnings": []
     },
     {
-      "item_id": "0ecb6d60-6499-42c2-9450-d498b61beb17",
+      "item_id": "92f2e07b-7c03-45b2-a684-ce8644ded083",
       "kapitola": "PSV-712",
       "popis": "Mechanické kotvení PVC fólie (RF13)",
       "MJ": "ks",
@@ -430,7 +443,7 @@
       "warnings": []
     },
     {
-      "item_id": "660766ac-75c1-49fc-8295-aa1c58790bc5",
+      "item_id": "48de4d93-744c-4132-969e-48fa83fcceab",
       "kapitola": "PSV-712",
       "popis": "Geotextilie pod chodník (RF13)",
       "MJ": "m2",
@@ -453,7 +466,7 @@
       "warnings": []
     },
     {
-      "item_id": "cd35f2c8-c188-4ee2-8bb1-cd2a9c11cd0a",
+      "item_id": "b4c707f4-e20a-4b41-aae6-16951a11a288",
       "kapitola": "PSV-712",
       "popis": "Štěrkový posyp 50 mm (RF13)",
       "MJ": "m3",
@@ -476,7 +489,7 @@
       "warnings": []
     },
     {
-      "item_id": "a6735d8b-6b6e-4e85-9297-1b5444bb0a5f",
+      "item_id": "5bdccb81-3489-49e8-ab45-83e12bb072cd",
       "kapitola": "PSV-712",
       "popis": "Hydroizolace balkóny (RF20)",
       "MJ": "m2",
@@ -499,7 +512,7 @@
       "warnings": []
     },
     {
-      "item_id": "746cb40c-9caa-4c5b-b684-4aa7cb0ccfce",
+      "item_id": "21d8af64-8cd2-4c7a-9558-00e6827bea10",
       "kapitola": "PSV-712",
       "popis": "XPS 80 mm tepelná izolace (RF20)",
       "MJ": "m2",
@@ -522,7 +535,7 @@
       "warnings": []
     },
     {
-      "item_id": "99792230-4ff4-4ef6-b344-2aecc0a30105",
+      "item_id": "6704c5df-3ee1-45f9-b090-e5db1164ce32",
       "kapitola": "PSV-712",
       "popis": "Geotextilie pod terasovou dlažbu (RF20)",
       "MJ": "m2",
@@ -545,7 +558,7 @@
       "warnings": []
     },
     {
-      "item_id": "8e4a5a28-82d1-4921-8d39-e44dd6f73ee3",
+      "item_id": "25b8bdac-a52b-40b2-b7f1-4f54b5de3953",
       "kapitola": "PSV-712",
       "popis": "Terasová dlažba 60×60 cm na podstavcích (RF20)",
       "MJ": "m2",
@@ -568,7 +581,7 @@
       "warnings": []
     },
     {
-      "item_id": "6e673d47-0efe-482e-8779-91aa67ce5417",
+      "item_id": "e7401a4b-9a9b-4c51-909a-1c2b186a917f",
       "kapitola": "PSV-712",
       "popis": "Odvodňovač terasy + napojení na svod (RF20)",
       "MJ": "ks",
@@ -591,7 +604,7 @@
       "warnings": []
     },
     {
-      "item_id": "80fbcfcb-dd5a-40ff-ba0e-f51c287d5e26",
+      "item_id": "b3a93f67-c64f-4f4d-a6a9-64b83a500fac",
       "kapitola": "PSV-713",
       "popis": "Penetrace podkladu ETICS",
       "MJ": "m2",
@@ -614,7 +627,7 @@
       "warnings": []
     },
     {
-      "item_id": "2b9b6dce-c045-491b-914a-930cb1a7c4fa",
+      "item_id": "7dafdc84-0763-4c6d-9d32-ac049be5045f",
       "kapitola": "PSV-713",
       "popis": "Lepicí stěrka pod EPS",
       "MJ": "kg",
@@ -637,7 +650,7 @@
       "warnings": []
     },
     {
-      "item_id": "1144bff4-7e5a-4c0e-b1f7-65201cb12e47",
+      "item_id": "f906b937-e621-4242-9b52-208bf58468ac",
       "kapitola": "PSV-713",
       "popis": "EPS 200 mm tepelná izolace fasáda",
       "MJ": "m2",
@@ -660,7 +673,7 @@
       "warnings": []
     },
     {
-      "item_id": "a133b138-b5c4-4159-8aa4-5a922e823435",
+      "item_id": "18571507-da1d-447a-be70-5a13051d4734",
       "kapitola": "PSV-713",
       "popis": "Talířové hmoždinky",
       "MJ": "ks",
@@ -683,7 +696,7 @@
       "warnings": []
     },
     {
-      "item_id": "eee987b7-bfa6-4c96-add6-621e54496c09",
+      "item_id": "1ef8803e-d7bf-49cf-a464-df4d04f7ed4e",
       "kapitola": "PSV-713",
       "popis": "Armovací síť do výztužné stěrky",
       "MJ": "m2",
@@ -706,7 +719,7 @@
       "warnings": []
     },
     {
-      "item_id": "59ece28a-2367-457b-b53f-739c1aec90c2",
+      "item_id": "6aa53a7d-102c-45d7-99f4-9e318f59369a",
       "kapitola": "PSV-713",
       "popis": "Výztužná stěrka pod finální vrstvu",
       "MJ": "kg",
@@ -729,7 +742,7 @@
       "warnings": []
     },
     {
-      "item_id": "856a89f7-57fd-4005-897d-1751150c418b",
+      "item_id": "55bb28dd-5b33-41ba-9dfb-2fcd5a3892bb",
       "kapitola": "PSV-713",
       "popis": "Soklový profil hliníkový",
       "MJ": "m",
@@ -752,7 +765,7 @@
       "warnings": []
     },
     {
-      "item_id": "9d9905d1-934e-4203-86b7-6f75cdd28faf",
+      "item_id": "98a12ff9-acfe-459b-990f-3eafe6a13754",
       "kapitola": "PSV-713",
       "popis": "Rohové lišty fasády hliníkové",
       "MJ": "m",
@@ -775,7 +788,7 @@
       "warnings": []
     },
     {
-      "item_id": "c75b27b1-392f-4861-962c-ff61da22e9ee",
+      "item_id": "bb11d00a-71b3-4eb2-8da3-056ea4ef591b",
       "kapitola": "PSV-713",
       "popis": "Lišty okolo otvorů (rohové + okenní)",
       "MJ": "m",
@@ -798,7 +811,7 @@
       "warnings": []
     },
     {
-      "item_id": "e2f0a1c4-3ba0-4af3-b2f4-8676fd713c66",
+      "item_id": "3898dcd2-e5a3-41dc-8dde-37f507e164ce",
       "kapitola": "PSV-713",
       "popis": "Penetrace soklu ETICS",
       "MJ": "m2",
@@ -821,7 +834,7 @@
       "warnings": []
     },
     {
-      "item_id": "03e28d84-5461-455c-9021-1664d29680ba",
+      "item_id": "58c685d2-45aa-47ab-bb8b-f93a0deb0a7b",
       "kapitola": "PSV-713",
       "popis": "XPS 100 mm sokl ETICS",
       "MJ": "m2",
@@ -843,7 +856,7 @@
       "warnings": []
     },
     {
-      "item_id": "f750efa3-41e0-4c83-81c9-329b81852515",
+      "item_id": "65408024-76a1-4014-85c7-adc95ff9acee",
       "kapitola": "PSV-713",
       "popis": "Lepicí stěrka soklová",
       "MJ": "kg",
@@ -866,7 +879,7 @@
       "warnings": []
     },
     {
-      "item_id": "1567bb22-c5f4-4620-8586-d98a9afbeaa6",
+      "item_id": "35f33e80-d581-4832-8468-3e8dfb7496ba",
       "kapitola": "PSV-713",
       "popis": "Hmoždinky soklové",
       "MJ": "ks",
@@ -889,7 +902,7 @@
       "warnings": []
     },
     {
-      "item_id": "e6220130-d60c-4191-9cbc-16c06cad0c91",
+      "item_id": "7b4ab310-a37e-457a-8b73-b89c1d3815d7",
       "kapitola": "PSV-713",
       "popis": "Mozaiková omítka soklová",
       "MJ": "m2",
@@ -912,7 +925,7 @@
       "warnings": []
     },
     {
-      "item_id": "876d4ef4-61f6-44f1-b141-ef9aba25e2c4",
+      "item_id": "065c1a61-8fce-41ce-b479-a857ce5a18ae",
       "kapitola": "PSV-762",
       "popis": "Difuzní fólie podkrokevní",
       "MJ": "m2",
@@ -934,7 +947,7 @@
       "warnings": []
     },
     {
-      "item_id": "d6861ecf-68f3-405a-b45a-891eb19478ba",
+      "item_id": "834ea99e-e0e9-4ede-8f85-633c294b9aa3",
       "kapitola": "PSV-762",
       "popis": "Latě 30×50 mm rozteč 330 mm pod bobrovku",
       "MJ": "m",
@@ -956,7 +969,7 @@
       "warnings": []
     },
     {
-      "item_id": "66a6671d-510f-442b-b7f7-a66ad14f5f24",
+      "item_id": "f7e4862d-3f3a-48c8-abe4-c3bc2d7decc8",
       "kapitola": "PSV-762",
       "popis": "Kontralatě 30×50 mm rozteč 1000 mm",
       "MJ": "m",
@@ -978,7 +991,7 @@
       "warnings": []
     },
     {
-      "item_id": "1510aa5b-bf78-4189-9383-5782735cc60b",
+      "item_id": "4db541c6-c0db-423a-8e14-c94033bd4af7",
       "kapitola": "PSV-762",
       "popis": "Spojovací materiál (vruty + svorky)",
       "MJ": "kg",
@@ -1000,7 +1013,7 @@
       "warnings": []
     },
     {
-      "item_id": "6a2951cf-7d0f-42c5-ad45-63c3146a913e",
+      "item_id": "0c319d62-21ae-4488-bf00-84a83c2aca78",
       "kapitola": "PSV-764",
       "popis": "TP01A: Nové zaatikové okapové žlaby",
       "MJ": "bm",
@@ -1024,7 +1037,7 @@
       "warnings": []
     },
     {
-      "item_id": "db41fedb-3764-4307-9df7-84880bb3b478",
+      "item_id": "2056133f-1057-4daa-bca6-87b695ecfd9f",
       "kapitola": "PSV-764",
       "popis": "Montáž TP01A (Nové zaatikové okapové žlaby)",
       "MJ": "bm",
@@ -1048,7 +1061,7 @@
       "warnings": []
     },
     {
-      "item_id": "e813878e-1f00-4c86-a140-bc124a34ab01",
+      "item_id": "8f9c406c-128e-4566-b294-fd7ba00ca845",
       "kapitola": "PSV-764",
       "popis": "TP01B: Okapnice navazující na zaatikové okapové žlaby",
       "MJ": "bm",
@@ -1072,7 +1085,7 @@
       "warnings": []
     },
     {
-      "item_id": "1ba1c0d7-0ad6-4eec-84d2-c112b450c4f0",
+      "item_id": "39232c03-87b0-4ff3-9497-241dacbf0c23",
       "kapitola": "PSV-764",
       "popis": "Montáž TP01B (Okapnice navazující na zaatikové okapové žlaby)",
       "MJ": "bm",
@@ -1096,7 +1109,7 @@
       "warnings": []
     },
     {
-      "item_id": "9d5e1629-58c6-40ed-89c4-5d8896b44df6",
+      "item_id": "6bddf961-39d7-499f-9290-3dab016d8bd7",
       "kapitola": "PSV-764",
       "popis": "TP01C: Čelní lišta navazující na zaatikové okapové žlaby",
       "MJ": "bm",
@@ -1120,7 +1133,7 @@
       "warnings": []
     },
     {
-      "item_id": "698d9841-16b9-41fc-a50e-bbd2655e61af",
+      "item_id": "486f4042-814a-4745-a223-cda424cadbdc",
       "kapitola": "PSV-764",
       "popis": "Montáž TP01C (Čelní lišta navazující na zaatikové okapové žlaby)",
       "MJ": "bm",
@@ -1144,7 +1157,7 @@
       "warnings": []
     },
     {
-      "item_id": "fdf6f506-2b45-40fa-8775-391678433490",
+      "item_id": "a30ec354-39a5-419b-84ad-ba6cb0d0af54",
       "kapitola": "PSV-764",
       "popis": "TP02A: Nové zaatikové okapové žlaby",
       "MJ": "bm",
@@ -1168,7 +1181,7 @@
       "warnings": []
     },
     {
-      "item_id": "bd435159-f73c-4bd2-8ebc-da8204b84a9d",
+      "item_id": "25b1e3c3-af19-4c0e-a718-06f8058e516e",
       "kapitola": "PSV-764",
       "popis": "Montáž TP02A (Nové zaatikové okapové žlaby)",
       "MJ": "bm",
@@ -1192,7 +1205,7 @@
       "warnings": []
     },
     {
-      "item_id": "38797edf-2ced-4374-b550-e220804bd68d",
+      "item_id": "1b9a3308-8711-446b-990a-17a9852d159b",
       "kapitola": "PSV-764",
       "popis": "TP02B: Okapnice navazující na zaatikové okapové žlaby",
       "MJ": "bm",
@@ -1216,7 +1229,7 @@
       "warnings": []
     },
     {
-      "item_id": "fa45ad8c-cb7a-4bfb-be12-c15cc0b32a22",
+      "item_id": "0614f756-3985-45aa-9cfb-17fc64f56725",
       "kapitola": "PSV-764",
       "popis": "Montáž TP02B (Okapnice navazující na zaatikové okapové žlaby)",
       "MJ": "bm",
@@ -1240,7 +1253,7 @@
       "warnings": []
     },
     {
-      "item_id": "e7f64c9a-7b09-4cc6-a9b3-8be78a8977bc",
+      "item_id": "8d9459ee-ec40-4599-bed5-5a6056466d3c",
       "kapitola": "PSV-764",
       "popis": "TP02C: Čelní lišta navazující na zaatikové okapové žlaby",
       "MJ": "bm",
@@ -1264,7 +1277,7 @@
       "warnings": []
     },
     {
-      "item_id": "01b4948f-25fa-48b0-8e35-fe31f3aef85e",
+      "item_id": "62f4ec82-4983-45c5-9bfb-c0b649657668",
       "kapitola": "PSV-764",
       "popis": "Montáž TP02C (Čelní lišta navazující na zaatikové okapové žlaby)",
       "MJ": "bm",
@@ -1288,7 +1301,7 @@
       "warnings": []
     },
     {
-      "item_id": "bcbe84d7-3b79-4093-a54e-060a46efe318",
+      "item_id": "32d1f6a1-c45f-4d5c-a781-b09d72a94e70",
       "kapitola": "PSV-764",
       "popis": "TP03A: Nové okapové žlaby nadpraží balkónů a teras",
       "MJ": "bm",
@@ -1312,7 +1325,7 @@
       "warnings": []
     },
     {
-      "item_id": "ad026054-029b-4e41-b626-c2fefce08509",
+      "item_id": "63a4a5a1-6f13-4615-926e-a02eaba78cdb",
       "kapitola": "PSV-764",
       "popis": "Montáž TP03A (Nové okapové žlaby nadpraží balkónů a teras)",
       "MJ": "bm",
@@ -1336,7 +1349,7 @@
       "warnings": []
     },
     {
-      "item_id": "9415bb2c-5243-41fd-840e-e1f0c80458d3",
+      "item_id": "09d459f3-f8d2-4af1-ac16-095cef2364a2",
       "kapitola": "PSV-764",
       "popis": "TP03B: Okapnice navazující na okapové žlaby nadpraží balkónů a tera",
       "MJ": "bm",
@@ -1360,7 +1373,7 @@
       "warnings": []
     },
     {
-      "item_id": "aeb8dc07-8ee0-4417-a5b6-d7475a43d553",
+      "item_id": "ebc3d989-39dd-49da-9b49-61d832a7fd7b",
       "kapitola": "PSV-764",
       "popis": "Montáž TP03B (Okapnice navazující na okapové žlaby nadpraží balk)",
       "MJ": "bm",
@@ -1384,7 +1397,7 @@
       "warnings": []
     },
     {
-      "item_id": "8cd0b09d-d465-4278-bc5c-350e498a9ebd",
+      "item_id": "71929fb5-f260-49c6-9203-adf97240bc86",
       "kapitola": "PSV-764",
       "popis": "TP04: Žlabový kotlík",
       "MJ": "ks",
@@ -1408,7 +1421,7 @@
       "warnings": []
     },
     {
-      "item_id": "8e32bd0e-4d7d-4fc0-a038-8bbcbe315b64",
+      "item_id": "3dccf990-a969-46c8-8bfc-548f79650008",
       "kapitola": "PSV-764",
       "popis": "TP12: Průchodka a oplechování VZT",
       "MJ": "ks",
@@ -1432,7 +1445,7 @@
       "warnings": []
     },
     {
-      "item_id": "a8f8c8f3-833b-46c9-881b-3687d49eb523",
+      "item_id": "d21b0967-ac2e-4833-9a61-e7ce7ced579e",
       "kapitola": "PSV-764",
       "popis": "TP13: Lemování do střechy pro komín 225/160",
       "MJ": "ks",
@@ -1456,7 +1469,7 @@
       "warnings": []
     },
     {
-      "item_id": "c53a6ed1-1bf4-4026-b3f1-cc59cb822b0a",
+      "item_id": "f5876522-5d6f-45cf-8cf4-abf0f4104825",
       "kapitola": "PSV-764",
       "popis": "TP14: Oplechování kruhových střešních prostupů do 0.3m2",
       "MJ": "ks",
@@ -1480,7 +1493,7 @@
       "warnings": []
     },
     {
-      "item_id": "a6dfd6b3-9515-4e5a-a193-ee75da693cc6",
+      "item_id": "6f0ab875-1041-44e5-a3c4-8da28c8f5a31",
       "kapitola": "PSV-764",
       "popis": "TP22: Oplechování odvětrání výtahové šachty",
       "MJ": "ks",
@@ -1504,7 +1517,7 @@
       "warnings": []
     },
     {
-      "item_id": "6adb3795-81e3-4991-afa8-5b6fbc4af4be",
+      "item_id": "e1e9bae0-13d3-4bac-8664-3a2df5d59da4",
       "kapitola": "PSV-764",
       "popis": "TP23: Oplechování prostupu VZT na plochou střechu v objektu B",
       "MJ": "bm",
@@ -1528,7 +1541,7 @@
       "warnings": []
     },
     {
-      "item_id": "eed44fa6-651a-4908-82ae-bbac5f01c35e",
+      "item_id": "187538a2-3f15-46da-b50b-4afce2fcd323",
       "kapitola": "PSV-764",
       "popis": "TP24: Oplechování prostupu VZT na plochou střechu v objektu C",
       "MJ": "bm",
@@ -1552,7 +1565,7 @@
       "warnings": []
     },
     {
-      "item_id": "af61ecc8-0972-44e8-bcee-e1e728080cc3",
+      "item_id": "4a60c25e-42dc-46e4-bdf0-a96e1e0ec8f2",
       "kapitola": "PSV-764",
       "popis": "TP25: Dešťový svod ø75mm",
       "MJ": "bm",
@@ -1576,7 +1589,7 @@
       "warnings": []
     },
     {
-      "item_id": "fbd57083-e9ec-45ad-aaed-cc0d9d7ce613",
+      "item_id": "bcc31543-e843-4db9-932d-e0571f6091f9",
       "kapitola": "PSV-764",
       "popis": "TP26: Soklová lišta",
       "MJ": "bm",
@@ -1600,7 +1613,7 @@
       "warnings": []
     },
     {
-      "item_id": "ed65dd60-bd50-4e3b-b93a-5e550019b6a6",
+      "item_id": "108fd777-cca0-4c9a-8d09-518d11834f4d",
       "kapitola": "PSV-764",
       "popis": "TP27A: Dešťový žlab zakončení šikmé střechy u ploché střechy",
       "MJ": "bm",
@@ -1624,7 +1637,7 @@
       "warnings": []
     },
     {
-      "item_id": "e6053ce9-413c-40ed-8abd-511971b24d06",
+      "item_id": "1e7a4900-b5a6-4c7c-8282-4e9e7b8fa1e2",
       "kapitola": "PSV-764",
       "popis": "Montáž TP27A (Dešťový žlab zakončení šikmé střechy u ploché stře)",
       "MJ": "bm",
@@ -1648,7 +1661,7 @@
       "warnings": []
     },
     {
-      "item_id": "4c173784-c1cf-4b14-8a06-54df9a3c8f90",
+      "item_id": "35c6aa56-df0f-4318-893f-a509c29dc2ae",
       "kapitola": "PSV-764",
       "popis": "TP27B: Okapnice navazující na dešťový žlab",
       "MJ": "bm",
@@ -1672,7 +1685,7 @@
       "warnings": []
     },
     {
-      "item_id": "d0ae2f8a-e3b2-4887-9c61-d44cc0bdadd2",
+      "item_id": "e7bbbce7-0ad6-4229-9742-740d5d3f7fc5",
       "kapitola": "PSV-764",
       "popis": "Montáž TP27B (Okapnice navazující na dešťový žlab)",
       "MJ": "bm",
@@ -1696,7 +1709,7 @@
       "warnings": []
     },
     {
-      "item_id": "dbec8adf-1483-4a0c-816e-212a19ffe4a2",
+      "item_id": "800f0620-61e6-4f9d-a28b-a9287920765c",
       "kapitola": "PSV-764",
       "popis": "TP28: Oplechování koruny zdiva",
       "MJ": "bm",
@@ -1720,7 +1733,7 @@
       "warnings": []
     },
     {
-      "item_id": "01727dd1-664f-4aa0-b7c0-e9d1cc545bdf",
+      "item_id": "4c23b8e1-d21b-4bdb-9a67-a4d4f6d13359",
       "kapitola": "PSV-764",
       "popis": "TP29A: Boční lemování - lišta",
       "MJ": "bm",
@@ -1744,7 +1757,7 @@
       "warnings": []
     },
     {
-      "item_id": "62923ac9-d3cb-440c-973a-f9af7e8c73a5",
+      "item_id": "899bf18d-d245-4335-9d8a-c1c2d1ca53d8",
       "kapitola": "PSV-764",
       "popis": "TP29B: Boční lemování - rohový profil",
       "MJ": "bm",
@@ -1768,7 +1781,7 @@
       "warnings": []
     },
     {
-      "item_id": "81a81f6c-f0b8-4644-89fc-e74deffa0537",
+      "item_id": "c99e9a4d-9416-45b8-9057-203d3f67d6de",
       "kapitola": "PSV-764",
       "popis": "TP29C: Boční lemování - napojení na krytinu",
       "MJ": "bm",
@@ -1792,7 +1805,7 @@
       "warnings": []
     },
     {
-      "item_id": "27076ce5-8cbe-48bb-b91a-21b1abc5b817",
+      "item_id": "d9494713-75e1-4d8f-95b1-cb8d07329833",
       "kapitola": "PSV-765",
       "popis": "Tondach bobrovka 19×40 cm — kladení šupinové",
       "MJ": "m2",
@@ -1814,7 +1827,7 @@
       "warnings": []
     },
     {
-      "item_id": "6c69c273-ab85-494f-b64d-763e5f1fe30b",
+      "item_id": "23a97830-7e90-4270-b396-76bb236f278a",
       "kapitola": "PSV-765",
       "popis": "Tondach bobrovka — počet kusů",
       "MJ": "ks",
@@ -1836,7 +1849,7 @@
       "warnings": []
     },
     {
-      "item_id": "1f1b0dbe-0e93-4801-a3f4-550d0f693014",
+      "item_id": "2d572395-5f3c-4d06-9c51-c6d8c58f1e12",
       "kapitola": "PSV-765",
       "popis": "Hřebenáče Tondach",
       "MJ": "m",
@@ -1858,7 +1871,7 @@
       "warnings": []
     },
     {
-      "item_id": "41717c74-5ff9-4afa-bb3c-6c8d21af9561",
+      "item_id": "a7e8d6b6-8335-4c2a-b744-e644e6230979",
       "kapitola": "PSV-765",
       "popis": "Větrací prvky hřebene",
       "MJ": "ks",
@@ -1880,7 +1893,7 @@
       "warnings": []
     },
     {
-      "item_id": "b2fd735c-c01d-44c2-9e37-1edbc81fc979",
+      "item_id": "1352ce2f-f359-46c6-9adb-21bb93c43ce3",
       "kapitola": "PSV-765",
       "popis": "Prostupová taška Tondach OP50",
       "MJ": "ks",
@@ -1904,7 +1917,7 @@
       ]
     },
     {
-      "item_id": "7781e6f0-c772-43f5-9506-091f4ecdd934",
+      "item_id": "a442e9be-4ee1-4e66-ae6b-d743ef165af8",
       "kapitola": "PSV-765",
       "popis": "Sněhové zachytávače",
       "MJ": "m",
@@ -1923,6 +1936,464 @@
       "confidence": 0.85,
       "status": "to_audit",
       "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "717e01e7-1830-4bb4-9bcb-0d878b510e51",
+      "kapitola": "PSV-783",
+      "popis": "Žárové zinkování ocelových LP## (zábradlí, schodiště)",
+      "MJ": "kg",
+      "mnozstvi": 1956.665,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "žárové zinkování ČSN EN ISO 1461"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Σ LP## komplex × D-share 0.25; bm @10 kg + ks @35 kg → steel mass 1957 kg pro D",
+      "warnings": []
+    },
+    {
+      "item_id": "c858b6aa-8a59-4576-bd16-4b02d954fb69",
+      "kapitola": "PSV-783",
+      "popis": "Prášková povrchová úprava antracit pro LP##",
+      "MJ": "kg",
+      "mnozstvi": 1956.665,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "prášková epoxidová barva antracit RAL 7016"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c84becdf-7539-4f32-9d93-52ba2e9a3139",
+      "kapitola": "PSV-783",
+      "popis": "Anti-graffiti penetrace F23 (parter ~3 m × obvod)",
+      "MJ": "m2",
+      "mnozstvi": 242.94,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F23",
+        "vrstva": "anti-graffiti"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "obvod 81.0 m × 3 m parter = 242.9 m² (estimate)",
+      "warnings": []
+    },
+    {
+      "item_id": "de614fd1-e75e-4de4-a975-0c17b3e3218a",
+      "kapitola": "PSV-783",
+      "popis": "Anti-graffiti permanentní nátěr F23",
+      "MJ": "m2",
+      "mnozstvi": 242.94,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F23",
+        "vrstva": "anti-graffiti"
+      },
+      "vyrobce_ref": "např. Antigraffiti Permanent SL",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f2d5a3dc-b268-4e44-9d92-af77df45ff9a",
+      "kapitola": "PSV-783",
+      "popis": "Penetrace pod epoxid (F11 sklepy 1.PP)",
+      "MJ": "m2",
+      "mnozstvi": 267.999,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F11",
+        "vrstva": "epoxidový nátěr"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "F11 1.PP plocha sklep D ≈ 268.0 m²",
+      "warnings": []
+    },
+    {
+      "item_id": "fc2b2274-0161-4b75-b7d1-c253637171c4",
+      "kapitola": "PSV-783",
+      "popis": "Epoxid 1. vrstva (F11)",
+      "MJ": "m2",
+      "mnozstvi": 267.999,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F11",
+        "vrstva": "epoxidový nátěr"
+      },
+      "vyrobce_ref": "např. Sika EpoCem",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f371af1d-eaea-4ca8-a54b-09359678e86d",
+      "kapitola": "PSV-783",
+      "popis": "Epoxid 2. vrstva uzavírací (F11)",
+      "MJ": "m2",
+      "mnozstvi": 267.999,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F11",
+        "vrstva": "epoxidový nátěr"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2cfc26af-96da-4082-8ac6-cc3841cd1eb5",
+      "kapitola": "PSV-783",
+      "popis": "Penetrace pod PU (F10 garáž 1.PP)",
+      "MJ": "m2",
+      "mnozstvi": 0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F10",
+        "vrstva": "polyuretanový systém přímopojízdné"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "F10 garáž 1.PP D ≈ 0.0 m² (estimate)",
+      "warnings": []
+    },
+    {
+      "item_id": "b6835274-7f4d-4ca2-9873-1107d90fbd71",
+      "kapitola": "PSV-783",
+      "popis": "PU 1. vrstva základní (F10)",
+      "MJ": "m2",
+      "mnozstvi": 0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F10",
+        "vrstva": "polyuretanový systém přímopojízdné"
+      },
+      "vyrobce_ref": "např. Sika Conceret PU System",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8665dd6c-8990-494e-b7f0-7735d25f40d5",
+      "kapitola": "PSV-783",
+      "popis": "Posyp křemenného písku do PU (F10)",
+      "MJ": "kg",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F10",
+        "vrstva": "polyuretanový systém přímopojízdné"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~1.5 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "a4528d8a-985b-41a9-af63-b018164b17d1",
+      "kapitola": "PSV-783",
+      "popis": "PU 2. vrstva uzavírací (F10)",
+      "MJ": "m2",
+      "mnozstvi": 0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F10",
+        "vrstva": "polyuretanový systém přímopojízdné"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "47326782-10cc-451e-ac31-ea078a06777e",
+      "kapitola": "PSV-783",
+      "popis": "Vsyp pancéřový F00 — rampa",
+      "MJ": "m2",
+      "mnozstvi": 30.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F00",
+        "vrstva": "pancéřový vsyp"
+      },
+      "vyrobce_ref": "např. Sika CZ HardTop",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "rampa estimate ~30 m²; verify in Phase 4",
+      "warnings": []
+    },
+    {
+      "item_id": "cf6da1d7-077f-4f7b-b1c2-352efbf17615",
+      "kapitola": "PSV-783",
+      "popis": "Hladcení + uzavírací nátěr F00",
+      "MJ": "m2",
+      "mnozstvi": 30.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podlahy": "F00",
+        "vrstva": "pancéřový vsyp"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c8e8515c-23de-4d61-9603-3a31ccc85c33",
+      "kapitola": "PSV-783",
+      "popis": "Penetrace pod transparentní nátěr (F14 ŽB stěny 1.PP)",
+      "MJ": "m2",
+      "mnozstvi": 624.78,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F14",
+        "vrstva": "transparentní bezprašný nátěr"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "F14 area ≈ 624.8 m²",
+      "warnings": []
+    },
+    {
+      "item_id": "383ecb9a-a00e-4cd2-bba6-0ef19949055b",
+      "kapitola": "PSV-783",
+      "popis": "Transparentní bezprašný nátěr ŽB (F14)",
+      "MJ": "m2",
+      "mnozstvi": 624.78,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_sten": "F14",
+        "vrstva": "transparentní bezprašný nátěr"
+      },
+      "vyrobce_ref": "např. Sika ImperKote",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "0b1a5c95-a03c-4437-834d-de65006e111a",
+      "kapitola": "PSV-713",
+      "popis": "Lepicí pěna pro minerální vatu (F15 strop 1.PP)",
+      "MJ": "kg",
+      "mnozstvi": 134.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "kontaktní zateplení 100 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~0.5 kg/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "730417a7-1bc0-406e-8c46-cd0e42faece7",
+      "kapitola": "PSV-713",
+      "popis": "Minerální vata Isover Top V Final 100 mm (F15)",
+      "MJ": "m2",
+      "mnozstvi": 268.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "kontaktní zateplení 100 mm"
+      },
+      "vyrobce_ref": "Isover Top V Final 100 mm",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "40a627b0-fa72-4c19-a92f-8a191887b468",
+      "kapitola": "PSV-713",
+      "popis": "Hmoždinky pod minerální vatu (F15)",
+      "MJ": "ks",
+      "mnozstvi": 1072.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "kontaktní zateplení 100 mm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~4 ks/m²",
+      "warnings": []
+    },
+    {
+      "item_id": "284bfd3c-2ee7-434d-a91e-96a4c90b242a",
+      "kapitola": "PSV-711",
+      "popis": "Penetrace pod bituman (FF03 radonová izolace)",
+      "MJ": "m2",
+      "mnozstvi": 84.48,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "FF": "FF03",
+        "vrstva": "hydroizolace bituman radon"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "FF03 plocha 1.PP D = 84.5 m² (Phase 1)",
+      "warnings": []
+    },
+    {
+      "item_id": "26902119-e024-4a5f-a914-142ca4bed1bd",
+      "kapitola": "PSV-711",
+      "popis": "Asfaltový pás bituman radonová bariéra (FF03)",
+      "MJ": "m2",
+      "mnozstvi": 92.928,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "FF": "FF03",
+        "vrstva": "hydroizolace bituman radon"
+      },
+      "vyrobce_ref": "např. Glastek 40 Special Mineral",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "overlap 10 %",
       "warnings": []
     }
   ]

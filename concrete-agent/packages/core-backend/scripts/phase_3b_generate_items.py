@@ -368,17 +368,167 @@ def gen_PSV_765_pokryvac() -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Build & save (kapitoly 1-9 only at this point)
+# Kapitola 10: PSV-783 nátěry vnější
 # ---------------------------------------------------------------------------
 
-def build_kap_1_9() -> tuple[list[dict], dict]:
+def gen_PSV_783_vnejsi_natery(zamec_items: dict) -> list[dict]:
+    """Žárové zinkování ocelových LP##, prášková povrchová úprava, anti-graffiti F23."""
+    items = []
+    total_bm = 0.0
+    total_ks = 0
+    for code, item in zamec_items.items():
+        qty = item.get("mnozstvi") or 0
+        mj = item.get("mj") or ""
+        if mj == "bm":
+            total_bm += qty
+        elif mj == "ks":
+            total_ks += qty
+    steel_mass_kg = (total_bm * 10.0 + total_ks * 35.0) * D_SHARE
+    items.append(make_item(
+        "PSV-783", "Žárové zinkování ocelových LP## (zábradlí, schodiště)",
+        "kg", steel_mass_kg, MISTO_D_FACADE,
+        {"vrstva": "žárové zinkování ČSN EN ISO 1461"},
+        poznamka=(
+            f"Σ LP## komplex × D-share 0.25; bm @10 kg + ks @35 kg → "
+            f"steel mass {steel_mass_kg:.0f} kg pro D"
+        ),
+    ))
+    items.append(make_item(
+        "PSV-783", "Prášková povrchová úprava antracit pro LP##",
+        "kg", steel_mass_kg, MISTO_D_FACADE,
+        {"vrstva": "prášková epoxidová barva antracit RAL 7016"},
+    ))
+    plocha_f23 = F23_M2_ESTIMATE
+    items.append(make_item(
+        "PSV-783", "Anti-graffiti penetrace F23 (parter ~3 m × obvod)", "m2",
+        plocha_f23, MISTO_D_FACADE,
+        {"F_povrch_sten": "F23", "vrstva": "anti-graffiti"},
+        poznamka=f"obvod {ROOF_OBVOD_M:.1f} m × 3 m parter = {plocha_f23:.1f} m² (estimate)",
+    ))
+    items.append(make_item(
+        "PSV-783", "Anti-graffiti permanentní nátěr F23",
+        "m2", plocha_f23, MISTO_D_FACADE,
+        {"F_povrch_sten": "F23", "vrstva": "anti-graffiti"},
+        vyrobce_ref="např. Antigraffiti Permanent SL",
+    ))
+    return items
+
+
+# ---------------------------------------------------------------------------
+# Kapitola 11: Suterén (PSV-783 + PSV-713 + PSV-711)
+# ---------------------------------------------------------------------------
+
+def gen_kap_11_suteren(rooms: list[dict], aggs: dict) -> list[dict]:
+    items = []
+
+    # F11 epoxid sklepy
+    f11_area = sum(
+        (r.get("plocha_podlahy_m2") or 0)
+        for r in rooms
+        if r.get("podlazi") == "1.PP"
+        and "F11" in (r.get("F_povrch_podlahy") or "").split(",")
+    )
+    if f11_area == 0:
+        f11_area = sum(
+            (r.get("plocha_podlahy_m2") or 0)
+            for r in rooms
+            if r.get("podlazi") == "1.PP" and r.get("byt_or_section") == "S"
+        )
+    skladba_ref_f11 = {"F_povrch_podlahy": "F11", "vrstva": "epoxidový nátěr"}
+    items.append(make_item("PSV-783", "Penetrace pod epoxid (F11 sklepy 1.PP)",
+                           "m2", f11_area, MISTO_D_PP, skladba_ref_f11,
+                           poznamka=f"F11 1.PP plocha sklep D ≈ {f11_area:.1f} m²"))
+    items.append(make_item("PSV-783", "Epoxid 1. vrstva (F11)",
+                           "m2", f11_area, MISTO_D_PP, skladba_ref_f11,
+                           vyrobce_ref="např. Sika EpoCem"))
+    items.append(make_item("PSV-783", "Epoxid 2. vrstva uzavírací (F11)",
+                           "m2", f11_area, MISTO_D_PP, skladba_ref_f11))
+
+    # F10 polyuretan garáž
+    f10_area = sum(
+        (r.get("plocha_podlahy_m2") or 0)
+        for r in rooms
+        if r.get("podlazi") == "1.PP"
+        and "F10" in (r.get("F_povrch_podlahy") or "").split(",")
+    )
+    if f10_area == 0:
+        f10_area = max(PP_FLOOR_AREA_M2 - f11_area - 30, 0)
+    skladba_ref_f10 = {"F_povrch_podlahy": "F10", "vrstva": "polyuretanový systém přímopojízdné"}
+    items.append(make_item("PSV-783", "Penetrace pod PU (F10 garáž 1.PP)",
+                           "m2", f10_area, MISTO_D_PP, skladba_ref_f10,
+                           poznamka=f"F10 garáž 1.PP D ≈ {f10_area:.1f} m² (estimate)"))
+    items.append(make_item("PSV-783", "PU 1. vrstva základní (F10)",
+                           "m2", f10_area, MISTO_D_PP, skladba_ref_f10,
+                           vyrobce_ref="např. Sika Conceret PU System"))
+    items.append(make_item("PSV-783", "Posyp křemenného písku do PU (F10)",
+                           "kg", f10_area * 1.5, MISTO_D_PP, skladba_ref_f10,
+                           poznamka="~1.5 kg/m²"))
+    items.append(make_item("PSV-783", "PU 2. vrstva uzavírací (F10)",
+                           "m2", f10_area, MISTO_D_PP, skladba_ref_f10))
+
+    # F00 vsyp rampa
+    f00_area = 30.0
+    skladba_ref_f00 = {"F_povrch_podlahy": "F00", "vrstva": "pancéřový vsyp"}
+    items.append(make_item("PSV-783", "Vsyp pancéřový F00 — rampa", "m2",
+                           f00_area, MISTO_D_PP, skladba_ref_f00,
+                           vyrobce_ref="např. Sika CZ HardTop",
+                           poznamka="rampa estimate ~30 m²; verify in Phase 4"))
+    items.append(make_item("PSV-783", "Hladcení + uzavírací nátěr F00",
+                           "m2", f00_area, MISTO_D_PP, skladba_ref_f00))
+
+    # F14 transparentní nátěr ŽB stěn 1.PP
+    f14_area = aggs.get("by_F_povrch_sten", {}).get("F14", 0.0)
+    if f14_area == 0:
+        f14_area = PP_PERIMETER_M * 2.7 * 0.5
+    skladba_ref_f14 = {"F_povrch_sten": "F14", "vrstva": "transparentní bezprašný nátěr"}
+    items.append(make_item("PSV-783", "Penetrace pod transparentní nátěr (F14 ŽB stěny 1.PP)",
+                           "m2", f14_area, MISTO_D_PP, skladba_ref_f14,
+                           poznamka=f"F14 area ≈ {f14_area:.1f} m²"))
+    items.append(make_item("PSV-783", "Transparentní bezprašný nátěr ŽB (F14)",
+                           "m2", f14_area, MISTO_D_PP, skladba_ref_f14,
+                           vyrobce_ref="např. Sika ImperKote"))
+
+    # F15 kontaktní zateplení podhledů 1.PP
+    f15_area = PP_FLOOR_AREA_M2
+    skladba_ref_f15 = {"F_povrch_podhledu": "F15", "vrstva": "kontaktní zateplení 100 mm"}
+    items.append(make_item("PSV-713", "Lepicí pěna pro minerální vatu (F15 strop 1.PP)",
+                           "kg", f15_area * 0.5, MISTO_D_PP, skladba_ref_f15,
+                           poznamka="~0.5 kg/m²"))
+    items.append(make_item("PSV-713", "Minerální vata Isover Top V Final 100 mm (F15)",
+                           "m2", f15_area, MISTO_D_PP, skladba_ref_f15,
+                           vyrobce_ref="Isover Top V Final 100 mm"))
+    items.append(make_item("PSV-713", "Hmoždinky pod minerální vatu (F15)",
+                           "ks", f15_area * 4, MISTO_D_PP, skladba_ref_f15,
+                           poznamka="~4 ks/m²"))
+
+    # FF03 hydroizolace radon — separate vrstva
+    ff03_area = aggs.get("by_FF_floor_skladba", {}).get("FF03", 84.48)
+    skladba_ref_ff03 = {"FF": "FF03", "vrstva": "hydroizolace bituman radon"}
+    items.append(make_item("PSV-711", "Penetrace pod bituman (FF03 radonová izolace)",
+                           "m2", ff03_area, MISTO_D_PP, skladba_ref_ff03,
+                           poznamka=f"FF03 plocha 1.PP D = {ff03_area:.1f} m² (Phase 1)"))
+    items.append(make_item("PSV-711", "Asfaltový pás bituman radonová bariéra (FF03)",
+                           "m2", ff03_area * 1.1, MISTO_D_PP, skladba_ref_ff03,
+                           vyrobce_ref="např. Glastek 40 Special Mineral",
+                           poznamka="overlap 10 %"))
+    return items
+
+
+# ---------------------------------------------------------------------------
+# Build & save
+# ---------------------------------------------------------------------------
+
+def build_all() -> tuple[list[dict], dict]:
     if not DS.exists() or not TAB.exists():
         raise SystemExit("Run prior phases first")
     dataset = json.loads(DS.read_text(encoding="utf-8"))
     tabulky = json.loads(TAB.read_text(encoding="utf-8"))
 
     klempir_items = tabulky["klempirske"]["items"]
+    zamec_items = tabulky["zamecnicke"]["items"]
     skladby_master = dataset.get("skladby", {})
+    aggs = dataset.get("aggregates", {})
+    rooms = dataset.get("rooms", [])
 
     all_items: list[dict] = []
     all_items.extend(gen_HSV_622_1_pasky())
@@ -389,11 +539,13 @@ def build_kap_1_9() -> tuple[list[dict], dict]:
     all_items.extend(gen_PSV_762_tesarske())
     all_items.extend(gen_PSV_764_klempir(klempir_items))
     all_items.extend(gen_PSV_765_pokryvac())
+    all_items.extend(gen_PSV_783_vnejsi_natery(zamec_items))
+    all_items.extend(gen_kap_11_suteren(rooms, aggs))
     return all_items, dataset
 
 
 def main() -> None:
-    items, dataset = build_kap_1_9()
+    items, dataset = build_all()
 
     by_kap: dict[str, dict] = defaultdict(lambda: {"count": 0, "by_mj": defaultdict(float)})
     for it in items:
@@ -408,8 +560,9 @@ def main() -> None:
         "metadata": {
             "phase": "3b",
             "kapitoly_present": ["HSV-622.1", "HSV-622.2", "HSV-622.3",
-                                  "PSV-712", "PSV-713", "PSV-762", "PSV-764", "PSV-765"],
-            "kapitoly_pending": ["PSV-783 vnější + suterén"],
+                                  "PSV-712", "PSV-713", "PSV-762", "PSV-764", "PSV-765",
+                                  "PSV-783", "PSV-711 (FF03 radon)"],
+            "kapitoly_pending": [],
             "items_count": len(items),
             "summary_per_kapitola": by_kap_clean,
             "carry_forward_findings": dataset.get("carry_forward_findings", []),
