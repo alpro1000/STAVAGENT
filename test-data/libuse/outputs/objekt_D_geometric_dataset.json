@@ -7714,7 +7714,7 @@
       "referenced_in": [
         "dxf.wall_tag"
       ],
-      "kind": "stena",
+      "kind": "obvodova",
       "label": "nadzemní obvodová stěna - zdivo",
       "celkova_tloustka_mm": 485.0,
       "vrstvy": [
@@ -7760,7 +7760,8 @@
           "specifikace": "",
           "referencni_vyrobek": "viz Tabulka Místností a Tabulka Povrchů"
         }
-      ]
+      ],
+      "specifikum": null
     },
     "WF32": {
       "code": "WF32",
@@ -7768,7 +7769,7 @@
       "referenced_in": [
         "dxf.wall_tag"
       ],
-      "kind": "stena",
+      "kind": "pricka",
       "label": "vnitřní zdivo podezdívek van",
       "celkova_tloustka_mm": 50.0,
       "vrstvy": [
@@ -7793,7 +7794,8 @@
           "specifikace": "",
           "referencni_vyrobek": ""
         }
-      ]
+      ],
+      "specifikum": "podezdivka_van"
     },
     "WF40": {
       "code": "WF40",
@@ -7801,7 +7803,7 @@
       "referenced_in": [
         "dxf.wall_tag"
       ],
-      "kind": "stena",
+      "kind": "sdk",
       "label": "SDK předstěna tl.100mm - v.1400mm",
       "celkova_tloustka_mm": 100.0,
       "vrstvy": [
@@ -7819,7 +7821,8 @@
           "specifikace": "",
           "referencni_vyrobek": "Profily UW75 + CW75"
         }
-      ]
+      ],
+      "specifikum": null
     },
     "WF41": {
       "code": "WF41",
@@ -7827,7 +7830,7 @@
       "referenced_in": [
         "dxf.wall_tag"
       ],
-      "kind": "stena",
+      "kind": "sdk",
       "label": "SDK předstěna tl.150mm - v.1400mm",
       "celkova_tloustka_mm": 150.0,
       "vrstvy": [
@@ -7852,7 +7855,8 @@
           "specifikace": "",
           "referencni_vyrobek": ""
         }
-      ]
+      ],
+      "specifikum": null
     },
     "WF50": {
       "code": "WF50",
@@ -7860,7 +7864,7 @@
       "referenced_in": [
         "dxf.wall_tag"
       ],
-      "kind": "stena",
+      "kind": "sdk",
       "label": "SDK předstěna tl.100mm - v.100mm nad podhled",
       "celkova_tloustka_mm": 100.0,
       "vrstvy": [
@@ -7878,7 +7882,8 @@
           "specifikace": "",
           "referencni_vyrobek": "Profily UW75 + CW75"
         }
-      ]
+      ],
+      "specifikum": null
     },
     "WF51": {
       "code": "WF51",
@@ -7886,7 +7891,7 @@
       "referenced_in": [
         "dxf.wall_tag"
       ],
-      "kind": "stena",
+      "kind": "sdk",
       "label": "SDK předstěna tl.150mm - v.100mm nad podhled",
       "celkova_tloustka_mm": 150.0,
       "vrstvy": [
@@ -7911,7 +7916,1229 @@
           "specifikace": "",
           "referencni_vyrobek": ""
         }
-      ]
+      ],
+      "specifikum": null
+    },
+    "WF01": {
+      "code": "WF01",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "suterenní obvodová stěna",
+      "celkova_tloustka_mm": 250,
+      "vrstvy": [
+        {
+          "poradi": "01",
+          "nazev": "Zásyp stavební jámy",
+          "tloustka_mm": null,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton",
+          "tloustka_mm": 250.0,
+          "specifikace": "Vodostavebný železobeton, viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": "2",
+          "nazev": "Ochranná vrstva",
+          "tloustka_mm": 3.0,
+          "specifikace": "Netkaná geotextilie 300g/m2",
+          "referencni_vyrobek": "např. Filtek 300"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 80.0,
+          "specifikace": "Extrudovaný polystaren (XPS) nenasákavý, min. součinitel tel. vodivosti λ = 0,034 W/mK",
+          "referencni_vyrobek": "např. DEKPERIMETER SD 150"
+        },
+        {
+          "poradi": null,
+          "nazev": "Hydroizolační vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Modifikovaný SBS asfaltový pás s nosnou vložkou ze skelné tkaniny",
+          "referencni_vyrobek": "např. Glastek 40"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton",
+          "tloustka_mm": 250.0,
+          "specifikace": "Vodostavebný železobeton, viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF03": {
+      "code": "WF03",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna - soklové zdivo",
+      "celkova_tloustka_mm": 485,
+      "vrstvy": [
+        {
+          "poradi": "03",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 60.0,
+          "specifikace": "Extrudovaný polystaren (XPS) nenasákavý, min. součinitel tel. vodivosti λ = 0,034 W/mK",
+          "referencni_vyrobek": "např. DEKPERIMETER SD 150"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící hmota",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Hydroizolační vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "SBS asfaltový pás",
+          "referencni_vyrobek": "např. Glastek 40"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Asfaltová penetrační emulze",
+          "referencni_vyrobek": "např. Dekprimer"
+        },
+        {
+          "poradi": null,
+          "nazev": "Cementový postřik",
+          "tloustka_mm": 3.0,
+          "specifikace": "Cementová malta pro úpravu podkladu",
+          "referencni_vyrobek": "např. Cemix 052"
+        },
+        {
+          "poradi": null,
+          "nazev": "Obvodové zdivo keramické s vloženou minerální vatou",
+          "tloustka_mm": 380.0,
+          "specifikace": "keramické tvárnice broušené P+D vyplněné minerální vatou",
+          "referencni_vyrobek": "např. Porotherm 38TBS Profi"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF11": {
+      "code": "WF11",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna - železobeton štít schodiště k šikmé střeše",
+      "celkova_tloustka_mm": 564,
+      "vrstvy": [
+        {
+          "poradi": "11",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 200.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton",
+          "tloustka_mm": 250.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Ocelová konstrukce instalační předstěny vyplněná tepelnou izolací",
+          "tloustka_mm": 50.0,
+          "specifikace": "Knauf UW50 + CW50",
+          "referencni_vyrobek": "např. systém Knauf"
+        },
+        {
+          "poradi": null,
+          "nazev": "Vnitřní SDK záklop dvojitý",
+          "tloustka_mm": 25.0,
+          "specifikace": "SDK desky 2 x 12.5mm, neimpregnované",
+          "referencni_vyrobek": "např. Knauf GKB"
+        }
+      ],
+      "specifikum": null
+    },
+    "WF12": {
+      "code": "WF12",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna u střechy - atika ke hřebeni",
+      "celkova_tloustka_mm": 460,
+      "vrstvy": [
+        {
+          "poradi": "12",
+          "nazev": "Venkovní tenkovrstvý omítkový systém",
+          "tloustka_mm": 1.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 200.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton/zdivo",
+          "tloustka_mm": 250.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF13": {
+      "code": "WF13",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna u střechy - atika k šikmé střeše",
+      "celkova_tloustka_mm": 574,
+      "vrstvy": [
+        {
+          "poradi": "13",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 200.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton/zdivo",
+          "tloustka_mm": 250.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 80.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Venkovní tenkovrstvý omítkový systém",
+          "tloustka_mm": 1.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF14": {
+      "code": "WF14",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna u střechy - atika obvodová",
+      "celkova_tloustka_mm": 409,
+      "vrstvy": [
+        {
+          "poradi": "14",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 80.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton/zdivo",
+          "tloustka_mm": 200.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 80.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Venkovní tenkovrstvý omítkový systém",
+          "tloustka_mm": 1.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF15": {
+      "code": "WF15",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna u střechy - k výtahové nebo instalační šachtě",
+      "celkova_tloustka_mm": 489,
+      "vrstvy": [
+        {
+          "poradi": "15",
+          "nazev": "Cihelné pásky Terca",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 200.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Nosné zdivo keramické akustické",
+          "tloustka_mm": 250.0,
+          "specifikace": "Keramické tvárnice broušené akustické P+D",
+          "referencni_vyrobek": "např. Porotherm 25 AKU SYM"
+        }
+      ],
+      "specifikum": null
+    },
+    "WF16": {
+      "code": "WF16",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna - žb parapet 3.np objektu A",
+      "celkova_tloustka_mm": 489,
+      "vrstvy": [
+        {
+          "poradi": "16",
+          "nazev": "Cihelné pásky Terca",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 90.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobetonový parapet",
+          "tloustka_mm": 360.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF17": {
+      "code": "WF17",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna - boky balkónu",
+      "celkova_tloustka_mm": 465,
+      "vrstvy": [
+        {
+          "poradi": "17",
+          "nazev": "Venkovní tenkovrstvý omítkový systém",
+          "tloustka_mm": 1.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Podkladová deska srovnávací deska",
+          "tloustka_mm": 12.5,
+          "specifikace": "Cementová podkladní deska pro venkovní použití kotvená do pomocných ocelových systémových profilů s protikorozní úpravou min. C3.",
+          "referencni_vyrobek": "např. Knauf Aquapanel Outdoor"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 7.5,
+          "specifikace": "Flexibilní cementové lepidlo",
+          "referencni_vyrobek": "např. Cemix Flex Extra Plus 095"
+        },
+        {
+          "poradi": null,
+          "nazev": "Obvodové zdivo keramické s vloženou minerální vatou",
+          "tloustka_mm": 440.0,
+          "specifikace": "Keramické tvárnice broušené P+D vyplněné minerální vatou",
+          "referencni_vyrobek": "např. Porotherm 44TB Profi"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF18": {
+      "code": "WF18",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna - zdivo balkónu",
+      "celkova_tloustka_mm": 570,
+      "vrstvy": [
+        {
+          "poradi": "18",
+          "nazev": "Venkovní tenkovrstvý omítkový systém",
+          "tloustka_mm": 1.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 120.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Obvodové zdivo keramické s vloženou minerální vatou",
+          "tloustka_mm": 440.0,
+          "specifikace": "Keramické tvárnice broušené P+D vyplněné minerální vatou",
+          "referencni_vyrobek": "např. Porotherm 44TB Profi"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF19": {
+      "code": "WF19",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodová stěna - nadpraží balkónu",
+      "celkova_tloustka_mm": 570,
+      "vrstvy": [
+        {
+          "poradi": "19",
+          "nazev": "Venkovní tenkovrstvý omítkový systém",
+          "tloustka_mm": 1.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 330.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Vyzdívka z keramického zdiva",
+          "tloustka_mm": 230.0,
+          "specifikace": "2x keramický překlad",
+          "referencni_vyrobek": "např. Porotherm KP11,5"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF20": {
+      "code": "WF20",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "vnitrni_nosna",
+      "label": "vnitřní nosná stěna - zdivo",
+      "celkova_tloustka_mm": 250,
+      "vrstvy": [
+        {
+          "poradi": "20",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Nosné zdivo keramické akustické",
+          "tloustka_mm": 250.0,
+          "specifikace": "Keramické tvárnice broušené akustické P+D",
+          "referencni_vyrobek": "např. Porotherm 25 AKU SYM"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF21": {
+      "code": "WF21",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "vnitrni_nosna",
+      "label": "vnitřní nosná stěna - železobeton",
+      "celkova_tloustka_mm": 250,
+      "vrstvy": [
+        {
+          "poradi": "21",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton",
+          "tloustka_mm": 250.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF22": {
+      "code": "WF22",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "vnitrni_nosna",
+      "label": "obvodová stěna - nadezdívky",
+      "celkova_tloustka_mm": 500,
+      "vrstvy": [
+        {
+          "poradi": "22",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo s výztužnou tkaninou",
+          "tloustka_mm": 5.0,
+          "specifikace": "viz Tabulka povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Systémová penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Podkladová cementová deska",
+          "tloustka_mm": 12.5,
+          "specifikace": "Cementová podkladní deska pro venkovní použití kotvená do pomocných ocelových systémových profilů s protikorozní úpravou min. C3",
+          "referencni_vyrobek": "např. Knauf Aquapanel Outdoor"
+        },
+        {
+          "poradi": null,
+          "nazev": "Hydroizolační fólie",
+          "tloustka_mm": 0.0,
+          "specifikace": "Systémová hydroizolační fólie",
+          "referencni_vyrobek": "např. Knauf Aquapanel Hydroizolace"
+        },
+        {
+          "poradi": null,
+          "nazev": "Ocelové nosné fasádní profily C3 vyplněné tepelnou izolací",
+          "tloustka_mm": 150.0,
+          "specifikace": "Ocelové nosné fasádní profily s protikorozní úpravou min. C3 vyplněné tepelnou izolací z minerální skelné vlny",
+          "referencni_vyrobek": "KEW profile 150 + např. Isover Multimax 30"
+        },
+        {
+          "poradi": null,
+          "nazev": "Nosná ocelová konstrukce vyplněná tepelnou izolací",
+          "tloustka_mm": 220.0,
+          "specifikace": "HEB 220 vč. zavětrování - viz Stavebně-konstrukční část projektu, vyplněno tepelnou izolací  z minerální skelné vlny",
+          "referencni_vyrobek": "ocel + např. Isover Multiplat 35"
+        },
+        {
+          "poradi": null,
+          "nazev": "Parozábrana",
+          "tloustka_mm": 0.0,
+          "specifikace": "Fólie s hliníkovou vložkou",
+          "referencni_vyrobek": "např. Dekfon N AL 170 Special"
+        },
+        {
+          "poradi": null,
+          "nazev": "Záklop z podkladových desek",
+          "tloustka_mm": 12.5,
+          "specifikace": "SDK deska 12.5 mm pro vnitřní použití kotvená do pomocných ocelových systémových profilů C3",
+          "referencni_vyrobek": "Knauf GKB"
+        },
+        {
+          "poradi": null,
+          "nazev": "Ocelová konstrukce instalační předstěny vyplněná tepelnou izolací",
+          "tloustka_mm": 50.0,
+          "specifikace": "Systémové ocelové profily vyplněné tepelnou izolací z minerální skelné vlny tl.30mm",
+          "referencni_vyrobek": "Knauf UW50/CW50 + Isover Multimax 30"
+        },
+        {
+          "poradi": null,
+          "nazev": "Vnitřní SDK záklop dvojitý",
+          "tloustka_mm": 25.0,
+          "specifikace": "SDK desky 2 x 12.5mm, neimpregnované",
+          "referencni_vyrobek": "např. Knauf GKB"
+        }
+      ],
+      "specifikum": "ocel_HEB"
+    },
+    "WF23": {
+      "code": "WF23",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "vnitrni_nosna",
+      "label": "vnitřní nosná stěn instalační šachty - železobeton",
+      "celkova_tloustka_mm": 200,
+      "vrstvy": [
+        {
+          "poradi": "23",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton",
+          "tloustka_mm": 200.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Neomítnutá vnitřní strana instalační šachty",
+          "tloustka_mm": 0.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": "instalacni_sachta"
+    },
+    "WF24": {
+      "code": "WF24",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "vnitrni_nosna",
+      "label": "vnitřní nosná stěn instalační šachty - železobeton",
+      "celkova_tloustka_mm": 200,
+      "vrstvy": [
+        {
+          "poradi": "24",
+          "nazev": "Neomítnutá vnitřní strana instalační šachty",
+          "tloustka_mm": 0.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobeton",
+          "tloustka_mm": 200.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Neomítnutá vnitřní strana instalační šachty",
+          "tloustka_mm": 0.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": "instalacni_sachta"
+    },
+    "WF25": {
+      "code": "WF25",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "vnitrni_nosna",
+      "label": "vnitřní nosná podezdívka vyrovnávacího schodiště v 1.PP objektu D",
+      "celkova_tloustka_mm": 175,
+      "vrstvy": [
+        {
+          "poradi": "25",
+          "nazev": "Neomítnutá strana",
+          "tloustka_mm": 0.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Nosné zdivo keramické",
+          "tloustka_mm": 175.0,
+          "specifikace": "nosnou podezdívka z keramické tvárnice broušené zděné na maltu",
+          "referencni_vyrobek": "např. Porotherm 17.5 Profi"
+        },
+        {
+          "poradi": null,
+          "nazev": "Neomítnutá strana",
+          "tloustka_mm": 0.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": "podezdivka_schodiste"
+    },
+    "WF30": {
+      "code": "WF30",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "pricka",
+      "label": "vnitřní příčkové zdivo",
+      "celkova_tloustka_mm": 115,
+      "vrstvy": [
+        {
+          "poradi": "30",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Příčkové zdivo keramické",
+          "tloustka_mm": 115.0,
+          "specifikace": "keramické příčkovky broušené P+D na maltu pro tenké spáry",
+          "referencni_vyrobek": "např. Porotherm 11.5 AKU Profi"
+        },
+        {
+          "poradi": null,
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
+    },
+    "WF31": {
+      "code": "WF31",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "pricka",
+      "label": "vnitřní zdivo instalačních šachet",
+      "celkova_tloustka_mm": 115,
+      "vrstvy": [
+        {
+          "poradi": "31",
+          "nazev": "Povrchová úprava",
+          "tloustka_mm": null,
+          "specifikace": "viz Tabulka Místností a Tabulka Povrchů",
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Příčkové zdivo keramické",
+          "tloustka_mm": 115.0,
+          "specifikace": "keramické příčkovky broušené P+D na maltu pro tenké spáry",
+          "referencni_vyrobek": "např. Porotherm 11.5 AKU Profi"
+        },
+        {
+          "poradi": null,
+          "nazev": "Neomítnutá vnitřní strana instalační šachty",
+          "tloustka_mm": 0.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": "instalacni_sachta"
+    },
+    "WF90": {
+      "code": "WF90",
+      "in_tabulka_skladeb": true,
+      "referenced_in": [],
+      "kind": "obvodova",
+      "label": "nadzemní obvodové stěny - věnce",
+      "celkova_tloustka_mm": 319,
+      "vrstvy": [
+        {
+          "poradi": "90",
+          "nazev": "Cihelné pásky",
+          "tloustka_mm": 25.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": null,
+          "referencni_vyrobek": null
+        },
+        {
+          "poradi": null,
+          "nazev": "Výztužná vrstva",
+          "tloustka_mm": 4.0,
+          "specifikace": "Lepící a stěrková hmota vč. výztužné tkaniny",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Tepelná izolace",
+          "tloustka_mm": 80.0,
+          "specifikace": "Desky EPS 70 F z expandovaného fasádního pěnového polystyrenu; min. součinitel tel. vodivosti λ = 0,039 W/mK; vč. kotvících hmoždinek",
+          "referencni_vyrobek": "např. ISOVER EPS 70F"
+        },
+        {
+          "poradi": null,
+          "nazev": "Lepidlo",
+          "tloustka_mm": 5.0,
+          "specifikace": "Cementová lepící hmota.",
+          "referencni_vyrobek": "např. Cemix Comfort 135"
+        },
+        {
+          "poradi": null,
+          "nazev": "Penetrace",
+          "tloustka_mm": 0.0,
+          "specifikace": "Adhézní spojovací můstek.",
+          "referencni_vyrobek": "např. Cemix Kontakt"
+        },
+        {
+          "poradi": null,
+          "nazev": "Železobetonový věnec",
+          "tloustka_mm": 200.0,
+          "specifikace": "viz Stavebně-konstrukční část projektu",
+          "referencni_vyrobek": null
+        }
+      ],
+      "specifikum": null
     }
   },
   "skladby_count": 31,

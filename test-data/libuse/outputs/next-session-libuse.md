@@ -1,11 +1,11 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-04 (Phase 6.5 špalety actual measurement)
+Last updated: 2026-05-05 (Phase 6.5 v2 — 5-bug fix pack from VELTON spot-check)
 
 ## Status
 
-Phase 6.5 špalety actual measurement complete (L2.5 project-aware per-room).
-Phase 8 List 11 regenerated. Excel ready for KROS manual ÚRS pricing.
+Phase 6.5 v2 (5-bug fix pack) applied. Phase 0.8 + 0.9 added to populate
+master skladby + door ownership. Excel ready for KROS manual ÚRS pricing.
 
 ## Project metadata
 
@@ -39,6 +39,9 @@ Phase 8 List 11 regenerated. Excel ready for KROS manual ÚRS pricing.
 - ✅ Phase 6.3      — audit (10 HIGH gaps + 28 OP edge cases found)
 - ✅ Phase 6.4      — fix gaps + +221 material dodávka items (final 2548 items)
 - ✅ Phase 6.5      — špalety actual measurement L2.5 (replaces 30/70 heuristika)
+- ✅ Phase 0.8      — extract 26 WF skladeb from master XLSX (Bug #1 fix)
+- ✅ Phase 0.9      — door ownership from Tabulka 0041 (Bug #2 + #3 fix)
+- ✅ Phase 6.5 v2   — 5-bug fix pack (cluster, garage, fallback, popis, sources)
 - ✅ Phase 7a Part 1 — 579 query groups built (group-first approach)
 - ⏸️ Phase 7a Part 2 — DEFERRED (manual KROS ÚRS pricing instead)
 - ✅ Phase 8        — List 11 sumarizace added (manual KROS workflow)
@@ -284,6 +287,105 @@ PROJ_AVG fallback. Pro vyšší přesnost je nutné Phase L1 extrakce
 verified 0 m² fasádních (was 1.24 m² under heuristics). Net reduction
 −61 m² across 132 items reflects realistic stripping of fictitious
 fasádní share from interior-only rooms.
+
+---
+
+## Phase 6.5 v2 — 5-bug fix pack (TASK_GATE2_FIX v2) — 2026-05-05
+
+### Status
+
+✅ All 5 bugs from VELTON spot-check resolved. Excel + List 11 regenerated.
+
+### Bugs fixed
+
+| # | Bug | Fix |
+|---|-----|-----|
+| 1 | Phase 0.x extracted 2/26 WF skladeb | New `phase_0_8_extract_master_skladby.py` parses Tabulka 0030 master XLSX → 26 WF entries with `kind` + `specifikum` |
+| 2 | nearest-room cluster: 11 dveří → 4 m² S.D.27 | New `phase_0_9_extract_doors_ownership.py` reads Tabulka 0041 `z_místnoti`/`do_místnoti` columns → explicit per-room ownership |
+| 3 | Garážová vrata D05 5700×2100 v HSV-612 | `is_garage_gate()` filter v ownership data (D05 OR width >3000mm); excluded z HSV-612 |
+| 4 | PROJ_AVG_PRICKA = 50 mm (= WF32 podezdívka van bias) | `median_typical()` weighted median over generic příčky (specifikum=None) → 115 mm |
+| 5 | Item popis "(hloubka 200 mm)" inherited z Phase 6.4 | Phase 6.5 v2 regeneruje popis s actual `tl_mm`; pro qty=0 → "žádný X otvor v místnosti" |
+
+### Project fallback thicknesses (median typical, post-Bug #1+#4)
+
+- obvodová (excluding atika): **487 mm** (was 485 from 1 skladba)
+- vnitřní nosná: **250 mm** (was 220 hardcoded fallback)
+- vnitřní příčka: **115 mm** (was 50 mm from WF32 only)
+- SDK předstěna: **125 mm** (unchanged)
+
+### Aggregate delta vs Phase 6.5 v1
+
+| | v1 | v2 | Δ |
+|---|---:|---:|---:|
+| Σ fasádní špalety m² | 57.49 | 58.50 | +1.01 (+1.8 %) |
+| Σ vnitřní špalety m² | 80.99 | 188.80 | **+107.81 (+133.1 %)** |
+
+Vnitřní +133 % je spojený důsledek (a) přesunu dveří do správných chodeb
+(z 1.PP klastru misclustered do sklepních kójí) a (b) opravy fallback
+50→115 mm, tj. konečně realistická typická příčka.
+
+### Spot-check (5 rooms vs Tabulka 0041 ground truth)
+
+| Místnost | Spec očekává | v1 chyba | v2 výsledek | ✓ |
+|----------|--------------|----------|-------------|---|
+| **S.D.27** SKLEPNÍ KÓJE B | 1 dveře (D04 z S.D.20), ~1 m² | 7.40 m² (11 dveří × 50 mm) | **1.403 m²** (1 × 115 mm) | ✅ |
+| **S.D.40** SKLEPNÍ KÓJE D | 1 dveře (D04 do S.D.32), ~1 m² | 5.28 m² (9 dveří × 50 mm) | **1.403 m²** (1 × 115 mm) | ✅ |
+| D.1.4.07 POKOJ | 1 D + 1 W (485 mm obvod) | 4.85 m² fas + 0 vnt | 4.870 fas + 1.403 vnt | ✅ |
+| D.2.1.07 POKOJ | 1 D + 1 W | 4.85 fas + 0 vnt | 4.870 fas + 1.403 vnt | ✅ |
+| D.2.4.07 POKOJ | 1 D + 1 W | 4.85 fas + 0 vnt | 4.870 fas + 1.403 vnt | ✅ |
+
+### Golden case D.1.1.01 chodba
+
+- fasádní: **0.000 m²** ✅ (n_fasadni_openings = 0, unchanged)
+- vnitřní: 7.560 m² (4 dveře × tl 150 mm — chodba má WF51 SDK předstěnu,
+  preferred order nosná → příčka → SDK pulled SDK 150 mm)
+
+### New scripts
+
+- `concrete-agent/packages/core-backend/scripts/phase_0_8_extract_master_skladby.py`
+  — reads Tabulka 0030 XLSX (`skladby sten` sheet) → patches geometric_dataset
+  s 26 WF skladbami (kind + specifikum + vrstvy). Idempotent.
+- `concrete-agent/packages/core-backend/scripts/phase_0_9_extract_doors_ownership.py`
+  — reads Tabulka 0041 XLSX (`tab dvere` sheet) → produces
+  `objekt_D_doors_ownership.json` (290 doors → ownership map per
+  z_místnoti/do_místnoti, garage gate flagging).
+- `concrete-agent/packages/core-backend/scripts/phase_6_5_v2_spalety.py`
+  — orchestrator implementující všech 5 oprav. Idempotent (re-run
+  vrátí stejné hodnoty + clean popis).
+
+### Files updated this phase (in-place)
+
+- `objekt_D_geometric_dataset.json` — skladby dict rozšířen o 24 WF entries
+  (Bug #1 — Phase 0.x extracted only 2/26)
+- `objekt_D_doors_ownership.json` — NEW: 104 D-rooms × ownership lists
+- `items_objekt_D_complete.json` — 132 spalety items s aktualizovanou
+  mnozstvi + popis + warnings + source_method=`L2.5_v2_per_room`
+- `Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx` — 11 sheets, 457 KB
+  (regenerated od Phase 6 → Phase 8 List 11 refreshed)
+- `Vykaz_vymer_pre_phase6_5_v2.xlsx` — single backup před destructive write
+  (450 KB)
+- `next-session-libuse.md` — this file
+
+### Garage gate exclusion stats
+
+- 2 D05 garážová vrata (5700×2100 mm Hoermann) detekovány v Tabulce 0041
+- Žádné z nich nejsou přiřazené k S.D./D. místnostem (jsou v S.B./S.C.
+  garáží), takže Bug #3 filter nemusel firovat na D-objektu, ale je v
+  místě pro budoucí A/B/C runs.
+
+### Edge stops (12 rooms s fasádním otvorem ale bez obvodové WF tag)
+
+Stejných 12 rooms jako v v1: D.1.1.03, D.1.2.03, D.1.3.03, D.1.4.05,
+D.2.1.03, atd. — fallback 487 mm (median obvodová bez atik) místo
+WF41/WF51 SDK tagů. Pro tyto rooms je tloušťka over-estimate o ~30 % —
+vyžaduje L1 extrakce per-otvor `wall_thickness_mm` z Tabulky výplní.
+
+### Verdict
+
+✅ **All 5 bugs resolved. Pipeline ready pro VELTON delivery.**
+
+Backlog (B-L1 + B-L2 v task spec §3) vyřešen v separátním tasku po
+konfirmaci s ABMV (F20/F30 typo, broken code references audit).
 
 ### Backlog — Phase L1 extract (post-submission)
 

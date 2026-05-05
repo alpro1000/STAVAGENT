@@ -1,0 +1,2000 @@
+{
+  "source": "Tabulka 0041 z_mistnoti/do_mistnoti ownership",
+  "method": "explicit_table_lookup",
+  "garage_exclusion": {
+    "rule": "D05 OR sirka_otvoru_mm > 3000",
+    "count_flagged": 2
+  },
+  "ownership": {
+    "S.D.09": [
+      {
+        "cislo": "027",
+        "typ": "D02",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.09",
+        "to_room": "S.C.02"
+      },
+      {
+        "cislo": "028",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.10",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "029",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.11",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "030",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.12",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "031",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.13",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "032",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.14",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "033",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.15",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "034",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.16",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "035",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.17",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "036",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.18",
+        "to_room": "S.D.09"
+      },
+      {
+        "cislo": "037",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.19",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.10": [
+      {
+        "cislo": "028",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.10",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.11": [
+      {
+        "cislo": "029",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.11",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.12": [
+      {
+        "cislo": "030",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.12",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.13": [
+      {
+        "cislo": "031",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.13",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.14": [
+      {
+        "cislo": "032",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.14",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.15": [
+      {
+        "cislo": "033",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.15",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.16": [
+      {
+        "cislo": "034",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.16",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.17": [
+      {
+        "cislo": "035",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.17",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.18": [
+      {
+        "cislo": "036",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.18",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.19": [
+      {
+        "cislo": "037",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.19",
+        "to_room": "S.D.09"
+      }
+    ],
+    "S.D.04": [
+      {
+        "cislo": "038",
+        "typ": "D02",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.04",
+        "to_room": "S.C.02"
+      }
+    ],
+    "S.D.02": [
+      {
+        "cislo": "039",
+        "typ": "D01",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.02",
+        "to_room": "S.C.02"
+      },
+      {
+        "cislo": "040",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.05",
+        "to_room": "S.D.02"
+      },
+      {
+        "cislo": "041",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.08",
+        "to_room": "S.D.02"
+      },
+      {
+        "cislo": "042",
+        "typ": "D03",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.03",
+        "to_room": "S.D.02"
+      },
+      {
+        "cislo": "043",
+        "typ": "D03",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.02",
+        "to_room": "S.D.01"
+      },
+      {
+        "cislo": "044",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.07",
+        "to_room": "S.D.02"
+      }
+    ],
+    "S.D.05": [
+      {
+        "cislo": "040",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.05",
+        "to_room": "S.D.02"
+      }
+    ],
+    "S.D.08": [
+      {
+        "cislo": "041",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.08",
+        "to_room": "S.D.02"
+      }
+    ],
+    "S.D.03": [
+      {
+        "cislo": "042",
+        "typ": "D03",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.03",
+        "to_room": "S.D.02"
+      }
+    ],
+    "S.D.01": [
+      {
+        "cislo": "043",
+        "typ": "D03",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.02",
+        "to_room": "S.D.01"
+      },
+      {
+        "cislo": "056",
+        "typ": "D03",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.30",
+        "to_room": "S.D.01"
+      }
+    ],
+    "S.D.07": [
+      {
+        "cislo": "044",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.07",
+        "to_room": "S.D.02"
+      }
+    ],
+    "S.D.06": [
+      {
+        "cislo": "045",
+        "typ": "D02",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.06",
+        "to_room": "S.C.02"
+      }
+    ],
+    "S.D.20": [
+      {
+        "cislo": "046",
+        "typ": "D02",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.C.02"
+      },
+      {
+        "cislo": "047",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.21",
+        "to_room": "S.D.20"
+      },
+      {
+        "cislo": "048",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.22",
+        "to_room": "S.D.20"
+      },
+      {
+        "cislo": "049",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.23",
+        "to_room": "S.D.20"
+      },
+      {
+        "cislo": "050",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.24",
+        "to_room": "S.D.20"
+      },
+      {
+        "cislo": "051",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.25",
+        "to_room": "S.D.20"
+      },
+      {
+        "cislo": "052",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.26",
+        "to_room": "S.D.20"
+      },
+      {
+        "cislo": "053",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.D.27"
+      },
+      {
+        "cislo": "054",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.D.28"
+      },
+      {
+        "cislo": "055",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.D.29"
+      }
+    ],
+    "S.D.21": [
+      {
+        "cislo": "047",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.21",
+        "to_room": "S.D.20"
+      }
+    ],
+    "S.D.22": [
+      {
+        "cislo": "048",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.22",
+        "to_room": "S.D.20"
+      }
+    ],
+    "S.D.23": [
+      {
+        "cislo": "049",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.23",
+        "to_room": "S.D.20"
+      }
+    ],
+    "S.D.24": [
+      {
+        "cislo": "050",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.24",
+        "to_room": "S.D.20"
+      }
+    ],
+    "S.D.25": [
+      {
+        "cislo": "051",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.25",
+        "to_room": "S.D.20"
+      }
+    ],
+    "S.D.26": [
+      {
+        "cislo": "052",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.26",
+        "to_room": "S.D.20"
+      }
+    ],
+    "S.D.27": [
+      {
+        "cislo": "053",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.D.27"
+      }
+    ],
+    "S.D.28": [
+      {
+        "cislo": "054",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.D.28"
+      }
+    ],
+    "S.D.29": [
+      {
+        "cislo": "055",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.20",
+        "to_room": "S.D.29"
+      }
+    ],
+    "S.D.30": [
+      {
+        "cislo": "056",
+        "typ": "D03",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.30",
+        "to_room": "S.D.01"
+      },
+      {
+        "cislo": "057",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.31",
+        "to_room": "S.D.30"
+      },
+      {
+        "cislo": "058",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.32",
+        "to_room": "S.D.30"
+      }
+    ],
+    "S.D.31": [
+      {
+        "cislo": "057",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.31",
+        "to_room": "S.D.30"
+      }
+    ],
+    "S.D.32": [
+      {
+        "cislo": "058",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.32",
+        "to_room": "S.D.30"
+      },
+      {
+        "cislo": "059",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.33",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "060",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.34",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "061",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.35",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "062",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.36",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "063",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.37",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "064",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.38",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "065",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.39",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "066",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.40",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "067",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.41",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "068",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.42",
+        "to_room": "S.D.32"
+      },
+      {
+        "cislo": "069",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.43",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.33": [
+      {
+        "cislo": "059",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.33",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.34": [
+      {
+        "cislo": "060",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.34",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.35": [
+      {
+        "cislo": "061",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.35",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.36": [
+      {
+        "cislo": "062",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.36",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.37": [
+      {
+        "cislo": "063",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.37",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.38": [
+      {
+        "cislo": "064",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.38",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.39": [
+      {
+        "cislo": "065",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.39",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.40": [
+      {
+        "cislo": "066",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.40",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.41": [
+      {
+        "cislo": "067",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.41",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.42": [
+      {
+        "cislo": "068",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.42",
+        "to_room": "S.D.32"
+      }
+    ],
+    "S.D.43": [
+      {
+        "cislo": "069",
+        "typ": "D04",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "S.D.43",
+        "to_room": "S.D.32"
+      }
+    ],
+    "D.3.2.01": [
+      {
+        "cislo": "128",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.01",
+        "to_room": "D.3.S.01"
+      },
+      {
+        "cislo": "275",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.02",
+        "to_room": "D.3.2.01"
+      },
+      {
+        "cislo": "276",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.03",
+        "to_room": "D.3.2.01"
+      },
+      {
+        "cislo": "277",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.04",
+        "to_room": "D.3.2.01"
+      }
+    ],
+    "D.3.S.01": [
+      {
+        "cislo": "128",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.01",
+        "to_room": "D.3.S.01"
+      },
+      {
+        "cislo": "267",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.01",
+        "to_room": "D.3.S.01"
+      },
+      {
+        "cislo": "279",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.01",
+        "to_room": "D.3.S.01"
+      }
+    ],
+    "D.1.S.02": [
+      {
+        "cislo": "228",
+        "typ": "D20",
+        "sirka_otvoru_mm": 1600,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.S.02",
+        "to_room": "D.1.S.01"
+      }
+    ],
+    "D.1.S.01": [
+      {
+        "cislo": "228",
+        "typ": "D20",
+        "sirka_otvoru_mm": 1600,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.S.02",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "229",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.01",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "233",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.01",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "237",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.S.01",
+        "to_room": "D.1.3.01"
+      },
+      {
+        "cislo": "241",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.01",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "293",
+        "typ": "D42",
+        "sirka_otvoru_mm": 1900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.S.01",
+        "to_room": null
+      }
+    ],
+    "D.1.1.01": [
+      {
+        "cislo": "229",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.01",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "230",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.04",
+        "to_room": "D.1.1.01"
+      },
+      {
+        "cislo": "231",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.03",
+        "to_room": "D.1.1.01"
+      },
+      {
+        "cislo": "232",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.02",
+        "to_room": "D.1.1.01"
+      }
+    ],
+    "D.1.1.04": [
+      {
+        "cislo": "230",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.04",
+        "to_room": "D.1.1.01"
+      }
+    ],
+    "D.1.1.03": [
+      {
+        "cislo": "231",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.03",
+        "to_room": "D.1.1.01"
+      }
+    ],
+    "D.1.1.02": [
+      {
+        "cislo": "232",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.1.02",
+        "to_room": "D.1.1.01"
+      }
+    ],
+    "D.1.2.01": [
+      {
+        "cislo": "233",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.01",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "234",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.02",
+        "to_room": "D.1.2.01"
+      },
+      {
+        "cislo": "235",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.03",
+        "to_room": "D.1.2.01"
+      },
+      {
+        "cislo": "236",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.04",
+        "to_room": "D.1.2.01"
+      }
+    ],
+    "D.1.2.02": [
+      {
+        "cislo": "234",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.02",
+        "to_room": "D.1.2.01"
+      }
+    ],
+    "D.1.2.03": [
+      {
+        "cislo": "235",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.03",
+        "to_room": "D.1.2.01"
+      }
+    ],
+    "D.1.2.04": [
+      {
+        "cislo": "236",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.2.04",
+        "to_room": "D.1.2.01"
+      }
+    ],
+    "D.1.3.01": [
+      {
+        "cislo": "237",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.S.01",
+        "to_room": "D.1.3.01"
+      },
+      {
+        "cislo": "238",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.3.01",
+        "to_room": "D.1.3.02"
+      },
+      {
+        "cislo": "239",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.3.01",
+        "to_room": "D.1.3.03"
+      },
+      {
+        "cislo": "240",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.3.01",
+        "to_room": "D.1.3.04"
+      }
+    ],
+    "D.1.3.02": [
+      {
+        "cislo": "238",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.3.01",
+        "to_room": "D.1.3.02"
+      }
+    ],
+    "D.1.3.03": [
+      {
+        "cislo": "239",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.3.01",
+        "to_room": "D.1.3.03"
+      }
+    ],
+    "D.1.3.04": [
+      {
+        "cislo": "240",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.3.01",
+        "to_room": "D.1.3.04"
+      }
+    ],
+    "D.1.4.01": [
+      {
+        "cislo": "241",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.01",
+        "to_room": "D.1.S.01"
+      },
+      {
+        "cislo": "242",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.07",
+        "to_room": "D.1.4.01"
+      },
+      {
+        "cislo": "243",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.06",
+        "to_room": "D.1.4.01"
+      },
+      {
+        "cislo": "244",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.05",
+        "to_room": "D.1.4.01"
+      },
+      {
+        "cislo": "245",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.03",
+        "to_room": "D.1.4.01"
+      },
+      {
+        "cislo": "246",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.02",
+        "to_room": "D.1.4.01"
+      }
+    ],
+    "D.1.4.07": [
+      {
+        "cislo": "242",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.07",
+        "to_room": "D.1.4.01"
+      }
+    ],
+    "D.1.4.06": [
+      {
+        "cislo": "243",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.06",
+        "to_room": "D.1.4.01"
+      }
+    ],
+    "D.1.4.05": [
+      {
+        "cislo": "244",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.05",
+        "to_room": "D.1.4.01"
+      }
+    ],
+    "D.1.4.03": [
+      {
+        "cislo": "245",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.03",
+        "to_room": "D.1.4.01"
+      }
+    ],
+    "D.1.4.02": [
+      {
+        "cislo": "246",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.1.4.02",
+        "to_room": "D.1.4.01"
+      }
+    ],
+    "D.2.S.01": [
+      {
+        "cislo": "247",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.S.01",
+        "to_room": "D.2.1.01"
+      },
+      {
+        "cislo": "253",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.01",
+        "to_room": "D.2.S.01"
+      },
+      {
+        "cislo": "257",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.S.01",
+        "to_room": "D.2.3.01"
+      },
+      {
+        "cislo": "261",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.01",
+        "to_room": "D.2.S.01"
+      }
+    ],
+    "D.2.1.01": [
+      {
+        "cislo": "247",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.S.01",
+        "to_room": "D.2.1.01"
+      },
+      {
+        "cislo": "248",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.07"
+      },
+      {
+        "cislo": "249",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.06"
+      },
+      {
+        "cislo": "250",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.05"
+      },
+      {
+        "cislo": "251",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.03"
+      },
+      {
+        "cislo": "252",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.02"
+      }
+    ],
+    "D.2.1.07": [
+      {
+        "cislo": "248",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.07"
+      }
+    ],
+    "D.2.1.06": [
+      {
+        "cislo": "249",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.06"
+      }
+    ],
+    "D.2.1.05": [
+      {
+        "cislo": "250",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.05"
+      }
+    ],
+    "D.2.1.03": [
+      {
+        "cislo": "251",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.03"
+      }
+    ],
+    "D.2.1.02": [
+      {
+        "cislo": "252",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.1.01",
+        "to_room": "D.2.1.02"
+      }
+    ],
+    "D.2.2.01": [
+      {
+        "cislo": "253",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.01",
+        "to_room": "D.2.S.01"
+      },
+      {
+        "cislo": "254",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.04",
+        "to_room": "D.2.2.01"
+      },
+      {
+        "cislo": "255",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.03",
+        "to_room": "D.2.2.01"
+      },
+      {
+        "cislo": "256",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.02",
+        "to_room": "D.2.2.01"
+      }
+    ],
+    "D.2.2.04": [
+      {
+        "cislo": "254",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.04",
+        "to_room": "D.2.2.01"
+      }
+    ],
+    "D.2.2.03": [
+      {
+        "cislo": "255",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.03",
+        "to_room": "D.2.2.01"
+      }
+    ],
+    "D.2.2.02": [
+      {
+        "cislo": "256",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.2.02",
+        "to_room": "D.2.2.01"
+      }
+    ],
+    "D.2.3.01": [
+      {
+        "cislo": "257",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.S.01",
+        "to_room": "D.2.3.01"
+      },
+      {
+        "cislo": "258",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.3.01",
+        "to_room": "D.2.3.04"
+      },
+      {
+        "cislo": "259",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.3.01",
+        "to_room": "D.2.3.03"
+      },
+      {
+        "cislo": "260",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.3.01",
+        "to_room": "D.2.3.02"
+      }
+    ],
+    "D.2.3.04": [
+      {
+        "cislo": "258",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.3.01",
+        "to_room": "D.2.3.04"
+      }
+    ],
+    "D.2.3.03": [
+      {
+        "cislo": "259",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.3.01",
+        "to_room": "D.2.3.03"
+      }
+    ],
+    "D.2.3.02": [
+      {
+        "cislo": "260",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.3.01",
+        "to_room": "D.2.3.02"
+      }
+    ],
+    "D.2.4.01": [
+      {
+        "cislo": "261",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.01",
+        "to_room": "D.2.S.01"
+      },
+      {
+        "cislo": "262",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.07",
+        "to_room": "D.2.4.01"
+      },
+      {
+        "cislo": "263",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.06",
+        "to_room": "D.2.4.01"
+      },
+      {
+        "cislo": "264",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.05",
+        "to_room": "D.2.4.01"
+      },
+      {
+        "cislo": "265",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.03",
+        "to_room": "D.2.4.01"
+      },
+      {
+        "cislo": "266",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.02",
+        "to_room": "D.2.4.01"
+      }
+    ],
+    "D.2.4.07": [
+      {
+        "cislo": "262",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.07",
+        "to_room": "D.2.4.01"
+      }
+    ],
+    "D.2.4.06": [
+      {
+        "cislo": "263",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.06",
+        "to_room": "D.2.4.01"
+      }
+    ],
+    "D.2.4.05": [
+      {
+        "cislo": "264",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.05",
+        "to_room": "D.2.4.01"
+      }
+    ],
+    "D.2.4.03": [
+      {
+        "cislo": "265",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.03",
+        "to_room": "D.2.4.01"
+      }
+    ],
+    "D.2.4.02": [
+      {
+        "cislo": "266",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.2.4.02",
+        "to_room": "D.2.4.01"
+      }
+    ],
+    "D.3.1.01": [
+      {
+        "cislo": "267",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.01",
+        "to_room": "D.3.S.01"
+      },
+      {
+        "cislo": "268",
+        "typ": "D35",
+        "sirka_otvoru_mm": 1585,
+        "vyska_otvoru_mm": 2210,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.04",
+        "to_room": "D.3.1.01"
+      },
+      {
+        "cislo": "272",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.03",
+        "to_room": "D.3.1.01"
+      },
+      {
+        "cislo": "273",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.02",
+        "to_room": "D.3.1.01"
+      }
+    ],
+    "D.3.1.04": [
+      {
+        "cislo": "268",
+        "typ": "D35",
+        "sirka_otvoru_mm": 1585,
+        "vyska_otvoru_mm": 2210,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.04",
+        "to_room": "D.3.1.01"
+      },
+      {
+        "cislo": "269",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.07",
+        "to_room": "D.3.1.04"
+      },
+      {
+        "cislo": "270",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.06",
+        "to_room": "D.3.1.04"
+      },
+      {
+        "cislo": "271",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.05",
+        "to_room": "D.3.1.04"
+      }
+    ],
+    "D.3.1.07": [
+      {
+        "cislo": "269",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.07",
+        "to_room": "D.3.1.04"
+      }
+    ],
+    "D.3.1.06": [
+      {
+        "cislo": "270",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.06",
+        "to_room": "D.3.1.04"
+      }
+    ],
+    "D.3.1.05": [
+      {
+        "cislo": "271",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.05",
+        "to_room": "D.3.1.04"
+      }
+    ],
+    "D.3.1.03": [
+      {
+        "cislo": "272",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.03",
+        "to_room": "D.3.1.01"
+      }
+    ],
+    "D.3.1.02": [
+      {
+        "cislo": "273",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.1.02",
+        "to_room": "D.3.1.01"
+      }
+    ],
+    "D.3.2.02": [
+      {
+        "cislo": "275",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.02",
+        "to_room": "D.3.2.01"
+      }
+    ],
+    "D.3.2.03": [
+      {
+        "cislo": "276",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.03",
+        "to_room": "D.3.2.01"
+      }
+    ],
+    "D.3.2.04": [
+      {
+        "cislo": "277",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.04",
+        "to_room": "D.3.2.01"
+      },
+      {
+        "cislo": "278",
+        "typ": "D35",
+        "sirka_otvoru_mm": 1585,
+        "vyska_otvoru_mm": 2210,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.04",
+        "to_room": "D.3.2.05"
+      }
+    ],
+    "D.3.2.05": [
+      {
+        "cislo": "278",
+        "typ": "D35",
+        "sirka_otvoru_mm": 1585,
+        "vyska_otvoru_mm": 2210,
+        "is_garage_gate": false,
+        "from_room": "D.3.2.04",
+        "to_room": "D.3.2.05"
+      }
+    ],
+    "D.3.3.01": [
+      {
+        "cislo": "279",
+        "typ": "D21",
+        "sirka_otvoru_mm": 1000,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.01",
+        "to_room": "D.3.S.01"
+      },
+      {
+        "cislo": "280",
+        "typ": "D35",
+        "sirka_otvoru_mm": 1585,
+        "vyska_otvoru_mm": 2210,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.01"
+      },
+      {
+        "cislo": "284",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.01",
+        "to_room": "D.3.3.03"
+      },
+      {
+        "cislo": "285",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.01",
+        "to_room": "D.3.3.02"
+      }
+    ],
+    "D.3.3.04": [
+      {
+        "cislo": "280",
+        "typ": "D35",
+        "sirka_otvoru_mm": 1585,
+        "vyska_otvoru_mm": 2210,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.01"
+      },
+      {
+        "cislo": "281",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.07"
+      },
+      {
+        "cislo": "282",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.06"
+      },
+      {
+        "cislo": "283",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.05"
+      }
+    ],
+    "D.3.3.07": [
+      {
+        "cislo": "281",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.07"
+      }
+    ],
+    "D.3.3.06": [
+      {
+        "cislo": "282",
+        "typ": "D31",
+        "sirka_otvoru_mm": 900,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.06"
+      }
+    ],
+    "D.3.3.05": [
+      {
+        "cislo": "283",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.04",
+        "to_room": "D.3.3.05"
+      }
+    ],
+    "D.3.3.03": [
+      {
+        "cislo": "284",
+        "typ": "D34",
+        "sirka_otvoru_mm": 800,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.01",
+        "to_room": "D.3.3.03"
+      }
+    ],
+    "D.3.3.02": [
+      {
+        "cislo": "285",
+        "typ": "D33",
+        "sirka_otvoru_mm": 1300,
+        "vyska_otvoru_mm": 2150,
+        "is_garage_gate": false,
+        "from_room": "D.3.3.01",
+        "to_room": "D.3.3.02"
+      }
+    ]
+  }
+}
