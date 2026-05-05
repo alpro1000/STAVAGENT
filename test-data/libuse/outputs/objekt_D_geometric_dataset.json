@@ -6834,6 +6834,22 @@
       "estimated_value_czk": 133733.0,
       "items_added": 86,
       "source_specifikace": "Tabulka skladeb 0030 F15: tepelná izolace minerální vlna ISOVER Top V Final 100mm + Cemix Superfix bezkotevní lepidlo 5mm"
+    },
+    {
+      "phase": "0.13",
+      "type": "PROBE_FINDING + GENERATOR_FIX",
+      "label": "PROBE 5 — FF01 mismap + F14/F11 missing pro 1.PP D-rooms",
+      "description": "3 systemic issues v Phase 6 generator pro 1.PP D-rooms (43 rooms): (a) F14 bezprašný nátěr ŽB stěn (Sikagard 555W) chybělo přes všech 39 rooms s architectovou poznámkou; (b) F11 epoxidový nátěr podlahy (Sikafloor 2540 W 2-coat) chybělo přes všech 43 rooms; (c) FF01 mismap: Phase 6 produced cementový potěr 50mm + kari síť items pro 1.PP, ale FF01 = pancéřová betonová podlaha s vsypem (NE cementový potěr — to patří do FF20/FF30 nad suterénem). Phase 0.13 inject 203 new items + zeroed 126 wrong potěr items.",
+      "items_added": 203,
+      "items_zeroed": 126,
+      "rooms_affected_F14": 39,
+      "rooms_affected_F11": 43,
+      "estimated_correction_czk": {
+        "F14_under_billing_closed": "+98 000 Kč",
+        "F11_under_billing_closed": "+70 000 Kč",
+        "FF01_over_billing_removed": "-167 000 Kč",
+        "net_correction": "+1 000 Kč (close to neutral, but each category was wrong)"
+      }
     }
   ],
   "skladby": {
