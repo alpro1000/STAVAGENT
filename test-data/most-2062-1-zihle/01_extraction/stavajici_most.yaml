@@ -1,0 +1,346 @@
+# ═══════════════════════════════════════════════════════════════════════
+# stavajici_most.yaml — strukturovaná extrakce dat o stávajícím mostě
+# ═══════════════════════════════════════════════════════════════════════
+# Most ev.č. 2062-1, Žihle (Plzeň-sever), trámová deska 1 pole
+#
+# Schema: každý fact má pole `value`, `source` (PDF/strana nebo foto),
+# `confidence` (0.0–1.0), případně `note` pro nejistoty.
+#
+# Confidence rubric:
+#   1.0  = explicit text v dokumentu (PDF strana citována)
+#   0.9  = ručně psaná hodnota v mostním listu, čitelně
+#   0.85 = odvozeno z KB norem nebo logickou interpretací PDF
+#   0.5  = vizuální odhad z fotografie
+#   N/A  = chybí (flagováno + zdůvodnění)
+# ═══════════════════════════════════════════════════════════════════════
+
+schema_version: 1
+extracted: 2026-05-05
+sources:
+  primary:
+    - "inputs/pdf/2062-1 HMP.pdf"                    # HPM (6 s., 2025-09-24)
+    - "inputs/photos/Příloha č. 1 - snímek mostního listu.png"  # BMS rukopis
+  secondary:
+    - "inputs/photos/20260421_131615.jpg"            # foto 1 boční pohled
+    - "inputs/photos/20260421_131624.jpg"            # foto 2 zdola
+    - "inputs/photos/20260421_131650.jpg"            # foto 3 detail trámů
+    - "inputs/photos/20260421_131658.jpg"            # foto 4 opěra zdola
+    - "inputs/photos/20260421_131821.jpg"            # foto 5 v ose vozovky
+    - "inputs/photos/20260421_132429.jpg"            # foto 6 z dálky
+
+# ─────────────────────────────────────────────────────────────────────
+# § 1. Identifikace
+# ─────────────────────────────────────────────────────────────────────
+
+identifikace:
+  ev_cislo:
+    value: "2062-1"
+    source: "HPM s.2 §A + ZD s.5 §4.1"
+    confidence: 1.0
+  nazev:
+    value: "Most přes Mladotický potok za obcí Žihle"
+    source: "HPM s.1+2"
+    confidence: 1.0
+  cislo_komunikace:
+    value: "III/206 2"
+    source: "ZD s.5 §4.1; HPM s.2 §A uvádí jen '2062'"
+    confidence: 1.0
+  staniceni_km:
+    value: 0.793
+    source: "HPM s.2 §A"
+    confidence: 1.0
+    note: "ZD §5.1 vymezuje úsek stavby 0,600 – 0,900 km (širší rozsah pro směrovou úpravu silnice)"
+  okres:
+    value: "Plzeň-sever"
+    source: "HPM s.2"
+    confidence: 1.0
+  smer_staniceni:
+    value: "z obce Žihle do Potvorova"
+    source: "HPM s.2 §A"
+    confidence: 1.0
+  premostovana_prekazka:
+    value: "Mladotický potok"
+    source: "HPM s.1; Vysvětlení ZD č.1"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 2. Konstrukční typ — nosná konstrukce (NK)
+# ─────────────────────────────────────────────────────────────────────
+
+nk:
+  typ:
+    value: "trámová deska, 1 pole"
+    source: "HPM s.2 §B [2.1]"
+    confidence: 1.0
+  pocet_poli:
+    value: 1
+    source: "HPM s.2 §B [2.1]"
+    confidence: 1.0
+  trámy:
+    pocet:
+      value: 16
+      source: "HPM s.2 [2.1] + mostní list (label 'ŽEL. BET. TRÁMY 20/50 16 KS')"
+      confidence: 1.0
+    material:
+      value: "železobetonové (ŽB) s tuhými ocelovými vložkami z I-profilů"
+      source: "HPM s.2 [2.1]"
+      confidence: 1.0
+    profil_ocelove_vlozky:
+      value: "I-280"
+      source: "HPM s.2 [2.1] — určeno podle šířky příruby na obnažené spodní části trámů"
+      confidence: 0.9
+      note: "HPM uvádí 'pravděpodobně č. 280'; mostní list popisuje sekundární prvky 'BET. SLOUPKY + OCEL I č.6 3×' (jiný kontext — výtok)"
+    prurez_ramy_cm:
+      value: "20 × 50"
+      source: "mostní list (BMS PNG, label 'ŽEL. BET. TRÁMY 20/50')"
+      confidence: 0.9
+      note: "rukopis, výklad: šířka × výška = 20 cm × 50 cm"
+    pudoryorne_usporadani:
+      value: "11 trámů rovnoběžných s levou stranou; 5 trámů na pravé straně rozevírá do šikmosti čela NK"
+      source: "HPM s.2 [2.1] + mostní list (vyznačeno 'OSOVÁ VZDÁLENOST TRÁMŮ NA OPEŘE' s narůstajícími rozestupy 70/85/95/105/100 cm)"
+      confidence: 0.9
+  deska_mostovky:
+    material:
+      value: "železobetonová, monolitická"
+      source: "HPM s.2 [2.1]"
+      confidence: 1.0
+    tloustka_cm:
+      value: null
+      source: null
+      confidence: null
+      note: "v HPM neuvedena; mostní list ukazuje řez ale tloušťka desky je nečitelná. Flag jako MISSING."
+  šikmost:
+    value_deg: 50
+    source: "mostní list (PNG, ručně vyznačený úhel '50°')"
+    confidence: 0.9
+    note: "Šikmost čela NK k ose vozovky. Konzistentní s asymetrickým rozestupem trámů a různou délkou zábradlí (7.40 BM levá vs 8.30 BM pravá)."
+  loziska:
+    value: "nejsou"
+    source: "HPM s.2 [2.2]"
+    confidence: 1.0
+  mostni_zavery:
+    value: "nejsou"
+    source: "HPM s.2 [2.3]"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 3. Geometrie (z mostního listu)
+# ─────────────────────────────────────────────────────────────────────
+
+geometrie:
+  # Hodnoty čteny z rukopisné mostní karty BMS — interpretace vyžaduje opatrnost.
+  # PNG ukazuje půdorys (top), řez A-A' (front cross section), výtok (downstream).
+  rozpeti_m:
+    value_approx: 9.0
+    source: "mostní list (PNG, kóta '900' v půdorysu mezi opěrami)"
+    confidence: 0.7
+    note: "Hodnota 9.00 m = osová vzdálenost mezi opěrami (rozpětí). Šikmost 50° → efektivní délka trámů > 9.0 m. Geodetické zaměření vyžadováno pro přesné hodnoty."
+  sirka_vozovky_mostu_m:
+    value_approx: 9.00
+    source: "mostní list (PNG, řez A-A' kóta '900')"
+    confidence: 0.7
+    note: "Stávající mostovka má vozovku ~9.0 m mezi římsami. ZD §4.4.c požaduje pro nový most pouze S 7,5 (vozovka 6.50 m) — tj. nová NK bude užší."
+  sirka_celkova_m:
+    value_approx: 9.40
+    source: "mostní list (řez A-A': 20 + 900 + 20 = 940 mm? cm? — interpretace 20 cm římsa každé straně)"
+    confidence: 0.6
+    note: "Interpretace '20 cm každé strany na římsy' → 9.00 + 0.20 + 0.20 = 9.40 m celková šířka. Kóty rukopisné, hodnoty mohou být jiné jednotky."
+  zabradli_delka_leve_m:
+    value: 7.40
+    source: "mostní list (PNG, label 'ZÁBRADLÍ 7,40 BM')"
+    confidence: 0.9
+  zabradli_delka_prave_m:
+    value: 8.30
+    source: "mostní list (PNG, label 'ZÁBRADLÍ 8,30 BM')"
+    confidence: 0.9
+    note: "Asymetrie 7.40 vs 8.30 m vyplývá ze šikmosti 50° + rozevírání trámů na pravé straně"
+  svetla_vyska_pod_mostem_m:
+    value: null
+    source: null
+    confidence: null
+    note: "v HPM ani mostním listu kvantitativně neuvedena. HPM s.4 [2.1] kvalifikuje: 'střední část konstrukce lze jen obtížně kontrolovat pro malou světlou výšku pod mostem' a HPM s.4 [4.2]: 'Prostor pod mostem je příliš nízký pro veškeré revizní i stavební práce'. Foto 20260421_131615 + 131624 vizuálně potvrzují velmi nízkou světlost (odhad ~1.0–1.5 m) — flag jako MISSING quantitative."
+
+# ─────────────────────────────────────────────────────────────────────
+# § 4. Spodní stavba (SS)
+# ─────────────────────────────────────────────────────────────────────
+
+ss:
+  zaklady:
+    typ:
+      value: "pravděpodobně plošné"
+      source: "HPM s.2 [1.1]"
+      confidence: 0.85
+      note: "HPM uvádí 'nepřístupné, pravděpodobně plošné'. Pro PDPS bude vyžadovat IGP."
+  opery:
+    konstrukce:
+      value: "nízké masivní opěry z kamenných kvádrů"
+      source: "HPM s.2 [1.2]"
+      confidence: 1.0
+    zvlastnost:
+      value: "na levé straně rozšířené"
+      source: "HPM s.2 [1.2]"
+      confidence: 1.0
+  kridla:
+    value: "Levé křídlo opěry 1 = rovnoběžná kamenná zídka navazující na opěru. Ostatní = krátká svahová z kamenného zdiva. Levá strana opěry 2 = křídlo kolmé. Pravá strana = křídla šikmá."
+    source: "HPM s.2 [1.3]"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 5. Svršek + vybavení
+# ─────────────────────────────────────────────────────────────────────
+
+svrsek:
+  vozovka:
+    typ:
+      value: "živičná, na pravé straně s nezpevněnou krajnicí"
+      source: "HPM s.3 [3.1]"
+      confidence: 1.0
+    nadvyseni:
+      value: "vozovka je nadvýšena do úrovně říms"
+      source: "HPM s.4 [3.1]"
+      confidence: 1.0
+  chodniky:
+    value: "nejsou"
+    source: "HPM s.3 [3.2]"
+    confidence: 1.0
+  rimsy:
+    value: "železobetonové monolitické"
+    source: "HPM s.3 [3.3.1]"
+    confidence: 1.0
+  izolace_NK:
+    value: "nepřístupná, typ izolace nezjištěn"
+    source: "HPM s.3 [3.4] + s.4 [3.3] (dnes nefunkční)"
+    confidence: 1.0
+
+vybaveni:
+  odvodneni:
+    value: "není"
+    source: "HPM s.3 [4.1]"
+    confidence: 1.0
+  svodidla:
+    value: "ocelová zábradelní svodidla bez výplně SafeStar 231, H2/W3 s náběhy (z r. 2020)"
+    source: "HPM s.3 [4.2]"
+    confidence: 1.0
+  dopravni_znaceni:
+    value: "B13 (20 t), E13 (24 t) + tabulka s ev. číslem mostu"
+    source: "HPM s.3 [4.3]; foto 20260421_131821 vizuálně potvrzuje B13 '20t'"
+    confidence: 1.0
+  uzemi_pod_mostem:
+    value: "Koryto Mladotického potoka zpevněné lomovým kamenem; přístup po svazích silničního tělesa a korytem vodoteče"
+    source: "HPM s.3 [4.4]"
+    confidence: 1.0
+  cizi_zarizeni:
+    value: "nezjištěno"
+    source: "HPM s.3 [4.5]"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 6. Stavební stav + použitelnost
+# ─────────────────────────────────────────────────────────────────────
+
+stavebni_stav:
+  ss_klasifikace:
+    value: "IV — Uspokojivý"
+    koeficient_a: 8.0
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  nk_klasifikace:
+    value: "VI — Velmi špatný"
+    koeficient_a: 0.4
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  pouzitelnost:
+    value: "III — použitelné s výhradou (po dopravních opatřeních); bez DO: V — nepoužitelné"
+    source: "HPM s.5 §G + s.6 'Poznámka ke stavu a použitelnosti'"
+    confidence: 1.0
+  klicove_zavady_NK:
+    - {popis: "beton degradovaný, místy s průsaky; zatéká pod římsami", source: "HPM s.4 [2.1]", confidence: 1.0}
+    - {popis: "u krajních cca 6 trámů z obou stran odpadlá krycí vrstva spodního líce", source: "HPM s.4 [2.1]", confidence: 1.0}
+    - {popis: "odhalené třmínky a spodní pásnice ocelových I-vložek výrazně korodují s oslabením", source: "HPM s.4 [2.1] + foto 20260421_131650", confidence: 1.0}
+    - {popis: "trhliny nad výztuží při spodním líci", source: "HPM s.4 [2.1]", confidence: 1.0}
+    - {popis: "mezi 1. a 2. nosníkem zleva — beton desky zcela degradovaný, obnažená výztuž s masivním oslabením", source: "HPM s.4 [2.1] (BOLD)", confidence: 1.0}
+    - {popis: "ve druhé polovině u opěry 2 beton desky chybí v délce cca 1.5 m, výztuž překorodovaná, zatížení přenáší jen vozovka", source: "HPM s.4 [2.1] (BOLD)", confidence: 1.0}
+    - {popis: "kotvení levé římsy v této zóně funkční jen omezeně", source: "HPM s.4 [2.1] + s.6", confidence: 1.0}
+  klicove_zavady_SS:
+    - {popis: "průsaky na opěrách, spárování místy porušené trhlinami", source: "HPM s.3 [1.2]", confidence: 1.0}
+    - {popis: "spárování zdiva křídel porušené, místy vypadané", source: "HPM s.3 [1.3]", confidence: 1.0}
+    - {popis: "kamenná zídka levého křídla u opěry 1 rozvolněná a deformovaná zemními tlaky a erozí, vegetace mezi kameny", source: "HPM s.3 [1.3] + foto 20260421_131658", confidence: 1.0}
+  klicove_zavady_okoli:
+    - {popis: "z opevnění koryta zcela vyplavené spárování, některé kameny uvolněné nebo chybí", source: "HPM s.4 [4.2]", confidence: 1.0}
+    - {popis: "prostor pod mostem příliš nízký pro veškeré revizní i stavební práce", source: "HPM s.4 [4.2]", confidence: 1.0}
+
+# ─────────────────────────────────────────────────────────────────────
+# § 7. Stávající zatížitelnost
+# ─────────────────────────────────────────────────────────────────────
+
+zatizitelnost_stavajici:
+  zpusob_zjisteni:
+    value: "N — způsob stanovení zatížitelnosti neznámý"
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  Vn_t:
+    value: 20.0
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  Vr_t:
+    value: 24.0
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  Ve_t:
+    value: 29.0
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  max_napravovy_tlak_t:
+    value: 12.0
+    source: "HPM s.5 §G"
+    confidence: 1.0
+  poznamka:
+    value: "Po provedení doporučených opatření (uzavření vozovky u levé římsy, Z-směrovací desky) je možné na zbytku konstrukce zachovat původní zatížitelnost"
+    source: "HPM s.6"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 8. Doporučená opatření z HPM
+# ─────────────────────────────────────────────────────────────────────
+
+doporuceni_HPM:
+  - {priorita: "5 — odstranění nutno provést ihned", popis: "uzavřít vozovku u levé římsy + Z-směrovací desky, odsunout provoz na střední část", source: "HPM s.5 §E (5)", confidence: 1.0}
+  - {priorita: "3 — odstranění nutno do 1 roku", popis: "základní opravy a přespárování zdiva spodní stavby (křídla)", source: "HPM s.5 §E (3)", confidence: 1.0}
+  - {priorita: "2 — odstranění nutno do 5 let", popis: "náhrada NK novou konstrukcí", source: "HPM s.5 §E (2)", confidence: 1.0}
+  - {priorita: "6 — periodicky", popis: "údržba dle ČSN 73 6221", source: "HPM s.5 §E (6)", confidence: 1.0}
+
+verdict_HPM:
+  value: "Most je nutno zásadně rekonstruovat bez jakékoliv prodlevy. Údržba již nemůže prodloužit životnost ani zachovat zatížitelnost."
+  source: "HPM s.4 §D"
+  confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 9. Identifikace prohlídky
+# ─────────────────────────────────────────────────────────────────────
+
+prohlidka:
+  datum: 2025-09-24
+  prohlizel: "Komanec Petr, Ing. (PONTEX, s.r.o.)"
+  cislo_opravneni: "086/2003"
+  pocasi: "zataženo, 17.0 °C"
+  zpusob_zpristupneni: "z terénu"
+  datum_projednani: 2025-12-09
+  termin_dalsi_HPM: 2027
+  source: "HPM s.2 + s.5 §F + s.6"
+  confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# Souhrn missing data (chybí v inputs/, vyžaduje doplnění před PDPS)
+# ─────────────────────────────────────────────────────────────────────
+
+missing_data:
+  - field: "geometrie.svetla_vyska_pod_mostem_m"
+    reason: "HPM ani mostní list nekvantifikují; kvalitativně 'příliš nízká'. Vyžaduje geodetické zaměření."
+  - field: "nk.deska_mostovky.tloustka_cm"
+    reason: "Mostní list ukazuje řez ale tloušťka desky nečitelná v rozlišení rukopisu."
+  - field: "ss.zaklady.hloubka + dimenze"
+    reason: "HPM uvádí 'nepřístupné, pravděpodobně plošné'. Vyžaduje IGP a sondu při demolici."
+  - field: "puvodni_projektova_dokumentace"
+    reason: "Vysvětlení ZD č.1 ad 1: 'Zadavatel nedisponuje původní projektovou dokumentací ke stávajícímu mostu, tudíž ji nemůže poskytnout.' Mostní list z BMS je jediná evidence."
+  - field: "hydrologicke_pomery_potoka"
+    reason: "ZD §4.4.b/d požaduje splnit hydrologická data — ale neposkytuje je. Zhotovitel zajistí u správce toku."

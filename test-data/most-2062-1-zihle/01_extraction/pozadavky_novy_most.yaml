@@ -1,0 +1,424 @@
+# ═══════════════════════════════════════════════════════════════════════
+# pozadavky_novy_most.yaml — strukturovaná extrakce požadavků na nový most
+# ═══════════════════════════════════════════════════════════════════════
+# Most ev.č. 2062-1, Žihle — D&B přestavba
+#
+# Zdroj: ZD č.j. 3967/26/SÚSPK-P (1.4.2026, 26 stran)
+#       + Vysvětlení ZD č.1 (24.4.2026, č.j. 10186/26/SÚSPK-P)
+#
+# Pozn.: V tomto souboru jsou jen RAW POŽADAVKY z dokumentace.
+#        Návrh nové NK (varianty řešení, výběr betonu, výběr bednění)
+#        patří do 02_design/ — Phase B.
+#
+# Confidence: všechny hodnoty 1.0 (citace přímo z PDF s číslem strany).
+# ═══════════════════════════════════════════════════════════════════════
+
+schema_version: 1
+extracted: 2026-05-05
+sources:
+  zd:
+    cesta: "inputs/pdf/ZD - Most ev.č. 2062-1 u obce Žihle - DaB.pdf"
+    cislo_jednaci: "3967/26/SÚSPK-P"
+    datum: 2026-04-01
+    pocet_stran: 26
+  zd_vysvetleni_1:
+    cesta: "inputs/pdf/Vysvětlení ZD č. 1 - Most u obce Žihle.pdf"
+    cislo_jednaci: "10186/26/SÚSPK-P"
+    datum: 2026-04-24
+    pocet_stran: 2
+
+# ─────────────────────────────────────────────────────────────────────
+# § 1. Předmět veřejné zakázky (ZD §4.1 + §4.3)
+# ─────────────────────────────────────────────────────────────────────
+
+predmet_zakazky:
+  forma:
+    value: "Design & Build"
+    pravni_zaklad: "§92 odst. 2 ZZVZ (zákon č. 134/2016 Sb.)"
+    rezim: "zjednodušené podlimitní řízení"
+    source: "ZD s.4 §4.2 + s.1"
+    confidence: 1.0
+  obecny_popis:
+    value: "Odstranění stávajícího mostu ev.č. 2062-1 + výstavba mostu nového, vč. směrové úpravy silnice III/206 2 v úseku km 0,600 – 0,900 a vypracování projektové dokumentace všech stupňů (DUR, DSP, DPS, DOS) + zajištění pravomocných rozhodnutí + provizorium"
+    source: "ZD s.4-5 §4.1 + Vysvětlení ZD č.1 'Předmět plnění VZ'"
+    confidence: 1.0
+  rozsah_dilcich_plneni:
+    # ZD §4.3 — 10 položek a–j
+    a: "vypracování dokumentace pro povolení stavby (DUR), vč. projednání a pravomocného rozhodnutí o povolení záměru"
+    b: "vypracování projektové dokumentace pro provádění stavby (DPS), vč. DIO a soupisu prací a výkazu výměr"
+    c: "vypracování dokumentace pro odstranění stavby stávajícího mostu, vč. projednání a povolení odstranění"
+    d: "provedení bouracích prací stávajícího mostu"
+    e: "zřízení provizorního mostního přemostění a zajištění převedení chodů po dobu stavby, vč. PD a povolení s následnou demontáží"
+    f: "provedení stavby nového mostu v rozsahu nabídky"
+    g: "vypracování pasportu Stavby a geodetické zaměření Stavby"
+    h: "zajištění Kolaudačního rozhodnutí"
+    i: "geodetické zaměření skutečného stavu (S-JTSK, Bpv, 3. třída přesnosti, DGN+JVF, vyhláška č. 393/2020 Sb. o DTM)"
+    j: "výpočet zatížitelnosti mostu dle ČSN 73 6222"
+    source: "ZD s.5 §4.3"
+    confidence: 1.0
+  cpv_kody:
+    - "71240000-2 Architektonické, technické a plánovací služby"
+    - "45000000-7 Stavební práce"
+    - "45100000-8 Práce spojené s přípravou staveniště"
+    - "45110000-1 Demolice a zemní práce"
+    - "45111100-9 Demoliční práce"
+    - "45111200-0 Příprava staveniště a odklizovací práce"
+    - "45112000-5 Výkopové a zemní práce"
+    - "45112400-9 Výkopové práce"
+    - "45233140-2 Práce na stavbě silnic"
+    - "45233290-8 Instalace a montáž dopravního značení"
+    - "45262210-6 Zakládací práce"
+    - "45262300-4 Betonářské práce"
+    - "45262310-7 Železobetonářské práce"
+    - "45262311-4 Betonářské stavební práce"
+    - "45262340-6 Injektážní práce"
+    - "45221111-3 Výstavba silničních mostů"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 2. Hard parametry nového mostu (ZD §4.4)
+# ─────────────────────────────────────────────────────────────────────
+
+parametry_noveho_mostu:
+  # Pozn.: ZD §4.4 obsahuje 18 položek (a–r), pozice c+e jsou duplikát
+  #        (šířkové uspořádání S 7,5) — uvádím jen 1×.
+
+  zalozeni:
+    pozadavek:
+      value: "stavba nového mostu vč. nového založení; bude vycházet ze Zhotovitelem provedených průzkumů a měření"
+      source: "ZD s.6 §4.4.a"
+      confidence: 1.0
+    poznamka: "IGP a geodézie = odpovědnost zhotovitele"
+
+  hydrologie:
+    pozadavek:
+      value: "průtočný průřez musí splňovat technickými normami daná hydrologická data v místě"
+      source: "ZD s.6 §4.4.b + §4.4.d"
+      confidence: 1.0
+    poznamka: "Konkrétní Q-hodnoty v ZD nejsou — zhotovitel zajistí u správce toku (Mladotický potok)"
+
+  sirkove_usporadani:
+    kategorie_silnice: "III. třída"
+    typ: "S 7,5"
+    sirka_vozovky_m: 6.50
+    vodici_prouzek_v4_m: 0.125
+    pozadavek_napojeni:
+      value: "plynule navazovat na související úpravy silnice"
+      source: "ZD s.6 §4.4.c (=§4.4.e)"
+      confidence: 1.0
+
+  niveleta:
+    pozadavek:
+      value: "vozovka na mostě a v okolí bude plynule napojena na stávající komunikaci"
+      source: "ZD s.6 §4.4.f"
+      confidence: 1.0
+
+  limity_deformaci:
+    sedani_spodni_stavby_max_mm:
+      value: 12
+      podminka: "měřené během stavby a během záruční doby"
+      source: "ZD s.6 §4.4.g"
+      confidence: 1.0
+      poznamka: "Vyžaduje volbu vhodného typu založení dle IGP"
+    dlouhodoba_deformace_NK_uprostred_max_mm:
+      value: 3
+      source: "ZD s.6 §4.4.k"
+      confidence: 1.0
+
+  zatizitelnost_csn_73_6222:
+    Vn_t:
+      value: 32
+      source: "ZD s.6 §4.4.h"
+      confidence: 1.0
+    Vr_t:
+      value: 80
+      source: "ZD s.6 §4.4.h"
+      confidence: 1.0
+    Ve_t:
+      value: 180
+      source: "ZD s.6 §4.4.h"
+      confidence: 1.0
+    poznamka: "Zatížitelnost bude stanovena po dokončení mostu dle ČSN 73 6222 (§4.3.j)"
+
+  zadrzny_system:
+    pozadavek:
+      value: "na mostě bude osazen zádržný systém požadovaný pro mosty v extravilánu"
+      source: "ZD s.6 §4.4.i"
+      confidence: 1.0
+    poznamka: "Konkrétní úroveň zadržení (H1/H2/H3) v ZD neuvedena — zhotovitel volí dle ČSN EN 1317 a TKP 11 pro extravilán"
+
+  vozovka:
+    typ: "živičná"
+    pocet_vrstev: 3
+    obrusna_vrstva:
+      pozadavek:
+        value: "100 % návrhová tloušťka obrusné vrstvy bez tolerance — průměrná tloušťka při kontrolním měření musí odpovídat min. 100 % tloušťky navržené v PD"
+        source: "ZD s.6 §4.4.j + s.7 (poznámka *)"
+        confidence: 1.0
+        poznamka: "PŘÍSNĚJŠÍ NEŽ STANDARDNÍ TKP — nepřipouští se žádná tolerance ani odchylka tloušťky obrusné vrstvy podle TP/TKP/jiných předpisů"
+
+  konstrukcni_omezeni_minimalni_udrzba:
+    # ZD §4.4.l — explicit list co MUSÍ být splněno pro „co nejmenší nároky na budoucí údržbu"
+    pozadavek_obecny:
+      value: "konstrukční řešení mostu vyžadující co nejmenší nároky na budoucí údržbu"
+      source: "ZD s.6 §4.4.l"
+      confidence: 1.0
+    konkretni_zakazy:
+      bez_dilatacnich_zaveru_ve_vozovce: true
+      bez_mostnich_lozisek: true
+      bez_slozit_systemu_odvodneni: true
+      source: "ZD s.6 §4.4.l (přesné znění: 'např. bez dilatačních závěrů ve vozovce, bez mostních ložisek, bez složitého systému odvodnění apod.')"
+      confidence: 1.0
+      dusledek_pro_navrh: "Tyto 3 zákazy směřují k integrálnímu rámovému typu mostu (BR_FRAME per Pokorný-Suchánek INDEX.yaml). Detail v 02_design/."
+    revizni_schodiste:
+      povinne: true
+      source: "ZD s.6 §4.4.l"
+      confidence: 1.0
+    uprava_vodniho_toku:
+      pozadavek:
+        value: "případná úprava vodního toku a zpevnění dna koryta v rámci stavby nového mostu bude provedena dle požadavku správce toku"
+        source: "ZD s.6 §4.4.l + §4.4.r ('v okolí max. 10 m úprava vodního toku a zpevnění dna koryta')"
+        confidence: 1.0
+
+  chranicky_v_pravo_rimse:
+    pocet: 3
+    DN_mm: 75
+    smer: "ve směru staničení (z Žihle do Potvorova)"
+    source: "ZD s.6 §4.4.m"
+    confidence: 1.0
+
+  smerova_uprava_silnice:
+    pozadavek_zihle_strana:
+      value: "směrové vedení oblouku silnice III/206 2 před nájezdem na most ve směru staničení (od mostu směr Žihle), s odpovídající konstrukcí vozovky vč. případného založení/sanace podloží"
+      source: "ZD s.6 §4.4.n"
+      confidence: 1.0
+    pozadavek_potvorov_strana:
+      value: "stejné parametry budou aplikovány i na případnou směrovou úpravu od obce Potvorov, bude-li nutná"
+      source: "ZD s.7 §4.4.n"
+      confidence: 1.0
+    sirkove_usporadani: "S 7,5; 2× 3,25 m jízdní pruhy + VDZ V4 stříkaný plast 0,125 m"
+    odvodneni: "přes krajnice do silničního příkopu (součást silničního pozemku dle §11 zákona č. 13/1997 Sb.)"
+    rozsah_obnovy: "Původní těleso silnice odstraněno a rekultivováno. Nová konstrukce vozovky vč. asfaltového souvrství po celé délce směrové úpravy. Připouští se ponechání pouze podloží konstrukce vozovky za podmínek splnění požadované únosnosti (prokáže diagnostický průzkum)."
+    source: "ZD s.6-7 §4.4.n"
+    confidence: 1.0
+
+  zakaz_TP_260:
+    pozadavek:
+      value: "nebude použito řešení tzv. přímo pojížděnou mostovkou (TP 260)"
+      source: "ZD s.7 §4.4.p"
+      confidence: 1.0
+
+  zakaz_dreva:
+    pozadavek:
+      value: "v trvalých částech mostu nebude použit žádný dřevěný materiál"
+      source: "ZD s.7 §4.4.q"
+      confidence: 1.0
+    poznamka: "Bednění je dočasné — zákaz se vztahuje na trvalé části (např. ne dřevěné výplně zábradlí, ne dřevěné nadbetonování...). Tradiční tesařské bednění během stavby NENÍ tímto zakázáno."
+
+  uprava_koryta:
+    rozsah_m: 10
+    pozadavek:
+      value: "v okolí mostu (max. 10 m) provedena úprava vodního toku a zpevnění dna koryta"
+      source: "ZD s.7 §4.4.r"
+      confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 3. Provizorium (ZD §4.4.o + Vysvětlení ZD č.1 ad 2)
+# ─────────────────────────────────────────────────────────────────────
+
+provizorium:
+  povinne:
+    value: true
+    source: "ZD s.7 §4.4.o + Vysvětlení ZD č.1 ad 2"
+    confidence: 1.0
+  typ_minimalni:
+    value: "minimálně jednosměrné s provozem řízeným světelnou signalizací"
+    source: "ZD s.7 §4.4.o"
+    confidence: 1.0
+  povolena_vozidla:
+    - "do 3,5 t"
+    - "vozidla linkové veřejné dopravy"
+    poznamka: "uchazeč si v rámci ZD zajistí požadované parametry provozovatele linkové veřejné dopravy"
+    source: "ZD s.7 §4.4.o"
+    confidence: 1.0
+  alternativa_objizdna_zamitnuta:
+    value: true
+    detail: "úplná uzavírka komunikace s objízdnou trasou přes Potvorov–Mladotice (cca 14,5 km / 17 min) NEPŘIPOUŠTÍ se"
+    duvod: "Zajištění dopravní obslužnosti obce Žihle — průjezdnost III/206 2 Kralovice–Žihle stěžejní"
+    source: "Vysvětlení ZD č.1 ad 2"
+    confidence: 1.0
+  scope: "Provizorium = SO 180 (analogicky Kfely, ale tam objízdná). Náklady provizoria součástí Nabídkové ceny dle ZD §19."
+
+# ─────────────────────────────────────────────────────────────────────
+# § 4. Cena, doba realizace, jistota (ZD §5 + §19 + §21 + §29)
+# ─────────────────────────────────────────────────────────────────────
+
+cena_a_doba:
+  predpokladana_max_cena_kc:
+    value: 30000000
+    bez_dph: true
+    source: "ZD s.8 §5.5 + s.18 §19.5"
+    confidence: 1.0
+    pravidlo: "Překročení = nesplnění zadávacích podmínek → vyloučení (§19.6)"
+  max_doba_realizace_mesicu:
+    value: 30
+    source: "ZD s.8 §5.3 + s.25 §29.2"
+    confidence: 1.0
+  jistota_kc:
+    value: 600000
+    forma: ["složení peněžní částky", "bankovní záruka", "pojištění záruky"]
+    source: "ZD s.19 §21.1"
+    confidence: 1.0
+  zadavaci_lhuta_dnu:
+    value: 90
+    source: "ZD s.20 §22.1"
+    confidence: 1.0
+
+hodnotici_kriteria:
+  cena_vaha:
+    value: 0.80
+    bodovy_vzorec: "C = (nejnižší_nabídková_cena / hodnocená_cena) × 100"
+    source: "ZD s.25 §29.3"
+    confidence: 1.0
+  doba_realizace_vaha:
+    value: 0.20
+    bodovy_vzorec: "D = (nejkratší_doba / hodnocená_doba) × 100"
+    source: "ZD s.25-26 §29.3"
+    confidence: 1.0
+  celkove_hodnoceni: "C × 0.8 + D × 0.2"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 5. Termíny (ZD §26 + §29)
+# ─────────────────────────────────────────────────────────────────────
+
+terminy:
+  lhuta_podani_nabidek:
+    datum: 2026-07-02
+    cas: "10:00"
+    source: "ZD s.23 §26.1"
+    confidence: 1.0
+  zahajeni_plneni:
+    value: "bezprostředně po řádném skončení Zadávacího řízení a uzavření Smlouvy"
+    source: "ZD s.8 §5.2"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 6. Kvalifikační požadavky (ZD §10–§13)
+# ─────────────────────────────────────────────────────────────────────
+
+kvalifikace:
+  zakladni_zpusobilost:
+    value: "§74 ZZVZ — způsobem dle §75 odst. 1"
+    source: "ZD s.12 §10"
+    confidence: 1.0
+  profesni_zpusobilost:
+    obory:
+      - "provádění staveb, jejich změn a odstraňování"
+      - "projektová činnost ve výstavbě"
+      - "výkon zeměměřičských činností"
+    autorizace:
+      - "obor dopravní stavby (zákon č. 360/1992 Sb.)"
+      - "obor mosty a inženýrské konstrukce (zákon č. 360/1992 Sb.)"
+    source: "ZD s.12 §11"
+    confidence: 1.0
+  ekonomicka_kvalifikace:
+    min_rocni_obrat_kc:
+      value: 15000000
+      source: "ZD s.12 §12.1"
+      confidence: 1.0
+  technicka_kvalifikace:
+    referencni_stavba_min_pocet: 1
+    referencni_stavba_typ: "stavba mostu vč. zajištění kolaudačního souhlasu"
+    referencni_stavba_min_hodnota_kc: 15000000
+    refereence_DUR_min_pocet: 1
+    reference_DUR_typ: "PD pro umístění stavby mostu"
+    reference_DSP_min_pocet: 1
+    reference_DSP_typ: "PD pro povolení stavby mostu"
+    source: "ZD s.13 §13.4 + §13.5 + §13.6"
+    confidence: 1.0
+  personal_klicovy:
+    stavbyvedouci:
+      zkusenost_let: 5
+      autorizace: "obor dopravní stavby NEBO mosty a inženýrské konstrukce (postačí 1, druhou zástupce SV)"
+      reference: "min. 1× silniční mostní stavba v hodnotě ≥ 15 mil. Kč bez DPH, kde působil v pozici stavbyvedoucího"
+      source: "ZD s.13-14 §13.7.a + §13.9"
+      confidence: 1.0
+    zastupce_stavbyvedouciho:
+      zkusenost_let: 5
+      autorizace: "doplněk k SV (souhrnně obě autorizace)"
+      reference: "min. 1× silniční mostní stavba ≥ 15 mil. Kč bez DPH, pozice SV nebo zástupce SV"
+      source: "ZD s.14 §13.7.b"
+      confidence: 1.0
+    hlavni_projektant:
+      zkusenost_let: 5
+      autorizace: "obor mosty a inženýrské konstrukce"
+      reference: "min. 1× DUR/DSP/společné povolení na novostavbě nebo rekonstrukci mostu na min. dvouproudové komunikaci v hodnotě ≥ 15 mil. Kč, pozice hlavního projektanta"
+      source: "ZD s.14-15 §13.7.c"
+      confidence: 1.0
+    geodet:
+      zkusenost_let: 5
+      autorizace: "úřední oprávnění §13 odst. 1 písm. c) zákona č. 200/1994 Sb. o zeměměřictví"
+      source: "ZD s.15 §13.7.d"
+      confidence: 1.0
+  certifikace_iso:
+    value: "ČSN EN 14001 (environmental management)"
+    source: "ZD s.15 §13.8"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 7. Zadavatel + kontakty
+# ─────────────────────────────────────────────────────────────────────
+
+zadavatel:
+  organizace: "Správa a údržba silnic Plzeňského kraje, p.o."
+  pravni_forma: "příspěvková organizace"
+  ico: "72053119"
+  dic: "CZ72053119"
+  sidlo: "Koterovská 462/162, Východní Předměstí, 326 00 Plzeň"
+  zapis: "obchodní rejstřík vedený KS Plzeň, oddíl Pr, vložka 737"
+  generalni_reditel: "Ing. Jiří Velíšek"
+  kontaktni_osoba: "Ing. Martina Tyrová (tel. 377 172 516, martina.tyrova@suspk.eu)"
+  datova_schranka: "qbep485"
+  profil_zadavatele: "https://ezak.cnpk.cz/profile_display_137.html"
+  odkaz_VZ: "https://ezak.cnpk.cz/contract_display_12374.html"
+  source: "ZD s.3 §1"
+  confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 8. Přílohy ZD (ZD §32 + obdrženo v inputs/)
+# ─────────────────────────────────────────────────────────────────────
+
+prilohy_ZD:
+  priloha_1:
+    nazev: "Přehled poddodavatelů + Čestné prohlášení k individuálním sankcím"
+    pritomno_v_inputs: false
+    poznamka: "vzorové dokumenty — text žádosti, ne strukturovaný formulář"
+  priloha_2:
+    nazev: "Návrh Smlouvy o dílo"
+    cesta: "inputs/docx/Příloha č. 2 - SOD - Design and Build Most u obce Žihle.docx"
+    pritomno_v_inputs: true
+  priloha_3:
+    nazev: "Prohlášení o výši Nabídkové ceny a Doby provádění Díla"
+    cesta: "inputs/docx/Příloha č. 3 - Prohlášení o výši Nabídkové ceny a Době provádění Díla.docx"
+    pritomno_v_inputs: true
+  priloha_4:
+    nazev: "Dokumentace"
+    pritomno_v_inputs: false
+    poznamka: "ZD §32 zmiňuje, ale obsah neuvádí — pravděpodobně související přílohy z e-ZAK profilu zadavatele"
+
+# ─────────────────────────────────────────────────────────────────────
+# Souhrn missing data (chybí ze strany zadavatele)
+# ─────────────────────────────────────────────────────────────────────
+
+missing_data:
+  - field: "puvodni_PD_stavajiciho_mostu"
+    reason: "Vysvětlení ZD č.1 ad 1: zadavatel nedisponuje. Mostní list z BMS je jediná evidence (snímek v inputs/photos/)."
+  - field: "konkretni_hydrologicke_parametry_potoka"
+    reason: "ZD §4.4.b/d odkazuje obecně na 'hydrologická data daná technickými normami'. Q-100 / Q-50 hodnoty zhotovitel zajistí u správce toku."
+  - field: "uroven_zadrzeni_extravilan"
+    reason: "ZD §4.4.i jen 'pro mosty v extravilánu'. Konkrétní H1/H2/H3 dle ČSN EN 1317 + TKP 11 musí zhotovitel vyhodnotit (intenzita dopravy + rychlost na III. třídě)."
+  - field: "ig_geologie + zalozeni"
+    reason: "ZD §4.4.a explicit: zhotovitel provede průzkumy a měření. Žádné podklady IGP v inputs/ nejsou."
+  - field: "geodézie + zaměření terénu"
+    reason: "ZD §4.3.i — povinnost zhotovitele (S-JTSK, Bpv, 3. třída). Žádné podklady v inputs/."
+  - field: "PD + dimenze stávajícího mostu (přesné rozměry)"
+    reason: "Mostní list = rukopis BMS, ne technická dokumentace. Přesné rozměry pro plán demolice vyžadují vlastní zaměření na místě."

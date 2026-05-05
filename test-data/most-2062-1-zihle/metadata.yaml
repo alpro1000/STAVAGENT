@@ -4,7 +4,7 @@
 # může konvertovat do golden testu pod test-data/tz/.
 
 schema_version: 1
-status: inputs_received          # raw → inputs_received → extraction → design → calculated → done
+status: extraction_done          # raw → inputs_received → extraction_done → design → calculated → done
 project_kind: sandbox            # sandbox | golden_test_candidate | tender
 created: 2026-05-05
 not_for_delivery: true
@@ -13,10 +13,12 @@ identifikace:
   ev_cislo_mostu: "2062-1"
   nazev: "Most ev.č. 2062-1"
   silnice: "III/206 2"
-  staniceni: null                # doplnit po extrakci ze ZD/HPM
+  staniceni_km_mostu: 0.793                     # bod stávajícího mostu (HPM s.2)
+  staniceni_km_uprava_silnice: "0.600 – 0.900"  # rozsah stavby (ZD §5.1)
   obec: "Žihle"
-  okres: null                    # doplnit po extrakci z HPM
+  okres: "Plzeň-sever"                          # potvrzeno HPM s.2
   premostovana_prekazka: "Mladotický potok"
+  smer_staniceni: "z obce Žihle do Potvorova"   # HPM s.2
 
 zadavatel:
   organizace: "Správa a údržba silnic Plzeňského kraje, p.o."
@@ -92,32 +94,32 @@ provizorium:
   povolena_vozidla: "do 3,5 t + linková veřejná doprava"
 
 zdrojove_dokumenty:
-  # Stav po nahrání 2026-05-05: HPM jako samostatný PDF dodán nebyl;
-  # místo toho přišel snímek mostního listu (PNG) + 6 fotek z prohlídky
-  # (taken 2026-04-21). Tato kolekce zastupuje HPM v pipeline extrakce.
-  hpm_kolekce:
-    nazev: "Hlavní prohlídka mostu — fotodokumentace + mostní list"
-    datum_porizeni_fotek: 2026-04-21
+  hpm:
+    nazev: "Hlavní prohlídka mostu (HPM 2062-1)"
+    autor: "Komanec Petr, Ing. (PONTEX, s.r.o., č.opr. 086/2003)"
+    datum: 2025-09-24
+    pocet_stran: 6
+    cesta: "inputs/pdf/2062-1 HMP.pdf"
+    pritomno: true
+  hpm_dodatecna_evidence:
+    nazev: "Mostní list z BMS + fotodokumentace 2026-04-21"
     polozky:
-      - typ: "mostní list (snímek)"
+      - typ: "mostní list (rukopis BMS)"
         cesta: "inputs/photos/Příloha č. 1 - snímek mostního listu.png"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131615.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131624.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131650.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131658.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131821.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_132429.jpg"
     pritomno: true
-    poznamka: |
-      6-stránkový HPM PDF z 2025-09-24 (zmíněn v původním zadání) zatím
-      v inputs/ není. Pokud bude později dodán, založit pole hpm_pdf:
-      separátně.
+    poznamka: "Mostní list PNG = jediná evidence stávajícího mostu kromě HPM. Originál PD zadavatel nemá (Vysvětlení ZD č.1 ad 1)."
   zd:
     nazev: "Zadávací dokumentace — Most ev.č. 2062-1 u obce Žihle (D&B)"
     datum: 2026-04-01
@@ -144,7 +146,14 @@ workflow_faze:
   - id: "01_extraction"
     nazev: "Extrakce ze zdrojových dokumentů"
     popis: "Strukturovaná data (JSON/YAML) o stávajícím mostě a o požadavcích nové stavby"
-    status: pending
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "01_extraction/stavajici_most.yaml"
+      - "01_extraction/pozadavky_novy_most.yaml"
+      - "01_extraction/site_conditions.yaml"
+      - "01_extraction/aplikovatelne_normy.yaml"
+      - "01_extraction/SOURCES.md"
   - id: "02_design"
     nazev: "Návrh"
     popis: "Varianty řešení nové NK (skici, popisy variant, rozhodnutí)"

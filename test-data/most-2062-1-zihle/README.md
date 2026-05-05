@@ -1,6 +1,6 @@
 # Most ev.č. 2062-1 — Žihle (sandbox)
 
-**Status:** `inputs_received` — vstupní dokumenty nahrány do `inputs/`, extrakce zatím neproběhla.
+**Status:** `extraction_done` — Phase A (extrakce) dokončena 2026-05-05. Phase B (návrh) + Phase C (výpočet) deferred do dalších sessionů.
 **Účel:** experimentální průchod celým workflow STAVAGENT (HPM → analýza
 stávajícího mostu → požadavky ZD → návrh nové NK → výpočet kalkulátorem
 → generace soupisu prací) na malém reálném tendru.
@@ -32,10 +32,31 @@ test-data/most-2062-1-zihle/
 |------|--------|-------|
 | 0. Initialized | ✅ done | `metadata.yaml` |
 | 1. Inputs received | ✅ done | `inputs/` (viz `inputs/README.md`) |
-| 2. Extraction (ZD + photos → JSON) | ⏳ pending | `01_extraction/` |
+| 2. Extraction (HPM + ZD + photos → YAML) | ✅ done 2026-05-05 | `01_extraction/` (4 YAML + SOURCES.md) |
 | 3. Design (varianty NK) | ⏳ pending | `02_design/` |
 | 4. Calculation (kalkulátor + Gantt) | ⏳ pending | `03_calculation/` |
 | 5. Documentation (TZ + VV) | ⏳ pending | `04_documentation/` |
+
+## Phase A — extrakce (2026-05-05)
+
+Strukturovaná data ze 4 PDF + 1 PNG + 6 fotografií → 4 YAML + index:
+
+| Soubor | Obsah | # facts | Avg. confidence |
+|--------|-------|---------|-----------------|
+| [`01_extraction/stavajici_most.yaml`](01_extraction/stavajici_most.yaml) | Identifikace + NK + SS + svršek + stav + zatížitelnost stávající | ~70 | 0.93 |
+| [`01_extraction/pozadavky_novy_most.yaml`](01_extraction/pozadavky_novy_most.yaml) | ZD §4.1–4.4 + provizorium + cena/doba + kvalifikace | ~65 | 1.00 |
+| [`01_extraction/site_conditions.yaml`](01_extraction/site_conditions.yaml) | Foto-inventura + site conclusions + Vysvětlení ZD č.1 Q&A | ~30 | 0.65 |
+| [`01_extraction/aplikovatelne_normy.yaml`](01_extraction/aplikovatelne_normy.yaml) | TKP kapitoly + ČSN normy + KB cross-reference | ~30 | 0.90 |
+| [`01_extraction/SOURCES.md`](01_extraction/SOURCES.md) | Index všech zdrojů + missing-data flags + executive summary | — | — |
+
+**Klíčová zjištění:**
+- Stávající: 16 ŽB trámů 20×50 cm s I-280, šikmost 50°, rozpětí ~9 m, NK stav VI havarijní
+- ZD: D&B max 30 mil. Kč / 30 měsíců; bez ložisek/dilatací → **integrální rám** = jediná varianta
+- Provizorium **povinné** (Vysvětlení ZD č.1) — alternativa objízdné zamítnuta
+- Skruž zdola **nemožná** (světlá výška ~1 m pod mostem)
+- KB chybí: ČSN 73 6222, ČSN 73 6244, ČSN EN 1992-2, ČSN EN 1317 → Phase B bude citovat externí zdroje
+
+**Pre-Phase-B checklist + missing data flags:** viz [`01_extraction/SOURCES.md`](01_extraction/SOURCES.md).
 
 ## Zdrojové dokumenty
 

@@ -1,0 +1,185 @@
+# ═══════════════════════════════════════════════════════════════════════
+# site_conditions.yaml — co lze odvodit z fotografií + Vysvětlení ZD č.1
+# ═══════════════════════════════════════════════════════════════════════
+# Most ev.č. 2062-1, Žihle
+#
+# Pozn.: Foto-evidence má per default confidence 0.5 (vizuální odhad).
+#        Kvantitativní hodnoty (vzdálenosti, výšky) jsou ODHADY a vyžadují
+#        geodetické zaměření před PDPS.
+# ═══════════════════════════════════════════════════════════════════════
+
+schema_version: 1
+extracted: 2026-05-05
+foto_datum_porizeni: 2026-04-21
+
+# ─────────────────────────────────────────────────────────────────────
+# § 1. Co je vidět na fotkách (per foto)
+# ─────────────────────────────────────────────────────────────────────
+
+foto_inventura:
+  20260421_131615:
+    nazev: "Boční pohled na most z břehu — celkový pohled na NK z levé strany"
+    pohled: "z břehu potoka, ze strany koryta směrem na čelo opěry"
+    co_je_videt:
+      - "Spodní líc desky mostovky — viditelně degradovaný"
+      - "Stopy vodního zatékání + výluhů na betonu"
+      - "Kamenná opěra (kvádry) s viditelným spárováním"
+      - "Velmi nízká světlá výška pod mostem (vizuální odhad ~1 m, lze se sehnout pro průchod ale ne pohodlně)"
+      - "Vodící proužek vozovky + ocelové svodidlo SafeStar nahoře"
+      - "Z-směrovací deska červeno-bílá (potvrzuje doporučení HPM s.5 §E)"
+      - "Stojící voda v korytě potoka, koryto úzké"
+      - "Lesnaté okolí, žádný pevný povrch pro velký mechanismus"
+    confidence: 0.5
+
+  20260421_131624:
+    nazev: "Boční pohled detail — zóna spodního líce + opěra"
+    co_je_videt:
+      - "Detail spodního líce desky — viditelně silně poškozený s vystupujícími skvrnami koroze (rust patches)"
+      - "Stojí osoba (modré džíny) — měřítko ukazuje světlou výšku ~1 m"
+      - "Pod mostem prostor max ~1 m pro pohyb člověka"
+      - "Žádný prostor pro stavební mechanizaci nebo skruž zdola"
+    confidence: 0.5
+
+  20260421_131650:
+    nazev: "Pohled zdola — 16 trámů s krycí vrstvou"
+    co_je_videt:
+      - "Spodní líc 16 trámů viditelný v záběru"
+      - "Krycí vrstva betonu odpadlá ve více místech (potvrzuje HPM s.4 [2.1])"
+      - "Viditelně koroduje ocelová výztuž / I-vložky (rezavé pruhy)"
+      - "Mezi trámy patrné dřevěné bednění ponechané po realizaci (HPM s.4 [2.1])"
+      - "Prosvit mezi trámy → degradovaný beton"
+    confidence: 0.55
+
+  20260421_131658:
+    nazev: "Detail opěry zdola — rozvolněné kamenné kvádry"
+    co_je_videt:
+      - "Detail kamenné opěry zdola, viditelně rozvolněné spárování"
+      - "Kameny ven čnějí, mezery vyplněné vegetací"
+      - "Erodovaná spodní hrana opěry"
+      - "Potvrzuje HPM s.3 [1.2] + [1.3] (rozvolněné zdivo, vegetace)"
+    confidence: 0.6
+
+  20260421_131821:
+    nazev: "Pohled v ose vozovky směrem na most"
+    co_je_videt:
+      - "Vozovka asfaltová s podélnou trhlinou nad opěrou 1 (HPM s.4 [3.1])"
+      - "Vozovka nadvýšená do úrovně říms (potvrzeno)"
+      - "Levá řísma s ocelovým svodidlem"
+      - "Zúžení provozu Z-směrovacími deskami (havarijní opatření z HPM)"
+      - "Dopravní značka B13 'omezení 20 t' (potvrzuje Vn=20 t z HPM)"
+      - "Most zasazen do lesa, na obou stranách hustý lesní porost"
+      - "Šířka mostu vozovky cca 5–6 m mezi svodidly"
+    confidence: 0.5
+
+  20260421_132429:
+    nazev: "Pohled z dálky — most v krajině"
+    co_je_videt:
+      - "Most v dálce, část za zatáčkou v lese"
+      - "Vpravo od silnice volný terén — orná půda nebo trávník"
+      - "Polní cesta odbočující z hlavní silnice (možný přístup pro provizorium)"
+      - "B13 dopravní značka 20 t opět viditelná"
+      - "Otevřený prostor pro PŘÍSTUP / staveniště — VPRAVO od mostu (směr Potvorov?)"
+    confidence: 0.5
+
+# ─────────────────────────────────────────────────────────────────────
+# § 2. Site conclusions (co fota říkají o realizaci)
+# ─────────────────────────────────────────────────────────────────────
+
+site_conclusions:
+  pristup_pod_most:
+    moznost_skruze_zdola:
+      hodnoceni: "VELMI OBTÍŽNÉ až NEMOŽNÉ"
+      duvod: "HPM s.4 [4.2] kvalifikuje 'prostor pod mostem příliš nízký pro veškeré revizní i stavební práce'. Foto 131624 vizuálně potvrzuje světlou výšku ~1 m. Pevná skruž zdola = nemyslitelná."
+      dusledek_pro_navrh: "Skruž bude muset být buď BUDOVÁNA POSTUPNĚ s odbouráním (po demolici stávajícího mostu otevřený prostor) nebo prostor bude vyhloubený. Zhotovitel zváží."
+      confidence: 0.7
+    moznost_demolice_zdola:
+      hodnoceni: "OBTÍŽNÁ"
+      duvod: "Stejný argument. Demolice pravděpodobně shora (vyřezávání segmentů + jeřáb) nebo destrukčně po odklonu vody."
+      confidence: 0.6
+    pristup_pres_potok:
+      hodnoceni: "PŘÍSTUP po svazích silničního tělesa a korytem vodoteče"
+      source: "HPM s.3 [4.4]"
+      confidence: 1.0
+
+  prostor_pro_stavenisti:
+    leve_strana_pred_mostem:
+      hodnoceni: "STÍSNĚNÝ — most v lese, hustý porost"
+      detail: "Foto 131821 ukazuje přilehnutí lesa téměř k vozovce; málo místa pro skladování"
+      confidence: 0.5
+    prava_strana_za_mostem:
+      hodnoceni: "DOSTUPNÝ"
+      detail: "Foto 132429 ukazuje volný prostor vpravo od silnice — orná/travnatý prostor + polní cesta"
+      pouziti: "možné staveniště + zařízení staveniště + prostor pro provizorium"
+      confidence: 0.6
+      poznamka: "Vyžaduje souhlas vlastníka pozemku (mimo silniční pozemek SÚSPK)"
+
+  hydrologicka_situace:
+    stav_koryta:
+      value: "úzké koryto, opevnění lomovým kamenem s vyplaveným spárováním"
+      detail: "některé kameny uvolněné nebo chybí (HPM s.4 [4.2])"
+      source: "HPM + foto 131615/131624"
+      confidence: 0.9
+    stav_vody_v_dobe_porizeni:
+      value: "stojící voda, malý průtok"
+      detail: "foto 131615 ukazuje stojatou hladinu v korytě"
+      poznamka: "Foto z 21.4.2026 — jaro, mírná voda. Při Q-100 / Q-50 mostí silně zatěžované."
+      confidence: 0.5
+    pozadavek_uprava_koryta:
+      value: "ZD §4.4.l + §4.4.r vyžaduje úpravu vodního toku v okolí (max 10 m) dle požadavku správce toku"
+      source: "ZD s.6-7"
+      confidence: 1.0
+
+  realizační_omezení:
+    nutnost_provizoria:
+      value: true
+      duvod: "Vysvětlení ZD č.1 ad 2 — alternativa objízdné ZAMÍTNUTA"
+      typ_provizoria: "minimálně jednosměrné se světelnou signalizací, pro vozidla do 3,5 t + linkovou veřejnou dopravu"
+      umisteni: "navrženo poblíž mostu (vpravo, foto 132429 indikuje volný prostor)"
+      source: "ZD §4.4.o + Vysvětlení ZD č.1"
+      confidence: 1.0
+    sezonnost:
+      value: "Mostní stavba v rámci tendru — nutno zvážit zimní přestávku (XF expozice)"
+      poznamka: "30 měsíců na celé D&B = lze rozložit na DUR + DSP + DPS + 1× zimu + výstavba 1 sezona"
+      confidence: 0.6
+
+# ─────────────────────────────────────────────────────────────────────
+# § 3. Confirmed by Vysvětlení ZD č.1 (Q&A z 24.4.2026)
+# ─────────────────────────────────────────────────────────────────────
+
+vysvetleni_QA:
+  ad_1_chybi_PD_stavajiciho:
+    otazka: "Žádost o poskytnutí původní PD stávajícího mostu (případně mostního listu nebo jiné technické evidence)"
+    odpoved: "Zadavatel nedisponuje původní projektovou dokumentací; podklady doplněny o mostní list dostupný v evidenci BMS"
+    dusledek: "Single source of truth pro stávající most = HPM (2025-09-24) + mostní list (BMS rukopis) + 6 fotografií. Žádné CAD soubory ani statický výpočet."
+    source: "Vysvětlení ZD č.1 ad 1"
+    confidence: 1.0
+  ad_2_provizorium_nutne:
+    otazka: "Lze nahradit provizorium úplnou uzavírkou + objízdná trasa Potvorov–Mladotice (14,5 km / 17 min)?"
+    odpoved: "NE. Provizorium podle čl. 4.4.o povinné. Důvod: dopravní obslužnost obce Žihle, průjezdnost III/206 2 Kralovice–Žihle stěžejní"
+    dusledek: "Cena nabídky musí zahrnovat provizorium SO 180 (~6 měsíců provoz + montáž + demontáž)"
+    source: "Vysvětlení ZD č.1 ad 2"
+    confidence: 1.0
+
+# ─────────────────────────────────────────────────────────────────────
+# § 4. Missing data — vyžadováno před PDPS / nabídkou
+# ─────────────────────────────────────────────────────────────────────
+
+missing_data:
+  - field: "geodézie (zaměření terénu, mostu, koryta)"
+    reason: "ZD §4.3.i — povinnost zhotovitele. Bez ní nelze určit přesné rozpětí, šířku, sklon vozovky, profil koryta."
+    priorita: "P0 — před DUR"
+  - field: "IGP (inženýrsko-geologický průzkum)"
+    reason: "ZD §4.4.a — zhotovitel provede. Bez něj nelze určit typ založení (plošné vs piloty)."
+    priorita: "P0 — před DUR"
+  - field: "hydrologická data Mladotického potoka (Q-1, Q-5, Q-20, Q-50, Q-100)"
+    reason: "ZD §4.4.b/d odkazuje obecně. Hodnoty u správce toku (Povodí Vltavy s.p.? Plzeňský kraj?)."
+    priorita: "P0 — před DUR"
+  - field: "diagnostika podloží stávající silnice (před směrovou úpravou)"
+    reason: "ZD §4.4.n připouští ponechat podloží jen pokud diagnostický průzkum prokáže únosnost"
+    priorita: "P1 — DPS"
+  - field: "souhlas vlastníka pozemku pro provizorium"
+    reason: "Pravděpodobné staveniště + provizorium = mimo silniční pozemek (foto 132429 indikuje orná půda vpravo)"
+    priorita: "P1 — DUR"
+  - field: "konzultace s provozovatelem linkové veřejné dopravy"
+    reason: "ZD §4.4.o explicit: uchazeč si zajistí parametry provozovatele linkové veřejné dopravy"
+    priorita: "P1 — nabídka"
