@@ -15,14 +15,14 @@
   "dependencies": {
     "@stavagent/monolit-shared": "file:../shared",
     "@tanstack/react-query": "^5.17.9",
-    "axios": "^1.15.0",
+    "axios": "^1.16.0",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "lucide-react": "^0.562.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^7.9.5",
-    "uuid": "^13.0.0",
+    "react-router-dom": "^7.15.0",
+    "uuid": "^14.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
