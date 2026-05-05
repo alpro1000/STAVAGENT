@@ -1,0 +1,385 @@
+{
+  "input": {
+    "element_type": "mostovkova_deska",
+    "volume_m3": 39.84,
+    "formwork_area_m2": 99.6,
+    "height_m": 3,
+    "deck_thickness_m": 0.4,
+    "span_m": 9,
+    "num_spans": 1,
+    "nk_width_m": 8.3,
+    "construction_technology": "fixed_scaffolding",
+    "concrete_class": "C30/37",
+    "exposure_class": "XF2",
+    "cement_type": "CEM_II",
+    "rebar_mass_kg": 5577,
+    "preferred_manufacturer": "DOKA",
+    "season": "normal"
+  },
+  "output": {
+    "element": {
+      "type": "mostovkova_deska",
+      "label_cs": "Mostovková deska",
+      "classification_confidence": 1,
+      "profile": {
+        "element_type": "mostovkova_deska",
+        "confidence": 1,
+        "label_cs": "Mostovková deska",
+        "rebar_category": "slabs_foundations",
+        "rebar_default_diameter_mm": 20,
+        "recommended_formwork": [
+          "MULTIFLEX",
+          "Top 50",
+          "Dokaflex"
+        ],
+        "difficulty_factor": 1.2,
+        "needs_supports": true,
+        "needs_platforms": true,
+        "needs_crane": true,
+        "rebar_ratio_kg_m3": 150,
+        "rebar_ratio_range": [
+          120,
+          180
+        ],
+        "rebar_norm_h_per_t": 50,
+        "strip_strength_pct": 70,
+        "orientation": "horizontal",
+        "max_pour_rate_m3_h": 30,
+        "pump_typical": true
+      }
+    },
+    "pour_decision": {
+      "pour_mode": "sectional",
+      "sub_mode": "independent",
+      "num_sections": 1,
+      "section_volume_m3": 39.84,
+      "max_sections_per_tact": 1,
+      "num_tacts": 1,
+      "tact_volume_m3": 39.84,
+      "t_window_hours": 5,
+      "pumps_required": 1,
+      "retarder_required": false,
+      "backup_pump": false,
+      "pour_hours_per_tact": 2.33,
+      "total_pour_hours": 2.33,
+      "scheduling_mode": "linear",
+      "cure_between_neighbors_h": 0,
+      "warnings": [
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky."
+      ],
+      "decision_log": [
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+        "Working joints: 1 záběrů × 39.8 m³ (max 120 m³/okno)"
+      ]
+    },
+    "formwork": {
+      "system": {
+        "name": "Top 50",
+        "manufacturer": "DOKA",
+        "heights": [
+          "0.50",
+          "1.00",
+          "1.50",
+          "2.00"
+        ],
+        "assembly_h_m2": 0.6,
+        "disassembly_h_m2": 0.21,
+        "disassembly_ratio": 0.35,
+        "rental_czk_m2_month": 380,
+        "unit": "m2",
+        "description": "Nosníkové bednění Top 50 — mostovky + stropy, unášený roštový systém s dřevěnými nosníky H20 nebo ocelovými GT 24",
+        "weight_kg_m2": 25,
+        "pressure_kn_m2": 75,
+        "needs_crane": true,
+        "formwork_category": "slab",
+        "pour_role": "formwork",
+        "formwork_subtype": "nosnikove"
+      },
+      "assembly_days": 2.24,
+      "disassembly_days": 0.78,
+      "curing_days": 21,
+      "three_phase": {
+        "initial_cost_labor": 42812.06,
+        "middle_cost_labor": 38530.86,
+        "final_cost_labor": 8990.53,
+        "total_cost_labor": 42812.06,
+        "initial_days": 3.36,
+        "middle_days": 3.03,
+        "final_days": 0.71,
+        "middle_tact_count": 0
+      },
+      "strategies": [
+        {
+          "id": "A",
+          "label": "Posloupně (1 sada)",
+          "sets": 1,
+          "total_days": 26.5,
+          "rental_days": 28.5
+        },
+        {
+          "id": "B",
+          "label": "S překrytím (2 sady)",
+          "sets": 2,
+          "total_days": 26.520000000000003,
+          "rental_days": 28.520000000000003
+        },
+        {
+          "id": "C",
+          "label": "Paralelně (plný)",
+          "sets": 1,
+          "total_days": 26.520000000000003,
+          "rental_days": 28.520000000000003
+        }
+      ],
+      "shape_correction": 1
+    },
+    "rebar": {
+      "mass_kg": 5577,
+      "mass_t": 5.577,
+      "mass_source": "user",
+      "norm_h_per_t": 8.6,
+      "norm_source": "matrix",
+      "norm_category": "slabs_foundations",
+      "norm_diameter_mm": 20,
+      "labor_hours": 47.96,
+      "duration_days": 1.5,
+      "cost_labor": 19088.96,
+      "optimistic_days": 1.27,
+      "most_likely_days": 1.5,
+      "pessimistic_days": 1.95,
+      "crew_size": 4,
+      "recommended_crew": 2,
+      "element_type": "mostovkova_deska",
+      "confidence": 0.95,
+      "assumptions_log": "element=mostovkova_deska, vol=39.84m³, mass=5.577t (user), norm=8.6h/t (slabs_foundations D20), crew=4, shift=10h"
+    },
+    "pour": {
+      "effective_rate_m3_h": 30,
+      "rate_bottleneck": "element",
+      "pumping_hours": 1.33,
+      "total_pour_hours": 2.33,
+      "pour_days": 0.23,
+      "pump_needed": true,
+      "pumps_required": 1,
+      "backup_pump_recommended": false,
+      "pumps_for_actual_window": {
+        "count": 1,
+        "total_rate_m3_h": 30,
+        "pour_duration_h": 2.33,
+        "scenario": "Skutečná doba betonáže (1 čerpadlo)"
+      },
+      "pour_window_h": 5,
+      "fits_in_window": true,
+      "pour_sessions": 1,
+      "warnings": [],
+      "assumptions_log": "element=mostovkova_deska, vol=39.84m³, Q_eff=30m³/h (element), window=5h, season=normal, retarder=no"
+    },
+    "schedule": {
+      "total_days": 24.7,
+      "sequential_days": 7.9,
+      "savings_days": -16.8,
+      "savings_pct": -212.7,
+      "tact_details": [
+        {
+          "tact": 1,
+          "set": 1,
+          "assembly": [
+            0,
+            2.5
+          ],
+          "rebar": [
+            1.2,
+            2.7
+          ],
+          "concrete": [
+            2.7,
+            3.7
+          ],
+          "curing": [
+            3.7,
+            5.7
+          ],
+          "stripping": [
+            5.7,
+            6.6
+          ]
+        }
+      ],
+      "critical_path": [
+        "T0_ASM",
+        "T0_REB",
+        "T0_CON",
+        "T0_CUR",
+        "T0_STR"
+      ],
+      "gantt": "Den:  0    5 \nS1:   ██░══▓▓\nFW:   ███··▓▓\nRB:   ·▒▒····\n\n█=montáž ▒=výztuž ░=beton ═=zrání ▓=demontáž ·=volno",
+      "utilization": {
+        "formwork_crews": 0.5,
+        "rebar_crews": 0.2,
+        "sets": [
+          1
+        ]
+      },
+      "bottleneck": null,
+      "effective_curing_days": 2
+    },
+    "resources": {
+      "total_formwork_workers": 4,
+      "total_rebar_workers": 4,
+      "num_formwork_crews": 1,
+      "num_rebar_crews": 1,
+      "crew_size_formwork": 4,
+      "crew_size_rebar": 4,
+      "shift_h": 10,
+      "wage_formwork_czk_h": 398,
+      "wage_rebar_czk_h": 398,
+      "wage_pour_czk_h": 398,
+      "pour_shifts": 1,
+      "pour_simultaneous_headcount": 4,
+      "pour_rostered_headcount": 4,
+      "pour_has_night_premium": false,
+      "pour_crew_breakdown": {
+        "ukladani": 2,
+        "vibrace": 1,
+        "finiseri": 1,
+        "rizeni": 0,
+        "total": 4,
+        "pumps_used": 1
+      }
+    },
+    "props": {
+      "needed": true,
+      "system": {
+        "name": "Eurex 20 top",
+        "manufacturer": "Doka",
+        "min_height_m": 1.5,
+        "max_height_m": 3.5,
+        "assembly_h_per_prop": 0.12,
+        "disassembly_h_per_prop": 0.08,
+        "rental_czk_per_prop_day": 12,
+        "weight_kg": 18
+      },
+      "grid_spacing_m": 1.25,
+      "num_props_per_tact": 64,
+      "total_props_needed": 64,
+      "assembly_hours": 7.68,
+      "disassembly_hours": 5.12,
+      "assembly_days": 0.24,
+      "disassembly_days": 0.16,
+      "labor_hours": 12.8,
+      "hold_days": 21,
+      "rental_days": 24,
+      "rental_cost_czk": 18432,
+      "labor_cost_czk": 5094,
+      "total_cost_czk": 23526,
+      "total_weight_kg": 1152,
+      "crane_needed": true,
+      "warnings": [
+        "Stojky (Eurex 20 top): celková hmotnost 1.2 t — vyžaduje jeřáb pro montáž/demontáž."
+      ],
+      "log": [
+        "Grid: 1.25m (Mostovka: skruž 1.25 × 1.25 m (Top 50 / Staxo raster))",
+        "System: Eurex 20 top (Doka), 1.5–3.5m [vendor hint: DOKA]",
+        "Props/tact: ceil(99.6m² / 1.5625m²) = 64",
+        "Total props: 64 (1 set, hold prevents fast rotation)",
+        "Assembly: 7.68h = 0.24d, Disassembly: 5.12h = 0.16d",
+        "Rental: 64 × 12 Kč/d × 24d = 18432 Kč",
+        "Labor: (7.68+5.12)h × 1 tacts × 398 Kč/h = 5094 Kč"
+      ]
+    },
+    "bridge_technology": {
+      "technology": "fixed_scaffolding",
+      "technology_label_cs": "Pevná skruž",
+      "recommendation": {
+        "recommended": "fixed_scaffolding",
+        "reason": "Rozpětí 9m × 1 pole — pevná skruž je ekonomičtější pro krátké mosty.",
+        "options": [
+          {
+            "technology": "fixed_scaffolding",
+            "label_cs": "Pevná skruž",
+            "feasible": true,
+            "is_recommended": true
+          },
+          {
+            "technology": "mss",
+            "label_cs": "Posuvná skruž (MSS)",
+            "feasible": false,
+            "infeasible_reason": "Rozpětí 9m < 20m — posuvná skruž je neekonomická pro krátká rozpětí.",
+            "is_recommended": false
+          },
+          {
+            "technology": "cantilever",
+            "label_cs": "Letmá betonáž (CFT)",
+            "feasible": false,
+            "infeasible_reason": "Rozpětí 9m — letmá betonáž se používá od 80m.",
+            "is_recommended": false
+          }
+        ],
+        "warnings": []
+      }
+    },
+    "costs": {
+      "formwork_labor_czk": 42812.06,
+      "rebar_labor_czk": 19088.96,
+      "pour_labor_czk": 3709.36,
+      "pour_night_premium_czk": 0,
+      "total_labor_czk": 70704.38,
+      "formwork_rental_czk": 33684.72,
+      "props_labor_czk": 5094,
+      "props_rental_czk": 18432,
+      "is_mss_path": false,
+      "mss_mobilization_czk": 0,
+      "mss_demobilization_czk": 0,
+      "mss_rental_czk": 0
+    },
+    "norms_sources": {
+      "formwork_assembly": "Top 50: 0.72 h/m² (základ 0.6 h/m² × faktor obtížnosti 1.2). Zdroj: FORMWORK_SYSTEMS (element-classifier.ts, data z katalogů Doka/PERI/NOE)",
+      "formwork_disassembly": "Top 50: 0.252 h/m² (základ 0.21 h/m² × 1.2). Zdroj: katalog výrobce",
+      "rebar": "8.6 h/t (typ: user). Zdroj: REBAR_NORMS (element-classifier.ts, ČSN 73 0210, oborové průměry)",
+      "curing": "ČSN EN 13670 Tab. NA.2: 21 dní při 15°C, C30/37, CEM_II",
+      "skruz": "ČSN 73 6244 + ČSN EN 13670: min. 21 dní od poslední betonáže (sezóna \"podzim_jaro\", C30/37, 15°C). Porovnáno se zráním dle maturity modelu — použita delší hodnota."
+    },
+    "deadline_check": {
+      "calculated_days": 24.7,
+      "overrun_days": 0,
+      "fits": true,
+      "suggestions": []
+    },
+    "warnings": [
+      "Top 50 vyžaduje jeřáb (panel 150+ kg) — zajistěte jeřáb na stavbě pro celou dobu montáže.",
+      "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+      "Nosná konstrukce se betonuje PO dokončení spodní stavby (opěry, pilíře, úložné prahy). Ověřte že spodní stavba je hotová.",
+      "Mostovková deska bez spár: použito max. 1 kompletní souprava/y (1 souprava na 1 most). Zadaných 2 souprav bylo omezeno.",
+      "Stojky (Eurex 20 top): celková hmotnost 1.2 t — vyžaduje jeřáb pro montáž/demontáž.",
+      "Podpěrná konstrukce (skruž/stojky): minimální doba ponechání 21 dní od poslední betonáže (sezóna \"podzim_jaro\": ČSN 73 6244 min. 21d). Harmonogram prodloužen o 18.1 dní."
+    ],
+    "decision_log": [
+      "Element: mostovkova_deska (explicit)",
+      "Formwork: Top 50 (0.72 h/m², df=1.2)",
+      "Pour: sectional/independent, 1 tacts × 39.84m³",
+      "Bridge technology: fixed_scaffolding (recommended: fixed_scaffolding)",
+      "Formwork kits capped for monolithic bridge deck: 2 → 1",
+      "Formwork area: 99.6 m² per tact",
+      "Maturity strip: 6.0d (70% f_ck, 15°C, CEM_II)",
+      "Skruž min (21d, sezóna \"podzim_jaro\", ČSN 73 6244) > maturity (6.0d) → using skruž minimum",
+      "Rebar: 5577kg/tact, 1.5d/tact (user, 1 čet×4 prac.=4 železářů, RCPSP parallel=1)",
+      "Pour: 30m³/h, 2.33h/tact (bottleneck: element)",
+      "Pour crew: 4 lidí (2+1+1+0, 1 čerpadel) for 2.3h pour",
+      "Props: Eurex 20 top, 64 ks/tact, rental 24d, total 23526 Kč",
+      "  props: Grid: 1.25m (Mostovka: skruž 1.25 × 1.25 m (Top 50 / Staxo raster))",
+      "  props: System: Eurex 20 top (Doka), 1.5–3.5m [vendor hint: DOKA]",
+      "  props: Props/tact: ceil(99.6m² / 1.5625m²) = 64",
+      "  props: Total props: 64 (1 set, hold prevents fast rotation)",
+      "  props: Assembly: 7.68h = 0.24d, Disassembly: 5.12h = 0.16d",
+      "  props: Rental: 64 × 12 Kč/d × 24d = 18432 Kč",
+      "  props: Labor: (7.68+5.12)h × 1 tacts × 398 Kč/h = 5094 Kč",
+      "Tesaři sequence per tact: podpěry 0.24d → bednění 2.24d (ASM=2.48d) | STR: bednění 0.78d → podpěry 0.16d (STR=0.94d). Tatáž četa, jedna stopa.",
+      "Schedule: 6.6d (sequential 7.9d, savings 16%)",
+      "Props hold: 21d (min=21d, sezóna=\"podzim_jaro\", ČSN 73 6244), last CON 3.7d => total 24.7d (+18.1d)",
+      "T-window: 5h (season=normal, retarder=false)",
+      "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+      "Working joints: 1 záběrů × 39.8 m³ (max 120 m³/okno)"
+    ]
+  }
+}

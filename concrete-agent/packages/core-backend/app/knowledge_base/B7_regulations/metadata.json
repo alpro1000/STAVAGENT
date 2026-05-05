@@ -1,9 +1,38 @@
 {
   "category": "B7_regulations",
-  "last_updated": "2025-10-09",
-  "version": "1.0",
-  "source": "Initial setup",
-  "description": "Laws and building regulations",
-  "files": [],
-  "notes": "Category initialized. Ready for data."
+  "last_updated": "2026-05-05",
+  "version": "1.1",
+  "source": "Manual ingest",
+  "description": "Laws and building regulations: Eurocode norms (full or partial extracts), ČSN regulations (or paid-norm stubs cross-referencing university distillations).",
+  "files": [
+    {
+      "path": "csn_en_206_pruvodce/",
+      "type": "subfolder_pointer",
+      "title": "Průvodce normou ČSN EN 206+A2",
+      "doc_type": "norm_guide",
+      "files_in_folder": ["source_pointer.md"],
+      "pdf_location": "GCS (gs://stavagent-cenik-norms/B7_regulations/csn_en_206_pruvodce/)"
+    },
+    {
+      "path": "en_1992_2_concrete_bridges/",
+      "type": "subfolder_extract",
+      "title": "EN 1992-2 — Eurocode 2 Part 2: Concrete bridges (PARTIAL extract)",
+      "doc_type": "eurocode_norm",
+      "files_in_folder": ["INDEX.yaml", "METADATA.md", "source_pointer.md"],
+      "pdf_location": "../B2_csn_standards/SIST-EN-1992-2-2005.pdf",
+      "extraction_status": "PARTIAL (sections 3.1.2, 4.4, Annex E for Žihle Phase B)",
+      "added": "2026-05-05"
+    },
+    {
+      "path": "csn_73_6222_zatizitelnost_mostu/",
+      "type": "subfolder_stub",
+      "title": "ČSN 73 6222 — Zatížitelnost mostů (STUB, paid norm via UPa)",
+      "doc_type": "csn_norm_stub",
+      "files_in_folder": ["INDEX.yaml", "METADATA.md", "source_pointer.md"],
+      "pdf_location": null,
+      "primary_extraction_source": "../B6_research_papers/upa_zatizitelnost_sanace_mostu/",
+      "added": "2026-05-05"
+    }
+  ],
+  "notes": "B7_regulations holds extracted YAML/MD for norms. Source PDFs may live in B2_csn_standards/ (legacy convention for ČSN-like binaries) or in GCS (large-format references). Each subfolder includes a source_pointer.md describing PDF location and Vertex AI / RAG ingest status."
 }

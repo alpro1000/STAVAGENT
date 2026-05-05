@@ -1,0 +1,358 @@
+# UPa Zatížitelnost a sanace mostů — INDEX
+# Machine-readable structured data extracted from lecture slides
+# Source: 09_zatizitelnost__sanace.pdf (Univerzita Pardubice, FDJP)
+
+source:
+  pdf: "09_zatizitelnost__sanace.pdf"
+  pages: 31
+  language: cs
+  type: lecture_slides
+  year: ~2020-2024
+
+# ─────────────────────────────────────────────────────────────────────
+# 1. Skupiny pozemních komunikací (slide 4)
+# Source: ČSN EN 1991-2 + ČSN 73 6222
+# ─────────────────────────────────────────────────────────────────────
+skupiny_komunikaci:
+  description: "Klasifikace komunikací pro účely zatížitelnosti"
+  values:
+    - id: 1
+      typ: "Magistrální + dálnice + silnice I. třídy"
+      vn_t: 32
+      vr_t: 80
+      ve_t: 180
+      notes: "Standardní hodnoty pro nové mostní stavby"
+    - id: 2
+      typ: "Silnice II. a III. třídy + místní komunikace"
+      vn_t: 22
+      vr_t: 40
+      ve_t: null
+      notes: "Pro stávající mosty, ne pro nové stavby vyšších tříd"
+  applies_to_zihle: 1  # ZD čl. 4.4.h požaduje 32/80/180 → skupina 1
+
+# ─────────────────────────────────────────────────────────────────────
+# 2. Klasifikační stupně stavebního stavu (slide 4)
+# Source: ČSN 73 6222
+# ─────────────────────────────────────────────────────────────────────
+stavebni_stavy:
+  description: "Stupně stavebního stavu s redukčním koeficientem α"
+  values:
+    - stupen: I
+      popis: "bezvadný"
+      alpha_koef: 1.0
+    - stupen: II
+      popis: "velmi dobrý"
+      alpha_koef: 1.0
+    - stupen: III
+      popis: "dobrý"
+      alpha_koef: 1.0
+    - stupen: IV
+      popis: "uspokojivý"
+      alpha_koef: 0.8
+    - stupen: V
+      popis: "špatný"
+      alpha_koef: 0.6
+    - stupen: VI
+      popis: "velmi špatný"
+      alpha_koef: 0.4
+    - stupen: VII
+      popis: "havarijní"
+      alpha_koef: 0.2
+  
+  application:
+    description: "α násobí únosnost pro výpočet zatížitelnosti"
+    formula: "Skutečná zatížitelnost = teoretická × α"
+  
+  applies_to_zihle:
+    starý_most_NK: VI         # HPM 24.9.2025: stav VI velmi špatný (α=0.4)
+    starý_most_SS: IV         # HPM: spodní stavba uspokojivá (α=0.8)
+    nový_most_target: I       # nová stavba musí být bezvadná
+
+# ─────────────────────────────────────────────────────────────────────
+# 3. Schémata vozidel (slides 5-7)
+# Source: ČSN 73 6222
+# ─────────────────────────────────────────────────────────────────────
+vehicle_schemas:
+  description: "Idealized vehicle schemas for Vn/Vr/Ve calculation"
+  
+  vn_normal:
+    description: "Normální zatížitelnost — průměrný provoz"
+    cases:
+      - mass_class: ">=16t"
+        axles: 3  # předtní + zadní dvojice
+        axle_loads: ["1/4 Vn", "3/8 Vn", "3/8 Vn"]
+        spacing_mm: [1500, 2400, 1200, 900]  # přední, mezi nápravami, mezi koly
+      - mass_class: "<16t"
+        axles: 2
+        axle_loads: ["1/4 Vn", "3/4 Vn"]
+        spacing_mm: [1500, 3000, 1500]
+  
+  vr_vyhradni:
+    description: "Výhradní zatížitelnost — výjimečné jednotlivé jízdy"
+    cases:
+      - mass_class: "<16t"
+        axles: 2
+        axle_loads: ["1/4 Vr", "3/4 Vr"]
+        spacing_mm: [1500, 3000, 1500]
+      - mass_class: ">=16t"
+        axles: 3
+        axle_loads: ["1/4 Vr", "3/8 Vr", "3/8 Vr"]
+        spacing_mm: [1500, 2400, 1200, 900]
+      - mass_class: ">50t"
+        axles: 6
+        axle_loads: ["1/6 Vr", "1/6 Vr", "1/6 Vr", "1/6 Vr", "1/6 Vr", "1/6 Vr"]
+        spacing_mm: [750, 1500, 1500, 1500, 1500, 1500, 750]  # 6× 1.5 m + okraje
+  
+  ve_vyjimecna:
+    description: "Výjimečná zatížitelnost — nadrozměrná vozidla"
+    axles: 9
+    axle_loads: ["1/9 Ve", "1/9 Ve", "1/9 Ve", "1/9 Ve", "1/9 Ve", "1/9 Ve", "1/9 Ve", "1/9 Ve", "1/9 Ve"]
+    spacing_mm: [750, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 750]
+
+# ─────────────────────────────────────────────────────────────────────
+# 4. Výpočet zatížitelnosti (slides 8-9)
+# Source: ČSN 73 6222
+# ─────────────────────────────────────────────────────────────────────
+vypocet_zatizitelnosti:
+  description: "Kombinovaný statický výpočet zatížitelnosti"
+  
+  formula_med:
+    name: "M_Ed (návrhový moment)"
+    expression: "M_Ed = Σ γ_G,j · M_Gk,j + γ_V · M_Vk,c + Σ γ_Q,i · ψ_0,i · M_Qk,i"
+    components:
+      - var: "γ_G,j"
+        meaning: "partial factor stálých zatížení"
+      - var: "M_Gk,j"
+        meaning: "char. hodnoty momentů od stálých zatížení"
+      - var: "γ_V"
+        meaning: "partial factor zatížení vozidlem"
+      - var: "M_Vk,c"
+        meaning: "char. moment od vozidla zatížitelnosti"
+      - var: "γ_Q,i"
+        meaning: "partial factor proměnných zatížení"
+      - var: "ψ_0,i"
+        meaning: "kombinační součinitel"
+  
+  formula_mvkc:
+    name: "M_Vk,c (max moment od vozidla)"
+    expression: "M_Vk,c = (M_Rd - Σ γ_G,j · M_Gk,j) / γ_V"
+    note: "Zjednodušená forma bez proměnných zatížení"
+    components:
+      - var: "M_Rd"
+        meaning: "návrhový odpor (moment únosnosti)"
+  
+  metody:
+    - name: "Kombinovaný statický výpočet"
+      use_case: "Standardní postup pro stupně I-IV"
+    - name: "Podrobný statický výpočet"
+      use_case: "Pro stupně V-VII (špatný-havarijní stav)"
+
+# ─────────────────────────────────────────────────────────────────────
+# 5. Železniční zatížitelnost (slides 10-15)
+# Source: SŽ S5/1, ČSN EN 15528
+# ─────────────────────────────────────────────────────────────────────
+zeleznicni_zatizitelnost:
+  description: "Zatížitelnost železničních mostů — POZNÁMKA: pro Žihle není relevantní"
+  not_applicable_to_stavagent_road: true
+  
+  pojmy:
+    zatizitelnost: "Poměr svislého pohyblivého zatížení k UIC-71"
+    prechodnost: "Schopnost převádět konkrétní provozní zatížení"
+  
+  kategorie:
+    - id: A
+      method: "určená odhadem"
+    - id: B
+      method: "odvozená, určená porovnávacím přepočtem"
+    - id: C
+      method: "určená novým přepočtem"
+    - id: D
+      method: "určená přepočtem na základě diagnostiky/zatěžovacích zkoušek"
+  
+  tratove_tridy:
+    description: "Per ČSN EN 15528, tab. 7.1"
+    values:
+      - id: A
+        p_kn: 160
+        p1_kn_per_m: 50
+      - id: B1
+        p_kn: 180
+        p1_kn_per_m: 50
+      - id: B2
+        p_kn: 180
+        p1_kn_per_m: 64
+      - id: C2
+        p_kn: 200
+        p1_kn_per_m: 64
+      - id: C3
+        p_kn: 200
+        p1_kn_per_m: 72
+      - id: C4
+        p_kn: 200
+        p1_kn_per_m: 80
+      - id: D2
+        p_kn: 225
+        p1_kn_per_m: 64
+      - id: D3
+        p_kn: 225
+        p1_kn_per_m: 72
+      - id: D4
+        p_kn: 225
+        p1_kn_per_m: 80
+
+# ─────────────────────────────────────────────────────────────────────
+# 6. Návrhová životnost (slide 19)
+# Source: praxe + ČSN EN 1990
+# ─────────────────────────────────────────────────────────────────────
+navrhova_zivotnost:
+  description: "Předpokládaná životnost prvků mostu (rozsah min-max)"
+  unit: years
+  
+  per_element:
+    rimsa:
+      min: 30
+      max: 50
+      stavagent_element_type: rimsa
+    vozovka:
+      min: 20
+      max: 30
+      stavagent_element_type: null  # not in calculator (NOT element scope)
+    svodidlo:
+      min: 15
+      max: 30
+      stavagent_element_type: null
+    zabradli:
+      min: 15
+      max: 30
+      stavagent_element_type: null
+    mostni_zaver:
+      min: 15
+      max: 30
+      stavagent_element_type: null
+      not_applicable_for_integral_bridge: true  # u rámových mostů žádné
+    mostni_lozisko_vc_skruze:
+      min: 30
+      max: 50
+      stavagent_element_type: null
+      not_applicable_for_integral_bridge: true  # u rámových mostů žádná
+    mostni_izolace:
+      min: 30
+      max: 50
+      stavagent_element_type: null
+    spodni_stavba:
+      min: 60
+      max: 100
+      stavagent_element_type:
+        - opery_ulozne_prahy
+        - driky_piliru
+        - zaklady_piliru
+        - zaklady_oper
+    nosna_konstrukce:
+      min: 60
+      max: 100
+      stavagent_element_type:
+        - mostovkova_deska
+        - prechodova_deska
+    odvodnovace:
+      min: 20
+      max: 30
+      stavagent_element_type: null
+
+  application:
+    description: "Tabulka pro lifecycle cost analysis"
+    use_case_examples:
+      - "Total cost of ownership v 50letém horizontu"
+      - "Comparison nového rámového vs stávajícího mostu (re-paving cycles)"
+      - "ROI argument pro D&B nabídku s bezúdržbovým horizontem"
+    integration_target: "B9_validation/lifecycle_durability/ + future engine"
+
+# ─────────────────────────────────────────────────────────────────────
+# 7. Sanace metody (slides 20-31) — PRO REFERENCI, NE PRO ŽIHLE
+# Source: TKP 31, VL 0, ČSN EN 1504
+# ─────────────────────────────────────────────────────────────────────
+sanace_metody:
+  description: "Metody sanace existujících mostů (ŽIHLE = demolice, ne sanace)"
+  applies_to_zihle: false
+  
+  reference_standards:
+    - TKP 31
+    - VL 0
+    - "ČSN EN 1504 části 1-9"
+  
+  cisteni_tlakem_vody:
+    "<200_bar": "čištění povrchu"
+    "<=600_bar": "zdrsnění podkladu"
+    ">1000_bar": "odstranění poškozených vrstev betonu"
+  
+  cisteni_vyztuze:
+    method: "tryskání"
+    grade: "Sa 2½ dle ISO 8501-1"
+    follow_up: "ochrana nátěrem"
+  
+  povrchove_opravy:
+    "<10_mm": "nanesení správkové hmoty"
+    "<20_mm": "ruční + tlakové dočištění + obnovení krycí vrstvy"
+    "<50_mm": "stejné jako <20mm"
+    ">50_mm": "ruční + tlakové dočištění + aplikace do bednění"
+    classes:
+      - id: R2
+        description: "Bez statické funkce"
+      - id: R4
+        description: "Se statickou funkcí"
+  
+  natery:
+    types:
+      - hydrofobní_impregnace
+      - impregnace
+      - nátěr
+
+# ─────────────────────────────────────────────────────────────────────
+# 8. Cross-references
+# ─────────────────────────────────────────────────────────────────────
+cross_references:
+  primary_norms:
+    - id: csn_73_6222
+      title: "ČSN 73 6222 Zatížitelnost mostů pozemních komunikací"
+      status: paid_unavailable
+      slides_cover: "1-9"
+    - id: csn_73_6203
+      title: "ČSN 73 6203 (zrušena, vystřídána ČSN EN 1990 + ČSN EN 1991-2)"
+    - id: tp_200
+      title: "TP 200 Stanovení zatížitelnosti mostů PK"
+    - id: csn_en_15528
+      title: "ČSN EN 15528 Železniční aplikace - Traťové třídy zatížení"
+      slides_cover: "14-15"
+    - id: tkp_31
+      title: "TKP 31 Opravy betonových konstrukcí"
+      slides_cover: "20-31"
+    - id: csn_en_1504
+      title: "ČSN EN 1504 (díly 1-9) Výrobky a systémy pro ochranu a opravy betonových konstrukcí"
+    - id: vl_0
+      title: "VL 0 Vzorové listy (sanace)"
+      slides_cover: "25-26"
+
+  related_kb_entries:
+    - "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii"
+    - "B7_regulations/en_1992_2_concrete_bridges"
+    - "B7_regulations/csn_en_206_beton"
+    - "B9_validation/lifecycle_durability"
+
+# ─────────────────────────────────────────────────────────────────────
+# 9. Validation rules extractable from this source
+# ─────────────────────────────────────────────────────────────────────
+validation_rules:
+  - id: VR-LOAD-001
+    description: "ZD požadavek na novou stavbu musí spadat do skupiny 1"
+    check: "if vn_t == 32 and vr_t == 80 and ve_t == 180: skupina = 1; OK"
+  
+  - id: VR-LOAD-002
+    description: "Stavební stav VI/VII vyžaduje immediate intervention"
+    check: "if stavebni_stav in ['VI', 'VII']: alpha < 0.5; warning='havarijní/velmi špatný'"
+  
+  - id: VR-LIFECYCLE-001
+    description: "Nová NK musí mít navrženou životnost ≥60 let"
+    check: "if element_type in [mostovkova_deska, opery_*, driky_*]: lifecycle_min >= 60"
+  
+  - id: VR-INTEGRAL-001
+    description: "Integrální mosty nemají ložiska ani závěry — nepoužívat odpovídající lifecycle"
+    check: "if construction_technology == 'integralni_ram': skip [mostni_zaver, mostni_lozisko]"

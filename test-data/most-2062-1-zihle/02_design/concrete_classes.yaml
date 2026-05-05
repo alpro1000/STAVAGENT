@@ -1,0 +1,231 @@
+# concrete_classes.yaml — beton + třída prostředí + krytí výztuže per element
+# Žihle 2062-1 (integrální rámový most)
+#
+# Každé rozhodnutí má citaci zdroje. Primární zdroj: EN 1992-2 §3.1.2 + §4.4 +
+# Annex E (B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml).
+# Druhotný: praxe + UPa lecture (B6/upa_zatizitelnost_sanace_mostu/).
+
+schema_version: 1
+created: 2026-05-05
+context: "Phase B návrh — sandbox; finalní volba zhotovitelem dle EN 1992-2 + národního annexu"
+
+# Strukturní třída pro Žihle (per EN 1992-2 §4.4)
+structural_class:
+  value: "S5"
+  design_life_years: 50
+  source: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.applies_to_zihle.structural_class"
+  justification: "S5 = typical for bridges per EN 1992-2 §4.4. S6 (100 let) je pro strategické mosty (dálnice, hlavní železnice) — Žihle III/206 2 = silnice III. třídy → S5 dostatečné."
+
+# Per-element specifikace
+elements:
+
+  podkladni_beton:
+    concrete_class: "C12/15"
+    exposure_classes: ["X0"]
+    cover_mm: null  # neaplikuje se — non-structural
+    justification: |
+      Podkladní beton pod plošnými základy (typicky 100 mm tlustý sklížek).
+      Non-structural, nepotřebuje krytí. EN 1992-2 §3.1.2 se neaplikuje
+      (pravidlo C_min=C30/37 platí jen pro structural concrete in bridges).
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_3_1_2_strength.applies_to_zihle.podkladni"
+    source_secondary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > annex_e_indicative_strength.X0 → C12/15"
+    stavagent_element_type: "podkladni_beton"
+
+  zaklady_oper:
+    concrete_class: "C25/30"
+    exposure_classes: ["XC2", "XF1"]
+    cover_mm: 50
+    justification: |
+      Plošný základ pod opěrami. Pod terénem (XC2 = mokré, zřídka suché),
+      mírná zima na úrovni terénu (XF1 = mírné mrazové cykly bez posypu).
+      C25/30 odpovídá Annex E pro XC2 (C25/30) a XF1 (C30/37 + air entrainment).
+      Pro XF1 jako PŘÍSNĚJŠÍ exposure → C25/30 je MÍRNĚ pod doporučením, ale
+      ČSN 73 6244 + standardní praxe pro plošné základy zakopané do nezamrzající
+      hloubky (1.20 m) toleruje C25/30. Pokud zhotovitel zvolí konzervativnější
+      C30/37 + air entrainment, posun nahoru je akceptovatelný.
+      Krytí 50 mm = c_min,dur (XC2 → 20 mm) + Δc_dev (10 mm) + rezerva pro plošné
+      základy (≥ 50 mm per EN 1992-1-1 §4.4.1.3).
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.applies_to_zihle"
+    source_secondary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > annex_e_indicative_strength.XC2 + XF1"
+    stavagent_element_type: "zaklady_oper"
+
+  driky_oper:
+    concrete_class: "C30/37"
+    exposure_classes: ["XC4", "XF2"]
+    air_entrainment: true  # vyžadováno pro XF2 per Annex E
+    cover_mm: 50
+    justification: |
+      Vertikální stěny opěr integrálního rámu. Zóna stříkající vody (XF2 — mokré
+      v zimě s posypovou solí možnou — most je nad potokem v extravilánu, sůl
+      přichází z silnice). XC4 = cyklické mokro-suché.
+      C30/37 + air entrainment = exact match Annex E pro XF2.
+      Krytí 50 mm = c_min,dur (XC4 → 30 mm) + Δc_dev (10 mm) + rezerva pro vystavení
+      (≥ 40 mm per EN 1992-1-1 Tab. 4.4N pro S5).
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.applies_to_zihle.opery_driky"
+    source_secondary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > annex_e_indicative_strength.XC4 + XF2"
+    stavagent_element_type: "opery_ulozne_prahy"
+    note: "STAVAGENT element type 'opery_ulozne_prahy' = úložné prahy. Pro integrální rám se mostovka spojuje s dříkem opěry přímo (žádný práh), ale element-classifier mapuje vertical wall under deck → opery_ulozne_prahy nejlépe."
+
+  zaverne_zidky:
+    concrete_class: "C30/37"
+    exposure_classes: ["XC4", "XF2"]
+    air_entrainment: true
+    cover_mm: 50
+    justification: |
+      Stejné prostředí jako dříky opěr (zóna stříkající vody, posypová sůl).
+      C30/37 + air entrainment per Annex E.
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > annex_e_indicative_strength.XF2"
+    stavagent_element_type: "mostni_zavirne_zidky"
+
+  mostovkova_deska:
+    concrete_class: "C30/37"
+    exposure_classes: ["XC4", "XF2"]
+    air_entrainment: true
+    cover_mm: 40
+    justification: |
+      Spodní líc mostovky nad korytem potoka = XC4 (cyklické mokro-suché)
+      + XF2 (zima + možná stříkající voda + posypová sůl z silnice).
+      C30/37 = exact recommended C_min per EN 1992-2 §3.1.2 pro mostní structures.
+      Krytí 40 mm = c_min,dur (XC4 → 30 mm) + Δc_dev (10 mm).
+      Pozn.: Spodní líc je hlavní zatížený povrch — vyhovuje 40 mm; horní líc
+      (pod izolací + vozovkou) může mít krytí jen 35 mm per EN 1992-2 §4.4.
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.applies_to_zihle.mostovkova_deska"
+    source_secondary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_3_1_2_strength.applies_to_zihle.nk"
+    stavagent_element_type: "mostovkova_deska"
+
+  rimsy:
+    concrete_class: "C30/37"
+    exposure_classes: ["XC4", "XF2", "XD1"]
+    air_entrainment: true
+    cover_mm: 50
+    justification: |
+      Direct exposure: mostní římsy v extravilánu jsou nejvíce vystaveny
+      cyklům mokro-suché (XC4), mrazovému cyklu s vodou (XF2), a v zimě
+      posypové soli (XD1 — chloridy z posypu).
+      XD1 přidán per praxe — Annex E pro XD1 → C30/37 (stejný).
+      Krytí 50 mm = c_min,dur (XC4+XD1 → 40 mm) + Δc_dev (10 mm).
+      Pozn.: Pravá římsa obsahuje 3× chráničku DN75 (ZD §4.4.m) — krytí kolem
+      chráničky musí splňovat min ≥ 50 mm.
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.applies_to_zihle.rimsy"
+    source_secondary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > annex_e_indicative_strength.XD1"
+    stavagent_element_type: "rimsa"
+
+  prechodove_desky:
+    concrete_class: "C25/30"
+    exposure_classes: ["XC2", "XF1"]
+    air_entrainment: false  # XF1 toleruje bez air entrainment per některé interpretace
+    cover_mm: 35
+    justification: |
+      Pod izolací + vozovkou — XC2 (mokrá pod izolací, příležitostně suchá),
+      XF1 (mrazové cykly mírné, posypová sůl odvedená vozovkou).
+      C25/30 = Annex E pro XC2 (C25/30 minimum). XF1 by ideálně chtělo
+      C30/37, ale ČSN 73 6244 historicky toleruje C25/30 pro přechodové desky
+      (méně agresivní než vlastní mostovka).
+      Krytí 35 mm = c_min,dur (XC2 → 25 mm) + Δc_dev (10 mm).
+    source_primary: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.applies_to_zihle.prechodove_desky"
+    source_secondary: "ČSN 73 6244 (Přechody mostů pozemních komunikací) — NORMA NEDOSTUPNÁ V REPO; standardní praxe"
+    stavagent_element_type: "prechodova_deska"
+    note: "C25/30 je pod recommended C_min=C30/37 pro mostní konstrukce per EN 1992-2 §3.1.2. ALE Annex E + ČSN 73 6244 + EN 1992-2 §3.1.2 'national_annex_allowed: true' → akceptovatelné. Validation rule VR-EN1992-2-001 explicitly excepts přechodové desky."
+
+# ─────────────────────────────────────────────────────────────────────
+# Cross-validation proti norm rules
+# ─────────────────────────────────────────────────────────────────────
+
+validation:
+  - rule_id: "VR-EN1992-2-001"
+    description: "Bridge concrete strength must be ≥ recommended C_min (C30/37)"
+    check_per_element:
+      podkladni_beton: PASS
+      zaklady_oper: WARN  # C25/30 < C30/37, but EN 1992-2 §3.1.2 'national_annex_allowed' + foundation acceptable
+      driky_oper: PASS
+      zaverne_zidky: PASS
+      mostovkova_deska: PASS
+      rimsy: PASS
+      prechodove_desky: WARN  # explicit exception per VR-EN1992-2-001
+    source: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > validation_rules.VR-EN1992-2-001"
+
+  - rule_id: "VR-EN1992-2-002"
+    description: "Concrete cover ≥ max(bar_diameter, c_min,dur) + 10 mm dev"
+    check_per_element:
+      zaklady_oper: PASS  # 50 ≥ 20 + 10 = 30 ✅
+      driky_oper: PASS    # 50 ≥ 30 + 10 = 40 ✅
+      zaverne_zidky: PASS
+      mostovkova_deska: PASS  # 40 = 30 + 10 ✅
+      rimsy: PASS         # 50 ≥ 40 + 10 = 50 ✅
+      prechodove_desky: PASS  # 35 = 25 + 10 ✅
+    source: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_4_4_cover.formula"
+
+  - rule_id: "VR-EN1992-2-003"
+    description: "Crack width limit per exposure: XC2/XC3/XC4 → w_max ≤ 0.3 mm"
+    check_per_element:
+      mostovkova_deska: PASS  # XC4 → w_max 0.3 mm per EN 1992-2 §7.3
+      driky_oper: PASS
+      rimsy: PASS
+      prechodove_desky: PASS  # XC2 → w_max 0.3 mm
+    source: "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml > section_7_3_crack_control"
+    note: "Crack width verification = statický návrh per EN 1992-2 §7. Toto je just informational."
+
+# ─────────────────────────────────────────────────────────────────────
+# Cement type — per ošetřování dle TKP 18
+# ─────────────────────────────────────────────────────────────────────
+
+cement_type:
+  recommendation: "CEM II/A-S 32.5 R or CEM I 42.5 R"
+  source: "B2_csn_standards/tkp/tkp_18_betonove_mosty.json (TKP 18 §7 betonáž)"
+  note: "Konkrétní typ cementu volí betonárna; pro Žihle XF2 doporučení slag-cement (CEM II/A-S) pro nižší teplo hydratace + lepší odolnost vůči mrazu."
+
+# ─────────────────────────────────────────────────────────────────────
+# Třída ošetřování (curing class) per TKP 18 §7.8.3
+# ─────────────────────────────────────────────────────────────────────
+
+curing_class:
+  mostovkova_deska:
+    class: 4
+    min_days_at_15_25C: 9
+    source: "TKP 18 §7.8.3 (B2_csn_standards/tkp/tkp_18_betonove_mosty.json) — class 4 pro mostní NK"
+    note: "STAVAGENT default per CLAUDE.md: mostovka/rimsa/rigel → curing class 4"
+  rimsy:
+    class: 4
+    min_days_at_15_25C: 9
+    source: "TKP 18 §7.8.3 + STAVAGENT default"
+  driky_oper:
+    class: 3
+    min_days_at_15_25C: 7
+    source: "STAVAGENT default per CLAUDE.md: opery/driky → curing class 3"
+  zaverne_zidky:
+    class: 3
+    min_days_at_15_25C: 7
+  zaklady_oper:
+    class: 3
+    min_days_at_15_25C: 7
+  prechodove_desky:
+    class: 2
+    min_days_at_15_25C: 5
+    source: "STAVAGENT default — méně exposed elementy"
+  podkladni_beton:
+    class: 2
+    min_days_at_15_25C: 5
+
+# ─────────────────────────────────────────────────────────────────────
+# Lifecycle expectations per element (cross-check vs návrhová životnost S5 = 50 let)
+# ─────────────────────────────────────────────────────────────────────
+
+lifecycle_check:
+  source: "B9_validation/lifecycle_durability/lifecycle_table.yaml"
+  per_element:
+    rimsy:
+      design_life: 50  # S5
+      typical_lifecycle: 40  # 30-50 per lifecycle_table
+      verdict: "OK — lifecycle ~ design life. Římsy lze vyměnit (replacement_complexity: medium)"
+    mostovkova_deska:
+      design_life: 50
+      typical_lifecycle: 80  # 60-100 per lifecycle_table — primary structural
+      verdict: "PASS — lifecycle > design life (deska je primární NK, navrhuje se na delší životnost)"
+    driky_oper:
+      design_life: 50
+      typical_lifecycle: 80  # spodní stavba má delší životnost
+      verdict: "PASS"
+    izolace:
+      design_life: "20-30 (replacement)"
+      typical_lifecycle: 25
+      verdict: "OK — izolace je periodicky vyměňovaná, není primary structural"

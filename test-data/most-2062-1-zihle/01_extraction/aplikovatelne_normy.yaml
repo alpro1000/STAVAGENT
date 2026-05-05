@@ -1,0 +1,280 @@
+# ═══════════════════════════════════════════════════════════════════════
+# aplikovatelne_normy.yaml — list TKP/ČSN/EN aplikovatelných na Žihle
+# ═══════════════════════════════════════════════════════════════════════
+# Cross-reference: požadavky ZD/HPM ↔ Kfely TKP list (jako vzor) ↔ KB
+#
+# Přístup:
+#   1. Vyjít ze seznamu TKP kapitol z Kfely (Příloha A05 TKP specifikace)
+#   2. Doplnit ČSN/EN normy explicit zmíněné v ZD/HPM
+#   3. Cross-reference proti STAVAGENT KB (B7_regulations + B2_csn_standards)
+#   4. Flagovat normy chybějící v KB jako "external reference only"
+# ═══════════════════════════════════════════════════════════════════════
+
+schema_version: 1
+extracted: 2026-05-05
+references:
+  zd: "inputs/pdf/ZD - Most ev.č. 2062-1 u obce Žihle - DaB.pdf"
+  hpm: "inputs/pdf/2062-1 HMP.pdf"
+  kfely_tkp: "inputs/reference/4106641-A05_OR_Technicka specifikace_GB.docx (vzor — NE pro Žihle hodnoty)"
+  kb_root: "concrete-agent/packages/core-backend/app/knowledge_base/"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 1. TKP kapitoly aplikovatelné na Žihle (vzor: Kfely TKP A05)
+# ─────────────────────────────────────────────────────────────────────
+# Pozn.: Kfely má 14 TKP kapitol (1, 2, 3, 4, 5, 7, 11, 16, 18, 21, 22, 23, 26, 31).
+#        Pro Žihle vyloučit kap. 22 (mostní ložiska — ZD §4.4.l zakazuje ložiska).
+#        Ostatní kapitoly aplikovatelné téměř identicky (silniční mosty kategorie III).
+# ─────────────────────────────────────────────────────────────────────
+
+tkp_kapitoly:
+  - kap: "1"
+    nazev: "Všeobecně"
+    relevance_zihle: true
+    kb_status: "missing — TKP1 v KB B2_csn_standards/tkp/ neexistuje"
+    odkaz: "MD ČR — Technické kvalitativní podmínky staveb pozemních komunikací"
+
+  - kap: "2"
+    nazev: "Příprava staveniště"
+    relevance_zihle: true
+    odkaz_zd: "souvisí se ZD §4.3.e — provizorium + dopravní opatření"
+    kb_status: "missing"
+
+  - kap: "3"
+    nazev: "Zemní práce"
+    relevance_zihle: true
+    odkaz_zd: "ZD §4.4.a (založení), §4.4.n (sanace podloží směrové úpravy)"
+    kb_status: "PRESENT — B2_csn_standards/tkp/tkp_03_zemni_prace.json"
+    aplikace_zihle: ["plošné založení (předp.)", "demolice opěr", "úprava koryta ±10m"]
+
+  - kap: "4"
+    nazev: "Pilotové základy"
+    relevance_zihle: "podmíněně"
+    poznamka: "Pokud IGP ukáže nutnost. HPM s.2 [1.1] uvádí 'pravděpodobně plošné' založení stávajícího mostu — pro nový by stačily plošné při dobrém podloží."
+    kb_status: "missing"
+
+  - kap: "5"
+    nazev: "Podkladní vrstvy vozovky"
+    relevance_zihle: true
+    odkaz_zd: "ZD §4.4.j (vozovka 3-vrstvá živičná)"
+    kb_status: "missing"
+
+  - kap: "7"
+    nazev: "Hutněné asfaltové vrstvy"
+    relevance_zihle: true
+    odkaz_zd: "ZD §4.4.j + obrusná vrstva 100 % bez tolerance"
+    kb_status: "missing"
+
+  - kap: "11"
+    nazev: "Svodidla, zábradlí, tlumiče nárazu"
+    relevance_zihle: true
+    odkaz_zd: "ZD §4.4.i (zádržný systém pro extravilán); HPM eviduje SafeStar 231 H2/W3"
+    csn_souvisejici: "ČSN EN 1317"
+    kb_status: "missing"
+
+  - kap: "16"
+    nazev: "Piloty + podzemní stěny"
+    relevance_zihle: "podmíněně (pokud IGP)"
+    kb_status: "missing"
+
+  - kap: "18"
+    nazev: "Betonové konstrukce a mosty"
+    relevance_zihle: true
+    odkaz_zd: "ZD §4.4 — celý nový most je betonová konstrukce"
+    kb_status: "PRESENT — B2_csn_standards/tkp/tkp_18.md + tkp_18_betonove_mosty.json"
+    aplikace_zihle:
+      - "§7.8 ošetřování betonu (zrání)"
+      - "§7.8.3 třídy ošetřování (klíčové pro mostovku)"
+      - "krytí výztuže"
+      - "betonování (záběry, pracovní spáry)"
+
+  - kap: "21"
+    nazev: "Zvláštní zakládání"
+    relevance_zihle: "podmíněně"
+    kb_status: "PRESENT — B2_csn_standards/tkp/tkp_24_zvlastni_zakladani.json (číslo kap. 24 v KB, ale TKP kap. 21)"
+    poznamka_kb: "číslování v KB neodpovídá MD ČR — nutno ověřit"
+
+  - kap: "22"
+    nazev: "Mostní ložiska"
+    relevance_zihle: false
+    duvod_vylouceni: "ZD §4.4.l explicitně zakazuje mostní ložiska. Integrální rám = bez ložisek."
+    kb_status: "missing"
+
+  - kap: "23"
+    nazev: "Mostní závěry"
+    relevance_zihle: false
+    duvod_vylouceni: "ZD §4.4.l explicitně zakazuje dilatační závěry. Integrální rám = bez dilatačních závěrů."
+    kb_status: "missing"
+
+  - kap: "26"
+    nazev: "Izolace + povlaky"
+    relevance_zihle: true
+    odkaz_zd: "vodotěsná izolace mostovky pod živičnou vozovkou"
+    kb_status: "PRESENT — B2_csn_standards/tkp/tkp_22_izolace.json (číslo kap. 22 v KB, ale TKP kap. 26)"
+    poznamka_kb: "číslování v KB neodpovídá MD ČR — nutno ověřit"
+
+  - kap: "31"
+    nazev: "Dlažební prvky, dlažby"
+    relevance_zihle: "podmíněně"
+    odkaz_zd: "ZD §4.4.r — zpevnění dna koryta (kamenná dlažba)"
+    kb_status: "missing"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 2. ČSN normy explicit zmíněné v ZD/HPM/Vysvětlení
+# ─────────────────────────────────────────────────────────────────────
+
+csn_normy:
+  - kod: "ČSN 73 6222"
+    nazev: "Zatížitelnost mostů pozemních komunikací"
+    relevance: "P0 — primární"
+    aplikace_zihle: "Vn=32 / Vr=80 / Ve=180 t (ZD §4.4.h + §4.3.j)"
+    kb_status: "missing — není v B2_csn_standards"
+    poznamka: "ZD §4.3.j explicitně požaduje výpočet zatížitelnosti dle této normy"
+
+  - kod: "ČSN 73 6221"
+    nazev: "Prohlídky mostů pozemních komunikací"
+    relevance: "P1 — pro evidenci a údržbu"
+    aplikace_zihle: "termín další HPM 2027 (HPM s.6); údržba dle čl. 5.3.1 ČSN 73 6221"
+    kb_status: "missing"
+    odkaz: "HPM s.5 §E (6) + s.6"
+
+  - kod: "ČSN 73 6244"
+    nazev: "Přechody mostů pozemních komunikací"
+    relevance: "P1 — návrh přechodových desek"
+    aplikace_zihle: "Pravděpodobně 2× přechodová deska na konci NK pro tlumení rázů; v ZD explicitně neuvedeno, ale standard pro mosty bez ložisek/dilatací"
+    kb_status: "missing"
+
+  - kod: "ČSN EN 206"
+    nazev: "Beton — specifikace, vlastnosti, výroba a shoda"
+    relevance: "P0 — beton + třídy prostředí"
+    aplikace_zihle: "Třídy prostředí XC/XF/XD pro nový most (návrh v Phase B)"
+    kb_status: "PRESENT — B2_csn_standards/csn_en_206.json + B7_regulations/csn_en_206_pruvodce/"
+
+  - kod: "ČSN EN 1992-1-1"
+    nazev: "Eurokód 2: Navrhování betonových konstrukcí — Část 1-1: Obecná pravidla a pravidla pro pozemní stavby"
+    relevance: "P0 — návrh ŽB konstrukcí"
+    aplikace_zihle: "návrh dimenzí, výztuže, krytí pro novou NK (Phase B)"
+    kb_status: "missing"
+
+  - kod: "ČSN EN 1992-2"
+    nazev: "Eurokód 2: Navrhování betonových konstrukcí — Část 2: Betonové mosty"
+    relevance: "P0 — specifické pravidla pro betonové mosty"
+    aplikace_zihle: "kontrola mostovky, krytí pro mostní expozice, trvanlivost"
+    kb_status: "missing"
+
+  - kod: "ČSN EN 1317"
+    nazev: "Záchytné systémy na komunikacích"
+    relevance: "P0 — zádržný systém v extravilánu (ZD §4.4.i)"
+    aplikace_zihle: "úroveň zadržení (zhotovitel volí dle dopravy + rychlosti)"
+    kb_status: "missing"
+
+  - kod: "Vyhláška č. 393/2020 Sb."
+    nazev: "O digitální technické mapě kraje (vyhláška o DTM)"
+    relevance: "P1 — formát geodetického zaměření"
+    aplikace_zihle: "geodetické zaměření skutečného stavu (ZD §4.3.i): S-JTSK, Bpv, 3. třída, formát DGN+JVF"
+    kb_status: "missing"
+
+  - kod: "TP 260"
+    nazev: "Technické podmínky — Přímo pojížděná mostovka"
+    relevance: "ZAKÁZÁNO ZD §4.4.p"
+    aplikace_zihle: "negativní reference — TP 260 řešení nesmí být použito"
+    kb_status: "missing"
+
+  - kod: "Zákon č. 134/2016 Sb."
+    nazev: "O zadávání veřejných zakázek (ZZVZ)"
+    relevance: "P0 — celý tendr"
+    aplikace_zihle: "§52 písm. a) zjednodušené podlimitní řízení; §92 odst. 2 D&B"
+    kb_status: "n/a (legislativa, ne KB)"
+
+  - kod: "Zákon č. 13/1997 Sb."
+    nazev: "O pozemních komunikacích"
+    relevance: "P1 — silniční pozemek"
+    aplikace_zihle: "§11 — vymezení silničního pozemku (ZD §4.4.n: odvodnění do silničního příkopu, který bude součástí silničního pozemku)"
+    kb_status: "n/a"
+
+  - kod: "Zákon č. 360/1992 Sb."
+    nazev: "O výkonu povolání autorizovaných architektů a inženýrů"
+    relevance: "P0 — kvalifikace personálu"
+    aplikace_zihle: "stavbyvedoucí + zástupce SV + hlavní projektant — autorizace"
+    kb_status: "n/a"
+
+  - kod: "Zákon č. 200/1994 Sb."
+    nazev: "O zeměměřictví"
+    relevance: "P1 — kvalifikace geodeta"
+    aplikace_zihle: "úřední oprávnění §13 odst. 1 písm. c)"
+    kb_status: "n/a"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 3. KB zdroje pro Phase B (návrh)
+# ─────────────────────────────────────────────────────────────────────
+
+kb_zdroje_pro_phase_b:
+  - cesta: "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii/INDEX.yaml"
+    pouziti: "klasifikace mostu (BR_FRAME — rámový), volba technologie výstavby (pevná skruž — 14a), validační pravidla"
+    klicove_sekce_pro_zihle:
+      - "bridge_classification.keyword_to_element_type → ramovy_most (BR_FRAME, span 10–60 m). POZOR: Žihle ~9 m je POD spodním limitem typického rozpětí — flag pro Phase B."
+      - "construction_technologies.pevna_skruz → 'fixed falsework', max length 100 m, max height 15 m, typical systems DOKA/PERI/HUNNEBECK/PEINER/PIZMO_STOJKY_IP"
+      - "technology_decision_rules"
+      - "validation_rules (VR-001..VR-011)"
+    confidence: 1.0
+
+  - cesta: "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii/ch01_06_typy_mostu.yaml"
+    pouziti: "detailní data per typ mostu (rámový — kapitola 4)"
+
+  - cesta: "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii/ch13_19_technologie_vystavby.yaml"
+    pouziti: "kapitoly 14a (pevná skruž), 14b (MSS — pro Žihle nerelevantní), 15 (ILM — pro Žihle nerelevantní)"
+
+  - cesta: "B7_regulations/csn_en_206_pruvodce/"
+    pouziti: "průvodce ČSN EN 206 — třídy prostředí pro mostní konstrukce"
+
+  - cesta: "B2_csn_standards/tkp/tkp_18_betonove_mosty.json"
+    pouziti: "TKP 18 specifikace pro betonové mosty (ošetřování, krytí, betonáž)"
+
+  - cesta: "B2_csn_standards/tkp/tkp_03_zemni_prace.json"
+    pouziti: "TKP 3 zemní práce (demolice, výkopy, úprava terénu)"
+
+  - cesta: "B2_csn_standards/tkp/tkp_22_izolace.json"
+    pouziti: "TKP 26 izolace mostovek (číslo kap. v KB ≠ TKP — vyžaduje ověření)"
+
+  - cesta: "B2_csn_standards/tkp/tkp_17_beton.json"
+    pouziti: "TKP 17 beton (předpisy pro výrobu/zpracování)"
+
+  - cesta: "Monolit-Planner/shared/src/calculators/element-classifier.ts"
+    pouziti: "ELEMENT_CATALOG — 22+ element typů pro nový most (deska, opěry, římsy, přechodové desky, atd.)"
+    poznamka: "Konzumace pro Phase C (kalkulace), ne Phase B (návrh)."
+
+# ─────────────────────────────────────────────────────────────────────
+# § 4. Cross-check vs Kfely TKP list (Příloha A05 — vzor)
+# ─────────────────────────────────────────────────────────────────────
+
+kfely_tkp_diff:
+  poznamka: "Kfely je samostatný D&B most (cca 17× větší, prefab nosníky, objízdná místo provizoria). TKP seznam slouží jen jako STRUCTURÁLNÍ vzor."
+  kapitoly_v_kfely_aplikovatelne_i_pro_zihle:
+    [1, 2, 3, 4, 5, 7, 11, 16, 18, 21, 26, 31]
+  kapitoly_v_kfely_NEAPLIKOVATELNE_pro_zihle:
+    - kap: 22
+      duvod: "mostní ložiska — Žihle integrální rám zakázal ložiska (ZD §4.4.l)"
+    - kap: 23
+      duvod: "mostní závěry — Žihle bez dilatačních závěrů (ZD §4.4.l)"
+  kapitoly_potencialne_dodatecne_pro_zihle:
+    - kap: "neidentif."
+      poznamka: "TKP pro úpravu vodního toku (správce toku Mladotický potok) — pravděpodobně mimo TKP, jiné předpisy"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 5. KB coverage gaps (známé limity STAVAGENT KB pro Phase B)
+# ─────────────────────────────────────────────────────────────────────
+
+kb_coverage_gaps:
+  zdroj_audit: "docs/audits/knowledge_audit/99_summary.md (2026-04-26)"
+  shrnuti: "B1–B4 + B9 fleshed out; B5 (tech_cards), B6 (kromě Pokorný), B7 (kromě EN 206), B8 (company-specific) sparse."
+  pro_zihle_chybi:
+    - norm: "ČSN 73 6222 (zatížitelnost)"
+      dopad: "P0 — nelze cross-reference Vn/Vr/Ve výpočet bez normy. Jen externí odkaz na ČAS / SÚSPK."
+    - norm: "ČSN 73 6244 (přechodové desky)"
+      dopad: "P1 — návrh přechodových desek pro integrální rám bez normy v KB"
+    - norm: "ČSN EN 1992-2 (Eurokód 2 mosty)"
+      dopad: "P0 — návrh ŽB mostní NK; jen externí PDF normy"
+    - norm: "ČSN EN 1317 (zádržné systémy)"
+      dopad: "P1 — volba úrovně zadržení H1/H2/H3 pro extravilán"
+    - norm: "TKP 1, 2, 5, 7, 11, 16, 31"
+      dopad: "P2 — buď externí PDF nebo MD ČR online katalog"
+  doporuceni: "Pro Phase B využít externí PDF norem (mimo KB) + cross-reference na zdroje v KB co existují (TKP 18, TKP 03, EN 206, Pokorný-Suchánek). Žádné numerické hodnoty v této extrakci nepřebírám z KB do Phase B — to je úkol Phase B."

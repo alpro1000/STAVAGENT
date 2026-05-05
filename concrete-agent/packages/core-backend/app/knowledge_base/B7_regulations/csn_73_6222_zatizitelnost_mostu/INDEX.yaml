@@ -1,0 +1,99 @@
+# ČSN 73 6222 — INDEX (stub)
+# Plný text normy není volně dostupný (placené ÚNMZ).
+# Tento INDEX shromažďuje klíčový obsah z UPa slides + cross-references.
+
+source:
+  norm_id: csn_73_6222
+  title: "ČSN 73 6222 Zatížitelnost mostů pozemních komunikací"
+  status: paid_standard_unavailable
+  primary_extraction_source: "B6_research_papers/upa_zatizitelnost_sanace_mostu/"
+  
+# ─────────────────────────────────────────────────────────────────────
+# Klíčové pravidlo 1: Klasifikace skupin
+# ─────────────────────────────────────────────────────────────────────
+skupiny_komunikaci:
+  description: "Klasifikace per ČSN EN 1991-2 + ČSN 73 6222"
+  see_also: "upa_zatizitelnost_sanace_mostu INDEX.yaml > skupiny_komunikaci"
+  values:
+    - id: 1
+      vn_t: 32
+      vr_t: 80
+      ve_t: 180
+    - id: 2
+      vn_t: 22
+      vr_t: 40
+      ve_t: null
+
+# ─────────────────────────────────────────────────────────────────────
+# Klíčové pravidlo 2: Klasifikační stupně
+# ─────────────────────────────────────────────────────────────────────
+stavebni_stavy:
+  description: "Per ČSN 73 6222"
+  see_also: "upa_zatizitelnost_sanace_mostu INDEX.yaml > stavebni_stavy"
+  table:
+    I: {popis: "bezvadný", alpha: 1.0}
+    II: {popis: "velmi dobrý", alpha: 1.0}
+    III: {popis: "dobrý", alpha: 1.0}
+    IV: {popis: "uspokojivý", alpha: 0.8}
+    V: {popis: "špatný", alpha: 0.6}
+    VI: {popis: "velmi špatný", alpha: 0.4}
+    VII: {popis: "havarijní", alpha: 0.2}
+
+# ─────────────────────────────────────────────────────────────────────
+# Klíčové pravidlo 3: Vzorce
+# ─────────────────────────────────────────────────────────────────────
+vzorce:
+  see_also: "upa_zatizitelnost_sanace_mostu INDEX.yaml > vypocet_zatizitelnosti"
+
+# ─────────────────────────────────────────────────────────────────────
+# Validation rules pro STAVAGENT
+# ─────────────────────────────────────────────────────────────────────
+validation_rules:
+  - id: VR-CSN73-6222-001
+    description: "ZD požadavek musí korespondovat se skupinou normy"
+    check: |
+      def validate(zd_vn, zd_vr, zd_ve):
+        if zd_vn == 32 and zd_vr == 80 and zd_ve == 180:
+          return {'skupina': 1, 'valid': True}
+        elif zd_vn == 22 and zd_vr == 40:
+          return {'skupina': 2, 'valid': True}
+        else:
+          return {'valid': False, 'reason': 'Nestandardní hodnoty Vn/Vr/Ve'}
+
+  - id: VR-CSN73-6222-002
+    description: "HPM stav VI/VII = nucená intervence"
+    check: |
+      def validate(stavebni_stav):
+        alpha = {'I': 1.0, 'II': 1.0, 'III': 1.0, 'IV': 0.8,
+                 'V': 0.6, 'VI': 0.4, 'VII': 0.2}.get(stavebni_stav)
+        if stavebni_stav in ['VI', 'VII']:
+          return {'severity': 'CRITICAL', 'alpha': alpha,
+                  'recommendation': 'Demolice nebo zásadní rekonstrukce'}
+        elif stavebni_stav == 'V':
+          return {'severity': 'HIGH', 'alpha': alpha,
+                  'recommendation': 'Sanace nebo provozní omezení'}
+
+# ─────────────────────────────────────────────────────────────────────
+# Application to Žihle 2062-1
+# ─────────────────────────────────────────────────────────────────────
+applies_to_zihle:
+  zd_pozadavky:
+    vn_t: 32
+    vr_t: 80
+    ve_t: 180
+    skupina: 1
+    valid: true
+  
+  hpm_stary_most:
+    nk_stav: VI
+    nk_alpha: 0.4
+    ss_stav: IV
+    ss_alpha: 0.8
+    severity: CRITICAL
+    recommendation: "Demolice — soulad s HPM doporučením do 5 let"
+  
+  existujici_zatizitelnost:
+    vn_t: 20.0
+    vr_t: 24
+    ve_t: 29
+    note: "Pod skupinu 1 i pod skupinu 2 — most je nedostatečně únosný"

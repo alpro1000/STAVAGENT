@@ -1,0 +1,21 @@
+{
+  "name": "@stavagent-sandbox/zihle-2062-1-calc",
+  "version": "0.1.0",
+  "description": "Phase C calculator runner for Most 2062-1 Žihle (sandbox)",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "calc": "tsx run-calc.ts",
+    "summary": "tsx make-summary.ts"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.3.3"
+  }
+}

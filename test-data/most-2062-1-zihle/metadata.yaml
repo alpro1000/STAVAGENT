@@ -4,7 +4,7 @@
 # může konvertovat do golden testu pod test-data/tz/.
 
 schema_version: 1
-status: inputs_received          # raw → inputs_received → extraction → design → calculated → done
+status: calculated               # raw → inputs_received → extraction_done → design → calculated → done
 project_kind: sandbox            # sandbox | golden_test_candidate | tender
 created: 2026-05-05
 not_for_delivery: true
@@ -13,10 +13,12 @@ identifikace:
   ev_cislo_mostu: "2062-1"
   nazev: "Most ev.č. 2062-1"
   silnice: "III/206 2"
-  staniceni: null                # doplnit po extrakci ze ZD/HPM
+  staniceni_km_mostu: 0.793                     # bod stávajícího mostu (HPM s.2)
+  staniceni_km_uprava_silnice: "0.600 – 0.900"  # rozsah stavby (ZD §5.1)
   obec: "Žihle"
-  okres: null                    # doplnit po extrakci z HPM
+  okres: "Plzeň-sever"                          # potvrzeno HPM s.2
   premostovana_prekazka: "Mladotický potok"
+  smer_staniceni: "z obce Žihle do Potvorova"   # HPM s.2
 
 zadavatel:
   organizace: "Správa a údržba silnic Plzeňského kraje, p.o."
@@ -92,32 +94,32 @@ provizorium:
   povolena_vozidla: "do 3,5 t + linková veřejná doprava"
 
 zdrojove_dokumenty:
-  # Stav po nahrání 2026-05-05: HPM jako samostatný PDF dodán nebyl;
-  # místo toho přišel snímek mostního listu (PNG) + 6 fotek z prohlídky
-  # (taken 2026-04-21). Tato kolekce zastupuje HPM v pipeline extrakce.
-  hpm_kolekce:
-    nazev: "Hlavní prohlídka mostu — fotodokumentace + mostní list"
-    datum_porizeni_fotek: 2026-04-21
+  hpm:
+    nazev: "Hlavní prohlídka mostu (HPM 2062-1)"
+    autor: "Komanec Petr, Ing. (PONTEX, s.r.o., č.opr. 086/2003)"
+    datum: 2025-09-24
+    pocet_stran: 6
+    cesta: "inputs/pdf/2062-1 HMP.pdf"
+    pritomno: true
+  hpm_dodatecna_evidence:
+    nazev: "Mostní list z BMS + fotodokumentace 2026-04-21"
     polozky:
-      - typ: "mostní list (snímek)"
+      - typ: "mostní list (rukopis BMS)"
         cesta: "inputs/photos/Příloha č. 1 - snímek mostního listu.png"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131615.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131624.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131650.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131658.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_131821.jpg"
-      - typ: "fotka z osmotky"
+      - typ: "fotka z prohlídky 2026-04-21"
         cesta: "inputs/photos/20260421_132429.jpg"
     pritomno: true
-    poznamka: |
-      6-stránkový HPM PDF z 2025-09-24 (zmíněn v původním zadání) zatím
-      v inputs/ není. Pokud bude později dodán, založit pole hpm_pdf:
-      separátně.
+    poznamka: "Mostní list PNG = jediná evidence stávajícího mostu kromě HPM. Originál PD zadavatel nemá (Vysvětlení ZD č.1 ad 1)."
   zd:
     nazev: "Zadávací dokumentace — Most ev.č. 2062-1 u obce Žihle (D&B)"
     datum: 2026-04-01
@@ -144,19 +146,73 @@ workflow_faze:
   - id: "01_extraction"
     nazev: "Extrakce ze zdrojových dokumentů"
     popis: "Strukturovaná data (JSON/YAML) o stávajícím mostě a o požadavcích nové stavby"
-    status: pending
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "01_extraction/stavajici_most.yaml"
+      - "01_extraction/pozadavky_novy_most.yaml"
+      - "01_extraction/site_conditions.yaml"
+      - "01_extraction/aplikovatelne_normy.yaml"
+      - "01_extraction/SOURCES.md"
   - id: "02_design"
     nazev: "Návrh"
     popis: "Varianty řešení nové NK (skici, popisy variant, rozhodnutí)"
-    status: pending
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "02_design/varianta_01_integralni_ram.md"
+      - "02_design/decomposition_so.md"
+      - "02_design/concrete_classes.yaml"
+      - "02_design/formwork_choice.md"
+      - "02_design/provizorium_specs.md"
+      - "02_design/element_breakdown.yaml"
   - id: "03_calculation"
     nazev: "Výpočet"
-    popis: "Excel/CSV výstupy kalkulátoru, harmonogram, soupis prací"
-    status: pending
+    popis: "Excel/CSV výstupy kalkulátoru, harmonogram"
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "03_calculation/run-calc.ts"
+      - "03_calculation/make-summary.ts"
+      - "03_calculation/outputs/*.json (11 elementů)"
+      - "03_calculation/cost_summary.xlsx"
+      - "03_calculation/gantt_chart.svg"
+      - "03_calculation/README.md"
   - id: "04_documentation"
     nazev: "Dokumentace"
-    popis: "Generované TZ pro DUR/DSP, výkaz výměr"
-    status: pending
+    popis: "Generované TZ pro DUR/DSP, výkaz výměr KROS XC4"
+    status: deferred
+    poznamka: "Mimo scope tohoto sandboxu — pro skutečné podání nabídky."
+
+phase_b_design_decisions:
+  staticky_system: "Vetknutý integrální rám 1 pole"
+  rozpeti_m: 9.0
+  tloustka_desky_m: 0.40
+  sirka_mostu_m: 8.30
+  beton_mostovky: "C30/37 + air entrainment"
+  expozice: "XF2 (XC4 + XF2 souhrnně)"
+  kryti_mm: 40
+  technologie_vystavby: "Pevná skruž ze dna stavební jámy"
+  bednění_default: "DOKA Framax Xlife (vertikální) + Top 50 (horizontální) + Eurex 20 stojky"
+  pocet_so: 5  # SO 001 + SO 180 (provizorium) + SO 201 + SO 290 + ZS
+
+phase_c_calculation_results:
+  calculator_invoked: true
+  calculator_path: "Monolit-Planner/shared/src/calculators/planner-orchestrator.ts > planElement()"
+  elements_calculated: 11
+  elements_ok: 11
+  total_calculator_labor_kc: 222746
+  total_with_materials_calculator_kc: 1200000   # zaokrouhleno (calculator labor + concrete + rebar materiály per elements)
+  total_with_out_of_calc_kc: 6500000            # včetně SO 001 + SO 180 + SO 290 + svršek + ZS
+  vendor_margin_extrapolation_low_kc: 12000000  # +50% margin
+  vendor_margin_extrapolation_high_kc: 18000000 # +130% margin
+  budget_kc: 30000000
+  doba_realizace_dni: 319
+  doba_limit_dni: 900   # 30 měsíců
+  verdict: "vejde se s rezervou"
+  schedule_per_element_in_outputs: true
+  cost_summary_xlsx: "03_calculation/cost_summary.xlsx (4 sheets)"
+  gantt_svg: "03_calculation/gantt_chart.svg"
 
 golden_test_candidate:
   reason: "malý 1-polový silniční most, jasně vymezené ZD limity → ideální etalon kategorie 'malý silniční most'"

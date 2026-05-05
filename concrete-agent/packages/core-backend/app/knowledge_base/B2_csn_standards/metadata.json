@@ -1,9 +1,40 @@
 {
   "category": "B2_csn_standards",
-  "last_updated": "2025-10-09",
-  "version": "1.0",
-  "source": "Initial setup",
-  "description": "ČSN standards and regulations",
-  "files": [],
-  "notes": "Category initialized. Ready for data."
+  "last_updated": "2026-05-05",
+  "version": "1.1",
+  "source": "Manual + drag&drop ingest",
+  "description": "ČSN standards, Eurocode PDFs, and related ČSN-like binary references. Convention: PDF binaries live here; structured extracts (YAML/MD) live in B6_research_papers (university material) or B7_regulations (norms). See docs/KNOWLEDGE_PLACEMENT_GUIDE.md.",
+  "files": [
+    {
+      "path": "csn_en_206.json",
+      "type": "extracted_json",
+      "title": "ČSN EN 206+A2 — beton, klíčové parametry"
+    },
+    {
+      "path": "VL_4_2021_Mosty_markdown.md",
+      "type": "extracted_md",
+      "title": "VL 4 (2021) — Mosty, vzorové listy"
+    },
+    {
+      "path": "tkp/",
+      "type": "subfolder",
+      "title": "Pre-extracted JSON for selected TKP chapters (3, 17, 18, 22, 24)"
+    },
+    {
+      "path": "09_zatizitelnost, sanace.pdf",
+      "type": "pdf_binary",
+      "title": "UPa lecture slides — Zatížitelnost a sanace mostů (31 stran)",
+      "extracted_to": "../B6_research_papers/upa_zatizitelnost_sanace_mostu/",
+      "added": "2026-05-05"
+    },
+    {
+      "path": "SIST-EN-1992-2-2005.pdf",
+      "type": "pdf_binary",
+      "title": "EN 1992-2 — Eurocode 2 Part 2: Concrete bridges (SIST transposition, English text)",
+      "extracted_to": "../B7_regulations/en_1992_2_concrete_bridges/",
+      "extraction_status": "PARTIAL (Žihle-relevant sections only)",
+      "added": "2026-05-05"
+    }
+  ],
+  "notes": "PDF binaries kept in this bucket per legacy convention. New PDFs added 2026-05-05 with extracted YAML/MD placed in canonical buckets per docs/KNOWLEDGE_PLACEMENT_GUIDE.md."
 }
