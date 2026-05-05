@@ -1,7 +1,8 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-05 evening (Phase 0.10–0.20 complete + code review
-fixes, PR #1066 ready for **full review** in next session)
+Last updated: 2026-05-05 late evening (Phase 0.10–0.20 complete + code
+review fixes + handoff docs refresh, PR #1066 ready for **full review**
+in next session)
 
 ## Status
 
@@ -10,8 +11,8 @@ Pending: full review per-item (user request) → merge → delivery.
 
 - 3 021 items (+ 11 deprecated D05 with mnozstvi=0)
 - ~762 KB, **12 sheets** (incl. nový List 12 Filter_view)
-- Branch: `claude/phase-0-5-batch-and-parser` @ `3b502fef`
-- **PR #1066:** https://github.com/alpro1000/STAVAGENT/pull/1066
+- Branch: `claude/phase-0-5-batch-and-parser` @ `48f45fb`
+- **PR #1066:** https://github.com/alpro1000/STAVAGENT/pull/1066 (21 commits)
 
 ## ⭐ NEXT SESSION FOCUS — full Excel review (user request)
 
@@ -593,7 +594,7 @@ Acceptance criteria pro L1 extract:
 - **NE % alokace** — všechny m² z reálných per-room hodnot Tabulky 0020
   sloupec `plocha_m2`. Per task hard requirement #2.
 
-### Commits této session (20)
+### Commits této session (21)
 
 | # | Commit | Phase | Δ Kč |
 |--:|--------|-------|-----:|
@@ -616,7 +617,8 @@ Acceptance criteria pro L1 extract:
 | 17 | `f00d6aa4` | 0.20 v1 Filter view 6 stacked tables | — |
 | 18 | `dff0c29f` | 0.20 v2 Excel Table VykazFilter | — |
 | 19 | `3b502fef` | code-review fixes (Qodo + Amazon Q) | — |
-| 20 | (this) | docs update — full review plan | — |
+| 20 | `48f45fb` | docs(session) — full review plan + 4-osa strategy | — |
+| 21 | (this) | docs(session) — refresh post-48f45fb (commit count + branch SHA) | — |
 
 **Total session recovery: +599k Kč** (PROBE 4 + Phase 0.15-0.18 fix pack)
 
