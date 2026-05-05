@@ -6850,6 +6850,19 @@
         "FF01_over_billing_removed": "-167 000 Kč",
         "net_correction": "+1 000 Kč (close to neutral, but each category was wrong)"
       }
+    },
+    {
+      "phase": "0.19",
+      "type": "PROBE_FINDING + GENERATOR_FIX",
+      "label": "PROBE 6 — D05 wrong template + out of scope",
+      "description": "User cross-check identifikoval že D05 v pipeline má 11 items popisující klasické dveře (rám/křídlo/obložky/klika/zámek) — ale per Tabulka 0041 přehled kódů D05 = 'Roleta z Rampy' = rolovací lamelová vrata Hoermann 5700×2100mm. Plus instance v Tabulce 0041 (cislo 301) je z=S.C.02 (garáž C), out of scope pro objekt D. Phase 6 generator nedetekoval tento special-type (non-door).",
+      "items_deprecated": 11,
+      "value_removed_kc": 0.0,
+      "additional_concerns_for_user_review": {
+        "D10_fasadni_vstupni": "11 items v pipeline, 0 D-side instance v Tabulce 0041 (jen A.1.S.02 + B.1.S.02). Může patřit Tabulce 0043 curtain walls — user must clarify.",
+        "D11_fasadni_unikove": "19 items v pipeline, 0 D-side instance (3× A+B). Same uncertainty as D10.",
+        "D42_revizni": "11 items v pipeline, 1 D-side instance OK — keep."
+      }
     }
   ],
   "skladby": {
