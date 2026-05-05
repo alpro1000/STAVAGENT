@@ -1,0 +1,87 @@
+{
+  "scan_date": "2026-05-05",
+  "source_xlsx": [
+    "185-01_DPS_D_SO01_100_0020_R01_TABULKA MISTNOSTI.xlsx",
+    "185-01_DPS_D_SO01_100_0030_R01_TABULKA SKLADEB A POVRCHU_R01.xlsx"
+  ],
+  "summary": {
+    "D1_undefined_F_codes_count": 0,
+    "D2_FF_typos_count": 5,
+    "D3_sequence_gaps_count": 0,
+    "D4_xlsx_only_rooms_count": 2,
+    "D5_dxf_only_rooms_count": 0,
+    "D6_printed_legend_anomaly": "D.1.3.01 misfiled in PDF (XLSX OK)"
+  },
+  "D1_undefined_F_codes": {
+    "description": "F-codes used in Tabulka místností XLSX but not defined in Tabulka skladeb master XLSX",
+    "undefined": []
+  },
+  "D2_FF_column_typos": {
+    "description": "Tabulka místností FF column contains bare F## codes (missing FF prefix); high-confidence typos.",
+    "typos": [
+      {
+        "room": "D.1.4.03",
+        "nazev": "WC",
+        "FF_value_in_xlsx": "F20",
+        "recommended": "FF20"
+      },
+      {
+        "room": "D.2.1.03",
+        "nazev": "WC",
+        "FF_value_in_xlsx": "F30",
+        "recommended": "FF30"
+      },
+      {
+        "room": "D.2.4.03",
+        "nazev": "WC",
+        "FF_value_in_xlsx": "F30",
+        "recommended": "FF30"
+      },
+      {
+        "room": "D.3.1.03",
+        "nazev": "WC",
+        "FF_value_in_xlsx": "F30",
+        "recommended": "FF30"
+      },
+      {
+        "room": "D.3.3.03",
+        "nazev": "WC",
+        "FF_value_in_xlsx": "F30",
+        "recommended": "FF30"
+      }
+    ]
+  },
+  "D3_master_sequence_gaps": {
+    "description": "F-code numbers missing from master Tabulka 0030 sequential numbering. May or may not be intentional reservations.",
+    "gaps": []
+  },
+  "D4_xlsx_only_rooms": {
+    "description": "D-rooms in Tabulka místností XLSX without matching room in DXF geometric dataset (DXF parsing gap or XLSX-only ghost rooms).",
+    "rooms": [
+      "S.D.16",
+      "S.D.42"
+    ]
+  },
+  "D5_dxf_only_rooms": {
+    "description": "DXF rooms without matching XLSX entry (DXF over-detection or undocumented spaces).",
+    "rooms": []
+  },
+  "D6_printed_legend_anomaly": {
+    "description": "Printed Tabulka místností legend (PDF výkresu) misfiles D.1.3.01 under D.1.2 byt section. Source XLSX has it in correct D.1.3 byt — pipeline is not affected, but printed deliverable to client should be regenerated.",
+    "evidence": {
+      "xlsx_section": "D.1.3 byt (D.1.3.01 CHODBA 6.35 m², FF20/F02/F05/CF20/F17)",
+      "printed_subtotal_D12_pdf": "55.9 m² (= 49.59 actual D.1.2 + 6.35 misfiled D.1.3.01)",
+      "printed_subtotal_D13_pdf": "43.2 m² (= 43.24 actual D.1.3 minus D.1.3.01)",
+      "correct_subtotal_D12": "49.59 m²",
+      "correct_subtotal_D13": "49.59 m² (parity with D.1.2 byt)"
+    }
+  },
+  "abmv_email_required": [
+    "F-CODE NUMBERING INCONSISTENCY (XLSX vs PDF): XLSX `povrchy` sheet má 23 sequential rows (F00–F22), PDF Tabulka 0030 ma explicit codes F00–F23 with F20 SKIPPED. From F20+ XLSX a PDF se neshodují (XLSX F20 = obchodní podlaha, PDF F21 = obchodní podlaha). Která verze je kanonická?",
+    "F20 — used in 16 room references. Per XLSX seq = 'Povrch podlahy - obchodní jednotky' (podlahový kód!). Used in F povrch stěn + F povrch podhledu of 8 residential POKOJ rooms (D.3.1.02/06/07, D.3.2.03/04, D.3.3.02/06/07) — semantic mismatch: podlaha kód aplikován na stěny/podhled. Recommended: F17 (SDK + otěruvzdorná výmalba). Confirm.",
+    "F30 — used in 4 WC FF column references (D.2.1.03, D.2.4.03, D.3.1.03, D.3.3.03). Bare 'F30' missing 'FF' prefix — typo for FF30 (běžná podlaha dlažba 130 mm). Confirm.",
+    "F20 in FF column of D.1.4.03 WC — typo for FF20 (podlaha nad suterénem dlažba 130 mm). Confirm.",
+    "Printed legend Tabulka místností 1.NP — D.1.3.01 misfiled under D.1.2 byt section. Subtotaly 55.9 / 43.2 m² mají být 49.59 / 49.59 m². Regenerovat printout pro VELTON delivery.",
+    "S.D.16 SKLEPNÍ KÓJE - C (7.62 m²) and S.D.42 SKLEPNÍ KÓJE - D (2.99 m²) defined in Tabulka místností XLSX but missing from DXF geometric dataset — Phase 0.x DXF parser may have skipped them (small kóje? code position outside detected polygons?)."
+  ]
+}

@@ -458,6 +458,65 @@ walls v DXF jsou anonymous. Vyžaduje DXF block-name analysis nebo
 - `Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx` — regenerated 11 sheets
 - `Vykaz_vymer_pre_xcheck.xlsx` — backup před xcheck regen
 
+---
+
+## Phase 0.10 — Documentation inconsistency audit (architectovy chyby)
+
+### Status
+
+✅ Comprehensive audit master Tabulky 0030 + Tabulky místností 0020 vůči
+DXF dataset zachytil 6 inkonzistencí v projektové dokumentaci. Žádná
+nemá výpočetní dopad na current pipeline (XLSX-based), ale **6 items
+musí být potvrzeno s ABMV před VELTON delivery**.
+
+### Audit findings (D1–D6)
+
+| # | Issue | Detail | Impact |
+|---|-------|--------|--------|
+| **D1** | F-code numbering XLSX↔PDF rozpor | XLSX `povrchy` sheet má 23 sequential rows (F00–F22). PDF Tabulka 0030 má explicit codes F00–F23 s **F20 přeskočeno**. Od F20+ se XLSX a PDF NESHODUJÍ (XLSX F20 = obchodní podlaha, PDF F21 = obchodní podlaha). | Která verze je kanonická? |
+| **D2** | 5× FF column typo (chybí FF prefix) | D.1.4.03 WC: FF="F20" → mělo být FF20. D.2.1.03/D.2.4.03/D.3.1.03/D.3.3.03 WC: FF="F30" → mělo být FF30. | XLSX neopravuje, ale Excel List 4 (Mistnosti) zobrazí raw hodnoty → auditor uvidí broken kódy. |
+| **D3** | Master 0030 sequence gaps | Žádné gaps v XLSX (F00–F22 sequential). Ale PDF má F20 skipped. | Důsledek D1. |
+| **D4** | 2× XLSX-only rooms missing v DXF | S.D.16 SKLEPNÍ KÓJE - C (7.62 m²), S.D.42 SKLEPNÍ KÓJE - D (2.99 m²). Phase 0.x DXF parser je nezachytil. | Tyto kóje chybí v geometric dataset → 0 items v Excel pro ně → potenciální under-billing ~10 m² podlaha + obvod. |
+| **D5** | DXF-only rooms (none) | Žádný room v DXF mimo Tabulku místností. | Clean. |
+| **D6** | Printed legend D.1.3.01 misfiling | PDF výkres Tabulka místností 1.NP řadí D.1.3.01 CHODBA pod sekci D.1.2 byt (subtotaly 55.9 / 43.2 m² místo správných 49.59 / 49.59 m²). XLSX má D.1.3.01 správně v D.1.3 byt → pipeline OK, ale printed deliverable broken. | Regenerovat printout pro VELTON. |
+
+### F20 interpretation (semantic mismatch)
+
+Pro 8 residential POKOJ + OBÝVACÍ POKOJ rooms v 3.NP (D.3.1.02, .06, .07,
+D.3.2.03, .04, D.3.3.02, .06, .07):
+
+```
+Tabulka místností XLSX zápis:
+  F povrch stěn = "F05, F20"
+  F povrch podhledu = "F20"
+```
+
+- F05 = sádrová omítka 10mm (correct pro pokojové stěny)
+- **F20** ⚠️ — per XLSX seq = "Povrch podlahy - obchodní jednotky" (PODLAHOVÝ
+  kód aplikovaný na stěny/podhled je semantically wrong)
+- Per PDF = F20 undefined (skipped)
+- **Recommended interpretation**: F17 (SDK + otěruvzdorná výmalba) —
+  3.NP má sedlovou střechu 30°-67°, část podhledu jde do šikminy
+  potažená SDK; architekt pravděpodobně chtěl označit SDK
+  treatment ale použil shorthand F20 místo F17.
+
+### ABMV e-mail items (6 confirmation requests)
+
+Plné details v `documentation_inconsistencies.json` → `abmv_email_required[]`.
+Souhrn:
+1. F-code numbering canonical: XLSX or PDF?
+2. F20 v 8 residential POKOJ stěn/podhled = F17?
+3. F30 v 4 WC FF column = FF30?
+4. F20 v D.1.4.03 WC FF column = FF20?
+5. Regenerate Tabulka místností 1.NP printout (D.1.3.01 misfile)
+6. S.D.16, S.D.42 SKLEPNÍ KÓJE missing v DXF dataset — Phase 0.x parser gap
+
+### Files
+
+- New: `concrete-agent/packages/core-backend/scripts/phase_0_10_documentation_audit.py`
+- New: `test-data/libuse/outputs/documentation_inconsistencies.json`
+- Backlog B-L1 + B-L2 (původně v Phase 6.5 v2 sekci) → **resolved in this audit**.
+
 ### Backlog — Phase L1 extract (post-submission)
 
 Detected sparse WF coverage v `geometric_dataset.json`: jen 1 obvodová +
