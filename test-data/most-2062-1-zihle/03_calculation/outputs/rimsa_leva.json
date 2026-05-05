@@ -1,0 +1,293 @@
+{
+  "input": {
+    "element_type": "rimsa",
+    "volume_m3": 4.32,
+    "formwork_area_m2": 19.2,
+    "height_m": 0.4,
+    "concrete_class": "C30/37",
+    "exposure_class": "XF2",
+    "cement_type": "CEM_II",
+    "rebar_mass_kg": 432,
+    "preferred_manufacturer": "DOKA",
+    "season": "normal"
+  },
+  "output": {
+    "element": {
+      "type": "rimsa",
+      "label_cs": "Římsa",
+      "classification_confidence": 1,
+      "profile": {
+        "element_type": "rimsa",
+        "confidence": 1,
+        "label_cs": "Římsa",
+        "rebar_category": "staircases",
+        "rebar_default_diameter_mm": 10,
+        "recommended_formwork": [
+          "Římsové bednění T",
+          "Římsový vozík TU",
+          "Římsový vozík T"
+        ],
+        "difficulty_factor": 1.15,
+        "needs_supports": false,
+        "needs_platforms": true,
+        "needs_crane": true,
+        "rebar_ratio_kg_m3": 120,
+        "rebar_ratio_range": [
+          100,
+          180
+        ],
+        "rebar_norm_h_per_t": 50,
+        "strip_strength_pct": 70,
+        "orientation": "horizontal",
+        "max_pour_rate_m3_h": 20,
+        "pump_typical": true
+      }
+    },
+    "pour_decision": {
+      "pour_mode": "sectional",
+      "sub_mode": "independent",
+      "num_sections": 1,
+      "section_volume_m3": 4.32,
+      "max_sections_per_tact": 1,
+      "num_tacts": 1,
+      "tact_volume_m3": 4.32,
+      "t_window_hours": 5,
+      "pumps_required": 1,
+      "retarder_required": false,
+      "backup_pump": false,
+      "pour_hours_per_tact": 1.14,
+      "total_pour_hours": 1.14,
+      "scheduling_mode": "linear",
+      "cure_between_neighbors_h": 0,
+      "warnings": [
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky."
+      ],
+      "decision_log": [
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+        "Working joints: 1 záběrů × 4.3 m³ (max 120 m³/okno)"
+      ]
+    },
+    "formwork": {
+      "system": {
+        "name": "Římsové bednění T",
+        "manufacturer": "DOKA",
+        "heights": [
+          "libovolná"
+        ],
+        "assembly_h_m2": 0.38,
+        "disassembly_h_m2": 0.1,
+        "disassembly_ratio": 0.25,
+        "rental_czk_m2_month": 672,
+        "unit": "bm",
+        "description": "Konzolové bednění říms mostu (0,30–0,45 h/bm, 672 Kč/bm/měs)",
+        "needs_crane": true,
+        "formwork_category": "special",
+        "pour_role": "formwork",
+        "applicable_element_types": [
+          "rimsa"
+        ]
+      },
+      "assembly_days": 0.17,
+      "disassembly_days": 0.05,
+      "curing_days": 6,
+      "three_phase": {
+        "initial_cost_labor": 4719.07,
+        "middle_cost_labor": 4218.16,
+        "final_cost_labor": 790.91,
+        "total_cost_labor": 4719.07,
+        "initial_days": 0.25,
+        "middle_days": 0.22,
+        "final_days": 0.04,
+        "middle_tact_count": 0
+      },
+      "strategies": [
+        {
+          "id": "A",
+          "label": "Posloupně (1 sada)",
+          "sets": 1,
+          "total_days": 7.7,
+          "rental_days": 9.7
+        },
+        {
+          "id": "B",
+          "label": "S překrytím (2 sady)",
+          "sets": 2,
+          "total_days": 7.68,
+          "rental_days": 9.68
+        },
+        {
+          "id": "C",
+          "label": "Paralelně (plný)",
+          "sets": 1,
+          "total_days": 7.68,
+          "rental_days": 9.68
+        }
+      ],
+      "shape_correction": 1
+    },
+    "rebar": {
+      "mass_kg": 432,
+      "mass_t": 0.432,
+      "mass_source": "user",
+      "norm_h_per_t": 25.8,
+      "norm_source": "matrix",
+      "norm_category": "staircases",
+      "norm_diameter_mm": 10,
+      "labor_hours": 11.15,
+      "duration_days": 0.46,
+      "cost_labor": 4435.95,
+      "optimistic_days": 0.39,
+      "most_likely_days": 0.46,
+      "pessimistic_days": 0.6,
+      "crew_size": 3,
+      "recommended_crew": 2,
+      "element_type": "rimsa",
+      "confidence": 0.95,
+      "assumptions_log": "element=rimsa, vol=4.32m³, mass=0.432t (user), norm=25.8h/t (staircases D10), crew=3, shift=10h"
+    },
+    "pour": {
+      "effective_rate_m3_h": 20,
+      "rate_bottleneck": "element",
+      "pumping_hours": 0.22,
+      "total_pour_hours": 1.22,
+      "pour_days": 0.12,
+      "pump_needed": true,
+      "pumps_required": 1,
+      "backup_pump_recommended": false,
+      "pumps_for_actual_window": {
+        "count": 1,
+        "total_rate_m3_h": 20,
+        "pour_duration_h": 1.22,
+        "scenario": "Skutečná doba betonáže (1 čerpadlo)"
+      },
+      "pour_window_h": 5,
+      "fits_in_window": true,
+      "pour_sessions": 1,
+      "warnings": [],
+      "assumptions_log": "element=rimsa, vol=4.32m³, Q_eff=20m³/h (element), window=5h, season=normal, retarder=no"
+    },
+    "schedule": {
+      "total_days": 3.6,
+      "sequential_days": 3.7,
+      "savings_days": 0.1,
+      "savings_pct": 3,
+      "tact_details": [
+        {
+          "tact": 1,
+          "set": 1,
+          "assembly": [
+            0,
+            0.2
+          ],
+          "rebar": [
+            0.1,
+            0.5
+          ],
+          "concrete": [
+            0.5,
+            1.5
+          ],
+          "curing": [
+            1.5,
+            3.5
+          ],
+          "stripping": [
+            3.5,
+            3.6
+          ]
+        }
+      ],
+      "critical_path": [
+        "T0_ASM",
+        "T0_REB",
+        "T0_CON",
+        "T0_CUR",
+        "T0_STR"
+      ],
+      "gantt": "Den:  0   \nS1:   ░══▓\nFW:   █··▓\nRB:   ▒···\n\n█=montáž ▒=výztuž ░=beton ═=zrání ▓=demontáž ·=volno",
+      "utilization": {
+        "formwork_crews": 0.1,
+        "rebar_crews": 0.1,
+        "sets": [
+          0.9
+        ]
+      },
+      "bottleneck": "Sady bednění na 90%, zrání 2d > práce 0.63d — další sada by snížila prostoje",
+      "effective_curing_days": 2
+    },
+    "resources": {
+      "total_formwork_workers": 6,
+      "total_rebar_workers": 3,
+      "num_formwork_crews": 1,
+      "num_rebar_crews": 1,
+      "crew_size_formwork": 6,
+      "crew_size_rebar": 3,
+      "shift_h": 10,
+      "wage_formwork_czk_h": 398,
+      "wage_rebar_czk_h": 398,
+      "wage_pour_czk_h": 398,
+      "pour_shifts": 1,
+      "pour_simultaneous_headcount": 3,
+      "pour_rostered_headcount": 3,
+      "pour_has_night_premium": false,
+      "pour_crew_breakdown": {
+        "ukladani": 2,
+        "vibrace": 1,
+        "finiseri": 0,
+        "rizeni": 0,
+        "total": 3,
+        "pumps_used": 1
+      }
+    },
+    "costs": {
+      "formwork_labor_czk": 4719.07,
+      "rebar_labor_czk": 4435.95,
+      "pour_labor_czk": 1456.68,
+      "pour_night_premium_czk": 0,
+      "total_labor_czk": 10611.7,
+      "formwork_rental_czk": 4816.9,
+      "props_labor_czk": 0,
+      "props_rental_czk": 0,
+      "is_mss_path": false,
+      "mss_mobilization_czk": 0,
+      "mss_demobilization_czk": 0,
+      "mss_rental_czk": 0
+    },
+    "norms_sources": {
+      "formwork_assembly": "Římsové bednění T: 0.437 h/m² (základ 0.38 h/m² × faktor obtížnosti 1.15). Zdroj: FORMWORK_SYSTEMS (element-classifier.ts, data z katalogů Doka/PERI/NOE)",
+      "formwork_disassembly": "Římsové bednění T: 0.115 h/m² (základ 0.1 h/m² × 1.15). Zdroj: katalog výrobce",
+      "rebar": "25.8 h/t (typ: user). Zdroj: REBAR_NORMS (element-classifier.ts, ČSN 73 0210, oborové průměry)",
+      "curing": "ČSN EN 13670 Tab. NA.2: 6 dní při 15°C, C30/37, CEM_II"
+    },
+    "deadline_check": {
+      "calculated_days": 3.6,
+      "overrun_days": 0,
+      "fits": true,
+      "suggestions": []
+    },
+    "warnings": [
+      "Římsové bednění T vyžaduje jeřáb (panel 150+ kg) — zajistěte jeřáb na stavbě pro celou dobu montáže.",
+      "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+      "Římsa: záběr 20 m, celkem 1 záběrů, objem/záběr 4.32 m³",
+      "Římsa se betonuje PO dokončení mostovky a PO vnesení předpětí (pokud NK předpjatá).",
+      "⚠️ Římsa: délka mostu nezadána — použito konzolové bednění T. Zadejte délku mostu (>150 m → římsový vozík TU/T) pro správný výběr systému.",
+      "⚠️ Třída prostředí XF2 je neobvyklá pro Římsa. Vyberte jednu z: XF4, XD3. Ověřte s projektem.",
+      "Sady bednění na 90%, zrání 2d > práce 0.63d — další sada by snížila prostoje"
+    ],
+    "decision_log": [
+      "Element: rimsa (explicit)",
+      "Formwork: Římsové bednění T (0.437 h/m², df=1.15)",
+      "Pour: sectional/independent, 1 tacts × 4.32m³",
+      "Formwork area: 19.2 m² per tact",
+      "Maturity strip: 6.0d (70% f_ck, 15°C, CEM_II)",
+      "Rebar: 432kg/tact, 0.46d/tact (user, 1 čet×3 prac.=3 železářů, RCPSP parallel=1)",
+      "Pour: 20m³/h, 1.22h/tact (bottleneck: element)",
+      "Pour crew: 3 lidí (2+1+0+0, 1 čerpadel) for 1.2h pour",
+      "Schedule: 3.6d (sequential 3.7d, savings 3%)",
+      "T-window: 5h (season=normal, retarder=false)",
+      "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+      "Working joints: 1 záběrů × 4.3 m³ (max 120 m³/okno)"
+    ]
+  }
+}

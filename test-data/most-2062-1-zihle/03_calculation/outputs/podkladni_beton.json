@@ -1,0 +1,287 @@
+{
+  "input": {
+    "element_type": "podkladni_beton",
+    "volume_m3": 5,
+    "formwork_area_m2": 0.1,
+    "height_m": 0.1,
+    "concrete_class": "C12/15",
+    "exposure_class": "X0",
+    "cement_type": "CEM_II",
+    "rebar_mass_kg": 100
+  },
+  "output": {
+    "element": {
+      "type": "podkladni_beton",
+      "label_cs": "Podkladní beton",
+      "classification_confidence": 1,
+      "profile": {
+        "element_type": "podkladni_beton",
+        "confidence": 1,
+        "label_cs": "Podkladní beton",
+        "rebar_category": "slabs_foundations",
+        "rebar_default_diameter_mm": 10,
+        "recommended_formwork": [
+          "Tradiční tesařské"
+        ],
+        "difficulty_factor": 0.5,
+        "needs_supports": false,
+        "needs_platforms": false,
+        "needs_crane": false,
+        "needs_formwork": false,
+        "rebar_ratio_kg_m3": 0,
+        "rebar_ratio_range": [
+          0,
+          0
+        ],
+        "rebar_norm_h_per_t": 0,
+        "strip_strength_pct": 50,
+        "orientation": "horizontal",
+        "max_pour_rate_m3_h": 50,
+        "pump_typical": true
+      }
+    },
+    "pour_decision": {
+      "pour_mode": "sectional",
+      "sub_mode": "independent",
+      "num_sections": 1,
+      "section_volume_m3": 5,
+      "max_sections_per_tact": 1,
+      "num_tacts": 1,
+      "tact_volume_m3": 5,
+      "t_window_hours": 5,
+      "pumps_required": 1,
+      "retarder_required": false,
+      "backup_pump": false,
+      "pour_hours_per_tact": 1.17,
+      "total_pour_hours": 1.17,
+      "scheduling_mode": "linear",
+      "cure_between_neighbors_h": 0,
+      "warnings": [
+        "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky."
+      ],
+      "decision_log": [
+        "T-window: 5h (season=normal, retarder=false)",
+        "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+        "Working joints: 1 záběrů × 5 m³ (max 120 m³/okno)"
+      ]
+    },
+    "formwork": {
+      "system": {
+        "name": "Tradiční tesařské",
+        "manufacturer": "Místní",
+        "heights": [
+          "libovolná"
+        ],
+        "assembly_h_m2": 1.3,
+        "disassembly_h_m2": 0.65,
+        "disassembly_ratio": 0.5,
+        "rental_czk_m2_month": 0,
+        "unit": "m2",
+        "description": "Jednorázové tesařské bednění (bez pronájmu, materiál)",
+        "weight_kg_m2": 35,
+        "needs_crane": false,
+        "formwork_category": "universal",
+        "pour_role": "formwork"
+      },
+      "assembly_days": 0,
+      "disassembly_days": 0,
+      "curing_days": 4,
+      "three_phase": {
+        "initial_cost_labor": 42.69,
+        "middle_cost_labor": 38.81,
+        "final_cost_labor": 11.64,
+        "total_cost_labor": 42.69,
+        "initial_days": 0,
+        "middle_days": 0,
+        "final_days": 0,
+        "middle_tact_count": 0
+      },
+      "strategies": [
+        {
+          "id": "A",
+          "label": "Posloupně (1 sada)",
+          "sets": 1,
+          "total_days": 5.1,
+          "rental_days": 7.1
+        },
+        {
+          "id": "B",
+          "label": "S překrytím (2 sady)",
+          "sets": 2,
+          "total_days": 5.0600000000000005,
+          "rental_days": 7.0600000000000005
+        },
+        {
+          "id": "C",
+          "label": "Paralelně (plný)",
+          "sets": 1,
+          "total_days": 5.0600000000000005,
+          "rental_days": 7.0600000000000005
+        }
+      ],
+      "shape_correction": 1
+    },
+    "rebar": {
+      "mass_kg": 100,
+      "mass_t": 0.1,
+      "mass_source": "user",
+      "norm_h_per_t": 20.6,
+      "norm_source": "matrix",
+      "norm_category": "slabs_foundations",
+      "norm_diameter_mm": 10,
+      "labor_hours": 2.06,
+      "duration_days": 0.06,
+      "cost_labor": 819.88,
+      "optimistic_days": 0.05,
+      "most_likely_days": 0.06,
+      "pessimistic_days": 0.08,
+      "crew_size": 4,
+      "recommended_crew": 2,
+      "element_type": "podkladni_beton",
+      "confidence": 0.95,
+      "assumptions_log": "element=podkladni_beton, vol=5m³, mass=0.100t (user), norm=20.6h/t (slabs_foundations D10), crew=4, shift=10h"
+    },
+    "pour": {
+      "effective_rate_m3_h": 40,
+      "rate_bottleneck": "mixer",
+      "pumping_hours": 0.13,
+      "total_pour_hours": 1.13,
+      "pour_days": 0.11,
+      "pump_needed": true,
+      "pumps_required": 1,
+      "backup_pump_recommended": false,
+      "pumps_for_actual_window": {
+        "count": 1,
+        "total_rate_m3_h": 40,
+        "pour_duration_h": 1.13,
+        "scenario": "Skutečná doba betonáže (1 čerpadlo)"
+      },
+      "pour_window_h": 5,
+      "fits_in_window": true,
+      "pour_sessions": 1,
+      "warnings": [
+        "[Záběr 5 m³] Omezení rychlosti podáváním mixů (40 m³/h)."
+      ],
+      "assumptions_log": "element=podkladni_beton, vol=5m³, Q_eff=40m³/h (mixer), window=5h, season=normal, retarder=no"
+    },
+    "schedule": {
+      "total_days": 5.1,
+      "sequential_days": 5.1,
+      "savings_days": 0,
+      "savings_pct": 0,
+      "tact_details": [
+        {
+          "tact": 1,
+          "set": 1,
+          "assembly": [
+            0,
+            0
+          ],
+          "rebar": [
+            0,
+            0.1
+          ],
+          "concrete": [
+            0.1,
+            1.1
+          ],
+          "curing": [
+            1.1,
+            5.1
+          ],
+          "stripping": [
+            5.1,
+            5.1
+          ]
+        }
+      ],
+      "critical_path": [
+        "T0_ASM",
+        "T0_REB",
+        "T0_CON",
+        "T0_CUR",
+        "T0_STR"
+      ],
+      "gantt": "Den:  0    5\nS1:   ░════▓\nFW:   ·····▓\nRB:   ▒·····\n\n█=montáž ▒=výztuž ░=beton ═=zrání ▓=demontáž ·=volno",
+      "utilization": {
+        "formwork_crews": 0,
+        "rebar_crews": 0,
+        "sets": [
+          1
+        ]
+      },
+      "bottleneck": "Sady bednění na 100%, zrání 4d > práce 0.06d — další sada by snížila prostoje",
+      "effective_curing_days": 4
+    },
+    "resources": {
+      "total_formwork_workers": 4,
+      "total_rebar_workers": 4,
+      "num_formwork_crews": 1,
+      "num_rebar_crews": 1,
+      "crew_size_formwork": 4,
+      "crew_size_rebar": 4,
+      "shift_h": 10,
+      "wage_formwork_czk_h": 398,
+      "wage_rebar_czk_h": 398,
+      "wage_pour_czk_h": 398,
+      "pour_shifts": 1,
+      "pour_simultaneous_headcount": 2,
+      "pour_rostered_headcount": 2,
+      "pour_has_night_premium": false,
+      "pour_crew_breakdown": {
+        "ukladani": 2,
+        "vibrace": 0,
+        "finiseri": 0,
+        "rizeni": 0,
+        "total": 2,
+        "pumps_used": 1
+      }
+    },
+    "costs": {
+      "formwork_labor_czk": 42.69,
+      "rebar_labor_czk": 819.88,
+      "pour_labor_czk": 899.48,
+      "pour_night_premium_czk": 0,
+      "total_labor_czk": 1762.05,
+      "formwork_rental_czk": 0,
+      "props_labor_czk": 0,
+      "props_rental_czk": 0,
+      "is_mss_path": false,
+      "mss_mobilization_czk": 0,
+      "mss_demobilization_czk": 0,
+      "mss_rental_czk": 0
+    },
+    "norms_sources": {
+      "formwork_assembly": "Tradiční tesařské: 0.65 h/m² (základ 1.3 h/m² × faktor obtížnosti 0.5). Zdroj: FORMWORK_SYSTEMS (element-classifier.ts, data z katalogů Doka/PERI/NOE)",
+      "formwork_disassembly": "Tradiční tesařské: 0.325 h/m² (základ 0.65 h/m² × 0.5). Zdroj: katalog výrobce",
+      "rebar": "20.6 h/t (typ: user). Zdroj: REBAR_NORMS (element-classifier.ts, ČSN 73 0210, oborové průměry)",
+      "curing": "ČSN EN 13670 Tab. NA.2: 4 dní při 15°C, C12/15, CEM_II"
+    },
+    "deadline_check": {
+      "calculated_days": 5.1,
+      "overrun_days": 0,
+      "fits": true,
+      "suggestions": []
+    },
+    "warnings": [
+      "Pracovní spáry nepotvrzeny — ověřte v RDS. Bez dilatačních spár: doporučena minimalizace pracovních spár. Definitivní členění záběrů dle RDS/statiky.",
+      "[Záběr 5 m³] Omezení rychlosti podáváním mixů (40 m³/h).",
+      "Sady bednění na 100%, zrání 4d > práce 0.06d — další sada by snížila prostoje"
+    ],
+    "decision_log": [
+      "Element: podkladni_beton (explicit)",
+      "Formwork: Tradiční tesařské (0.65 h/m², df=0.5)",
+      "Pour: sectional/independent, 1 tacts × 5m³",
+      "Formwork area: 0.1 m² per tact",
+      "Season not specified — defaulting to \"podzim_jaro\" (21d skruž hold). Pass season: 'hot'|'normal'|'cold' for accurate results.",
+      "Maturity strip: 4.0d (50% f_ck, 15°C, CEM_II)",
+      "Rebar: 100kg/tact, 0.06d/tact (user, 1 čet×4 prac.=4 železářů, RCPSP parallel=1)",
+      "Pour: 40m³/h, 1.13h/tact (bottleneck: mixer)",
+      "Pour crew: 2 lidí (2+0+0+0, 1 čerpadel) for 1.1h pour",
+      "Schedule: 5.1d (sequential 5.1d, savings 0%)",
+      "T-window: 5h (season=normal, retarder=false)",
+      "Dilatační spáry: NE, pracovní spáry: unknown (default) → sekční režim po pracovních spárách",
+      "Working joints: 1 záběrů × 5 m³ (max 120 m³/okno)"
+    ]
+  }
+}

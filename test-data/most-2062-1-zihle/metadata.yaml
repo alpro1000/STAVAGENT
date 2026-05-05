@@ -4,7 +4,7 @@
 # může konvertovat do golden testu pod test-data/tz/.
 
 schema_version: 1
-status: extraction_done          # raw → inputs_received → extraction_done → design → calculated → done
+status: calculated               # raw → inputs_received → extraction_done → design → calculated → done
 project_kind: sandbox            # sandbox | golden_test_candidate | tender
 created: 2026-05-05
 not_for_delivery: true
@@ -157,15 +157,62 @@ workflow_faze:
   - id: "02_design"
     nazev: "Návrh"
     popis: "Varianty řešení nové NK (skici, popisy variant, rozhodnutí)"
-    status: pending
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "02_design/varianta_01_integralni_ram.md"
+      - "02_design/decomposition_so.md"
+      - "02_design/concrete_classes.yaml"
+      - "02_design/formwork_choice.md"
+      - "02_design/provizorium_specs.md"
+      - "02_design/element_breakdown.yaml"
   - id: "03_calculation"
     nazev: "Výpočet"
-    popis: "Excel/CSV výstupy kalkulátoru, harmonogram, soupis prací"
-    status: pending
+    popis: "Excel/CSV výstupy kalkulátoru, harmonogram"
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "03_calculation/run-calc.ts"
+      - "03_calculation/make-summary.ts"
+      - "03_calculation/outputs/*.json (11 elementů)"
+      - "03_calculation/cost_summary.xlsx"
+      - "03_calculation/gantt_chart.svg"
+      - "03_calculation/README.md"
   - id: "04_documentation"
     nazev: "Dokumentace"
-    popis: "Generované TZ pro DUR/DSP, výkaz výměr"
-    status: pending
+    popis: "Generované TZ pro DUR/DSP, výkaz výměr KROS XC4"
+    status: deferred
+    poznamka: "Mimo scope tohoto sandboxu — pro skutečné podání nabídky."
+
+phase_b_design_decisions:
+  staticky_system: "Vetknutý integrální rám 1 pole"
+  rozpeti_m: 9.0
+  tloustka_desky_m: 0.40
+  sirka_mostu_m: 8.30
+  beton_mostovky: "C30/37 + air entrainment"
+  expozice: "XF2 (XC4 + XF2 souhrnně)"
+  kryti_mm: 40
+  technologie_vystavby: "Pevná skruž ze dna stavební jámy"
+  bednění_default: "DOKA Framax Xlife (vertikální) + Top 50 (horizontální) + Eurex 20 stojky"
+  pocet_so: 5  # SO 001 + SO 180 (provizorium) + SO 201 + SO 290 + ZS
+
+phase_c_calculation_results:
+  calculator_invoked: true
+  calculator_path: "Monolit-Planner/shared/src/calculators/planner-orchestrator.ts > planElement()"
+  elements_calculated: 11
+  elements_ok: 11
+  total_calculator_labor_kc: 222746
+  total_with_materials_calculator_kc: 1200000   # zaokrouhleno (calculator labor + concrete + rebar materiály per elements)
+  total_with_out_of_calc_kc: 6500000            # včetně SO 001 + SO 180 + SO 290 + svršek + ZS
+  vendor_margin_extrapolation_low_kc: 12000000  # +50% margin
+  vendor_margin_extrapolation_high_kc: 18000000 # +130% margin
+  budget_kc: 30000000
+  doba_realizace_dni: 319
+  doba_limit_dni: 900   # 30 měsíců
+  verdict: "vejde se s rezervou"
+  schedule_per_element_in_outputs: true
+  cost_summary_xlsx: "03_calculation/cost_summary.xlsx (4 sheets)"
+  gantt_svg: "03_calculation/gantt_chart.svg"
 
 golden_test_candidate:
   reason: "malý 1-polový silniční most, jasně vymezené ZD limity → ideální etalon kategorie 'malý silniční most'"

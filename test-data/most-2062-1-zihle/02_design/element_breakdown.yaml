@@ -1,0 +1,285 @@
+# element_breakdown.yaml — vstup pro Phase C kalkulátor (Monolit-Planner)
+# Žihle 2062-1 (integrální rámový most)
+#
+# Každý element = jedno volání planElement(input) → PlannerOutput.
+# Strukturální mapping per Monolit-Planner StructuralElementType union
+# (viz Monolit-Planner/shared/src/calculators/pour-decision.ts).
+#
+# Geometrie a objem ORIENTAČNÍ — pro skutečnou nabídku nutná geodézie + IGP.
+
+schema_version: 1
+created: 2026-05-05
+project: "Most 2062-1 Žihle (integrální rám)"
+context: "Sandbox Phase B → Phase C — finalní hodnoty zhotovitele"
+
+# ─────────────────────────────────────────────────────────────────────
+# Globální parametry (default per element pokud override není uveden)
+# ─────────────────────────────────────────────────────────────────────
+
+defaults:
+  preferred_manufacturer: "DOKA"
+  season: "normal"               # předpoklad realizace v hlavní stavební sezoně
+  crew_size: 4                   # default per Monolit-Planner DEFAULT_CREW
+  shift_h: 10                    # default per Monolit-Planner DEFAULT_SHIFT
+  hourly_wage: 250               # standard CZ stavebník
+
+# ─────────────────────────────────────────────────────────────────────
+# Per-element vstupy do kalkulátoru
+# ─────────────────────────────────────────────────────────────────────
+# Každý element níže:
+#   - id: stable identifier
+#   - element_type: STAVAGENT classifier value (z pour-decision.ts union)
+#   - input: PlannerInput-compatible object (geometrie, beton, etc.)
+#   - rationale: stručná justifikace dimenzí
+
+elements:
+
+  podkladni_beton:
+    element_type: "podkladni_beton"
+    input:
+      element_type: "podkladni_beton"
+      volume_m3: 5.0              # 2× základ × ~ 3 × 8.30 × 0.10 = 2.5 m³ × 2 = 5 m³
+      formwork_area_m2: 0.1        # placeholder — podkladní beton bez bednění (calculator vyžaduje > 0)
+      height_m: 0.1
+      concrete_class: "C12/15"
+      exposure_class: "X0"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 100  # placeholder — reálně nevyztužený, calculator vyžaduje rebar mass > 0 (rebar.ts:35); cost negligible (~0.5% celku)
+    rationale: "2× sklížek pod plošnými základy, 100 mm tlustý. Nevyztužený, bez bednění."
+
+  zaklady_oper_levy:
+    element_type: "zaklady_piliru"   # Calculator note: zaklady_oper exists in union but missing from lookup tables (incomplete Phase 3 Gate 2a refactor); zaklady_piliru is "paralelní" per code comment.
+    input:
+      element_type: "zaklady_piliru"
+      volume_m3: 15.0              # 3.0 × 8.30 × 0.60 = 14.94 m³
+      formwork_area_m2: 13.6       # perimeter (3+3+8.3+8.3) × 0.6 = 13.56 m²
+      height_m: 0.6
+      concrete_class: "C25/30"
+      exposure_class: "XC2"        # primary exposure, XF1 considered via cement
+      cement_type: "CEM_II"
+      rebar_mass_kg: 1500 # 100 kg/m³ standard pro plošný základ
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Plošný základ pod levou opěrou, 3.0 × 8.30 × 0.60 m. Krytí 50 mm."
+
+  zaklady_oper_pravy:
+    element_type: "zaklady_piliru"   # See zaklady_oper_levy — same workaround.
+    input:
+      element_type: "zaklady_piliru"
+      volume_m3: 15.0
+      formwork_area_m2: 13.6
+      height_m: 0.6
+      concrete_class: "C25/30"
+      exposure_class: "XC2"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 1500
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Plošný základ pod pravou opěrou, identický s levým."
+
+  driky_oper_levy:
+    element_type: "opery_ulozne_prahy"
+    input:
+      element_type: "opery_ulozne_prahy"
+      volume_m3: 8.3               # 0.50 × 8.30 × 2.0 = 8.30 m³
+      formwork_area_m2: 33.2       # 2× (8.30 × 2.0) = 33.2 m² (oba líce)
+      height_m: 2.0
+      concrete_class: "C30/37"
+      exposure_class: "XF2"        # zóna stříkající vody
+      cement_type: "CEM_II"
+      rebar_mass_kg: 1162 # 140 kg/m³ standard pro úložné prahy (per CLAUDE.md update v4.18)
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Vertikální stěna integrální opěry levé. Tloušťka 0.50 m, výška 2.0 m, šířka 8.30 m. Krytí 50 mm. Bednění Framax Xlife."
+
+  driky_oper_pravy:
+    element_type: "opery_ulozne_prahy"
+    input:
+      element_type: "opery_ulozne_prahy"
+      volume_m3: 8.3
+      formwork_area_m2: 33.2
+      height_m: 2.0
+      concrete_class: "C30/37"
+      exposure_class: "XF2"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 1162
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Vertikální stěna integrální opěry pravé, identická s levou."
+
+  mostovkova_deska:
+    element_type: "mostovkova_deska"
+    input:
+      element_type: "mostovkova_deska"
+      volume_m3: 39.84             # 8.30 × 12.0 × 0.40 = 39.84 m³
+      formwork_area_m2: 99.6       # spodní líc (8.30 × 12) + boky (2× 12 × 0.40 + 2× 8.30 × 0.40) = 99.6 + 16.24 = ~116; spodní = 99.6 dominantní
+      height_m: 3.0                # výška podpory pod deskou (terén po demolici → spodek desky)
+      deck_thickness_m: 0.40       # cross-section thickness
+      span_m: 9.0                  # rozpětí jednoho pole
+      num_spans: 1                 # 1 pole
+      nk_width_m: 8.30             # šířka NK
+      construction_technology: "fixed_scaffolding"  # pevná skruž
+      concrete_class: "C30/37"
+      exposure_class: "XF2"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 5577 # 140 kg/m³ pro mostovku (heavy load)
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Mostovka deska 8.30 × 12.0 × 0.40 m, integrální spojení s opěrami. Pevná skruž ze dna stavební jámy (světlá výška ~3 m). Krytí 40 mm."
+
+  zaverne_zidky:
+    element_type: "mostni_zavirne_zidky"
+    input:
+      element_type: "mostni_zavirne_zidky"
+      volume_m3: 4.0               # 2× (0.30 × 8.30 × 0.80) = 3.98 m³
+      formwork_area_m2: 26.6       # 2× (8.30 × 0.80) × 2 líce = ~26.56
+      height_m: 0.8
+      concrete_class: "C30/37"
+      exposure_class: "XF2"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 720  # 180 kg/m³
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Závěrné zídky 2× za opěrami, drží zem za opěrou + ukončují přechod desky. Tloušťka 0.30 m, výška 0.80 m."
+
+  rimsa_leva:
+    element_type: "rimsa"
+    input:
+      element_type: "rimsa"
+      volume_m3: 4.32              # 0.90 × 12.0 × 0.40 = 4.32 m³
+      formwork_area_m2: 19.2       # vnější + horní + spodní stranou per BM
+      height_m: 0.4
+      concrete_class: "C30/37"
+      exposure_class: "XF2"        # XF2+XD1 souhrnně, ale volíme XF2 (worst-case Annex E)
+      cement_type: "CEM_II"
+      rebar_mass_kg: 432  # 100 kg/m³ (lower for rims, standardní praxe)
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Levá římsa 0.90 m × 12.0 m × 0.40 m. Krytí 50 mm. Římsové bednění (T nebo vozík). Bez chrániček."
+
+  rimsa_prava:
+    element_type: "rimsa"
+    input:
+      element_type: "rimsa"
+      volume_m3: 4.32
+      formwork_area_m2: 19.2
+      height_m: 0.4
+      concrete_class: "C30/37"
+      exposure_class: "XF2"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 432
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Pravá římsa, identická s levou + 3× chránička DN75 mm vložená (per ZD §4.4.m). Chráničky se vkládají při betonáži, neovlivňuje cenu betonu, jen detail."
+
+  prechodova_deska_leva:
+    element_type: "prechodova_deska"
+    input:
+      element_type: "prechodova_deska"
+      volume_m3: 9.96              # 4.0 × 8.30 × 0.30 = 9.96 m³
+      formwork_area_m2: 33.2       # spodní líc 4.0 × 8.30 = 33.2 m²
+      height_m: 0.3
+      concrete_class: "C25/30"
+      exposure_class: "XC2"        # XC2+XF1 → primary XC2
+      cement_type: "CEM_II"
+      rebar_mass_kg: 996  # 100 kg/m³ standard
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Přechodová deska levá 4.0 × 8.30 × 0.30 m. Per ČSN 73 6244 (NORMA NEDOSTUPNÁ V REPO — engineering judgment). Krytí 35 mm."
+
+  prechodova_deska_prava:
+    element_type: "prechodova_deska"
+    input:
+      element_type: "prechodova_deska"
+      volume_m3: 9.96
+      formwork_area_m2: 33.2
+      height_m: 0.3
+      concrete_class: "C25/30"
+      exposure_class: "XC2"
+      cement_type: "CEM_II"
+      rebar_mass_kg: 996
+      preferred_manufacturer: "DOKA"
+      season: "normal"
+    rationale: "Přechodová deska pravá, identická s levou."
+
+# ─────────────────────────────────────────────────────────────────────
+# Souhrn objemu betonu (sanity)
+# ─────────────────────────────────────────────────────────────────────
+
+summary_volumes:
+  podkladni_beton_m3: 5.0
+  zaklady_oper_m3: 30.0           # 2× 15
+  driky_oper_m3: 16.6             # 2× 8.3
+  mostovkova_deska_m3: 39.84
+  zaverne_zidky_m3: 4.0
+  rimsy_m3: 8.64                  # 2× 4.32
+  prechodove_desky_m3: 19.92      # 2× 9.96
+  TOTAL_BETON_M3: 124.0
+
+summary_reinforcement_kg:
+  zaklady_oper: 3000              # 2× 1500
+  driky_oper: 2324                # 2× 1162
+  mostovkova_deska: 5577
+  zaverne_zidky: 720
+  rimsy: 864                      # 2× 432
+  prechodove_desky: 1992          # 2× 996
+  TOTAL_VYZTUZ_KG: 14477
+
+# ─────────────────────────────────────────────────────────────────────
+# OUT-OF-CALCULATOR items (pro Phase C agregát)
+# ─────────────────────────────────────────────────────────────────────
+# Tyto položky NENÍ v Monolit-Planner kalkulátoru — přidá se v cost_summary.xlsx
+# jako separate line items s vlastními zdroji odhadu.
+
+out_of_calculator:
+
+  SO_001_demolice:
+    description: "Demolice stávajícího mostu (16 ŽB trámů + ŽB deska + kamenné opěry)"
+    estimate_method: "Scaling z Kfely SO 001 podle plochy mostovky (~46 m² Žihle vs ~815 m² Kfely)"
+    confidence: "low — orientace ±50%"
+    estimate_czk_range: [800000, 1500000]
+    midpoint_czk: 1100000
+
+  SO_180_provizorium:
+    description: "Mostní provizorium (Mabey C200 ~12 m, jednosměrné, 6 měsíců)"
+    estimate_method: "Vendor catalog rough estimate (NO RFQ)"
+    confidence: "low — orientace ±50%"
+    estimate_czk_range: [1500000, 2500000]
+    midpoint_czk: 2000000
+    detail_in: "provizorium_specs.md"
+
+  SO_290_smerova_uprava:
+    description: "Směrová úprava silnice III/206 2 (~300 m, 3-vrstvá živičná, 100% obrusná bez tolerance)"
+    estimate_method: "Standardní cena vozovky CZK/m × délka"
+    confidence: "medium — známé jednotkové ceny"
+    estimate_czk_per_m_range: [4000, 6000]
+    length_m: 300
+    estimate_czk_range: [1200000, 1800000]
+    midpoint_czk: 1500000
+
+  ZS_VRN:
+    description: "Zařízení staveniště + dokumentace + kolaudace + dozory (geodézie, IGP, hydrologie)"
+    estimate_method: "% z hlavních prací per ČSN 73 0212"
+    confidence: "medium"
+    pct_of_main_works: [3, 5]
+    note: "Aplikuje se na (SO 001 + SO 180 + SO 201 + SO 290)"
+
+  mostni_svrsek:
+    description: "Izolace + vozovka 3-vrstvá živičná na mostě + zádržný systém + revizní schodiště + chráničky 3× DN75"
+    estimate_method: "Standardní jednotkové ceny vrstvy mostního svršku"
+    confidence: "medium"
+    estimate_czk_range: [400000, 700000]
+    midpoint_czk: 550000
+    note: "Cena je nad rámec Monolit-Planner kalkulátoru (kalkulátor pokrývá jen betonářské práce)."
+
+# ─────────────────────────────────────────────────────────────────────
+# Cross-references
+# ─────────────────────────────────────────────────────────────────────
+
+cross_refs:
+  varianta_design: "varianta_01_integralni_ram.md"
+  concrete_classes: "concrete_classes.yaml"
+  formwork_choice: "formwork_choice.md"
+  provizorium: "provizorium_specs.md"
+  decomposition: "decomposition_so.md"
+  phase_c_consumer: "../03_calculation/run-calc.ts"

@@ -1,6 +1,8 @@
 # Most ev.č. 2062-1 — Žihle (sandbox)
 
-**Status:** `extraction_done` — Phase A (extrakce) dokončena 2026-05-05. Phase B (návrh) + Phase C (výpočet) deferred do dalších sessionů.
+**Status:** `calculated` — Phase A + B + C dokončeny 2026-05-05. Phase 4 (DUR/DSP/DPS dokumentace + KROS XC4 soupis) deferred mimo sandbox scope.
+
+**Bottom line:** direct cost ~6.5 mil. Kč → realistická Nabídková cena (s vendor margin + D&B docs + contingency) ~12-18 mil. Kč vs budget 30 mil. Kč → **vejde se s rezervou**. Doba 10.6 měsíců vs limit 30 měsíců. Detail: [`00_PROJECT_SUMMARY.md`](00_PROJECT_SUMMARY.md).
 **Účel:** experimentální průchod celým workflow STAVAGENT (HPM → analýza
 stávajícího mostu → požadavky ZD → návrh nové NK → výpočet kalkulátorem
 → generace soupisu prací) na malém reálném tendru.
@@ -33,9 +35,10 @@ test-data/most-2062-1-zihle/
 | 0. Initialized | ✅ done | `metadata.yaml` |
 | 1. Inputs received | ✅ done | `inputs/` (viz `inputs/README.md`) |
 | 2. Extraction (HPM + ZD + photos → YAML) | ✅ done 2026-05-05 | `01_extraction/` (4 YAML + SOURCES.md) |
-| 3. Design (varianty NK) | ⏳ pending | `02_design/` |
-| 4. Calculation (kalkulátor + Gantt) | ⏳ pending | `03_calculation/` |
-| 5. Documentation (TZ + VV) | ⏳ pending | `04_documentation/` |
+| 3. Design (varianty NK) | ✅ done 2026-05-05 | `02_design/` (6 deliverables) |
+| 4. Calculation (kalkulátor + Gantt) | ✅ done 2026-05-05 | `03_calculation/` (Node CLI + 11 outputs + xlsx + svg) |
+| 5. Documentation (TZ + VV) | ⏸ deferred | `04_documentation/` (mimo sandbox scope) |
+| **Summary** | ✅ done | [`00_PROJECT_SUMMARY.md`](00_PROJECT_SUMMARY.md) |
 
 ## Phase A — extrakce (2026-05-05)
 
