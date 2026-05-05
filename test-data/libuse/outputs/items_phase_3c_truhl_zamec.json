@@ -1,0 +1,1759 @@
+{
+  "metadata": {
+    "phase": "3c",
+    "part": "B — truhlářské + zámečnické vnitřní",
+    "kapitoly": [
+      "PSV-766",
+      "PSV-767"
+    ],
+    "items_count": 76,
+    "summary_per_kapitola": {
+      "PSV-766": {
+        "count": 45,
+        "totals": {
+          "ks": 357.0
+        }
+      },
+      "PSV-767": {
+        "count": 31,
+        "totals": {
+          "bm": 330.08,
+          "ks": 117.5,
+          "kg": 1152.0
+        }
+      }
+    }
+  },
+  "items": [
+    {
+      "item_id": "4293d3e4-728f-4105-8b90-5b109115a943",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D04 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "S.A.20",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 39",
+      "warnings": []
+    },
+    {
+      "item_id": "014383bf-dc86-41c7-a1e1-233ba5755fef",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D04 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8fb0c5d3-44fb-4fd3-a9c7-fd7a3c4cfd3b",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D04 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 39,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D04"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f2bf29f6-942c-46d2-8aff-fd4e872da3c2",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D34 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "A.2.4.04",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 22",
+      "warnings": []
+    },
+    {
+      "item_id": "7d67a51a-ff6e-45ee-9742-e05df2ff94ff",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D34 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "23a3c712-22ba-4a87-a040-ad6cd86086aa",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D34 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 22,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D34"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5f4417e4-1ff6-4e41-8fbf-2e37329b4410",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D31 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "A.2.4.05",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 16",
+      "warnings": []
+    },
+    {
+      "item_id": "ed1881eb-1d6d-4189-9713-5ccb4926a65f",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D31 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "85f59eed-4efd-4b67-ab66-1310dfaac5e8",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D31 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 16,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D31"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "edac9d87-5366-4be6-8428-bffa061ecf59",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D21 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "A.2.4.01",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 11",
+      "warnings": []
+    },
+    {
+      "item_id": "846d95f7-33af-4cee-8b92-5477ac058584",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D21 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "51cd0db3-4b03-49ff-a844-45de6b08fcb9",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D21 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 11,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D21"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ce765465-ca9d-4990-b43a-f4a70ec58036",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D02 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "S.A.23",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 10",
+      "warnings": []
+    },
+    {
+      "item_id": "d20e325d-397c-4f34-b57f-cc27b9595381",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D02 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "4e70f33e-1c49-495b-b65d-54c70d16b4e7",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D02 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 10,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D02"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e5544c63-72b8-4e70-92f3-b3b40d474e3a",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D33 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "A.2.4.01",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 5",
+      "warnings": []
+    },
+    {
+      "item_id": "1153e903-34fc-46ee-b9f1-926078148e1b",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D33 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "d63e3cb4-6f83-43a4-9c19-521248bf74a3",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D33 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D33"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2458361a-ff6c-4cac-bdcd-8f3761b1876d",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D03 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "S.A.21",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 4",
+      "warnings": []
+    },
+    {
+      "item_id": "13d8a1fe-56ab-4f8c-816e-b9c8fe94e749",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D03 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e9c66296-923c-4ed6-b90a-e2d2993ede4d",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D03 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D03"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "33a2df74-f3a6-4380-8c5c-e5e2042dddc2",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D01 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "S.A.02",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 3",
+      "warnings": []
+    },
+    {
+      "item_id": "a9328c7e-b748-4f19-9cbe-57596fa33f46",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D01 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "b31738f2-0597-44ce-9656-cc5a6f0113bc",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D01 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D01"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "39ca0f8a-9c74-4044-b79d-57a0976d2a75",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D35 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "A.2.4.01",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 3",
+      "warnings": []
+    },
+    {
+      "item_id": "838e85e1-6540-494f-bb64-a19246d480e6",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D35 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "01eb8e29-8619-4609-8833-51a885db887a",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D35 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 3,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D35"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e4d580be-551b-4628-8def-6b8fff22788a",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D05 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "S.C.02",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 1",
+      "warnings": []
+    },
+    {
+      "item_id": "ac890de0-b540-4c5b-ae74-25491582a6a4",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D05 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "00356cfe-f1df-4fb4-8797-f9c62b9d76da",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D05 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D05"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5237650a-682c-4734-9dc8-817270a17d68",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D10 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "A.1.S.02",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 1",
+      "warnings": []
+    },
+    {
+      "item_id": "4731ee44-e5fa-4576-8cb4-a82bb5aee9a0",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D10 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "fea4d697-ff6d-40a1-890a-e70cb9df5bc6",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D10 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D10"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "ded2a0a9-a0aa-4a76-afa9-6bbeb463091d",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D20 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "A.1.S.01",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 1",
+      "warnings": []
+    },
+    {
+      "item_id": "dd388c0a-095d-4ee6-8dd9-8c71fa868a31",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D20 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "86ae1a37-7287-4ea9-ac10-3660c3904c67",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D20 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D20"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "8160e0d3-2d4d-4b44-829f-d5e6cb414557",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D11 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "A.1.S.01",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 1",
+      "warnings": []
+    },
+    {
+      "item_id": "32c22108-0db4-4d25-a0bf-c7ca90e97653",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D11 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "1502b666-3d28-44d5-b57b-5044e9a21298",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D11 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "2683d21d-4e8b-4579-bb3a-582dfb111151",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D11 — bezpečnostní rám 4. třída",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "59f52316-7dee-45d1-8c2e-9b13a4e4140f",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D11 — bezpečnostní křídlo",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "9eb06bff-5e19-4036-9767-5995084d4778",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D11 — cylinder bezp. + 5 klíčů",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D11"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "acd4df20-be56-44db-a158-6ac425317bb8",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D42 — dodávka (rám + křídlo + obložky)",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "A.1.S.01",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "DXF count = 1",
+      "warnings": []
+    },
+    {
+      "item_id": "91468bac-3bb8-4bd3-824b-59f0ded5fa06",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D42 — kotvení + spárování",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5d72a323-a604-4fc8-a96a-f80b94f2805d",
+      "kapitola": "PSV-766",
+      "popis": "Dveře D42 — klika + zámek",
+      "MJ": "ks",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "D_type": "D42"
+      },
+      "vyrobce_ref": "standard nebo dle TZ",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e61ae350-6fa5-4ff8-8b10-8b1ebb99bf43",
+      "kapitola": "PSV-767",
+      "popis": "LP20: Vnitřní zábradlí schodišťové - na stěně — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 16.546,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP20",
+        "tabulka_qty_komplex": 66.18599999999998,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "prášková barva antracit",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=66.18599999999998 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "6ce48790-4ff1-4bfa-b265-fcb91bffe2a8",
+      "kapitola": "PSV-767",
+      "popis": "LP20: Vnitřní zábradlí schodišťové - na stěně — montáž",
+      "MJ": "bm",
+      "mnozstvi": 16.546,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP20",
+        "tabulka_qty_komplex": 66.18599999999998,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "4c8bce25-480a-46f3-b4d4-e0c3a0fdba8c",
+      "kapitola": "PSV-767",
+      "popis": "LP21: Vnitřní zábradlí schodišťové - v zrcadle — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 18.295,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP21",
+        "tabulka_qty_komplex": 73.17899999999999,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "prášková barva antracit",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=73.17899999999999 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "25e1f82e-d4c6-4b8f-9d43-77497098456e",
+      "kapitola": "PSV-767",
+      "popis": "LP21: Vnitřní zábradlí schodišťové - v zrcadle — montáž",
+      "MJ": "bm",
+      "mnozstvi": 18.295,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP21",
+        "tabulka_qty_komplex": 73.17899999999999,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "b7e2f547-ce6a-4e01-b54a-fdf74c138272",
+      "kapitola": "PSV-767",
+      "popis": "LP22: Vnitřní zábradlí schodišťové - na stěně — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 7.682,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP22",
+        "tabulka_qty_komplex": 30.729999999999997,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "prášková barva antracit",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=30.729999999999997 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "b9541671-d88e-4938-a0f7-2ebe60218198",
+      "kapitola": "PSV-767",
+      "popis": "LP22: Vnitřní zábradlí schodišťové - na stěně — montáž",
+      "MJ": "bm",
+      "mnozstvi": 7.682,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP22",
+        "tabulka_qty_komplex": 30.729999999999997,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a9201d6f-d426-4e5a-bd13-23d4a26853dc",
+      "kapitola": "PSV-767",
+      "popis": "LP23: Vnitřní zábradlí schodišťové - na stěně — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 0.491,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP23",
+        "tabulka_qty_komplex": 1.9649999999999999,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "prášková barva antracit",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.9649999999999999 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "161a2ad4-1784-4e2f-b13f-01f6ef869f58",
+      "kapitola": "PSV-767",
+      "popis": "LP23: Vnitřní zábradlí schodišťové - na stěně — montáž",
+      "MJ": "bm",
+      "mnozstvi": 0.491,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP23",
+        "tabulka_qty_komplex": 1.9649999999999999,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "fa453ffb-fca6-4b8c-ad73-5ee4112a9886",
+      "kapitola": "PSV-767",
+      "popis": "LP30: Balkonové zábradlí — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 39.715,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP30",
+        "tabulka_qty_komplex": 158.85899999999998,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "prášková barva antracit",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=158.85899999999998 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "cc8aebb1-5101-4500-9899-0704a4553afb",
+      "kapitola": "PSV-767",
+      "popis": "LP30: Balkonové zábradlí — montáž",
+      "MJ": "bm",
+      "mnozstvi": 39.715,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP30",
+        "tabulka_qty_komplex": 158.85899999999998,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "0e82ccb8-5606-48b8-801f-d9df9c0b816d",
+      "kapitola": "PSV-767",
+      "popis": "LP34: Ztužení příček - 3. NP — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 56.045,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP34",
+        "tabulka_qty_komplex": 224.17800000000005,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=224.17800000000005 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "a54fad94-75da-4d03-ac0d-204d8b0541c0",
+      "kapitola": "PSV-767",
+      "popis": "LP34: Ztužení příček - 3. NP — montáž",
+      "MJ": "bm",
+      "mnozstvi": 56.045,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP34",
+        "tabulka_qty_komplex": 224.17800000000005,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "95caf169-9174-4a67-9d1c-1f896344e93a",
+      "kapitola": "PSV-767",
+      "popis": "LP35: Ztužení příček - 3. NP — dodávka",
+      "MJ": "bm",
+      "mnozstvi": 26.267,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP35",
+        "tabulka_qty_komplex": 105.06899999999999,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=105.06899999999999 bm",
+      "warnings": []
+    },
+    {
+      "item_id": "4b63f99b-2b72-49cd-920c-8bbaefb3e092",
+      "kapitola": "PSV-767",
+      "popis": "LP35: Ztužení příček - 3. NP — montáž",
+      "MJ": "bm",
+      "mnozstvi": 26.267,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP35",
+        "tabulka_qty_komplex": 105.06899999999999,
+        "mj": "bm"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "c41049e3-4001-45df-bbab-f8c033c682cc",
+      "kapitola": "PSV-767",
+      "popis": "LP40: Podstavec pod venkovní chladící jednotku BJ — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP40",
+        "tabulka_qty_komplex": 4.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "žárový pozink",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=4.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "a5764f04-1077-4ccb-9cc3-b78905cb0fc8",
+      "kapitola": "PSV-767",
+      "popis": "LP40: Podstavec pod venkovní chladící jednotku BJ — montáž",
+      "MJ": "ks",
+      "mnozstvi": 1.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP40",
+        "tabulka_qty_komplex": 4.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e9767434-a37d-4a9f-9125-a7d44848bd7b",
+      "kapitola": "PSV-767",
+      "popis": "LP60: Skleněné zábradlí francouzských oken — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 5.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP60",
+        "tabulka_qty_komplex": 20.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=20.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "7754f610-44f3-4d96-9f62-125c43cf15d0",
+      "kapitola": "PSV-767",
+      "popis": "LP60: Skleněné zábradlí francouzských oken — montáž",
+      "MJ": "ks",
+      "mnozstvi": 5.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP60",
+        "tabulka_qty_komplex": 20.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3a4a12a7-21f4-4dd8-8c0a-2972289ce518",
+      "kapitola": "PSV-767",
+      "popis": "LP61: Skleněné zábradlí francouzských oken — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP61",
+        "tabulka_qty_komplex": 1.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "096225e2-186b-4e99-b31d-1ed03de3353e",
+      "kapitola": "PSV-767",
+      "popis": "LP61: Skleněné zábradlí francouzských oken — montáž",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP61",
+        "tabulka_qty_komplex": 1.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "beec99b0-2814-4607-9f0d-1d1b1be6de1e",
+      "kapitola": "PSV-767",
+      "popis": "LP62: Skleněné zábradlí francouzských oken — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP62",
+        "tabulka_qty_komplex": 2.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=2.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "46818241-734f-4519-89d4-f1832e469098",
+      "kapitola": "PSV-767",
+      "popis": "LP62: Skleněné zábradlí francouzských oken — montáž",
+      "MJ": "ks",
+      "mnozstvi": 0.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP62",
+        "tabulka_qty_komplex": 2.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "0f819aee-831d-43a9-90cf-68941fe0bbe2",
+      "kapitola": "PSV-767",
+      "popis": "LP63: Skleněné zábradlí francouzských oken — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 1.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP63",
+        "tabulka_qty_komplex": 6.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=6.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "6818aca7-125d-4355-8420-28e801cda883",
+      "kapitola": "PSV-767",
+      "popis": "LP63: Skleněné zábradlí francouzských oken — montáž",
+      "MJ": "ks",
+      "mnozstvi": 1.5,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP63",
+        "tabulka_qty_komplex": 6.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "a631cbd7-b43e-45d3-934b-93ca066621f1",
+      "kapitola": "PSV-767",
+      "popis": "LP64: Skleněné zábradlí francouzských oken — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP64",
+        "tabulka_qty_komplex": 1.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "35486522-bce8-4ea3-8ee1-3ede74bb8e48",
+      "kapitola": "PSV-767",
+      "popis": "LP64: Skleněné zábradlí francouzských oken — montáž",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP64",
+        "tabulka_qty_komplex": 1.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "3fedcef0-631d-45d3-9158-d0ab8f3b1e40",
+      "kapitola": "PSV-767",
+      "popis": "LP65: Skleněné zábradlí francouzských oken — dodávka",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP65",
+        "tabulka_qty_komplex": 1.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "Bezpečnostní sklo VSG do nerezového prvku",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "komplex × 0.25 D-share; tabulka_qty=1.0 ks",
+      "warnings": []
+    },
+    {
+      "item_id": "1df4729b-b0e0-4189-942f-db00bec39ae0",
+      "kapitola": "PSV-767",
+      "popis": "LP65: Skleněné zábradlí francouzských oken — montáž",
+      "MJ": "ks",
+      "mnozstvi": 0.25,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "LP": "LP65",
+        "tabulka_qty_komplex": 1.0,
+        "mj": "ks"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "02251f6c-ff92-453d-a188-882daff6760d",
+      "kapitola": "PSV-767",
+      "popis": "Ocelové stupně schodiště — dodávka (PROBE finding)",
+      "MJ": "ks",
+      "mnozstvi": 50,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "ocelové stupně"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "z Phase 1.5 manual proof-of-concept",
+      "warnings": [
+        "PROBE 1.5 finding: ~50 ks pro D, úplně chybí ve starém VV. VYNECHANE_KRITICKE in Phase 5 audit."
+      ]
+    },
+    {
+      "item_id": "d698e3f1-0cbd-44ce-94e3-fdf59dbf026b",
+      "kapitola": "PSV-767",
+      "popis": "Ocelové stupně schodiště — montáž + kotvení",
+      "MJ": "ks",
+      "mnozstvi": 50,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "ocelové stupně"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "e3d1c946-97b5-48f5-86cd-d1bf82a816ed",
+      "kapitola": "PSV-767",
+      "popis": "Ocelové sloupky IPE120 — krov 3.NP",
+      "MJ": "kg",
+      "mnozstvi": 1152,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {
+        "vrstva": "IPE120"
+      },
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "estimate ~8 ks × 12 m × 12 kg/m; verify v Phase 4 z DXF řezy",
+      "warnings": []
+    }
+  ]
+}

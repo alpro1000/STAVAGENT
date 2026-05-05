@@ -1,0 +1,758 @@
+{
+  "metadata": {
+    "drawings_classified": {
+      "185-01_DPS_D_SO01_100_4030_R01 - PŮDORYS 1PP": "spol_1.PP",
+      "185-01_DPS_D_SO01_100_5000_R01 - ŘEZY 1-PP": "spol_1.PP",
+      "185-01_DPS_D_SO01_140_4410_00-OBJEKT D - Půdorys 1 .NP": "objekt_D",
+      "185-01_DPS_D_SO01_140_4420-OBJEKT D - Půdorys 2 .NP": "objekt_D",
+      "185-01_DPS_D_SO01_140_4430-OBJEKT D - Půdorys 3 .NP": "objekt_D",
+      "185-01_DPS_D_SO01_140_4440_00-OBJEKT D - Půdorys střecha": "objekt_D",
+      "185-01_DPS_D_SO01_140_5400_R01 - OBJEKT D - ŘEZY": "objekt_D",
+      "185-01_DPS_D_SO01_140_6400_R01 - OBJEKT D - POHLEDY": "objekt_D",
+      "185-01_DPS_D_SO01_140_7410_00-OBJEKT D - Výkres podhledů 1. NP": "objekt_D",
+      "185-01_DPS_D_SO01_140_7420_00-OBJEKT D - Výkres podhledů 2. NP": "objekt_D",
+      "185-01_DPS_D_SO01_140_7430_00-OBJEKT D - Výkres podhledů 3. NP": "objekt_D",
+      "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP": "other"
+    },
+    "pp_d_share": 0.25,
+    "method": "Re-parses every DXF, classifies tag occurrences by drawing's objekt scope. objekt-D drawings count fully; spol 1.PP × 0.25 D-share."
+  },
+  "counts_per_objekt_d": {
+    "OP": {
+      "OP01": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 7,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.75,
+        "total_d_count": 1.75,
+        "total_d_count_int": 2
+      },
+      "OP02": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 4,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP03": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 12,
+        "other_drawings": 0,
+        "d_share_from_pp": 3.0,
+        "total_d_count": 6.0,
+        "total_d_count_int": 6
+      },
+      "OP04": {
+        "objekt_d_drawings": 6,
+        "spol_1pp_drawings": 4,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.0,
+        "total_d_count": 7.0,
+        "total_d_count_int": 7
+      },
+      "OP08": {
+        "objekt_d_drawings": 15,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 15.0,
+        "total_d_count_int": 15
+      },
+      "OP10": {
+        "objekt_d_drawings": 11,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 11.0,
+        "total_d_count_int": 11
+      },
+      "OP12": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "OP15": {
+        "objekt_d_drawings": 5,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "OP16": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP18": {
+        "objekt_d_drawings": 21,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 21.0,
+        "total_d_count_int": 21
+      },
+      "OP19": {
+        "objekt_d_drawings": 6,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 6.0,
+        "total_d_count_int": 6
+      },
+      "OP20": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP21": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP22": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 1,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.25,
+        "total_d_count": 0.25,
+        "total_d_count_int": 0
+      },
+      "OP23": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 1,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.25,
+        "total_d_count": 0.25,
+        "total_d_count_int": 0
+      },
+      "OP24": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "OP25": {
+        "objekt_d_drawings": 11,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 11.0,
+        "total_d_count_int": 11
+      },
+      "OP26": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "OP27": {
+        "objekt_d_drawings": 2,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 2.0,
+        "total_d_count_int": 2
+      },
+      "OP31": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "OP42": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 5,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.25,
+        "total_d_count": 1.25,
+        "total_d_count_int": 1
+      },
+      "OP43": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 3,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.75,
+        "total_d_count": 0.75,
+        "total_d_count_int": 1
+      },
+      "OP44": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 1,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.25,
+        "total_d_count": 0.25,
+        "total_d_count_int": 0
+      },
+      "OP45": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 14,
+        "other_drawings": 0,
+        "d_share_from_pp": 3.5,
+        "total_d_count": 3.5,
+        "total_d_count_int": 4
+      },
+      "OP47": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 1,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.25,
+        "total_d_count": 0.25,
+        "total_d_count_int": 0
+      },
+      "OP50": {
+        "objekt_d_drawings": 2,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 2.0,
+        "total_d_count_int": 2
+      },
+      "OP52": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP53": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP87": {
+        "objekt_d_drawings": 6,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 6.0,
+        "total_d_count_int": 6
+      },
+      "OP89": {
+        "objekt_d_drawings": 12,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 12.0,
+        "total_d_count_int": 12
+      },
+      "OP90": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "OP96": {
+        "objekt_d_drawings": 5,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "OP98": {
+        "objekt_d_drawings": 7,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 7.0,
+        "total_d_count_int": 7
+      }
+    },
+    "LI": {
+      "LI01": {
+        "objekt_d_drawings": 19,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 19.0,
+        "total_d_count_int": 19
+      },
+      "LI02": {
+        "objekt_d_drawings": 17,
+        "spol_1pp_drawings": 54,
+        "other_drawings": 0,
+        "d_share_from_pp": 13.5,
+        "total_d_count": 30.5,
+        "total_d_count_int": 30
+      },
+      "LI03": {
+        "objekt_d_drawings": 10,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 10.0,
+        "total_d_count_int": 10
+      },
+      "LI04": {
+        "objekt_d_drawings": 5,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "LI05": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "LI06": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 1,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.25,
+        "total_d_count": 0.25,
+        "total_d_count_int": 0
+      },
+      "LI11": {
+        "objekt_d_drawings": 10,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 10.0,
+        "total_d_count_int": 10
+      },
+      "LI12": {
+        "objekt_d_drawings": 20,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 20.0,
+        "total_d_count_int": 20
+      },
+      "LI16": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "LI22": {
+        "objekt_d_drawings": 16,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 16.0,
+        "total_d_count_int": 16
+      },
+      "LI23": {
+        "objekt_d_drawings": 2,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 2.0,
+        "total_d_count_int": 2
+      },
+      "LI29": {
+        "objekt_d_drawings": 8,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 8.0,
+        "total_d_count_int": 8
+      }
+    },
+    "LP": {
+      "LP09": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "LP20": {
+        "objekt_d_drawings": 6,
+        "spol_1pp_drawings": 8,
+        "other_drawings": 0,
+        "d_share_from_pp": 2.0,
+        "total_d_count": 8.0,
+        "total_d_count_int": 8
+      },
+      "LP21": {
+        "objekt_d_drawings": 4,
+        "spol_1pp_drawings": 4,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "LP22": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 4,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "LP23": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 2,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.5,
+        "total_d_count": 0.5,
+        "total_d_count_int": 0
+      },
+      "LP30": {
+        "objekt_d_drawings": 12,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 12.0,
+        "total_d_count_int": 12
+      },
+      "LP40": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "LP60": {
+        "objekt_d_drawings": 10,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 10.0,
+        "total_d_count_int": 10
+      },
+      "LP63": {
+        "objekt_d_drawings": 4,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 4.0,
+        "total_d_count_int": 4
+      }
+    },
+    "TP": {
+      "TP04": {
+        "objekt_d_drawings": 10,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 10.0,
+        "total_d_count_int": 10
+      },
+      "TP12": {
+        "objekt_d_drawings": 21,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 21.0,
+        "total_d_count_int": 21
+      },
+      "TP13": {
+        "objekt_d_drawings": 2,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 2.0,
+        "total_d_count_int": 2
+      },
+      "TP14": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "TP22": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "TP25": {
+        "objekt_d_drawings": 2,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 2.0,
+        "total_d_count_int": 2
+      },
+      "TP28": {
+        "objekt_d_drawings": 10,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 10.0,
+        "total_d_count_int": 10
+      }
+    },
+    "WF": {
+      "WF10": {
+        "objekt_d_drawings": 5,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "WF32": {
+        "objekt_d_drawings": 6,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 6.0,
+        "total_d_count_int": 6
+      },
+      "WF40": {
+        "objekt_d_drawings": 5,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "WF41": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "WF50": {
+        "objekt_d_drawings": 2,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 2.0,
+        "total_d_count_int": 2
+      },
+      "WF51": {
+        "objekt_d_drawings": 8,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 8.0,
+        "total_d_count_int": 8
+      }
+    },
+    "CF": {
+      "CF10": {
+        "objekt_d_drawings": 8,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 8.0,
+        "total_d_count_int": 8
+      },
+      "CF20": {
+        "objekt_d_drawings": 18,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 18.0,
+        "total_d_count_int": 18
+      },
+      "CF21": {
+        "objekt_d_drawings": 16,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 16.0,
+        "total_d_count_int": 16
+      }
+    },
+    "D": {
+      "D01": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 3,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.75,
+        "total_d_count": 0.75,
+        "total_d_count_int": 1
+      },
+      "D02": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 10,
+        "other_drawings": 0,
+        "d_share_from_pp": 2.5,
+        "total_d_count": 2.5,
+        "total_d_count_int": 2
+      },
+      "D03": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 4,
+        "other_drawings": 0,
+        "d_share_from_pp": 1.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "D04": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 39,
+        "other_drawings": 0,
+        "d_share_from_pp": 9.75,
+        "total_d_count": 9.75,
+        "total_d_count_int": 10
+      },
+      "D05": {
+        "objekt_d_drawings": 0,
+        "spol_1pp_drawings": 1,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.25,
+        "total_d_count": 0.25,
+        "total_d_count_int": 0
+      },
+      "D10": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "D11": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "D20": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      },
+      "D21": {
+        "objekt_d_drawings": 11,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 11.0,
+        "total_d_count_int": 11
+      },
+      "D31": {
+        "objekt_d_drawings": 16,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 16.0,
+        "total_d_count_int": 16
+      },
+      "D33": {
+        "objekt_d_drawings": 5,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 5.0,
+        "total_d_count_int": 5
+      },
+      "D34": {
+        "objekt_d_drawings": 22,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 22.0,
+        "total_d_count_int": 22
+      },
+      "D35": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "D42": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      }
+    },
+    "W": {
+      "W01": {
+        "objekt_d_drawings": 3,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 3.0,
+        "total_d_count_int": 3
+      },
+      "W03": {
+        "objekt_d_drawings": 17,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 17.0,
+        "total_d_count_int": 17
+      },
+      "W04": {
+        "objekt_d_drawings": 4,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 4.0,
+        "total_d_count_int": 4
+      },
+      "W05": {
+        "objekt_d_drawings": 9,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 9.0,
+        "total_d_count_int": 9
+      },
+      "W83": {
+        "objekt_d_drawings": 4,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 4.0,
+        "total_d_count_int": 4
+      },
+      "W91": {
+        "objekt_d_drawings": 1,
+        "spol_1pp_drawings": 0,
+        "other_drawings": 0,
+        "d_share_from_pp": 0.0,
+        "total_d_count": 1.0,
+        "total_d_count_int": 1
+      }
+    }
+  }
+}

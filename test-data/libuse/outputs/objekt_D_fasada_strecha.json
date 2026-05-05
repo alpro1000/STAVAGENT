@@ -1,0 +1,131 @@
+{
+  "objekt": "D",
+  "footprints_per_podlazi": {
+    "1.NP": {
+      "interior_union_m2": 259.25,
+      "interior_bbox_m2": 315.58,
+      "interior_bbox_w_m": 27.1,
+      "interior_bbox_h_m": 11.64,
+      "wall_buffer_mm": 400,
+      "footprint_with_walls_m2": 347.22,
+      "footprint_w_m": 27.9,
+      "footprint_h_m": 12.44,
+      "footprint_perimeter_m": 80.69,
+      "centroid": [
+        8675.0,
+        62465.0
+      ]
+    },
+    "2.NP": {
+      "interior_union_m2": 292.37,
+      "interior_bbox_m2": 371.87,
+      "interior_bbox_w_m": 27.71,
+      "interior_bbox_h_m": 13.42,
+      "wall_buffer_mm": 400,
+      "footprint_with_walls_m2": 405.41,
+      "footprint_w_m": 28.51,
+      "footprint_h_m": 14.22,
+      "footprint_perimeter_m": 85.46,
+      "centroid": [
+        8210.0,
+        62160.0
+      ]
+    },
+    "3.NP": {
+      "interior_union_m2": 245.81,
+      "interior_bbox_m2": 331.84,
+      "interior_bbox_w_m": 27.1,
+      "interior_bbox_h_m": 12.24,
+      "wall_buffer_mm": 400,
+      "footprint_with_walls_m2": 363.96,
+      "footprint_w_m": 27.9,
+      "footprint_h_m": 13.04,
+      "footprint_perimeter_m": 81.89,
+      "centroid": [
+        8185.0,
+        63155.0
+      ]
+    }
+  },
+  "levels_m": [
+    1.5,
+    4.65,
+    7.8,
+    14.875
+  ],
+  "total_height_m_eaves": 13.375,
+  "facade_brutto_envelope": {
+    "total_height_m_eaves": 13.38,
+    "long_axis_X_m": 27.9,
+    "short_axis_Y_m": 12.44,
+    "rect_envelope_per_side": {
+      "+X-facing (along Y axis)": 166.38,
+      "-X-facing (along Y axis)": 166.38,
+      "+Y-facing (along X axis)": 373.16,
+      "-Y-facing (along X axis)": 373.16
+    },
+    "rect_envelope_total_m2": 1079.09,
+    "note": "Cardinal orientation requires manual N-arrow alignment; axis labels are placeholders. Brutto excludes gable triangles."
+  },
+  "windows_per_floor": {
+    "1.PP": {
+      "doors_total_m2": 143.01,
+      "windows_total_m2": 0,
+      "curtain_total_m2": 0,
+      "door_count_with_dim": 71,
+      "window_count_with_dim": 0,
+      "curtain_count_with_dim": 0
+    },
+    "1.NP": {
+      "doors_total_m2": 46.19,
+      "windows_total_m2": 15.38,
+      "curtain_total_m2": 0,
+      "door_count_with_dim": 22,
+      "window_count_with_dim": 11,
+      "curtain_count_with_dim": 0
+    },
+    "2.NP": {
+      "doors_total_m2": 36.54,
+      "windows_total_m2": 21.1,
+      "curtain_total_m2": 0,
+      "door_count_with_dim": 20,
+      "window_count_with_dim": 15,
+      "curtain_count_with_dim": 0
+    },
+    "3.NP": {
+      "doors_total_m2": 32.55,
+      "windows_total_m2": 12.83,
+      "curtain_total_m2": 0,
+      "door_count_with_dim": 19,
+      "window_count_with_dim": 9,
+      "curtain_count_with_dim": 0
+    }
+  },
+  "windows_total_facade_m2": 49.31,
+  "roof": {
+    "horizontal_polygons_count": 0,
+    "horizontal_total_m2": 0,
+    "horizontal_polygons": [],
+    "rooflights_count": 19,
+    "rooflights_total_m2": 3.66,
+    "slope_corrections": {
+      "31_deg_factor": 1.1666,
+      "67_deg_factor": 2.5593,
+      "note": "Apply per-segment factor in Phase 1 once RF tags are clustered to skat."
+    }
+  },
+  "cross_check_vs_spec": {
+    "pudorys_1NP": {
+      "parser_m2": 347.22,
+      "expected_m2": 348.71,
+      "diff_pct": -0.43,
+      "within_3pct": true
+    },
+    "fasada_brutto": {
+      "parser_m2": 1079.09,
+      "expected_m2": 838.01,
+      "diff_pct": 28.77,
+      "within_3pct": false
+    }
+  }
+}

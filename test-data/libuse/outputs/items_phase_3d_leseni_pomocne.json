@@ -1,0 +1,616 @@
+{
+  "metadata": {
+    "phase": "3d",
+    "kapitoly": [
+      "HSV-941 fasádní",
+      "HSV-941 vnitřní",
+      "HSV-944",
+      "HSV-997",
+      "HSV-998",
+      "PSV-925"
+    ],
+    "items_count": 25,
+    "summary_per_kapitola": {
+      "HSV-941": {
+        "count": 10,
+        "totals": {
+          "m2": 8181.0,
+          "ks": 484.0
+        },
+        "category_split": {
+          "subcontractor_required": 10
+        }
+      },
+      "HSV-944": {
+        "count": 4,
+        "totals": {
+          "ks-měs": 32.0,
+          "m": 115.98,
+          "m2": 971.08
+        },
+        "category_split": {
+          "subcontractor_required": 4
+        }
+      },
+      "HSV-997": {
+        "count": 3,
+        "totals": {
+          "t": 147.49,
+          "m3": 74.73
+        },
+        "category_split": {
+          "subcontractor_required": 3
+        }
+      },
+      "HSV-998": {
+        "count": 3,
+        "totals": {
+          "m": 176.03,
+          "m2": 7073.85
+        },
+        "category_split": {
+          "subcontractor_required": 3
+        }
+      },
+      "PSV-925": {
+        "count": 5,
+        "totals": {
+          "kpl-měs": 4.0,
+          "ks-měs": 8.0,
+          "kpl": 1.0,
+          "m-měs": 800.0,
+          "ks": 4.0
+        },
+        "category_split": {
+          "general_site_overhead": 5
+        }
+      }
+    },
+    "harmonogram_mesice": 4,
+    "ground_truth_used": {
+      "facade_brutto_m2": 838.0,
+      "roof_total_m2": 443.0,
+      "interior_total_m2": 1056.16,
+      "FF_total_m2": 730.4,
+      "ETICS_m2": 786.59,
+      "SDK_total_m2": 1230.1599999999999
+    }
+  },
+  "items": [
+    {
+      "item_id": "47fce5c0-4b41-4785-9cd8-b84bc73d47fc",
+      "kapitola": "HSV-941",
+      "popis": "Postavění lešení fasádní rámové do v. 15 m",
+      "MJ": "m2",
+      "mnozstvi": 838.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "facade brutto 838 m² (Phase 0.7 spec)",
+      "warnings": []
+    },
+    {
+      "item_id": "50086a85-9fb2-4510-aa0d-c39c5334850b",
+      "kapitola": "HSV-941",
+      "popis": "Pronájem lešení fasádní × 4 měsíce",
+      "MJ": "m2",
+      "mnozstvi": 3352.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "plocha × 4 měsíce harmonogramu",
+      "warnings": []
+    },
+    {
+      "item_id": "beeeec5d-f060-4958-8270-2b140747fd1d",
+      "kapitola": "HSV-941",
+      "popis": "Montáž záchytných sítí na lešení",
+      "MJ": "m2",
+      "mnozstvi": 838.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "7ae3e271-333f-40d0-976c-d5093933ba91",
+      "kapitola": "HSV-941",
+      "popis": "Demontáž lešení fasádního",
+      "MJ": "m2",
+      "mnozstvi": 838.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "b9688cb1-2f76-47ce-b327-a597310cb64f",
+      "kapitola": "HSV-941",
+      "popis": "Postavění lešení pojezdové schodiště D",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL — schodiště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "1 schodiště D × 4 ramena (1.PP→3.NP)",
+      "warnings": []
+    },
+    {
+      "item_id": "d5778523-8695-41e4-a487-01da1bf5e1d8",
+      "kapitola": "HSV-941",
+      "popis": "Pronájem lešení pojezdové schodiště × 120 dní",
+      "MJ": "ks",
+      "mnozstvi": 480,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL — schodiště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "6765fda5-b0aa-4976-8aa0-7179b02c997e",
+      "kapitola": "HSV-941",
+      "popis": "Postavění lešení vnitřní podkroví (skosné stropy)",
+      "MJ": "m2",
+      "mnozstvi": 195.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "3.NP plocha 195 m², do hřebene ~6 m výška",
+      "warnings": []
+    },
+    {
+      "item_id": "227de43a-2ac7-4a19-a789-93f508979627",
+      "kapitola": "HSV-941",
+      "popis": "Pronájem lešení podkroví × 4 měsíce",
+      "MJ": "m2",
+      "mnozstvi": 780.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "3.NP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "f59270c2-8309-43ba-b668-130467c5b54d",
+      "kapitola": "HSV-941",
+      "popis": "Postavění lešení vnitřní 1.PP (parkování, tech. místnosti)",
+      "MJ": "m2",
+      "mnozstvi": 268.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "1.PP plocha 268 m²",
+      "warnings": []
+    },
+    {
+      "item_id": "e539b7c8-4d65-46eb-a123-4cb75302a9d1",
+      "kapitola": "HSV-941",
+      "popis": "Pronájem lešení 1.PP × 4 měsíce",
+      "MJ": "m2",
+      "mnozstvi": 1072.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": []
+    },
+    {
+      "item_id": "5a138bf6-31b8-4516-b607-c44d631ee1a5",
+      "kapitola": "HSV-944",
+      "popis": "Pomocné žebříky pro výškové práce — pronájem",
+      "MJ": "ks-měs",
+      "mnozstvi": 32,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "8 žebříků × harmonogram",
+      "warnings": []
+    },
+    {
+      "item_id": "c3597565-f39d-4986-85f0-cf7d2994d715",
+      "kapitola": "HSV-944",
+      "popis": "Ochranné zábrany na okrajích atik + balkónů",
+      "MJ": "m",
+      "mnozstvi": 115.98,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "fasáda",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "obvod střechy + balkónové obvody",
+      "warnings": []
+    },
+    {
+      "item_id": "6c570781-724f-48d0-87e3-f506d2cb5e72",
+      "kapitola": "HSV-944",
+      "popis": "Bezpečnostní záchytné sítě střecha",
+      "MJ": "m2",
+      "mnozstvi": 443.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "střecha",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "celá střecha 443 m²",
+      "warnings": []
+    },
+    {
+      "item_id": "62cfd91d-bdb0-4502-8d69-45a2a2e485e7",
+      "kapitola": "HSV-944",
+      "popis": "Provizorní zakrytí stávajících konstrukcí PE folií",
+      "MJ": "m2",
+      "mnozstvi": 528.08,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "50 % vnitřních ploch během prací (typicky podlahy + okna)",
+      "warnings": []
+    },
+    {
+      "item_id": "580fc3cd-fb3d-4fa1-851b-f23fd64a443a",
+      "kapitola": "HSV-997",
+      "popis": "Přesun hmot ručně do 30 m",
+      "MJ": "t",
+      "mnozstvi": 124.549,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Σ ≈ 124.5 t: cement 80.3 + SDK 14.8 + EPS 3.9 + klempíř 3.0 + Tondach 17.5 + ostatní 5.0",
+      "warnings": []
+    },
+    {
+      "item_id": "2f53a6d2-f597-4f3d-8235-7541c59a3ae1",
+      "kapitola": "HSV-997",
+      "popis": "Přesun hmot autojeřábem (těžké materiály na střechu)",
+      "MJ": "t",
+      "mnozstvi": 22.943,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Tondach + EPS na ploché + klempíř plechy",
+      "warnings": []
+    },
+    {
+      "item_id": "e721a0b8-58e3-479f-a8ce-e8fd049af9b9",
+      "kapitola": "HSV-997",
+      "popis": "Doprava odpadu na skládku (kontejnery + km)",
+      "MJ": "m3",
+      "mnozstvi": 74.73,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "~30 % přesun hmot × 2 m³/t (sypký odpad)",
+      "warnings": []
+    },
+    {
+      "item_id": "5f361404-08ba-4b3d-b31b-4f02e34ac6cb",
+      "kapitola": "HSV-998",
+      "popis": "Vybourání drážek pro dilatace v podkladu",
+      "MJ": "m",
+      "mnozstvi": 176.027,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "grid 6×6 m × m délky drážek",
+      "warnings": []
+    },
+    {
+      "item_id": "2af8acfa-ed45-4530-a94b-f350ab0c5a2b",
+      "kapitola": "HSV-998",
+      "popis": "Příprava povrchů pro malby (broušení + hladění)",
+      "MJ": "m2",
+      "mnozstvi": 6757,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "Σ HSV-611 + HSV-612 omítka brutto plocha",
+      "warnings": []
+    },
+    {
+      "item_id": "317480da-e63d-4730-996f-c5963f6aeba5",
+      "kapitola": "HSV-998",
+      "popis": "Prach + ochranné krytí stávajících konstrukcí",
+      "MJ": "m2",
+      "mnozstvi": 316.848,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "ALL",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "subcontractor_required",
+      "confidence": 0.85,
+      "status": "to_audit",
+      "poznamka": "30 % vnitřních ploch (přírubové práce)",
+      "warnings": []
+    },
+    {
+      "item_id": "356379d3-9de7-4ee7-a86b-87afe1c9f931",
+      "kapitola": "PSV-925",
+      "popis": "Sociální zázemí (kontejner WC + šatna) × 4 měs",
+      "MJ": "kpl-měs",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "staveniště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "confidence": 0.6,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": [
+        "general_site_overhead — k dořešení s hlavním dodavatelem"
+      ]
+    },
+    {
+      "item_id": "029427db-f486-41c6-9965-b39317e9831d",
+      "kapitola": "PSV-925",
+      "popis": "Sklad materiálu uzamykatelný × 4 měs",
+      "MJ": "ks-měs",
+      "mnozstvi": 8,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "staveniště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "confidence": 0.6,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": [
+        "general_site_overhead — k dořešení s hlavním dodavatelem"
+      ]
+    },
+    {
+      "item_id": "51526319-1454-499f-b71f-475178a27bf0",
+      "kapitola": "PSV-925",
+      "popis": "Energetické připojení staveniště (elektro + voda)",
+      "MJ": "kpl",
+      "mnozstvi": 1,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "staveniště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "confidence": 0.6,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": [
+        "general_site_overhead — k dořešení s hlavním dodavatelem"
+      ]
+    },
+    {
+      "item_id": "b13dfcd8-1990-4843-8be5-1af18ee15a51",
+      "kapitola": "PSV-925",
+      "popis": "Mobilní oplocení × 4 měs",
+      "MJ": "m-měs",
+      "mnozstvi": 800,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "staveniště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "confidence": 0.6,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": [
+        "general_site_overhead — k dořešení s hlavním dodavatelem"
+      ]
+    },
+    {
+      "item_id": "1e609dd8-b6d8-4e28-8d6c-67c817c1bf5b",
+      "kapitola": "PSV-925",
+      "popis": "Tabule informační + bezpečnostní",
+      "MJ": "ks",
+      "mnozstvi": 4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "staveniště",
+        "mistnosti": []
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_description": null,
+      "category": "general_site_overhead",
+      "confidence": 0.6,
+      "status": "to_audit",
+      "poznamka": "",
+      "warnings": [
+        "general_site_overhead — k dořešení s hlavním dodavatelem"
+      ]
+    }
+  ]
+}

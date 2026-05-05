@@ -1,0 +1,163 @@
+{
+  "method": "Triangulation: Tabulka místností × Starý VV × Můj pipeline",
+  "objekt_D_share_assumption": 0.28,
+  "stary_vv_source": "Vykaz_vymer_stary.xlsx",
+  "stary_vv_komplex_total_czk": 183655741.82,
+  "total_real_under_billing_czk": 38489997.0,
+  "categories": [
+    {
+      "category": "Kročejová izolace 25mm Isover N",
+      "stary_vv_komplex_qty": 4825.51,
+      "stary_vv_n_rows": 2,
+      "d_expected_qty": 1351.14,
+      "my_pipeline_n": 0,
+      "my_pipeline_qty": 0.0,
+      "diff_d_qty": 1351.14,
+      "status": "REAL gap",
+      "estimated_under_billing_czk": 162137.0
+    },
+    {
+      "category": "Polysterén beton PSB 50 / Liapor Mix 40mm",
+      "stary_vv_komplex_qty": 146.9,
+      "stary_vv_n_rows": 1,
+      "d_expected_qty": 41.13,
+      "my_pipeline_n": 0,
+      "my_pipeline_qty": 0.0,
+      "diff_d_qty": 41.13,
+      "status": "REAL gap",
+      "estimated_under_billing_czk": 8226.0
+    },
+    {
+      "category": "PE folie separace Deksepar",
+      "stary_vv_komplex_qty": 0,
+      "stary_vv_n_rows": 0,
+      "d_expected_qty": 0.0,
+      "my_pipeline_n": 0,
+      "my_pipeline_qty": 0.0,
+      "diff_d_qty": 0.0,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "SDK podhled Knauf D112 (CF20/CF21)",
+      "stary_vv_komplex_qty": 5123.54,
+      "stary_vv_n_rows": 5,
+      "d_expected_qty": 1434.59,
+      "my_pipeline_n": 1,
+      "my_pipeline_qty": 21.0,
+      "diff_d_qty": 1413.59,
+      "status": "REAL gap",
+      "estimated_under_billing_czk": 1060193.0
+    },
+    {
+      "category": "Systémové zavěšení podhledu",
+      "stary_vv_komplex_qty": 0,
+      "stary_vv_n_rows": 0,
+      "d_expected_qty": 0.0,
+      "my_pipeline_n": 0,
+      "my_pipeline_qty": 0.0,
+      "diff_d_qty": 0.0,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "XPS 80mm Dekperimetr (FF03)",
+      "stary_vv_komplex_qty": 408.64,
+      "stary_vv_n_rows": 3,
+      "d_expected_qty": 114.42,
+      "my_pipeline_n": 3,
+      "my_pipeline_qty": 130.12,
+      "diff_d_qty": -15.7,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Asfaltový pás Glastek 40 radon (FF03)",
+      "stary_vv_komplex_qty": 0,
+      "stary_vv_n_rows": 0,
+      "d_expected_qty": 0.0,
+      "my_pipeline_n": 1,
+      "my_pipeline_qty": 92.93,
+      "diff_d_qty": -92.93,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Cementový potěr 50mm (FF20/FF21/FF30)",
+      "stary_vv_komplex_qty": 983.36,
+      "stary_vv_n_rows": 1,
+      "d_expected_qty": 275.34,
+      "my_pipeline_n": 36,
+      "my_pipeline_qty": 324.85,
+      "diff_d_qty": -49.51,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Cementový potěr 58mm (FF31)",
+      "stary_vv_komplex_qty": 1630.73,
+      "stary_vv_n_rows": 1,
+      "d_expected_qty": 456.6,
+      "my_pipeline_n": 28,
+      "my_pipeline_qty": 490.02,
+      "diff_d_qty": -33.41,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Tepelná izolace Isover Top V Final 100mm (F15)",
+      "stary_vv_komplex_qty": 0,
+      "stary_vv_n_rows": 0,
+      "d_expected_qty": 0.0,
+      "my_pipeline_n": 44,
+      "my_pipeline_qty": 546.61,
+      "diff_d_qty": -546.61,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Vinyl 2.5mm Gerflor Creation",
+      "stary_vv_komplex_qty": 3424.53,
+      "stary_vv_n_rows": 2,
+      "d_expected_qty": 958.87,
+      "my_pipeline_n": 112,
+      "my_pipeline_qty": 1678.72,
+      "diff_d_qty": -719.85,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Keramický obklad bytové koupelny (F06)",
+      "stary_vv_komplex_qty": 142166.79,
+      "stary_vv_n_rows": 3,
+      "d_expected_qty": 39806.7,
+      "my_pipeline_n": 32,
+      "my_pipeline_qty": 586.24,
+      "diff_d_qty": 39220.46,
+      "status": "REAL gap",
+      "estimated_under_billing_czk": 37259440.0
+    },
+    {
+      "category": "Sádrová omítka 10mm (F04/F05)",
+      "stary_vv_komplex_qty": 0,
+      "stary_vv_n_rows": 0,
+      "d_expected_qty": 0.0,
+      "my_pipeline_n": 0,
+      "my_pipeline_qty": 0.0,
+      "diff_d_qty": 0.0,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    },
+    {
+      "category": "Vápenocementová omítka 10mm (F19)",
+      "stary_vv_komplex_qty": 0,
+      "stary_vv_n_rows": 0,
+      "d_expected_qty": 0.0,
+      "my_pipeline_n": 0,
+      "my_pipeline_qty": 0.0,
+      "diff_d_qty": 0.0,
+      "status": "OK",
+      "estimated_under_billing_czk": 0.0
+    }
+  ]
+}
