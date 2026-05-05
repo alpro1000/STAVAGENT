@@ -1,0 +1,193 @@
+# EN 1992-2 — INDEX.yaml (PARTIAL — sections relevant for Žihle Phase B)
+
+source:
+  norm_id: en_1992_2
+  title: "EN 1992-2 — Concrete bridges (Eurocode 2, Part 2)"
+  year: 2005
+  publisher: CEN
+  pdf_in_repo: "B2_csn_standards/SIST-EN-1992-2-2005.pdf"
+  extraction_status: PARTIAL
+
+# ─────────────────────────────────────────────────────────────────────
+# Section 3.1.2 — Strength classes (Materials)
+# ─────────────────────────────────────────────────────────────────────
+section_3_1_2_strength:
+  description: "Recommended strength class range for bridges"
+  recommended_values:
+    c_min: "C30/37"
+    c_max: "C70/85"
+  national_annex_allowed: true
+  applies_to_zihle:
+    nk: "C30/37"           # ✅ recommended C_min
+    opery_driky: "C30/37"  # ✅
+    rimsy: "C30/37"        # ✅
+    prechodove_desky: "C25/30"  # ⚠️ pod doporučením, ale akceptovatelné per ČSN 73 6244
+    podkladni: "C12/15"    # ✅ blinder, neaplikuje se §3.1.2 (non-structural)
+
+# ─────────────────────────────────────────────────────────────────────
+# Section 4.4 — Concrete cover
+# ─────────────────────────────────────────────────────────────────────
+section_4_4_cover:
+  description: "Minimum concrete cover for durability"
+  
+  formula:
+    c_nom: "c_min + Δc_dev"
+    c_min: "max(c_min,b, c_min,dur, 10 mm)"
+  
+  parameters:
+    delta_c_dev:
+      recommended_value_mm: 10
+      reduced_value_mm: 5
+      reduction_condition: "When QA system in place"
+    
+    c_min_b:
+      description: "Bond cover, depends on bar diameter"
+      rule: "≥ bar diameter"
+      typical_values_mm:
+        bar_8_to_12: 10
+        bar_14_to_16: 16
+        bar_20_to_25: 25
+        bar_28_plus: 32
+    
+    c_min_dur:
+      description: "Durability cover, depends on exposure + structural class"
+      see: "Table 4.4N (in EN 1992-1-1, referenced by EN 1992-2)"
+  
+  structural_class:
+    description: "Reflects design life requirement"
+    classes:
+      - id: S1
+        design_life_years: 25
+      - id: S2
+        design_life_years: 25
+      - id: S3
+        design_life_years: 50
+      - id: S4
+        design_life_years: 50
+      - id: S5
+        design_life_years: 50
+        typical_for_bridges: true
+      - id: S6
+        design_life_years: 100
+        typical_for_strategic_bridges: true
+  
+  applies_to_zihle:
+    structural_class: S5
+    design_life_years: 50
+    typical_covers_mm:
+      mostovkova_deska: 40       # XC4 + XF2 → c_min,dur ≈ 30, + 10 dev = 40
+      opery_driky: 50            # XC4 + XF2 + agresivni → 40 + 10 = 50
+      rimsy: 50                  # XC4 + XF2 + traffic abrasion → 50
+      prechodove_desky: 35       # XC2 + XF1 → 25 + 10 = 35
+
+# ─────────────────────────────────────────────────────────────────────
+# Section 7.3 — Crack control (overview)
+# ─────────────────────────────────────────────────────────────────────
+section_7_3_crack_control:
+  description: "Crack width limits (national annex specific)"
+  default_w_max:
+    description: "Recommended max crack width [mm]"
+    by_exposure:
+      X0: "no limit (informative)"
+      XC1: 0.4
+      XC2_XC3_XC4: 0.3
+      XD1_XD2_XS1_XS2_XS3: 0.3
+      XS_or_XF_with_prestressing: "stricter — see decompression criterion"
+  applies_to_zihle:
+    nk_w_max_mm: 0.3   # XC4 → 0.3 mm
+    rimsy_w_max_mm: 0.3 # XC4 → 0.3 mm
+
+# ─────────────────────────────────────────────────────────────────────
+# Section 113 — Design for execution stages
+# ─────────────────────────────────────────────────────────────────────
+section_113_execution:
+  description: "Verification during construction"
+  key_principles:
+    - "ULS check at all intermediate construction stages"
+    - "SLS check during execution (cracks, deflections)"
+    - "Loads during execution per EN 1991-1-6"
+    - "Partial factors may be reduced per National Annex"
+  
+  applies_to_zihle_stages:
+    - stage_id: 1
+      name: "Foundation + opěry standalone (before deck)"
+      checks_required:
+        - "Stability of standalone walls under earth pressure (asymmetric loading possible)"
+        - "Working pressure on temporary excavation walls"
+    - stage_id: 2
+      name: "Falsework + bednění in stavební jámě"
+      checks_required:
+        - "Falsework stability per ČSN EN 12812"
+        - "Formwork pressure per DIN 18218"
+    - stage_id: 3
+      name: "Concreting deck — fresh concrete acting on falsework"
+      checks_required:
+        - "Falsework load capacity"
+        - "Pressure on bednění (fresh concrete weight)"
+    - stage_id: 4
+      name: "Removal of falsework after curing"
+      checks_required:
+        - "Deck self-weight + structural continuity (frame action engages)"
+        - "Strength at removal time per TKP18 §7.8.3 (třída ošetřování)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Annex E — Indicative strength classes for durability
+# ─────────────────────────────────────────────────────────────────────
+annex_e_indicative_strength:
+  description: "Min strength class per exposure (informative)"
+  table:
+    X0: "C12/15"
+    XC1: "C20/25"
+    XC2: "C25/30"
+    XC3: "C25/30"
+    XC4: "C30/37"
+    XD1: "C30/37"
+    XD2: "C35/45"
+    XD3: "C35/45"
+    XS1: "C30/37"
+    XS2: "C35/45"
+    XS3: "C35/45"
+    XF1: "C30/37"
+    XF2: "C30/37 + air entrainment"
+    XF3: "C30/37 + air entrainment"
+    XF4: "C30/37 + air entrainment"
+    XA1: "C30/37"
+    XA2: "C30/37 + sulfate resistant"
+    XA3: "C35/45 + sulfate resistant"
+
+# ─────────────────────────────────────────────────────────────────────
+# Validation rules pro STAVAGENT
+# ─────────────────────────────────────────────────────────────────────
+validation_rules:
+  - id: VR-EN1992-2-001
+    description: "Bridge concrete strength must be ≥ recommended C_min"
+    check: "if element_is_structural and element_is_bridge: concrete_class >= C30/37"
+    exceptions: ["podkladní beton (non-structural blinder)", "přechodové desky (per ČSN 73 6244)"]
+  
+  - id: VR-EN1992-2-002
+    description: "Concrete cover must satisfy c_min,dur for exposure class"
+    check: "cover_mm >= max(bar_diameter, c_min_dur_per_exposure) + 10 mm dev"
+  
+  - id: VR-EN1992-2-003
+    description: "Crack width limit per exposure"
+    check: "if exposure in XC2/XC3/XC4: w_max <= 0.3 mm"
+
+# ─────────────────────────────────────────────────────────────────────
+# Sections NOT YET extracted (TODO for separate task)
+# ─────────────────────────────────────────────────────────────────────
+not_yet_extracted:
+  sections:
+    - "5 Structural analysis (full)"
+    - "6 ULS — bending, shear, torsion, punching, fatigue"
+    - "7.4 Deflection control (detailed)"
+    - "8 Detailing of reinforcement and prestressing tendons"
+    - "9 Detailing of members"
+    - "10 Precast concrete elements"
+    - "11 Lightweight aggregate concrete"
+  annexes_not_extracted:
+    - "Annex A: Modification of partial factors"
+    - "Annex B: Creep and shrinkage strain"
+    - "Annex C: Reinforcement properties"
+    - "Annex D: Detailed prestressing relaxation"
+    - "Annex F-QQ: various technical annexes"
+  effort_estimate_hours: 8-12

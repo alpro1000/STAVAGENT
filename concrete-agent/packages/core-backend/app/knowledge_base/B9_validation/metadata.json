@@ -1,0 +1,18 @@
+{
+  "category": "B9_validation",
+  "last_updated": "2026-05-05",
+  "version": "1.0",
+  "source": "Manual ingest",
+  "description": "Cross-validation rules and lifecycle data for STAVAGENT calculator/classifier sanity checks. Data here is consumed by validation_rules in calculator engines and by lifecycle cost analysis (TCO) — NOT for initial CapEx kalkulaci.",
+  "files": [
+    {
+      "path": "lifecycle_durability/",
+      "type": "subfolder_data",
+      "title": "Návrhová životnost prvků mostu (per element type)",
+      "files_in_folder": ["lifecycle_table.yaml"],
+      "primary_source": "../B6_research_papers/upa_zatizitelnost_sanace_mostu/ (slide 19)",
+      "added": "2026-05-05"
+    }
+  ],
+  "notes": "New bucket created 2026-05-05 alongside B9_Equipment_Specs. Reason: lifecycle/durability data has different semantics than equipment specs (validation rules vs catalog lookup). See docs/KNOWLEDGE_PLACEMENT_GUIDE.md section 15 for canonical examples."
+}

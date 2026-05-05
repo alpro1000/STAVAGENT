@@ -329,6 +329,10 @@ Při konfliktu mezi zdroji:
 | DIN 18218:2010-01 | B7 | `din_18218_2010_frischbetondruck` |
 | Pokorný + Suchánek — Betonové mosty II (UPa) | B6 | `upa_pokorny_suchanek_mosty_ii` |
 | VUT Bílý — Příklady navrhování 2G EC2 | B6 | `vut_bily_priklady_2g_ec2` |
+| **UPa lecture — Zatížitelnost a sanace mostů** *(actual slug used)* | **B6** | **`upa_zatizitelnost_sanace_mostu`** |
+| **EN 1992-2:2005 (SIST transposition, PARTIAL extract)** *(actual)* | **B7** | **`en_1992_2_concrete_bridges`** |
+| **ČSN 73 6222 — paid-norm stub via UPa** *(actual)* | **B7** | **`csn_73_6222_zatizitelnost_mostu`** |
+| **Lifecycle durability table per element type** *(actual)* | **B9_validation** | **`lifecycle_durability/`** |
 | Nečas — Betonové mosty II Modul M01 (VUT) | B6 | `vut_necas_mosty_ii_m01_technologie` |
 | VŠB — Pozemní stavitelství: Základy | B6 | `vsb_pozemni_zaklady` |
 | FA ČVUT — Beton 21. stol. — technologie | B6 | `cvut_beton_21st_technologie` |

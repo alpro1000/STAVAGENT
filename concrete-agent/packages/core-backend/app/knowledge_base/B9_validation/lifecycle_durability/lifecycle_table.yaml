@@ -1,0 +1,182 @@
+# Lifecycle Durability — Návrhová životnost prvků mostu
+# Source: UPa lecture slide 19 (09_zatizitelnost__sanace.pdf)
+# Bucket: B9_validation/ (cross-validation rules and lifecycle data)
+
+source:
+  primary: "B6_research_papers/upa_zatizitelnost_sanace_mostu/"
+  slide: 19
+  origin: "praxe + ČSN EN 1990 (basis of design)"
+  unit: "years"
+
+# ─────────────────────────────────────────────────────────────────────
+# Lifecycle table per element
+# ─────────────────────────────────────────────────────────────────────
+lifecycle_per_element:
+  description: |
+    Předpokládaná životnost jednotlivých prvků mostu.
+    Hodnoty jsou rozsahy (min - max) — konkrétní hodnota závisí na
+    expozici, kvalitě provedení, údržbě.
+    
+    Tato data jsou vstup pro lifecycle cost analysis (TCO),
+    ne pro initial CapEx kalkulaci.
+  
+  elements:
+    rimsa:
+      min_years: 30
+      max_years: 50
+      typical_years: 40
+      stavagent_element_types: [rimsa]
+      replacement_complexity: medium  # vyžaduje uzavírku + nové kotvení
+    
+    vozovka:
+      min_years: 20
+      max_years: 30
+      typical_years: 25
+      stavagent_element_types: []  # vozovka není bridge element v classifier
+      sub_elements:
+        obrusna_vrstva: {min: 8, max: 12}
+        loznivrstva: {min: 15, max: 25}
+        podkladni_vrstvy: {min: 20, max: 30}
+      replacement_complexity: low  # frézování + nová pokládka
+    
+    svodidlo:
+      min_years: 15
+      max_years: 30
+      typical_years: 25
+      stavagent_element_types: []
+      replacement_complexity: low
+    
+    zabradli:
+      min_years: 15
+      max_years: 30
+      typical_years: 25
+      stavagent_element_types: []
+      replacement_complexity: low
+    
+    mostni_zaver:
+      min_years: 15
+      max_years: 30
+      typical_years: 20
+      stavagent_element_types: []
+      replacement_complexity: high  # přerušení provozu, sanace okolí
+      not_applicable_for_integral_bridge: true
+    
+    mostni_lozisko_vc_skruze:
+      min_years: 30
+      max_years: 50
+      typical_years: 40
+      stavagent_element_types: []
+      replacement_complexity: very_high  # zvedání NK
+      not_applicable_for_integral_bridge: true
+    
+    mostni_izolace:
+      min_years: 30
+      max_years: 50
+      typical_years: 40
+      stavagent_element_types: []
+      replacement_complexity: high  # demontáž vozovky + render izolace
+    
+    spodni_stavba:
+      min_years: 60
+      max_years: 100
+      typical_years: 80
+      stavagent_element_types:
+        - opery_ulozne_prahy
+        - driky_piliru
+        - zaklady_piliru
+        - zaklady_oper
+        - zakladovy_pas
+        - zakladova_patka
+      replacement_complexity: very_high  # full reconstruction
+      
+    nosna_konstrukce:
+      min_years: 60
+      max_years: 100
+      typical_years: 80
+      stavagent_element_types:
+        - mostovkova_deska
+        - prechodova_deska
+      replacement_complexity: very_high  # demolice + nová stavba
+    
+    odvodnovace:
+      min_years: 20
+      max_years: 30
+      typical_years: 25
+      stavagent_element_types: []
+      replacement_complexity: low
+
+# ─────────────────────────────────────────────────────────────────────
+# Validation rules (consumable by future lifecycle engine)
+# ─────────────────────────────────────────────────────────────────────
+validation_rules:
+  - id: VR-LIFECYCLE-001
+    description: "Nová NK musí mít navrženou životnost ≥ 60 let"
+    check: |
+      def validate(element_type, design_life_years):
+        nk_elements = ['mostovkova_deska', 'opery_ulozne_prahy', 'driky_piliru',
+                       'zaklady_piliru', 'zaklady_oper', 'zakladovy_pas', 'zakladova_patka']
+        if element_type in nk_elements:
+          return design_life_years >= 60
+        return True  # other elements have shorter design lives
+  
+  - id: VR-LIFECYCLE-002
+    description: "Integral frame bridge — skip lifecycle for non-existent elements"
+    check: |
+      def get_applicable_lifecycle_elements(construction_technology):
+        if construction_technology == 'integralni_ram':
+          # No bearings, no expansion joints
+          return [el for el in lifecycle_per_element 
+                  if not el.get('not_applicable_for_integral_bridge', False)]
+        return list(lifecycle_per_element)
+  
+  - id: VR-LIFECYCLE-003
+    description: "Total cost of ownership horizon should match worst element life"
+    check: |
+      def get_tco_horizon(elements_list):
+        # If TCO horizon = 50 years:
+        # - Vozovka replaced 1-2× (life 20-30y)
+        # - Svodidla replaced 1-2× (life 15-30y)
+        # - Izolace replaced 1× (life 30-50y)
+        # - NK + SS still in service (life 60-100y)
+        return 50  # standard for D&B tenders
+
+# ─────────────────────────────────────────────────────────────────────
+# Future capability: TCO calculator (NOT YET implemented)
+# ─────────────────────────────────────────────────────────────────────
+tco_calculator_design:
+  status: TODO
+  description: |
+    Engine which calculates Total Cost of Ownership over 50-year horizon:
+    
+    TCO = initial_capex
+        + Σ replacement_cost(element, years_until_replacement)
+        + Σ maintenance_cost(element, annual)
+    
+    Inputs:
+      - Element breakdown (from main calculator)
+      - Replacement costs per element type (B3_current_prices/)
+      - Lifecycle data (this file)
+      - Discount rate (default: 3%/year for public sector CZ)
+    
+    Outputs:
+      - NPV of total cost over 50 years
+      - Replacement schedule (which year, which element)
+      - Comparison: Žihle integrální rám vs hypothetical "standard with bearings"
+  
+  potential_d_and_b_advantage:
+    description: |
+      Integral frame bridge eliminates expensive replacement cycles:
+      - No bearings → save 30-50y replacement (very_high complexity)
+      - No expansion joints → save 15-30y replacement (high complexity)
+      - Simpler drainage → save 20-30y replacement
+      
+      This could be marketing differentiator for STAVAGENT-supported D&B bids:
+      Vyšší CapEx +5% → -30% TCO za 50 let
+
+# ─────────────────────────────────────────────────────────────────────
+# Cross-references
+# ─────────────────────────────────────────────────────────────────────
+cross_references:
+  - "B6_research_papers/upa_zatizitelnost_sanace_mostu/INDEX.yaml > navrhova_zivotnost"
+  - "B7_regulations/csn_en_1990_basis_of_design/" # TODO — provides design life basis
+  - "B3_current_prices/" # for replacement cost data
