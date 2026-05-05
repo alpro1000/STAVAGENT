@@ -1,0 +1,396 @@
+# ═══════════════════════════════════════════════════════════════════════
+# extracted/ch07_12_predpinaci_systemy.yaml
+# Kapitoly 7-12: předpínací systémy, kotvy, kotevní oblast, ztráty předpětí
+# ═══════════════════════════════════════════════════════════════════════
+
+source:
+  metadata_ref: ../METADATA.md
+  language: cs
+  jurisdiction: CZ
+  pages: "61-92"
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 7: Předpínací systémy — základní rozdělení
+# ─────────────────────────────────────────────────────────────────────
+
+ch07_zakladni_typy:
+  
+  predem_predpjate:
+    label_cs: "předem předpjaté"
+    label_en: "pre-tensioned"
+    bond: "se soudržností"
+    typical_use: "prefabrikované mostní konstrukce"
+    predpinaci_drahy_max_length_m: 200
+    workflow:
+      step_1: "očištění + namazání odformovacím olejem"
+      step_2: "vložení betonářské + předpínací výztuže"
+      step_3: "napínání hydraulickou pistolí + kotvení do kotevních bloků"
+      step_4: "betonáž, vibrace, hlazení"
+      step_5: "proteplení betonu (urychlení tvrdnutí)"
+      step_6: "po dosažení 80% pevnosti uvolnit kotvení → vnesení předpětí"
+    workflow_critical_param:
+      pevnost_betonu_pred_uvolnenim_pct: 80
+    products:
+      - VSTI-2000
+      - I-DZ_97
+      - TT-DZ_97
+      - MK-T
+    page: 62
+
+  dodatecne_predpjate:
+    label_cs: "dodatečně předpjaté"
+    label_en: "post-tensioned"
+    bond: "se soudržností i bez soudržnosti"
+    typical_use: "mosty na rozpětí střední a velké"
+    workflow:
+      step_1: "osazení kabelových kanálků ve formě (s odvzdušňovacími trubkami v nejvyšších bodech)"
+      step_2: "vybednění čel + osazení kotev"
+      step_3: "doplnění předpínací výztuže betonářskou"
+      step_4: "vložení kabelů s mrtvými kotvami do trubek před betonáží"
+      step_5: "vybetonování (v plné délce nebo z dílů)"
+      step_6: "protažení patentovaného kabelu chráničkou"
+      step_7: "předepnutí kabelu (převážně ve výrobně, případně další na stavbě)"
+      step_8: "profouknutí kanálků stlačeným vzduchem nebo tlakovou vodou"
+      step_9: "zainjektování"
+    products_current:
+      - "MK-T"
+      - "MK-T-ČD"
+      - "T-93"
+      - "T-2000_PETRA"
+    products_legacy_pre_1990:
+      - "KA-67"
+      - "KA-73"
+      - "I-67"
+      - "I-73"
+    page: 63
+
+  vnejsi_predpeti:
+    label_cs: "vnější volné předpětí"
+    label_en: "external prestressing"
+    bond: "bez soudržnosti"
+    common_form: "vícelanové kabely vedené mimo betonový průřez pomocí deviátorů"
+    typical_location: "v dutině komorového průřezu"
+    components:
+      deviatory:
+        definition: "masivní bloky betonu nebo ocelové prvky, v nichž dochází k vychýlení dráhy předpínacího kabelu"
+      kotevni_bloky: true
+      sedla: true
+    arrangements:
+      - "ohýbání vnějších kabelů v deviátorech"
+      - "ohýbání vnějších kabelů v příčnících"
+      - "volná lana vedená přes pylon (zavěšené mosty)"
+    page: 65
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 7: Předpínací výztuž — vlastnosti
+# ─────────────────────────────────────────────────────────────────────
+
+ch07a_predpinaci_vyztuz:
+
+  drat_patentovany:
+    label_cs: "patentovaný drát"
+    diameter_range_mm: [2, 7]
+    strength_MPa_range: [1400, 1800]
+    manufacturing: "tažení za studena z válcovaného drátu"
+    storage: "navíjen na cívky velkých rozměrů"
+    page: 61
+
+  lana:
+    label_cs: "předpínací lano (typically 7-drátové)"
+    composition: "1 přímý centrální + 6 svinutých do šroubovice"
+    typical_diameters_mm: [15.3, 15.7]
+    f_p_0_1k_min_MPa: 1570
+    f_pk_min_MPa: 1770
+    Ep_assumed_GPa: 195
+    Ep_actual_range_GPa: [185, 205]
+    objemova_hmotnost_kg_per_m3: 7850
+    purpose_of_helix: "zlepšuje soudržnost lana s injektáží nebo betonem"
+    storage:
+      svitek_length_m: 1635
+      svitek_mass_kg: 1920
+    page: 61
+
+  tyce:
+    label_cs: "předpínací tyče (žebírkové)"
+    diameter_range_mm: [20, 40]
+    manufacturing: "válcování za tepla"
+    typical_use: "dodatečné předpínání"
+    Ep_assumed_GPa: 205
+    Ep_actual_range_GPa: [195, 210]
+    page: 61
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 8: Konstrukční zásady
+# ─────────────────────────────────────────────────────────────────────
+
+ch08_konstrukcni_zasady:
+  
+  legacy_csn_73_6207:
+    note: "Tato norma byla nahrazena. Hodnoty zde uvádíme pro porovnání."
+    krytí_kabelovych_kanalku_mm:
+      formula: "max(průměr_kanálku, 30)"
+    krytí_predpinaci_vyztuze_mm:
+      min: 30
+    mezery_mezi_vlozkami_mm:
+      formula: "max(průměr_vložek, 20)"
+    tloustka_steny_mezi_kanalky_mm: 30
+    tloustka_steny_pri_krizovani: "lze ležet na sobě, pokud opatřeny PE/ocelovou trubkou"
+    pri_velkem_poctu_kabelu:
+      svisla_mezera_min_mm: 100
+    trminky_max_vzdalenost: 
+      formula_mm: "min(0.75 * vyska_tramu, 400)"
+    trminky_pri_sirce_zebrа_gt_300mm:
+      type: "minimálně čtyřstřižné"
+      podelne_vlozky_max_vzdalenost_mm: 400
+    page: 67
+
+  current_csn_en_1992_2:
+    note: "Aktuální norma — Eurokód 2 část 2 (mosty)"
+    nominalni_kryci_vrstva: "c_nom = c_min + Δc_dev"
+    minimalni_kryci_vrstva: "c_min = max(c_min,b ; c_min,dur + Δc_dur,γ - Δc_dur,st - Δc_dur,add)"
+    components:
+      c_min_b: "minimální krycí vrstva z hlediska soudržnosti"
+      c_min_dur: "minimální krycí vrstva z hlediska podmínek prostředí"
+      delta_c_dur_gamma: "minimální přídavná bezpečnostní složka"
+      delta_c_dur_st: "redukce při použití nerezové oceli"
+      delta_c_dur_add: "redukce při použití přídavné ochrany"
+    abrazivni_pusobeni:
+      vystaveni: "led nebo pevné části tekoucí vodou"
+      adjustment_mm: 10  # má být zvětšena minimálně o 10 mm
+    page: 68
+    source_clause: "ČSN EN 1992-1-1 + ČSN EN 1992-2"
+
+  exposure_classes_link:
+    norm: "ČSN EN 206-1"
+    note: "Stupně vlivu prostředí — XA, XC, XD, XF, XS"
+    page: 69
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 9: Základní prvky předpínacích systémů
+# ─────────────────────────────────────────────────────────────────────
+
+ch09_kotvy_a_systemy:
+  
+  zakladni_principy_kotev:
+    klinove:
+      principle: "kuželový kotevní kuželík + kotevní objímka; reakce kolmo na osu kuželu; rýhy zvětšují μ"
+      example_systems: ["DYWIDAG_lano", "FREYSSINET", "VSL", "SKANSKA_DS"]
+      detail:
+        kotevni_kuzelik: "dělen na 3 díly, středem prochází lano"
+        princip_zatlaceni: "pokluz — zatlačení kuželíku do otvoru"
+        ztrata_pokluzem: "důsledek pokluzu při kotvení"
+        prokluz_definition: "negativní jev — neúmyslné proklouznutí lana v kuželíku"
+      page: 71
+
+    sroubove:
+      principle: "šroub na konci tyče (hladké nebo celozávitové) opřený o kotevní blok; předpínání utahováním (mechanicky/hydraulicky)"
+      example_systems: ["DYWIDAG_tyc"]
+      page: 73
+
+    rozsireni_konce:
+      principle: "konec prutu rozšířen stlačením → hlava brání proklouznutí; mezi blok a čelo nosníku ocelové podložky"
+      example_systems: ["BBR", "KA"]
+      page: 73
+
+    pasivni_kotvy:
+      definition: "kotvy bez aktivního napínání"
+      page: 74
+
+  spojky:
+    label_cs: "spojky kabelů"
+    purpose: "spojení kabelů mezi sebou"
+    example_systems: ["VSL"]
+    page: 74
+
+  mrtva_kotva:
+    use_case: "pasivní konec kabelu v nedostupném místě"
+    force_transfer:
+      - "radiální tlak"
+      - "soudržnost"
+      - "kotevní desky"
+      - "soudržnost rozpletených drátů s betonem"
+    requires: "ztužující kroužek + spirála pro zachycení štěpící síly"
+    page: 75
+
+  injektovani:
+    purpose:
+      - "ochrana kanálku a výztuže proti korozi"
+      - "soudržnost výztuže s betonem po celé délce kanálku"
+    methods:
+      - "tlaková injektáž"
+      - "následná injektáž"
+      - "vakuová injektáž"
+    composition: "směs cementu, vody a přísad pro tekutost a stabilitu"
+    workflow:
+      - "profouknutí vzduchem nebo tlakovou vodou"
+      - "vhánění malty nízkými body, vzduch tlačený odvzdušňovacími trubkami"
+    page: 76
+
+  sklipek:
+    label_cs: "sklípek"
+    definition: "vytvořený prostor v čele prvku — mezi kotevní deskou a svislou rovinou nosníku"
+    purpose: "umožnění šikmého kabelu"
+    page: 76
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 10: DYWIDAG lanový systém — detailní specifikace
+# ─────────────────────────────────────────────────────────────────────
+
+ch10_dywidag_lanovy:
+  
+  type: "dodatečně předpínací lanový systém"
+  diameters_mm: [15.3, 15.7]
+  steel_jmenovita_pevnost_MPa:
+    f_p_0_1k_min: 1570
+    f_pk_min: 1770
+
+  prubeh_sily_v_kabelu:
+    pri_napinani_max:
+      formula: "0.8 × f_pk"
+      explanation: "při napínání nesmí předpínací síla překročit 0.8 jmenovité pevnosti"
+    pri_zatizeni_max:
+      formula: "0.7 × f_pk"
+      explanation: "síla v kabelu při zatížení předpjaté konstrukce nesmí překročit 0.7 jmenovité pevnosti"
+    page: 79
+
+  polomery_zakriveni_minimalni_m:
+    # Tabulka 12 — strana 79
+    n_lan_gt_22:
+      R_min: 8.6
+    n_lan_le_22:
+      R_min: 4.8
+    table_ref: "Tabulka 12"
+    page: 79
+
+  spojkovani:
+    constraint: "nesmí docházet k nepřijatelnému posunu spojky"
+
+  kotvy_typy:
+    - id: stupnovita
+      use: "podélné předpětí mostních a trámových konstrukcí"
+      page: 80
+    - id: jednodilna_deskova
+      use: "deskové konstrukce + příčné předpětí mostních desek"
+      page: 81
+    - id: vicelanovy_s_plochymi_kanalky
+      use: "předpínání desek + příčné předpínání horních desek komůrkových mostů"
+      detail: "kabel ze 4 lan v jedné vrstvě, napínání a kotvení zvlášť"
+      page: 81
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 11: Kotevní oblast (anchorage zone)
+# ─────────────────────────────────────────────────────────────────────
+
+ch11_kotevni_oblast:
+
+  definition: 
+    cs: "oblast mezi čelem prvku a průřezem ležícím ve vzdálenosti vyrovnávací délky"
+    note: "po této délce je rozdělení napětí lineární"
+  
+  pozadavek_kotvy: "osazena kolmo na betonovanou plochu"
+  pri_sikmych_kabelech: "použít sklípek"
+  
+  vyrovnávací_delka:
+    label_cs: "vyrovnávací délka (l_d)"
+    fotoelastimetricka_zavislost: "l_d ≈ a_1 (výška průřezu prvku)"
+    page: 85
+
+  pricny_napeti:
+    near_face: "tlak"  # příčný tlak těsně za kotvou
+    further: "tah"     # příčný tah v další části úseku l_d
+    velikost_zavisla_na: "poměr a_2 / a_1 (výška kotevní desky / výška průřezu)"
+    pravidlo: "tahová napětí jsou tím větší, čím menší je tento poměr"
+    page: 85
+
+  isobary:
+    definition: "čáry spojující místa stejného příčného napětí"
+    oznaceni: "poměr σ_y / σ_x"
+    pri_dostrednem_pusobeni:
+      max_pomer: 0.34   # v hlavní oblasti příčných tahů
+      page: 86
+
+  stepna_tahova_sila:
+    definition: "síla působící příčně k ose prvku, kterou musí zachytit příčná výztuž"
+    typically_zachycena_by: "spirála z betonářské oceli"
+    spirala_zavit_mm: [30, 60]   # 3-6 cm výška závitu
+    spirala_delka: "odpovídá přibližně délku náhradního hranolu"
+    page: 87
+
+  pricna_napeti_dostredne_vs_mimostredne:
+    dostredne:
+      formula_principle: "viz diagram velikosti štěpné tahové síly"
+    mimostredne:
+      principle: "náhradní hranol o výšce a_i — tlaková síla působí centricky"
+      page: 86
+
+  vetsi_pocet_kotev_postup:
+    step_1: "určit náhradní hranol pro každou kotvu"
+    step_2: "diagramem vyšetřit velikost štěpné síly v hranolech"
+    step_3: "při kotvách nad sebou počítat sílu v hranolu s nejmenším poměrem a_2/a_1"
+    step_4: "součet štěpných sil ve svislých pásech"
+    step_5: "výslednice S předpínací síly všech kabelů"
+    step_6: "náhradní hranol o výšce = 2× vzdálenost působiště od bližšího okraje"
+    step_7: "v náhradním hranolu vyšetřit tahová napětí (S' < S)"
+    step_8: "brát nejmenší hodnotu Z_S"
+    page: 87
+
+  minimalni_pevnost_betonu:
+    note: "závisí na konkrétním systému, viz technické podklady"
+
+  dovolene_namahani_betonu:
+    kotvy_pripojene:
+      formula: "σ_b ≤ k * σ_b,c * sqrt(A1/A2)"
+    kotvy_zabetonovane:
+      formula: "σ_b ≤ k * σ_b,c * sqrt(A1/A2) (vyšší k)"
+    horni_omezeni: "max 2.5 × dovolené napětí betonu v tlačené oblasti za dostředného tlaku"
+    page: 84
+
+  pozadavky_pro_plochu_A1:
+    a: "těžiště A1 totožné s těžištěm A2"
+    b: "délkové rozměry A1 ≤ 5× délkové rozměry A2"
+    c: "u 2+ kotev se překrývající části počítají jen jednou"
+    page: 82
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 12: Změny předpětí (ztráty)
+# ─────────────────────────────────────────────────────────────────────
+
+ch12_zmeny_predpeti:
+  
+  princip:
+    nature: "předpínací síla není konstantní — mění se po délce kabelu i s časem"
+    napeti_max_pri_napinani:
+      formula_inputs: ["f_pk", "f_p,0,1k"]
+      note: "viz vztah pro odvození vysoké maximální přípustné hodnoty"
+    page: 91
+
+  ztraty_okamzite:
+    label_cs: "okamžité ztráty (výrobní)"
+    occurs: "v okamžiku předpínání + během zakotvení"
+    components:
+      - id: treni_kabel_kanalek
+        label_cs: "tření mezi kabelem a stěnami kabelového kanálku"
+        depends_on: ["součinitel_třeni_přímý μ", "součinitel_třeni_zakřivený β"]
+      - id: pokluz_v_kotve
+        label_cs: "pokluz v kotvě"
+      - id: pruzne_pretvoreni_betonu
+        label_cs: "okamžité pružné přetvoření betonu"
+      - id: postupne_predpinani
+        label_cs: "ztráta postupným předpínáním (ztráta v dříve napnutých kabelech od následujících)"
+      - id: relaxace_vyztuze
+        label_cs: "relaxace předpínací výztuže (okamžitá část)"
+      - id: technologie_specific
+        label_cs: "další ztráty závislé na technologii"
+    page: 91
+
+  ztraty_dlouhodobe:
+    label_cs: "dlouhodobé ztráty (provozní)"
+    occurs: "po zakotvení (resp. po vnesení) — projevují se v čase"
+    components:
+      - id: smrstovani_betonu
+        label_cs: "smršťování betonu"
+      - id: dotvarovani_betonu
+        label_cs: "dotvarování betonu (creep)"
+      - id: relaxace_vyztuze_dlouhodoba
+        label_cs: "relaxace předpínací výztuže (dlouhodobá část)"
+    page: 92

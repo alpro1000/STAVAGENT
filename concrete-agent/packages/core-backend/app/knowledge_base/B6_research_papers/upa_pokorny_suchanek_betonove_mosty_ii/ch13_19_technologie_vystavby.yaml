@@ -1,0 +1,547 @@
+# ═══════════════════════════════════════════════════════════════════════
+# extracted/ch13_19_technologie_vystavby.yaml
+# Kapitoly 13-19: technologie výstavby mostů (klíčové pro element-scheduler + formwork engine)
+# ═══════════════════════════════════════════════════════════════════════
+
+source:
+  metadata_ref: ../METADATA.md
+  language: cs
+  jurisdiction: CZ
+  pages: "93-118"
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 13: Moderní technologie výstavby mostů — přehled
+# ─────────────────────────────────────────────────────────────────────
+
+ch13_prehled:
+  
+  hlavni_kategorie:
+    monoliticke_konstrukce:
+      label_cs: "monolitické konstrukce"
+      construction_methods:
+        - "na pevných skružích"
+        - "na posuvných skružích"
+        - "na výsuvné skruži se zatímními podpěrami"
+        - "vysouvané"
+        - "otáčené"
+        - "letmá betonáž"
+      page: 93
+    
+    prefabrikovane_konstrukce:
+      label_cs: "prefabrikované konstrukce"
+      construction_methods:
+        - "podélné prefabrikované prvky (do L=30-40 m)"
+        - "příčně dělené segmentové konstrukce (rozpětí střední a velké)"
+      page: 93
+    
+    hybridni_konstrukce:
+      label_cs: "hybridní konstrukce"
+      construction_methods:
+        - "kombinace monolitické a prefabrikované"
+      page: 93
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 14: Výstavba mostů na skružích
+# ─────────────────────────────────────────────────────────────────────
+
+ch14_skruze:
+
+  pevne_skruze:
+    label_cs: "pevné skruže (lešení)"
+    components: "lehké stojky podpírající bednění + nosníky"
+    
+    pri_3_4_polich: "skruž celá (najednou)"
+    pri_dlouhých_mostech: "skruž se přestavuje"
+    
+    examples:
+      - PEINER     # podporová skruž
+      - PERI
+      - HUNNEBECK
+      - PIZMO_STOJKY_IP   # ocelové inventární podpěry
+      - DOKA               # bednění
+    
+    constraints:
+      max_bridge_length_m: 100
+      max_height_above_ground_m_range: [10, 15]
+    
+    advantages:
+      - "mosty složitého půdorysu / velkého spádu"
+      - "případy, kdy nelze využít prefabrikaci"
+      - "ocelové inventární skruže — únosnost, opakovatelnost, variabilnost, ekonomie"
+    
+    disadvantages:
+      - "max délka mostu 100 m"
+      - "max výška 10-15 m"
+    page: 95
+
+  posuvne_skruze:
+    label_cs: "posuvné skruže (movable formwork system, MSS)"
+    economic_for_total_length_m_min: 400
+    optimum_for: "stálé rozpětí + konstantní šířka nosné konstrukce"
+    can_handle_variable_section: true
+    
+    suitable_section_types_by_span:
+      mensi_rozpeti: ["deskový", "trámový"]
+      vetsi_rozpeti: ["komorový"]
+    
+    static_systems_during_construction:
+      - "prosté nosníky"
+      - "spojité nosníky"
+      - "rámové konstrukce"
+    
+    skruz_length_to_span_ratio: [1.3, 2.5]
+    
+    main_girder_position:
+      - id: pod_konstrukci
+        bedneni: "podpíráno"
+        advantage: "Prostor na skruži je volný pro veškeré práce"
+      - id: nad_konstrukci
+        bedneni: "zavěšeno"
+        advantage: "Hlavní nosník dostatečné výšky bez omezení prostoru pod mostem"
+    
+    skruze_pro_segmentovou_betonaz:
+      use_case: "rozpětí 60-100 m"
+      max_segment_length_m: 10
+      advantage: "menší hmotnost skruže"
+    
+    skruze_pro_cele_pole:
+      use_case: "rozpětí 30-60 m"
+    
+    workflow_complete_pole:
+      step_1: "sestavení v předpolí mostu, zasunutí do prvního pole"
+      step_2: "vyrovnání bednění"
+      step_3: "montáž výztuže a předpínacích kabelů"
+      step_4: "betonování (pracovní spára obvykle v místě nulového momentu od vlastní tíhy)"
+      step_5: "technologická přestávka"
+      step_6: "předepnutí + injektáž"
+      step_7: "posun zařízení do dalšího pole"
+    
+    workflow_segmentova:
+      step_1: "sestavení zařízení na pilíři"
+      step_2: "zavěšení bednění na skruži (podepírané u pilířů + na předcházející konzole)"
+      step_3: "betonování od pilířů v symetrických konzolách postupně po segmentech"
+    
+    examples:
+      - id: MSSU
+        full_name: "MSSU"
+        construction: "2 svařované hlavní nosníky spojené příčníky"
+        front_support: "podpěrné konzoly s hydraulickými lisy upevněné na pilíři"
+        rear_support: "zavěšen na nosník na hydraulických lisech (na konzole nosné konstrukce z předcházející etapy)"
+        zavesy: "tyče Dywidag s klouby pro svislost při změně podélného sklonu"
+      - id: BINDER
+        full_name: "Posuvná skruž Binder"
+        coverage: "přemosťuje 2 pole"
+        movement: "podélné a příčné posuny systémem hydraulických podpěr"
+      - id: POLENSKY_ZOLLNER
+        full_name: "Polensky-Zöllner"
+    
+    reference_projects_CZ:
+      - "R 3509 Slavonín-Přáslavice (446 m, MSSU)"
+      - "Estakáda Hvězdonice (první v ČR)"
+      - "Estakáda Beroun"
+    
+    static_analysis_complication:
+      multi_phase: true
+      example_4_pole_bridge:
+        phase_1: "vlastní tíha + předpětí na staticky určitém nosníku s převislým koncem"
+        phase_2_to_3: "vlastní tíha + předpětí na spojitém nosníku s převislým koncem"
+        phase_4_final: "vlastní tíha + předpětí na spojitém nosníku o čtyřech polích"
+    
+    advantages:
+      - "zrychlení výstavby (1 pole / 14 dní)"
+      - "nezávislost na terénu pod mostem"
+      - "možnost náročných tras a architektonických řešení"
+      - "zvýšení produktivity opakováním"
+    
+    disadvantages:
+      - "velké pořizovací náklady"
+      - "montáž a transport skruže"
+      - "komplikace statického výpočtu"
+    page: [96, 99]
+
+  vysuvna_skruz_se_zatimnimi_podperami:
+    label_cs: "výsuvná skruž se zatímními podpěrami"
+    construction: "4 příhradové nosníky"
+    sliding_along: "zatímní podpěry uprostřed rozpětí, případně u pilířů"
+    advantages:
+      - "úspornější díky menšímu rozpětí skruže"
+    disadvantages:
+      - "nelze navrhovat nadpilířová a mezilehlá ztužidla"
+      - "menší výšky konstrukce nad terénem"
+    page: 99
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 15: Vysouvané konstrukce (incremental launching)
+# ─────────────────────────────────────────────────────────────────────
+
+ch15_vysouvane:
+
+  technology: "incremental launching method (ILM)"
+  segment_length_m: [15, 40]   # délka lamely
+  
+  prurez_vetsinou:
+    primary: "jednokomorový"
+    alternatives: ["deskový", "dvoutrám", "tříkomorový"]
+  
+  problem_konzolovy_moment:
+    nature: "při vysouvání vzniká velký konzolový moment v konzole"
+    reduction_methods:
+      - id: vysuvny_nos
+        nature: "lehká ocelová příhradová konstrukce"
+        delka_pct_of_pole: [60, 80]
+      - id: pylon_se_zavesy
+        nature: "montážní pylon"
+        position: "od konce konzoly ve vzdálenosti = délce vysouvaného pole"
+    
+    moment_charakter:
+      max: "vždy ve vysouvané konzole"
+      types: ["kladný", "záporný"]
+
+  sliding_components:
+    - "bloky s nerezavějící výztuží"
+    - "teflonové desky pro posun (mezi bloky a konstrukcí)"
+    - "vodící prvky pro směr (na podpěrách)"
+
+  forma_konstrukce:
+    castí: 2
+    cast_1: "betonáž spodní desky"
+    cast_2: "betonáž stěn + horní desky"
+    bocnice: "odklopné"
+    jadro: "výsuvné"
+    page: 102
+
+  workflow_basic:
+    step_1: "betonování lamely ve formě za opěrou"
+    step_2: "předepnutí po dosažení 80% pevnosti"
+    step_3: "vysunutí lamely speciální konstrukcí"
+    step_4: "betonování další lamely"
+  
+  workflow_weekly_cycle:
+    description: "týdenní cyklus výroby"
+    days_1_2: "betonáž spodní desky"
+    days_3_4_5: "betonáž stěn a horní desky"
+    days_6_7: "víkend — beton tvrdne"
+    day_8: "pondělí — předpínání + výsun, cyklus se opakuje"
+
+  rozdeleni_konstrukci:
+    - id: vysuvny_nos
+      label_cs: "pomocí výsuvného ocelového nosu"
+    - id: pylon_zavesy
+      label_cs: "vyvěšením ocelové části pylonem"
+
+  vlastni_vysuvne_zarizeni:
+    - id: tlacne
+      label_cs: "tlačné"
+      principle: "svislý + vodorovný hydraulický lis (nadzvedne + posune)"
+    - id: tazne
+      label_cs: "tažné"
+      principle: "předpínací pistole opřená o opěru, napíná kabel zakotvený na konci lamely"
+
+  advantages:
+    - "podélné i příčné vysouvání"
+  
+  disadvantages:
+    - "pouze mosty s konstantní křivostí"
+  
+  reference_projects:
+    - id: tomice_1972
+      name: "Most v Tomicích (1972) — první v ČR"
+    - id: cekanice_1994
+      name: "Most u Čekanic (1994)"
+      detail: "spojitý nosník 13 polí — 10 vysouvaných + 3 monolitické"
+    - id: rimov
+      name: "Most v Římově"
+    - id: aichtal
+      name: "Most Aichtal (D B27 Stuttgart-Tübingen)"
+  page: [101, 104]
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 16: Otáčené konstrukce
+# ─────────────────────────────────────────────────────────────────────
+
+ch16_otacene:
+  
+  workflow:
+    - "stavba podél překonávané překážky"
+    - "technologická přestávka"
+    - "otočení nosné konstrukce do požadované polohy"
+  
+  rotation_support: "elastomerové desky"
+  rotation_surface: "nerezavějící ocel s teflonovým povrchem"
+  
+  rare_technology: true
+  page: 105
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 17: Letmá betonáž (balanced cantilever)
+# ─────────────────────────────────────────────────────────────────────
+
+ch17_letma_betonaz:
+
+  technology: "balanced cantilever / free cantilever method"
+  economic_for_span_min_m: 200
+  typical_use_cases:
+    - "mosty přes hluboká údolí"
+    - "široké řeky"
+    - "průplavy"
+  
+  staticky_system_during_construction:
+    - "vetknutý"
+    - "spojitý nosník"
+    - "oblouk"
+    - "sdružený rám s/bez kloubů uprostřed polí"
+    - "jednostranná konzola"
+  
+  pricny_rez:
+    typical: "uzavřený komůrkový průřez proměnné výšky"
+    near_supports:
+      bottom_slab: "zesilování"
+      total_height: "zvětšení (parabolický náběh esteticky)"
+    height_variation: "plynulá; alternativně konstantní s zesilněním spodní desky"
+    page: 106
+  
+  segment_length_m: [3, 5]
+  
+  cantilever_moment_reduction:
+    - "dočasné podpory"
+    - "zavěšený pylon"
+    - "postupné budování příčného řezu (snížení montážního zatížení)"
+  
+  workflow:
+    step_1: "vybetonování zárodku (pilíř + 7-10 m nosné konstrukce, tradiční způsob)"
+    step_2: "umístění 1-2 betonovacích vozíků na zárodek"
+    step_3: "vyrovnání + uchycení bednění lamely"
+    step_4: "uložení trubek pro kabely + výztuž"
+    step_5: "betonáž úseku + 42h technologická přestávka"
+    step_6: "po 42h (cca 25 MPa) — předepnutí lamely k existující konstrukci"
+    step_7: "odbednění + posun vozíku (zpravidla na druhou stranu konzoly)"
+    step_8: "koncové části — dobetonování na skruži"
+    page: [109, 110]
+  
+  workflow_critical_params:
+    zarodek_length_m: [7, 10]
+    technologicka_prestavka_h: 42
+    pevnost_pri_predepinani_MPa: 25
+  
+  betonovaci_vozik:
+    construction: "příhradová konstrukce"
+    mass_t: [50, 80]   # KRITICKÉ — vstupuje do statické analýzy
+    positions:
+      - nad_konstrukci
+      - pod_konstrukci
+    requirements:
+      - "co nejnižší hmotnost"
+      - "jednoduchá montáž a přesouvání"
+    material_transport: "kabelové nebo sloupové jeřáby"
+    page: 109
+  
+  kabely_kategorie:
+    page: 110
+    items:
+      - id: montazni_konzolove
+        label_cs: "montážní (konzolové) kabely"
+        function: "přenesení záporných momentů během výstavby"
+        location: "horní okraj desky"
+      - id: kladne_zaporne
+        label_cs: "kladné a záporné kabely"
+        function: "redukce tahových napětí ve středu rozpětí a nad podporami"
+        tensioned_when: "po vybetonování střední spáry"
+      - id: spojitosti
+        label_cs: "kabely spojitosti"
+        function: "redukce tahových napětí + spojitost vahadel"
+        span_coverage: "jedno pole"
+        sub_categories:
+          - id: vnitrni_soudrzne
+            location: "kotvené v zesílené části u podpěr"
+          - id: vnejsi_volne
+            location: "kotvené v podporových příčnících"
+            requirement: "vyžadují deviátory"
+  
+  reference_projects:
+    - "Most na D8 přes Vltavu (spojitý nosník o 3 polích)"
+    - "Most přes Nuselské údolí Praha (sdružený rám o 5 polích)"
+    - "Zvíkovské mosty přes Otavu a Vltavu"
+    - "Most přes údolí řeky Kocher (Německo)"
+    - "Největší obloukový most na světě — ostrov Krk (Chorvatsko)"
+  
+  advantages:
+    - "vhodné pro vysoké podpěry"
+    - "nevyžaduje podpůrné konstrukce"
+    - "neomezuje provoz pod mostem"
+    - "úspora bednění"
+    - "rychlá výstavba"
+    - "během výstavby = staticky určitá konstrukce"
+    - "lze i pro zavěšené a obloukové mosty"
+  
+  disadvantages:
+    - "zárodek trvá několik týdnů"
+    - "vysoké nároky na statický výpočet (váha vozíku 50-80 t)"
+    - "reologické projevy (segmenty různého stáří)"
+    - "stísněný pracovní prostor"
+  page: [106, 112]
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 18: Prefabrikované mostní konstrukce
+# ─────────────────────────────────────────────────────────────────────
+
+ch18_prefab:
+
+  podelne_prefab_prvky:
+    label_cs: "podélné prefabrikované prvky"
+    span_max_m: 40   # 30-40 m
+    typical_section_types: ["U", "I", "spřažená deska s nosníkem"]
+    materials:
+      - zelezobetonove
+      - predem_predpjate
+      - dodatecne_predpjate
+    erection: "autojeřáby"
+    special_method:
+      name: "výsuvný most"
+      capability: "nosník vyzdvihnout a přesunout do místa působení (nezávislý na terénu)"
+    page: 113
+
+  pricne_delene_segmenty:
+    label_cs: "příčně dělené prefabrikované segmentové konstrukce"
+    segment_length_m: [2.5, 4.0]
+    economic_for_span_m: ["střední", "velké"]
+    typical_section_types:
+      - komorovy
+      - dvoutrám
+      - parapetni_tramovy
+    static_systems:
+      - "prosté nosníky o více polích"
+      - "spojité nosníky"
+      - "rámové konstrukce"
+      - "sdružené rámy"
+      - "oblouky"
+      - "zavěšené mosty"
+      - "visuté mosty"
+    page: 113
+    
+    spary_vyplneni:
+      purpose: "ochrana předpínací výztuže proti korozi"
+      historical:
+        material: "beton"
+      current:
+        material: "epoxidový tmel"
+        composition: "vlastní tmel + tužidlo"
+        beton_today: "jen pro uzavření spáry mezi montážními celky"
+      page: 113
+    
+    vyroba_segmentu:
+      method: "kontaktní způsob"
+      principle: "čelo vybetonovaného segmentu = bednění pro čelo následujícího"
+      
+      methods:
+        - id: dlouha_draha
+          label_cs: "metoda dlouhé dráhy"
+          track_length: "polovina pole (geometrie odpovídá spodní hraně konstrukce)"
+          procedure: "betonování segmentů na dráze do formy, která se pohybuje podél dráhy"
+          advantage: "snadná kontrola geometrie"
+          disadvantage: "požadavek na prostor"
+          page: 114
+        
+        - id: kratka_draha
+          label_cs: "metoda krátké dráhy"
+          cell_capacity: 2  # 2 segmenty
+          components: ["forma (pevné nebo pohyblivé čelo, podlaha, bočnice, jádro)", "rektifikační rámy"]
+          procedure:
+            step_1: "nastavení vyrobeného segmentu na rámech do navržené polohy"
+            step_2: "přiražení bočnice, jádra a podlahy jako bednění dalšího segmentu"
+            step_3: "betonáž"
+            step_4: "odvezení kontaktního segmentu na skládku"
+            step_5: "posunutí nově vyrobeného segmentu do polohy předcházejícího"
+            step_6: "před montáží — nátěr kontaktní spáry epoxidovým tmelem"
+            step_7: "montáž segmentů"
+          advantage: "možnost segmentů přímých i výrazně zakřivených"
+          disadvantage: "nutno sledovat hydratační teplo"
+          page: 115
+      
+      proteplovani:
+        purpose: "zmenšení smršťování a dotvarování"
+        risk: "deformace stykové plochy vyráběných segmentů"
+    
+    osetrovani:
+      after_casting: "kropení po 24 hodinách"
+      after_form_removal: "vlhčení povrchu"
+      until_strength_pct: 70
+      page: 115
+    
+    skladovani:
+      max_layers: 2
+      base: "podlážky"
+    
+    doprava_segmentu:
+      methods: ["železnice", "silnice", "lodě"]
+    
+    montaz_metody:
+      - id: letmo_obe_strany_pilire
+        label_cs: "montáž letmo na obě strany pilíře"
+        is_most_common: true
+        for_span: ["střední", "velké"]
+        workflow: "zárodek → symetrické připojení segmentů → dobetonování střední části → zmonolitnění předepnutím"
+        page: 116
+      
+      - id: kratsi_zavazeci_most
+        label_cs: "montáž kratším zavážecím mostem"
+        bridge_to_span_ratio: 1.5
+      
+      - id: delsi_zavazeci_most
+        label_cs: "montáž delším zavážecím mostem"
+        bridge_to_span_ratio: 2.0
+        feature: "všechny 3 nohy nad pilíři + 2 zvedací zařízení"
+        advantage: "urychlení montáže"
+      
+      - id: kolovy_jerab_uzaviraci_most
+        label_cs: "kolový jeřáb a uzavírací most"
+        principle: "uzavírací most = (podepřený konec hotové části + následující pilíř); autojeřáb na konzole vahadla"
+        advantage: "segmenty nezatěžují konstrukci v průběhu výstavby"
+        disadvantage: "výška mostu omezena zdvihem autojeřábu a uzavíracího mostu"
+      
+      - id: jerab_pojezd_konstrukce
+        label_cs: "jeřáb pojíždějící po konstrukci"
+        principle: "vozík (jeřáb) na zárodek; symetrická montáž = vahadlo; vozíky kotveny při zdvihání"
+        advantage: "2 vozíky urychlí výstavbu"
+        disadvantage: "výška mostu omezena zdvihem vozíku"
+      
+      - id: vpred_estakada_25_50m
+        label_cs: "montáž vpřed (estakády L=25-50 m)"
+        movement_direction: "jedním směrem od pilíře"
+        sub_methods:
+          - "podpírání konzoly provizorními podpěrami"
+          - "vyvěšování konzoly pomocí pylonu + lana"
+        page: 117
+      
+      - id: vpred_kolovy_jerab
+        label_cs: "montáž vpřed kolovými mobilními jeřáby"
+        constraint: "dobrý přístup k mostu"
+    
+    fazi_pripojeni:
+      page: 115
+      items:
+        - id: provizorni
+          label_cs: "montážní (provizorní) připnutí segmentu"
+          common_method: "předpínací tyče kotvené do stoliček (kozlíků) nahoře a dole"
+        - id: definitivni
+          label_cs: "definitivní připnutí segmentu"
+    
+    geometrie_kontrola:
+      frequency: "pravidelně v průběhu montáže"
+      odchylky: "včas eliminovány"
+      vpred_montaz: "návrh prostorových spár pro vyrovnání délkových změn"
+    
+    reference_projects:
+      - "Zavěšený most přes Labe u Poděbrad"
+      - "Most přes Radbuzu u Plzně"
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 19 (souhrn statiky pro spojité konstrukce)
+# ─────────────────────────────────────────────────────────────────────
+
+ch19_staticky_neurcite:
+  
+  optimalni_tlouskty_staticky_neurcitych_konstrukci:
+    # Tabulka 15 — strana 119
+    note: "Předběžný návrh — finální dimenzace dle ČSN EN 1992-2"
+    page: 119
+    table_ref: "Tabulka 15"

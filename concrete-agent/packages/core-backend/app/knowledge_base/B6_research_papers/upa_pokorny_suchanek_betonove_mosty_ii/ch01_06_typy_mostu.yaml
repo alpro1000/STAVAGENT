@@ -1,0 +1,399 @@
+# ═══════════════════════════════════════════════════════════════════════
+# extracted/ch01_06_typy_mostu.yaml
+# Kapitoly 1-6: klasifikace mostů + 5 hlavních typů konstrukcí
+# Tabulky 1-8 — optimální tloušťky a rozpětí
+# ═══════════════════════════════════════════════════════════════════════
+
+source:
+  metadata_ref: ../METADATA.md
+  language: cs
+  jurisdiction: CZ
+  pages: "12-60"
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 1: Rozdělení mostů
+# ─────────────────────────────────────────────────────────────────────
+
+ch01_klasifikace:
+  most_definition:
+    parameter: "kolmá světlost otvoru"
+    threshold_m: 2.0
+    rule: "L > 2.0 m"
+    source_clause: "ČSN 73 6200"
+    page: 12
+  
+  propustek_definition:
+    parameter: "kolmá světlost otvoru"
+    threshold_m: 2.0
+    rule: "L ≤ 2.0 m"
+    source_clause: "ČSN 73 6200"
+    page: 12
+
+  vrchni_stavba_komponenty:
+    page: 12
+    items:
+      - hlavni_nosna_konstrukce
+      - mostovka
+      - ztuzidla
+      - loziska_a_klouby
+      - dilatacni_zavery
+      - vypln
+
+  spodni_stavba_komponenty:
+    page: 12
+    items:
+      - mostni_podpery_opery_pilire
+      - zaklady_hlubinne_nebo_plosne
+      - mostni_kridla
+      - zaverne_zdi
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 2: Deskové mosty
+# ─────────────────────────────────────────────────────────────────────
+
+ch02_deskove_mosty:
+  
+  optimalni_tlouskty_proste_podeprene:
+    # Tabulka 3 — strana 16
+    silnicni_zelezobetonove:
+      ratio_t_to_L: [12, 20]    # 1/12 až 1/20 L
+      formula: "h = L / N, kde N ∈ [12, 20]"
+    silnicni_predpjate:
+      ratio_t_to_L: [18, 30]
+      formula: "h = L / N, kde N ∈ [18, 30]"
+    zeleznicni_zelezobetonove:
+      ratio_t_to_L: [10, 15]
+    zeleznicni_predpjate:
+      ratio_t_to_L: [15, 22]
+    page: 16
+    table_ref: "Tabulka 3"
+
+  optimalni_tlouskty_spojite_predpjate_silnicni:
+    # Tabulka 4 — strana 16
+    konstantni_tloustka:
+      ratio_t_to_L: [18, 26]
+    promenna_tloustka_v_poli:
+      ratio_t_to_L: [25, 35]
+    promenna_tloustka_nad_podporou:
+      ratio_t_to_L: [18, 20]
+    page: 16
+    table_ref: "Tabulka 4"
+
+  staticke_systemy:
+    - id: proste_ulozene
+      page: 16
+    - id: spojite
+      page: 16
+    - id: rozeprene
+      page: 16
+    - id: ramove
+      page: 16
+    - id: gerberuv_nosnik
+      label_cs: "deska s vloženými klouby (Gerberův nosník)"
+      historical: true
+      page: 16
+
+  pricniky_position:
+    - "konce desky"
+    - "v polovině pole"
+    - "ve třetinách pole"
+
+  pricniky_typy:
+    nadpodporove:
+      treatment: "zesilují se a předepínají"
+    koncove:
+      purpose: "se zřetelem k zabudování dilatačního závěru"
+    vnitrni:
+      purpose: "pro přenesení příčné síly"
+
+  varianty_prurezu:
+    - id: monoliticka_prosta_deska
+      properties: "nejjednodušší příčný řez, nejmenší spotřeba dřeva na bednění, jednoduchá výztuž a betonáž"
+    - id: vylehčená_prosta_deska
+      purpose: "snížení vlastní hmotnosti"
+      structural_modeling: "ve statickém výpočtu jako monolitická deska"
+    - id: deska_s_dutinami
+      modern_use: false
+      replaced_by: "lichoběžníkový tvar nebo silnější deskové pásy (ploché trámy)"
+
+  vyhody:
+    - jednoduche_provadeni
+    - mala_konstrukcni_vyska
+    - velka_spolupusobici_sirka_desky
+    - mensi_pracnost
+    - vetsi_bezpecnost_proti_trhlinam_oproti_tramovym
+    - male_smykove_napeti
+
+  nevyhody:
+    - pouze_pro_mensi_rozpeti
+    - vetsi_spotreba_betonu_a_vyztuze
+    - velka_hmotnost  # mitigace: vylehčené desky
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 3: Trámové mosty
+# ─────────────────────────────────────────────────────────────────────
+
+ch03_tramove_mosty:
+  
+  optimalni_tlouskty:
+    # Tabulka 5 — strana 19
+    silnicni_zelezobetonove:
+      jedno_pole_ratio_t_to_L: [10, 15]
+      spojity_nosnik_bez_nabehu_ratio_t_to_L: [13, 18]
+    silnicni_predpjate:
+      jedno_pole_ratio_t_to_L: [16, 20]
+      spojity_nosnik_bez_nabehu_ratio_t_to_L: [18, 25]
+    zeleznicni_zelezobetonove:
+      jedno_pole_ratio_t_to_L: [8, 12]
+      spojity_nosnik_bez_nabehu_ratio_t_to_L: [10, 15]
+    zeleznicni_predpjate:
+      jedno_pole_ratio_t_to_L: [13, 15]
+      spojity_nosnik_bez_nabehu_ratio_t_to_L: [15, 18]
+    page: 19
+    table_ref: "Tabulka 5"
+
+  pouzivana_rozpeti_m:
+    zelezobetonove_tramove:
+      L_range: [10, 25]
+      page: 19
+    predpjate_prefab_tramy:
+      L_max: 30
+      page: 19
+    predpjate_komorove_tramy:
+      L_max: 250
+      page: 19
+    predpjate_komorove_se_zavesenim:
+      L_max: 500
+      page: 19
+
+  prurez_zebrove_tramy:
+    typical_shapes: ["T", "I"]
+    width_to_height_ratio: 
+      min: [1, 3]   # 1:3
+      max: [1, 7]   # 1:7
+      formula: "b : h = 1:3 až 1:7"
+    page: 19
+
+  minimalni_tloustka_mm:
+    monoliticke_tramy: [200, 250]
+    prefabrikovane_tramy: [100, 150]
+    page: 20
+
+  zabradelni_nosniky:
+    mostovka: ["dolní", "zapuštěná"]
+    korytkovy_prurez: "připojení mostovky při dolním okraji na dva trámy"
+    page: 20
+
+  komorove_tramy:
+    rozpeti_m: [40, 300]
+    naběhy_kolem_pilířů_when: "rozpětí > 70 m"
+    page: 22
+    
+    optimalni_pomery_tlouskty:
+      # Tabulka 8 — komorové nosníky z předpjatého betonu
+      steny_a_desky_u_svislych_nebo_sikmych_sten:
+        ratio_t_to_L: [3, 10]
+      deska_mostovky:
+        ratio_t_to_L: [12, 30]
+      dolni_deska:
+        ratio_t_to_L: [14, 35]
+      page: 23
+      table_ref: "Tabulka 8"
+
+  vyhody:
+    - mala_prurezova_plocha_velky_moment_setrvacnosti
+    - velka_tuhost_v_kruceni  # vhodné pro velké rozpětí + půdorysně zakřivené mosty
+  
+  nevyhody:
+    - pracnejsi_nez_deskove
+    - vetsi_konstrukcni_vyska
+    - nejvetsi_naklady_na_bedneni  # ale klesají při opakovaném použití
+
+  poznamka_zelezobetonove_tramove:
+    quote_paraphrased: "Železobetonové trámové mosty se z hospodárných důvodů většinou nenavrhují — v porovnání s předpjatými mají téměř trojnásobnou konstrukční výšku, spotřebu materiálu a hmotnost."
+    page: 19
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 4: Rámové mosty
+# ─────────────────────────────────────────────────────────────────────
+
+ch04_ramove_mosty:
+  
+  rozpeti_m_max: 60
+  optimalni_tloustka_konstrukce_ratio: [20, 45]   # 1/20 až 1/45 L
+  pocet_poli_max: 5
+  page: 25
+
+  staticke_soustavy_jednoduche:
+    - id: trojkloubovy
+      neurcitost: 0  # staticky určitý
+      use_case: "velmi stlačitelné podloží + poddolovaná území"
+      kloub_typy: ["vrubový (Freyssinerův)", "pérový (Mesnagerův)", "ocelolitina"]
+    - id: dvoukloubovy
+      neurcitost: 1
+      typical_use: "nadjezdy"
+      kloub_position: "v patkách, ve stejné výšce nad základy"
+    - id: vetknuta_ramova_konstrukce
+      neurcitost: 3
+      most_common: true
+      foundation_requirement: "únosné podloží (skalní podloží) nebo velkoprůměrové piloty"
+    - id: uzavrena_ramova_konstrukce
+      neurcitost: 3
+      use_cases: ["podchody pro pěší", "propustky pod vysokými náspy", "přesypané mosty", "ochranné galerie pro železnice/dálnice"]
+    - id: trojuhelnikove_stojky
+      neurcitost: 5
+
+  sdruzene_ramy:
+    label_cs: "rámy o několika polích"
+    rozpeti_m_typical: [150, 400]
+    rozpeti_m_max: 1000
+    use_cases: ["viadukty", "křížení železnice s pozemní komunikací"]
+    page: 31
+
+  vyhody:
+    - uspora_konstruktivni_tloustky_lozisek_hmot
+    - vylouceni_nebo_omezeni_dilatacnich_spar
+    - vetsi_odolnost_dynamickym_ucinkum  # vhodné pro seizmické oblasti
+
+  nevyhody:
+    - jednoduche_ramy_jen_pro_mensi_rozpeti
+    - klouby_jsou_choulostive_konstrukcni_detaily
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 5: Nosníkový rošt
+# ─────────────────────────────────────────────────────────────────────
+
+ch05_nosnikovy_rost:
+  
+  definition: "spojení trámů ztužidly (příčníky) a deskou mostovky"
+  staticka_neurcitost: "mnohonásobná"
+  page: 38
+
+  reseni_simplified:
+    assumption: "tuhé spojení trámů s 1 ideálním ztužidlem uprostřed rozpětí"
+    pri_velkych_rozpetich: "až 3 ztužidla"
+    kruceni: "zanedbává se"
+    method: "superpozice rozložených stavů"
+    page: 38
+
+# ─────────────────────────────────────────────────────────────────────
+# Kapitola 6: Obloukové mosty
+# ─────────────────────────────────────────────────────────────────────
+
+ch06_obloukove_mosty:
+  
+  staticke_soustavy:
+    page: 41
+    soustavy:
+      - id: dvoukloubovy
+        neurcitost: 1
+        vetknuti: "vetknuté nebo s klouby v patách"
+      - id: trojkloubovy
+        neurcitost: 0  # staticky určitý — třetí kloub ve vrcholu
+      - id: vetknuty_v_patach
+        neurcitost: 3
+        poznamka: "staticky nejvýhodnější"
+
+  vlozeni_kloubu_kdy:
+    purpose: "redukce vedlejších účinků (teplota, smršťování betonu, popouštění podpěr, pružné pootočení)"
+    threshold: "vedlejší účinky < 15 % napětí při hlavním zatížení"
+    risk: "klouby mohou snížit trvanlivost konstrukce"
+    page: 41
+
+  hospodarne_rozpeti_m:
+    presypane_mosty: [5, 30]
+    velke_rozpeti: [200, 999]   # nad 200 m letmou betonáží/montáží
+    nehospodarne: [30, 200]      # tato pásma — drahá skruž, pracnější výstavba
+    page: 41
+
+  podminka_stavby:
+    requirement: "tuhé podepření opěr"
+    constraints: "opěry nesmí se posunovat vodorovně, svisle ani pootáčet"
+    alternative: "vodorovná složka H zachycena táhlem"
+    page: 41
+
+  pomerne_vzepeti:
+    label_cs: "f/L (vzepětí k délce)"
+    range: 
+      min: 0.067   # 1:15
+      max: 1.0     # 1:1
+    optimum_vetknute: 3.5  # poznámka: tento údaj v textu (str. 44)
+    bezne_obloukyL_range: [0.167, 0.25]  # 1:4 až 1:6
+    page: 44
+
+  smelost_oblouku_formula:
+    expression: "H = c * q * L^2 / f"
+    components:
+      H: "vodorovná síla od stálého zatížení"
+      c: "konstanta závislá na statické soustavě"
+      q: "zatížení oblouku na délkovou jednotku"
+      L: "rozpětí oblouku"
+      f: "vzepětí oblouku"
+    page: 44
+
+  stihlost_oblouku_definition:
+    parameter: "ds / L"
+    components:
+      ds: "výška průřezu ve vrcholu oblouku"
+      L: "rozpětí"
+
+  stihlost_oblouku_typical:
+    vetknuty_pas:
+      ratio_d_to_L: [65, 150]   # 1:65 až 1:150
+    zebrovy_prurez:
+      ratio_d_to_L: [55, 80]    # 1:55 až 1:80
+    page: 45
+
+  hranice_tlustych_a_stihlych:
+    dimensionless: 0.05  # uvedeno jako mezní hodnota stíhlosti pro rozdělení
+    detailed_criterion: "kritická / největší oblouková síla — viz vzorec str. 45"
+    requirement_vetknuty_dvoukloubovy: "n_kr/n > určité pravidlo"
+    requirement_trojkloubovy: "ostřejší"
+    page: 45
+
+  pricny_rez_typy:
+    obloukove_pasy:
+      - "široký, plochý, plný obdélníkový průřez"
+      - "komorový průřez (jednoduchý, vícekomorový, otevřené komůrky)"
+      - "klenbové pásy"
+    obloukova_zebra_se_ztuzidly:
+      page: 45
+      items:
+        - "vysokých obdélníků"
+        - ["I", "T", "H", "U"]
+        - "kruhový oblouk"
+        - "šestiúhelníkový"
+        - "osmiúhelníkový"
+        - "složitě členěný"
+        - "příhradový oblouk"
+
+  vyztuz:
+    primary_direction: "ve směru rozpětí, k oběma povrchům"
+    symmetry: "souměrná"
+    optimum_vyztuzeni_pct: [0.8, 1.2]
+    nesymetricka_vyztuz: "ne — vnesla by ohybové momenty od smršťování a dotvarování"
+    pricna_vyztuz: "kolmo k podélné"
+    trminky: "kolmo k ose oblouku"
+    page: 46
+
+  opery_zalozeni:
+    nesoudrzne_zeminy_pisek_sterk:
+      tan_phi: [0.40, 0.45]
+      page: 47
+    soudrzne_zeminy_jil_slin_piskovec:
+      tan_phi_max: 0.25
+      page: 47
+    strme_svahy:
+      method: "podélné a příčné zazubení základů do skalních vrstev"
+      page: 47
+    hluboko_pod_patkami:
+      method: "prodlužení a rozšíření oblouku k základové spáře; kvalita betonu stoupá k patě"
+      alternative: "hlubinné založení (piloty, kesony, studně)"
+      page: 48
+
+  mostovka_obloukoveho_mostu_typy:
+    page: 49
+    items:
+      - "horní (na obloukem)"
+      - "dolní (zavěšená)"
+      - "kombinace"

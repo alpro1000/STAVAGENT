@@ -1,0 +1,759 @@
+# ═══════════════════════════════════════════════════════════════════════
+# INDEX.yaml — Pokorný-Suchánek "Betonové mosty II" → STAVAGENT mapping
+# ═══════════════════════════════════════════════════════════════════════
+# Účel: Strojově čitelný most mezi obsahem učebnice a element types 
+#       v kalkulátoru STAVAGENT. AI Reasoner načítá tento soubor pro:
+#         (1) klasifikaci mostů z TZ
+#         (2) výběr formwork systému podle technologie výstavby  
+#         (3) určení prestress subtype z popisu projektu
+#         (4) lookup tlouštek/rozpětí pro sanity checks
+# 
+# Formát: vše dotazovatelné jako YAML (parsovatelný v Pythonu i Node).
+# ═══════════════════════════════════════════════════════════════════════
+
+source:
+  metadata_ref: ./METADATA.md
+  language: cs
+  jurisdiction: CZ
+  generated_for: STAVAGENT_calculator_v4.x
+  schema_version: "1.0"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 1. KLASIFIKACE MOSTŮ — rozhodovací strom
+# ─────────────────────────────────────────────────────────────────────
+# Použití: classifier dostane text TZ → určí element type
+# ─────────────────────────────────────────────────────────────────────
+
+bridge_classification:
+  
+  # Hraniční podmínka most vs propustek
+  most_vs_propustek_threshold:
+    parameter: "kolmá světlost otvoru"
+    value_m: 2.0
+    rule: "> 2.0 m → most; ≤ 2.0 m → propustek"
+    source_clause: "ČSN 73 6200 (citováno v kap. 1, str. 12)"
+    csn_compare:
+      csn_value: 2.0
+      csn_source: "ČSN 73 6200"
+      verdict: "shoda — primárním zdrojem je ČSN 73 6200"
+
+  # Rozdělení konstrukce mostu
+  konstrukcni_cleneni:
+    vrchni_stavba:
+      definition: "nosná konstrukce + svršek + výplň + (nadnásyp)"
+      components:
+        - hlavni_nosna_konstrukce
+        - mostovka
+        - ztuzidla
+        - loziska_a_klouby
+        - dilatacni_zavery
+        - vypln
+    spodni_stavba:
+      definition: "mostní podpěry + základy + mostní křídla + závěrné zdi"
+      components:
+        - opery
+        - pilire
+        - zaklady_hlubinne_nebo_plosne
+        - mostni_kridla
+        - zaverne_zdi
+
+  # Rozhodující faktory pro volbu hlavní nosné konstrukce
+  factors_for_construction_choice:
+    - id: konstrukcni_prostor
+      label_cs: "daný konstrukční prostor"
+      affects: ["statický_systém", "rozpětí"]
+    - id: zakladove_pomery
+      label_cs: "základové poměry"
+      affects: ["typ_podpor", "možnost_oblouku", "rámové_systémy"]
+    - id: technologie_vystavby
+      label_cs: "technologie výstavby"
+      affects: ["všechny_komponenty"]
+      note: "Během výstavby může působit jiný statický systém než v konečném stavu"
+    - id: pouzity_material
+      label_cs: "použitý materiál"
+      affects: ["hmotnost", "únosnost"]
+    - id: trvanlivost_udrzba
+      label_cs: "trvanlivost a údržba"
+      affects: ["volba_materiálu", "možnost_výměny"]
+    - id: ekonomie
+      label_cs: "ekonomie"
+      affects: ["všechny_komponenty"]
+    - id: estetika
+      label_cs: "estetika a začlenění do krajiny"
+      affects: ["volba_typu_mostu"]
+
+  # Mapování keyword → element type (pro classifier)
+  keyword_to_element_type:
+    # Czech keywords s mapováním na STAVAGENT element_type
+    # Toto je klíčový vstup pro Bridge Classifier z TZ textu
+    deskovy_most:
+      keywords_cs: ["desková", "deskový", "deska", "monolitická prostá deska", "vylehčená deska"]
+      keywords_en: ["slab bridge", "plate"]
+      element_type: BR_DECK_SLAB
+      typical_span_range_m: [5, 25]
+      reference_chapter: 2
+    
+    tramovy_most:
+      keywords_cs: ["trámový", "trám", "T-průřez", "I-průřez", "žebrový"]
+      keywords_en: ["girder bridge", "beam"]
+      element_type: BR_GIRDER_T
+      typical_span_range_m: [10, 30]  # ŽB do 25, předpjaté prefab do 30
+      reference_chapter: 3
+    
+    komorovy_most:
+      keywords_cs: ["komorový", "box", "komorový trám", "uzavřený komůrkový"]
+      keywords_en: ["box girder", "box section"]
+      element_type: BR_BOX_GIRDER
+      typical_span_range_m: [40, 250]   # bez závěšení; se závěšením do 500
+      reference_chapter: 3
+    
+    ramovy_most:
+      keywords_cs: ["rámový", "rám", "vetknutý rám", "uzavřený rám", "vzpěradlový"]
+      keywords_en: ["frame bridge", "rigid frame"]
+      element_type: BR_FRAME
+      typical_span_range_m: [10, 60]
+      reference_chapter: 4
+    
+    nosnikovy_rost:
+      keywords_cs: ["nosníkový rošt", "rošt", "trámový rošt"]
+      keywords_en: ["beam grid", "grillage"]
+      element_type: BR_BEAM_GRID
+      typical_span_range_m: [15, 40]
+      reference_chapter: 5
+      note: "Ztužidla = příčníky; výpočet zjednodušen zanedbáním kroucení"
+    
+    obloukovy_most:
+      keywords_cs: ["oblouk", "obloukový", "klenba", "klenutý", "vetknutý oblouk", "dvoukloubový oblouk", "trojkloubový oblouk"]
+      keywords_en: ["arch bridge", "vault"]
+      element_type: BR_ARCH
+      typical_span_range_m_categories:
+        presypane: [5, 30]      # přesypané — do 30 m
+        velke_rozpony: [200, 500]  # nad 200 m letmá betonáž / letmá montáž
+        nehospodarne: [30, 200]  # tato pásma nejsou hospodárná
+      reference_chapter: 6
+    
+    visuty_most:
+      keywords_cs: ["visutý", "visutý most", "lana přes pylon"]
+      keywords_en: ["suspension bridge"]
+      element_type: BR_SUSPENSION
+      reference_chapter: 7d
+    
+    zaveseny_most:
+      keywords_cs: ["zavěšený", "zavěšený most", "kabely zavěšené přes pylon"]
+      keywords_en: ["cable-stayed bridge"]
+      element_type: BR_CABLE_STAYED
+      reference_chapter: 7d
+
+# ─────────────────────────────────────────────────────────────────────
+# § 2. PŘEDPÍNACÍ TYPY — klasifikace pro prestress engine
+# ─────────────────────────────────────────────────────────────────────
+
+prestressing_type_classification:
+  
+  predem_predpjate:
+    label_cs: "předem předpjaté (pre-tensioned)"
+    label_en: "pre-tensioned"
+    bond_with_concrete: "with_bond"  # se soudržností
+    typical_use: "prefabrikované mostní konstrukce"
+    workflow_short: "napnutí_výztuže → betonáž → tvrdnutí_80%_pevnosti → uvolnění_kotvení → vnesení_předpětí"
+    typical_products:
+      - VSTI_2000
+      - I_DZ_97
+      - TT_DZ_97
+      - MK_T
+    typical_span_range_m: [10, 30]
+    keyword_match:
+      - "předem předpjaté"
+      - "předpjatá výroba"
+      - "pre-tensioned"
+    reference_chapter: 7b
+
+  dodatecne_predpjate:
+    label_cs: "dodatečně předpjaté (post-tensioned)"
+    label_en: "post-tensioned"
+    bond_with_concrete: "with_bond_or_without"  # se soudržností i bez
+    typical_use: "mosty na rozpětí střední a velké z předpjatého betonu"
+    workflow_short: "kabelové_kanálky_v_bednění → betonáž → protažení_kabelů → předepnutí → injektáž"
+    typical_products:
+      - MK_T
+      - MK_T_CD
+      - T_93
+      - T_2000_PETRA
+    legacy_pre_1990:
+      - KA_67
+      - KA_73
+      - I_67
+      - I_73
+    typical_span_range_m: [25, 250]
+    keyword_match:
+      - "dodatečně předpjaté"
+      - "post-tensioned"
+      - "kabelobeton"
+      - "kabelové kanálky"
+    reference_chapter: 7c
+
+  vnejsi_predpeti:
+    label_cs: "vnější předpětí (volné kabely)"
+    label_en: "external prestressing"
+    bond_with_concrete: "without_bond"
+    typical_use: "většinou vícelanové kabely vedené mimo betonový průřez pomocí deviátorů"
+    typical_location: "v dutině komorového průřezu"
+    requires_components:
+      - deviatory  # masivní bloky betonu nebo ocelové prvky pro vychýlení dráhy
+      - kotevni_bloky
+      - sedla
+    typical_use_cases:
+      - "rekonstrukce mostů"
+      - "lana přes pylon (zavěšené mosty)"
+    keyword_match:
+      - "vnější předpětí"
+      - "volné kabely"
+      - "external prestressing"
+      - "deviátory"
+    reference_chapter: 7d
+
+# ─────────────────────────────────────────────────────────────────────
+# § 3. PŘEDPÍNACÍ SYSTÉMY (kotvy) — vendor catalog
+# ─────────────────────────────────────────────────────────────────────
+
+prestressing_systems_catalog:
+  - system: DYWIDAG
+    type: ["lanový", "tyčový"]
+    anchor_principle: "klínové (lano) + šroubové (tyč)"
+    typical_strand_diameters_mm: [15.3, 15.7]
+    typical_strands_per_cable: [4, 7, 12, 19, 22, 27, 31, 37]
+    nominal_steel_strength_MPa:
+      f_p_0_1k_min: 1570
+      f_pk_min: 1770
+    max_force_during_tensioning: "0.8 * f_pk"
+    max_force_during_service: "0.7 * f_pk"
+    min_curvature_radius_m:
+      n_strands_gt_22: 8.6
+      n_strands_le_22: 4.8
+    products:
+      - "Stupňovitá kotva (podélné předpětí mostů a trámů)"
+      - "Jednodílná desková kotva (deskové konstrukce, příčné předpětí mostních desek)"
+      - "Vícelanový systém s plochými kabelovými kanálky (předpínání desek)"
+    reference_chapter: 10
+  
+  - system: VSL
+    type: ["lanový"]
+    anchor_principle: "klínové"
+    products:
+      - "Spojka VSL (mezi kabely)"
+    reference_chapter: 9b
+
+  - system: FREYSSINET
+    type: ["lanový"]
+    anchor_principle: "klínové"
+    reference_chapter: 9a_i
+
+  - system: SKANSKA_DS
+    type: ["lanový"]
+    anchor_principle: "klínové"
+    reference_chapter: 9a_i
+
+  - system: BBR
+    type: ["lanový"]
+    anchor_principle: "rozšíření_konce_pruty (head formation)"
+    reference_chapter: 9a_iii
+
+  - system: KA
+    type: ["plochá_lana"]
+    anchor_principle: "rozšíření_konce s ocelovými podložkami"
+    note: "starší systém"
+    reference_chapter: 9a_iii
+
+  - system: MONOS
+    type: ["lanový"]
+    reference_chapter: 9
+
+  - system: SOLO
+    type: ["lanový"]
+    reference_chapter: 9
+
+  - system: FIRESTA
+    type: ["lanový"]
+    reference_chapter: 9
+
+  - system: CCL
+    type: ["lanový"]
+    reference_chapter: 9
+
+  - system: TENSACCIACI
+    type: ["lanový"]
+    reference_chapter: 9
+
+# ─────────────────────────────────────────────────────────────────────
+# § 4. PŘEDPÍNACÍ VÝZTUŽ — drát/lano/tyč specifikace
+# ─────────────────────────────────────────────────────────────────────
+
+prestressing_reinforcement:
+  drat_patentovany:
+    label_cs: "předpínací drát (patentovaný)"
+    label_en: "wire"
+    diameter_range_mm: [2, 7]
+    strength_range_MPa: [1400, 1800]
+    manufacturing: "tažením za studena z válcovaného drátu"
+  
+  lana_7drata:
+    label_cs: "7-drátové lano"
+    label_en: "7-wire strand"
+    typical_diameters_mm: [15.3, 15.7]
+    composition: "1 přímý centrální drát + 6 drátů svinutých do šroubovice"
+    f_p_0_1k_min_MPa: 1570
+    f_pk_min_MPa: 1770
+    Ep_assumed_GPa: 195
+    Ep_actual_range_GPa: [185, 205]
+    bulk_density_kg_per_m3: 7850
+  
+  tyce_zebirkove:
+    label_cs: "předpínací tyče (žebírkové)"
+    label_en: "ribbed bars"
+    diameter_range_mm: [20, 40]
+    manufacturing: "válcování za tepla"
+    typical_use: "dodatečné předpínání"
+    Ep_assumed_GPa: 205
+    Ep_actual_range_GPa: [195, 210]
+
+# ─────────────────────────────────────────────────────────────────────
+# § 5. TECHNOLOGIE VÝSTAVBY — klíčové pro element-scheduler + formwork
+# ─────────────────────────────────────────────────────────────────────
+
+construction_technologies:
+  
+  pevna_skruz:
+    label_cs: "pevná skruž (lešení)"
+    label_en: "fixed falsework"
+    chapter: 14a
+    typical_use_cases:
+      - "mosty složitého půdorysného tvaru"
+      - "při velkém spádu"
+      - "kdy nelze využít prefabrikaci"
+    constraints:
+      max_bridge_length_m: 100
+      max_height_above_ground_m: 15  # 10-15 m
+    typical_systems:
+      - DOKA       # bednění
+      - PERI
+      - HUNNEBECK
+      - PEINER
+      - PIZMO_STOJKY_IP  # ocelové inventární podpěry
+    advantages:
+      - "možnost použití i pro složitá geometrie"
+      - "ekonomicky výhodné při opakovaném použití (3-4 polí celá; dlouhé = přestavování)"
+    disadvantages:
+      - "omezení délky a výšky"
+      - "závislost na terénu pod mostem"
+    formwork_engine_mapping: "tradicni_bedneni"  # → fallback v calculator
+    
+  posuvna_skruz:
+    label_cs: "posuvná skruž (movable formwork system)"
+    label_en: "movable formwork system (MSS)"
+    abbreviation: "MSS"
+    chapter: 14b
+    economic_for_span_range_m: [30, 100]   # 30-60 celé pole, 60-100 segmentová
+    economic_for_total_length_m_min: 400   # více jak 400 m
+    suitable_section_types:
+      ["deskový", "trámový", "komorový"]
+    static_systems:
+      - "prosté nosníky"
+      - "spojité nosníky"  
+      - "rámové"
+    skruz_length_to_span_ratio: [1.3, 2.5]  # 1.3-2.5 × rozpětí pole
+    main_girder_position:
+      - id: pod_konstrukci
+        label_cs: "pod konstrukcí mostu (s bedněním podpíraným)"
+        advantage: "Prostor na skruži je volný pro veškeré práce"
+      - id: nad_konstrukci
+        label_cs: "nad konstrukcí mostu (s bedněním zavěšeným)"
+        advantage: "Hlavní nosník dostatečné výšky bez omezení prostoru pod mostem"
+    workflow:
+      - "sestavení v předpolí mostu, zasunutí do prvního pole"
+      - "vyrovnání bednění"
+      - "montáž výztuže a předpínacích kabelů"
+      - "betonování (pracovní spára obvykle v místě nulového momentu)"
+      - "technologická přestávka"
+      - "předepnutí konstrukce a injektáž"
+      - "posun zařízení do dalšího pole"
+    typical_systems_used_in_CZ:
+      - MSSU      # MSSU = první v ČR po Estakáda Hvězdonice + Beroun
+      - BINDER    # přemosťuje 2 pole
+      - POLENSKY_ZOLLNER
+    reference_projects:
+      - "R 3509 Slavonín-Přáslavice (446 m, MSSU)"
+      - "Estakáda Hvězdonice (první v ČR)"
+      - "Estakáda Beroun"
+    advantages:
+      - "zrychlení výstavby (1 pole za 14 dní)"
+      - "nezávislost na terénu pod mostem"
+      - "možnost náročných tras + architektonických řešení"
+      - "zvýšení produktivity opakováním"
+    disadvantages:
+      - "velké pořizovací náklady"
+      - "montáž a transport skruže"
+      - "komplikuje statický výpočet"
+    formwork_engine_mapping: "MSS_komorovy"
+    
+  vysuvna_skruz_se_zatimnimi_podperami:
+    label_cs: "výsuvná skruž se zatímními podpěrami"
+    chapter: 14c
+    construction: "4 příhradové nosníky přesouvané po zatímních podpěrách"
+    advantage: "úspornější varianta díky menšímu rozpětí skruže"
+    constraints:
+      - "menší výšky konstrukce nad terénem"
+      - "nelze navrhovat nadpilířová a mezilehlá ztužidla"
+    formwork_engine_mapping: "VARIOKIT_VST_or_similar"
+
+  vysouvane_konstrukce:
+    label_cs: "vysouvané konstrukce (incremental launching)"
+    label_en: "incremental launching method (ILM)"
+    chapter: 15
+    segment_length_m: [15, 40]  # délka lamely
+    typical_section_types:
+      - "jednokomorový"
+      - "dvoutrám"
+      - "tříkomorový"
+    moment_reduction_methods:
+      - id: vysuvny_nos
+        label_cs: "výsuvný nos"
+        type: "lehká ocelová příhradová konstrukce"
+        length_pct_of_span: [60, 80]
+      - id: pylon_se_zavesy
+        label_cs: "montážní pylon se závěsy"
+        position: "od konce konzoly ve vzdálenosti = délce vysouvaného pole"
+    sliding_components:
+      - "bloky s nerezavějící výztuží"
+      - "teflonové desky pro posun"
+      - "vodící prvky pro směr"
+    formwork_construction:
+      - "pevné nebo posuvné čelo"
+      - "podlaha"
+      - "bočnice (odklopné)"
+      - "jádro (výsuvné)"
+    workflow_cycle_days: 7  # pondělí předpíná, týdenní cyklus
+    workflow:
+      - "betonování lamely ve formě za opěrou"
+      - "předepnutí po dosažení 80% pevnosti"
+      - "vysunutí lamely speciální konstrukcí"
+      - "betonování další lamely"
+    workflow_subdivision:
+      day_1_2: "betonáž spodní desky"
+      day_3_4_5: "betonáž stěn a horní desky"  
+      day_6_7: "tvrdnutí betonu (víkend)"
+      day_8: "předpínání + výsun (pondělí)"
+    sliding_mechanism_types:
+      - id: tlacne
+        label_cs: "tlačné"
+        principle: "svislý + vodorovný hydraulický lis (nadzvedne + posune)"
+      - id: tazne
+        label_cs: "tažné"
+        principle: "předpínací pistole + kabel zakotvený na konci lamely"
+    reference_projects:
+      - "Most v Tomicích (1972) — první v ČR"
+      - "Most u Čekanic (1994) — 13 polí, 10 vysouvaných"
+      - "Most v Římově"
+      - "Most Aichtal (D B27 Stuttgart-Tübingen)"
+    advantages:
+      - "lze vysouvat podélně i příčně"
+    disadvantages:
+      - "pouze pro mosty s konstantní křivostí"
+    formwork_engine_mapping: "ILM_specialni"
+
+  otacene_konstrukce:
+    label_cs: "otáčené konstrukce"
+    label_en: "rotated construction"
+    chapter: 16
+    workflow: "stavba podél překážky → otočení do požadované polohy"
+    sliding_surface: "nerezavějící ocel s teflonovým povrchem; podpora elastomerovými deskami"
+    rare_technology: true
+
+  letma_betonaz:
+    label_cs: "letmá betonáž (balanced cantilever)"
+    label_en: "balanced cantilever / free cantilever"
+    chapter: 17
+    economic_for_span_min_m: 200
+    typical_section_type: "uzavřený komůrkový průřez proměnné výšky"
+    section_height_variation: "parabolický náběh (esteticky); spodní deska se zesiluje u podpor"
+    suitable_static_systems:
+      - "vetknutý"
+      - "spojitý nosník"
+      - "oblouk"
+      - "sdružený rám s/bez kloubů uprostřed polí"
+      - "jednostranná konzola"
+    segment_length_m: [3, 5]
+    cantilever_moment_reduction:
+      - "dočasné podpory"
+      - "zavěšený pylon"
+      - "postupné budování příčného řezu"
+    workflow:
+      - "vybetonování zárodku (pilíř + 7-10 m nosné konstrukce)"
+      - "umístění 1-2 betonovacích vozíků na zárodek"
+      - "vyrovnání a uchycení bednění lamely"
+      - "uložení trubek pro kabely + výztuž"
+      - "betonáž úseku + 42h technologická přestávka (cca 25 MPa)"
+      - "předepnutí lamely k existující konstrukci"
+      - "odbednění a posun vozíku na druhou stranu konzoly"
+      - "koncové části — dobetonování na skruži"
+    cable_categories:
+      - id: montazni
+        label_cs: "montážní (konzolové) kabely"
+        function: "přenesení záporných momentů během výstavby"
+        location: "horní okraj desky"
+      - id: kladne_zaporne
+        label_cs: "kladné a záporné kabely"
+        function: "redukce tahových napětí ve středu rozpětí a nad podporami"
+        when_tensioned: "po vybetonování střední spáry"
+      - id: spojitosti
+        label_cs: "kabely spojitosti"
+        function: "zajišťují spojitost vahadel"
+        sub_types:
+          - id: vnitrni_soudrzne
+            location: "kotvené v zesílené části u podpěr"
+          - id: vnejsi_volne
+            location: "kotvené v podporových příčnících"
+            requirement: "vyžadují deviátory"
+    casting_carriage:
+      label_cs: "betonovací vozík"
+      construction: "příhradová konstrukce"
+      mass_t: [50, 80]  # 50-80 t — důležité pro statickou analýzu montáže
+      positions:
+        - nad_konstrukci
+        - pod_konstrukci
+      material_transport: "kabelové nebo sloupové jeřáby"
+    reference_projects:
+      - "Most na D8 přes Vltavu (spojitý nosník o 3 polích)"
+      - "Most přes Nuselské údolí Praha (sdružený rám o 5 polích)"
+      - "Zvíkovské mosty přes Otavu a Vltavu"
+      - "Most přes údolí řeky Kocher (Německo)"
+      - "Největší obloukový most na světě — ostrov Krk (Chorvatsko)"
+    advantages:
+      - "vhodné pro vysoké podpěry"
+      - "nevyžaduje podpůrné konstrukce"
+      - "neomezuje provoz pod mostem"
+      - "úspora bednění"
+      - "rychlá výstavba"
+      - "během výstavby = staticky určitá konstrukce"
+      - "lze použít pro zavěšené a obloukové mosty"
+    disadvantages:
+      - "zárodek trvá několik týdnů"
+      - "vysoké nároky na statický výpočet (váha vozíku 50-80 t)"
+      - "reologické projevy (segmenty různého stáří)"
+      - "stísněný pracovní prostor"
+    formwork_engine_mapping: "BALANCED_CANTILEVER_VOZIK"
+
+  prefab_segmentove:
+    label_cs: "prefabrikované segmentové konstrukce (příčně dělené)"
+    label_en: "precast segmental"
+    chapter: 18
+    economic_for_span_range_m: [30, 200]
+    segment_length_m: [2.5, 4.0]
+    typical_section_types:
+      - komorovy
+      - dvoutrám
+      - parapetni_tramovy
+    static_systems:
+      - "prosté nosníky o více polích"
+      - "spojité nosníky"
+      - "rámové konstrukce"
+      - "sdružené rámy"
+      - "oblouky"
+      - "zavěšené mosty"
+      - "visuté mosty"
+    joint_filling_evolution:
+      - period: "nejstarší"
+        material: "beton"
+      - period: "moderní"
+        material: "epoxidový tmel (epoxidový tmel + tužidlo)"
+        note: "betonové spáry dnes jen jako uzavření spáry mezi montážními celky"
+    production_methods:
+      - id: dlouha_draha
+        label_cs: "metoda dlouhé dráhy"
+        track_length_m: "polovina pole"
+        advantage: "snadná kontrola geometrie"
+        disadvantage: "velký požadavek na prostor"
+      - id: kratka_draha
+        label_cs: "metoda krátké dráhy"
+        cell_capacity: "2 segmenty"
+        advantage: "možnost segmentů přímých i výrazně zakřivených"
+        disadvantage: "nutno sledovat hydratační teplo"
+    curing:
+      until_strength_pct: 70
+      method: "kropení po 24 hodinách po vybetonování"
+    storage_max_layers: 2
+    erection_methods:
+      - id: letmo_obe_strany
+        label_cs: "letmo na obě strany pilíře"
+        common: true
+        for_span: ["střední", "velké"]
+        workflow: "zárodek → symetrické připojení segmentů → dobetonování střední části → zmonolitnění předepnutím"
+      - id: kratsi_zavazeci_most
+        label_cs: "montáž kratším zavážecím mostem"
+        bridge_length_to_span_ratio: 1.5
+      - id: delsi_zavazeci_most
+        label_cs: "montáž delším zavážecím mostem"
+        bridge_length_to_span_ratio: 2.0
+        advantage: "urychlení montáže pomocí 2 zvedacích zařízení"
+      - id: kolovy_jerab_uzaviraci_most
+        label_cs: "kolový jeřáb a uzavírací most"
+        advantage: "segmenty nezatěžují konstrukci v průběhu výstavby"
+        disadvantage: "výška mostu omezena zdvihem"
+      - id: jerab_pojezd_konstrukce
+        label_cs: "jeřáb pojíždějící po konstrukci"
+        disadvantage: "výška mostu omezena zdvihem vozíku"
+      - id: vpred_25_50m
+        label_cs: "montáž vpřed (estakády L=25-50 m)"
+        sub_methods:
+          - "podpírání konzoly provizorními podpěrami"
+          - "vyvěšování konzoly pylonem + lana"
+      - id: vpred_kolovy_jerab
+        label_cs: "montáž vpřed kolovými mobilními jeřáby"
+        constraint: "dobrý přístup k mostu"
+    formwork_engine_mapping: "PREFAB_SEGMENT"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 6. ROZHODOVACÍ LOGIKA: technologie výstavby podle parametrů
+# ─────────────────────────────────────────────────────────────────────
+# AI Reasoner použije při výběru technologie výstavby
+# Vstup: rozpětí, délka mostu, výška nad terénem, počet polí, terén
+# Výstup: doporučená technologie + zdůvodnění
+
+technology_decision_rules:
+  - rule_id: TR-001
+    name: "Krátký most na rovině"
+    conditions:
+      bridge_length_m_lt: 100
+      max_height_m_lt: 15
+      terrain_complexity: "any"
+    recommended:
+      - pevna_skruz
+    rationale: "Pevná skruž je hospodárná pro krátké mosty s nízkou konstrukcí"
+
+  - rule_id: TR-002
+    name: "Dlouhý most s opakujícími poli"
+    conditions:
+      bridge_length_m_gt: 400
+      span_consistency: "stálé rozpětí"
+      width_consistency: "konstantní šířka"
+    recommended:
+      - posuvna_skruz
+    rationale: "Posuvná skruž je hospodárná díky opakování technologie"
+
+  - rule_id: TR-003
+    name: "Velmi dlouhé rozpětí přes překážku"
+    conditions:
+      span_m_gt: 200
+      below_obstacle: "hluboké údolí, široká řeka, průplav"
+    recommended:
+      - letma_betonaz
+    rationale: "Letmá betonáž nevyžaduje podpůrné konstrukce a neomezuje provoz pod mostem"
+
+  - rule_id: TR-004
+    name: "Most s konstantní křivostí, omezený přístup pod mostem"
+    conditions:
+      span_m_range: [15, 40]
+      curvature: "konstantní"
+      access_below: "omezený"
+    recommended:
+      - vysouvane_konstrukce
+    rationale: "ILM nevyžaduje přístup pod mostem; lamely se betonují za opěrou"
+
+  - rule_id: TR-005
+    name: "Most přes existující komunikaci nebo trať"
+    conditions:
+      cross_obstacle: ["železnice", "dálnice", "frekventovaná komunikace"]
+      construction_disturbance: "minimum"
+    recommended:
+      - otacene_konstrukce
+      - prefab_segmentove
+    rationale: "Otáčená konstrukce minimalizuje zásah do provozu"
+
+  - rule_id: TR-006
+    name: "Estakáda střední délky"
+    conditions:
+      span_m_range: [25, 50]
+      type: "estakáda"
+    recommended:
+      - prefab_segmentove
+    rationale: "Prefab segmenty + montáž vpřed jsou hospodárné pro tato rozpětí"
+
+# ─────────────────────────────────────────────────────────────────────
+# § 7. CROSS-DOMAIN VALIDATION RULES
+# ─────────────────────────────────────────────────────────────────────
+# Pravidla pro detekci nekonzistencí mezi částmi projektu
+# Použití: B9_validation modul
+
+validation_rules:
+  - rule_id: VR-001
+    description: "Komorový průřez vyžaduje rozpětí > 40 m"
+    check: |
+      if section_type == 'komorovy' and span_m < 40:
+        warning: "Komorový průřez je obvykle navrhován pro rozpětí ≥ 40 m. Zvažte trámový průřez."
+    source_clause: "kap. 3, str. 22"
+
+  - rule_id: VR-002
+    description: "Letmá betonáž ekonomická pro rozpětí > 200 m"
+    check: |
+      if technology == 'letma_betonaz' and span_m < 100:
+        warning: "Letmá betonáž je metoda pro rozpětí > 200 m. Pro krátká rozpětí zvažte skruže nebo prefab."
+    source_clause: "kap. 17, str. 106"
+
+  - rule_id: VR-003
+    description: "Vysouvané konstrukce vyžadují konstantní křivost"
+    check: |
+      if technology == 'vysouvane' and curvature == 'variable':
+        error: "Vysouvané konstrukce lze provádět pouze na mostech s konstantní křivostí."
+    source_clause: "kap. 15, str. 104"
+
+  - rule_id: VR-004
+    description: "Pevná skruž omezena délkou mostu a výškou"
+    check: |
+      if technology == 'pevna_skruz' and (bridge_length_m > 100 or max_height_m > 15):
+        warning: "Pevná skruž je vhodná pro mosty < 100 m a výšku < 15 m. Zvažte posuvnou skruž."
+    source_clause: "kap. 14a, str. 95"
+
+  - rule_id: VR-005
+    description: "Předem předpjaté konstrukce — vedení výztuže omezené"
+    check: |
+      if prestress_type == 'predem' and (curve_path == 'parabolic_complex' or polygonal_path == True):
+        warning: "Předem předpjaté konstrukce mají omezené možnosti vedení předpínací výztuže (rovné lano)."
+    source_clause: "kap. 7b, str. 63"
+
+  - rule_id: VR-006
+    description: "Maximální napínací síla = 0.8 × f_pk"
+    check: |
+      tensioning_force_kN <= 0.8 * f_pk_kN
+    source_clause: "kap. 10, str. 79; ČSN EN 1992-1-1"
+
+  - rule_id: VR-007
+    description: "Maximální provozní síla = 0.7 × f_pk"
+    check: |
+      service_force_kN <= 0.7 * f_pk_kN
+    source_clause: "kap. 10, str. 79"
+
+  - rule_id: VR-008
+    description: "Minimální poloměr zakřivení kabelu"
+    check: |
+      if n_strands > 22:
+        R_min_m = 8.6
+      else:
+        R_min_m = 4.8
+    source_clause: "kap. 10, str. 79; Tabulka 12"
+
+  - rule_id: VR-009
+    description: "Krytí kabelového kanálku — staré ČSN"
+    check: |
+      cover_to_duct_mm >= max(duct_diameter_mm, 30)
+    source_clause: "kap. 8 (ČSN 73 6207 — neplatná); pro nové projekty viz ČSN EN 1992-2"
+
+  - rule_id: VR-010
+    description: "Předpínací výztuž — dosažení 80% pevnosti před uvolněním kotvení"
+    check: |
+      concrete_strength_at_release_pct >= 80
+    source_clause: "kap. 7b, krok 6 pracovního postupu"
+
+  - rule_id: VR-011
+    description: "Letmá betonáž — předepínání po 42h"
+    check: |
+      curing_time_before_prestressing_h >= 42 and concrete_strength_MPa >= 25
+    source_clause: "kap. 17, krok 6 pracovního postupu"

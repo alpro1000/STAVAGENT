@@ -1,0 +1,278 @@
+# ═══════════════════════════════════════════════════════════════════════
+# extracted/ch22_glosar_eng_cz.yaml
+# Kapitola 22: Anglicko-český slovník (bridge engineering terminology)
+# Použití: parser TZ + UI překlady + multi-language search
+# ═══════════════════════════════════════════════════════════════════════
+
+source:
+  metadata_ref: ../METADATA.md
+  language: ["cs", "en"]
+  jurisdiction: CZ
+  pages: "141-143"
+  purpose: "bilingual terminology mapping for parsers and UI translation"
+
+glossary:
+  # Materiály
+  - en: "addition"
+    cs: "příměs"
+  - en: "additive"
+    cs: "aditivum"
+  - en: "admixture"
+    cs: "přísada"
+  - en: "aggregate"
+    cs: "kamenivo"
+  - en: "ballast"
+    cs: "štěrkopísek (do betonu)"
+  - en: "binder"
+    cs: "pojivo"
+  - en: "cement"
+    cs: "cement"
+  - en: "concrete"
+    cs: "beton"
+  - en: "plain concrete"
+    cs: "prostý beton"
+  - en: "prestressed concrete"
+    cs: "předpjatý beton"
+    stavagent_relevance: high
+  - en: "reinforced concrete"
+    cs: "železový beton"
+    stavagent_relevance: high
+  - en: "precast concrete"
+    cs: "prefabrikovaný beton"
+    stavagent_relevance: high
+  - en: "filler"
+    cs: "plnivo"
+  - en: "gravel"
+    cs: "štěrk"
+  - en: "sand"
+    cs: "písek"
+  - en: "plasticizer"
+    cs: "plastifikátor"
+  - en: "grout"
+    cs: "injektážní malta"
+  - en: "compound"
+    cs: "zálivka"
+
+  # Vlastnosti betonu
+  - en: "density of concrete"
+    cs: "objemová hmotnost betonu"
+  - en: "compactability"
+    cs: "zhutnitelnost"
+  - en: "flow"
+    cs: "rozlití"
+  - en: "hardened"
+    cs: "ztvrdlý"
+  - en: "heat of hydration"
+    cs: "hydratační teplo"
+  - en: "setting"
+    cs: "tuhnutí"
+  - en: "shrinkage"
+    cs: "smršťování"
+    stavagent_relevance: high  # z prestress losses
+  - en: "creep"
+    cs: "dotvarování"
+    stavagent_relevance: high
+  - en: "curing"
+    cs: "ošetřování"
+  - en: "water/cement ratio (w/c)"
+    cs: "vodní součinitel"
+  - en: "graiding"
+    cs: "zrnitost"
+  - en: "graiding curve"
+    cs: "křivka zrnitosti"
+  - en: "mixing"
+    cs: "míchání"
+  - en: "mixture"
+    cs: "směs"
+
+  # Výztuž
+  - en: "reinforcement"
+    cs: "výztuž"
+    stavagent_relevance: high
+  - en: "active reinforcement"
+    cs: "předpínací výztuž"
+    stavagent_relevance: high
+  - en: "passive reinforcement"
+    cs: "betonářská výztuž"
+    stavagent_relevance: high
+  - en: "reinforcement percentage"
+    cs: "procento vyztužení"
+    stavagent_relevance: high
+  - en: "reinforcing steel"
+    cs: "betonářská výztuž"
+  - en: "prestressing steel"
+    cs: "předpínací výztuž"
+  - en: "prestressing bar"
+    cs: "předpínací tyč"
+  - en: "reinforcing bar"
+    cs: "výztužný prut"
+  - en: "ribbed bar"
+    cs: "žebírkový prut"
+  - en: "welded bar"
+    cs: "svařovaný prut"
+  - en: "bar"
+    cs: "prut, tyč, vložka"
+  - en: "bar diameter"
+    cs: "průměr prutu"
+  - en: "bar size"
+    cs: "rozměr prutu"
+  - en: "bar spacing"
+    cs: "osová vzdálenost prutů"
+  - en: "spacing"
+    cs: "rozteč"
+  - en: "overlap"
+    cs: "přesah (výztuže)"
+  - en: "rod"
+    cs: "válcovaný drát"
+  - en: "tendon"
+    cs: "předpínací výztuž (obecně)"
+  - en: "cage"
+    cs: "koš (výztužný)"
+  - en: "link"
+    cs: "třmínek"
+  - en: "welded meshes"
+    cs: "svařovaná síť"
+  - en: "lattice"
+    cs: "příhradový"
+
+  # Adheze a soudržnost
+  - en: "adhesion"
+    cs: "soudržnost"
+  - en: "bond"
+    cs: "soudržnost"
+  - en: "bonded length"
+    cs: "kotevní délka"
+
+  # Předpětí
+  - en: "prestress"
+    cs: "předpětí"
+    stavagent_relevance: high
+  - en: "prestressing force"
+    cs: "předpínací síla"
+    stavagent_relevance: high
+  - en: "post-tensioned"
+    cs: "dodatečně předpjatý"
+    stavagent_relevance: high
+  - en: "pre-tensioned"
+    cs: "předem předpjatý"
+    stavagent_relevance: high
+  - en: "anchorage"
+    cs: "kotva, kotevní"
+    stavagent_relevance: high
+  - en: "anchorage system"
+    cs: "kotevní zařízení"
+  - en: "anchorage zone"
+    cs: "kotevní oblast"
+    stavagent_relevance: high
+  - en: "anchoring"
+    cs: "kotvení"
+  - en: "connector"
+    cs: "spojka"
+  - en: "duct"
+    cs: "kanálek"
+  - en: "slip"
+    cs: "pokluz"
+  - en: "relaxation"
+    cs: "relaxace"
+    stavagent_relevance: high  # z prestress losses
+
+  # Typy mostů
+  - en: "bridge plate"
+    cs: "deskový most"
+    element_type: BR_DECK_SLAB
+    stavagent_relevance: critical
+  - en: "girder bridge"
+    cs: "trámový most"
+    element_type: BR_GIRDER_T
+    stavagent_relevance: critical
+  - en: "frame bridge"
+    cs: "rámový most"
+    element_type: BR_FRAME
+    stavagent_relevance: critical
+  - en: "arch bridge"
+    cs: "obloukový most"
+    element_type: BR_ARCH
+    stavagent_relevance: critical
+  - en: "cable-stayed bridge"
+    cs: "zavěšený most"
+    element_type: BR_CABLE_STAYED
+    stavagent_relevance: critical
+  - en: "suspension bridge"
+    cs: "visutý most"
+    element_type: BR_SUSPENSION
+    stavagent_relevance: critical
+
+  # Komponenty mostu
+  - en: "bridge deck"
+    cs: "nosná konstrukce mostu"
+    stavagent_relevance: critical
+  - en: "deck (slab)"
+    cs: "mostovka"
+    stavagent_relevance: critical
+  - en: "depth"
+    cs: "účinná výška mostu"
+  - en: "cill beam"
+    cs: "úložný práh"
+    element_type: BR_BEARING_BLOCK
+  - en: "camber (of prestressed beam)"
+    cs: "nadvýšení (předpjatého nosníku)"
+  - en: "pylon"
+    cs: "pylon"
+  - en: "casting (of concrete)"
+    cs: "betonování"
+  - en: "fabrication"
+    cs: "výroba (ve výrobně)"
+  - en: "interface"
+    cs: "styčná plocha"
+  - en: "membrane"
+    cs: "izolace, fólie, membrána"
+  - en: "profile"
+    cs: "profil, průřez"
+  - en: "segment"
+    cs: "lamela, segment"
+    stavagent_relevance: high  # u prefab segmentů
+  - en: "precast concrete unit"
+    cs: "betonový dílec"
+  - en: "prestressed precast unit"
+    cs: "předpjatý dílec"
+  - en: "effective width of flanges"
+    cs: "spolupůsobící šířka desky"
+
+  # Výroba a degradace
+  - en: "cube"
+    cs: "krychle"
+  - en: "cylinder"
+    cs: "válec"
+  - en: "cover"
+    cs: "krycí (vrstva)"
+    stavagent_relevance: high
+  - en: "crack"
+    cs: "trhlina"
+  - en: "corrosion"
+    cs: "koroze"
+  - en: "damp"
+    cs: "vlhkost, vlhčit"
+  - en: "injection"
+    cs: "injektáž"
+    stavagent_relevance: high
+
+  # Bednění
+  - en: "formwork"
+    cs: "bednění"
+    stavagent_relevance: critical
+
+  # Technologie
+  - en: "launching"
+    cs: "vysouvání"
+    construction_method: incremental_launching
+    stavagent_relevance: critical
+
+  # Vlastnosti
+  - en: "attribute"
+    cs: "vlastnost"
+  - en: "life assessment"
+    cs: "stanovení životnosti"
+  - en: "bending"
+    cs: "ohýbání (ohybový)"
+  - en: "welding"
+    cs: "svařování"
