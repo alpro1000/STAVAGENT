@@ -30,7 +30,8 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
-warnings.filterwarnings("ignore")
+# Scoped warning suppression — only openpyxl-internal user warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 
 EXCEL = Path(
     "test-data/libuse/outputs/"
@@ -47,6 +48,16 @@ def extract_podlazi(misto) -> str:
     return parts[1] if len(parts) >= 2 else "unknown"
 
 
+def find_col(headers: list, name: str) -> int:
+    """Return 1-based column index of header `name`, or raise."""
+    try:
+        return headers.index(name) + 1
+    except ValueError as e:
+        raise RuntimeError(
+            f"Required column {name!r} missing from source headers: {headers}"
+        ) from e
+
+
 def main() -> None:
     print("=" * 72)
     print("PHASE 0.20 v2 — 12_Filter_view jako Excel Table")
@@ -61,13 +72,33 @@ def main() -> None:
     n_src_rows = ws_src.max_row
     n_src_cols = ws_src.max_column
     print(f"\nSource {SHEET_SRC}: {n_src_rows} rows × {n_src_cols} cols")
-    if n_src_rows != 3022 or n_src_cols != 12:
-        print(f"⛔ STOP — source dimensions {n_src_rows}×{n_src_cols} "
-              f"!= expected 3022×12")
-        return
 
     headers_src = [ws_src.cell(1, c).value for c in range(1, n_src_cols + 1)]
     print(f"  Source headers: {headers_src}")
+
+    # Hard requirements: must have ≥1 data row + required columns by NAME
+    REQUIRED_COLS = ["#", "ÚRS kód", "Kapitola", "Popis položky", "MJ",
+                     "Množství", "Místo", "Skladba/povrch", "Confidence",
+                     "Status", "Poznámka", "Source"]
+    missing = [c for c in REQUIRED_COLS if c not in headers_src]
+    if missing:
+        print(f"⛔ STOP — source missing required columns: {missing}")
+        return
+    if n_src_rows < 2:
+        print(f"⛔ STOP — source has no data rows (only header)")
+        return
+    # Soft warn if dimensions differ from session baseline (3022×12)
+    if n_src_rows != 3022 or n_src_cols != 12:
+        print(f"⚠️  Source dimensions {n_src_rows}×{n_src_cols} differ from "
+              f"session baseline 3022×12 — proceeding anyway "
+              f"(items count is variable across phases).")
+
+    # Resolve column indices by NAME (not hardcoded position)
+    misto_col = find_col(headers_src, "Místo")
+    status_col = find_col(headers_src, "Status")
+    confidence_col = find_col(headers_src, "Confidence")
+    print(f"  Resolved cols: Místo={misto_col}, Status={status_col}, "
+          f"Confidence={confidence_col}")
 
     # === Delete existing 12_Filter_view (V1 static) ===
     if SHEET_NEW in wb.sheetnames:
@@ -96,21 +127,23 @@ def main() -> None:
 
     # ROWS 3+ : Data
     DATA_START = HEADER_ROW + 1
-    for src_row in range(2, n_src_rows + 1):  # source rows 2..3022
+    podlazi_col = n_src_cols + 1  # derived column = last+1
+    for src_row in range(2, n_src_rows + 1):  # source rows 2..N
         target_row = DATA_START + (src_row - 2)
         for c in range(1, n_src_cols + 1):
             v = ws_src.cell(src_row, c).value
             ws.cell(target_row, c, v)
-        # Derived Podlaží (col 13)
-        misto_val = ws_src.cell(src_row, 7).value  # col G = Místo
-        ws.cell(target_row, 13, extract_podlazi(misto_val))
+        # Derived Podlaží via name-resolved column
+        misto_val = ws_src.cell(src_row, misto_col).value
+        ws.cell(target_row, podlazi_col, extract_podlazi(misto_val))
 
-    last_data_row = DATA_START + (n_src_rows - 2)  # = 3023
-    last_col_letter = get_column_letter(13)
+    last_data_row = DATA_START + (n_src_rows - 2)
+    n_total_cols = n_src_cols + 1  # source + Podlaží
+    last_col_letter = get_column_letter(n_total_cols)
     table_ref = f"A{HEADER_ROW}:{last_col_letter}{last_data_row}"
     print(f"\nTable ref: {table_ref} (header row {HEADER_ROW}, "
           f"data rows {DATA_START}..{last_data_row}, total "
-          f"{last_data_row - HEADER_ROW + 1} rows × 13 cols)")
+          f"{last_data_row - HEADER_ROW + 1} rows × {n_total_cols} cols)")
 
     # === Convert to Excel Table (auto-filter enabled by default) ===
     table = Table(displayName="VykazFilter", ref=table_ref)
@@ -129,45 +162,45 @@ def main() -> None:
     ws.freeze_panes = f"A{DATA_START}"  # = A3
 
     # === Conditional formatting ===
-    # Status column (col 10 = J), data range J3:J3023
-    status_range = f"J{DATA_START}:J{last_data_row}"
-    # Green for matched_*
+    # Status column — resolved by name (not hardcoded J)
+    status_letter = get_column_letter(status_col)
+    status_range = f"{status_letter}{DATA_START}:{status_letter}{last_data_row}"
+    # Conditional formatting formulas use RELATIVE row reference so each
+    # row evaluates its own Status cell. Range top-left = {status_letter}{DATA_START};
+    # Excel offsets the formula per cell (Qodo + Amazon Q review fix).
+    sl = status_letter  # alias for f-string brevity
+    ds = DATA_START
     ws.conditional_formatting.add(
         status_range,
         FormulaRule(
-            formula=[f'OR($J{DATA_START}="matched_high",'
-                     f'$J{DATA_START}="matched_medium")'],
+            formula=[f'OR({sl}{ds}="matched_high",{sl}{ds}="matched_medium")'],
             fill=PatternFill("solid", fgColor="C6EFCE"),
             font=Font(color="006100")))
-    # Yellow for needs_review / OPRAVENO_*
     ws.conditional_formatting.add(
         status_range,
         FormulaRule(
-            formula=[f'OR($J{DATA_START}="needs_review",'
-                     f'$J{DATA_START}="OPRAVENO_OBJEM",'
-                     f'$J{DATA_START}="OPRAVENO_POPIS")'],
+            formula=[f'OR({sl}{ds}="needs_review",{sl}{ds}="OPRAVENO_OBJEM",'
+                     f'{sl}{ds}="OPRAVENO_POPIS")'],
             fill=PatternFill("solid", fgColor="FFEB9C"),
             font=Font(color="9C5700")))
-    # Red for no_match / VYNECHANE_KRITICKE
     ws.conditional_formatting.add(
         status_range,
         FormulaRule(
-            formula=[f'OR($J{DATA_START}="no_match",'
-                     f'$J{DATA_START}="VYNECHANE_KRITICKE")'],
+            formula=[f'OR({sl}{ds}="no_match",{sl}{ds}="VYNECHANE_KRITICKE")'],
             fill=PatternFill("solid", fgColor="FFC7CE"),
             font=Font(color="9C0006")))
-    # Gray for VYNECHANE_DETAIL / deprecated
     ws.conditional_formatting.add(
         status_range,
         FormulaRule(
-            formula=[f'OR($J{DATA_START}="VYNECHANE_DETAIL",'
-                     f'$J{DATA_START}="deprecated")'],
+            formula=[f'OR({sl}{ds}="VYNECHANE_DETAIL",{sl}{ds}="deprecated")'],
             fill=PatternFill("solid", fgColor="D9D9D9"),
             font=Font(color="595959")))
     print(f"✓ Conditional formatting on Status column ({status_range})")
 
-    # Confidence column (col 9 = I), data bar 0-1
-    confidence_range = f"I{DATA_START}:I{last_data_row}"
+    # Confidence column — resolved by name
+    confidence_letter = get_column_letter(confidence_col)
+    confidence_range = (f"{confidence_letter}{DATA_START}:"
+                         f"{confidence_letter}{last_data_row}")
     ws.conditional_formatting.add(
         confidence_range,
         DataBarRule(
@@ -187,21 +220,24 @@ def main() -> None:
     sheets_post = list(wb2.sheetnames)
     print(f"  Sheets ({len(sheets_post)}): {sheets_post}")
 
-    # Verify source unchanged
+    # Verify source unchanged (dimensions match what we read pre-edit)
     ws_src2 = wb2[SHEET_SRC]
-    if ws_src2.max_row != 3022 or ws_src2.max_column != 12:
-        print(f"⛔ ERROR: source modified ({ws_src2.max_row}×{ws_src2.max_column})")
+    if ws_src2.max_row != n_src_rows or ws_src2.max_column != n_src_cols:
+        print(f"⛔ ERROR: source modified "
+              f"({ws_src2.max_row}×{ws_src2.max_column} vs "
+              f"pre-edit {n_src_rows}×{n_src_cols})")
         return
 
-    # Verify new sheet structure
+    # Verify new sheet structure (computed from source dims)
     ws_new2 = wb2[SHEET_NEW]
     print(f"  {SHEET_NEW}: {ws_new2.max_row} rows × {ws_new2.max_column} cols")
-    expected_rows = 3023  # row 1 metadata + row 2 header + 3021 data
+    expected_rows = HEADER_ROW + (n_src_rows - 1)  # metadata + header + data
+    expected_cols = n_src_cols + 1  # source + Podlaží
     if ws_new2.max_row != expected_rows:
         print(f"⛔ ERROR: new sheet rows {ws_new2.max_row} != {expected_rows}")
         return
-    if ws_new2.max_column != 13:
-        print(f"⛔ ERROR: new sheet cols {ws_new2.max_column} != 13")
+    if ws_new2.max_column != expected_cols:
+        print(f"⛔ ERROR: new sheet cols {ws_new2.max_column} != {expected_cols}")
         return
 
     # Verify table exists
@@ -211,30 +247,40 @@ def main() -> None:
         print(f"⛔ ERROR: VykazFilter table not registered")
         return
 
-    # Verify autofilter enabled (Excel Table auto-includes it)
-    print(f"  AutoFilter ref: {ws_new2.auto_filter.ref}")
+    # Verify autofilter (Excel Table auto-includes it; .ref may be None
+    # if openpyxl didn't reflect Table-internal filter to sheet-level —
+    # that is fine; functional filter is in Table XML)
+    af = ws_new2.auto_filter
+    if af is not None and af.ref:
+        print(f"  AutoFilter ref (sheet level): {af.ref}")
+    else:
+        print(f"  AutoFilter ref (sheet level): None — filter lives "
+              f"inside Table XML (Excel-side dropdowns OK)")
 
-    # Spot-check 3 random data rows match source
+    # Spot-check 3 random data rows match source (cols by name)
     import random
-    for src_row in random.sample(range(2, 3023), 3):
-        target_row = src_row + 1  # source row N → new sheet row N+1
-        for c in (1, 4, 6, 7, 10):  # check #, Popis, Množství, Místo, Status
+    spot_cols = []
+    for name in ("#", "Popis položky", "Množství", "Místo", "Status"):
+        if name in headers_src:
+            spot_cols.append(headers_src.index(name) + 1)
+    for src_row in random.sample(range(2, n_src_rows + 1), min(3, n_src_rows - 1)):
+        target_row = DATA_START + (src_row - 2)
+        for c in spot_cols:
             src_val = ws_src2.cell(src_row, c).value
             new_val = ws_new2.cell(target_row, c).value
             if src_val != new_val:
                 print(f"⛔ ERROR: data mismatch row {src_row} col {c}: "
                       f"src={src_val!r} vs new={new_val!r}")
                 return
-        # Also check Podlaží derived
-        misto = ws_src2.cell(src_row, 7).value
+        misto = ws_src2.cell(src_row, misto_col).value
         derived = extract_podlazi(misto)
-        new_pod = ws_new2.cell(target_row, 13).value
+        new_pod = ws_new2.cell(target_row, podlazi_col).value
         if derived != new_pod:
             print(f"⛔ ERROR: Podlaží mismatch row {src_row}: "
                   f"derived={derived!r} vs stored={new_pod!r}")
             return
 
-    print("✓ Spot-check 3 rows × 6 fields all match source")
+    print(f"✓ Spot-check 3 rows × {len(spot_cols)} fields all match source")
     print("\n✅ All checks pass.")
 
 
