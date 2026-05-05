@@ -1,15 +1,26 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-05 (Phase 0.10–0.19 complete, PR #1066 ready to merge)
+Last updated: 2026-05-05 evening (Phase 0.10–0.20 complete + code review
+fixes, PR #1066 ready for **full review** in next session)
 
 ## Status
 
-**Excel deliverable ready pro VELTON delivery + KROS manual ÚRS pricing.**
+**Excel deliverable feature-complete + interactive filter dashboard added.**
+Pending: full review per-item (user request) → merge → delivery.
 
 - 3 021 items (+ 11 deprecated D05 with mnozstvi=0)
-- 485 174 bytů, 11 sheets
-- Branch: `claude/phase-0-5-batch-and-parser` @ `b6af780b`
+- ~762 KB, **12 sheets** (incl. nový List 12 Filter_view)
+- Branch: `claude/phase-0-5-batch-and-parser` @ `3b502fef`
 - **PR #1066:** https://github.com/alpro1000/STAVAGENT/pull/1066
+
+## ⭐ NEXT SESSION FOCUS — full Excel review (user request)
+
+User: *"я хочу пройти в следующей сесси весь итоговый файл с работами
+заново с проверкой"*
+
+Plan: použij List 12 Filter_view (Excel Table s ▼ dropdowns) pro
+per-column filtrování + procházej po řezech (podlaží / kapitola / F-kód
+/ status). Detail v § "NEJBLIŽŠÍ SESSION" níže.
 
 Total cumulative recovery this session ~599k Kč (PROBE 4 F15 134k +
 Phase 0.15-0.18 465k). Plus Phase 0.19 cleanup −0 Kč (D05 zeroed but
@@ -65,6 +76,11 @@ ABMV email draft ready (Phase 0.10 audit, 6 documentation otázek).
 - ✅ Phase 0.17     — Keramický obklad gap fill (+9k Kč, 12 items)
 - ✅ Phase 0.18     — Polystyrenbeton PSB 50 40mm (+141k Kč, 56 items)
 - ✅ Phase 0.19     — D05 PROBE 6 cleanup (rolovací brána, S.C.02 scope)
+- ✅ Phase 0.20 v1  — Filter view 6 stacked tables (later superseded)
+- ✅ Phase 0.20 v2  — Excel Table `VykazFilter` s native column dropdowns
+- ✅ Code review fixes (Qodo + Amazon Q) — conditional formatting
+  absolute→relative, name-resolved cols, soft-warn dimensions, autofilter
+  null-guard, scoped warning suppression
 - ✅ Phase 7a Part 1 — 579 query groups built (group-first approach)
 - ⏸️ Phase 7a Part 2 — DEFERRED (manual KROS ÚRS pricing instead)
 - ✅ Phase 8        — List 11 sumarizace added (manual KROS workflow)
@@ -577,7 +593,7 @@ Acceptance criteria pro L1 extract:
 - **NE % alokace** — všechny m² z reálných per-room hodnot Tabulky 0020
   sloupec `plocha_m2`. Per task hard requirement #2.
 
-### Commits této session (15)
+### Commits této session (20)
 
 | # | Commit | Phase | Δ Kč |
 |--:|--------|-------|-----:|
@@ -596,6 +612,11 @@ Acceptance criteria pro L1 extract:
 | 13 | `d598706b` | 0.18 PSB beton 40mm m³ | +141k |
 | 14 | `5c89a64d` | 0.15-0.18 final regen | — |
 | 15 | `b6af780b` | 0.19 D05 cleanup (PROBE 6) | −0 (zeroed) |
+| 16 | `4e345d7d` | docs(session) summary + handoff | — |
+| 17 | `f00d6aa4` | 0.20 v1 Filter view 6 stacked tables | — |
+| 18 | `dff0c29f` | 0.20 v2 Excel Table VykazFilter | — |
+| 19 | `3b502fef` | code-review fixes (Qodo + Amazon Q) | — |
+| 20 | (this) | docs update — full review plan | — |
 
 **Total session recovery: +599k Kč** (PROBE 4 + Phase 0.15-0.18 fix pack)
 
@@ -626,7 +647,77 @@ Draft ready v `documentation_inconsistencies.json` →
 
 ## Pokračovací TASK pro budoucí sessions
 
-### Bezprostřední (post-merge PR #1066)
+### ⭐ NEJBLIŽŠÍ SESSION — full review výkazu (user request)
+
+User explicit request:
+> *"я хочу пройти в следующей сесси весь итоговый файл с работами
+> заново с проверкой"*
+
+**Strategy — interaktivní review s pomocí List 12 Filter_view:**
+
+1. **Otevřít** `Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx`,
+   přejít na sheet `12_Filter_view`
+2. **Použít column-header dropdowns** (▼ ikony) pro filtrování per řez
+3. **Procházet 4 osy v sequenci:**
+
+   #### Osa A — Per podlaží (5 řezů)
+   - Filter Podlaží = `1.PP` → ~1 700 items (sklepní kóje + chodby)
+   - Filter Podlaží = `1.NP` → ~430 items (byty + obchodní jednotky)
+   - Filter Podlaží = `2.NP` → ~440 items (byty)
+   - Filter Podlaží = `3.NP` → ~370 items (byty + sedlová střecha)
+   - Filter Podlaží = `fasáda` / `ALL` / atd. → border zone items
+
+   #### Osa B — Per kapitola (~21 řezů)
+   - HSV-611 (Penetrace + omítka vápenocementová)
+   - HSV-612 (Penetrace + omítka sádrová)
+   - HSV-613 / HSV-622 / HSV-631 (cementové potěry)
+   - HSV-642 (osazení zárubní)
+   - PSV-713 (tepelná izolace stropů, kročejová)
+   - PSV-763 (SDK podhled, prosklené příčky)
+   - PSV-766 / PSV-767 (zámečnické dveře, kování)
+   - PSV-781 / PSV-783 / PSV-784 (obklady, nátěry, malby)
+
+   #### Osa C — Per F-kód (skladby cross-check)
+   - FF01/FF03 (1.PP podlahy — pancéřová / hydroizolace radon)
+   - FF20/21/30/31 (NP podlahy — potěr+kročejová+PSB skladby)
+   - F02/F03/F11 (povrchy podlah — dlažba/vinyl/epoxid)
+   - F04/F05/F19 (povrchy stěn — sádrová/vápenocementová omítka)
+   - F06 (koupelny — keramický obklad)
+   - F14 (bezprašný nátěr ŽB)
+   - F15 (tepelná izolace stropů 1PP)
+   - F17 (SDK otěruvzdorná výmalba)
+   - CF20/CF21 (SDK podhled chodeb / koupelny)
+   - WF20-32, WF40-51 (vnitřní stěny + SDK předstěny)
+
+   #### Osa D — Per status (audit triage)
+   - `no_match` (~1766) → potřeba KROS ÚRS pricing
+   - `needs_review` (~611) → manual qty/price verify
+   - `matched_high/medium` (~273) → OK, low priority
+   - `VYNECHANE_KRITICKE/DETAIL` → Phase 5 audit findings
+   - `OPRAVENO_OBJEM/POPIS` → track our corrections
+   - `deprecated` (= 11 D05 items) → expected, scope-out
+
+4. **Kontrolní body per item:**
+   - [ ] Popis přesný + odpovídá master Tabulce 0030?
+   - [ ] Mnozstvi sedí proti Tabulce místností 0020 `plocha_m2`?
+   - [ ] Skladba_ref matches Tabulku 0020 sloupce FF / F povrch *?
+   - [ ] Místo_kód v platném D-scope (D.* / S.D.*)?
+   - [ ] Status logical (deprecated = D05 only, ostatní active)?
+
+5. **Co najít / new PROBE candidates:**
+   - **Wrong-template items** (jako D05 byl — special-type vs interior door)
+   - **Out-of-scope items** (mimo objekt D — patří A/B/C)
+   - **Missing categories** (nový PROBE 7+ pokud nějaký F-kód má 0 items)
+   - **Quantity mismatches** vs Tabulka 0020 plocha_m2
+   - **Duplikátní pairs** (Phase 6 montáž+materiál duplicate flag)
+
+6. **Output session:**
+   - User decisions per finding (DEPRECATE / FIX / KEEP)
+   - PROBE 7+ logged v carry_forward_findings
+   - Phase 0.21+ scripts pro každý fix
+   - Updated Excel + commit per PROBE
+
+### Bezprostřední (post-review, před delivery)
 
 1. **Merge PR #1066** do main (zachová branch history)
 2. **Pošli ABMV email** — 6 documentation otázek (draft ready)
