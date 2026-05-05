@@ -506,10 +506,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -562,10 +564,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 11 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 11 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 11 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 15.479; phase_6.5_v2: 15.479 → 15.479",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 15.479; phase_6.5_v2: 15.479 → 15.479; phase_6.5_v2: 15.479 → 15.479",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -1018,10 +1022,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.869 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.869 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -1074,10 +1080,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.492 → 1.78; phase_6.5_v2: 1.78 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.492 → 1.78; phase_6.5_v2: 1.78 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -1530,10 +1538,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -1586,10 +1596,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -2042,10 +2054,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -2098,10 +2112,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -2554,10 +2570,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -2610,10 +2628,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -3066,10 +3086,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -3122,10 +3144,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 1.18; phase_6.5_v2: 1.18 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 1.18; phase_6.5_v2: 1.18 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -3578,10 +3602,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.63 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.63 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -3634,10 +3660,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.84 → 0.6; phase_6.5_v2: 0.6 → 1.449; phase_6.5_v2: 1.449 → 1.449",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.84 → 0.6; phase_6.5_v2: 0.6 → 1.449; phase_6.5_v2: 1.449 → 1.449; phase_6.5_v2: 1.449 → 1.449",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -4490,10 +4518,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -4546,10 +4576,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -5005,10 +5037,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -5061,10 +5095,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -5917,10 +5953,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -5973,10 +6011,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -6429,10 +6469,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -6485,10 +6527,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -7491,10 +7535,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.63 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.63 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -7547,10 +7593,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 2 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.84 → 0.6; phase_6.5_v2: 0.6 → 2.898; phase_6.5_v2: 2.898 → 2.898",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.84 → 0.6; phase_6.5_v2: 0.6 → 2.898; phase_6.5_v2: 2.898 → 2.898; phase_6.5_v2: 2.898 → 2.898",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -9103,10 +9151,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -9159,10 +9209,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -10418,10 +10470,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -10474,10 +10528,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -10930,10 +10986,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -10986,10 +11044,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -11442,10 +11502,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -11498,10 +11560,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -11954,10 +12018,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -12010,10 +12076,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -12466,10 +12534,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.478 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.478 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -12522,10 +12592,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.304 → 2.36; phase_6.5_v2: 2.36 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.304 → 2.36; phase_6.5_v2: 2.36 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -12978,10 +13050,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 5.544 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 5.544 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -13034,10 +13108,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 7.392 → 5.28; phase_6.5_v2: 5.28 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 7.392 → 5.28; phase_6.5_v2: 5.28 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -13490,10 +13566,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -13546,10 +13624,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -14002,10 +14082,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -14058,10 +14140,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -14514,10 +14598,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -14570,10 +14656,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -15026,10 +15114,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.609 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -15082,10 +15172,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.812 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -15538,10 +15630,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -15594,10 +15688,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 1.18; phase_6.5_v2: 1.18 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 1.18; phase_6.5_v2: 1.18 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -16750,10 +16846,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.848 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.848 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -16806,10 +16904,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.464 → 1.76; phase_6.5_v2: 1.76 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.464 → 1.76; phase_6.5_v2: 1.76 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -17262,10 +17362,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 7.77 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 7.77 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -17318,10 +17420,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 10.36 → 7.4; phase_6.5_v2: 7.4 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 10.36 → 7.4; phase_6.5_v2: 7.4 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -17774,10 +17878,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.402 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.402 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -17830,10 +17936,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 4.536 → 3.24; phase_6.5_v2: 3.24 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 4.536 → 3.24; phase_6.5_v2: 3.24 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -18286,10 +18394,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -18342,10 +18452,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 1.18; phase_6.5_v2: 1.18 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 1.18; phase_6.5_v2: 1.18 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -18798,10 +18910,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -18854,10 +18968,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 10 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 10 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 10 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 14.076; phase_6.5_v2: 14.076 → 14.076",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 14.076; phase_6.5_v2: 14.076 → 14.076; phase_6.5_v2: 14.076 → 14.076",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -19310,10 +19426,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.63 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.63 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -19366,10 +19484,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 6 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 6 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 6 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.84 → 0.6; phase_6.5_v2: 0.6 → 8.556; phase_6.5_v2: 8.556 → 8.556",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.84 → 0.6; phase_6.5_v2: 0.6 → 8.556; phase_6.5_v2: 8.556 → 8.556; phase_6.5_v2: 8.556 → 8.556",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -19972,10 +20092,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -20028,10 +20150,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -20484,10 +20608,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.26 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.26 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.354,
       "urs_alternatives": [
         {
@@ -20540,10 +20666,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "needs_review",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.68 → 1.2; phase_6.5_v2: 1.2 → 1.449; phase_6.5_v2: 1.449 → 1.449",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.68 → 1.2; phase_6.5_v2: 1.2 → 1.449; phase_6.5_v2: 1.449 → 1.449; phase_6.5_v2: 1.449 → 1.449",
       "urs_confidence": 0.351,
       "urs_alternatives": [
         {
@@ -21548,10 +21676,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.299 → 3.298; phase_6.5_v2: 3.298 → 3.312; phase_6.5_v2: 3.312 → 3.312",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.299 → 3.298; phase_6.5_v2: 3.298 → 3.312; phase_6.5_v2: 3.312 → 3.312; phase_6.5_v2: 3.312 → 3.312",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -21606,10 +21737,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.066 → 1.51; phase_6.5_v2: 1.51 → 1.725; phase_6.5_v2: 1.725 → 1.725",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.066 → 1.51; phase_6.5_v2: 1.51 → 1.725; phase_6.5_v2: 1.725 → 1.725; phase_6.5_v2: 1.725 → 1.725",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -22467,10 +22601,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.682 → 3.152; phase_6.5_v2: 3.152 → 3.945; phase_6.5_v2: 3.945 → 3.945",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.682 → 3.152; phase_6.5_v2: 3.152 → 3.945; phase_6.5_v2: 3.945 → 3.945; phase_6.5_v2: 3.945 → 3.945",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -22525,10 +22662,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 5 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 5 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.91 → 0.0; phase_6.5_v2: 0.0 → 7.521; phase_6.5_v2: 7.521 → 7.521",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.91 → 0.0; phase_6.5_v2: 0.0 → 7.521; phase_6.5_v2: 7.521 → 7.521; phase_6.5_v2: 7.521 → 7.521",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -23382,10 +23522,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.239 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -23436,10 +23577,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 2.95; phase_6.5_v2: 2.95 → 7.56; phase_6.5_v2: 7.56 → 7.56",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.652 → 2.95; phase_6.5_v2: 2.95 → 7.56; phase_6.5_v2: 7.56 → 7.56; phase_6.5_v2: 7.56 → 7.56",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -24297,10 +24439,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.344 → 3.007; phase_6.5_v2: 3.007 → 3.019; phase_6.5_v2: 3.019 → 3.019",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.344 → 3.007; phase_6.5_v2: 3.007 → 3.019; phase_6.5_v2: 3.019 → 3.019; phase_6.5_v2: 3.019 → 3.019",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -24355,10 +24500,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.792 → 0.66; phase_6.5_v2: 0.66 → 1.587; phase_6.5_v2: 1.587 → 1.587",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.792 → 0.66; phase_6.5_v2: 0.66 → 1.587; phase_6.5_v2: 1.587 → 1.587; phase_6.5_v2: 1.587 → 1.587",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -26070,10 +26218,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 485 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 485 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 485 mm × 1 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.425; phase_6.5_v2: 2.425 → 2.425",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.425; phase_6.5_v2: 2.425 → 2.425; phase_6.5_v2: 2.425 → 2.425",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -26124,10 +26273,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 125 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 125 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 125 mm × 1 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.525; phase_6.5_v2: 1.525 → 1.525",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.525; phase_6.5_v2: 1.525 → 1.525; phase_6.5_v2: 1.525 → 1.525",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -26828,10 +26978,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.932 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.932 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -26860,9 +27011,9 @@
     {
       "item_id": "65efd865-e064-46a0-ab43-2a1b04ade5d6-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 150 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 2.52,
+      "mnozstvi": 7.56,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -26882,10 +27033,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.576 → 1.84; phase_6.5_v2: 1.84 → 2.52; phase_6.5_v2: 2.52 → 2.52",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.576 → 1.84; phase_6.5_v2: 1.84 → 2.52; phase_6.5_v2: 2.52 → 2.52; phase_6.5_v2: 2.52 → 7.56",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -30056,10 +30208,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.381 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.381 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -30088,9 +30241,9 @@
     {
       "item_id": "f419807c-e783-4795-9d2d-f9f40d740c4e-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 150 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 2.52,
+      "mnozstvi": 7.56,
       "misto": {
         "objekt": "D",
         "podlazi": "1.NP",
@@ -30110,10 +30263,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 4.508 → 3.22; phase_6.5_v2: 3.22 → 2.52; phase_6.5_v2: 2.52 → 2.52",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 4.508 → 3.22; phase_6.5_v2: 3.22 → 2.52; phase_6.5_v2: 2.52 → 2.52; phase_6.5_v2: 2.52 → 7.56",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -33281,10 +33435,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.806 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.806 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -33335,10 +33490,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.408 → 4.3; phase_6.5_v2: 4.3 → 11.16; phase_6.5_v2: 11.16 → 11.16",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.408 → 4.3; phase_6.5_v2: 4.3 → 11.16; phase_6.5_v2: 11.16 → 11.16; phase_6.5_v2: 11.16 → 11.16",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -34196,10 +34352,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -34254,10 +34413,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.587; phase_6.5_v2: 1.587 → 1.587",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.587; phase_6.5_v2: 1.587 → 1.587; phase_6.5_v2: 1.587 → 1.587",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -36837,10 +36999,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -36895,10 +37060,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -37603,10 +37771,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.05 → 4.85; phase_6.5_v2: 4.85 → 4.87; phase_6.5_v2: 4.87 → 4.87",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.05 → 4.85; phase_6.5_v2: 4.85 → 4.87; phase_6.5_v2: 4.87 → 4.87; phase_6.5_v2: 4.87 → 4.87",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -37661,10 +37832,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.4 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.4 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -38365,10 +38539,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -38397,9 +38572,9 @@
     {
       "item_id": "a5e1fee4-b82b-4ca4-9108-971af07e9746-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 150 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 3.72,
+      "mnozstvi": 11.16,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -38419,10 +38594,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 6 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 6 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 6 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 3.72; phase_6.5_v2: 3.72 → 3.72",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 3.72; phase_6.5_v2: 3.72 → 3.72; phase_6.5_v2: 3.72 → 11.16",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -39289,10 +39465,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.651 → 3.007; phase_6.5_v2: 3.007 → 3.019; phase_6.5_v2: 3.019 → 3.019",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.651 → 3.007; phase_6.5_v2: 3.007 → 3.019; phase_6.5_v2: 3.019 → 3.019; phase_6.5_v2: 3.019 → 3.019",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -39347,10 +39526,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.868 → 0.0; phase_6.5_v2: 0.0 → 1.587; phase_6.5_v2: 1.587 → 1.587",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.868 → 0.0; phase_6.5_v2: 0.0 → 1.587; phase_6.5_v2: 1.587 → 1.587; phase_6.5_v2: 1.587 → 1.587",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -41936,10 +42118,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -41994,10 +42179,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -42702,10 +42890,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.05 → 4.85; phase_6.5_v2: 4.85 → 4.87; phase_6.5_v2: 4.87 → 4.87",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.05 → 4.85; phase_6.5_v2: 4.85 → 4.87; phase_6.5_v2: 4.87 → 4.87; phase_6.5_v2: 4.87 → 4.87",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -42760,10 +42951,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.4 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.4 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -43464,10 +43658,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.562 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.562 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -43496,9 +43691,9 @@
     {
       "item_id": "8136b1bb-a810-41a4-a73b-45b300d2c47d-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 150 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 2.52,
+      "mnozstvi": 7.56,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -43518,10 +43713,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.416 → 2.44; phase_6.5_v2: 2.44 → 2.52; phase_6.5_v2: 2.52 → 2.52",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 3.416 → 2.44; phase_6.5_v2: 2.44 → 2.52; phase_6.5_v2: 2.52 → 2.52; phase_6.5_v2: 2.52 → 7.56",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -46689,10 +46885,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.953 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.953 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -46721,9 +46918,9 @@
     {
       "item_id": "4580e448-665e-4a86-8edc-665b8a298403-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 150 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 2.52,
+      "mnozstvi": 7.56,
       "misto": {
         "objekt": "D",
         "podlazi": "2.NP",
@@ -46743,10 +46940,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.604 → 1.86; phase_6.5_v2: 1.86 → 2.52; phase_6.5_v2: 2.52 → 2.52",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.604 → 1.86; phase_6.5_v2: 1.86 → 2.52; phase_6.5_v2: 2.52 → 2.52; phase_6.5_v2: 2.52 → 7.56",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -49914,10 +50112,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -49968,10 +50167,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 150 mm × 6 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 2.9; phase_6.5_v2: 2.9 → 11.16; phase_6.5_v2: 11.16 → 11.16",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 2.9; phase_6.5_v2: 2.9 → 11.16; phase_6.5_v2: 11.16 → 11.16; phase_6.5_v2: 11.16 → 11.16",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -50829,10 +51029,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -50887,10 +51090,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.587; phase_6.5_v2: 1.587 → 1.587",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.587; phase_6.5_v2: 1.587 → 1.587; phase_6.5_v2: 1.587 → 1.587",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -53467,10 +53673,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -53525,10 +53734,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -54233,10 +54445,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 2 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.05 → 4.85; phase_6.5_v2: 4.85 → 4.87; phase_6.5_v2: 4.87 → 4.87",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.05 → 4.85; phase_6.5_v2: 4.85 → 4.87; phase_6.5_v2: 4.87 → 4.87; phase_6.5_v2: 4.87 → 4.87",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -54291,10 +54506,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.4 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.4 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -54999,10 +55217,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.714 → 3.298; phase_6.5_v2: 3.298 → 3.312; phase_6.5_v2: 3.312 → 3.312",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.714 → 3.298; phase_6.5_v2: 3.298 → 3.312; phase_6.5_v2: 3.312 → 3.312; phase_6.5_v2: 3.312 → 3.312",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -55057,10 +55278,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 4 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.952 → 0.0; phase_6.5_v2: 0.0 → 5.796; phase_6.5_v2: 5.796 → 5.796",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.952 → 0.0; phase_6.5_v2: 0.0 → 5.796; phase_6.5_v2: 5.796 → 5.796; phase_6.5_v2: 5.796 → 5.796",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -55914,10 +56138,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.869 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.869 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -55968,10 +56193,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.492 → 4.45; phase_6.5_v2: 4.45 → 5.338; phase_6.5_v2: 5.338 → 5.338",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.492 → 4.45; phase_6.5_v2: 4.45 → 5.338; phase_6.5_v2: 5.338 → 5.338; phase_6.5_v2: 5.338 → 5.338",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -56827,10 +57053,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -56883,10 +57111,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.38; phase_6.5_v2: 1.38 → 1.38",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 1.38; phase_6.5_v2: 1.38 → 1.38; phase_6.5_v2: 1.38 → 1.38",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -58448,10 +58678,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.197 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.197 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -58480,9 +58711,9 @@
     {
       "item_id": "d9241cb5-fac1-4154-8717-f70914473502-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 100 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 2.569,
+      "mnozstvi": 5.138,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -58502,10 +58733,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.596 → 1.14; phase_6.5_v2: 1.14 → 2.569; phase_6.5_v2: 2.569 → 2.569",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.596 → 1.14; phase_6.5_v2: 1.14 → 2.569; phase_6.5_v2: 2.569 → 2.569; phase_6.5_v2: 2.569 → 5.138",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -61027,10 +61259,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.094 → 2.241; phase_6.5_v2: 2.241 → 2.25; phase_6.5_v2: 2.25 → 2.25",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.094 → 2.241; phase_6.5_v2: 2.241 → 2.25; phase_6.5_v2: 2.25 → 2.25; phase_6.5_v2: 2.25 → 2.25",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -61085,10 +61320,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.459 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.459 → 0.58; phase_6.5_v2: 0.58 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -61789,10 +62027,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.848 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.848 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -61843,10 +62082,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.464 → 4.4; phase_6.5_v2: 4.4 → 4.88; phase_6.5_v2: 4.88 → 4.88",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 2.464 → 4.4; phase_6.5_v2: 4.4 → 4.88; phase_6.5_v2: 4.88 → 4.88; phase_6.5_v2: 4.88 → 4.88",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -65019,10 +65259,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -65075,10 +65317,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.746; phase_6.5_v2: 1.746 → 1.746",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 1.746; phase_6.5_v2: 1.746 → 1.746; phase_6.5_v2: 1.746 → 1.746",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -65934,10 +66178,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -65990,10 +66236,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 4 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 4 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 6.139; phase_6.5_v2: 6.139 → 6.139",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 6.139; phase_6.5_v2: 6.139 → 6.139; phase_6.5_v2: 6.139 → 6.139",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -66849,10 +67097,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.693 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.693 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -66905,10 +67155,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.924 → 0.66; phase_6.5_v2: 0.66 → 1.587; phase_6.5_v2: 1.587 → 1.587",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.924 → 0.66; phase_6.5_v2: 0.66 → 1.587; phase_6.5_v2: 1.587 → 1.587; phase_6.5_v2: 1.587 → 1.587",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -68470,10 +68722,11 @@
       "poznamka": "D2: 30 % špalety fasádní hloubka 350 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 0 mm × 0 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.218 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0; phase_6.5_v2: 0.0 → 0.0",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -68502,9 +68755,9 @@
     {
       "item_id": "7aba2ab2-303a-41e3-882a-d59b120588b5-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 100 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 2.569,
+      "mnozstvi": 5.138,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -68524,10 +68777,11 @@
       "poznamka": "D2: 70 % špalety vnitřní hloubka 200 mm",
       "warnings": [
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)"
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 4 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 4 otvorů, door ownership from Tabulka 0041)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 2.569; phase_6.5_v2: 2.569 → 2.569",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 1.624 → 1.16; phase_6.5_v2: 1.16 → 2.569; phase_6.5_v2: 2.569 → 2.569; phase_6.5_v2: 2.569 → 5.138",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -70394,10 +70648,13 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm"
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.525 → 2.425; phase_6.5_v2: 2.425 → 2.435; phase_6.5_v2: 2.435 → 2.435; phase_6.5_v2: 2.435 → 2.435",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -70426,9 +70683,9 @@
     {
       "item_id": "664248a9-da98-47e3-963b-572e9ad06a2d-vnt",
       "kapitola": "HSV-612",
-      "popis": "Špalety sádrová okolo otvorů (hloubka 50 mm vnitřní)",
+      "popis": "Špalety sádrová okolo otvorů (hloubka 115 mm vnitřní)",
       "MJ": "m2",
-      "mnozstvi": 0.61,
+      "mnozstvi": 1.403,
       "misto": {
         "objekt": "D",
         "podlazi": "3.NP",
@@ -70450,10 +70707,13 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 50 mm × 1 otvorů, door ownership from Tabulka 0041)",
-        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm"
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF32']); used 487 mm",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 0.61; phase_6.5_v2: 0.61 → 0.61",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.7 → 0.0; phase_6.5_v2: 0.0 → 0.61; phase_6.5_v2: 0.61 → 0.61; phase_6.5_v2: 0.61 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -71158,10 +71418,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.485 → 2.241; phase_6.5_v2: 2.241 → 2.25; phase_6.5_v2: 2.25 → 2.25",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.485 → 2.241; phase_6.5_v2: 2.241 → 2.25; phase_6.5_v2: 2.25 → 2.25; phase_6.5_v2: 2.25 → 2.25",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -71216,10 +71479,13 @@
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
+        "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 115 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2: fasádní tloušťka fallback 487 mm (no wall_segment_tags)",
         "PHASE_6_5v2: vnitřní tloušťka fallback 115 mm (median typical příčka, no room WF tags)"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.647 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.647 → 0.0; phase_6.5_v2: 0.0 → 1.403; phase_6.5_v2: 1.403 → 1.403; phase_6.5_v2: 1.403 → 1.403",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {
@@ -71922,10 +72188,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
         "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
+        "PHASE_6_5_v2: L2.5 actual measurement (fasádní tloušťka 487 mm × 1 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.714 → 3.298; phase_6.5_v2: 3.298 → 3.312; phase_6.5_v2: 3.312 → 3.312",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.714 → 3.298; phase_6.5_v2: 3.298 → 3.312; phase_6.5_v2: 3.312 → 3.312; phase_6.5_v2: 3.312 → 3.312",
       "urs_confidence": 0.382,
       "urs_alternatives": [
         {
@@ -71978,10 +72246,12 @@
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 3 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
         "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 3 otvorů, door ownership from Tabulka 0041)",
+        "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm",
+        "PHASE_6_5_v2: L2.5 actual measurement (vnitřní tloušťka 100 mm × 3 otvorů, door ownership from Tabulka 0041)",
         "PHASE_6_5v2_EDGE_STOP: room has fasádní opening but no obvodová WF tag (tags=['WF40']); used 487 mm"
       ],
       "urs_status": "no_match",
-      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.952 → 0.0; phase_6.5_v2: 0.0 → 3.78; phase_6.5_v2: 3.78 → 3.78",
+      "audit_note": "Bez match v starém VV — novy item; phase_6.5 L2.5: 0.952 → 0.0; phase_6.5_v2: 0.0 → 3.78; phase_6.5_v2: 3.78 → 3.78; phase_6.5_v2: 3.78 → 3.78",
       "urs_confidence": 0.38,
       "urs_alternatives": [
         {

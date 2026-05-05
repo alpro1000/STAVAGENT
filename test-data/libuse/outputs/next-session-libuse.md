@@ -387,6 +387,77 @@ vyžaduje L1 extrakce per-otvor `wall_thickness_mm` z Tabulky výplní.
 Backlog (B-L1 + B-L2 v task spec §3) vyřešen v separátním tasku po
 konfirmaci s ABMV (F20/F30 typo, broken code references audit).
 
+---
+
+## Phase 6.5 v2 cross-check (verifikace vůči Tabulce 0030 PDF + 11 XLSX)
+
+### Cross-check audit results
+
+Manuální cross-check v2 výpočtů proti master Tabulce 0030 PDF + 11 inputs
+XLSX odhalil další 2 výpočetní bugy (kromě cosmetic WF22 misclass).
+
+| Bug | Detail | Závažnost | Fix |
+|-----|--------|-----------|-----|
+| WF22 kind | XLSX label "obvodová stěna - nadezdívky" — Phase 0.8 KIND_BY_CODE měla v `vnitrni_nosna` (range-based) | Cosmetic — žádný room nemá WF22 v tags | Move to `obvodova` set |
+| `resolve_room_thickness` neresp. specifikum | 6 POKOJŮ s `wall_segment_tags=['WF32']` (Ytong podezdívka van 50mm) → Phase 6.5 v2 returnoval 50mm jako celá vnitřní stěna pro dveře. 9 koupelen `(WF32, WF51)` resolvovalo na 50mm příčka místo 150mm SDK kvůli pořadí nosná→příčka→SDK. | **High** ~5–7 m² under-estimate | Skip skladby s `specifikum != None` v room thickness resolution; fallback to PROJ_PRICKA (115mm) |
+
+### Aggregate delta po cross-check fix
+
+| | v1 | v2 initial | v2 + xcheck | Δ od v1 |
+|---|---:|---:|---:|---:|
+| Σ fasádní m² | 57.49 | 58.50 | 58.50 | +1.8 % |
+| Σ vnitřní m² | 80.99 | 188.80 | **222.33** | +174 % |
+
+Vnitřní ještě více vzrostlo o +17.8 % od v2 initial — jde o 9 koupelen
+(D.1.2.01, D.1.3.01, D.2.1.01, …) které předtím dostávaly 50mm Ytong
+podezdívka, teď 150mm SDK předstěna. Plus ~6 jiných místností přes
+PROJ_PRICKA fallback 115mm.
+
+### Spot-check 5 rooms — všechny stále ✅ pass
+
+| Room | Tags | tl_vnt po xcheck | qty m² |
+|------|------|------:|-------:|
+| S.D.27 | [] | 115 (fallback) | 1.403 |
+| S.D.40 | [] | 115 (fallback) | 1.403 |
+| D.1.4.07 | [] | 115 (fallback) | 1.403 |
+| D.2.1.07 | [] | 115 (fallback) | 1.403 |
+| D.2.4.07 | [] | 115 (fallback) | 1.403 |
+| D.1.1.01 (golden) | ['WF51'] | 150 (SDK) | 7.560 |
+| D.1.2.01 (koupelna) | ['WF32','WF51'] | 150 (SDK, was 50 wrong) | 7.560 |
+
+### Foundational issue (logged for backlog, not fixed in this round)
+
+Phase 1 spatial WF tagger detekuje **pouze 6 z 26 unique WF kódů** v
+109 D-roomech: WF10, WF32, WF40, WF41, WF50, WF51 (= obvodová Porotherm
+44 + Ytong podezdívka + 4× SDK předstěny).
+
+Chybí především:
+- **WF20** (250mm Porotherm 25 AKU mezi-bytová) — měla by být v
+  každé bytové místnosti
+- **WF30** (115mm Porotherm 11.5 příčka) — interních příček
+
+71/109 rooms (65 %) má `wall_segment_tags=[]` → Phase 6.5 v2 spadne do
+PROJ_PRICKA fallback 115mm což je pro většinu dveří v bytech správně,
+ale pro fasádní špalety (WF20 + obvodové) by bylo přesnější mít explicit
+tagy.
+
+Backlog item: **Phase 1 spatial WF tagger upgrade** — improve shapely
+spatial join to detect Porotherm walls (WF20/WF30) v DXF. Currently
+detector matches only walls with explicit text annotations; Porotherm
+walls v DXF jsou anonymous. Vyžaduje DXF block-name analysis nebo
+šířka-based heuristic.
+
+### Files updated by cross-check
+
+- `concrete-agent/packages/core-backend/scripts/phase_0_8_extract_master_skladby.py`
+  — WF22 reklasifikace (vnitrni_nosna → obvodova)
+- `concrete-agent/packages/core-backend/scripts/phase_6_5_v2_spalety.py`
+  — `resolve_room_thickness()` skip `specifikum != None`
+- `objekt_D_geometric_dataset.json` — WF22 kind="obvodova"
+- `items_objekt_D_complete.json` — 132 items s aktualizovanou tloušťkou
+- `Vykaz_vymer_Libuse_objekt_D_dokoncovaci_prace.xlsx` — regenerated 11 sheets
+- `Vykaz_vymer_pre_xcheck.xlsx` — backup před xcheck regen
+
 ### Backlog — Phase L1 extract (post-submission)
 
 Detected sparse WF coverage v `geometric_dataset.json`: jen 1 obvodová +

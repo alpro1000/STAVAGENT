@@ -8829,7 +8829,7 @@
       "code": "WF22",
       "in_tabulka_skladeb": true,
       "referenced_in": [],
-      "kind": "vnitrni_nosna",
+      "kind": "obvodova",
       "label": "obvodová stěna - nadezdívky",
       "celkova_tloustka_mm": 500,
       "vrstvy": [

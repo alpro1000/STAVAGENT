@@ -76,13 +76,20 @@ def median_typical(skladby: dict, kind: str, exclude_atika: bool = False) -> flo
 def resolve_room_thickness(room_meta: dict, skladby: dict, kind: str) -> int | None:
     """Compute room's average tloušťka for one kind from its WF tags.
 
-    Skips tags that don't match kind. Returns rounded int mm or None.
+    Skips localized special-case skladby (specifikum != None) — they
+    represent partial walls (podezdívka van under bathtub, instalační
+    šachta, etc.) not the dominant wall in which dveře are installed.
+    Without this filter, a room tagged only WF32 (Ytong 50mm bath
+    podezdívka) would resolve dveře špalety to 50mm — wrong. Falls back
+    to PROJ_PRICKA (115mm) instead, which is the typical Porotherm 11.5
+    interior wall in which dveře sit.
     """
     tags = room_meta.get("wall_segment_tags") or []
     matched_tl = [skladby[t]["celkova_tloustka_mm"]
                   for t in tags
                   if t in skladby
                   and skladby[t].get("kind") == kind
+                  and skladby[t].get("specifikum") is None
                   and skladby[t].get("celkova_tloustka_mm")]
     if not matched_tl:
         return None

@@ -34,12 +34,17 @@ DS_PATH = Path("test-data/libuse/outputs/objekt_D_geometric_dataset.json")
 
 # Classification by code prefix (verified against 26 WF entries in master XLSX)
 KIND_BY_CODE = {
-    # obvodové stěny (suterén + nadzemní + atiky + štíty + nadezdívky)
+    # obvodové stěny (suterén + nadzemní + atiky + štíty + nadezdívky + věnce)
+    # WF22 included here per XLSX label "obvodová stěna - nadezdívky"
+    # (HEB220 + tepelná izolace, specifikum=ocel_HEB).
     **{c: "obvodova" for c in
        ("WF01", "WF03", "WF10", "WF11", "WF12", "WF13", "WF14",
-        "WF15", "WF16", "WF17", "WF18", "WF19", "WF90")},
-    # vnitřní nosné
-    **{c: "vnitrni_nosna" for c in ("WF20", "WF21", "WF22", "WF23", "WF24", "WF25")},
+        "WF15", "WF16", "WF17", "WF18", "WF19", "WF22", "WF90")},
+    # vnitřní nosné — WF22 has range-prefix WF2x but its XLSX label is
+    # "obvodová stěna - nadezdívky" (HEB220 + tepelná izolace), so it lives
+    # in obvodova set above. WF20/WF21 = klasické nosné (Porotherm/ŽB),
+    # WF23/WF24 = instalační šachty (specifikum), WF25 = podezdívka schodiště.
+    **{c: "vnitrni_nosna" for c in ("WF20", "WF21", "WF23", "WF24", "WF25")},
     # příčky zděné
     **{c: "pricka" for c in ("WF30", "WF31", "WF32")},
     # SDK předstěny
