@@ -2,7 +2,7 @@
   "metadata": {
     "objekt": "D",
     "phase": "3 (a + b + c) — complete",
-    "items_count": 2574,
+    "items_count": 2660,
     "items_per_source": {
       "items_phase_3a_vnitrni.json": 1425,
       "items_phase_3b_vnejsi_a_suteren.json": 104,
@@ -377,7 +377,8 @@
     "phase_6_5_method": "L2.5_project_aware_per_room",
     "phase_6_5_v2_applied": true,
     "phase_6_5_v2_method": "L2.5_v2_per_room_with_tabulka_0041",
-    "phase_0_11_applied": true
+    "phase_0_11_applied": true,
+    "phase_0_12_applied": true
   },
   "items": [
     {
@@ -131089,6 +131090,2500 @@
       "warnings": [
         "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
       ]
+    },
+    {
+      "item_id": "e4cd78a0-7c8c-4f7c-882e-7d7b4989242f",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 27.85,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "5cb6a513-55c5-46e5-adeb-bd9cee0a28cd",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 27.85,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.01"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "26e63f29-86ef-49c8-8511-a42e61fb6bbc",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 18.17,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "2808d41a-f216-4068-a163-e57e65b97197",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 18.17,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.02"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "97675a26-f5c8-4371-91f1-160f7a220fd4",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 9.96,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "2ea45612-87a7-4a8c-a1d7-2b7ddeb77ae0",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 9.96,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.03"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "271649e0-b52d-424a-be41-dad3f3ff9866",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 6.68,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "28adb1b9-7b77-42c8-9201-97341b55f3e9",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 6.68,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.04"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "cd748f40-6ad4-4aec-b3de-7203da479a8c",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 5.84,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "4d18d6f9-55d8-4297-987c-f212e64da143",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 5.84,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.05"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "be5d8bfe-0d6a-4da2-9c18-921fc0b793c1",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 5.92,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "7d4ffbc1-a00d-4d00-99c7-496d5d97fefe",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 5.92,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.06"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "5f6a7a48-5e12-4716-972c-0cd27485af77",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 8.63,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "d44b25bc-4bf0-40e3-9fd7-e804b321b010",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 8.63,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.07"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "cb5b99f1-3b2d-45ac-b315-adca1dc4ed01",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.04,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.08"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "afa59e7b-fade-444c-99ce-f579b4209d09",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.04,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.08"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "bbf8965a-00ca-4ad8-996d-ab121f86c695",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 15.24,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.09"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "2f07f83e-6e66-4f81-823c-0bb2330572a6",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 15.24,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.09"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "e6abb4d7-a8cd-44f2-8145-0c9e9e31519a",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.10"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "3969a789-1ae9-4a65-9e4a-7515155b73c6",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.4,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.10"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "7d7f71cc-2178-44f2-97bb-1c4eb59ee992",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.54,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.11"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "5a1d9434-d2ca-4b4a-b5db-7bc31e3c1573",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.54,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.11"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "f29877ef-18b7-4aea-9baf-90658262c9aa",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 2.87,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.12"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "fed01066-e177-4429-bfb7-98164a1d32b8",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 2.87,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.12"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "6761c73d-ed00-4a92-8d47-617984c7578a",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 5.09,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.13"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "c9de5534-db93-42af-89a1-e1bf577d634c",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 5.09,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.13"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "2747aac4-52f9-49af-8fa4-48074a01e5f1",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 6.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.14"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "78929822-6b46-405d-b9e5-deed5634c92f",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 6.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.14"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "a9d6a1a8-d685-4e45-a0b9-9b8b58b64323",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 8.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.15"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "b818017c-9e95-4154-8f47-5649dfcfbefc",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 8.6,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.15"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "8b32faa5-9268-4e2d-96e6-fc6f814445f4",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 7.62,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "21716eaa-3181-4088-9a70-7e0719b12ed9",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 7.62,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "4c7487c3-334b-447b-9b1e-73eabdf93458",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.13,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.17"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "fd2df62b-3e97-4068-919b-8cedf3a7a40e",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.13,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.17"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "d1e1bbad-afa5-4434-8cf8-7714689aa540",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.86,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.18"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "baba2310-87af-4425-975f-d5551d545ee6",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.86,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.18"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "df911a90-087a-4424-af8c-3ea4bc302697",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.32,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.19"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "62b754bc-1156-42a1-9c20-a83e1c08c4a2",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.32,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.19"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "8e0c9c8e-3e19-4711-9251-1c0528cb5ed5",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 13.63,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.20"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "7297b8be-94d2-4c5e-a411-f11e03a9b5c3",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 13.63,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.20"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "30dd2a9c-9f0f-48e5-9223-afcfccc66171",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.26,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.21"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "1f0266ae-9819-4898-a2d5-73c0e1714bde",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.26,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.21"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "258f75b2-6781-41b4-b3c0-6eab9d4cd89e",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.83,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.22"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "e6ff9187-7801-4c1b-b684-7c2495aafa69",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.83,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.22"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "da493540-ef90-49ec-8e37-a9ee1e27fc5b",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.83,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.23"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "846afa98-e554-43f8-a5e4-a4cee3029954",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.83,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.23"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "b424e758-8fde-47ab-b5db-568a00231e46",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.83,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.24"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "c0e9a1f9-63f4-4db0-84df-a61b00536825",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.83,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.24"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "81f940f9-a903-4019-935f-82fe2bdb2310",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.78,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.25"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "d5d20d5b-f169-4a28-8a22-d38175eb93d9",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.78,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.25"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "348d6fa7-3ec8-406f-9fa1-a561dc1ca44a",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.43,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.26"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "c2cfb977-fa90-4e5b-9dd8-cf471edf1685",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.43,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.26"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "05ce8212-fc5b-47ec-9f2a-a29cdc662f8a",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.14,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.27"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "08354b95-17a5-4bf1-b2ed-48d3771dffea",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.14,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.27"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "b7483a67-eea3-4e04-818c-94a0f2555127",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.38,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.28"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "5792d231-2b7e-4aed-805e-e8b842918518",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.38,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.28"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "b7cfdd46-3825-4f4b-ab10-828d5283b074",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.87,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.29"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "9e80843c-2f6a-4a76-8d7a-517e9855043f",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.87,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.29"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "842b4eed-60db-4f5f-aadf-df72f7a4c706",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.72,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.30"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "6ba00e5a-1f41-4d28-b59f-9c77ffa2f502",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.72,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.30"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "257bdc67-7543-4542-a511-5c431ba1fecd",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 12.85,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.31"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "9b2c5d6c-a8c3-4cec-b10a-63cb915d6eb0",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 12.85,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.31"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "28fca522-bbb9-40ea-a81a-837f2d92e1c2",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 12.64,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.32"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "5e81c0c3-98af-473e-9b85-c06463811f0f",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 12.64,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.32"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "d0de019d-c166-4ac4-8059-0d1484979860",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.05,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.33"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "d59f5e7a-ccde-499e-b5dc-1de63a1adb02",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.05,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.33"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "3a77eb9a-b8d5-4588-84e8-3f3f02753ca2",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 5.45,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.34"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "52ea77ac-0c90-4c45-ae00-9651abd9e118",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 5.45,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.34"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "79e0b589-eca4-4848-8402-d47c7471e7bf",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 6.12,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.35"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "98e367b3-0e97-4414-bd11-fd3c354e5d94",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 6.12,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.35"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "64309f6b-50b8-4b67-b7a4-a1094b576d6b",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 5.01,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.36"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "ffab5fea-d2f7-4551-a2b3-4ed67ddfa398",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 5.01,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.36"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "ee411317-dba8-4467-9a08-bad2d44c238d",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.87,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.37"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "a24644b3-a724-48f8-8ef9-071968a0e85d",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.87,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.37"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "80e526b4-3302-4950-99c3-554c48bf21ee",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 2.68,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.38"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "4f1902f7-403e-4589-90ac-2153a4ab40df",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 2.68,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.38"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "c2a45f9e-1d89-4c44-8a19-27f462e98bef",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 5.95,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.39"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "b106fdb0-3eaf-4780-bd5b-d3dc416334fb",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 5.95,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.39"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "8df23954-aace-4bde-8a24-a7c4ab150c88",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 4.81,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.40"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "8bc0548c-995c-4ab7-a2be-b2218d2dc935",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 4.81,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.40"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "9fb9c141-a3f1-4cf9-9c85-55674aebc3c3",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 2.94,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.41"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "9ad61366-69ee-452f-b91a-e1210550914d",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 2.94,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.41"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "7f349385-e699-4f8f-bc13-d0cb5070395f",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 2.99,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "5ed7ec8a-8dc3-4ce0-8c2f-0415734ff7ea",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 2.99,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "10b7711b-3751-4572-be12-3e5402035bd2",
+      "kapitola": "HSV-713",
+      "popis": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "popis_canonical": "Tepelná izolace stropů 1PP — minerální vlna 100 mm (ISOVER Top V Final, čedičová λ=0,040, TR 30 kPa)",
+      "MJ": "m2",
+      "mnozstvi": 3.19,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.43"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
+    },
+    {
+      "item_id": "8fd5ed7b-2151-40fb-90e4-db631f629c67",
+      "kapitola": "HSV-713",
+      "popis": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "popis_canonical": "Lepidlo bezkotevní cementová lepící hmota tl. 5 mm (Cemix Superfix) — montáž tepelné izolace stropů 1PP",
+      "MJ": "m2",
+      "mnozstvi": 3.19,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.43"
+        ]
+      },
+      "skladba_ref": {
+        "F_povrch_podhledu": "F15",
+        "vrstva": "tepelná izolace"
+      },
+      "vyrobce_ref": "ISOVER Top V Final / Cemix Superfix",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.85,
+      "status": "to_audit",
+      "source_method": "PHASE_0_12_F15_tepelna_izolace_stropu_1PP",
+      "audit_note": "PHASE_0_12: F15 tepelná izolace stropů 1PP — Phase 6 generator missed this category. Plocha = plocha místnosti per Tabulka místností (strop 1PP rovná podlaze 1.NP nad ním).",
+      "warnings": []
     }
   ]
 }

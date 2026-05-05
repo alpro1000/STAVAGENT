@@ -6823,6 +6823,17 @@
         "S.D.42"
       ],
       "items_added": 26
+    },
+    {
+      "phase": "0.12",
+      "type": "PROBE_FINDING",
+      "label": "PROBE 4 — F15 tepelná izolace stropů 1PP",
+      "description": "Phase 6 generator missed F15 (tepelná izolace stropů 1PP, minerální vlna 100mm + lepidlo 5mm) napříč 43 D-rooms. Tabulka místností XLSX má F15 v Povrch podhledu sloupci pro all S.D.* sklepní kóje + D-side společné prostory. Phase 0.12 inject 2 items per room (HSV-713 izolace + lepidlo).",
+      "rooms_affected": 43,
+      "total_plocha_m2": 278.61,
+      "estimated_value_czk": 133733.0,
+      "items_added": 86,
+      "source_specifikace": "Tabulka skladeb 0030 F15: tepelná izolace minerální vlna ISOVER Top V Final 100mm + Cemix Superfix bezkotevní lepidlo 5mm"
     }
   ],
   "skladby": {

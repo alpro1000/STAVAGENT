@@ -52,7 +52,11 @@ master skladby + door ownership. Excel ready for KROS manual ÚRS pricing.
 - **PROBE 2**: hydroizolace pod obklad ~0.4 mil Kč missing
 - **PROBE 3**: cihelné pásky Terca ~3.9 mil Kč missing material
   (Phase 6.4 newest)
+- **PROBE 4**: F15 tepelná izolace stropů 1PP missing — 278.61 m² ×
+  ~480 Kč/m² ≈ ~134k Kč pod-fakturováno (Phase 0.12 fix). Týká se 43
+  D-rooms v 1.PP (sklepní kóje + chodby + tech.místnost).
 - **Total under-booking**: ~5.8 mil Kč komplex / ~1.45 mil Kč objekt D
+  (+ ~134k Kč PROBE 4 = ~1.58 mil Kč objekt D total)
 
 ## Key files (all in `test-data/libuse/outputs/`)
 
