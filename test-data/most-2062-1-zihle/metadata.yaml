@@ -1,0 +1,129 @@
+# Most ev.č. 2062-1 — Žihle
+# Pracovní (sandbox) projekt pro průchod celým workflow STAVAGENT.
+# NENÍ určen k odevzdání tendru. Po dokončení workflow se zhuštěná verze
+# může konvertovat do golden testu pod test-data/tz/.
+
+schema_version: 1
+status: raw                      # raw → extraction → design → calculated → done
+project_kind: sandbox            # sandbox | golden_test_candidate | tender
+created: 2026-05-05
+not_for_delivery: true
+
+identifikace:
+  ev_cislo_mostu: "2062-1"
+  nazev: "Most ev.č. 2062-1"
+  silnice: "III/206 2"
+  staniceni: null                # doplnit po extrakci ze ZD/HPM
+  obec: "Žihle"
+  okres: null                    # doplnit po extrakci z HPM
+  premostovana_prekazka: "Mladotický potok"
+
+zadavatel:
+  organizace: "Správa a údržba silnic Plzeňského kraje, p.o."
+  jednaci_cislo_zd: "3967/26/SÚSPK-P"
+  datum_zd: 2026-04-01
+  datum_hpm: 2025-09-24
+
+tendr:
+  predpokladana_hodnota_kc_bez_dph: 30000000
+  forma: "Design & Build"
+  pravni_zaklad: "§92 odst. 2 ZZVZ"
+  max_doba_realizace_mesicu: 30
+  lhuta_podani_nabidek: 2026-07-02T10:00:00
+  jistota_kc: 600000
+  hodnotici_kriteria:
+    cena_pct: 80
+    doba_realizace_pct: 20
+  kvalifikace:
+    min_obrat_kc_rok: 15000000
+    min_referencni_stavba_kc: 15000000
+    min_pocet_referencnich_staveb: 1
+    typ_referencni_stavby: "mostní stavba"
+
+stavajici_most:
+  konstrukce: "trámová deska"
+  pocet_poli: 1
+  nk_material:
+    - "16 ks ŽB trámů s tuhými ocelovými vložkami z I-280"
+    - "ŽB deska mostovky"
+  spodni_stavba: "nízké masivní opěry z kamenných kvádrů"
+  stavebni_stav:
+    nk: "VI — Velmi špatný"
+    nk_koeficient_a: 0.4
+    ss: "IV — Uspokojivý"
+    ss_koeficient_a: 8.0
+    poznamka_nk: "havarijní stav desky mostovky vlevo"
+  pouzitelnost: "III — s výhradou (po dopravním opatření)"
+  zatizitelnost_t:
+    Vn: 20.0
+    Vr: 24.0
+    Ve: 29.0
+    max_napravovy_tlak: 12.0
+  cilova_akce: "odstranění a nahrazení novou NK"
+
+novy_most:
+  kategorie_silnice: "III/206 2"
+  sirkove_usporadani: "S 7,5"
+  vozovka_sirka_m: 6.50
+  vodici_proufek_v4_m: 0.125
+  zatizitelnost_csn_73_6222_t:
+    Vn: 32
+    Vr: 80
+    Ve: 180
+  limity_deformaci_mm:
+    sedani_spodni_stavby_max: 12        # během stavby + záruka
+    dlouhodoba_deformace_nk_mid_span_max: 3
+  hydrologie:
+    pozadavek: "splnit pro Mladotický potok"
+    detail: null                        # doplnit po extrakci ze ZD
+  konstrukcni_omezeni:
+    - "bez dilatačních závěrů ve vozovce"
+    - "bez ložisek"
+    - "bez složitého systému odvodnění"
+    - "NE přímo pojížděná mostovka (TP 260)"
+    - "žádný dřevěný materiál v trvalých částech"
+    - "3 ks chráničky DN 75 mm v pravé římse (směr staničení)"
+    - "revizní schodiště je součástí stavby"
+    - "vozovka 3-vrstvá živičná, 100 % návrhová tloušťka obrusné vrstvy bez tolerance"
+  reference_zd: "ZD čl. 4.4"
+
+provizorium:
+  typ: "minimálně jednosměrné se světelnou signalizací"
+  povolena_vozidla: "do 3,5 t + linková veřejná doprava"
+
+zdrojove_dokumenty:
+  hpm:
+    nazev: "Hlavní prohlídka mostu"
+    datum: 2025-09-24
+    pocet_stran: 6
+    cesta: "inputs/pdf/HPM_2025-09-24.pdf"
+    pritomno: false                     # user dodá drag&drop
+  zd:
+    nazev: "Zadávací dokumentace"
+    datum: 2026-04-01
+    cislo_jednaci: "3967/26/SÚSPK-P"
+    pocet_stran: 26
+    cesta: "inputs/pdf/ZD_2026-04-01.pdf"
+    pritomno: false                     # user dodá drag&drop
+
+workflow_faze:
+  - id: "01_extraction"
+    nazev: "Extrakce ze zdrojových dokumentů"
+    popis: "Strukturovaná data (JSON/YAML) o stávajícím mostě a o požadavcích nové stavby"
+    status: pending
+  - id: "02_design"
+    nazev: "Návrh"
+    popis: "Varianty řešení nové NK (skici, popisy variant, rozhodnutí)"
+    status: pending
+  - id: "03_calculation"
+    nazev: "Výpočet"
+    popis: "Excel/CSV výstupy kalkulátoru, harmonogram, soupis prací"
+    status: pending
+  - id: "04_documentation"
+    nazev: "Dokumentace"
+    popis: "Generované TZ pro DUR/DSP, výkaz výměr"
+    status: pending
+
+golden_test_candidate:
+  reason: "malý 1-polový silniční most, jasně vymezené ZD limity → ideální etalon kategorie 'malý silniční most'"
+  target_path: null                     # vyplnit až po průchodu workflow, např. test-data/tz/MOST-2062-1_ZIHLE_golden_test.md
