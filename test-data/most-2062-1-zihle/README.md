@@ -1,6 +1,6 @@
 # Most ev.č. 2062-1 — Žihle (sandbox)
 
-**Status:** `raw` — struktura založena, žádná data ještě neextrahována.
+**Status:** `inputs_received` — vstupní dokumenty nahrány do `inputs/`, extrakce zatím neproběhla.
 **Účel:** experimentální průchod celým workflow STAVAGENT (HPM → analýza
 stávajícího mostu → požadavky ZD → návrh nové NK → výpočet kalkulátorem
 → generace soupisu prací) na malém reálném tendru.
@@ -16,8 +16,10 @@ o číslované phase-prefixy podle 4 fází workflow:
 test-data/most-2062-1-zihle/
 ├── README.md            ← tento soubor
 ├── metadata.yaml        ← strukturovaná karta projektu (identifikace, ZD limity, stávající most)
-├── inputs/              ← raw bidder docs (HPM, ZD); user dodává drag&drop
-│   └── pdf/
+├── inputs/              ← raw bidder docs — viz inputs/README.md
+│   ├── pdf/             ← ZD + Vysvětlení ZD č.1
+│   ├── docx/            ← Přílohy 2 + 3 (SOD, Nabídková cena)
+│   └── photos/          ← snímek mostního listu + 6 fotek z osmotky
 ├── 01_extraction/       ← strukturovaná data (JSON/YAML) ze zdrojových PDF
 ├── 02_design/           ← varianty NK (skici, popisy, rozhodnutí)
 ├── 03_calculation/      ← Excel/CSV výstupy kalkulátoru, harmonogram, soupis prací
@@ -29,19 +31,24 @@ test-data/most-2062-1-zihle/
 | Fáze | Status | Cesta |
 |------|--------|-------|
 | 0. Initialized | ✅ done | `metadata.yaml` |
-| 1. Extraction (HPM + ZD → JSON) | ⏳ pending | `01_extraction/` |
-| 2. Design (varianty NK) | ⏳ pending | `02_design/` |
-| 3. Calculation (kalkulátor + Gantt) | ⏳ pending | `03_calculation/` |
-| 4. Documentation (TZ + VV) | ⏳ pending | `04_documentation/` |
+| 1. Inputs received | ✅ done | `inputs/` (viz `inputs/README.md`) |
+| 2. Extraction (ZD + photos → JSON) | ⏳ pending | `01_extraction/` |
+| 3. Design (varianty NK) | ⏳ pending | `02_design/` |
+| 4. Calculation (kalkulátor + Gantt) | ⏳ pending | `03_calculation/` |
+| 5. Documentation (TZ + VV) | ⏳ pending | `04_documentation/` |
 
-## Zdrojové dokumenty (k doplnění)
+## Zdrojové dokumenty
 
-User nahraje přes drag&drop do `inputs/pdf/`:
+Aktuální stav viz [`inputs/README.md`](inputs/README.md) a
+`metadata.yaml → zdrojove_dokumenty`.
 
-- `HPM_2025-09-24.pdf` — Hlavní prohlídka mostu, 6 stran
-- `ZD_2026-04-01.pdf` — Zadávací dokumentace, č.j. 3967/26/SÚSPK-P, 26 stran
+Nahráno:
+- ZD (PDF, 26 s.) + Vysvětlení ZD č. 1 (PDF) → `inputs/pdf/`
+- Přílohy 2 (SOD) + 3 (Nabídková cena) → `inputs/docx/`
+- Snímek mostního listu (PNG) + 6 terénních fotek → `inputs/photos/`
 
-Stav přítomnosti je vedený v `metadata.yaml → zdrojove_dokumenty.*.pritomno`.
+Chybí:
+- Plný 6-stránkový HPM PDF z 2025-09-24 (částečně zastoupen kolekcí v `photos/`)
 
 ## Klíčové parametry (souhrn z `metadata.yaml`)
 

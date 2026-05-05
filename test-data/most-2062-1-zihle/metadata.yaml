@@ -4,7 +4,7 @@
 # může konvertovat do golden testu pod test-data/tz/.
 
 schema_version: 1
-status: raw                      # raw → extraction → design → calculated → done
+status: inputs_received          # raw → inputs_received → extraction → design → calculated → done
 project_kind: sandbox            # sandbox | golden_test_candidate | tender
 created: 2026-05-05
 not_for_delivery: true
@@ -22,7 +22,7 @@ zadavatel:
   organizace: "Správa a údržba silnic Plzeňského kraje, p.o."
   jednaci_cislo_zd: "3967/26/SÚSPK-P"
   datum_zd: 2026-04-01
-  datum_hpm: 2025-09-24
+  datum_hpm: 2025-09-24                # dle původního zadání tasku — v dodaných inputs nepřítomno (viz zdrojove_dokumenty)
 
 tendr:
   predpokladana_hodnota_kc_bez_dph: 30000000
@@ -92,19 +92,53 @@ provizorium:
   povolena_vozidla: "do 3,5 t + linková veřejná doprava"
 
 zdrojove_dokumenty:
-  hpm:
-    nazev: "Hlavní prohlídka mostu"
-    datum: 2025-09-24
-    pocet_stran: 6
-    cesta: "inputs/pdf/HPM_2025-09-24.pdf"
-    pritomno: false                     # user dodá drag&drop
+  # Stav po nahrání 2026-05-05: HPM jako samostatný PDF dodán nebyl;
+  # místo toho přišel snímek mostního listu (PNG) + 6 fotek z prohlídky
+  # (taken 2026-04-21). Tato kolekce zastupuje HPM v pipeline extrakce.
+  hpm_kolekce:
+    nazev: "Hlavní prohlídka mostu — fotodokumentace + mostní list"
+    datum_porizeni_fotek: 2026-04-21
+    polozky:
+      - typ: "mostní list (snímek)"
+        cesta: "inputs/photos/Příloha č. 1 - snímek mostního listu.png"
+      - typ: "fotka z osmotky"
+        cesta: "inputs/photos/20260421_131615.jpg"
+      - typ: "fotka z osmotky"
+        cesta: "inputs/photos/20260421_131624.jpg"
+      - typ: "fotka z osmotky"
+        cesta: "inputs/photos/20260421_131650.jpg"
+      - typ: "fotka z osmotky"
+        cesta: "inputs/photos/20260421_131658.jpg"
+      - typ: "fotka z osmotky"
+        cesta: "inputs/photos/20260421_131821.jpg"
+      - typ: "fotka z osmotky"
+        cesta: "inputs/photos/20260421_132429.jpg"
+    pritomno: true
+    poznamka: |
+      6-stránkový HPM PDF z 2025-09-24 (zmíněn v původním zadání) zatím
+      v inputs/ není. Pokud bude později dodán, založit pole hpm_pdf:
+      separátně.
   zd:
-    nazev: "Zadávací dokumentace"
+    nazev: "Zadávací dokumentace — Most ev.č. 2062-1 u obce Žihle (D&B)"
     datum: 2026-04-01
     cislo_jednaci: "3967/26/SÚSPK-P"
     pocet_stran: 26
-    cesta: "inputs/pdf/ZD_2026-04-01.pdf"
-    pritomno: false                     # user dodá drag&drop
+    cesta: "inputs/pdf/ZD - Most ev.č. 2062-1 u obce Žihle - DaB.pdf"
+    pritomno: true
+  zd_vysvetleni_1:
+    nazev: "Vysvětlení ZD č. 1 — Most u obce Žihle"
+    cesta: "inputs/pdf/Vysvětlení ZD č. 1 - Most u obce Žihle.pdf"
+    pritomno: true
+  priloha_2_sod:
+    nazev: "Příloha č. 2 — SOD — Design and Build Most u obce Žihle"
+    typ: "smlouva o dílo (šablona)"
+    cesta: "inputs/docx/Příloha č. 2 - SOD - Design and Build Most u obce Žihle.docx"
+    pritomno: true
+  priloha_3_nabidkova_cena:
+    nazev: "Příloha č. 3 — Prohlášení o výši Nabídkové ceny a Době provádění Díla"
+    typ: "formulář nabídky (šablona)"
+    cesta: "inputs/docx/Příloha č. 3 - Prohlášení o výši Nabídkové ceny a Době provádění Díla.docx"
+    pritomno: true
 
 workflow_faze:
   - id: "01_extraction"
