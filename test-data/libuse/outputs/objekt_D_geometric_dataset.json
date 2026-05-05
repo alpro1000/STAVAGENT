@@ -6689,6 +6689,80 @@
       "warnings": [],
       "tabulka_plocha_m2": 4.82,
       "plocha_diff_pct": 0.0
+    },
+    {
+      "code": "S.D.16",
+      "objekt": "D",
+      "podlazi": "1.PP",
+      "byt_or_section": "1.PP",
+      "mistnost_num": "16",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha_podlahy_m2": 7.62,
+      "tabulka_plocha_m2": 7.62,
+      "plocha_diff_pct": 0.0,
+      "svetla_vyska_mm": 3400,
+      "obvod_m": 11.4,
+      "plocha_sten_brutto_m2": 38.76,
+      "code_position": [
+        9700.0,
+        8000.0
+      ],
+      "FF": "FF01",
+      "F_povrch_podlahy": "F11",
+      "F_povrch_sten": "F19",
+      "F_povrch_podhledu": "F15",
+      "wall_segment_tags": [],
+      "ceiling_segment_tags": [],
+      "other_segment_tags": [],
+      "doors": [],
+      "windows": [],
+      "curtain_walls": [],
+      "otvory_other": [],
+      "tabulka_match": true,
+      "confidence": 0.7,
+      "source_drawing": "PHASE_0_11_manual_inject_from_XLSX",
+      "warnings": [
+        "PHASE_0_11: Manually injected — DXF parser missed this room (Phase 0.x text label spatial join failed). Geometry estimated from XLSX area + peer kóje pattern. obvod_m approximate."
+      ],
+      "manual_injection": true,
+      "poznamka": "Všechny ŽB stěny s povrchem F14"
+    },
+    {
+      "code": "S.D.42",
+      "objekt": "D",
+      "podlazi": "1.PP",
+      "byt_or_section": "1.PP",
+      "mistnost_num": "42",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha_podlahy_m2": 2.99,
+      "tabulka_plocha_m2": 2.99,
+      "plocha_diff_pct": 0.0,
+      "svetla_vyska_mm": 2800,
+      "obvod_m": 7.0,
+      "plocha_sten_brutto_m2": 19.599999999999998,
+      "code_position": [
+        -15000.0,
+        60000.0
+      ],
+      "FF": "FF01",
+      "F_povrch_podlahy": "F11",
+      "F_povrch_sten": "F19",
+      "F_povrch_podhledu": "F15",
+      "wall_segment_tags": [],
+      "ceiling_segment_tags": [],
+      "other_segment_tags": [],
+      "doors": [],
+      "windows": [],
+      "curtain_walls": [],
+      "otvory_other": [],
+      "tabulka_match": true,
+      "confidence": 0.7,
+      "source_drawing": "PHASE_0_11_manual_inject_from_XLSX",
+      "warnings": [
+        "PHASE_0_11: Manually injected — DXF parser missed this room. Geometry estimated from XLSX area. obvod_m approximate."
+      ],
+      "manual_injection": true,
+      "poznamka": "Všechny ŽB stěny s povrchem F14"
     }
   ],
   "rooms_count": 109,
@@ -6739,6 +6813,16 @@
       "status_in_old_VV": "absent (only kladení, ne dodávka)",
       "status_in_new_VV": "explicit dodávka row added v Phase 6.4 part A",
       "next_action": "Investor should verify with contractor whether quoted m² price for kladení includes Terca pásky material. If labor+lepidlo only, this 976 tis Kč material cost is missing from old VV."
+    },
+    {
+      "phase": "0.11",
+      "type": "PARSER_GAP_FIX",
+      "description": "Phase 0.x DXF parser missed S.D.16 + S.D.42 SKLEPNÍ KÓJE. Both rooms ARE drawn on PDF and ARE in Tabulka místností XLSX. Phase 0.11 manually injected room records + 13-item sets per kóje. Geometry estimated from XLSX (area, výška) + peer kóje pattern. obvod_m approximate ±10%.",
+      "rooms_affected": [
+        "S.D.16",
+        "S.D.42"
+      ],
+      "items_added": 26
     }
   ],
   "skladby": {

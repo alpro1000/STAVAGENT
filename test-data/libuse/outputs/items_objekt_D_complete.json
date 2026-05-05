@@ -2,7 +2,7 @@
   "metadata": {
     "objekt": "D",
     "phase": "3 (a + b + c) — complete",
-    "items_count": 2548,
+    "items_count": 2574,
     "items_per_source": {
       "items_phase_3a_vnitrni.json": 1425,
       "items_phase_3b_vnejsi_a_suteren.json": 104,
@@ -376,7 +376,8 @@
     "phase_6_5_applied": true,
     "phase_6_5_method": "L2.5_project_aware_per_room",
     "phase_6_5_v2_applied": true,
-    "phase_6_5_v2_method": "L2.5_v2_per_room_with_tabulka_0041"
+    "phase_6_5_v2_method": "L2.5_v2_per_room_with_tabulka_0041",
+    "phase_0_11_applied": true
   },
   "items": [
     {
@@ -130359,6 +130360,734 @@
           "description": "firebg mm vnejs vnejsm",
           "confidence": 0.221
         }
+      ]
+    },
+    {
+      "item_id": "94b8d9b9-38bf-4de5-8cfd-4531ebe65429",
+      "kapitola": "HSV-611",
+      "popis": "Penetrace pod omítku vápenocementová",
+      "popis_canonical": "Penetrace pod omítku vápenocementová",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "c6395d50-9e28-468b-9468-e0fbe5c31745",
+      "kapitola": "HSV-611",
+      "popis": "Omítka vápenocementová vnitřních ploch tl. 10 mm",
+      "popis_canonical": "Omítka vápenocementová vnitřních ploch tl. 10 mm",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "a112a80e-d792-43a9-a89f-8b5a166d3580",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (žádný fasádní otvor v místnosti)",
+      "popis_canonical": "Špalety vápenocementová okolo otvorů (žádný fasádní otvor v místnosti)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "66c26901-0f37-4c64-936e-9cb922d4246b",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 115 mm vnitřní)",
+      "popis_canonical": "Špalety vápenocementová okolo otvorů (hloubka 115 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.403,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "1ea5f248-3cb9-4266-8545-6e43d99a6cba",
+      "kapitola": "HSV-631",
+      "popis": "Penetrace pod potěr (FF01)",
+      "popis_canonical": "Penetrace pod potěr (FF01)",
+      "MJ": "m2",
+      "mnozstvi": 7.62,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "3df9441a-4678-4db3-b9a5-606ce1b6e225",
+      "kapitola": "HSV-631",
+      "popis": "Cementový potěr F5 tl. 50 mm (FF01)",
+      "popis_canonical": "Cementový potěr F5 tl. 50 mm (FF01)",
+      "MJ": "m2",
+      "mnozstvi": 7.62,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "156b2729-ff2d-4b93-b7c8-e96cd9bd2983",
+      "kapitola": "HSV-631",
+      "popis": "Kari síť 150/150/4 mm pro potěr (FF01)",
+      "popis_canonical": "Kari síť 150/150/4 mm pro potěr (FF01)",
+      "MJ": "m2",
+      "mnozstvi": 8.001,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "f5d79703-ebfc-49cd-bbc7-70b21885526b",
+      "kapitola": "PSV-784",
+      "popis": "Penetrace stěn pod malbu vápenná (F19)",
+      "popis_canonical": "Penetrace stěn pod malbu vápenná (F19)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "870cf08f-3e90-482f-afd8-7733fc153aa8",
+      "kapitola": "PSV-784",
+      "popis": "Malba vápenná 1. nátěr (F19)",
+      "popis_canonical": "Malba vápenná 1. nátěr (F19)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "80aa4624-289f-49fd-8a6c-3e9ee324264d",
+      "kapitola": "PSV-784",
+      "popis": "Malba vápenná 2. nátěr (F19)",
+      "popis_canonical": "Malba vápenná 2. nátěr (F19)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "fa327e9a-0eba-4217-85be-b1edf6232789",
+      "kapitola": "PSV-784",
+      "popis": "Malba disperzní — dodávka barvy (paired with Malba vápenná 1.+2.)",
+      "popis_canonical": "Malba disperzní — dodávka barvy (paired with Malba vápenná 1.+2.)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "97ba19b7-073a-4e9b-91ea-40a949878900",
+      "kapitola": "PSV-783",
+      "popis": "Bezprašný nátěr ŽB stěn F14 — 1. nátěr",
+      "popis_canonical": "Bezprašný nátěr ŽB stěn F14 — 1. nátěr",
+      "MJ": "m2",
+      "mnozstvi": 36.825,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11: per Tabulka místností note 'Všechny ŽB stěny s povrchem F14'",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "f964f8b0-a930-47ed-b869-fd560c9407e2",
+      "kapitola": "PSV-783",
+      "popis": "Bezprašný nátěr ŽB stěn F14 — 2. nátěr",
+      "popis_canonical": "Bezprašný nátěr ŽB stěn F14 — 2. nátěr",
+      "MJ": "m2",
+      "mnozstvi": 36.825,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.16"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11: per Tabulka místností note 'Všechny ŽB stěny s povrchem F14'",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "3666e980-dfcb-4098-9bc9-81220a80d337",
+      "kapitola": "HSV-611",
+      "popis": "Penetrace pod omítku vápenocementová",
+      "popis_canonical": "Penetrace pod omítku vápenocementová",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "9e966741-8b69-4d77-8f50-1ec5b4461e61",
+      "kapitola": "HSV-611",
+      "popis": "Omítka vápenocementová vnitřních ploch tl. 10 mm",
+      "popis_canonical": "Omítka vápenocementová vnitřních ploch tl. 10 mm",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "e645aedf-ea55-4276-bb1f-f396ba3409a7",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (žádný fasádní otvor v místnosti)",
+      "popis_canonical": "Špalety vápenocementová okolo otvorů (žádný fasádní otvor v místnosti)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "efb2f89f-6bd6-4157-accc-6fc5a51fa26b",
+      "kapitola": "HSV-611",
+      "popis": "Špalety vápenocementová okolo otvorů (hloubka 115 mm vnitřní)",
+      "popis_canonical": "Špalety vápenocementová okolo otvorů (hloubka 115 mm vnitřní)",
+      "MJ": "m2",
+      "mnozstvi": 1.403,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "92bbad9d-1aad-4408-b661-d4f9c2549d25",
+      "kapitola": "HSV-631",
+      "popis": "Penetrace pod potěr (FF01)",
+      "popis_canonical": "Penetrace pod potěr (FF01)",
+      "MJ": "m2",
+      "mnozstvi": 2.99,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "396ee972-b2db-4bab-b931-9a372d97d65b",
+      "kapitola": "HSV-631",
+      "popis": "Cementový potěr F5 tl. 50 mm (FF01)",
+      "popis_canonical": "Cementový potěr F5 tl. 50 mm (FF01)",
+      "MJ": "m2",
+      "mnozstvi": 2.99,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "12331f9e-9d59-434d-8291-1444b18767fc",
+      "kapitola": "HSV-631",
+      "popis": "Kari síť 150/150/4 mm pro potěr (FF01)",
+      "popis_canonical": "Kari síť 150/150/4 mm pro potěr (FF01)",
+      "MJ": "m2",
+      "mnozstvi": 3.14,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "50c661c1-5bec-413f-9fd1-b684f5510bee",
+      "kapitola": "PSV-784",
+      "popis": "Penetrace stěn pod malbu vápenná (F19)",
+      "popis_canonical": "Penetrace stěn pod malbu vápenná (F19)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "df352c8a-2891-40c0-a484-cf702da4cf7b",
+      "kapitola": "PSV-784",
+      "popis": "Malba vápenná 1. nátěr (F19)",
+      "popis_canonical": "Malba vápenná 1. nátěr (F19)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "55ddf6c4-77cc-4372-b54f-fe741718fc6f",
+      "kapitola": "PSV-784",
+      "popis": "Malba vápenná 2. nátěr (F19)",
+      "popis_canonical": "Malba vápenná 2. nátěr (F19)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "411b56d6-3b12-42fe-9281-7b5722859300",
+      "kapitola": "PSV-784",
+      "popis": "Malba disperzní — dodávka barvy (paired with Malba vápenná 1.+2.)",
+      "popis_canonical": "Malba disperzní — dodávka barvy (paired with Malba vápenná 1.+2.)",
+      "MJ": "m2",
+      "mnozstvi": 0.0,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11_manual_inject",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "79bcafe8-2a9a-433e-ad6c-d1cedc0649fe",
+      "kapitola": "PSV-783",
+      "popis": "Bezprašný nátěr ŽB stěn F14 — 1. nátěr",
+      "popis_canonical": "Bezprašný nátěr ŽB stěn F14 — 1. nátěr",
+      "MJ": "m2",
+      "mnozstvi": 17.665,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11: per Tabulka místností note 'Všechny ŽB stěny s povrchem F14'",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
+      ]
+    },
+    {
+      "item_id": "8424f04b-c837-4ddf-8329-470b8ad256cd",
+      "kapitola": "PSV-783",
+      "popis": "Bezprašný nátěr ŽB stěn F14 — 2. nátěr",
+      "popis_canonical": "Bezprašný nátěr ŽB stěn F14 — 2. nátěr",
+      "MJ": "m2",
+      "mnozstvi": 17.665,
+      "misto": {
+        "objekt": "D",
+        "podlazi": "1.PP",
+        "mistnosti": [
+          "S.D.42"
+        ]
+      },
+      "skladba_ref": {},
+      "vyrobce_ref": "",
+      "urs_code": null,
+      "urs_status": "needs_review",
+      "urs_confidence": 0.0,
+      "urs_alternatives": [],
+      "confidence": 0.7,
+      "status": "to_audit",
+      "source_method": "PHASE_0_11_manual_inject",
+      "audit_note": "PHASE_0_11: per Tabulka místností note 'Všechny ŽB stěny s povrchem F14'",
+      "warnings": [
+        "PHASE_0_11: Manually injected — room missed by DXF parser, qty derived from XLSX plocha + peer kóje pattern."
       ]
     }
   ]

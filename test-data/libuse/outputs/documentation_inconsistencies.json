@@ -8,7 +8,7 @@
     "D1_undefined_F_codes_count": 0,
     "D2_FF_typos_count": 5,
     "D3_sequence_gaps_count": 0,
-    "D4_xlsx_only_rooms_count": 2,
+    "D4_xlsx_only_rooms_count": 0,
     "D5_dxf_only_rooms_count": 0,
     "D6_printed_legend_anomaly": "D.1.3.01 misfiled in PDF (XLSX OK)"
   },
@@ -57,10 +57,7 @@
   },
   "D4_xlsx_only_rooms": {
     "description": "D-rooms in Tabulka místností XLSX without matching room in DXF geometric dataset (DXF parsing gap or XLSX-only ghost rooms).",
-    "rooms": [
-      "S.D.16",
-      "S.D.42"
-    ]
+    "rooms": []
   },
   "D5_dxf_only_rooms": {
     "description": "DXF rooms without matching XLSX entry (DXF over-detection or undocumented spaces).",
