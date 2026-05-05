@@ -1,0 +1,5275 @@
+{
+  "summary": {
+    "total_rooms": 111,
+    "rooms_with_gaps": 104,
+    "estimated_under_billing_czk": 1007192.0,
+    "by_podlazi": {
+      "1.NP": {
+        "rooms": 20,
+        "rooms_with_gaps": 20,
+        "total_gap_categories": 99,
+        "total_plocha_with_gaps": 256.15000000000003
+      },
+      "2.NP": {
+        "rooms": 25,
+        "rooms_with_gaps": 21,
+        "total_gap_categories": 103,
+        "total_plocha_with_gaps": 255.04
+      },
+      "3.NP": {
+        "rooms": 23,
+        "rooms_with_gaps": 20,
+        "total_gap_categories": 100,
+        "total_plocha_with_gaps": 227.80999999999997
+      },
+      "1.PP": {
+        "rooms": 43,
+        "rooms_with_gaps": 43,
+        "total_gap_categories": 62,
+        "total_plocha_with_gaps": 278.61
+      }
+    }
+  },
+  "coverage_by_code": [
+    {
+      "code": "F11",
+      "rooms_using": 43,
+      "rooms_covered": 43,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "F15",
+      "rooms_using": 43,
+      "rooms_covered": 43,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "FF01",
+      "rooms_using": 42,
+      "rooms_covered": 42,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "F05",
+      "rooms_using": 41,
+      "rooms_covered": 41,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "F14",
+      "rooms_using": 39,
+      "rooms_covered": 39,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "F19",
+      "rooms_using": 39,
+      "rooms_covered": 36,
+      "coverage_pct": 92.3
+    },
+    {
+      "code": "F17",
+      "rooms_using": 34,
+      "rooms_covered": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "code": "F03",
+      "rooms_using": 28,
+      "rooms_covered": 28,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "FF30",
+      "rooms_using": 22,
+      "rooms_covered": 22,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "FF31",
+      "rooms_using": 19,
+      "rooms_covered": 19,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "CF20",
+      "rooms_using": 18,
+      "rooms_covered": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "code": "CF21",
+      "rooms_using": 16,
+      "rooms_covered": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "code": "F06",
+      "rooms_using": 16,
+      "rooms_covered": 16,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "F18",
+      "rooms_using": 16,
+      "rooms_covered": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "code": "F02",
+      "rooms_using": 13,
+      "rooms_covered": 13,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "FF21",
+      "rooms_using": 9,
+      "rooms_covered": 9,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "F04",
+      "rooms_using": 8,
+      "rooms_covered": 8,
+      "coverage_pct": 100.0
+    },
+    {
+      "code": "FF03",
+      "rooms_using": 8,
+      "rooms_covered": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "code": "FF20",
+      "rooms_using": 6,
+      "rooms_covered": 6,
+      "coverage_pct": 100.0
+    }
+  ],
+  "estimated_gap_value_by_code_czk": {
+    "CF21": 57962.0,
+    "F06": 32731.0,
+    "F17": 20206.0,
+    "F18": 77055.0,
+    "FF30": 54627.0,
+    "CF20": 138292.0,
+    "F02": 95906.0,
+    "F05": 192906.0,
+    "FF20": 22294.0,
+    "F04": 41178.0,
+    "FF31": 104400.0,
+    "FF21": 52400.0,
+    "FF03": 50682.0,
+    "F19": 66553.0
+  },
+  "rooms_gaps_top25": [
+    {
+      "room": "D.1.1.03",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 5.96,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.2.04",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.33,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.3.04",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.33,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.05",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.6,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.05",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.91,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.2.04",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.29,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.3.04",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.29,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.05",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.72,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.05",
+      "podlazi": "3.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.37,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.2.02",
+      "podlazi": "3.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 3.49,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.05",
+      "podlazi": "3.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.28,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.1.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 10.73,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.2.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.35,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.3.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.35,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 14.06,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.03",
+      "podlazi": "1.NP",
+      "nazev": "WC",
+      "plocha": 1.51,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 13.94,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.03",
+      "podlazi": "2.NP",
+      "nazev": "WC",
+      "plocha": 1.45,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.2.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.37,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.3.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.36,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 14.07,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.03",
+      "podlazi": "2.NP",
+      "nazev": "WC",
+      "plocha": 1.46,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.01",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 7.67,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.03",
+      "podlazi": "3.NP",
+      "nazev": "WC",
+      "plocha": 2.11,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.04",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 7.25,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "rooms_gaps_all": [
+    {
+      "room": "D.1.1.03",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 5.96,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.2.04",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.33,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.3.04",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.33,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.05",
+      "podlazi": "1.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.6,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.05",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.91,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.2.04",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.29,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.3.04",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 4.29,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.05",
+      "podlazi": "2.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.72,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.05",
+      "podlazi": "3.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.37,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.2.02",
+      "podlazi": "3.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 3.49,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.05",
+      "podlazi": "3.NP",
+      "nazev": "KOUPELNA",
+      "plocha": 6.28,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.1.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 10.73,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.2.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.35,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.3.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.35,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.01",
+      "podlazi": "1.NP",
+      "nazev": "CHODBA",
+      "plocha": 14.06,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.03",
+      "podlazi": "1.NP",
+      "nazev": "WC",
+      "plocha": 1.51,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 13.94,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.03",
+      "podlazi": "2.NP",
+      "nazev": "WC",
+      "plocha": 1.45,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.2.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.37,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.3.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 6.36,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.01",
+      "podlazi": "2.NP",
+      "nazev": "CHODBA",
+      "plocha": 14.07,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.03",
+      "podlazi": "2.NP",
+      "nazev": "WC",
+      "plocha": 1.46,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.01",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 7.67,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.03",
+      "podlazi": "3.NP",
+      "nazev": "WC",
+      "plocha": 2.11,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.04",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 7.25,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.2.01",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 4.5,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.01",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 7.94,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.03",
+      "podlazi": "3.NP",
+      "nazev": "WC",
+      "plocha": 2.09,
+      "gaps": [
+        {
+          "code": "CF21",
+          "missing_categories": [
+            {
+              "label": "SDK podhled koupelny",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F06",
+          "missing_categories": [
+            {
+              "label": "jádrová omítka 10mm koupelny",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "HI stěrka koupelny",
+              "est_kc_per_m2": 180
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "F18",
+          "missing_categories": [
+            {
+              "label": "dlažba koupelny",
+              "est_kc_per_m2": 950
+            },
+            {
+              "label": "HI stěrka pod dlažbu",
+              "est_kc_per_m2": 180
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.04",
+      "podlazi": "3.NP",
+      "nazev": "CHODBA",
+      "plocha": 7.24,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F02",
+          "missing_categories": [
+            {
+              "label": "dlažba bytové chodby",
+              "est_kc_per_m2": 850
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.S.02",
+      "podlazi": "1.NP",
+      "nazev": "ZÁDVEŘÍ",
+      "plocha": 9.97,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.S.01",
+      "podlazi": "1.NP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 22.21,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF20",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.2.05",
+      "podlazi": "3.NP",
+      "nazev": "ŠATNA",
+      "plocha": 3.58,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.S.01",
+      "podlazi": "2.NP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 17.9,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.S.01",
+      "podlazi": "3.NP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 17.9,
+      "gaps": [
+        {
+          "code": "CF20",
+          "missing_categories": [
+            {
+              "label": "SDK podhled chodeb",
+              "est_kc_per_m2": 750
+            }
+          ]
+        },
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "F17",
+          "missing_categories": [
+            {
+              "label": "SDK otěruvzdorná výmalba",
+              "est_kc_per_m2": 80
+            }
+          ]
+        },
+        {
+          "code": "FF30",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.1.02",
+      "podlazi": "1.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 19.31,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.1.04",
+      "podlazi": "1.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.34,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.2.02",
+      "podlazi": "1.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 23.67,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.2.03",
+      "podlazi": "1.NP",
+      "nazev": "POKOJ",
+      "plocha": 15.24,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.3.02",
+      "podlazi": "1.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 23.83,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.3.03",
+      "podlazi": "1.NP",
+      "nazev": "POKOJ",
+      "plocha": 15.08,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.02",
+      "podlazi": "1.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 27.25,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.06",
+      "podlazi": "1.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.7,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.1.4.07",
+      "podlazi": "1.NP",
+      "nazev": "POKOJ",
+      "plocha": 12.33,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF21",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.02",
+      "podlazi": "2.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 24.87,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.06",
+      "podlazi": "2.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.44,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.1.07",
+      "podlazi": "2.NP",
+      "nazev": "POKOJ",
+      "plocha": 11.9,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.2.02",
+      "podlazi": "2.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 21.63,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.2.03",
+      "podlazi": "2.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.49,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.3.02",
+      "podlazi": "2.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 21.63,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.3.03",
+      "podlazi": "2.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.5,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.02",
+      "podlazi": "2.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 25.01,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.06",
+      "podlazi": "2.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.54,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.2.4.07",
+      "podlazi": "2.NP",
+      "nazev": "POKOJ",
+      "plocha": 12.27,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.02",
+      "podlazi": "3.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 32.42,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.06",
+      "podlazi": "3.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.05,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.1.07",
+      "podlazi": "3.NP",
+      "nazev": "POKOJ",
+      "plocha": 12.5,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.2.03",
+      "podlazi": "3.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 23.65,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.2.04",
+      "podlazi": "3.NP",
+      "nazev": "POKOJ",
+      "plocha": 11.6,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.02",
+      "podlazi": "3.NP",
+      "nazev": "OBÝVACÍ POKOJ + KK",
+      "plocha": 32.07,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.06",
+      "podlazi": "3.NP",
+      "nazev": "POKOJ",
+      "plocha": 13.14,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "D.3.3.07",
+      "podlazi": "3.NP",
+      "nazev": "POKOJ",
+      "plocha": 12.96,
+      "gaps": [
+        {
+          "code": "F05",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm bytové",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF31",
+          "missing_categories": [
+            {
+              "label": "kročejová izolace 25mm",
+              "est_kc_per_m2": 120
+            },
+            {
+              "label": "polysterén beton 40mm",
+              "est_kc_per_m2": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.01",
+      "podlazi": "1.PP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 27.85,
+      "gaps": [
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.02",
+      "podlazi": "1.PP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 18.17,
+      "gaps": [
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.03",
+      "podlazi": "1.PP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 9.96,
+      "gaps": [
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.21",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 3.26,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.22",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 3.83,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.23",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 3.83,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.30",
+      "podlazi": "1.PP",
+      "nazev": "SPOLEČNÁ CHODBA",
+      "plocha": 4.72,
+      "gaps": [
+        {
+          "code": "F04",
+          "missing_categories": [
+            {
+              "label": "sádrová omítka 10mm chodby",
+              "est_kc_per_m2": 320
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.31",
+      "podlazi": "1.PP",
+      "nazev": "TECHNICKÁ MÍSTNOST",
+      "plocha": 12.85,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        },
+        {
+          "code": "FF03",
+          "missing_categories": [
+            {
+              "label": "asfaltová HI proti radonu",
+              "est_kc_per_m2": 250
+            },
+            {
+              "label": "XPS izolace 80mm",
+              "est_kc_per_m2": 350
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.16",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 7.62,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "otěruvzdorný nátěr sklep",
+              "est_kc_per_m2": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.27",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 4.14,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "otěruvzdorný nátěr sklep",
+              "est_kc_per_m2": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.42",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 2.99,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            },
+            {
+              "label": "otěruvzdorný nátěr sklep",
+              "est_kc_per_m2": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.04",
+      "podlazi": "1.PP",
+      "nazev": "SKLAD",
+      "plocha": 6.68,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.05",
+      "podlazi": "1.PP",
+      "nazev": "SKLAD",
+      "plocha": 5.84,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.06",
+      "podlazi": "1.PP",
+      "nazev": "SKLAD",
+      "plocha": 5.92,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.07",
+      "podlazi": "1.PP",
+      "nazev": "SKLAD",
+      "plocha": 8.63,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.08",
+      "podlazi": "1.PP",
+      "nazev": "ÚKLID",
+      "plocha": 4.04,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.09",
+      "podlazi": "1.PP",
+      "nazev": "CHODBA",
+      "plocha": 15.24,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.10",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 4.4,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.11",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 3.54,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.12",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 2.87,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.13",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 5.09,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.14",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 6.6,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.15",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 8.6,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.17",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 4.13,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.18",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 3.86,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.19",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - C",
+      "plocha": 4.32,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.20",
+      "podlazi": "1.PP",
+      "nazev": "CHODBA",
+      "plocha": 13.63,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.24",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 3.83,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.25",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 4.78,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.26",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 4.43,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.28",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 3.38,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.29",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - B",
+      "plocha": 3.87,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.32",
+      "podlazi": "1.PP",
+      "nazev": "CHODBA",
+      "plocha": 12.64,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.33",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 3.05,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.34",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 5.45,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.35",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 6.12,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.36",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 5.01,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.37",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 3.87,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.38",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 2.68,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.39",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 5.95,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.40",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 4.81,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.41",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 2.94,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "room": "S.D.43",
+      "podlazi": "1.PP",
+      "nazev": "SKLEPNÍ KÓJE - D",
+      "plocha": 3.19,
+      "gaps": [
+        {
+          "code": "F19",
+          "missing_categories": [
+            {
+              "label": "vápenocementová omítka",
+              "est_kc_per_m2": 300
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
