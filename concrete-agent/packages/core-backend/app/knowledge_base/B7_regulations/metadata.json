@@ -1,9 +1,9 @@
 {
   "category": "B7_regulations",
-  "last_updated": "2026-05-05",
-  "version": "1.1",
+  "last_updated": "2026-05-06",
+  "version": "1.2",
   "source": "Manual ingest",
-  "description": "Laws and building regulations: Eurocode norms (full or partial extracts), ČSN regulations (or paid-norm stubs cross-referencing university distillations).",
+  "description": "Laws and building regulations: Eurocode norms (full or partial extracts), ČSN regulations (or paid-norm stubs cross-referencing university distillations), TKP MD ČR free norms (full extracts), VL vzorové listy.",
   "files": [
     {
       "path": "csn_en_206_pruvodce/",
@@ -20,7 +20,7 @@
       "doc_type": "eurocode_norm",
       "files_in_folder": ["INDEX.yaml", "METADATA.md", "source_pointer.md"],
       "pdf_location": "../B2_csn_standards/SIST-EN-1992-2-2005.pdf",
-      "extraction_status": "PARTIAL (sections 3.1.2, 4.4, Annex E for Žihle Phase B)",
+      "extraction_status": "PARTIAL (sections 3.1.2, 4.4, 7.3, 113, Annex E for Žihle Phase B)",
       "added": "2026-05-05"
     },
     {
@@ -32,7 +32,49 @@
       "pdf_location": null,
       "primary_extraction_source": "../B6_research_papers/upa_zatizitelnost_sanace_mostu/",
       "added": "2026-05-05"
+    },
+    {
+      "path": "tkp_04_zemni_prace/",
+      "type": "subfolder_extract",
+      "title": "TKP — Kapitola 4: Zemní práce (full extraction, 2026 edition)",
+      "doc_type": "tkp_md_norm",
+      "files_in_folder": ["INDEX.yaml", "METADATA.md", "source_pointer.md"],
+      "pdf_location": "../../../../../../docs/normy/tkp/TKP04_2026_01.pdf",
+      "extraction_status": "full (Scenario A, 38 stran ≤50)",
+      "issuer": "Ministerstvo dopravy (MD-3008/2026-940/2, 19.1.2026)",
+      "effective": "2026-02-01",
+      "supersedes": "TKP_04_2017.doc (legacy in B2_csn_standards/)",
+      "added": "2026-05-06"
+    },
+    {
+      "path": "csn_73_6244_prechody_mostu/",
+      "type": "subfolder_stub",
+      "title": "ČSN 73 6244 — Přechody mostů pozemních komunikací (STUB, paid norm)",
+      "doc_type": "csn_norm_stub",
+      "files_in_folder": ["INDEX.yaml", "METADATA.md", "source_pointer.md"],
+      "pdf_location": null,
+      "primary_extraction_source": "User-prepared structured summary (TASK §3.3, 2026-05-06)",
+      "secondary_source": "../B6_research_papers/upa_prechodove_oblasti/ (UPa skripta)",
+      "key_values_captured": [
+        "Čl. 5: zásyp ŠDA 0-32, ID 0,85-0,90, vrstva max 125 mm",
+        "Čl. 7: nerovnost 20 mm dálnice / 40 mm silnice II/III tř.",
+        "Čl. 7.3: drenáž DN 150, geomembrana 20 kN/m",
+        "Čl. 7.7: integrované mosty (Žihle relevantní)",
+        "Příloha A: tabulka A.1 míra zhutnění"
+      ],
+      "added": "2026-05-06"
+    },
+    {
+      "path": "vl_4_mosty/",
+      "type": "subfolder_extract",
+      "title": "VL 4 — Vzorové listy MOSTY (2021)",
+      "doc_type": "vzorove_listy_md_extracted",
+      "files_in_folder": ["INDEX.yaml", "METADATA.md", "VL_4_2021_Mosty.md"],
+      "issuer": "Ministerstvo dopravy",
+      "extraction_status": "full_markdown (~700 stran v originále, 4000+ řádků MD)",
+      "moved_from": "B2_csn_standards/VL_4_2021_Mosty_markdown.md",
+      "added": "2026-05-06"
     }
   ],
-  "notes": "B7_regulations holds extracted YAML/MD for norms. Source PDFs may live in B2_csn_standards/ (legacy convention for ČSN-like binaries) or in GCS (large-format references). Each subfolder includes a source_pointer.md describing PDF location and Vertex AI / RAG ingest status."
+  "notes": "B7_regulations holds extracted YAML/MD for norms. Source PDFs may live in: (a) docs/normy/tkp/ (canonical for free MD ČR TKPs), (b) B2_csn_standards/ (legacy for ČSN-like + university PDFs), (c) GCS (large-format references), or (d) NOT in repo (paid normy ÚNMZ — distillation stubs only). Each subfolder includes source_pointer.md describing PDF location and acquisition path."
 }

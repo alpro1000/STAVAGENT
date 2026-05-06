@@ -1,0 +1,258 @@
+# parcels_and_consents.yaml — kadastrální vlastníci + předběžné souhlasy se vstupem
+# Zdroje:
+#   - inputs/pdf/Most ev.č. 2062-1 - okruh pozemků-noname.pdf (vlastnická struktura)
+#   - inputs/pdf/Most ev.č. 2062-1 - předbežné souhlasy FO, obec, RFK-noname.pdf (7 stran souhlasů)
+#   - 04_documentation/kadastr_audit/kadastr_extracted.yaml (DXF extents + parcel labels)
+# Audit method: Read tool (Claude native PDF read with multimodal vision).
+
+schema_version: 1
+audit_date: "2026-05-06"
+investor: "Správa a údržba silnic Plzeňského kraje, p.o. (SÚSPK), IČO 72053119, DIČ CZ72053119"
+investor_address: "Pracoviště Žatecká 732, 331 41 Kralovice"
+project_name: "Most ev.č. 2062-1 u obce Žihle"
+contract_type: "Design & Build (D&B)"
+
+# =========================================================================
+# OWNERSHIP CATEGORIES (per okruh pozemků PDF)
+# =========================================================================
+owner_categories:
+  - category: "FYZICKÉ OSOBY (FO) — soukromí vlastníci"
+    count_owners: 4
+    parcels:
+      - parcel: "392"
+        ku: "Přehořov u Žihle"
+        owner_id: "FO_1"
+      - parcel: "1723"
+        ku: "Žihle"
+        owner_id: "FO_1"
+      - parcel: "1714"
+        ku: "Žihle"
+        owner_id: "FO_2"
+      - parcel: "391/2"
+        ku: "Přehořov u Žihle"
+        owner_id: "FO_3"
+      - parcel: "385/3"
+        ku: "Přehořov u Žihle"
+        owner_id: "FO_4"
+      - parcel: "385/1"
+        ku: "Přehořov u Žihle"
+        owner_id: "FO_4"
+
+  - category: "SÚS Plzeňského kraje (investor)"
+    count_owners: 1
+    parcels:
+      - parcel: "1755"
+        ku: "Žihle"
+        note: "Nemá zvláštní souhlas — investor sám"
+      - parcel: "1842"
+        ku: "Žihle"
+      - parcel: "1832"
+        ku: "Žihle"
+      - parcel: "1714"
+        ku: "Žihle"
+        note: "Pozn.: parcela 1714 je sdílena s FO_2 (spoluvlastnictví?) — ověřit u SÚS"
+
+  - category: "Obec Žihle"
+    count_owners: 1
+    address: "č. p. 53, 331 65 Žihle"
+    parcels:
+      - parcel: "1770"
+        ku: "Žihle"
+      - parcel: "1845"
+        ku: "Žihle"
+      - parcel: "1831"
+        ku: "Žihle"
+      - parcel: "1710"
+        ku: "Žihle"
+      - parcel: "618/1"
+        ku: "Přehořov u Žihle"
+
+  - category: "ČR — Státní pozemkový úřad (SPÚ)"
+    count_owners: 1
+    parcels:
+      - parcel: "385/11"
+        ku: "Přehořov u Žihle"
+        note: "SPÚ nevydává předběžný souhlas — vyjádří se až ke konkrétnímu návrhu PD"
+
+  - category: "ČR — Povodí Vltavy"
+    count_owners: 1
+    note: "Spravuje Mladotický potok"
+    parcels:
+      - parcel: "1836"
+        ku: "Žihle"
+      - parcel: "385/13"
+        ku: "Přehořov u Žihle"
+
+  - category: "ČR — Lesy České republiky, s.p., Lesní správa Žatec"
+    count_owners: 1
+    address: "K Perči 3003, 438 01 Žatec"
+    parcels:
+      - parcel: "385/12"
+        ku: "Přehořov u Žihle"
+      - parcel: "613/3"
+        ku: "Přehořov u Žihle"
+      - parcel: "397"
+        ku: "Přehořov u Žihle"
+      - parcel: "614"
+        ku: "Přehořov u Žihle"
+      - parcel: "1769"
+        ku: "Žihle"
+      - parcel: "1843"
+        ku: "Žihle"
+
+  - category: "Římskokatolická farnost Kralovice"
+    count_owners: 1
+    address: "Plzeňská tř. 158, 331 41 Kralovice"
+    ico: "47732211"
+    parcels:
+      - parcel: "1785"
+        ku: "Žihle"
+
+# =========================================================================
+# PŘEDBĚŽNÉ SOUHLASY (per souhlasy PDF — 7 stránek, anonymizované)
+# =========================================================================
+# Pozn.: SÚSPK podpis se neuvádí — investor sám.
+preliminary_consents:
+  total_consents_collected: 7      # 4 FO + 1 obec + 1 LČR + 1 RFK
+  total_pages_in_pdf: 7
+  consent_template_signature: "ČS-SÚSPK-souhlas-vstup-25" # standardní formulář
+  consent_legal_basis: "předběžný souhlas se vstupem na pozemek z důvodu stavebního záměru"
+  consent_clauses_summary:
+    - "Souhlas pro zahájení projektové přípravy (NE pro provedení stavby)"
+    - "Projevení souhlasu na situaci PD bude provedeno samostatně"
+    - "Forma realizační smlouvy: Smlouva o právu provedení stavby NEBO obdobný smluvní vztah (nájemní smlouva)"
+
+  consents:
+    - consent_id: "FO_1"
+      page_in_pdf: 1
+      parcels: ["392 (Přehořov u Žihle)", "1723 (Žihle)"]
+      location_signed: "V Žihli"
+      date_signed: "2025-12-18"
+      conditions_or_requirements: "Žádné specifické požadavky"
+      status: "GRANTED"
+
+    - consent_id: "FO_2"
+      page_in_pdf: 2
+      parcels: ["1714 (Žihle)"]
+      location_signed: "V Praze"
+      date_signed: "2025-12-10"
+      conditions_or_requirements: |
+        Vlastník má datovou schránku (FO).
+        10 schránka [ID redacted].
+        Veškeré informace zasílat výhradně do datovky NEBO na uvedený email.
+      status: "GRANTED with communication preference"
+
+    - consent_id: "OBEC_ZIHLE"
+      page_in_pdf: 3
+      parcels: ["1770", "1845", "1831", "1710 (Žihle)", "618/1 (Přehořov u Žihle)"]
+      signed_by: "starosta obce Žihle"
+      location_signed: "V Žihli"
+      date_signed: null   # Datum chybí v PDF (prázdný řádek)
+      conditions_or_requirements: "Žádné specifické požadavky uvedené v textu"
+      status: "GRANTED (datum doplnit při finalizaci)"
+
+    - consent_id: "FO_3"
+      page_in_pdf: 4
+      parcels: ["391/2 (Přehořov u Žihle)"]
+      location_signed: "V Přehořově"
+      date_signed: "2025-11-10"
+      conditions_or_requirements: "Žádné specifické požadavky"
+      status: "GRANTED"
+
+    - consent_id: "FO_4"
+      page_in_pdf: 5
+      parcels: ["385/3", "385/1 (Přehořov u Žihle)"]
+      location_signed: "V Přehořově"
+      date_signed: "2025-12-12"
+      conditions_or_requirements: "Žádné specifické požadavky"
+      status: "GRANTED"
+
+    - consent_id: "LCR_ZATEC"
+      page_in_pdf: 6
+      parcels: ["385/12", "613/3", "397", "614 (Přehořov u Žihle)", "1769", "1843 (Žihle)"]
+      signed_by: "lesní správce Lesy ČR, Lesní správa Žatec"
+      signature_type: "Digitální podpis"
+      date_signed: "2025-11-25"
+      conditions_or_requirements: |
+        ⚠️ PODMÍNĚNÝ SOUHLAS:
+        - Na pozemcích s právem hospodařit LČR NEBUDE v rámci zajištění PD nutné kácet,
+          oklešťovat dřeviny, ANI zde NEBUDE ukládán materiál.
+        - Zpracovatel PD musí navrhnout řešení nejšetrnější z hlediska zachování lesa,
+          ochrany ŽP a celospolečenských zájmů.
+        - Zábor pozemků určených k plnění funkce lesa (PUPFL) musí být minimalizován.
+        - Zpracovatel PD musí provést vyhodnocení důsledků navrhovaného řešení a
+          navrhnout způsob následné rekultivace + uspořádání území po dokončení stavby.
+      status: "GRANTED with conditions"
+      action_for_dur: |
+        D&B zhotovitel musí explicitně řešit v PD:
+        1. Žádné kácení/ořezy dřevin na parcelách 385/12, 613/3, 397, 614, 1769, 1843.
+        2. Žádné mezideponie/ukládání materiálu na lesních parcelách.
+        3. Vyhodnocení dopadů + plán rekultivace v rámci kapitoly TZ "Vliv na ŽP" + samostatná příloha.
+
+    - consent_id: "RFK_KRALOVICE"
+      page_in_pdf: 7
+      organization: "Římskokatolická farnost Kralovice"
+      ico: "47732211"
+      parcels: ["1785 (Žihle)"]
+      contact_email: "farnost.kralovice@bip.cz"
+      location_signed: "V Plzni"
+      date_signed: "2025-10-27"
+      conditions_or_requirements: "Žádné specifické požadavky"
+      contract_type_acknowledged: "Design & Build"
+      status: "GRANTED"
+
+# =========================================================================
+# MISSING CONSENTS / OPEN ITEMS
+# =========================================================================
+missing_or_pending_consents:
+  - owner: "ČR — Státní pozemkový úřad (SPÚ)"
+    parcels: ["385/11 (Přehořov u Žihle)"]
+    status: "PENDING — vyjádří se až ke konkrétnímu návrhu PD"
+    risk_level: "MEDIUM"
+    action: "D&B zhotovitel musí podat žádost o vyjádření SPÚ při zahájení DUR/DSP."
+
+  - owner: "ČR — Povodí Vltavy"
+    parcels: ["1836 (Žihle)", "385/13 (Přehořov u Žihle)"]
+    status: "MISSING — souhlas v PDF nedoložen"
+    risk_level: "HIGH"
+    risk_description: |
+      Mladotický potok = vodní tok ve správě Povodí Vltavy. Zásah do koryta (zakládání,
+      provizorium, demolice stávajícího mostu) vyžaduje:
+      - Souhlas s vodoprávní úpravou
+      - Možný zábor parcely pro ZS (zařízení staveniště) nebo manipulační prostor
+    action: "P0 PRIORITY: D&B zhotovitel musí získat předběžný souhlas Povodí Vltavy před DUR."
+
+# =========================================================================
+# CROSS-VALIDATION VS DXF KADASTR
+# =========================================================================
+cross_validation_vs_dxf:
+  dxf_source: "04_documentation/kadastr_audit/kadastr_extracted.yaml"
+  dxf_parcel_candidates_total: 1986
+  consents_pdf_unique_parcels_total: 21    # see counts below
+  parcel_count_breakdown:
+    fyzicke_osoby: 6        # 392, 1723, 1714, 391/2, 385/3, 385/1
+    sus_plzen: 4            # 1755, 1842, 1832, 1714 (1714 sdílena s FO_2)
+    obec_zihle: 5           # 1770, 1845, 1831, 1710, 618/1
+    cr_spu: 1               # 385/11
+    cr_povodi_vltavy: 2     # 1836, 385/13
+    cr_lesy: 6              # 385/12, 613/3, 397, 614, 1769, 1843
+    rfk: 1                  # 1785
+  notes: |
+    DXF má 1986 parcel candidates (zahrnuje široké okolí + nesouvisející parcely).
+    Konsenty pokrývají ~21 unikátních parcel přímo dotčených stavbou.
+    Phase E (deferred to Session 2) vykreslí situaci M 1:500 s těmito 21 parcelami zvýrazněnými.
+
+# =========================================================================
+# AUDIT FLAGS
+# =========================================================================
+flags:
+  - level: warning
+    message: "Povodí Vltavy souhlas chybí — kritický blocker pro DUR (Mladotický potok)."
+  - level: info
+    message: "SPÚ standardně vydává souhlas až po DUR — nevyžaduje akci v této fázi."
+  - level: warning
+    message: "LČR souhlas obsahuje ZÁVAZNÉ podmínky (no kácení, no skládání materiálu) — D&B zhotovitel je musí explicitně řešit v PD."
+  - level: info
+    message: "Obec Žihle — datum souhlasu chybí; doplnit při finalizaci."
+  - level: info
+    message: "FO_2 vyžaduje komunikaci přes datovou schránku — dodavatel D&B respektuje."

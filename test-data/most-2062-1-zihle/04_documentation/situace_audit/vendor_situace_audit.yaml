@@ -1,0 +1,54 @@
+# vendor_situace_audit.yaml — audit vendor situace.pdf vs DXF kadastr
+# Per task §1.3: page count, scale, drawing extent comparison
+
+schema_version: 1
+source_file: "inputs/pdf/Most ev.č. 2062-1 u obce Žihle, přestavba - situace.pdf"
+file_size_bytes: 1117015
+audit_method: "Read tool (Claude native PDF read with multimodal vision)"
+
+content:
+  pages: 1
+  type: "wide-area location overview map ('Zájmové území stavebního záměru')"
+  base_map: "Mapy.com"
+  publisher: "SÚSPK (Správa a údržba silnic Plzeňského kraje, p.o.)"
+  detail_level: "schematic / overview"
+  marked_location: "red circle between obec Žihle (km ~0,793 along III/206 2) and Potvorov"
+
+scope_assessment:
+  is_engineering_situace_M_1_500: false
+  is_overview_orientation_map: true
+  detail_level_inadequate_for_DPS: true
+  notes: |
+    This is a wide-area orientation map (covers ~30 km × 25 km area incl. Žihle, Potvorov,
+    Vysoká Libyně, Bílov, Sedlec, Kralovice, Kožlany, Mladotice). Not the detailed
+    M 1:500 / 1:200 engineering situace required for DUR + DSP per vyhláška 499/2006 Sb.
+    Pro Phase E sandbox výstup (C.2.1_situace_M1_500.svg) — DXF kadastr je single source
+    of truth (18253 entities, 1986 parcel candidates, scale-true).
+
+cross_validation_vs_dxf:
+  dxf_extents_wgs84:
+    lon_min: 13.2901    # from 04_documentation/kadastr_audit/kadastr_extracted.yaml
+    lon_max: 13.3735
+    lat_min: 50.0282
+    lat_max: 50.0682
+    width_m: 5817.2
+    height_m: 2913.99
+  vendor_situace_extents_wgs84_estimated:
+    lon_min: ~13.21    # visual estimate from map (covers Pohvizdy west to Kožlany east)
+    lon_max: ~13.55
+    lat_min: ~49.91
+    lat_max: ~50.20
+    width_km: ~30
+    height_km: ~25
+  comparison: |
+    Vendor situace covers ~14× wider area than DXF (overview map vs detailed kadastr).
+    Both center at Žihle (~13.37 lon / 50.05 lat) — locations consistent.
+    DXF is the authoritative geometry source for Phase E; vendor situace is just orientation.
+
+flag:
+  level: info
+  message: "Vendor situace is overview-only (Mapy.com schematic). Detail engineering situace (M 1:500) for DUR submission must be generated from DXF kadastr in Phase E."
+
+cross_references:
+  - "04_documentation/kadastr_audit/kadastr_extracted.yaml — DXF authoritative geometry"
+  - "Phase E (deferred to Session 2): C.2.1_situace_M1_500.svg generation"

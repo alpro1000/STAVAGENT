@@ -1,0 +1,173 @@
+# vendor_quotes.yaml — externí cenové nabídky pro Most ev.č. 2062-1 Žihle
+# Konsoliduje 6 PDF zdrojů (4× mostní provizorium + 1× ukládka zeminy + 1× ceník odpadů).
+# Audit method: Read tool (Claude native PDF read with multimodal vision).
+# Per task §Q9: vendor_quotes.yaml = veřejné nabídky → INCLUDE; nabídka.xlsm = INTERNAL → STRUCTURE-ONLY (separate file).
+
+schema_version: 1
+audit_date: "2026-05-06"
+recipient_role: "BERGER (zhotovitel — návrh cenové nabídky pro tendr SÚS Plzeňského kraje)"
+currency: CZK
+vat_treatment: "Nabídky bez DPH (sazba 21 % pokud uvedeno samostatně)"
+
+# =========================================================================
+# A) MOSTNÍ PROVIZORIUM (4 nabídky — užité technologie/šířky se liší)
+# =========================================================================
+mostni_provizorium:
+  scope: "Provizorní most pro objízdnou trasu po dobu výstavby Mostu ev.č. 2062-1 (objížďka přes Mladotický potok, max 30 t)."
+
+  - vendor_id: TMS_9m
+    company: "Petra Vaňková (zástupce TMS — Tubular Modular Systems)"
+    customer_in_quote: "BERGER Bohemia, a.s."
+    quote_date: "2026-04-30"
+    pdf_source: "inputs/docx/Cenová nabídka TMS 9 m.pdf"
+    technology: "TMS — modulární trubková konstrukce typ Z1p2s"
+    parameters:
+      delka_m: 9
+      sirka_volna_m: ~3.5  # typický TMS 9m profile
+      nosnost_t: ~30
+    cost_breakdown:
+      montaz_czk: 102000
+      demontaz_czk: 102000
+      najem_czk_per_day: 850
+      pravidelna_prohlidka_czk_per_month: 8000
+      doprava_czk: "samostatně (nezahrnuto do paušálu)"
+    typical_3month_total_estimate_czk:
+      formula: "102000 + 102000 + 90×850 + 3×8000 = 304500"
+      note: "Reference 90 dní pronájmu, 3 měsíce prohlídek; doprava extra"
+    notes: |
+      Užitné parametry pro D&B tendr Žihle: nejlevnější varianta — TMS lehčí konstrukce.
+      Délka 9 m je dostatečná pro Mladotický potok (světlost ~5 m).
+      Nosnost ~30 t pokrývá VL 4 třídu A (40 t) jen částečně — ověřit s SÚS.
+
+  - vendor_id: PONVIA_MS_9m
+    company: "PONVIA Construct s.r.o."
+    company_ico: "04381823"
+    customer_in_quote: "BERGER Bohemia, a.s."
+    quote_date: "2026-05-04"
+    pdf_source: "inputs/docx/Cenová nabídka mostního provizoria MS.pdf"
+    technology: "MS — Mostní provizorium soustavy MS"
+    parameters:
+      delka_m: 9
+      nosnost_normalni_t: 11      # Vn = normální zatížení
+      nosnost_vyjimecna_t: 40     # Vr = výjimečné zatížení
+    cost_breakdown:
+      montaz_czk: 268300
+      demontaz_czk: 268300
+      najem_czk_per_day: 750
+      pravidelna_prohlidka_czk_per_month: 10990
+    typical_3month_total_estimate_czk:
+      formula: "268300 + 268300 + 90×750 + 3×10990 = 637070"
+      note: "Cca 2× dražší než TMS, ale 40 t Vr (těžká vozidla SÚS)"
+    notes: |
+      MS soustava je v ČR standard pro silniční D&B mosty (kompatibilní s VL 4 třída A 40 t).
+      Vyšší cena za montáž odráží těžší konstrukci a nutnost jeřábu.
+
+  - vendor_id: MOSTY_ZABORI_4m
+    company: "Mosty Záboří s.r.o."
+    company_ico: "21881545"
+    contact: "Pavel Hrdina"
+    customer_in_quote: "BERGER Bohemia, a.s."
+    quote_date: "2026-05-05"
+    pdf_source: "inputs/docx/Příloha č.1 - Cenová nabídka MP šířky 4m - varianta č.1.pdf"
+    cover_letter_pdf: "inputs/docx/CN Provizorium Žihle ze dne 5.5.2026.pdf"
+    technology: "Mostní provizorium — varianta č. 1 (delší/širší)"
+    parameters:
+      sirka_konstrukce_m: 4.2
+      sirka_vozovky_m: 4.0
+      delka_m: 15
+    cost_breakdown:
+      total_czk: 750328
+      breakdown_note: "Detail položek (montáž/demontáž/nájem/doprava) v PDF — souhrn 750 328 Kč"
+    notes: |
+      Širší vozovka (4 m) umožňuje obousměrný provoz s úzkými vozidly nebo jednosměrný s rezervou.
+      Délka 15 m řeší mostek + nájezdové úseky.
+
+  - vendor_id: MOSTY_ZABORI_3.5m
+    company: "Mosty Záboří s.r.o."
+    company_ico: "21881545"
+    contact: "Pavel Hrdina"
+    customer_in_quote: "BERGER Bohemia, a.s."
+    quote_date: "2026-05-05"
+    pdf_source: "inputs/docx/Příloha č.2 - Cenová nabídka MP šířky 3,5m - varianta č.2.pdf"
+    cover_letter_pdf: "inputs/docx/CN Provizorium Žihle ze dne 5.5.2026.pdf"
+    technology: "Mostní provizorium — varianta č. 2 (užší)"
+    parameters:
+      sirka_konstrukce_m: 3.75
+      sirka_vozovky_m: 3.5
+      delka_m: 15
+    cost_breakdown:
+      total_czk: 654387
+      breakdown_note: "Detail položek v PDF — souhrn 654 387 Kč"
+    notes: |
+      Užší vozovka (3.5 m) — pouze jednosměrný provoz nebo s vyhýbací plochou.
+      Cca 96 000 Kč úspora oproti variantě 4 m při zachování délky.
+
+# =========================================================================
+# B) UKLÁDKA ZEMINY / ODPADY
+# =========================================================================
+ukladka_zeminy:
+  - vendor_id: DECO_TRADE_NESUCHYNE
+    company: "DECO TRADE s.r.o."
+    company_ico: "09560530"
+    provoz: "Provozovna Nesuchyně (skládka kompatibilních odpadů)"
+    customer_in_quote: "BERGER Bohemia, a.s."
+    quote_date: "2026-04-30"
+    pdf_source: "inputs/docx/Ukládka zeminy - nabídka BERGER 30.04.2026.pdf"
+    cost_breakdown:
+      ukladka_zeminy_czk_per_t: 120
+      platnost_do: "2026-12-31"
+    notes: |
+      KRITICKÉ: V názvu PDF je "BERGER" jako PŘÍJEMCE nabídky, ne dodavatel.
+      Skutečný dodavatel = DECO TRADE s.r.o. Nezamenit.
+      Nesuchyně leží ~25 km od Žihle (přes Kralovice) — adekvátní svozová vzdálenost.
+
+# =========================================================================
+# C) CENÍK MULTI-ODPAD A DEMOLIČNÍ HMOTY
+# =========================================================================
+recyklacni_stredisko:
+  - vendor_id: EKOSTAVBY_LOUNY_RS_ZATEC
+    company: "Ekostavby Louny s.r.o."
+    company_ico: "10442481"
+    stredisko: "Recyklační středisko Žatec (RS Žatec 2026)"
+    quote_date: "2026 (ceník platný pro rok 2026)"
+    pdf_source: "inputs/docx/Ceník RS Žatec 2026.pdf"
+    related_pdfs:
+      - "inputs/docx/INFORMACE pro zákazníky RS 2026 I.pdf"
+      - "inputs/docx/INFORMACE pro zákazníky příjem asfaltových odpadů a zeminy RS 2026 I.pdf"
+    cost_breakdown_per_t:
+      beton_max_50cm_czk: 60
+      beton_armovany_czk: 400
+      asfaltove_smesi_czk_min: 220
+      asfaltove_smesi_czk_max: 300
+      zemina_czk: 250
+    container_pricing_czk_per_ks:
+      kontejner_4_5m3_min: 1770
+      kontejner_4_5m3_max: 4150
+    notes: |
+      Cílová destinace pro demolici stávajícího mostu (beton + výztuž) a frézáty asfaltů.
+      Beton armovaný (400 Kč/t) je 6.7× dražší než neztužený (60 Kč/t) → relevantní pro rozpočet demolice opěr.
+      Žatec ~30 km od Žihle (severním směrem) — vyšší dopravní náklady než Nesuchyně.
+
+# =========================================================================
+# CROSS-REFERENCES & USAGE IN DUR/DSP
+# =========================================================================
+usage_in_phases:
+  current_dur_phase:
+    relevance: "Vendor quotes informují odhad nákladů SO 180 (Objízdná trasa) a SO 991 (Demolice/Recyklace)."
+    consumption: "Cenové údaje pouze orientační — finální výběr dodavatele po VŘ."
+  master_soupis_phase:
+    relevance: "OTSKP catalog gap (mostní provizorium) — vendor quotes = ground truth pro custom 9xxxxxx kódy."
+    cross_ref: "04_documentation/otskp_mapping.yaml — provizorium block (027111 + 027113 + custom 9xxxxxx)"
+
+selection_decision_matrix:
+  notes: |
+    Doporučení pro nabídkovou cenu (NE komitment):
+    - LEVNÝ: TMS_9m ~304k Kč/3 měs (lightweight)
+    - STANDARD: PONVIA_MS_9m ~637k Kč/3 měs (40 t Vr — kompatibilní s VL 4 tř. A)
+    - WIDE: MOSTY_ZABORI_4m 750k Kč fix (15 m × 4 m vozovka — nejvyšší komfort obousměr)
+    - NARROW: MOSTY_ZABORI_3.5m 654k Kč fix (jednosměrný)
+
+    Pro 30M Kč hard cap rozpočtu D&B doporučená kombinace:
+    - PONVIA MS 9m (kompatibilní s 40 t) NEBO MOSTY ZABORI 4m (širší vozovka)
+    - DECO TRADE pro zeminu 120 Kč/t
+    - RS Žatec pro betonové sutě + asfalty

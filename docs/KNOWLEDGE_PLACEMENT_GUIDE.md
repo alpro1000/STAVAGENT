@@ -593,4 +593,88 @@ End of section 16. Continue with main guide above.
 
 ---
 
+## §17 Bridge KB build-out — May 2026 (revised v2)
+
+After commits `b31bdf57` (UPa zatížitelnost + EN 1992-2 partial + lifecycle) and
+**this commit** (TKP 4 2026 + ČSN 73 6244 stub + VL 4 + real-world templates +
+Litovel reference), KB structure for bridge engineering domain:
+
+### B7_regulations/ (norms, regulations, mandatory standards)
+
+| Slug | Source | Type | Status |
+|---|---|---|---|
+| `csn_en_206_pruvodce` | GCS | norm_guide | source_pointer (legacy GCS path) |
+| `csn_73_6222_zatizitelnost_mostu` | UPa stand-in | bridge load | stub (paid norm) |
+| `csn_73_6244_prechody_mostu` | User-prepared §3.3 + UPa | přechody | **stub (paid norm) — NEW 2026-05-06** |
+| `en_1992_2_concrete_bridges` | SIST PDF | Eurocode 2 mosty | partial extract |
+| `tkp_04_zemni_prace` | docs/normy/tkp/TKP04_2026_01.pdf | TKP zemní práce | **full (Scenario A, 38 stran) — NEW 2026-05-06** |
+| `vl_4_mosty` | restructured MD | vzorové listy | **restructured + INDEX — NEW 2026-05-06** |
+
+### B6_research_papers/ (university skripta, lecture slides, papers)
+
+| Slug | Source | Type |
+|---|---|---|
+| `upa_pokorny_suchanek_betonove_mosty_ii` | textbook | bridges textbook |
+| `upa_zatizitelnost_sanace_mostu` | UPa skripta | zatížitelnost + sanace |
+| `upa_prechodove_oblasti` | UPa skripta `05_prechodove...pdf` | **přechody (secondary) — NEW 2026-05-06 stub** |
+| `upa_vykresy_mosty` | `vykresy_mosty_I.pdf` | **výkresy mostů — NEW 2026-05-06 stub (identification TODO)** |
+
+### B5_tech_cards/ (real-world references, templates, postupy)
+
+| Slug | Source | Type |
+|---|---|---|
+| `real_world_examples/204_01_technicka_zprava` | reálný projekt | **TZ template — NEW 2026-05-06 stub** |
+| `technological_postupy/zemni_prace_bourani` | reálný postup | **bourání + zemní práce — NEW 2026-05-06 stub** |
+
+### B9_validation/ (cross-validation rules)
+
+| Slug | Source | Type |
+|---|---|---|
+| `lifecycle_durability` | UPa slide 19 | element lifespans |
+
+### test-data/ (sandbox + reference projects — NOT in KB)
+
+| Slug | Bridge type | Status |
+|---|---|---|
+| `most-2062-1-zihle` | `BR_FRAME` (rámový integrální) | sandbox done (Phase A-D) |
+| `most-litovel` | `BR_DECK_SLAB` (deskový) | **archive_reference — NEW 2026-05-06** |
+| `most-2062-1-zihle/inputs/reference/` (Kfely XML) | `BR_BOX_GIRDER` / `BR_GIRDER_T` | reference XML |
+
+### Cross-reference graph — bridge element types vs primary norms
+
+| STAVAGENT element_type | Primary norm | Secondary | Tertiary | VL 4 výkres |
+|---|---|---|---|---|
+| `mostovkova_deska` | EN 1992-2 §3.1.2/§4.4 | Pokorný-Suchánek kap. 4 | TKP 18 §7.8.3 | (deskové typy — TODO mapping) |
+| `prechodova_deska` | **ČSN 73 6244 čl. 7.4** | EN 1992-2 §4.4 | TKP 4 §4.3.11 | **VL 4-302** |
+| `mostni_zavirne_zidky` | ČSN 73 6244 čl. 7.3.5 | TKP 4 §4.3.10 | EN 1992-2 §4.4 | VL 4-201 |
+| `zaklady_oper` | EN 1997-1 (geotechnika) | **TKP 4 §4.3.4.4** | ČSN 73 1001 | VL 4-204 |
+| zásyp opěr (component) | **ČSN 73 6244 čl. 5.4** | **TKP 4 §4.3.10** | ČSN 73 6133 | VL 4-201 |
+| drenáž rubová | ČSN 73 6244 čl. 7.3.6 | **VL 4-201.07** | TP 83 | VL 4-201.07 |
+| `rimsa` | EN 1992-2 §4.4 | VL 4 | TKP 18 + TKP 11 | VL 4 římsy |
+| izolace_NK | TKP 21 (izolace) | EN 1992-2 §4.4 | VL 4 | VL 4 izolace |
+| `opery_ulozne_prahy` | EN 1992-2 §4.4 | TKP 4 §4.3.10 (zásypy) | VL 4-204 | VL 4-204 |
+| svodidlo_zabradelni | ČSN EN 1317 (H1/H2/H3) | TKP 11 | VL 4 římsy + svodidla | VL 4 |
+
+### Strategy & convention summary
+
+1. **Modern TKP PDFs** → `docs/normy/tkp/TKP{NN}_{YYYY}_{MM}.pdf` (canonical, free MD ČR docs).
+2. **Legacy + ČSN-like PDFs** → `B2_csn_standards/` (legacy bucket).
+3. **Paid normy** (ÚNMZ) → stub entry v B7 (no PDF), distillation z user/teaching source.
+4. **Extracted YAML/MD** → `B7_regulations/<slug>/INDEX.yaml + METADATA.md + source_pointer.md`.
+5. **University material** → `B6_research_papers/<univ>_<title>/`.
+6. **Real-world examples** → `B5_tech_cards/<category>/<slug>/`.
+7. **Validation rules** → `B9_validation/<topic>/`.
+8. **Reference projects** (NOT norms) → `test-data/<project_slug>/`.
+
+### Audit trail
+
+- `docs/audits/knowledge_audit/2026-05-06_b2_and_docs_bridge_ingest_audit.md` — full audit + duplicate detection + ingest plan
+- Decisions: 0 escalations to user; 8 unique-to-B2 files placed; 0 duplicates created; 1 paid-norm stub built from inline summary; 1 archive_reference (Litovel) without OCR.
+
+---
+
+End of section 17. Continue with main guide above.
+
+---
+
 End of guide. Updates jdou do tohoto souboru jako PR commits.

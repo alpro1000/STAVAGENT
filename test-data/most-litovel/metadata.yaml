@@ -1,0 +1,64 @@
+# Most Litovel — DESKOVÝ MOST (BR_DECK_SLAB)
+# Reference project archive — NOT a sandbox, NOT a golden test.
+# Status: archive_reference — pouze metadata stub, žádný workflow.
+
+schema_version: 1
+status: archive_reference        # archive_reference | sandbox | golden_test
+project_kind: real_world_project_reference
+created: 2026-05-06
+not_for_delivery: true
+not_for_workflow: true            # Litovel se neprochází Phase A→D (oddělený případný task)
+
+identifikace:
+  nazev: "Most Litovel"
+  bridge_element_type: BR_DECK_SLAB    # deskový most (pokrytí třetího hlavního typu po BR_FRAME Žihle a BR_BOX_GIRDER/T Kfely)
+  lokace: "město Litovel, okres Olomouc"
+  archive_id: "31697"
+
+zdrojove_dokumenty:
+  primary:
+    nazev: "31697_Archive.pdf"
+    cesta: "inputs/source/31697_Archive.pdf"
+    velikost_MB: 6.37
+    pocet_stran: 19
+    pdf_version: 1.4
+    text_extractable: false              # SCANNED IMAGE — no text layer
+    requires_ocr: true
+    pritomno: true
+  poznamka_obsah: |
+    Per task spec (TASK_KB_MajorIngest_BridgesV2 §2.3): plný projekt deskového mostu
+    ve městě Litovel — DPS / PDPS / TZ + výkresy + soupis kombinovaný v jednom PDF.
+    Pro plnou identifikaci typu a struktury je nutná OCR pipeline.
+
+text_extraction:
+  status: blocked
+  reason: "PDF je scanned image bez text-layer. Read tool extrahuje 0 znaků."
+  required_pipeline: "OCR (např. MinerU service v Cloud Run, Tesseract, nebo Claude vision API per page)"
+  evidence: "PDF /Type /Page entries detected = 19; URI 'http://www.aco.cz/70-mostni-odvodneni.html' (concrete drainage supplier)"
+
+strategic_value:
+  description: "Pokrytí třetího hlavního bridge_element_type po Žihle (BR_FRAME) a Kfely (BR_BOX_GIRDER / BR_GIRDER_T)"
+  classifier_calibration:
+    - "Test classifier mapping pro deskový most"
+    - "Cross-validation deskový vs rámový (Žihle) vs prefab estakáda (Kfely)"
+    - "OTSKP 421325 (mostní nosné deskové konstrukce ŽB C30/37) — direct match expected"
+  future_sandbox_potential: |
+    Litovel může být konvertován na třetí sandbox project (Phase A→D) per separátní
+    task po dostupnosti OCR pipeline. Cross-coverage 3 různé bridge types pak poskytne
+    excellent test fixture pro calculator regression suite.
+
+relevance_to_stavagent:
+  - "Classifier calibration for BR_DECK_SLAB"
+  - "Real-world soupis prací OTSKP coding for deskový most"
+  - "Cross-validation vs Žihle (rámový) — element overlap analysis"
+
+cross_references:
+  zihle_2062_1: "../most-2062-1-zihle/ (BR_FRAME, sandbox done Phase A-D)"
+  kfely_reference: "../most-2062-1-zihle/inputs/reference/20 Rekonstrukce mostu Kfely (zadání).xml (BR_BOX_GIRDER/T, XML reference)"
+
+placement_decision:
+  audit_2026_05_06: "docs/audits/knowledge_audit/2026-05-06_b2_and_docs_bridge_ingest_audit.md §3"
+  reasoning: |
+    Per audit Q3: test-data/most-2062-1-zihle/ je sibling pattern (NE pod test-data/projects/).
+    Litovel proto následuje stejnou flat strukturu: test-data/most-litovel/.
+    NE v KB (per task §2.3 — projekt není norma, neuvádí se v B-bucket).

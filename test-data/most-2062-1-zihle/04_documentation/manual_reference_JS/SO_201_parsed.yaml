@@ -1,0 +1,608 @@
+schema_version: 1
+SO: SO_201
+label: Most (evidenční číslo 20-005 = Kfely template, mnozstvi platná pro Žihle)
+source_file: inputs/docx/SO 201 - Most ev.č. 20-005 - JŠ.xls
+source_rows: 102
+source_cols: 23
+tskp_classes: !!python/object/apply:collections.OrderedDict
+- - - ''
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Všeobecné konstrukce a práce
+        - - polozky
+          - - kod: '014102'
+              popis: POPLATKY ZA SKLÁDKU
+              mj: T
+              mnozstvi: 74.0
+              typ: HSV
+              cisl: 1
+            - kod: '014201'
+              popis: POPLATKY ZA ZEMNÍK - ZEMINA
+              mj: M3
+              mnozstvi: 105.6
+              typ: HSV
+              cisl: 2
+            - kod: '014211'
+              popis: POPLATKY ZA ZEMNÍK - ORNICE
+              mj: M3
+              mnozstvi: 120.0
+              typ: HSV
+              cisl: 3
+            - kod: '0251'
+              popis: ZKOUŠENÍ MATERIÁLŮ ZKUŠEBNOU ZHOTOVITELE
+              mj: KPL
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 4
+            - kod: '0273'
+              popis: POMOC PRÁCE ZŘÍZ NEBO ZAJIŠŤ OCHRANU INŽENÝRSKÝCH SÍTÍ
+              mj: KPL
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 5
+            - kod: 0291
+              popis: OSTATNÍ POŽADAVKY - ZEMĚMĚŘIČSKÁ MĚŘENÍ
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 6
+            - kod: 02911
+              popis: OSTATNÍ POŽADAVKY - GEODETICKÉ ZAMĚŘENÍ
+              mj: HM
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 7
+            - kod: 02911
+              popis: OSTATNÍ POŽADAVKY - GEODETICKÉ ZAMĚŘENÍ
+              mj: HM
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 8
+            - kod: 02912
+              popis: OSTATNÍ POŽADAVKY - VYTYČOVACÍ BOD MIKROSÍTĚ
+              mj: KUS
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 9
+            - kod: 0292
+              popis: OSTATNÍ POŽADAVKY - OCHRANA ŽIVOTNÍHO PROSTŘEDÍ
+              mj: KPL
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 10
+            - kod: 029412
+              popis: OSTATNÍ POŽADAVKY - VYPRACOVÁNÍ MOSTNÍHO LISTU
+              mj: KUS
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 11
+            - kod: 02943
+              popis: OSTATNÍ POŽADAVKY - VYPRACOVÁNÍ RDS
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 12
+            - kod: 02944
+              popis: OSTAT POŽADAVKY - DOKUMENTACE SKUTEČ PROVEDENÍ V DIGIT FORMĚ
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 13
+            - kod: 02953
+              popis: OSTATNÍ POŽADAVKY - HLAVNÍ MOSTNÍ PROHLÍDKA
+              mj: KUS
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 14
+            - kod: 0296
+              popis: OSTATNÍ POŽADAVKY - ODBORNÝ DOZOR
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 15
+            - kod: 02991
+              popis: OSTATNÍ POŽADAVKY - INFORMAČNÍ TABULE
+              mj: KUS
+              mnozstvi: 2.0
+              typ: HSV
+              cisl: 16
+  - - '1'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Zemní práce
+        - - polozky
+          - - kod: '11511'
+              popis: ČERPÁNÍ VODY DO 500 L/MIN
+              mj: HOD
+              mnozstvi: 360.0
+              typ: HSV
+              cisl: 17
+            - kod: '13173'
+              popis: HLOUBENÍ JAM ZAPAŽ I NEPAŽ TR. I
+              mj: M3
+              mnozstvi: 253.4
+              typ: HSV
+              cisl: 20
+            - kod: '1712'
+              popis: ULOŽENÍ SYPANINY DO NÁSYPU A NA SKLÁDKY BEZ ZHUTNENÍ
+              mj: M3
+              mnozstvi: 253.4
+              typ: HSV
+              cisl: 21
+            - kod: '17411'
+              popis: ZÁSYP JAM A RÝH ZEMINOU SE ZHUTNENÍM
+              mj: M3
+              mnozstvi: 181.0
+              typ: HSV
+              cisl: 23
+            - kod: '17511'
+              popis: OBSYP POTRUBÍ A OBJEKTU SE ZHUTNENÍM
+              mj: M3
+              mnozstvi: 15.75
+              typ: HSV
+              cisl: 25
+            - kod: '17581'
+              popis: OBSYP POTRUBÍ A OBJEKTU Z NAKUPOVANÝCH MATERIÁLU
+              mj: M3
+              mnozstvi: 62.3
+              typ: HSV
+              cisl: 26
+            - kod: '1778'
+              popis: ZEMNÍ HRÁZKY Z NAKUPOVANÝCH MATERIÁLŮ
+              mj: M3
+              mnozstvi: 20.8
+              typ: HSV
+              cisl: 27
+            - kod: '1822'
+              popis: ROZPROSTRENÍ ORNICE VE SVAHU
+              mj: M3
+              mnozstvi: 120.0
+              typ: HSV
+              cisl: 28
+            - kod: '18242'
+              popis: ZALOŽENÍ TRÁVNÍKU HYDROOSEVEM NA ORNICI
+              mj: M2
+              mnozstvi: 900.0
+              typ: HSV
+              cisl: 29
+  - - '2'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Základy
+        - - polozky
+          - - kod: '21331'
+              popis: DRENÁŽNÍ VRSTVY Z BETONU MEZEROVITÉHO (DRENÁŽNÍHO)
+              mj: M3
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 30
+            - kod: '21341'
+              popis: DRENÁŽNÍ VRSTVY Z PLASTBETONU (PLASTMALTY)
+              mj: M3
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 31
+            - kod: '272325'
+              popis: ZÁKLADY ZE ŽELEZOBETONU DO C30/37
+              mj: M3
+              mnozstvi: 32.0
+              typ: HSV
+              cisl: 37
+            - kod: '272365'
+              popis: VÝZTUŽ ZÁKLADU Z OCELI 10505, B500B
+              mj: T
+              mnozstvi: 4.48
+              typ: HSV
+              cisl: 38
+            - kod: '28999'
+              popis: OPLÁŠTENÍ (ZPEVNENÍ) Z FÓLIE
+              mj: M2
+              mnozstvi: 87.4
+              typ: HSV
+              cisl: 39
+  - - '3'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Svislé konstrukce
+        - - polozky
+          - - kod: '31717'
+              popis: KOVOVÉ KONSTRUKCE PRO KOTVENÍ RÍMSY
+              mj: KG
+              mnozstvi: 80.0
+              typ: HSV
+              cisl: 40
+            - kod: '317325'
+              popis: RÍMSY ZE ŽELEZOBETONU DO C30/37
+              mj: M3
+              mnozstvi: 1.6
+              typ: HSV
+              cisl: 41
+            - kod: '317365'
+              popis: VÝZTUŽ RÍMS Z OCELI 10505, B500B
+              mj: T
+              mnozstvi: 0.256
+              typ: HSV
+              cisl: 42
+            - kod: '333325'
+              popis: MOSTNÍ OPERY A KRÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37
+              mj: M3
+              mnozstvi: 25.84
+              typ: HSV
+              cisl: 43
+            - kod: '333365'
+              popis: VÝZTUŽ MOSTNÍCH OPER A KRÍDEL Z OCELI 10505, B500B
+              mj: T
+              mnozstvi: 1.436
+              typ: HSV
+              cisl: 44
+  - - '4'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Vodorovné konstrukce
+        - - polozky
+          - - kod: '420324'
+              popis: PRECHODOVÉ DESKY MOSTNÍCH OPER ZE ŽELEZOBETONU C25/30
+              mj: M3
+              mnozstvi: 22.8
+              typ: HSV
+              cisl: 47
+            - kod: '420365'
+              popis: VÝZTUŽ PRECHODOVÝCH DESEK MOSTNÍCH OPER Z OCELI 10505, B500B
+              mj: T
+              mnozstvi: 2.74
+              typ: HSV
+              cisl: 48
+            - kod: '421325'
+              popis: MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C30/37
+              mj: M3
+              mnozstvi: 37.62
+              typ: HSV
+              cisl: 113
+            - kod: '421365'
+              popis: VÝZTUŽ MOSTNÍ DESKOVÉ KONSTRUKCE Z OCELI 10505
+              mj: T
+              mnozstvi: 5.7
+              typ: HSV
+              cisl: 114
+            - kod: 45131A
+              popis: PODKLADNÍ A VÝPLNOVÉ VRSTVY Z PROSTÉHO BETONU C20/25
+              mj: M3
+              mnozstvi: 6.0
+              typ: HSV
+              cisl: 57
+            - kod: '451323'
+              popis: PODKL A VÝPLN VRSTVY ZE ŽELEZOBET DO C16/20
+              mj: M3
+              mnozstvi: 8.5
+              typ: HSV
+              cisl: 58
+            - kod: '45157'
+              popis: PODKLADNÍ A VÝPLNOVÉ VRSTVY Z KAMENIVA TEŽENÉHO
+              mj: M3
+              mnozstvi: 25.1
+              typ: HSV
+              cisl: 59
+            - kod: '45734'
+              popis: VYROVNÁVACÍ A SPÁD BETON ZVLÁŠTNÍ (PLASTBETON)
+              mj: M3
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 60
+            - kod: '461314'
+              popis: PATKY Z PROSTÉHO BETONU C25/30
+              mj: M3
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 61
+            - kod: '465512'
+              popis: DLAŽBY Z LOMOVÉHO KAMENE NA MC
+              mj: M3
+              mnozstvi: 16.1
+              typ: HSV
+              cisl: 62
+            - kod: '467314'
+              popis: STUPNĚ A PRAHY VODNÍCH KORYT Z PROSTÉHO BETONU C25/30
+              mj: M3
+              mnozstvi: 1.5
+              typ: HSV
+              cisl: 63
+  - - '5'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Komunikace
+        - - polozky
+          - - kod: '56314'
+              popis: VOZOVKOVÉ VRSTVY Z MECHANICKY ZPEVNĚNÉHO KAMENIVA TL. DO 200MM
+              mj: M2
+              mnozstvi: 90.0
+              typ: HSV
+              cisl: 64
+            - kod: '56335'
+              popis: VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 250MM
+              mj: M2
+              mnozstvi: 112.5
+              typ: HSV
+              cisl: 65
+            - kod: '56343'
+              popis: VOZOVKOVÉ VRSTVY ZE ŠTERKOPÍSKU TL. DO 150MM
+              mj: M2
+              mnozstvi: 67.5
+              typ: HSV
+              cisl: 66
+            - kod: '56963'
+              popis: ZPEVNĚNÍ KRAJNIC Z RECYKLOVANÉHO MATERIÁLU TL DO 150MM
+              mj: M2
+              mnozstvi: 50.0
+              typ: HSV
+              cisl: 67
+            - kod: '572123'
+              popis: INFILTRAČNÍ POSTŘIK Z EMULZE DO 1,0KG/M2
+              mj: M2
+              mnozstvi: 450.0
+              typ: HSV
+              cisl: 68
+            - kod: '572214'
+              popis: SPOJOVACÍ POSTRIK Z MODIFIK EMULZE DO 0,5KG/M2
+              mj: M2
+              mnozstvi: 518.4
+              typ: HSV
+              cisl: 69
+            - kod: 574C78
+              popis: ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 22+, 22S TL. 80MM
+              mj: M2
+              mnozstvi: 450.0
+              typ: HSV
+              cisl: 70
+            - kod: 574E07
+              popis: ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 22+, 22S
+              mj: M3
+              mnozstvi: 36.0
+              typ: HSV
+              cisl: 71
+            - kod: 574I54
+              popis: ASFALTOVÝ KOBEREC MASTIXOVÝ SMA 11+, 11S TL. 40MM
+              mj: M2
+              mnozstvi: 518.4
+              typ: HSV
+              cisl: 72
+            - kod: 575C53
+              popis: LITÝ ASFALT MA IV (OCHRANA MOSTNÍ IZOLACE) 11 TL. 40MM
+              mj: M2
+              mnozstvi: 68.4
+              typ: HSV
+              cisl: 73
+            - kod: '576413'
+              popis: POSYP KAMENIVEM OBALOVANÝM 4KG/M2
+              mj: M2
+              mnozstvi: 68.4
+              typ: HSV
+              cisl: 74
+            - kod: '58303'
+              popis: KRYT ZE SINIČNÍCH DÍLCŮ (PANELŮ) TL 210MM
+              mj: M2
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 75
+            - kod: '5892'
+              popis: VÝPLN SPAR MODIFIKOVANÝM ASFALTEM
+              mj: M
+              mnozstvi: 19.0
+              typ: HSV
+              cisl: 76
+  - - '6'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Úpravy povrchů, podlahy, výplně otvorů
+        - - polozky
+          - - kod: '62592'
+              popis: ÚPRAVA POVRCHU BETONOVÝCH PLOCH A KONSTRUKCÍ - STRIÁŽ
+              mj: M2
+              mnozstvi: 52.34
+              typ: HSV
+              cisl: 77
+  - - '7'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Přidružená stavební výroba
+        - - polozky
+          - - kod: '711111'
+              popis: IZOLACE BEŽNÝCH KONSTRUKCÍ PROTI ZEMNÍ VLHKOSTI ASFALTOVÝMI NÁTERY
+              mj: M2
+              mnozstvi: 72.6
+              typ: HSV
+              cisl: 78
+            - kod: '711432'
+              popis: IZOLACE MOSTOVEK POD ŘÍMSOU ASFALTOVÝMI PÁSY
+              mj: M2
+              mnozstvi: 5.4
+              typ: HSV
+              cisl: 79
+            - kod: '711442'
+              popis: IZOLACE MOSTOVEK CELOPLOŠNÁ ASFALTOVÝMI PÁSY S PECETÍCÍ VRSTVOU
+              mj: M2
+              mnozstvi: 87.4
+              typ: HSV
+              cisl: 80
+            - kod: '711509'
+              popis: OCHRANA IZOLACE NA POVRCHU TEXTILIÍ
+              mj: M2
+              mnozstvi: 69.4
+              typ: HSV
+              cisl: 81
+            - kod: '78382'
+              popis: NÁTERY BETON KONSTR TYP S2 (OS-B)
+              mj: M2
+              mnozstvi: 77.9
+              typ: HSV
+              cisl: 82
+            - kod: '78383'
+              popis: NÁTERY BETON KONSTR TYP S4 (OS-C)
+              mj: M2
+              mnozstvi: 8.64
+              typ: HSV
+              cisl: 83
+  - - '8'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Potrubí
+        - - polozky
+          - - kod: '84914'
+              popis: POTRUBÍ ODPADNÍ MOSTNÍCH OBJEKTU ZE SKLOLAM TRUB DN DO 200MM
+              mj: M
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 84
+            - kod: '875332'
+              popis: POTRUBÍ DREN Z TRUB PLAST DN DO 150MM DĚROVANÝCH
+              mj: M
+              mnozstvi: 19.0
+              typ: HSV
+              cisl: 85
+            - kod: '87534'
+              popis: POTRUBÍ DREN Z TRUB PLAST DN DO 200MM
+              mj: M
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 86
+            - kod: '87634'
+              popis: CHRÁNIČKY Z TRUB PLASTOVÝCH DN DO 200MM
+              mj: M
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 87
+  - - '9'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Ostatní konstrukce a práce
+        - - polozky
+          - - kod: 9113B1
+              popis: SVODIDLO OCEL SILNIČ JEDNOSTR, ÚROVEŇ ZADRŽ H1 -DODÁVKA A MONTÁŽ
+              mj: M
+              mnozstvi: 60.0
+              typ: HSV
+              cisl: 88
+            - kod: 9117C1
+              popis: SVOD OCEL ZÁBRADEL ÚROVEŇ ZADRŽ H2 - DODÁVKA A MONTÁŽ
+              mj: M
+              mnozstvi: 14.4
+              typ: HSV
+              cisl: 89
+            - kod: '91238'
+              popis: SMĚROVÉ SLOUPKY Z PLAST HMOT - NÁSTAVCE NA SVODIDLA VČETNĚ ODRAZNÉHO PÁSKU
+              mj: KUS
+              mnozstvi: 20.0
+              typ: HSV
+              cisl: 90
+            - kod: '91345'
+              popis: NIVELAČNÍ ZNAČKY KOVOVÉ
+              mj: KUS
+              mnozstvi: 8.0
+              typ: HSV
+              cisl: 91
+            - kod: '91355'
+              popis: EVIDENČNÍ ČÍSLO MOSTU
+              mj: KUS
+              mnozstvi: 2.0
+              typ: HSV
+              cisl: 92
+            - kod: '914352'
+              popis: DOPRAV ZNAČKY ZMENŠ VEL HLINÍK - MONTÁŽ S PŘESUNEM
+              mj: KUS
+              mnozstvi: 2.0
+              typ: HSV
+              cisl: 93
+            - kod: '914911'
+              popis: SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCEL TRUBEK SE ZABETONOVÁNÍM - DODÁVKA A MONTÁŽ
+              mj: KUS
+              mnozstvi: 2.0
+              typ: HSV
+              cisl: 94
+            - kod: '915111'
+              popis: VODOROVNÉ DOPRAVNÍ ZNAČENÍ BARVOU HLADKÉ - DODÁVKA A POKLÁDKA
+              mj: M2
+              mnozstvi: 25.0
+              typ: HSV
+              cisl: 95
+            - kod: '915231'
+              popis: VODOR DOPRAV ZNAČ PLASTEM PROFIL ZVUČÍCÍ - DOD A POKLÁDKA
+              mj: M2
+              mnozstvi: 25.0
+              typ: HSV
+              cisl: 96
+            - kod: '917223'
+              popis: SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 100MM
+              mj: M
+              mnozstvi: 15.0
+              typ: HSV
+              cisl: 97
+            - kod: '917224'
+              popis: SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150MM
+              mj: M
+              mnozstvi: 30.0
+              typ: HSV
+              cisl: 98
+            - kod: '919111'
+              popis: ŘEZÁNÍ ASFALTOVÉHO KRYTU VOZOVEK TL DO 50MM
+              mj: M
+              mnozstvi: 106.3
+              typ: HSV
+              cisl: 99
+            - kod: '931326'
+              popis: TĚSNĚNÍ DILATAČ SPAR ASF ZÁLIVKOU MODIFIK PRŮŘ DO 800MM2
+              mj: M
+              mnozstvi: 38.4
+              typ: HSV
+              cisl: 100
+            - kod: '93135'
+              popis: TĚSNĚNÍ DILATAČ SPAR PRYŽ PÁSKOU NEBO KRUH PROFILEM
+              mj: M
+              mnozstvi: 38.4
+              typ: HSV
+              cisl: 101
+            - kod: '93311'
+              popis: ZATEŽOVACÍ ZKOUŠKA MOSTU STATICKÁ 1. POLE DO 300M2
+              mj: KUS
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 103
+            - kod: '93315'
+              popis: ZATEŽOVACÍ ZKOUŠKA MOSTU STATICKÁ 2. A DALŠÍ POLE DO 300M2
+              mj: KUS
+              mnozstvi: 2.0
+              typ: HSV
+              cisl: 104
+            - kod: '935212'
+              popis: PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600MM DO BETONU TL 100MM
+              mj: M
+              mnozstvi: 25.68
+              typ: HSV
+              cisl: 107
+            - kod: '93631'
+              popis: DROBNÉ DOPLŇK KONSTR BETON MONOLIT
+              mj: M3
+              mnozstvi: 0.01
+              typ: HSV
+              cisl: 108
+            - kod: '93639'
+              popis: ZAÚSTĚNÍ SKLUZŮ (VČET DLAŽBY Z LOM KAMENE)
+              mj: KUS
+              mnozstvi: 4.0
+              typ: HSV
+              cisl: 109
+            - kod: '936532'
+              popis: MOSTNÍ ODVODŇOVACÍ SOUPRAVA 300/500
+              mj: KUS
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 110
+            - kod: '936542'
+              popis: MOSTNÍ ODVODŇOVACÍ TRUBKA (POVRCHŮ IZOLACE) MĚDĚNÁ
+              mj: KUS
+              mnozstvi: 0.0
+              typ: HSV
+              cisl: 111
+stats:
+  total_rows: 101
+  polozky_total: 91
+  polozky_with_quantity: 77
+  tskp_classes_count: 10

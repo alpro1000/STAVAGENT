@@ -1,0 +1,1215 @@
+schema_version: 1
+source_file: inputs/photos/PROJEKT_MOST_HLAVNI.dxf
+dxf_version: AC1032
+code_page: ANSI_1250
+last_saved_by: prokopovo
+coordinate_system:
+  inferred: S-JTSK (EPSG:5514) — inferred from extents
+  epsg: 5514
+  name: S-JTSK / Krovak East North
+  explicit_in_header: false
+  transformation_used: pyproj.Transformer EPSG:5514 → EPSG:4326
+extents_sjtsk:
+  x_min: -820725.4
+  y_min: -1038209.93988103
+  x_max: -814908.17
+  y_max: -1035295.94
+  width_m: 5817.2
+  height_m: 2914.0
+extents_wgs84:
+  lon_min: 13.334702
+  lat_min: 50.029656
+  lon_max: 13.408892
+  lat_max: 50.063416
+  center_lon: 13.371784
+  center_lat: 50.046542
+  matches_zihle_expected: ✅ ~13.37 lon / 50.05 lat (Žihle area)
+stats:
+  total_layers_with_entities: 36
+  total_layers_in_dxf: 38
+  total_entities: 18253
+  total_text_labels: 2071
+  total_polylines: 826
+  parcel_number_candidates: 1986
+layers:
+- name: '21900'
+  color: 1
+  entity_count: 10641
+  entity_types:
+    LWPOLYLINE: 592
+    LINE: 10049
+- name: '21800'
+  color: 1
+  entity_count: 2069
+  entity_types:
+    LINE: 2057
+    LWPOLYLINE: 12
+- name: '18'
+  color: 1
+  entity_count: 1943
+  entity_types:
+    TEXT: 1943
+- name: '105'
+  color: 1
+  entity_count: 590
+  entity_types:
+    INSERT: 590
+- name: '404'
+  color: 1
+  entity_count: 571
+  entity_types:
+    INSERT: 571
+- name: '304'
+  color: 1
+  entity_count: 401
+  entity_types:
+    INSERT: 401
+- name: '20602'
+  color: 1
+  entity_count: 301
+  entity_types:
+    LINE: 301
+- name: '402'
+  color: 1
+  entity_count: 250
+  entity_types:
+    INSERT: 250
+- name: '23700'
+  color: 1
+  entity_count: 221
+  entity_types:
+    LWPOLYLINE: 221
+- name: '20502'
+  color: 1
+  entity_count: 212
+  entity_types:
+    LINE: 212
+- name: '1029'
+  color: 1
+  entity_count: 163
+  entity_types:
+    LINE: 74
+    INSERT: 89
+- name: '306'
+  color: 1
+  entity_count: 142
+  entity_types:
+    INSERT: 142
+- name: '20600'
+  color: 1
+  entity_count: 103
+  entity_types:
+    LINE: 103
+- name: '1016'
+  color: 1
+  entity_count: 100
+  entity_types:
+    TEXT: 100
+- name: '101'
+  color: 1
+  entity_count: 100
+  entity_types:
+    INSERT: 100
+- name: '308'
+  color: 1
+  entity_count: 81
+  entity_types:
+    INSERT: 81
+- name: '20302'
+  color: 1
+  entity_count: 73
+  entity_types:
+    LINE: 72
+    LWPOLYLINE: 1
+- name: '21999'
+  color: 1
+  entity_count: 55
+  entity_types:
+    LINE: 55
+- name: '316'
+  color: 1
+  entity_count: 50
+  entity_types:
+    INSERT: 50
+- name: '20300'
+  color: 1
+  entity_count: 46
+  entity_types:
+    LINE: 46
+- name: '319'
+  color: 1
+  entity_count: 25
+  entity_types:
+    INSERT: 25
+- name: '1009'
+  color: 1
+  entity_count: 21
+  entity_types:
+    TEXT: 21
+- name: '20500'
+  color: 1
+  entity_count: 18
+  entity_types:
+    LINE: 18
+- name: '802'
+  color: 1
+  entity_count: 17
+  entity_types:
+    INSERT: 17
+- name: '314'
+  color: 1
+  entity_count: 12
+  entity_types:
+    INSERT: 12
+- name: '318'
+  color: 1
+  entity_count: 12
+  entity_types:
+    INSERT: 12
+- name: '804'
+  color: 1
+  entity_count: 9
+  entity_types:
+    INSERT: 9
+- name: '420'
+  color: 1
+  entity_count: 8
+  entity_types:
+    INSERT: 8
+- name: '803'
+  color: 1
+  entity_count: 5
+  entity_types:
+    INSERT: 5
+- name: '22300'
+  color: 1
+  entity_count: 4
+  entity_types:
+    LINE: 4
+parcel_numbers:
+- &id001
+  text: 1226/15
+  layer: '18'
+  sjtsk_x: -818118.67
+  sjtsk_y: -1036636.44
+  wgs84_lon: 13.367372
+  wgs84_lat: 50.04717
+- &id002
+  text: '1936'
+  layer: '18'
+  sjtsk_x: -817526.83
+  sjtsk_y: -1036960.38
+  wgs84_lon: 13.376221
+  wgs84_lat: 50.045089
+- &id003
+  text: '1935'
+  layer: '18'
+  sjtsk_x: -819010.86
+  sjtsk_y: -1037267.17
+  wgs84_lon: 13.356381
+  wgs84_lat: 50.040357
+- &id004
+  text: 1142/41
+  layer: '18'
+  sjtsk_x: -818167.75
+  sjtsk_y: -1036964.76
+  wgs84_lon: 13.367384
+  wgs84_lat: 50.044185
+- &id005
+  text: 1468/7
+  layer: '18'
+  sjtsk_x: -818141.97
+  sjtsk_y: -1036980.18
+  wgs84_lon: 13.367772
+  wgs84_lat: 50.044083
+- &id006
+  text: 1937/2
+  layer: '18'
+  sjtsk_x: -818170.84
+  sjtsk_y: -1036930.3
+  wgs84_lon: 13.367269
+  wgs84_lat: 50.044487
+- &id007
+  text: 1240/41
+  layer: '18'
+  sjtsk_x: -818462.39
+  sjtsk_y: -1036572.88
+  wgs84_lon: 13.362494
+  wgs84_lat: 50.04727
+- &id008
+  text: 1240/42
+  layer: '18'
+  sjtsk_x: -818482.35
+  sjtsk_y: -1036678.74
+  wgs84_lon: 13.362441
+  wgs84_lat: 50.046302
+- &id009
+  text: 1937/1
+  layer: '18'
+  sjtsk_x: -818182.4
+  sjtsk_y: -1036930.95
+  wgs84_lon: 13.36711
+  wgs84_lat: 50.044466
+- &id010
+  text: 1468/5
+  layer: '18'
+  sjtsk_x: -818172.7
+  sjtsk_y: -1036964.36
+  wgs84_lon: 13.367314
+  wgs84_lat: 50.044182
+- &id011
+  text: '624'
+  layer: '18'
+  sjtsk_x: -817851.25
+  sjtsk_y: -1036852.28
+  wgs84_lon: 13.371516
+  wgs84_lat: 50.045612
+- &id012
+  text: '1947'
+  layer: '18'
+  sjtsk_x: -817882.51
+  sjtsk_y: -1036940.1
+  wgs84_lon: 13.371269
+  wgs84_lat: 50.044789
+- &id013
+  text: 1647/1
+  layer: '18'
+  sjtsk_x: -818850.95
+  sjtsk_y: -1036732.8
+  wgs84_lon: 13.357466
+  wgs84_lat: 50.045323
+- &id014
+  text: '715'
+  layer: '18'
+  sjtsk_x: -818272.39
+  sjtsk_y: -1036987.44
+  wgs84_lon: 13.365987
+  wgs84_lat: 50.043842
+- &id015
+  text: '1929'
+  layer: '18'
+  sjtsk_x: -817454.04
+  sjtsk_y: -1037105.75
+  wgs84_lon: 13.377531
+  wgs84_lat: 50.043895
+- &id016
+  text: '690'
+  layer: '18'
+  sjtsk_x: -817556.94
+  sjtsk_y: -1037114.57
+  wgs84_lon: 13.376129
+  wgs84_lat: 50.043678
+- &id017
+  text: '1930'
+  layer: '18'
+  sjtsk_x: -817430.9
+  sjtsk_y: -1037127.78
+  wgs84_lon: 13.377897
+  wgs84_lat: 50.043731
+- &id018
+  text: 1403/19
+  layer: '18'
+  sjtsk_x: -817443.27
+  sjtsk_y: -1037119.56
+  wgs84_lon: 13.377709
+  wgs84_lat: 50.043787
+- &id019
+  text: '1928'
+  layer: '18'
+  sjtsk_x: -817449.33
+  sjtsk_y: -1037096.01
+  wgs84_lon: 13.377575
+  wgs84_lat: 50.043988
+- &id020
+  text: 1898/3
+  layer: '18'
+  sjtsk_x: -817448.72
+  sjtsk_y: -1037089.94
+  wgs84_lon: 13.377571
+  wgs84_lat: 50.044043
+- &id021
+  text: '1927'
+  layer: '18'
+  sjtsk_x: -817428.31
+  sjtsk_y: -1037085.5
+  wgs84_lon: 13.377844
+  wgs84_lat: 50.04411
+- &id022
+  text: '1925'
+  layer: '18'
+  sjtsk_x: -817447.67
+  sjtsk_y: -1037063.73
+  wgs84_lon: 13.377531
+  wgs84_lat: 50.044278
+- &id023
+  text: 184/16
+  layer: '18'
+  sjtsk_x: -817533.17
+  sjtsk_y: -1036768.77
+  wgs84_lon: 13.375732
+  wgs84_lat: 50.046784
+- &id024
+  text: 89/17
+  layer: '18'
+  sjtsk_x: -817426.61
+  sjtsk_y: -1037068.13
+  wgs84_lon: 13.377831
+  wgs84_lat: 50.044267
+- &id025
+  text: 1403/18
+  layer: '18'
+  sjtsk_x: -817471.63
+  sjtsk_y: -1037095.99
+  wgs84_lon: 13.377268
+  wgs84_lat: 50.043959
+- text: '1926'
+  layer: '18'
+  sjtsk_x: -817436.71
+  sjtsk_y: -1037050.08
+  wgs84_lon: 13.377653
+  wgs84_lat: 50.044414
+- text: 1647/2
+  layer: '18'
+  sjtsk_x: -818851.92
+  sjtsk_y: -1036703.72
+  wgs84_lon: 13.357392
+  wgs84_lat: 50.04558
+- text: 1650/8
+  layer: '18'
+  sjtsk_x: -817438.18
+  sjtsk_y: -1036727.85
+  wgs84_lon: 13.376958
+  wgs84_lat: 50.047276
+- text: 1650/15
+  layer: '18'
+  sjtsk_x: -817377.89
+  sjtsk_y: -1036677.45
+  wgs84_lon: 13.377684
+  wgs84_lat: 50.047806
+- text: 1650/9
+  layer: '18'
+  sjtsk_x: -817421.58
+  sjtsk_y: -1036709.71
+  wgs84_lon: 13.377149
+  wgs84_lat: 50.04746
+- text: 1650/12
+  layer: '18'
+  sjtsk_x: -817395.55
+  sjtsk_y: -1036689.13
+  wgs84_lon: 13.377465
+  wgs84_lat: 50.047678
+- text: 1650/3
+  layer: '18'
+  sjtsk_x: -817457.81
+  sjtsk_y: -1036785.96
+  wgs84_lon: 13.376808
+  wgs84_lat: 50.046733
+- text: 1436/5
+  layer: '18'
+  sjtsk_x: -817324.34
+  sjtsk_y: -1037123.69
+  wgs84_lon: 13.379359
+  wgs84_lat: 50.043911
+- text: 1240/40
+  layer: '18'
+  sjtsk_x: -818286.0
+  sjtsk_y: -1036365.6
+  wgs84_lon: 13.364494
+  wgs84_lat: 50.049351
+- text: '710'
+  layer: '18'
+  sjtsk_x: -817942.61
+  sjtsk_y: -1036997.32
+  wgs84_lon: 13.37056
+  wgs84_lat: 50.0442
+- text: 1650/7
+  layer: '18'
+  sjtsk_x: -817429.55
+  sjtsk_y: -1036742.15
+  wgs84_lon: 13.377107
+  wgs84_lat: 50.047161
+- text: 1650/17
+  layer: '18'
+  sjtsk_x: -817343.24
+  sjtsk_y: -1036652.66
+  wgs84_lon: 13.378111
+  wgs84_lat: 50.048073
+- text: 1650/16
+  layer: '18'
+  sjtsk_x: -817360.3
+  sjtsk_y: -1036667.42
+  wgs84_lon: 13.377906
+  wgs84_lat: 50.047918
+- text: 1326/2
+  layer: '18'
+  sjtsk_x: -818495.26
+  sjtsk_y: -1036441.28
+  wgs84_lon: 13.361764
+  wgs84_lat: 50.048395
+- text: 1326/1
+  layer: '18'
+  sjtsk_x: -818482.72
+  sjtsk_y: -1036459.92
+  wgs84_lon: 13.361976
+  wgs84_lat: 50.048247
+- text: '675'
+  layer: '18'
+  sjtsk_x: -819162.18
+  sjtsk_y: -1037321.68
+  wgs84_lon: 13.354407
+  wgs84_lat: 50.039668
+- text: '1938'
+  layer: '18'
+  sjtsk_x: -818419.71
+  sjtsk_y: -1036621.65
+  wgs84_lon: 13.363186
+  wgs84_lat: 50.046894
+- text: 1065/2
+  layer: '18'
+  sjtsk_x: -818938.63
+  sjtsk_y: -1036851.4
+  wgs84_lon: 13.356505
+  wgs84_lat: 50.04415
+- text: 1604/1
+  layer: '18'
+  sjtsk_x: -817619.24
+  sjtsk_y: -1037185.56
+  wgs84_lon: 13.375418
+  wgs84_lat: 50.042963
+- text: '700'
+  layer: '18'
+  sjtsk_x: -818074.64
+  sjtsk_y: -1036813.79
+  wgs84_lon: 13.368352
+  wgs84_lat: 50.045653
+- text: 1604/2
+  layer: '18'
+  sjtsk_x: -817603.37
+  sjtsk_y: -1037195.15
+  wgs84_lon: 13.375657
+  wgs84_lat: 50.042899
+- text: 1223/7
+  layer: '18'
+  sjtsk_x: -818116.59
+  sjtsk_y: -1036719.25
+  wgs84_lon: 13.367575
+  wgs84_lat: 50.046436
+- text: '699'
+  layer: '18'
+  sjtsk_x: -818496.23
+  sjtsk_y: -1037127.06
+  wgs84_lon: 13.36319
+  wgs84_lat: 50.042298
+- text: 1226/14
+  layer: '18'
+  sjtsk_x: -818114.92
+  sjtsk_y: -1036704.07
+  wgs84_lon: 13.367566
+  wgs84_lat: 50.046574
+- text: '698'
+  layer: '18'
+  sjtsk_x: -817574.25
+  sjtsk_y: -1036852.9
+  wgs84_lon: 13.375342
+  wgs84_lat: 50.045981
+all_text_labels_sample:
+- text: '23.5'
+  layer: '1016'
+  sjtsk_x: -817514.99
+  sjtsk_y: -1036983.42
+  wgs84_lon: 13.376433
+  wgs84_lat: 50.044901
+- text: '23.3'
+  layer: '1016'
+  sjtsk_x: -817606.46
+  sjtsk_y: -1036964.1
+  wgs84_lon: 13.37513
+  wgs84_lat: 50.044949
+- text: '201.1'
+  layer: '1016'
+  sjtsk_x: -818092.27
+  sjtsk_y: -1036999.62
+  wgs84_lon: 13.368499
+  wgs84_lat: 50.043977
+- text: '23.4'
+  layer: '1016'
+  sjtsk_x: -817562.41
+  sjtsk_y: -1037029.53
+  wgs84_lon: 13.375875
+  wgs84_lat: 50.044427
+- text: '22.1'
+  layer: '1016'
+  sjtsk_x: -819818.67
+  sjtsk_y: -1036881.11
+  wgs84_lon: 13.344421
+  wgs84_lat: 50.042695
+- *id001
+- *id002
+- *id003
+- *id004
+- *id005
+- *id006
+- *id007
+- *id008
+- *id009
+- *id010
+- *id011
+- *id012
+- *id013
+- *id014
+- *id015
+- *id016
+- *id017
+- *id018
+- *id019
+- *id020
+- *id021
+- *id022
+- *id023
+- *id024
+- *id025
+polylines_sample:
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - &id026 !!python/object/apply:numpy.dtype
+      args:
+      - f8
+      - false
+      - true
+      state: !!python/tuple
+      - 3
+      - <
+      - null
+      - null
+      - null
+      - -1
+      - -1
+      - 0
+    - !!binary |
+      ZmZm5ob3KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      hetROFKjL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZm5ob3KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      hetROFKjL8E=
+- layer: '23700'
+  n_points: 9
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0K10b2KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMTHSlL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0K10b2KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMTHSlL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      UrgeBZb2KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoULpyjL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      UrgeBZb2KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoULpyjL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcD3PzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0K1+ylL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcD3PzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0K1+ylL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      XI/CdcP3KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZmZoqjL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      XI/CdcP3KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZmZoqjL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      7FG4HuP0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/UoXKCkL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      7FG4HuP0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/UoXKCkL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      SOF6lILyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMzGWlL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      SOF6lILyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMzGWlL8E=
+- layer: '23700'
+  n_points: 10
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/Uo3CzpKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      PQrXo6+eL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/Uo3CzpKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      PQrXo6+eL8E=
+- layer: '23700'
+  n_points: 7
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0KV9bpKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoULlyjL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0KV9bpKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoULlyjL8E=
+- layer: '23700'
+  n_points: 27
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      hetRuO3qKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoUrqSqL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      hetRuO3qKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoUrqSqL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoUru3yKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      rkfhepClL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoUru3yKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      rkfhepClL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      exSux2PyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      j8L1KDSnL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      exSux2PyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      j8L1KDSnL8E=
+- layer: '23700'
+  n_points: 9
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      hetROLf0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0KV6ykL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      hetROLf0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0KV6ykL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoUrtbxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      MzMzs9qmL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      4XoUrtbxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      MzMzs9qmL8E=
+- layer: '23700'
+  n_points: 4
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      16NwvQvzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      16Nwvf2mL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      16NwvQvzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      16Nwvf2mL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMzNfxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      PQrXo9umL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMzNfxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      PQrXo9umL8E=
+- layer: '23700'
+  n_points: 5
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZm5hrzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5HYSSnL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZm5hrzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5HYSSnL8E=
+- layer: '23700'
+  n_points: 7
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      7FG4HgDyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      XI/C9b2mL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      7FG4HgDyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      XI/C9b2mL8E=
+- layer: '23700'
+  n_points: 6
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      mpmZGQvzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5H4SunL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      mpmZGQvzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5H4SunL8E=
+- layer: '23700'
+  n_points: 8
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      UrgeBQ/zKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5H4QanL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      UrgeBQ/zKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5H4QanL8E=
+- layer: '23700'
+  n_points: 13
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      AAAAgBfzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      j8L1KGanL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      AAAAgBfzKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      j8L1KGanL8E=
+- layer: '23700'
+  n_points: 9
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      pHA9imz0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/Uo3O+kL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      pHA9imz0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/Uo3O+kL8E=
+- layer: '23700'
+  n_points: 18
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      H4Xr0d/yKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZm5qakL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      H4Xr0d/yKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      ZmZm5qakL8E=
+- layer: '23700'
+  n_points: 34
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5H4V72KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      mpmZGf2kL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5H4V72KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      mpmZGf2kL8E=
+- layer: '23700'
+  n_points: 35
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcj0TxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      SOF6FHqnL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcj0TxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      SOF6FHqnL8E=
+- layer: '23700'
+  n_points: 54
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcD1zwKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMzEyoL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcD1zwKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      zczMzEyoL8E=
+- layer: '23700'
+  n_points: 85
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0KV5j0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcD76kL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      cT0KV5j0KME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      9ihcD76kL8E=
+- layer: '23700'
+  n_points: 84
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/UoXCnyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5HYfqlL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      w/UoXCnyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      FK5HYfqlL8E=
+- layer: '23700'
+  n_points: 79
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      UrgeBXvyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      16NwPVenL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      UrgeBXvyKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      16NwPVenL8E=
+- layer: '23700'
+  n_points: 107
+  closed: true
+  first_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      mpmZmfPxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      7FG4HuWmL8E=
+  last_point:
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      mpmZmfPxKME=
+  - !!python/object/apply:numpy._core.multiarray.scalar
+    - *id026
+    - !!binary |
+      7FG4HuWmL8E=
+user_intent_per_filename: PROJEKT_MOST_HLAVNI = user attempt to draw bridge structure on kadastr base — likely incomplete (per task §1.2)
