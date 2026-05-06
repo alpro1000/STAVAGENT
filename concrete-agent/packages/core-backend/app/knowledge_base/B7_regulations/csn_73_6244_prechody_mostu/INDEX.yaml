@@ -1,0 +1,200 @@
+# ČSN 73 6244 — Přechody mostů pozemních komunikací — INDEX (stub)
+#
+# Plný text normy je placený (ÚNMZ); není volně k dispozici.
+# Tento INDEX shromažďuje strukturovaný obsah z user-prepared summary
+# (zadání tasku TASK_KB_MajorIngest_BridgesV2 §3.3) + UPa skripta
+# "05 Přechodové oblasti a přechody" jako sekundární zdroj.
+
+source:
+  norm_id: csn_73_6244
+  title: "ČSN 73 6244 — Přechody mostů pozemních komunikací"
+  status: paid_standard_unavailable
+  publisher: "ÚNMZ (Úřad pro technickou normalizaci, metrologii a státní zkušebnictví)"
+  edition_year: 2010
+  pages: 40
+  oprava_1: 2011-06
+  primary_source: "User-prepared structured summary (TASK §3.3, 2026-05-06)"
+  secondary_source: "B6_research_papers/upa_prechodove_oblasti/ (UPa skripta '05 Přechodové oblasti a přechody', PDF 3.65 MB)"
+  language: cs
+  freely_available: false   # placená norma ÚNMZ
+  acquisition_url: "https://www.unmz.cz/ nebo https://www.agentura-cas.cz/"
+
+# ─────────────────────────────────────────────────────────────────────
+# Čl. 1 — Předmět normy
+# ─────────────────────────────────────────────────────────────────────
+clanek_1_predmet:
+  description: "Norma stanovuje požadavky na návrh, provádění, kontrolu a údržbu přechodů mostů pozemních komunikací."
+  scope:
+    - "Mostní přechod = oblast přechodu z mostní konstrukce na zemní těleso"
+    - "Zahrnuje přechodové desky, závěrné zídky, drenáže, hydroizolace, zásypy"
+
+# ─────────────────────────────────────────────────────────────────────
+# Čl. 5 — Materiály
+# ─────────────────────────────────────────────────────────────────────
+clanek_5_materialy:
+  zasyp_oper:
+    minimum_kvalita: "ŠDA 0-32 (štěrkodrť)"
+    rezni_zrnitost: "0-32 mm"
+    relativni_uleжlost_min_ID: 0.85   # ID = relativní ulehlost
+    relativni_ulezlost_optimum_max_ID: 0.90
+    layer_thickness_max_mm: 125  # max tloušťka jedné vrstvy zhutňování
+  pozadavky_obecne:
+    - "Materiál nenamrzavý"
+    - "Frakce odpovídající ID 0,85-0,90"
+    - "Hutnitelnost ověřená Proctorovou standardní zkouškou"
+
+# ─────────────────────────────────────────────────────────────────────
+# Čl. 6 — Geotechnické pomery
+# ─────────────────────────────────────────────────────────────────────
+clanek_6_geotechnicke:
+  description: "Návrh musí vycházet z geotechnického průzkumu (per ČSN EN 1997-1 + 1997-2 + TP 76)"
+  iqp_pozadavky:
+    - "Klasifikace zemin podloží"
+    - "Stanovení modulu přetvárnosti"
+    - "Výpočet sedání"
+
+# ─────────────────────────────────────────────────────────────────────
+# Čl. 7 — Návrh přechodu (KLÍČOVÉ HODNOTY)
+# ─────────────────────────────────────────────────────────────────────
+clanek_7_navrh:
+  nerovnost_v_misti_prechodu_mm:
+    dalnice: 20
+    silnice_II_III_tridy: 40
+    description: "Maximální dovolená nerovnost povrchu vozovky v místě přechodu mostu"
+    measurement: "ČSN 73 6175 (měření a hodnocení nerovnosti povrchů vozovek)"
+
+  clanek_7_3_konstrukcni_pozadavky:
+    drenaz_za_operou:
+      min_DN_mm: 150
+      cross_reference: "VL 4-201.07 (vzorový výkres drenáže za opěrou)"
+    geomembrana_taznost_min_kN_m: 20
+    izolace_proti_vode:
+      type: "asfaltové pásy nebo geomembrána"
+      cross_reference: "TKP 21 (izolace) + VL 4 (vzorové detaily)"
+
+  clanek_7_4_navrh_prechodove_desky:
+    description: "Přechodová deska zajišťuje plynulý přechod nivelety vozovky z mostu na násypové těleso"
+    typical_dimensions:
+      delka_m: [4.0, 6.0]   # rozsah typický
+      sirka_m: "= šířka mostu (per case-by-case)"
+      tloustka_m: 0.30
+    podlozi:
+      requirements:
+        - "Ošetřená drenáž — propustná vrstva pod deskou"
+        - "Vyrovnaná spádování min. 2.5 % směrem od mostu"
+    materiál_betonu_typicky: "C25/30 XC2 + XF1"  # per Žihle Phase B + general practice
+
+  clanek_7_7_integrovane_mosty:
+    description: "Integrované mosty (rámové) — speciální požadavky pro přechodové oblasti bez ložisek a dilatací"
+    relevance_zihle: "PRIMÁRNÍ — Žihle = integrální rám 1 pole"
+    key_principles:
+      - "Bez mostních závěrů ve vozovce — přechodová deska musí absorbovat délkové změny"
+      - "Frikce mezi přechodovou deskou a vozovkou — hladký přechod"
+      - "Drenáž za opěrou musí odvádět vodu z prostoru za závěrnou zídkou"
+      - "Vyztužení přechodové desky pro absorpci dilatačních pohybů"
+    typical_extra_requirements:
+      - "Geosyntetická separační vrstva mezi zásypem opěry a přechodovou deskou"
+      - "Max. délka integrálního mostu pro účinnost — viz ČSN EN 1992-2 §113 (obvykle ≤ 60-80 m bez speciálních opatření)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Čl. 8 — Provádění
+# ─────────────────────────────────────────────────────────────────────
+clanek_8_provadeni:
+  zasypy_oper:
+    technika: "Po vrstvách max 125 mm, hutnění do dosažení ID 0,85-0,90"
+    rovnoměrnost_obou_stran: "Současně na obou stranách opěry, max rozdíl výškový 0.5 m (per TKP 4 §4.3.10)"
+    blizkost_konstrukce_m: "< 1 m od rubu — pomocí takových prostředků, aby nedošlo k poškození izolace nebo vybočení konstrukce"
+  zhutneni_kontrola:
+    primary_method: "Proctorova standardní zkouška (PS) → ID 0,85-0,90"
+    alternativni: "Statická zatěžovací zkouška + rázová zatěžovací zkouška"
+
+# ─────────────────────────────────────────────────────────────────────
+# Čl. 9 — Zkoušení
+# ─────────────────────────────────────────────────────────────────────
+clanek_9_zkouseni:
+  proctorova_standardni_zkouska:
+    standard: "ČSN EN 13286-2"
+    parameters:
+      - "Maximální objemová hmotnost ρ_d,max"
+      - "Optimální vlhkost w_opt"
+    cross_reference: "ČSN 72 1006 (kontrola zhutnění zemin a sypanin)"
+  cetnost_zkousek: "Per ČSN 73 6133 + TKP 4"
+
+# ─────────────────────────────────────────────────────────────────────
+# Příloha A — Tabulka A.1 míra zhutnění
+# ─────────────────────────────────────────────────────────────────────
+priloha_a_tabulka_zhutneni:
+  description: "Předepsané hodnoty míry zhutnění per část přechodové oblasti"
+  values:
+    - position: "zásyp za opěrou"
+      D_min_pct: 95   # minimum % PS
+      ID_range: [0.85, 0.90]
+    - position: "podloží přechodové desky"
+      D_min_pct: 95
+    - position: "přechodová oblast obecně"
+      D_min_pct: 95
+      method: "Proctorova standardní zkouška"
+  note: "Konkrétní hodnoty se mohou lišit per typ přechodu — viz čl. 7.3-7.7"
+
+# ─────────────────────────────────────────────────────────────────────
+# Přílohy B-E (informativní)
+# ─────────────────────────────────────────────────────────────────────
+prilohy_b_e_informativni:
+  description: "Informativní přílohy s vzorovými výkresy a metodikami"
+  cross_reference: "VL 4 (vzorové listy mostů) — `B7_regulations/vl_4_mosty/`"
+  typical_drawings:
+    - "Detail napojení přechodové desky na opěru"
+    - "Detail drenáže za opěrou (DN 150)"
+    - "Detail závěrné zídky a izolace"
+
+# ─────────────────────────────────────────────────────────────────────
+# Validation rules pro STAVAGENT classifier + calculator
+# ─────────────────────────────────────────────────────────────────────
+validation_rules:
+  - id: "VR-CSN736244-001"
+    description: "Drenáž za opěrou min DN 150"
+    check: "if element_type=='zasyp_oper' or 'prechodova_oblast': drenaz_DN >= 150"
+  - id: "VR-CSN736244-002"
+    description: "Zásyp za opěrou — frakce ŠDA 0-32, ID 0,85-0,90"
+    check: "if element_type=='zasyp_oper': zrnitost == '0-32' AND ID in [0.85, 0.90]"
+  - id: "VR-CSN736244-003"
+    description: "Max nerovnost povrchu vozovky v přechodu"
+    check: "if komunikace == 'silnice II/III tř.': nerovnost_max_mm == 40"
+  - id: "VR-CSN736244-004"
+    description: "Tloušťka vrstvy zhutňování max 125 mm"
+    check: "if element_type=='zasyp_oper': layer_thickness_mm <= 125"
+  - id: "VR-CSN736244-005"
+    description: "Geomembrana taznost min 20 kN/m"
+    check: "if uses_geomembrane: taznost_kN_m >= 20"
+  - id: "VR-CSN736244-006-zihle"
+    description: "Integrované mosty (čl. 7.7) — absence ložisek + dilatačních závěrů; přechodová deska absorbuje pohyby"
+    check: "if bridge_type=='BR_FRAME' (integrální): no_ložiska AND no_dilatacni_zaver AND prechodova_deska.flex == true"
+    relevance: "PRIMÁRNÍ pro Žihle 2062-1"
+
+# ─────────────────────────────────────────────────────────────────────
+# Cross-reference na související KB
+# ─────────────────────────────────────────────────────────────────────
+related_kb_entries:
+  primary:
+    - "B7_regulations/tkp_04_zemni_prace/ (zásypy + výkopy + obsypy + §4.3.11 Přechodová oblast)"
+    - "B7_regulations/vl_4_mosty/ (vzorové výkresy přechodů — VL 4-201.07, 302.01, atd.)"
+    - "B7_regulations/en_1992_2_concrete_bridges/ (Eurokód 2 mosty)"
+  secondary:
+    - "B6_research_papers/upa_prechodove_oblasti/ (UPa skripta '05 Přechodové oblasti')"
+    - "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii/ (rámové mosty kap. 4)"
+  tkp_relevant:
+    - "TKP 21 (izolace mostů)"
+    - "TKP 11 (svodidla, zábradlí — okraje přechodové oblasti)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Acquisition note
+# ─────────────────────────────────────────────────────────────────────
+authoritative_source_note: |
+  Pro skutečnou validaci (např. před podáním tendru) zhotovitel MUSÍ získat
+  plný text ČSN 73 6244 z ÚNMZ (https://www.unmz.cz/) nebo prostřednictvím
+  https://www.agentura-cas.cz/. Tento INDEX je jen distillation z user-prepared
+  structured summary + UPa teaching material.
+
+  Specific clauses (čl. 5 frakce, čl. 7 nerovnosti, Příloha A míra zhutnění)
+  are confirmed against UPa skripta. Ostatní fakta jsou per user summary;
+  authoritative form vyžaduje verifikaci proti placenému originálu.

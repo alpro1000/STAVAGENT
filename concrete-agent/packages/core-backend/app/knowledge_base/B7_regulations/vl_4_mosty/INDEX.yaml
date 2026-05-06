@@ -1,0 +1,152 @@
+# VL 4 — Vzorové listy MOSTY — INDEX.yaml
+# Typové výkresy a detailní řešení mostních konstrukcí pro PK
+# (Vydalo Ministerstvo dopravy, Odbor pozemních komunikací)
+
+source:
+  norm_id: vl_4
+  title: "VL 4 — Vzorové listy staveb pozemních komunikací: MOSTY"
+  issuer: "Ministerstvo dopravy, Odbor pozemních komunikací"
+  edition_year: 2021
+  pages: ~700  # extracted MD má 4000+ řádků = ~700 stran v originále
+  format: markdown_extracted
+  md_in_repo: "VL_4_2021_Mosty.md"
+  pdf_source_external: "https://pjpk.rsd.cz/vl-4-mosty"
+  language: cs
+  freely_available: true   # MD ČR vydává VL zdarma
+  extraction_status: full_markdown   # předextrahovaný markdown s H1/H2/H3 strukturou
+  extraction_quality: "Strukturováno per typový výkres + sekce; vhodné pro AI Reasoner ingest"
+
+# ─────────────────────────────────────────────────────────────────────
+# Topical index — typové výkresy per element
+# ─────────────────────────────────────────────────────────────────────
+typove_vykresy_index:
+  description: "Klíčové typové výkresy a sekce v VL 4 markdown — primárně používané v Žihle"
+
+  vl_4_201_zasypy_a_prechody:
+    title_short: "VL 4-201 Zásypy + přechodové oblasti"
+    md_section_keywords: ["DRENÁŽ ZA OPĚROU", "ÚPRAVA PŘED OPĚROU", "DETAIL SPÁRY", "ÚPRAVA PODÉL KŘÍDLA"]
+    elements_covered:
+      - zaver_pro_zasypem_oper
+      - drenaz_za_operou
+      - prechodova_deska_uloženi
+    cross_reference: "ČSN 73 6244 čl. 7.3.2 (cituje VL 4-201.07 a 302.01)"
+    md_anchors:
+      - "DRENÁŽ ZA OPĚROU (řádek ~3179)"
+      - "ZAÚSTĚNÍ DO PŘÍKOPU"
+      - "ZAÚSTĚNÍ DO VSAKOVACÍ JÍMKY MIMO PATU NÁSYPU"
+
+  vl_4_204_spodni_stavba:
+    title_short: "VL 4-204 Výkresy spodní stavby"
+    elements_covered:
+      - zaklady_oper
+      - opery_ulozne_prahy
+      - kridla_opery
+      - patky
+    cross_reference: "TKP 4 §4.3.4.4 + EN 1997-1"
+
+  vl_4_302_uloženi_prechodove_desky:
+    title_short: "VL 4-302 Uložení přechodové desky"
+    elements_covered:
+      - prechodova_deska
+      - zaverni_zidky
+    cross_reference: "ČSN 73 6244 čl. 7.4"
+
+  vl_4_rimsy:
+    title_short: "VL 4 — Římsy a svodidla"
+    md_section_keywords: ["ALTERNATIVA SE ZÁBRADLÍM", "PRŮJEZDNÝ PROSTOR"]
+    elements_covered:
+      - rimsa
+      - svodidlo_mostni
+      - zabradeli
+    cross_reference: "TKP 11 (svodidla) + ČSN EN 1317"
+
+  vl_4_izolace:
+    title_short: "VL 4 — Izolace"
+    md_section_keywords:
+      - "IZOLACE PROTI ZEMNÍ VLHKOSTI"
+      - "IZOLACE PROTI VODĚ"
+      - "IZOLACE PROTI TLAKOVÉ VODĚ"
+    elements_covered:
+      - izolace_NK
+      - izolace_pod_rimsou
+    cross_reference: "TKP 21 (izolace) + EN 1992-2"
+
+  vl_4_dilatace_a_spary:
+    title_short: "VL 4 — Dilatační spáry a kluzné trny"
+    md_section_keywords:
+      - "DO OZUBU"
+      - "DO LIŠTY V BEDNĚNÍ"
+      - "SPÁRA S KLUZNÝM TRNEM"
+      - "SPÁRA SE SMYKOVOU ZARÁŽKOU"
+    note: "Pro integrální mosty (Žihle) NEPOUŽITELNÉ — bez dilatačních závěrů per ZD §4.4.l"
+
+  vl_4_vstupy_a_revizni_schody:
+    title_short: "VL 4 — Vstup do mostu + revizní schodiště"
+    md_section_keywords: ["VSTUP DO MOSTU", "POHLED NA KŘÍDLO"]
+    elements_covered:
+      - revizni_schodiste
+    cross_reference: "Per ZD §4.4.l (revizní schodiště povinné u Žihle)"
+
+# ─────────────────────────────────────────────────────────────────────
+# STAVAGENT element_type → VL 4 typové výkresy mapping
+# ─────────────────────────────────────────────────────────────────────
+element_type_vl_mapping:
+  zaklady_oper: ["VL 4-204 Výkresy spodní stavby"]
+  opery_ulozne_prahy: ["VL 4-204"]
+  kridla_opery: ["VL 4-204"]
+  mostovkova_deska: []   # VL 4 má specifické deskové typy — TODO doplnit
+  rimsa: ["VL 4 — Římsy", "TKP 11"]
+  prechodova_deska: ["VL 4-302 Uložení přechodové desky"]
+  mostni_zavirne_zidky: ["VL 4-201 Zásypy + přechodové oblasti"]
+  drenaz_oper: ["VL 4-201.07 Drenáž za opěrou"]
+  izolace_NK: ["VL 4 — Izolace"]
+  svodidlo_zabradelni: ["VL 4 — Římsy a svodidla"]
+
+# ─────────────────────────────────────────────────────────────────────
+# Validation rules
+# ─────────────────────────────────────────────────────────────────────
+validation_rules:
+  - id: "VR-VL4-001"
+    description: "Prechodová deska — uložení per VL 4-302"
+    check: "if element_type=='prechodova_deska': design references VL 4-302 detail"
+    cross_reference: "ČSN 73 6244 čl. 7.4"
+  - id: "VR-VL4-002"
+    description: "Drenáž za opěrou per VL 4-201.07 (DN ≥ 150)"
+    check: "if element_type=='drenaz_oper': DN >= 150 AND vykres_per VL 4-201.07"
+    cross_reference: "ČSN 73 6244 čl. 7.3.2"
+  - id: "VR-VL4-003"
+    description: "Pro integrální mosty NESPRÁVNĚ aplikovat VL 4 dilatační detaily"
+    check: "if bridge_type=='BR_FRAME': not has_dilatacni_zaver AND skip VL 4 dilatace"
+  - id: "VR-VL4-004"
+    description: "Revizní schodiště per VL 4 vstup + ZD §4.4.l"
+    check: "if bridge_has_revizni_schody: design references VL 4 vstup detail"
+
+# ─────────────────────────────────────────────────────────────────────
+# Cross-references
+# ─────────────────────────────────────────────────────────────────────
+related_kb_entries:
+  - "B7_regulations/csn_73_6244_prechody_mostu/INDEX.yaml — cituje VL 4-201.07 + 302.01"
+  - "B7_regulations/tkp_04_zemni_prace/INDEX.yaml — §4.3.10 zásypy s odkazem na VL 4"
+  - "B7_regulations/en_1992_2_concrete_bridges/INDEX.yaml"
+  - "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii/"
+
+# ─────────────────────────────────────────────────────────────────────
+# Notes for AI Reasoner
+# ─────────────────────────────────────────────────────────────────────
+ai_reasoner_notes: |
+  VL 4 markdown obsahuje ~4000+ řádků s >100 typovými výkresy.
+  Pro classifier query: použij `md_section_keywords` z `typove_vykresy_index`
+  jako primary index. Příslušné výkresy jsou identifikovatelné per H1/H2/H3
+  v `VL_4_2021_Mosty.md`.
+
+  Kompletní seznam platných VL 4 (sekce 5 v MD, řádek 170+):
+  - VL 4-201.* (zásypy + přechody)
+  - VL 4-204.* (spodní stavba)
+  - VL 4-302.* (uložení přechodové desky)
+  - VL 4 typové detaily římsy / drenáže / izolace / spár / vstupů
+
+  Pro Žihle Phase B/C/D primárně relevantní:
+  - VL 4-201.07 (drenáž)
+  - VL 4-302 (uložení přechodové desky)
+  - VL 4 izolace (cross-ref TKP 21)
+  - VL 4 římsy (cross-ref TKP 11)

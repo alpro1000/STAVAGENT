@@ -1,9 +1,9 @@
 {
   "category": "B2_csn_standards",
-  "last_updated": "2026-05-05",
-  "version": "1.1",
+  "last_updated": "2026-05-06",
+  "version": "1.2",
   "source": "Manual + drag&drop ingest",
-  "description": "ČSN standards, Eurocode PDFs, and related ČSN-like binary references. Convention: PDF binaries live here; structured extracts (YAML/MD) live in B6_research_papers (university material) or B7_regulations (norms). See docs/KNOWLEDGE_PLACEMENT_GUIDE.md.",
+  "description": "ČSN standards, Eurocode PDFs, and related ČSN-like binary references. Convention: PDF binaries live here for ČSN-like + university source PDFs; structured extracts (YAML/MD) live in B6_research_papers (university material) or B7_regulations (norms). Modern TKP PDFs live in docs/normy/tkp/ (canonical for free MD ČR docs). See docs/KNOWLEDGE_PLACEMENT_GUIDE.md §16.",
   "files": [
     {
       "path": "csn_en_206.json",
@@ -11,14 +11,9 @@
       "title": "ČSN EN 206+A2 — beton, klíčové parametry"
     },
     {
-      "path": "VL_4_2021_Mosty_markdown.md",
-      "type": "extracted_md",
-      "title": "VL 4 (2021) — Mosty, vzorové listy"
-    },
-    {
       "path": "tkp/",
       "type": "subfolder",
-      "title": "Pre-extracted JSON for selected TKP chapters (3, 17, 18, 22, 24)"
+      "title": "Pre-extracted JSON for selected TKP chapters (3, 17, 18, 22, 24) — legacy interim convention before docs/normy/tkp/ canonical layout."
     },
     {
       "path": "09_zatizitelnost, sanace.pdf",
@@ -34,7 +29,63 @@
       "extracted_to": "../B7_regulations/en_1992_2_concrete_bridges/",
       "extraction_status": "PARTIAL (Žihle-relevant sections only)",
       "added": "2026-05-05"
+    },
+    {
+      "path": "TKP_04_2017.doc",
+      "type": "doc_binary_legacy",
+      "title": "TKP — Kapitola 4: Zemní práce (2017 edition, č.j. 143/2017-120-TN/1)",
+      "status": "superseded_by_2026_edition",
+      "readable": false,
+      "note": "DOC binary not readable in sandbox env (no pandoc/libreoffice/antiword). Kept for historical reference only. Successor in docs/normy/tkp/TKP04_2026_01.pdf with extracted YAML in B7_regulations/tkp_04_zemni_prace/.",
+      "added": "2026-05-06"
+    },
+    {
+      "path": "05_prechodove oblasti a prechody.pdf",
+      "type": "pdf_binary",
+      "title": "UPa skripta — 05 Přechodové oblasti a přechody (3.65 MB)",
+      "extracted_to": "../B6_research_papers/upa_prechodove_oblasti/ (stub)",
+      "secondary_for": "../B7_regulations/csn_73_6244_prechody_mostu/",
+      "added": "2026-05-06"
+    },
+    {
+      "path": "204.01 TECHNICKA ZPRAVA.pdf.pdf",
+      "type": "pdf_binary",
+      "title": "Real-world technická zpráva 204.01 (template reference)",
+      "extracted_to": "../B5_tech_cards/real_world_examples/204_01_technicka_zprava/ (stub)",
+      "added": "2026-05-06"
+    },
+    {
+      "path": "Příloha SoD č. 4_Technologický postup prací_zemni prace, bourani.pdf",
+      "type": "pdf_binary",
+      "title": "Příloha SoD č. 4 — Technologický postup zemní práce + bourání",
+      "extracted_to": "../B5_tech_cards/technological_postupy/zemni_prace_bourani/ (stub)",
+      "added": "2026-05-06"
+    },
+    {
+      "path": "vykresy_mosty_I.pdf",
+      "type": "pdf_binary",
+      "title": "Výkresy mostů I (UPa lecture material — inferred per filename)",
+      "extracted_to": "../B6_research_papers/upa_vykresy_mosty/ (stub)",
+      "identification_status": "tentative_per_filename",
+      "added": "2026-05-06"
     }
   ],
-  "notes": "PDF binaries kept in this bucket per legacy convention. New PDFs added 2026-05-05 with extracted YAML/MD placed in canonical buckets per docs/KNOWLEDGE_PLACEMENT_GUIDE.md."
+  "moved_out_2026_05_06": [
+    {
+      "path_was": "TKP_4_2026_fin.pdf",
+      "path_now": "docs/normy/tkp/TKP04_2026_01.pdf",
+      "reason": "Modern TKP PDFs canonical location is docs/normy/tkp/ per audit 2026-05-06 §3."
+    },
+    {
+      "path_was": "31697_Archive.pdf",
+      "path_now": "test-data/most-litovel/inputs/source/31697_Archive.pdf",
+      "reason": "Litovel je real-world projekt (BR_DECK_SLAB), ne norma — patří do test-data/, ne KB."
+    },
+    {
+      "path_was": "VL_4_2021_Mosty_markdown.md",
+      "path_now": "../B7_regulations/vl_4_mosty/VL_4_2021_Mosty.md",
+      "reason": "Vzorové listy = normativní dokument MD ČR; canonical lokace je B7_regulations/."
+    }
+  ],
+  "notes": "PDF binaries kept here for legacy convention + university PDFs. Modern TKP PDFs moved to docs/normy/tkp/ (matching pattern of 36 existing TKPs there). New entries 2026-05-06 added per task TASK_KB_MajorIngest_BridgesV2."
 }

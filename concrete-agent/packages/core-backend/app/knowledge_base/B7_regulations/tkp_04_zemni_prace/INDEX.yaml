@@ -1,0 +1,358 @@
+# TKP 4 — Zemní práce — INDEX.yaml
+# Full extraction (Scenario A) per docs/KNOWLEDGE_PLACEMENT_GUIDE.md (38 stran ≤ 50 limit).
+#
+# Source PDF: docs/normy/tkp/TKP04_2026_01.pdf
+# Issued: 19.1.2026 by Ministerstvo dopravy, Odbor pozemních komunikací (č. j. MD-3008/2026-940/2)
+# Effective: 1.2.2026; supersedes 6th edition (143/2017-120-TN/1, 7.8.2017)
+
+source:
+  norm_id: tkp_04
+  title: "TKP — Kapitola 4: Zemní práce"
+  issuer: "Ministerstvo dopravy, Odbor pozemních komunikací"
+  approval_id: "MD-3008/2026-940/2"
+  approval_date: 2026-01-19
+  effective_date: 2026-02-01
+  edition: 7
+  supersedes: "6. vydání 2017 (č.j. 143/2017-120-TN/1)"
+  pages: 38
+  format: pdf
+  pdf_in_repo: "docs/normy/tkp/TKP04_2026_01.pdf"
+  language: cs
+  freely_available: true   # MD ČR vydáva TKP zdarma na pjpk.rsd.cz
+  publisher_url: "https://pjpk.rsd.cz"
+  extraction_status: full   # Scenario A — full content embed; klíčové values + cross-refs
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.1 ÚVOD
+# ─────────────────────────────────────────────────────────────────────
+section_4_1_uvod:
+  description: "Pojmy, ustanovení, návaznost na TKP 1, použití pouze společně s TKP 1"
+  key_principles:
+    - "TKP 4 navazuje na TKP 1 (Všeobecně), použití jen společně"
+    - "Vydané pouze elektronicky (zabezpečený PDF na pjpk.rsd.cz)"
+    - "Odkazy na ČSN/TP/jiné dokumenty se chápou v platném znění"
+    - "Přílohy mají stejnou závaznost jako text kapitoly"
+  scope: |
+    Požadavky na materiály, technologické postupy, zkoušení a převzetí
+    výkonů a dodávek při provádění zemních prací na stavbách pozemních
+    komunikací. Příloha P1 řeší opravy a údržbu zemních těles.
+  pd_requirements:
+    must_comply_with:
+      - "ČSN EN 1997-1 Eurokód 7"
+      - "ČSN 73 6133 Návrh a provádění zemního tělesa pozemních komunikací"
+      - "TKP 4 + související kapitoly TKP"
+      - "Příslušné TP (TP 76, TP 94, TP 97, TP 146, TP 170, TP 198, TP 210, TP 268)"
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+# ─────────────────────────────────────────────────────────────────────
+section_4_2_materialy:
+  description: "Klasifikace zemin, hornin, alternativních materiálů"
+  unsuitable_zeminy:
+    description: "Nepoužitelné podle ČSN 73 6133"
+    types:
+      - "organické zeminy"
+      - "bahna"
+      - "rašelina"
+      - "humus"
+      - "ornice s obsahem org. látek > 6 % (suchá obj. hmotnost částic <2mm)"
+    extreme_plastic_excluded:
+      - ME (extrémně plastické)
+      - CE (extrémně plastické)
+    organic_test: "ČSN 72 1021"
+  alternative_materials:
+    types:
+      - "strusky z výroby železných a neželezných kovů"
+      - "vedlejší energetické produkty"
+      - "stavební demoliční materiál"
+      - "výsypky, hlušiny"
+      - "recyklované materiály"
+    governing_tp: ["TP 210 (recykláty)", "TP 268 (alternativní)"]
+    required_specifications:
+      - "přesný popis"
+      - "technologie zpracování"
+      - "návrhové fyzikálně-mechanické parametry"
+      - "ekologická nezávadnost"
+      - "vyluhovatelnost a její změny v čase"
+      - "časový vývoj mech. vlastností"
+      - "dlouhodobá objemová stálost"
+      - "způsob kontroly + četnost"
+  ocelove_vyztuzne_prvky:
+    drat_taženy_za_studena: "ČSN EN 10079"
+    svarovani_siti_a_mrizi: "ČSN EN 10080"
+    galvanizace: "ČSN EN ISO 1461"
+    quality_specs: "TKP 30"
+  pojiva_pro_upravu_zemin:
+    relevant_documents: ["TP 94", "ČSN 73 6133", "ČSN EN 16907-4"]
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+# ─────────────────────────────────────────────────────────────────────
+section_4_3_technologie:
+  pre_work_requirements:
+    - "Technologický předpis těžby a zpracování sypaniny — odsouhlasen Objednatelem/Správcem"
+    - "Pro zpracování zemin s pojivy nebo vyztužování — zásady technologie v dokumentaci/ZTKP"
+    - "Využít materiál vyzískaný ze staveniště v první řadě"
+  vykopy:
+    rozdeleni:
+      - "Výkopy v trase (sejmutí humózní vrstvy + odtěžení do úrovně zemní pláně/parapláně)"
+      - "Výkopy v zemníku (mimo trasu)"
+      - "Výkopy pro zakládání objektů (mosty, opěrné/zárubní zdi, propustky)"
+      - "Výkopy pro inženýrské sítě a odvodnění"
+    klasifikace_tezitelnosti: "ČSN 73 6133, příloha D"
+    skalní_výkopy_trhaviny:
+      legal: "Zákon č. 61/1988 Sb."
+      seismic_check: "ČSN 73 0040"
+      method_for_zarezy: "Doporučen řízený výlom (presplit) pro definitivní úpravu"
+    pažení:
+      mandatory_thresholds:
+        zastavene_uzemi: 1.3   # m
+        nezastavene_uzemi: 1.5 # m
+      ocelove_stenove_steny: "ČSN EN 12063"
+  vykopy_pro_zakladani_mostnich_oper_relevant_zihle:
+    description: "Klíčový pasáž pro Žihle — výkop pro plošný základ integrálního rámu"
+    key_rules:
+      - "Výkop ukončit nad projektovanou základovou spárou (cca 0.3 m) — chrání horninu před klimat. vlivy"
+      - "Dotěžení na konečnou úroveň max. 48 hodin před návaznými pracemi"
+      - "Pro základní spáru: geologická dokumentace + posouzení geotechnikem Zhotovitele"
+      - "Při hladina podzemní vody → snížit čerpáním pod niveletu základové spáry"
+      - "Bez písemného odsouhlasení od Objednatele/Správce nesmí být zakryta"
+      - "Po odsouhlasení bezprostředně (do 1 pracovní směny) zahájit návazné práce"
+      - "Dočasné výkopy nesmějí být ponechány přes zimní období"
+  nasypy:
+    types:
+      - "Násypy ze zemin"
+      - "Násypy z kamenité a balvanité sypaniny"
+      - "Násypy z alternativních materiálů"
+      - "Násypy vrstevnaté"
+      - "Násypy vyztužené (TKP 30 + TP 97 + ČSN EN 14475)"
+      - "Násypy vylehčené (TP 198)"
+      - "Násypy ve vodě (ČSN EN 16907-1 + 16907-3)"
+    zhutnovaci_zkouska:
+      mandatory_for: "Dálnice, silnice I. třídy, místní rychlostní komunikace pokud objem zem. prací > 100 000 m³"
+      optional_for: "Ostatní stavby — pokud nelze dosáhnout vlastnosti násypu předepsané dokumentací"
+  podlozí_násypu:
+    sklon_pro_svahove_stupne: 0.10  # 10% — nad tímto sklonem terénu kolmo k ose násypu se budují svahové stupně
+    svahove_stupne_priny_sklon_min: 0.03  # 3% min příčný sklon
+    geotextilie:
+      separace_filtrace_min_taznost: 20  # %
+  zaktivni_zona_a_zemni_plan:
+    typical_thickness_m: 0.5  # od zemní pláně dolů
+    podzemni_voda_min_pod_plani_m: 0.5
+    geosynthetic_geocell_NOT_for_active_zone: true  # vyztužení AZ nemá význam pro únosnost podloží vozovky
+    vyjimka: "Dočasné/účelové komunikace s nestmeleným krytem"
+  zpetny_zasyp_obsypy_zaklady_mostu:
+    cross_reference: ["ČSN 73 6244", "TKP 3 (inženýrské sítě)"]
+    propustky_max_rozdil_urovne_zasypu_obou_stranach_m: 0.5
+    zhutneni_blizkost_objektu_m: 1.0  # do 1 m od rubu konstrukce — zvláštní opatrnost
+    drevo_v_zasypu: "NESMÍ BÝT (per § 4.3.10)"
+  prechodova_oblast_KEY_FOR_BRIDGES:
+    description: "Přechod z násypového tělesa na most"
+    cross_reference_norm: "ČSN 73 6244 čl. 3"
+    governing_norms_for_zemni_prace: ["ČSN 73 6244", "ČSN 73 6133", "ČSN 73 6201"]
+    most_oper_na_pilotach_OR_uloznem_prahu:
+      rule: "Při zakládání mostní opěry v tělese násypu na úložném prahu podepřeném pilotami se musí celé zemní těleso v přechodové oblasti, včetně svahových kuželů před opěrou, stavět současně."
+      zasyp_kontrola_celou_vysku: "ČSN 73 6244"
+    obsyp_kridel: "Současně na obou stranách (zabránit jednostrannému zatěžování)"
+    ochranny_zasyp_za_operou: "Nenamrzavá zemina dle ČSN 73 6244"
+    obsyp_kridel_a_objektu_zemina: "Pro stabilní svah dle dokumentace"
+  nezpevnena_krajnice_dělicí_pás:
+    suitable_zeminy: ["S1-S5", "G1-G5"]
+    rezni_modul_deformace_min_MPa: 20  # M_vd ≥ 20 MPa per ČSN 73 6192 (lehká dynamická deska)
+    recyklat_per_TP_210: true
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.5 KONTROLNÍ ZKOUŠKY (klíčové pro classifier validation)
+# ─────────────────────────────────────────────────────────────────────
+section_4_5_kontroly:
+  mira_zhutneni_pozadavky:
+    nasyp_pojizdene_konstrukce: "Hodnoty dle ČSN 73 6133 tab. 10a, 10b"
+    nasyp_nepoizdene_protihluk_valy: "Polovic. rozsah, min 3 zkoušky"
+    obsyp_potrubi: 0.92   # 92 % PS minimum
+    silnicni_teleso: 0.95  # 95 % PS
+    aktivni_zona: 1.00    # 100 % PS
+  precision_metody:
+    primary: "Měření obj. hmotnosti in situ vs Proctor standard (D, %)"
+    indirect:
+      - "Statická zatěžovací zkouška (poměr modulů E_def,2 / E_def,1)"
+      - "Rázová zatěžovací zkouška (ČSN 73 6192)"
+      - "Dynamic/static penetration"
+    membranove_objemomery: "1× lab. srovnávací obj. hmotnost na 3 stanovení (homogenní) / 1 (nehomogenní)"
+  rough_stones_static_test:
+    application: "Zeminy s hrubými úlomky a štěrkovými zrny >16 mm v množství >30 %"
+    cannot_apply_lab_zhutnitelnost: true
+  cetnost_zkousek_vsetky_dle_csn_736133:
+    note: "ČSN 73 6133 tab. 9 (těžba), tab. 10a/b (násypy), tab. 13 (povolené odchylky)"
+  prechodova_oblast_zhutneni: "Per ČSN 73 6244"
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.6 PŘÍPUSTNÉ ODCHYLKY (kritické tolerance)
+# ─────────────────────────────────────────────────────────────────────
+section_4_6_odchylky:
+  parapláň:
+    odchylka_vysek_dalnice_silnice_I_II_mm: { plus: 30, minus: 40 }
+    odchylka_vysek_mistni_komunikace_mm: { plus: 40, minus: 40 }
+    odchylka_sirek_mm: { plus: 100, minus: 50 }
+    odchylka_pricniho_sklonu_max_pct: 1.0
+    min_pricni_sklon_pct: 2.5
+    measurement_freq: "Každý druhý profil (obvykle po 40 m), 3 body jízdního pásu"
+  modul_pretvarnosti:
+    do_10_zkousek: "Žádná naměřená hodnota nesmí být nižší než předepsaná"
+    od_11_zkousek: "Žádná hodnota o víc než 10 % nižší než předepsaná; max 10 % zkoušek smí být menších než předepsaná, ne za sebou"
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.7 POVĚTRNOSTNÍ PODMÍNKY
+# ─────────────────────────────────────────────────────────────────────
+section_4_7_pocasi:
+  nizke_teploty_kamenita_sypanina:
+    min_temp_C: -5  # při teplotách nižších pouze sypanina z tvrdých skalních hornin
+    obsah_zrn_do_2mm_max_pct: 15
+    okraj_zhutnovani_zintenzivneni: "do vzdálenosti 2.5 m od okraje svahu — dvojnásobek počtu přejezdů"
+    forbidden: "Sypání na poslední zmrzlou vrstvu"
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.9 GEOTECHNICKÝ MONITORING
+# ─────────────────────────────────────────────────────────────────────
+section_4_9_monitoring:
+  scope:
+    - "Měření napětí v horninovém masivu / kontaktu s konstrukcí"
+    - "Měření přetvoření zemních konstrukcí (svislá + vodorovná)"
+    - "Měření hladiny podzemní vody + napětí v pórech"
+    - "Měření protažení geosyntetické výztuže"
+    - "Měření vibrací"
+
+# ─────────────────────────────────────────────────────────────────────
+# §4.12 NORMY A PŘEDPISY (cited)
+# ─────────────────────────────────────────────────────────────────────
+cited_norms:
+  zakony:
+    - "Zákon č. 258/2000 Sb., ochrana veřejného zdraví"
+    - "Zákon č. 541/2020 Sb., o odpadech"
+    - "Vyhláška č. 104/1997 Sb., zákon o pozemních komunikacích"
+    - "Vyhláška č. 273/2021 Sb., nakládání s odpady"
+    - "Vyhláška č. 194/2024 Sb."
+    - "Nařízení vlády č. 119/2024 Sb. (NV č. 163/2002 Sb. tech. požadavky)"
+  csn_eu_eurokod:
+    - "ČSN EN 1997-1 Eurokód 7"
+    - "ČSN EN 1997-2 Eurokód 7 — průzkum a zkoušení základové půdy"
+    - "ČSN EN 16907-1 až -6 (zemní práce)"
+    - "ČSN EN 17542-1 (zkouška rozpadavosti)"
+    - "ČSN EN ISO 14689 (klasifikace hornin)"
+    - "ČSN EN ISO 17892-1 až -12 (laboratorní zkoušky zemin)"
+    - "ČSN EN ISO 22 475-1 (odběry vzorků)"
+    - "ČSN EN 14475 (vyztužené zemní konstrukce)"
+    - "ČSN EN 12063 (ocelové štětové stěny)"
+    - "ČSN EN 13286-2 (Proctorova zkouška)"
+    - "ČSN EN 13286-47 (CBR + IBI + lineární bobtnání)"
+  csn_narodni:
+    - "ČSN 72 1006 Kontrola zhutnění zemin a sypanin"
+    - "ČSN 72 1010 Stanovení obj. hmotnosti zemin"
+    - "ČSN 72 1018 Relativní ulehlost"
+    - "ČSN 72 1021 Stanovení org. látek"
+    - "ČSN 73 0040 Zatížení tech. seizmicitou"
+    - "ČSN 73 1375 Radiometrické zkoušení"
+    - "ČSN 73 6005 Prostorové uspořádání vedení"
+    - "ČSN 73 6133 Návrh a provádění zemního tělesa"
+    - "ČSN 73 6175 Měření nerovnosti vozovek"
+    - "ČSN 73 6192 Rázové zatěžovací zkoušky"
+    - "ČSN 73 6201 Projektování mostních objektů"
+    - "ČSN 73 6244 Přechody mostů pozemních komunikací"
+    - "ČSN 75 5630 Vodovodní podchody"
+    - "ČSN 75 6101 Stokové sítě"
+    - "ČSN 75 6230 Podchody stok"
+    - "ČSN 83 9001 Sadovnictví terminologie"
+    - "ČSN 83 9011 Práce s půdou"
+  tp_md:
+    - "TP 53 Protierozní opatření"
+    - "TP 76A/B/C Geotechnický průzkum"
+    - "TP 82 Katalog poruch netuhých vozovek"
+    - "TP 83 Odvodnění PK"
+    - "TP 94 Úprava zemin"
+    - "TP 97 Geosyntetika"
+    - "TP 146 Provádění výkopů"
+    - "TP 170 Navrhování vozovek"
+    - "TP 198 Vylehčené násypy"
+    - "TP 210 Recykláty"
+    - "TP 268 Alternativní materiály"
+  tkp:
+    - "TKP 1 Všeobecně"
+    - "TKP 2 Příprava staveniště"
+    - "TKP 3 Odvodnění + chráničky"
+    - "TKP 13 Vegetační úpravy"
+    - "TKP 16 Piloty + podzemní stěny"
+    - "TKP 18 Beton"
+    - "TKP 29 Zvláštní zakládání"
+    - "TKP 30 Speciální zemní konstrukce"
+  vl:
+    - "VL 1 Vozovky a krajnice"
+    - "VL 2 Odvodnění"
+    - "VL 4 Mosty"
+
+# ─────────────────────────────────────────────────────────────────────
+# Cross-references for STAVAGENT calculator + classifier
+# ─────────────────────────────────────────────────────────────────────
+stavagent_cross_references:
+  bridge_elements_governed:
+    zaklady_oper:
+      tkp_4_sections: ["§4.3.4.4 Výkopy pro zakládání objektů", "§4.3.6 Podloží násypu"]
+      key_rules:
+        - "Výkop ukončit nad projektovanou základovou spárou cca 0.3 m"
+        - "Dotěžení max. 48 hod před návaznými pracemi"
+        - "Geologická dokumentace pro odsouhlasení základové spáry"
+    opery_ulozne_prahy:
+      tkp_4_sections: ["§4.3.10 Zpětný zásyp + obsypy + zásypy základů mostů"]
+      key_rule: "Zhutnění do 1 m od rubu konstrukce — pomocí takových prostředků aby nedošlo k vybočení konstrukce/poškození izolace"
+    prechodova_deska:
+      tkp_4_sections: ["§4.3.11 Přechodová oblast"]
+      key_rule: "Most_oper na pilotách + úložném prahu — celé zemní těleso v přechodové oblasti vč. svahových kuželů stavět současně"
+      governing_norm_primary: "ČSN 73 6244"
+    rimsy:
+      tkp_4_sections: []
+      governing_norms: ["TKP 11", "TKP 18", "VL 4"]
+  validation_rules:
+    - id: "VR-TKP4-001"
+      description: "Zhutnění aktivní zóny min 100 % PS"
+      check: "if element_type=='aktivni_zona' or near zemní pláň: D >= 100 %"
+    - id: "VR-TKP4-002"
+      description: "Hloubka založení nesmí být nad nezamrzající hloubkou (typ. 1.20 m)"
+      check: "Volba per IGP + ČSN 73 6133 + region klimatu"
+    - id: "VR-TKP4-003"
+      description: "Žádné dřevo v trvalém zásypu (per §4.3.10)"
+      check: "obsyp_drevenne_bedneni == false"
+    - id: "VR-TKP4-004"
+      description: "Sklon příčný parapláně min 2.5 %, max odchylka 1 %"
+    - id: "VR-TKP4-005"
+      description: "Zhutnění obsypu potrubí min 92 % PS"
+    - id: "VR-TKP4-006"
+      description: "Modul přetvárnosti — pravidlo o odchylkách (do 10 zkoušek = žádná pod hodnotu, od 11 = max 10 % o ≤10 % nižší, ne za sebou)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Příloha P1 — Opravy a údržba zemních těles
+# ─────────────────────────────────────────────────────────────────────
+priloha_p1_opravy:
+  scope: "Prohlídky, klasifikace poruch, opravy a údržba zemních těles na PK"
+  prohlidky:
+    bezne_vizualni_min_2x_rocne:
+      - "Před zimním obdobím (říjen-listopad)"
+      - "Na jaře (březen-duben)"
+    hlavni: "Při uvedení do provozu, před skončením záruční doby, při inventarizaci"
+    mimoradne: "Náhlé poškození (přívalové deště, zaplavení, zřícení skalních bloků)"
+  klasifikace_poruch:
+    lehke:
+      examples: ["splavení humózní vrstvy", "erozní rýhy", "uvolňování drobných úlomků", "zanášení příkopů"]
+      action: "Běžná údržba"
+    stredni:
+      examples: ["vývěry vody", "povrchové deformace", "poklesy krajnice", "trhliny"]
+      action: "Posouzení geotech. firmou + dokumentace opravy"
+    tezke:
+      examples: ["sesutí svahu", "zřícení skal. bloků", "zaplavení", "velké propady vozovky"]
+      action: "Havarijní stav — neprodleně sanace + zjednodušená dokumentace, omezení/zastavení provozu"
+  zpusobilost:
+    quality_system: "MP SJ-PK č.j. 20840/01-120, část II/4"
+    references: "Min. 3 roky"
+
+related_kb_entries:
+  - "B7_regulations/csn_73_6244_prechody_mostu/INDEX.yaml (přechodové oblasti)"
+  - "B7_regulations/vl_4_mosty/INDEX.yaml (vzorové výkresy zásypů + drenáží)"
+  - "B6_research_papers/upa_pokorny_suchanek_betonove_mosty_ii/ (zakládání mostů)"
+  - "B5_tech_cards/technological_postupy/zemni_prace_bourani/ (real-world postup)"
