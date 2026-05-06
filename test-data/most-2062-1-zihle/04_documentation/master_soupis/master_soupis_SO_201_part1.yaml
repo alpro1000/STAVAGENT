@@ -1,5 +1,22 @@
 # master_soupis_SO_201_part1.yaml — SO 201 Most ev.č. 2062-1 (TSKP třídy 0+1+2+3+4)
 #
+# ⚠️ DEPRECATED — First attempt, replaced by per-třída focused files. Kept for
+#    reconciliation reference.
+#
+# Reason: scope (32 položek across 5 tříd) bylo too broad pro single review pass.
+# Per-třída split lépe slouží audit + review workflow.
+#
+# Replacement files (per-třída):
+#   - master_soupis_SO_201_t0.yaml      — TSKP třída 0 (administrativa)         [10 pol.]
+#   - master_soupis_SO_201_t1_t2.yaml   — TSKP třídy 1 + 2 (zemní + základy)    [TBD]
+#   - master_soupis_SO_201_t3.yaml      — TSKP třída 3 (svislé konstrukce)      [TBD]
+#   - master_soupis_SO_201_t4.yaml      — TSKP třída 4 (vodorovné konstrukce)   [TBD]
+#
+# Tento file zůstává v repo PRO REFERENCE (cross-validation cen + audit trailů
+# na souhrnné úrovni); per-třída files jsou authoritative source.
+#
+# ─────────────────────────────────────────────────────────────────────
+#
 # Žihle 2062-1 (integrální rámový most)
 #
 # Source primary: Phase C calculator outputs (`03_calculation/outputs/_all_outputs.json` + per-element JSONs)
