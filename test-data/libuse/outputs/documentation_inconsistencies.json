@@ -79,6 +79,8 @@
     "F30 — used in 4 WC FF column references (D.2.1.03, D.2.4.03, D.3.1.03, D.3.3.03). Bare 'F30' missing 'FF' prefix — typo for FF30 (běžná podlaha dlažba 130 mm). Confirm.",
     "F20 in FF column of D.1.4.03 WC — typo for FF20 (podlaha nad suterénem dlažba 130 mm). Confirm.",
     "Printed legend Tabulka místností 1.NP — D.1.3.01 misfiled under D.1.2 byt section. Subtotaly 55.9 / 43.2 m² mají být 49.59 / 49.59 m². Regenerovat printout pro VELTON delivery.",
-    "S.D.16 SKLEPNÍ KÓJE - C (7.62 m²) and S.D.42 SKLEPNÍ KÓJE - D (2.99 m²) defined in Tabulka místností XLSX but missing from DXF geometric dataset — Phase 0.x DXF parser may have skipped them (small kóje? code position outside detected polygons?)."
+    "S.D.16 SKLEPNÍ KÓJE - C (7.62 m²) and S.D.42 SKLEPNÍ KÓJE - D (2.99 m²) defined in Tabulka místností XLSX but missing from DXF geometric dataset — Phase 0.x DXF parser may have skipped them (small kóje? code position outside detected polygons?).",
+    "D10 v objektu D má jen STD interior treatment, zatímco v Tabulce 0041 pro objekty A/B je D10 specifikováno s bezpečnostní pack (rám + EMZ + ACS + SN2). Potvrďte zda objekt-D D10 je záměrně downgraded, nebo mělo být specifikováno stejně jako A/B.",
+    "Tabulka 0041 počítá D10=0, D11=0, D21=10 ks, ale v DWG výkresech jsou D10=1 ks (In_FAS_1600x2350 1.NP hlavní vstup), D11=1 ks (1.NP únikový), D21=11 ks. Internal documentation inconsistency — opravte Tabulku 0041 pro budoucí konzistenci A/B/C."
   ]
 }
