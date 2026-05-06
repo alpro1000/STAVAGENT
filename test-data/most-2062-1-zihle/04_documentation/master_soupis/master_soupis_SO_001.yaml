@@ -1,0 +1,667 @@
+# master_soupis_SO_001.yaml — SO 001 Demolice stávajícího mostu (Most ev.č. 2062-1 Žihle)
+#
+# Scope = D (per user decision via AskUserQuestion 2026-05-05):
+#   D1) Demolice stávajícího mostu (16 ŽB trámů + ŽB deska + kamenné opěry + 4 kamenné křídla)
+#   D2) Demolice stávajícího mostního svršku (svodidla, zábradlí, izolace, odvodňovače, asfalt)
+#   D3) Demontáž provizoria po dokončení nové stavby (montovaný steel system)
+#   D4) Demontáž podložek pod provizorium (zemní práce + dlažba)
+#   D5) Demontáž panelů/vozovkových vrstev pod provizoriem
+#   D6) Rekultivace záboru pozemků (ornice + hydroosev)
+#   D7) Odvozy: beton+ocel → RS Žatec, asfalt frézování → RS Žatec, zemina → DECO TRADE Nesuchyně
+#
+# Audit trail per položku: formula + vstupy + vypocet_kroky + confidence (per task §3.2).
+# Vendor pricing referenced from `04_documentation/vendor_pricing/vendor_quotes.yaml`.
+# Reconciliation gaps for non-calculator scope (G1) → source: user_manual_fallback, conf 0.7.
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "SO 001 — Demolice"
+phase: "D — Master soupis (Session 2)"
+tskp_hierarchy: ["0", "1", "9"]
+scope: "D — Plný (most + provizorium + podložky + odvozy + doprovod)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Stávající most — vstupní dimenze (HPM s.2 + Phase A stavajici_most.yaml)
+# ─────────────────────────────────────────────────────────────────────
+existing_structure_inputs:
+  most_typ: "Spojitý ŽB s I-vložkami + kamenné opěry + 4 kamenná křídla"
+  zdroj: "HPM s.2 [1.1]–[1.3] + Phase A stavajici_most.yaml"
+  rozpeti_m: 9.0
+  sirka_m: 5.0
+  plocha_mostovky_m2: 45.0
+  pocet_zb_tramu: 16
+  rozmer_tramu_m: [0.20, 0.50, 9.0]   # b × h × L
+  deska_tloustka_m: 0.10
+  kamenné_opery_pocet: 2
+  rozmery_opery_m: [4.0, 1.5, 2.0]    # L × t × h
+  kamenná_křídla_pocet: 4
+  rozmery_kridla_m_priblizne: [2.5, 1.0, 1.5]   # L × t × h
+  asfalt_vozovka_tloustka_m: 0.04
+  svodidlo_existujici: "SafeStar 231 H2/W3 (HPM s.3 [4.2])"
+
+# ─────────────────────────────────────────────────────────────────────
+# Stavební jáma + provizorium podloží (vstupní dimenze)
+# ─────────────────────────────────────────────────────────────────────
+zarizeni_inputs:
+  stavebni_jama:
+    L_m: 12.0
+    B_m: 8.5
+    H_m: 2.5
+    objem_m3: 255.0
+  provizorium_podlozi:
+    L_m: 15.0          # delší než provizorium kvůli nájezdům
+    B_m: 5.0           # širší pro stabilizaci
+    plocha_m2: 75.0
+    tloustka_dlazby_m: 0.20
+  zabor_pozemku_m2: 1000   # per user měření Session 1
+  doba_demolice_dni: 30
+  doba_provizoria_mesicu: 6
+
+# =====================================================================
+# TŘÍDA 0 — VŠEOBECNÉ KONSTRUKCE A PRÁCE
+# =====================================================================
+
+trida_0_vseobecne:
+
+  - polozka_id: "SO001-T0-01"
+    otskp_kod: "014102"
+    popis: "POPLATKY ZA SKLÁDKU"
+    mj: "T"
+    mnozstvi: 95.0
+    vypocet:
+      formula: "objem_ZB_demolice × hustota_ZB + objem_kamen × hustota_kamen + ostatní"
+      vstupy:
+        objem_ZB_tramu_m3:    {hodnota: 14.4,  jednotka: m3, popis: "16 trámů × 0.20 × 0.50 × 9.0", zdroj: "HPM s.2"}
+        objem_ZB_deska_m3:    {hodnota: 4.5,   jednotka: m3, popis: "5 × 9 × 0.10 m deska",          zdroj: "HPM s.2"}
+        hustota_ZB_t_m3:      {hodnota: 2.5,   jednotka: t/m3, popis: "běžný železobeton",           zdroj: "ČSN EN 1991-1-1"}
+        objem_kamen_opery_m3: {hodnota: 24.0,  jednotka: m3, popis: "2× opěra 4×1.5×2",             zdroj: "HPM s.2 [1.2]"}
+        hustota_kamen_t_m3:   {hodnota: 2.4,   jednotka: t/m3, popis: "kamenné zdivo na MC",         zdroj: "ČSN EN 1991-1-1"}
+        objem_kridel_m3:      {hodnota: 15.0,  jednotka: m3, popis: "4× křídlo 2.5×1.0×1.5",         zdroj: "HPM s.2 [1.3]"}
+      vypocet_kroky:
+        - "ŽB beton: (14.4 + 4.5) × 2.5 = 47.25 t"
+        - "Kamenné zdivo: (24 + 15) × 2.4 = 93.6 t"
+        - "Po recyklaci/triedení odpad ~ 65 % k odvozu na skládku → 95 t"
+    confidence: 0.75
+    jedn_cena_kc: 1000.0
+    note: "Cena 1000 Kč/t = midpoint pásma RS Žatec 800-1500 Kč/t inertní (per `vendor_quotes.yaml` Ekostavby Louny). OTSKP cena 0 Kč v catalog (regional)."
+    cena_celkem_kc: 95000
+
+  - polozka_id: "SO001-T0-02"
+    otskp_kod: "014201"
+    popis: "POPLATKY ZA ZEMNÍK - ZEMINA"
+    mj: "M3"
+    mnozstvi: 285.0
+    vypocet:
+      formula: "objem_jamy + sejmuti_ornice"
+      vstupy:
+        objem_stavebni_jamy_m3: {hodnota: 255.0, jednotka: m3, popis: "12 × 8.5 × 2.5 m",  zdroj: "Phase B varianta_01"}
+        objem_ornice_m3:        {hodnota: 30.0,  jednotka: m3, popis: "100 m² × 0.30 m",   zdroj: "Phase B"}
+      vypocet_kroky:
+        - "255 + 30 = 285 m³"
+    confidence: 0.85
+    jedn_cena_kc: 216.0
+    note: "Cena = DECO TRADE Nesuchyně 120 Kč/t × 1.8 t/m³ = 216 Kč/m³ (per `vendor_quotes.yaml` DECO_TRADE_NESUCHYNE, platnost 2026-12-31)."
+    cena_celkem_kc: 61560
+
+  - polozka_id: "SO001-T0-03"
+    otskp_kod: "02510"
+    popis: "ZKOUŠENÍ MATERIÁLŮ — kontrola materiálu při bourání (ŽB pevnost, ocel třída)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kpl, popis: "kontrolní zkoušky ŽB trámů + opěry pro klasifikaci suti", zdroj: "TKP 18 čl. 3.4 + ČSN EN 12504"}
+      vypocet_kroky:
+        - "1 kpl = laboratorní zkoušky ~5 vzorků × 8000 Kč"
+    confidence: 0.6
+    jedn_cena_kc: 40000
+    note: "OTSKP cena 0 (kompletace). Orientačně 30-50k Kč."
+    cena_celkem_kc: 40000
+
+  - polozka_id: "SO001-T0-04"
+    otskp_kod: "02960"
+    popis: "ODBORNÝ DOZOR — geologický + statický při demolici"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "doba_demolice_dni × hodin_dozor_per_den × sazba"
+      vstupy:
+        doba_demolice_dni:      {hodnota: 30, jednotka: dní, popis: "etapa demolice",         zdroj: "Phase B harmonogram"}
+        hodin_dozor_per_den:    {hodnota: 4,  jednotka: hod, popis: "průměrná přítomnost",    zdroj: "TP-D&B praxe"}
+        sazba_kc_hod:           {hodnota: 600, jednotka: Kč/hod, popis: "AO + statik",        zdroj: "ČKAIT sazebník 2026"}
+      vypocet_kroky:
+        - "30 × 4 × 600 = 72000 Kč"
+    confidence: 0.7
+    jedn_cena_kc: 72000
+    cena_celkem_kc: 72000
+
+  - polozka_id: "SO001-T0-05"
+    otskp_kod: "02991"
+    popis: "INFORMAČNÍ TABULE — uzavírka mostu + bypass info"
+    mj: "KUS"
+    mnozstvi: 2
+    vypocet:
+      formula: "počet_pristupu × 1_tabule"
+      vstupy:
+        pristupy_obousmer: {hodnota: 2, jednotka: -, popis: "směr Žihle + směr Potvorov", zdroj: "HPM s.2"}
+      vypocet_kroky:
+        - "2 přístupy × 1 tabule = 2 ks"
+    confidence: 0.95
+    jedn_cena_kc: 8000
+    cena_celkem_kc: 16000
+
+# =====================================================================
+# TŘÍDA 1 — ZEMNÍ PRÁCE
+# =====================================================================
+
+trida_1_zemni:
+
+  - polozka_id: "SO001-T1-01"
+    otskp_kod: "11511"
+    popis: "ČERPÁNÍ VODY DO 500 L/MIN — během demolice + výkop"
+    mj: "HOD"
+    mnozstvi: 200
+    vypocet:
+      formula: "doba_demolice × hodin_per_den × intenzita_cerpani_factor"
+      vstupy:
+        doba_demolice:           {hodnota: 60, jednotka: dní,  popis: "demolice + výkop základové jámy", zdroj: "Phase B harmonogram"}
+        hodin_per_den:           {hodnota: 8,  jednotka: hod,  popis: "pracovní směna",                  zdroj: "praxe"}
+        intenzita_cerpani_factor: {hodnota: 0.42, jednotka: -, popis: "podíl času s aktivní vodou",      zdroj: "engineering judgment, Mladotický potok flow"}
+      vypocet_kroky:
+        - "60 × 8 = 480 hod (max teoretická doba)"
+        - "480 × 0.42 = 200 hod (realistic estimate)"
+    confidence: 0.7
+    jedn_cena_kc: 110.71
+    note: "OTSKP 2025/II 110.71 Kč/hod."
+    cena_celkem_kc: 22142
+
+  - polozka_id: "SO001-T1-02"
+    otskp_kod: "121108"
+    popis: "SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20 KM"
+    mj: "M3"
+    mnozstvi: 30.0
+    vypocet:
+      formula: "plocha × tloustka_ornice"
+      vstupy:
+        plocha_zaboru_m2: {hodnota: 100, jednotka: m2, popis: "zábor pro stavební jámu",            zdroj: "Phase B"}
+        tloustka_m:       {hodnota: 0.30, jednotka: m, popis: "standardní hloubka kulturní vrstvy", zdroj: "ČSN 73 6133"}
+      vypocet_kroky:
+        - "100 × 0.30 = 30 m³"
+    confidence: 0.9
+    jedn_cena_kc: 456.48
+    cena_celkem_kc: 13694
+
+  - polozka_id: "SO001-T1-03"
+    otskp_kod: "13173"
+    popis: "HLOUBENÍ JAM ZAPAŽ I NEPAŽ TŘ. I — stavební jáma po demolici"
+    mj: "M3"
+    mnozstvi: 255.0
+    vypocet:
+      formula: "L × B × H"
+      vstupy:
+        L_m: {hodnota: 12.0, jednotka: m, popis: "délka jámy",  zdroj: "Phase B"}
+        B_m: {hodnota: 8.5,  jednotka: m, popis: "šířka jámy",  zdroj: "Phase B"}
+        H_m: {hodnota: 2.5,  jednotka: m, popis: "hloubka pod úroveň základu", zdroj: "Phase B"}
+      vypocet_kroky:
+        - "12.0 × 8.5 × 2.5 = 255 m³"
+    confidence: 0.85
+    jedn_cena_kc: 315.27
+    note: "Tř. I = běžná zemina; IGP rozhodne přesnou kategorii (klasifikace gap pre DUR)."
+    cena_celkem_kc: 80394
+
+  - polozka_id: "SO001-T1-04"
+    otskp_kod: "17120"
+    popis: "ULOŽENÍ SYPANINY DO NÁSYPU NEBO NA SKLÁDKU BEZ ZHUTNĚNÍ"
+    mj: "M3"
+    mnozstvi: 285.0
+    vypocet:
+      formula: "objem_jamy + objem_ornice"
+      vstupy:
+        objem_jamy_m3:   {hodnota: 255, jednotka: m3, popis: "stavební jáma",       zdroj: "T1-03 above"}
+        objem_ornice_m3: {hodnota: 30,  jednotka: m3, popis: "sejmutá ornice",      zdroj: "T1-02 above"}
+      vypocet_kroky:
+        - "255 + 30 = 285 m³"
+    confidence: 0.9
+    jedn_cena_kc: 95.0
+    note: "Část ornice pro zpětnou rekultivaci → odvoz max 60 % na skládku."
+    cena_celkem_kc: 27075
+
+# =====================================================================
+# TŘÍDA 9 — DEMOLICE + ODSTRANĚNÍ + PROVIZORIUM-DEMONTÁŽ + REKULTIVACE
+# =====================================================================
+
+trida_9_demolice:
+
+  # ── D1: Demolice stávajícího mostu — ŽB část ─────────────────────────
+  - polozka_id: "SO001-T9-01"
+    otskp_kod: "966168"
+    popis: "BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU S ODVOZEM DO 20 KM (16 trámů + deska)"
+    mj: "M3"
+    mnozstvi: 19.0
+    vypocet:
+      formula: "16_tramu × b × h × L + deska_plocha × t"
+      vstupy:
+        pocet_tramu:       {hodnota: 16,   jednotka: ks,  popis: "stávající trámy",  zdroj: "HPM s.2 [1.1]"}
+        b_m:               {hodnota: 0.20, jednotka: m,   popis: "šířka trámu",      zdroj: "HPM s.2"}
+        h_m:               {hodnota: 0.50, jednotka: m,   popis: "výška trámu",      zdroj: "HPM s.2"}
+        L_m:               {hodnota: 9.0,  jednotka: m,   popis: "délka trámu",      zdroj: "HPM s.2"}
+        deska_plocha_m2:   {hodnota: 45.0, jednotka: m2,  popis: "5 m × 9 m mostovka", zdroj: "HPM s.2"}
+        deska_t_m:         {hodnota: 0.10, jednotka: m,   popis: "tloušťka desky",   zdroj: "HPM s.2"}
+      vypocet_kroky:
+        - "Trámy: 16 × 0.20 × 0.50 × 9.0 = 14.4 m³"
+        - "Deska: 45.0 × 0.10 = 4.5 m³"
+        - "Celkem: 14.4 + 4.5 = 18.9 ≈ 19 m³"
+    confidence: 0.85
+    jedn_cena_kc: 6851.46
+    note: "Ocelové I-280 vložky neoddělitelně součást ŽB → likvidace v rámci kódu 966168 (cena obsahuje recyklaci)."
+    cena_celkem_kc: 130178
+
+  # ── D1 cont.: Demolice kamenné opěry + 4 křídel ─────────────────────
+  - polozka_id: "SO001-T9-02"
+    otskp_kod: "962031"
+    popis: "BOURÁNÍ ZDIVA Z KAMENE NA MC NEBO MO — 2× opěra + 4× křídlo"
+    mj: "M3"
+    mnozstvi: 39.0
+    vypocet:
+      formula: "2 × opera_objem + 4 × kridlo_objem"
+      vstupy:
+        opera_objem_m3:  {hodnota: 12.0, jednotka: m3, popis: "1× opěra 4.0 × 1.5 × 2.0", zdroj: "HPM s.2 [1.2]"}
+        kridlo_objem_m3: {hodnota: 3.75, jednotka: m3, popis: "1× křídlo 2.5 × 1.0 × 1.5", zdroj: "HPM s.2 [1.3]"}
+      vypocet_kroky:
+        - "2× opěra: 2 × 12 = 24 m³"
+        - "4× křídlo: 4 × 3.75 = 15 m³"
+        - "Celkem: 24 + 15 = 39 m³"
+    confidence: 0.7
+    jedn_cena_kc: 2400.0
+    note: "OTSKP catalog cena varies; 2400 Kč/m³ = midpoint per Kfely SO 001 reference + RS Žatec recyklace 60 Kč/t."
+    cena_celkem_kc: 93600
+
+  # ── D2: Stávající mostní svršek — odvodňovače + izolace ─────────────
+  - polozka_id: "SO001-T9-03"
+    otskp_kod: "966019"
+    popis: "DEMONTÁŽ MOSTNÍCH ODVODŇOVAČŮ + DRENÁŽÍ"
+    mj: "KUS"
+    mnozstvi: 4
+    vypocet:
+      formula: "počet_per_strana × 2 strany"
+      vstupy:
+        per_strana: {hodnota: 2, jednotka: ks, popis: "typicky 2 odvodňovače per strana mostu", zdroj: "HPM + ČSN 73 6242"}
+      vypocet_kroky:
+        - "2 × 2 strany = 4 ks"
+    confidence: 0.7
+    jedn_cena_kc: 1200
+    note: "Odvodňovače DN 100 silnič. Cena = vendor odhad."
+    cena_celkem_kc: 4800
+    source: "user_manual_fallback"   # G1 reconciliation gap — calculator nepokrývá
+
+  - polozka_id: "SO001-T9-04"
+    otskp_kod: "966xxx"
+    popis: "DEMONTÁŽ STÁVAJÍCÍ MOSTNÍ IZOLACE (asfaltové pásy + pečetící vrstva)"
+    mj: "M2"
+    mnozstvi: 45.0
+    vypocet:
+      formula: "plocha_mostovky"
+      vstupy:
+        plocha_m2: {hodnota: 45.0, jednotka: m2, popis: "5 × 9 m mostovka", zdroj: "HPM s.2"}
+      vypocet_kroky:
+        - "5.0 × 9.0 = 45.0 m²"
+    confidence: 0.7
+    jedn_cena_kc: 220
+    note: "OTSKP nemá explicit kód pro demontáž asfaltové izolace → user_manual_fallback. Kfely template 711xxx demontáž ~200-300 Kč/m²."
+    cena_celkem_kc: 9900
+    source: "user_manual_fallback"
+
+  # ── D2 cont.: Asfalt vozovka mostu — frézování ──────────────────────
+  - polozka_id: "SO001-T9-05"
+    otskp_kod: "113728"
+    popis: "FRÉZOVÁNÍ ZPEVNĚNÝCH PLOCH ASFALTOVÝCH, ODVOZ DO 20 KM"
+    mj: "M3"
+    mnozstvi: 1.8
+    vypocet:
+      formula: "plocha_vozovky × tloustka"
+      vstupy:
+        plocha_m2:    {hodnota: 45.0, jednotka: m2, popis: "vozovka mostu",       zdroj: "HPM s.2"}
+        tloustka_m:   {hodnota: 0.04, jednotka: m,  popis: "asfalt tloušťka",     zdroj: "HPM s.3 [4.1]"}
+      vypocet_kroky:
+        - "45 × 0.04 = 1.8 m³"
+    confidence: 0.95
+    jedn_cena_kc: 2072.20
+    note: "Frézáty → RS Žatec (Ekostavby Louny) 220-300 Kč/t per `vendor_quotes.yaml`."
+    cena_celkem_kc: 3730
+
+  # ── D2 cont.: Stávající svodidla + zábradlí ─────────────────────────
+  - polozka_id: "SO001-T9-06"
+    otskp_kod: "9117C9"
+    popis: "DEMONTÁŽ STÁVAJÍCÍCH SVODIDEL OCEL (SafeStar 231 H2/W3)"
+    mj: "M"
+    mnozstvi: 24.0
+    vypocet:
+      formula: "2 × délka_mostu (na obou stranách)"
+      vstupy:
+        delka_mostu_m: {hodnota: 12.0, jednotka: m, popis: "1× strana", zdroj: "HPM s.2"}
+      vypocet_kroky:
+        - "2 × 12 = 24 m"
+    confidence: 0.9
+    jedn_cena_kc: 220
+    note: "OTSKP demontáž svodidel sazba ~200-250 Kč/m + odvoz na recyklaci ocel (ne separate fee)."
+    cena_celkem_kc: 5280
+
+  - polozka_id: "SO001-T9-07"
+    otskp_kod: "914123"
+    popis: "DOPRAVNÍ ZNAČKY ZÁKLADNÍ VELIKOSTI OCELOVÉ TŘ. RA1 — DEMONTÁŽ"
+    mj: "KUS"
+    mnozstvi: 4
+    vypocet:
+      formula: "B13 + E13 + tabulka_ev × 2 strany"
+      vstupy:
+        znacky_per_strana: {hodnota: 2, jednotka: ks, popis: "B13 + E13 + 1× ev. tabulka", zdroj: "HPM s.3 [4.3]"}
+      vypocet_kroky:
+        - "2 × 2 strany = 4 ks"
+    confidence: 1.0
+    jedn_cena_kc: 227.17
+    cena_celkem_kc: 909
+
+  - polozka_id: "SO001-T9-08"
+    otskp_kod: "914933"
+    popis: "SLOUPKY A STOJKY DZ Z HLINÍK TRUBEK ZABETON — DEMONTÁŽ"
+    mj: "KUS"
+    mnozstvi: 4
+    vypocet:
+      formula: "1 sloupek per dopr. značka × 4 značky"
+      vstupy:
+        pocet_znacek: {hodnota: 4, jednotka: ks, popis: "viz T9-07", zdroj: "HPM s.3"}
+      vypocet_kroky:
+        - "4 × 1 sloupek = 4 ks"
+    confidence: 1.0
+    jedn_cena_kc: 227.17
+    cena_celkem_kc: 909
+
+  # ── D2 cont.: Odstranění opevnění břehů + dlažby koryta ─────────────
+  - polozka_id: "SO001-T9-09"
+    otskp_kod: "968021"
+    popis: "ODSTRANĚNÍ DLAŽBY KAMENNÉ KORYTA STÁVAJÍCÍ S ODVOZEM DO 20 KM"
+    mj: "M2"
+    mnozstvi: 50.0
+    vypocet:
+      formula: "delka_mostu × sirka_koryta + nájezdy ±10 m"
+      vstupy:
+        delka_m:  {hodnota: 12.0, jednotka: m, popis: "úsek dotčený demolicí + ±10 m za mostem", zdroj: "ZD §4.4.r"}
+        sirka_m:  {hodnota: 4.0,  jednotka: m, popis: "Mladotický potok šířka koryta",          zdroj: "Phase A foto 131615"}
+      vypocet_kroky:
+        - "12 × 4 = 48 m² ≈ 50 m² (zaokrouhlení)"
+    confidence: 0.7
+    jedn_cena_kc: 380
+    note: "OTSKP cca 350-450 Kč/m² + odvoz."
+    cena_celkem_kc: 19000
+    source: "user_manual_fallback"   # G1 — calculator nepokrývá vodohosp. úpravy
+
+  - polozka_id: "SO001-T9-10"
+    otskp_kod: "968022"
+    popis: "ODSTRANĚNÍ OPEVNĚNÍ BŘEHŮ STÁVAJÍCÍ (gabiony / kamenná rovnaninka)"
+    mj: "M2"
+    mnozstvi: 30.0
+    vypocet:
+      formula: "2 strany × délka × výška_břehu"
+      vstupy:
+        delka_m: {hodnota: 10.0, jednotka: m, popis: "±5 m od mostu na každé straně",  zdroj: "ZD §4.4.r"}
+        vyska_m: {hodnota: 1.5,  jednotka: m, popis: "průměrná výška opevnění břehu", zdroj: "Phase A foto 131650"}
+      vypocet_kroky:
+        - "2 × 10 × 1.5 = 30 m²"
+    confidence: 0.6
+    jedn_cena_kc: 320
+    cena_celkem_kc: 9600
+    source: "user_manual_fallback"
+
+  # ── D3: Demontáž provizoria po dokončení nového mostu ───────────────
+  - polozka_id: "SO001-T9-11"
+    otskp_kod: "027413"
+    popis: "PROVIZORNÍ MOSTY — DEMONTÁŽ (ocelový mostní systém)"
+    mj: "M2"
+    mnozstvi: 60.0
+    vypocet:
+      formula: "L_provizorium × B_provizorium"
+      vstupy:
+        L_m: {hodnota: 12.0, jednotka: m, popis: "délka přemostění (provizorium)",      zdroj: "vendor TMS spec"}
+        B_m: {hodnota: 5.0,  jednotka: m, popis: "šířka mostní konstrukce provizoria", zdroj: "vendor 4-5m varianta"}
+      vypocet_kroky:
+        - "12 × 5 = 60 m²"
+    confidence: 0.85
+    jedn_cena_kc: 3086
+    note: "Vendor pricing demontáž = median(TMS 102k, PONVIA 268.3k) / 60 m² = 3086 Kč/m². Per `vendor_quotes.yaml` mostni_provizorium."
+    cena_celkem_kc: 185160
+    cross_ref: "vendor_quotes.yaml: TMS_9m.demontaz_czk + PONVIA_MS_9m.demontaz_czk"
+
+  # ── D4: Demontáž podložek pod provizorium ───────────────────────────
+  - polozka_id: "SO001-T9-12"
+    otskp_kod: "968011"
+    popis: "ROZEBRÁNÍ DLAŽBY POD PROVIZORIEM (podložky kamenné/beton)"
+    mj: "M2"
+    mnozstvi: 75.0
+    vypocet:
+      formula: "L_podlozi × B_podlozi"
+      vstupy:
+        L_m: {hodnota: 15.0, jednotka: m, popis: "delší než provizorium kvůli nájezdům", zdroj: "Phase B"}
+        B_m: {hodnota: 5.0,  jednotka: m, popis: "šířka podloží",                       zdroj: "Phase B"}
+      vypocet_kroky:
+        - "15 × 5 = 75 m²"
+    confidence: 0.75
+    jedn_cena_kc: 280
+    cena_celkem_kc: 21000
+    source: "user_manual_fallback"
+
+  # ── D5: Demontáž panelů/vozovkových vrstev pod provizoriem ──────────
+  - polozka_id: "SO001-T9-13"
+    otskp_kod: "113328"
+    popis: "ODSTRANĚNÍ PODKLADŮ Z KAMENIVA NESTMEL (štěrkodrť pod provizoriem) S ODVOZEM DO 20 KM"
+    mj: "M3"
+    mnozstvi: 22.5
+    vypocet:
+      formula: "plocha × tloustka"
+      vstupy:
+        plocha_m2:  {hodnota: 75.0, jednotka: m2, popis: "podloží provizoria", zdroj: "T9-12"}
+        tloustka_m: {hodnota: 0.30, jednotka: m,  popis: "MZK 0.10 + štěrkodrť 0.30 — průměr 0.30", zdroj: "Phase B + Kfely SO 180"}
+      vypocet_kroky:
+        - "75 × 0.30 = 22.5 m³"
+    confidence: 0.8
+    jedn_cena_kc: 745.23
+    cena_celkem_kc: 16768
+
+  - polozka_id: "SO001-T9-14"
+    otskp_kod: "113727"
+    popis: "FRÉZOVÁNÍ ASFALTU NÁJEZDU PROVIZORIA, ODVOZ DO 20 KM"
+    mj: "M3"
+    mnozstvi: 1.5
+    vypocet:
+      formula: "plocha × tloustka_asfalt"
+      vstupy:
+        plocha_m2:    {hodnota: 30.0, jednotka: m2, popis: "asfaltová část nájezdů provizoria", zdroj: "Phase B"}
+        tloustka_m:   {hodnota: 0.05, jednotka: m,  popis: "ACO 11+ 50 mm",                     zdroj: "Phase B"}
+      vypocet_kroky:
+        - "30 × 0.05 = 1.5 m³"
+    confidence: 0.85
+    jedn_cena_kc: 2072.20
+    cena_celkem_kc: 3108
+
+  # ── D6: Rekultivace záboru pozemků (ornice + hydroosev) ─────────────
+  - polozka_id: "SO001-T9-15"
+    otskp_kod: "181101"
+    popis: "ROZPROSTŘENÍ ORNICE V ROVINĚ — rekultivace záboru"
+    mj: "M3"
+    mnozstvi: 30.0
+    vypocet:
+      formula: "objem_ornice_pro_zpetnou_rozprostreni"
+      vstupy:
+        objem_m3: {hodnota: 30.0, jednotka: m3, popis: "ornice z T1-02 zpětně použitá", zdroj: "T1-02"}
+      vypocet_kroky:
+        - "30 m³ (sejmutá ornice plně použita zpětně, nuluje T1-04 pro ornici)"
+    confidence: 0.85
+    jedn_cena_kc: 220
+    note: "Per LČR podmínka (parcels_and_consents.yaml: LCR_ZATEC) — minimalizace záboru lesa + rekultivace povinná."
+    cena_celkem_kc: 6600
+
+  - polozka_id: "SO001-T9-16"
+    otskp_kod: "18241"
+    popis: "ZALOŽENÍ TRÁVNÍKU HYDROOSETÍM — rekultivace záboru"
+    mj: "M2"
+    mnozstvi: 1000.0
+    vypocet:
+      formula: "zabor_pozemku_celkovy"
+      vstupy:
+        zabor_m2: {hodnota: 1000, jednotka: m2, popis: "zábor staveniště + provizorium", zdroj: "user měření Session 1"}
+      vypocet_kroky:
+        - "1000 m² zábor → 100 % rekultivace per LČR podmínka"
+    confidence: 0.85
+    jedn_cena_kc: 35
+    note: "Hydroosev levnější než klasické zatravnění; standardní cena 30-40 Kč/m²."
+    cena_celkem_kc: 35000
+
+  # ── D6 cont.: Demolice provizorních DZ ──────────────────────────────
+  - polozka_id: "SO001-T9-17"
+    otskp_kod: "914123"
+    popis: "DEMONTÁŽ PROVIZORNÍCH DOPRAVNÍCH ZNAČEK (po dokončení provozu provizoria)"
+    mj: "KUS"
+    mnozstvi: 12
+    vypocet:
+      formula: "počet_DZ_provizoria"
+      vstupy:
+        DZ_objizdka:    {hodnota: 6, jednotka: ks, popis: "DZ pro objízdnou trasu",      zdroj: "DIO Phase B"}
+        DZ_provizorium: {hodnota: 6, jednotka: ks, popis: "DZ + signalizace provizoria", zdroj: "DIO Phase B"}
+      vypocet_kroky:
+        - "6 + 6 = 12 ks"
+    confidence: 0.7
+    jedn_cena_kc: 227.17
+    cena_celkem_kc: 2726
+
+# =====================================================================
+# ODVOZY (per vendor pricing — recyklační střediska)
+# =====================================================================
+
+odvozy:
+
+  - polozka_id: "SO001-ODV-01"
+    otskp_kod: "91091010"        # custom non-OTSKP — odvoz beton+ocel sutí
+    popis: "ODVOZ ŽELEZOBETONOVÉ SUTI NA RS ŽATEC (Ekostavby Louny)"
+    mj: "T"
+    mnozstvi: 47.5
+    vypocet:
+      formula: "objem_ZB × hustota_ZB"
+      vstupy:
+        objem_m3:   {hodnota: 19.0, jednotka: m3,    popis: "T9-01 ŽB demolice",  zdroj: "T9-01"}
+        hustota_t_m3: {hodnota: 2.5, jednotka: t/m3, popis: "běžný ŽB",            zdroj: "ČSN EN 1991-1-1"}
+      vypocet_kroky:
+        - "19 × 2.5 = 47.5 t"
+    confidence: 0.9
+    jedn_cena_kc: 400
+    note: "Cena RS Žatec beton armovaný = 400 Kč/t per `vendor_quotes.yaml` EKOSTAVBY_LOUNY_RS_ZATEC.cost_breakdown_per_t.beton_armovany_czk."
+    cena_celkem_kc: 19000
+    cross_ref: "vendor_quotes.yaml: EKOSTAVBY_LOUNY_RS_ZATEC"
+
+  - polozka_id: "SO001-ODV-02"
+    otskp_kod: "91091011"
+    popis: "ODVOZ KAMENNÉ SUTI Z DEMOLICE OPĚR + KŘÍDEL NA RS ŽATEC"
+    mj: "T"
+    mnozstvi: 93.6
+    vypocet:
+      formula: "objem_kamen × hustota_kamen"
+      vstupy:
+        objem_m3:    {hodnota: 39.0, jednotka: m3,   popis: "T9-02 kamenné zdivo",      zdroj: "T9-02"}
+        hustota_t_m3: {hodnota: 2.4, jednotka: t/m3, popis: "kamenné zdivo",            zdroj: "ČSN EN 1991-1-1"}
+      vypocet_kroky:
+        - "39 × 2.4 = 93.6 t"
+    confidence: 0.9
+    jedn_cena_kc: 60
+    note: "Cena RS Žatec beton ≤50 cm = 60 Kč/t (kamenné suti se rozdělí na frakce, kde převažuje recyklát ≤50 cm)."
+    cena_celkem_kc: 5616
+    cross_ref: "vendor_quotes.yaml: EKOSTAVBY_LOUNY_RS_ZATEC"
+
+  - polozka_id: "SO001-ODV-03"
+    otskp_kod: "91091012"
+    popis: "ODVOZ ASFALTOVÝCH FRÉZÁTŮ Z DEMOLICE NA RS ŽATEC"
+    mj: "T"
+    mnozstvi: 7.7
+    vypocet:
+      formula: "(objem_freza_most + objem_freza_provizorium) × hustota_asfalt"
+      vstupy:
+        objem_freza_most_m3:        {hodnota: 1.8,  jednotka: m3, popis: "T9-05",       zdroj: "T9-05"}
+        objem_freza_provizorium_m3: {hodnota: 1.5,  jednotka: m3, popis: "T9-14",       zdroj: "T9-14"}
+        hustota_asfalt_t_m3:        {hodnota: 2.35, jednotka: t/m3, popis: "ACO 11+",   zdroj: "ČSN EN 13108-1"}
+      vypocet_kroky:
+        - "(1.8 + 1.5) × 2.35 = 7.755 ≈ 7.7 t"
+    confidence: 0.9
+    jedn_cena_kc: 260
+    note: "Cena RS Žatec asfalt = midpoint(220, 300) = 260 Kč/t."
+    cena_celkem_kc: 2002
+    cross_ref: "vendor_quotes.yaml: EKOSTAVBY_LOUNY_RS_ZATEC"
+
+  - polozka_id: "SO001-ODV-04"
+    otskp_kod: "91091013"
+    popis: "ODVOZ ZEMINY ZE STAVEBNÍ JÁMY NA SKLÁDKU DECO TRADE NESUCHYNĚ"
+    mj: "T"
+    mnozstvi: 459.0
+    vypocet:
+      formula: "(objem_jamy − objem_ornice_zpetne) × hustota_zeminy"
+      vstupy:
+        objem_jamy_m3:           {hodnota: 255.0, jednotka: m3,   popis: "T1-03",                                    zdroj: "T1-03"}
+        objem_ornice_zpetne_m3:  {hodnota: 0,     jednotka: m3,   popis: "ornice neodvážen — rekultivace na místě (T9-15)", zdroj: "T9-15"}
+        hustota_t_m3:            {hodnota: 1.8,   jednotka: t/m3, popis: "průměrná stavební zemina",                 zdroj: "ČSN EN 1991-1-1"}
+      vypocet_kroky:
+        - "(255 - 0) × 1.8 = 459 t"
+    confidence: 0.85
+    jedn_cena_kc: 120
+    note: "Cena DECO TRADE Nesuchyně 120 Kč/t per `vendor_quotes.yaml` DECO_TRADE_NESUCHYNE, platnost 2026-12-31."
+    cena_celkem_kc: 55080
+    cross_ref: "vendor_quotes.yaml: DECO_TRADE_NESUCHYNE"
+
+# =====================================================================
+# TOTALS — SO 001
+# =====================================================================
+
+totals:
+  trida_0_kc: 284560     # 95000+61560+40000+72000+16000
+  trida_1_kc: 143305     # 22142+13694+80394+27075
+  trida_9_kc: 548268     # 130178+93600+4800+9900+3730+5280+909+909+19000+9600+185160+21000+16768+3108+6600+35000+2726
+  odvozy_kc: 81698       # 19000+5616+2002+55080
+  SO_001_subtotal_kc: 1057831
+  SO_001_total_kc: 1057831
+  SO_001_total_with_vat_kc: 1279976    # × 1.21
+  total_polozek: 30      # 5 + 4 + 17 + 4
+
+confidence_distribution:
+  high_0_85_to_1_0: 14
+  medium_0_70_to_0_84: 11
+  user_manual_fallback_0_70: 5
+  custom_non_otskp: 5   # ODV-01..04 (4) + T9-04 placeholder kód
+  total_polozek: 30
+  note: |
+    27 položek total. 5 položky source=user_manual_fallback (G1 reconciliation gap):
+    T9-03 odvodňovače, T9-04 izolace demontáž, T9-09 dlažba koryta, T9-10 opevnění břehů,
+    T9-12 podložky pod provizorium. Tyto kódy chybí v calculator scope per
+    `04_documentation/reconciliation_report.md` § 6 G1.
+
+# =====================================================================
+# CROSS-REFERENCES
+# =====================================================================
+
+cross_references:
+  vendor_pricing:        "../vendor_pricing/vendor_quotes.yaml"
+  reconciliation:        "../reconciliation_report.md"
+  parcels_consents:      "../kadastr_audit/parcels_and_consents.yaml"
+  phase_b_decomposition: "../../02_design/decomposition_so.md"
+  phase_d_otskp_anchor:  "../otskp_mapping.yaml (SO_001 section, 9 položek — extends to 27)"
+  task_spec:             "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.2"
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "5 položek source=user_manual_fallback (calculator gap G1) — confidence 0.7. Pre DUR ověřit s projektantem."
+  - level: warning
+    message: "T9-09/T9-10 (dlažba koryta + opevnění břehů) vyžadují souhlas Povodí Vltavy — souhlas v parcels_and_consents.yaml MISSING (P0 blocker pre DUR)."
+  - level: info
+    message: "Custom kód 91091010-13 = odvozy mimo OTSKP (per Option A pattern z SO 180 provizoria). Vendor pricing je deterministický, ne RFQ-blocked."
+  - level: info
+    message: "T9-15 + T9-16 (rekultivace) povinné per LČR podmínka (parcels_and_consents.yaml: LCR_ZATEC.conditions_or_requirements)."
