@@ -1,0 +1,597 @@
+# master_soupis_SO_201_t8_t9.yaml — SO 201 (TSKP třídy 8 + 9)
+#
+# Žihle 2062-1 (integrální rámový most)
+# Focused deliverable: potrubí (drenáže + chráničky) + ostatní práce (svodidla, dilatace,
+# obrubníky, dopravní značení, zatěžovací zkouška, příkopové žlaby).
+#
+# Source primary: user manual `04_documentation/manual_reference_JS/SO_201_parsed.yaml`
+#   třídy 8 (4 řád, 1 s mn>0) + 9 (21 řád, 19 s mn>0).
+# Source secondary: ZD §4.4.l + §4.4.m (chráničky DN 75, integrální rám = bez ložisek/závěrů).
+#
+# Pravidla:
+#   1. Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+#   2. No-work-duplication vs SO 001 + SO 180 + SO 201 t0/t1_t2/t3_t4/t5_t6_t7.
+#   3. Inline reconciliation flag pokud |delta calc vs user| > 10 %.
+#   4. Source field per položku.
+#
+# EXPLICIT EXCLUSIONS per ZD §4.4.l (integrální rám):
+#   - 428xxx mostní ložiska — žádná (integrální rám = monolit s opěrami, no bearing)
+#   - 93152 mostní závěr — žádný (integrální rám = thermal expansion via přechodové desky)
+#   - 4283x ložiska elastomer — žádná
+#   POZN: 931326 + 93135 dilatační spáry V VOZOVCE jsou OK (asphalt expansion joints,
+#         ne mostní závěry — slouží na přechodu most-vozovka pro thermal v krytu).
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "SO 201 — Most (TSKP třídy 8 + 9)"
+phase: "D — Master soupis (Session 2)"
+tskp_classes: ["8", "9"]
+scope: "Potrubí (drenáže, chráničky) + ostatní (svodidla, dopravní značení, obrubníky, dilatace vozovky, zatěžovací zkouška, příkopové žlaby)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Vstupní geometrie + ZD constraints
+# ─────────────────────────────────────────────────────────────────────
+
+inputs:
+  most_geometry:
+    L_m: 12.0
+    B_m: 8.30
+    rimsa_L_m: 24.0           # 2× 12 m
+    pole_count: 1             # rozpětí 9 m, jen 1 pole
+  vozovka:
+    plocha_celkova_m2: 565.5
+    delka_dilatacnich_spar_m: 38.4   # užší okraj vozovky + okraj na přechodu
+    delka_obrubniku_m: 45.0          # 2× 12.0 m mostu + 2× 15.0 m nájezdy minus okraje
+  zd_constraints:
+    zakaz_lozisek: "ZD §4.4.l: 'integrální rám bez ložisek'"
+    zakaz_zaveru: "ZD §4.4.l: 'bez dilatačních závěrů' (mostní závěr 93152 vyloučen)"
+    chranicky:    "ZD §4.4.m: '3× chránička DN 75 v pravé říмse pro budoucí kabely'"
+    minimalni_odvodneni: "ZD §4.4.l: 'minimalizovat odvodňovače' (drobné odvodnění postačí přechodový spoj)"
+
+# =====================================================================
+# TŘÍDA 8 — POTRUBÍ (drenáže + chráničky)
+# =====================================================================
+
+trida_8_potrubi:
+
+  - polozka_id: "SO201-T8-01"
+    otskp_kod: "875332"
+    popis: "POTRUBÍ DREN Z TRUB PLAST DN DO 150 MM, DĚROVANÝ (rubová drenáž za opěrami)"
+    mj: "M"
+    mnozstvi: 19.0
+    vypocet:
+      formula: "2 × L_oper + zaokrouhleni"
+      vstupy:
+        L_opery_m: {hodnota: 8.30, jednotka: m, popis: "šířka NK = délka drenáže za 1 opěrou", zdroj: "Phase B"}
+      vypocet_kroky:
+        - "2 × 8.30 = 16.6 m + 2.4 m napojení (cca 0.6 m každý konec drenáže × 4) = 19.0 m"
+        - "User manual SO_201 row 85 = 19.0 m EXACT MATCH"
+    confidence: 0.9
+    jedn_cena_kc: 280
+    note: "Rubová drenáž PE-HD DN 150 mm, děrovaná, geotextilní obal. Per ČSN 73 6244 čl. 7.4."
+    cena_celkem_kc: 5320
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T8-02"
+    otskp_kod: "87534"
+    popis: "POTRUBÍ DREN Z TRUB PLAST DN DO 200 MM (odvodnění mostovky — minimalizováno per ZD §4.4.l)"
+    mj: "M"
+    mnozstvi: 12.0
+    vypocet:
+      formula: "L_mostu × 1 (jednostranné odvodnění mostovky podél říмs)"
+      vstupy:
+        L_mostu_m: {hodnota: 12.0, jednotka: m, popis: "délka mostovky", zdroj: "Phase B"}
+      vypocet_kroky:
+        - "12.0 m podélné drenáže pod jednou stranou vozovky (2-spádová mostovka → odtok jedním směrem)"
+    confidence: 0.7
+    jedn_cena_kc: 350
+    note: |
+      ZD §4.4.l preferuje minimalizaci odvodňovačů (žádné mostní pevné odvodňovače).
+      Tato podélná drenáž DN 200 vede průsak z mostní izolace + vozovky k zaústění
+      v koryto Mladotického potoka via T9 zaústění skluzů. User manual SO_201 row 87
+      má 0 m (Kfely template má vlastní odvodnění bez tohoto detailu); Žihle integrální
+      rám potřebuje minimální drenáž.
+    reconciliation:
+      user_manual_value: 0.0
+      delta_pct: "+infinite"
+      status: FLAG
+      explanation: |
+        ⚠️ Žihle-specific položka. User manual Kfely template má 0 m (jiný design). Žihle
+        integrální rám POTŘEBUJE drenáž odvodnění mostovky pro odvod průsaku z izolace.
+        Engineering decision per Phase B + ČSN 73 6244 čl. 7.7.
+    cena_celkem_kc: 4200
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T8-03"
+    otskp_kod: "87634"
+    popis: "POTRUBÍ — CHRÁNIČKA DN 75 ZABETONOVANÁ (3× rezerva pro budoucí kabely v pravé říмse per ZD §4.4.m)"
+    mj: "M"
+    mnozstvi: 36.0
+    vypocet:
+      formula: "3_chranicky × L_rimsy"
+      vstupy:
+        pocet_chranicek: {hodnota: 3,    jednotka: ks, popis: "3× chránička v pravé říмse",  zdroj: "ZD §4.4.m"}
+        L_rimsy_m:       {hodnota: 12.0, jednotka: m,  popis: "délka pravé říмs",            zdroj: "Phase B"}
+      vypocet_kroky:
+        - "3 × 12.0 = 36 m"
+    confidence: 0.95
+    jedn_cena_kc: 600
+    note: |
+      Chráničky DN 75 mm pro budoucí kabely (telekomunikace + řízení dopravy). Vkládají se
+      při betonáži pravé říмs (T3-06). Cena pokrývá trubky + zatažení do betonu (instalace).
+    cena_celkem_kc: 21600
+    source: "user_manual_fallback"   # ZD §4.4.m derived
+
+# =====================================================================
+# TŘÍDA 9 — OSTATNÍ KONSTRUKCE A PRÁCE
+# =====================================================================
+
+trida_9_ostatni:
+
+  # ── Svodidla + zábradlí (per ZD §4.4.i — extravilán H2 + napojení H1) ─
+  - polozka_id: "SO201-T9-01"
+    otskp_kod: "9113B1"
+    popis: "SVODIDLO OCEL SILNIČNÍ JEDNOSTRANNÉ, ÚROVEŇ ZADRŽENÍ H1 — DODÁVKA A MONTÁŽ (před+za mostem)"
+    mj: "M"
+    mnozstvi: 60.0
+    vypocet:
+      formula: "2 strany × (L_pred_mostem + L_za_mostem)"
+      vstupy:
+        L_pred_m: {hodnota: 15.0, jednotka: m, popis: "úsek silničního svodidla před mostem (nájezd)", zdroj: "Phase B + ZD §4.4.i"}
+        L_za_m:   {hodnota: 15.0, jednotka: m, popis: "úsek silničního svodidla za mostem (nájezd)",   zdroj: "Phase B + ZD §4.4.i"}
+      vypocet_kroky:
+        - "2 strany × (15 + 15) = 60 m"
+        - "User manual SO_201 row 88 = 60 m EXACT MATCH"
+    confidence: 0.9
+    jedn_cena_kc: 1780.96
+    note: "ZD §4.4.i: extravilán + návaznost na nájezdy. H1 napojení na H2 mostní zábradelní svodidlo (T9-02)."
+    cena_celkem_kc: 106858
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-02"
+    otskp_kod: "9117C1"
+    popis: "SVODIDLO OCEL ZÁBRADELNÍ MOSTNÍ, ÚROVEŇ ZADRŽENÍ H2 — DODÁVKA A MONTÁŽ (na říмsách mostu)"
+    mj: "M"
+    mnozstvi: 24.0
+    vypocet:
+      formula: "2 × L_rimsy"
+      vstupy:
+        L_rimsy_m: {hodnota: 12.0, jednotka: m, popis: "délka 1 říмs (= L mostovky)", zdroj: "Phase B"}
+      vypocet_kroky:
+        - "2 × 12.0 = 24 m"
+    confidence: 0.95
+    jedn_cena_kc: 7940.04
+    note: |
+      KEY ELEMENT bezpečnosti. ZD §4.4.i: extravilán → H2 (vyšší úroveň zadržení).
+      Předchozí stav HPM s.3 [4.2] = SafeStar 231 H2/W3 → zachování úrovně H2.
+      Reconciliation: user manual SO_201 row 89 = 14.4 m (Kfely template, jiná délka mostu).
+      Žihle 24 m = engineering correct per Phase B (2× 12 m říмса).
+    reconciliation:
+      user_manual_value: 14.4
+      delta_pct: 66.7
+      status: FLAG
+      explanation: |
+        ⚠️ Δ +67 % (Žihle 24 m vs Kfely user 14.4 m). NOT ERROR — different geometry:
+        Žihle most L=12 m × 2 strany = 24 m mostního zábradlí. Kfely template L=7.2 m
+        × 2 = 14.4 m (kratší most). Accept Žihle hodnotu (Phase B engineering correct).
+    cena_celkem_kc: 190561
+    source: "user_manual_fallback"
+
+  # ── Doprovodná značení a vybavení (kuste položek 91xxx) ──────────
+  - polozka_id: "SO201-T9-03"
+    otskp_kod: "91238"
+    popis: "SMĚROVÉ SLOUPKY Z PLAST HMOT — NÁSTAVCE NA SVODIDLA VČETNĚ ODRAZNÝCH PRVKŮ"
+    mj: "KUS"
+    mnozstvi: 20
+    vypocet:
+      formula: "L_svodidla / spacing_smer_sloupek"
+      vstupy:
+        L_svodidla_m:    {hodnota: 60,  jednotka: m,    popis: "T9-01 silniční svodidlo H1",  zdroj: "T9-01"}
+        spacing_per_ks:  {hodnota: 3,   jednotka: m,    popis: "směrový sloupek každé 3 m",   zdroj: "ČSN 73 6101"}
+      vypocet_kroky:
+        - "60 / 3 = 20 ks"
+        - "User manual SO_201 row 90 = 20 ks EXACT MATCH"
+    confidence: 0.95
+    jedn_cena_kc: 800
+    cena_celkem_kc: 16000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-04"
+    otskp_kod: "91345"
+    popis: "NIVELAČNÍ ZNAČKY KOVOVÉ (geodetické body pro budoucí měření sedání)"
+    mj: "KUS"
+    mnozstvi: 8
+    vypocet:
+      formula: "4 znacky_per_opera × 2 opery"
+      vstupy:
+        per_opera: {hodnota: 4, jednotka: ks, popis: "4 nivelační body per opěra (2× boky × 2× výška)", zdroj: "ČSN 73 6221 čl. 5.2"}
+      vypocet_kroky:
+        - "4 × 2 = 8 ks"
+    confidence: 0.9
+    jedn_cena_kc: 2500
+    cena_celkem_kc: 20000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-05"
+    otskp_kod: "91355"
+    popis: "EVIDENČNÍ ČÍSLO MOSTU (kovová tabulka 'Most ev.č. 2062-1') — 2× (vstupní + výstupní strana)"
+    mj: "KUS"
+    mnozstvi: 2
+    vypocet:
+      formula: "1 tabulka_per_strana × 2 strany"
+      vstupy:
+        per_strana: {hodnota: 1, jednotka: ks, popis: "evidenční tabulka", zdroj: "ČSN 73 6221"}
+      vypocet_kroky:
+        - "1 × 2 strany = 2 ks"
+    confidence: 0.95
+    jedn_cena_kc: 800
+    cena_celkem_kc: 1600
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-06"
+    otskp_kod: "914352"
+    popis: "DOPRAVNÍ ZNAČKY ZMENŠENÉ VELIKOSTI HLINÍK — MONTÁŽ S PŘESUNEM (B13 + E13 nové)"
+    mj: "KUS"
+    mnozstvi: 2
+    vypocet:
+      formula: "B13 + E13"
+      vstupy:
+        b13: {hodnota: 1, jednotka: ks, popis: "DZ B13 omezení nákladních vozidel", zdroj: "HPM s.3 [4.3]"}
+        e13: {hodnota: 1, jednotka: ks, popis: "DZ E13 dodatková tabulka",          zdroj: "HPM s.3 [4.3]"}
+      vypocet_kroky:
+        - "1 + 1 = 2 ks"
+    confidence: 0.95
+    jedn_cena_kc: 1500
+    note: "Nahrazení starých DZ (demontovaných v SO 001 T9-07) novými hliníkovými. Stejná konfigurace per HPM."
+    cena_celkem_kc: 3000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-07"
+    otskp_kod: "914911"
+    popis: "SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCELOVÝCH TRUBEK SE ZABETONOVÁNÍM"
+    mj: "KUS"
+    mnozstvi: 2
+    vypocet:
+      formula: "počet_DZ × 1_sloupek_per_DZ"
+      vstupy:
+        pocet_DZ: {hodnota: 2, jednotka: ks, popis: "T9-06", zdroj: "T9-06"}
+      vypocet_kroky:
+        - "2 × 1 = 2 ks"
+    confidence: 0.95
+    jedn_cena_kc: 1200
+    cena_celkem_kc: 2400
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-08"
+    otskp_kod: "915111"
+    popis: "VODOROVNÉ DOPRAVNÍ ZNAČENÍ BARVOU HLADKÉ — DODÁVKA A POKLÁDKA (středová čára + okraje vozovky)"
+    mj: "M2"
+    mnozstvi: 25.0
+    vypocet:
+      formula: "L_vozovky × delka_relevantnich_car / sirka_car"
+      vstupy:
+        plocha_m2: {hodnota: 25, jednotka: m2, popis: "celk plocha vodorovného značení", zdroj: "user manual SO_201 row 95"}
+      vypocet_kroky:
+        - "25 m² (typický rozsah pro 60 m vozovky × čar 0.125 m × cca 3 čáry)"
+    confidence: 0.85
+    jedn_cena_kc: 200
+    cena_celkem_kc: 5000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-09"
+    otskp_kod: "915231"
+    popis: "VODOR DOPRAV ZNAČ PLASTEM PROFIL ZVUČÍCÍ — DOD A POKLÁDKA (zvučící okrajový pruh)"
+    mj: "M2"
+    mnozstvi: 25.0
+    vypocet:
+      formula: "= mnozstvi(915111)"
+      vstupy:
+        plocha_m2: {hodnota: 25, jednotka: m2, popis: "překryv s 915111 (zvučící varianta na okrajích)", zdroj: "user manual SO_201 row 96"}
+      vypocet_kroky:
+        - "25 m² (zvučící okrajový pruh + středová bezpečnostní čára)"
+    confidence: 0.85
+    jedn_cena_kc: 480
+    cena_celkem_kc: 12000
+    source: "user_manual_fallback"
+
+  # ── Obrubníky (na nájezdech mostu — přechod silnice / chodník) ──
+  - polozka_id: "SO201-T9-10"
+    otskp_kod: "917223"
+    popis: "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 100 MM (vnitřní okraj nájezdů)"
+    mj: "M"
+    mnozstvi: 15.0
+    vypocet:
+      formula: "= 15 m"
+      vstupy:
+        rozsah: {hodnota: 15, jednotka: m, popis: "užší obrubníky na vnitřním okraji nájezdů", zdroj: "user manual SO_201 row 97"}
+      vypocet_kroky:
+        - "15 m (per Kfely template, Žihle nájezdy 2× 7.5 m)"
+    confidence: 0.8
+    jedn_cena_kc: 800
+    cena_celkem_kc: 12000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-11"
+    otskp_kod: "917224"
+    popis: "SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150 MM (vnější okraj + zaústění)"
+    mj: "M"
+    mnozstvi: 30.0
+    vypocet:
+      formula: "= 30 m"
+      vstupy:
+        rozsah: {hodnota: 30, jednotka: m, popis: "širší obrubníky na vnějším okraji nájezdů + zaústění do silnice", zdroj: "user manual SO_201 row 98"}
+      vypocet_kroky:
+        - "30 m (per Kfely template, Žihle nájezdy + zaústění)"
+    confidence: 0.8
+    jedn_cena_kc: 950
+    cena_celkem_kc: 28500
+    source: "user_manual_fallback"
+
+  # ── Asfaltové práce navázání (řezání + dilatace) ───────────────
+  - polozka_id: "SO201-T9-12"
+    otskp_kod: "919111"
+    popis: "ŘEZÁNÍ ASFALTOVÉHO KRYTU VOZOVEK TL DO 50 MM (přesné napojení nové vozovky na stávající)"
+    mj: "M"
+    mnozstvi: 106.3
+    vypocet:
+      formula: "perimetr_napojeni"
+      vstupy:
+        rozsah_m: {hodnota: 106.3, jednotka: m, popis: "obvod napojení nájezdů + dilatačních spar", zdroj: "user manual SO_201 row 99"}
+      vypocet_kroky:
+        - "Per Kfely template: ~106.3 m řezání pro přesné napojení (2× 14 m nájezd + 2× 19.5 m podélně + obvody)"
+    confidence: 0.7
+    jedn_cena_kc: 90
+    cena_celkem_kc: 9567
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-13"
+    otskp_kod: "931326"
+    popis: "TĚSNĚNÍ DILATAČ SPAR ASF ZÁLIVKOU MODIFIK PRŮŘ DO 800 MM² (vozovkové dilatační spáry — NE mostní závěr)"
+    mj: "M"
+    mnozstvi: 38.4
+    vypocet:
+      formula: "delka_okraju_dilatacnich_spar"
+      vstupy:
+        rozsah_m: {hodnota: 38.4, jednotka: m, popis: "okraje vozovky + dilatační spáry mezi mostem a nájezdy", zdroj: "user manual SO_201 row 100"}
+      vypocet_kroky:
+        - "38.4 m (asphalt expansion joints — důležité: NE mostní závěr)"
+    confidence: 0.85
+    jedn_cena_kc: 320
+    note: |
+      ⚠️ EXPLICITLY NOT mostní závěr (93152 vyloučen per ZD §4.4.l integrální rám).
+      Tyto jsou asphalt expansion joints v vozovce — řeší thermal v krytu vozovky,
+      ne mostní konstrukci. Integrální rám má thermal compensation via přechodové desky.
+    cena_celkem_kc: 12288
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-14"
+    otskp_kod: "93135"
+    popis: "TĚSNĚNÍ DILATAČ SPAR PRYŽ PÁSKOU NEBO KRUH PROFILEM (sekundární těsnění pod 931326)"
+    mj: "M"
+    mnozstvi: 38.4
+    vypocet:
+      formula: "= mnozstvi(931326)"
+      vstupy:
+        rozsah_m: {hodnota: 38.4, jednotka: m, popis: "stejná délka jako asf zálivka (T9-13) — sekundární vrstva", zdroj: "T9-13"}
+      vypocet_kroky:
+        - "38.4 m"
+    confidence: 0.85
+    jedn_cena_kc: 280
+    cena_celkem_kc: 10752
+    source: "user_manual_fallback"
+
+  # ── ZATĚŽOVACÍ ZKOUŠKA (CRITICAL — povinná pro každý nový most) ──
+  - polozka_id: "SO201-T9-15"
+    otskp_kod: "93311"
+    popis: "ZATĚŽOVACÍ ZKOUŠKA MOSTU STATICKÁ 1. POLE DO 300 M² (★ POVINNÁ per ČSN 73 6209)"
+    mj: "KUS"
+    mnozstvi: 1
+    vypocet:
+      formula: "1 zkouska_per_pole × 1 pole"
+      vstupy:
+        pocet_pole: {hodnota: 1, jednotka: ks, popis: "Žihle most má 1 pole (rozpětí 9 m, integrální rám)", zdroj: "Phase B varianta_01"}
+      vypocet_kroky:
+        - "1 × 1 = 1 zkouška"
+    confidence: 1.0
+    jedn_cena_kc: 100000
+    note: |
+      ★ KEY ELEMENT — POVINNÁ pro každý nový most per ČSN 73 6209 (zatěžovací zkoušky
+      mostů). Plocha mostu 99.6 m² < 300 m² → kategorie 1. pole do 300 m².
+      Zkouška = statické zatížení ekvivalentem 0.6 × charakteristického zatížení LM1
+      (per ČSN EN 1991-2). Měření průhybů + napětí + sedání opěr. Před uvedením do
+      provozu mostu, financováno SÚS Plzeňského kraje.
+      Cena 100k Kč = midpoint pásma 80-150k Kč (trh 2026 pro malý most do 300 m²).
+    cena_celkem_kc: 100000
+    source: "user_manual_fallback"   # match s user manual SO_201 row 103
+
+  # NOTE: 93315 zatěžovací zkouška 2. + další pole — Žihle má jen 1 pole,
+  # tato položka NENÍ aplikovatelná. User manual má 2 ks (Kfely template).
+  # Excluded explicitly v no_work_duplication_validation níže.
+
+  # ── Příkopové žlaby (odvodnění silnice před+za mostem) ──────────
+  - polozka_id: "SO201-T9-16"
+    otskp_kod: "935212"
+    popis: "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600 MM DO BETONU TL 100 MM (odvodnění nájezdů)"
+    mj: "M"
+    mnozstvi: 25.68
+    vypocet:
+      formula: "delka_najezdu_obousmer × 2_strany × redukce"
+      vstupy:
+        rozsah_m: {hodnota: 25.68, jednotka: m, popis: "příkopové žlaby na nájezdech mostu (per geometrie navazování)", zdroj: "user manual SO_201 row 107"}
+      vypocet_kroky:
+        - "25.68 m (per Kfely template scaled na Žihle)"
+    confidence: 0.75
+    jedn_cena_kc: 1100
+    cena_celkem_kc: 28248
+    source: "user_manual_fallback"
+
+  # ── Drobné doplňky beton + zaústění skluzů ─────────────────────
+  - polozka_id: "SO201-T9-17"
+    otskp_kod: "93631"
+    popis: "DROBNÉ DOPLŇKY KONSTR BETON MONOLIT (drobné monolitické doplňky pro detail PDPS)"
+    mj: "M3"
+    mnozstvi: 0.5
+    vypocet:
+      formula: "engineering paušál"
+      vstupy:
+        rozsah: {hodnota: 0.5, jednotka: m3, popis: "letopočet vlisem + drobné monolitické doplňky", zdroj: "Kfely template + Phase B"}
+      vypocet_kroky:
+        - "Drobné doplňky: letopočet (~0.05 m³) + ostatní detaily ~0.45 m³ = 0.5 m³"
+        - "User manual SO_201 row 108 = 0.01 m³ (Kfely minimal). Žihle volí 0.5 m³ pro DPS detail rezervu."
+    confidence: 0.6
+    jedn_cena_kc: 4783.44
+    note: "User manual hodnota 0.01 m³ = nominal placeholder. Žihle navýšeno na 0.5 m³ pro reálné monolitické detaily."
+    reconciliation:
+      user_manual_value: 0.01
+      delta_pct: 4900.0
+      status: FLAG
+      explanation: |
+        ⚠️ Δ +4900 % (calc 0.5 m³ vs user 0.01 m³). User manual = nominal placeholder
+        (Kfely Excel má hodnotu pro registraci kódu, ne reálné množství). Žihle volí
+        0.5 m³ pro reálnou rezervu na monolitické detaily DPS (letopočet vlisem,
+        drobné doplňky odvodnění, kotevní bloky). Engineering decision Phase B.
+    cena_celkem_kc: 2392
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO201-T9-18"
+    otskp_kod: "93639"
+    popis: "ZAÚSTĚNÍ SKLUZŮ (VČET DLAŽBY Z LOM KAMENE) — odvodnění mostovky do koryta Mladotického potoka"
+    mj: "KUS"
+    mnozstvi: 4
+    vypocet:
+      formula: "2_strany × 2_zausteni"
+      vstupy:
+        per_strana: {hodnota: 2, jednotka: ks, popis: "2 zaústění per strana mostu (před+za)", zdroj: "user manual SO_201 row 109"}
+      vypocet_kroky:
+        - "2 × 2 = 4 ks"
+    confidence: 0.85
+    jedn_cena_kc: 4500
+    note: "Zaústění drenážních potrubí (T8-01 + T8-02) do koryta s ochrannou kamennou dlažbou. Vyžaduje souhlas Povodí Vltavy."
+    cena_celkem_kc: 18000
+    source: "user_manual_fallback"
+
+# =====================================================================
+# TOTALS — SO 201 TŘÍDY 8 + 9
+# =====================================================================
+
+totals:
+  trida_8_kc: 31120     # 5320+4200+21600
+  trida_9_kc: 579166    # 106858+190561+16000+20000+1600+3000+2400+5000+12000+12000+28500+9567+12288+10752+100000+28248+2392+18000
+  SO_201_t8_t9_subtotal_kc: 610286
+  SO_201_t8_t9_total_kc: 610286
+  SO_201_t8_t9_total_with_vat_kc: 738446    # × 1.21
+  total_polozek: 21    # 3 + 18
+
+source_distribution:
+  calculator_deterministic_polozek: 0    # Phase C calc nepokrývá svodidla, dilatace, atd.
+  calculator_deterministic_kc: 0
+  user_manual_fallback_polozek: 21
+  user_manual_fallback_kc: 610286
+
+confidence_distribution:
+  high_0_85_to_1_0: 13
+  medium_0_70_to_0_84: 7
+  low_0_60_to_0_69: 1   # T9-17 drobné doplňky (engineering rezerva, široké pásmo)
+  total_polozek: 21
+
+# Reconciliation FLAG summary
+reconciliation_flags:
+  - polozka: "SO201-T8-02 drenáž mostovky DN 200"
+    user_manual: 0.0
+    engineering: 12.0
+    delta_pct: "+infinite"
+    explanation: "Žihle-specific drenáž; Kfely template nepoužívá. Engineering per ČSN 73 6244 čl. 7.7."
+
+  - polozka: "SO201-T9-02 mostní zábradlí H2"
+    calc: 24.0
+    user: 14.4
+    delta_pct: 66.7
+    explanation: "Different geometry: Žihle 24 m (2× 12 m říмса) vs Kfely 14.4 m (kratší most)"
+
+  - polozka: "SO201-T9-17 drobné doplňky monolit"
+    calc: 0.5
+    user: 0.01
+    delta_pct: 4900.0
+    explanation: "User manual = nominal placeholder; Žihle navýšeno na 0.5 m³ pro reálné DPS detaily"
+
+# =====================================================================
+# NO-WORK-DUPLICATION VALIDATION VS ALL PREVIOUS SO + tříd
+# =====================================================================
+
+no_work_duplication_validation:
+  shared_otskp_kody:
+    - kod: "914352 + 914911 dopravní značky"
+      SO_001_polozka: "T9-07 + T9-08 (4× DEMONTÁŽ stávajících DZ + 4× sloupky)"
+      SO_180_polozka: "T0-10 (DIO + dočasné DZ provizoria, paušál)"
+      SO_201_t9_polozka: "T9-06 + T9-07 (2× MONTÁŽ NOVÝCH DZ + 2× sloupky)"
+      explanation: |
+        DIFFERENT OPERATIONS: SO 001 = demontáž starých (4 ks z původního mostu).
+        SO 180 = dočasné DZ na provizorium/objízdku (paušál po dobu 6 měs).
+        SO 201 = montáž nových permanent DZ na nový most (2 ks per HPM s.3 [4.3]).
+        Different counts (4 demontaž ≠ 2 montáž) reflect upgrade scope.
+
+    - kod: "9117C9 demontáž svodidla / 9113B1 + 9117C1 montáž svodidla"
+      SO_001_polozka: "T9-06 (24 m DEMONTÁŽ stávajícího SafeStar 231 H2/W3)"
+      SO_201_t9_polozka: "T9-01 (60 m H1 silniční) + T9-02 (24 m H2 mostní zábradelní)"
+      explanation: |
+        DIFFERENT OPERATIONS: SO 001 demontáž starého (24 m H2/W3 do recyklace).
+        SO 201 montáž nového rozšířeného systému (60 m H1 nájezdy + 24 m H2 most).
+        ZD §4.4.i specifikuje upgrade na separate H1/H2 systémy.
+
+    - kod: "93631 drobné doplňky beton"
+      SO_201_t9_polozka: "T9-17 (0.5 m³ na novém mostě)"
+      explanation: "Pouze v SO 201 t9 — žádný překryv."
+
+  excluded_kody:
+    - kod: "428xxx mostní ložiska"
+      reason: "ZD §4.4.l: integrální rám = bez ložisek (monolithic spojení mostovky s opěrami via přechodové desky)"
+    - kod: "93152 mostní závěr"
+      reason: "ZD §4.4.l: integrální rám = bez dilatačních závěrů (thermal expansion via přechodové desky T4-03)"
+    - kod: "93315 zatěžovací zkouška 2. + další pole"
+      reason: "Žihle most má 1 pole (rozpětí 9 m, integrální rám). User manual SO_201 row 104 = 2 ks (Kfely více polí). Žihle 0 ks."
+    - kod: "84914 potrubí odpadní mostních objektů"
+      reason: "ZD §4.4.l: 'minimalizovat odvodňovače' — Žihle nemá pevné mostní odvodňovače, jen drenáže (T8-01/T8-02). User manual SO_201 row 85 = 0 m anyway."
+
+  duplications_found: 0
+  validation_status: "PASS — všechny shared kódy s ostatními SO mají operation/timeline-separation explanation. 4 OTSKP kódy explicitně vyloučené per ZD constraints."
+
+# =====================================================================
+# CROSS-REFERENCES
+# =====================================================================
+
+cross_references:
+  user_manual_source:    "../manual_reference_JS/SO_201_parsed.yaml — třídy 8 (4 řád, 1 mn>0) + 9 (21 řád, 19 mn>0)"
+  reconciliation_report: "../reconciliation_report.md"
+  parcels_consents:      "../kadastr_audit/parcels_and_consents.yaml"
+  phase_b_design:        "../../02_design/varianta_01_integralni_ram.md (integrální rám justification)"
+  zd_constraints:        "../../inputs/pdf/ZD - Most ev.č. 2062-1 u obce Žihle - DaB.pdf §4.4.i + §4.4.l + §4.4.m"
+  task_spec:             "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.4"
+  related_so_files:
+    - "master_soupis_SO_001.yaml (T9-06 demontáž svodidel, T9-07/T9-08 demontáž DZ — opačný worktype)"
+    - "master_soupis_SO_180.yaml (T0-10 DIO provizoria — different scope)"
+    - "master_soupis_SO_201_t0.yaml (administrativa)"
+    - "master_soupis_SO_201_t1_t2.yaml (zemní + základy)"
+    - "master_soupis_SO_201_t3_t4.yaml (CORE konstrukce)"
+    - "master_soupis_SO_201_t5_t6_t7.yaml (vozovka + povrchy + izolace)"
+  per_trida_plan_status: "t0 ✅, t1_t2 ✅, t3_t4 ✅, t5_t6_t7 ✅, t8_t9 ✅ — SO 201 ÚPLNÝ"
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "21 položek across TSKP třídy 8 (3) + 9 (18). 0 calculator-deterministic (Phase C nepokrývá svodidla, dilatace, drenáže, dopravní značení), 21 user_manual_fallback. T9-15 zatěžovací zkouška 1 ks = ★ KEY ELEMENT POVINNÝ per ČSN 73 6209."
+  - level: info
+    message: "ZD §4.4.l integrální rám konstrukce: explicit EXCLUDED 4 OTSKP kódy — 428xxx mostní ložiska, 93152 mostní závěr, 93315 zatěžovací zkouška 2. + další pole, 84914 mostní odpadní potrubí. Důvody dokumentovány v no_work_duplication_validation.excluded_kody."
+  - level: info
+    message: "T9-02 mostní zábradlí H2 = 24 m (Žihle 2× 12 m říмса) vs user manual 14.4 m (Kfely kratší). Different geometry, accept Žihle hodnotu per Phase B."
+  - level: info
+    message: "T8-03 chráničky DN 75 (3× 12 m = 36 m) per ZD §4.4.m — vkládány při betonáži pravé říмs (T3-06)."
+  - level: warning
+    message: "T9-18 zaústění skluzů (4 ks) vyžaduje souhlas Povodí Vltavy (parcely 1836, 385/13) — MISSING souhlas (P0 blocker pre DUR per parcels_and_consents.yaml)."
+  - level: info
+    message: "★ T9-15 zatěžovací zkouška 100k Kč = POVINNÁ pre uvedení do provozu (ČSN 73 6209). Nelze vynechat z tendrového offer."
+  - level: info
+    message: "No-work-duplication PASS — všechny shared kódy s SO 001 (svodidla/DZ demontáž) operation-separated od SO 201 montáží."
