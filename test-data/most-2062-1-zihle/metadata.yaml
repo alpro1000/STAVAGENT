@@ -4,7 +4,7 @@
 # může konvertovat do golden testu pod test-data/tz/.
 
 schema_version: 1
-status: calculated               # raw → inputs_received → extraction_done → design → calculated → done
+status: documented               # raw → inputs_received → extraction_done → design → calculated → documented → done
 project_kind: sandbox            # sandbox | golden_test_candidate | tender
 created: 2026-05-05
 not_for_delivery: true
@@ -179,10 +179,41 @@ workflow_faze:
       - "03_calculation/gantt_chart.svg"
       - "03_calculation/README.md"
   - id: "04_documentation"
-    nazev: "Dokumentace"
-    popis: "Generované TZ pro DUR/DSP, výkaz výměr KROS XC4"
-    status: deferred
-    poznamka: "Mimo scope tohoto sandboxu — pro skutečné podání nabídky."
+    nazev: "Dokumentace (Phase D)"
+    popis: "OTSKP mapping + soupis prací (UNIXML KROS + XLSX) + TZ pro DUR"
+    status: done
+    dokonceno: 2026-05-05
+    artefakty:
+      - "04_documentation/otskp_mapping.yaml"
+      - "04_documentation/build_soupis.py"
+      - "04_documentation/soupis_praci_zihle_2062-1.xml (UNIXML 1.2)"
+      - "04_documentation/soupis_praci_zihle_2062-1.xlsx (3 sheets)"
+      - "04_documentation/TZ_DUR_zihle_2062-1.md (500 lines, vyhláška 499/2006)"
+
+phase_d_documentation_results:
+  otskp_catalog: "OTSKP 2025/II (CS ÚRS) — concrete-agent/.../B1_otkskp_codes/2025_03_otskp.xml"
+  total_polozek: 52
+  total_kc_bez_dph: 6868210
+  per_so:
+    SO_001_demolice: 549313
+    SO_180_provizorium: 1750000   # Option A: 027111+3 anchor + 7 custom 9xxxxxx (vendor RFQ)
+    SO_201_most: 2798897
+    SO_290_silnice: 1500000
+    ZS: 270000
+  calibration_vs_phase_c:
+    phase_c_direct_cost_kc: 6500000
+    phase_d_otskp_total_kc: 6868210
+    rozdil_pct: 5.7
+    verdict: "PASS — rozdíl 5.7 % v rámci AC #8 ±10 % tolerance"
+  confidence_distribution:
+    exact_1_0: 18
+    close_0_85_to_0_9: 8
+    uncertain_0_6_to_0_8: 8
+    custom_non_otskp_0_0: 7   # SO 180 provizorium (per user Option A)
+  provizorium_gap_resolution: "User decision 2026-05-05 (AskUserQuestion): Option A — anchor 027111 (PROVIZORNÍ OBJÍŽĎKY ZŘÍZENÍ) + 027113 (ZRUŠENÍ) + 7 custom non-OTSKP 91091001-91091007 (montáž / pronájem / demontáž / doprava / signalizace / DIO / konzultace s linkovou dopravou). Vendor RFQ vyžadováno před nabídkou."
+  tz_dur_md_lines: 500
+  tz_dur_h2_sections: 36
+  tz_dur_kb_citations: 80
 
 phase_b_design_decisions:
   staticky_system: "Vetknutý integrální rám 1 pole"

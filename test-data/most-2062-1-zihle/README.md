@@ -1,6 +1,6 @@
 # Most ev.č. 2062-1 — Žihle (sandbox)
 
-**Status:** `calculated` — Phase A + B + C dokončeny 2026-05-05. Phase 4 (DUR/DSP/DPS dokumentace + KROS XC4 soupis) deferred mimo sandbox scope.
+**Status:** `documented` — Phase A + B + C + D dokončeny 2026-05-05. Sandbox kompletní; pro reálnou nabídku doplnit IGP, geodézii, vendor RFQ provizoria, statický výpočet — viz [`00_PROJECT_SUMMARY.md`](00_PROJECT_SUMMARY.md) hand-off list.
 
 **Bottom line:** direct cost ~6.5 mil. Kč → realistická Nabídková cena (s vendor margin + D&B docs + contingency) ~12-18 mil. Kč vs budget 30 mil. Kč → **vejde se s rezervou**. Doba 10.6 měsíců vs limit 30 měsíců. Detail: [`00_PROJECT_SUMMARY.md`](00_PROJECT_SUMMARY.md).
 **Účel:** experimentální průchod celým workflow STAVAGENT (HPM → analýza
@@ -37,7 +37,7 @@ test-data/most-2062-1-zihle/
 | 2. Extraction (HPM + ZD + photos → YAML) | ✅ done 2026-05-05 | `01_extraction/` (4 YAML + SOURCES.md) |
 | 3. Design (varianty NK) | ✅ done 2026-05-05 | `02_design/` (6 deliverables) |
 | 4. Calculation (kalkulátor + Gantt) | ✅ done 2026-05-05 | `03_calculation/` (Node CLI + 11 outputs + xlsx + svg) |
-| 5. Documentation (TZ + VV) | ⏸ deferred | `04_documentation/` (mimo sandbox scope) |
+| 5. Documentation (Phase D — OTSKP + TZ + soupis) | ✅ done 2026-05-05 | `04_documentation/` (otskp_mapping + soupis XML/XLSX + TZ_DUR markdown) |
 | **Summary** | ✅ done | [`00_PROJECT_SUMMARY.md`](00_PROJECT_SUMMARY.md) |
 
 ## Phase A — extrakce (2026-05-05)

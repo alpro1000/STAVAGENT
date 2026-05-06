@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unixml format="unixml_cz" verze="1.2">
+  <typ_souboru>SOUPIS_PRACI</typ_souboru>
+  <rozsah_exportu>CELA_STAVBA</rozsah_exportu>
+  <zdroj>STAVAGENT_SANDBOX</zdroj>
+  <stavba>
+    <kod_stavby>2062-1/26-DZMS</kod_stavby>
+    <nazev_stavby>Most ev.č. 2062-1 u obce Žihle, přestavba</nazev_stavby>
+    <verejna_zakazka>ANO</verejna_zakazka>
+    <datum>05.05.2026</datum>
+    <misto>Žihle, Plzeň-sever</misto>
+    <oblast>Plzeňský kraj</oblast>
+    <zpracoval>Sandbox Phase D</zpracoval>
+    <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+    <projektant>TBD — zhotovitel D&amp;B</projektant>
+    <zhotovitel>TBD</zhotovitel>
+    <investor>Plzeňský kraj</investor>
+    <kso>823 26</kso>
+    <cpv>45221111-3 Výstavba silničních mostů</cpv>
+    <poznamka>Sandbox výstup — NENÍ pro odevzdání tendru. Phase D Žihle 2062-1.</poznamka>
+    <objekty>
+      <objekt>
+        <kod_objektu>SO 001</kod_objektu>
+        <nazev_objektu>Demolice stávajícího mostu</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <cpv>45111100-9</cpv>
+        <datum>05.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>966168</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU S ODVOZEM DO 20KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>14,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>6851,46</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: OTSKP 2025/II | Note: Stávající trámy ŽB s ocelovými I-280 vložkami. 966168 je obecné bourání ŽB; ocelové vložky nezvyšují cenu výrazně (likvidace v rámci odvozu).</poznamka_polozky>
+            <uzivatelske_zarazeni>bourani_NK_zb</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>966168</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>BOURÁNÍ KONSTRUKCÍ Z KAMENE / KAMENNÉHO ZDIVA</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>30,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>6851,46</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: OTSKP 2025/II — code reuse (kamenné zdivo není explicitně samostatná pol., ale 966168 je nejbližší) | Note: Stávající kamenné opěry s rozšířením vlevo + 4 kamenné křídla (HPM s.2 [1.2]+[1.3]). Kfely SO 001 měl 'bourání spodní stavby a ŽB desky' analogicky.</poznamka_polozky>
+            <uzivatelske_zarazeni>bourani_kamene_opera</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>113728</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>FRÉZOVÁNÍ ZPEVNĚNÝCH PLOCH ASFALTOVÝCH, ODVOZ DO 20KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>3,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2072,20</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 001</poznamka_polozky>
+            <uzivatelske_zarazeni>frezovani_vozovky</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>113328</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>ODSTRANĚNÍ PODKLADŮ ZPEVNĚNÝCH PLOCH Z KAMENIVA NESTMEL, ODVOZ DO 20KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>8,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>745,23</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 001</poznamka_polozky>
+            <uzivatelske_zarazeni>odstraneni_podkladu</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>13173</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>HLOUBENÍ JAM ZAPAŽ I NEPAŽ TŘ. I</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>250,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>315,27</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: OTSKP 2025/II | Note: Stavební jáma pro nový most. Tř. I = běžná zemina. IGP rozhodne přesnou kategorii.</poznamka_polozky>
+            <uzivatelske_zarazeni>hloubeni_jam</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>121108</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>30,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>456,48</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 001</poznamka_polozky>
+            <uzivatelske_zarazeni>sejmuti_ornice</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>111208</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>ODSTRANĚNÍ KŘOVIN S ODVOZEM DO 20KM</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>100,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>147,70</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: OTSKP 2025/II + Kfely SO 001</poznamka_polozky>
+            <uzivatelske_zarazeni>odstraneni_krovin</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>11511</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>ČERPÁNÍ VODY DO 500 L/MIN</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>240,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>110,71</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: OTSKP 2025/II + Kfely SO 001 | Note: Mladotický potok je úzké koryto se stojící vodou (foto 131615), čerpání během demolice a výkopu základové jámy.</poznamka_polozky>
+            <uzivatelske_zarazeni>cerpani_vody</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>914123</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>DOPRAVNÍ ZNAČKY ZÁKLADNÍ VELIKOSTI OCELOVÉ TŘ RA1 - DEMONTÁŽ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>227,17</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 001</poznamka_polozky>
+            <uzivatelske_zarazeni>demontaz_dz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>914933</kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>SLOUPKY A STOJKY DZ Z HLINÍK TRUBEK ZABETON DEMONTÁŽ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>227,17</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>demontaz_sloupkov</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>014102</kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>POPLATKY ZA SKLÁDKU</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>100,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: OTSKP 2025/II — cena 0 v catalog (regional) | Note: Skládková cena se per region a typ odpadu. Orientačně 800-1500 Kč/t inertní.</poznamka_polozky>
+            <uzivatelske_zarazeni>poplatek_skladka</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 180</kod_objektu>
+        <nazev_objektu>Mostní provizorium (Mabey C200 nebo ekvivalent)</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <cpv>45221111-3</cpv>
+        <datum>05.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027111</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ OBJÍŽĎKY - ZŘÍZENÍ</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>50,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>0,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source: OTSKP 2025/II — anchor for SO 180 (provizorní objížďka semantic close to mostní provizorium) | Note: OTSKP cena 0 — vendor pricing in 91091001 (custom). Tato anchor položka jen drží OTSKP-konzistentní strukturu.</poznamka_polozky>
+            <uzivatelske_zarazeni>zrizeni_provizoria_anchor</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091001</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>MOSTNÍ PROVIZORIUM TYPU MABEY C200 NEBO EKVIVALENT - MONTÁŽ NA MÍSTĚ</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>400000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.0 | Source: Custom non-OTSKP code (per user decision Option A — vendor RFQ pricing) | Note: OTSKP NEMÁ kód pro mostní provizorium steel system. Per user 2026-05-05 Option A: anchor 027111 + custom sub-item. Vendor RFQ vyžadováno před nabídkou. Orientace 300-500k Kč.</poznamka_polozky>
+            <uzivatelske_zarazeni>prov_montaz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091002</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>MOSTNÍ PROVIZORIUM TYPU MABEY C200 NEBO EKVIVALENT - PRONÁJEM PER MĚSÍC</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>6,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>100000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.0 | Source: Custom non-OTSKP — vendor RFQ | Note: Orientace 80-120k Kč/měsíc per Mabey/Bailey katalog. Pricing finalní po vendor RFQ.</poznamka_polozky>
+            <uzivatelske_zarazeni>prov_pronajem</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091003</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>MOSTNÍ PROVIZORIUM TYPU MABEY C200 NEBO EKVIVALENT - DEMONTÁŽ</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>250000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.0 | Source: Custom non-OTSKP — vendor RFQ | Note: Orientace 200-300k Kč.</poznamka_polozky>
+            <uzivatelske_zarazeni>prov_demontaz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091004</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>MOSTNÍ PROVIZORIUM - DOPRAVA PANEL+ZAŘÍZENÍ DO MÍSTA STAVBY A ZPĚT</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.0 | Source: Custom non-OTSKP — vendor RFQ</poznamka_polozky>
+            <uzivatelske_zarazeni>prov_doprava</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091005</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>PROVIZORIUM - SVĚTELNÁ SIGNALIZACE (SEMAFOR) PRO JEDNOSMĚRNÝ PROVOZ</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>120000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.0 | Source: Custom non-OTSKP — vendor RFQ; per ZD §4.4.o | Note: Pronájem semafor + montáž + provoz po dobu 6 měsíců. Orientace 80-150k.</poznamka_polozky>
+            <uzivatelske_zarazeni>prov_signalizace</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091006</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>PROVIZORIUM - DIO + DOČASNÉ DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>150000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.3 | Source: Custom non-OTSKP. URS catalog má 95271xxx pro dočasné DZ ale ne kompletní DIO package. | Note: Zahrnuje montáž+demontáž DZ, DIO project, koordinace s dopr. policií. Per ZD §4.3.b 'DIO součást DPS'.</poznamka_polozky>
+            <uzivatelske_zarazeni>prov_dio_dopravni_znaceni</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027113</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ OBJÍŽĎKY - ZRUŠENÍ</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>50,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>0,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source: OTSKP 2025/II — anchor pair to 027111 | Note: Cena 0 (anchor); actual demontáž v 91091003.</poznamka_polozky>
+            <uzivatelske_zarazeni>zruseni_provizoria_anchor</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>91091007</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>KONZULTACE A SOUHLAS PROVOZOVATELE LINKOVÉ VEŘEJNÉ DOPRAVY (per ZD §4.4.o)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.0 | Source: Custom non-OTSKP. ZD §4.4.o explicit: 'uchazeč si v rámci ZD zajistí požadované parametry provozovatele linkové veřejné dopravy'.</poznamka_polozky>
+            <uzivatelske_zarazeni>konzultace_linkovou_dopravu</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 201</kod_objektu>
+        <nazev_objektu>Most ev.č. 2062-1 (nová stavba — integrální rám)</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <cpv>45221111-3</cpv>
+        <datum>05.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>45131A</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>5,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4648,04</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: OTSKP 2025/II — closest match (catalog nemá C12/15 v 451xx) | Note: Naše navrh C12/15, OTSKP cena pro C20/25 — vyšší confidence by byl 451323 (C16/20, 4592 Kč) ale rozdíl je v ceně mizivý. Volíme 45131A jako Kfely-konzistentní precedent.</poznamka_polozky>
+            <uzivatelske_zarazeni>podkladni_beton_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>272325</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>ZÁKLADY ZE ŽELEZOBETONU DO C30/37</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>30,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5775,35</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201 row reference | Note: Naše C25/30 ≤ catalog max C30/37 → exact match. 2× plošný základ pod opěrami.</poznamka_polozky>
+            <uzivatelske_zarazeni>zaklady_oper_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>272365</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ ZÁKLADŮ Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>3,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40761,57</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>zaklady_oper_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333325</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>16,60</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>9377,28</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201 row 43 | Note: ZD §4.4.l zakazuje samostatná křídla — v naší variantě svahový kužel. Položka zahrnuje opěry per OTSKP nazev.</poznamka_polozky>
+            <uzivatelske_zarazeni>driky_oper_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333365</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>2,32</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40874,37</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>driky_oper_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333325</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>4,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>9377,28</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: OTSKP 2025/II — 333325 zahrnuje 'opěry a křídla', závěrné zídky jsou vrch opěry v praxi | Note: Alternativně by šlo dělit do 93631 (drobné konstr beton monolit, 4783 Kč/m³) ale 333325 je vendor-konzistentní.</poznamka_polozky>
+            <uzivatelske_zarazeni>zaverne_zidky_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333365</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>0,72</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40874,37</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>zaverne_zidky_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>421325</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C30/37</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>39,84</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>13417,90</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II — exact match pro deskový rámový most | Note: Klíčový element. NEPLATÍ Kfely 424A14 (spřažená mostovka prefab) — naše je monolitická deska. 421325 je správný OTSKP code.</poznamka_polozky>
+            <uzivatelske_zarazeni>mostovkova_deska_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>421365</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ MOSTNÍ DESKOVÉ KONSTRUKCE Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>5,58</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>42334,95</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>mostovkova_deska_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>317325</kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>4,32</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>16900,36</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201</poznamka_polozky>
+            <uzivatelske_zarazeni>rimsa_leva_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>317365</kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ ŘÍMS Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>0,43</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>41635,80</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>rimsa_leva_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>317325</kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>4,32</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>16900,36</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II | Note: Pravá římsa zahrnuje 3× chráničku DN75 mm (ZD §4.4.m). Chráničky se vkládají při betonáži; přesný cenový dopad je v rámci prováděcího detailu (ne separate položka).</poznamka_polozky>
+            <uzivatelske_zarazeni>rimsa_prava_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>317365</kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ ŘÍMS Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>0,43</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>41635,80</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>rimsa_prava_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>420324</kod_polozky>
+            <cislo_polozky>14</cislo_polozky>
+            <nazev_polozky>PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>9,96</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5360,58</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201</poznamka_polozky>
+            <uzivatelske_zarazeni>prechodova_deska_leva_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>420365</kod_polozky>
+            <cislo_polozky>15</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ PŘECHODOVÝCH DESEK MOSTNÍCH OPĚR Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>41635,80</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>prechodova_deska_leva_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>420324</kod_polozky>
+            <cislo_polozky>16</cislo_polozky>
+            <nazev_polozky>PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>9,96</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5360,58</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>prechodova_deska_prava_beton</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>420365</kod_polozky>
+            <cislo_polozky>17</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ PŘECHODOVÝCH DESEK MOSTNÍCH OPĚR Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>41635,80</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>prechodova_deska_prava_vyztuz</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>PSV</typ_polozky>
+            <kod_polozky>711442</kod_polozky>
+            <cislo_polozky>18</cislo_polozky>
+            <nazev_polozky>IZOLACE MOSTOVEK CELOPLOŠNÁ ASFALTOVÝMI PÁSY S PEČETÍCÍ VRSTVOU</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>100,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>806,81</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201</poznamka_polozky>
+            <uzivatelske_zarazeni>izolace_mostovky</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>PSV</typ_polozky>
+            <kod_polozky>711432</kod_polozky>
+            <cislo_polozky>19</cislo_polozky>
+            <nazev_polozky>IZOLACE MOSTOVEK POD ŘÍMSOU ASFALTOVÝMI PÁSY</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>22,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>692,99</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201</poznamka_polozky>
+            <uzivatelske_zarazeni>izolace_pod_rimsou</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>9117C1</kod_polozky>
+            <cislo_polozky>20</cislo_polozky>
+            <nazev_polozky>SVOD OCEL ZÁBRADEL ÚROVEŇ ZADRŽ H2 - DODÁVKA A MONTÁŽ</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>24,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>7940,04</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II — H2/W3 per ZD §4.4.i (extravilán) | Note: ZD §4.4.i: zádržný systém pro extravilán. Předchozí stav SafeStar 231 H2/W3 (HPM s.3 [4.2]) → naše H2 zachová úroveň.</poznamka_polozky>
+            <uzivatelske_zarazeni>svodidlo_mostni_zabradelni</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>M</typ_polozky>
+            <kod_polozky>9113B1</kod_polozky>
+            <cislo_polozky>21</cislo_polozky>
+            <nazev_polozky>SVODIDLO OCEL SILNIČ JEDNOSTR, ÚROVEŇ ZADRŽ H1 - DODÁVKA A MONTÁŽ</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>60,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1780,96</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201</poznamka_polozky>
+            <uzivatelske_zarazeni>svodidlo_silnicni_napojeni</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>465512</kod_polozky>
+            <cislo_polozky>22</cislo_polozky>
+            <nazev_polozky>DLAŽBY Z LOMOVÉHO KAMENE NA MC</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>8,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>7252,50</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II + Kfely SO 201</poznamka_polozky>
+            <uzivatelske_zarazeni>dlazba_koryta_kamen</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>45131A</kod_polozky>
+            <cislo_polozky>23</cislo_polozky>
+            <nazev_polozky>PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>4,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4648,04</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>beton_lozni_dlazba</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>938255</kod_polozky>
+            <cislo_polozky>24</cislo_polozky>
+            <nazev_polozky>ÚPRAVA BET POVRCHU OTRYSKÁNÍM OCELOVÝMI KULIČKAMI</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>100,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>300,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: OTSKP 2025/II — cena 0 v catalog (general) | Note: Cena v OTSKP 0 — vendor specific. Orientačně 200-400 Kč/m² per market.</poznamka_polozky>
+            <uzivatelske_zarazeni>uprava_betonoveho_povrchu</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>93631</kod_polozky>
+            <cislo_polozky>25</cislo_polozky>
+            <nazev_polozky>DROBNÉ DOPLŇK KONSTR BETON MONOLIT</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>1,50</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4783,44</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: OTSKP 2025/II | Note: Discretionary položka pro detaily PDPS — letopočet vlisem, drobné monolitické doplňky.</poznamka_polozky>
+            <uzivatelske_zarazeni>drobne_doplnky_konstr</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02911</kod_polozky>
+            <cislo_polozky>26</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY - ZEMĚMĚŘICKÉ ZAMĚŘENÍ</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>100000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: OTSKP 2025/II — cena 0 v catalog (kompletace) | Note: Per ZD §4.3.i geodetické zaměření S-JTSK + Bpv + 3. třída + DGN+JVF + vyhláška 393/2020. Orientační cena 80-150k.</poznamka_polozky>
+            <uzivatelske_zarazeni>geodeticke_zamereni</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02943</kod_polozky>
+            <cislo_polozky>27</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY - VYPRACOVÁNÍ RDS</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>300000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source: OTSKP 2025/II | Note: RDS (Realizační dokumentace stavby) v rámci D&amp;B per ZD §4.3.b. Orientačně 200-400k.</poznamka_polozky>
+            <uzivatelske_zarazeni>realizacni_dokumentace</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02944</kod_polozky>
+            <cislo_polozky>28</cislo_polozky>
+            <nazev_polozky>OSTAT POŽADAVKY - DOKUMENTACE SKUTEČ PROVEDENÍ V DIGIT FORMĚ</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>80000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source: OTSKP 2025/II + ZD §4.3.g (pasport + geodetické zaměření)</poznamka_polozky>
+            <uzivatelske_zarazeni>dokumentace_skutec_provedeni</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02953</kod_polozky>
+            <cislo_polozky>29</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY - HLAVNÍ MOSTNÍ PROHLÍDKA</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: OTSKP 2025/II — první HPM po dokončení per ČSN 73 6221</poznamka_polozky>
+            <uzivatelske_zarazeni>hlavni_mostni_prohlidka</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02991</kod_polozky>
+            <cislo_polozky>30</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY - INFORMAČNÍ TABULE</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>8000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: OTSKP 2025/II</poznamka_polozky>
+            <uzivatelske_zarazeni>informacni_tabule</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 290</kod_objektu>
+        <nazev_objektu>Směrová úprava silnice III/206 2 km 0,600 – 0,900</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <cpv>45233140-2</cpv>
+        <datum>05.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>ROAD-CMPLX</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>SMĚROVÁ ÚPRAVA SILNICE III/206 2, KM 0,600 – 0,900 — souhrnný řádek</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>300,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: Engineering judgment — standardní cena vozovky 3-vrstvé | Note: Detailní položkový rozpis (frézování + ACL + ACP + SMA + obrusná vrstva 100% bez tolerance) by zhotovitel zpracoval při PDPS. Per ZD §4.4.j obrusná vrstva 100% tloušťky bez tolerance — vyžaduje overpour reserve 5-10 %.</poznamka_polozky>
+            <uzivatelske_zarazeni>smerova_uprava_summary</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>ZS</kod_objektu>
+        <nazev_objektu>Zařízení staveniště + VRN</nazev_objektu>
+        <typ_zakazky>ZARIZENI_STAVENISTE</typ_zakazky>
+        <cpv>45100000-8</cpv>
+        <datum>05.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>ZS</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>ZAŘÍZENÍ STAVENIŠTĚ + VRN (4% z hlavních prací per ČSN 73 0212)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1,00</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>270000,00</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: ČSN 73 0212 — Zařízení staveniště + Vedlejší rozpočtové náklady | Note: Aplikuje se 4% jako střed pásma 3-5 % z (SO 001 + SO 180 + SO 201 + SO 290). Souhlas vlastníka pozemku (vpravo, mimo silniční pozemek) zatím nezískán — flag pro nabídku.</poznamka_polozky>
+            <uzivatelske_zarazeni>zarizeni_staveniste</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+    </objekty>
+  </stavba>
+</unixml>
