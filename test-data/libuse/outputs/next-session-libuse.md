@@ -1,18 +1,43 @@
 # Libuše Objekt D — Next Session Handoff
 
-Last updated: 2026-05-05 late evening (Phase 0.10–0.20 complete + code
-review fixes + handoff docs refresh, PR #1066 ready for **full review**
-in next session)
+Last updated: 2026-05-06 (post-merge admin hygiene + PROBE 7 verification
++ review_checklist.md added; PR #1066 **already merged 2026-05-05 08:56
+UTC** to main)
 
 ## Status
 
-**Excel deliverable feature-complete + interactive filter dashboard added.**
-Pending: full review per-item (user request) → merge → delivery.
+**Excel deliverable feature-complete + interactive filter dashboard
+added.** PR #1066 merged. Outstanding: full per-item review (user
+request) → ABMV email send → KROS manual ÚRS pricing → VELTON delivery.
 
 - 3 021 items (+ 11 deprecated D05 with mnozstvi=0)
-- ~762 KB, **12 sheets** (incl. nový List 12 Filter_view)
-- Branch: `claude/phase-0-5-batch-and-parser` @ `48f45fb`
-- **PR #1066:** https://github.com/alpro1000/STAVAGENT/pull/1066 (21 commits)
+- ~762 KB, **12 sheets** (incl. List 12 Filter_view)
+- Pipeline + Phase 0.10–0.20 commits live on **`main`**
+- Doc-only follow-up commits on `claude/update-session-docs-Q4PwS`
+  (commit count + branch SHA refresh, review_checklist.md, PROBE 3–6
+  backfill into `carry_forward_findings`, ABMV items #7 + #8)
+- **PR #1066** (closed, merged): https://github.com/alpro1000/STAVAGENT/pull/1066
+
+### Branch strategy going forward — needs user decision
+
+Current state:
+- `main` carries the merged pipeline (post #1066)
+- `claude/update-session-docs-Q4PwS` carries 3 doc commits ahead of main
+  (`c970d2f`, `61a7367`, `b106ab1`)
+
+Options for next steps:
+
+1. **Open small follow-up PR** for doc commits on
+   `claude/update-session-docs-Q4PwS` → merge to main, then continue
+   review from a fresh feature branch
+2. **Keep working on `claude/update-session-docs-Q4PwS`** until the full
+   review pass + any PROBE 7+ fixes are complete, then one combined PR
+3. **Branch off main now** for the review session work, leave the
+   doc-only commits as their own micro-PR
+
+Pick one before starting Excel walkthrough — relevant because Phase 0.21+
+fix scripts (if any PROBE finding requires code) need a clear merge
+target.
 
 ## ⭐ NEXT SESSION FOCUS — full Excel review (user request)
 
@@ -27,8 +52,16 @@ Total cumulative recovery this session ~599k Kč (PROBE 4 F15 134k +
 Phase 0.15-0.18 465k). Plus Phase 0.19 cleanup −0 Kč (D05 zeroed but
 no value previously counted).
 
-⚠️ Pre-merge: all 6 PROBE findings logged in carry_forward_findings.
-ABMV email draft ready (Phase 0.10 audit, 6 documentation otázek).
+✅ Post-merge admin hygiene done: PROBE 1–6 logged in
+`carry_forward_findings[]` (was 2 entries, now 6 — PROBE 3 cihelné
+pásky, 4 F15 izolace stropů, 5 FF01 mismap, 6 D05 wrong template).
+PROBE 7 (D10 underspec vs Tabulka 0041 A/B template) deliberately NOT
+in carry-forward — gated on ABMV reply. Excel sheet 8 row 8 reserved
+as PROBE 7 placeholder.
+
+ABMV email queue now 8 items (was 6): Phase 0.10 audit (#1–6) + #7
+D10 underspec decision + #8 Tabulka 0041 vs DWG count discrepancy
+(D10/D11/D21).
 
 ## Project metadata
 
@@ -618,7 +651,18 @@ Acceptance criteria pro L1 extract:
 | 18 | `dff0c29f` | 0.20 v2 Excel Table VykazFilter | — |
 | 19 | `3b502fef` | code-review fixes (Qodo + Amazon Q) | — |
 | 20 | `48f45fb` | docs(session) — full review plan + 4-osa strategy | — |
-| 21 | (this) | docs(session) — refresh post-48f45fb (commit count + branch SHA) | — |
+| 21 | `c970d2f` | docs(session) — refresh post-48f45fb (commit count + branch SHA) | — |
+
+PR #1066 merged 2026-05-05 08:56 UTC → all 21 commits live on `main`.
+
+Doc-only follow-up commits on `claude/update-session-docs-Q4PwS` (not
+yet on main):
+
+| # | Commit | Phase |
+|--:|--------|-------|
+| F1 | `61a7367` | docs(libuse) — review_checklist.md (PROBE 7 verify + 4-axis checklist) |
+| F2 | `b106ab1` | docs(libuse) — backfill PROBE 3-6 + ABMV items #7-8 (admin hygiene) |
+| F3 | (this) | docs(session) — post-merge state reflect + branch strategy options |
 
 **Total session recovery: +599k Kč** (PROBE 4 + Phase 0.15-0.18 fix pack)
 
@@ -633,7 +677,7 @@ Acceptance criteria pro L1 extract:
 - **F06** keramický obklad — 32 + 12 gap items
 - D05 — 11 items DEPRECATED (rolovací brána, scope C)
 
-### ABMV email — 6 documentation otázek (pending odeslání)
+### ABMV email — 8 documentation otázek (pending odeslání)
 
 Draft ready v `documentation_inconsistencies.json` →
 `abmv_email_required[]`. Souhrn:
@@ -644,6 +688,11 @@ Draft ready v `documentation_inconsistencies.json` →
 4. F20 v D.1.4.03 WC FF column = FF20?
 5. Regenerate Tabulka místností 1.NP printout (D.1.3.01 misfile)
 6. S.D.16 + S.D.42 missing v DXF dataset (Phase 0.x parser gap)
+7. **D10 v objektu D STD interior treatment** vs Tabulka 0041 A/B
+   bezpečnostní pack (rám + EMZ + ACS + SN2) — záměrně downgraded?
+8. **Tabulka 0041 vs DWG count discrepancy** (D10=0/+1, D11=0/+1,
+   D21=10/+1) — internal inconsistency, opravte před A/B/C komplex
+   pricing
 
 ---
 
@@ -721,8 +770,11 @@ User explicit request:
 
 ### Bezprostřední (post-review, před delivery)
 
-1. **Merge PR #1066** do main (zachová branch history)
-2. **Pošli ABMV email** — 6 documentation otázek (draft ready)
+1. **Decide branch strategy** — merge `claude/update-session-docs-Q4PwS`
+   to main (small follow-up PR) or continue accumulating doc + PROBE-fix
+   commits there until a combined PR is ready (see "Branch strategy
+   going forward" section above)
+2. **Pošli ABMV email** — 8 documentation otázek (draft ready)
 3. **VELTON delivery** — Excel připraven, čeká na KROS manual ÚRS
    pricing (~3-5h experienced rate, 579 master rows v List 11)
 
