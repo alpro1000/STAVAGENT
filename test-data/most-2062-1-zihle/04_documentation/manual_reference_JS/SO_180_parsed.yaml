@@ -1,0 +1,223 @@
+schema_version: 1
+SO: SO_180
+label: Objízdná trasa (užívá se jako template pro provizorium)
+source_file: inputs/docx/SO 180 - Objízdná trasa - JŠ.xls
+source_rows: 37
+source_cols: 23
+tskp_classes: !!python/object/apply:collections.OrderedDict
+- - - ''
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Všeobecné konstrukce a práce
+        - - polozky
+          - - kod: '014102'
+              popis: POPLATKY ZA SKLÁDKU
+              mj: T
+              mnozstvi: 650.0
+              typ: HSV
+              cisl: 33
+            - kod: '0271'
+              popis: POMOC PRÁCE ZŘÍZ NEBO ZAJIŠŤ OBJÍŽĎKY A PŘÍSTUP CESTY
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 1
+            - kod: '027111'
+              popis: PROVIZORNÍ OBJÍŽĎKY - ZŘÍZENÍ
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 8
+            - kod: '027113'
+              popis: PROVIZORNÍ OBJÍŽĎKY - ZRUŠENÍ
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 9
+            - kod: '0274'
+              popis: POMOC PRÁCE ZŘÍZ NEBO ZAJIŠŤ PROVIZORNÍ MOSTY
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 36
+            - kod: '027411'
+              popis: PROVIZORNÍ MOSTY - MONTÁŽ
+              mj: M2
+              mnozstvi: 60.0
+              typ: HSV
+              cisl: 10
+            - kod: '027412'
+              popis: PROVIZORNÍ MOSTY - NÁJEMNÉ
+              mj: KPLMĚSÍC
+              mnozstvi: 6.0
+              typ: HSV
+              cisl: 11
+            - kod: '027413'
+              popis: PROVIZORNÍ MOSTY - DEMONTÁŽ
+              mj: M2
+              mnozstvi: 60.0
+              typ: HSV
+              cisl: 12
+            - kod: 02946
+              popis: OSTAT POŽADAVKY - FOTODOKUMENTACE
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 2
+            - kod: 0295
+              popis: OSTATNÍ POŽADAVKY - POSUDKY, KONTROLY, REVIZNÍ ZPRÁVY
+              mj: KPL
+              mnozstvi: 1.0
+              typ: HSV
+              cisl: 3
+  - - '1'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Zemní práce
+        - - polozky
+          - - kod: '111208'
+              popis: ODSTRANĚNÍ KŘOVIN S ODVOZEM DO 20KM
+              mj: M2
+              mnozstvi: 300.0
+              typ: HSV
+              cisl: 13
+            - kod: '11511'
+              popis: ČERPÁNÍ VODY DO 500 L/MIN
+              mj: HOD
+              mnozstvi: 100.0
+              typ: HSV
+              cisl: 30
+            - kod: '121108'
+              popis: SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20KM
+              mj: M3
+              mnozstvi: 84.0
+              typ: HSV
+              cisl: 14
+            - kod: '13173'
+              popis: HLOUBENÍ JAM ZAPAŽ I NEPAŽ TŘ. I
+              mj: M3
+              mnozstvi: 280.0
+              typ: HSV
+              cisl: 15
+            - kod: '1712'
+              popis: ULOŽENÍ SYPANINY DO NÁSYPŮ A NA SKLÁDKY BEZ ZHUTNĚNÍ
+              mj: M3
+              mnozstvi: 280.0
+              typ: HSV
+              cisl: 16
+            - kod: '1778'
+              popis: ZEMNÍ HRÁZKY Z NAKUPOVANÝCH MATERIÁLŮ
+              mj: M3
+              mnozstvi: 25.0
+              typ: HSV
+              cisl: 31
+            - kod: '1811'
+              popis: ÚPRAVA PLÁNĚ SE ZHUTNĚNÍM V HORNINĚ TŘ. I
+              mj: M2
+              mnozstvi: 812.0
+              typ: HSV
+              cisl: 17
+            - kod: '1822'
+              popis: ROZPROSTŘENÍ ORNICE VE SVAHU
+              mj: M3
+              mnozstvi: 120.0
+              typ: HSV
+              cisl: 34
+            - kod: '18241'
+              popis: ZALOŽENÍ TRÁVNÍKU RUČNÍM VÝSEVEM
+              mj: M2
+              mnozstvi: 900.0
+              typ: HSV
+              cisl: 35
+  - - '5'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Komunikace
+        - - polozky
+          - - kod: '56314'
+              popis: VOZOVKOVÉ VRSTVY Z MECHANICKY ZPEVNĚNÉHO KAMENIVA TL. DO 200MM
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 23
+            - kod: '56333'
+              popis: VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 150MM
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 20
+            - kod: '56336'
+              popis: VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 300MM
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 19
+            - kod: '56963'
+              popis: ZPEVNĚNÍ KRAJNIC Z RECYKLOVANÉHO MATERIÁLU TL DO 150MM
+              mj: M2
+              mnozstvi: 113.333
+              typ: HSV
+              cisl: 26
+            - kod: '572123'
+              popis: INFILTRAČNÍ POSTŘIK Z EMULZE DO 1,0KG/M2
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 24
+            - kod: '572214'
+              popis: SPOJOVACÍ POSTRIK Z MODIFIK EMULZE DO 0,5KG/M2
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 5
+            - kod: 574A34
+              popis: ASFALTOVÝ BETON PRO OBRUSNÉ VRSTVY ACO 11+ TL. 40MM
+              mj: M2
+              mnozstvi: 522.0
+              typ: HSV
+              cisl: 25
+  - - HSV
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Práce a dodávky HSV
+        - - polozky
+          - []
+  - - '2'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Zakládání
+        - - polozky
+          - - kod: '28997'
+              popis: OPLÁŠTĚNÍ (ZPEVNĚNÍ) Z GEOTEXTILIE A GEOMŘÍŽOVIN
+              mj: M2
+              mnozstvi: 900.0
+              typ: HSV
+              cisl: 18
+  - - '4'
+    - !!python/object/apply:collections.OrderedDict
+      - - - nazev
+          - Vodorovné konstrukce
+        - - polozky
+          - - kod: '451523'
+              popis: VÝPLŇ VRSTVY Z KAMENIVA DRCENÉHO, INDEX ZHUTNĚNÍ ID DO 0,9
+              mj: M3
+              mnozstvi: 20.0
+              typ: HSV
+              cisl: 28
+            - kod: '45211'
+              popis: PODKLAD KONSTR Z DÍLCŮ BETON
+              mj: M3
+              mnozstvi: 20.0
+              typ: HSV
+              cisl: 29
+            - kod: '465512'
+              popis: DLAŽBY Z LOMOVÉHO KAMENE NA MC
+              mj: M3
+              mnozstvi: 25.0
+              typ: HSV
+              cisl: 32
+stats:
+  total_rows: 36
+  polozky_total: 30
+  polozky_with_quantity: 30
+  tskp_classes_count: 6
