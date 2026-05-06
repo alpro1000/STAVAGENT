@@ -1,6 +1,6 @@
 # Most ev.č. 2062-1 Žihle — Project Summary (sandbox)
 
-**Status:** `calculated` (Phase A + B + C dokončeny)
+**Status:** `documented` (Phase A + B + C + D dokončeny)
 **Datum:** 2026-05-05
 **Tendr deadline:** 2026-07-02 10:00 (ZD §26.1)
 **NENÍ pro odevzdání tendru** — sandbox/golden-test candidate.
@@ -43,7 +43,52 @@
 | **Phase A** — Extrakce ze zdrojových dokumentů | ✅ done 2026-05-05 (commit `cd0f2a19`) | 4 YAML + SOURCES.md v `01_extraction/` |
 | **Phase B** — Návrh nové NK | ✅ done 2026-05-05 | 6 deliverables v `02_design/` |
 | **Phase C** — Calculator + Excel + Gantt | ✅ done 2026-05-05 | run-calc.ts, 11 element JSONs, cost_summary.xlsx, gantt_chart.svg |
+| **Phase D** — OTSKP soupis + TZ pro DUR | ✅ done 2026-05-05 | `04_documentation/` (otskp_mapping + soupis XML/XLSX + TZ_DUR markdown) |
 | **Phase 4** — Summary + golden test conversion | ✅ done 2026-05-05 | tento soubor |
+
+## Phase D outputs (2026-05-05)
+
+| Artefakt | Detail |
+|---|---|
+| `04_documentation/otskp_mapping.yaml` | 52 položek per element s OTSKP kódem + cenou + confidence + zdrojem (catalog 2025/II) |
+| `04_documentation/build_soupis.py` | Generator: YAML → UNIXML 1.2 + XLSX |
+| `04_documentation/soupis_praci_zihle_2062-1.xml` | UNIXML 1.2 KROS format, 5 SO objektů, 52 položek, 47 KB |
+| `04_documentation/soupis_praci_zihle_2062-1.xlsx` | 3 sheets: Soupis_polozek (full) + Souhrn_per_SO + Krycí_list |
+| `04_documentation/TZ_DUR_zihle_2062-1.md` | TZ pro DUR per vyhláška 499/2006 Sb., 500 řádků, 36 sekcí, 80 KB+source citací |
+
+**Soupis cena breakdown (OTSKP 2025/II catalog):**
+
+| SO | Položek | Cena bez DPH [Kč] | Komentář |
+|---|---|---|---|
+| SO 001 Demolice | 11 | 549 313 | Bourání ŽB s I-280 + kamenné opěry |
+| SO 180 Provizorium | 9 | 1 750 000 | **2 anchor (027111/3) + 7 custom 9xxxxxx** (vendor RFQ — viz níže) |
+| SO 201 Most | 30 | 2 798 897 | Hlavní stavba (calculator-driven beton + výztuž + svršek + dokumentace) |
+| SO 290 Silnice | 1 | 1 500 000 | Směrová úprava ~300 m, 3-vrstvá živičná |
+| ZS | 1 | 270 000 | 4 % per ČSN 73 0212 |
+| **CELKEM bez DPH** | **52** | **6 868 210** | |
+
+**Calibration vs Phase C:** Phase D OTSKP total 6 868 210 Kč vs Phase C direct cost 6 500 000 Kč → rozdíl +5.7 %, **PASS** (AC #8 ±10 % tolerance). OTSKP includes vendor margin + transport, calculator returns labor + rental only — difference je očekávaná.
+
+**Provizorium OTSKP gap RESOLVED** (per AskUserQuestion 2026-05-05 → Option A):
+- Anchor codes `027111` (PROVIZORNÍ OBJÍŽĎKY - ZŘÍZENÍ) + `027113` (ZRUŠENÍ) — semantic close, OTSKP cena 0
+- 7 custom non-OTSKP codes `91091001`–`91091007`: montáž / pronájem / demontáž / doprava / signalizace / DIO / konzultace s linkovou dopravou
+- Confidence všech 7 custom položek = 0.0 (vendor RFQ pricing required před podáním nabídky)
+- Detail: `04_documentation/otskp_mapping.yaml > SO_180`
+
+**Confidence distribution Phase D:**
+- 1.0 (exact match OTSKP): 18 položek
+- 0.85–0.9 (close match): 8 položek
+- 0.6–0.8 (anchor / vendor pricing): 8 položek (svršek, geodézie, dokumentace, ZS)
+- 0.0 (custom non-OTSKP): 7 položek (SO 180 provizorium)
+
+**TZ pro DUR — kompletnost:**
+- Struktura per vyhláška 499/2006 Sb.: A (identif.) + B.1–B.8 (souhrnná TZ) + C/D/E (situační/objekty/dokladová)
+- Klíčové sekce s plnou cross-reference KB:
+  - B.2.3 Konstrukční řešení — citace EN 1992-2 §3.1.2 + §4.4 + Annex E + TKP 18 §7.8.3 + Pokorný-Suchánek kap. 4 + 14a
+  - B.8.1 Provizorium — cituje Vysvětlení ZD č.1 ad 2 (alternativa objížděny zamítnuta)
+  - B.8.2 Etapy výstavby — odkaz na Phase C harmonogram (319 dní = 10.6 měsíců)
+- 80+ explicit citací v markdown
+- Žádné "engineering judgment without source" — všechny missing data flagovány explicitně
 
 Status v `metadata.yaml`: `calculated`.
 
