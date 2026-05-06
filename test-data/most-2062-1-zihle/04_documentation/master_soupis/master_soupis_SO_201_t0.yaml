@@ -1,0 +1,314 @@
+# master_soupis_SO_201_t0.yaml — SO 201 Most ev.č. 2062-1 (TSKP TŘÍDA 0 ONLY)
+#
+# Žihle 2062-1 (integrální rámový most)
+# Focused deliverable: pouze administrativa, dokumentace, geodézie, zkoušky.
+#
+# Source primary: user manual `04_documentation/manual_reference_JS/SO_201_parsed.yaml`
+#   třída 0 (12 položek expert benchmark Kfely template).
+# Source fallback: reconciliation_report.md G1 — calculator nepokrývá administrativu/dokumentaci.
+#
+# Pravidla:
+#   1. Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+#   2. No-work-duplication vs SO 001 + SO 180 — overlap kódy explicit explanation.
+#   3. Source field per položku (user_manual_fallback / paušál_administrativní / vendor_pricing).
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "SO 201 — Most (TSKP třída 0 ONLY)"
+phase: "D — Master soupis (Session 2)"
+tskp_class: "0"
+scope: "Administrativa, dokumentace, geodézie, zkoušky a měření, dozor, informační tabule"
+
+# ─────────────────────────────────────────────────────────────────────
+# Vstupní parametry (Phase A + B + harmonogram Phase C)
+# ─────────────────────────────────────────────────────────────────────
+
+inputs:
+  doba_vystavby_NK_mesicu: 4.5     # Phase C scheduler
+  doba_vystavby_NK_dni: 135
+  ckait_sazba_kc_hod: 600          # standardní AO + statik (ČKAIT 2026)
+  geodet_sazba_kc_hod: 1500        # geodet certifikovaný (vyhláška 393/2020)
+
+# =====================================================================
+# TŘÍDA 0 — VŠEOBECNÉ KONSTRUKCE A PRÁCE
+# =====================================================================
+
+trida_0_vseobecne:
+
+  # ── Geodézie (3 položky — průběžné + finální) ─────────────────────
+  - polozka_id: "SO201-T0-01"
+    otskp_kod: "0291"
+    popis: "OSTATNÍ POŽADAVKY — ZEMĚMĚŘIČSKÁ MĚŘENÍ (průběžně během stavby)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "počet_kontrol × hodin_per_kontrola × sazba"
+      vstupy:
+        pocet_kontrol:        {hodnota: 10,    jednotka: ks,     popis: "průběžná zaměření os, výškové body, kontrola opěr",   zdroj: "TKP 18 čl. 4.2"}
+        hodin_per_kontrola:   {hodnota: 3,     jednotka: hod,    popis: "1 výjezd geodeta",                                    zdroj: "praxe"}
+        sazba_kc_hod:         {hodnota: 1500,  jednotka: Kč/hod, popis: "geodet certifikovaný",                                zdroj: "vyhláška 393/2020"}
+      vypocet_kroky:
+        - "10 × 3 × 1500 = 45 000 Kč"
+    confidence: 0.8
+    jedn_cena_kc: 45000
+    cena_celkem_kc: 45000
+    source: "paušál_administrativní"
+
+  - polozka_id: "SO201-T0-02"
+    otskp_kod: "02911"
+    popis: "OSTATNÍ POŽADAVKY — GEODETICKÉ ZAMĚŘENÍ (S-JTSK + Bpv, 3. tř. přesnosti, výchozí)"
+    mj: "HM"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál pro most + 300 m silnice"
+      vstupy:
+        rozsah:        {hodnota: 1,     jednotka: hm,  popis: "kompletní zaměření před zahájením stavby (DGN+JVF výstup)", zdroj: "ZD §4.3.i"}
+        rozsah_kc_min: {hodnota: 80000, jednotka: Kč,  popis: "dolní hranice běžných nabídek",                              zdroj: "trh 2026"}
+        rozsah_kc_max: {hodnota: 150000, jednotka: Kč, popis: "horní hranice (most + návaznosti silnice)",                  zdroj: "trh 2026"}
+      vypocet_kroky:
+        - "Midpoint pásma 80-150k = 100 000 Kč (paušál 1 hm)"
+    confidence: 0.7
+    jedn_cena_kc: 100000
+    cena_celkem_kc: 100000
+    source: "paušál_administrativní"
+
+  - polozka_id: "SO201-T0-03"
+    otskp_kod: "02911-skutecne"
+    popis: "OSTATNÍ POŽADAVKY — GEODETICKÉ ZAMĚŘENÍ SKUTEČNÉHO PROVEDENÍ"
+    mj: "HM"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál pro DSPS"
+      vstupy:
+        rozsah:        {hodnota: 1,     jednotka: hm,  popis: "závěrečné zaměření po dokončení stavby",  zdroj: "ZD §4.3.g"}
+        rozsah_kc_min: {hodnota: 50000, jednotka: Kč,  popis: "dolní hranice",                            zdroj: "trh 2026"}
+        rozsah_kc_max: {hodnota: 80000, jednotka: Kč,  popis: "horní hranice",                            zdroj: "trh 2026"}
+      vypocet_kroky:
+        - "Midpoint pásma 50-80k = 65 000 Kč"
+    confidence: 0.7
+    jedn_cena_kc: 65000
+    cena_celkem_kc: 65000
+    source: "paušál_administrativní"
+
+  # ── Dokumentace (3 položky) ────────────────────────────────────────
+  - polozka_id: "SO201-T0-04"
+    otskp_kod: "029412"
+    popis: "OSTATNÍ POŽADAVKY — VYPRACOVÁNÍ MOSTNÍHO LISTU (per ČSN 73 6221)"
+    mj: "KUS"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál (vyplnění + příloha + zaměření)"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kus, popis: "mostní list per ČSN 73 6221 + Příloha č. 1 ZD",  zdroj: "ČSN 73 6221"}
+      vypocet_kroky:
+        - "Vyplnění formuláře (4 hod) + fotorozhled (4 hod) + zaměření (4 hod) × 1250 Kč/hod = 15 000 Kč"
+    confidence: 0.85
+    jedn_cena_kc: 15000
+    cena_celkem_kc: 15000
+    source: "user_manual_fallback"   # User manual SO_201 row 11 — match
+
+  - polozka_id: "SO201-T0-05"
+    otskp_kod: "02943"
+    popis: "OSTATNÍ POŽADAVKY — VYPRACOVÁNÍ RDS (Realizační dokumentace stavby)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál v rámci D&B"
+      vstupy:
+        rozsah:           {hodnota: 1,      jednotka: kpl, popis: "RDS pro DUR + DSP integrované",     zdroj: "ZD §4.3.b"}
+        rozsah_kc_min:    {hodnota: 200000, jednotka: Kč,  popis: "dolní hranice malý most",            zdroj: "ČKAIT sazebník"}
+        rozsah_kc_max:    {hodnota: 400000, jednotka: Kč,  popis: "horní hranice (komplexnější)",       zdroj: "ČKAIT sazebník"}
+      vypocet_kroky:
+        - "Midpoint pásma 200-400k = 300 000 Kč"
+    confidence: 0.65
+    jedn_cena_kc: 300000
+    cena_celkem_kc: 300000
+    source: "user_manual_fallback"   # User manual SO_201 row 12 — match
+
+  - polozka_id: "SO201-T0-06"
+    otskp_kod: "02944"
+    popis: "OSTATNÍ POŽADAVKY — DOKUMENTACE SKUTEČNÉHO PROVEDENÍ V DIGITÁLNÍ FORMĚ (DSPS)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál (digital outputs + pasport)"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kpl, popis: "DSPS digitálně + pasport per ZD §4.3.g",  zdroj: "ZD §4.3.g"}
+      vypocet_kroky:
+        - "Digital DSPS pro malý most = 80 000 Kč (orientační market)"
+    confidence: 0.7
+    jedn_cena_kc: 80000
+    cena_celkem_kc: 80000
+    source: "user_manual_fallback"   # User manual SO_201 row 13 — match
+
+  # ── Zkoušky (1 položka — zkoušení betonu + výztuže) ────────────────
+  - polozka_id: "SO201-T0-07"
+    otskp_kod: "02510"
+    popis: "ZKOUŠENÍ MATERIÁLŮ — laboratorní zkoušky betonu + výztuže (TKP 18 čl. 3.4)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "počet_etap_betonáže × zkoušky_per_etapa × sazba"
+      vstupy:
+        pocet_etap_betonaze:    {hodnota: 8,    jednotka: ks,  popis: "8 dílčích betonářských záběrů (sklížek + 2× základ + 2× opěra + mostovka + 2× příchod)", zdroj: "Phase C scheduler"}
+        zkousky_per_etapa:      {hodnota: 3,    jednotka: ks,  popis: "krychelná pevnost 28d + sleva 7d + zkoušky výztuže", zdroj: "TKP 18 čl. 3.4 + ČSN EN 12390"}
+        sazba_kc_zkouska:       {hodnota: 2500, jednotka: Kč,  popis: "lab cena per zkoušku",                              zdroj: "trh 2026"}
+      vypocet_kroky:
+        - "8 × 3 × 2500 = 60 000 Kč"
+    confidence: 0.8
+    jedn_cena_kc: 60000
+    cena_celkem_kc: 60000
+    source: "paušál_administrativní"
+
+  # ── Hlavní mostní prohlídka (1 položka) ────────────────────────────
+  - polozka_id: "SO201-T0-08"
+    otskp_kod: "02953"
+    popis: "OSTATNÍ POŽADAVKY — HLAVNÍ MOSTNÍ PROHLÍDKA (první po dokončení per ČSN 73 6221)"
+    mj: "KUS"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál per ČSN 73 6221"
+      vstupy:
+        rozsah:               {hodnota: 1,     jednotka: kus, popis: "první HPM po uvedení do provozu", zdroj: "ČSN 73 6221"}
+        sazba_kc_per_hpm:     {hodnota: 25000, jednotka: Kč,  popis: "standardní sazba HPM malý most",  zdroj: "trh 2026"}
+      vypocet_kroky:
+        - "1 × 25 000 = 25 000 Kč"
+    confidence: 0.85
+    jedn_cena_kc: 25000
+    cena_celkem_kc: 25000
+    source: "user_manual_fallback"   # User manual SO_201 row 14 — match
+
+  # ── Odborný dozor (1 položka — autorský + statický) ────────────────
+  - polozka_id: "SO201-T0-09"
+    otskp_kod: "0296"
+    popis: "OSTATNÍ POŽADAVKY — ODBORNÝ DOZOR (autorský + statický během stavby SO 201)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "doba_stavby × hodin_dozor_per_den × sazba"
+      vstupy:
+        doba_stavby_dni:    {hodnota: 135, jednotka: dní,    popis: "4.5 měs × 30 dní výstavba NK", zdroj: "Phase C harmonogram"}
+        hodin_per_den:      {hodnota: 2,   jednotka: hod,    popis: "průměrná přítomnost AO + statika", zdroj: "ČKAIT praxe"}
+        sazba_kc_hod:       {hodnota: 600, jednotka: Kč/hod, popis: "AO + statik",                  zdroj: "ČKAIT sazebník 2026"}
+      vypocet_kroky:
+        - "135 × 2 × 600 = 162 000 Kč"
+    confidence: 0.75
+    jedn_cena_kc: 162000
+    cena_celkem_kc: 162000
+    source: "paušál_administrativní"
+
+  # ── Informační tabule (1 položka) ──────────────────────────────────
+  - polozka_id: "SO201-T0-10"
+    otskp_kod: "02991"
+    popis: "OSTATNÍ POŽADAVKY — INFORMAČNÍ TABULE (stavba — investor + zhotovitel)"
+    mj: "KUS"
+    mnozstvi: 2
+    vypocet:
+      formula: "počet_pristupu × 1_tabule"
+      vstupy:
+        pristupy_obousmer: {hodnota: 2, jednotka: -, popis: "směr Žihle + směr Potvorov (před a za mostem)", zdroj: "HPM s.2"}
+      vypocet_kroky:
+        - "2 přístupy × 1 tabule = 2 ks"
+    confidence: 0.95
+    jedn_cena_kc: 8000
+    cena_celkem_kc: 16000
+    source: "user_manual_fallback"   # User manual SO_201 row 16 — match
+
+# =====================================================================
+# TOTALS — SO 201 TŘÍDA 0
+# =====================================================================
+
+totals:
+  trida_0_kc: 868000   # 45+100+65+15+300+80+60+25+162+16 (×1000)
+  SO_201_T0_total_kc: 868000
+  SO_201_T0_total_with_vat_kc: 1050280   # × 1.21
+  total_polozek: 10
+
+source_distribution:
+  user_manual_fallback_polozek: 5      # T0-04, T0-05, T0-06, T0-08, T0-10
+  user_manual_fallback_kc: 436000      # 15+300+80+25+16 (×1000)
+  paušál_administrativní_polozek: 5    # T0-01, T0-02, T0-03, T0-07, T0-09
+  paušál_administrativní_kc: 432000    # 45+100+65+60+162 (×1000)
+
+confidence_distribution:
+  high_0_85_to_1_0: 3       # T0-04 (0.85), T0-08 (0.85), T0-10 (0.95)
+  medium_0_70_to_0_84: 6    # T0-01 (0.8), T0-02 (0.7), T0-03 (0.7), T0-06 (0.7), T0-07 (0.8), T0-09 (0.75)
+  low_0_60_to_0_69: 1       # T0-05 RDS (0.65 — ČKAIT sazebník široké pásmo)
+  total_polozek: 10
+
+# =====================================================================
+# NO-WORK-DUPLICATION VALIDATION VS SO 001 + SO 180
+# =====================================================================
+
+no_work_duplication_validation:
+  shared_otskp_kody:
+    - kod: "02991 informační tabule"
+      SO_001_polozka: "T0-05 (2 ks — uzavírka + bypass info během demolice)"
+      SO_180_polozka: "—"
+      SO_201_T0_polozka: "T0-10 (2 ks — investor + zhotovitel během výstavby NK)"
+      explanation: |
+        DIFFERENT CONTEXT: SO 001 tabule jsou DIO/uzavírkové (informace o uzavírce mostu
+        + bypass), SO 201 tabule jsou stavební (investor + zhotovitel). Časově oddělené:
+        SO 001 tabule po dobu demolice + objízdky (~6 měs), SO 201 tabule po dobu
+        výstavby NK (~4.5 měs). Žádné překryvné období → no-duplication PASS.
+      total_ks_celkem: 4
+
+    - kod: "02510 zkoušení materiálů"
+      SO_001_polozka: "T0-03 (1 kpl — zkoušky materiálu při bourání: ŽB pevnost, ocel třída)"
+      SO_201_T0_polozka: "T0-07 (1 kpl — laboratorní zkoušky NOVÉHO betonu + výztuže)"
+      explanation: |
+        DIFFERENT MATERIAL: SO 001 zkouší ZBYTKY existujícího mostu (klasifikace suti pro
+        recyklaci). SO 201 zkouší NOVÝ beton + výztuž (TKP 18 čl. 3.4 + ČSN EN 12390).
+        Different lab + different procedure → no-duplication PASS.
+
+    - kod: "02960 / 0296 odborný dozor"
+      SO_001_polozka: "T0-04 (1 kpl — geologický + statický při demolici, 30 dní)"
+      SO_201_T0_polozka: "T0-09 (1 kpl — AO + statický během výstavby NK, 135 dní)"
+      explanation: |
+        DIFFERENT PHASE: SO 001 dozor jen pro etapu demolice (1 měsíc, geologický focus).
+        SO 201 dozor pro etapu výstavby (4.5 měs, autorský + statický focus).
+        Časově oddělené → no-duplication PASS.
+
+  duplications_found: 0
+  validation_status: "PASS — všechny shared OTSKP kódy mají context/timeline-separation explanation."
+
+  excluded_kody_already_in_other_SO:
+    - kod: "014102 poplatky za skládku"
+      already_in: "SO 001 T0-01 + SO 180 T0-01"
+      reason: "Skládka = demolice/zemní context. Hlavní stavba SO 201 nemá vlastní materiál pro skládku (beton + výztuž = nákupy, ne odpad)."
+
+    - kod: "014201 poplatky za zemník — zemina"
+      already_in: "SO 001 T0-02 (285 m³ zemina ze stavební jámy)"
+      reason: "Zemník = preparation phase. SO 201 betonáž neprodukuje zeminu."
+
+    - kod: "014211 poplatky za zemník — ornice"
+      already_in: "SO 180 T1-03 (150 m³ ornice ze záboru)"
+      reason: "Ornice = preparation phase. SO 201 hlavní stavba neproškrabuje terén."
+
+# =====================================================================
+# CROSS-REFERENCES
+# =====================================================================
+
+cross_references:
+  user_manual_source:        "../manual_reference_JS/SO_201_parsed.yaml — třída 0 (12 položek)"
+  reconciliation_report:     "../reconciliation_report.md § 2 (G1 — třída 0 100% missing v calculator)"
+  parent_master_soupis:      "master_soupis_SO_201_part1.yaml (full TSKP třídy 0-4 — supersedes this focused file)"
+  related_so:
+    - "master_soupis_SO_001.yaml (T0-03 zkoušení, T0-04 dozor, T0-05 tabule — different context)"
+    - "master_soupis_SO_180.yaml (provizorium — žádný překryv s SO 201 T0)"
+  task_spec:                 "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.4"
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "10 položek pokrývajících administrativu, dokumentaci, geodézii, zkoušky, dozor, tabule. Všechny per user manual SO_201 row 6-16 (12 originálních − 3 alokovaných do SO 001/180)."
+  - level: info
+    message: "Source distribution: 5 user_manual_fallback (rows direct match k user manual) + 5 paušál_administrativní (per ČKAIT sazebník 2026 + market rates)."
+  - level: info
+    message: "No-work-duplication PASS: 3 shared kódy s SO 001 (02991 tabule, 02510 zkoušení, 02960/0296 dozor) — context-separated. 3 OTSKP kódy explicitně vyloučeny (014102, 014201, 014211) jako already-in SO 001/180."
+  - level: info
+    message: "T0-05 RDS confidence 0.65 = nejnižší v této třídě — ČKAIT pásmo 200-400k Kč široké; pro tendrový offer doplnit konkrétní AO sazbu po uzavření smlouvy."
