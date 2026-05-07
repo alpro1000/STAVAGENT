@@ -93,19 +93,33 @@ def _num(x, default=0):
 
 
 def _split_popis(popis):
-    """Split popis on first em-dash / pomlčka into (canonical OTSKP, naše poznámka).
+    """Split popis on first em-dash / pomlčka / trailing-parens into (canonical OTSKP, naše poznámka).
 
-    Separators tried in order: em-dash '—', en-dash '–', double-hyphen '--'.
-    If no separator found, entire string returns as canonical, second column empty.
+    Heuristics tried in order:
+      1. Em-dash '—', en-dash '–', or double-hyphen '--' — split on first occurrence.
+      2. Trailing parenthesized extension: 'CANONICAL TEXT (extension)' — split, leaving
+         parens contents as our note. Only matched when the closing paren is at the very
+         end of the string (mid-string parens like 'C30/37 (B500B)' stay in canonical).
+      3. No separator found — entire string is canonical, second column empty.
+
+    Plain hyphens '-' are NOT used as separators (they appear inside canonical OTSKP
+    names like 'POPLATKY ZA ZEMNÍK - ZEMINA').
     """
     if not popis:
         return "", ""
-    text = str(popis)
+    text = str(popis).strip()
+    # 1. Em-dash family first
     for sep in ['—', '–', '--']:
         if sep in text:
             head, tail = text.split(sep, 1)
             return head.strip(), tail.strip()
-    return text.strip(), ""
+    # 2. Trailing-parens extension: 'CANONICAL (... extension)' at end of string
+    import re as _re
+    m = _re.match(r'^(.+?)\s+\(([^)]+)\)\s*$', text)
+    if m:
+        return m.group(1).strip(), m.group(2).strip()
+    # 3. No separator
+    return text, ""
 
 
 def _format_vypocet(item):
