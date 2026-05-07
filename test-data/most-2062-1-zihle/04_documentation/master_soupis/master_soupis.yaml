@@ -4,16 +4,16 @@ project: Most ev.č. 2062-1 u obce Žihle
 sandbox_status: Phase D — Master soupis (Session 2 KOMPLETNÍ)
 totals:
   total_polozek: 181
-  total_kc_bez_dph: 12449723
-  total_kc_s_dph_21pct: 15064165
-  vs_zd_limit_30M_pct: 50.2
+  total_kc_bez_dph: 12201523
+  total_kc_s_dph_21pct: 14763843
+  vs_zd_limit_30M_pct: 49.2
 per_SO:
 - SO: SO_001
   label: Demolice stávajícího mostu
   polozek: 30
   kc_bez_dph: 1057831
   kc_s_dph: 1279976
-  podil_pct: 8.5
+  podil_pct: 8.7
   source_files:
   - master_soupis_SO_001.yaml
   phase_c_days_approx: 45
@@ -22,7 +22,7 @@ per_SO:
   polozek: 26
   kc_bez_dph: 2047138
   kc_s_dph: 2477037
-  podil_pct: 16.4
+  podil_pct: 16.8
   source_files:
   - master_soupis_SO_180.yaml
   phase_c_days_approx: 30
@@ -31,7 +31,7 @@ per_SO:
   polozek: 72
   kc_bez_dph: 4435958
   kc_s_dph: 5367509
-  podil_pct: 35.6
+  podil_pct: 36.4
   source_files:
   - master_soupis_SO_201_t0.yaml
   - master_soupis_SO_201_t1_t2.yaml
@@ -44,16 +44,16 @@ per_SO:
   polozek: 12
   kc_bez_dph: 1952470
   kc_s_dph: 2362489
-  podil_pct: 15.7
+  podil_pct: 16.0
   source_files:
   - master_soupis_SO_290.yaml
   phase_c_days_approx: 25
 - SO: SO_801
   label: Zařízení staveniště (detailní)
   polozek: 25
-  kc_bez_dph: 1288054
-  kc_s_dph: 1558545
-  podil_pct: 10.3
+  kc_bez_dph: 1204854
+  kc_s_dph: 1457873
+  podil_pct: 9.9
   source_files:
   - master_soupis_SO_801.yaml
   phase_c_days_approx: 330
@@ -62,16 +62,16 @@ per_SO:
   polozek: 3
   kc_bez_dph: 560000
   kc_s_dph: 677600
-  podil_pct: 4.5
+  podil_pct: 4.6
   source_files:
   - master_soupis_PRESUN_HMOT.yaml
   phase_c_days_approx: 180
 - SO: VRN
   label: Vedlejší rozpočtové náklady
   polozek: 13
-  kc_bez_dph: 1108272
-  kc_s_dph: 1341009
-  podil_pct: 8.9
+  kc_bez_dph: 943272
+  kc_s_dph: 1141359
+  podil_pct: 7.7
   source_files:
   - master_soupis_VRN.yaml
   phase_c_days_approx: 330
@@ -85,7 +85,8 @@ source_distribution:
   vendor_pricing_median: 3
   paušál_administrativní: 6
   calculator_deterministic: 13
-  d6_template_scaled: 41
+  d6_template_scaled: 37
+  kfely_mostovy_benchmark: 4
 reconciliation_flags_count: 12
 critical_items_count: 6
 otskp_codes_total_unique: 114

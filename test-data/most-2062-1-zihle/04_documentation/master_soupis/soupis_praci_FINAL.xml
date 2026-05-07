@@ -17,7 +17,7 @@
     <investor>Plzeňský kraj</investor>
     <kso>823 26</kso>
     <cpv>45221111-3 Výstavba silničních mostů</cpv>
-    <poznamka>Master soupis FINAL — 181 položek, 12,449,723 Kč bez DPH. Sandbox výstup.</poznamka>
+    <poznamka>Master soupis FINAL — 181 položek, 12,201,523 Kč bez DPH. Sandbox výstup.</poznamka>
     <objekty>
       <objekt>
         <kod_objektu>SO 001</kod_objektu>
@@ -2345,10 +2345,10 @@ segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy ne
             <mj>CESTA</mj>
             <mnozstvi>2</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>4000</jednotkova_cena>
+            <jednotkova_cena>4400</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: kfely_mostovy_benchmark</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-08</uzivatelske_zarazeni>
           </polozka>
           <polozka>
@@ -2476,14 +2476,14 @@ segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy ne
             <typ_polozky>HSV</typ_polozky>
             <kod_polozky></kod_polozky>
             <cislo_polozky>17</cislo_polozky>
-            <nazev_polozky>ELEKTRICKÁ ENERGIE — SPOTŘEBA (PHM + tarif)</nazev_polozky>
+            <nazev_polozky>ELEKTRICKÁ ENERGIE — SPOTŘEBA GRID (600 kWh/měs × 11 měs × 6.5 Kč/kWh, ČEZ D02 obchod 2026)</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>30000</jednotkova_cena>
+            <jednotkova_cena>66000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.75 | Source: kfely_mostovy_benchmark</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-17</uzivatelske_zarazeni>
           </polozka>
           <polozka>
@@ -2570,10 +2570,10 @@ segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy ne
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>200000</jednotkova_cena>
+            <jednotkova_cena>80000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.9 | Source: d6_template_scaled</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.9 | Source: kfely_mostovy_benchmark</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-23</uzivatelske_zarazeni>
           </polozka>
           <polozka>
@@ -2676,14 +2676,14 @@ segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy ne
             <typ_polozky>HSV</typ_polozky>
             <kod_polozky></kod_polozky>
             <cislo_polozky>1</cislo_polozky>
-            <nazev_polozky>POLÍR / STAVBYVEDOUCÍ (50 % time — sdílen s druhou stavbou)</nazev_polozky>
-            <mj>OSOBA-MES</mj>
-            <mnozstvi>5,5</mnozstvi>
+            <nazev_polozky>STAVBYVEDOUCÍ — část. úvazek 30 % (~12 hod/týden, real CZ market for small mostovy projects)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>11</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>90000</jednotkova_cena>
+            <jednotkova_cena>30000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.8 | Source: kfely_mostovy_benchmark</poznamka_polozky>
             <uzivatelske_zarazeni>VRN-01</uzivatelske_zarazeni>
           </polozka>
           <polozka>

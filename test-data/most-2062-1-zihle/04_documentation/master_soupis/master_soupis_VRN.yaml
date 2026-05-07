@@ -39,23 +39,21 @@ vrn_polozky:
 
   - polozka_id: "VRN-01"
     kod_polozky: "VRN-01"
-    popis: "POLÍR / STAVBYVEDOUCÍ (50 % time — sdílen s druhou stavbou)"
-    mj: "OSOBA-MES"
-    mnozstvi: 5.5
-    jedn_cena_kc: 90000
-    cena_celkem_kc: 495000
+    popis: "STAVBYVEDOUCÍ — část. úvazek 30 % (~12 hod/týden, real CZ market for small mostovy projects)"
+    mj: "MES"
+    mnozstvi: 11
+    jedn_cena_kc: 30000
+    cena_celkem_kc: 330000
     vypocet:
-      formula: "time_share × měs × cena"
+      formula: "měsíce × cena_part_time"
       vstupy:
-        time_share:   {hodnota: 0.5, jednotka: "-", popis: "polír sdílen s další stavbou (real practice for small projects)", zdroj: "Žihle scale-aware decision (task interview default)", confidence: 0.75}
-        mesice:       {hodnota: 11, jednotka: měs, popis: "doba aktivního staveniště", zdroj: "Phase C", confidence: 0.85}
-        cena:         {hodnota: 90000, jednotka: "Kč/měs", popis: "polír full-time superhrubá mzda + benefity", zdroj: "D6 template (3 souborů identical)", confidence: 0.9}
+        mesice:           {hodnota: 11,    jednotka: měs,    popis: "doba aktivního staveniště",                                zdroj: "Phase C harmonogram", confidence: 0.85}
+        cena_part_time:   {hodnota: 30000, jednotka: "Kč/měs", popis: "part-time stavbyvedoucí ~12 hod/týden (CZ market 2026 pro mostovy <20M projects)", zdroj: "Kfely mostovy benchmark + tržní 2026", confidence: 0.8}
       vypocet_kroky:
-        - "0.5 × 11 = 5.5 osoba-měs (effective)"
-        - "5.5 × 90 000 = 495 000 Kč"
+        - "11 × 30 000 = 330 000 Kč"
     confidence: 0.8
-    source: "d6_template_scaled"
-    poznamka: "Default 50%. Alt 100% raises +495k pokud user requires dedicated polír. Alt 30% lowers -198k pokud part-time supervision dostatečné."
+    source: "kfely_mostovy_benchmark"
+    poznamka: "RECALIBRATED Session 4 — Žihle malý mostovy projekt (10.5M, 11 měs). Full-time polír 90k/měs (D6 highway urban) disproportionate. Kfely I/20 mostovy benchmark + CZ trh 2026 → realistic part-time 30k/měs (delta -165k vs D6 50%×90k=495k). Pokud user requires full-time supervision, raise to 90k/měs +660k."
 
   - polozka_id: "VRN-02"
     kod_polozky: "VRN-02"
@@ -259,8 +257,12 @@ vrn_polozky:
 # =====================================================================
 
 totals:
-  VRN_total_kc: 1043272
-  VRN_total_with_vat_kc: 1262359    # × 1.21
+  VRN_total_kc: 943272               # Session 4: VRN-01 polír 495k → 330k stavbyvedoucí part-time, delta -165k (oh wait math: -165k means 1108272 - 165000 = 943272)
+  # Original Session 3 total was 1 108 272 (13 položek):
+  #   495 + 42.343 + 90 + 45 + 100 + 52.929 + 35 + 45 + 88 + 50 + 30 + 18 + 17 = 1108.272k
+  # Session 4 delta: VRN-01 495 → 330 = -165k
+  # New total: 1 108 272 - 165 000 = 943 272 Kč
+  VRN_total_with_vat_kc: 1141359     # × 1.21
   total_polozek: 13
 
 cross_check_vs_csn_73_0212_pasmo:
@@ -276,8 +278,10 @@ cross_check_vs_csn_73_0212_pasmo:
   verdict: "PASS — Žihle 9.2 % is within D6 reference pásma. Long-duration small project = high VRN %."
 
 source_distribution:
-  d6_template_scaled: 13
-  d6_template_scaled_kc: 1043272
+  d6_template_scaled: 12
+  d6_template_scaled_kc: 613272      # 943272 - 330000 (VRN-01 stavbyvedoucí is kfely_mostovy_benchmark)
+  kfely_mostovy_benchmark: 1
+  kfely_mostovy_benchmark_kc: 330000
 
 confidence_distribution:
   high_0_85_to_1_0: 6
@@ -292,12 +296,14 @@ removed_per_no_work_duplication:
 
 flags:
   - level: info
-    message: "REPLACES předchozí 5-položkovou paušální verzi (commit 068f5683 311 839 Kč). Detailized 13-item structure d6_template_scaled."
+    message: "REPLACES předchozí 5-položkovou paušální verzi (commit 068f5683 311 839 Kč). Detailized 13-item structure."
+  - level: info
+    message: "Session 4 recalibration: VRN-01 polír 50%×90k (D6 highway 495k) → stavbyvedoucí part-time 30%×30k (Kfely mostovy 330k). Delta -165k. Mostovy malý projekt (Žihle 10.5M) requires part-time supervision, ne full-time polír."
   - level: info
     message: "RDS/DSPS/dílenská REMOVED per no-work-duplication (kept v SO 201 t0). Save -310k vs Žihle Lessons initial estimate."
   - level: info
-    message: "VRN-09 koordinátor BOZP = legal coordinator (zákon 309/2006 Sb.). NEPLÉTAT s SO 801 T0-23 BOZP zabezpečení (physical safety equipment 200k). Different items."
+    message: "VRN-09 koordinátor BOZP = legal coordinator (zákon 309/2006 Sb.). NEPLÉTAT s SO 801 T0-23 BOZP zabezpečení 80k (physical safety equipment, Kfely benchmark). Different items."
   - level: warning
     message: "VRN-13 Povodí Vltavy souhlas — process pre P0 BLOCKER (parcels 1836+385/13 Mladotický potok). Real cost vyžaduje user RFQ."
   - level: warning
-    message: "D6 unit prices 2022-2023. Inflation NOT applied. Vendor RFQ doporučeno před tendrem."
+    message: "D6 + Kfely unit prices 2022-2023. Inflation 2022-2026 NOT applied. Vendor RFQ doporučeno před tendrem."
