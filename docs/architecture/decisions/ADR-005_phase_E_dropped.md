@@ -1,98 +1,218 @@
 # ADR-005: Drop Phase E (Engineering Drawings) from STAVAGENT Output
 
-## Status
+**Status:** Accepted
+**Date:** 2026-05-07
+**Deciders:** Alexander (founder), Claude (technical analysis)
+**Pilot project:** Žihle 2062-1 D&B tendr
 
-**Accepted** — 2026-05-07
-Validated against: Žihle 2062-1 D&B pilot.
+---
 
 ## Context
 
-Žihle pilot included a Phase E experiment — auto-generate situace M 1:500 SVG from GPX +
-DXF kadastr + Phase B parametric inputs (bridge polygon, skew, zábor). The proof-of-concept
-worked technically (`test-data/most-2062-1-zihle/build_situace_svg.py` →
-`C.2.1_situace_M1_500.svg` + PNG via cairosvg, commit `218f03a2`). The output is
-human-readable, scaled correctly, parses in browsers + PDF readers.
+Žihle pilot (April-May 2026) included experimental **Phase E** — auto-generate situace
+M 1:500 SVG drawings from multimodal sources:
 
-The question: should "engineering drawings" become a STAVAGENT workflow deliverable
-alongside TZ + soupis, or stay as an internal validation tool?
+- **GPX trace** (Mapy.cz manual measurement, 116 m provizorium, 6 GPS points)
+- **DXF kataster** (1986 entities, 36 layers, S-JTSK coordinate system)
+- **Phase B parameters** (most 9.0 × 8.30 m, šikmost 50°)
+- **Site photos** (orientation reference)
+
+### What we built
+
+`build_situace_v2.py` (Python svgwrite) generates technical drawing-style SVG:
+- M 1:500 scale, A3 portrait
+- Title block, scale bar, north arrow, legenda
+- Bridge polygon (rotated by šikmost relative to road direction)
+- Provizorium GPX trace overlay
+- Mladotický potok schematic
+- Záboru pozemku polygon
+
+**Outputs:**
+- `04_documentation/výkresy/C.2.1_situace_M1_500.svg`
+- `04_documentation/výkresy/C.2.1_situace_M1_500.png`
+
+### Quality assessment
+
+✅ **Pipeline works** — multimodal extraction → vector drawing
+✅ **Geometry accurate** — GPS within ±1-3 m, DXF coordinates exact
+⚠️ **Visual quality "engineering schematic"** — not CAD-grade
+⚠️ **Iterations needed** for orientation correction (provizorium side, bridge rotation)
+❌ **Not production-grade** for DPS submission
+
+---
 
 ## Decision
 
 **STAVAGENT does NOT produce engineering CAD drawings as deliverable.**
 
-Engineering drawings (situace M 1:500/1:200, podélný řez, příčný řez, výkres výztuže,
-detail bednění) are explicitly out of scope. The capability to render lightweight SVG/PDF
-from extracted geometry is retained **only as a validation tool** (sanity-check that the
-extracted bridge polygon + GPX trace + DXF kadastr are geometrically consistent).
+Phase E experiments are **deprecated**. Capability retained for **internal validation
+tooling only**.
+
+---
 
 ## Reasoning
 
-1. **CAD is mature engineering domain.** AutoCAD / Revit / MicroStation / TurboCAD have
-   30+ years of feature depth, ISO/ČSN-conformant linetypes, layer conventions, title-block
-   standards, and ČKAIT-recognized output formats (DWG/DGN). STAVAGENT cannot match this in
-   the foreseeable roadmap, and approximating it produces output that looks engineering-
-   grade but isn't.
+### 1. CAD is mature engineering domain (30+ years)
 
-2. **Real DPS submission requires authorized projektant signature** (ČKAIT autorizovaný
-   inženýr or autorizovaný architekt) per zákon 360/1992 Sb. + ČSN 01 3420. The signature
-   carries personal legal liability for the geometry. AI-generated drawings cannot be
-   signed; a human projektant who signs an AI drawing they didn't author + verify is taking
-   on liability they may not realize.
+AutoCAD (1982), Revit (2002), MicroStation, ZWCAD, BricsCAD — these tools are:
+- **Vector-native** with mathematical precision
+- **Layer-based** for complex multi-discipline drawings
+- **Standards-compliant** (ČSN ISO 128 for technical drawings, layers per VL 4)
+- **Plotter-ready** with proper line weights, hatches, dimensions
+- **Feedback loops** with engineering offices for decades
 
-3. **STAVAGENT moat is the text/data layer** — TZ generation from KB normy, soupis
-   reconciliation across calculator + user manual + vendor data, audit trail per položka,
-   OTSKP/ÚRS classification. That's where deterministic-first AI offers leverage. CAD is
-   not where the differentiation lives.
+Competing as AI-generated SVG = **technically and economically infeasible**.
 
-4. **Tendrová praxe accepts** "výkresy budou součást DPS zhotovitele" in DUR-stage
-   submissions. STAVAGENT's text package + reference to "výkresy by zhotovitel/projektant"
-   is a complete, non-misleading deliverable.
+### 2. Real DPS requires authorized projektant signature
+
+CZ legal requirement: výkresové dokumentace pro stavebné povolení musí být:
+- **Signed by autorizovaný projektant** (ČKAIT certification)
+- **Liability-bound** to that person
+- **Reviewed by statik** for structural elements
+
+AI-generated drawings:
+- **Cannot be signed** (no ČKAIT certification)
+- **Cannot bear liability** (legal entity required)
+- **Will not be accepted** by stavebný úřad without overlay from real projektant
+
+Even if AI drawing 100% accurate → real projektant must redraw in AutoCAD with their seal.
+Our work = wasted effort.
+
+### 3. STAVAGENT moat is in different domain
+
+**Where STAVAGENT wins:**
+- Text/data layer extraction (TZ, soupis prací)
+- Multi-source intelligence (KB + calculator + vendor + manual)
+- Audit trail generation (formula + vstupy + kroky + confidence)
+- Reconciliation framework (3-source triangulation)
+- TSKP hierarchical organization
+- Vendor pricing integration
+
+**Where STAVAGENT cannot win:**
+- Vector drawing precision and tools
+- Engineering domain expertise depth
+- Legal/liability framework
+- Specialized rendering (sections, details, isometrics)
+
+**Strategic principle:** narrow scope, deeper moat. Don't dilute value proposition by
+attempting tasks where mature tools dominate.
+
+### 4. User feedback validates pivot
+
+Direct user quote (2026-05-07):
+> "не очень получилось но уже хоть со стороны наверное забьем это не важно
+> наверно не надо так делать вообще"
+
+Translation: not worth pursuing, drop it.
+
+User experience confirms theoretical analysis.
+
+---
 
 ## What we KEEP
 
-- Capability to **extract geometry** from GPX traces + DXF kadastr + Phase B parametric
-  inputs — used downstream for VALIDATION (sanity-check bridge bounding box, parcel
-  overlap, skew consistency).
-- Optional **Nano Banana / GPT-4o marketing illustrations** for landing pages, blog posts,
-  and pre-tender presentations — clearly labelled "Illustrative only — not to scale, not
-  for engineering use."
-- The Žihle Phase E artefakty (`build_situace_svg.py`, `C.2.1_situace_M1_500.svg`/`.png`,
-  `cross_validation_notes.md`) stay in the repo as **validation tooling** + golden-test
-  reference for the geometry-extraction pipeline.
+### Capability for internal validation
+The geometric extraction pipeline (GPX + DXF + Phase B params → coordinate system)
+is **valuable** for:
+
+1. **Sanity check** — Phase A/B dimensions consistent across sources?
+2. **Cross-validation** — vendor situace vs our Phase B params match?
+3. **Audit trail** — visual representation of "what we extracted"
+4. **Internal QA workflow** — projektant reviews extraction visually before approval
+
+### Optional marketing illustrations
+For pitch decks, investor materials, marketing:
+- **Nano Banana** (Gemini 2.5 image, ~$0.04/img)
+- **GPT-4o image generation** for hero visuals
+- **Clearly labeled "AI illustration, not engineering drawing"**
+
+These have NO claim to engineering accuracy — purely visual.
+
+---
 
 ## What we DROP
 
-- **Phase E as a workflow deliverable** — no future pilot project includes Phase E in its
-  task scope.
-- **SVG/PDF outputs framed as "professional drawings"** — internal naming changes from
-  `C.2.1_situace_M1_500.svg` (which mimics ČSN 01 3420 výkres číslování) to neutral names
-  like `geometry_validation.svg` for new projects.
-- **Pretense of CAD-grade quality** in marketing/sales materials — no "STAVAGENT generates
-  výkresy" claims.
-- **Tendrový package wording** "Výkresy: viz přiložené SVG" → replaced by "Výkresy v rámci
-  DPS zhotovitele per ZD §X.Y."
+### Phase E as workflow stage
+- ❌ No `Phase E` deliverable in workflow A→B→C→D→...
+- ❌ No `výkresy/` directory mandatory in `04_documentation/`
+- ❌ No SVG/PDF as "professional drawings"
+
+### Pretense of CAD-grade quality
+- ❌ Title blocks emulating ČSN ISO 7200
+- ❌ Scale bar 1:500 implying engineering accuracy
+- ❌ Legenda mimicking real výkresová dokumentace
+
+These create false expectations. Either deliver real CAD or don't pretend.
+
+### Žihle Phase E artifacts status
+- `build_situace_v2.py` → moved to `tools/internal/geometry_extraction/`
+- `C.2.1_situace_M1_500.svg` → kept v `04_documentation/výkresy/` with header comment:
+  ```
+  <!-- INTERNAL VALIDATION TOOL — NOT FOR TENDER SUBMISSION
+       Real engineering drawings must be produced by authorized projektant in AutoCAD.
+       This SVG is auto-extracted geometry for QA/sanity-check purposes only. -->
+  ```
+
+---
 
 ## Consequences
 
-- **Žihle reference project status:** `tender_ready` per `metadata.yaml`. The phase_d_e
-  block stays valid because the SVG artefakty are now framed as validation tooling, not
-  deliverable. No code or commit is reverted.
-- **Future pilot projects:** Phase A → B → C → D → submission. Phase E task is removed
-  from the standard checklist.
-- **TZ wording:** TZ generators reference "výkresy součást DPS zhotovitele" rather than
-  embedding SVG. Žihle TZ B-section already uses neutral wording — no retroactive edit
-  needed.
-- **Marketing:** AI illustrations for landing pages allowed only with disclaimer
-  ("Ilustrativní — nikoli technický výkres").
-- **Backlog impact:** any backlog item proposing Phase E expansion (e.g.
-  "build_podelny_rez.py", "build_pricny_rez.py") is now closed-as-rejected with link to
-  this ADR.
+### Positive
+1. **Sharper product positioning** — "AI for text/data, projektant for drawings"
+2. **Reduced engineering complexity** — no CAD library maintenance, no layer standards
+3. **Lower customer expectations** alignment — real customers know they need projektant
+4. **Faster pilot iteration** — Phase A→D done in days, not weeks
+5. **Clearer pricing model** — STAVAGENT data layer + 3rd party CAD = transparent
 
-## Cross-references
+### Negative
+1. **Deliverable looks "incomplete"** — TZ + soupis without drawings
+2. **Customer education needed** — explain why we don't do drawings
+3. **Marketing visuals require alternative** — Nano Banana / GPT-4o for pitch
+4. **Some real projektants prefer integrated tool** — CAD + smety in one
 
-- Žihle Phase E artefakty: `test-data/most-2062-1-zihle/04_documentation/výkresy/`
-- Žihle Phase E build script: `test-data/most-2062-1-zihle/build_situace_svg.py`
-- Cross-validation against vendor situace: `test-data/most-2062-1-zihle/04_documentation/výkresy/cross_validation_notes.md`
-- Product patterns: `docs/STAVAGENT_PATTERNS.md`
-- ČSN 01 3420 (výkresy stavebních konstrukcí) — out of repo, ÚNMZ
-- Zákon 360/1992 Sb. (autorizace ve výstavbě) — out of repo, MMR
+### Mitigation
+- **Customer communication:** "STAVAGENT generates 80% of D&B documentation
+  (TZ + soupis prací). Drawings produced by your projektant in AutoCAD/Revit.
+  We integrate via standard exports (DWG/DXF/PDF)."
+- **Partnership opportunity:** referral pipeline with projekční kanceláře (mutual benefit)
+- **Future re-evaluation:** if AI CAD tools mature significantly (5+ years), reconsider
+
+---
+
+## Validation criteria
+
+ADR-005 considered **successful** if:
+- ✅ STAVAGENT pilot Žihle complete without engineering drawings (achieved 2026-05-07)
+- ✅ Customer feedback distinguishes STAVAGENT scope from CAD work
+- ✅ No customer churn citing missing drawings as primary reason
+- ✅ Reduced engineering load on STAVAGENT team
+
+ADR-005 considered **needs revision** if:
+- ⚠️ Multiple customers cite drawings as deal-breaker
+- ⚠️ Mature open-source AI CAD tool emerges (e.g., AutoCAD with native AI)
+- ⚠️ Legal framework changes allowing AI-signed drawings
+- ⚠️ Direct competitor offers AI drawings successfully
+
+---
+
+## References
+
+- **Pilot project:** Žihle 2062-1 (test-data/most-2062-1-zihle/)
+- **Phase E artifacts:** commit `218f03a2` (initial), iteration `zihle_situace_v2.svg`
+- **STAVAGENT patterns:** `docs/STAVAGENT_PATTERNS.md`
+- **Related ADRs:** ADR-001 (audit trail mandatory), ADR-003 (calculator deterministic default)
+
+---
+
+## Appendix: Alternative considered — Generate DXF for projektant import
+
+**Idea:** instead of "final" SVG, produce DXF with extracted geometry for projektant
+to import into AutoCAD as starting layer.
+
+**Why rejected:**
+- Projektant already has tools to extract from GPX/DXF (their workflow)
+- DXF generated by AI may have wrong layer conventions per office standards
+- Liability concerns — projektant accepts liability only for own work
+- Adds maintenance burden for marginal value
+
+**Decision:** not worth implementing. Projektant workflow undisturbed.

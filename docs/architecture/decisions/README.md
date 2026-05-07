@@ -13,6 +13,10 @@ immutable once accepted — supersede with a new ADR rather than edit history.
 > per-SO chunking, TSKP hierarchy). They will be promoted to standalone ADRs when
 > a future pilot project re-validates or stress-tests them.
 
+> **Note (2026-05-07 conflict resolve):** ADR-005 originally landed at flat
+> `docs/ADR-005_phase_E_dropped.md` on `main`. Moved to this structured directory
+> here on the Žihle branch — flat copy removed.
+
 ## Convention
 
 - File name: `ADR-NNN_short_slug.md`
