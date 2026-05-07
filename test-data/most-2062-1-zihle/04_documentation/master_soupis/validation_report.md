@@ -2,8 +2,8 @@
 
 **Generated:** 2026-05-07
 **Total položek:** 181
-**Total cena:** 12,449,723 Kč bez DPH (15,064,165 Kč s DPH 21 %)
-**vs ZD limit 30 M Kč:** 50.2 %
+**Total cena:** 12,201,523 Kč bez DPH (14,763,843 Kč s DPH 21 %)
+**vs ZD limit 30 M Kč:** 49.2 %
 
 ---
 
@@ -11,14 +11,14 @@
 
 | SO | Název | Položek | Kč bez DPH | Podíl |
 |---|---|---:|---:|---:|
-| **SO_001** | Demolice stávajícího mostu | 30 | 1,057,831 | 8.5 % |
-| **SO_180** | Mostní provizorium + objízdná trasa | 26 | 2,047,138 | 16.4 % |
-| **SO_201** | Most ev.č. 2062-1 | 72 | 4,435,958 | 35.6 % |
-| **SO_290** | Silnice III/206 2 (návaznosti) | 12 | 1,952,470 | 15.7 % |
-| **SO_801** | Zařízení staveniště (detailní) | 25 | 1,288,054 | 10.3 % |
-| **PRESUN_HMOT** | Přesun hmot stavby | 3 | 560,000 | 4.5 % |
-| **VRN** | Vedlejší rozpočtové náklady | 13 | 1,108,272 | 8.9 % |
-| | **TOTAL** | **181** | **12,449,723** | **100.0 %** |
+| **SO_001** | Demolice stávajícího mostu | 30 | 1,057,831 | 8.7 % |
+| **SO_180** | Mostní provizorium + objízdná trasa | 26 | 2,047,138 | 16.8 % |
+| **SO_201** | Most ev.č. 2062-1 | 72 | 4,435,958 | 36.4 % |
+| **SO_290** | Silnice III/206 2 (návaznosti) | 12 | 1,952,470 | 16.0 % |
+| **SO_801** | Zařízení staveniště (detailní) | 25 | 1,204,854 | 9.9 % |
+| **PRESUN_HMOT** | Přesun hmot stavby | 3 | 560,000 | 4.6 % |
+| **VRN** | Vedlejší rozpočtové náklady | 13 | 943,272 | 7.7 % |
+| | **TOTAL** | **181** | **12,201,523** | **100.0 %** |
 
 ---
 
@@ -38,9 +38,10 @@
 |---|---:|---:|
 | user_manual_fallback | 73 | 40.3 % |
 | unspecified | 45 | 24.9 % |
-| d6_template_scaled | 41 | 22.7 % |
+| d6_template_scaled | 37 | 20.4 % |
 | calculator_deterministic | 13 | 7.2 % |
 | paušál_administrativní | 6 | 3.3 % |
+| kfely_mostovy_benchmark | 4 | 2.2 % |
 | vendor_pricing_median | 3 | 1.7 % |
 
 ---
@@ -284,7 +285,7 @@ OTSKP kódy explicitně vyloučené z master soupis per ZD constraints — dokum
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-05 |  | BUŇKY ŠATNY — PRONÁJEM | KS-MES | 11 | 19,800 | 0.85 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-06 |  | BUŇKY SKLADY — PRONÁJEM (nářadí, drobný materiál) | KS-MES | 11 | 16,500 | 0.85 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-07 |  | SCHODIŠTĚ K BUŇKOVIŠTI | KPL | 1 | 8,000 | 0.85 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-08 |  | DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ | CESTA | 2 | 8,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-08 |  | DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ | CESTA | 2 | 8,800 | 0.85 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-09 |  | VYBAVENÍ BUNĚK (50 % scale: 1 stůl + 4 židle + 1 s | KPL | 1 | 42,104 | 0.8 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-10 |  | WC TOI-TOI — PRONÁJEM (mobilní toalety bez kanaliz | KS-MES | 11 | 26,400 | 0.85 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-11 |  | OPLOCENÍ STAVENIŠTĚ — MONTÁŽ + DEMONTÁŽ (mobilní 2 | M | 200 | 9,600 | 0.75 |
@@ -293,19 +294,19 @@ OTSKP kódy explicitně vyloučené z master soupis per ZD constraints — dokum
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-14 |  | LIKVIDACE ZAŘÍZENÍ STAVENIŠTĚ (po dokončení stavby | KPL | 1 | 25,000 | 0.85 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-15 |  | OSVĚTLENÍ STAVBY (LED reflektory + sloupy + kabelá | KPL | 1 | 130,000 | 0.8 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-16 |  | ELEKTROCENTRÁLA PŘENOSNÁ (záložní zdroj — výpadky  | KS-MES | 11 | 12,650 | 0.75 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-17 |  | ELEKTRICKÁ ENERGIE — SPOTŘEBA (PHM + tarif) | KPL | 1 | 30,000 | 0.7 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-17 |  | ELEKTRICKÁ ENERGIE — SPOTŘEBA GRID (600 kWh/měs ×  | KPL | 1 | 66,000 | 0.75 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-18 |  | PŘÍPOJKA ELEKTRO (provedení + měřič — Žihle obec Č | KPL | 1 | 150,000 | 0.7 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-19 |  | PŘÍPOJKA VODY (přípojka + měřič — vodovod přes obe | KPL | 1 | 50,000 | 0.75 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-20 |  | UŽITKOVÁ VODA — SPOTŘEBA (sociální + technická) | MES | 11 | 38,500 | 0.8 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-21 |  | ČIŠTĚNÍ KOMUNIKACÍ — MYCÍ LINKA (POVINNÉ per ČSN 7 | KPL | 1 | 105,000 | 0.85 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-22 |  | DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY (5 ks DZ + sloupky | KS | 5 | 75,000 | 0.85 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-23 |  | BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě  | KPL | 1 | 200,000 | 0.9 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-23 |  | BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě  | KPL | 1 | 80,000 | 0.9 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-24 |  | ZIMNÍ OPATŘENÍ — ZAKRÝVÁNÍ STAVBY (geotextílie, pl | KPL | 1 | 50,000 | 0.75 |
 | SO_801 | trida_0_zarizeni_staveniste | SO801-T0-25 |  | ZIMNÍ OPATŘENÍ — TEMPEROVÁNÍ BETONU (zahřívání čer | KPL | 1 | 75,000 | 0.75 |
 | PRESUN_HMOT | presun_hmot | PH-01 |  | KRAMER BEZ OBSLUHY + NAFTA (univerzální nakladač p | MES | 6 | 210,000 | 0.85 |
 | PRESUN_HMOT | presun_hmot | PH-02 |  | POMOCNÍ PRACOVNÍCI PŘI PŘESUNECH HMOT | OSOBA-MES | 4 | 200,000 | 0.85 |
 | PRESUN_HMOT | presun_hmot | PH-03 |  | AUTOJEŘÁB S OBSLUHOU (montáž bednění + výztuže + b | HOD | 100 | 150,000 | 0.85 |
-| VRN | vrn_polozky | VRN-01 |  | POLÍR / STAVBYVEDOUCÍ (50 % time — sdílen s druhou | OSOBA-MES | 5.5 | 495,000 | 0.8 |
+| VRN | vrn_polozky | VRN-01 |  | STAVBYVEDOUCÍ — část. úvazek 30 % (~12 hod/týden,  | MES | 11 | 330,000 | 0.8 |
 | VRN | vrn_polozky | VRN-02 |  | POJIŠTĚNÍ STAVBY CAR (Contractor's All Risks + odp | KPL | 1 | 42,343 | 0.85 |
 | VRN | vrn_polozky | VRN-03 |  | GEODET — KONTROLNÍ MĚŘENÍ BĚHEM KONSTRUKCE (contin | MES | 3 | 90,000 | 0.8 |
 | VRN | vrn_polozky | VRN-04 |  | GEOMETRICKÝ PLÁN (kolaudační podklad pre KÚ) | KPL | 1 | 45,000 | 0.85 |
@@ -324,9 +325,9 @@ OTSKP kódy explicitně vyloučené z master soupis per ZD constraints — dokum
 ## 10. Sanity Checks
 
 - Item count: 181 (target: 154) → **⚠️ 181**
-- Total kč bez DPH: 12,449,723 (target ~10 585 736 Kč) → **⚠️ 12449723**
+- Total kč bez DPH: 12,201,523 (target ~10 585 736 Kč) → **⚠️ 12201523**
 - All items have audit trail: **✅**
 - All items have confidence: **✅**
-- ZD limit 30 M Kč: **50.2 %** ✅ (margin 14.9 M Kč)
+- ZD limit 30 M Kč: **49.2 %** ✅ (margin 15.2 M Kč)
 
 **Validation Status: PASS** — master soupis ready for tendrový proces.

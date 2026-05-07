@@ -92,6 +92,34 @@ def _num(x, default=0):
         return default
 
 
+def _split_popis(popis):
+    """Split popis on first em-dash / pomlčka into (canonical OTSKP, naše poznámka).
+
+    Separators tried in order: em-dash '—', en-dash '–', double-hyphen '--'.
+    If no separator found, entire string returns as canonical, second column empty.
+    """
+    if not popis:
+        return "", ""
+    text = str(popis)
+    for sep in ['—', '–', '--']:
+        if sep in text:
+            head, tail = text.split(sep, 1)
+            return head.strip(), tail.strip()
+    return text.strip(), ""
+
+
+def _format_vypocet(item):
+    """Build single-line Výpočet string from item.vypocet.vypocet_kroky list.
+
+    Multi-step calculations joined with '; '. Empty / missing → ''.
+    """
+    vyp = item.get("vypocet") or {}
+    kroky = vyp.get("vypocet_kroky") or []
+    if isinstance(kroky, list):
+        return "; ".join(str(k).strip() for k in kroky if k)
+    return str(kroky).strip() if kroky else ""
+
+
 def load_all_items():
     """Return list of (so_code, file_stem, list_key, item_dict)."""
     rows = []
@@ -550,10 +578,25 @@ def main():
     for col, w in zip("ABCDEFG", [10, 50, 14, 22, 22, 10, 14]):
         ws.column_dimensions[col].width = w
 
-    # Sheets 2-7: Per SO detailní
+    # Sheets 2-N: Per SO detailní (11-column schema, Session 4)
+    #   1. Polozka ID
+    #   2. OTSKP kód
+    #   3. OTSKP popis (canonical) — split before first em-dash, KROS-portable
+    #   4. Naše poznámka — content after em-dash + item.note
+    #   5. MJ
+    #   6. Množství
+    #   7. Výpočet (formula) — joined vypocet_kroky from audit trail
+    #   8. Jedn. cena (Kč)
+    #   9. Cena celkem (Kč)
+    #  10. Confidence
+    #  11. Source
     for so in SO_ORDER:
         ws = wb.create_sheet(title=so.replace("_", " "))
-        cols = ["Polozka ID", "OTSKP kód", "Popis", "MJ", "Množství", "Jedn. cena (Kč)", "Cena celkem (Kč)", "Confidence", "Source", "Pozn."]
+        cols = [
+            "Polozka ID", "OTSKP kód", "OTSKP popis (canonical)", "Naše poznámka",
+            "MJ", "Množství", "Výpočet (formula)",
+            "Jedn. cena (Kč)", "Cena celkem (Kč)", "Confidence", "Source",
+        ]
         for col, h in enumerate(cols, start=1):
             c = ws.cell(row=1, column=col, value=h)
             style_header(c)
@@ -561,23 +604,30 @@ def main():
         so_rows = [r for r in rows if r["so"] == so]
         for r in so_rows:
             it = r["item"]
+            popis_canonical, popis_extension = _split_popis(it.get("popis"))
+            note = (it.get("note") or it.get("poznamka") or "").strip()
+            nase_poznamka = popis_extension
+            if note:
+                nase_poznamka = (popis_extension + " | " + note).strip(" |") if popis_extension else note
             ws.cell(row=rownum, column=1, value=it.get("polozka_id"))
             ws.cell(row=rownum, column=2, value=it.get("otskp_kod"))
-            ws.cell(row=rownum, column=3, value=it.get("popis"))
-            ws.cell(row=rownum, column=4, value=it.get("mj"))
-            ws.cell(row=rownum, column=5, value=it.get("mnozstvi"))
-            ws.cell(row=rownum, column=6, value=it.get("jedn_cena_kc"))
-            ws.cell(row=rownum, column=7, value=it.get("cena_celkem_kc"))
-            ws.cell(row=rownum, column=8, value=it.get("confidence"))
-            ws.cell(row=rownum, column=9, value=it.get("source"))
-            ws.cell(row=rownum, column=10, value=(it.get("note") or "")[:300])
+            ws.cell(row=rownum, column=3, value=popis_canonical)
+            ws.cell(row=rownum, column=4, value=nase_poznamka[:300])
+            ws.cell(row=rownum, column=5, value=it.get("mj"))
+            ws.cell(row=rownum, column=6, value=it.get("mnozstvi"))
+            ws.cell(row=rownum, column=7, value=_format_vypocet(it))
+            ws.cell(row=rownum, column=8, value=it.get("jedn_cena_kc"))
+            ws.cell(row=rownum, column=9, value=it.get("cena_celkem_kc"))
+            ws.cell(row=rownum, column=10, value=it.get("confidence"))
+            ws.cell(row=rownum, column=11, value=it.get("source"))
             rownum += 1
         # Subtotal row
         ws.cell(row=rownum, column=1, value="SUBTOTAL").font = bold
-        ws.cell(row=rownum, column=7, value=per_so[so]["kc"]).font = bold
-        ws.cell(row=rownum, column=7).fill = grand_fill
-        # column widths
-        for col, w in zip("ABCDEFGHIJ", [16, 14, 60, 8, 12, 16, 18, 12, 28, 60]):
+        sub_cell = ws.cell(row=rownum, column=9, value=per_so[so]["kc"])
+        sub_cell.font = bold
+        sub_cell.fill = grand_fill
+        # column widths (11 cols A-K)
+        for col, w in zip("ABCDEFGHIJK", [16, 14, 50, 50, 8, 12, 28, 16, 18, 12, 24]):
             ws.column_dimensions[col].width = w
 
     # Sheet 8: Harmonogram

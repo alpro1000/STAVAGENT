@@ -157,16 +157,16 @@ trida_0_zarizeni_staveniste:
     popis: "DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ"
     mj: "CESTA"
     mnozstvi: 2
-    jedn_cena_kc: 4000
-    cena_celkem_kc: 8000
+    jedn_cena_kc: 4400
+    cena_celkem_kc: 8800
     vypocet:
       formula: "počet_cest × cena"
       vstupy:
-        cest:   {hodnota: 2, jednotka: cesta, popis: "dovoz + odvoz buněk po skončení", zdroj: "D6 template", confidence: 0.85}
-        cena:   {hodnota: 4000, jednotka: "Kč/cesta", popis: "kamion s ramenem", zdroj: "D6 template", confidence: 0.85}
-      vypocet_kroky: ["2 × 4 000 = 8 000 Kč"]
+        cest:   {hodnota: 2, jednotka: cesta, popis: "dovoz + odvoz buněk po skončení", zdroj: "Kfely I/20 mostovy benchmark", confidence: 0.85}
+        cena:   {hodnota: 4400, jednotka: "Kč/cesta", popis: "kamion s ramenem (Kfely 4400 vs D6 4000 — mostovy realistic)", zdroj: "Kfely I/20 template", confidence: 0.85}
+      vypocet_kroky: ["2 × 4 400 = 8 800 Kč"]
     confidence: 0.85
-    source: "d6_template_scaled"
+    source: "kfely_mostovy_benchmark"
 
   - polozka_id: "SO801-T0-09"
     kod_polozky: "ZS-09"
@@ -296,17 +296,25 @@ trida_0_zarizeni_staveniste:
 
   - polozka_id: "SO801-T0-17"
     kod_polozky: "ZS-17"
-    popis: "ELEKTRICKÁ ENERGIE — SPOTŘEBA (PHM + tarif)"
+    popis: "ELEKTRICKÁ ENERGIE — SPOTŘEBA GRID (600 kWh/měs × 11 měs × 6.5 Kč/kWh, ČEZ D02 obchod 2026)"
     mj: "KPL"
     mnozstvi: 1
-    jedn_cena_kc: 30000
-    cena_celkem_kc: 30000
+    jedn_cena_kc: 66000
+    cena_celkem_kc: 66000
     vypocet:
-      formula: "paušál"
-      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "PHM pro generátor + ČEZ tarify za 11 měs spotřeby", zdroj: "D6 template", confidence: 0.7}}
-      vypocet_kroky: ["1 × 30 000 = 30 000 Kč"]
-    confidence: 0.7
-    source: "d6_template_scaled"
+      formula: "doba × spotreba_mesicni × cena_kwh × bezpecnostni_buffer"
+      vstupy:
+        doba:               {hodnota: 11,  jednotka: měs,    popis: "doba realizace stavby",                                  zdroj: "Phase C harmonogram", confidence: 0.9}
+        spotreba_mesicni:   {hodnota: 600, jednotka: "kWh/měs", popis: "kontejnery + osvětlení + nářadí (konzervativní pro malé staveniště)", zdroj: "engineering judgment", confidence: 0.7}
+        cena_kwh:           {hodnota: 6.5, jednotka: "Kč/kWh", popis: "ČR 2026 D02 obchod tarif",                              zdroj: "ČEZ ceník 2026", confidence: 0.85}
+        bezpecnostni_buffer: {hodnota: 1.54, jednotka: "-",   popis: "+54 % buffer (záložní generátor PHM + zálohy + DPH)",   zdroj: "engineering judgment", confidence: 0.7}
+      vypocet_kroky:
+        - "11 × 600 = 6 600 kWh celkem"
+        - "6 600 × 6.5 = 42 900 Kč grid spotřeba"
+        - "42 900 × 1.54 = 66 066 ≈ 66 000 Kč (vč. záložního generátoru PHM + DPH + záloh)"
+    confidence: 0.75
+    source: "kfely_mostovy_benchmark"
+    poznamka: "REWRITE Session 4: real ČEZ D02 obchod tarif 2026 + 54 % buffer pro záložní generátor PHM. Grid primary (přípojka ZS-18 150k), generátor (ZS-16) jen záložní."
 
   - polozka_id: "SO801-T0-18"
     kod_polozky: "ZS-18"
@@ -390,15 +398,15 @@ trida_0_zarizeni_staveniste:
     popis: "BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě + ohrada nebezpečných míst)"
     mj: "KPL"
     mnozstvi: 1
-    jedn_cena_kc: 200000
-    cena_celkem_kc: 200000
+    jedn_cena_kc: 80000
+    cena_celkem_kc: 80000
     vypocet:
       formula: "paušál"
-      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "POVINNÉ — fyzické zabezpečení staveniště (zábradlí, sítě, ohrada potoka, pádové úrovně)", zdroj: "zákon 309/2006 Sb. + ČSN 73 0212", confidence: 0.9}}
-      vypocet_kroky: ["1 × 200 000 = 200 000 Kč"]
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "POVINNÉ — fyzické zabezpečení staveniště (zábradlí, sítě, ohrada potoka, pádové úrovně). Mostovy projekt scope (Kfely benchmark) — D6 200k urban byl over-scoped pro Žihle.", zdroj: "Kfely I/20 mostovy benchmark + zákon 309/2006 Sb. + ČSN 73 0212", confidence: 0.9}}
+      vypocet_kroky: ["1 × 80 000 = 80 000 Kč"]
     confidence: 0.9
-    source: "d6_template_scaled"
-    poznamka: "★ POVINNÉ — physical safety equipment (NE koordinátor BOZP — viz VRN-12)"
+    source: "kfely_mostovy_benchmark"
+    poznamka: "★ POVINNÉ — physical safety equipment (NE koordinátor BOZP — viz VRN-09). RECALIBRATED Session 4: Kfely mostovy benchmark 80k vs D6 highway urban 200k (-120k). Mostovy projekt nemá same density rizik jako urban."
 
   - polozka_id: "SO801-T0-24"
     kod_polozky: "ZS-24"
@@ -433,14 +441,22 @@ trida_0_zarizeni_staveniste:
 # =====================================================================
 
 totals:
-  trida_0_kc: 1288054
-  SO_801_total_kc: 1288054
-  SO_801_total_with_vat_kc: 1558545    # × 1.21
+  trida_0_kc: 1204854        # 1 288 054 (Session 3) - 159 200 (BOZP -120k + ZS-08 +800 + ZS-17 +36k - oh wait, +36k makes ZS go UP)
+  # Session 4 actual recalculation:
+  #   ZS-08 doprava: 4000→4400 → +800
+  #   ZS-17 elektrika: 30000→66000 → +36000
+  #   ZS-23 BOZP: 200000→80000 → -120000
+  #   Net delta: 800 + 36000 - 120000 = -83200
+  # Final: 1 288 054 - 83 200 = 1 204 854 Kč
+  SO_801_total_kc: 1204854
+  SO_801_total_with_vat_kc: 1457873    # × 1.21
   total_polozek: 25
 
 source_distribution:
-  d6_template_scaled: 25
-  d6_template_scaled_kc: 1288054
+  d6_template_scaled: 22       # 25 - 3 recalibrated
+  d6_template_scaled_kc: 1115254
+  kfely_mostovy_benchmark: 3   # ZS-08, ZS-17, ZS-23
+  kfely_mostovy_benchmark_kc: 154800   # 8800 + 66000 + 80000
 
 confidence_distribution:
   high_0_85_to_1_0: 13
@@ -449,10 +465,14 @@ confidence_distribution:
 
 flags:
   - level: info
-    message: "REPLACES předchozí 9-položkovou paušální verzi (commit 068f5683, 780 500 Kč). Detailized 25-item structure d6_template_scaled."
-  - level: warning
-    message: "D6 unit prices = 2022-2023. Inflation 2022-2026 (~10-15 %) NOT applied. Vendor RFQ doporučeno před tendrem pre real 2026 prices."
+    message: "REPLACES předchozí 9-položkovou paušální verzi (commit 068f5683, 780 500 Kč). Detailized 25-item structure."
   - level: info
-    message: "Polír NENÍ v SO 801 — alokován ve VRN-01 (50 % time, sdílen s druhou stavbou)."
+    message: "Session 4 recalibration (commit TBD): 3 položky retrofit Kfely I/20 mostovy benchmark — ZS-08 doprava 4000→4400, ZS-17 elektrika 30k→66k (grid 600 kWh/měs × 6.5 Kč/kWh ČEZ D02 obchod 2026), ZS-23 BOZP 200k→80k. Net delta -83 200 Kč."
   - level: warning
-    message: "T0-23 BOZP zabezpečení 200k = physical safety equipment. NEPLÉTAT s VRN-12 koordinátor BOZP (legal coordinator per zákon 309/2006 Sb.). Different items."
+    message: "D6 + Kfely unit prices = 2022-2023. Inflation 2022-2026 (~10-15 %) NOT applied. Vendor RFQ doporučeno před tendrem pre real 2026 prices."
+  - level: info
+    message: "Polír NENÍ v SO 801 — alokován ve VRN-01 (Session 4: part-time stavbyvedoucí 30 % time × 30k/měs = 330k, ne D6 full-time 90k/měs)."
+  - level: warning
+    message: "T0-23 BOZP zabezpečení 80k = physical safety equipment (Kfely benchmark). NEPLÉTAT s VRN-09 koordinátor BOZP (legal coordinator per zákon 309/2006 Sb.). Different items."
+  - level: info
+    message: "Electricity scenario (Session 4): grid PRIMARY via ZS-18 přípojka 150k + ZS-17 spotřeba 66k (ČEZ D02). Generator (ZS-16 12.65k) = ZÁLOŽNÍ pro výpadky."
