@@ -55,17 +55,20 @@ SOURCES = [
         ["trida_1_zemni_a_frezovani", "trida_5_komunikace", "trida_9_ostatni"]),
     ("SO_801", "Zařízení staveniště (detailní)",      "master_soupis_SO_801.yaml",
         ["trida_0_zarizeni_staveniste"]),
+    ("PRESUN_HMOT", "Přesun hmot stavby",             "master_soupis_PRESUN_HMOT.yaml",
+        ["presun_hmot"]),
     ("VRN",    "Vedlejší rozpočtové náklady",         "master_soupis_VRN.yaml",
         ["vrn_polozky"]),
 ]
 
-SO_ORDER = ["SO_001", "SO_180", "SO_201", "SO_290", "SO_801", "VRN"]
+SO_ORDER = ["SO_001", "SO_180", "SO_201", "SO_290", "SO_801", "PRESUN_HMOT", "VRN"]
 SO_LABELS = {
     "SO_001": "Demolice stávajícího mostu",
     "SO_180": "Mostní provizorium + objízdná trasa",
     "SO_201": "Most ev.č. 2062-1",
     "SO_290": "Silnice III/206 2 (návaznosti)",
     "SO_801": "Zařízení staveniště (detailní)",
+    "PRESUN_HMOT": "Přesun hmot stavby",
     "VRN":    "Vedlejší rozpočtové náklady",
 }
 SO_PHASE_C_DAYS = {       # Phase C scheduler approximation
@@ -74,6 +77,7 @@ SO_PHASE_C_DAYS = {       # Phase C scheduler approximation
     "SO_201": 135,        # 4.5 měs výstavba NK
     "SO_290": 25,
     "SO_801": 330,        # 11 měs paralelní s celou stavbou
+    "PRESUN_HMOT": 180,   # 6 měs konstrukce + pomocné práce
     "VRN": 330,           # paralelní
 }
 
@@ -588,6 +592,7 @@ def main():
         "SO_201": ("Etapa 2 — výstavba NK mostu",    "Měsíce 3-6 (135 dní); 4.5 měs"),
         "SO_290": ("Etapa 3 — silnice (po SO 201)",  "Měsíc 7 (25 dní)"),
         "SO_801": ("Paralelně po celou dobu",        "11 měs aktivní staveniště"),
+        "PRESUN_HMOT": ("Paralelně s konstrukcí",    "6 měs konstrukce NK + pomocné"),
         "VRN":    ("Paralelně po celou dobu",        "11 měs administrativa + dozory"),
     }
     rownum = 2

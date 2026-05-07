@@ -1,0 +1,104 @@
+# master_soupis_PRESUN_HMOT.yaml — Přesun hmot (NEW per D6 template)
+#
+# Žihle 2062-1 (Most ev.č. 2062-1)
+# NEW soupis section per D6 KV-Olšova vrata template structure (sekce 2: PŘESUN HMOT).
+# Žihle scope: malé manipulace, autojeřáb dostatečný (NO věžové jeřáby J1/J2/J3).
+
+schema_version: 1
+created: 2026-05-07
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "PRESUN_HMOT — Přesun hmot stavby"
+phase: "D — Master soupis (Session 3 retrofit)"
+template_source: "D6 KV-Olšova vrata 2022-2023 sheet 'Přesun hmot'"
+
+inputs:
+  doba_konstrukce_NK_mesicu: 6
+  doba_pomocnych_praci_mesicu: 4
+  hodin_autojerab_for_NK: 100
+
+# =====================================================================
+# PŘESUN HMOT (3 položky — Žihle scaled)
+# =====================================================================
+
+presun_hmot:
+
+  - polozka_id: "PH-01"
+    kod_polozky: "PH-01"
+    popis: "KRAMER BEZ OBSLUHY + NAFTA (univerzální nakladač pro manipulace v staveništi)"
+    mj: "MES"
+    mnozstvi: 6
+    jedn_cena_kc: 35000
+    cena_celkem_kc: 210000
+    vypocet:
+      formula: "měs × cena_per_měs"
+      vstupy:
+        mesice: {hodnota: 6, jednotka: měs, popis: "během konstrukce NK + opěr + přechodů", zdroj: "Phase C harmonogram", confidence: 0.8}
+        cena:   {hodnota: 35000, jednotka: "Kč/měs", popis: "Kramer pronájem + diesel", zdroj: "D6 template (3 souborů identical)", confidence: 0.9}
+      vypocet_kroky: ["6 × 35 000 = 210 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+    poznamka: "Kramer = univerzální. Merlo z D6 ne nutný — Kramer dostatečný pre malou stavbu."
+
+  - polozka_id: "PH-02"
+    kod_polozky: "PH-02"
+    popis: "POMOCNÍ PRACOVNÍCI PŘI PŘESUNECH HMOT"
+    mj: "OSOBA-MES"
+    mnozstvi: 4
+    jedn_cena_kc: 50000
+    cena_celkem_kc: 200000
+    vypocet:
+      formula: "osoba × měs × cena_měsíční"
+      vstupy:
+        osoba:    {hodnota: 1, jednotka: osoba, popis: "1 pomocný pracovník",                      zdroj: "Žihle scale", confidence: 0.85}
+        mesice:   {hodnota: 4, jednotka: měs, popis: "intenzivní fáze NK + opěry",                  zdroj: "Phase C", confidence: 0.85}
+        cena:     {hodnota: 50000, jednotka: "Kč/měs", popis: "stavební dělník superhrubá mzda",    zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["1 × 4 × 50 000 = 200 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "PH-03"
+    kod_polozky: "PH-03"
+    popis: "AUTOJEŘÁB S OBSLUHOU (montáž bednění + výztuže + betonáž mostovky)"
+    mj: "HOD"
+    mnozstvi: 100
+    jedn_cena_kc: 1500
+    cena_celkem_kc: 150000
+    vypocet:
+      formula: "hodin × sazba"
+      vstupy:
+        hodin: {hodnota: 100, jednotka: hod, popis: "manipulace pre NK montáž + bednění Top 50 + výztuž", zdroj: "Phase C engineering", confidence: 0.8}
+        sazba: {hodnota: 1500, jednotka: "Kč/hod", popis: "autojeřáb s obsluhou", zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["100 × 1 500 = 150 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+    poznamka: "Autojeřáb = mobile crane. NE věžové jeřáby J1/J2/J3 — mostní stavba ne výškové."
+
+# =====================================================================
+# TOTALS
+# =====================================================================
+
+totals:
+  presun_hmot_kc: 560000
+  PRESUN_HMOT_total_kc: 560000
+  PRESUN_HMOT_total_with_vat_kc: 677600    # × 1.21
+  total_polozek: 3
+
+source_distribution:
+  d6_template_scaled: 3
+  d6_template_scaled_kc: 560000
+
+confidence_distribution:
+  high_0_85_to_1_0: 3
+  total_polozek: 3
+
+excluded_per_zihle_scope:
+  - {kod: "Merlo", reason: "Kramer dostatečný pre malou stavbu"}
+  - {kod: "základy_jerabu_piloty", reason: "ne věžový jeřáb (autojeřáb only)"}
+  - {kod: "věžové jeřáby J1/J2/J3", reason: "mostní stavba ne výškové"}
+  - {kod: "stavební_vytahy_GEDA", reason: "mostní stavba ne výškové"}
+
+flags:
+  - level: info
+    message: "NEW soupis section per D6 template. Žihle scope: 3 položky (Kramer + pomocní + autojeřáb). 4 D6 items vyloučeno (Merlo, věžové jeřáby, stavební výtahy)."
+  - level: warning
+    message: "D6 unit prices 2022-2023. Inflation NOT applied. Vendor RFQ doporučeno před tendrem."
