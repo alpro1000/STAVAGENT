@@ -90,7 +90,13 @@ def sjtsk_to_svg(x_sjtsk, y_sjtsk):
 # ─────────────────────────────────────────────────────────────────────
 
 def read_dxf_data():
-    doc = ezdxf.readfile(str(ROOT / "inputs" / "photos" / "PROJEKT_MOST_HLAVNI.dxf"))
+    dxf_path = ROOT / "inputs" / "photos" / "PROJEKT_MOST_HLAVNI.dxf"
+    if not dxf_path.exists():
+        raise FileNotFoundError(f"DXF source missing: {dxf_path}")
+    try:
+        doc = ezdxf.readfile(str(dxf_path))
+    except Exception as e:
+        raise RuntimeError(f"Failed to parse DXF {dxf_path}: {e}") from e
     msp = doc.modelspace()
 
     target_parcels = {'1710','1714','1723','1755','1769','1770','1785','1831','1832','1836',

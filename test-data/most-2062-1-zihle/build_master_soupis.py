@@ -78,13 +78,28 @@ SO_PHASE_C_DAYS = {       # Phase C scheduler approximation
 }
 
 
+def _num(x, default=0):
+    """Coerce x to float; return default for None/empty/non-numeric."""
+    if x is None or x == "":
+        return default
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return default
+
+
 def load_all_items():
     """Return list of (so_code, file_stem, list_key, item_dict)."""
     rows = []
     for so_code, _label, fname, list_keys in SOURCES:
         path = SOUPIS_DIR / fname
-        with open(path) as f:
-            data = yaml.safe_load(f)
+        if not path.exists():
+            raise FileNotFoundError(f"Master soupis YAML missing: {path}")
+        try:
+            with open(path) as f:
+                data = yaml.safe_load(f) or {}
+        except yaml.YAMLError as e:
+            raise RuntimeError(f"Malformed YAML in {path}: {e}") from e
         for key in list_keys:
             for item in data.get(key, []) or []:
                 rows.append({
@@ -100,21 +115,25 @@ def main():
     rows = load_all_items()
     items = [r["item"] for r in rows]
     n = len(items)
-    total_kc = sum(int(i.get("cena_celkem_kc") or 0) for i in items)
+    if n == 0:
+        raise ValueError("No items loaded from master_soupis_*.yaml — aborting (check SOURCES paths).")
+    total_kc = sum(int(_num(i.get("cena_celkem_kc"))) for i in items)
+    if total_kc <= 0:
+        raise ValueError(f"total_kc = {total_kc} across {n} items — cannot compute percentages. Check cena_celkem_kc values.")
     total_kc_dph = round(total_kc * 1.21)
 
     # Per-SO aggregation
     per_so = defaultdict(lambda: {"polozek": 0, "kc": 0, "files": []})
     for r in rows:
         per_so[r["so"]]["polozek"] += 1
-        per_so[r["so"]]["kc"] += int(r["item"].get("cena_celkem_kc") or 0)
+        per_so[r["so"]]["kc"] += int(_num(r["item"].get("cena_celkem_kc")))
         if r["file"] not in per_so[r["so"]]["files"]:
             per_so[r["so"]]["files"].append(r["file"])
 
     # Confidence distribution (bucketing)
     conf_buckets = Counter()
     for it in items:
-        c = float(it.get("confidence", 0))
+        c = _num(it.get("confidence"))
         if c >= 0.85:
             conf_buckets["high_0.85_to_1.0"] += 1
         elif c >= 0.70:
