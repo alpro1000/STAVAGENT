@@ -19,21 +19,25 @@ Read-only classification of all 58 source files in
 **Distribution**:
 - shared: 33
 - D: 25
-- A: 0
-- B: 0
-- C: 0
+- A: 22
+- B: 24
+- C: 25
 - UNKNOWN: 0
 
-**A / B / C buckets are empty** — ABMV must supply DWG / PDF for those
-buildings before Phase Π.1+ A/B/C komplex pricing can run.
+**Π.0.0 Part 2 update (2026-05-07)**: A / B / C uploads received from
+ABMV (71 files at `test-data/<flat>` → moved to `sources/{A,B,C}/`).
+See `abc_classification_manifest.md` for the Part-2 classification log.
 
 ---
 
-## Classification rules (auto-applied)
+## Classification rules (auto-applied) — VERIFIED
 
 | Pattern | Target | Confidence | Rationale |
 |---------|--------|-----------:|-----------|
 | Filename contains `_100_` | `shared/` | 0.97 | Architectural section 100 = komplex-wide. Verified: Tabulka 0020 mistnosti has 935 rows covering A + B + C + D + S.A + S.B + S.C + S.D rooms. |
+| Filename contains `_110_` | `A/` | 1.00 | Architectural section 110 = A-specific. **VERIFIED Π.0.0 Part 2**: 22 ABMV-uploaded files all contain `OBJEKT A` / `Obj_A_` text. |
+| Filename contains `_120_` | `B/` | 1.00 | Architectural section 120 = B-specific. **VERIFIED Π.0.0 Part 2**: 24 ABMV-uploaded files all contain `OBJEKT B` / `Obj_B_` text. |
+| Filename contains `_130_` | `C/` | 1.00 | Architectural section 130 = C-specific. **VERIFIED Π.0.0 Part 2**: 25 ABMV-uploaded files all contain `OBJEKT C` / `Obj_C_` text. |
 | Filename contains `_140_` | `D/` | 0.99 | Architectural section 140 = D-specific. All DWG files in this group explicitly named 'OBJEKT D'. |
 | `Vykaz_vymer_stary.xlsx` | `shared/` | 0.95 | Komplex bill-of-quantities — 30 sheets covering all trades (architecture, ZTI, HVAC, electrical) for whole komplex. Pipeline filters to D-scope at parse time. |
 
