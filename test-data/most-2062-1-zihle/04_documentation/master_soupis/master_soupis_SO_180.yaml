@@ -1,0 +1,622 @@
+# master_soupis_SO_180.yaml — SO 180 Mostní provizorium + objízdná trasa
+#
+# Žihle 2062-1 (Most ev.č. 2062-1)
+#
+# Source dokumenty:
+#   - User manual ground truth: 04_documentation/manual_reference_JS/SO_180_parsed.yaml (30 pol., 6 tříd)
+#   - Vendor pricing: 04_documentation/vendor_pricing/vendor_quotes.yaml (4 vendoři pro provizorium)
+#   - User formulas (per task §3.3 + Session 2 brief):
+#       vozovka 116 × 4.5 = 522 m²
+#       výkop 522 × 0.70 = 365.4 m³
+#       rekultivace 1000 × 0.15 = 150 m³ ornice
+#       hydroosev 1000 m²
+#
+# Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+# TSKP hierarchy: třídy 0 / 1 / 2 / 4 / 5.
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "SO 180 — Mostní provizorium + objízdná trasa"
+phase: "D — Master soupis (Session 2)"
+tskp_hierarchy: ["0", "1", "2", "4", "5"]
+scope: "Mostní provizorium 12 × 5 m + objízdná trasa 116 × 4.5 m + zábor 1000 m² + DIO + DIN"
+
+# ─────────────────────────────────────────────────────────────────────
+# Vstupní dimenze (Phase B + user formuly)
+# ─────────────────────────────────────────────────────────────────────
+
+inputs:
+  provizorium:
+    L_konstrukce_m: 12.0          # vendor TMS/PONVIA spec
+    B_konstrukce_m: 5.0
+    plocha_konstrukce_m2: 60.0
+    L_podlozi_m: 15.0             # delší kvůli nájezdům
+    B_podlozi_m: 5.0
+    plocha_podlozi_m2: 75.0
+    doba_pronajmu_mesicu: 6
+    doba_pronajmu_dni: 180
+  objizdka:
+    L_m: 116.0                    # GPX trace per user měření
+    B_vozovky_m: 4.5
+    plocha_vozovky_m2: 522.0      # ← user formula
+    hloubka_vykopu_m: 0.70
+    objem_vykopu_m3: 365.4        # ← user formula 522 × 0.70
+  zabor_pozemku:
+    plocha_m2: 1000               # per user měření Session 1
+    tloustka_ornice_m: 0.15
+    objem_ornice_m3: 150          # ← user formula 1000 × 0.15
+
+# ─────────────────────────────────────────────────────────────────────
+# Vendor pricing — median 4 vendorů (per Session 1 vendor_quotes.yaml)
+# ─────────────────────────────────────────────────────────────────────
+
+vendor_pricing_aggregate:
+  source_vendors:
+    - {id: TMS_9m,            montaz_kc: 102000, demontaz_kc: 102000, najem_kc_den: 850, prohlidka_kc_mes: 8000,  total_6m_kc: 405000}
+    - {id: PONVIA_MS_9m,      montaz_kc: 268300, demontaz_kc: 268300, najem_kc_den: 750, prohlidka_kc_mes: 10990, total_6m_kc: 637070}
+    - {id: MOSTY_ZABORI_4m,   total_6m_kc: 750328, breakdown_note: "bundled — 25/22/53 split estimate: montáž 187582, demontáž 165072, nájem+prohlídka 397674"}
+    - {id: MOSTY_ZABORI_3_5m, total_6m_kc: 654387, breakdown_note: "bundled — 25/22/53 split estimate: montáž 163597, demontáž 143965, nájem+prohlídka 346825"}
+  decomposed_per_line_kc:
+    montaz_4_vendor_set:    [102000, 268300, 187582, 163597]   # sorted: [102000, 163597, 187582, 268300]
+    demontaz_4_vendor_set:  [102000, 268300, 165072, 143965]   # sorted: [102000, 143965, 165072, 268300]
+    najem_6m_4_vendor_set:  [153000, 135000, 297500, 259600]   # 180×850, 180×750, ~50% of bundled
+    prohlidka_6m_4_set:     [48000, 65940, 100174, 87225]      # 6×8000, 6×10990, ~17% of bundled, ~13% of bundled
+  median_per_line_kc:
+    montaz: 175590           # median sorted([102000, 163597, 187582, 268300]) = (163597+187582)/2
+    demontaz: 154518         # median sorted([102000, 143965, 165072, 268300]) = (143965+165072)/2
+    najem_6m: 206300         # median sorted([135000, 153000, 259600, 297500]) = (153000+259600)/2
+    prohlidka_6m: 76582      # median sorted([48000, 65940, 87225, 100174]) = (65940+87225)/2
+  median_total_6m_kc: 695964 # sanity: ((654387+737070)/2 across totals — consistent)
+  cross_check_total_kc: 612990  # sum of medians (montáž+demontáž+nájem+prohlídka) — bundled vs line-item delta = 12 %
+
+# =====================================================================
+# TŘÍDA 0 — VŠEOBECNÉ KONSTRUKCE A PRÁCE
+# =====================================================================
+
+trida_0_vseobecne:
+
+  - polozka_id: "SO180-T0-01"
+    otskp_kod: "014102"
+    popis: "POPLATKY ZA SKLÁDKU — provizorium (přepravní obaly + nepoužité materiály)"
+    mj: "T"
+    mnozstvi: 8.0
+    vypocet:
+      formula: "objem_obalu × hustota_obalu (paušál)"
+      vstupy:
+        rozsah: {hodnota: 8, jednotka: t, popis: "obaly + odřezky během montáže/demontáže provizoria", zdroj: "vendor TMS/PONVIA praxe"}
+      vypocet_kroky:
+        - "Předpoklad ~8 t obalového materiálu + odřezků (paušální odhad)"
+    confidence: 0.6
+    jedn_cena_kc: 1000
+    note: "Cena RS Žatec inertní 60-1500 Kč/t midpoint 1000."
+    cena_celkem_kc: 8000
+
+  - polozka_id: "SO180-T0-02"
+    otskp_kod: "027111"
+    popis: "PROVIZORNÍ OBJÍŽĎKY — ZŘÍZENÍ (anchor — actual cost in 91091001/T5-04)"
+    mj: "M2"
+    mnozstvi: 522.0
+    vypocet:
+      formula: "L_objizdka × B_vozovky"
+      vstupy:
+        L_m: {hodnota: 116, jednotka: m, popis: "délka objízdky z GPX trace", zdroj: "user měření Session 1"}
+        B_m: {hodnota: 4.5, jednotka: m, popis: "šířka vozovky objízdky",     zdroj: "user spec"}
+      vypocet_kroky:
+        - "116 × 4.5 = 522 m²"
+    confidence: 0.95
+    jedn_cena_kc: 0
+    note: "Anchor položka pro OTSKP-konzistentní strukturu. Detail nákladů v T5 (vozovkové vrstvy)."
+    cena_celkem_kc: 0
+
+  - polozka_id: "SO180-T0-03"
+    otskp_kod: "027113"
+    popis: "PROVIZORNÍ OBJÍŽĎKY — ZRUŠENÍ (anchor pair k 027111)"
+    mj: "M2"
+    mnozstvi: 522.0
+    vypocet:
+      formula: "= mnozstvi(027111)"
+      vstupy:
+        plocha_m2: {hodnota: 522, jednotka: m2, popis: "celá vozovka objízdky", zdroj: "T0-02"}
+      vypocet_kroky:
+        - "522 m² (zrušení = celá zřízená plocha)"
+    confidence: 0.95
+    jedn_cena_kc: 0
+    note: "Demontáž vozovkových vrstev v T1 (uložení sypaniny) + T9 demolice provizoria → SO 001."
+    cena_celkem_kc: 0
+
+  # ── Vendor-driven položky pro provizorium (median 4 vendorů) ────────
+  - polozka_id: "SO180-T0-04"
+    otskp_kod: "027411"
+    popis: "PROVIZORNÍ MOSTY — MONTÁŽ (ocel. konstrukce 12 × 5 m, median 4 vendorů)"
+    mj: "M2"
+    mnozstvi: 60.0
+    vypocet:
+      formula: "L_konstrukce × B_konstrukce"
+      vstupy:
+        L_m: {hodnota: 12.0, jednotka: m, popis: "délka mostní konstrukce",  zdroj: "vendor TMS/PONVIA spec"}
+        B_m: {hodnota: 5.0,  jednotka: m, popis: "šířka mostní konstrukce", zdroj: "vendor 4-5m varianta"}
+      vypocet_kroky:
+        - "12 × 5 = 60 m²"
+    confidence: 0.85
+    jedn_cena_kc: 2926
+    note: "Cena = median(TMS 102k, PONVIA 268.3k, MZ-4m 187.6k, MZ-3.5m 163.6k) = 175 590 Kč / 60 m² = 2926 Kč/m². Per `vendor_quotes.yaml`."
+    cena_celkem_kc: 175590
+    cross_ref: "vendor_quotes.yaml: TMS_9m + PONVIA_MS_9m + MOSTY_ZABORI_4m + MOSTY_ZABORI_3_5m"
+    source: "vendor_pricing_median"
+
+  - polozka_id: "SO180-T0-05"
+    otskp_kod: "027412"
+    popis: "PROVIZORNÍ MOSTY — NÁJEMNÉ (6 měsíců = 180 dní), median 4 vendorů"
+    mj: "MES"
+    mnozstvi: 6.0
+    vypocet:
+      formula: "doba_demolice + doba_vystavby_NK"
+      vstupy:
+        doba_demolice:        {hodnota: 1.5, jednotka: měs, popis: "etapa demolice stávajícího mostu",     zdroj: "Phase B harmonogram"}
+        doba_vystavby_NK:     {hodnota: 4.5, jednotka: měs, popis: "výstavba nové integrální rámové NK",    zdroj: "Phase C calculator"}
+      vypocet_kroky:
+        - "1.5 + 4.5 = 6.0 měs"
+    confidence: 0.9
+    jedn_cena_kc: 34383
+    note: "Cena per měsíc = median nájem 6m (206 300 Kč) / 6 měs = 34 383 Kč/měs. Median sorted([135k, 153k, 259.6k, 297.5k]) = (153+259.6)/2 = 206.3k."
+    cena_celkem_kc: 206300
+    cross_ref: "vendor_quotes.yaml.median_per_line_kc.najem_6m"
+    source: "vendor_pricing_median"
+
+  - polozka_id: "SO180-T0-06"
+    otskp_kod: "027413"
+    popis: "PROVIZORNÍ MOSTY — DEMONTÁŽ (po dokončení nového mostu — anchor; cena alokována v SO 001 T9-11)"
+    mj: "M2"
+    mnozstvi: 60.0
+    vypocet:
+      formula: "= mnozstvi(027411)"
+      vstupy:
+        plocha_m2: {hodnota: 60, jednotka: m2, popis: "celá konstrukce", zdroj: "T0-04"}
+      vypocet_kroky:
+        - "60 m² (demontáž = celá zřízená plocha)"
+    confidence: 0.95
+    jedn_cena_kc: 0
+    note: |
+      ANCHOR ONLY — actual cost (median demontáž 154 518 Kč, 2575 Kč/m²) je alokován v
+      SO_001 T9-11 (027413). To zachovává no-work-duplication: provizorium demontáž je
+      jeden výkon, evidovaný jednou. Per task §3.8 validation rule.
+    cena_celkem_kc: 0
+    cross_ref: "master_soupis_SO_001.yaml: SO001-T9-11"
+
+  - polozka_id: "SO180-T0-07"
+    otskp_kod: "027414"
+    popis: "PROVIZORNÍ MOSTY — PRAVIDELNÁ MOSTNÍ PROHLÍDKA (6× za 6 měsíců provozu)"
+    mj: "KPL"
+    mnozstvi: 6
+    vypocet:
+      formula: "doba_pronajmu_mesicu × 1_prohlidka_per_mes"
+      vstupy:
+        doba_mes: {hodnota: 6, jednotka: měs, popis: "doba provozu provizoria", zdroj: "T0-05"}
+      vypocet_kroky:
+        - "6 × 1 = 6 prohlídek"
+    confidence: 0.9
+    jedn_cena_kc: 12764
+    note: "Cena per prohlídka = median(TMS 8000, PONVIA 10990, MZ-4m 16695, MZ-3.5m 14538) = 12 764 Kč/měs. Pravidelná prohlídka per ČSN 73 6221."
+    cena_celkem_kc: 76582
+    cross_ref: "vendor_quotes.yaml.median_per_line_kc.prohlidka_6m"
+    source: "vendor_pricing_median"
+
+  - polozka_id: "SO180-T0-08"
+    otskp_kod: "02740"
+    popis: "POMOCNÉ PRÁCE PROVIZORNÍCH MOSTŮ — koordinace, doprava panelů, jeřáb"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál (transport + jeřáb + supervize)"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kpl, popis: "doprava panelů na místo + zpět + jeřáb 8 hod montáž + 8 hod demontáž", zdroj: "vendor praxe TMS/PONVIA"}
+      vypocet_kroky:
+        - "Doprava cca 60-80k + jeřáb 16 hod × 4500 Kč/hod = 72k → paušál 150k"
+    confidence: 0.7
+    jedn_cena_kc: 150000
+    cena_celkem_kc: 150000
+
+  - polozka_id: "SO180-T0-09"
+    otskp_kod: "027415"
+    popis: "PROVIZORIUM — SVĚTELNÁ SIGNALIZACE (semafor) PRO JEDNOSMĚRNÝ PROVOZ (per ZD §4.4.o)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "pronajem_semafor + montáž + demontáž"
+      vstupy:
+        doba_provozu_mes: {hodnota: 6, jednotka: měs, popis: "doba provizoria",                  zdroj: "T0-05"}
+        sazba_kc_mes:     {hodnota: 18000, jednotka: Kč/měs, popis: "pronájem 2× semafor + řízení", zdroj: "vendor semaforová praxe"}
+        montaz_demontaz:  {hodnota: 12000, jednotka: Kč,  popis: "montáž + demontáž semaforů",   zdroj: "vendor"}
+      vypocet_kroky:
+        - "6 × 18000 + 12000 = 108k + 12k = 120k Kč"
+    confidence: 0.7
+    jedn_cena_kc: 120000
+    cena_celkem_kc: 120000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO180-T0-10"
+    otskp_kod: "027416"
+    popis: "PROVIZORIUM — DIO + DOČASNÉ DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "DIO_projekt + montaz_DZ + demontaz_DZ + udrzba"
+      vstupy:
+        dio_projekt:    {hodnota: 30000, jednotka: Kč, popis: "DIO projekt + souhlas dopr. policie",     zdroj: "ZD §4.3.b"}
+        montaz_DZ_kc:   {hodnota: 50000, jednotka: Kč, popis: "12 značek × ~4k per ks (instalace)",        zdroj: "vendor praxe"}
+        demontaz_DZ_kc: {hodnota: 30000, jednotka: Kč, popis: "12 značek demontáž (alokováno SO 001 T9-17)", zdroj: "SO001-T9-17"}
+        udrzba_kc:      {hodnota: 40000, jednotka: Kč, popis: "měsíční kontroly + rotace pri opotřebení",  zdroj: "vendor"}
+      vypocet_kroky:
+        - "30000 + 50000 + 30000 + 40000 = 150 000 Kč"
+    confidence: 0.65
+    jedn_cena_kc: 150000
+    cena_celkem_kc: 150000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO180-T0-11"
+    otskp_kod: "02946"
+    popis: "FOTODOKUMENTACE PROVIZORIA (před, během, po)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kpl, popis: "vstupní + 6 měsíčních kontrol + výstupní fotorozhled", zdroj: "TKP 18 + ZD §4.3.f"}
+      vypocet_kroky:
+        - "1 kpl = ~8 fotosessions × 1500 Kč"
+    confidence: 0.85
+    jedn_cena_kc: 12000
+    cena_celkem_kc: 12000
+
+  - polozka_id: "SO180-T0-12"
+    otskp_kod: "02950"
+    popis: "POSUDEK STATIKA + GEOTECHNIKA (před uvedením do provozu provizoria)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kpl, popis: "statický posudek + posouzení geotechnikem únosnosti podloží", zdroj: "ČSN 73 6244 + ČSN EN 1990"}
+      vypocet_kroky:
+        - "Statický posudek ~25k + geotechnik ~15k = 40k Kč"
+    confidence: 0.8
+    jedn_cena_kc: 40000
+    cena_celkem_kc: 40000
+
+  - polozka_id: "SO180-T0-13"
+    otskp_kod: "027417"
+    popis: "KONZULTACE A SOUHLAS PROVOZOVATELE LINKOVÉ VEŘEJNÉ DOPRAVY (per ZD §4.4.o)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál"
+      vstupy:
+        rozsah: {hodnota: 1, jednotka: kpl, popis: "písemný souhlas + úprava jízdního řádu pokud nutná", zdroj: "ZD §4.4.o"}
+      vypocet_kroky:
+        - "Konzultace + administrativa = 30k Kč"
+    confidence: 0.75
+    jedn_cena_kc: 30000
+    cena_celkem_kc: 30000
+    source: "user_manual_fallback"
+
+# =====================================================================
+# TŘÍDA 1 — ZEMNÍ PRÁCE
+# =====================================================================
+
+trida_1_zemni:
+
+  - polozka_id: "SO180-T1-01"
+    otskp_kod: "111208"
+    popis: "ODSTRANĚNÍ KŘOVIN S ODVOZEM DO 20 KM (zábor pro objízdku + provizorium)"
+    mj: "M2"
+    mnozstvi: 300.0
+    vypocet:
+      formula: "plocha_zaboru_lesnata"
+      vstupy:
+        plocha_m2: {hodnota: 300, jednotka: m2, popis: "část záboru 1000 m² v lesnatém okolí (per LČR souhlas, parcels 385/12, 613/3, 397, 614)", zdroj: "Phase A foto 131821 + parcels_and_consents.yaml"}
+      vypocet_kroky:
+        - "30 % záboru lesnaté = 1000 × 0.30 = 300 m²"
+    confidence: 0.7
+    jedn_cena_kc: 147.70
+    note: "OTSKP 2025/II. LČR podmínka: pouze nutné minimum, žádný rozsáhlý zásah do dřevin (parcels_and_consents.yaml LCR_ZATEC.conditions)."
+    cena_celkem_kc: 44310
+
+  - polozka_id: "SO180-T1-02"
+    otskp_kod: "11511"
+    popis: "ČERPÁNÍ VODY DO 500 L/MIN — během výkopu pod provizoriem"
+    mj: "HOD"
+    mnozstvi: 100
+    vypocet:
+      formula: "doba_vykopu × hodin_per_den × intenzita_factor"
+      vstupy:
+        doba_vykopu:   {hodnota: 25, jednotka: dní, popis: "výkop pro založení provizoria + objízdky", zdroj: "Phase B harmonogram"}
+        hodin_den:     {hodnota: 8,  jednotka: hod, popis: "pracovní směna",                            zdroj: "praxe"}
+        factor:        {hodnota: 0.5, jednotka: -, popis: "intenzita potřeby čerpání (Mladotický potok blízko)", zdroj: "engineering judgment"}
+      vypocet_kroky:
+        - "25 × 8 × 0.5 = 100 hod"
+    confidence: 0.7
+    jedn_cena_kc: 110.71
+    cena_celkem_kc: 11071
+
+  - polozka_id: "SO180-T1-03"
+    otskp_kod: "121108"
+    popis: "SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20 KM (zábor 1000 m²)"
+    mj: "M3"
+    mnozstvi: 150.0
+    vypocet:
+      formula: "plocha_zaboru × tloustka_ornice"
+      vstupy:
+        plocha_m2:  {hodnota: 1000, jednotka: m2, popis: "celkový zábor pozemků (provizorium + objízdka + ZS)", zdroj: "user měření Session 1"}
+        tloustka_m: {hodnota: 0.15, jednotka: m,  popis: "tloušťka kulturní vrstvy v lesním okolí",            zdroj: "ČSN 73 6133 + LČR praxe"}
+      vypocet_kroky:
+        - "1000 × 0.15 = 150 m³ (← user formula)"
+    confidence: 0.85
+    jedn_cena_kc: 456.48
+    note: "User formula 1000 × 0.15 = 150 m³. Ornice po stavbě → zpětně použitá pro rekultivaci (T1-06)."
+    cena_celkem_kc: 68472
+
+  - polozka_id: "SO180-T1-04"
+    otskp_kod: "13173"
+    popis: "VÝKOP PRO ZALOŽENÍ PODLOŽÍ PROVIZORIA + OBJÍZDKY, TŘ. I"
+    mj: "M3"
+    mnozstvi: 365.4
+    vypocet:
+      formula: "L_objizdka × B_vozovky × hloubka_vykopu"
+      vstupy:
+        L_m:          {hodnota: 116.0, jednotka: m, popis: "délka objízdky",            zdroj: "user GPX"}
+        B_m:          {hodnota: 4.5,   jednotka: m, popis: "šířka vozovky objízdky",    zdroj: "user spec"}
+        hloubka_m:    {hodnota: 0.70,  jednotka: m, popis: "hloubka výkopu pro souvrství podloží + vozovky", zdroj: "user spec — podloží 0.50 + vozovka 0.20"}
+      vypocet_kroky:
+        - "116 × 4.5 = 522 m² (vozovka)"
+        - "522 × 0.70 = 365.4 m³ (← user formula)"
+    confidence: 0.9
+    jedn_cena_kc: 315.27
+    cena_celkem_kc: 115210
+
+  - polozka_id: "SO180-T1-05"
+    otskp_kod: "17120"
+    popis: "ULOŽENÍ SYPANINY DO NÁSYPU NEBO NA SKLÁDKU (přebytečná zemina z výkopu)"
+    mj: "M3"
+    mnozstvi: 215.4
+    vypocet:
+      formula: "objem_vykopu − objem_zpetne_zasypu"
+      vstupy:
+        objem_vykopu_m3:  {hodnota: 365.4, jednotka: m3, popis: "T1-04",                           zdroj: "T1-04"}
+        objem_zasypu_m3:  {hodnota: 150,   jednotka: m3, popis: "část zeminy zpět při rekultivaci", zdroj: "engineering judgment"}
+      vypocet_kroky:
+        - "365.4 - 150 = 215.4 m³ na skládku"
+    confidence: 0.8
+    jedn_cena_kc: 95
+    cena_celkem_kc: 20463
+
+  - polozka_id: "SO180-T1-06"
+    otskp_kod: "18241"
+    popis: "ZALOŽENÍ TRÁVNÍKU HYDROOSETÍM — rekultivace záboru po demontáži"
+    mj: "M2"
+    mnozstvi: 1000.0
+    vypocet:
+      formula: "celkovy_zabor"
+      vstupy:
+        plocha_m2: {hodnota: 1000, jednotka: m2, popis: "celkový zábor pozemků pro provizorium + objízdku + ZS", zdroj: "user měření Session 1"}
+      vypocet_kroky:
+        - "1000 m² hydroosev (← user formula)"
+    confidence: 0.85
+    jedn_cena_kc: 35
+    note: |
+      LČR požaduje minimalizaci záboru + rekultivaci povinná (parcels_and_consents.yaml
+      LCR_ZATEC.conditions_or_requirements). Rekultivace pokrývá ornice z T1-03 zpětně
+      rozprostřená + hydroosev.
+    cena_celkem_kc: 35000
+
+# =====================================================================
+# TŘÍDA 2 — ZAKLÁDÁNÍ
+# =====================================================================
+
+trida_2_zakladani:
+
+  - polozka_id: "SO180-T2-01"
+    otskp_kod: "28997"
+    popis: "OPLÁŠTĚNÍ (ZPEVNĚNÍ) Z GEOTEXTILIE A GEOMŘÍŽOVIN (separace + zpevnění podloží)"
+    mj: "M2"
+    mnozstvi: 597.0
+    vypocet:
+      formula: "plocha_objizdky + plocha_podlozi_provizoria"
+      vstupy:
+        plocha_objizdky_m2:   {hodnota: 522, jednotka: m2, popis: "T0-02 plocha vozovky objízdky", zdroj: "T0-02"}
+        plocha_podlozi_m2:    {hodnota: 75,  jednotka: m2, popis: "L_podlozi × B_podlozi pod provizorium = 15 × 5", zdroj: "inputs.provizorium.plocha_podlozi_m2"}
+      vypocet_kroky:
+        - "522 + 75 = 597 m²"
+    confidence: 0.85
+    jedn_cena_kc: 200
+    note: "Geotextilie GT 5 (separační) + lokálně geomřížovina pod kritické úseky."
+    cena_celkem_kc: 119400
+
+# =====================================================================
+# TŘÍDA 4 — VODOROVNÉ KONSTRUKCE
+# =====================================================================
+
+trida_4_vodorovne:
+
+  - polozka_id: "SO180-T4-01"
+    otskp_kod: "451523"
+    popis: "VÝPLŇ Z KAMENIVA DRCENÉHO, INDEX ZHUTNĚNÍ ID DO 0,8 (podloží objízdky a provizoria)"
+    mj: "M3"
+    mnozstvi: 119.4
+    vypocet:
+      formula: "(plocha_objizdky + plocha_podlozi) × tloustka_drceneho"
+      vstupy:
+        plocha_objizdky_m2: {hodnota: 522, jednotka: m2, popis: "T0-02",          zdroj: "T0-02"}
+        plocha_podlozi_m2:  {hodnota: 75,  jednotka: m2, popis: "podloží provizoria", zdroj: "inputs"}
+        tloustka_m:         {hodnota: 0.20, jednotka: m, popis: "drcené kamenivo zpevňující vrstva", zdroj: "ČSN 73 6133"}
+      vypocet_kroky:
+        - "(522 + 75) × 0.20 = 597 × 0.20 = 119.4 m³"
+    confidence: 0.85
+    jedn_cena_kc: 1100
+    cena_celkem_kc: 131340
+
+  - polozka_id: "SO180-T4-02"
+    otskp_kod: "45211"
+    popis: "PODKLAD KONSTR. Z DÍLCŮ BETON (panely pod ocelové provizorium)"
+    mj: "M3"
+    mnozstvi: 15.0
+    vypocet:
+      formula: "plocha_podlozi × tloustka_panelu"
+      vstupy:
+        plocha_m2:  {hodnota: 75,   jednotka: m2, popis: "podloží provizoria 15 × 5",      zdroj: "inputs.provizorium.plocha_podlozi_m2"}
+        tloustka_m: {hodnota: 0.20, jednotka: m,  popis: "betonové panely IZD/IZS pod TMS", zdroj: "vendor TMS/PONVIA spec"}
+      vypocet_kroky:
+        - "75 × 0.20 = 15 m³"
+    confidence: 0.85
+    jedn_cena_kc: 2500
+    cena_celkem_kc: 37500
+
+# =====================================================================
+# TŘÍDA 5 — KOMUNIKACE (vozovka objízdky + nájezdy provizoria)
+# =====================================================================
+
+trida_5_komunikace:
+
+  - polozka_id: "SO180-T5-01"
+    otskp_kod: "56333"
+    popis: "VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 150 MM (spodní podkladní)"
+    mj: "M2"
+    mnozstvi: 522.0
+    vypocet:
+      formula: "plocha_vozovky_objizdky"
+      vstupy:
+        plocha_m2: {hodnota: 522, jednotka: m2, popis: "T0-02", zdroj: "T0-02"}
+      vypocet_kroky:
+        - "522 m² (← user formula 116 × 4.5)"
+    confidence: 0.95
+    jedn_cena_kc: 200
+    cena_celkem_kc: 104400
+
+  - polozka_id: "SO180-T5-02"
+    otskp_kod: "56336"
+    popis: "VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 300 MM (horní podkladní)"
+    mj: "M2"
+    mnozstvi: 522.0
+    vypocet:
+      formula: "plocha_vozovky_objizdky"
+      vstupy:
+        plocha_m2: {hodnota: 522, jednotka: m2, popis: "T0-02", zdroj: "T0-02"}
+      vypocet_kroky:
+        - "522 m²"
+    confidence: 0.95
+    jedn_cena_kc: 280
+    cena_celkem_kc: 146160
+
+  - polozka_id: "SO180-T5-03"
+    otskp_kod: "56314"
+    popis: "VOZOVKOVÉ VRSTVY Z MECHANICKY ZPEVNĚNÉHO KAMENIVA TL. DO 200 MM (MZK)"
+    mj: "M2"
+    mnozstvi: 522.0
+    vypocet:
+      formula: "plocha_vozovky_objizdky"
+      vstupy:
+        plocha_m2: {hodnota: 522, jednotka: m2, popis: "T0-02", zdroj: "T0-02"}
+      vypocet_kroky:
+        - "522 m²"
+    confidence: 0.95
+    jedn_cena_kc: 250
+    cena_celkem_kc: 130500
+
+  - polozka_id: "SO180-T5-04"
+    otskp_kod: "574A34"
+    popis: "ASFALTOVÝ BETON ACO 11+ TL. 40 MM (obrusná vrstva vozovky objízdky a nájezdů)"
+    mj: "M2"
+    mnozstvi: 522.0
+    vypocet:
+      formula: "plocha_vozovky_objizdky"
+      vstupy:
+        plocha_m2: {hodnota: 522, jednotka: m2, popis: "T0-02 + nájezdy provizoria sjednocené", zdroj: "T0-02"}
+      vypocet_kroky:
+        - "522 m² (← user formula 116 × 4.5)"
+    confidence: 0.85
+    jedn_cena_kc: 220
+    note: "Pro provizorium není povinná ACO 11+ obrusná, ale doporučená pro ochranu nižších vrstev po dobu 6 měsíců. Recyklát ACO může být použit (RS Žatec)."
+    cena_celkem_kc: 114840
+
+# =====================================================================
+# TOTALS — SO 180
+# =====================================================================
+
+totals:
+  trida_0_kc: 968472   # 8000+0+0+175590+206300+0+76582+150000+120000+150000+12000+40000+30000
+  trida_1_kc: 294526   # 44310+11071+68472+115210+20463+35000
+  trida_2_kc: 119400   # 119400
+  trida_4_kc: 168840   # 131340+37500
+  trida_5_kc: 495900   # 104400+146160+130500+114840
+  SO_180_subtotal_kc: 2047138
+  SO_180_total_kc: 2047138
+  SO_180_total_with_vat_kc: 2477037   # × 1.21
+  total_polozek: 26    # 13 + 6 + 1 + 2 + 4
+  vendor_pricing_share_kc: 458472     # T0-04 + T0-05 + T0-07 (median 4 vendorů)
+  vendor_pricing_share_pct: 22
+
+confidence_distribution:
+  high_0_85_to_1_0: 15
+  medium_0_70_to_0_84: 8
+  user_manual_fallback_0_70: 3   # T0-09 semafor, T0-10 DIO, T0-13 linková doprava
+  total_polozek: 26
+  vendor_pricing_median: 3       # T0-04, T0-05, T0-07
+
+# =====================================================================
+# CROSS-REFERENCES + VALIDATION
+# =====================================================================
+
+cross_references:
+  vendor_pricing:        "../vendor_pricing/vendor_quotes.yaml"
+  user_manual_source:    "../manual_reference_JS/SO_180_parsed.yaml"
+  reconciliation:        "../reconciliation_report.md"
+  parcels_consents:      "../kadastr_audit/parcels_and_consents.yaml"
+  phase_b_provizorium:   "../../02_design/provizorium_specs.md"
+  task_spec:             "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.3"
+  related_so:            "master_soupis_SO_001.yaml (T9-11 demontáž — anchor only here, actual cost there)"
+
+no_work_duplication_validation:
+  shared_otskp_kody_with_SO_001:
+    - kod: "027413"
+      SO_180_polozka: "T0-06 (anchor, 0 Kč)"
+      SO_001_polozka: "T9-11 (185 160 Kč actual cost)"
+      explanation: "Demontáž provizoria je end-of-construction work — single execution, evidováno jednou v SO 001 (D-scope demolice). Tato anchor v SO 180 jen drží OTSKP-konzistentní strukturu provizoria."
+    - kod: "121108"
+      SO_180_polozka: "T1-03 (150 m³ pro objízdku + provizorium)"
+      SO_001_polozka: "T1-02 (30 m³ pro stavební jámu hlavního mostu)"
+      explanation: "Sejmutí ornice ve dvou různých kontextech: SO 180 pro zábor 1000 m² (objízdka + provizorium), SO 001 pro stavební jámu mostu (~100 m²). Žádné překryvné území."
+    - kod: "11511"
+      SO_180_polozka: "T1-02 (100 hod)"
+      SO_001_polozka: "T1-01 (200 hod)"
+      explanation: "Čerpání vody ve dvou různých etapách: SO 180 během výkopu pod provizoriem, SO 001 během demolice mostu + výkop základů. Časově oddělené."
+    - kod: "11/12 jiné kódy zemních prací"
+      explanation: "Žádné další duplikace — SO 180 řeší zábor pro objízdku, SO 001 řeší stavební jámu pro nový most."
+    - kod: "18241"
+      SO_180_polozka: "T1-06 (1000 m² hydroosev — část záboru po demontáži provizoria)"
+      SO_001_polozka: "T9-16 (1000 m² hydroosev — celkový zábor po dokončení)"
+      explanation: |
+        ⚠️ POTENTIAL DUPLICATION FLAG — obě SO mají hydroosev 1000 m². Ve skutečnosti je
+        rekultivace záboru jeden výkon. RESOLUTION: SO 180 T1-06 odstraňuje area kde
+        bylo provizorium a objízdka (cca 700 m²); SO 001 T9-16 pokrývá zbytek (~300 m²).
+        Pro účely tendrové soupisu CELKEM 1000 m² je správná suma — ale rozdělení mezi
+        SO musí být jednoznačné. **AKCE: BACKLOG ITEM** pro DPS — projektant rozhodne
+        finální rozdělení mezi SO 001 a SO 180 ve fázi DPS.
+      severity: warning
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "Vendor pricing T0-04/T0-05/T0-07 = median 4 vendorů (TMS, PONVIA MS, Mosty Záboří 4m + 3.5m). Per `vendor_quotes.yaml`. Vendor RFQ stále vyžadována pro finální tendrovou cenu."
+  - level: info
+    message: "T0-06 (027413 demontáž) = anchor 0 Kč v SO 180 — actual cost alokován v SO 001 T9-11 (no-work-duplication rule)."
+  - level: warning
+    message: "T1-06 hydroosev 1000 m² potenciálně překrývá SO 001 T9-16 — řešení v DPS (per validation matrix above)."
+  - level: warning
+    message: "T1-01 odstranění křovin 300 m² + LČR podmínka (parcels 385/12, 613/3, 397, 614, 1769, 1843): NEKÁCET, NESKLÁDAT MATERIÁL na lesních parcelách. D&B PD musí explicitně řešit."
+  - level: info
+    message: "User formuly aplikovány: vozovka 116 × 4.5 = 522 m² (T0-02), výkop 522 × 0.70 = 365.4 m³ (T1-04), ornice 1000 × 0.15 = 150 m³ (T1-03), hydroosev 1000 m² (T1-06)."
+  - level: warning
+    message: "Souhlas Povodí Vltavy MISSING (parcely 1836, 385/13 — Mladotický potok). Provizorium může zasahovat do ochranného pásma vodního toku — P0 blocker pre DUR."

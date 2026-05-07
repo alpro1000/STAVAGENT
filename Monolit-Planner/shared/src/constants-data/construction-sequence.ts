@@ -22,6 +22,7 @@ export const BRIDGE_ELEMENT_ORDER: Record<StructuralElementType, number> = {
   zakladovy_pas:        25,
   zakladova_deska:      30,
   zaklady_piliru:       35,
+  zaklady_oper:         35,
 
   // Group 2: Substructure (Spodní stavba)
   driky_piliru:         40,
@@ -80,6 +81,7 @@ export const BUILDING_ELEMENT_ORDER: Record<StructuralElementType, number> = {
 
   // Group 5: Bridge elements (if mixed project)
   zaklady_piliru:       80,
+  zaklady_oper:         80,
   driky_piliru:         81,
   opery_ulozne_prahy:   82,
   kridla_opery:         82,

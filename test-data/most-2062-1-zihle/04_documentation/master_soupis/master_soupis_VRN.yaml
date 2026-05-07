@@ -1,0 +1,254 @@
+# master_soupis_VRN.yaml — VRN Vedlejší rozpočtové náklady
+#
+# Žihle 2062-1 (Most ev.č. 2062-1)
+# Per ČSN 73 0212 — Vedlejší rozpočtové náklady (VRN) jsou:
+#   - mimostaveniční doprava materiálů
+#   - pojištění stavby
+#   - koordinační dokumentace + správní poplatky
+#   - koordinátor BOZP per zákon 309/2006 Sb.
+#
+# Standardní pásmo: 3-5 % z hlavních prací (SO 001 + SO 180 + SO 201 + SO 290 + SO 801).
+# Per task brief Session 2: detailed per item (NE 3 % paušál) pro transparency a audit trail.
+#
+# Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "VRN — Vedlejší rozpočtové náklady"
+phase: "D — Master soupis (Session 2)"
+norm_basis: "ČSN 73 0212 + zákon 309/2006 Sb. (BOZP) + 568/2020 Sb. (správní poplatky)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Vstupní agregát hlavních prací (sum SO 001 + SO 180 + SO 201 + SO 290 + SO 801)
+# ─────────────────────────────────────────────────────────────────────
+
+hlavni_prace_souhrn_kc:
+  SO_001_demolice_kc:     1057831
+  SO_180_provizorium_kc:  2047138
+  SO_201_most_kc:         4435958     # t0+t1_t2+t3_t4+t5_t6_t7+t8_t9
+  SO_290_silnice_kc:      1952470
+  SO_801_zs_kc:           780500
+  TOTAL_hlavni_prace_kc:  10273897
+
+vrn_pasmo_per_csn_73_0212:
+  min_pct: 3.0
+  max_pct: 5.0
+  cilove_pct: 3.0           # midpoint nižší — Žihle je relativně standardní D&B malý most
+  cilove_kc_orientace: 308217  # 3.0 % × 10 273 897
+
+# =====================================================================
+# VRN POLOŽKY (5 detailních položek per ČSN 73 0212 + praxe)
+# =====================================================================
+
+vrn_polozky:
+
+  - polozka_id: "VRN-01"
+    otskp_kod: "VRN-MIMOSTAV-DOPRAVA"
+    popis: "MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport betonu, výztuže, ocelových konstrukcí mimo bezprostřední staveniště)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "podil_z_hlavnich_praci × hlavni_prace_kc"
+      vstupy:
+        hlavni_prace_kc:    {hodnota: 10273897, jednotka: Kč,  popis: "souhrn SO 001+180+201+290+801",                            zdroj: "hlavni_prace_souhrn_kc"}
+        podil_pct:          {hodnota: 1.0,      jednotka: "%",   popis: "1 % standardní podíl mimostaveničních transportů per ČSN 73 0212", zdroj: "ČSN 73 0212 + tržní praxe 2026"}
+      vypocet_kroky:
+        - "10 273 897 × 0.010 = 102 739 Kč"
+    confidence: 0.7
+    jedn_cena_kc: 102739
+    note: |
+      Pokrývá: transport betonu z betonárny do Žihle (~30 km), transport výztuže, ocel.
+      konstrukcí (TMS provizorium z ~50 km vendor lokace), stavebních materiálů z vele-
+      skladu, jeřábu na/ze staveniště. NEZAHRNUJE manipulaci v rámci staveniště (in SO 801
+      T0-06 přístupová komunikace).
+    cena_celkem_kc: 102739
+    source: "vrn_kalkulace_per_norma"
+
+  - polozka_id: "VRN-02"
+    otskp_kod: "VRN-POJISTENI"
+    popis: "POJIŠTĚNÍ STAVBY (CAR — Contractor's All Risks + odpovědnost za škodu)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "podil_z_hlavnich_praci × hlavni_prace_kc"
+      vstupy:
+        hlavni_prace_kc:    {hodnota: 10273897, jednotka: Kč,  popis: "základní pojistná částka",                                    zdroj: "hlavni_prace_souhrn_kc"}
+        podil_pct:          {hodnota: 0.4,      jednotka: "%",   popis: "0.4 % standardní sazba CAR pojištění pro malé mostní stavby", zdroj: "Allianz / Generali / Kooperativa nabídky 2026"}
+      vypocet_kroky:
+        - "10 273 897 × 0.004 = 41 095.6 Kč ≈ 41 100 Kč"
+    confidence: 0.8
+    jedn_cena_kc: 41100
+    note: |
+      CAR (Contractor's All Risks) pokrývá: stavební rizika (požár, povodně z Mladotic.
+      potoka, krádež materiálu), odpovědnost za škodu třetím osobám (řidiči objízdky,
+      sousední pozemky). Doba pojištění = 11 měsíců (Phase C harmonogram + buffer).
+    cena_celkem_kc: 41100
+    source: "vrn_kalkulace_per_norma"
+
+  - polozka_id: "VRN-03"
+    otskp_kod: "VRN-KOORD-DOKUMENTACE"
+    popis: "KOORDINAČNÍ DOKUMENTACE (revize TZ + koordinace s ostatními SO + vyjádření DOSS)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál (revize + koordinace + vyjádření)"
+      vstupy:
+        revize_TZ_kc:           {hodnota: 12000, jednotka: Kč, popis: "revize technické zprávy DUR + odpovědi na RFI",  zdroj: "ČKAIT sazebník 2026"}
+        koordinace_so_kc:       {hodnota: 8000,  jednotka: Kč, popis: "koordinace mezi SO 001/180/201/290/801",          zdroj: "praxe"}
+        vyjadreni_doss_kc:      {hodnota: 10000, jednotka: Kč, popis: "vyjádření dotčených orgánů (Povodí Vltavy, LČR, Obec, ČEZ, GasNet, telekom)", zdroj: "tržní 2026"}
+      vypocet_kroky:
+        - "12 000 + 8 000 + 10 000 = 30 000 Kč"
+    confidence: 0.75
+    jedn_cena_kc: 30000
+    note: |
+      DUPLICATION CHECK: SO 201 t0 T0-05 (RDS 300k) + T0-06 (DSPS 80k) řeší TVŮRČÍ
+      dokumentaci konkrétního mostu. VRN-03 řeší KOORDINAČNÍ overhead mezi SO objekty
+      + vyjádření DOSS (jiný scope, neresetuje SO 201 cenu).
+    cena_celkem_kc: 30000
+    source: "vrn_kalkulace_per_norma"
+
+  - polozka_id: "VRN-04"
+    otskp_kod: "VRN-SPRAVNI-POPLATKY"
+    popis: "SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU (stavební povolení, kolaudace, oznámení DPM)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "(stavebni_povolení + kolaudace + ostatní_poplatky) + AI_proces"
+      vstupy:
+        stavebni_povoleni_kc:    {hodnota: 10000, jednotka: Kč, popis: "správní poplatek za stavební povolení per zákon 568/2020 Sb.", zdroj: "zákon 568/2020 Sb."}
+        kolaudace_kc:            {hodnota: 8000,  jednotka: Kč, popis: "kolaudační rozhodnutí",                                          zdroj: "ČKAIT"}
+        oznameni_dotcenym_kc:    {hodnota: 5000,  jednotka: Kč, popis: "oznámení dopravnímu policejnímu úřadu + okresnímu úřadu",       zdroj: "praxe"}
+        AI_proces_kc:            {hodnota: 27000, jednotka: Kč, popis: "autorizovaný inženýr v procesu (písemná stanoviska, oddělené od dozoru SO 201 T0-09)", zdroj: "ČKAIT sazebník"}
+      vypocet_kroky:
+        - "10 000 + 8 000 + 5 000 + 27 000 = 50 000 Kč"
+    confidence: 0.75
+    jedn_cena_kc: 50000
+    note: |
+      Správní poplatky jsou fixní per zákon 568/2020 Sb. AI v procesu = autorizovaný
+      inženýr formálně účastní stavebního řízení (oddělené od stavebního dozoru SO 201
+      T0-09 dozor 162k Kč, který řeší kontrolu kvality během stavby).
+    cena_celkem_kc: 50000
+    source: "vrn_kalkulace_per_norma"
+
+  - polozka_id: "VRN-05"
+    otskp_kod: "VRN-BOZP-KOORDINATOR"
+    popis: "KOORDINÁTOR BOZP NA STAVENIŠTI (povinný per zákon 309/2006 Sb. — staveniště s více zhotoviteli)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "doba_stavby × sazba_per_mes"
+      vstupy:
+        doba_stavby_mes:    {hodnota: 11,    jednotka: měs,    popis: "doba aktivního staveniště",                          zdroj: "Phase C + SO 801"}
+        sazba_kc_mes:       {hodnota: 8000,  jednotka: Kč/měs, popis: "tržní sazba certifikovaného koordinátora BOZP 2026",  zdroj: "ČKAIT BOZP sazebník"}
+      vypocet_kroky:
+        - "11 × 8 000 = 88 000 Kč"
+    confidence: 0.85
+    jedn_cena_kc: 88000
+    note: |
+      ★ POVINNÉ per zákon 309/2006 Sb. § 14 — staveniště, kde současně pracují více
+      zhotovitelů (Žihle: vendor TMS provizorium + zhotovitel D&B + subkontraktoři pro
+      asfalt + dlažba) → koordinátor BOZP MUSÍ být ustanoven pro celou dobu stavby.
+      Oddělené od dozoru autorského (SO 201 T0-09) a od koordinátora BOZP-PD ve fázi
+      přípravy projektu (typicky in PD náklady, ne VRN realizace).
+    cena_celkem_kc: 88000
+    source: "vrn_kalkulace_per_norma"
+
+# =====================================================================
+# TOTALS — VRN
+# =====================================================================
+
+totals:
+  VRN_01_mimostav_doprava_kc:    102739
+  VRN_02_pojisteni_kc:           41100
+  VRN_03_koord_dokumentace_kc:   30000
+  VRN_04_spravni_poplatky_kc:    50000
+  VRN_05_BOZP_koordinator_kc:    88000
+  VRN_subtotal_kc:               311839
+  VRN_total_kc:                  311839
+  VRN_total_with_vat_kc:         377325    # × 1.21
+  total_polozek:                 5
+
+cross_check_vs_csn_73_0212_pasmo:
+  hlavni_prace_kc:        10273897
+  VRN_kc:                 311839
+  podil_pct:              3.04         # = 311839 / 10273897 × 100
+  pasmo_csn_pct:          [3.0, 5.0]
+  status: "PASS — 3.04 % je v dolním pásmu ČSN 73 0212. Žihle je standardní D&B malý most → nižší pásmo OK."
+  delta_vs_orientacni_3pct: 3622   # 311 839 - 308 217 = 3 622 Kč (rounding)
+
+source_distribution:
+  vrn_kalkulace_per_norma_polozek: 5
+  vrn_kalkulace_per_norma_kc:      311839
+  calculator_deterministic_polozek: 0
+  user_manual_fallback_polozek:    0
+
+confidence_distribution:
+  high_0_85_to_1_0: 1     # VRN-05 BOZP (povinný, sazba známá)
+  medium_0_70_to_0_84: 4  # VRN-01 (0.7), VRN-02 (0.8), VRN-03 (0.75), VRN-04 (0.75)
+  total_polozek: 5
+
+# =====================================================================
+# NO-WORK-DUPLICATION VALIDATION VS ALL SO
+# =====================================================================
+
+no_work_duplication_validation:
+  shared_categories:
+    - kategorie: "dokumentace"
+      SO_201_polozky: "T0-05 RDS (300k), T0-06 DSPS (80k) — TVŮRČÍ dokumentace mostu"
+      VRN_polozka: "VRN-03 (30k) — KOORDINAČNÍ overhead mezi SO + vyjádření DOSS"
+      explanation: "Different scope: SO 201 = jeden objekt mostu (creative engineering output). VRN = projektové overhead napříč všemi SO + vyjádření DOSS (administrativní)."
+
+    - kategorie: "dozor / odborný"
+      SO_201_polozka: "T0-09 ODBORNÝ DOZOR autorský + statický (162k) — kontrola kvality stavby"
+      VRN_polozka: "VRN-04 AI v procesu (27k část) — autorizovaný inženýr formálně účastní stavebního řízení"
+      explanation: "Different role: SO 201 dozor = quality control během realizace (denní). VRN AI = administrativní autorizace v stavebním řízení (formální)."
+
+    - kategorie: "BOZP"
+      VRN_polozka: "VRN-05 koordinátor BOZP REALIZACE (88k, povinný per 309/2006 Sb.)"
+      not_in_other_SO: "BOZP koordinátor PD by byl in PD náklady (předDUR), ne v této master soupis."
+      explanation: "Pouze v VRN — přesné kategorie."
+
+    - kategorie: "doprava materiálů"
+      SO_801_polozka: "T0-06 PŘÍJEZDOVÁ KOMUNIKACE DOČASNÁ (80k) — IZD panely v rámci staveniště"
+      VRN_polozka: "VRN-01 MIMOSTAVENIČNÍ DOPRAVA (103k) — transport materiálů VEN ze staveniště"
+      explanation: "Different scope: SO 801 = manipulace v rámci staveniště. VRN-01 = doprava na/ze staveniště (od dodavatelů)."
+
+  duplications_found: 0
+  validation_status: "PASS — VRN položky jsou kategoriálně odlišné od ostatních SO. Žádné OTSKP kódy se nepřekrývají."
+
+# =====================================================================
+# CROSS-REFERENCES
+# =====================================================================
+
+cross_references:
+  norm_basis:           "ČSN 73 0212 (Zařízení staveniště + VRN), zákon 309/2006 Sb. (BOZP), zákon 568/2020 Sb. (správní poplatky)"
+  hlavni_prace_aggregate:
+    - "master_soupis_SO_001.yaml = 1 057 831 Kč"
+    - "master_soupis_SO_180.yaml = 2 047 138 Kč"
+    - "master_soupis_SO_201_t0+t1_t2+t3_t4+t5_t6_t7+t8_t9 = 4 435 958 Kč"
+    - "master_soupis_SO_290.yaml = 1 952 470 Kč"
+    - "master_soupis_SO_801.yaml = 780 500 Kč"
+    - "TOTAL hlavní práce = 10 273 897 Kč"
+  task_spec:            "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.7"
+  related_so_files:     "all master_soupis_SO_*.yaml"
+  superseded:
+    - "otskp_mapping.yaml ZS.zarizeni_staveniste = paušál 4 % (270k) — REPLACED by SO 801 (780.5k detailed) + VRN (311.8k detailed)"
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "5 VRN položek detailně rozepsaných (NE 3 % paušál). Total VRN 311 839 Kč = 3.04 % z hlavních prací (10 273 897 Kč). V dolním pásmu ČSN 73 0212 (3-5 %)."
+  - level: info
+    message: "★ VRN-05 koordinátor BOZP POVINNÝ per zákon 309/2006 Sb. § 14 (staveniště s více zhotoviteli — vendor TMS + D&B zhotovitel + subkontraktoři). Nelze vynechat."
+  - level: info
+    message: "VRN-01 mimostaveniční doprava 1 % je nižší standard hranice — pro Žihle (~30 km od betonárny + ~50 km od TMS provizorium vendor) je adekvátní. Pokud zhotovitel zvolí vzdálenějšího vendora, doprava může vzrůst na 1.5-2 %."
+  - level: info
+    message: "VRN-02 pojištění CAR 0.4 % = standardní sazba pro malé mostní stavby. Pojistná částka = hlavní práce 10 274 tis. Kč × 11 měs."
+  - level: info
+    message: "No-work-duplication PASS — všechny VRN položky kategoriálně odlišné od SO objektů. Žádné OTSKP kódy se nepřekrývají."
+  - level: info
+    message: "Per-SO plán SO 001/180/201/290/801/VRN ✅ KOMPLETNÍ — master soupis ready pre validation_report + UNIXML/XLSX export."

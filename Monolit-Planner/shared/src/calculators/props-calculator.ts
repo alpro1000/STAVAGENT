@@ -160,6 +160,12 @@ export const ELEMENT_DIMENSION_HINTS: Record<StructuralElementType, DimensionHin
     typical_height_range: [1, 3],
     has_height: true,
   },
+  zaklady_oper: {
+    required_dimensions: ['height_m'],
+    hint_cs: 'Výška základu (bednění pouze boční). Podpěry nepotřeba.',
+    typical_height_range: [1, 3],
+    has_height: true,
+  },
   driky_piliru: {
     required_dimensions: ['height_m'],
     hint_cs: 'Výška dříku pilíře. Ovlivňuje volbu lešení a plošin.',

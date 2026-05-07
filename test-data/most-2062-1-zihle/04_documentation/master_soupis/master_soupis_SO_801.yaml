@@ -1,0 +1,290 @@
+# master_soupis_SO_801.yaml — SO 801 Zařízení staveniště (detailní)
+#
+# Žihle 2062-1 (Most ev.č. 2062-1)
+# Per user decision A (Session 1 AskUserQuestion): separate SO s detailními položkami,
+# NE 4 % paušální souhrn jak v existing otskp_mapping.yaml ZS.zarizeni_staveniste.
+#
+# Source: ČSN 73 0212 (Zařízení staveniště) + market rates 2026 + Phase C harmonogram.
+# Phase C calculator NEPOKRÝVÁ — pure user_manual_fallback / engineering paušál.
+#
+# Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "SO 801 — Zařízení staveniště (detailní)"
+phase: "D — Master soupis (Session 2)"
+tskp_classes: ["0"]
+scope: "Hygiena + sociální + energie + voda + oplocení + osvětlení + dočasná komunikace + čistění vozidel + tabule + vytýčení (perimetr cca 50 × 50 m, doba 11 měsíců)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Vstupní parametry (Phase C harmonogram + DXF kadastr)
+# ─────────────────────────────────────────────────────────────────────
+
+inputs:
+  doba_stavby_total_mesicu: 11      # 1.5 demolice + 0.5 setup + 4.5 výstavba NK + 4.5 souběžně provizorium + buffer 0.5
+  obvod_staveniste_m: 200           # 4 × 50 m perimetr per DXF + GPX bbox
+  plocha_staveniste_m2: 2500        # 50 × 50 m foot print most + provizorium + skladovací plocha
+  pocet_pracovniku: 10              # 8-10 lidí na vrcholu (výstavba + provizorium souběžně)
+
+# =====================================================================
+# TŘÍDA 0 — VŠEOBECNÉ KONSTRUKCE A PRÁCE (ZS)
+# =====================================================================
+
+trida_0_zarizeni_staveniste:
+
+  - polozka_id: "SO801-T0-01"
+    otskp_kod: "02520"
+    popis: "HYGIENICKÁ A SOCIÁLNÍ ZAŘÍZENÍ STAVENIŠTĚ (kontejnery WC + šatna + jídelna)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "doba_stavby × ks_kontejnerů × cena_pronajmu_měsíc"
+      vstupy:
+        doba_stavby_mes:    {hodnota: 11,    jednotka: měs, popis: "harmonogram demolice+výstavba+buffer",  zdroj: "Phase C scheduler 319 dní + reserve"}
+        ks_kontejneru:      {hodnota: 3,     jednotka: ks,  popis: "WC + šatna + jídelna",                  zdroj: "ČSN 73 0212 + praxe pro 8-10 pracovníků"}
+        cena_pronajmu_kc:   {hodnota: 8000,  jednotka: Kč/měs, popis: "tržní průměr CZ 2026 per kontejner", zdroj: "vendor lookup TOI TOI / Cramo"}
+      vypocet_kroky:
+        - "11 × 3 × 8000 = 264 000 Kč"
+        - "Cca 264k pokrývá pronájem + transport + týdenní servis + likvidaci splaškových vod"
+    confidence: 0.7
+    jedn_cena_kc: 264000
+    cena_celkem_kc: 264000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-02"
+    otskp_kod: "02530"
+    popis: "ENERGIE + VODA STAVENIŠTĚ (elektrický rozvaděč + připojení vody + průběžné poplatky)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "instalace + (doba_stavby × prubezne_poplatky)"
+      vstupy:
+        instalace_rozvadec_kc: {hodnota: 30000, jednotka: Kč,    popis: "instalace stavebního rozvaděče + zapojení",                   zdroj: "ČEZ Distribuce ceník 2026"}
+        instalace_voda_kc:     {hodnota: 15000, jednotka: Kč,    popis: "připojení dočasného vodovodu (přípojka + měřič)",            zdroj: "VAS ceník 2026"}
+        doba_stavby_mes:       {hodnota: 11,    jednotka: měs,   popis: "doba odběru",                                                  zdroj: "Phase C harmonogram"}
+        elektrika_kc_mes:      {hodnota: 6500,  jednotka: Kč/měs, popis: "průměrná spotřeba 2 kVA × ~140 hod × 11 Kč/kWh",            zdroj: "ČEZ tarify 2026"}
+        voda_kc_mes:           {hodnota: 1300,  jednotka: Kč/měs, popis: "spotřeba ~5 m³/měs × 250 Kč/m³ vč. stočného",                zdroj: "VAS"}
+      vypocet_kroky:
+        - "Instalace: 30 000 + 15 000 = 45 000 Kč"
+        - "Průběžné: 11 × (6 500 + 1 300) = 11 × 7 800 = 85 800 Kč"
+        - "Total: 45 000 + 85 800 = 130 800 ≈ 132 000 Kč"
+    confidence: 0.7
+    jedn_cena_kc: 132000
+    cena_celkem_kc: 132000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-03"
+    otskp_kod: "02540"
+    popis: "TELEFONNÍ / INTERNETOVÉ SPOJENÍ STAVENIŠTĚ (mobilní router + datový tarif)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "instalace + (doba_stavby × tarif)"
+      vstupy:
+        zarizeni_kc:        {hodnota: 4000,  jednotka: Kč,    popis: "mobilní 4G/5G router + SIM",                                  zdroj: "vendor lookup"}
+        doba_stavby_mes:    {hodnota: 11,    jednotka: měs,   popis: "doba odběru",                                                  zdroj: "Phase C"}
+        tarif_kc_mes:       {hodnota: 1100,  jednotka: Kč/měs, popis: "neomezený data tarif (kontrolní reporty + komunikace)",     zdroj: "tržní 2026"}
+      vypocet_kroky:
+        - "4 000 + (11 × 1 100) = 4 000 + 12 100 = 16 100 ≈ 16 500 Kč"
+    confidence: 0.85
+    jedn_cena_kc: 16500
+    cena_celkem_kc: 16500
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-04"
+    otskp_kod: "02560"
+    popis: "OPLOCENÍ STAVENIŠTĚ (mobilní oplocení 2.0 m výška + brány)"
+    mj: "M"
+    mnozstvi: 200
+    vypocet:
+      formula: "obvod_staveniste"
+      vstupy:
+        obvod_m: {hodnota: 200, jednotka: m, popis: "perimetr ohraničující staveniště ~50 m × 50 m", zdroj: "DXF kataster + GPX trace bbox"}
+      vypocet_kroky:
+        - "Plocha staveniště ≈ 50 × 50 = 2500 m² (foot print most + provizorium + skladovací plocha)"
+        - "Obvod = 4 × 50 = 200 m"
+    confidence: 0.65
+    jedn_cena_kc: 350
+    note: "Mobilní oplocení 2.0 m × 350 Kč/m = pronájem 11 měs + montáž + demontáž + 2× brána. Per ČSN 73 0212 čl. 4.3."
+    cena_celkem_kc: 70000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-05"
+    otskp_kod: "02570"
+    popis: "OSVĚTLENÍ STAVENIŠTĚ (LED reflektory na sloupech + pohybová čidla)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "instalace + (doba_stavby × elektrika_provoz)"
+      vstupy:
+        instalace_kc:           {hodnota: 30000, jednotka: Kč,    popis: "4× LED reflektor 200 W + sloupy + kabeláž",                 zdroj: "vendor lookup"}
+        doba_stavby_mes:        {hodnota: 11,    jednotka: měs,   popis: "doba",                                                       zdroj: "Phase C"}
+        elektrika_provoz_kc:    {hodnota: 2700,  jednotka: Kč/měs, popis: "4× 200 W × 12 hod/den × 30 dní × 11 Kč/kWh",                zdroj: "ČEZ tarify"}
+      vypocet_kroky:
+        - "30 000 + (11 × 2 700) = 30 000 + 29 700 = 59 700 ≈ 60 000 Kč"
+    confidence: 0.7
+    jedn_cena_kc: 60000
+    cena_celkem_kc: 60000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-06"
+    otskp_kod: "02580"
+    popis: "PŘÍJEZDOVÁ KOMUNIKACE DOČASNÁ (panely IZD na zpevněném podkladu)"
+    mj: "M2"
+    mnozstvi: 100
+    vypocet:
+      formula: "L × B (od silnice III/206 2 ke staveništi)"
+      vstupy:
+        L_m: {hodnota: 25, jednotka: m, popis: "délka přístupové cesty od silnice", zdroj: "DXF kadastr + Phase B"}
+        B_m: {hodnota: 4,  jednotka: m, popis: "šířka pro průjezd nákladu (mixéry beton, jeřáb)", zdroj: "ČSN 73 0212"}
+      vypocet_kroky:
+        - "25 × 4 = 100 m²"
+    confidence: 0.7
+    jedn_cena_kc: 800
+    note: "IZD panely 800 Kč/m² zahrnuje pronájem + transport na/ze staveniště + likvidaci podloží po skončení."
+    cena_celkem_kc: 80000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-07"
+    otskp_kod: "02590"
+    popis: "ČIŠTĚNÍ VOZIDEL PŘI VÝJEZDU ZE STAVENIŠTĚ (mokrý mycí systém + voda + údržba)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "doba_stavby × cena_per_mes"
+      vstupy:
+        doba_stavby_mes: {hodnota: 11,   jednotka: měs,   popis: "doba", zdroj: "Phase C"}
+        cena_per_mes:    {hodnota: 8000, jednotka: Kč/měs, popis: "průměrná cena pronájmu mycí stanice + voda + údržba", zdroj: "vendor lookup"}
+      vypocet_kroky:
+        - "11 × 8 000 = 88 000 Kč"
+    confidence: 0.75
+    jedn_cena_kc: 88000
+    note: "POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic. Mycí systém high-pressure mokrý + recyklační kalová jímka."
+    cena_celkem_kc: 88000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-08"
+    otskp_kod: "02991"
+    popis: "TABULE A ZNAČKY STAVENIŠTĚ (povinné identifikační + bezpečnostní + výstražné)"
+    mj: "KUS"
+    mnozstvi: 10
+    vypocet:
+      formula: "povinné_tabule_per_ČSN_73_0212"
+      vstupy:
+        identifikacni:    {hodnota: 1, jednotka: ks, popis: "Stavbyvedoucí + investor + projekt + lhůty",  zdroj: "vyhláška 499/2006 Sb."}
+        bezpecnostni:     {hodnota: 4, jednotka: ks, popis: "B14 zákaz vstupu + B26 přilba + výstrahy",     zdroj: "ČSN ISO 3864-1"}
+        vystrazne:        {hodnota: 3, jednotka: ks, popis: "Výstraha staveniště + uzávěr + objízdka",      zdroj: "ČSN 73 0212"}
+        bozp_evakuacni:   {hodnota: 2, jednotka: ks, popis: "Evakuační směr + první pomoc",                 zdroj: "zákon 309/2006 Sb."}
+      vypocet_kroky:
+        - "1 + 4 + 3 + 2 = 10 ks"
+    confidence: 0.85
+    jedn_cena_kc: 4500
+    cena_celkem_kc: 45000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO801-T0-09"
+    otskp_kod: "02500"
+    popis: "VYTÝČENÍ STAVENIŠTĚ + OCHRANNÁ PÁSMA (geodetické vytýčení obvodů, sítí a dotčených pozemků)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál (geodet + dokumentace ochranných pásem)"
+      vstupy:
+        rozsah:               {hodnota: 1,     jednotka: kpl, popis: "vytýčení obvodu + identifikace inženýrských sítí + dokumentace",  zdroj: "ČSN 73 0212 čl. 3.2"}
+        sazba_geodet_kc_hod:  {hodnota: 1500,  jednotka: Kč/hod, popis: "geodet certifikovaný",                                          zdroj: "vyhláška 393/2020"}
+        hodin_vytyceni:       {hodnota: 16,    jednotka: hod, popis: "obvod + 7× ochranná pásma sítí",                                   zdroj: "praxe"}
+      vypocet_kroky:
+        - "1 500 × 16 = 24 000 Kč ≈ 25 000 Kč"
+    confidence: 0.75
+    jedn_cena_kc: 25000
+    note: |
+      DUPLICATION CHECK: SO 201 t0 T0-01 (zaměřičská měření 45k) + T0-02 (geodetické
+      zaměření výchozí 100k) řeší MOST samotný (osy + výškové body). SO 801 T0-09 řeší
+      OBVOD STAVENIŠTĚ + OCHRANNÁ PÁSMA inženýrských sítí (jiný scope, jiná etapa).
+    cena_celkem_kc: 25000
+    source: "user_manual_fallback"
+
+# =====================================================================
+# TOTALS — SO 801
+# =====================================================================
+
+totals:
+  trida_0_kc: 780500    # 264000+132000+16500+70000+60000+80000+88000+45000+25000
+  SO_801_subtotal_kc: 780500
+  SO_801_total_kc: 780500
+  SO_801_total_with_vat_kc: 944405    # × 1.21
+  total_polozek: 9
+
+source_distribution:
+  calculator_deterministic_polozek: 0    # Phase C calc nepokrývá ZS
+  calculator_deterministic_kc: 0
+  user_manual_fallback_polozek: 9
+  user_manual_fallback_kc: 780500
+
+confidence_distribution:
+  high_0_85_to_1_0: 2     # T0-03 telefon (0.85), T0-08 tabule (0.85)
+  medium_0_70_to_0_84: 6  # T0-01, T0-02, T0-05, T0-06, T0-07, T0-09
+  low_0_60_to_0_69: 1     # T0-04 oplocení (perimetr uncertain bez detailního DPS)
+  total_polozek: 9
+
+# =====================================================================
+# NO-WORK-DUPLICATION VALIDATION VS SO 001 + SO 180 + SO 201 + SO 290
+# =====================================================================
+
+no_work_duplication_validation:
+  shared_otskp_kody:
+    - kod: "02991 informační/identifikační tabule"
+      SO_001_polozka: "T0-05 (2 ks DIO uzavírka mostu)"
+      SO_180_polozka: "—"
+      SO_201_polozka: "T0-10 (2 ks stavební investor + zhotovitel — na mostě)"
+      SO_801_polozka: "T0-08 (10 ks staveniště — identifikační + bezpečnostní + výstražné + BOZP)"
+      explanation: |
+        DIFFERENT CATEGORIES: SO 001 = DIO/uzavírkové tabule (na silnici k objízdce).
+        SO 201 = stavební tabule investora/zhotovitele (na mostě). SO 801 = staveniště
+        identifikační + bezpečnostní (uvnitř oploceného staveniště). Different positions,
+        different audience, different content. Total tabule = 14 ks across all SO.
+
+    - kod: "02500 vytýčení / 02911 geodézie"
+      SO_201_polozka: "T0-01 (zaměřičské měření MOST 45k) + T0-02 (geodetické MOST výchozí 100k)"
+      SO_801_polozka: "T0-09 (vytýčení STAVENIŠTĚ + ochranná pásma 25k)"
+      explanation: |
+        DIFFERENT SCOPE: SO 201 řeší most samotný (osy mostu, výškové body opěr,
+        zaměření po dokončení). SO 801 řeší OBVOD staveniště + ochranná pásma
+        inženýrských sítí + dotčené pozemky. Žádný překryv.
+
+  duplications_found: 0
+  validation_status: "PASS — všechny shared kódy s ostatními SO mají category/scope-separation explanation."
+
+# =====================================================================
+# CROSS-REFERENCES
+# =====================================================================
+
+cross_references:
+  norm_basis:           "ČSN 73 0212 (Zařízení staveniště) + zákon 309/2006 Sb. (BOZP) + vyhláška 499/2006 Sb."
+  phase_c_harmonogram:  "../../03_calculation/outputs/_all_outputs.json (319 dní + reserve = 11 měs)"
+  parcels_consents:     "../kadastr_audit/parcels_and_consents.yaml (souhlasy k přístupům přes pozemky)"
+  task_spec:            "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.6"
+  related_so_files:
+    - "master_soupis_SO_001.yaml (T0-05 DIO tabule — different category)"
+    - "master_soupis_SO_201_t0.yaml (T0-01/T0-02 geodézie mostu — different scope)"
+  superseded:
+    - "otskp_mapping.yaml ZS.zarizeni_staveniste = paušál 4 % (270k) — REPLACED by detailed 9-položkový SO 801 (780.5k Kč). Detailed přístup je per user decision A z Session 1 AskUserQuestion."
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "9 položek detailní ZS per user decision A. Replaces orientační paušál 4 % (270k Kč) z otskp_mapping.yaml."
+  - level: info
+    message: "Source 100 % user_manual_fallback — Phase C calculator nepokrývá ZS. Confidence 0.65-0.85 (engineering paušály)."
+  - level: warning
+    message: "T0-04 oplocení 200 m perimetr confidence 0.65 — staveniště bbox uncertain bez detailního DPS. Pro DPS projektant ověří dle skutečného plotu (může být menší než 200 m pokud staveniště nesouvislé)."
+  - level: info
+    message: "Doba stavby 11 měsíců = Phase C 319 dní + buffer (originally elementy-only 4.5 měs, ale provizorium 6 měs souběžně + demolice + setup + buffer)."
+  - level: info
+    message: "T0-07 čistění vozidel POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic — nelze vynechat."
+  - level: info
+    message: "No-work-duplication PASS: 02991 tabule a 02500/02911 geodézie mají category/scope-separation s ostatními SO."
