@@ -1,0 +1,368 @@
+{
+  "doors": [],
+  "footprint_areas": {},
+  "glass_partitions": [],
+  "legacy_vv": {},
+  "lintels": [],
+  "locksmith": [],
+  "metadata": {
+    "extracted_at": "2026-05-07T16:08:06+00:00",
+    "extractor_version": "0.0.1",
+    "objekt": "B",
+    "schema_version": 1,
+    "source_files": [
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_4210_00-OBJEKT B - Půdorys 1. NP.dwg",
+        "sha256": "206d792e1f337adc2debb1db0dd05082fd2bde6604b2eb8551268c851c71f125",
+        "size_bytes": 378153
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_4220_R01 - OBJEKT B - Půdorys 2. NP.dwg",
+        "sha256": "d3ddd433964e1d889ec00b4dc61190404065bcc8d71a87db6b770e5e5a1f3aaf",
+        "size_bytes": 433045
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_4230_R01 - OBJEKT B - Půdorys 3. NP.dwg",
+        "sha256": "8eb4cc91f28c6e0de89c94e7d43f5298cb1828cb987a63c0bf4fc0699582132f",
+        "size_bytes": 350221
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_4240_00-OBJEKT B - Půdorys střecha.dwg",
+        "sha256": "9ac746e8052a7ff06cee3f2b65f2991d125b10874cb7f69bca349b99ae1f21a8",
+        "size_bytes": 160536
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_5200_R01 - OBJEKT B - ŘEZY.dwg",
+        "sha256": "df0b1821526f3e879c7821ccd38eed13c879c9020152f5e15c321052a629d401",
+        "size_bytes": 750784
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_6200_00_OBJEKT B - POHLEDY.dwg",
+        "sha256": "87b4c9cf541b96f0776807de2b21ec27f2f9cb65947957549d2c7e213f9d3e0f",
+        "size_bytes": 679123
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_7210_00-OBJEKT B - Výkres podhledů 1. NP.dwg",
+        "sha256": "c1e8d4b58bcbee863bda0aa28087b65ef2cf46d16acb932138329a4be9a5b0ae",
+        "size_bytes": 302214
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_7220_00-OBJEKT B - Výkres podhledů 2. NP.dwg",
+        "sha256": "b6fb67eef523923367d8a96e064396d6bd3f9c334f89ebcc00550f6f3e48f7e4",
+        "size_bytes": 292519
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_7230_00-OBJEKT B - Výkres podhledů 3. NP.dwg",
+        "sha256": "51781c377697b600ade0d48155b73d4d3c2ce73acfb399acd662ff6601e9f8ed",
+        "size_bytes": 247435
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/B/dwg/185-01_DPS_D_SO01_120_ARS objekt B_desky.dwg",
+        "sha256": "0209731f382ac6461d694ed4b0af144e8b7210760fa5bdaa6057708322aaa9ed",
+        "size_bytes": 4301330
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_0000_00_ARS objekt B_desky.pdf",
+        "sha256": "bc3df2da36b8d224147f082469a50a517c4ff82e334ea3af5d9fcb7f99f40cec",
+        "size_bytes": 672994
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_4210_00_Obj_B_Pudorys_1_NP.pdf",
+        "sha256": "4c12a98fb48103469c5325a3a88e45a028c20a5ba1609173c1e098339d1fdd95",
+        "size_bytes": 177996
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_4220_01_Obj_B_Půdorys_2_NP.pdf",
+        "sha256": "a3f8f51b40ca654f948b62326c62e1313981d50291c114ccc909d109528ddfb7",
+        "size_bytes": 226359
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_4230_01_Obj_B_Půdorys_3_NP.pdf",
+        "sha256": "8423f89b3614f1f5b5e0b5c5f8232e1589786a379fe47f909776a9f289bfb51d",
+        "size_bytes": 232099
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_4240_00_Obj_B_Pudorys_strecha.pdf",
+        "sha256": "b5144c0dfa922533a330c69eee8bc05fb88c361b4537aeb830332b169b558a7c",
+        "size_bytes": 88877
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_5200_01_Obj_B_Rezy.pdf",
+        "sha256": "539a689b36b6073a35cf38ef3b9cbbbc50b94e3fcde9981e307756714d6885cd",
+        "size_bytes": 694292
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_6200_00_Obj_B_Pohledy.pdf",
+        "sha256": "7b6ff48e935e1fcc1b4d83b1235d5f4b781b0c30cd128c318ff96f9b3e11ec7a",
+        "size_bytes": 302118
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_7210_00_Obj_B_Vykres_podhledu_1_NP.pdf",
+        "sha256": "c255935ee397d534817628bdc651256f5b3f650b0aaf83137df79679a91bb703",
+        "size_bytes": 184602
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_7220_00_Obj_B_Vykres_podhledu_2_NP.pdf",
+        "sha256": "82427b4cfb31dfd450d8cffa0de9d1d33d9729604bc27b7c06ea3b66882af571",
+        "size_bytes": 138867
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_7230_00_Obj_B_Vykres_podhledu_3_NP.pdf",
+        "sha256": "6c03691bfd2994f58191e6a8fb01f7c6442b63a1517e5fd9da16d5bb139188c0",
+        "size_bytes": 150423
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_9210_00_Obj_B_Koor_vykres_1_NP.pdf",
+        "sha256": "522301c0c14146ae358a9a7d480c3975dfe94512659e79af6cb4fa5dbd89ac44",
+        "size_bytes": 413155
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_9220_00_Obj_B_Koor_vykres_2_NP.pdf",
+        "sha256": "2cd2b4940933bcb29b39f102b738dc7992ae8a50d3af476c022ff26884a54c9b",
+        "size_bytes": 427443
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_9221_00_Obj_B_Koor_vyk_byt_jader_2_NP.pdf",
+        "sha256": "592a40353b1ea6db922e02a13ef13e5e82db4a7a304df38092c55f02a9ccceba",
+        "size_bytes": 896951
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/B/pdf/185-01_DPS_D_SO01_120_9230_00_Obj_B_Koor_vykres_3_NP.pdf",
+        "sha256": "ebd66f772899fcf393734c60be56d8f89ffebaa1db8ef67506009fa7d95a3ed4",
+        "size_bytes": 401658
+      },
+      {
+        "kind": "docx",
+        "path": "test-data/libuse/sources/shared/docx/185-01_DPS_D_SO01_100_0010_R01-TZ.docx",
+        "sha256": "13f767f94726d260a32700fcc99b58383b62545c7a43cc960c4dfc6af8fd0e1c",
+        "size_bytes": 94265
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/185-01_DPS_D_SO01_100_4030_R01 - PŮDORYS 1PP.dwg",
+        "sha256": "0d179a3e312afbffe5df2b95239daea606190b01ea25eec54e82031c27bf1c98",
+        "size_bytes": 679636
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/185-01_DPS_D_SO01_100_4040_R00 - odvodneni teras.dwg",
+        "sha256": "d690593ff189e325c203951efca5fff443603b71ebf06da9cace4ed596485bb8",
+        "size_bytes": 2926873
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/185-01_DPS_D_SO01_100_5000_R01 - ŘEZY 1-PP.dwg",
+        "sha256": "8c294d9659b114a8fb25a3f7e835eea0c9e34a8125190909133dc24924ca6fde",
+        "size_bytes": 704940
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0000_01_Titulka.pdf",
+        "sha256": "1dfd742c548aa521745f50948eb80a66d0ffd40bd4190ff3728db474f0537e1b",
+        "size_bytes": 672726
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0010_01_Technicka_zprava.pdf",
+        "sha256": "e240cf0518a6a3a4a0d8edb5c8ac4536dbeb1283878eda59070b41e1b1ec3813",
+        "size_bytes": 944059
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0011_00_Radonovy posudek.pdf",
+        "sha256": "71f564c382f5af2d2ffacc729d0cdede8a6d0b02cda7887efa09b06fb96fd15c",
+        "size_bytes": 1287278
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0020_01_Tabulka_mistnosti.pdf",
+        "sha256": "bb222b486259cfdc8871fc23c4cd44a4db0aecfcfb738e67957fa23e779ea811",
+        "size_bytes": 621137
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0030_01_Tabulka_specifikace_skladeb_a_povrchu.pdf",
+        "sha256": "3201299f9f47a1671e63918f7e48d0eac64f0da505a23d8502172c39d20b6803",
+        "size_bytes": 687572
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0040_00_Tabulka_vyplneni_otvoru.pdf",
+        "sha256": "fa1fad004ae1f44d8efec5c0876003673201ebc09078f850a39ca949fdf24ff4",
+        "size_bytes": 1777792
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0050_01_Tabulka_zamecnickych_prvku.pdf",
+        "sha256": "e2c24a60d50c0e55b6f8d1bb196577de9bcedf2d768d22acbbcc401c007ef405",
+        "size_bytes": 1004757
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0060_01_Tabulka_klempirskych_prvku.pdf",
+        "sha256": "66c84f95ea4cbbd2a73565306ab79d1dbd398e2d4276cb748d8b5ac9da06a2f4",
+        "size_bytes": 1186365
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0070_01_Tabulka_prekladu.pdf",
+        "sha256": "0ff17d25535671f443226e01a0b1c6b588d0bb173d8c1178669ed0900a4735e7",
+        "size_bytes": 790555
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_0080_02_Tabulka_ostatnich prvku.pdf",
+        "sha256": "da746ed97fb35f6a03180acd4915436ecac8f493644695659732ce82e844ee0c",
+        "size_bytes": 677714
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_4010_00_Pudorys_vykopu.pdf",
+        "sha256": "8b46439a046690d302ee21ea613c6fc4bd8e17c81c3723e93ec7596b19170c4c",
+        "size_bytes": 1563431
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_4020_00_Podkladni_betony.pdf",
+        "sha256": "225b8a157f1cee7ef36a361ea338d44105dd821c9b2003d44c7b3ef6386b131f",
+        "size_bytes": 1449466
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_4030_01_Pudorys_1_PP.pdf",
+        "sha256": "5d00dbee86438a6db662e970d202a6777d35429b2a576809c4f32dbac3ff5556",
+        "size_bytes": 696461
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_4040_01_Odvodneni teras.pdf",
+        "sha256": "800f75040f314e13a990eb0ebc60059440037291a1f58658e86377f9b68c23a6",
+        "size_bytes": 1446168
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_5000_01_Rezy_1_PP.pdf",
+        "sha256": "188e217e0981d9b83c90ddae1367d6b62618a0c1a8e56ad9c60e6c3596327776",
+        "size_bytes": 409015
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_8030_01_Kniha_detailu.pdf",
+        "sha256": "f41c58a5b089eeed29e266bdf4dac04339c6a518cc02803299c924d396c53f2f",
+        "size_bytes": 23420917
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_8050_00_Zasady_sparorezu.pdf",
+        "sha256": "37938727a37a689872649234678b27a2efe109291964132164eb3d296282945c",
+        "size_bytes": 621219
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_9000_00_Pudorys_1_PP_koor_vykres_cast_A.pdf",
+        "sha256": "b98a3b17a79cbddb0874f34373f6741e2a2971c1ce088c7c9e54d406aa77a447",
+        "size_bytes": 835385
+      },
+      {
+        "kind": "pdf",
+        "path": "test-data/libuse/sources/shared/pdf/185-01_DPS_D_SO01_100_9001_00_Pudorys_1_PP_koor_vykres_cast_B.pdf",
+        "sha256": "5f5b744fe465a73f68b6cbadd59bdbb11934f65fdc3a8a623357a1e046223f09",
+        "size_bytes": 599345
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0020_R01_TABULKA MISTNOSTI.xlsx",
+        "sha256": "58b8290687261b59554499876d3af28cea69b4dd29999f27e0850a512cdc28f0",
+        "size_bytes": 104118
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0030_R01_TABULKA SKLADEB A POVRCHU_R01.xlsx",
+        "sha256": "b162b152e2d71d17427acb18374e8e3b51dd3cd3d5797b4f8423f80e2c774b5d",
+        "size_bytes": 89673
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0041_TABULKA DVERI.xlsx",
+        "sha256": "7a5531a9c5787f7fe23e26b468d07374ec9ea7f73a69e9e3af8fef0723017aea",
+        "size_bytes": 122033
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx",
+        "sha256": "5621217602180574dd5a312c676b5d97842eeed9af700ad109ad1316a5d4863d",
+        "size_bytes": 272175
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0043_TABULKA PROSKLENYCH PRICEK.xlsx",
+        "sha256": "b254dde2ebb33a1f61b4a6fd113685f65f306ad8ce09244e829d1409a041db64",
+        "size_bytes": 221479
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0050_R01_TABULKA ZAMECNICKYCH VYROBKU.xlsx",
+        "sha256": "de9cec7deeb1218c14c6ec8edeca44c7a6f6b31d52e0584fdd8ff63d06fc5348",
+        "size_bytes": 222597
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0060_R01_TABULKA KLEMPIRSKYCH PRVKU.xlsx",
+        "sha256": "0c7b05f9d2971dda5efe17997bb8932e19427abf8530ec36b8f4d4bbd346d06b",
+        "size_bytes": 218525
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0070_R01_TABULKA PREKLADU.xlsx",
+        "sha256": "e1102c93ea9aea72b40a3740f5c7618db0f74e1a1a28e9c87d18da24f24fc190",
+        "size_bytes": 47539
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/185-01_DPS_D_SO01_100_0080_R02 - TABULKA OSTATNICH PRVKU.xlsx",
+        "sha256": "c3e8b713f1f88bcf809580a373cf7f6898f29ee2b30c81a5efbc2305cda4409e",
+        "size_bytes": 237899
+      },
+      {
+        "kind": "xlsx",
+        "path": "test-data/libuse/sources/shared/xlsx/Vykaz_vymer_stary.xlsx",
+        "sha256": "debf028a7f831e44153566536d1d0f4c4d81ef82c3e259f811ad03fda278b870",
+        "size_bytes": 984980
+      }
+    ]
+  },
+  "openings": [],
+  "others_OP": [],
+  "rooms": [],
+  "segment_counts": {},
+  "sheet_metal_TP": [],
+  "skladby": {},
+  "validation": {},
+  "walls": [],
+  "warnings": [],
+  "windows": []
+}

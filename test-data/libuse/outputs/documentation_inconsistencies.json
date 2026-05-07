@@ -82,6 +82,6 @@
     "S.D.16 SKLEPNÍ KÓJE - C (7.62 m²) and S.D.42 SKLEPNÍ KÓJE - D (2.99 m²) defined in Tabulka místností XLSX but missing from DXF geometric dataset — Phase 0.x DXF parser may have skipped them (small kóje? code position outside detected polygons?).",
     "D10 v objektu D má jen STD interior treatment, zatímco v Tabulce 0041 pro objekty A/B je D10 specifikováno s bezpečnostní pack (rám + EMZ + ACS + SN2). Potvrďte zda objekt-D D10 je záměrně downgraded, nebo mělo být specifikováno stejně jako A/B.",
     "Tabulka 0041 počítá D10=0, D11=0, D21=10 ks, ale v DWG výkresech jsou D10=1 ks (In_FAS_1600x2350 1.NP hlavní vstup), D11=1 ks (1.NP únikový), D21=11 ks. Internal documentation inconsistency — opravte Tabulku 0041 pro budoucí konzistenci A/B/C.",
-    "Pro objekt A chybí výkres ARS desek (_110_0000_*) — DWG i PDF. B/C/D mají tento výkres standardně. Potvrďte zda objekt A nemá samostatný výkres desek (např. shared s jiným objektem) nebo zda byla zapomenuta při uploadu."
+    "Pro objekt A chybí výkres ARS desek (_110_0000_*) — DWG i PDF. B/C/D mají tento výkres standardně. Prosíme potvrďte, která ze tří možností platí: (a) objekt A nemá samostatný výkres desek (vůbec se neprodukuje); (b) ARS desky pro A jsou sloučené do jiného objektu (např. společný výkres pro A+B nebo s D-deskou) — pokud ano, který soubor je referenční; (c) výkres existuje, ale byl zapomenut při uploadu — prosíme zaslat."
   ]
 }

@@ -151,7 +151,7 @@ Out of scope for Π.0a (deferred to later passes):
     "swing_type": {"value": "Double_Swing_Solid", "source": "DERIVED|block_name", "confidence": 0.95},
     "install_context": {"value": "In_FAS", "source": "DERIVED|block_name", "confidence": 0.95},
     "subtype": {"value": null, "source": "DERIVED|block_name", "confidence": 0.95},
-    "archicad_lib_id": {"value": "1915407", "source": "DERIVED|block_name", "confidence": 0.95}
+    "cad_lib_id": {"value": "1915407", "source": "DERIVED|block_name", "confidence": 0.95}
   },
 
   // From DXF parser
@@ -160,7 +160,7 @@ Out of scope for Π.0a (deferred to later passes):
   "height_mm": {"value": 2350, "source": "DXF|...|block_name", "confidence": 0.95},
 
   // From Tabulka 0041 (G1 absorption — door extras)
-  "tabulka_dveri_row": 71,                  // for traceability
+  "tabulka_dveri_row": {"value": 71, "source": "XLSX|0041|tab_dvere|row=71", "confidence": 1.0},
   "celkova_svetla_sirka_mm": {"value": 1600, "source": "XLSX|0041|tab_dvere|row=71,col=7", "confidence": 1.0},
   "sirka_aktivniho_kridla_mm": {"value": 1000, "source": "XLSX|...|col=8", "confidence": 1.0},
   "svetla_vyska_mm": {"value": 2350, "source": "XLSX|...|col=9", "confidence": 1.0},
@@ -172,7 +172,7 @@ Out of scope for Π.0a (deferred to later passes):
   "bezpecn_odolnost": {"value": "RC3, ESG", "source": "XLSX|...|col=19", "confidence": 1.0},
   "tepelne_vlastnosti_u": {"value": null, "source": "XLSX|...|col=20", "confidence": 1.0},
   "typ_kovani": {"value": "KP1, MM", "source": "XLSX|...|col=21", "confidence": 1.0},
-  "typ_samozaviraace": {"value": "SN2", "source": "XLSX|...|col=22", "confidence": 1.0},
+  "typ_samozavirace": {"value": "SN2", "source": "XLSX|...|col=22", "confidence": 1.0},
   "zamek": {"value": "EMZ", "source": "XLSX|...|col=23", "confidence": 1.0},
   "doplnky": {"value": "Z2, KL", "source": "XLSX|...|col=24", "confidence": 1.0},
   "eps_fas": {"value": null, "source": "XLSX|...|col=25", "confidence": 1.0},
@@ -183,7 +183,7 @@ Out of scope for Π.0a (deferred to later passes):
 ```
 
 > **PROBE 7 root cause closure**: `bezpecn_odolnost` + `zamek` + `acs` +
-> `typ_samozaviraace` are exactly the columns dropped today. Π.0a lifts
+> `typ_samozavirace` are exactly the columns dropped today. Π.0a lifts
 > them. Downstream item-generator (separate from Π.0a) decides whether
 > to apply RC3/EMZ/ACS spec to objekt-D D10 items.
 
@@ -394,19 +394,34 @@ shared XLSX (Tabulka 0020 has 935 rows — only 80 belong to A, etc.).
 ```python
 # All JSON output goes through this
 def write_canonical(path: Path, data: dict):
+    """Serialize with deterministic ordering + numeric rounding.
+
+    - sort_keys=True: stable dict order
+    - default=_round_numeric_floats: round numeric floats to 6 decimals
+    - WKT strings (polygon_wkt) pass through verbatim — never re-parsed
+      / re-rounded; the original DXF coordinate precision is preserved
+      as-is. Only numeric float fields (plocha_m2, perimeter_m, etc.)
+      get rounded.
+    """
+    canonical = _normalize(data)
     text = json.dumps(
-        data,
+        canonical,
         indent=2,
         ensure_ascii=False,
-        sort_keys=True,                    # deterministic ordering
-        default=_round_floats               # 6 decimals max
+        sort_keys=True,
     )
     path.write_text(text + "\n", encoding="utf-8")
 
-def _round_floats(obj):
+
+def _normalize(obj):
+    """Recursive: round floats to 6 decimals; pass strings through."""
     if isinstance(obj, float):
         return round(obj, 6)
-    raise TypeError
+    if isinstance(obj, dict):
+        return {k: _normalize(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_normalize(v) for v in obj]
+    return obj  # str / int / bool / None — pass through (incl. WKT)
 ```
 
 Plus: `metadata.extracted_at` excluded from idempotency check (only
