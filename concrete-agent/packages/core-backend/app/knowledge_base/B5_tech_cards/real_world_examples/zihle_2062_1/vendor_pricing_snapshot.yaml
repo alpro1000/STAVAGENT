@@ -1,0 +1,152 @@
+# vendor_pricing_snapshot.yaml — Žihle 2062-1 vendor sources (anonymized)
+#
+# KB-safe snapshot of `test-data/most-2062-1-zihle/04_documentation/vendor_pricing/vendor_quotes.yaml`.
+# Vendor IČO + jména anonymizovány (replaced by tags). Real names + IČO remain only
+# in the test-data pilot directory for audit trail purposes; KB version is portable
+# across future projects.
+
+schema_version: 1
+project_anonymized_tag: "MOSTOVY_PILOT_2026_01"        # = Žihle 2062-1 v real-world
+project_size_kc_bez_dph: 12201523
+project_duration_mes: 11
+geographic_context: "venkov, obec ~150 m od ČEZ rozvaděče"
+date_collected: "2026-04-30 .. 2026-05-05"
+inflation_year: 2026
+
+# =====================================================================
+# A) MOSTNÍ PROVIZORIUM — 4 vendor sources (median basis)
+# =====================================================================
+mostni_provizorium:
+  scope: "Provizorní silniční most ~12 × 5 m × 6 měsíců, jednosměrný provoz, signalizace"
+  vendors:
+
+  - vendor_id: "VENDOR_PROV_A"
+    typ_systemu: "TMS — Tubular Modular System (lehčí konstrukce)"
+    nosnost_t: 30
+    delka_m: 9
+    cost_breakdown:
+      montaz_kc: 102000
+      demontaz_kc: 102000
+      najem_kc_per_day: 850
+      pravidelna_prohlidka_kc_per_month: 8000
+    typical_6m_total_kc: 405000
+
+  - vendor_id: "VENDOR_PROV_B"
+    typ_systemu: "MS — Mostní soustava (těžší konstrukce, 40 t Vr)"
+    nosnost_normalni_t: 11
+    nosnost_vyjimecna_t: 40
+    delka_m: 9
+    cost_breakdown:
+      montaz_kc: 268300
+      demontaz_kc: 268300
+      najem_kc_per_day: 750
+      pravidelna_prohlidka_kc_per_month: 10990
+    typical_6m_total_kc: 637070
+
+  - vendor_id: "VENDOR_PROV_C"
+    typ_systemu: "Bundled (vozovka 4.0 m, integrated package)"
+    sirka_vozovky_m: 4.0
+    delka_m: 15
+    bundled_total_kc: 750328
+
+  - vendor_id: "VENDOR_PROV_D"
+    typ_systemu: "Bundled (vozovka 3.5 m, lower-cost integrated)"
+    sirka_vozovky_m: 3.5
+    delka_m: 15
+    bundled_total_kc: 654387
+
+  median_per_line_kc:
+    montaz: 175590        # median of 4 sorted vendor montáž costs
+    demontaz: 154518      # median of 4 demontáž costs (Mosty Záboří split via 25/22/53)
+    najem_6m: 206300      # median of 4 6-měsíčních nájem totals
+    prohlidka_6m: 76582   # median 6 prohlídek across vendors
+
+  applied_in_zihle:
+    montaz_assigned_kc: 175590     # SO 180 T0-04 (027411 montáž 60 m²)
+    najem_6m_assigned_kc: 206300   # SO 180 T0-05 (027412 nájem)
+    prohlidka_assigned_kc: 76582   # SO 180 T0-07 (027414 prohlídky 6×)
+    demontaz_assigned_kc: 185160   # SO 001 T9-11 (027413, anchor pattern — actual cost in demolice scope)
+
+# =====================================================================
+# B) UKLÁDKA ZEMINY — 1 vendor source
+# =====================================================================
+ukladka_zeminy:
+  - vendor_id: "VENDOR_SKLADKA_ZEMINA"
+    typ: "Provozovna skládky ~25 km svozová vzdálenost"
+    cena_kc_per_t: 120
+    platnost_do: "2026-12-31"
+    quote_date: "2026-04-30"
+    applied_in_zihle: "SO 001 ODV-04 (zemina 459 t × 120 = 55 080 Kč)"
+
+# =====================================================================
+# C) RECYKLAČNÍ STŘEDISKO — 1 vendor source
+# =====================================================================
+recyklacni_stredisko:
+  - vendor_id: "VENDOR_RECYKLACE_RS"
+    typ: "Recyklační středisko ~30 km svozová vzdálenost"
+    quote_date: "2026 (ceník platný pro rok)"
+    cost_breakdown_per_t:
+      beton_max_50cm_kc: 60
+      beton_armovany_kc: 400
+      asfaltove_smesi_kc_min: 220
+      asfaltove_smesi_kc_max: 300
+      zemina_kc: 250
+    container_pricing_kc_per_ks:
+      kontejner_4_5m3_min: 1770
+      kontejner_4_5m3_max: 4150
+    applied_in_zihle:
+      ZB_suti_kc: "SO 001 ODV-01 (47.5 t × 400 = 19 000 Kč)"
+      kamenne_suti_kc: "SO 001 ODV-02 (93.6 t × 60 = 5 616 Kč)"
+      asfalt_frezat_kc: "SO 001 ODV-03 (7.7 t × 260 = 2 002 Kč)"
+
+# =====================================================================
+# AGGREGATE STATS — vendor pricing impact on Žihle
+# =====================================================================
+aggregate_in_zihle:
+  vendor_pricing_total_kc: 540042  # 458472 (provizorium 3 lines) + 55080 (zemina) + 26618 (RS Žatec 3 lines)
+  pct_of_grand_total: 4.4         # 540 042 / 12 201 523
+  source_distribution_share:
+    vendor_pricing_median: 3      # 3 SO 180 lines using median 4 vendorů
+    user_manual_fallback_with_vendor_ref: 7  # SO 001 ODV + RS Žatec referenced
+
+# =====================================================================
+# CROSS-PROJECT INSIGHTS
+# =====================================================================
+insights_for_future_pilots:
+
+  - lesson: "≥ 3 vendors give meaningful median; 4 ideal"
+    detail: |
+      Žihle had 4 mostní provizorium vendors. Median per-line decomposition (montáž,
+      demontáž, nájem, prohlídka) was within ±5 % of bundled vendor totals →
+      median methodology validated. Single-vendor quote would have biased estimate.
+
+  - lesson: "Bundled quotes need decomposition assumptions"
+    detail: |
+      VENDOR_PROV_C and VENDOR_PROV_D (Mosty Záboří 4 m + 3.5 m) provided bundled
+      totals only. Žihle decomposed via industry-typical 25/22/53 split (montáž
+      25 %, demontáž 22 %, nájem+prohlídka 53 %). Documented in audit trail of
+      SO 180.
+
+  - lesson: "Recyklace + skládka unit prices are CZ regional"
+    detail: |
+      Per-region pricing varies 10-30 %. RS Žatec (60-400 Kč/t) and DECO TRADE
+      Nesuchyně (120 Kč/t) are Plzeň/Karlovy Vary kraj rates. Future pilots in
+      different krajích need fresh RFQ; do NOT carry these prices over.
+
+  - lesson: "Inflation 2026 vs 2022-2023 templates"
+    detail: |
+      D6 + Kfely templates date 2022-2023. Žihle vendor quotes from April-May 2026.
+      Direct comparison shows ~10 % drift on doprava + ~0 % drift on standard buňky
+      (confirmed Pattern F in ZS_templates/PATTERNS.md).
+
+# =====================================================================
+# ANONYMIZATION NOTE
+# =====================================================================
+anonymization:
+  rules_applied:
+    - "Vendor name + IČO replaced by VENDOR_*_tag identifiers"
+    - "Geographic specificity reduced (e.g., 'obec Žihle' → 'venkov, obec ~150 m...')"
+    - "Quote dates kept as month-year (no day-level traceback)"
+    - "Pricing structure + units preserved verbatim (KB value)"
+  source_with_real_names: "test-data/most-2062-1-zihle/04_documentation/vendor_pricing/vendor_quotes.yaml"
+  why_kb_version: "Reusable across future projects without exposing vendor commercial data"

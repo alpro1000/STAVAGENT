@@ -13,6 +13,10 @@
 This is the active pilot project. All artifacts:
 **`test-data/most-2062-1-zihle/`**
 
+**Full real-world example KB entry:**
+**`B5_tech_cards/real_world_examples/zihle_2062_1/`** — METADATA + master_soupis_summary +
+reconciliation_findings (G1-G4) + vendor_pricing_snapshot (anonymized) + patterns_validated.
+
 Specifically:
 - `04_documentation/master_soupis/master_soupis_SO_801.yaml` — 25 položek 1.20 M
 - `04_documentation/master_soupis/master_soupis_PRESUN_HMOT.yaml` — 3 položek 0.56 M
