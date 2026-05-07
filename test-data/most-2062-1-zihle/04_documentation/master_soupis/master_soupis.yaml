@@ -3,17 +3,17 @@ generated: '2026-05-07'
 project: Most ev.č. 2062-1 u obce Žihle
 sandbox_status: Phase D — Master soupis (Session 2 KOMPLETNÍ)
 totals:
-  total_polozek: 154
-  total_kc_bez_dph: 10585736
-  total_kc_s_dph_21pct: 12808741
-  vs_zd_limit_30M_pct: 42.7
+  total_polozek: 181
+  total_kc_bez_dph: 12449723
+  total_kc_s_dph_21pct: 15064165
+  vs_zd_limit_30M_pct: 50.2
 per_SO:
 - SO: SO_001
   label: Demolice stávajícího mostu
   polozek: 30
   kc_bez_dph: 1057831
   kc_s_dph: 1279976
-  podil_pct: 10.0
+  podil_pct: 8.5
   source_files:
   - master_soupis_SO_001.yaml
   phase_c_days_approx: 45
@@ -22,7 +22,7 @@ per_SO:
   polozek: 26
   kc_bez_dph: 2047138
   kc_s_dph: 2477037
-  podil_pct: 19.3
+  podil_pct: 16.4
   source_files:
   - master_soupis_SO_180.yaml
   phase_c_days_approx: 30
@@ -31,7 +31,7 @@ per_SO:
   polozek: 72
   kc_bez_dph: 4435958
   kc_s_dph: 5367509
-  podil_pct: 41.9
+  podil_pct: 35.6
   source_files:
   - master_soupis_SO_201_t0.yaml
   - master_soupis_SO_201_t1_t2.yaml
@@ -44,42 +44,51 @@ per_SO:
   polozek: 12
   kc_bez_dph: 1952470
   kc_s_dph: 2362489
-  podil_pct: 18.4
+  podil_pct: 15.7
   source_files:
   - master_soupis_SO_290.yaml
   phase_c_days_approx: 25
 - SO: SO_801
   label: Zařízení staveniště (detailní)
-  polozek: 9
-  kc_bez_dph: 780500
-  kc_s_dph: 944405
-  podil_pct: 7.4
+  polozek: 25
+  kc_bez_dph: 1288054
+  kc_s_dph: 1558545
+  podil_pct: 10.3
   source_files:
   - master_soupis_SO_801.yaml
   phase_c_days_approx: 330
+- SO: PRESUN_HMOT
+  label: Přesun hmot stavby
+  polozek: 3
+  kc_bez_dph: 560000
+  kc_s_dph: 677600
+  podil_pct: 4.5
+  source_files:
+  - master_soupis_PRESUN_HMOT.yaml
+  phase_c_days_approx: 180
 - SO: VRN
   label: Vedlejší rozpočtové náklady
-  polozek: 5
-  kc_bez_dph: 311839
-  kc_s_dph: 377325
-  podil_pct: 2.9
+  polozek: 13
+  kc_bez_dph: 1108272
+  kc_s_dph: 1341009
+  podil_pct: 8.9
   source_files:
   - master_soupis_VRN.yaml
   phase_c_days_approx: 330
 confidence_distribution:
-  medium_0.70_to_0.84: 46
-  high_0.85_to_1.0: 100
-  low_0.60_to_0.69: 8
+  medium_0.70_to_0.84: 56
+  high_0.85_to_1.0: 118
+  low_0.60_to_0.69: 7
 source_distribution:
   unspecified: 45
-  user_manual_fallback: 82
+  user_manual_fallback: 73
   vendor_pricing_median: 3
   paušál_administrativní: 6
   calculator_deterministic: 13
-  vrn_kalkulace_per_norma: 5
+  d6_template_scaled: 41
 reconciliation_flags_count: 12
 critical_items_count: 6
-otskp_codes_total_unique: 123
+otskp_codes_total_unique: 114
 otskp_codes_shared_across_SO: 21
 files:
   validation_report: validation_report.md
@@ -95,6 +104,7 @@ files:
   - master_soupis_SO_201_t8_t9.yaml
   - master_soupis_SO_290.yaml
   - master_soupis_SO_801.yaml
+  - master_soupis_PRESUN_HMOT.yaml
   - master_soupis_VRN.yaml
 norm_basis:
 - ČSN 73 0212 (Zařízení staveniště + VRN)

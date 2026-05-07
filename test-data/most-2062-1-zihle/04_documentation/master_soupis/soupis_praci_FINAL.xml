@@ -17,7 +17,7 @@
     <investor>Plzeňský kraj</investor>
     <kso>823 26</kso>
     <cpv>45221111-3 Výstavba silničních mostů</cpv>
-    <poznamka>Master soupis FINAL — 154 položek, 10,585,736 Kč bez DPH. Sandbox výstup.</poznamka>
+    <poznamka>Master soupis FINAL — 181 položek, 12,449,723 Kč bez DPH. Sandbox výstup.</poznamka>
     <objekty>
       <objekt>
         <kod_objektu>SO 001</kod_objektu>
@@ -2234,140 +2234,432 @@ segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy ne
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02520</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>1</cislo_polozky>
-            <nazev_polozky>HYGIENICKÁ A SOCIÁLNÍ ZAŘÍZENÍ STAVENIŠTĚ (kontejnery WC + šatna + jídelna)</nazev_polozky>
-            <mj>KPL</mj>
-            <mnozstvi>1</mnozstvi>
+            <nazev_polozky>ZPEVNĚNÁ PLOCHA ŠTĚRKEM (přístup pro buňkoviště + skladovací prostor)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>100</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>264000</jednotkova_cena>
+            <jednotkova_cena>480</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-01</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02530</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>2</cislo_polozky>
-            <nazev_polozky>ENERGIE + VODA STAVENIŠTĚ (elektrický rozvaděč + připojení vody + průběžné poplatky)</nazev_polozky>
-            <mj>KPL</mj>
-            <mnozstvi>1</mnozstvi>
+            <nazev_polozky>AUTOJEŘÁB PRO MONTÁŽ ZS (vyložení buněk + dopravního značení)</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>10</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>132000</jednotkova_cena>
+            <jednotkova_cena>1250</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-02</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02540</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>3</cislo_polozky>
-            <nazev_polozky>TELEFONNÍ / INTERNETOVÉ SPOJENÍ STAVENIŠTĚ (mobilní router + datový tarif)</nazev_polozky>
+            <nazev_polozky>MONTÁŽ ZAŘÍZENÍ STAVENIŠTĚ (kompletace, paušál)</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>16500</jednotkova_cena>
+            <jednotkova_cena>15000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-03</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02560</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>4</cislo_polozky>
-            <nazev_polozky>OPLOCENÍ STAVENIŠTĚ (mobilní oplocení 2.0 m výška + brány)</nazev_polozky>
-            <mj>M</mj>
-            <mnozstvi>200</mnozstvi>
+            <nazev_polozky>BUŇKY KANCELÁŘE — PRONÁJEM (technický zázemí pracovníků TZP)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>350</jednotkova_cena>
+            <jednotkova_cena>1000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.65 | Source: user_manual_fallback | Mobilní oplocení 2.0 m × 350 Kč/m = pronájem 11 měs + montáž + demontáž + 2× brána. Per ČSN 73 0212 čl. 4.3.</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-04</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02570</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>5</cislo_polozky>
-            <nazev_polozky>OSVĚTLENÍ STAVENIŠTĚ (LED reflektory na sloupech + pohybová čidla)</nazev_polozky>
-            <mj>KPL</mj>
-            <mnozstvi>1</mnozstvi>
+            <nazev_polozky>BUŇKY ŠATNY — PRONÁJEM</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>60000</jednotkova_cena>
+            <jednotkova_cena>1800</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-05</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02580</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>6</cislo_polozky>
-            <nazev_polozky>PŘÍJEZDOVÁ KOMUNIKACE DOČASNÁ (panely IZD na zpevněném podkladu)</nazev_polozky>
-            <mj>M2</mj>
-            <mnozstvi>100</mnozstvi>
+            <nazev_polozky>BUŇKY SKLADY — PRONÁJEM (nářadí, drobný materiál)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>800</jednotkova_cena>
+            <jednotkova_cena>1500</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | IZD panely 800 Kč/m² zahrnuje pronájem + transport na/ze staveniště + likvidaci podloží po skončení.</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-06</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02590</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>7</cislo_polozky>
-            <nazev_polozky>ČIŠTĚNÍ VOZIDEL PŘI VÝJEZDU ZE STAVENIŠTĚ (mokrý mycí systém + voda + údržba)</nazev_polozky>
+            <nazev_polozky>SCHODIŠTĚ K BUŇKOVIŠTI</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>88000</jednotkova_cena>
+            <jednotkova_cena>8000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.75 | Source: user_manual_fallback | POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic. Mycí systém high-pressure mokrý + recyklační kalová jímka.</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-07</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02991</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>8</cislo_polozky>
-            <nazev_polozky>TABULE A ZNAČKY STAVENIŠTĚ (povinné identifikační + bezpečnostní + výstražné)</nazev_polozky>
-            <mj>KUS</mj>
-            <mnozstvi>10</mnozstvi>
+            <nazev_polozky>DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ</nazev_polozky>
+            <mj>CESTA</mj>
+            <mnozstvi>2</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>4500</jednotkova_cena>
+            <jednotkova_cena>4000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>SO801-T0-08</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>02500</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>9</cislo_polozky>
-            <nazev_polozky>VYTÝČENÍ STAVENIŠTĚ + OCHRANNÁ PÁSMA (geodetické vytýčení obvodů, sítí a dotčených pozemků)</nazev_polozky>
+            <nazev_polozky>VYBAVENÍ BUNĚK (50 % scale: 1 stůl + 4 židle + 1 skříň + 0.25 kopírka A3)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>42104</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>WC TOI-TOI — PRONÁJEM (mobilní toalety bez kanalizace)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2400</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>OPLOCENÍ STAVENIŠTĚ — MONTÁŽ + DEMONTÁŽ (mobilní 2.0 m výška)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>200</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>48</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>OPLOCENÍ STAVENIŠTĚ — NÁJEM</nazev_polozky>
+            <mj>M-MES</mj>
+            <mnozstvi>2200</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>REKLAMNÍ / IDENTIFIKAČNÍ CEDULE VELKÁ (POVINNÁ per vyhláška 499/2006 Sb.)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>75000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-13</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>14</cislo_polozky>
+            <nazev_polozky>LIKVIDACE ZAŘÍZENÍ STAVENIŠTĚ (po dokončení stavby)</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
             <jednotkova_cena>25000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.75 | Source: user_manual_fallback | DUPLICATION CHECK: SO 201 t0 T0-01 (zaměřičská měření 45k) + T0-02 (geodetické
-zaměření výchozí 100k) řeší MOST samotný (osy + výškové body). SO 801 T0-09 řeší
-OBVOD STAVENIŠTĚ + OCHRANNÁ PÁSMA inženýrských sítí (jiný scope, jiná etapa).
-</poznamka_polozky>
-            <uzivatelske_zarazeni>SO801-T0-09</uzivatelske_zarazeni>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-14</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>15</cislo_polozky>
+            <nazev_polozky>OSVĚTLENÍ STAVBY (LED reflektory + sloupy + kabeláž + pohybová čidla)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>130000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-15</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>16</cislo_polozky>
+            <nazev_polozky>ELEKTROCENTRÁLA PŘENOSNÁ (záložní zdroj — výpadky obecního ČEZ)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1150</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-16</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>17</cislo_polozky>
+            <nazev_polozky>ELEKTRICKÁ ENERGIE — SPOTŘEBA (PHM + tarif)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-17</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>18</cislo_polozky>
+            <nazev_polozky>PŘÍPOJKA ELEKTRO (provedení + měřič — Žihle obec ČEZ ~150 m)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>150000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-18</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>19</cislo_polozky>
+            <nazev_polozky>PŘÍPOJKA VODY (přípojka + měřič — vodovod přes obec)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-19</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>20</cislo_polozky>
+            <nazev_polozky>UŽITKOVÁ VODA — SPOTŘEBA (sociální + technická)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>3500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-20</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>21</cislo_polozky>
+            <nazev_polozky>ČIŠTĚNÍ KOMUNIKACÍ — MYCÍ LINKA (POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>105000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-21</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>22</cislo_polozky>
+            <nazev_polozky>DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY (5 ks DZ + sloupky)</nazev_polozky>
+            <mj>KS</mj>
+            <mnozstvi>5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>15000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-22</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>23</cislo_polozky>
+            <nazev_polozky>BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě + ohrada nebezpečných míst)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-23</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>24</cislo_polozky>
+            <nazev_polozky>ZIMNÍ OPATŘENÍ — ZAKRÝVÁNÍ STAVBY (geotextílie, plachty proti dešti/sněhu)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-24</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>25</cislo_polozky>
+            <nazev_polozky>ZIMNÍ OPATŘENÍ — TEMPEROVÁNÍ BETONU (zahřívání čerstvého betonu C30/37 winter pour)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>75000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-25</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>PRESUN HMOT</kod_objektu>
+        <nazev_objektu>Přesun hmot stavby</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>KRAMER BEZ OBSLUHY + NAFTA (univerzální nakladač pro manipulace v staveništi)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>35000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>PH-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>POMOCNÍ PRACOVNÍCI PŘI PŘESUNECH HMOT</nazev_polozky>
+            <mj>OSOBA-MES</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>PH-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>AUTOJEŘÁB S OBSLUHOU (montáž bednění + výztuže + betonáž mostovky)</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>100</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>PH-03</uzivatelske_zarazeni>
           </polozka>
         </polozky>
       </objekt>
@@ -2382,95 +2674,197 @@ OBVOD STAVENIŠTĚ + OCHRANNÁ PÁSMA inženýrských sítí (jiný scope, jiná
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>VRN-MIMOSTAV-DOPRAVA</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>1</cislo_polozky>
-            <nazev_polozky>MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport betonu, výztuže, ocelových konstrukcí mimo bezprostřední staveniště)</nazev_polozky>
-            <mj>KPL</mj>
-            <mnozstvi>1</mnozstvi>
+            <nazev_polozky>POLÍR / STAVBYVEDOUCÍ (50 % time — sdílen s druhou stavbou)</nazev_polozky>
+            <mj>OSOBA-MES</mj>
+            <mnozstvi>5,5</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>102739</jednotkova_cena>
+            <jednotkova_cena>90000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.7 | Source: vrn_kalkulace_per_norma | Pokrývá: transport betonu z betonárny do Žihle (~30 km), transport výztuže, ocel.
-konstrukcí (TMS provizorium z ~50 km vendor lokace), stavebních materiálů z vele-
-skladu, jeřábu na/ze staveniště. NEZAHRNUJE manipulaci v rámci staveniště (in SO 801
-T0-06 přístupová komunikace).
-</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>VRN-01</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>VRN-POJISTENI</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>2</cislo_polozky>
-            <nazev_polozky>POJIŠTĚNÍ STAVBY (CAR — Contractor's All Risks + odpovědnost za škodu)</nazev_polozky>
+            <nazev_polozky>POJIŠTĚNÍ STAVBY CAR (Contractor's All Risks + odpovědnost za škodu)</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>41100</jednotkova_cena>
+            <jednotkova_cena>42343</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.8 | Source: vrn_kalkulace_per_norma | CAR (Contractor's All Risks) pokrývá: stavební rizika (požár, povodně z Mladotic.
-potoka, krádež materiálu), odpovědnost za škodu třetím osobám (řidiči objízdky,
-sousední pozemky). Doba pojištění = 11 měsíců (Phase C harmonogram + buffer).
-</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>VRN-02</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>VRN-KOORD-DOKUMENTACE</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>3</cislo_polozky>
-            <nazev_polozky>KOORDINAČNÍ DOKUMENTACE (revize TZ + koordinace s ostatními SO + vyjádření DOSS)</nazev_polozky>
-            <mj>KPL</mj>
-            <mnozstvi>1</mnozstvi>
+            <nazev_polozky>GEODET — KONTROLNÍ MĚŘENÍ BĚHEM KONSTRUKCE (continuous oversight)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>3</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
             <jednotkova_cena>30000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.75 | Source: vrn_kalkulace_per_norma | DUPLICATION CHECK: SO 201 t0 T0-05 (RDS 300k) + T0-06 (DSPS 80k) řeší TVŮRČÍ
-dokumentaci konkrétního mostu. VRN-03 řeší KOORDINAČNÍ overhead mezi SO objekty
-+ vyjádření DOSS (jiný scope, neresetuje SO 201 cenu).
-</poznamka_polozky>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
             <uzivatelske_zarazeni>VRN-03</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>VRN-SPRAVNI-POPLATKY</kod_polozky>
+            <kod_polozky></kod_polozky>
             <cislo_polozky>4</cislo_polozky>
-            <nazev_polozky>SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU (stavební povolení, kolaudace, oznámení DPM)</nazev_polozky>
+            <nazev_polozky>GEOMETRICKÝ PLÁN (kolaudační podklad pre KÚ)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>45000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>DIO — DOPRAVNĚ INŽENÝRSKÉ OPATŘENÍ (komunikace + přípojky stavby)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>100000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport mimo bezprostřední staveniště)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>52929</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>ZÁVĚREČNÝ ÚKLID VENKOVNÍ (zábor + okolní pozemky)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>1000</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>35</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>FOTODOKUMENTACE STAVBY (3 etapy: před / během / po)</nazev_polozky>
+            <mj>ETAPA</mj>
+            <mnozstvi>3</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>15000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>KOORDINÁTOR BOZP (povinný per zákon 309/2006 Sb. § 14 — staveniště s více zhotoviteli)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>8000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU (stavební povolení, kolaudace, AI)</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
             <jednotkova_cena>50000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.75 | Source: vrn_kalkulace_per_norma | Správní poplatky jsou fixní per zákon 568/2020 Sb. AI v procesu = autorizovaný
-inženýr formálně účastní stavebního řízení (oddělené od stavebního dozoru SO 201
-T0-09 dozor 162k Kč, který řeší kontrolu kvality během stavby).
-</poznamka_polozky>
-            <uzivatelske_zarazeni>VRN-04</uzivatelske_zarazeni>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-10</uzivatelske_zarazeni>
           </polozka>
           <polozka>
             <typ_vety>K</typ_vety>
             <typ_polozky>HSV</typ_polozky>
-            <kod_polozky>VRN-BOZP-KOORDINATOR</kod_polozky>
-            <cislo_polozky>5</cislo_polozky>
-            <nazev_polozky>KOORDINÁTOR BOZP NA STAVENIŠTI (povinný per zákon 309/2006 Sb. — staveniště s více zhotoviteli)</nazev_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>KOORDINAČNÍ DOKUMENTACE + VYJÁDŘENÍ DOSS (revize TZ + koordinace SO + dotčené orgány)</nazev_polozky>
             <mj>KPL</mj>
             <mnozstvi>1</mnozstvi>
             <typ_mnozstvi>ZADANE</typ_mnozstvi>
-            <jednotkova_cena>88000</jednotkova_cena>
+            <jednotkova_cena>30000</jednotkova_cena>
             <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
             <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
-            <poznamka_polozky>Confidence: 0.85 | Source: vrn_kalkulace_per_norma | ★ POVINNÉ per zákon 309/2006 Sb. § 14 — staveniště, kde současně pracují více
-zhotovitelů (Žihle: vendor TMS provizorium + zhotovitel D&amp;B + subkontraktoři pro
-asfalt + dlažba) → koordinátor BOZP MUSÍ být ustanoven pro celou dobu stavby.
-Oddělené od dozoru autorského (SO 201 T0-09) a od koordinátora BOZP-PD ve fázi
-přípravy projektu (typicky in PD náklady, ne VRN realizace).
-</poznamka_polozky>
-            <uzivatelske_zarazeni>VRN-05</uzivatelske_zarazeni>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>POJIŠTĚNÍ ODPOVĚDNOSTI ZA ŠKODU TŘETÍM OSOBÁM (dodatkové k CAR)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>18000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>POVODÍ VLTAVY VYJÁDŘENÍ + VODOPRÁVNÍ SOUHLAS (Mladotický potok)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>17000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-13</uzivatelske_zarazeni>
           </polozka>
         </polozky>
       </objekt>

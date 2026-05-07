@@ -1,290 +1,458 @@
-# master_soupis_SO_801.yaml — SO 801 Zařízení staveniště (detailní)
+# master_soupis_SO_801.yaml — SO 801 Zařízení staveniště (D6 template retrofit)
 #
 # Žihle 2062-1 (Most ev.č. 2062-1)
-# Per user decision A (Session 1 AskUserQuestion): separate SO s detailními položkami,
-# NE 4 % paušální souhrn jak v existing otskp_mapping.yaml ZS.zarizeni_staveniste.
+# REPLACES paušální 9-položkovou verzi (commit `068f5683` 780 500 Kč) detailized
+# 25-item structure based on D6 KV-Olšova vrata professional templates 2022-2023
+# (3 souborů cross-validated unit prices) + Žihle scale-aware sizing.
 #
-# Source: ČSN 73 0212 (Zařízení staveniště) + market rates 2026 + Phase C harmonogram.
-# Phase C calculator NEPOKRÝVÁ — pure user_manual_fallback / engineering paušál.
+# Source unit prices: D6 templates (`26_02_23_-_ZS_-_Operna_stena_-_SO_254_-_JP.xls`,
+# `ZS_-_vzor_rev22_02_23_-_IK_-_SO_205.xls`, `ZS_-_vzor_rev22_02_23_-_SO_211_2.xls`).
+# Inflation 2022-2026 NOT applied — vendor RFQ recommended pre tender (flag below).
 #
-# Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+# Žihle scaling decisions (per task PRE-IMPLEMENTATION INTERVIEW defaults):
+#   - Polír 50% time (in VRN, ne SO 801) — sdílen s druhou stavbou (savings ~495k)
+#   - Vybavení buněk 50% (1 kancelář set, ne D6 multi-desk)
+#   - Žádné věžové jeřáby — autojeřáb dostatečný (PH section)
+#   - Žádná stražní služba — venkov, ne ostraha
+#   - Žádné BREEAM/LEED — mostní, ne komerční
+#   - Generátor + grid: BOTH (Žihle obec ČEZ ~150 m, generátor záložní)
 
-schema_version: 1
-created: 2026-05-06
+schema_version: 2
+created: 2026-05-07
 project: "Most ev.č. 2062-1 u obce Žihle"
-SO: "SO 801 — Zařízení staveniště (detailní)"
-phase: "D — Master soupis (Session 2)"
+SO: "SO 801 — Zařízení staveniště"
+phase: "D — Master soupis (Session 3 retrofit)"
 tskp_classes: ["0"]
-scope: "Hygiena + sociální + energie + voda + oplocení + osvětlení + dočasná komunikace + čistění vozidel + tabule + vytýčení (perimetr cca 50 × 50 m, doba 11 měsíců)"
-
-# ─────────────────────────────────────────────────────────────────────
-# Vstupní parametry (Phase C harmonogram + DXF kadastr)
-# ─────────────────────────────────────────────────────────────────────
+scope: "Detailized ZS — buňky, oplocení, přípojky, BOZP zabezpečení, zimní opatření, mycí linka. D6 template-scaled."
+template_source: "D6 KV-Olšova vrata 2022-2023 (3 souborů cross-validated)"
+supersedes: "Předchozí 9-položková paušální verze (commit 068f5683)"
 
 inputs:
-  doba_stavby_total_mesicu: 11      # 1.5 demolice + 0.5 setup + 4.5 výstavba NK + 4.5 souběžně provizorium + buffer 0.5
-  obvod_staveniste_m: 200           # 4 × 50 m perimetr per DXF + GPX bbox
-  plocha_staveniste_m2: 2500        # 50 × 50 m foot print most + provizorium + skladovací plocha
-  pocet_pracovniku: 10              # 8-10 lidí na vrcholu (výstavba + provizorium souběžně)
+  doba_stavby_mesicu: 11
+  obvod_oploceni_m: 200
+  plocha_zpevnene_plochy_m2: 100
+  pocet_pracovniku: 8
+  zabor_celkovy_m2: 1000
 
 # =====================================================================
-# TŘÍDA 0 — VŠEOBECNÉ KONSTRUKCE A PRÁCE (ZS)
+# TŘÍDA 0 — ZAŘÍZENÍ STAVENIŠTĚ (25 položek)
 # =====================================================================
 
 trida_0_zarizeni_staveniste:
 
   - polozka_id: "SO801-T0-01"
-    otskp_kod: "02520"
-    popis: "HYGIENICKÁ A SOCIÁLNÍ ZAŘÍZENÍ STAVENIŠTĚ (kontejnery WC + šatna + jídelna)"
-    mj: "KPL"
-    mnozstvi: 1
-    vypocet:
-      formula: "doba_stavby × ks_kontejnerů × cena_pronajmu_měsíc"
-      vstupy:
-        doba_stavby_mes:    {hodnota: 11,    jednotka: měs, popis: "harmonogram demolice+výstavba+buffer",  zdroj: "Phase C scheduler 319 dní + reserve"}
-        ks_kontejneru:      {hodnota: 3,     jednotka: ks,  popis: "WC + šatna + jídelna",                  zdroj: "ČSN 73 0212 + praxe pro 8-10 pracovníků"}
-        cena_pronajmu_kc:   {hodnota: 8000,  jednotka: Kč/měs, popis: "tržní průměr CZ 2026 per kontejner", zdroj: "vendor lookup TOI TOI / Cramo"}
-      vypocet_kroky:
-        - "11 × 3 × 8000 = 264 000 Kč"
-        - "Cca 264k pokrývá pronájem + transport + týdenní servis + likvidaci splaškových vod"
-    confidence: 0.7
-    jedn_cena_kc: 264000
-    cena_celkem_kc: 264000
-    source: "user_manual_fallback"
-
-  - polozka_id: "SO801-T0-02"
-    otskp_kod: "02530"
-    popis: "ENERGIE + VODA STAVENIŠTĚ (elektrický rozvaděč + připojení vody + průběžné poplatky)"
-    mj: "KPL"
-    mnozstvi: 1
-    vypocet:
-      formula: "instalace + (doba_stavby × prubezne_poplatky)"
-      vstupy:
-        instalace_rozvadec_kc: {hodnota: 30000, jednotka: Kč,    popis: "instalace stavebního rozvaděče + zapojení",                   zdroj: "ČEZ Distribuce ceník 2026"}
-        instalace_voda_kc:     {hodnota: 15000, jednotka: Kč,    popis: "připojení dočasného vodovodu (přípojka + měřič)",            zdroj: "VAS ceník 2026"}
-        doba_stavby_mes:       {hodnota: 11,    jednotka: měs,   popis: "doba odběru",                                                  zdroj: "Phase C harmonogram"}
-        elektrika_kc_mes:      {hodnota: 6500,  jednotka: Kč/měs, popis: "průměrná spotřeba 2 kVA × ~140 hod × 11 Kč/kWh",            zdroj: "ČEZ tarify 2026"}
-        voda_kc_mes:           {hodnota: 1300,  jednotka: Kč/měs, popis: "spotřeba ~5 m³/měs × 250 Kč/m³ vč. stočného",                zdroj: "VAS"}
-      vypocet_kroky:
-        - "Instalace: 30 000 + 15 000 = 45 000 Kč"
-        - "Průběžné: 11 × (6 500 + 1 300) = 11 × 7 800 = 85 800 Kč"
-        - "Total: 45 000 + 85 800 = 130 800 ≈ 132 000 Kč"
-    confidence: 0.7
-    jedn_cena_kc: 132000
-    cena_celkem_kc: 132000
-    source: "user_manual_fallback"
-
-  - polozka_id: "SO801-T0-03"
-    otskp_kod: "02540"
-    popis: "TELEFONNÍ / INTERNETOVÉ SPOJENÍ STAVENIŠTĚ (mobilní router + datový tarif)"
-    mj: "KPL"
-    mnozstvi: 1
-    vypocet:
-      formula: "instalace + (doba_stavby × tarif)"
-      vstupy:
-        zarizeni_kc:        {hodnota: 4000,  jednotka: Kč,    popis: "mobilní 4G/5G router + SIM",                                  zdroj: "vendor lookup"}
-        doba_stavby_mes:    {hodnota: 11,    jednotka: měs,   popis: "doba odběru",                                                  zdroj: "Phase C"}
-        tarif_kc_mes:       {hodnota: 1100,  jednotka: Kč/měs, popis: "neomezený data tarif (kontrolní reporty + komunikace)",     zdroj: "tržní 2026"}
-      vypocet_kroky:
-        - "4 000 + (11 × 1 100) = 4 000 + 12 100 = 16 100 ≈ 16 500 Kč"
-    confidence: 0.85
-    jedn_cena_kc: 16500
-    cena_celkem_kc: 16500
-    source: "user_manual_fallback"
-
-  - polozka_id: "SO801-T0-04"
-    otskp_kod: "02560"
-    popis: "OPLOCENÍ STAVENIŠTĚ (mobilní oplocení 2.0 m výška + brány)"
-    mj: "M"
-    mnozstvi: 200
-    vypocet:
-      formula: "obvod_staveniste"
-      vstupy:
-        obvod_m: {hodnota: 200, jednotka: m, popis: "perimetr ohraničující staveniště ~50 m × 50 m", zdroj: "DXF kataster + GPX trace bbox"}
-      vypocet_kroky:
-        - "Plocha staveniště ≈ 50 × 50 = 2500 m² (foot print most + provizorium + skladovací plocha)"
-        - "Obvod = 4 × 50 = 200 m"
-    confidence: 0.65
-    jedn_cena_kc: 350
-    note: "Mobilní oplocení 2.0 m × 350 Kč/m = pronájem 11 měs + montáž + demontáž + 2× brána. Per ČSN 73 0212 čl. 4.3."
-    cena_celkem_kc: 70000
-    source: "user_manual_fallback"
-
-  - polozka_id: "SO801-T0-05"
-    otskp_kod: "02570"
-    popis: "OSVĚTLENÍ STAVENIŠTĚ (LED reflektory na sloupech + pohybová čidla)"
-    mj: "KPL"
-    mnozstvi: 1
-    vypocet:
-      formula: "instalace + (doba_stavby × elektrika_provoz)"
-      vstupy:
-        instalace_kc:           {hodnota: 30000, jednotka: Kč,    popis: "4× LED reflektor 200 W + sloupy + kabeláž",                 zdroj: "vendor lookup"}
-        doba_stavby_mes:        {hodnota: 11,    jednotka: měs,   popis: "doba",                                                       zdroj: "Phase C"}
-        elektrika_provoz_kc:    {hodnota: 2700,  jednotka: Kč/měs, popis: "4× 200 W × 12 hod/den × 30 dní × 11 Kč/kWh",                zdroj: "ČEZ tarify"}
-      vypocet_kroky:
-        - "30 000 + (11 × 2 700) = 30 000 + 29 700 = 59 700 ≈ 60 000 Kč"
-    confidence: 0.7
-    jedn_cena_kc: 60000
-    cena_celkem_kc: 60000
-    source: "user_manual_fallback"
-
-  - polozka_id: "SO801-T0-06"
-    otskp_kod: "02580"
-    popis: "PŘÍJEZDOVÁ KOMUNIKACE DOČASNÁ (panely IZD na zpevněném podkladu)"
+    kod_polozky: "ZS-01"
+    popis: "ZPEVNĚNÁ PLOCHA ŠTĚRKEM (přístup pro buňkoviště + skladovací prostor)"
     mj: "M2"
     mnozstvi: 100
+    jedn_cena_kc: 480
+    cena_celkem_kc: 48000
     vypocet:
-      formula: "L × B (od silnice III/206 2 ke staveništi)"
+      formula: "plocha × cena × ratio"
       vstupy:
-        L_m: {hodnota: 25, jednotka: m, popis: "délka přístupové cesty od silnice", zdroj: "DXF kadastr + Phase B"}
-        B_m: {hodnota: 4,  jednotka: m, popis: "šířka pro průjezd nákladu (mixéry beton, jeřáb)", zdroj: "ČSN 73 0212"}
-      vypocet_kroky:
-        - "25 × 4 = 100 m²"
+        plocha_m2:    {hodnota: 100, jednotka: m2, popis: "buňkoviště + skladovací plocha", zdroj: "Žihle scale-aware sizing", confidence: 0.7}
+        cena_d6_kc:   {hodnota: 320, jednotka: "Kč/m²", popis: "D6 baseline 2022", zdroj: "D6 template", confidence: 0.85}
+        ratio:        {hodnota: 1.5, jednotka: "-", popis: "venkovský přístup horší než D6 městský", zdroj: "engineering judgment", confidence: 0.7}
+      vypocet_kroky: ["100 × 320 × 1.5 = 48 000 Kč"]
     confidence: 0.7
-    jedn_cena_kc: 800
-    note: "IZD panely 800 Kč/m² zahrnuje pronájem + transport na/ze staveniště + likvidaci podloží po skončení."
-    cena_celkem_kc: 80000
-    source: "user_manual_fallback"
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-02"
+    kod_polozky: "ZS-02"
+    popis: "AUTOJEŘÁB PRO MONTÁŽ ZS (vyložení buněk + dopravního značení)"
+    mj: "HOD"
+    mnozstvi: 10
+    jedn_cena_kc: 1250
+    cena_celkem_kc: 12500
+    vypocet:
+      formula: "hodin × sazba"
+      vstupy:
+        hodin:    {hodnota: 10,   jednotka: hod, popis: "1 den vyložení 5 buněk + 5 ks dopravního značení",  zdroj: "vendor praxe", confidence: 0.8}
+        sazba:    {hodnota: 1250, jednotka: "Kč/hod", popis: "autojeřáb bez obsluhy",                          zdroj: "D6 template", confidence: 0.85}
+      vypocet_kroky: ["10 × 1 250 = 12 500 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-03"
+    kod_polozky: "ZS-03"
+    popis: "MONTÁŽ ZAŘÍZENÍ STAVENIŠTĚ (kompletace, paušál)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 15000
+    cena_celkem_kc: 15000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "kompletace ZS po dodání jednotlivých prvků", zdroj: "D6 template", confidence: 0.85}}
+      vypocet_kroky: ["1 × 15 000 = 15 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-04"
+    kod_polozky: "ZS-04"
+    popis: "BUŇKY KANCELÁŘE — PRONÁJEM (technický zázemí pracovníků TZP)"
+    mj: "KS-MES"
+    mnozstvi: 11
+    jedn_cena_kc: 1000
+    cena_celkem_kc: 11000
+    vypocet:
+      formula: "ks × měs × cena"
+      vstupy:
+        ks:       {hodnota: 1,    jednotka: ks, popis: "1 kontejner pro 5-8 pracovníků",  zdroj: "Žihle scale", confidence: 0.85}
+        mesice:   {hodnota: 11,   jednotka: měs, popis: "doba stavby",                     zdroj: "Phase C", confidence: 0.85}
+        cena:     {hodnota: 1000, jednotka: "Kč/ks/měs", popis: "standardní stavební buňka 6×2.5 m", zdroj: "D6 template (3 souborů identical)", confidence: 0.9}
+      vypocet_kroky: ["1 × 11 × 1 000 = 11 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-05"
+    kod_polozky: "ZS-05"
+    popis: "BUŇKY ŠATNY — PRONÁJEM"
+    mj: "KS-MES"
+    mnozstvi: 11
+    jedn_cena_kc: 1800
+    cena_celkem_kc: 19800
+    vypocet:
+      formula: "ks × měs × cena"
+      vstupy:
+        ks:     {hodnota: 1, jednotka: ks, popis: "šatna pracovníků", zdroj: "Žihle scale", confidence: 0.85}
+        mesice: {hodnota: 11, jednotka: měs, popis: "doba stavby",    zdroj: "Phase C", confidence: 0.85}
+        cena:   {hodnota: 1800, jednotka: "Kč/ks/měs", popis: "buňka šatna se šatními skříňkami", zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["1 × 11 × 1 800 = 19 800 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-06"
+    kod_polozky: "ZS-06"
+    popis: "BUŇKY SKLADY — PRONÁJEM (nářadí, drobný materiál)"
+    mj: "KS-MES"
+    mnozstvi: 11
+    jedn_cena_kc: 1500
+    cena_celkem_kc: 16500
+    vypocet:
+      formula: "ks × měs × cena"
+      vstupy:
+        ks:     {hodnota: 1, jednotka: ks, popis: "sklad nářadí", zdroj: "Žihle scale", confidence: 0.85}
+        mesice: {hodnota: 11, jednotka: měs, popis: "doba stavby", zdroj: "Phase C", confidence: 0.85}
+        cena:   {hodnota: 1500, jednotka: "Kč/ks/měs", popis: "skladová buňka", zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["1 × 11 × 1 500 = 16 500 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
 
   - polozka_id: "SO801-T0-07"
-    otskp_kod: "02590"
-    popis: "ČIŠTĚNÍ VOZIDEL PŘI VÝJEZDU ZE STAVENIŠTĚ (mokrý mycí systém + voda + údržba)"
+    kod_polozky: "ZS-07"
+    popis: "SCHODIŠTĚ K BUŇKOVIŠTI"
     mj: "KPL"
     mnozstvi: 1
+    jedn_cena_kc: 8000
+    cena_celkem_kc: 8000
     vypocet:
-      formula: "doba_stavby × cena_per_mes"
-      vstupy:
-        doba_stavby_mes: {hodnota: 11,   jednotka: měs,   popis: "doba", zdroj: "Phase C"}
-        cena_per_mes:    {hodnota: 8000, jednotka: Kč/měs, popis: "průměrná cena pronájmu mycí stanice + voda + údržba", zdroj: "vendor lookup"}
-      vypocet_kroky:
-        - "11 × 8 000 = 88 000 Kč"
-    confidence: 0.75
-    jedn_cena_kc: 88000
-    note: "POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic. Mycí systém high-pressure mokrý + recyklační kalová jímka."
-    cena_celkem_kc: 88000
-    source: "user_manual_fallback"
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "ocelové schodiště + zábradlí pro vstup do buněk", zdroj: "D6 template", confidence: 0.85}}
+      vypocet_kroky: ["1 × 8 000 = 8 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
 
   - polozka_id: "SO801-T0-08"
-    otskp_kod: "02991"
-    popis: "TABULE A ZNAČKY STAVENIŠTĚ (povinné identifikační + bezpečnostní + výstražné)"
-    mj: "KUS"
-    mnozstvi: 10
+    kod_polozky: "ZS-08"
+    popis: "DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ"
+    mj: "CESTA"
+    mnozstvi: 2
+    jedn_cena_kc: 4000
+    cena_celkem_kc: 8000
     vypocet:
-      formula: "povinné_tabule_per_ČSN_73_0212"
+      formula: "počet_cest × cena"
       vstupy:
-        identifikacni:    {hodnota: 1, jednotka: ks, popis: "Stavbyvedoucí + investor + projekt + lhůty",  zdroj: "vyhláška 499/2006 Sb."}
-        bezpecnostni:     {hodnota: 4, jednotka: ks, popis: "B14 zákaz vstupu + B26 přilba + výstrahy",     zdroj: "ČSN ISO 3864-1"}
-        vystrazne:        {hodnota: 3, jednotka: ks, popis: "Výstraha staveniště + uzávěr + objízdka",      zdroj: "ČSN 73 0212"}
-        bozp_evakuacni:   {hodnota: 2, jednotka: ks, popis: "Evakuační směr + první pomoc",                 zdroj: "zákon 309/2006 Sb."}
-      vypocet_kroky:
-        - "1 + 4 + 3 + 2 = 10 ks"
+        cest:   {hodnota: 2, jednotka: cesta, popis: "dovoz + odvoz buněk po skončení", zdroj: "D6 template", confidence: 0.85}
+        cena:   {hodnota: 4000, jednotka: "Kč/cesta", popis: "kamion s ramenem", zdroj: "D6 template", confidence: 0.85}
+      vypocet_kroky: ["2 × 4 000 = 8 000 Kč"]
     confidence: 0.85
-    jedn_cena_kc: 4500
-    cena_celkem_kc: 45000
-    source: "user_manual_fallback"
+    source: "d6_template_scaled"
 
   - polozka_id: "SO801-T0-09"
-    otskp_kod: "02500"
-    popis: "VYTÝČENÍ STAVENIŠTĚ + OCHRANNÁ PÁSMA (geodetické vytýčení obvodů, sítí a dotčených pozemků)"
+    kod_polozky: "ZS-09"
+    popis: "VYBAVENÍ BUNĚK (50 % scale: 1 stůl + 4 židle + 1 skříň + 0.25 kopírka A3)"
     mj: "KPL"
     mnozstvi: 1
+    jedn_cena_kc: 42104
+    cena_celkem_kc: 42104
     vypocet:
-      formula: "paušál (geodet + dokumentace ochranných pásem)"
+      formula: "scale × cena_d6"
       vstupy:
-        rozsah:               {hodnota: 1,     jednotka: kpl, popis: "vytýčení obvodu + identifikace inženýrských sítí + dokumentace",  zdroj: "ČSN 73 0212 čl. 3.2"}
-        sazba_geodet_kc_hod:  {hodnota: 1500,  jednotka: Kč/hod, popis: "geodet certifikovaný",                                          zdroj: "vyhláška 393/2020"}
-        hodin_vytyceni:       {hodnota: 16,    jednotka: hod, popis: "obvod + 7× ochranná pásma sítí",                                   zdroj: "praxe"}
-      vypocet_kroky:
-        - "1 500 × 16 = 24 000 Kč ≈ 25 000 Kč"
+        scale:    {hodnota: 0.5, jednotka: "-", popis: "Žihle 1 kancelář (D6 má 3 stoly)", zdroj: "Žihle scale-aware", confidence: 0.8}
+        cena_d6:  {hodnota: 84209, jednotka: "Kč/kpl", popis: "D6 full vybavení (3 stoly, 12 židlí, 4 skříně, 1 kopírka)", zdroj: "D6 template (3 souborů identical)", confidence: 0.9}
+      vypocet_kroky: ["0.5 × 84 209 = 42 104.5 → 42 104 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-10"
+    kod_polozky: "ZS-10"
+    popis: "WC TOI-TOI — PRONÁJEM (mobilní toalety bez kanalizace)"
+    mj: "KS-MES"
+    mnozstvi: 11
+    jedn_cena_kc: 2400
+    cena_celkem_kc: 26400
+    vypocet:
+      formula: "ks × měs × cena"
+      vstupy:
+        ks:     {hodnota: 1, jednotka: ks, popis: "1 mobilní WC pro 8 pracovníků", zdroj: "Žihle scale", confidence: 0.85}
+        mesice: {hodnota: 11, jednotka: měs, popis: "doba stavby", zdroj: "Phase C", confidence: 0.85}
+        cena:   {hodnota: 2400, jednotka: "Kč/ks/měs", popis: "TOI-TOI standard včetně týdenního servisu + likvidace splaškových vod", zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["1 × 11 × 2 400 = 26 400 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-11"
+    kod_polozky: "ZS-11"
+    popis: "OPLOCENÍ STAVENIŠTĚ — MONTÁŽ + DEMONTÁŽ (mobilní 2.0 m výška)"
+    mj: "M"
+    mnozstvi: 200
+    jedn_cena_kc: 48
+    cena_celkem_kc: 9600
+    vypocet:
+      formula: "m × cena"
+      vstupy:
+        delka:    {hodnota: 200, jednotka: m, popis: "perimetr 50×50 m staveniště", zdroj: "DXF kadastr + Phase B", confidence: 0.7}
+        cena:     {hodnota: 48, jednotka: "Kč/m", popis: "MTŽ + DMTŽ jednorázově", zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["200 × 48 = 9 600 Kč"]
     confidence: 0.75
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-12"
+    kod_polozky: "ZS-12"
+    popis: "OPLOCENÍ STAVENIŠTĚ — NÁJEM"
+    mj: "M-MES"
+    mnozstvi: 2200
+    jedn_cena_kc: 25
+    cena_celkem_kc: 55000
+    vypocet:
+      formula: "m × měs × cena"
+      vstupy:
+        delka:    {hodnota: 200, jednotka: m, popis: "perimetr",        zdroj: "T0-11", confidence: 0.7}
+        mesice:   {hodnota: 11, jednotka: měs, popis: "doba stavby",     zdroj: "Phase C", confidence: 0.85}
+        cena:     {hodnota: 25, jednotka: "Kč/m/měs", popis: "nájem mobilního oplocení", zdroj: "D6 template", confidence: 0.9}
+      vypocet_kroky: ["200 × 11 = 2 200 m·měs", "2 200 × 25 = 55 000 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-13"
+    kod_polozky: "ZS-13"
+    popis: "REKLAMNÍ / IDENTIFIKAČNÍ CEDULE VELKÁ (POVINNÁ per vyhláška 499/2006 Sb.)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 75000
+    cena_celkem_kc: 75000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "investor + zhotovitel + projekt + lhůty + autorizace", zdroj: "vyhláška 499/2006 Sb.", confidence: 0.95}}
+      vypocet_kroky: ["1 × 75 000 = 75 000 Kč"]
+    confidence: 0.9
+    source: "d6_template_scaled"
+    poznamka: "POVINNÁ — nelze vynechat"
+
+  - polozka_id: "SO801-T0-14"
+    kod_polozky: "ZS-14"
+    popis: "LIKVIDACE ZAŘÍZENÍ STAVENIŠTĚ (po dokončení stavby)"
+    mj: "KPL"
+    mnozstvi: 1
     jedn_cena_kc: 25000
-    note: |
-      DUPLICATION CHECK: SO 201 t0 T0-01 (zaměřičská měření 45k) + T0-02 (geodetické
-      zaměření výchozí 100k) řeší MOST samotný (osy + výškové body). SO 801 T0-09 řeší
-      OBVOD STAVENIŠTĚ + OCHRANNÁ PÁSMA inženýrských sítí (jiný scope, jiná etapa).
     cena_celkem_kc: 25000
-    source: "user_manual_fallback"
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "úklid + odvoz zbytkového materiálu po demontáži ZS", zdroj: "D6 template", confidence: 0.85}}
+      vypocet_kroky: ["1 × 25 000 = 25 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-15"
+    kod_polozky: "ZS-15"
+    popis: "OSVĚTLENÍ STAVBY (LED reflektory + sloupy + kabeláž + pohybová čidla)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 130000
+    cena_celkem_kc: 130000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "4× LED 200W + sloupy + kabeláž + pohybová čidla po celou dobu stavby", zdroj: "D6 template scaled", confidence: 0.8}}
+      vypocet_kroky: ["1 × 130 000 = 130 000 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-16"
+    kod_polozky: "ZS-16"
+    popis: "ELEKTROCENTRÁLA PŘENOSNÁ (záložní zdroj — výpadky obecního ČEZ)"
+    mj: "KS-MES"
+    mnozstvi: 11
+    jedn_cena_kc: 1150
+    cena_celkem_kc: 12650
+    vypocet:
+      formula: "ks × měs × cena"
+      vstupy:
+        ks:     {hodnota: 1, jednotka: ks, popis: "1 záložní generátor", zdroj: "Žihle (obec malá ČEZ ne 100% reliable)", confidence: 0.7}
+        mesice: {hodnota: 11, jednotka: měs, popis: "doba stavby", zdroj: "Phase C", confidence: 0.85}
+        cena:   {hodnota: 1150, jednotka: "Kč/ks/měs", popis: "pronájem generátoru bez paliva", zdroj: "D6 template", confidence: 0.85}
+      vypocet_kroky: ["1 × 11 × 1 150 = 12 650 Kč"]
+    confidence: 0.75
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-17"
+    kod_polozky: "ZS-17"
+    popis: "ELEKTRICKÁ ENERGIE — SPOTŘEBA (PHM + tarif)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 30000
+    cena_celkem_kc: 30000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "PHM pro generátor + ČEZ tarify za 11 měs spotřeby", zdroj: "D6 template", confidence: 0.7}}
+      vypocet_kroky: ["1 × 30 000 = 30 000 Kč"]
+    confidence: 0.7
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-18"
+    kod_polozky: "ZS-18"
+    popis: "PŘÍPOJKA ELEKTRO (provedení + měřič — Žihle obec ČEZ ~150 m)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 150000
+    cena_celkem_kc: 150000
+    vypocet:
+      formula: "delka × jedn_cena"
+      vstupy:
+        delka:        {hodnota: 150, jednotka: m, popis: "vzdálenost staveniště od ČEZ rozvaděče v obci", zdroj: "DXF + obec Žihle", confidence: 0.7}
+        jedn_cena:    {hodnota: 1000, jednotka: "Kč/m", popis: "instalace dočasné přípojky + rozvaděč + měřič", zdroj: "ČEZ ceník 2026", confidence: 0.75}
+      vypocet_kroky: ["150 × 1 000 = 150 000 Kč"]
+    confidence: 0.7
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-19"
+    kod_polozky: "ZS-19"
+    popis: "PŘÍPOJKA VODY (přípojka + měřič — vodovod přes obec)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 50000
+    cena_celkem_kc: 50000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "připojení dočasného vodovodu + vodoměr", zdroj: "VAS ceník 2026", confidence: 0.75}}
+      vypocet_kroky: ["1 × 50 000 = 50 000 Kč"]
+    confidence: 0.75
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-20"
+    kod_polozky: "ZS-20"
+    popis: "UŽITKOVÁ VODA — SPOTŘEBA (sociální + technická)"
+    mj: "MES"
+    mnozstvi: 11
+    jedn_cena_kc: 3500
+    cena_celkem_kc: 38500
+    vypocet:
+      formula: "měs × cena"
+      vstupy:
+        mesice: {hodnota: 11, jednotka: měs, popis: "doba stavby", zdroj: "Phase C", confidence: 0.85}
+        cena:   {hodnota: 3500, jednotka: "Kč/měs", popis: "spotřeba ~14 m³/měs × 250 Kč/m³ vč. stočného", zdroj: "VAS + D6 template", confidence: 0.8}
+      vypocet_kroky: ["11 × 3 500 = 38 500 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-21"
+    kod_polozky: "ZS-21"
+    popis: "ČIŠTĚNÍ KOMUNIKACÍ — MYCÍ LINKA (POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 105000
+    cena_celkem_kc: 105000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "mobilní mokrý mycí systém high-pressure + recyklační kalová jímka + údržba 11 měs", zdroj: "D6 template", confidence: 0.85}}
+      vypocet_kroky: ["1 × 105 000 = 105 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+    poznamka: "POVINNÉ per ČSN 73 0212 — nelze vynechat"
+
+  - polozka_id: "SO801-T0-22"
+    kod_polozky: "ZS-22"
+    popis: "DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY (5 ks DZ + sloupky)"
+    mj: "KS"
+    mnozstvi: 5
+    jedn_cena_kc: 15000
+    cena_celkem_kc: 75000
+    vypocet:
+      formula: "ks × cena"
+      vstupy:
+        ks:     {hodnota: 5, jednotka: ks, popis: "B14 zákaz vstupu + výstrahy + objízdka", zdroj: "DIO Phase B", confidence: 0.85}
+        cena:   {hodnota: 15000, jednotka: "Kč/ks", popis: "DZ + sloupek + montáž + údržba", zdroj: "D6 template", confidence: 0.85}
+      vypocet_kroky: ["5 × 15 000 = 75 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-23"
+    kod_polozky: "ZS-23"
+    popis: "BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě + ohrada nebezpečných míst)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 200000
+    cena_celkem_kc: 200000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "POVINNÉ — fyzické zabezpečení staveniště (zábradlí, sítě, ohrada potoka, pádové úrovně)", zdroj: "zákon 309/2006 Sb. + ČSN 73 0212", confidence: 0.9}}
+      vypocet_kroky: ["1 × 200 000 = 200 000 Kč"]
+    confidence: 0.9
+    source: "d6_template_scaled"
+    poznamka: "★ POVINNÉ — physical safety equipment (NE koordinátor BOZP — viz VRN-12)"
+
+  - polozka_id: "SO801-T0-24"
+    kod_polozky: "ZS-24"
+    popis: "ZIMNÍ OPATŘENÍ — ZAKRÝVÁNÍ STAVBY (geotextílie, plachty proti dešti/sněhu)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 50000
+    cena_celkem_kc: 50000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "zima 2026/27 v harmonogramu (Phase C — výstavba NK leden-březen)", zdroj: "D6 template + Phase C", confidence: 0.75}}
+      vypocet_kroky: ["1 × 50 000 = 50 000 Kč"]
+    confidence: 0.75
+    source: "d6_template_scaled"
+
+  - polozka_id: "SO801-T0-25"
+    kod_polozky: "ZS-25"
+    popis: "ZIMNÍ OPATŘENÍ — TEMPEROVÁNÍ BETONU (zahřívání čerstvého betonu C30/37 winter pour)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 75000
+    cena_celkem_kc: 75000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "topné rohože / parní generátor pro zrání betonu při <5 °C", zdroj: "ČSN EN 13670 + D6 template", confidence: 0.75}}
+      vypocet_kroky: ["1 × 75 000 = 75 000 Kč"]
+    confidence: 0.75
+    source: "d6_template_scaled"
 
 # =====================================================================
-# TOTALS — SO 801
+# TOTALS
 # =====================================================================
 
 totals:
-  trida_0_kc: 780500    # 264000+132000+16500+70000+60000+80000+88000+45000+25000
-  SO_801_subtotal_kc: 780500
-  SO_801_total_kc: 780500
-  SO_801_total_with_vat_kc: 944405    # × 1.21
-  total_polozek: 9
+  trida_0_kc: 1288054
+  SO_801_total_kc: 1288054
+  SO_801_total_with_vat_kc: 1558545    # × 1.21
+  total_polozek: 25
 
 source_distribution:
-  calculator_deterministic_polozek: 0    # Phase C calc nepokrývá ZS
-  calculator_deterministic_kc: 0
-  user_manual_fallback_polozek: 9
-  user_manual_fallback_kc: 780500
+  d6_template_scaled: 25
+  d6_template_scaled_kc: 1288054
 
 confidence_distribution:
-  high_0_85_to_1_0: 2     # T0-03 telefon (0.85), T0-08 tabule (0.85)
-  medium_0_70_to_0_84: 6  # T0-01, T0-02, T0-05, T0-06, T0-07, T0-09
-  low_0_60_to_0_69: 1     # T0-04 oplocení (perimetr uncertain bez detailního DPS)
-  total_polozek: 9
-
-# =====================================================================
-# NO-WORK-DUPLICATION VALIDATION VS SO 001 + SO 180 + SO 201 + SO 290
-# =====================================================================
-
-no_work_duplication_validation:
-  shared_otskp_kody:
-    - kod: "02991 informační/identifikační tabule"
-      SO_001_polozka: "T0-05 (2 ks DIO uzavírka mostu)"
-      SO_180_polozka: "—"
-      SO_201_polozka: "T0-10 (2 ks stavební investor + zhotovitel — na mostě)"
-      SO_801_polozka: "T0-08 (10 ks staveniště — identifikační + bezpečnostní + výstražné + BOZP)"
-      explanation: |
-        DIFFERENT CATEGORIES: SO 001 = DIO/uzavírkové tabule (na silnici k objízdce).
-        SO 201 = stavební tabule investora/zhotovitele (na mostě). SO 801 = staveniště
-        identifikační + bezpečnostní (uvnitř oploceného staveniště). Different positions,
-        different audience, different content. Total tabule = 14 ks across all SO.
-
-    - kod: "02500 vytýčení / 02911 geodézie"
-      SO_201_polozka: "T0-01 (zaměřičské měření MOST 45k) + T0-02 (geodetické MOST výchozí 100k)"
-      SO_801_polozka: "T0-09 (vytýčení STAVENIŠTĚ + ochranná pásma 25k)"
-      explanation: |
-        DIFFERENT SCOPE: SO 201 řeší most samotný (osy mostu, výškové body opěr,
-        zaměření po dokončení). SO 801 řeší OBVOD staveniště + ochranná pásma
-        inženýrských sítí + dotčené pozemky. Žádný překryv.
-
-  duplications_found: 0
-  validation_status: "PASS — všechny shared kódy s ostatními SO mají category/scope-separation explanation."
-
-# =====================================================================
-# CROSS-REFERENCES
-# =====================================================================
-
-cross_references:
-  norm_basis:           "ČSN 73 0212 (Zařízení staveniště) + zákon 309/2006 Sb. (BOZP) + vyhláška 499/2006 Sb."
-  phase_c_harmonogram:  "../../03_calculation/outputs/_all_outputs.json (319 dní + reserve = 11 měs)"
-  parcels_consents:     "../kadastr_audit/parcels_and_consents.yaml (souhlasy k přístupům přes pozemky)"
-  task_spec:            "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.6"
-  related_so_files:
-    - "master_soupis_SO_001.yaml (T0-05 DIO tabule — different category)"
-    - "master_soupis_SO_201_t0.yaml (T0-01/T0-02 geodézie mostu — different scope)"
-  superseded:
-    - "otskp_mapping.yaml ZS.zarizeni_staveniste = paušál 4 % (270k) — REPLACED by detailed 9-položkový SO 801 (780.5k Kč). Detailed přístup je per user decision A z Session 1 AskUserQuestion."
-
-# =====================================================================
-# FLAGS
-# =====================================================================
+  high_0_85_to_1_0: 13
+  medium_0_70_to_0_84: 12
+  total_polozek: 25
 
 flags:
   - level: info
-    message: "9 položek detailní ZS per user decision A. Replaces orientační paušál 4 % (270k Kč) z otskp_mapping.yaml."
-  - level: info
-    message: "Source 100 % user_manual_fallback — Phase C calculator nepokrývá ZS. Confidence 0.65-0.85 (engineering paušály)."
+    message: "REPLACES předchozí 9-položkovou paušální verzi (commit 068f5683, 780 500 Kč). Detailized 25-item structure d6_template_scaled."
   - level: warning
-    message: "T0-04 oplocení 200 m perimetr confidence 0.65 — staveniště bbox uncertain bez detailního DPS. Pro DPS projektant ověří dle skutečného plotu (může být menší než 200 m pokud staveniště nesouvislé)."
+    message: "D6 unit prices = 2022-2023. Inflation 2022-2026 (~10-15 %) NOT applied. Vendor RFQ doporučeno před tendrem pre real 2026 prices."
   - level: info
-    message: "Doba stavby 11 měsíců = Phase C 319 dní + buffer (originally elementy-only 4.5 měs, ale provizorium 6 měs souběžně + demolice + setup + buffer)."
-  - level: info
-    message: "T0-07 čistění vozidel POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic — nelze vynechat."
-  - level: info
-    message: "No-work-duplication PASS: 02991 tabule a 02500/02911 geodézie mají category/scope-separation s ostatními SO."
+    message: "Polír NENÍ v SO 801 — alokován ve VRN-01 (50 % time, sdílen s druhou stavbou)."
+  - level: warning
+    message: "T0-23 BOZP zabezpečení 200k = physical safety equipment. NEPLÉTAT s VRN-12 koordinátor BOZP (legal coordinator per zákon 309/2006 Sb.). Different items."

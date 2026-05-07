@@ -1,9 +1,9 @@
 # Validation Report — Master Soupis Žihle 2062-1
 
 **Generated:** 2026-05-07
-**Total položek:** 154
-**Total cena:** 10,585,736 Kč bez DPH (12,808,741 Kč s DPH 21 %)
-**vs ZD limit 30 M Kč:** 42.7 %
+**Total položek:** 181
+**Total cena:** 12,449,723 Kč bez DPH (15,064,165 Kč s DPH 21 %)
+**vs ZD limit 30 M Kč:** 50.2 %
 
 ---
 
@@ -11,23 +11,24 @@
 
 | SO | Název | Položek | Kč bez DPH | Podíl |
 |---|---|---:|---:|---:|
-| **SO_001** | Demolice stávajícího mostu | 30 | 1,057,831 | 10.0 % |
-| **SO_180** | Mostní provizorium + objízdná trasa | 26 | 2,047,138 | 19.3 % |
-| **SO_201** | Most ev.č. 2062-1 | 72 | 4,435,958 | 41.9 % |
-| **SO_290** | Silnice III/206 2 (návaznosti) | 12 | 1,952,470 | 18.4 % |
-| **SO_801** | Zařízení staveniště (detailní) | 9 | 780,500 | 7.4 % |
-| **VRN** | Vedlejší rozpočtové náklady | 5 | 311,839 | 2.9 % |
-| | **TOTAL** | **154** | **10,585,736** | **100.0 %** |
+| **SO_001** | Demolice stávajícího mostu | 30 | 1,057,831 | 8.5 % |
+| **SO_180** | Mostní provizorium + objízdná trasa | 26 | 2,047,138 | 16.4 % |
+| **SO_201** | Most ev.č. 2062-1 | 72 | 4,435,958 | 35.6 % |
+| **SO_290** | Silnice III/206 2 (návaznosti) | 12 | 1,952,470 | 15.7 % |
+| **SO_801** | Zařízení staveniště (detailní) | 25 | 1,288,054 | 10.3 % |
+| **PRESUN_HMOT** | Přesun hmot stavby | 3 | 560,000 | 4.5 % |
+| **VRN** | Vedlejší rozpočtové náklady | 13 | 1,108,272 | 8.9 % |
+| | **TOTAL** | **181** | **12,449,723** | **100.0 %** |
 
 ---
 
-## 2. Confidence Distribution (154 položek)
+## 2. Confidence Distribution (181 položek)
 
 | Bucket | Počet | Podíl |
 |---|---:|---:|
-| high_0.85_to_1.0 | 100 | 64.9 % |
-| medium_0.70_to_0.84 | 46 | 29.9 % |
-| low_0.60_to_0.69 | 8 | 5.2 % |
+| high_0.85_to_1.0 | 118 | 65.2 % |
+| medium_0.70_to_0.84 | 56 | 30.9 % |
+| low_0.60_to_0.69 | 7 | 3.9 % |
 
 ---
 
@@ -35,12 +36,12 @@
 
 | Source | Počet | Podíl |
 |---|---:|---:|
-| user_manual_fallback | 82 | 53.2 % |
-| unspecified | 45 | 29.2 % |
-| calculator_deterministic | 13 | 8.4 % |
-| paušál_administrativní | 6 | 3.9 % |
-| vrn_kalkulace_per_norma | 5 | 3.2 % |
-| vendor_pricing_median | 3 | 1.9 % |
+| user_manual_fallback | 73 | 40.3 % |
+| unspecified | 45 | 24.9 % |
+| d6_template_scaled | 41 | 22.7 % |
+| calculator_deterministic | 13 | 7.2 % |
+| paušál_administrativní | 6 | 3.3 % |
+| vendor_pricing_median | 3 | 1.7 % |
 
 ---
 
@@ -73,8 +74,8 @@ Položky označené `★`, `POVINNÁ`, `POVINNÉ`, `POVINNÝ`, nebo `KEY ELEMENT
 | SO201-T7-03 | SO_201 | 711442 | IZOLACE MOSTOVEK CELOPLOŠNÁ ASFALTOVÝMI PÁSY S PEČETÍCÍ VRSTVOU (NAIP + pečetící | 70,515 |
 | SO201-T9-02 | SO_201 | 9117C1 | SVODIDLO OCEL ZÁBRADELNÍ MOSTNÍ, ÚROVEŇ ZADRŽENÍ H2 — DODÁVKA A MONTÁŽ (na říмsá | 190,561 |
 | SO201-T9-15 | SO_201 | 93311 | ZATĚŽOVACÍ ZKOUŠKA MOSTU STATICKÁ 1. POLE DO 300 M² (★ POVINNÁ per ČSN 73 6209) | 100,000 |
-| SO801-T0-07 | SO_801 | 02590 | ČIŠTĚNÍ VOZIDEL PŘI VÝJEZDU ZE STAVENIŠTĚ (mokrý mycí systém + voda + údržba) | 88,000 |
-| VRN-05 | VRN | VRN-BOZP-KOORDINATOR | KOORDINÁTOR BOZP NA STAVENIŠTI (povinný per zákon 309/2006 Sb. — staveniště s ví | 88,000 |
+| SO801-T0-13 | SO_801 | None | REKLAMNÍ / IDENTIFIKAČNÍ CEDULE VELKÁ (POVINNÁ per vyhláška 499/2006 Sb.) | 75,000 |
+| SO801-T0-21 | SO_801 | None | ČIŠTĚNÍ KOMUNIKACÍ — MYCÍ LINKA (POVINNÉ per ČSN 73 0212 + zákon o čistotě silni | 105,000 |
 
 ---
 
@@ -89,7 +90,7 @@ Per-položka explanation pro každý překryv je v příslušném `master_soupis
 | `014102` | SO_001, SO_180 | POPLATKY ZA SKLÁDKU | ✅ context-separated per per-SO YAML |
 | `02510` | SO_001, SO_201 | ZKOUŠENÍ MATERIÁLŮ — kontrola materiálu při bourání (ŽB pevn | ✅ context-separated per per-SO YAML |
 | `027413` | SO_001, SO_180 | PROVIZORNÍ MOSTY — DEMONTÁŽ (ocelový mostní systém) | ✅ context-separated per per-SO YAML |
-| `02991` | SO_001, SO_201, SO_801 | INFORMAČNÍ TABULE — uzavírka mostu + bypass info | ✅ context-separated per per-SO YAML |
+| `02991` | SO_001, SO_201 | INFORMAČNÍ TABULE — uzavírka mostu + bypass info | ✅ context-separated per per-SO YAML |
 | `113728` | SO_001, SO_290 | FRÉZOVÁNÍ ZPEVNĚNÝCH PLOCH ASFALTOVÝCH, ODVOZ DO 20 KM | ✅ context-separated per per-SO YAML |
 | `11511` | SO_001, SO_180, SO_201 | ČERPÁNÍ VODY DO 500 L/MIN — během demolice + výkop | ✅ context-separated per per-SO YAML |
 | `121108` | SO_001, SO_180 | SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20 KM | ✅ context-separated per per-SO YAML |
@@ -276,29 +277,56 @@ OTSKP kódy explicitně vyloučené z master soupis per ZD constraints — dokum
 | SO_290 | trida_9_ostatni | SO290-T9-06 | 914911 | SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCEL TRUBEK S | KUS | 4 | 4,800 | 0.9 |
 | SO_290 | trida_9_ostatni | SO290-T9-07 | 9113B1 | SVODIDLO OCEL SILNIČNÍ JEDNOSTRANNÉ, ÚROVEŇ ZADRŽ  | M | 100.0 | 178,096 | 0.7 |
 | SO_290 | trida_9_ostatni | SO290-T9-08 | 91238 | SMĚROVÉ SLOUPKY Z PLAST HMOT — NÁSTAVCE NA SVODIDL | KUS | 33 | 26,400 | 0.9 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-01 | 02520 | HYGIENICKÁ A SOCIÁLNÍ ZAŘÍZENÍ STAVENIŠTĚ (kontejn | KPL | 1 | 264,000 | 0.7 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-02 | 02530 | ENERGIE + VODA STAVENIŠTĚ (elektrický rozvaděč + p | KPL | 1 | 132,000 | 0.7 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-03 | 02540 | TELEFONNÍ / INTERNETOVÉ SPOJENÍ STAVENIŠTĚ (mobiln | KPL | 1 | 16,500 | 0.85 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-04 | 02560 | OPLOCENÍ STAVENIŠTĚ (mobilní oplocení 2.0 m výška  | M | 200 | 70,000 | 0.65 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-05 | 02570 | OSVĚTLENÍ STAVENIŠTĚ (LED reflektory na sloupech + | KPL | 1 | 60,000 | 0.7 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-06 | 02580 | PŘÍJEZDOVÁ KOMUNIKACE DOČASNÁ (panely IZD na zpevn | M2 | 100 | 80,000 | 0.7 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-07 | 02590 | ČIŠTĚNÍ VOZIDEL PŘI VÝJEZDU ZE STAVENIŠTĚ (mokrý m | KPL | 1 | 88,000 | 0.75 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-08 | 02991 | TABULE A ZNAČKY STAVENIŠTĚ (povinné identifikační  | KUS | 10 | 45,000 | 0.85 |
-| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-09 | 02500 | VYTÝČENÍ STAVENIŠTĚ + OCHRANNÁ PÁSMA (geodetické v | KPL | 1 | 25,000 | 0.75 |
-| VRN | vrn_polozky | VRN-01 | VRN-MIMOSTAV-DOPRAVA | MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport betonu | KPL | 1 | 102,739 | 0.7 |
-| VRN | vrn_polozky | VRN-02 | VRN-POJISTENI | POJIŠTĚNÍ STAVBY (CAR — Contractor's All Risks + o | KPL | 1 | 41,100 | 0.8 |
-| VRN | vrn_polozky | VRN-03 | VRN-KOORD-DOKUMENTACE | KOORDINAČNÍ DOKUMENTACE (revize TZ + koordinace s  | KPL | 1 | 30,000 | 0.75 |
-| VRN | vrn_polozky | VRN-04 | VRN-SPRAVNI-POPLATKY | SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU  | KPL | 1 | 50,000 | 0.75 |
-| VRN | vrn_polozky | VRN-05 | VRN-BOZP-KOORDINATOR | KOORDINÁTOR BOZP NA STAVENIŠTI (povinný per zákon  | KPL | 1 | 88,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-01 |  | ZPEVNĚNÁ PLOCHA ŠTĚRKEM (přístup pro buňkoviště +  | M2 | 100 | 48,000 | 0.7 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-02 |  | AUTOJEŘÁB PRO MONTÁŽ ZS (vyložení buněk + dopravní | HOD | 10 | 12,500 | 0.8 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-03 |  | MONTÁŽ ZAŘÍZENÍ STAVENIŠTĚ (kompletace, paušál) | KPL | 1 | 15,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-04 |  | BUŇKY KANCELÁŘE — PRONÁJEM (technický zázemí praco | KS-MES | 11 | 11,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-05 |  | BUŇKY ŠATNY — PRONÁJEM | KS-MES | 11 | 19,800 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-06 |  | BUŇKY SKLADY — PRONÁJEM (nářadí, drobný materiál) | KS-MES | 11 | 16,500 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-07 |  | SCHODIŠTĚ K BUŇKOVIŠTI | KPL | 1 | 8,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-08 |  | DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ | CESTA | 2 | 8,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-09 |  | VYBAVENÍ BUNĚK (50 % scale: 1 stůl + 4 židle + 1 s | KPL | 1 | 42,104 | 0.8 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-10 |  | WC TOI-TOI — PRONÁJEM (mobilní toalety bez kanaliz | KS-MES | 11 | 26,400 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-11 |  | OPLOCENÍ STAVENIŠTĚ — MONTÁŽ + DEMONTÁŽ (mobilní 2 | M | 200 | 9,600 | 0.75 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-12 |  | OPLOCENÍ STAVENIŠTĚ — NÁJEM | M-MES | 2200 | 55,000 | 0.8 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-13 |  | REKLAMNÍ / IDENTIFIKAČNÍ CEDULE VELKÁ (POVINNÁ per | KPL | 1 | 75,000 | 0.9 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-14 |  | LIKVIDACE ZAŘÍZENÍ STAVENIŠTĚ (po dokončení stavby | KPL | 1 | 25,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-15 |  | OSVĚTLENÍ STAVBY (LED reflektory + sloupy + kabelá | KPL | 1 | 130,000 | 0.8 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-16 |  | ELEKTROCENTRÁLA PŘENOSNÁ (záložní zdroj — výpadky  | KS-MES | 11 | 12,650 | 0.75 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-17 |  | ELEKTRICKÁ ENERGIE — SPOTŘEBA (PHM + tarif) | KPL | 1 | 30,000 | 0.7 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-18 |  | PŘÍPOJKA ELEKTRO (provedení + měřič — Žihle obec Č | KPL | 1 | 150,000 | 0.7 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-19 |  | PŘÍPOJKA VODY (přípojka + měřič — vodovod přes obe | KPL | 1 | 50,000 | 0.75 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-20 |  | UŽITKOVÁ VODA — SPOTŘEBA (sociální + technická) | MES | 11 | 38,500 | 0.8 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-21 |  | ČIŠTĚNÍ KOMUNIKACÍ — MYCÍ LINKA (POVINNÉ per ČSN 7 | KPL | 1 | 105,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-22 |  | DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY (5 ks DZ + sloupky | KS | 5 | 75,000 | 0.85 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-23 |  | BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě  | KPL | 1 | 200,000 | 0.9 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-24 |  | ZIMNÍ OPATŘENÍ — ZAKRÝVÁNÍ STAVBY (geotextílie, pl | KPL | 1 | 50,000 | 0.75 |
+| SO_801 | trida_0_zarizeni_staveniste | SO801-T0-25 |  | ZIMNÍ OPATŘENÍ — TEMPEROVÁNÍ BETONU (zahřívání čer | KPL | 1 | 75,000 | 0.75 |
+| PRESUN_HMOT | presun_hmot | PH-01 |  | KRAMER BEZ OBSLUHY + NAFTA (univerzální nakladač p | MES | 6 | 210,000 | 0.85 |
+| PRESUN_HMOT | presun_hmot | PH-02 |  | POMOCNÍ PRACOVNÍCI PŘI PŘESUNECH HMOT | OSOBA-MES | 4 | 200,000 | 0.85 |
+| PRESUN_HMOT | presun_hmot | PH-03 |  | AUTOJEŘÁB S OBSLUHOU (montáž bednění + výztuže + b | HOD | 100 | 150,000 | 0.85 |
+| VRN | vrn_polozky | VRN-01 |  | POLÍR / STAVBYVEDOUCÍ (50 % time — sdílen s druhou | OSOBA-MES | 5.5 | 495,000 | 0.8 |
+| VRN | vrn_polozky | VRN-02 |  | POJIŠTĚNÍ STAVBY CAR (Contractor's All Risks + odp | KPL | 1 | 42,343 | 0.85 |
+| VRN | vrn_polozky | VRN-03 |  | GEODET — KONTROLNÍ MĚŘENÍ BĚHEM KONSTRUKCE (contin | MES | 3 | 90,000 | 0.8 |
+| VRN | vrn_polozky | VRN-04 |  | GEOMETRICKÝ PLÁN (kolaudační podklad pre KÚ) | KPL | 1 | 45,000 | 0.85 |
+| VRN | vrn_polozky | VRN-05 |  | DIO — DOPRAVNĚ INŽENÝRSKÉ OPATŘENÍ (komunikace + p | KPL | 1 | 100,000 | 0.8 |
+| VRN | vrn_polozky | VRN-06 |  | MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport mimo b | KPL | 1 | 52,929 | 0.75 |
+| VRN | vrn_polozky | VRN-07 |  | ZÁVĚREČNÝ ÚKLID VENKOVNÍ (zábor + okolní pozemky) | M2 | 1000 | 35,000 | 0.85 |
+| VRN | vrn_polozky | VRN-08 |  | FOTODOKUMENTACE STAVBY (3 etapy: před / během / po | ETAPA | 3 | 45,000 | 0.85 |
+| VRN | vrn_polozky | VRN-09 |  | KOORDINÁTOR BOZP (povinný per zákon 309/2006 Sb. § | MES | 11 | 88,000 | 0.9 |
+| VRN | vrn_polozky | VRN-10 |  | SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU  | KPL | 1 | 50,000 | 0.85 |
+| VRN | vrn_polozky | VRN-11 |  | KOORDINAČNÍ DOKUMENTACE + VYJÁDŘENÍ DOSS (revize T | KPL | 1 | 30,000 | 0.8 |
+| VRN | vrn_polozky | VRN-12 |  | POJIŠTĚNÍ ODPOVĚDNOSTI ZA ŠKODU TŘETÍM OSOBÁM (dod | KPL | 1 | 18,000 | 0.75 |
+| VRN | vrn_polozky | VRN-13 |  | POVODÍ VLTAVY VYJÁDŘENÍ + VODOPRÁVNÍ SOUHLAS (Mlad | KPL | 1 | 17,000 | 0.7 |
 
 ---
 
 ## 10. Sanity Checks
 
-- Item count: 154 (target: 154) → **✅**
-- Total kč bez DPH: 10,585,736 (target ~10 585 736 Kč) → **✅**
+- Item count: 181 (target: 154) → **⚠️ 181**
+- Total kč bez DPH: 12,449,723 (target ~10 585 736 Kč) → **⚠️ 12449723**
 - All items have audit trail: **✅**
 - All items have confidence: **✅**
-- ZD limit 30 M Kč: **42.7 %** ✅ (margin 17.2 M Kč)
+- ZD limit 30 M Kč: **50.2 %** ✅ (margin 14.9 M Kč)
 
 **Validation Status: PASS** — master soupis ready for tendrový proces.
