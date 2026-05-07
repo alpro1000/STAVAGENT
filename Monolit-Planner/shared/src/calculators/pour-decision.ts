@@ -165,6 +165,12 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
     typical_spara_spacing_m: null,
     description_cs: 'Základy pilířů — každý základ = samostatná zachvatka, bez smejnosti',
   },
+  zaklady_oper: {
+    typical_has_spary: true,
+    typical_sub_mode: 'independent',
+    typical_spara_spacing_m: null,
+    description_cs: 'Základy pilířů — každý základ = samostatná zachvatka, bez smejnosti',
+  },
   driky_piliru: {
     typical_has_spary: true,
     typical_sub_mode: 'vertical_layers',
