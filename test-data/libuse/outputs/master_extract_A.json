@@ -6,7 +6,7 @@
   "lintels": [],
   "locksmith": [],
   "metadata": {
-    "extracted_at": "2026-05-07T16:08:06+00:00",
+    "extracted_at": "2026-05-08T17:56:42+00:00",
     "extractor_version": "0.0.1",
     "objekt": "A",
     "schema_version": 1,
@@ -351,6 +351,13 @@
   "skladby": {},
   "validation": {},
   "walls": [],
-  "warnings": [],
+  "warnings": [
+    {
+      "category": "deferred_extraction",
+      "level": "info",
+      "message": "Openings for objekt A not extracted in Step 2 — pi_0/ doesn't wire DWG→DXF conversion yet. Deferred to Step 5+ when per-objekt scope wiring lands.",
+      "source_evidence": "sources/A/dwg/*.dwg present but unparsed"
+    }
+  ],
   "windows": []
 }
