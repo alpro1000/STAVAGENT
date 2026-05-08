@@ -112,12 +112,26 @@ export default function QuotaDisplay() {
           </div>
           {balance <= 5 && balance > 0 && (
             <div style={{ fontSize: 11, color: '#f59e0b', marginTop: 4 }}>
-              Nízký zůstatek kreditů. Otevřená beta — kontaktujte info@stavagent.cz pro doplnění.
+              Nízký zůstatek kreditů. Otevřená beta —{' '}
+              <a
+                href="mailto:info@stavagent.cz?subject=Doplnění%20kreditů%20%E2%80%94%20beta&body=Dobrý%20den%2C%0A%0Apros%C3%ADm%20o%20doplnění%20kreditů%20do%20mého%20%C3%BA%C4%8Dtu%20StavAgent%20(otevřená%20beta).%0A%0AD%C4%9Bkuji."
+                style={{ color: '#f59e0b', textDecoration: 'underline' }}
+              >
+                kontaktujte info@stavagent.cz
+              </a>{' '}
+              pro doplnění.
             </div>
           )}
           {balance === 0 && (
             <div style={{ fontSize: 11, color: '#e53e3e', marginTop: 4 }}>
-              Žádné kredity. Otevřená beta — kontaktujte info@stavagent.cz.
+              Žádné kredity. Otevřená beta —{' '}
+              <a
+                href="mailto:info@stavagent.cz?subject=Doplnění%20kreditů%20%E2%80%94%20beta&body=Dobrý%20den%2C%0A%0AM%C5%AFj%20zůstatek%20kreditů%20StavAgent%20je%200.%20Pros%C3%ADm%20o%20doplnění%20pro%20pokračování%20v%20otevřené%20bet%C4%9B.%0A%0AD%C4%9Bkuji."
+                style={{ color: '#e53e3e', textDecoration: 'underline', fontWeight: 600 }}
+              >
+                kontaktujte info@stavagent.cz
+              </a>
+              .
             </div>
           )}
         </div>
