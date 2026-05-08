@@ -262,10 +262,10 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-500/10 hover:bg-blue-500/20 rounded transition-colors border border-blue-300/50"
-                title={`Otevřít v Monolitu → ${localData.monolitMetadata.part_name || 'projekt'}`}
+                title={`Otevřít v Kalkulátoru → ${localData.monolitMetadata.part_name || 'projekt'}`}
               >
                 <ExternalLink size={14} />
-                Otevřít v Monolitu
+                Otevřít v Kalkulátoru
                 {localData.monolitMetadata.part_name && (
                   <span className="text-blue-400 ml-1">({localData.monolitMetadata.part_name})</span>
                 )}
@@ -276,22 +276,22 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-500 hover:bg-blue-500/10 rounded transition-colors"
-                title="Otevřít kalkulátor Monolit"
+                title="Otevřít Kalkulátor betonáže"
               >
                 <ExternalLink size={14} />
-                Monolit Planner
+                Kalkulátor betonáže
               </a>
             )}
           </div>
         </div>
 
-        {/* Pre-fill banner from Monolit Planner */}
+        {/* Pre-fill banner from Kalkulátor betonáže */}
         {hasExtendedCosts(item.monolith_payload) && localData.labor.length === 0 && (
           <div className="mx-4 mt-3 p-3 bg-orange-50 border border-orange-200 rounded-lg flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm">
               <Zap size={16} className="text-orange-500" />
               <span className="text-orange-800">
-                <strong>Kalkulátor Monolit</strong> — data z výpočtu jsou k dispozici.
+                <strong>Kalkulátor betonáže</strong> — data z výpočtu jsou k dispozici.
                 Předvyplnit práce, bednění a materiály?
               </span>
             </div>

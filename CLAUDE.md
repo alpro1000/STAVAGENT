@@ -79,9 +79,9 @@ docs/CALCULATOR_PHILOSOPHY.md
 STAVAGENT/
 ├── concrete-agent/        ← CORE (Python FastAPI, port 8000)
 ├── stavagent-portal/      ← Portal/Dispatcher (Node.js/Express/React, port 3001)
-├── Monolit-Planner/       ← Kiosk: Concrete Calculator (Node.js/React, port 3001/5173)
-├── URS_MATCHER_SERVICE/   ← Kiosk: URS Matching (Node.js, port 3001/3000)
-├── rozpocet-registry/     ← Kiosk: BOQ Registry (React/Vite + Vercel serverless, port 5173)
+├── Monolit-Planner/       ← Kiosk: Kalkulátor betonáže (Node.js/React, port 3001/5173)
+├── URS_MATCHER_SERVICE/   ← Kiosk: Klasifikátor stavebních prací (Node.js, port 3001/3000)
+├── rozpocet-registry/     ← Kiosk: Registr (React/Vite + Vercel serverless, port 5173)
 ├── scripts/               ← Helper scripts (dangerous/ subdir for destructive ops)
 ├── docs/                  ← ARCHITECTURE.md, normy/, archive/
 ├── mineru_service/        ← MinerU PDF parser (Python FastAPI, Cloud Run europe-west1, port 8080)
@@ -95,9 +95,9 @@ STAVAGENT/
 | concrete-agent (CORE) | concrete-agent-1086027517695.europe-west3.run.app | — |
 | portal backend | stavagent-portal-backend-1086027517695.europe-west3.run.app | — |
 | portal frontend | www.stavagent.cz | www.stavagent.cz |
-| Monolit backend | monolit-planner-api-1086027517695.europe-west3.run.app | — |
-| Monolit frontend | monolit-planner-frontend.vercel.app | **kalkulator.stavagent.cz** |
-| URS Matcher | urs-matcher-service-1086027517695.europe-west3.run.app | **klasifikator.stavagent.cz** |
+| Kalkulátor betonáže — backend (Monolit-Planner repo) | monolit-planner-api-1086027517695.europe-west3.run.app | — |
+| Kalkulátor betonáže — frontend (Monolit-Planner repo) | monolit-planner-frontend.vercel.app | **kalkulator.stavagent.cz** |
+| Klasifikátor (URS_MATCHER_SERVICE repo) | urs-matcher-service-1086027517695.europe-west3.run.app | **klasifikator.stavagent.cz** |
 | Registry backend | rozpocet-registry-backend-1086027517695.europe-west3.run.app | — |
 | Registry frontend | stavagent-backend-ktwx.vercel.app | **registry.stavagent.cz** |
 
@@ -157,7 +157,7 @@ Design: Brutalist Neumorphism, monochrome + orange #FF9F1C, BEM.
 - **SEO:** `index.html` has og:title, og:description, canonical, twitter card. Title matches AI-last philosophy.
 - **Credit system:** `add-credit-system.sql` seeds 15 operation prices (2–20 credits). 200 free on registration, 1 Kč = 10 credits.
 
-### 3. Monolit-Planner (Kiosk)
+### 3. Kalkulátor betonáže (Monolit-Planner repo, Kiosk)
 Node.js/Express + React. **132 endpoints**, **735 tests**, **~40K LOC**.
 Structure: `shared/` (735 tests, 18 files), `backend/` (0 tests), `frontend/` (0 tests). Design: Slate Minimal (`--r0-*`).
 **DB:** 45 tables (incl. `planner_variants`). **Frontend:** PlannerPage (Part B) ~380 lines layout, logic in `useCalculator` hook + 10 files in `components/calculator/` (Sidebar, FormFields, Result, HelpPanel, WizardHints, InlineResourcePanel, applyPlanToPositions, ui, types, helpers, useCalculator).
@@ -217,11 +217,11 @@ Structure: `shared/` (735 tests, 18 files), `backend/` (0 tests), `frontend/` (0
 - **KPI Panel CSS:** `.kpi-card` in `flat-design.css` — `overflow:visible`, `min-width:200px` (was 180px/hidden, clipped "lidí" and "Kč/m³")
 - **Dual DB:** `monolith_projects` (listed via `/api/monolith-projects`, auth) + `bridges` (FK compat for `positions.bridge_id`); `bridgesAPI.getAll()` calls monolith-projects
 
-### 4. URS_MATCHER_SERVICE (Kiosk)
+### 4. Klasifikátor (URS_MATCHER_SERVICE repo, Kiosk)
 Node.js/Express + SQLite. **~45 endpoints**, **159 tests**, **~10K LOC**, **12 tables**.
 4-phase matching, dual search (36 seed + 17,904 OTSKP + Perplexity), VZ Scraper, 9 LLM providers.
 
-### 5. rozpocet-registry (Kiosk)
+### 5. Registr (rozpocet-registry repo, Kiosk)
 React 19 + Vite + Vercel serverless. **12 endpoints**, **87 tests**, **~17K LOC**.
 BOQ classification (11 groups), AI Classification (Cache→Rules→Memory→Gemini), TOV Modal, Formwork/Pump Calculators.
 - **Import:** Fuzzy auto-detect (header keywords + normalize), per-sheet dataStartRow detection (code+MJ heuristic), reimport with skupiny preservation

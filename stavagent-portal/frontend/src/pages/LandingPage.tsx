@@ -7,9 +7,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowRight, LogIn, User, Calculator, HardHat, Building2, Landmark,
-  TableProperties, FileSearch, Link, Cpu, LayoutDashboard, Upload,
+  TableProperties, FileSearch, Link, Cpu, Upload,
   Search, FileOutput, Database, Brain, ChevronDown, ChevronUp,
-  Check, Mail, ExternalLink, Code,
+  Check, Mail, Code,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -81,46 +81,60 @@ const ghostBtn = {
 
 // ── Data ────────────────────────────────────────────────────────────────────
 const ROLES = [
-  { icon: Calculator, title: 'Rozpočtář', text: 'Kontrola soupisu prací, párování kataložních kódů, hledání chyb v cenách a množstvích. Export do Excelu jedním klikem.' },
-  { icon: HardHat, title: 'Přípravář stavby', text: 'Kalkulace monolitického betonu — bednění, výztuž, betonáž, zrání. Harmonogram prací a odhad nákladů Kč/m³.' },
-  { icon: Building2, title: 'Stavební firma / generální dodavatel', text: 'Přehled přes všechny objekty a rozpočty na jednom místě. Registr smět, porovnání verzí, analýza dokumentace.' },
-  { icon: Landmark, title: 'Mosty a infrastruktura', text: 'OTSKP klasifikace, mostní prvky (pilíře, opěry, mostovka, římsy), železniční stavby. Normy ČSN EN, ŘSD předpisy.' },
+  { icon: Calculator, title: 'Rozpočtář', text: 'Klasifikace pozic do vlastních skupin pro poptávky a oddělení. AI návrh kódů z popisu — vždy ke schválení. Export do Excelu jedním klikem.' },
+  { icon: HardHat, title: 'Přípravář monolitu', text: 'Takty, zdroje, brigády, harmonogram. Bednění, výztuž, betonáž — na úrovni jednoho prvku nebo celého objektu. TOV s resursní mapou.' },
+  { icon: Building2, title: 'Stavební firma / generální dodavatel', text: 'Přehled přes všechny objekty a rozpočty. Smety rozdělené do skupin, ready k poptávkám. Vestavěné kalkulátory bětonpumpy, dopravy a kranu.' },
+  { icon: Landmark, title: 'Mosty a infrastruktura', text: 'Mostní prvky (pilíře, opěry, mostovky, římsy), předpětí, takty betonáže. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace.' },
 ];
 
 const MODULES = [
   {
-    icon: TableProperties, title: 'Registr rozpočtů',
-    desc: 'Nahrajte Excel s rozpočtem — systém automaticky rozparsuje pozice, roztřídí do skupin prací a připraví přehlednou strukturu pro další práci.',
-    bullets: ['Import xlsx — automatická detekce struktury smety', 'Skupiny prací: Piloty, Základy, Bednění, Výztuž, Beton a další', 'Export do Excelu s hypertextovými odkazy zpět na zdrojový soubor'],
-    cta: 'Vyzkoušet registr', href: 'https://registry.stavagent.cz', external: true,
+    icon: Link, title: 'Klasifikátor stavebních prací',
+    desc: 'AI klasifikace pozic. Vložte výkaz výměr, jednu položku, nebo nahrajte dokument — systém najde kandidáty z OTSKP a navrhne kódy s pravděpodobností. Nikdy ne se 100% jistotou — vždy ke schválení.',
+    bullets: [
+      '3 vstupy: výkaz výměr (xlsx), ručně text, dokumenty (PDF, DWG)',
+      '2 režimy: rychlý (~2–3 min) nebo rozšířený s multi-role validací a ČSN kontrolou (~5–10 min)',
+      'Confidence u každého návrhu — AI nikdy ne 100%, vždy ke schválení uživatelem',
+    ],
+    cta: 'Otevřít Klasifikátor', href: 'https://klasifikator.stavagent.cz', external: true,
   },
   {
-    icon: FileSearch, title: 'AI analýza stavební dokumentace',
-    desc: 'Nahrajte TZ, statiku, geologii nebo výkres — systém extrahuje klíčové parametry a porovná je s ostatními dokumenty v projektu.',
-    note: 'Modul je v přípravě. Brzy k dispozici.',
-    bullets: ['12+ typů stavební dokumentace (D.1.2 statika, D.1.3 PBŘS, D.1.4 profese, C geologie…)', 'Cross-document kontrola: geologie → statika → rozpočet', 'Determinismus: regex extrakce (conf. 1.0) první, AI pouze jako doplněk'],
-    cta: 'Brzy k dispozici', href: '/portal/analysis', external: false, comingSoon: true,
-  },
-  {
-    icon: Link, title: 'Párování s kataložními kódy',
-    desc: 'Máte soupis bez kódů, nebo s nestandardními kódy? Systém přiřadí správné kódy z katalogových databází včetně OTSKP.',
-    note: 'Modul je v aktivním vývoji. Aktuálně podporuje OTSKP databázi (17 904 položek). Další katalogy připravujeme.',
-    bullets: ['17 904 položek OTSKP v lokální databázi (confidence = 1.0)', 'Fulltextové vyhledávání + AI fallback pro nestandardní popisy', 'Confidence skóre u každého výsledku: víte, jak jistý je návrh'],
-    cta: 'Více informací', href: 'https://klasifikator.stavagent.cz', external: true,
+    icon: TableProperties, title: 'Registr — pracovní rozbor smety',
+    desc: 'Smetu rozdělíte do vlastních skupin pro poptávky a oddělení. Pro každou položku rozbor TOV: lidé, mechanizmy, materiály. Vestavěné kalkulátory bětonpumpy, dopravy betonu a kranu.',
+    bullets: [
+      'Klasifikace pozic do vlastních skupin pro poptávky a oddělení',
+      'TOV — rozbor každé práce: lidé, mechanizmy, materiály',
+      'Vestavěné kalkulátory: bětonpumpa (multi-supplier formuly), doprava betonu, kran',
+    ],
+    cta: 'Otevřít Registr', href: 'https://registry.stavagent.cz', external: true,
   },
   {
     icon: Cpu, title: 'Kalkulátor betonáže',
-    desc: 'Detailní výpočet pro jeden konstrukční prvek: bednění, výztuž, betonáž, zrání betonu, harmonogram a potřeba čerpadel.',
-    bullets: ['7 výpočetních jader: bednění → výztuž → betonáž → zrání → harmonogram → PERT → čerpadla', 'Metoda zralosti (Saul: M = Σ(T+10)×Δt) pro řízení odbedňování', 'Odhad crew (počet pracovníků) a směnnosti automaticky z objemu'],
-    cta: 'Spustit kalkulaci', href: 'https://kalkulator.stavagent.cz/planner', external: true,
-  },
-  {
-    icon: LayoutDashboard, title: 'Monolit Planner — plánování monolitických prací',
-    desc: 'Kompletní přehled monolitických prací na stavebním objektu: všechny prvky, bednění, výztuž, harmonogram a náklady na jednom místě.',
-    bullets: ['25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční) — výběr podle rozměrů', '21 typů konstrukčních prvků (9 mostních + 11 pozemních + 1 obecný)', 'Harmonogram prací, kalkulace Kč/m³ a export do Excelu'],
-    cta: 'Otevřít planner', href: 'https://kalkulator.stavagent.cz', external: true,
+    desc: 'Spočítejte beton, bednění, výztuž, takty a zdroje. Dva režimy: detail jednoho prvku, nebo plán celého objektu — vše s harmonogramem a kalkulací Kč/m³.',
+    bullets: [
+      'Detail prvku — 7 výpočetních jader (bednění, výztuž, betonáž, zrání, harmonogram, PERT, čerpadla)',
+      'Plán objektu — tabulka všech prvků s takty, zdroji a kalkulací Kč/m³',
+      '25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 22 typů prvků',
+    ],
+    cta: 'Otevřít Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
   },
 ];
+
+// Modul "v přípravě" — Analýza dokumentace. Renderuje se jako oddělený
+// teaser blok pod sekcí Moduly, s lead-gen formulářem na early access.
+// Plná implementace formuláře: Gate 5 v3.2 plánu (samostatný commit).
+const COMING_SOON = {
+  icon: FileSearch,
+  title: 'Analýza stavební dokumentace',
+  badge: 'V přípravě — early access',
+  desc: 'TZ, statika, geologie, výkresy. Cross-document kontrola: geologie → statika → rozpočet. AI extrakce klíčových parametrů + porovnání s ostatními dokumenty v projektu.',
+  bullets: [
+    '12+ typů stavební dokumentace (D.1.2 statika, D.1.3 PBŘS, C geologie…)',
+    'Cross-document kontrola: geologie → statika → rozpočet',
+    'Determinismus first: regex extrakce (conf. 1.0), AI pouze jako doplněk s pravděpodobností',
+  ],
+  cta: 'Přidat se do early access',
+};
 
 const STEPS = [
   { icon: Upload, title: 'Nahrajte soubor', text: 'Excel (.xlsx) nebo PDF s rozpočtem, soupisem prací nebo technickou dokumentací.' },
@@ -133,34 +147,18 @@ const PILLARS = [
   { icon: Database, title: 'OTSKP databáze (conf. 1.0)', text: '17 904 položek s ověřenými kódy, popisy a MJ.' },
   { icon: Brain, title: 'AI jako doplněk (conf. 0.7)', text: 'Gemini Flash pouze když regex a DB nenajdou shodu.' },
 ];
-
-const PRICING = [
-  { name: 'Parsování dokumentu', sub: 'Extrakce dat z PDF/Excel/XML', ai: false, credits: 2 },
-  { name: 'AI analýza dokumentu', sub: 'Kompletní analýza s pasportem', ai: true, credits: 10 },
-  { name: 'Generování pasportu', sub: 'AI pasport s normami', ai: true, credits: 15 },
-  { name: 'Kontrola norem (NKB)', sub: 'Kontrola souladu s ČSN/EN', ai: true, credits: 5 },
-  { name: 'NKB poradce', sub: 'AI poradce pro normativní dotazy', ai: true, credits: 8 },
-  { name: 'Párování kataložních kódů', sub: 'AI párování položek na kódy', ai: true, credits: 8 },
-  { name: 'Klasifikace položek', sub: 'AI klasifikace do skupin prací', ai: true, credits: 5 },
-  { name: 'Kalkulace monolitu', sub: 'Výpočet ceny betonových prací', ai: false, credits: 1 },
-  { name: 'Kalkulace čerpadla', sub: 'Výpočet nákladů na čerpadlo', ai: false, credits: 1 },
-  { name: 'Export do Excel', sub: '', ai: false, credits: 1 },
-  { name: 'Export do CSV', sub: '', ai: false, credits: 1 },
-  { name: 'Uložení do projektu', sub: '', ai: false, credits: 2 },
-  { name: 'Chat zpráva', sub: 'AI odpověď v chatu projektu', ai: true, credits: 3 },
-  { name: 'Parsování ceníku betonárny', sub: 'Extrakce cen z PDF ceníku', ai: true, credits: 5 },
-  { name: 'Audit rozpočtu', sub: 'Multi-role AI validace', ai: true, credits: 20 },
-];
-
 const FAQ = [
   { q: 'Musím něco instalovat?', a: 'Ne. StavAgent je webová aplikace — stačí prohlížeč. Žádná instalace, žádné pluginy.' },
-  { q: 'Jaké formáty souborů podporujete?', a: 'Excel (.xlsx, .xls) pro rozpočty a soupisy. PDF pro technickou dokumentaci.' },
-  { q: 'Jak přesné jsou výsledky?', a: 'Každý výsledek nese confidence skóre. Deterministické výpočty (regex, databáze OTSKP) mají confidence 1.0. AI doplnění má confidence 0.70. Vždy vidíte, čemu můžete věřit a co je odhad.' },
-  { q: 'Funguje to pro mosty a infrastrukturu?', a: 'Ano. Systém obsahuje OTSKP databázi (17 904 položek) a 21 typů konstrukčních prvků včetně mostních (pilíře, opěry, mostovky, římsy). Normy ČSN EN, předpisy ŘSD.' },
-  { q: 'Mohu exportovat do KROS?', a: 'Výstup je Excel (.xlsx) kompatibilní s KROS importem. Obsahuje kódy, popisy, MJ, množství a ceny.' },
-  { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud). Každý uživatel vidí pouze své projekty. Data nejsou sdílena s třetími stranami.' },
-  { q: 'Kolik to stojí?', a: 'Na start dostanete 200 kreditů zdarma. Poté si můžete dobít kredity za 1 Kč = 10 kreditů. Platíte pouze za operace, které skutečně použijete. Žádné měsíční poplatky.' },
-  { q: 'Co je kredit?', a: 'Kredit je interní jednotka. Každá operace má svou cenu v kreditech — od 1 kreditu za export až po 20 kreditů za kompletní AI audit. Přehled cen najdete v ceníku.' },
+  { q: 'Jaké formáty souborů podporujete?', a: 'Excel (.xlsx, .xls) pro rozpočty a soupisy. PDF, DWG, JPG pro stavební dokumentaci.' },
+  { q: 'Jak přesné jsou výsledky?', a: 'Každý výsledek nese pravděpodobnost. Regex a OTSKP exact match mají confidence 1.0. AI návrh má pravděpodobnost typicky 60–85% — nikdy ne 100%. Vždy ke schválení uživatelem. Žádné skryté halucinace.' },
+  { q: 'Funguje to pro mosty a infrastrukturu?', a: 'Ano. 22 typů konstrukčních prvků (9 mostních + 13 pozemních) včetně pilířů, opěr, mostovek, říms, základů a opěrných zdí. Předpětí, takty betonáže, MSS technologie. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace (17 904 položek).' },
+  { q: 'Pracuje StavAgent s katalogy?', a: 'Ano — s OTSKP (Otevřený třídník stavebních prací, 17 904 položek). Pro pozice, které v OTSKP nejsou, doplní AI návrh s pravděpodobností. AI návrh je vždy ke schválení uživatelem — nikdy se 100% jistotou.' },
+  { q: 'Co je TOV?', a: 'Technologicko-organizační rozbor — pro každou položku v rozpočtu rozbor na lidé / mechanizmy / materiály s počty, cenami a sazbami. V Registru najdete vestavěné kalkulátory bětonpumpy (multi-supplier), dopravy betonu a kranu.' },
+  { q: 'Můžu si zvolit AI model?', a: 'Ano. Klasifikátor nabízí 19 modelů na výběr (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Rozšířený režim navíc spustí multi-role validaci s 6 expertními rolemi.' },
+  { q: 'Mohu výstup importovat zpět do své stávající aplikace?', a: 'Ano. Výstup je Excel (.xlsx) s kódy, popisy, MJ, množstvími a cenami. Hypertextové odkazy zpět na zdrojový soubor zachovány.' },
+  { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud, Frankfurt). Každý uživatel vidí pouze své projekty. Data nejsou sdílena s třetími stranami.' },
+  { q: 'Kolik to stojí?', a: 'Na start 200 kreditů zdarma při registraci. Otevřená beta — placené plány v Q3 2026.' },
+  { q: 'Kdy začnete účtovat?', a: 'Otevřená beta. Placené plány v Q3 2026 přes Lemon Squeezy (Merchant of Record). Do té doby běžné použití zdarma na 200 kreditů, jakékoliv další po dohodě.' },
 ];
 
 const STATS = [
@@ -281,7 +279,7 @@ export default function LandingPage() {
       <section id="moduly" style={sectionStyle()}>
         <h2 style={h2Style}>Co StavAgent umí</h2>
         <p style={subtitleStyle}>
-          Pět modulů, které pokrývají celý proces &mdash; od analýzy dokumentů po kalkulaci betonu.
+          Tři propojené nástroje pro celý workflow přípraváře.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {MODULES.map((m, i) => (
@@ -295,16 +293,6 @@ export default function LandingPage() {
                 <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{m.title}</h3>
               </div>
               <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>{m.desc}</p>
-              {m.note && (
-                <div style={{
-                  padding: '10px 14px', borderRadius: 8,
-                  border: '1px solid var(--accent-orange)',
-                  background: 'rgba(255,159,28,0.06)',
-                  fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5,
-                }}>
-                  {m.note}
-                </div>
-              )}
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {m.bullets.map((b, j) => (
                   <li key={j} style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 4 }}>{b}</li>
@@ -312,24 +300,70 @@ export default function LandingPage() {
               </ul>
               <div>
                 <button
-                  onClick={() => { if ((m as any).comingSoon) return; m.external ? openExternal(m.href) : navigate(m.href); }}
-                  disabled={(m as any).comingSoon}
+                  onClick={() => { m.external ? openExternal(m.href) : navigate(m.href); }}
                   style={{
                     ...orangeBtn(),
                     background: 'transparent',
-                    color: (m as any).comingSoon ? 'var(--text-muted, #9ca3af)' : 'var(--accent-orange)',
-                    border: `1px solid ${(m as any).comingSoon ? 'var(--border-default, #d1d5db)' : 'var(--accent-orange)'}`,
+                    color: 'var(--accent-orange)',
+                    border: '1px solid var(--accent-orange)',
                     padding: '8px 16px',
                     fontSize: 13,
-                    cursor: (m as any).comingSoon ? 'not-allowed' : 'pointer',
-                    opacity: (m as any).comingSoon ? 0.7 : 1,
                   }}
                 >
-                  {m.cta} {!(m as any).comingSoon && <ArrowRight size={14} />}
+                  {m.cta} <ArrowRight size={14} />
                 </button>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Připravujeme — Modul "v přípravě" + early-access teaser. Plný
+            lead-gen formulář (POST endpoint + DB) přijde v Gate 5 v3.2. */}
+        <div style={{ marginTop: 32 }}>
+          <div style={{
+            padding: '8px 14px', display: 'inline-block',
+            background: 'rgba(255,159,28,0.08)',
+            border: '1px solid var(--accent-orange)',
+            borderRadius: 16, fontSize: 12, fontWeight: 600,
+            color: 'var(--accent-orange)', textTransform: 'uppercase', letterSpacing: 0.5,
+            marginBottom: 12,
+          }}>
+            {COMING_SOON.badge}
+          </div>
+          <div style={{
+            ...card,
+            border: '1px dashed var(--accent-orange)',
+            background: 'rgba(255,159,28,0.03)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+              <COMING_SOON.icon size={28} style={{ color: 'var(--accent-orange)', flexShrink: 0 }} />
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                {COMING_SOON.title}
+              </h3>
+            </div>
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.55, margin: '0 0 12px' }}>
+              {COMING_SOON.desc}
+            </p>
+            <ul style={{ margin: '0 0 16px', paddingLeft: 20 }}>
+              {COMING_SOON.bullets.map((b, j) => (
+                <li key={j} style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 4 }}>{b}</li>
+              ))}
+            </ul>
+            <a
+              href="mailto:info@stavagent.cz?subject=Early%20access%20%E2%80%94%20Anal%C3%BDza%20dokumentace&body=Dobr%C3%BD%20den%2C%20m%C3%A1m%20z%C3%A1jem%20o%20early%20access%20do%20Anal%C3%BDzy%20dokumentace."
+              style={{
+                ...orangeBtn(),
+                textDecoration: 'none',
+                background: 'transparent',
+                color: 'var(--accent-orange)',
+                border: '1px solid var(--accent-orange)',
+                padding: '8px 16px',
+                fontSize: 13,
+              }}
+            >
+              {COMING_SOON.cta} <ArrowRight size={14} />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -443,10 +477,10 @@ export default function LandingPage() {
       <section id="cenik" style={sectionStyle('800px')}>
         <h2 style={h2Style}>Ceník</h2>
         <p style={subtitleStyle}>
-          Platíte pouze za to, co skutečně použijete. Žádné měsíční poplatky, žádné závazky.
+          Otevřená beta. 200 kreditů zdarma na start.
         </p>
 
-        {/* Free tier box */}
+        {/* Free tier box — jediný cenový artefakt na lendingu během bety. */}
         <div style={{
           ...card, textAlign: 'center', marginBottom: 24,
           border: '2px solid var(--accent-orange)',
@@ -457,71 +491,15 @@ export default function LandingPage() {
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 8px', lineHeight: 1.5 }}>
             Stačí se zaregistrovat a můžete hned začít. Žádná kreditní karta, žádné závazky.
           </p>
-          <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--accent-orange)' }}>
-            Potom: 1 Kč = 10 kreditů
+          <div style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+            Otevřená beta &mdash; placené plány v Q3 2026 přes Lemon Squeezy (Merchant of Record).
           </div>
         </div>
 
-        {/* Pricing table */}
-        <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
-          <div style={{
-            display: 'grid', gridTemplateColumns: '1fr auto auto',
-            padding: '12px 20px', borderBottom: '2px solid var(--border-default)',
-            fontSize: 12, fontWeight: 600, color: 'var(--text-muted)',
-            textTransform: 'uppercase', letterSpacing: 0.5,
-          }}>
-            <span>Operace</span>
-            <span style={{ textAlign: 'center', width: 40 }}>AI</span>
-            <span style={{ textAlign: 'right', width: 60 }}>Kredity</span>
-          </div>
-          {PRICING.map((p, i) => (
-            <div key={i} style={{
-              display: 'grid', gridTemplateColumns: '1fr auto auto',
-              padding: '10px 20px', alignItems: 'center',
-              borderBottom: i < PRICING.length - 1 ? '1px solid var(--border-default)' : 'none',
-              background: i % 2 === 0 ? 'var(--data-surface)' : 'transparent',
-            }}>
-              <div>
-                <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>{p.name}</div>
-                {p.sub && <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{p.sub}</div>}
-              </div>
-              <span style={{ textAlign: 'center', width: 40 }}>
-                {p.ai && <span style={{
-                  display: 'inline-block', padding: '2px 6px', borderRadius: 4,
-                  background: 'rgba(255,159,28,0.12)', color: '#b45309',
-                  fontSize: 10, fontWeight: 600,
-                }}>AI</span>}
-              </span>
-              <span style={{ textAlign: 'right', width: 60, fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-                {p.credits}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Usage example */}
-        <div style={{ ...card, marginTop: 20, background: 'var(--data-surface)' }}>
-          <h4 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
-            Typický pracovní den rozpočtáře:
-          </h4>
-          <pre style={{
-            fontFamily: "'JetBrains Mono', monospace", fontSize: 13,
-            color: 'var(--text-secondary)', lineHeight: 1.8, margin: 0,
-            whiteSpace: 'pre-wrap', background: 'none',
-          }}>
-{`2\u00d7 parsov\u00e1n\u00ed dokumentu        =   4 kredit\u016f
-1\u00d7 AI anal\u00fdza                 =  10 kredit\u016f
-1\u00d7 kalkulace monolitu         =   1 kredit
-2\u00d7 export do Excel            =   2 kredity
-1\u00d7 ulo\u017een\u00ed do projektu        =   2 kredity
-\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-Celkem:                          19 kredit\u016f
-
-200 kredit\u016f zdarma = cca 10 pracovn\u00edch dn\u00ed.
-Potom: 19 kredit\u016f/den = 1,90 K\u010d/den.`}
-          </pre>
-        </div>
-
+        {/* Pricing table removed per v3.2 Q-J. Per-operation credit costs are
+            visible after registration in the user's cabinet billing panel.
+            Free-tier card above is the only landing-page pricing artefact. */}
+        {/* Removed-pricing-table-anchor */}
         <div style={{ textAlign: 'center', marginTop: 24 }}>
           <button onClick={goCta} style={orangeBtn(true)}>
             Začít zdarma &mdash; 200 kreditů <ArrowRight size={18} />
@@ -594,7 +572,7 @@ Potom: 19 kredit\u016f/den = 1,90 K\u010d/den.`}
         }}>
           <div>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>Moduly</h4>
-            {['Registr rozpo\u010dt\u016f', 'Anal\u00fdza dokument\u016f', 'Katalo\u017en\u00ed k\u00f3dy', 'Kalkul\u00e1tor', 'Monolit Planner'].map(t => (
+            {['Klasifik\u00e1tor', 'Registr', 'Kalkul\u00e1tor beton\u00e1\u017ee', 'Anal\u00fdza dokumentace (v p\u0159\u00edprav\u011b)'].map(t => (
               <div key={t} style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, cursor: 'pointer' }} onClick={() => scrollTo('moduly')}>{t}</div>
             ))}
           </div>
