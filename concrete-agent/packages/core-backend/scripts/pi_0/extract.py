@@ -27,6 +27,7 @@ from pi_0.extractors.dxf_openings import (
     extract_openings_from_dxf, parse_block_name, parsed_anything,
 )
 from pi_0.extractors.xlsx_dvere import extract_doors_for_objekt
+from pi_0.extractors.xlsx_skladby import extract_skladby
 from pi_0.schema import write_canonical
 
 # Resolve the repo root from this file's location:
@@ -41,6 +42,12 @@ VALID_OBJEKTY = ("A", "B", "C", "D")
 TABULKA_DVERI_PATH = (
     SOURCES_ROOT / "shared" / "xlsx"
     / "185-01_DPS_D_SO01_100_0041_TABULKA DVERI.xlsx"
+)
+
+# Tabulka 0030 — skladby + povrchy. Komplex-wide; same content for all objekty.
+TABULKA_SKLADEB_PATH = (
+    SOURCES_ROOT / "shared" / "xlsx"
+    / "185-01_DPS_D_SO01_100_0030_R01_TABULKA SKLADEB A POVRCHU_R01.xlsx"
 )
 
 
@@ -309,6 +316,31 @@ def extract(objekt: str) -> dict:
     sources = files_for_objekt(objekt)
     openings, warnings = extract_openings(objekt)
     doors = extract_doors_for_objekt(TABULKA_DVERI_PATH, objekt)
+    skladby = extract_skladby(TABULKA_SKLADEB_PATH)
+
+    # Step 4: skladby coverage report.
+    skladby_total = sum(len(by_kind) for by_kind in skladby.values())
+    skladby_kinds = ",".join(sorted(skladby.keys())) or "<none>"
+    if skladby_total == 0:
+        warnings.append({
+            "level": "warning",
+            "category": "missing_tabulka_skladeb",
+            "message": (
+                f"Tabulka 0030 SKLADEB A POVRCHU.xlsx absent or empty for "
+                f"objekt {objekt}; skladby{{}} is empty."
+            ),
+            "source_evidence": str(TABULKA_SKLADEB_PATH.relative_to(REPO_ROOT)),
+        })
+    else:
+        warnings.append({
+            "level": "info",
+            "category": "step_4_gate",
+            "message": (
+                f"Step 4: {skladby_total} skladby lifted from Tabulka 0030 "
+                f"across kinds [{skladby_kinds}]."
+            ),
+            "source_evidence": "sources/shared/xlsx/...0030_*.xlsx",
+        })
 
     if not doors:
         warnings.append({
@@ -338,7 +370,7 @@ def extract(objekt: str) -> dict:
         "rooms": [],
         "walls": [],
         "openings": openings,
-        "skladby": {},
+        "skladby": skladby,
         "doors": doors,
         "windows": [],
         "glass_partitions": [],
