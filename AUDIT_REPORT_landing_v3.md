@@ -818,7 +818,9 @@ The internal value is consumed by backend. Renaming the LABEL doesn't break anyt
 Untouched — no rename in this PR.
 
 ### 13.7 `for-kiosk/urs_matcher` Portal route slug
-Renaming this path would break Klasifikátor's `app.js:2337` fetch. **Out of scope** for this PR (URS rename is a separate PR).
+Renaming this path would break Klasifikátor's `app.js:2337` fetch. **Out of scope** for this PR.
+
+**Update (2026-05-07):** the planned future "URS_MATCHER_SERVICE rename" PR has been re-scoped per user decision. Instead of renaming the directory / Cloud Run service / env vars / API paths, the acronym is being **redefined** as `Unified Retrieval Service` (defensible non-trademark term that accurately describes the service: unified retrieval from OTSKP local DB + AI semantic search + future regional integrations). This means the `urs_matcher` slug, `urs-matcher-service` Cloud Run name, `URS_BACKEND` env, `URS_MATCHER_SERVICE/` directory, `cloudbuild-urs.yaml` etc. **all stay as-is**. Only documentation (CLAUDE.md, root README.md, per-service README + package.json) updates to lock in the new official meaning. See §18.
 
 ### 13.8 `Monolit-Planner/backend/src/services/emailService.js`
 If this file is wired (i.e., Monolit-Planner backend really sends its own emails), renaming branding is safe. If we delete the file, we need to confirm no `require/import` references it anywhere. **Q-E in §14.**
@@ -900,6 +902,9 @@ I recommend E1 (investigate first).
 - L1: Rename to lowercase `CLAUDE.md` to match root + concrete-agent. Trivial 1-line `git mv`.
 - L2: Leave as-is (functional difference is zero; case-sensitive filesystems may serve it differently).
 
+### Q-3 (revisited). URS_MATCHER_SERVICE — RESOLVED via §18
+The original interview answer was "Separate PR (Recommended)" for renaming `URS_MATCHER_SERVICE`. **Now resolved differently:** per §18, the acronym is redefined in-place as `Unified Retrieval Service`. Future PR is reduced from "infrastructure rename" to "documentation update" (3 files). Removed from this PR's scope; tracked as a deferred backlog item.
+
 ---
 
 ## 15. Estimated implementation scope
@@ -941,3 +946,57 @@ When you're ready to proceed:
 3. Then I'll start Gate 1.
 
 Ready when you are.
+
+---
+
+## 18. Future task: URS_MATCHER_SERVICE acronym redefinition (decoded — DEFER)
+
+**Decision recorded 2026-05-07** (replaces the original Q3 interview answer "URS_MATCHER_SERVICE rename — separate PR").
+
+### 18.1 Strategy
+
+Instead of renaming `URS_MATCHER_SERVICE` → `unified-retrieval-service` (which would touch Cloud Run, Cloud Build, env vars, internal API clients, repo directory, CI workflows — a multi-day infrastructure PR), we **redefine the acronym in documentation only** as:
+
+> **URS** = Unified Retrieval Service
+
+This is:
+- **Legally defensible**: "Unified Retrieval Service" is a generic technical term, not a trademark, and it accurately describes the service (it unifies retrieval from OTSKP local DB + Perplexity AI semantic search + future regional integrations).
+- **Zero blast radius**: directory name, Cloud Run service name, env vars, API paths, CI workflows — all stay. Acronym persists, official meaning is redefined.
+- **Defangs the future PR completely**: a multi-file rename becomes a 3-file documentation PR.
+
+### 18.2 What needs to change (when this future task is executed)
+
+Three documentation surfaces must lock in the new official meaning before anyone can claim ambiguity:
+
+1. **Root `CLAUDE.md`** — add a section explicitly defining `URS_MATCHER_SERVICE = Unified Retrieval Service` with the description below.
+2. **Root `README.md`** — same definition in the service-table row + the architecture diagram caption.
+3. **`URS_MATCHER_SERVICE/README.md`** + **`URS_MATCHER_SERVICE/backend/package.json:4`** — the per-service README and the npm `description` field both currently say `"URS Matcher Service - Web kiosk for ÚRS position matching"`. **Both must be updated** — `package.json` is published to GitHub when the repo is open and is the kind of metadata that gets indexed.
+
+### 18.3 Canonical doc entry (to be added when the future task is executed)
+
+```
+### URS_MATCHER_SERVICE
+
+Unified Retrieval Service — microservice that unifies retrieval from
+multiple catalog sources (OTSKP local DB + AI-based semantic search +
+future regional integrations). Provides matching layer between user
+input (work descriptions) and structured catalog codes.
+```
+
+### 18.4 Why this is deferred (not in v3.2 PR)
+
+- v3.2 PR scope is "landing-page reposition + public UI scrub". User-facing surfaces are cleaned in this PR (§2.1, §2.2, §2.3, §2.7, §2.8 + DB seed migration).
+- §18 is **internal documentation hygiene**, not user-visible. Can ship anytime without affecting users.
+- Bundling §18 into the v3.2 PR would dilute the diff and risk merge conflicts with active branches.
+
+### 18.5 Conditions to execute §18
+
+Trigger this task when **any** of the following happens:
+- A new contributor asks "what does URS stand for?" — locking down the official meaning prevents the answer from drifting back to "ÚRS".
+- The repository becomes open-source / publicly indexed (npm description + README will be crawled).
+- A legal/IP review surfaces concern about the trademark proximity to ÚRS Praha.
+- A UI reshuffle elsewhere happens to touch any of the 3 files in §18.2 — bundle the rename in opportunistically.
+
+### 18.6 Note on the `value="urs"` dropdown attribute
+
+`URS_MATCHER_SERVICE/frontend/public/index.html:197` has `<option value="urs">` — internal API contract. **Stays as-is even after §18 is executed** (the value `"urs"` would now mean "use Unified Retrieval Service backend [not OTSKP local DB]"). No code consumer cares about the semantics of the string; only the API stability matters.
