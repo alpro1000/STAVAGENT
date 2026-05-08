@@ -14,25 +14,9 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Email verification tokens table (Phase 1: Email Verification)
-CREATE TABLE IF NOT EXISTS email_verification_tokens (
-  id VARCHAR(255) PRIMARY KEY,
-  user_id INTEGER NOT NULL UNIQUE,
-  token_hash VARCHAR(255) NOT NULL,
-  expires_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- Password reset tokens table (Phase 2: Password Reset)
-CREATE TABLE IF NOT EXISTS password_reset_tokens (
-  id VARCHAR(255) PRIMARY KEY,
-  user_id INTEGER NOT NULL,
-  token_hash VARCHAR(255) NOT NULL,
-  expires_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
+-- NOTE (2026-05-08): email_verification_tokens and password_reset_tokens
+-- were removed when MP switched to Portal JWT auth. The runtime migration
+-- in src/db/migrations.js drops them on next boot if they still exist.
 
 -- Bridges table
 CREATE TABLE IF NOT EXISTS bridges (

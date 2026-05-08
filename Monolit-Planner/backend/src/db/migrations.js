@@ -210,48 +210,24 @@ async function runPhase1Phase2Migrations() {
       }
     }
 
-    // Phase 1: Create email_verification_tokens table if it doesn't exist
+    // Phase 1+2 (2026-05-08): Drop orphan email_verification_tokens and
+    // password_reset_tokens tables. Monolit-Planner now uses Portal JWT
+    // (see src/middleware/auth.js); the standalone email/password flow
+    // and its emailService.js have been removed.
     try {
-      console.log('[Migration] Checking for email_verification_tokens table...');
-      await db.exec(`
-        CREATE TABLE IF NOT EXISTS email_verification_tokens (
-          id VARCHAR(255) PRIMARY KEY,
-          user_id INTEGER NOT NULL UNIQUE,
-          token_hash VARCHAR(255) NOT NULL,
-          expires_at TIMESTAMP NOT NULL,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        );
-      `);
-      console.log('[Migration] ✓ email_verification_tokens table created or already exists');
+      console.log('[Migration] Dropping orphan email_verification_tokens table...');
+      await db.exec('DROP TABLE IF EXISTS email_verification_tokens;');
+      console.log('[Migration] ✓ email_verification_tokens dropped (or never existed)');
     } catch (error) {
-      if (!error.message.includes('already exists')) {
-        console.error('[Migration] Error creating email_verification_tokens:', error);
-      } else {
-        console.log('[Migration] ✓ email_verification_tokens table already exists');
-      }
+      console.warn('[Migration] Could not drop email_verification_tokens:', error.message);
     }
 
-    // Phase 2: Create password_reset_tokens table if it doesn't exist
     try {
-      console.log('[Migration] Checking for password_reset_tokens table...');
-      await db.exec(`
-        CREATE TABLE IF NOT EXISTS password_reset_tokens (
-          id VARCHAR(255) PRIMARY KEY,
-          user_id INTEGER NOT NULL,
-          token_hash VARCHAR(255) NOT NULL,
-          expires_at TIMESTAMP NOT NULL,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        );
-      `);
-      console.log('[Migration] ✓ password_reset_tokens table created or already exists');
+      console.log('[Migration] Dropping orphan password_reset_tokens table...');
+      await db.exec('DROP TABLE IF EXISTS password_reset_tokens;');
+      console.log('[Migration] ✓ password_reset_tokens dropped (or never existed)');
     } catch (error) {
-      if (!error.message.includes('already exists')) {
-        console.error('[Migration] Error creating password_reset_tokens:', error);
-      } else {
-        console.log('[Migration] ✓ password_reset_tokens table already exists');
-      }
+      console.warn('[Migration] Could not drop password_reset_tokens:', error.message);
     }
 
     console.log('[PostgreSQL Migrations] ✅ Phase 1 & 2 migrations completed successfully');
@@ -1353,29 +1329,11 @@ async function initSqliteSchema() {
     );
   `);
 
-  // Create email verification tokens table (Phase 1: Email Verification)
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS email_verification_tokens (
-      id TEXT PRIMARY KEY,
-      user_id INTEGER NOT NULL UNIQUE,
-      token_hash TEXT NOT NULL,
-      expires_at TEXT NOT NULL,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `);
-
-  // Create password reset tokens table (Phase 2: Password Reset)
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS password_reset_tokens (
-      id TEXT PRIMARY KEY,
-      user_id INTEGER NOT NULL,
-      token_hash TEXT NOT NULL,
-      expires_at TEXT NOT NULL,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-    );
-  `);
+  // SQLite parity for the PostgreSQL Phase 1+2 cleanup (2026-05-08): drop
+  // orphan email_verification_tokens / password_reset_tokens tables. MP now
+  // uses Portal JWT auth.
+  db.exec(`DROP TABLE IF EXISTS email_verification_tokens;`);
+  db.exec(`DROP TABLE IF EXISTS password_reset_tokens;`);
 
   // Create audit logs table (Phase 3: Admin Panel & Audit Logging)
   db.exec(`
