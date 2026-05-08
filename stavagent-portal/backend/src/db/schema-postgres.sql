@@ -1,4 +1,4 @@
--- PostgreSQL Schema for Monolit Planner
+-- PostgreSQL Schema for StavAgent Portal (database: stavagent_portal)
 -- Auto-generated from SQLite schema with PostgreSQL-specific types
 
 -- Users table
@@ -691,13 +691,13 @@ INSERT INTO feature_flags (id, flag_key, display_name, description, category, de
   (gen_random_uuid(), 'price_parser',        'Price Parser',             'Parsování ceníků betonáren z PDF',                'service', true),
   (gen_random_uuid(), 'pump',                'Pump Calculator',          'Kalkulátor čerpadel betonu',                      'service', true),
   (gen_random_uuid(), 'objednavka_betonu',   'Objednávka betonu',        'Vyhledávání betonáren + kalkulace',               'service', true),
-  (gen_random_uuid(), 'monolit',             'Monolit Planner',          'Kalkulátor monolitických betonů',                 'service', true),
-  (gen_random_uuid(), 'registry',            'Rozpočet Registry',        'Klasifikace položek rozpočtu',                    'service', true),
-  (gen_random_uuid(), 'urs_matcher',         'URS Matcher',              'Párování položek na URS kódy',                    'service', true),
+  (gen_random_uuid(), 'monolit',             'Kalkulátor betonáže',      'Detail prvku + plán objektu — beton, bednění, takty, harmonogram', 'service', true),
+  (gen_random_uuid(), 'registry',            'Registr',                  'Pracovní rozbor smety: skupiny + TOV + multi-supplier kalkulátory', 'service', true),
+  (gen_random_uuid(), 'urs_matcher',         'Klasifikátor stavebních prací', 'AI klasifikace pozic',                       'service', true),
   (gen_random_uuid(), 'chat',                'Chat Assistant',           'AI chat asistent v projektech',                   'module',  true),
   (gen_random_uuid(), 'export_xlsx',         'Export XLSX',              'Export výsledků do Excel',                         'action',  true),
   (gen_random_uuid(), 'export_csv',          'Export CSV',               'Export výsledků do CSV',                           'action',  true),
-  (gen_random_uuid(), 'kb_research',         'Knowledge Base',           'Přístup ke znalostní bázi (KROS, ČSN)',           'module',  true),
+  (gen_random_uuid(), 'kb_research',         'Knowledge Base',           'Přístup ke znalostní bázi (OTSKP, ČSN)',          'module',  true),
   (gen_random_uuid(), 'file_upload',         'Nahrávání souborů',        'Upload PDF/Excel/XML dokumentů',                  'action',  true),
   (gen_random_uuid(), 'google_drive',        'Google Drive',             'Připojení Google Drive',                          'module',  false)
 ON CONFLICT (flag_key) DO NOTHING;
@@ -750,7 +750,7 @@ INSERT INTO operation_prices (id, operation_key, display_name, description, cred
   (gen_random_uuid(), 'nkb_check',            'Kontrola norem (NKB)',         'Kontrola souladu s ČSN/EN normami',              5, true,  4),
   (gen_random_uuid(), 'nkb_advisor',          'NKB poradce',                  'AI poradce pro normativní dotazy',               8, true,  5),
   (gen_random_uuid(), 'workflow_c_audit',     'Audit rozpočtu',               'Multi-role AI validace rozpočtu',                20, true,  6),
-  (gen_random_uuid(), 'urs_match',            'URS párování',                 'AI párování položek na URS kódy',                8, true,  7),
+  (gen_random_uuid(), 'urs_match',            'AI klasifikace pozic',         'AI návrh kódů s pravděpodobností',               8, true,  7),
   (gen_random_uuid(), 'registry_classify',    'Klasifikace položek',          'AI klasifikace do skupin prací',                 5, true,  8),
   (gen_random_uuid(), 'monolit_calculate',    'Kalkulace monolitu',           'Výpočet ceny betonových prací',                  1, false, 9),
   (gen_random_uuid(), 'pump_calculate',       'Kalkulace čerpadla',           'Výpočet nákladů na čerpadlo',                    1, false, 10),
