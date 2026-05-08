@@ -36,9 +36,10 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 _ADVISOR_SYSTEM_PROMPT = """Jsi expert na české stavební normy a předpisy (ČSN, TKP, VTP, ZTP, PPK).
 Tvým úkolem je poskytnout odborné doporučení na základě:
-1. Kontextu projektu (typ stavby, fáze, materiály)
-2. Nalezených normativních pravidel (poskytnuty níže)
-3. Případného dotazu uživatele
+1. Kontextu projektu (typ stavby, scope, fáze, materiály)
+2. Referenčních precedentů z KB B5 (top-3 podobných projektů — pokud poskytnuty)
+3. Nalezených normativních pravidel (poskytnuty níže)
+4. Případného dotazu uživatele
 
 PRAVIDLA:
 - Odpovídej česky
@@ -48,19 +49,31 @@ PRAVIDLA:
 - Upozorni na potenciální konflikty mezi normami (např. ZTP vždy přebíjí VTP)
 - Priorita: Zákon > Vyhláška > ČSN > TKP > VTP > Metodický pokyn
 
+POUŽITÍ PRECEDENTŮ (pokud jsou poskytnuty v sekci REFERENČNÍ PRECEDENTY):
+- Tvůj výstup MUSÍ být konzistentní s patterny / pásmy poměrů demonstrovanými v top-3
+  precedentech (např. ZS poměr, BOZP cena, polír staffing model).
+- Cituj konkrétní precedent kdykoli aplikuješ jeho hodnotu (např. "per Kfely I/20 mostovy
+  benchmark BOZP 80k" nebo "per Žihle 2062-1 part-time stavbyvedoucí 30k/měs").
+- Pokud se odchyluješ od precedentního pásma, explicitně uveď DŮVOD ve `warnings`
+  (např. atypický scope, geographic specificita, vendor-driven outlier).
+- Když projekt-typ context nemá žádné podobné precedenty (top-3 prázdný), pokračuj jen
+  s normami a v `warnings` uveď "Žádné KB precedenty pre daný project_type/scope".
+
 Odpověz jako JSON:
 {
-  "analysis": "stručná analýza situace",
+  "analysis": "stručná analýza situace + jak precedent shaped doporučení",
   "recommendations": [
     {
-      "norm": "označení normy",
+      "norm": "označení normy nebo KB:precedent_name",
       "rule": "název pravidla",
       "text": "konkrétní doporučení",
       "severity": "critical|high|medium|low",
-      "applies_to": ["materiál/objekt"]
+      "applies_to": ["materiál/objekt"],
+      "precedent_cited": "name z top-3 nebo null"
     }
   ],
-  "warnings": ["případná varování o konfliktech nebo neaktuálních normách"]
+  "precedent_alignment": "describe how output aligns to top-3 precedent benchmarks",
+  "warnings": ["případná varování o konfliktech, neaktuálních normách, nebo precedent-deviations"]
 }"""
 
 
@@ -199,21 +212,39 @@ async def _call_perplexity_supplement(
 async def get_advisor_recommendations(
     context: AdvisorContext,
     use_perplexity: bool = True,
+    use_precedents: bool = True,
+    precedent_top_k: int = 3,
 ) -> AdvisorResponse:
     """
     Get NKB advisor recommendations for a given context.
 
     Steps:
-      1. Match norms & rules
-      2. Build prompt with matched rules
-      3. Call Gemini for analysis
-      4. Call Perplexity for supplement (optional)
-      5. Return structured response
+      1. Match norms & rules deterministically
+      2. Retrieve top-K KB B5 precedents (project_type + scope_range similarity)
+      3. Build prompt: norms + matched rules + few-shot precedent block
+      4. Call Gemini for analysis (instructed to align output to precedents)
+      5. Call Perplexity for supplement (optional)
+      6. Return structured response
+
+    Args:
+      context: AdvisorContext with project_type + scope_kc_bez_dph + scope_range
+        used for precedent matching. Falls back to construction_type if
+        project_type omitted.
+      use_perplexity: enable Perplexity supplemental web-search.
+      use_precedents: enable KB B5 precedent retrieval + few-shot injection.
+      precedent_top_k: how many precedents to inject (default 3).
     """
+    # Auto-derive scope_range from scope_kc_bez_dph if needed
+    if context.scope_range is None and context.scope_kc_bez_dph is not None:
+        from app.services.precedent_retriever import derive_scope_range
+        context.scope_range = derive_scope_range(context.scope_kc_bez_dph)
+
     logger.info(
         f"[NKB Advisor] get_advisor_recommendations: "
-        f"construction_type={context.construction_type!r}, phase={context.phase!r}, "
-        f"materials={context.materials}, question={context.question[:80] if context.question else 'none'}..."
+        f"construction_type={context.construction_type!r}, project_type={context.project_type!r}, "
+        f"scope_range={context.scope_range!r}, scope_kc={context.scope_kc_bez_dph!r}, "
+        f"phase={context.phase!r}, materials={context.materials}, "
+        f"question={context.question[:80] if context.question else 'none'}..."
     )
 
     # Step 1: Match norms and rules
@@ -242,15 +273,51 @@ async def get_advisor_recommendations(
             warnings=["Upřesněte typ stavby, fázi nebo materiály pro lepší výsledky."],
         )
 
-    # Step 2: Build context prompt
+    # Step 2: Retrieve top-K precedents from KB B5 (real_world_examples + ZS_templates)
+    precedents = []
+    precedents_block = ""
+    if use_precedents:
+        try:
+            from app.services.precedent_retriever import (
+                retrieve_precedents,
+                format_precedents_for_prompt,
+            )
+            precedents = retrieve_precedents(context, top_k=precedent_top_k)
+            precedents_block = format_precedents_for_prompt(precedents)
+            logger.info(
+                f"[NKB Advisor] precedents retrieved: {len(precedents)} "
+                f"(top scores={[p.score for p in precedents]})"
+            )
+        except Exception as e:
+            logger.warning(
+                f"[NKB Advisor] precedent retrieval failed: {type(e).__name__}: {e}"
+            )
+
+    # Step 3: Build context prompt
     rules_text = _format_rules_for_prompt(matched_rules[:20])  # Top 20 rules
     norms_text = "\n".join(f"- {n.designation}: {n.title}" for n in matched_norms[:15])
 
+    scope_str = (
+        f"{context.scope_kc_bez_dph:,.0f} Kč bez DPH"
+        if context.scope_kc_bez_dph else "neurčen"
+    )
+    if context.scope_range:
+        scope_str += f" (bucket: {context.scope_range})"
+    project_type_str = context.project_type or context.construction_type or "neurčen"
+    duration_str = (
+        f"{context.duration_mes:.0f} měs" if context.duration_mes else "neurčena"
+    )
+
     user_prompt = f"""KONTEXT PROJEKTU:
-- Typ stavby: {context.construction_type or 'neurčen'}
+- Project type (KB matching): {project_type_str}
+- Construction type (legacy): {context.construction_type or 'neurčen'}
+- Scope: {scope_str}
+- Duration: {duration_str}
 - Fáze: {context.phase or 'neurčena'}
 - Objekty: {', '.join(context.objects) if context.objects else 'neurčeny'}
 - Materiály: {', '.join(context.materials) if context.materials else 'neurčeny'}
+
+{precedents_block}
 
 NALEZENÉ NORMY:
 {norms_text}
@@ -261,20 +328,23 @@ RELEVANTNÍ PRAVIDLA:
 {f'DOTAZ: {context.question}' if context.question else ''}
 {f'TEXT DOKUMENTU (úryvek): {context.document_text[:2000]}' if context.document_text else ''}
 
-Analyzuj a poskytni strukturovaná doporučení."""
+Analyzuj a poskytni strukturovaná doporučení. Pokud byly poskytnuty REFERENČNÍ PRECEDENTY,
+align tvůj výstup k jejich pásmům a explicitně cituj precedent_name v polích recommendations.precedent_cited."""
 
     full_prompt = f"{_ADVISOR_SYSTEM_PROMPT}\n\n{user_prompt}"
 
-    # Step 3: Call Gemini
+    # Step 4: Call Gemini
     recommendations: List[AdvisorRecommendation] = []
     ai_analysis = None
     ai_model = None
     warnings: List[str] = []
+    precedent_alignment: Optional[str] = None
 
     result, model_name = await _call_gemini_advisor(full_prompt)
     if result:
         ai_model = model_name
         ai_analysis = result.get("analysis", "")
+        precedent_alignment = result.get("precedent_alignment")
         for rec in result.get("recommendations", []):
             recommendations.append(AdvisorRecommendation(
                 norm_designation=rec.get("norm", ""),
@@ -286,7 +356,14 @@ Analyzuj a poskytni strukturovaná doporučení."""
             ))
         warnings.extend(result.get("warnings", []))
 
-    # Step 4: Perplexity supplement
+    # Note when precedents requested but none found — surfaced to caller as warning
+    if use_precedents and not precedents:
+        warnings.append(
+            "Žádné KB precedenty pre daný project_type/scope. "
+            "Doporučení odvozeno pouze z norem; align-to-precedent step skipped."
+        )
+
+    # Step 5: Perplexity supplement
     perplexity_text = None
     if use_perplexity and matched_norms:
         context_str = f"{context.construction_type or ''} {context.phase or ''} {' '.join(context.materials)}"
@@ -295,14 +372,18 @@ Analyzuj a poskytni strukturovaná doporučení."""
             context=context_str,
         )
 
-    # Step 5: Build response
+    # Step 6: Build response
     context_parts = []
-    if context.construction_type:
-        context_parts.append(f"typ stavby: {context.construction_type}")
+    if context.project_type or context.construction_type:
+        context_parts.append(f"typ: {context.project_type or context.construction_type}")
+    if context.scope_range:
+        context_parts.append(f"scope: {context.scope_range}")
     if context.phase:
         context_parts.append(f"fáze: {context.phase}")
     if context.objects:
         context_parts.append(f"objekty: {', '.join(context.objects)}")
+    if precedents:
+        context_parts.append(f"{len(precedents)} KB precedentů")
 
     return AdvisorResponse(
         context_summary=f"Analýza pro {', '.join(context_parts) if context_parts else 'obecný kontext'}",
@@ -313,6 +394,8 @@ Analyzuj a poskytni strukturovaná doporučení."""
         ai_model_used=ai_model,
         perplexity_supplement=perplexity_text,
         warnings=warnings,
+        precedents=precedents,
+        precedent_alignment=precedent_alignment,
     )
 
 
