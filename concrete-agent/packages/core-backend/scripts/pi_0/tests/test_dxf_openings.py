@@ -124,12 +124,34 @@ class ExtractOpeningsTests(unittest.TestCase):
             msg=f"Only {rate:.1%} parseable — Step 2 gate ≥90% FAILED",
         )
 
-    def test_abc_openings_empty_with_deferral_warning(self):
+    def test_abc_openings_populated_via_dxf(self):
+        """Step 2.5: A/B/C now have direct DXF reads (was empty in Step 2)."""
         for objekt in ("A", "B", "C"):
             openings, warnings = extract_openings(objekt)
-            self.assertEqual(openings, [])
-            self.assertTrue(any(w["category"] == "deferred_extraction" for w in warnings),
-                            msg=f"objekt {objekt} missing deferral warning")
+            self.assertGreater(
+                len(openings), 0,
+                msg=f"objekt {objekt} should have openings after Step 2.5",
+            )
+            # Step 2.5 gate report should be present (the legacy "deferred"
+            # warning category is gone)
+            categories = {w["category"] for w in warnings}
+            self.assertIn("step_2_gate", categories, msg=f"objekt {objekt}")
+            self.assertNotIn("deferred_extraction", categories,
+                             msg=f"objekt {objekt} still has deferral warning")
+
+    def test_each_objekt_90pct_gate(self):
+        """All four objekty must pass the ≥90 % parseable gate."""
+        for objekt in ("A", "B", "C", "D"):
+            openings, _ = extract_openings(objekt)
+            if not openings:
+                self.skipTest(f"no openings for {objekt} to evaluate")
+            from pi_0.extractors.dxf_openings import parsed_anything
+            parsed = sum(1 for op in openings if parsed_anything(op["block_attrs"]))
+            rate = parsed / len(openings)
+            self.assertGreaterEqual(
+                rate, 0.90,
+                msg=f"{objekt}: {rate:.1%} parseable < 90 %",
+            )
 
 
 class IdempotencyTests(unittest.TestCase):

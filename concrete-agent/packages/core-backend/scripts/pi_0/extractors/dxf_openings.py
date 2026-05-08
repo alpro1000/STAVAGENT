@@ -1,8 +1,12 @@
-"""Block-name parsing for DXF opening (door/window/curtain-wall) blocks.
+"""DXF opening (door/window/curtain-wall) block parsing + extraction.
 
 Step 2 of Π.0a (TASK_PHASE_PI_0_SPEC.md §5 step 2). Absorbs the
 ArchiCAD-block-name attributes that the existing pipeline drops:
 frame_type, swing_type, install_context, subtype, cad_lib_id.
+
+Step 2.5 added: direct ezdxf-based reading of the DXFs produced by
+`scripts/infrastructure/dwg_to_dxf_batch.py`. Replaces the earlier
+legacy-JSON fallback so A/B/C buckets get populated alongside D.
 
 Block-name format observed in DXF:
 
@@ -33,7 +37,26 @@ Confidence convention: 0.95 (DERIVED from block_name string). Per
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from typing import Any
+
+try:
+    import ezdxf
+    _EZDXF_AVAILABLE = True
+except ImportError:
+    _EZDXF_AVAILABLE = False
+
+# DXF layers carrying opening INSERT entities (per dxf_full_inventory.md).
+OPENING_LAYERS = {
+    "A-DOOR-____-OTLN": "door",
+    "A-GLAZ-____-OTLN": "window",
+    "A-GLAZ-CURT-OTLN": "curtain_wall",
+}
+
+# ArchiCAD generates anonymous blocks with hex prefixes like `*U123` for
+# block reference instances; the actual named block is the parent. Skip
+# anonymous unless the block_name itself encodes attrs (rare).
+_ANONYMOUS_BLOCK_RE = re.compile(r"^\*[UEAT]\d+$")
 
 # Width × Height (× depth) in mm. Matches `1600x2350` and `1200 × 2100 × 800`.
 DIMENSIONS_RE = re.compile(
@@ -165,3 +188,78 @@ def parse_dimensions_from_block_name(block_name: str | None) -> tuple[int | None
     h = int(m.group(2))
     d = int(m.group(3)) if m.group(3) else None
     return w, h, d
+
+
+# ---------------------------------------------------------------------------
+# Step 2.5 — direct DXF reading via ezdxf
+# ---------------------------------------------------------------------------
+
+def extract_openings_from_dxf(dxf_path: Path) -> list[dict]:
+    """Read INSERT entities on opening-relevant layers from a single DXF.
+
+    Returns a list of dicts shaped like the legacy DXF parser output
+    (otvor_type, type_code, block_name, position, width_mm, height_mm,
+    source_drawing, source_layer) so the orchestrator can wrap each in
+    the master_extract.openings[] schema.
+
+    Layers consumed (per dxf_full_inventory.md):
+      - A-DOOR-____-OTLN  → otvor_type='door'
+      - A-GLAZ-____-OTLN  → otvor_type='window'
+      - A-GLAZ-CURT-OTLN  → otvor_type='curtain_wall'
+    Anonymous block references (`*UNNN`) are skipped — they're block
+    instances, not named opening blocks.
+
+    type_code is heuristically pulled from the block name's leading
+    `D##` / `W##` token if present (e.g. block_name starts `D21_…`).
+    Otherwise None — Step 5 will do proper IDEN-tag spatial matching.
+    """
+    if not _EZDXF_AVAILABLE:
+        return []
+    try:
+        doc = ezdxf.readfile(str(dxf_path))
+    except (IOError, ezdxf.DXFError):
+        return []
+
+    msp = doc.modelspace()
+    drawing_key = dxf_path.stem
+    out: list[dict] = []
+
+    for entity in msp.query("INSERT"):
+        layer = entity.dxf.layer
+        otvor_type = OPENING_LAYERS.get(layer)
+        if otvor_type is None:
+            continue
+        block_name = entity.dxf.name
+        if _ANONYMOUS_BLOCK_RE.match(block_name):
+            continue
+        w, h, d = parse_dimensions_from_block_name(block_name)
+        out.append({
+            "otvor_type": otvor_type,
+            "type_code": _heuristic_type_code(block_name),
+            "block_name": block_name,
+            "source_drawing": drawing_key,
+            "source_layer": layer,
+            "position": [round(entity.dxf.insert.x, 6),
+                         round(entity.dxf.insert.y, 6)],
+            "width_mm": w,
+            "height_mm": h,
+            "depth_mm": d,
+        })
+    return out
+
+
+_LEADING_TYPE_CODE_RE = re.compile(r"\b([DW])(\d{2})\b")
+
+
+def _heuristic_type_code(block_name: str) -> str | None:
+    """Extract a leading D## / W## token from the block name, if present.
+
+    Most ArchiCAD blocks DON'T encode the user-facing D## / W## type
+    code in the block name (it lives as a separate `*-IDEN` text
+    annotation that requires spatial join). This helper exists for
+    the rare cases where the type is in the block name itself.
+
+    Step 5+ will replace this with proper *-IDEN spatial matching.
+    """
+    m = _LEADING_TYPE_CODE_RE.search(block_name or "")
+    return f"{m.group(1)}{m.group(2)}" if m else None

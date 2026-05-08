@@ -47,3 +47,11 @@ extracted_data/
 # Generated DXF (Phase 0.5 — produced from inputs/dwg/ by dwg2dxf, ~300 MB total,
 # regeneratable in <10s via convert_batch; some files exceed GitHub's 100 MB cap)
 test-data/libuse/inputs/dxf/*.dxf
+
+# Generated DXF (any STAVAGENT project — gitignored, regeneratable
+# via scripts/infrastructure/dwg_to_dxf_batch.py)
+test-data/*/inputs/dxf/*.dxf
+test-data/*/sources/*/dxf/*.dxf
+
+# libredwg in-tree clone (build script clones to /tmp by default)
+/libredwg/

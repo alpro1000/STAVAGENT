@@ -46,11 +46,19 @@ BUCKETS = ("A", "B", "C", "D", "shared")
 
 
 def _import_batch_module():
-    """Load scripts/infrastructure/dwg_to_dxf_batch.py without modifying sys.path."""
-    spec = importlib.util.spec_from_file_location("dwg_to_dxf_batch", INFRA_BATCH)
+    """Load scripts/infrastructure/dwg_to_dxf_batch.py without modifying sys.path.
+
+    NOTE: registers the module in sys.modules before exec_module() — required
+    for @dataclass etc. to resolve type hints via sys.modules[cls.__module__].
+    """
+    module_name = "dwg_to_dxf_batch"
+    if module_name in sys.modules:
+        return sys.modules[module_name]
+    spec = importlib.util.spec_from_file_location(module_name, INFRA_BATCH)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Could not load {INFRA_BATCH}")
     module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
 

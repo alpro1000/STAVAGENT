@@ -1,24 +1,31 @@
 """Π.0a Foundation Extraction Layer — entry point.
 
 Step 1: skeleton + idempotency wrapper.
-Step 2: DXF block-name attrs absorption — populates openings[] for D
-(via existing dxf_parser_test.json since DWG→DXF conversion isn't
-wired into pi_0/ yet; A/B/C deferred to Step 5+).
+Step 2: DXF block-name attrs absorption (parse_block_name).
+Step 2.5: ezdxf-based direct DXF reading — full A/B/C/D coverage now
+that scripts/infrastructure/build_libredwg.sh + dwg_to_dxf_batch.py
+produce DXFs from sources/{objekt}/dwg/. Replaces the earlier legacy
+dxf_parser_test.json fallback.
 
 Usage:
     python -m pi_0.extract --objekt={A|B|C|D}
     python -m pi_0.extract --all
+
+If sources/{objekt}/dxf/ is missing or empty, openings stays empty +
+warning. Run scripts/infrastructure/dwg_to_dxf_batch.py (or the
+Libuše-specific phase_0_5_batch_convert.py) first.
 """
 from __future__ import annotations
 
 import argparse
 import datetime as _dt
 import hashlib
-import json
 from pathlib import Path
 
 from pi_0 import SCHEMA_VERSION, __version__
-from pi_0.extractors.dxf_openings import parse_block_name, parsed_anything
+from pi_0.extractors.dxf_openings import (
+    extract_openings_from_dxf, parse_block_name, parsed_anything,
+)
 from pi_0.schema import write_canonical
 
 # Resolve the repo root from this file's location:
@@ -28,11 +35,6 @@ SOURCES_ROOT = REPO_ROOT / "test-data" / "libuse" / "sources"
 OUTPUTS_ROOT = REPO_ROOT / "test-data" / "libuse" / "outputs"
 
 VALID_OBJEKTY = ("A", "B", "C", "D")
-
-# Step 2: legacy DXF parse output (covers D drawings only). Used as
-# the temporary source of opening block_names until pi_0/ wires DWG→DXF
-# conversion for A/B/C in Step 5+.
-LEGACY_DXF_PARSER_TEST_JSON = OUTPUTS_ROOT / "dxf_parser_test.json"
 
 
 def _sha256_file(path: Path) -> str:
@@ -88,83 +90,80 @@ def build_metadata(objekt: str, source_files: list[Path]) -> dict:
     }
 
 
-def _load_legacy_dxf_parse() -> dict:
-    """Read existing dxf_parser_test.json (read-only). Returns {} if absent."""
-    if not LEGACY_DXF_PARSER_TEST_JSON.exists():
-        return {}
-    with open(LEGACY_DXF_PARSER_TEST_JSON, encoding="utf-8") as f:
-        return json.load(f)
+def _dxf_files_for_objekt(objekt: str) -> list[Path]:
+    """Return DXF files for `objekt`: per-objekt + shared. Sorted, stable."""
+    found: list[Path] = []
+    for bucket in (SOURCES_ROOT / objekt, SOURCES_ROOT / "shared"):
+        dxf_dir = bucket / "dxf"
+        if dxf_dir.exists():
+            found.extend(sorted(dxf_dir.glob("*.dxf")))
+    return found
 
 
 def extract_openings(objekt: str) -> tuple[list[dict], list[dict]]:
-    """Extract opening blocks for `objekt` from existing DXF parse output.
+    """Extract opening blocks for `objekt` directly from sources DXFs.
 
     Returns (openings, warnings). Each opening carries the raw block_name
-    plus parsed `block_attrs` per parse_block_name(). Currently uses
-    `outputs/dxf_parser_test.json` as the source — covers D drawings
-    only. A/B/C return empty + a warning until DWG→DXF wiring lands in
-    Step 5+.
+    plus parsed `block_attrs` per parse_block_name(), shaped per
+    TASK_PHASE_PI_0_SPEC.md §2.4.
 
-    Schema follows TASK_PHASE_PI_0_SPEC.md §2.4.
+    Reads `sources/{objekt}/dxf/*.dxf` and `sources/shared/dxf/*.dxf`
+    (the 1.PP komplex drawings shared across all objekty). DXFs are
+    produced by `scripts/infrastructure/dwg_to_dxf_batch.py` from the
+    DWGs under `sources/{objekt}/dwg/`. Missing DXFs → empty openings
+    + warning suggesting the converter run.
     """
-    if objekt != "D":
-        return [], [{
-            "level": "info",
-            "category": "deferred_extraction",
-            "message": (
-                f"Openings for objekt {objekt} not extracted in Step 2 — pi_0/ "
-                "doesn't wire DWG→DXF conversion yet. Deferred to Step 5+ when "
-                "per-objekt scope wiring lands."
-            ),
-            "source_evidence": f"sources/{objekt}/dwg/*.dwg present but unparsed",
-        }]
-
-    legacy = _load_legacy_dxf_parse()
-    if not legacy:
+    dxf_files = _dxf_files_for_objekt(objekt)
+    if not dxf_files:
         return [], [{
             "level": "warning",
-            "category": "missing_legacy_input",
+            "category": "missing_dxf_input",
             "message": (
-                "outputs/dxf_parser_test.json absent — cannot extract D "
-                "openings via Step 2 fallback. Skipping."
+                f"No DXF files under sources/{objekt}/dxf/ or sources/shared/"
+                f"dxf/. Run scripts/infrastructure/dwg_to_dxf_batch.py or "
+                f"phase_0_5_batch_convert.py to convert DWGs first."
             ),
-            "source_evidence": str(LEGACY_DXF_PARSER_TEST_JSON.relative_to(REPO_ROOT)),
+            "source_evidence": f"sources/{objekt}/dxf/ + sources/shared/dxf/",
         }]
 
     openings: list[dict] = []
     warnings: list[dict] = []
     unparseable_count = 0
+    drawings_read = 0
 
-    for drawing_key, drawing_data in legacy.items():
-        for op in drawing_data.get("openings", []):
-            block_name = op.get("block_name")
+    for dxf_path in dxf_files:
+        raw_openings = extract_openings_from_dxf(dxf_path)
+        drawings_read += 1
+        for raw in raw_openings:
+            block_name = raw["block_name"]
             block_attrs = parse_block_name(block_name)
             entry = {
-                "id": f"{objekt}.{drawing_key}.{op.get('type_code', 'unknown')}.{len(openings):04d}",
-                "otvor_type": op.get("otvor_type"),
-                "type_code": op.get("type_code"),
-                "source_drawing": drawing_key,
-                "source_layer": op.get("source_layer"),
+                "id": f"{objekt}.{raw['source_drawing']}."
+                      f"{raw.get('type_code') or 'unknown'}.{len(openings):04d}",
+                "otvor_type": raw["otvor_type"],
+                "type_code": raw.get("type_code"),
+                "source_drawing": raw["source_drawing"],
+                "source_layer": raw["source_layer"],
                 "block_name": {
                     "value": block_name,
-                    "source": f"DXF|{drawing_key}|{op.get('source_layer', '?')}",
+                    "source": f"DXF|{raw['source_drawing']}|{raw['source_layer']}",
                     "confidence": 1.0,
                 },
                 "block_attrs": block_attrs,
-                "position": op.get("position"),
+                "position": raw["position"],
                 "width_mm": {
-                    "value": op.get("width_mm"),
-                    "source": f"DXF|{drawing_key}|block_name",
+                    "value": raw["width_mm"],
+                    "source": f"DXF|{raw['source_drawing']}|block_name",
                     "confidence": 0.95,
                 },
                 "height_mm": {
-                    "value": op.get("height_mm"),
-                    "source": f"DXF|{drawing_key}|block_name",
+                    "value": raw["height_mm"],
+                    "source": f"DXF|{raw['source_drawing']}|block_name",
                     "confidence": 0.95,
                 },
                 "depth_mm": {
-                    "value": op.get("depth_mm"),
-                    "source": f"DXF|{drawing_key}|block_name",
+                    "value": raw["depth_mm"],
+                    "source": f"DXF|{raw['source_drawing']}|block_name",
                     "confidence": 0.95,
                 },
             }
@@ -175,7 +174,7 @@ def extract_openings(objekt: str) -> tuple[list[dict], list[dict]]:
                     "level": "warning",
                     "category": "block_name_unparseable",
                     "message": f"Could not parse any attribute from block_name: {block_name!r}",
-                    "source_evidence": f"DXF|{drawing_key}|opening_id={entry['id']}",
+                    "source_evidence": f"DXF|{raw['source_drawing']}|opening_id={entry['id']}",
                 })
 
     # Coverage gate (per SPEC §5 step 2: ≥90 % parseable)
@@ -187,9 +186,10 @@ def extract_openings(objekt: str) -> tuple[list[dict], list[dict]]:
             "message": (
                 f"Step 2 gate: {len(openings) - unparseable_count}/{len(openings)} "
                 f"openings parseable ({parsed_pct:.1%}); "
-                f"target ≥90 %; gate {'PASSED' if parsed_pct >= 0.90 else 'FAILED'}."
+                f"target ≥90 %; gate {'PASSED' if parsed_pct >= 0.90 else 'FAILED'}; "
+                f"DXFs read: {drawings_read}."
             ),
-            "source_evidence": LEGACY_DXF_PARSER_TEST_JSON.name,
+            "source_evidence": f"sources/{objekt}/dxf/ + sources/shared/dxf/",
         })
 
     return openings, warnings
