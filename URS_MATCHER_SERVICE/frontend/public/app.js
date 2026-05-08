@@ -655,7 +655,7 @@ function displayFileUploadResults(job) {
       <tr>
         <th>Řádek</th>
         <th>Vstupní text</th>
-        <th>Kód ÚRS</th>
+        <th>Kód</th>
         <th>Název</th>
         <th>MJ</th>
         <th>Množství</th>
@@ -960,7 +960,7 @@ function displayBlockMatchResults(job) {
     // Items table
     if (items.length > 0) {
       html += '<table class="results-table grouped-table"><thead><tr>';
-      html += '<th>Řádek</th><th>Vstupní text</th><th>Kód ÚRS</th><th>Název</th><th>MJ</th>';
+      html += '<th>Řádek</th><th>Vstupní text</th><th>Kód</th><th>Název</th><th>MJ</th>';
       html += '</tr></thead><tbody>';
 
       items.forEach((item) => {
@@ -1076,7 +1076,7 @@ exportBtn.addEventListener('click', async () => {
 
     // Handle text-match results (manual input)
     if (candidates.length > 0) {
-      csv += 'Typ;Kód ÚRS;Název;MJ;Jistota (%);Důvod\n';
+      csv += 'Typ;Kód;Název;MJ;Jistota (%);Důvod\n';
 
       candidates.forEach((item) => {
         const confidence = ((item.confidence || 0) * 100).toFixed(0);
@@ -1091,7 +1091,7 @@ exportBtn.addEventListener('click', async () => {
     }
     // Handle block-match results
     else if (!items.length && currentResults.blocks) {
-      csv += 'Blok;Řádek;Vstupní text;Kód ÚRS;Název;MJ\n';
+      csv += 'Blok;Řádek;Vstupní text;Kód;Název;MJ\n';
       currentResults.blocks.forEach((block) => {
         const blockName = block.block_name || '';
         (block.items || []).forEach((item) => {
@@ -1100,7 +1100,7 @@ exportBtn.addEventListener('click', async () => {
       });
     } else {
       // Handle regular file upload results
-      csv += 'Řádek;Vstupní text;Kód ÚRS;Název;MJ;Množství;Jistota;Typ\n';
+      csv += 'Řádek;Vstupní text;Kód;Název;MJ;Množství;Jistota;Typ\n';
       items.forEach((item) => {
         const type = item.extra_generated ? 'Doplňková' : 'Přímá';
         csv += [esc(item.input_row_id), esc(item.input_text), esc(item.urs_code), esc(item.urs_name), esc(item.unit), item.quantity || '', item.confidence?.toFixed(2) || '', type].join(';') + '\n';
@@ -1130,7 +1130,7 @@ copyBtn.addEventListener('click', () => {
   if (!currentResults) return;
 
   try {
-    let text = 'Výsledky hledání ÚRS\n';
+    let text = 'Výsledky AI vyhledávání\n';
     text += '═'.repeat(60) + '\n\n';
 
     const items = currentResults.items || [];
@@ -1139,7 +1139,7 @@ copyBtn.addEventListener('click', () => {
 
     // Handle text-match results (manual input)
     if (candidates.length > 0) {
-      text += '🎯 DOPORUČENÉ POZICE ÚRS:\n';
+      text += '🎯 DOPORUČENÉ POZICE:\n';
       text += '─'.repeat(60) + '\n';
 
       candidates.forEach((item, idx) => {
@@ -1311,7 +1311,7 @@ exportToRegistryBtn?.addEventListener('click', async () => {
       body: JSON.stringify({
         positions,
         sourceKiosk: 'urs-matcher',
-        projectName: `URS Import ${new Date().toLocaleDateString('cs-CZ')}`,
+        projectName: `Klasifikátor Import ${new Date().toLocaleDateString('cs-CZ')}`,
         metadata: {
           jobId: currentJobId || null,
           exportedAt: new Date().toISOString()
