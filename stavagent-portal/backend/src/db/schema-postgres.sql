@@ -327,6 +327,12 @@ CREATE TABLE IF NOT EXISTS organizations (
   storage_mode  VARCHAR(20) NOT NULL DEFAULT 'managed'
                   CHECK (storage_mode IN ('managed','byos','private')),
   storage_config JSONB DEFAULT NULL,
+  -- DEPRECATED 2026-05-08: stripe_customer_id / stripe_subscription_id were
+  -- added during exploration but Stripe was never commercially activated
+  -- (see credits.js note + LandingPage.tsx FAQ). Columns kept for backward
+  -- compatibility with any existing prod rows; treat as orphan / no-op.
+  -- Will be repurposed or dropped when Lemon Squeezy MoR integration ships
+  -- in Q3 2026.
   stripe_customer_id    VARCHAR(255),
   stripe_subscription_id VARCHAR(255),
   max_projects    INTEGER DEFAULT 5,
@@ -724,7 +730,7 @@ CREATE TABLE IF NOT EXISTS credit_transactions (
   balance_after     INTEGER NOT NULL,               -- balance after this transaction
   operation_key     VARCHAR(100),                   -- NULL for top-ups, operation_key for deductions
   description       VARCHAR(500),                   -- human-readable description
-  reference_id      VARCHAR(255),                   -- external ref (Stripe payment_id, admin action, etc.)
+  reference_id      VARCHAR(255),                   -- external ref (admin action; Lemon Squeezy order_id when MoR launches Q3 2026)
   created_at        TIMESTAMP DEFAULT NOW()
 );
 

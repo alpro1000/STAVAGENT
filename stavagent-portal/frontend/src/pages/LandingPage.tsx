@@ -157,8 +157,8 @@ const FAQ = [
   { q: 'Můžu si zvolit AI model?', a: 'Ano. Klasifikátor nabízí 19 modelů na výběr (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Rozšířený režim navíc spustí multi-role validaci s 6 expertními rolemi.' },
   { q: 'Mohu výstup importovat zpět do své stávající aplikace?', a: 'Ano. Výstup je Excel (.xlsx) s kódy, popisy, MJ, množstvími a cenami. Hypertextové odkazy zpět na zdrojový soubor zachovány.' },
   { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud, Frankfurt). Každý uživatel vidí pouze své projekty. Data nejsou sdílena s třetími stranami.' },
-  { q: 'Kolik to stojí?', a: 'Na start 200 kreditů zdarma při registraci. Otevřená beta — placené plány v Q3 2026.' },
-  { q: 'Kdy začnete účtovat?', a: 'Otevřená beta. Placené plány v Q3 2026 přes Lemon Squeezy (Merchant of Record). Do té doby běžné použití zdarma na 200 kreditů, jakékoliv další po dohodě.' },
+  { q: 'Kolik to stojí?', a: 'Aktuálně otevřená beta s 200 kredity zdarma. Placené plány spustíme v Q3 2026 přes Lemon Squeezy (Merchant of Record — žádné DPH na vás).' },
+  { q: 'Kdy začnete účtovat?', a: 'Aktuálně otevřená beta s 200 kredity zdarma. Placené plány spustíme v Q3 2026 přes Lemon Squeezy (Merchant of Record — žádné DPH na vás).' },
 ];
 
 const STATS = [
