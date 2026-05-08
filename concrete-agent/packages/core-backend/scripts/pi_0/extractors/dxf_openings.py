@@ -42,6 +42,7 @@ from typing import Any
 
 try:
     import ezdxf
+    from ezdxf.math import Vec3
     _EZDXF_AVAILABLE = True
 except ImportError:
     _EZDXF_AVAILABLE = False
@@ -53,10 +54,47 @@ OPENING_LAYERS = {
     "A-GLAZ-CURT-OTLN": "curtain_wall",
 }
 
+# IDEN layers carry the human-visible D##/W## type-code labels that
+# pair (spatially) with each opening INSERT block.
+OPENING_IDEN_LAYERS = {
+    "door":         "A-DOOR-____-IDEN",
+    "window":       "A-GLAZ-____-IDEN",
+    "curtain_wall": "A-GLAZ-____-IDEN",  # curtain walls labeled on same layer
+}
+
+# Room polygon + room code layers
+LAYER_ROOM_BOUNDARY = "A-AREA-BNDY-OTLN"
+LAYER_ROOM_CODE = "A-AREA-____-IDEN"
+
+# Wall / ceiling / floor finish IDEN layers — text annotations carrying
+# segment tags (WF##, CF##, etc.).
+SEGMENT_TAG_LAYERS = {
+    "WF": "A-WALL-____-IDEN",
+    "CF": "A-CLNG-____-IDEN",
+    "OP": "A-GENM-____-IDEN",
+    "LP": "A-FLOR-HRAL-IDEN",
+    "TP": "A-WALL-____-IDEN",
+    "F":  "A-WALL-____-IDEN",
+    "FF": "A-FLOR-HRAL-IDEN",
+    "RF": None,  # roof — comes from drawing-name detection only
+}
+
+# Spatial-match threshold for *-IDEN ↔ opening pairing (mm)
+IDEN_MATCH_THRESHOLD_MM = 1500
+
+# Single-token tag codes: WF20, CF21, FF03, F19, OP05, LI01, LP20, TP01,
+# RF11, D04, D21, W03, etc. (1–3 letter prefix + 2–3 digits)
+SEGMENT_TAG_RE = re.compile(r"\b([A-Z]{1,3})(\d{2,3})\b")
+
 # ArchiCAD generates anonymous blocks with hex prefixes like `*U123` for
 # block reference instances; the actual named block is the parent. Skip
 # anonymous unless the block_name itself encodes attrs (rare).
 _ANONYMOUS_BLOCK_RE = re.compile(r"^\*[UEAT]\d+$")
+
+# Room code patterns matching D-objekt convention (and A/B/C analogs).
+ROOM_CODE_RE = re.compile(
+    r"^(?:[A-D]\.\d\.(?:\d|S|OB\d+)\.\d{2}|S\.[A-D]\.\d{2})$"
+)
 
 # Width × Height (× depth) in mm. Matches `1600x2350` and `1200 × 2100 × 800`.
 DIMENSIONS_RE = re.compile(
@@ -256,10 +294,257 @@ def _heuristic_type_code(block_name: str) -> str | None:
 
     Most ArchiCAD blocks DON'T encode the user-facing D## / W## type
     code in the block name (it lives as a separate `*-IDEN` text
-    annotation that requires spatial join). This helper exists for
-    the rare cases where the type is in the block name itself.
-
-    Step 5+ will replace this with proper *-IDEN spatial matching.
+    annotation that requires spatial join). This helper exists as a
+    fallback when the spatial matcher (parse_dxf_full) cannot find an
+    *-IDEN tag near the opening (e.g. ŘEZY drawings have no IDEN tags).
     """
     m = _LEADING_TYPE_CODE_RE.search(block_name or "")
     return f"{m.group(1)}{m.group(2)}" if m else None
+
+
+# ---------------------------------------------------------------------------
+# Step 5 — full-DXF parse: rooms + openings + IDEN tags + segment tags
+# ---------------------------------------------------------------------------
+
+def _entity_text(entity) -> str | None:
+    """Extract plain text from a TEXT or MTEXT entity, stripped."""
+    try:
+        if entity.dxftype() == "MTEXT":
+            return (entity.plain_text() or "").strip()
+        if entity.dxftype() == "TEXT":
+            return (entity.dxf.text or "").strip()
+    except (AttributeError, KeyError):
+        return None
+    return None
+
+
+def _entity_position(entity) -> list[float] | None:
+    """Best-effort (x, y) coordinates as plain Python list[float],
+    rounded to 6 decimals (cast away numpy floats for JSON roundtrip)."""
+    try:
+        if entity.dxftype() == "INSERT":
+            p = entity.dxf.insert
+        elif entity.dxftype() == "MTEXT":
+            p = entity.dxf.insert
+        elif entity.dxftype() == "TEXT":
+            p = entity.dxf.insert
+        else:
+            return None
+        return [round(float(p.x), 6), round(float(p.y), 6)]
+    except (AttributeError, KeyError):
+        return None
+
+
+def parse_dxf_full(dxf_path: Path) -> dict:
+    """Parse a single DXF and return structured data ready for caching.
+
+    Returns:
+      {
+        "drawing_key": str,        # source DXF stem
+        "rooms": [...],            # polygon + code (per A-AREA layers)
+        "raw_openings": [...],     # INSERT blocks on opening layers
+        "opening_iden_tags": [...],# TEXT/MTEXT on *-DOOR-IDEN / *-GLAZ-IDEN
+        "segment_tags": [...],     # WF/CF/F/OP/LI/LP/TP/RF tags from IDEN
+      }
+
+    The cache layer wraps this; orchestrator (extract.py) post-processes
+    raw_openings into block_attrs + spatial-matched type_code, builds
+    room_codes per polygon via point-in-polygon, etc.
+    """
+    if not _EZDXF_AVAILABLE:
+        return {"drawing_key": dxf_path.stem, "rooms": [],
+                "raw_openings": [], "opening_iden_tags": [], "segment_tags": []}
+    try:
+        doc = ezdxf.readfile(str(dxf_path))
+    except Exception:
+        return {"drawing_key": dxf_path.stem, "rooms": [],
+                "raw_openings": [], "opening_iden_tags": [], "segment_tags": []}
+
+    msp = doc.modelspace()
+    drawing_key = dxf_path.stem
+
+    rooms: list[dict] = []
+    raw_openings: list[dict] = []
+    opening_iden_tags: list[dict] = []
+    segment_tags: list[dict] = []
+    room_code_texts: list[dict] = []   # collected separately, joined to rooms below
+
+    for entity in msp:
+        layer = entity.dxf.layer if hasattr(entity.dxf, "layer") else None
+        etype = entity.dxftype()
+
+        # ---- Room polygons --------------------------------------------
+        if layer == LAYER_ROOM_BOUNDARY and etype == "LWPOLYLINE":
+            try:
+                # Normalize to plain Python list[list[float]] for JSON
+                # roundtrip equality (ezdxf returns numpy floats; cache
+                # roundtrip → plain floats, so we standardize at parse).
+                pts = [[round(float(p[0]), 6), round(float(p[1]), 6)]
+                       for p in entity.get_points("xy")]
+                if len(pts) >= 3 and entity.closed:
+                    rooms.append({
+                        "polygon": pts,
+                        "centroid": _centroid(pts),
+                        "area_m2": float(_polygon_area(pts) / 1_000_000),  # mm² → m²
+                        "perimeter_m": float(_polygon_perimeter(pts) / 1_000),
+                    })
+            except (AttributeError, ValueError):
+                pass
+            continue
+
+        # ---- Room codes (text on A-AREA-IDEN) -------------------------
+        if layer == LAYER_ROOM_CODE and etype in ("MTEXT", "TEXT"):
+            text = _entity_text(entity)
+            pos = _entity_position(entity)
+            if text and pos and ROOM_CODE_RE.match(text):
+                room_code_texts.append({"code": text, "position": pos})
+            continue
+
+        # ---- Opening INSERT blocks ------------------------------------
+        if etype == "INSERT" and layer in OPENING_LAYERS:
+            block_name = entity.dxf.name
+            if _ANONYMOUS_BLOCK_RE.match(block_name):
+                continue
+            otvor_type = OPENING_LAYERS[layer]
+            w, h, d = parse_dimensions_from_block_name(block_name)
+            raw_openings.append({
+                "otvor_type": otvor_type,
+                "block_name": block_name,
+                "source_layer": layer,
+                "position": _entity_position(entity) or [0.0, 0.0],
+                "width_mm": w,
+                "height_mm": h,
+                "depth_mm": d,
+            })
+            continue
+
+        # ---- Opening IDEN labels (D##/W## text near INSERT) -----------
+        if etype in ("MTEXT", "TEXT") and layer in OPENING_IDEN_LAYERS.values():
+            text = _entity_text(entity)
+            pos = _entity_position(entity)
+            if not text or not pos:
+                continue
+            m = SEGMENT_TAG_RE.search(text)
+            if not m:
+                continue
+            prefix, num = m.group(1), m.group(2)
+            if prefix in ("D", "W"):
+                opening_iden_tags.append({
+                    "code": f"{prefix}{num}",
+                    "position": pos,
+                    "source_layer": layer,
+                })
+            continue
+
+        # ---- Segment tags (WF##, CF##, F##, OP##, LI##, LP##, TP##) ---
+        if etype in ("MTEXT", "TEXT") and layer:
+            text = _entity_text(entity)
+            pos = _entity_position(entity)
+            if not text or not pos:
+                continue
+            for m in SEGMENT_TAG_RE.finditer(text):
+                prefix, num = m.group(1), m.group(2)
+                # Skip D/W (handled above)
+                if prefix in ("D", "W"):
+                    continue
+                # Recognised prefixes only (skip noise like CW, FM, etc.
+                # — those are out of current scope)
+                if prefix not in {"WF", "CF", "F", "FF", "OP",
+                                   "LI", "LP", "TP", "RF"}:
+                    continue
+                segment_tags.append({
+                    "code": f"{prefix}{num}",
+                    "prefix": prefix,
+                    "position": pos,
+                    "source_layer": layer,
+                })
+
+    # Spatial-join room codes ↔ polygons via point-in-polygon
+    for room in rooms:
+        room["code"] = None
+        for rc in room_code_texts:
+            if _point_in_polygon(rc["position"], room["polygon"]):
+                room["code"] = rc["code"]
+                break
+
+    return {
+        "drawing_key": drawing_key,
+        "rooms": rooms,
+        "raw_openings": raw_openings,
+        "opening_iden_tags": opening_iden_tags,
+        "segment_tags": segment_tags,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Geometry helpers (no shapely dependency — pure Python)
+# ---------------------------------------------------------------------------
+
+def _polygon_area(pts: list[tuple[float, float]]) -> float:
+    """Shoelace area in same units as input."""
+    if len(pts) < 3:
+        return 0.0
+    s = 0.0
+    n = len(pts)
+    for i in range(n):
+        x1, y1 = pts[i]
+        x2, y2 = pts[(i + 1) % n]
+        s += x1 * y2 - x2 * y1
+    return abs(s) / 2.0
+
+
+def _polygon_perimeter(pts: list[tuple[float, float]]) -> float:
+    if len(pts) < 2:
+        return 0.0
+    total = 0.0
+    n = len(pts)
+    for i in range(n):
+        x1, y1 = pts[i]
+        x2, y2 = pts[(i + 1) % n]
+        total += ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+    return total
+
+
+def _centroid(pts: list[tuple[float, float]]) -> list[float]:
+    """Polygon centroid (vertex-mean fallback for degenerate polygons)."""
+    if not pts:
+        return [0.0, 0.0]
+    n = len(pts)
+    cx = sum(p[0] for p in pts) / n
+    cy = sum(p[1] for p in pts) / n
+    return [round(cx, 6), round(cy, 6)]
+
+
+def _point_in_polygon(point: list[float], polygon: list[tuple[float, float]]) -> bool:
+    """Ray-cast point-in-polygon."""
+    if len(polygon) < 3:
+        return False
+    x, y = point[0], point[1]
+    inside = False
+    n = len(polygon)
+    j = n - 1
+    for i in range(n):
+        xi, yi = polygon[i]
+        xj, yj = polygon[j]
+        if ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi + 1e-12) + xi):
+            inside = not inside
+        j = i
+    return inside
+
+
+def find_nearest_iden_code(opening_pos: list[float],
+                             iden_tags: list[dict],
+                             threshold_mm: float = IDEN_MATCH_THRESHOLD_MM) -> str | None:
+    """Return the nearest IDEN tag code within `threshold_mm`, or None."""
+    if not opening_pos or not iden_tags:
+        return None
+    best_dist = float("inf")
+    best_code = None
+    ox, oy = opening_pos[0], opening_pos[1]
+    for tag in iden_tags:
+        tx, ty = tag["position"][0], tag["position"][1]
+        d = ((tx - ox) ** 2 + (ty - oy) ** 2) ** 0.5
+        if d < best_dist and d <= threshold_mm:
+            best_dist = d
+            best_code = tag["code"]
+    return best_code

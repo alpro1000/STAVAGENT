@@ -55,3 +55,6 @@ test-data/*/sources/*/dxf/*.dxf
 
 # libredwg in-tree clone (build script clones to /tmp by default)
 /libredwg/
+
+# Π.0a DXF parse cache (perf optimization, regeneratable from sources/*/dxf/)
+/.pi_0_cache/

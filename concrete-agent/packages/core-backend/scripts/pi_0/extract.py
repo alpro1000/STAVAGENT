@@ -23,8 +23,10 @@ import hashlib
 from pathlib import Path
 
 from pi_0 import SCHEMA_VERSION, __version__
+from pi_0.cache import load_or_parse
 from pi_0.extractors.dxf_openings import (
-    extract_openings_from_dxf, parse_block_name, parsed_anything,
+    find_nearest_iden_code, parse_block_name, parsed_anything,
+    parse_dxf_full,
 )
 from pi_0.extractors.xlsx_dvere import extract_doors_for_objekt
 from pi_0.extractors.xlsx_skladby import extract_skladby
@@ -35,6 +37,7 @@ from pi_0.schema import write_canonical
 REPO_ROOT = Path(__file__).resolve().parents[5]
 SOURCES_ROOT = REPO_ROOT / "test-data" / "libuse" / "sources"
 OUTPUTS_ROOT = REPO_ROOT / "test-data" / "libuse" / "outputs"
+CACHE_DIR = REPO_ROOT / ".pi_0_cache"
 
 VALID_OBJEKTY = ("A", "B", "C", "D")
 
@@ -114,70 +117,141 @@ def _dxf_files_for_objekt(objekt: str) -> list[Path]:
     return found
 
 
-def extract_openings(objekt: str) -> tuple[list[dict], list[dict]]:
-    """Extract opening blocks for `objekt` directly from sources DXFs.
+def _parse_dxf_cached(dxf_path: Path) -> dict:
+    """Cached wrapper around dxf_openings.parse_dxf_full()."""
+    return load_or_parse(dxf_path, parse_dxf_full, cache_dir=CACHE_DIR)
 
-    Returns (openings, warnings). Each opening carries the raw block_name
-    plus parsed `block_attrs` per parse_block_name(), shaped per
-    TASK_PHASE_PI_0_SPEC.md §2.4.
 
-    Reads `sources/{objekt}/dxf/*.dxf` and `sources/shared/dxf/*.dxf`
-    (the 1.PP komplex drawings shared across all objekty). DXFs are
-    produced by `scripts/infrastructure/dwg_to_dxf_batch.py` from the
-    DWGs under `sources/{objekt}/dwg/`. Missing DXFs → empty openings
-    + warning suggesting the converter run.
+def extract_dxf_data(objekt: str) -> tuple[list[dict], list[dict], dict, list[dict]]:
+    """Step 5: parse all DXFs for `objekt` (cached) and return four sections.
+
+    Returns (openings, rooms, segment_counts, warnings):
+      - openings: per-instance INSERT entries shaped per SPEC §2.4
+        with block_attrs + spatial-matched type_code from *-IDEN tags
+      - rooms: per-room {code, polygon, centroid, area_m2, perimeter_m,
+        source_drawing} filtered to objekt scope (e.g. starts with 'D.'
+        or 'S.D.' for objekt D)
+      - segment_counts: per-prefix census {prefix: {code: count, …}}
+      - warnings: extraction-time issues
     """
     dxf_files = _dxf_files_for_objekt(objekt)
     if not dxf_files:
-        return [], [{
+        return [], [], {}, [{
             "level": "warning",
             "category": "missing_dxf_input",
             "message": (
-                f"No DXF files under sources/{objekt}/dxf/ or sources/shared/"
-                f"dxf/. Run scripts/infrastructure/dwg_to_dxf_batch.py or "
-                f"phase_0_5_batch_convert.py to convert DWGs first."
+                f"No DXF files under sources/{objekt}/dxf/ or "
+                f"sources/shared/dxf/. Run "
+                f"scripts/infrastructure/dwg_to_dxf_batch.py or "
+                f"phase_0_5_batch_convert.py first."
             ),
             "source_evidence": f"sources/{objekt}/dxf/ + sources/shared/dxf/",
         }]
 
+    # Per-objekt room-code prefix filter (e.g. 'D' → starts D. or S.D.)
+    prefix_match = lambda code: bool(code and (
+        code.startswith(f"{objekt}.") or code.startswith(f"S.{objekt}.")
+    ))
+
     openings: list[dict] = []
+    rooms: list[dict] = []
+    seen_room_codes: set[str] = set()  # dedupe across drawings
+    segment_counts: dict[str, dict[str, int]] = {}
     warnings: list[dict] = []
     unparseable_count = 0
     drawings_read = 0
 
     for dxf_path in dxf_files:
-        raw_openings = extract_openings_from_dxf(dxf_path)
+        parsed = _parse_dxf_cached(dxf_path)
+        if not parsed:
+            continue
         drawings_read += 1
-        for raw in raw_openings:
+        drawing_key = parsed["drawing_key"]
+
+        # ---- Rooms (filter by objekt prefix; dedupe by code) ----------
+        for room in parsed["rooms"]:
+            code = room.get("code")
+            if not prefix_match(code):
+                continue
+            if code in seen_room_codes:
+                continue
+            seen_room_codes.add(code)
+            rooms.append({
+                "code": code,
+                "polygon": room["polygon"],
+                "centroid": room["centroid"],
+                "area_m2": {
+                    "value": round(room["area_m2"], 6),
+                    "source": f"DXF|{drawing_key}|{LAYER_ROOM_BOUNDARY}",
+                    "confidence": 0.95,  # derived from polygon
+                },
+                "perimeter_m": {
+                    "value": round(room["perimeter_m"], 6),
+                    "source": f"DXF|{drawing_key}|{LAYER_ROOM_BOUNDARY}",
+                    "confidence": 0.95,
+                },
+                "source_drawing": drawing_key,
+            })
+
+        # ---- Segment counts (per prefix per code) ---------------------
+        # Filter shared 1.PP segment tags only to objekty whose rooms
+        # they actually touch — without spatial logic we accept all
+        # shared tags for every objekt (slight over-count for non-D
+        # but consistent with legacy dxf_segment_counts logic).
+        for tag in parsed["segment_tags"]:
+            prefix = tag["prefix"]
+            code = tag["code"]
+            segment_counts.setdefault(prefix, {})
+            segment_counts[prefix][code] = segment_counts[prefix].get(code, 0) + 1
+
+        # ---- Openings: INSERT + spatial-matched IDEN type_code --------
+        # Group IDEN tags by source_layer for nearest-neighbour search
+        iden_by_layer: dict[str, list[dict]] = {}
+        for tag in parsed["opening_iden_tags"]:
+            iden_by_layer.setdefault(tag["source_layer"], []).append(tag)
+
+        for raw in parsed["raw_openings"]:
             block_name = raw["block_name"]
             block_attrs = parse_block_name(block_name)
+            otvor_type = raw["otvor_type"]
+            iden_layer = OPENING_IDEN_LAYERS.get(otvor_type, "")
+            iden_candidates = iden_by_layer.get(iden_layer, [])
+            spatial_code = find_nearest_iden_code(raw["position"],
+                                                    iden_candidates)
+            type_code = spatial_code or _heuristic_from_block(block_name)
+
             entry = {
-                "id": f"{objekt}.{raw['source_drawing']}."
-                      f"{raw.get('type_code') or 'unknown'}.{len(openings):04d}",
-                "otvor_type": raw["otvor_type"],
-                "type_code": raw.get("type_code"),
-                "source_drawing": raw["source_drawing"],
+                "id": f"{objekt}.{drawing_key}."
+                      f"{type_code or 'unknown'}.{len(openings):04d}",
+                "otvor_type": otvor_type,
+                "type_code": type_code,
+                "type_code_source": (
+                    "spatial_iden" if spatial_code else (
+                        "heuristic_block_name" if type_code else "unresolved"
+                    )
+                ),
+                "source_drawing": drawing_key,
                 "source_layer": raw["source_layer"],
                 "block_name": {
                     "value": block_name,
-                    "source": f"DXF|{raw['source_drawing']}|{raw['source_layer']}",
+                    "source": f"DXF|{drawing_key}|{raw['source_layer']}",
                     "confidence": 1.0,
                 },
                 "block_attrs": block_attrs,
                 "position": raw["position"],
                 "width_mm": {
                     "value": raw["width_mm"],
-                    "source": f"DXF|{raw['source_drawing']}|block_name",
+                    "source": f"DXF|{drawing_key}|block_name",
                     "confidence": 0.95,
                 },
                 "height_mm": {
                     "value": raw["height_mm"],
-                    "source": f"DXF|{raw['source_drawing']}|block_name",
+                    "source": f"DXF|{drawing_key}|block_name",
                     "confidence": 0.95,
                 },
                 "depth_mm": {
                     "value": raw["depth_mm"],
-                    "source": f"DXF|{raw['source_drawing']}|block_name",
+                    "source": f"DXF|{drawing_key}|block_name",
                     "confidence": 0.95,
                 },
             }
@@ -188,25 +262,48 @@ def extract_openings(objekt: str) -> tuple[list[dict], list[dict]]:
                     "level": "warning",
                     "category": "block_name_unparseable",
                     "message": f"Could not parse any attribute from block_name: {block_name!r}",
-                    "source_evidence": f"DXF|{raw['source_drawing']}|opening_id={entry['id']}",
+                    "source_evidence": f"DXF|{drawing_key}|opening_id={entry['id']}",
                 })
 
-    # Coverage gate (per SPEC §5 step 2: ≥90 % parseable)
     if openings:
         parsed_pct = (len(openings) - unparseable_count) / len(openings)
+        type_resolved = sum(1 for op in openings if op["type_code"])
+        type_pct = type_resolved / len(openings) if openings else 0
         warnings.append({
             "level": "info",
-            "category": "step_2_gate",
+            "category": "step_5_gate",
             "message": (
-                f"Step 2 gate: {len(openings) - unparseable_count}/{len(openings)} "
-                f"openings parseable ({parsed_pct:.1%}); "
-                f"target ≥90 %; gate {'PASSED' if parsed_pct >= 0.90 else 'FAILED'}; "
-                f"DXFs read: {drawings_read}."
+                f"Step 5: {drawings_read} DXFs read; "
+                f"openings={len(openings)} ({parsed_pct:.1%} block_attrs "
+                f"parseable, {type_pct:.1%} type_code resolved via "
+                f"*-IDEN spatial match); "
+                f"rooms={len(rooms)}; "
+                f"segment_counts={sum(len(v) for v in segment_counts.values())} "
+                f"distinct codes."
             ),
             "source_evidence": f"sources/{objekt}/dxf/ + sources/shared/dxf/",
         })
 
+    return openings, rooms, segment_counts, warnings
+
+
+# Backward-compat shim — keep `extract_openings()` callable for tests
+# that imported it directly. New full path is `extract_dxf_data()`.
+def extract_openings(objekt: str) -> tuple[list[dict], list[dict]]:
+    openings, _rooms, _sc, warnings = extract_dxf_data(objekt)
     return openings, warnings
+
+
+def _heuristic_from_block(block_name: str) -> str | None:
+    """Fallback when *-IDEN spatial match fails (e.g. ŘEZY drawings)."""
+    from pi_0.extractors.dxf_openings import _heuristic_type_code
+    return _heuristic_type_code(block_name)
+
+
+# Layer constants imported once for source-string consistency
+from pi_0.extractors.dxf_openings import (
+    LAYER_ROOM_BOUNDARY, OPENING_IDEN_LAYERS,
+)
 
 
 def _to_int_mm(value) -> int | None:
@@ -314,7 +411,7 @@ def extract(objekt: str) -> dict:
     See TASK_PHASE_PI_0_SPEC.md §2 for the full schema.
     """
     sources = files_for_objekt(objekt)
-    openings, warnings = extract_openings(objekt)
+    openings, rooms, segment_counts, warnings = extract_dxf_data(objekt)
     doors = extract_doors_for_objekt(TABULKA_DVERI_PATH, objekt)
     skladby = extract_skladby(TABULKA_SKLADEB_PATH)
 
@@ -367,7 +464,7 @@ def extract(objekt: str) -> dict:
 
     return {
         "metadata": build_metadata(objekt, sources),
-        "rooms": [],
+        "rooms": rooms,
         "walls": [],
         "openings": openings,
         "skladby": skladby,
@@ -378,7 +475,7 @@ def extract(objekt: str) -> dict:
         "sheet_metal_TP": [],
         "lintels": [],
         "others_OP": [],
-        "segment_counts": {},
+        "segment_counts": segment_counts,
         "footprint_areas": {},
         "legacy_vv": {},
         "warnings": warnings,
