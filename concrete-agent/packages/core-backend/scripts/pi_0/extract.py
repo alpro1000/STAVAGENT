@@ -53,6 +53,14 @@ TABULKA_SKLADEB_PATH = (
     / "185-01_DPS_D_SO01_100_0030_R01_TABULKA SKLADEB A POVRCHU_R01.xlsx"
 )
 
+# Phase 0.11 manual injects (S.D.16, S.D.42) — sklepní kóje not detected
+# by the DXF spatial parser (boundary edge case). Carry forward from
+# the existing geometric dataset for D-extracts.
+LEGACY_GEOMETRIC_DATASET_PATH = (
+    OUTPUTS_ROOT / "objekt_D_geometric_dataset.json"
+)
+PHASE_0_11_MANUAL_INJECT_CODES = {"S.D.16", "S.D.42"}
+
 
 def _sha256_file(path: Path) -> str:
     h = hashlib.sha256()
@@ -194,10 +202,10 @@ def extract_dxf_data(objekt: str) -> tuple[list[dict], list[dict], dict, list[di
             })
 
         # ---- Segment counts (per prefix per code) ---------------------
-        # Filter shared 1.PP segment tags only to objekty whose rooms
-        # they actually touch — without spatial logic we accept all
-        # shared tags for every objekt (slight over-count for non-D
-        # but consistent with legacy dxf_segment_counts logic).
+        # parse_dxf_full's segment_tags now covers all prefixes including
+        # D/W (legacy dxf_segment_counts treats those as tags too).
+        # opening_iden_tags is kept separately for spatial-matching
+        # opening blocks → type_codes — different concern.
         for tag in parsed["segment_tags"]:
             prefix = tag["prefix"]
             code = tag["code"]
@@ -265,26 +273,88 @@ def extract_dxf_data(objekt: str) -> tuple[list[dict], list[dict], dict, list[di
                     "source_evidence": f"DXF|{drawing_key}|opening_id={entry['id']}",
                 })
 
+    # Step 6: deduplicate openings across drawings
+    deduped_openings = _dedup_openings(openings)
+
     if openings:
         parsed_pct = (len(openings) - unparseable_count) / len(openings)
-        type_resolved = sum(1 for op in openings if op["type_code"])
-        type_pct = type_resolved / len(openings) if openings else 0
+        type_resolved = sum(1 for op in deduped_openings if op["type_code"])
+        type_pct = type_resolved / len(deduped_openings) if deduped_openings else 0
         warnings.append({
             "level": "info",
             "category": "step_5_gate",
             "message": (
                 f"Step 5: {drawings_read} DXFs read; "
-                f"openings={len(openings)} ({parsed_pct:.1%} block_attrs "
-                f"parseable, {type_pct:.1%} type_code resolved via "
-                f"*-IDEN spatial match); "
-                f"rooms={len(rooms)}; "
+                f"raw_openings={len(openings)} ({parsed_pct:.1%} block_attrs "
+                f"parseable); rooms={len(rooms)}; "
                 f"segment_counts={sum(len(v) for v in segment_counts.values())} "
                 f"distinct codes."
             ),
             "source_evidence": f"sources/{objekt}/dxf/ + sources/shared/dxf/",
         })
+        warnings.append({
+            "level": "info",
+            "category": "step_6_dedup",
+            "message": (
+                f"Step 6 dedup: {len(openings)} → {len(deduped_openings)} "
+                f"unique openings ({(1 - len(deduped_openings)/len(openings)):.1%} "
+                f"reduction); type_code resolved on "
+                f"{type_resolved}/{len(deduped_openings)} ({type_pct:.1%}) "
+                f"of unique openings."
+            ),
+            "source_evidence": "DERIVED|cross-drawing dedup by (block_name + position rounded to 500mm)",
+        })
 
-    return openings, rooms, segment_counts, warnings
+    return deduped_openings, rooms, segment_counts, warnings
+
+
+def _dedup_openings(openings: list[dict]) -> list[dict]:
+    """Collapse duplicate opening entries across drawings.
+
+    Strategy: group by (block_name, position rounded to 500 mm). Same
+    physical opening appearing in 1.NP-půdorys + 1.NP-Podhledy carries
+    the same block_name AND coincident coordinates. ŘEZY/POHLEDY
+    drawings project the door onto a different coordinate system, so
+    they don't collide with půdorys → remain as separate "view" entries.
+
+    Within a group:
+    - Pick the entry that resolved a type_code (preferred); fall back
+      to first.
+    - Aggregate `source_drawings` from all duplicates as a list.
+    - Confidence on `block_name` bumped to 1.0 if multi-drawing match
+      (cross-validated), 0.95 if single-drawing.
+    """
+    groups: dict[tuple[str, int, int], list[dict]] = {}
+    for op in openings:
+        bn = op["block_name"]["value"]
+        pos = op.get("position") or [0.0, 0.0]
+        key = (
+            bn,
+            int(round(pos[0] / 500.0)) * 500 if pos else 0,
+            int(round(pos[1] / 500.0)) * 500 if pos else 0,
+        )
+        groups.setdefault(key, []).append(op)
+
+    deduped: list[dict] = []
+    for group in groups.values():
+        # Prefer entry with type_code populated
+        primary = next((op for op in group if op.get("type_code")), group[0])
+        primary = dict(primary)  # shallow copy so we can mutate
+        primary["source_drawings"] = sorted({op["source_drawing"] for op in group})
+        primary["instance_count"] = len(group)
+        # Strengthen block_name confidence when seen in 2+ drawings
+        if len(group) > 1:
+            primary["block_name"] = {**primary["block_name"], "confidence": 1.0}
+        deduped.append(primary)
+
+    # Stable sort by source_drawing + position for deterministic output
+    deduped.sort(key=lambda op: (
+        op.get("source_drawing", ""),
+        op.get("position", [0, 0])[0],
+        op.get("position", [0, 0])[1],
+        op.get("block_name", {}).get("value", ""),
+    ))
+    return deduped
 
 
 # Backward-compat shim — keep `extract_openings()` callable for tests
@@ -304,6 +374,54 @@ def _heuristic_from_block(block_name: str) -> str | None:
 from pi_0.extractors.dxf_openings import (
     LAYER_ROOM_BOUNDARY, OPENING_IDEN_LAYERS,
 )
+
+
+def _phase_0_11_inject_rooms(rooms: list[dict]) -> list[dict]:
+    """Carry forward S.D.16 + S.D.42 from legacy dataset (D-only).
+
+    Mutates `rooms` in place; returns the list of newly injected room
+    entries (for warning generation). Uses confidence 0.95 (legacy
+    pipeline fallback) and source 'MANUAL|phase_0_11_inject_from_XLSX'.
+    """
+    if not LEGACY_GEOMETRIC_DATASET_PATH.exists():
+        return []
+    existing_codes = {r["code"] for r in rooms}
+    needed = PHASE_0_11_MANUAL_INJECT_CODES - existing_codes
+    if not needed:
+        return []
+    try:
+        import json as _json
+        with open(LEGACY_GEOMETRIC_DATASET_PATH, encoding="utf-8") as f:
+            legacy = _json.load(f)
+    except (OSError, _json.JSONDecodeError):
+        return []
+
+    injected: list[dict] = []
+    src = f"MANUAL|phase_0_11_inject_from_XLSX|{LEGACY_GEOMETRIC_DATASET_PATH.name}"
+    for legacy_room in legacy.get("rooms", []):
+        code = legacy_room.get("code")
+        if code not in needed:
+            continue
+        injected_entry = {
+            "code": code,
+            "polygon": [],          # no polygon — not in DXF
+            "centroid": legacy_room.get("code_position") or [0.0, 0.0],
+            "area_m2": {
+                "value": legacy_room.get("plocha_podlahy_m2"),
+                "source": src,
+                "confidence": 0.95,
+            },
+            "perimeter_m": {
+                "value": legacy_room.get("obvod_m"),
+                "source": src,
+                "confidence": 0.95,
+            },
+            "source_drawing": "PHASE_0_11_manual_inject_from_XLSX",
+            "manual_injection": True,
+        }
+        rooms.append(injected_entry)
+        injected.append(injected_entry)
+    return injected
 
 
 def _to_int_mm(value) -> int | None:
@@ -415,6 +533,23 @@ def extract(objekt: str) -> dict:
     doors = extract_doors_for_objekt(TABULKA_DVERI_PATH, objekt)
     skladby = extract_skladby(TABULKA_SKLADEB_PATH)
 
+    # Step 6: Phase 0.11 manual inject carryforward (D-only)
+    if objekt == "D":
+        injected = _phase_0_11_inject_rooms(rooms)
+        if injected:
+            warnings.append({
+                "level": "info",
+                "category": "step_6_phase_0_11_inject",
+                "message": (
+                    f"Phase 0.11 carryforward: appended {len(injected)} rooms "
+                    f"({', '.join(sorted(r['code'] for r in injected))}) "
+                    f"from outputs/objekt_D_geometric_dataset.json — these "
+                    f"sklepní kóje are missing from DXF parser output due "
+                    f"to a documented boundary edge case."
+                ),
+                "source_evidence": "MANUAL|phase_0_11_inject_from_XLSX",
+            })
+
     # Step 4: skladby coverage report.
     skladby_total = sum(len(by_kind) for by_kind in skladby.values())
     skladby_kinds = ",".join(sorted(skladby.keys())) or "<none>"
@@ -494,6 +629,9 @@ def main(argv: list[str] | None = None) -> int:
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--objekt", choices=VALID_OBJEKTY, help="Single objekt")
     group.add_argument("--all", action="store_true", help="Run A + B + C + D")
+    parser.add_argument("--validate-vs-legacy", action="store_true",
+                         help="After D extract, compare to Phase 0.x legacy "
+                              "outputs and write validation_report_D.{md,json}")
     args = parser.parse_args(argv)
 
     targets = list(VALID_OBJEKTY) if args.all else [args.objekt]
@@ -502,6 +640,29 @@ def main(argv: list[str] | None = None) -> int:
         path = write_output(obj, data)
         n_sources = len(data["metadata"]["source_files"])
         print(f"  {obj}: {n_sources} source files → {path.relative_to(REPO_ROOT)}")
+
+    if args.validate_vs_legacy:
+        if "D" not in targets:
+            print("  --validate-vs-legacy currently only supports objekt D",
+                  file=__import__("sys").stderr)
+            return 0
+        from pi_0.validation.diff_vs_legacy import (
+            run_validation_d, render_report_md,
+        )
+        d_extract = OUTPUTS_ROOT / "master_extract_D.json"
+        report = run_validation_d(d_extract, OUTPUTS_ROOT)
+        # Write JSON
+        json_path = OUTPUTS_ROOT / "validation_report_D.json"
+        write_canonical(json_path, report)
+        # Write MD
+        md_path = OUTPUTS_ROOT / "validation_report_D.md"
+        md_path.write_text(render_report_md(report) + "\n", encoding="utf-8")
+        t = report["totals"]
+        gate = "PASSED" if report["gate_passed"] else "FAILED"
+        print(f"\n  validation_report_D: MATCH={t['match']} CHANGED={t['changed']} "
+              f"NEW={t['new']} MISSING={t['missing']} → gate {gate}")
+        print(f"  → {md_path.relative_to(REPO_ROOT)}")
+        print(f"  → {json_path.relative_to(REPO_ROOT)}")
     return 0
 
 

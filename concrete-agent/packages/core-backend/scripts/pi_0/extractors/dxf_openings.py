@@ -86,6 +86,29 @@ IDEN_MATCH_THRESHOLD_MM = 1500
 # RF11, D04, D21, W03, etc. (1–3 letter prefix + 2–3 digits)
 SEGMENT_TAG_RE = re.compile(r"\b([A-Z]{1,3})(\d{2,3})\b")
 
+# Match WHOLE TEXT entity contents (anchored, like legacy parser):
+SINGLE_TAG_RE = re.compile(r"^([A-Z]{1,3})(\d{2,3})$")
+PREFIX_ONLY_RE = re.compile(r"^([A-Z]{1,3})$")
+DIGITS_ONLY_RE = re.compile(r"^(\d{1,3})$")
+
+# Layers carrying segment tags (per legacy dxf_parser.py SEGMENT_TAG_LAYERS
+# + opening IDEN layers — D## / W## codes also live there as split tags).
+LEGACY_SEGMENT_TAG_LAYERS = {
+    "A-WALL-____-IDEN",
+    "A-CLNG-____-IDEN",
+    "A-FLOR-HRAL-IDEN",
+    "A-FLOR-____-IDEN",
+    "A-GENM-____-IDEN",
+    "E-LITE-EQPM-IDEN",
+    # Opening IDEN layers — host D## (door) + W## (window) split tags
+    "A-DOOR-____-IDEN",
+    "A-GLAZ-____-IDEN",
+}
+
+# Split-tag spatial-join tolerances (mm) — match legacy dxf_parser.py.
+TAG_DY_MAX_MM = 250  # vertical max (digits BELOW prefix)
+TAG_DX_MAX_MM = 80   # horizontal max
+
 # ArchiCAD generates anonymous blocks with hex prefixes like `*U123` for
 # block reference instances; the actual named block is the parent. Skip
 # anonymous unless the block_name itself encodes attrs (rare).
@@ -368,6 +391,8 @@ def parse_dxf_full(dxf_path: Path) -> dict:
     opening_iden_tags: list[dict] = []
     segment_tags: list[dict] = []
     room_code_texts: list[dict] = []   # collected separately, joined to rooms below
+    # For two-pass segment-tag extraction (single + split_join):
+    iden_text_by_layer: dict[str, list[tuple[str, list[float]]]] = {}
 
     for entity in msp:
         layer = entity.dxf.layer if hasattr(entity.dxf, "layer") else None
@@ -419,45 +444,32 @@ def parse_dxf_full(dxf_path: Path) -> dict:
             continue
 
         # ---- Opening IDEN labels (D##/W## text near INSERT) -----------
+        # NOTE: do NOT `continue` — same TEXT entities also feed
+        # segment_tags pass below (legacy dxf_segment_counts treats
+        # D/W codes as tags too).
         if etype in ("MTEXT", "TEXT") and layer in OPENING_IDEN_LAYERS.values():
             text = _entity_text(entity)
             pos = _entity_position(entity)
-            if not text or not pos:
-                continue
-            m = SEGMENT_TAG_RE.search(text)
-            if not m:
-                continue
-            prefix, num = m.group(1), m.group(2)
-            if prefix in ("D", "W"):
-                opening_iden_tags.append({
-                    "code": f"{prefix}{num}",
-                    "position": pos,
-                    "source_layer": layer,
-                })
-            continue
+            if text and pos:
+                m = SEGMENT_TAG_RE.search(text)
+                if m:
+                    prefix, num = m.group(1), m.group(2)
+                    if prefix in ("D", "W"):
+                        opening_iden_tags.append({
+                            "code": f"{prefix}{num}",
+                            "position": pos,
+                            "source_layer": layer,
+                        })
+            # fall through — segment_tags pass below picks up D/W too
 
-        # ---- Segment tags (WF##, CF##, F##, OP##, LI##, LP##, TP##) ---
-        if etype in ("MTEXT", "TEXT") and layer:
+        # ---- Collect IDEN text for segment-tag two-pass extraction ----
+        # (single + split_join, matching legacy dxf_parser.py exactly).
+        if (etype in ("MTEXT", "TEXT")
+                and layer in LEGACY_SEGMENT_TAG_LAYERS):
             text = _entity_text(entity)
             pos = _entity_position(entity)
-            if not text or not pos:
-                continue
-            for m in SEGMENT_TAG_RE.finditer(text):
-                prefix, num = m.group(1), m.group(2)
-                # Skip D/W (handled above)
-                if prefix in ("D", "W"):
-                    continue
-                # Recognised prefixes only (skip noise like CW, FM, etc.
-                # — those are out of current scope)
-                if prefix not in {"WF", "CF", "F", "FF", "OP",
-                                   "LI", "LP", "TP", "RF"}:
-                    continue
-                segment_tags.append({
-                    "code": f"{prefix}{num}",
-                    "prefix": prefix,
-                    "position": pos,
-                    "source_layer": layer,
-                })
+            if text and pos:
+                iden_text_by_layer.setdefault(layer, []).append((text, pos))
 
     # Spatial-join room codes ↔ polygons via point-in-polygon
     for room in rooms:
@@ -466,6 +478,59 @@ def parse_dxf_full(dxf_path: Path) -> dict:
             if _point_in_polygon(rc["position"], room["polygon"]):
                 room["code"] = rc["code"]
                 break
+
+    # Two-pass segment-tag extraction per layer (legacy-compatible):
+    #   pass A: TEXT entities matching `^[A-Z]{1,3}\d{2,3}$` (whole text)
+    #   pass B: PREFIX text above DIGITS text spatially joined
+    #             (LP / 09 → LP09)
+    for layer, items in iden_text_by_layer.items():
+        prefixes_only: list[tuple[str, float, float]] = []
+        digits_only: list[tuple[str, float, float]] = []
+        for text, pos in items:
+            x, y = pos[0], pos[1]
+            m = SINGLE_TAG_RE.match(text)
+            if m:
+                segment_tags.append({
+                    "code": text,
+                    "prefix": m.group(1),
+                    "position": pos,
+                    "source_layer": layer,
+                    "extraction": "single_text",
+                })
+                continue
+            m = PREFIX_ONLY_RE.match(text)
+            if m:
+                prefixes_only.append((text, x, y))
+                continue
+            m = DIGITS_ONLY_RE.match(text)
+            if m:
+                digits_only.append((text, x, y))
+        # Spatial join: prefix above digits within (DX_MAX, DY_MAX)
+        used: set[int] = set()
+        for ptext, px, py in prefixes_only:
+            best_i = -1
+            best_d = float("inf")
+            for i, (dtext, dx_, dy_) in enumerate(digits_only):
+                if i in used:
+                    continue
+                dx = abs(dx_ - px)
+                dy = py - dy_  # prefix expected above digits
+                if 0 < dy <= TAG_DY_MAX_MM and dx <= TAG_DX_MAX_MM:
+                    d = dx + dy
+                    if d < best_d:
+                        best_d = d
+                        best_i = i
+            if best_i >= 0:
+                used.add(best_i)
+                dtext, dx_, dy_ = digits_only[best_i]
+                code = f"{ptext}{int(dtext):02d}"
+                segment_tags.append({
+                    "code": code,
+                    "prefix": ptext,
+                    "position": [round(float(px), 6), round(float(dy_), 6)],
+                    "source_layer": layer,
+                    "extraction": "split_join",
+                })
 
     return {
         "drawing_key": drawing_key,
