@@ -9171,7 +9171,7 @@
   "lintels": [],
   "locksmith": [],
   "metadata": {
-    "extracted_at": "2026-05-08T20:12:01+00:00",
+    "extracted_at": "2026-05-09T05:26:40+00:00",
     "extractor_version": "0.0.1",
     "objekt": "C",
     "schema_version": 1,
@@ -34420,11 +34420,1854 @@
       "source_evidence": "sources/shared/xlsx/...0030_*.xlsx"
     },
     {
+      "category": "step_7_gate",
+      "level": "info",
+      "message": "Step 7: 17 window types lifted from Tabulka 0042; 0 of 221 openings cross-linked by W## type_code.",
+      "source_evidence": "sources/shared/xlsx/...0042_*.xlsx"
+    },
+    {
       "category": "step_3_gate",
       "level": "info",
       "message": "Step 3: 58 door rows lifted from Tabulka 0041; 63 of 221 openings cross-linked by (type_code, width_mm).",
       "source_evidence": "sources/shared/xlsx/...0041_*.xlsx"
     }
   ],
-  "windows": []
+  "windows": [
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=17",
+        "value": "-"
+      },
+      "id": "window.W01.row8",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=1",
+        "value": "W01"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=20",
+        "value": 16
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=3",
+        "value": "1000"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8",
+        "value": 8
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=4",
+        "value": "2400"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=8,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=16",
+        "value": "RC3"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=17",
+        "value": "-"
+      },
+      "id": "window.W02.row9",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=1",
+        "value": "W02"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=20",
+        "value": 3
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=3",
+        "value": "1000"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9",
+        "value": 9
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=4",
+        "value": "3200"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=9,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=17",
+        "value": "-"
+      },
+      "id": "window.W03.row10",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=1",
+        "value": "W03"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=20",
+        "value": 49
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=3",
+        "value": "1000"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10",
+        "value": 10
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=4",
+        "value": "1500"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=10,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=17",
+        "value": "-"
+      },
+      "id": "window.W04.row11",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=1",
+        "value": "W04"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=20",
+        "value": 12
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=3",
+        "value": "1000"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11",
+        "value": 11
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=4",
+        "value": "2100"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=11,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=17",
+        "value": "-"
+      },
+      "id": "window.W05.row12",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=1",
+        "value": "W05"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=20",
+        "value": 28
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=3",
+        "value": "625"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12",
+        "value": 12
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=4",
+        "value": "1000"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=12,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=17",
+        "value": "-"
+      },
+      "id": "window.W06.row13",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=1",
+        "value": "W06"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=20",
+        "value": 1
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=3",
+        "value": "875"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13",
+        "value": 13
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=4",
+        "value": "2400"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=13,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=17",
+        "value": "-"
+      },
+      "id": "window.W07.row14",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=1",
+        "value": "W07"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=20",
+        "value": 1
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=3",
+        "value": "2000"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14",
+        "value": 14
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=4",
+        "value": "1150"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=14,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=17",
+        "value": "-"
+      },
+      "id": "window.W18.row15",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=1",
+        "value": "W18"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=20",
+        "value": 1
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=3",
+        "value": "1250"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15",
+        "value": 15
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=4",
+        "value": "2400"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=15,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=17",
+        "value": "-"
+      },
+      "id": "window.W19.row16",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=1",
+        "value": "W19"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=20",
+        "value": 1
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=3",
+        "value": "1250"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16",
+        "value": 16
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=4",
+        "value": "2100"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=16,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=16",
+        "value": "RC2"
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=17",
+        "value": "-"
+      },
+      "id": "window.W20.row17",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=1",
+        "value": "W20"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=14",
+        "value": "0.77"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=5",
+        "value": "O1"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=20",
+        "value": 1
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=15",
+        "value": "40"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=13",
+        "value": "0.6"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=3",
+        "value": "750"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17",
+        "value": 17
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=2",
+        "value": "AL1"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=12",
+        "value": "0.62"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=4",
+        "value": "2100"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=17,col=6",
+        "value": "S1"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=11",
+        "value": "Z1"
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=17",
+        "value": "-"
+      },
+      "id": "window.W81.row18",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=1",
+        "value": "W81"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=14",
+        "value": "0.62"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=5",
+        "value": "O3"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=20",
+        "value": 34
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=15",
+        "value": "35"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=13",
+        "value": "0.46"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=3",
+        "value": "942"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18",
+        "value": 18
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=7",
+        "value": "K2"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=2",
+        "value": "AL2"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=12",
+        "value": "0.9"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=4",
+        "value": "1398"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=18,col=6",
+        "value": "S3"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=11",
+        "value": "Z1"
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=17",
+        "value": "-"
+      },
+      "id": "window.W82.row19",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=1",
+        "value": "W82"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=14",
+        "value": "0.62"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=5",
+        "value": "O3"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=20",
+        "value": 19
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=15",
+        "value": "35"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=13",
+        "value": "0.46"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=3",
+        "value": "550"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19",
+        "value": 19
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=7",
+        "value": "K2"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=2",
+        "value": "AL2"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=12",
+        "value": "0.9"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=4",
+        "value": "778"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=19,col=6",
+        "value": "S3"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=17",
+        "value": "-"
+      },
+      "id": "window.W83.row20",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=1",
+        "value": "W83"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=14",
+        "value": "0.62"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=5",
+        "value": "O5"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=20",
+        "value": 8
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=15",
+        "value": "37"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=13",
+        "value": "0.44"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=3",
+        "value": "940"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20",
+        "value": 20
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=7",
+        "value": "K1"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=2",
+        "value": "AL3"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=12",
+        "value": "0.9"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=4",
+        "value": "1370"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=20,col=6",
+        "value": "S4"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=11",
+        "value": "Z1"
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=17",
+        "value": "-"
+      },
+      "id": "window.W84.row21",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=1",
+        "value": "W84"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=14",
+        "value": "0.62"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=5",
+        "value": "O3"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=20",
+        "value": 6
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=15",
+        "value": "35"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=13",
+        "value": "0.46"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=3",
+        "value": "942"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21",
+        "value": 21
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=7",
+        "value": "K2"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=2",
+        "value": "AL2"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=12",
+        "value": "0.9"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=4",
+        "value": "1178"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=21,col=6",
+        "value": "S3"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=11",
+        "value": "Z1"
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=17",
+        "value": "-"
+      },
+      "id": "window.W85.row22",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=1",
+        "value": "W85"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=14",
+        "value": "0.62"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=5",
+        "value": "O3"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=20",
+        "value": 4
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=15",
+        "value": "35"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=13",
+        "value": "0.46"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=3",
+        "value": "1140"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22",
+        "value": 22
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=7",
+        "value": "K2"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=2",
+        "value": "AL2"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=12",
+        "value": "0.9"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=4",
+        "value": "1398"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=22,col=6",
+        "value": "S3"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=11",
+        "value": "Z1"
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=17",
+        "value": "-"
+      },
+      "id": "window.W86.row23",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=1",
+        "value": "W86"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=14",
+        "value": "0.62"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=5",
+        "value": "O3"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=10",
+        "value": "EP1"
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=9",
+        "value": "IP1"
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=20",
+        "value": 1
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=19",
+        "value": null
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=15",
+        "value": "35"
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=13",
+        "value": "0.46"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=3",
+        "value": "780"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23",
+        "value": 23
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=8",
+        "value": "T1"
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=7",
+        "value": "K2"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=2",
+        "value": "AL2"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=12",
+        "value": "0.9"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=4",
+        "value": "1398"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=23,col=6",
+        "value": "S3"
+      }
+    },
+    {
+      "acs": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=18",
+        "value": "-"
+      },
+      "bezpecn_odolnost": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=16",
+        "value": null
+      },
+      "doplnky": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=11",
+        "value": null
+      },
+      "eps_fas": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=17",
+        "value": "-"
+      },
+      "id": "window.W91.row24",
+      "kod": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=1",
+        "value": "W91"
+      },
+      "lt_transmission": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=14",
+        "value": "0"
+      },
+      "otvirani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=5",
+        "value": "O5"
+      },
+      "parapet_vnejsi": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=10",
+        "value": null
+      },
+      "parapet_vnitrni": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=9",
+        "value": null
+      },
+      "pocet": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=20",
+        "value": 4
+      },
+      "poznamka": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=19",
+        "value": "Plastový střešní výlez pro otvor 900x1200mm"
+      },
+      "rw_site_db": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=15",
+        "value": null
+      },
+      "sf_g_value": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=13",
+        "value": "0"
+      },
+      "sirka_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=3",
+        "value": "1080"
+      },
+      "tabulka_oken_row": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24",
+        "value": 24
+      },
+      "tesnenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=8",
+        "value": null
+      },
+      "typ_kovani": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=7",
+        "value": "K2"
+      },
+      "typ_okna": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=2",
+        "value": "AL4"
+      },
+      "uw": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=12",
+        "value": "0.93"
+      },
+      "vyska_mm": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=4",
+        "value": "1380"
+      },
+      "zasklenie": {
+        "confidence": 1.0,
+        "source": "XLSX|shared/xlsx/185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx|tabulka|row=24,col=6",
+        "value": "S5"
+      }
+    }
+  ]
 }

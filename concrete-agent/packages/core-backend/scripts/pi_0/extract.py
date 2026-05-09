@@ -29,6 +29,7 @@ from pi_0.extractors.dxf_openings import (
     parse_dxf_full,
 )
 from pi_0.extractors.xlsx_dvere import extract_doors_for_objekt
+from pi_0.extractors.xlsx_okna import extract_windows
 from pi_0.extractors.xlsx_skladby import extract_skladby
 from pi_0.schema import write_canonical
 
@@ -51,6 +52,12 @@ TABULKA_DVERI_PATH = (
 TABULKA_SKLADEB_PATH = (
     SOURCES_ROOT / "shared" / "xlsx"
     / "185-01_DPS_D_SO01_100_0030_R01_TABULKA SKLADEB A POVRCHU_R01.xlsx"
+)
+
+# Tabulka 0042 — windows. Komplex-wide catalogue (W## type definitions).
+TABULKA_OKEN_PATH = (
+    SOURCES_ROOT / "shared" / "xlsx"
+    / "185-01_DPS_D_SO01_100_0042_TABULKA OKEN.xlsx"
 )
 
 # Phase 0.11 manual injects (S.D.16, S.D.42) — sklepní kóje not detected
@@ -424,6 +431,44 @@ def _phase_0_11_inject_rooms(rooms: list[dict]) -> list[dict]:
     return injected
 
 
+def _cross_link_openings_to_windows(openings: list[dict], windows: list[dict]) -> int:
+    """Annotate each window-type opening with `window_match` if Tabulka 0042
+    has a row with the same W## code. Returns the link count.
+
+    Match heuristic: same `type_code` (W##). Tabulka 0042 has one row per
+    window type (catalogue), so matching is by code alone — width may
+    differ across instances of the same type (e.g. W01 with Počet=16 has
+    multiple physical instances at varied geometry — Tabulka still gives
+    one canonical W×H per type).
+    """
+    if not openings or not windows:
+        return 0
+    win_by_code: dict[str, dict] = {}
+    for w in windows:
+        kod = w.get("kod", {}).get("value")
+        if isinstance(kod, str):
+            win_by_code[kod] = w
+
+    linked = 0
+    for op in openings:
+        tc = op.get("type_code")
+        if not tc or not tc.startswith("W"):
+            continue
+        w = win_by_code.get(tc)
+        if w is None:
+            continue
+        op["window_match"] = {
+            "value": {
+                "kod": tc,
+                "tabulka_oken_row": w["tabulka_oken_row"]["value"],
+            },
+            "source": "DERIVED|opening.type_code matches windows[].kod",
+            "confidence": 0.85,
+        }
+        linked += 1
+    return linked
+
+
 def _to_int_mm(value) -> int | None:
     """Coerce a width/height cell — Tabulka cells are sometimes str, sometimes
     int. Returns mm as int, or None if non-numeric."""
@@ -531,6 +576,7 @@ def extract(objekt: str) -> dict:
     sources = files_for_objekt(objekt)
     openings, rooms, segment_counts, warnings = extract_dxf_data(objekt)
     doors = extract_doors_for_objekt(TABULKA_DVERI_PATH, objekt)
+    windows = extract_windows(TABULKA_OKEN_PATH)
     skladby = extract_skladby(TABULKA_SKLADEB_PATH)
 
     # Step 6: Phase 0.11 manual inject carryforward (D-only)
@@ -574,6 +620,30 @@ def extract(objekt: str) -> dict:
             "source_evidence": "sources/shared/xlsx/...0030_*.xlsx",
         })
 
+    # Step 7: windows extraction + cross-link openings → windows by W## code
+    if windows:
+        win_link_count = _cross_link_openings_to_windows(openings, windows)
+        warnings.append({
+            "level": "info",
+            "category": "step_7_gate",
+            "message": (
+                f"Step 7: {len(windows)} window types lifted from Tabulka "
+                f"0042; {win_link_count} of {len(openings)} openings cross-"
+                f"linked by W## type_code."
+            ),
+            "source_evidence": "sources/shared/xlsx/...0042_*.xlsx",
+        })
+    else:
+        warnings.append({
+            "level": "warning",
+            "category": "missing_tabulka_oken",
+            "message": (
+                "sources/shared/xlsx/...0042 TABULKA OKEN.xlsx absent or "
+                "empty; windows[] is empty."
+            ),
+            "source_evidence": str(TABULKA_OKEN_PATH.relative_to(REPO_ROOT)),
+        })
+
     if not doors:
         warnings.append({
             "level": "warning",
@@ -604,7 +674,7 @@ def extract(objekt: str) -> dict:
         "openings": openings,
         "skladby": skladby,
         "doors": doors,
-        "windows": [],
+        "windows": windows,
         "glass_partitions": [],
         "locksmith": [],
         "sheet_metal_TP": [],
