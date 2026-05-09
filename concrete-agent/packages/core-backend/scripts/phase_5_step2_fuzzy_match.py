@@ -158,16 +158,43 @@ def main() -> None:
             "alternatives": alts[1:],
         })
 
-    # Stats
+    # Stats + hard-fail bucket.
+    # PROBE 8 hardening (2026-05-08): scores < SCORE_LOW used to be a silent
+    # "best match anyway" — that's how D06/W81/W82/W84/CW11/CW12 got dropped
+    # (best score 0.113–0.227). Now: any candidate below SCORE_LOW is
+    # explicitly tagged 'CHYBA_NEMOHL_PROPOJIT' on the candidate record AND
+    # mirrored into manual_review_required[] for downstream operator review.
     score_buckets = Counter()
+    manual_review_required: list[dict] = []
     for c in candidates:
         s = c["best_match"]["composite_score"]
         if s >= SCORE_HIGH:
+            c["match_status"] = "CONFIDENT"
             score_buckets["confident"] += 1
         elif s >= SCORE_LOW:
+            c["match_status"] = "POSSIBLE"
             score_buckets["possible"] += 1
         else:
+            c["match_status"] = "CHYBA_NEMOHL_PROPOJIT"
             score_buckets["no_match"] += 1
+            manual_review_required.append({
+                "old_idx": c["old_idx"],
+                "old_code": c["old_code"],
+                "old_popis": c["old_popis"],
+                "old_MJ": c["old_MJ"],
+                "old_section": c["old_section"],
+                "old_mnozstvi_komplex": c["old_mnozstvi_komplex"],
+                "best_score": c["best_match"]["composite_score"],
+                "best_match_new_id": c["best_match"]["new_item_id"],
+                "best_match_new_popis": c["best_match"]["new_popis"],
+                "reason": (
+                    f"composite_score={c['best_match']['composite_score']} "
+                    f"< SCORE_LOW={SCORE_LOW}; matcher could not find a "
+                    f"reliable counterpart in the new D pool. Flagged "
+                    f"explicitly to prevent silent drop (PROBE 8 class)."
+                ),
+                "status": "CHYBA_NEMOHL_PROPOJIT",
+            })
 
     out = {
         "metadata": {
@@ -177,12 +204,20 @@ def main() -> None:
             "weights": {"popis": 0.50, "mj": 0.20, "section": 0.15, "volume": 0.15},
             "d_share_assumption": D_SHARE,
             "score_distribution": dict(score_buckets),
+            "manual_review_count": len(manual_review_required),
         },
         "candidates": candidates,
+        "manual_review_required": manual_review_required,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\nWrote {OUT} ({OUT.stat().st_size:,} bytes)")
     print(f"Score distribution: {dict(score_buckets)}")
+    if manual_review_required:
+        print(
+            f"\n⚠️  {len(manual_review_required)} item(s) flagged "
+            f"CHYBA_NEMOHL_PROPOJIT (score < {SCORE_LOW}) — see "
+            f"manual_review_required[] in {OUT.name}"
+        )
 
 
 if __name__ == "__main__":
