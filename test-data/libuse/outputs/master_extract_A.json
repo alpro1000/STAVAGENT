@@ -11857,7 +11857,7 @@
   "lintels": [],
   "locksmith": [],
   "metadata": {
-    "extracted_at": "2026-05-09T05:26:23+00:00",
+    "extracted_at": "2026-05-09T05:39:44+00:00",
     "extractor_version": "0.0.1",
     "objekt": "A",
     "schema_version": 1,
@@ -35399,12 +35399,6 @@
       "OP96": 5,
       "OP99": 3
     },
-    "OS": {
-      "OS04": 11,
-      "OS20": 11,
-      "OS21": 12,
-      "OS23": 38
-    },
     "TP": {
       "TP01": 2,
       "TP04": 8,
@@ -38676,7 +38670,7 @@
     {
       "category": "step_5_gate",
       "level": "info",
-      "message": "Step 5: 12 DXFs read; raw_openings=328 (100.0% block_attrs parseable); rooms=80; segment_counts=123 distinct codes.",
+      "message": "Step 5: 12 DXFs read; raw_openings=328 (100.0% block_attrs parseable); rooms=80; segment_counts=119 distinct codes.",
       "source_evidence": "sources/A/dxf/ + sources/shared/dxf/"
     },
     {

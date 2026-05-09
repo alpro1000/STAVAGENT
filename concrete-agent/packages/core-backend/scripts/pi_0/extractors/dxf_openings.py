@@ -93,13 +93,17 @@ DIGITS_ONLY_RE = re.compile(r"^(\d{1,3})$")
 
 # Layers carrying segment tags (per legacy dxf_parser.py SEGMENT_TAG_LAYERS
 # + opening IDEN layers — D## / W## codes also live there as split tags).
+#
+# NOTE: E-LITE-EQPM-IDEN (lighting fixtures, electrical domain) is
+# DELIBERATELY EXCLUDED — those are out of finishing scope per
+# dxf_full_inventory.md classification, and produce 4 OS## codes / 85
+# instances of pure noise in segment_counts. Keep finishing-only layers.
 LEGACY_SEGMENT_TAG_LAYERS = {
     "A-WALL-____-IDEN",
     "A-CLNG-____-IDEN",
     "A-FLOR-HRAL-IDEN",
     "A-FLOR-____-IDEN",
     "A-GENM-____-IDEN",
-    "E-LITE-EQPM-IDEN",
     # Opening IDEN layers — host D## (door) + W## (window) split tags
     "A-DOOR-____-IDEN",
     "A-GLAZ-____-IDEN",

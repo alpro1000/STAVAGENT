@@ -9,7 +9,7 @@
 |---|---:|---|
 | MATCH    |    373 | Π.0a value == legacy |
 | CHANGED  |      0 | different value (investigate) |
-| NEW      |     11 | Π.0a found, legacy missed (gap closed) |
+| NEW      |      7 | Π.0a found, legacy missed (gap closed) |
 | MISSING  |      0 | legacy has, Π.0a missed (must be 0 to advance) |
 
 ## Section: `rooms`
@@ -30,7 +30,7 @@
 
 - MATCH: 90
 - CHANGED: 0
-- NEW: 11
+- NEW: 7
 - MISSING: 0
 
 ### Per prefix
@@ -44,7 +44,6 @@
 | `LI` | 12 | 0 | 0 |
 | `LP` | 9 | 0 | 0 |
 | `OP` | 33 | 0 | 0 |
-| `OS` | 0 | 4 | 0 |
 | `TP` | 7 | 0 | 0 |
 | `W` | 6 | 3 | 0 |
 | `WF` | 6 | 0 | 0 |

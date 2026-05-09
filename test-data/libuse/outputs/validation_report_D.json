@@ -26,7 +26,7 @@
       "changed": 0,
       "match": 90,
       "missing": 0,
-      "new": 11,
+      "new": 7,
       "per_prefix": {
         "CF": {
           "match": 3,
@@ -70,12 +70,6 @@
           "missing_details": [],
           "new": 0
         },
-        "OS": {
-          "match": 0,
-          "missing": 0,
-          "missing_details": [],
-          "new": 4
-        },
         "TP": {
           "match": 7,
           "missing": 0,
@@ -111,6 +105,6 @@
     "changed": 0,
     "match": 373,
     "missing": 0,
-    "new": 11
+    "new": 7
   }
 }
