@@ -1,0 +1,110 @@
+{
+  "extract_path": "master_extract_D.json",
+  "gate_passed": true,
+  "objekt": "D",
+  "sections": [
+    {
+      "changed": 0,
+      "changed_details": [],
+      "match": 111,
+      "missing": 0,
+      "missing_details": [],
+      "new": 0,
+      "new_details": [],
+      "section": "rooms"
+    },
+    {
+      "changed": 0,
+      "match": 102,
+      "missing": 0,
+      "missing_details": [],
+      "new": 0,
+      "new_details": [],
+      "section": "doors"
+    },
+    {
+      "changed": 0,
+      "match": 90,
+      "missing": 0,
+      "new": 7,
+      "per_prefix": {
+        "CF": {
+          "match": 3,
+          "missing": 0,
+          "missing_details": [],
+          "new": 0
+        },
+        "CW": {
+          "match": 0,
+          "missing": 0,
+          "missing_details": [],
+          "new": 2
+        },
+        "D": {
+          "match": 14,
+          "missing": 0,
+          "missing_details": [],
+          "new": 1
+        },
+        "F": {
+          "match": 0,
+          "missing": 0,
+          "missing_details": [],
+          "new": 1
+        },
+        "LI": {
+          "match": 12,
+          "missing": 0,
+          "missing_details": [],
+          "new": 0
+        },
+        "LP": {
+          "match": 9,
+          "missing": 0,
+          "missing_details": [],
+          "new": 0
+        },
+        "OP": {
+          "match": 33,
+          "missing": 0,
+          "missing_details": [],
+          "new": 0
+        },
+        "TP": {
+          "match": 7,
+          "missing": 0,
+          "missing_details": [],
+          "new": 0
+        },
+        "W": {
+          "match": 6,
+          "missing": 0,
+          "missing_details": [],
+          "new": 3
+        },
+        "WF": {
+          "match": 6,
+          "missing": 0,
+          "missing_details": [],
+          "new": 0
+        }
+      },
+      "section": "segment_counts"
+    },
+    {
+      "changed": 0,
+      "match": 70,
+      "missing": 0,
+      "missing_details": [],
+      "new": 0,
+      "new_details": [],
+      "section": "skladby"
+    }
+  ],
+  "totals": {
+    "changed": 0,
+    "match": 373,
+    "missing": 0,
+    "new": 7
+  }
+}
