@@ -1,39 +1,179 @@
 # TASK Π.1 — Work List Generator (per-objekt Excel deliverable for A/B/C)
 
-**Status:** Part 1 SPEC — awaiting user approval before Part 2 implementation
-**Date:** 2026-05-09
+**Status:** **V1 APPROVED — implementation DEFERRED** (await trigger conditions)
+**Date:** 2026-05-09 (drafted) · 2026-05-09 (V1 approved + deferred)
 **Branch:** `claude/phase-pi-1-generators`
 **Predecessors:** Π.0.0 (#1088 merged) → Π.0a Part 3 (#1095 merged) → **this**
 
 ---
 
-## TL;DR — please read first
+## TL;DR — current state
 
-The user's task description estimated Part 2 implementation at **4–6h**.
-After the discovery pass, the realistic effort for **full parity** with the
-D-deliverable (12 sheets, ~3000 items) is **7–9 days** of focused work,
-because the D pipeline is ~5 000 LOC of carefully-tuned Czech construction
-domain logic spread across Phase 1 + Phase 3a/b/c/d/e + 8 Phase 0.1x
-hot-fixes, and that domain logic is what produces the items list — not
-the Excel sheets themselves.
+After Part 1 discovery, three variants were offered (V1 full parity ~7–9 days,
+V2 redistribution ~2–3 days, V3 foundation MVP ~1–2 days). User decision
+**2026-05-09**:
 
-This SPEC therefore proposes **three variants** with honest trade-offs.
-Pick one before Part 2 starts:
+- ✅ **V1 Full parity** — APPROVED as the only acceptable quality level for
+  any future A/B/C deliverable.
+- ❌ **V2 Redistribution** — DROPPED (insufficient quality for user
+  requirements; share-key approximation is not engineering-grade).
+- ❌ **V3 Foundation MVP** — DROPPED (not a true work-list).
 
-| Variant | Effort | Output | Trade-off |
-|---|---|---|---|
-| **V1 Full parity** | 7–9 days | A/B/C Excels indistinguishable from D in completeness | Re-ports all Phase 3.x rules; matches user's original intent |
-| **V2 Redistribution** | 2–3 days | A/B/C Excels with items derived from D items by share-key (room-count or floor-area weight) | Inevitably approximate; same shape, simpler logic |
-| **V3 Foundation MVP** | 1–2 days | A/B/C Excels with rooms + skladby + segment-counts only (no kapitola items) | Audit-grade reference; not a true work-list |
+**Implementation is DEFERRED — no Π.1 work proceeds until trigger conditions
+below are met.** Currently there is no order for A/B/C, the D-deliverable
+(PR #1066 + PROBE 8 self-correction) is the active focus, and starting V1
+now would be ~7–9 days of speculative work that may go stale before any
+A/B/C client appears.
 
-**Recommendation:** **V2 first** (delivers a usable A/B/C Excel for VELTON
-review in days, not weeks), then upgrade to V1 progressively per kapitola
-based on which gaps surface in review. V3 only if user wants the cheapest
-possible "is the data shape sensible" snapshot before committing to any
-real generator effort.
+The V1 specification (architecture, coverage matrix, effort breakdown, test
+plan, prerequisites) is preserved below as the canonical reference for the
+day implementation IS triggered.
 
-> ⚠️ The 4–6h estimate from the task description is achievable **only for
-> V3** (foundation MVP). V1 and V2 require explicit re-scoping.
+---
+
+## Trigger conditions for Π.1 V1 implementation
+
+Π.1 V1 starts ONLY when **at least one** of the following is true:
+
+1. **VELTON confirms delivery acceptance for objekt D** (PR #1066 + PROBE 8
+   recovery accepted; D is locked as the reference) AND VELTON or another
+   stakeholder requests A/B/C pricing in the same komplex.
+
+2. **A new client engagement** (not VELTON) requests A/B/C work-list
+   regeneration with explicit pricing intent — pricing may still be out of
+   Π.1 scope, but the request must be real, not exploratory.
+
+3. **No deadline pressure exists at trigger time** — Π.1 V1 needs ~7–9 days
+   of focused work; do not start under deadline duress because the Phase 3.x
+   port is the kind of work where corner-case bugs accumulate when rushed.
+
+If a prospective client asks for a quick A/B/C estimate AND a deadline is
+short, the answer is "we can produce a foundation snapshot (V3 equivalent)
+in 1–2 days, then commit to V1 in ~9 days for the engineering-grade
+deliverable" — NOT "we'll start V1 today and hope for the best."
+
+---
+
+## Pre-implementation checklist when triggered
+
+Before starting any Π.1 V1 code on the trigger date, run this checklist
+end-to-end. Time-box: **half a day**. Findings determine whether the V1
+estimate below still holds or needs refresh.
+
+### Foundation freshness
+
+- [ ] `master_extract_{A,B,C}.json` still present in
+      `test-data/libuse/outputs/` and parseable.
+- [ ] Per-objekt counts match the values recorded in this SPEC's
+      "Context recap" section (A: 80/224/75/17/70, B: 68/372/61/17/70,
+      C: 59/221/58/17/70, D: 111/381/102/17/70). Any drift means
+      master_extract was regenerated since 2026-05-09 — investigate
+      before proceeding.
+- [ ] Re-run Π.0a validation gate on D:
+      `cd concrete-agent/packages/core-backend/scripts && \
+       python -m pi_0.validation.diff_vs_legacy --objekt=D`
+      Result must still be **373 MATCH / 0 MISSING / 0 CHANGED / 7 NEW**
+      (matching post-Step-7b state). Any regression must be diagnosed
+      before Π.1 begins — Π.1 builds on this guarantee.
+- [ ] Re-run Π.0a tests:
+      `python -m pi_0.tests.test_skeleton`,
+      `python -m pi_0.tests.test_dxf_openings`,
+      `python -m pi_0.tests.test_xlsx_dvere`,
+      `python -m pi_0.tests.test_xlsx_skladby`,
+      `python -m pi_0.tests.test_xlsx_okna`,
+      `python -m pi_0.tests.test_step5_dxf_full`,
+      `python -m pi_0.tests.test_step6_consolidation`.
+      All 80 must pass. Any failure means foundation drifted.
+
+### Phase 3.x stability check
+
+- [ ] `git log --oneline concrete-agent/packages/core-backend/scripts/phase_1_*.py concrete-agent/packages/core-backend/scripts/phase_3*.py concrete-agent/packages/core-backend/scripts/phase_0_1[1-9]_*.py concrete-agent/packages/core-backend/scripts/phase_6_generate_excel.py concrete-agent/packages/core-backend/scripts/phase_8_list11_sumarizace.py concrete-agent/packages/core-backend/scripts/phase_0_20_filter_view_table.py`
+      since 2026-05-09 — list every commit that touched them.
+- [ ] For each commit found, classify as:
+      - **NEUTRAL** (refactor, comment, formatting): no V1 estimate impact
+      - **DOMAIN DRIFT** (rule changed, kapitola added/removed, hot-fix
+        added): re-run D pipeline locally and confirm Phase 6/8/0.20
+        Excel still matches the PR #1066 + PROBE 8 reference; if not,
+        Π.1 V1 estimate gains 1–3 days for re-port of changed rules.
+      - **STRUCTURAL** (file renamed, function signature changed,
+        input/output JSON shape changed): SPEC's reuse policy table
+        must be re-validated; estimate may need fundamental revisit.
+- [ ] Document drift findings inline in this SPEC under a new "Drift
+      audit YYYY-MM-DD" subsection.
+
+### Tabulky 0050/0060/0070/0080 prerequisite (see next section)
+
+- [ ] Decide: do Π.0a Step 8 first (clean foundation) or read Tabulky
+      directly in Π.1 V1 (faster but bypasses canonical layer). User
+      preference recorded 2026-05-09: **Π.0a Step 8 is a prerequisite**
+      (clean data foundation). Add ~4–6h to total estimate.
+
+### Constants verification
+
+- [ ] A/B/C `facade_brutto_m²`, `roof_skat_31_m²`, `obvod_m`, `n_bytů`,
+      `harmonogram_měsíce` — ABMV email confirmation OR derive
+      heuristically from master_extract polygons. If derived, flag low
+      confidence and email ABMV for sign-off before final delivery.
+
+### Estimate refresh
+
+- [ ] Recompute V1 effort = base 8 days + Π.0a Step 8 (0.5 day) + drift
+      premium (0–3 days from previous step) = **expected 8.5–11.5 days
+      band**. If recomputed estimate exceeds 14 days, escalate to user
+      before any code is written.
+
+---
+
+## Π.0a Step 8 (Tabulky 0050/0060/0070/0080 absorption) — prerequisite
+
+User decision **2026-05-09**: Π.0a Step 8 IS a prerequisite for Π.1 V1.
+This keeps every per-objekt item carrying clean Π.0a-canonical
+provenance, instead of having TP/LP/OP/LI items bypass the foundation.
+
+### Scope of Π.0a Step 8
+
+Absorb the four remaining Tabulky into `master_extract_{A,B,C,D}.json`:
+
+| Tabulka | Sheet | Codes | Phase 3 consumer | Π.0a section to populate |
+|---|---|---|---|---|
+| 0050 | TABULKA ZAMECNICKYCH VYROBKU | LP## (locksmith) | phase_3c_partB, phase_3e | `locksmith[]` |
+| 0060 | TABULKA KLEMPIRSKYCH PRVKU | TP## (sheet metal) | phase_3b, phase_3c_partD | `sheet_metal_TP[]` |
+| 0070 | TABULKA PREKLADU | LI## (lintels) | phase_3c_partC | `lintels[]` |
+| 0080 | TABULKA OSTATNICH PRVKU | OP## (others) | phase_3c_partC | `others_OP[]` |
+
+These four arrays are present in master_extract schema today but **empty**.
+Step 8 populates them, following the same `{value, source, confidence}`
+triple convention as Tabulka 0041 (doors) and Tabulka 0042 (windows).
+
+### Implementation pattern (mirrors Steps 3 + 7)
+
+- New extractor module: `pi_0/extractors/xlsx_other_tabulky.py`
+- Per-Tabulka function: `extract_locksmith()`, `extract_sheet_metal()`,
+  `extract_lintels()`, `extract_others_OP()`
+- Each reads the canonical XLSX once via openpyxl read-only mode, returns
+  a list of dicts with full-row absorption (every column → field with
+  XLSX-cell provenance).
+- Wire into `pi_0/extract.py` to populate the four arrays.
+- Tests: `tests/test_xlsx_other_tabulky.py` mirroring `test_xlsx_dvere.py`
+  pattern (full-row schema test + spot-check known codes + per-objekt
+  coverage test where applicable — note: TP/LP/OP/LI are komplex-shared
+  like windows + skladby, so identical across A/B/C/D after extraction).
+- Re-run `diff_vs_legacy` for D — these new entries will show as NEW (no
+  legacy counterpart in current Phase 0.x outputs); audit them as REAL
+  vs FALSE_ALARM following the Step 7b precedent.
+
+### Effort estimate
+
+~4–6h (one focused half-day session). Should land in its own PR ahead of
+Π.1 V1, so Π.1 V1 starts on a clean foundation.
+
+### Deferred items in Step 8
+
+- `Tabulka 0043 PROSKLENE PRICKY` (curtain walls / glass partitions) —
+  current master_extract has `glass_partitions[]: empty` and PROBE 8
+  recovery added CW11 + CW12 manually to the Excel. Step 8 should also
+  absorb 0043 to close that loop properly. Treat as Step 8b if scope
+  pressure forces a split.
 
 ---
 
@@ -307,120 +447,47 @@ emits items derived from master_extract per the Phase 3.x rules.
 
 ---
 
-## Variant V2 — Redistribution (2–3 days)
+## Variant V2 — Redistribution (DROPPED 2026-05-09)
 
-### Scope
+User decision **2026-05-09**: V2 is **insufficient quality** for any
+A/B/C deliverable. Share-key redistribution from D items produces
+illustrative-only quantities (confidence 0.5–0.7) and per-room codes that
+don't exist in A/B/C — both are unacceptable for engineering-grade work.
 
-Take D's existing `items_objekt_D_complete.json` and redistribute each
-item to A/B/C using a per-objekt share-key derived from master_extract:
-
-- **Floor-area key**: A_share = A.total_floor_m² / D.total_floor_m²
-- **Room-count key**: alternative weight
-- **Manual override**: select kapitola-specific keys (e.g. PSV-768
-  garage gate stays D-only)
-
-Per item:
-```python
-A_item = D_item.copy()
-A_item["misto"]["objekt"] = "A"
-A_item["mnozstvi"] = D_item["mnozstvi"] * (A.area / D.area)
-A_item["misto"]["mistnosti"] = map_room_codes(D_item.misto.mistnosti, "A")  # heuristic
-A_item["confidence"] = max(0.5, D_item.confidence - 0.20)
-A_item["audit_note"] = "V2 redistribution from D × A/D share-key"
-```
-
-### What works
-
-- Sheets 4/5 (Mistnosti, Skladby) — direct from master_extract, full fidelity
-- Sheet 9 (Metadata) — straightforward per-objekt rewrite
-- Sheets 2/3 (Audit, Critical) — N/A or banner per D6
-- Sheet 11/12 (Sumarizace, Filter view) — derived from redistributed items[]
-- Sheet 7 (VRN) — komplex-shared values, allocated equally or per-area
-- Sheet 8 (Carry-forward) — shared with D + ABMV documentation_inconsistencies
-
-### What's approximate
-
-- Per-room item granularity is lost — A_item.misto.mistnosti carries D's
-  room codes (e.g. "S.D.09") which don't exist in A. Redistribution by
-  share-key implies "A's equivalent of this work" not "A's room S.A.09".
-  Fix: replace `mistnosti` with `[]` and set podlazi only.
-- Some kapitola don't redistribute meaningfully:
-  - PSV-768 garažová vrata — komplex-shared, not divisible
-  - PSV-925 zařízení staveniště — komplex-shared cost
-  - HSV-941 lešení — facade-specific, A/B/C have own facades
-  - 1.PP suterén items (F11/F14/F10/F00/FF03/F15) — D-only; drop entirely
-- D's Phase 0.1x hot-fixes leak into A/B/C unless filtered (e.g. F15
-  tepelná izolace stropů 1PP from Phase 0.12 is D-only)
-
-### Effort V2
-
-| Step | Effort |
-|---|---|
-| Per-objekt share-key computation | 0.25 day |
-| Redistribution engine + per-kapitola rules table | 1 day |
-| Filter D-only kapitola (suterén, hot-fixes) | 0.5 day |
-| Phase 6/8/0.20 wrapper | 0.5 day |
-| Validation (3× run identical, A/B/C consistency) | 0.5 day |
-| **Total** | **2.75 days** |
-
-### Risks V2
-
-| Risk | Severity | Mitigation |
-|---|---|---|
-| User sees "wrong" room codes (S.D.09 ghost in A) | HIGH | Drop `mistnosti` field for redistributed items; only carry podlazi |
-| Quantities are illustrative, not engineering-grade | HIGH | Confidence = 0.5–0.7; add Souhrn banner explaining V2 method |
-| Hot-fix items duplicate A/B/C onto themselves | MEDIUM | Hard exclusion list: skip Phase 0.11/0.12/0.13/0.15/0.16/0.17/0.19 sources |
-| Komplex VRN double-allocation if A+B+C+D each get full × 0.25 = 1.0 ✓ | LOW | OK if equal split |
+V2 is preserved as historical context only and **must not be implemented**.
+Any future "quick redistribution" request reverts to V3-shaped foundation
+snapshot, never V2.
 
 ---
 
-## Variant V3 — Foundation MVP (1–2 days)
+## Variant V3 — Foundation MVP (DROPPED 2026-05-09)
 
-### Scope
+User decision **2026-05-09**: V3 is **not a deliverable** — it's a
+structural data snapshot, not a work-list. If someone needs "just the
+rooms and skladby for A/B/C", they can read `master_extract_{A,B,C}.json`
+directly; no Excel wrapper adds value.
 
-Per A/B/C, generate an Excel with **only** the foundation sheets:
-
-- `0_Souhrn` — banner explaining MVP scope
-- `4_Mistnosti` — full per-objekt rooms list from master_extract
-- `5_Skladby` — full komplex-shared skladby (identical across A/B/C/D)
-- `9_Metadata` — provenance
-- `10_Doors_Windows` (NEW vs D) — per-objekt door + window list from
-  master_extract for review
-- `11_Segment_counts` (NEW vs D) — per-objekt segment_counts breakdown
-
-NO `1_Vykaz_vymer` items, NO `11_Sumarizace`, NO `12_Filter_view`. Not a
-work-list; a structural data snapshot.
-
-### Effort V3
-
-| Step | Effort |
-|---|---|
-| `pi_1.generate_mvp` (5 sheets per objekt) | 0.75 day |
-| Tests (3 objekty × Excel structure verification) | 0.25 day |
-| **Total** | **1 day** |
-
-### Risks V3
-
-- Not what user asked for; explicit downgrade. User must accept that V3
-  is a stepping stone, not a deliverable.
+V3 is preserved as historical context only and **must not be implemented**
+as a Π.1 product.
 
 ---
 
-## Test plan (applies to V1 and V2)
+## Test plan (V1)
 
-| Test | Asserts | Variant |
-|---|---|---|
-| `test_master_extract_loads_all_4_objekty` | A/B/C/D all load, schema-version 1 | V1, V2, V3 |
-| `test_dataset_enrich_idempotent_3x` | Π.1 dataset is byte-identical 3× run | V1, V2 |
-| `test_room_count_matches_master_extract` | dataset.rooms count == master_extract.rooms count per objekt | V1, V2, V3 |
-| `test_skladby_identical_across_objekty` | A/B/C/D all carry the same 70 skladby (komplex-shared) | V1, V2, V3 |
-| `test_windows_identical_across_objekty` | A/B/C/D all carry the same 17 windows | V1, V2, V3 |
-| `test_d_pipeline_unchanged` | D Excel still matches PROBE 8 reference (no regression) | V1, V2, V3 |
-| `test_pi_1_d_regression` | Π.1 run for `--objekt=D` produces an Excel within 1% item-count tolerance vs reference | V1 only |
-| `test_a_excel_has_12_sheets` | Output Excel has all 12 sheets (or 6 for V3) | V1, V2 |
-| `test_a_filter_view_table_present` | Sheet 12 has `VykazFilter` Excel Table | V1, V2 |
-| `test_a_no_d_misto_leakage` | No item in A/B/C carries `misto.objekt == "D"` or `misto.mistnosti` starting with `S.D.` | V1, V2 |
-| `test_a_no_1pp_items_for_abc` | A/B/C deliverables emit 0 items in 1.PP (suterén is D-only) | V1, V2 |
+| Test | Asserts |
+|---|---|
+| `test_master_extract_loads_all_4_objekty` | A/B/C/D all load, schema-version 1 |
+| `test_dataset_enrich_idempotent_3x` | Π.1 dataset is byte-identical 3× run |
+| `test_room_count_matches_master_extract` | dataset.rooms count == master_extract.rooms count per objekt |
+| `test_skladby_identical_across_objekty` | A/B/C/D all carry the same 70 skladby (komplex-shared) |
+| `test_windows_identical_across_objekty` | A/B/C/D all carry the same 17 windows |
+| `test_d_pipeline_unchanged` | D Excel still matches PROBE 8 reference (no regression) |
+| `test_pi_1_d_regression` | Π.1 run for `--objekt=D` produces an Excel within 1% item-count tolerance vs reference |
+| `test_a_excel_has_12_sheets` | Output Excel has all 12 sheets |
+| `test_a_filter_view_table_present` | Sheet 12 has `VykazFilter` Excel Table |
+| `test_a_no_d_misto_leakage` | No item in A/B/C carries `misto.objekt == "D"` or `misto.mistnosti` starting with `S.D.` |
+| `test_a_no_1pp_items_for_abc` | A/B/C deliverables emit 0 items in 1.PP (suterén is D-only) |
+| `test_step8_tabulky_populated` | Π.0a Step 8 prerequisite — locksmith / sheet_metal_TP / lintels / others_OP arrays non-empty in master_extract |
 
 ---
 
@@ -445,55 +512,73 @@ After Part 2, generate `pi_1_cross_objekt_report.md`:
 - **ÚRS code lookup** — Phase 4 / Phase 7a; user said "no pricing"
 - **Phase 5 audit vs starý VV per A/B/C** — N/A (komplex-wide audit only)
 - **PROBE detail per A/B/C** — no PROBE history; Sheet 3 minimal
-- **Π.0a Step 8 (Tabulky 0050/0060/0070/0080 absorption)** — V1 reads
-  these directly; if user wants Π.0a-canonical foundation, do Step 8 first
 - **A/B/C extrapolation of D's PROBE 8 specialty items** — explicitly
-  deferred to per-objekt verification in Π.1 review (do NOT assume the
-  same 6 codes are missing in A/B/C without DXF confirmation)
+  deferred to per-objekt verification at Π.1 trigger time (do NOT assume
+  the same 6 codes are missing in A/B/C without DXF confirmation)
 
 ---
 
-## Decision required from user
+## Status — recorded decisions and open commitments
 
-Pick **one** before Part 2 starts:
+### Decisions recorded 2026-05-09
 
-> **( )  V1 Full parity** — 7–9 days, A/B/C indistinguishable from D
->
-> **( )  V2 Redistribution** — 2–3 days, share-key based, approximate
->
-> **( )  V3 Foundation MVP** — 1–2 days, just rooms + skladby + windows + doors + segment_counts
->
-> **( )  V2 now → V1 progressively** _(recommended)_ — V2 in 2–3 days
-> as a usable A/B/C deliverable for VELTON; per-kapitola V1 upgrades
-> driven by review feedback.
+- ✅ **V1 Full parity** is the only acceptable Π.1 quality level for any
+  future A/B/C deliverable.
+- ❌ V2 Redistribution and V3 Foundation MVP are **DROPPED** — neither is
+  a valid Π.1 product.
+- ⏸ Π.1 V1 implementation is **DEFERRED** — no work proceeds until a
+  trigger condition is met (see "Trigger conditions" section).
+- ✅ Π.0a Step 8 (absorb Tabulky 0050/0060/0070/0080 — locksmith /
+  sheet-metal / lintels / others) is a **prerequisite** for Π.1 V1 — the
+  foundation must be clean before generators consume it.
+- ✅ D-deliverable on disk (`Vykaz_vymer_..._objekt_D_dokoncovaci_prace.xlsx`
+  + `items_objekt_D_complete.json` + `objekt_D_doors_ownership.json`)
+  MUST stay byte-identical post-Π.1. No Π.1 code path may write into
+  D-named outputs except in throwaway workdirs cleaned up before exit.
 
-Also confirm:
+### Open commitments to revisit at trigger time
 
-- [ ] Is it OK that V1 reads Tabulky 0050/0060/0070/0080 directly
-      (bypassing Π.0a canonical foundation)? Or should we do Π.0a Step 8
-      first (~4–6h additional, then V1 estimate becomes 7.5–9.5 days)?
-- [ ] For V2 redistribution: drop `misto.mistnosti` field for A/B/C items
-      (D's room codes don't exist in A/B/C), keeping only `objekt + podlazi`?
-- [ ] Roof + facade brutto for A/B/C — derive heuristically from
-      master_extract polygons, or ABMV email to confirm spec values?
-- [ ] D-deliverable on disk MUST stay byte-identical post-Π.1 — confirmed,
-      but reaffirm.
+These are NOT decided now; they're parked until pre-implementation
+checklist day (see that section above).
 
----
-
-## After approval
-
-Part 2 plan (driven by approved variant):
-1. Implement per the variant's Effort breakdown table
-2. Generate A, B, C Excels
-3. Run cross-objekt verification report
-4. Idempotency check (3× re-run, byte-identical)
-5. Open Π.1 PR
-
-If V2 selected: clean ~1100 LOC of new code in `pi_1/`, no changes to
-existing scripts. If V1: ~3500 LOC of new code, still no changes to
-existing scripts (per the wrapping pattern). If V3: ~600 LOC.
+- A/B/C `facade_brutto_m²`, `roof_skat_31_m²`, `obvod_m`, `n_bytů` —
+  derive heuristically from master_extract polygons OR ABMV email for
+  spec confirmation. Decide at trigger time based on (a) how many spec
+  constants Phase 3.x actually consumes after the drift audit, (b) ABMV
+  responsiveness window vs project timeline.
+- Phase 0.1x hot-fix applicability per A/B/C — each of the 8 hot-fixes
+  (S.D.16/S.D.42 inject, F15 izolace, F11/F14 inject, SDK podhled,
+  kročejová, keramický obklad, PSB beton, D05 cleanup) is evaluated
+  case-by-case during the port; a decision matrix is produced as part
+  of Π.1 V1 Step 3–6.
+- Π.0a Step 8b (Tabulka 0043 PROSKLENE PRICKY absorption) — split off
+  Step 8 if scope pressure forces it, otherwise bundle into the same PR.
 
 ---
 
-_Generated by Claude Code Π.1 Part 1 SPEC, 2026-05-09._
+## Next action
+
+**No code is written for Π.1 until a trigger condition fires.** When one
+does:
+
+1. Run the Pre-implementation checklist (half-day, time-boxed).
+2. Land Π.0a Step 8 in its own PR (~4–6h) so master_extract carries
+   complete TP/LP/OP/LI absorption.
+3. Implement Π.1 V1 per the Effort breakdown table in the
+   "Variant V1 — Full parity" section, refreshed by the checklist's
+   estimate-refresh step.
+4. Generate A, B, C Excels.
+5. Run cross-objekt verification report (template in
+   "Cross-objekt verification report" section).
+6. Idempotency check (3× re-run, byte-identical per Π.0a contract).
+7. Open Π.1 V1 PR.
+
+Code surface estimate: ~3500 LOC of new code in `pi_1/`, zero changes
+to existing Phase 1/3.x/6/8/0.20 scripts (wrapping pattern, per the
+user's "DO NOT change Phase 6 generator unless absolutely necessary"
+constraint).
+
+---
+
+_Generated by Claude Code Π.1 Part 1 SPEC, 2026-05-09. V1 selected +
+deferred 2026-05-09._
