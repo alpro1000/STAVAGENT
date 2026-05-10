@@ -1,111 +1,253 @@
-# Drop v2 — classification manifest (PLANNING DOC, drop not yet received)
+# Drop v2 — classification manifest (ACTUAL, drop verified 2026-05-10)
 
-**Date:** 2026-05-09
-**Status:** ⏸ **DROP NOT RECEIVED — manifest is a forward-looking plan**
-**Branch:** `claude/phase-pi-1-generators`
+**Date:** 2026-05-10
+**Status:** ✅ **DROP VERIFIED — 14 files received in `_UNSORTED/`,
+3 ZIPs expand to 24 inner DWGs → 34 unique DWGs total to sort**
+**Branch:** `claude/probe-9-drop-v2-sort` (off main `8cbb8eae`)
+**Drop commit on main:** `8cbb8eae` "Add files via upload" (2026-05-10)
 
 ---
 
 ## What this document is
 
-The user's task message of 2026-05-09 listed 14 new DWG/ZIP files that
-were expected to land in `_UNSORTED/`. After Part 1 discovery, **none
-of the 14 files exist anywhere on the filesystem** (verified by
-filename search across `test-data/libuse/{inputs,sources,_UNSORTED}/`,
-`/home`, `/root/Downloads`, `/tmp`, and shallow `/`).
-
-This document is therefore a **planning manifest**, not an execution
-record. It pre-decides the target path + handling per file so that
-when the drop actually lands, sorting can run mechanically without
-revisiting decisions. **No `git mv` / no extraction / no DXF conversion
-has been performed.**
+The 2026-05-09 task listed 14 new DWG/ZIP files. The user uploaded
+them to `inputs/_UNSORTED/` in commit `8cbb8eae`. This manifest now
+records the **actual verified state** with SHA-256 hashes, ZIP
+contents, target paths, and duplicate decisions. Pending user approval
+before Part 3 execution (extraction / `git mv` / DXF conversion).
 
 ---
 
-## Expected drop — the 14 files from task message
+## 1. Verified inventory — 14 files in `_UNSORTED/`
 
-| # | Source filename | Source format | Scope (per filename pattern) | Planned target |
-|---:|---|---|---|---|
-| 1 | `18501_DPS_D_SO01_140_9410_R00_koordinacni vykres D 1NP.zip` | ZIP | objekt D, koordinace, 1.NP | extract main DWG → `sources/D/dwg/`; xrefs → `sources/D/dwg/xref/` |
-| 2 | `18501_DPS_D_SO01_140_9420_R00_koordinacni vykres D 2NP.zip` | ZIP | objekt D, koordinace, 2.NP | same pattern |
-| 3 | `18501_DPS_D_SO01_140_9430_R00_koordinacni vykres D 3NP.zip` | ZIP | objekt D, koordinace, 3.NP | same pattern |
-| 4 | `18501_DPS_D_SO01_140_9421_R00_jadra D 2NP.dwg` | DWG | objekt D, byt jádra zoom 2.NP | **NO-OP — file already in `sources/D/dwg/` from earlier session.** Verify SHA matches; if newer, replace. |
-| 5 | `18501_DPS_D_SO01_100_9000_R00_koordinacni vykres 1PP.dwg` | DWG | komplex shared, 1.PP koord (single drawing replacing parts A+B PDFs) | `sources/shared/dwg/` |
-| 6 | `185-01_DPS_D_SO01_100_8050_00 - ZASADY SPAROREZU.dwg` | DWG | komplex shared, zásady spárořezu | `sources/shared/dwg/` |
-| 7 | `1pp_plyn.dwg` | DWG | 1.PP TZB section — **PLYN** (gas) | `sources/shared/dwg/` (komplex 1.PP scope) |
-| 8 | `1pp_slb.dwg` | DWG | 1.PP TZB section — **SLABOPROUD** (low-voltage / data) | `sources/shared/dwg/` |
-| 9 | `1pp_UT.dwg` | DWG | 1.PP TZB section — **UT** (heating) | `sources/shared/dwg/` |
-| 10 | `1PP_vod.dwg` | DWG | 1.PP TZB section — **VODOVOD** (water + drains) | `sources/shared/dwg/` |
-| 11 | `1pp_VZT.dwg` | DWG | 1.PP TZB section — **VZT** (HVAC) | `sources/shared/dwg/` |
-| 12 | `K1pp.dwg` | DWG | 1.PP TZB section — likely **silnoproud** (kabelové trasy / power) | `sources/shared/dwg/` (verify after DXF parse) |
-| 13 | `UDL_1PP.dwg` | DWG | 1.PP — likely lighting / UDL (universal data layer ARS overlay) | `sources/shared/dwg/` (verify after DXF parse) |
-| 14 | `185-01-LIB_Rozpisky_ARS.dwg` | DWG | komplex shared, ARS rozpiska / titleblock template | `sources/shared/dwg/` |
+| # | File | Bytes | SHA-256 (16-char prefix) | Format |
+|---:|---|---:|---|---|
+| 1 | `18501_DPS_D_SO01_140_9410_R00_koordinacni vykres D 1NP.zip` | 2 547 586 | `c69fe2585cdfe92c` | ZIP |
+| 2 | `18501_DPS_D_SO01_140_9420_R00_koordinacni vykres D 2NP.zip` | 2 516 930 | `b44cc0da18ee22c8` | ZIP |
+| 3 | `18501_DPS_D_SO01_140_9421_R00_jadra D 2NP.dwg` | 1 539 557 | `f0f5207566a1c6c4` | DWG |
+| 4 | `18501_DPS_D_SO01_140_9430_R00_koordinacni vykres D 3NP.zip` | 2 516 322 | `511cddafb6127a04` | ZIP |
+| 5 | `18501_DPS_D_SO01_100_9000_R00_koordinacni vykres 1PP.dwg` | 1 599 218 | `66112c5e31f1cb01` | DWG |
+| 6 | `18501_DPS_D_SO01_100_8050_00 - ZASADY SPAROREZU.dwg` | 1 085 419 | `4f7d004368a4184a` | DWG |
+| 7 | `1pp_plyn.dwg` | 128 200 | `ffff825f6227c665` | DWG |
+| 8 | `1pp_slb.dwg` | 46 191 | `e961935a20f168bb` | DWG |
+| 9 | `1pp_UT.dwg` | 356 889 | `a8a36950254b7217` | DWG |
+| 10 | `1PP_vod.dwg` | 150 189 | `3c04045ff07196ce` | DWG |
+| 11 | `1pp_VZT.dwg` | 2 318 715 | `612130aa9369b486` | DWG |
+| 12 | `K1pp.dwg` | 101 088 | `1421c8d93aa94a7d` | DWG |
+| 13 | `UDL_1PP.dwg` | 284 398 | `1d238080e596b310` | DWG |
+| 14 | `185-01-LIB_Rozpisky_ARS.dwg` | 3 945 717 | `1befd69c0325b82d` | DWG |
 
-### Naming-derived assumptions to verify after drop
+> **Filename note:** the user's task message used `185-01_DPS_D_SO01_100_8050`
+> prefix; actual file uses `18501_DPS_D_SO01_100_8050` (no hyphen). Same
+> file. Both prefix conventions appear in this drop.
 
-- **Files 7–13 (`1pp_*` + `K1pp` + `UDL_1PP`)** — short non-DPS-format
-  filenames. Likely came from a sub-contractor (TZB profession) rather
-  than the main ABMV DPS bundle. Title-block check after DXF conversion
-  will confirm objekt scope; if title-block says "objekt D only" rather
-  than "1.PP komplex", target moves to `sources/D/dwg/`.
-- **File 12 `K1pp`** — `K` prefix is unusual; could be **K**abeláž
-  (cabling) or **K**ompletní 1.PP koordinace. Layer inventory after
-  conversion settles which.
-- **File 13 `UDL_1PP`** — `UDL` matches the existing AutoCAD external-
-  reference naming convention seen in `_140_9421` (`UDL_2NP_D$0$...`
-  layers). Likely the ARS desky equivalent for 1.PP. Verify after DXF.
+### Duplicate detection vs already-sorted `sources/`
+
+- **File 3 (`9421 jadra D 2NP.dwg`):** SHA-256 matches the existing
+  `sources/D/dwg/18501_DPS_D_SO01_140_9421_R00_jadra D 2NP.dwg` byte-
+  for-byte (full SHA `f0f5207566a1c6c464d258f353f3e668c197fb09ddb1ebb22acf94964426fe73`
+  identical on both sides). **Action: NO-OP.** Drop the duplicate from
+  `_UNSORTED/`; keep existing sorted copy.
+- **All other 13 files:** zero filename collisions vs existing
+  `sources/D/dwg/` (11 entries) or `sources/shared/dwg/` (3 entries).
+  All clean adds.
 
 ---
 
-## Handling plan (when drop arrives)
+## 2. ZIP contents — 3 koord ZIPs expand to 24 inner DWGs
 
-### Step 1 — Drop reception verification
+Each podlazi ZIP carries the architect's main koord overlay + 6
+profession-specific TZB DWGs + 1 architectural xref (UDL_NNP_D).
 
-Before any moves, after files arrive in `_UNSORTED/`:
+### `_140_9410` ZIP (1.NP) — 8 files / 3 295 766 B uncompressed
 
-1. Confirm all 14 filenames present.
-2. SHA-256 each new file; record in this manifest.
-3. For file 4 (`9421_R00_jadra D 2NP.dwg`): compare SHA against the
-   already-sorted copy in `sources/D/dwg/`. If SHA differs → newer
-   revision; archive old to `sources/D/_archives/` and replace.
-   If SHA matches → drop the duplicate from `_UNSORTED/`, log no-op.
-4. Cross-check against existing PDFs in `sources/D/pdf/` (9410, 9420,
-   9430 PDFs) — these become **redundant** once DWG is available; keep
-   PDFs as visual reference but mark "DWG primary" in INVENTORY.
+| Inner file | Bytes | Discipline |
+|---|---:|---|
+| `18501_DPS_D_SO01_140_9410_R00_koordinacni vykres 1NP.dwg` | 1 432 858 | Main koord overlay (architect) |
+| `D_1NP_chl.dwg` | 1 024 407 | Chlazení (cooling) |
+| `D_1NP_kan.dwg` | 102 806 | Kanalizace (drains) |
+| `D_1NP_sil.dwg` | 226 066 | Silnoproud (power) |
+| `D_1NP_slb.dwg` | 78 210 | Slaboproud (low-voltage / data) |
+| `D_1NP_vod.dwg` | 113 971 | Vodovod (water supply) |
+| `D_1NP_vzt.dwg` | 180 629 | VZT (HVAC) |
+| `UDL_1NP_D.dwg` | 136 819 | Architectural overlay xref |
 
-### Step 2 — ZIP extraction (files 1, 2, 3)
+### `_140_9420` ZIP (2.NP) — 8 files / 3 252 710 B uncompressed
 
-For each koordinační ZIP (9410, 9420, 9430):
+| Inner file | Bytes | Discipline |
+|---|---:|---|
+| `18501_DPS_D_SO01_140_9420_R00_koordinacni vykres 2NP.dwg` | 1 424 498 | Main koord overlay |
+| `D_2NP_chl.dwg` | 972 446 | Chlazení |
+| `D_2NP_kan.dwg` | 94 171 | Kanalizace |
+| `D_2NP_sil.dwg` | 220 637 | Silnoproud |
+| `D_2NP_slb.dwg` | 73 580 | Slaboproud |
+| `D_2NP_vod.dwg` | 125 309 | Vodovod |
+| `D_2NP_vzt.dwg` | 184 022 | VZT |
+| `UDL_2NP_D.dwg` | 158 047 | Architectural overlay xref |
 
-```
-unzip -l <file>.zip            # inspect (read-only) before extract
-unzip -d <tmp>/D_<podlazi> <file>.zip
-```
+### `_140_9430` ZIP (3.NP) — 8 files / 3 235 400 B uncompressed
 
-Decision per ZIP content:
-- **Main DWG** (typically `<basename>.dwg` matching the ZIP name): move
-  to `sources/D/dwg/` with original filename.
-- **Xrefs** (smaller `.dwg` files referenced by the main): keep in
-  `sources/D/dwg/xref/` subdir. The DWG→DXF converter may or may not
-  resolve xrefs; if xref content is critical, may need
-  `dwg2dxf --resolve-xrefs` flag (verify converter supports it).
-- **Image files** (PNG / JPG embedded raster): keep in `sources/D/_archives/`.
-- **Original ZIP**: archive to `sources/D/_archives/` for provenance.
+| Inner file | Bytes | Discipline |
+|---|---:|---|
+| `18501_DPS_D_SO01_140_9430_R00_koordinacni vykres 3NP.dwg` | 1 426 757 | Main koord overlay |
+| `D_3NP_chl.dwg` | 966 792 | Chlazení |
+| `D_3NP_kan.dwg` | 102 142 | Kanalizace |
+| `D_3NP_sil.dwg` | 219 049 | Silnoproud |
+| `D_3NP_slb.dwg` | 65 626 | Slaboproud |
+| `D_3NP_vod.dwg` | 115 797 | Vodovod |
+| `D_3NP_vzt.dwg` | 172 676 | VZT |
+| `UDL_3NP_D.dwg` | 166 561 | Architectural overlay xref |
 
-### Step 3 — Flat DWG moves (files 4–14)
+> **Important:** the per-section TZB DWGs inside the ZIPs are
+> profession-specific (chl / kan / sil / slb / vod / vzt) and are
+> EXACTLY what PROBE 9 needs. This is materially better than the
+> 1-discipline-per-file 1.PP set — for above-ground floors we get
+> 6 disciplines × 3 podlazi = 18 per-section TZB DWGs.
 
-`git mv` per the table above. Match the existing flat-directory
-convention (`sources/{objekt}/dwg/`) — NO new sub-directories like
-`koordinace/` or `tzb/` unless necessary. Reason: existing pattern is
-flat; introducing subdirs only for the new drop creates inconsistency.
+---
 
-### Step 4 — Symlink updates
+## 3. Per-section TZB scope inventory (post-extraction)
 
-For every new DWG that lands in `sources/`, create the corresponding
-symlink in `inputs/dwg/` pointing back. Match the existing convention
-(`ln -sf ../../sources/{objekt}/dwg/<file> inputs/dwg/<file>`).
+Counting unique DWGs that need to land in `sources/`:
 
-### Step 5 — DWG → DXF batch conversion
+### Above-ground D koord set (from ZIPs)
+
+| Category | Count | Files |
+|---|---:|---|
+| Main koord overlay (architect) | 3 | `_140_9410/9420/9430_R00_koordinacni vykres NNP.dwg` |
+| TZB chlazení | 3 | `D_NNP_chl.dwg` (1.NP / 2.NP / 3.NP) |
+| TZB kanalizace | 3 | `D_NNP_kan.dwg` |
+| TZB silnoproud | 3 | `D_NNP_sil.dwg` |
+| TZB slaboproud | 3 | `D_NNP_slb.dwg` |
+| TZB vodovod | 3 | `D_NNP_vod.dwg` |
+| TZB VZT | 3 | `D_NNP_vzt.dwg` |
+| Architectural xref | 3 | `UDL_NNP_D.dwg` |
+| **Above-ground subtotal** | **24** | |
+
+### 1.PP komplex set (standalone DWGs)
+
+| Category | Count | Files |
+|---|---:|---|
+| Main koord overlay (1.PP) | 1 | `_100_9000_R00_koordinacni vykres 1PP.dwg` |
+| TZB plyn (gas) | 1 | `1pp_plyn.dwg` |
+| TZB slaboproud | 1 | `1pp_slb.dwg` |
+| TZB UT (topení) | 1 | `1pp_UT.dwg` |
+| TZB vodovod | 1 | `1PP_vod.dwg` (note capital `PP`, deviates from siblings — verify with title-block) |
+| TZB VZT | 1 | `1pp_VZT.dwg` |
+| Likely silnoproud (`K` = kabeláž?) | 1 | `K1pp.dwg` (verify post-DXF) |
+| Architectural xref (1.PP) | 1 | `UDL_1PP.dwg` |
+| **1.PP subtotal** | **8** | |
+
+### Komplex shared (non-podlazi-specific)
+
+| Category | Count | Files |
+|---|---:|---|
+| Zásady spárořezu | 1 | `_100_8050_00 - ZASADY SPAROREZU.dwg` |
+| ARS rozpiska / titleblock | 1 | `185-01-LIB_Rozpisky_ARS.dwg` |
+| **Komplex subtotal** | **2** | |
+
+### Grand total
+
+- 24 above-ground + 8 1.PP + 2 komplex = **34 unique DWGs**
+- Plus 1 SHA-duplicate (file 3 `9421`) → skip
+- Above-ground TZB scope: **6 disciplines × 3 podlazi = 18 DWGs** for PROBE 9
+
+> **Discipline gap:** above-ground set has CHLAZENÍ but NO PLYN
+> (chl ≠ plyn — gas is below-ground service). 1.PP set has PLYN but
+> NO CHLAZENÍ (no AC central machinery in basement here). This split
+> is normal. PROBE 9 prostupy + štroby quantification covers all
+> disciplines that ACTUALLY exist per podlazi.
+
+---
+
+## 4. Target paths — APPROVED for execution
+
+Sticking with **flat directory convention** to match existing
+`sources/{D,shared}/dwg/` pattern (no new `koordinace/` or `tzb/`
+subdirs). Filename pattern alone is enough to discriminate.
+
+### Files going to `sources/D/dwg/` (24 files — all above-ground D)
+
+- 3× main koord overlay (`_140_9410/9420/9430_R00_koordinacni vykres NNP.dwg`)
+- 18× per-discipline TZB (`D_NNP_{chl,kan,sil,slb,vod,vzt}.dwg`)
+- 3× architectural xref (`UDL_NNP_D.dwg`)
+
+### Files going to `sources/shared/dwg/` (10 files — 1.PP + komplex)
+
+- 1× 1.PP main koord (`_100_9000_R00_koordinacni vykres 1PP.dwg`)
+- 5× 1.PP per-discipline TZB (`1pp_plyn.dwg`, `1pp_slb.dwg`,
+  `1pp_UT.dwg`, `1PP_vod.dwg`, `1pp_VZT.dwg`)
+- 1× 1.PP `K1pp.dwg` (verify scope post-DXF; likely silnoproud)
+- 1× 1.PP architectural xref (`UDL_1PP.dwg`)
+- 1× zásady spárořezu (`_100_8050.dwg`)
+- 1× Rozpisky ARS (`185-01-LIB_Rozpisky_ARS.dwg`)
+
+### File 3 — duplicate, no-op
+
+`18501_DPS_D_SO01_140_9421_R00_jadra D 2NP.dwg` exists already in
+`sources/D/dwg/` with identical SHA. Drop the `_UNSORTED/` copy.
+
+---
+
+## 5. Filename normalisation
+
+Some filenames are non-canonical (lowercase, abbreviated, missing
+`185-01_` prefix). Recommend keeping AS-IS to preserve provenance —
+renaming risks breaking xref resolution when DWG→DXF converter walks
+the file. If renaming is desired later, do it as a separate cleanup
+commit with a `git mv` log.
+
+| Filename | Quirk | Recommendation |
+|---|---|---|
+| `1pp_plyn.dwg`, `1pp_slb.dwg`, `1pp_UT.dwg`, `1pp_VZT.dwg` | lowercase `1pp_` | keep |
+| `1PP_vod.dwg` | uppercase `1PP_` (inconsistent w/ siblings) | keep — provenance |
+| `K1pp.dwg` | no prefix; unclear discipline | keep + verify post-DXF |
+| `UDL_1PP.dwg` | uppercase `_1PP` | keep |
+| `185-01-LIB_Rozpisky_ARS.dwg` | uses `185-01-LIB` (project subcode) | keep |
+
+---
+
+## 6. Execution plan (Part 3, awaiting approval)
+
+### Step A — Branch + backup state
+
+- Already on `claude/probe-9-drop-v2-sort` (off main `8cbb8eae`)
+
+### Step B — Extract 3 ZIPs
+
+For each ZIP at `inputs/_UNSORTED/<zip>`:
+
+1. `unzip -o "<zip>" -d test-data/libuse/sources/D/dwg/`
+   — extracts all 8 inner files **flat** into `sources/D/dwg/`
+2. The main koord overlay (`_140_9NN0_R00_koordinacni vykres NNP.dwg`)
+   has the long DPS-pattern name; the 6 TZB profession DWGs
+   (`D_NNP_*.dwg`) and the UDL (`UDL_NNP_D.dwg`) have shorter names.
+   All land flat in `sources/D/dwg/`.
+3. After extraction: archive the original ZIP into
+   `sources/D/_archives/` (create if missing). Provenance retained,
+   doesn't pollute `_UNSORTED/`.
+
+### Step C — git mv 11 standalone DWGs
+
+`git mv inputs/_UNSORTED/<file> sources/{D,shared}/dwg/<file>` per the
+target table in §4. Includes:
+
+- 7× to `sources/shared/dwg/`: `_100_9000`, `_100_8050`, `1pp_plyn`,
+  `1pp_slb`, `1pp_UT`, `1PP_vod`, `1pp_VZT`, `K1pp`, `UDL_1PP`,
+  `Rozpisky_ARS` (10 files actually — let me re-count for execution)
+- 1× drop (file 3 `9421` duplicate): `git rm` from `_UNSORTED/`
+
+> Step C corrected count: **10 `git mv` to `sources/shared/dwg/`** +
+> **1 `git rm` for the 9421 duplicate**. The 24 above-ground D files
+> all come from ZIP extraction in Step B (Step B handles them).
+
+### Step D — `inputs/dwg/` symlinks
+
+For each NEW DWG that lands in `sources/`, create reverse symlink
+`inputs/dwg/<file> → ../../sources/{D,shared}/dwg/<file>`. Match the
+existing `ln -sf` convention from prior sessions. ~34 new symlinks.
+
+### Step E — DWG → DXF batch conversion
 
 ```
 python scripts/infrastructure/dwg_to_dxf_batch.py \
@@ -114,113 +256,97 @@ python scripts/infrastructure/dwg_to_dxf_batch.py \
     --recursive
 ```
 
-Expected new DXFs (~14 entries, one per new DWG except duplicates):
-- `_140_9410.dxf`, `_140_9420.dxf`, `_140_9430.dxf` (D koord)
-- `_100_9000.dxf` (komplex 1.PP koord)
-- `_100_8050.dxf` (zásady spárořezu)
-- `1pp_plyn.dxf`, `1pp_slb.dxf`, `1pp_UT.dxf`, `1PP_vod.dxf`,
-  `1pp_VZT.dxf` (TZB sections)
-- `K1pp.dxf`, `UDL_1PP.dxf` (verify scope post-conversion)
-- `Rozpisky_ARS.dxf`
+Expected ~34 new DXFs. Append result to
+`test-data/libuse/outputs/dwg_conversion_log.md`. Watch for converter
+errors on UDL xref DWGs (these often have unresolved cross-references
+that LibreDWG dwg2dxf may complain about; record any failures).
 
-Append to `outputs/dwg_conversion_log.md` per the existing pattern.
+### Step F — Π.0a `pi_0/extract.py --all` re-run
 
-### Step 6 — `pi_0/extract.py --all` re-run
+Auto-picks up new DXFs (cache-mtime keyed). Expected diffs:
 
-After new DXFs land in `sources/{D,shared}/dxf/`, Π.0a auto-picks
-them up (cache-mtime-keyed). Expected behaviour:
+- `master_extract_D.json` — additional openings from 9410/9420/9430
+  may surface; dedup by `(block_name, position)` should suppress
+  cross-drawing duplicates of the same physical doors/windows.
+- `segment_counts` — new TZB layers (`_VZT`, `_vodovod`, `_kanalizace`,
+  `_UT`, `_silnoproud`, etc.) do NOT match Π.0a's `*-IDEN` AIA-pattern,
+  so segment_counts likely UNCHANGED.
+- TZB content sits in DXF cache awaiting Π.0a Step 8c extractor (next
+  task after this one).
 
-- `master_extract_D.json` regenerates with new openings from 9410 / 9420
-  / 9430. Dedup should suppress double-counts (existing 9421 jádra
-  zoom + new full-floor coord drawings overlap on the same physical
-  prostupy).
-- `segment_counts` may grow if new layers carry IDEN-tag suffix codes
-  (verify; TZB layer convention `_VZT`/`_vodovod`/etc. doesn't follow
-  the AIA `*-IDEN` pattern Π.0a Step 5 looks for, so segment_counts
-  may NOT change).
-- TZB-section DXF content (1pp_plyn, K1pp, etc.) sits in DXF cache but
-  is **not yet absorbed** into master_extract — Π.0a Step 8c is the
-  pending extractor for that.
-
-### Step 7 — Validation gate re-run
+### Step G — Validation gate
 
 ```
 cd concrete-agent/packages/core-backend/scripts
 python -m pi_0.validation.diff_vs_legacy --objekt=D
 ```
 
-Must still report **0 MISSING / 0 CHANGED**. New entries in `NEW`
-bucket are expected (additional openings detected by 9410/9420/9430)
-and audit-classified per the Step 7b precedent. If MISSING > 0 →
-investigate before commit.
+Required: **0 MISSING / 0 CHANGED**. New `NEW` entries are expected
+(more openings detected) and audit-classified per Step 7b precedent.
 
-### Step 8 — Inventory + commit
+### Step H — INVENTORY updates + commit
 
-- Update `sources/MASTER_INVENTORY.md` and `sources/D/INVENTORY.md` /
-  `sources/shared/INVENTORY.md` with new files.
-- Logical commit split:
-  - **Commit 1** — `git mv` + ZIP extraction artifacts + symlink updates
-    + INVENTORY edits + this manifest's "PLANNING" → "EXECUTED" status flip
-  - **Commit 2** — DXF cache file additions (verify
-    `concrete-agent/packages/core-backend/scripts/.pi_0_cache/` is in
-    `.gitignore` per existing convention; do NOT commit cache)
-  - **Commit 3** — `master_extract_{A,B,C,D}.json` regenerated outputs
-    + validation report refresh
-- Push.
+Update:
+- `sources/MASTER_INVENTORY.md` — total file count
+- `sources/D/INVENTORY.md` — 24 new D entries
+- `sources/shared/INVENTORY.md` — 10 new shared entries
 
----
+Commit split:
+- **Commit 1**: ZIP extraction + `git mv` + symlink updates +
+  INVENTORY edits + this manifest's status flip to EXECUTED
+- **Commit 2**: regenerated `master_extract_{A,B,C,D}.json` +
+  `validation_report_D.{md,json}` (DXF cache stays gitignored)
 
-## Existing `_UNSORTED/` backlog (orthogonal to this drop)
-
-For reference: `inputs/_UNSORTED/` already contains the May-7 A/B/C
-drop that was sorted into `sources/{A,B,C}/` during Π.0.0 (#1088). The
-files in `_UNSORTED/` appear to be retained as backups — symlinks in
-`inputs/dwg/` point to `sources/A|B|C/dwg/`, not to `_UNSORTED/`.
-
-A/B/C koord ZIPs (`_110_91N0`, `_120_92N0`, `_130_93N0`, 9 ZIPs total)
-sit in `_UNSORTED/` un-extracted. They are **out of scope for the
-current PROBE 9 D-only audit** but should be addressed by Π.1 trigger
-day per `TASK_PHASE_PI_1_SPEC.md`.
-
-This drop v2 manifest does not touch the existing `_UNSORTED/` content.
+Push.
 
 ---
 
-## Decision tree for user
+## 7. Part 4 plan — PROBE 9 baseline audit
 
-When ready to drop:
+After Part 3 lands, audit each new DXF for layer / block / text
+content per discipline:
 
-1. **Drop the 14 files into `test-data/libuse/inputs/_UNSORTED/`**
-   (any other path is fine; the planning here assumes that path).
-2. Send a short message confirming the drop and any deviations from
-   the listed names (e.g. version suffixes, additional files).
-3. Claude re-runs Part 1 discovery against the actual files, fills in
-   the SHA-256 column above, and confirms / corrects target paths.
-4. After your re-approval, Steps 2–8 execute sequentially.
+- 18× above-ground TZB DXFs (chl / kan / sil / slb / vod / vzt × 3
+  podlazi) — extract layer inventory + count CIRCLE/LWPOLYLINE/TEXT
+  per layer
+- 3× above-ground main koord DXFs — same
+- 5× 1.PP per-discipline DXFs (plyn / slb / UT / vod / VZT)
+- 1× K1pp DXF (verify discipline)
+- 1× UDL_1PP DXF
+- 1× _100_9000 1.PP koord DXF
 
-If any of the 14 files won't be available (e.g. `Rozpisky_ARS.dwg` is
-optional), say so — they get marked DEFERRED in this manifest and
-omitted from sorting + DXF conversion.
+Output: `test-data/libuse/outputs/probe_9_full_audit_per_section.md`
 
-If additional files appear that aren't in the list of 14, they get
-added to the manifest with a TBD target until classification is
-confirmed.
+Per discipline:
+- Layer convention (Czech-named like `_VZT` / AIA-style like `M-HVAC-*`?)
+- Per-layer entity counts
+- Text annotation samples (DN labels?)
+- Prostup symbol convention (CIRCLE on which layer?)
+- Štroby (wall chases) representation — LINE entities? Hatch? Block?
+- Confidence rating: SUFFICIENT / PARTIAL / INSUFFICIENT for each
+  discipline at each podlazi for Π.0a Step 8c extractor design
 
----
-
-## What's blocked until drop arrives
-
-- **PROBE 9 full audit** (`probe_9_full_audit_per_section.md`) — needs
-  TZB-section DXFs to exist. Current `probe_9_source_audit.md` is
-  complete based on what's available (1 DXF + 6 PDFs).
-- **Π.0a Step 8c extractor** — design depends on actual layer
-  conventions in the new DXFs. May or may not match the
-  `_VZT`/`_vodovod`/`_kanalizace`/`_UT` Czech-named convention seen in
-  9421; per-discipline drawings often use different layer schemes
-  (`S-PIPE-*`, `M-HVAC-*`, `E-CABL-*` AIA standard, or vendor-specific).
-- **Master_extract enrichment** — new koord drawings may bring
-  additional rooms / openings / segment_tags depending on layer setup.
+Recommendations: which disciplines are auto-extractable vs need manual
+counts vs need ABMV clarification.
 
 ---
 
-_Generated by Claude Code, drop v2 planning manifest, 2026-05-09._
+## 8. Decisions to confirm before Part 3
+
+1. **Target paths** — flat in `sources/{D,shared}/dwg/` per §4? OR
+   create `sources/D/dwg/koordinace/` + `sources/D/dwg/tzb/` subdirs?
+   (I recommend flat; user may override.)
+2. **ZIP archives** — keep originals in `sources/D/_archives/` for
+   provenance? OR delete after successful extraction?
+3. **9421 duplicate** — drop from `_UNSORTED/` cleanly? (Recommended.)
+4. **K1pp / UDL_1PP scope verification** — Part 3 proceeds with the
+   target path in §4 even if title-block doesn't match. If post-DXF
+   inspection reveals different scope (e.g. K1pp turns out to be
+   D-only), do a corrective `git mv` in a follow-up commit.
+5. **Filename normalisation** — keep AS-IS per §5? (Recommended;
+   provenance trumps consistency.)
+
+---
+
+_Generated by Claude Code, drop v2 actual classification manifest,
+2026-05-10. Awaits user approval for Part 3 execution._
