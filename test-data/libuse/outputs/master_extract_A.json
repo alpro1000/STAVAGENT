@@ -11857,7 +11857,7 @@
   "lintels": [],
   "locksmith": [],
   "metadata": {
-    "extracted_at": "2026-05-09T05:39:44+00:00",
+    "extracted_at": "2026-05-10T11:06:06+00:00",
     "extractor_version": "0.0.1",
     "objekt": "A",
     "schema_version": 1,
@@ -12056,6 +12056,12 @@
       },
       {
         "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/185-01-LIB_Rozpisky_ARS.dwg",
+        "sha256": "1befd69c0325b82dd53326ecf31c07063edcc2fa6b7177265b68a6962ecbb1d9",
+        "size_bytes": 3945717
+      },
+      {
+        "kind": "dwg",
         "path": "test-data/libuse/sources/shared/dwg/185-01_DPS_D_SO01_100_4030_R01 - PŮDORYS 1PP.dwg",
         "sha256": "0d179a3e312afbffe5df2b95239daea606190b01ea25eec54e82031c27bf1c98",
         "size_bytes": 679636
@@ -12071,6 +12077,66 @@
         "path": "test-data/libuse/sources/shared/dwg/185-01_DPS_D_SO01_100_5000_R01 - ŘEZY 1-PP.dwg",
         "sha256": "8c294d9659b114a8fb25a3f7e835eea0c9e34a8125190909133dc24924ca6fde",
         "size_bytes": 704940
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/18501_DPS_D_SO01_100_8050_00 - ZASADY SPAROREZU.dwg",
+        "sha256": "4f7d004368a4184a6a3737244de53d115d6d0789552588210ab98b427318e426",
+        "size_bytes": 1085419
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/18501_DPS_D_SO01_100_9000_R00_koordinacni vykres 1PP.dwg",
+        "sha256": "66112c5e31f1cb010814f9f92e1bf9938c574d4aefaec76f9a1b2513803e9792",
+        "size_bytes": 1599218
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/1PP_vod.dwg",
+        "sha256": "3c04045ff07196ce3b70164bcf2fe3905867a63a71a296f8a9ae92479763a47b",
+        "size_bytes": 150189
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/1pp_UT.dwg",
+        "sha256": "a8a36950254b7217dcce025dbdc74ef17cd9b9cfc2368ad4645e4895bc438515",
+        "size_bytes": 356889
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/1pp_VZT.dwg",
+        "sha256": "612130aa9369b48615bb4eb96f8bb96deb718113c675ed1d730efd321582ae90",
+        "size_bytes": 2318715
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/1pp_plyn.dwg",
+        "sha256": "ffff825f6227c6658c40d637af278f35059b8b64b21a460e2ff0420466f77b42",
+        "size_bytes": 128200
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/1pp_slb.dwg",
+        "sha256": "e961935a20f168bb0d1a3425aa4e148a638ee0ad7bf6e7fad37cfcf0a580190e",
+        "size_bytes": 46191
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/K1pp.dwg",
+        "sha256": "1421c8d93aa94a7dbfa90b84a25905dae46c486bf534fd25e2cbc8259a4c9103",
+        "size_bytes": 101088
+      },
+      {
+        "kind": "dwg",
+        "path": "test-data/libuse/sources/shared/dwg/UDL_1PP.dwg",
+        "sha256": "1d238080e596b310d50a776ec17df3a407dcb29ac8a84a0ee8b305d909e21820",
+        "size_bytes": 284398
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/185-01-LIB_Rozpisky_ARS.dxf",
+        "sha256": "4bc8e920e8b3ca21a33382fc2ced4c1544b30a0caf34c2760f9b59c22bcb1c32",
+        "size_bytes": 114151156
       },
       {
         "kind": "dxf",
@@ -12089,6 +12155,60 @@
         "path": "test-data/libuse/sources/shared/dxf/185-01_DPS_D_SO01_100_5000_R01 - ŘEZY 1-PP.dxf",
         "sha256": "7c68124a97fe0a16e8b7ccc5c91190a29877338a7393d81adb1f2b7ed15f611d",
         "size_bytes": 4942653
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/18501_DPS_D_SO01_100_8050_00 - ZASADY SPAROREZU.dxf",
+        "sha256": "f7a84ec42cef1e4e8af86d490b162f3002f71607d3549926700e0573e8bf4e37",
+        "size_bytes": 43501362
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/18501_DPS_D_SO01_100_9000_R00_koordinacni vykres 1PP.dxf",
+        "sha256": "43a5245949f8b983cc6e7086bc000fde0c000d6aceefed1adb9ffe193fabec36",
+        "size_bytes": 48517314
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/1PP_vod.dxf",
+        "sha256": "1c2b0b34abdc5172522607e19ca03873396f536900f0d5e763694738b633f4b2",
+        "size_bytes": 590090
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/1pp_UT.dxf",
+        "sha256": "a2c4203d7085d72d697b01e4c8d0fb2eb3ea9287f4e2d33ec517992c59b39f27",
+        "size_bytes": 2979639
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/1pp_VZT.dxf",
+        "sha256": "1a65d8456cbadc6dc8602a44b8ed23ebfa6576f3003c0db80fdc13b31f89fdf4",
+        "size_bytes": 28408120
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/1pp_plyn.dxf",
+        "sha256": "a873ba6f5de2ac7dfd88b0a6ed18c5926be61de1fb2b92b7ce103adcec5db3b5",
+        "size_bytes": 470254
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/1pp_slb.dxf",
+        "sha256": "f1a564c534eb7e0c40d2e71cab19520786478176cdd83249eb55f8f48222840a",
+        "size_bytes": 165122
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/K1pp.dxf",
+        "sha256": "fd4bec08f47493847d11cd3c67c5f285f3e545703684ce8ffaaa16da1f17adfb",
+        "size_bytes": 310479
+      },
+      {
+        "kind": "dxf",
+        "path": "test-data/libuse/sources/shared/dxf/UDL_1PP.dxf",
+        "sha256": "164ea01bc022db8fd5dc5918b0d97a5062eca907a3f5160ac4ced6e33fb19c10",
+        "size_bytes": 2211466
       },
       {
         "kind": "pdf",
@@ -38664,13 +38784,15 @@
       }
     }
   },
+  "tzb_prostupy": [],
+  "tzb_strby": [],
   "validation": {},
   "walls": [],
   "warnings": [
     {
       "category": "step_5_gate",
       "level": "info",
-      "message": "Step 5: 12 DXFs read; raw_openings=328 (100.0% block_attrs parseable); rooms=80; segment_counts=119 distinct codes.",
+      "message": "Step 5: 22 DXFs read; raw_openings=328 (100.0% block_attrs parseable); rooms=80; segment_counts=119 distinct codes.",
       "source_evidence": "sources/A/dxf/ + sources/shared/dxf/"
     },
     {

@@ -31,6 +31,8 @@ from pi_0.extractors.dxf_openings import (
 from pi_0.extractors.xlsx_dvere import extract_doors_for_objekt
 from pi_0.extractors.xlsx_okna import extract_windows
 from pi_0.extractors.xlsx_skladby import extract_skladby
+from pi_0.extractors.dxf_tzb_prostupy import extract_tzb_prostupy
+from pi_0.extractors.dxf_tzb_strby import extract_tzb_strby
 from pi_0.schema import write_canonical
 
 # Resolve the repo root from this file's location:
@@ -667,6 +669,20 @@ def extract(objekt: str) -> dict:
             "source_evidence": "sources/shared/xlsx/...0041_*.xlsx",
         })
 
+    # Step 8c: TZB prostupy + štroby (per-discipline DXFs sorted in
+    # drop v2, 2026-05-10). D-only — A/B/C have no per-discipline DWGs
+    # at this point (drop v2 was D-side only); their tzb_* sections
+    # stay empty until Π.1 V1 trigger time per ADR-2026-05-09.
+    tzb_prostupy: list[dict] = []
+    tzb_strby: list[dict] = []
+    if objekt == "D":
+        prostupy_records, prostupy_warnings = extract_tzb_prostupy(objekt, SOURCES_ROOT)
+        strby_records, strby_warnings = extract_tzb_strby(objekt, SOURCES_ROOT)
+        tzb_prostupy = prostupy_records
+        tzb_strby = strby_records
+        warnings.extend(prostupy_warnings)
+        warnings.extend(strby_warnings)
+
     return {
         "metadata": build_metadata(objekt, sources),
         "rooms": rooms,
@@ -681,6 +697,8 @@ def extract(objekt: str) -> dict:
         "lintels": [],
         "others_OP": [],
         "segment_counts": segment_counts,
+        "tzb_prostupy": tzb_prostupy,
+        "tzb_strby": tzb_strby,
         "footprint_areas": {},
         "legacy_vv": {},
         "warnings": warnings,

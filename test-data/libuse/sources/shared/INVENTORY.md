@@ -98,3 +98,57 @@ Komplex-wide content expected (`_100_` prefix + Vykaz_vymer_stary):
 - **Vykaz_vymer_stary.xlsx**: komplex bill-of-quantities — pipeline filters to D-scope at parse time (Phase 5).
 - **0010 TZ**: present as both DOCX (editable, `shared/docx/`) and PDF (rendered, `shared/pdf/`).
 - **Drainage 4040**: DWG present but `dxf_parser.py` skips by `re.compile(r"odvodneni", re.IGNORECASE)` filename pattern.
+
+---
+
+## Drop v2 addendum (2026-05-10) — 1.PP per-discipline TZB + komplex koord
+
+10 new DWGs landed in `dwg/` from the 2026-05-10 user drop (commit
+`8cbb8eae` on main). Sources:
+- 1 komplex 1.PP koordinační overlay (`_100_9000`)
+- 1 komplex zásady spárořezu (`_100_8050`)
+- 5 1.PP per-discipline TZB DWGs (plyn / slb / UT / vod / VZT)
+- 1 1.PP K1pp DWG (likely silnoproud — verify post-DXF; flat target
+  pending title-block check)
+- 1 1.PP UDL_1PP architectural xref
+- 1 komplex Rozpisky ARS (titleblock template)
+
+### `dwg/` additions (10 files)
+
+| File | Size | SHA-256 (8) |
+|------|----:|:-----------|
+| `18501_DPS_D_SO01_100_9000_R00_koordinacni vykres 1PP.dwg` |  1,599,218 | `66112c5e` |
+| `18501_DPS_D_SO01_100_8050_00 - ZASADY SPAROREZU.dwg` |  1,085,419 | `4f7d0043` |
+| `1pp_plyn.dwg` |    128,200 | `ffff825f` |
+| `1pp_slb.dwg` |     46,191 | `e961935a` |
+| `1pp_UT.dwg` |    356,889 | `a8a36950` |
+| `1PP_vod.dwg` |    150,189 | `3c04045f` |
+| `1pp_VZT.dwg` |  2,318,715 | `612130aa` |
+| `K1pp.dwg` |    101,088 | `1421c8d9` |
+| `UDL_1PP.dwg` |    284,398 | `1d238080` |
+| `185-01-LIB_Rozpisky_ARS.dwg` |  3,945,717 | `1befd69c` |
+
+### Coverage matrix update — komplex DWGs
+
+| Code | Description | shared XLSX | shared DWG (was) | shared DWG (now) | shared PDF |
+|------|------------|:-----------:|:----------------:|:----------------:|:----------:|
+| 8050 | Zásady spárořezu | — | — | **✅** | ✅ |
+| 9000 | 1.PP koor. výkres část A | — | — | **✅** (full overlay, replaces parts A+B) | ✅ |
+| 9001 | 1.PP koor. výkres část B | — | — | (subsumed by 9000 DWG) | ✅ |
+| Rozpisky ARS | Titleblock template komplex | — | — | **✅** | — |
+| 1.PP TZB plyn | 1.PP gas service | — | — | **✅** | — |
+| 1.PP TZB slb | 1.PP slaboproud (data/EPS) | — | — | **✅** | — |
+| 1.PP TZB UT | 1.PP topení | — | — | **✅** | — |
+| 1.PP TZB vod | 1.PP vodovod | — | — | **✅** | — |
+| 1.PP TZB VZT | 1.PP HVAC | — | — | **✅** | — |
+| 1.PP K1pp | likely silnoproud (verify) | — | — | **✅** | — |
+| 1.PP UDL_1PP | architectural xref | — | — | **✅** | — |
+
+### Notes
+
+- All 10 DWGs converted cleanly to DXF on 2026-05-10 (no failures).
+- K1pp / UDL_1PP scope assumption (komplex 1.PP shared) pending
+  title-block verification at PROBE 9 audit time. Corrective
+  `git mv` to `sources/D/dwg/` if title-block reveals D-only scope.
+- Filename quirks (`1pp_` vs `1PP_` vs `K1pp` short prefix) preserved
+  AS-IS for provenance per drop v2 manifest §5.

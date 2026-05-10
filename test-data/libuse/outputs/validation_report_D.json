@@ -1,110 +1,110 @@
 {
-  "extract_path": "master_extract_D.json",
-  "gate_passed": true,
   "objekt": "D",
+  "extract_path": "master_extract_D.json",
+  "totals": {
+    "match": 373,
+    "changed": 0,
+    "new": 7,
+    "missing": 0
+  },
+  "gate_passed": true,
   "sections": [
     {
-      "changed": 0,
-      "changed_details": [],
+      "section": "rooms",
       "match": 111,
-      "missing": 0,
-      "missing_details": [],
+      "changed": 0,
       "new": 0,
+      "missing": 0,
+      "changed_details": [],
       "new_details": [],
-      "section": "rooms"
+      "missing_details": []
     },
     {
-      "changed": 0,
+      "section": "doors",
       "match": 102,
-      "missing": 0,
-      "missing_details": [],
       "new": 0,
+      "missing": 0,
+      "changed": 0,
       "new_details": [],
-      "section": "doors"
+      "missing_details": []
     },
     {
-      "changed": 0,
+      "section": "segment_counts",
       "match": 90,
-      "missing": 0,
       "new": 7,
+      "missing": 0,
+      "changed": 0,
       "per_prefix": {
-        "CF": {
-          "match": 3,
-          "missing": 0,
-          "missing_details": [],
-          "new": 0
-        },
-        "CW": {
-          "match": 0,
-          "missing": 0,
-          "missing_details": [],
-          "new": 2
-        },
-        "D": {
-          "match": 14,
-          "missing": 0,
-          "missing_details": [],
-          "new": 1
-        },
-        "F": {
-          "match": 0,
-          "missing": 0,
-          "missing_details": [],
-          "new": 1
-        },
-        "LI": {
-          "match": 12,
-          "missing": 0,
-          "missing_details": [],
-          "new": 0
-        },
-        "LP": {
-          "match": 9,
-          "missing": 0,
-          "missing_details": [],
-          "new": 0
-        },
-        "OP": {
-          "match": 33,
-          "missing": 0,
-          "missing_details": [],
-          "new": 0
-        },
-        "TP": {
-          "match": 7,
-          "missing": 0,
-          "missing_details": [],
-          "new": 0
-        },
         "W": {
           "match": 6,
+          "new": 3,
           "missing": 0,
-          "missing_details": [],
-          "new": 3
+          "missing_details": []
         },
         "WF": {
           "match": 6,
+          "new": 0,
           "missing": 0,
-          "missing_details": [],
-          "new": 0
+          "missing_details": []
+        },
+        "OP": {
+          "match": 33,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "LI": {
+          "match": 12,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "TP": {
+          "match": 7,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "F": {
+          "match": 0,
+          "new": 1,
+          "missing": 0,
+          "missing_details": []
+        },
+        "CW": {
+          "match": 0,
+          "new": 2,
+          "missing": 0,
+          "missing_details": []
+        },
+        "LP": {
+          "match": 9,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "D": {
+          "match": 14,
+          "new": 1,
+          "missing": 0,
+          "missing_details": []
+        },
+        "CF": {
+          "match": 3,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
         }
-      },
-      "section": "segment_counts"
+      }
     },
     {
-      "changed": 0,
+      "section": "skladby",
       "match": 70,
-      "missing": 0,
-      "missing_details": [],
       "new": 0,
+      "missing": 0,
+      "changed": 0,
       "new_details": [],
-      "section": "skladby"
+      "missing_details": []
     }
-  ],
-  "totals": {
-    "changed": 0,
-    "match": 373,
-    "missing": 0,
-    "new": 7
-  }
+  ]
 }
