@@ -58,6 +58,12 @@ DISCIPLINE_DXF_PATTERNS: dict[tuple[str, str], list[tuple[str, str]]] = {
         ("silnoproud", "D_2NP_sil.dxf"),
         ("slaboproud", "D_2NP_slb.dxf"),
         ("vodovod",    "D_2NP_vod.dxf"),
+        # VZT (partial recovery): D_2NP_vzt.dxf failed conversion, but
+        # 9421 jadra zoom carries _VZT layer with 13 CIRCLEs covering
+        # the byt cores at 2.NP. Per audit §3.7 + Part 5B Discovery
+        # 2026-05-10. Confidence stays at 0.85 (jadra zoom = subset of
+        # full 2.NP, missing common areas like corridors).
+        ("VZT_partial", "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP.dxf"),
     ],
     ("D", "3.NP"): [
         ("kanalizace", "D_3NP_kan.dxf"),
@@ -100,6 +106,10 @@ DISCIPLINE_LAYER_PATTERNS: dict[str, list[str]] = {
     "slaboproud": ["SLP-", "SLP_"],
     "UT":         ["0UT_", "0ut_"],
     "plyn":       ["Plyn_", "Plyn STL"],
+    # VZT_partial (Part 5B recovery): the 9421 jadra zoom carries _VZT
+    # content but is a 2.NP-byt-cores-only subset; flag for confidence
+    # downgrade in HSV item generator.
+    "VZT_partial": ["_VZT"],
 }
 
 # ---------------------------------------------------------------------------

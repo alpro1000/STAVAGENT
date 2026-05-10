@@ -59,6 +59,30 @@ _DISCIPLINE_LABEL = {
     "slaboproud":           "slaboproud (data / EPS)",
     "UT":                   "UT (topení)",
     "plyn":                 "plyn",
+    "VZT_partial":          "VZT (z 9421 jádra zoom — částečné pokrytí 2.NP)",
+    "VZT":                  "VZT (vzduchotechnika)",
+    "chl":                  "chlazení",
+}
+
+# ---------------------------------------------------------------------------
+# Part 5B — heuristic VZT + chl estimates per podlazi
+# ---------------------------------------------------------------------------
+# Density-ratio heuristic anchored to (kanalizace + vodovod) per-podlazi
+# counts auto-extracted by Step 8c. Methodology + sanity check in
+# test-data/libuse/outputs/probe_9_vzt_chl_manual_counts.md.
+#
+# Items emit at confidence 0.70 (vs 0.95 for direct extract).
+PART_5B_HEURISTIC_VZT: dict[str, int] = {
+    "1.PP": 94,   # 30% of (kan+vod=210) + 20 for machine room
+    "1.NP": 27,   # 30% of (kan+vod=91)
+    "2.NP": 10,   # 30% of (kan+vod=77) − 13 already extracted via VZT_partial
+    "3.NP": 17,   # 30% of (kan+vod=56)
+}
+PART_5B_HEURISTIC_CHL: dict[str, int] = {
+    "1.PP": 8,    # central chiller + main supply pair (flat-cap, not ratio)
+    "1.NP": 18,   # 20% of (kan+vod=91)
+    "2.NP": 15,   # 20% of (kan+vod=77)
+    "3.NP": 11,   # 20% of (kan+vod=56)
 }
 
 
@@ -150,6 +174,95 @@ def generate_items(extract_path: Path) -> tuple[list[dict], dict]:
             "category": "PROBE_9",
         }
         items.append(item)
+
+    # ----------------------------------------------------------------------
+    # Part 5B: heuristic VZT + chl items (DWG conversion failed for 7 files)
+    # ----------------------------------------------------------------------
+    # Each podlazi gets N items per discipline based on density ratio.
+    # Items emit at confidence 0.70 with explicit poznamka pointing at the
+    # methodology document. Stable item_id ensures idempotency.
+    PART_5B_NOTE = (
+        "PROBE 9 Part 5B heuristic estimate (DWG conversion failed — "
+        "LibreDWG 0.13.4 bug). Source: density ratio anchored to kanalizace + "
+        "vodovod actuals × 30% (VZT) / 20% (chl). See "
+        "probe_9_vzt_chl_manual_counts.md for methodology. ABMV email #11 "
+        "opened for re-export of failing DWGs."
+    )
+    for podlazi, n_vzt in PART_5B_HEURISTIC_VZT.items():
+        for i in range(1, n_vzt + 1):
+            source_id = f"part5b.VZT.{podlazi}.{i:04d}"
+            item_id = _stable_id("probe9.heuristic", source_id)
+            popis = (
+                f"Prostup ve stropě — VZT (vzduchotechnika), {podlazi} "
+                f"(heuristický odhad #{i})"
+            )
+            items.append({
+                "item_id": item_id,
+                "kapitola": "HSV-963",
+                "popis": popis,
+                "MJ": "ks",
+                "mnozstvi": 1,
+                "misto": {
+                    "objekt": objekt,
+                    "podlazi": podlazi,
+                    "mistnosti": [],
+                },
+                "skladba_ref": {},
+                "vyrobce_ref": None,
+                "urs_code": None,
+                "urs_description": None,
+                "confidence": 0.70,
+                "status": "to_audit",
+                "poznamka": PART_5B_NOTE,
+                "warnings": [
+                    "Confidence 0.70: heuristic estimate, not direct extract. "
+                    "Source DWG D_NNP_vzt.dwg or 1pp_VZT.dwg failed LibreDWG "
+                    "conversion. Verify via PDF or re-exported DWG before "
+                    "billing."
+                ],
+                "urs_status": "no_match",
+                "audit_note": "Part 5B manual VZT recovery — density ratio heuristic",
+                "urs_confidence": 0.0,
+                "data_source": "pi_0a_step_8c_part_5b_heuristic",
+                "category": "PROBE_9",
+            })
+    for podlazi, n_chl in PART_5B_HEURISTIC_CHL.items():
+        for i in range(1, n_chl + 1):
+            source_id = f"part5b.chl.{podlazi}.{i:04d}"
+            item_id = _stable_id("probe9.heuristic", source_id)
+            popis = (
+                f"Prostup ve stropě — chlazení, {podlazi} "
+                f"(heuristický odhad #{i})"
+            )
+            items.append({
+                "item_id": item_id,
+                "kapitola": "HSV-963",
+                "popis": popis,
+                "MJ": "ks",
+                "mnozstvi": 1,
+                "misto": {
+                    "objekt": objekt,
+                    "podlazi": podlazi,
+                    "mistnosti": [],
+                },
+                "skladba_ref": {},
+                "vyrobce_ref": None,
+                "urs_code": None,
+                "urs_description": None,
+                "confidence": 0.70,
+                "status": "to_audit",
+                "poznamka": PART_5B_NOTE,
+                "warnings": [
+                    "Confidence 0.70: heuristic estimate, not direct extract. "
+                    "Source DWG D_NNP_chl.dwg failed LibreDWG conversion. "
+                    "Verify via PDF or re-exported DWG before billing."
+                ],
+                "urs_status": "no_match",
+                "audit_note": "Part 5B manual chl recovery — density ratio heuristic",
+                "urs_confidence": 0.0,
+                "data_source": "pi_0a_step_8c_part_5b_heuristic",
+                "category": "PROBE_9",
+            })
 
     # HSV-961 from štroby (cable-tray chases)
     for r in strby:

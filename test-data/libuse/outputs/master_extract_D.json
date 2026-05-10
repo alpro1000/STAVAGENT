@@ -16123,7 +16123,7 @@
   "lintels": [],
   "locksmith": [],
   "metadata": {
-    "extracted_at": "2026-05-10T11:06:48+00:00",
+    "extracted_at": "2026-05-10T12:11:00+00:00",
     "extractor_version": "0.0.1",
     "objekt": "D",
     "schema_version": 1,
@@ -69502,7 +69502,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0358",
+      "id": "D.UT.1.PP.0371",
       "podlazi": "1.PP",
       "position": [
         -30890.323,
@@ -69520,7 +69520,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0359",
+      "id": "D.UT.1.PP.0372",
       "podlazi": "1.PP",
       "position": [
         -30763.201,
@@ -69538,7 +69538,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0360",
+      "id": "D.UT.1.PP.0373",
       "podlazi": "1.PP",
       "position": [
         -30629.865,
@@ -69556,7 +69556,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0392",
+      "id": "D.UT.1.PP.0405",
       "podlazi": "1.PP",
       "position": [
         -28078.926,
@@ -69574,7 +69574,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0391",
+      "id": "D.UT.1.PP.0404",
       "podlazi": "1.PP",
       "position": [
         -27870.458,
@@ -69592,7 +69592,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0394",
+      "id": "D.UT.1.PP.0407",
       "podlazi": "1.PP",
       "position": [
         -27634.736,
@@ -69610,7 +69610,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0393",
+      "id": "D.UT.1.PP.0406",
       "podlazi": "1.PP",
       "position": [
         -27426.268,
@@ -69628,7 +69628,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0387",
+      "id": "D.UT.1.PP.0400",
       "podlazi": "1.PP",
       "position": [
         -25640.108,
@@ -69646,7 +69646,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0374",
+      "id": "D.UT.1.PP.0387",
       "podlazi": "1.PP",
       "position": [
         -25237.893,
@@ -69664,7 +69664,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0388",
+      "id": "D.UT.1.PP.0401",
       "podlazi": "1.PP",
       "position": [
         -25159.103,
@@ -69682,7 +69682,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0372",
+      "id": "D.UT.1.PP.0385",
       "podlazi": "1.PP",
       "position": [
         -24919.858,
@@ -69700,7 +69700,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0389",
+      "id": "D.UT.1.PP.0402",
       "podlazi": "1.PP",
       "position": [
         -24851.224,
@@ -69718,7 +69718,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0375",
+      "id": "D.UT.1.PP.0388",
       "podlazi": "1.PP",
       "position": [
         -24814.152,
@@ -69736,7 +69736,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0376",
+      "id": "D.UT.1.PP.0389",
       "podlazi": "1.PP",
       "position": [
         -24810.431,
@@ -69754,7 +69754,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0377",
+      "id": "D.UT.1.PP.0390",
       "podlazi": "1.PP",
       "position": [
         -24810.431,
@@ -69772,7 +69772,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0373",
+      "id": "D.UT.1.PP.0386",
       "podlazi": "1.PP",
       "position": [
         -24496.117,
@@ -69790,7 +69790,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0386",
+      "id": "D.UT.1.PP.0399",
       "podlazi": "1.PP",
       "position": [
         -24424.521,
@@ -69808,7 +69808,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0385",
+      "id": "D.UT.1.PP.0398",
       "podlazi": "1.PP",
       "position": [
         -24238.732,
@@ -69826,7 +69826,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0382",
+      "id": "D.UT.1.PP.0395",
       "podlazi": "1.PP",
       "position": [
         -24129.911,
@@ -69844,7 +69844,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0383",
+      "id": "D.UT.1.PP.0396",
       "podlazi": "1.PP",
       "position": [
         -24129.911,
@@ -69862,7 +69862,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0384",
+      "id": "D.UT.1.PP.0397",
       "podlazi": "1.PP",
       "position": [
         -24029.092,
@@ -69880,7 +69880,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0381",
+      "id": "D.UT.1.PP.0394",
       "podlazi": "1.PP",
       "position": [
         -23929.967,
@@ -69898,7 +69898,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0378",
+      "id": "D.UT.1.PP.0391",
       "podlazi": "1.PP",
       "position": [
         -23789.285,
@@ -69916,7 +69916,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0379",
+      "id": "D.UT.1.PP.0392",
       "podlazi": "1.PP",
       "position": [
         -23679.113,
@@ -69934,7 +69934,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0390",
+      "id": "D.UT.1.PP.0403",
       "podlazi": "1.PP",
       "position": [
         -23569.474,
@@ -69952,7 +69952,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0380",
+      "id": "D.UT.1.PP.0393",
       "podlazi": "1.PP",
       "position": [
         -23568.94,
@@ -69970,7 +69970,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0370",
+      "id": "D.UT.1.PP.0383",
       "podlazi": "1.PP",
       "position": [
         -23270.493,
@@ -69988,7 +69988,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0371",
+      "id": "D.UT.1.PP.0384",
       "podlazi": "1.PP",
       "position": [
         -23177.598,
@@ -70006,7 +70006,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0362",
+      "id": "D.UT.1.PP.0375",
       "podlazi": "1.PP",
       "position": [
         -23078.449,
@@ -70024,7 +70024,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0361",
+      "id": "D.UT.1.PP.0374",
       "podlazi": "1.PP",
       "position": [
         -23074.32,
@@ -70042,7 +70042,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0363",
+      "id": "D.UT.1.PP.0376",
       "podlazi": "1.PP",
       "position": [
         -22994.696,
@@ -70060,7 +70060,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0356",
+      "id": "D.UT.1.PP.0369",
       "podlazi": "1.PP",
       "position": [
         -22410.652,
@@ -70078,7 +70078,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0357",
+      "id": "D.UT.1.PP.0370",
       "podlazi": "1.PP",
       "position": [
         -22156.452,
@@ -70096,7 +70096,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0351",
+      "id": "D.UT.1.PP.0364",
       "podlazi": "1.PP",
       "position": [
         -18290.499,
@@ -70114,7 +70114,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0350",
+      "id": "D.UT.1.PP.0363",
       "podlazi": "1.PP",
       "position": [
         -18028.629,
@@ -70132,7 +70132,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0355",
+      "id": "D.UT.1.PP.0368",
       "podlazi": "1.PP",
       "position": [
         -17653.011,
@@ -70150,7 +70150,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0354",
+      "id": "D.UT.1.PP.0367",
       "podlazi": "1.PP",
       "position": [
         -17498.897,
@@ -70168,7 +70168,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0349",
+      "id": "D.UT.1.PP.0362",
       "podlazi": "1.PP",
       "position": [
         -15017.371,
@@ -70186,7 +70186,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0348",
+      "id": "D.UT.1.PP.0361",
       "podlazi": "1.PP",
       "position": [
         -14755.5,
@@ -70204,7 +70204,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0396",
+      "id": "D.UT.1.PP.0409",
       "podlazi": "1.PP",
       "position": [
         -14510.992,
@@ -70222,7 +70222,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0395",
+      "id": "D.UT.1.PP.0408",
       "podlazi": "1.PP",
       "position": [
         -14249.121,
@@ -70240,7 +70240,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0398",
+      "id": "D.UT.1.PP.0411",
       "podlazi": "1.PP",
       "position": [
         -10780.335,
@@ -70258,7 +70258,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0397",
+      "id": "D.UT.1.PP.0410",
       "podlazi": "1.PP",
       "position": [
         -10518.465,
@@ -70276,7 +70276,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0353",
+      "id": "D.UT.1.PP.0366",
       "podlazi": "1.PP",
       "position": [
         -10106.416,
@@ -70294,7 +70294,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0352",
+      "id": "D.UT.1.PP.0365",
       "podlazi": "1.PP",
       "position": [
         -9858.635,
@@ -70312,7 +70312,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0365",
+      "id": "D.UT.1.PP.0378",
       "podlazi": "1.PP",
       "position": [
         12355.725,
@@ -70330,7 +70330,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0364",
+      "id": "D.UT.1.PP.0377",
       "podlazi": "1.PP",
       "position": [
         12475.574,
@@ -70348,7 +70348,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0366",
+      "id": "D.UT.1.PP.0379",
       "podlazi": "1.PP",
       "position": [
         12625.23,
@@ -70366,7 +70366,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0368",
+      "id": "D.UT.1.PP.0381",
       "podlazi": "1.PP",
       "position": [
         14054.68,
@@ -70384,7 +70384,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0367",
+      "id": "D.UT.1.PP.0380",
       "podlazi": "1.PP",
       "position": [
         14156.091,
@@ -70402,7 +70402,7 @@
         "source": "DXF|1pp_UT|none_in_250mm",
         "value": null
       },
-      "id": "D.UT.1.PP.0369",
+      "id": "D.UT.1.PP.0382",
       "podlazi": "1.PP",
       "position": [
         14303.611,
@@ -70426,7 +70426,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0257",
+      "id": "D.kanalizace.1.PP.0270",
       "podlazi": "1.PP",
       "position": [
         -77527.316,
@@ -70450,7 +70450,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0320",
+      "id": "D.kanalizace.1.PP.0333",
       "podlazi": "1.PP",
       "position": [
         -76985.713,
@@ -70474,7 +70474,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0327",
+      "id": "D.kanalizace.1.PP.0340",
       "podlazi": "1.PP",
       "position": [
         -75947.545,
@@ -70498,7 +70498,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0255",
+      "id": "D.kanalizace.1.PP.0268",
       "podlazi": "1.PP",
       "position": [
         -75091.341,
@@ -70522,7 +70522,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0251",
+      "id": "D.kanalizace.1.PP.0264",
       "podlazi": "1.PP",
       "position": [
         -74150.111,
@@ -70546,7 +70546,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0258",
+      "id": "D.kanalizace.1.PP.0271",
       "podlazi": "1.PP",
       "position": [
         -72890.3,
@@ -70570,7 +70570,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0309",
+      "id": "D.kanalizace.1.PP.0322",
       "podlazi": "1.PP",
       "position": [
         -71974.124,
@@ -70594,7 +70594,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0321",
+      "id": "D.kanalizace.1.PP.0334",
       "podlazi": "1.PP",
       "position": [
         -71631.184,
@@ -70618,7 +70618,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0252",
+      "id": "D.kanalizace.1.PP.0265",
       "podlazi": "1.PP",
       "position": [
         -69820.453,
@@ -70642,7 +70642,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0304",
+      "id": "D.kanalizace.1.PP.0317",
       "podlazi": "1.PP",
       "position": [
         -68740.681,
@@ -70666,7 +70666,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0240",
+      "id": "D.kanalizace.1.PP.0253",
       "podlazi": "1.PP",
       "position": [
         -68107.57,
@@ -70690,7 +70690,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0303",
+      "id": "D.kanalizace.1.PP.0316",
       "podlazi": "1.PP",
       "position": [
         -67570.262,
@@ -70714,7 +70714,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0259",
+      "id": "D.kanalizace.1.PP.0272",
       "podlazi": "1.PP",
       "position": [
         -66632.258,
@@ -70738,7 +70738,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0256",
+      "id": "D.kanalizace.1.PP.0269",
       "podlazi": "1.PP",
       "position": [
         -66626.97,
@@ -70762,7 +70762,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0260",
+      "id": "D.kanalizace.1.PP.0273",
       "podlazi": "1.PP",
       "position": [
         -66274.325,
@@ -70786,7 +70786,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0324",
+      "id": "D.kanalizace.1.PP.0337",
       "podlazi": "1.PP",
       "position": [
         -66235.525,
@@ -70810,7 +70810,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0310",
+      "id": "D.kanalizace.1.PP.0323",
       "podlazi": "1.PP",
       "position": [
         -65015.847,
@@ -70834,7 +70834,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0328",
+      "id": "D.kanalizace.1.PP.0341",
       "podlazi": "1.PP",
       "position": [
         -63551.683,
@@ -70858,7 +70858,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0253",
+      "id": "D.kanalizace.1.PP.0266",
       "podlazi": "1.PP",
       "position": [
         -63234.417,
@@ -70882,7 +70882,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0232",
+      "id": "D.kanalizace.1.PP.0245",
       "podlazi": "1.PP",
       "position": [
         -62459.103,
@@ -70906,7 +70906,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0325",
+      "id": "D.kanalizace.1.PP.0338",
       "podlazi": "1.PP",
       "position": [
         -61773.209,
@@ -70930,7 +70930,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0241",
+      "id": "D.kanalizace.1.PP.0254",
       "podlazi": "1.PP",
       "position": [
         -60472.749,
@@ -70954,7 +70954,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0311",
+      "id": "D.kanalizace.1.PP.0324",
       "podlazi": "1.PP",
       "position": [
         -60458.38,
@@ -70978,7 +70978,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0315",
+      "id": "D.kanalizace.1.PP.0328",
       "podlazi": "1.PP",
       "position": [
         -60206.371,
@@ -71002,7 +71002,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0314",
+      "id": "D.kanalizace.1.PP.0327",
       "podlazi": "1.PP",
       "position": [
         -60010.682,
@@ -71026,7 +71026,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0261",
+      "id": "D.kanalizace.1.PP.0274",
       "podlazi": "1.PP",
       "position": [
         -59801.079,
@@ -71050,7 +71050,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0233",
+      "id": "D.kanalizace.1.PP.0246",
       "podlazi": "1.PP",
       "position": [
         -59655.185,
@@ -71074,7 +71074,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0234",
+      "id": "D.kanalizace.1.PP.0247",
       "podlazi": "1.PP",
       "position": [
         -59234.872,
@@ -71098,7 +71098,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0322",
+      "id": "D.kanalizace.1.PP.0335",
       "podlazi": "1.PP",
       "position": [
         -59027.858,
@@ -71122,7 +71122,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0326",
+      "id": "D.kanalizace.1.PP.0339",
       "podlazi": "1.PP",
       "position": [
         -57769.632,
@@ -71146,7 +71146,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0323",
+      "id": "D.kanalizace.1.PP.0336",
       "podlazi": "1.PP",
       "position": [
         -56951.022,
@@ -71170,7 +71170,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0341",
+      "id": "D.kanalizace.1.PP.0354",
       "podlazi": "1.PP",
       "position": [
         -56212.608,
@@ -71194,7 +71194,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0318",
+      "id": "D.kanalizace.1.PP.0331",
       "podlazi": "1.PP",
       "position": [
         -56136.763,
@@ -71218,7 +71218,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0239",
+      "id": "D.kanalizace.1.PP.0252",
       "podlazi": "1.PP",
       "position": [
         -55577.631,
@@ -71242,7 +71242,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0235",
+      "id": "D.kanalizace.1.PP.0248",
       "podlazi": "1.PP",
       "position": [
         -55109.342,
@@ -71266,7 +71266,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0262",
+      "id": "D.kanalizace.1.PP.0275",
       "podlazi": "1.PP",
       "position": [
         -54830.911,
@@ -71290,7 +71290,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0299",
+      "id": "D.kanalizace.1.PP.0312",
       "podlazi": "1.PP",
       "position": [
         -53617.062,
@@ -71314,7 +71314,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0305",
+      "id": "D.kanalizace.1.PP.0318",
       "podlazi": "1.PP",
       "position": [
         -53576.117,
@@ -71338,7 +71338,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0236",
+      "id": "D.kanalizace.1.PP.0249",
       "podlazi": "1.PP",
       "position": [
         -52304.111,
@@ -71362,7 +71362,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0254",
+      "id": "D.kanalizace.1.PP.0267",
       "podlazi": "1.PP",
       "position": [
         -51263.312,
@@ -71386,7 +71386,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0238",
+      "id": "D.kanalizace.1.PP.0251",
       "podlazi": "1.PP",
       "position": [
         -51232.437,
@@ -71410,7 +71410,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0306",
+      "id": "D.kanalizace.1.PP.0319",
       "podlazi": "1.PP",
       "position": [
         -48976.436,
@@ -71434,7 +71434,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0297",
+      "id": "D.kanalizace.1.PP.0310",
       "podlazi": "1.PP",
       "position": [
         -47164.23,
@@ -71458,7 +71458,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0237",
+      "id": "D.kanalizace.1.PP.0250",
       "podlazi": "1.PP",
       "position": [
         -46461.405,
@@ -71482,7 +71482,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0298",
+      "id": "D.kanalizace.1.PP.0311",
       "podlazi": "1.PP",
       "position": [
         -45903.912,
@@ -71506,7 +71506,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0300",
+      "id": "D.kanalizace.1.PP.0313",
       "podlazi": "1.PP",
       "position": [
         -44381.679,
@@ -71530,7 +71530,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0295",
+      "id": "D.kanalizace.1.PP.0308",
       "podlazi": "1.PP",
       "position": [
         -44204.449,
@@ -71554,7 +71554,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0249",
+      "id": "D.kanalizace.1.PP.0262",
       "podlazi": "1.PP",
       "position": [
         -42442.375,
@@ -71578,7 +71578,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0266",
+      "id": "D.kanalizace.1.PP.0279",
       "podlazi": "1.PP",
       "position": [
         -41518.671,
@@ -71602,7 +71602,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0340",
+      "id": "D.kanalizace.1.PP.0353",
       "podlazi": "1.PP",
       "position": [
         -41214.108,
@@ -71626,7 +71626,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0319",
+      "id": "D.kanalizace.1.PP.0332",
       "podlazi": "1.PP",
       "position": [
         -40920.698,
@@ -71650,7 +71650,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0296",
+      "id": "D.kanalizace.1.PP.0309",
       "podlazi": "1.PP",
       "position": [
         -40342.963,
@@ -71674,7 +71674,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0267",
+      "id": "D.kanalizace.1.PP.0280",
       "podlazi": "1.PP",
       "position": [
         -39862.299,
@@ -71698,7 +71698,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0263",
+      "id": "D.kanalizace.1.PP.0276",
       "podlazi": "1.PP",
       "position": [
         -39297.684,
@@ -71722,7 +71722,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0268",
+      "id": "D.kanalizace.1.PP.0281",
       "podlazi": "1.PP",
       "position": [
         -37480.034,
@@ -71746,7 +71746,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0337",
+      "id": "D.kanalizace.1.PP.0350",
       "podlazi": "1.PP",
       "position": [
         -36907.654,
@@ -71770,7 +71770,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0248",
+      "id": "D.kanalizace.1.PP.0261",
       "podlazi": "1.PP",
       "position": [
         -36848.144,
@@ -71794,7 +71794,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0250",
+      "id": "D.kanalizace.1.PP.0263",
       "podlazi": "1.PP",
       "position": [
         -36108.923,
@@ -71818,7 +71818,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0339",
+      "id": "D.kanalizace.1.PP.0352",
       "podlazi": "1.PP",
       "position": [
         -34968.547,
@@ -71842,7 +71842,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0247",
+      "id": "D.kanalizace.1.PP.0260",
       "podlazi": "1.PP",
       "position": [
         -34153.157,
@@ -71866,7 +71866,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0277",
+      "id": "D.kanalizace.1.PP.0290",
       "podlazi": "1.PP",
       "position": [
         -32540.361,
@@ -71890,7 +71890,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0269",
+      "id": "D.kanalizace.1.PP.0282",
       "podlazi": "1.PP",
       "position": [
         -32452.424,
@@ -71914,7 +71914,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0291",
+      "id": "D.kanalizace.1.PP.0304",
       "podlazi": "1.PP",
       "position": [
         -32421.006,
@@ -71938,7 +71938,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0265",
+      "id": "D.kanalizace.1.PP.0278",
       "podlazi": "1.PP",
       "position": [
         -32217.694,
@@ -71962,7 +71962,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0342",
+      "id": "D.kanalizace.1.PP.0355",
       "podlazi": "1.PP",
       "position": [
         -32217.694,
@@ -71986,7 +71986,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0273",
+      "id": "D.kanalizace.1.PP.0286",
       "podlazi": "1.PP",
       "position": [
         -31974.86,
@@ -72010,7 +72010,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0336",
+      "id": "D.kanalizace.1.PP.0349",
       "podlazi": "1.PP",
       "position": [
         -31774.222,
@@ -72034,7 +72034,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0276",
+      "id": "D.kanalizace.1.PP.0289",
       "podlazi": "1.PP",
       "position": [
         -30372.194,
@@ -72058,7 +72058,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0275",
+      "id": "D.kanalizace.1.PP.0288",
       "podlazi": "1.PP",
       "position": [
         -30074.899,
@@ -72082,7 +72082,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0338",
+      "id": "D.kanalizace.1.PP.0351",
       "podlazi": "1.PP",
       "position": [
         -29518.073,
@@ -72106,7 +72106,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0246",
+      "id": "D.kanalizace.1.PP.0259",
       "podlazi": "1.PP",
       "position": [
         -29318.448,
@@ -72130,7 +72130,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0289",
+      "id": "D.kanalizace.1.PP.0302",
       "podlazi": "1.PP",
       "position": [
         -29187.563,
@@ -72154,7 +72154,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0335",
+      "id": "D.kanalizace.1.PP.0348",
       "podlazi": "1.PP",
       "position": [
         -29092.042,
@@ -72178,7 +72178,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0245",
+      "id": "D.kanalizace.1.PP.0258",
       "podlazi": "1.PP",
       "position": [
         -28628.032,
@@ -72202,7 +72202,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0329",
+      "id": "D.kanalizace.1.PP.0342",
       "podlazi": "1.PP",
       "position": [
         -28493.475,
@@ -72226,7 +72226,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0288",
+      "id": "D.kanalizace.1.PP.0301",
       "podlazi": "1.PP",
       "position": [
         -28017.144,
@@ -72250,7 +72250,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0290",
+      "id": "D.kanalizace.1.PP.0303",
       "podlazi": "1.PP",
       "position": [
         -25462.729,
@@ -72274,7 +72274,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0312",
+      "id": "D.kanalizace.1.PP.0325",
       "podlazi": "1.PP",
       "position": [
         -25223.115,
@@ -72298,7 +72298,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0270",
+      "id": "D.kanalizace.1.PP.0283",
       "podlazi": "1.PP",
       "position": [
         -25008.264,
@@ -72322,7 +72322,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0333",
+      "id": "D.kanalizace.1.PP.0346",
       "podlazi": "1.PP",
       "position": [
         -24800.215,
@@ -72346,7 +72346,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0278",
+      "id": "D.kanalizace.1.PP.0291",
       "podlazi": "1.PP",
       "position": [
         -24549.537,
@@ -72370,7 +72370,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0271",
+      "id": "D.kanalizace.1.PP.0284",
       "podlazi": "1.PP",
       "position": [
         -24439.763,
@@ -72394,7 +72394,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0244",
+      "id": "D.kanalizace.1.PP.0257",
       "podlazi": "1.PP",
       "position": [
         -23794.076,
@@ -72418,7 +72418,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0334",
+      "id": "D.kanalizace.1.PP.0347",
       "podlazi": "1.PP",
       "position": [
         -23159.324,
@@ -72442,7 +72442,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0264",
+      "id": "D.kanalizace.1.PP.0277",
       "podlazi": "1.PP",
       "position": [
         -22480.404,
@@ -72466,7 +72466,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0332",
+      "id": "D.kanalizace.1.PP.0345",
       "podlazi": "1.PP",
       "position": [
         -21680.295,
@@ -72490,7 +72490,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0243",
+      "id": "D.kanalizace.1.PP.0256",
       "podlazi": "1.PP",
       "position": [
         -20946.31,
@@ -72514,7 +72514,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0292",
+      "id": "D.kanalizace.1.PP.0305",
       "podlazi": "1.PP",
       "position": [
         -20905.262,
@@ -72538,7 +72538,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0330",
+      "id": "D.kanalizace.1.PP.0343",
       "podlazi": "1.PP",
       "position": [
         -20823.817,
@@ -72562,7 +72562,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0272",
+      "id": "D.kanalizace.1.PP.0285",
       "podlazi": "1.PP",
       "position": [
         -20214.088,
@@ -72586,7 +72586,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0279",
+      "id": "D.kanalizace.1.PP.0292",
       "podlazi": "1.PP",
       "position": [
         -18633.621,
@@ -72610,7 +72610,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0331",
+      "id": "D.kanalizace.1.PP.0344",
       "podlazi": "1.PP",
       "position": [
         -17469.58,
@@ -72634,7 +72634,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0242",
+      "id": "D.kanalizace.1.PP.0255",
       "podlazi": "1.PP",
       "position": [
         -15597.812,
@@ -72658,7 +72658,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0284",
+      "id": "D.kanalizace.1.PP.0297",
       "podlazi": "1.PP",
       "position": [
         -14063.944,
@@ -72682,7 +72682,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0287",
+      "id": "D.kanalizace.1.PP.0300",
       "podlazi": "1.PP",
       "position": [
         -14022.999,
@@ -72706,7 +72706,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0286",
+      "id": "D.kanalizace.1.PP.0299",
       "podlazi": "1.PP",
       "position": [
         -9423.318,
@@ -72730,7 +72730,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0282",
+      "id": "D.kanalizace.1.PP.0295",
       "podlazi": "1.PP",
       "position": [
         -7611.112,
@@ -72754,7 +72754,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0283",
+      "id": "D.kanalizace.1.PP.0296",
       "podlazi": "1.PP",
       "position": [
         -6350.794,
@@ -72778,7 +72778,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0285",
+      "id": "D.kanalizace.1.PP.0298",
       "podlazi": "1.PP",
       "position": [
         -4828.561,
@@ -72802,7 +72802,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0280",
+      "id": "D.kanalizace.1.PP.0293",
       "podlazi": "1.PP",
       "position": [
         -4651.331,
@@ -72826,7 +72826,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0281",
+      "id": "D.kanalizace.1.PP.0294",
       "podlazi": "1.PP",
       "position": [
         -789.845,
@@ -72844,7 +72844,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0307",
+      "id": "D.kanalizace.1.PP.0320",
       "podlazi": "1.PP",
       "position": [
         2202.578,
@@ -72862,7 +72862,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0308",
+      "id": "D.kanalizace.1.PP.0321",
       "podlazi": "1.PP",
       "position": [
         2202.578,
@@ -72886,7 +72886,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0293",
+      "id": "D.kanalizace.1.PP.0306",
       "podlazi": "1.PP",
       "position": [
         4584.571,
@@ -72910,7 +72910,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0302",
+      "id": "D.kanalizace.1.PP.0315",
       "podlazi": "1.PP",
       "position": [
         4930.795,
@@ -72934,7 +72934,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0301",
+      "id": "D.kanalizace.1.PP.0314",
       "podlazi": "1.PP",
       "position": [
         5036.533,
@@ -72958,7 +72958,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0274",
+      "id": "D.kanalizace.1.PP.0287",
       "podlazi": "1.PP",
       "position": [
         9046.055,
@@ -72982,7 +72982,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0294",
+      "id": "D.kanalizace.1.PP.0307",
       "podlazi": "1.PP",
       "position": [
         16393.794,
@@ -73000,7 +73000,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0313",
+      "id": "D.kanalizace.1.PP.0326",
       "podlazi": "1.PP",
       "position": [
         23232.282,
@@ -73018,7 +73018,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0316",
+      "id": "D.kanalizace.1.PP.0329",
       "podlazi": "1.PP",
       "position": [
         23810.436,
@@ -73036,7 +73036,7 @@
         "source": "DXF|K1pp|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.1.PP.0317",
+      "id": "D.kanalizace.1.PP.0330",
       "podlazi": "1.PP",
       "position": [
         24479.858,
@@ -73054,7 +73054,7 @@
         "source": "DXF|1pp_plyn|Plyn_popis|nearest",
         "value": 25
       },
-      "id": "D.plyn.1.PP.0343",
+      "id": "D.plyn.1.PP.0356",
       "podlazi": "1.PP",
       "position": [
         7.301,
@@ -73078,7 +73078,7 @@
         "source": "DXF|1pp_slb|none_in_250mm",
         "value": null
       },
-      "id": "D.slaboproud.1.PP.0346",
+      "id": "D.slaboproud.1.PP.0359",
       "podlazi": "1.PP",
       "position": [
         -30923.806,
@@ -73102,7 +73102,7 @@
         "source": "DXF|1pp_slb|none_in_250mm",
         "value": null
       },
-      "id": "D.slaboproud.1.PP.0347",
+      "id": "D.slaboproud.1.PP.0360",
       "podlazi": "1.PP",
       "position": [
         -20114.826,
@@ -73126,7 +73126,7 @@
         "source": "DXF|1pp_slb|none_in_250mm",
         "value": null
       },
-      "id": "D.slaboproud.1.PP.0344",
+      "id": "D.slaboproud.1.PP.0357",
       "podlazi": "1.PP",
       "position": [
         13546.163,
@@ -73150,7 +73150,7 @@
         "source": "DXF|1pp_slb|none_in_250mm",
         "value": null
       },
-      "id": "D.slaboproud.1.PP.0345",
+      "id": "D.slaboproud.1.PP.0358",
       "podlazi": "1.PP",
       "position": [
         15835.458,
@@ -73174,7 +73174,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0428",
+      "id": "D.vodovod.1.PP.0441",
       "podlazi": "1.PP",
       "position": [
         -46954.782,
@@ -73198,7 +73198,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0479",
+      "id": "D.vodovod.1.PP.0492",
       "podlazi": "1.PP",
       "position": [
         -46954.782,
@@ -73222,443 +73222,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0427",
+      "id": "D.vodovod.1.PP.0440",
       "podlazi": "1.PP",
       "position": [
         -46805.023,
         16054.083
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0478",
-      "podlazi": "1.PP",
-      "position": [
-        -46805.023,
-        16054.083
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0402",
-      "podlazi": "1.PP",
-      "position": [
-        -42265.14,
-        -22151.346
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0450",
-      "podlazi": "1.PP",
-      "position": [
-        -42265.14,
-        -22151.346
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0403",
-      "podlazi": "1.PP",
-      "position": [
-        -42117.617,
-        -22178.494
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0451",
-      "podlazi": "1.PP",
-      "position": [
-        -42117.617,
-        -22178.494
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0425",
-      "podlazi": "1.PP",
-      "position": [
-        -41067.013,
-        17119.712
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0476",
-      "podlazi": "1.PP",
-      "position": [
-        -41067.013,
-        17119.712
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0426",
-      "podlazi": "1.PP",
-      "position": [
-        -41046.518,
-        16820.413
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0477",
-      "podlazi": "1.PP",
-      "position": [
-        -41046.518,
-        16820.413
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0423",
-      "podlazi": "1.PP",
-      "position": [
-        -38910.418,
-        17166.577
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0474",
-      "podlazi": "1.PP",
-      "position": [
-        -38910.418,
-        17166.577
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0424",
-      "podlazi": "1.PP",
-      "position": [
-        -38900.08,
-        17016.934
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0475",
-      "podlazi": "1.PP",
-      "position": [
-        -38900.08,
-        17016.934
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0437",
-      "podlazi": "1.PP",
-      "position": [
-        -38686.429,
-        -22733.652
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0490",
-      "podlazi": "1.PP",
-      "position": [
-        -38686.429,
-        -22733.652
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0401",
-      "podlazi": "1.PP",
-      "position": [
-        -38538.906,
-        -22760.8
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0449",
-      "podlazi": "1.PP",
-      "position": [
-        -38538.906,
-        -22760.8
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0438",
-      "podlazi": "1.PP",
-      "position": [
-        -37757.238,
-        -23209.682
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73681,8 +73249,8 @@
       "id": "D.vodovod.1.PP.0491",
       "podlazi": "1.PP",
       "position": [
-        -37757.238,
-        -23209.682
+        -46805.023,
+        16054.083
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73702,11 +73270,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0400",
+      "id": "D.vodovod.1.PP.0415",
       "podlazi": "1.PP",
       "position": [
-        -37730.091,
-        -23062.16
+        -42265.14,
+        -22151.346
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73726,11 +73294,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0448",
+      "id": "D.vodovod.1.PP.0463",
       "podlazi": "1.PP",
       "position": [
-        -37730.091,
-        -23062.16
+        -42265.14,
+        -22151.346
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73750,11 +73318,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0404",
+      "id": "D.vodovod.1.PP.0416",
       "podlazi": "1.PP",
       "position": [
-        -36074.604,
-        -21115.501
+        -42117.617,
+        -22178.494
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73774,11 +73342,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0452",
+      "id": "D.vodovod.1.PP.0464",
       "podlazi": "1.PP",
       "position": [
-        -36074.604,
-        -21115.501
+        -42117.617,
+        -22178.494
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73798,11 +73366,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0421",
+      "id": "D.vodovod.1.PP.0438",
       "podlazi": "1.PP",
       "position": [
-        -34123.503,
-        17541.581
+        -41067.013,
+        17119.712
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73822,11 +73390,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0472",
+      "id": "D.vodovod.1.PP.0489",
       "podlazi": "1.PP",
       "position": [
-        -34123.503,
-        17541.581
+        -41067.013,
+        17119.712
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73846,11 +73414,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0422",
+      "id": "D.vodovod.1.PP.0439",
       "podlazi": "1.PP",
       "position": [
-        -34117.888,
-        17393.059
+        -41046.518,
+        16820.413
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73870,11 +73438,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0473",
+      "id": "D.vodovod.1.PP.0490",
       "podlazi": "1.PP",
       "position": [
-        -34117.888,
-        17393.059
+        -41046.518,
+        16820.413
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73894,11 +73462,59 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0435",
+      "id": "D.vodovod.1.PP.0436",
       "podlazi": "1.PP",
       "position": [
-        -33639.451,
-        19753.222
+        -38910.418,
+        17166.577
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0487",
+      "podlazi": "1.PP",
+      "position": [
+        -38910.418,
+        17166.577
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0437",
+      "podlazi": "1.PP",
+      "position": [
+        -38900.08,
+        17016.934
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -73921,6 +73537,366 @@
       "id": "D.vodovod.1.PP.0488",
       "podlazi": "1.PP",
       "position": [
+        -38900.08,
+        17016.934
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0450",
+      "podlazi": "1.PP",
+      "position": [
+        -38686.429,
+        -22733.652
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0503",
+      "podlazi": "1.PP",
+      "position": [
+        -38686.429,
+        -22733.652
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0414",
+      "podlazi": "1.PP",
+      "position": [
+        -38538.906,
+        -22760.8
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0462",
+      "podlazi": "1.PP",
+      "position": [
+        -38538.906,
+        -22760.8
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0451",
+      "podlazi": "1.PP",
+      "position": [
+        -37757.238,
+        -23209.682
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0504",
+      "podlazi": "1.PP",
+      "position": [
+        -37757.238,
+        -23209.682
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0413",
+      "podlazi": "1.PP",
+      "position": [
+        -37730.091,
+        -23062.16
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0461",
+      "podlazi": "1.PP",
+      "position": [
+        -37730.091,
+        -23062.16
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0417",
+      "podlazi": "1.PP",
+      "position": [
+        -36074.604,
+        -21115.501
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0465",
+      "podlazi": "1.PP",
+      "position": [
+        -36074.604,
+        -21115.501
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0434",
+      "podlazi": "1.PP",
+      "position": [
+        -34123.503,
+        17541.581
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0485",
+      "podlazi": "1.PP",
+      "position": [
+        -34123.503,
+        17541.581
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0435",
+      "podlazi": "1.PP",
+      "position": [
+        -34117.888,
+        17393.059
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0486",
+      "podlazi": "1.PP",
+      "position": [
+        -34117.888,
+        17393.059
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0448",
+      "podlazi": "1.PP",
+      "position": [
         -33639.451,
         19753.222
       ],
@@ -73942,7 +73918,31 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0470",
+      "id": "D.vodovod.1.PP.0501",
+      "podlazi": "1.PP",
+      "position": [
+        -33639.451,
+        19753.222
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0483",
       "podlazi": "1.PP",
       "position": [
         -33475.381,
@@ -73966,7 +73966,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0420",
+      "id": "D.vodovod.1.PP.0433",
       "podlazi": "1.PP",
       "position": [
         -33464.863,
@@ -73990,7 +73990,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0471",
+      "id": "D.vodovod.1.PP.0484",
       "podlazi": "1.PP",
       "position": [
         -33464.863,
@@ -74014,7 +74014,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0399",
+      "id": "D.vodovod.1.PP.0412",
       "podlazi": "1.PP",
       "position": [
         -30804.272,
@@ -74038,7 +74038,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0447",
+      "id": "D.vodovod.1.PP.0460",
       "podlazi": "1.PP",
       "position": [
         -30804.272,
@@ -74062,7 +74062,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0439",
+      "id": "D.vodovod.1.PP.0452",
       "podlazi": "1.PP",
       "position": [
         -30656.749,
@@ -74086,7 +74086,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0492",
+      "id": "D.vodovod.1.PP.0505",
       "podlazi": "1.PP",
       "position": [
         -30656.749,
@@ -74110,7 +74110,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0436",
+      "id": "D.vodovod.1.PP.0449",
       "podlazi": "1.PP",
       "position": [
         -30430.268,
@@ -74134,7 +74134,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0489",
+      "id": "D.vodovod.1.PP.0502",
       "podlazi": "1.PP",
       "position": [
         -30430.268,
@@ -74158,7 +74158,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0446",
+      "id": "D.vodovod.1.PP.0459",
       "podlazi": "1.PP",
       "position": [
         -30403.12,
@@ -74182,7 +74182,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0418",
+      "id": "D.vodovod.1.PP.0431",
       "podlazi": "1.PP",
       "position": [
         -28693.983,
@@ -74206,7 +74206,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0468",
+      "id": "D.vodovod.1.PP.0481",
       "podlazi": "1.PP",
       "position": [
         -28693.983,
@@ -74230,7 +74230,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0419",
+      "id": "D.vodovod.1.PP.0432",
       "podlazi": "1.PP",
       "position": [
         -28683.919,
@@ -74254,7 +74254,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0469",
+      "id": "D.vodovod.1.PP.0482",
       "podlazi": "1.PP",
       "position": [
         -28683.919,
@@ -74278,7 +74278,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0417",
+      "id": "D.vodovod.1.PP.0430",
       "podlazi": "1.PP",
       "position": [
         -26072.412,
@@ -74302,7 +74302,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0467",
+      "id": "D.vodovod.1.PP.0480",
       "podlazi": "1.PP",
       "position": [
         -26072.412,
@@ -74326,7 +74326,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0416",
+      "id": "D.vodovod.1.PP.0429",
       "podlazi": "1.PP",
       "position": [
         -26062.254,
@@ -74350,7 +74350,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0466",
+      "id": "D.vodovod.1.PP.0479",
       "podlazi": "1.PP",
       "position": [
         -26062.254,
@@ -74374,7 +74374,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0445",
+      "id": "D.vodovod.1.PP.0458",
       "podlazi": "1.PP",
       "position": [
         -25162.304,
@@ -74398,7 +74398,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0493",
+      "id": "D.vodovod.1.PP.0506",
       "podlazi": "1.PP",
       "position": [
         -25027.043,
@@ -74422,7 +74422,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0440",
+      "id": "D.vodovod.1.PP.0453",
       "podlazi": "1.PP",
       "position": [
         -22359.194,
@@ -74446,7 +74446,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0494",
+      "id": "D.vodovod.1.PP.0507",
       "podlazi": "1.PP",
       "position": [
         -22359.194,
@@ -74470,7 +74470,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0444",
+      "id": "D.vodovod.1.PP.0457",
       "podlazi": "1.PP",
       "position": [
         -22332.046,
@@ -74494,7 +74494,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0414",
+      "id": "D.vodovod.1.PP.0427",
       "podlazi": "1.PP",
       "position": [
         -20707.88,
@@ -74518,7 +74518,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0464",
+      "id": "D.vodovod.1.PP.0477",
       "podlazi": "1.PP",
       "position": [
         -20707.88,
@@ -74542,7 +74542,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0415",
+      "id": "D.vodovod.1.PP.0428",
       "podlazi": "1.PP",
       "position": [
         -20699.066,
@@ -74566,7 +74566,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0465",
+      "id": "D.vodovod.1.PP.0478",
       "podlazi": "1.PP",
       "position": [
         -20699.066,
@@ -74590,7 +74590,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0454",
+      "id": "D.vodovod.1.PP.0467",
       "podlazi": "1.PP",
       "position": [
         -10959.249,
@@ -74614,7 +74614,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0453",
+      "id": "D.vodovod.1.PP.0466",
       "podlazi": "1.PP",
       "position": [
         -10832.127,
@@ -74638,7 +74638,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0480",
+      "id": "D.vodovod.1.PP.0493",
       "podlazi": "1.PP",
       "position": [
         -7887.202,
@@ -74662,7 +74662,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0429",
+      "id": "D.vodovod.1.PP.0442",
       "podlazi": "1.PP",
       "position": [
         -7766.928,
@@ -74686,7 +74686,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0405",
+      "id": "D.vodovod.1.PP.0418",
       "podlazi": "1.PP",
       "position": [
         -7671.985,
@@ -74710,7 +74710,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0455",
+      "id": "D.vodovod.1.PP.0468",
       "podlazi": "1.PP",
       "position": [
         -7671.985,
@@ -74734,7 +74734,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0406",
+      "id": "D.vodovod.1.PP.0419",
       "podlazi": "1.PP",
       "position": [
         -7539.153,
@@ -74758,7 +74758,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0456",
+      "id": "D.vodovod.1.PP.0469",
       "podlazi": "1.PP",
       "position": [
         -7539.153,
@@ -74782,7 +74782,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0407",
+      "id": "D.vodovod.1.PP.0420",
       "podlazi": "1.PP",
       "position": [
         -3675.18,
@@ -74806,7 +74806,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0457",
+      "id": "D.vodovod.1.PP.0470",
       "podlazi": "1.PP",
       "position": [
         -3675.18,
@@ -74830,7 +74830,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0408",
+      "id": "D.vodovod.1.PP.0421",
       "podlazi": "1.PP",
       "position": [
         -3544.689,
@@ -74854,7 +74854,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0458",
+      "id": "D.vodovod.1.PP.0471",
       "podlazi": "1.PP",
       "position": [
         -3544.689,
@@ -74878,7 +74878,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0409",
+      "id": "D.vodovod.1.PP.0422",
       "podlazi": "1.PP",
       "position": [
         -3374.932,
@@ -74902,7 +74902,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0459",
+      "id": "D.vodovod.1.PP.0472",
       "podlazi": "1.PP",
       "position": [
         -3374.932,
@@ -74926,7 +74926,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0410",
+      "id": "D.vodovod.1.PP.0423",
       "podlazi": "1.PP",
       "position": [
         -3247.805,
@@ -74950,7 +74950,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0460",
+      "id": "D.vodovod.1.PP.0473",
       "podlazi": "1.PP",
       "position": [
         -3247.805,
@@ -74974,251 +74974,11 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0431",
+      "id": "D.vodovod.1.PP.0444",
       "podlazi": "1.PP",
       "position": [
         -3027.523,
         30075.599
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0482",
-      "podlazi": "1.PP",
-      "position": [
-        -3027.523,
-        30075.599
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0430",
-      "podlazi": "1.PP",
-      "position": [
-        -2947.962,
-        30202.73
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0481",
-      "podlazi": "1.PP",
-      "position": [
-        -2947.962,
-        30202.73
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0411",
-      "podlazi": "1.PP",
-      "position": [
-        -1206.431,
-        -1843.104
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0461",
-      "podlazi": "1.PP",
-      "position": [
-        -1206.431,
-        -1843.104
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0412",
-      "podlazi": "1.PP",
-      "position": [
-        -353.71,
-        3598.256
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0462",
-      "podlazi": "1.PP",
-      "position": [
-        -353.71,
-        3598.256
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0413",
-      "podlazi": "1.PP",
-      "position": [
-        -226.587,
-        3518.632
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0463",
-      "podlazi": "1.PP",
-      "position": [
-        -226.587,
-        3518.632
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0441",
-      "podlazi": "1.PP",
-      "position": [
-        3229.327,
-        26037.937
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -75241,152 +75001,8 @@
       "id": "D.vodovod.1.PP.0495",
       "podlazi": "1.PP",
       "position": [
-        3229.327,
-        26037.937
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0432",
-      "podlazi": "1.PP",
-      "position": [
-        3308.953,
-        26165.058
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0483",
-      "podlazi": "1.PP",
-      "position": [
-        3308.953,
-        26165.058
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0442",
-      "podlazi": "1.PP",
-      "position": [
-        3695.586,
-        25745.893
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0496",
-      "podlazi": "1.PP",
-      "position": [
-        3695.586,
-        25745.893
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0433",
-      "podlazi": "1.PP",
-      "position": [
-        3775.212,
-        25873.014
-      ],
-      "source_drawing": "1PP_vod",
-      "source_kind": "block_insert",
-      "source_layer": "ZT_STOUP"
-    },
-    {
-      "block_name": {
-        "confidence": 1.0,
-        "source": "DXF|1PP_vod|INSERT",
-        "value": "stoup"
-      },
-      "block_role": "kanalizace_or_vodovod_riser",
-      "confidence": 0.95,
-      "discipline": "vodovod",
-      "dn_mm": {
-        "confidence": 0.0,
-        "source": "DXF|1PP_vod|none_in_250mm",
-        "value": null
-      },
-      "id": "D.vodovod.1.PP.0484",
-      "podlazi": "1.PP",
-      "position": [
-        3775.212,
-        25873.014
+        -3027.523,
+        30075.599
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -75409,8 +75025,344 @@
       "id": "D.vodovod.1.PP.0443",
       "podlazi": "1.PP",
       "position": [
-        4443.03,
-        28076.989
+        -2947.962,
+        30202.73
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0494",
+      "podlazi": "1.PP",
+      "position": [
+        -2947.962,
+        30202.73
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0424",
+      "podlazi": "1.PP",
+      "position": [
+        -1206.431,
+        -1843.104
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0474",
+      "podlazi": "1.PP",
+      "position": [
+        -1206.431,
+        -1843.104
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0425",
+      "podlazi": "1.PP",
+      "position": [
+        -353.71,
+        3598.256
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0475",
+      "podlazi": "1.PP",
+      "position": [
+        -353.71,
+        3598.256
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0426",
+      "podlazi": "1.PP",
+      "position": [
+        -226.587,
+        3518.632
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0476",
+      "podlazi": "1.PP",
+      "position": [
+        -226.587,
+        3518.632
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0454",
+      "podlazi": "1.PP",
+      "position": [
+        3229.327,
+        26037.937
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0508",
+      "podlazi": "1.PP",
+      "position": [
+        3229.327,
+        26037.937
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0445",
+      "podlazi": "1.PP",
+      "position": [
+        3308.953,
+        26165.058
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0496",
+      "podlazi": "1.PP",
+      "position": [
+        3308.953,
+        26165.058
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0455",
+      "podlazi": "1.PP",
+      "position": [
+        3695.586,
+        25745.893
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0509",
+      "podlazi": "1.PP",
+      "position": [
+        3695.586,
+        25745.893
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0446",
+      "podlazi": "1.PP",
+      "position": [
+        3775.212,
+        25873.014
       ],
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
@@ -75431,6 +75383,30 @@
         "value": null
       },
       "id": "D.vodovod.1.PP.0497",
+      "podlazi": "1.PP",
+      "position": [
+        3775.212,
+        25873.014
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0456",
       "podlazi": "1.PP",
       "position": [
         4443.03,
@@ -75454,7 +75430,31 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0485",
+      "id": "D.vodovod.1.PP.0510",
+      "podlazi": "1.PP",
+      "position": [
+        4443.03,
+        28076.989
+      ],
+      "source_drawing": "1PP_vod",
+      "source_kind": "block_insert",
+      "source_layer": "ZT_STOUP"
+    },
+    {
+      "block_name": {
+        "confidence": 1.0,
+        "source": "DXF|1PP_vod|INSERT",
+        "value": "stoup"
+      },
+      "block_role": "kanalizace_or_vodovod_riser",
+      "confidence": 0.95,
+      "discipline": "vodovod",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|1PP_vod|none_in_250mm",
+        "value": null
+      },
+      "id": "D.vodovod.1.PP.0498",
       "podlazi": "1.PP",
       "position": [
         10062.244,
@@ -75478,7 +75478,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0434",
+      "id": "D.vodovod.1.PP.0447",
       "podlazi": "1.PP",
       "position": [
         10141.868,
@@ -75502,7 +75502,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0487",
+      "id": "D.vodovod.1.PP.0500",
       "podlazi": "1.PP",
       "position": [
         14477.758,
@@ -75526,7 +75526,7 @@
         "source": "DXF|1PP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.1.PP.0486",
+      "id": "D.vodovod.1.PP.0499",
       "podlazi": "1.PP",
       "position": [
         14603.601,
@@ -75535,6 +75535,240 @@
       "source_drawing": "1PP_vod",
       "source_kind": "block_insert",
       "source_layer": "ZT_STOUP"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0177",
+      "podlazi": "2.NP",
+      "position": [
+        -5151.794,
+        63072.404
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0176",
+      "podlazi": "2.NP",
+      "position": [
+        -4701.791,
+        63010.73
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0175",
+      "podlazi": "2.NP",
+      "position": [
+        -4701.791,
+        63260.73
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0179",
+      "podlazi": "2.NP",
+      "position": [
+        973.209,
+        63429.682
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0178",
+      "podlazi": "2.NP",
+      "position": [
+        973.209,
+        63665.411
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0180",
+      "podlazi": "2.NP",
+      "position": [
+        7723.206,
+        63655.728
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0181",
+      "podlazi": "2.NP",
+      "position": [
+        8773.206,
+        63655.728
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0183",
+      "podlazi": "2.NP",
+      "position": [
+        15523.203,
+        63428.382
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0182",
+      "podlazi": "2.NP",
+      "position": [
+        15523.203,
+        63661.289
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0185",
+      "podlazi": "2.NP",
+      "position": [
+        21198.203,
+        63030.73
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0184",
+      "podlazi": "2.NP",
+      "position": [
+        21198.203,
+        63254.388
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0186",
+      "podlazi": "2.NP",
+      "position": [
+        21627.507,
+        63173.96
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
+    },
+    {
+      "confidence": 0.95,
+      "discipline": "VZT_partial",
+      "dn_mm": {
+        "confidence": 0.0,
+        "source": "DXF|18501_DPS_D_SO01_140_9421_R00_jadra D 2NP|none_in_250mm",
+        "value": null
+      },
+      "id": "D.VZT_partial.2.NP.0174",
+      "podlazi": "2.NP",
+      "position": [
+        39125.684,
+        67001.768
+      ],
+      "source_drawing": "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP",
+      "source_kind": "circle",
+      "source_layer": "_VZT"
     },
     {
       "block_name": {
@@ -77320,7 +77554,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0194",
+      "id": "D.kanalizace.3.NP.0207",
       "podlazi": "3.NP",
       "position": [
         -38097.445,
@@ -77344,7 +77578,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0195",
+      "id": "D.kanalizace.3.NP.0208",
       "podlazi": "3.NP",
       "position": [
         -32598.377,
@@ -77368,7 +77602,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0200",
+      "id": "D.kanalizace.3.NP.0213",
       "podlazi": "3.NP",
       "position": [
         -32598.377,
@@ -77392,7 +77626,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0196",
+      "id": "D.kanalizace.3.NP.0209",
       "podlazi": "3.NP",
       "position": [
         -24367.871,
@@ -77416,7 +77650,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0197",
+      "id": "D.kanalizace.3.NP.0210",
       "podlazi": "3.NP",
       "position": [
         -16119.369,
@@ -77440,7 +77674,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0198",
+      "id": "D.kanalizace.3.NP.0211",
       "podlazi": "3.NP",
       "position": [
         -11585.168,
@@ -77458,7 +77692,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0183",
+      "id": "D.kanalizace.3.NP.0196",
       "podlazi": "3.NP",
       "position": [
         -3388.787,
@@ -77476,7 +77710,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0204",
+      "id": "D.kanalizace.3.NP.0217",
       "podlazi": "3.NP",
       "position": [
         -3239.818,
@@ -77494,7 +77728,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0203",
+      "id": "D.kanalizace.3.NP.0216",
       "podlazi": "3.NP",
       "position": [
         -3122.972,
@@ -77512,7 +77746,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0186",
+      "id": "D.kanalizace.3.NP.0199",
       "podlazi": "3.NP",
       "position": [
         -2833.83,
@@ -77530,7 +77764,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0201",
+      "id": "D.kanalizace.3.NP.0214",
       "podlazi": "3.NP",
       "position": [
         -1260.065,
@@ -77548,7 +77782,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0202",
+      "id": "D.kanalizace.3.NP.0215",
       "podlazi": "3.NP",
       "position": [
         -1260.065,
@@ -77572,7 +77806,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0191",
+      "id": "D.kanalizace.3.NP.0204",
       "podlazi": "3.NP",
       "position": [
         -230.33,
@@ -77590,7 +77824,7 @@
         "source": "DXF|D_3NP_kan|ZT_POPIS|nearest",
         "value": 50
       },
-      "id": "D.kanalizace.3.NP.0184",
+      "id": "D.kanalizace.3.NP.0197",
       "podlazi": "3.NP",
       "position": [
         7403.199,
@@ -77614,7 +77848,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0192",
+      "id": "D.kanalizace.3.NP.0205",
       "podlazi": "3.NP",
       "position": [
         7429.67,
@@ -77632,7 +77866,7 @@
         "source": "DXF|D_3NP_kan|ZT_POPIS|nearest",
         "value": 50
       },
-      "id": "D.kanalizace.3.NP.0205",
+      "id": "D.kanalizace.3.NP.0218",
       "podlazi": "3.NP",
       "position": [
         7625.347,
@@ -77650,7 +77884,7 @@
         "source": "DXF|D_3NP_kan|ZT_POPIS|nearest",
         "value": 50
       },
-      "id": "D.kanalizace.3.NP.0206",
+      "id": "D.kanalizace.3.NP.0219",
       "podlazi": "3.NP",
       "position": [
         7625.347,
@@ -77668,7 +77902,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0185",
+      "id": "D.kanalizace.3.NP.0198",
       "podlazi": "3.NP",
       "position": [
         13023.206,
@@ -77692,7 +77926,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0193",
+      "id": "D.kanalizace.3.NP.0206",
       "podlazi": "3.NP",
       "position": [
         15084.67,
@@ -77710,7 +77944,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0207",
+      "id": "D.kanalizace.3.NP.0220",
       "podlazi": "3.NP",
       "position": [
         17756.477,
@@ -77728,7 +77962,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0208",
+      "id": "D.kanalizace.3.NP.0221",
       "podlazi": "3.NP",
       "position": [
         17756.477,
@@ -77746,7 +77980,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0188",
+      "id": "D.kanalizace.3.NP.0201",
       "podlazi": "3.NP",
       "position": [
         19345.638,
@@ -77764,7 +77998,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0209",
+      "id": "D.kanalizace.3.NP.0222",
       "podlazi": "3.NP",
       "position": [
         19619.384,
@@ -77782,7 +78016,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0210",
+      "id": "D.kanalizace.3.NP.0223",
       "podlazi": "3.NP",
       "position": [
         19736.229,
@@ -77800,7 +78034,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0187",
+      "id": "D.kanalizace.3.NP.0200",
       "podlazi": "3.NP",
       "position": [
         19973.274,
@@ -77824,7 +78058,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0177",
+      "id": "D.kanalizace.3.NP.0190",
       "podlazi": "3.NP",
       "position": [
         34416.605,
@@ -77848,7 +78082,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0189",
+      "id": "D.kanalizace.3.NP.0202",
       "podlazi": "3.NP",
       "position": [
         34544.642,
@@ -77872,7 +78106,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0178",
+      "id": "D.kanalizace.3.NP.0191",
       "podlazi": "3.NP",
       "position": [
         39915.672,
@@ -77896,7 +78130,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0199",
+      "id": "D.kanalizace.3.NP.0212",
       "podlazi": "3.NP",
       "position": [
         39915.672,
@@ -77920,7 +78154,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0176",
+      "id": "D.kanalizace.3.NP.0189",
       "podlazi": "3.NP",
       "position": [
         41115.226,
@@ -77944,7 +78178,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0179",
+      "id": "D.kanalizace.3.NP.0192",
       "podlazi": "3.NP",
       "position": [
         47582.0,
@@ -77968,7 +78202,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0180",
+      "id": "D.kanalizace.3.NP.0193",
       "podlazi": "3.NP",
       "position": [
         48002.547,
@@ -77992,7 +78226,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0175",
+      "id": "D.kanalizace.3.NP.0188",
       "podlazi": "3.NP",
       "position": [
         50850.343,
@@ -78016,7 +78250,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0190",
+      "id": "D.kanalizace.3.NP.0203",
       "podlazi": "3.NP",
       "position": [
         54487.932,
@@ -78040,7 +78274,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0181",
+      "id": "D.kanalizace.3.NP.0194",
       "podlazi": "3.NP",
       "position": [
         55639.756,
@@ -78064,7 +78298,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0182",
+      "id": "D.kanalizace.3.NP.0195",
       "podlazi": "3.NP",
       "position": [
         61236.618,
@@ -78088,7 +78322,7 @@
         "source": "DXF|D_3NP_kan|none_in_250mm",
         "value": null
       },
-      "id": "D.kanalizace.3.NP.0174",
+      "id": "D.kanalizace.3.NP.0187",
       "podlazi": "3.NP",
       "position": [
         61299.556,
@@ -78106,7 +78340,7 @@
         "source": "DXF|D_3NP_sil|none_in_250mm",
         "value": null
       },
-      "id": "D.silnoproud.3.NP.0211",
+      "id": "D.silnoproud.3.NP.0224",
       "podlazi": "3.NP",
       "position": [
         89054.507,
@@ -78130,7 +78364,7 @@
         "source": "DXF|D_3NP_slb|none_in_250mm",
         "value": null
       },
-      "id": "D.slaboproud.3.NP.0212",
+      "id": "D.slaboproud.3.NP.0225",
       "podlazi": "3.NP",
       "position": [
         4276.598,
@@ -78154,7 +78388,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0222",
+      "id": "D.vodovod.3.NP.0235",
       "podlazi": "3.NP",
       "position": [
         -7445.874,
@@ -78178,7 +78412,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0221",
+      "id": "D.vodovod.3.NP.0234",
       "podlazi": "3.NP",
       "position": [
         -7296.802,
@@ -78196,7 +78430,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0226",
+      "id": "D.vodovod.3.NP.0239",
       "podlazi": "3.NP",
       "position": [
         -5241.969,
@@ -78214,7 +78448,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0227",
+      "id": "D.vodovod.3.NP.0240",
       "podlazi": "3.NP",
       "position": [
         -5181.898,
@@ -78232,7 +78466,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0224",
+      "id": "D.vodovod.3.NP.0237",
       "podlazi": "3.NP",
       "position": [
         -4100.812,
@@ -78250,7 +78484,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0225",
+      "id": "D.vodovod.3.NP.0238",
       "podlazi": "3.NP",
       "position": [
         -4100.812,
@@ -78274,7 +78508,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0220",
+      "id": "D.vodovod.3.NP.0233",
       "podlazi": "3.NP",
       "position": [
         -1884.219,
@@ -78298,7 +78532,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0219",
+      "id": "D.vodovod.3.NP.0232",
       "podlazi": "3.NP",
       "position": [
         -1884.219,
@@ -78322,7 +78556,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0223",
+      "id": "D.vodovod.3.NP.0236",
       "podlazi": "3.NP",
       "position": [
         5511.991,
@@ -78346,7 +78580,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0218",
+      "id": "D.vodovod.3.NP.0231",
       "podlazi": "3.NP",
       "position": [
         5565.781,
@@ -78370,7 +78604,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0217",
+      "id": "D.vodovod.3.NP.0230",
       "podlazi": "3.NP",
       "position": [
         5565.781,
@@ -78394,7 +78628,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0216",
+      "id": "D.vodovod.3.NP.0229",
       "podlazi": "3.NP",
       "position": [
         13565.781,
@@ -78418,7 +78652,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0215",
+      "id": "D.vodovod.3.NP.0228",
       "podlazi": "3.NP",
       "position": [
         13565.781,
@@ -78442,7 +78676,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0213",
+      "id": "D.vodovod.3.NP.0226",
       "podlazi": "3.NP",
       "position": [
         18948.804,
@@ -78466,7 +78700,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0214",
+      "id": "D.vodovod.3.NP.0227",
       "podlazi": "3.NP",
       "position": [
         19097.876,
@@ -78484,7 +78718,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0229",
+      "id": "D.vodovod.3.NP.0242",
       "podlazi": "3.NP",
       "position": [
         20645.984,
@@ -78502,7 +78736,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0228",
+      "id": "D.vodovod.3.NP.0241",
       "podlazi": "3.NP",
       "position": [
         20645.984,
@@ -78520,7 +78754,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0230",
+      "id": "D.vodovod.3.NP.0243",
       "podlazi": "3.NP",
       "position": [
         21678.206,
@@ -78538,7 +78772,7 @@
         "source": "DXF|D_3NP_vod|none_in_250mm",
         "value": null
       },
-      "id": "D.vodovod.3.NP.0231",
+      "id": "D.vodovod.3.NP.0244",
       "podlazi": "3.NP",
       "position": [
         21738.276,
@@ -79313,7 +79547,7 @@
     {
       "category": "step_8c_prostupy_gate",
       "level": "info",
-      "message": "Step 8c: 497 TZB prostupy extracted for objekt D; per-discipline {'kanalizace': 262, 'silnoproud': 3, 'slaboproud': 8, 'vodovod': 172, 'UT': 51, 'plyn': 1}; per-podlazi {'1.NP': 94, '1.PP': 266, '2.NP': 79, '3.NP': 58}.",
+      "message": "Step 8c: 510 TZB prostupy extracted for objekt D; per-discipline {'kanalizace': 262, 'silnoproud': 3, 'slaboproud': 8, 'vodovod': 172, 'UT': 51, 'plyn': 1, 'VZT_partial': 13}; per-podlazi {'1.NP': 94, '1.PP': 266, '2.NP': 92, '3.NP': 58}.",
       "source_evidence": "DERIVED|step_8c_extract_tzb_prostupy"
     },
     {
