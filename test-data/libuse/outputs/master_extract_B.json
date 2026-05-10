@@ -9645,7 +9645,7 @@
   "lintels": [],
   "locksmith": [],
   "metadata": {
-    "extracted_at": "2026-05-10T10:09:22+00:00",
+    "extracted_at": "2026-05-10T11:06:21+00:00",
     "extractor_version": "0.0.1",
     "objekt": "B",
     "schema_version": 1,
@@ -46383,6 +46383,8 @@
       }
     }
   },
+  "tzb_prostupy": [],
+  "tzb_strby": [],
   "validation": {},
   "walls": [],
   "warnings": [

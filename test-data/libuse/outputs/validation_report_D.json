@@ -35,8 +35,20 @@
       "missing": 0,
       "changed": 0,
       "per_prefix": {
-        "CF": {
-          "match": 3,
+        "W": {
+          "match": 6,
+          "new": 3,
+          "missing": 0,
+          "missing_details": []
+        },
+        "WF": {
+          "match": 6,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "OP": {
+          "match": 33,
           "new": 0,
           "missing": 0,
           "missing_details": []
@@ -44,6 +56,18 @@
         "LI": {
           "match": 12,
           "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "TP": {
+          "match": 7,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "F": {
+          "match": 0,
+          "new": 1,
           "missing": 0,
           "missing_details": []
         },
@@ -65,32 +89,8 @@
           "missing": 0,
           "missing_details": []
         },
-        "F": {
-          "match": 0,
-          "new": 1,
-          "missing": 0,
-          "missing_details": []
-        },
-        "TP": {
-          "match": 7,
-          "new": 0,
-          "missing": 0,
-          "missing_details": []
-        },
-        "OP": {
-          "match": 33,
-          "new": 0,
-          "missing": 0,
-          "missing_details": []
-        },
-        "W": {
-          "match": 6,
-          "new": 3,
-          "missing": 0,
-          "missing_details": []
-        },
-        "WF": {
-          "match": 6,
+        "CF": {
+          "match": 3,
           "new": 0,
           "missing": 0,
           "missing_details": []
