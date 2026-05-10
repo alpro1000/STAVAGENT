@@ -334,8 +334,9 @@ def _extract_one_dxf(
                     continue
                 # Layer-based INSERTs ALSO require layer-pattern match
                 # (otherwise titleblock blocks etc. would leak in).
+                # Skip layer validation for known prostup blocks (path a).
                 if (
-                    block_name not in PROSTUP_BLOCKS
+                    e.dxf.layer in LAYER_INSERT_AS_PROSTUP
                     and not _is_layer_match(e.dxf.layer, layer_pats)
                 ):
                     continue
