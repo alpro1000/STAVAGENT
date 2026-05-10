@@ -65,24 +65,35 @@ _DISCIPLINE_LABEL = {
 }
 
 # ---------------------------------------------------------------------------
-# Part 5B — heuristic VZT + chl estimates per podlazi
+# Part 5B / drop v3 (2026-05-10) — heuristic VZT + chl estimates per podlazi
 # ---------------------------------------------------------------------------
-# Density-ratio heuristic anchored to (kanalizace + vodovod) per-podlazi
-# counts auto-extracted by Step 8c. Methodology + sanity check in
-# test-data/libuse/outputs/probe_9_vzt_chl_manual_counts.md.
+# Drop v3 update: user uploaded user-converted AC1024 DXFs for D 1.NP/2.NP/
+# 3.NP VZT + chl. Step 8c now extracts those disciplines DIRECTLY at
+# confidence 0.85; heuristic for above-ground floors is therefore
+# DISABLED (set to 0). Only 1.PP entries remain heuristic:
+#   - 1.PP VZT: 94 (file 1pp_VZT.dxf 29 MB, exceeds GitHub UI upload
+#     limit; remains in backlog for git CLI upload — see ABMV item #11
+#     follow-up in probe_9_backlog.md ticket #1).
+#   - 1.PP chl: 8 (no standalone D_chl_1PP source DWG was ever produced
+#     by ABMV — central chiller drawing not separable from the 1.PP
+#     koord overlay; flat-cap heuristic anchored to plant capacity).
 #
-# Items emit at confidence 0.70 (vs 0.95 for direct extract).
+# Methodology + sanity check: probe_9_vzt_chl_manual_counts.md.
+# Above-ground heuristic = 0 ⇒ no items emitted; direct VZT + chl
+# items come from master_extract_D.json's tzb_prostupy[] section.
+#
+# Heuristic items emit at confidence 0.70 (vs 0.95 for direct extract).
 PART_5B_HEURISTIC_VZT: dict[str, int] = {
-    "1.PP": 94,   # 30% of (kan+vod=210) + 20 for machine room
-    "1.NP": 27,   # 30% of (kan+vod=91)
-    "2.NP": 10,   # 30% of (kan+vod=77) − 13 already extracted via VZT_partial
-    "3.NP": 17,   # 30% of (kan+vod=56)
+    "1.PP": 94,   # 30% of (kan+vod=210) + 20 for machine room (KEEP)
+    "1.NP": 0,    # disabled — direct extract from D_1NP_vzt.dxf
+    "2.NP": 0,    # disabled — direct extract from D_2NP_vzt.dxf
+    "3.NP": 0,    # disabled — direct extract from D_3NP_vzt.dxf
 }
 PART_5B_HEURISTIC_CHL: dict[str, int] = {
-    "1.PP": 8,    # central chiller + main supply pair (flat-cap, not ratio)
-    "1.NP": 18,   # 20% of (kan+vod=91)
-    "2.NP": 15,   # 20% of (kan+vod=77)
-    "3.NP": 11,   # 20% of (kan+vod=56)
+    "1.PP": 8,    # central chiller + main supply pair (KEEP)
+    "1.NP": 0,    # disabled — direct extract from D_1NP_chl.dxf
+    "2.NP": 0,    # disabled — direct extract from D_2NP_chl.dxf
+    "3.NP": 0,    # disabled — direct extract from D_3NP_chl.dxf
 }
 
 
