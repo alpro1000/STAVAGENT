@@ -266,6 +266,12 @@ def generate_items(extract_path: Path) -> tuple[list[dict], dict]:
 
     # HSV-961 from štroby (cable-tray chases)
     for r in strby:
+        # length_m is required by the štroba contract (see
+        # extract_tzb_strby in dxf_tzb_strby.py — every record has it
+        # set from polyline arithmetic). Belt-and-suspenders defensive
+        # default of 0.0 keeps the f-string + round() crash-safe if
+        # an upstream change ever drops the field.
+        length_m = r.get("length_m", 0.0)
         discipline_label = _DISCIPLINE_LABEL.get(r["discipline"], r["discipline"])
         podlazi = r["podlazi"]
         spec = r.get("spec", {})
@@ -281,7 +287,7 @@ def generate_items(extract_path: Path) -> tuple[list[dict], dict]:
             "kapitola": "HSV-961",
             "popis": popis,
             "MJ": "m",
-            "mnozstvi": round(r["length_m"], 3),
+            "mnozstvi": round(length_m, 3),
             "misto": {
                 "objekt": objekt,
                 "podlazi": podlazi,
@@ -298,7 +304,7 @@ def generate_items(extract_path: Path) -> tuple[list[dict], dict]:
                 f"{r.get('source_kind', '?')} on layer "
                 f"{r.get('source_layer', '?')} | "
                 f"source: {r.get('source_drawing', '?')} | "
-                f"length: {r['length_m']:.3f} m"
+                f"length: {length_m:.3f} m"
             ),
             "warnings": [],
             "urs_status": "no_match",
