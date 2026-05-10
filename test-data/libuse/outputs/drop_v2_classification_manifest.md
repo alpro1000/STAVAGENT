@@ -1,8 +1,10 @@
-# Drop v2 — classification manifest (ACTUAL, drop verified 2026-05-10)
+# Drop v2 — classification manifest (EXECUTED 2026-05-10)
 
 **Date:** 2026-05-10
-**Status:** ✅ **DROP VERIFIED — 14 files received in `_UNSORTED/`,
-3 ZIPs expand to 24 inner DWGs → 34 unique DWGs total to sort**
+**Status:** ✅ **EXECUTED — 14 files sorted, 3 ZIPs extracted (24 inner DWGs),
+1 SHA duplicate dropped, 34 unique DWGs landed in canonical sources/, 75/78
+DXFs converted (3 chl failures documented), Π.0a refresh + validation gate
+PASS (373 MATCH / 0 MISSING)**
 **Branch:** `claude/probe-9-drop-v2-sort` (off main `8cbb8eae`)
 **Drop commit on main:** `8cbb8eae` "Add files via upload" (2026-05-10)
 

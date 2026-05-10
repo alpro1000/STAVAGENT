@@ -65,3 +65,75 @@ D-specific drawings expected (`_140_` prefix):
 - **9421 koor. byt jader 2.NP** — has both DWG (with non-standard `18501_` prefix) + PDF.
 - **`140_ARS_objekt_D_desky.dwg`** — slab reinforcement; currently skipped by `dxf_parser.py` (filename pattern `ARS.*desky` in skip list). Out of finishing scope.
 - **Master XLSX tables** are komplex-wide → see `sources/shared/xlsx/`.
+
+---
+
+## Drop v2 addendum (2026-05-10) — PROBE 9 koordinační + per-discipline TZB
+
+24 new DWGs landed in `dwg/` from the 2026-05-10 user drop (commit
+`8cbb8eae` on main). Sources:
+- 3 koord overlay DWGs extracted from ZIPs (`_140_9410/9420/9430`)
+- 18 per-discipline TZB DWGs extracted from same ZIPs (chl/kan/sil/slb/vod/vzt × 1.NP/2.NP/3.NP)
+- 3 architectural xref DWGs extracted from same ZIPs (`UDL_NNP_D`)
+
+3 original ZIPs archived to `_archives/` (provenance retained).
+
+### `dwg/` additions (24 files, sorted by code/discipline)
+
+| File | Size | SHA-256 (8) |
+|------|----:|:-----------|
+| `18501_DPS_D_SO01_140_9410_R00_koordinacni vykres 1NP.dwg` |  1,432,858 | `33aabecc` |
+| `18501_DPS_D_SO01_140_9420_R00_koordinacni vykres 2NP.dwg` |  1,424,498 | `6c0fb16f` |
+| `18501_DPS_D_SO01_140_9430_R00_koordinacni vykres 3NP.dwg` |  1,426,757 | `c851812b` |
+| `D_1NP_chl.dwg` |  1,024,407 | `5241c7a7` |
+| `D_1NP_kan.dwg` |    102,806 | `335f7a9d` |
+| `D_1NP_sil.dwg` |    226,066 | `455c716b` |
+| `D_1NP_slb.dwg` |     78,210 | `4587bfc4` |
+| `D_1NP_vod.dwg` |    113,971 | `8a6db917` |
+| `D_1NP_vzt.dwg` |    180,629 | `4549f891` |
+| `D_2NP_chl.dwg` |    972,446 | `84478866` |
+| `D_2NP_kan.dwg` |     94,171 | `44e79a48` |
+| `D_2NP_sil.dwg` |    220,637 | `0e5a35df` |
+| `D_2NP_slb.dwg` |     73,580 | `b36df44c` |
+| `D_2NP_vod.dwg` |    125,309 | `df4556e9` |
+| `D_2NP_vzt.dwg` |    184,022 | `1830f2fd` |
+| `D_3NP_chl.dwg` |    966,792 | `689f9e9b` |
+| `D_3NP_kan.dwg` |    102,142 | `ae17f0bb` |
+| `D_3NP_sil.dwg` |    219,049 | `90fd409e` |
+| `D_3NP_slb.dwg` |     65,626 | `232bcb08` |
+| `D_3NP_vod.dwg` |    115,797 | `958e90c9` |
+| `D_3NP_vzt.dwg` |    172,676 | `fb83a833` |
+| `UDL_1NP_D.dwg` |    136,819 | `23b159b0` |
+| `UDL_2NP_D.dwg` |    158,047 | `17ae214c` |
+| `UDL_3NP_D.dwg` |    166,561 | `34c4b9cf` |
+
+### `_archives/` additions (3 files — original ZIPs)
+
+| File | Size |
+|------|----:|
+| `18501_DPS_D_SO01_140_9410_R00_koordinacni vykres D 1NP.zip` |  2,547,586 |
+| `18501_DPS_D_SO01_140_9420_R00_koordinacni vykres D 2NP.zip` |  2,516,930 |
+| `18501_DPS_D_SO01_140_9430_R00_koordinacni vykres D 3NP.zip` |  2,516,322 |
+
+### DXF conversion outcome
+
+- 21 of 24 new DWGs converted cleanly to DXF (LibreDWG dwg2dxf)
+- **3 chlazení DWGs failed** (`D_1NP_chl.dwg`, `D_2NP_chl.dwg`,
+  `D_3NP_chl.dwg`) — LibreDWG produced truncated DXFs with unresolved
+  object handles; ezdxf rejected with DXFStructureError.
+- Corrupt chl DXFs removed from `dxf/` to prevent Π.0a crashes.
+  Cooling discipline NOT covered by this drop's PROBE 9 baseline; see
+  `test-data/libuse/outputs/dwg_conversion_log.md` for full failure
+  log + mitigation paths (Teigha File Converter / ABMV re-export).
+
+### Coverage matrix update — D koord drawings
+
+| Code | Description | D DWG (was) | D DWG (now) | D PDF |
+|------|------------|:-----------:|:-----------:|:-----:|
+| 9410 | OBJEKT D — Koor. výkres 1.NP | ❌ (PDF only) | **✅** | ✅ |
+| 9420 | OBJEKT D — Koor. výkres 2.NP | ❌ (PDF only) | **✅** | ✅ |
+| 9430 | OBJEKT D — Koor. výkres 3.NP | ❌ (PDF only) | **✅** | ✅ |
+
+PROBE 9 prostupy + štroby quantification gap closed — see
+`probe_9_source_audit.md` and forthcoming
+`probe_9_full_audit_per_section.md`.
