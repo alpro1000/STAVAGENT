@@ -50,19 +50,24 @@ DISCIPLINE_DXF_PATTERNS: dict[tuple[str, str], list[tuple[str, str]]] = {
         ("silnoproud", "D_1NP_sil.dxf"),
         ("slaboproud", "D_1NP_slb.dxf"),
         ("vodovod",    "D_1NP_vod.dxf"),
-        # VZT: D_1NP_vzt.dxf — currently unconvertible (LibreDWG bug)
-        # chl: D_1NP_chl.dxf — currently unconvertible (LibreDWG bug)
+        # VZT + chl: user-supplied AC1024 DXFs landed 2026-05-10 after
+        # original LibreDWG conversion failed on the AC1027 source DWGs.
+        ("VZT",        "D_1NP_vzt.dxf"),
+        ("chl",        "D_1NP_chl.dxf"),
     ],
     ("D", "2.NP"): [
         ("kanalizace", "D_2NP_kan.dxf"),
         ("silnoproud", "D_2NP_sil.dxf"),
         ("slaboproud", "D_2NP_slb.dxf"),
         ("vodovod",    "D_2NP_vod.dxf"),
-        # VZT (partial recovery): D_2NP_vzt.dxf failed conversion, but
-        # 9421 jadra zoom carries _VZT layer with 13 CIRCLEs covering
-        # the byt cores at 2.NP. Per audit §3.7 + Part 5B Discovery
-        # 2026-05-10. Confidence stays at 0.85 (jadra zoom = subset of
-        # full 2.NP, missing common areas like corridors).
+        ("VZT",        "D_2NP_vzt.dxf"),
+        ("chl",        "D_2NP_chl.dxf"),
+        # 9421 jadra zoom retained as `VZT_partial` for confidence
+        # cross-check; produces ~13 entries on `_VZT` layer covering
+        # byt cores only. Now redundant with the full D_2NP_vzt.dxf,
+        # but kept as a defence-in-depth audit trail per Step 8c
+        # idempotency contract — same 13 prostupy will be deduped
+        # at item-generator level if needed.
         ("VZT_partial", "18501_DPS_D_SO01_140_9421_R00_jadra D 2NP.dxf"),
     ],
     ("D", "3.NP"): [
@@ -70,6 +75,8 @@ DISCIPLINE_DXF_PATTERNS: dict[tuple[str, str], list[tuple[str, str]]] = {
         ("silnoproud", "D_3NP_sil.dxf"),
         ("slaboproud", "D_3NP_slb.dxf"),
         ("vodovod",    "D_3NP_vod.dxf"),
+        ("VZT",        "D_3NP_vzt.dxf"),
+        ("chl",        "D_3NP_chl.dxf"),
     ],
     # 1.PP shared (komplex). D treats 1.PP as its own bookkeeping;
     # A/B/C deliverables emit zero 1.PP items per ADR-2026-05-09.
@@ -79,7 +86,8 @@ DISCIPLINE_DXF_PATTERNS: dict[tuple[str, str], list[tuple[str, str]]] = {
         ("slaboproud", "1pp_slb.dxf"),
         ("UT",         "1pp_UT.dxf"),
         ("vodovod",    "1PP_vod.dxf"),
-        # VZT: 1pp_VZT.dxf — currently unconvertible (LibreDWG bug)
+        # VZT: 1pp_VZT.dxf — file too large (29 MB) for GitHub UI
+        # upload; remains heuristic per Part 5B until git CLI upload.
         # silnoproud: NO standalone 1.PP DWG; embedded in 1.PP koord overlay
         # _100_9000_R00_koordinacni vykres 1PP.dxf on `_silnoproud` layer.
         ("silnoproud_embedded", "18501_DPS_D_SO01_100_9000_R00_koordinacni vykres 1PP.dxf"),
@@ -110,6 +118,30 @@ DISCIPLINE_LAYER_PATTERNS: dict[str, list[str]] = {
     # content but is a 2.NP-byt-cores-only subset; flag for confidence
     # downgrade in HSV item generator.
     "VZT_partial": ["_VZT"],
+    # VZT (drop v3 2026-05-10): user-supplied AC1024 DXFs use a
+    # different layer convention than 9421. Endpoint exhaust grilles
+    # on `VZT_EXHAUST` and equipment objects on `V-objekty` are the
+    # primary prostup signal (each grille / object passes through a
+    # wall or slab); `V-tvarovky` (fittings) excluded — those are
+    # in-line junctions, not penetrations.
+    "VZT": ["VZT_EXHAUST", "V-objekty", "VZT_DIGESTOR"],
+    # chl (drop v3 2026-05-10): split AC outdoor + indoor units on
+    # `Jednotky Daikin` layer. Each Daikin INSERT = one through-wall
+    # refrigerant connection. Pipe runs on PIPE-C1 are NOT prostupy.
+    "chl": ["Jednotky Daikin"],
+}
+
+# ---------------------------------------------------------------------------
+# Layers where ANY INSERT counts as a prostup (regardless of block name)
+# ---------------------------------------------------------------------------
+# Default INSERT handling requires block_name to be in PROSTUP_BLOCKS.
+# These layers override that — every INSERT on them is a prostup, since
+# the layer convention itself implies "this is a penetration symbol".
+# Used by VZT (anonymous AutoCAD blocks like `*U77`) and chl (Daikin
+# vendor blocks).
+LAYER_INSERT_AS_PROSTUP: set[str] = {
+    "VZT_EXHAUST", "V-objekty", "VZT_DIGESTOR",
+    "Jednotky Daikin",
 }
 
 # ---------------------------------------------------------------------------
@@ -123,6 +155,10 @@ DN_LABEL_LAYERS: dict[str, list[str]] = {
     "silnoproud":["0_el_trasy"],          # cable tray sizes via MTEXT
     "silnoproud_embedded": [],            # no DN labels
     "slaboproud":["SLP-_TRASY", "Defpoints"],
+    # VZT label convention uses %%c125 / %%c160 (Ø notation in TEXT).
+    "VZT":       ["VZT_EXHAUST-popis", "V-tvarovky-popis", "V-objekty-popis"],
+    # chl label convention uses CU potrubí spec strings ("12,7/25,4 mm").
+    "chl":       ["TT_popis OT"],
 }
 
 # ---------------------------------------------------------------------------
@@ -282,7 +318,27 @@ def _extract_one_dxf(
                     block_name = e.dxf.name
                 except Exception:
                     continue
-                if block_name not in PROSTUP_BLOCKS:
+                # Two acceptance paths for INSERT:
+                # (a) block_name is a known prostup symbol (PROSTUP_BLOCKS) —
+                #     classic kanalizace/vodovod stoup, slaboproud
+                #     SLP_PROSTUP, etc.
+                # (b) layer is in LAYER_INSERT_AS_PROSTUP — VZT_EXHAUST /
+                #     V-objekty / Jednotky Daikin (layer convention itself
+                #     implies the symbol is a penetration; block_name
+                #     can be an anonymous AutoCAD `*U77` or a vendor block
+                #     like `RSen_55_ME_FB_SOg-...`).
+                if (
+                    block_name not in PROSTUP_BLOCKS
+                    and e.dxf.layer not in LAYER_INSERT_AS_PROSTUP
+                ):
+                    continue
+                # Layer-based INSERTs ALSO require layer-pattern match
+                # (otherwise titleblock blocks etc. would leak in).
+                # Skip layer validation for known prostup blocks (path a).
+                if (
+                    e.dxf.layer in LAYER_INSERT_AS_PROSTUP
+                    and not _is_layer_match(e.dxf.layer, layer_pats)
+                ):
                     continue
                 pos = (e.dxf.insert.x, e.dxf.insert.y)
                 source_kind = "block_insert"
@@ -320,7 +376,13 @@ def _extract_one_dxf(
                     "source": f"DXF|{drawing_key}|INSERT",
                     "confidence": 1.0,
                 }
-                entry["block_role"] = PROSTUP_BLOCKS[block_name]
+                # block_role only set when block_name is a known prostup
+                # symbol (PROSTUP_BLOCKS). For layer-driven INSERTs (VZT
+                # anonymous `*U77`, Daikin vendor blocks) we leave
+                # block_role unset; the source_layer carries the role
+                # info instead (e.g. layer=VZT_EXHAUST → exhaust grille).
+                if block_name in PROSTUP_BLOCKS:
+                    entry["block_role"] = PROSTUP_BLOCKS[block_name]
             prostupy.append(entry)
 
     return prostupy, []
