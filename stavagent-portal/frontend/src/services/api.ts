@@ -614,18 +614,10 @@ export const creditsAPI = {
     const { data } = await api.get('/api/credits/history', { params: { limit, offset } });
     return data;
   },
-  getTiers: async (): Promise<any> => {
-    const { data } = await api.get('/api/credits/tiers');
-    return data;
-  },
-  calculate: async (amountCzk: number): Promise<any> => {
-    const { data } = await api.get('/api/credits/calculate', { params: { amount: amountCzk } });
-    return data;
-  },
-  checkout: async (amountCzk: number): Promise<any> => {
-    const { data } = await api.post('/api/credits/checkout', { amount_czk: amountCzk });
-    return data;
-  },
+  // Self-service topup (getTiers/calculate/checkout) removed 2026-05-08
+  // with the Stripe code path. Paid plans relaunch in Q3 2026 via Lemon
+  // Squeezy (Merchant of Record). Until then, only admin /admin/topup
+  // adds credits.
   // Admin
   getAdminStats: async (): Promise<any> => {
     const { data } = await api.get('/api/credits/admin/stats');

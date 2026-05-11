@@ -151,7 +151,7 @@ export function MaterialsTab({
                       <button
                         onClick={openInMonolit}
                         className="p-1 text-blue-500 hover:bg-blue-500/10 rounded transition-colors"
-                        title="Otevřít Monolit Planner"
+                        title="Otevřít Kalkulátor betonáže"
                       >
                         <ExternalLink size={14} />
                       </button>

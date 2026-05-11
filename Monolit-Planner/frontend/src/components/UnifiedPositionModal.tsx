@@ -120,7 +120,7 @@ export default function UnifiedPositionModal({ positionId, onClose }: Props) {
           {position.urs_payload && (
             <details className="c-panel c-panel--inset">
               <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '8px', userSelect: 'none' }}>
-                URS Matcher data
+                Klasifikátor — data z klasifikace
               </summary>
               <pre style={{
                 background: 'var(--bg-secondary)',

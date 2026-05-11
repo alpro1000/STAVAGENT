@@ -47,7 +47,12 @@ const backBtn = document.getElementById('backBtn');
 const errorBackBtn = document.getElementById('errorBackBtn');
 const exportBtn = document.getElementById('exportBtn');
 const copyBtn = document.getElementById('copyBtn');
-const exportToRegistryBtn = document.getElementById('exportToRegistryBtn');
+// exportToRegistryBtn removed in Gate 9.1 — direct push from Klasifikátor to
+// Registr was premature integration (AI classification with 60–85% confidence
+// needs a user-review step before commit to organized workflow). Klasifikátor
+// is positioned as a standalone lookup tool; users export CSV/JSON and
+// import into Registr through Registr's own xlsx-upload flow if needed.
+// See backlog ticket klasifikator-registr-protocol-align for future redesign.
 
 // Theme Toggle Elements
 const themeToggle = document.getElementById('themeToggle');
@@ -655,7 +660,7 @@ function displayFileUploadResults(job) {
       <tr>
         <th>Řádek</th>
         <th>Vstupní text</th>
-        <th>Kód ÚRS</th>
+        <th>Kód</th>
         <th>Název</th>
         <th>MJ</th>
         <th>Množství</th>
@@ -960,7 +965,7 @@ function displayBlockMatchResults(job) {
     // Items table
     if (items.length > 0) {
       html += '<table class="results-table grouped-table"><thead><tr>';
-      html += '<th>Řádek</th><th>Vstupní text</th><th>Kód ÚRS</th><th>Název</th><th>MJ</th>';
+      html += '<th>Řádek</th><th>Vstupní text</th><th>Kód</th><th>Název</th><th>MJ</th>';
       html += '</tr></thead><tbody>';
 
       items.forEach((item) => {
@@ -1076,7 +1081,7 @@ exportBtn.addEventListener('click', async () => {
 
     // Handle text-match results (manual input)
     if (candidates.length > 0) {
-      csv += 'Typ;Kód ÚRS;Název;MJ;Jistota (%);Důvod\n';
+      csv += 'Typ;Kód;Název;MJ;Jistota (%);Důvod\n';
 
       candidates.forEach((item) => {
         const confidence = ((item.confidence || 0) * 100).toFixed(0);
@@ -1091,7 +1096,7 @@ exportBtn.addEventListener('click', async () => {
     }
     // Handle block-match results
     else if (!items.length && currentResults.blocks) {
-      csv += 'Blok;Řádek;Vstupní text;Kód ÚRS;Název;MJ\n';
+      csv += 'Blok;Řádek;Vstupní text;Kód;Název;MJ\n';
       currentResults.blocks.forEach((block) => {
         const blockName = block.block_name || '';
         (block.items || []).forEach((item) => {
@@ -1100,7 +1105,7 @@ exportBtn.addEventListener('click', async () => {
       });
     } else {
       // Handle regular file upload results
-      csv += 'Řádek;Vstupní text;Kód ÚRS;Název;MJ;Množství;Jistota;Typ\n';
+      csv += 'Řádek;Vstupní text;Kód;Název;MJ;Množství;Jistota;Typ\n';
       items.forEach((item) => {
         const type = item.extra_generated ? 'Doplňková' : 'Přímá';
         csv += [esc(item.input_row_id), esc(item.input_text), esc(item.urs_code), esc(item.urs_name), esc(item.unit), item.quantity || '', item.confidence?.toFixed(2) || '', type].join(';') + '\n';
@@ -1130,7 +1135,7 @@ copyBtn.addEventListener('click', () => {
   if (!currentResults) return;
 
   try {
-    let text = 'Výsledky hledání ÚRS\n';
+    let text = 'Výsledky AI vyhledávání\n';
     text += '═'.repeat(60) + '\n\n';
 
     const items = currentResults.items || [];
@@ -1139,7 +1144,7 @@ copyBtn.addEventListener('click', () => {
 
     // Handle text-match results (manual input)
     if (candidates.length > 0) {
-      text += '🎯 DOPORUČENÉ POZICE ÚRS:\n';
+      text += '🎯 DOPORUČENÉ POZICE:\n';
       text += '─'.repeat(60) + '\n';
 
       candidates.forEach((item, idx) => {
@@ -1202,153 +1207,26 @@ copyBtn.addEventListener('click', () => {
 });
 
 // ============================================================================
-// EXPORT TO REGISTRY
+// EXPORT TO REGISTRY — REMOVED in Gate 9.1 (2026-05-08).
 // ============================================================================
-
-exportToRegistryBtn?.addEventListener('click', async () => {
-  if (!currentResults) {
-    alert('Žádné výsledky k exportu');
-    return;
-  }
-
-  try {
-    exportToRegistryBtn.disabled = true;
-    exportToRegistryBtn.textContent = 'Odesílání...';
-    debugLog('📤 Starting export to Registry');
-
-    // Map results to unified format
-    const positions = [];
-
-    // Handle block-match results
-    if (currentResults.blocks && currentResults.blocks.length > 0) {
-      currentResults.blocks.forEach((block, blockIdx) => {
-        const items = block.analysis?.items || block.items || [];
-        items.forEach((item, itemIdx) => {
-          const ursCode = item.selected_urs?.urs_code || '';
-          const ursName = item.selected_urs?.urs_name || '';
-          const unit = item.selected_urs?.unit || '';
-
-          if (ursCode) {
-            positions.push({
-              id: `urs-${blockIdx}-${itemIdx}-${Date.now()}`,
-              sourceKiosk: 'urs-matcher',
-              code: ursCode,
-              description: ursName || item.input_text || '',
-              quantity: item.quantity || null,
-              unit: unit,
-              unitPrice: null,
-              totalPrice: null,
-              workGroup: null,
-              metadata: {
-                inputText: item.input_text || '',
-                blockName: block.block_name || '',
-                confidence: item.confidence || null,
-                rowId: item.row_id || null
-              }
-            });
-          }
-        });
-      });
-    }
-
-    // Handle text-match results (candidates)
-    if (currentResults.candidates && currentResults.candidates.length > 0) {
-      currentResults.candidates.forEach((candidate, idx) => {
-        positions.push({
-          id: `urs-cand-${idx}-${Date.now()}`,
-          sourceKiosk: 'urs-matcher',
-          code: candidate.urs_code || '',
-          description: candidate.urs_name || '',
-          quantity: currentResults.quantity || null,
-          unit: candidate.unit || currentResults.unit || '',
-          unitPrice: null,
-          totalPrice: null,
-          workGroup: null,
-          metadata: {
-            confidence: candidate.confidence || null,
-            reason: candidate.reason || ''
-          }
-        });
-      });
-    }
-
-    // Handle file upload results (items array)
-    if (currentResults.items && currentResults.items.length > 0) {
-      currentResults.items.forEach((item, idx) => {
-        positions.push({
-          id: `urs-item-${idx}-${Date.now()}`,
-          sourceKiosk: 'urs-matcher',
-          code: item.urs_code || '',
-          description: item.urs_name || '',
-          quantity: item.quantity || null,
-          unit: item.unit || '',
-          unitPrice: null,
-          totalPrice: null,
-          workGroup: null,
-          metadata: {
-            inputText: item.input_text || '',
-            inputRowId: item.input_row_id || null,
-            confidence: item.confidence || null,
-            extraGenerated: item.extra_generated || false
-          }
-        });
-      });
-    }
-
-    if (positions.length === 0) {
-      alert('Žádné pozice k exportu');
-      return;
-    }
-
-    debugLog(`📤 Exporting ${positions.length} positions to Registry`);
-
-    // Send to Registry
-    const response = await fetch('https://registry.stavagent.cz/api/sync?action=import-positions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        positions,
-        sourceKiosk: 'urs-matcher',
-        projectName: `URS Import ${new Date().toLocaleDateString('cs-CZ')}`,
-        metadata: {
-          jobId: currentJobId || null,
-          exportedAt: new Date().toISOString()
-        }
-      })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `HTTP ${response.status}`);
-    }
-
-    const result = await response.json();
-    debugLog('📤 ✓ Export to Registry successful:', result);
-
-    // Show success
-    exportToRegistryBtn.textContent = '✓ Exportováno!';
-    setTimeout(() => {
-      exportToRegistryBtn.textContent = '📤 Export do Registry';
-      exportToRegistryBtn.disabled = false;
-    }, 2000);
-
-    // Optionally open Registry in new tab
-    if (result.projectId) {
-      const openRegistry = confirm(`Export úspěšný! Otevřít Registry s ${positions.length} položkami?`);
-      if (openRegistry) {
-        window.open(`https://registry.stavagent.cz/?project=${result.projectId}`, '_blank');
-      }
-    }
-
-  } catch (error) {
-    debugError('📤 Export to Registry error:', error);
-    alert(`Chyba při exportu do Registry: ${error.message}`);
-    exportToRegistryBtn.disabled = false;
-    exportToRegistryBtn.textContent = '📤 Export do Registry';
-  }
-});
+// The Klasifikátor → Registr direct-push flow (button + handler that POSTed
+// to https://registry.stavagent.cz/api/sync?action=import-positions) was
+// removed because:
+//   1. Protocol mismatch with the Registr receiver — sender used
+//      { sourceKiosk, projectName, metadata }; receiver expects
+//      { portalProjectId, source ∈ kiosk-enum, mergeStrategy }. Receiver
+//      returned 400 'portalProjectId is required'. Manual smoke test on
+//      production would have failed since pre-Gate-2.
+//   2. Premature integration. AI classification has 60–85 % confidence and
+//      needs a user-review step before commit to the organized tender
+//      workshop. Push-without-review is not the right UX.
+// Klasifikátor is now positioned as an independent lookup tool. Users can
+// still export CSV/JSON via the buttons that remain in the results section,
+// and import that into Registr through Registr's own xlsx upload flow.
+// The receiving endpoint in rozpocet-registry/api/sync.ts is intentionally
+// kept intact for future use when the redesign lands. See backlog ticket
+// klasifikator-registr-protocol-align.
+// ============================================================================
 
 // ============================================================================
 // PHASE 2: DOCUMENT UPLOAD & CONTEXT EDITOR
@@ -2357,7 +2235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (lines.length === 0) {
-          showError('V souboru nebyly nalezeny žádné popisky pro URS Matcher.');
+          showError('V souboru nebyly nalezeny žádné popisky ke klasifikaci.');
           return;
         }
 

@@ -174,7 +174,7 @@ export function ConfigEditor({
                 value={columns.kod}
                 onChange={(v) => handleColumnChange('kod', v)}
                 required
-                description="Kód položky (ÚRS/OTSKP)"
+                description="Kód položky (OTSKP / 9místný)"
               />
 
               {/* Popis */}

@@ -92,6 +92,16 @@ export default async function handler(
 // ============================================================================
 // IMPORT POSITIONS
 // ============================================================================
+// Note (Gate 9.1, 2026-05-08): the Klasifikátor → Registr direct-push flow
+// that called this endpoint was disabled in
+// URS_MATCHER_SERVICE/frontend/public/{index.html,app.js}. Reason: protocol
+// mismatch between Klasifikátor's outgoing payload (sourceKiosk / projectName
+// / metadata) and this endpoint's expected shape (portalProjectId / source ∈
+// kiosk-enum / mergeStrategy) — receiver returned 400 'portalProjectId is
+// required', so the integration was non-functional in production since
+// pre-Gate-2. Endpoint kept intact for future use when the redesign lands.
+// See backlog ticket klasifikator-registr-protocol-align.
+// ============================================================================
 
 async function handleImportPositions(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
