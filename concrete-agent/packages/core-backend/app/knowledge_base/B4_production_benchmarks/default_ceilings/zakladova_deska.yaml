@@ -1,0 +1,45 @@
+# Default Resource Ceiling — zakladova_deska (Základová deska)
+# Phase 2 Group A pozemní vodorovné (per task §6 + audit §6.1 R2).
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.zakladova_deska
+#
+# Baseline: typická hala / bytový dům 50-300 m³ ZD, Frami Xlife obvodové,
+# velká plocha → rotační hladička povinná (relevance num_finishers=true).
+# Per `computePourCrew(100, 1, 'zakladova_deska')` Level 3 →
+#   ukladani=2 + vibrace=2 + finiseri=1 = 5 pour crew.
+# ElementProfile.needs_crane=false → cranes omitted z ceiling.
+# Confidence: 0.85 (KB default, user-override má 0.99 precedenci).
+
+element_type: zakladova_deska
+source: kb_default
+confidence: 0.85
+
+workforce:
+  num_workers_total: 10      # 1 base + 1 železář brigáda + pour crew, malý souběh
+                             # ZD se betonuje obvykle monoliticky, tesaři + železáři už hotovi
+  num_carpenters: 4          # obvodové bednění (Frami Xlife) — Foundation C alignment
+  num_rebar_workers: 4       # husté armování dle statika (D14, 110 kg/m³)
+  num_concrete_workers: 4    # Level 3 pump-based (1 pump × 2 + reserve)
+  num_vibrators: 2           # ponorné vibrátory pro spodní vrstvu + lišta na vrchu
+  num_finishers: 1           # rotační hladička — velká plocha (relevance true)
+
+formwork:
+  num_formwork_sets: 2       # Frami Xlife obvodový — 2 sady obrátkovostí
+                             # matches orchestrator DEFAULTS.num_sets=2
+
+equipment:
+  num_pumps: 1               # 100 m³ × ~6h fit
+  plant_rate_m3_h: 60
+  mixer_delivery_m3_h: 40
+  # num_cranes vynecháno — relevance.num_cranes=false (ZD bez jeřábového panelu)
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false   # standardní ZD = denní režim
+
+references:
+  - Monolit-Planner/shared/src/classifiers/element-classifier.ts (ELEMENT_CATALOG.zakladova_deska:321)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§ základová deska)
+  - concrete-agent/.../B4/bedneni.json (brigady.standard)
+  - planner-orchestrator.ts:computePourCrew (Level 3 formula)

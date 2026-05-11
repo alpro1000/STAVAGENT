@@ -33,7 +33,13 @@ Per Phase 0 audit §5.3 + task spec §5.5:
 |--------------|-----------|-------|
 | `operne_zdi` | `operne_zdi.yaml` | 1 (Reference A) |
 | `mostovkova_deska` | `mostovkova_deska.yaml` | 1 (Reference B) |
-| 22 remaining types | (TODO) | 2–7 per task §6 |
+| `stropni_deska` | `stropni_deska.yaml` | 2 Group A — pozemní vodorovné |
+| `zakladova_deska` | `zakladova_deska.yaml` | 2 Group A — pozemní vodorovné |
+| `zakladovy_pas` | `zakladovy_pas.yaml` | 2 Group A — pozemní vodorovné |
+| `zakladova_patka` | `zakladova_patka.yaml` | 2 Group A — pozemní vodorovné |
+| `podkladni_beton` | `podkladni_beton.yaml` | 2 Group A — pozemní vodorovné |
+| `pruvlak` | `pruvlak.yaml` | 2 Group A — pozemní vodorovné |
+| 16 remaining types | (TODO) | 3–7 per task §6 (Groups B–F) |
 
 ## YAML schema
 

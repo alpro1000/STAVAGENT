@@ -1,0 +1,48 @@
+# Default Resource Ceiling — pruvlak (Průvlak / trám)
+# Phase 2 Group A pozemní vodorovné (per task §6 + audit §6.1 R2).
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.pruvlak
+#
+# Baseline: typický pozemní průvlak ~5-25 m³, Dokaflex panel + stojky,
+# horizontální orientace s mírnou krycí vrstvou (relevance num_finishers=true).
+# ElementProfile.needs_supports=true → stojky povinné.
+# Per `computePourCrew(15, 1, 'pruvlak')` Level 1 (<20 m³) →
+#   ukladani=2 + vibrace=1 + finiseri=0 = 3 pour crew (finiseri ignored).
+# Pro větší průvlak 20-60 m³ Level 2 → 4 pour crew (vč. finisher).
+# Strop 10 = pohodlný buffer pro souběh fází.
+# Confidence: 0.85 (KB default, user-override má 0.99 precedenci).
+
+element_type: pruvlak
+source: kb_default
+confidence: 0.85
+
+workforce:
+  num_workers_total: 10
+  num_carpenters: 4          # Foundation C alignment (orchestrator DEFAULTS.crew_size)
+                             # Dokaflex montáž + stojky
+  num_rebar_workers: 4       # husté armování (D16, 140 kg/m³)
+  num_concrete_workers: 3    # Level 1-2 — malý objem
+  num_vibrators: 1           # ponorný vibrátor (úzký nosník)
+  num_finishers: 1           # krycí vrstva horizontálního nosníku
+
+formwork:
+  num_formwork_sets: 2       # Dokaflex / Tradiční tesařské — 2 sady obrátkovostí
+                             # matches orchestrator DEFAULTS.num_sets=2
+  num_props_sets: 1          # stojky — needs_supports=true v ElementProfile
+
+equipment:
+  num_pumps: 1               # ElementProfile.pump_typical=true
+  plant_rate_m3_h: 50
+  mixer_delivery_m3_h: 35
+  num_cranes: 1              # ElementProfile.needs_crane=true (panel + stojky transport)
+  crane_max_load_kg: 4000
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false
+
+references:
+  - Monolit-Planner/shared/src/classifiers/element-classifier.ts (ELEMENT_CATALOG.pruvlak:423)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§ průvlak / trám)
+  - planner-orchestrator.ts:computePourCrew (Level 1-2 formula)
