@@ -11,13 +11,14 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://www.stavagent.cz/" />
 
-    <!-- hreflang DEFERRED: Czech is the only live locale today. The /en
-         English landing ships in a later Gate (v3.2 §10 spec); when /en
-         goes live, add:
-           <link rel="alternate" hreflang="cs" href="https://www.stavagent.cz/" />
-           <link rel="alternate" hreflang="en" href="https://www.stavagent.cz/en/" />
-           <link rel="alternate" hreflang="x-default" href="https://www.stavagent.cz/" />
-         Linking to a non-existent /en URL now would be an SEO error. -->
+    <!-- canonical + hreflang link tags ABOVE are the BASELINE for the
+         landing /. Each React page (LandingPage, LandingPageEn, TeamPage)
+         calls useHeadMeta on mount to REPLACE the canonical with its own
+         page-specific URL and append cs/en/x-default hreflang link tags.
+         The postbuild prerender (scripts/prerender.mjs) captures the
+         post-mount <head> state — so each dist/<route>/index.html ships
+         with the correct per-page tags, while crawlers hitting the
+         landing pre-hydration still see the baseline above. -->
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

@@ -29,7 +29,7 @@ Routes that get prerendered are listed in
 `scripts/prerender.mjs` → `ROUTES_TO_PRERENDER`. Today:
 
 ```js
-const ROUTES_TO_PRERENDER = ['/', '/team', '/en/team'];
+const ROUTES_TO_PRERENDER = ['/', '/en/', '/team', '/en/team'];
 ```
 
 Per-Gate additions:
@@ -39,7 +39,7 @@ Per-Gate additions:
 | Gate 4 | `'/'` | `dist/index.html` (overwritten) |
 | Gate 10 | `'/team'` | `dist/team/index.html` |
 | Gate 10 | `'/en/team'` | `dist/en/team/index.html` |
-| Gate 11 (pending) | `'/en/'` | `dist/en/index.html` |
+| Gate 11 | `'/en/'` | `dist/en/index.html` |
 
 **Routes that MUST NOT be in this list:**
 - `/portal/*` — auth-gated; prerender would either flash unauth content for
@@ -55,9 +55,9 @@ Per-Gate additions:
 | Route in allow-list | Output file | Active since |
 |---|---|---|
 | `/` | `dist/index.html` (overwritten) | Gate 4 |
+| `/en/` | `dist/en/index.html` | Gate 11 |
 | `/team` | `dist/team/index.html` | Gate 10 |
 | `/en/team` | `dist/en/team/index.html` | Gate 10 |
-| `/en/` | `dist/en/index.html` | Gate 11 (pending) |
 
 Vercel serves these static files directly because static-file precedence
 beats the `vercel.json` SPA rewrite (`{"source":"/(.*)","destination":"/index.html"}`).

@@ -29,7 +29,7 @@
 // module body, so a top-level `import puppeteer from 'puppeteer'` would
 // crash with ERR_MODULE_NOT_FOUND before the SKIP_PRERENDER check could run.
 import { createServer } from 'node:http';
-import { writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,6 +37,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = resolve(__dirname, '../dist');
+const INDEX_HTML = join(DIST_DIR, 'index.html');
 
 /**
  * EXPLICIT ALLOW-LIST. Each string is a route path Puppeteer will visit.
@@ -55,9 +56,13 @@ const DIST_DIR = resolve(__dirname, '../dist');
  *   v3.2 Gate 10 — added '/team' (CZ) + '/en/team' (EN founder page).
  *                  EAGER-imported in App.tsx so the render captures
  *                  fully-hydrated DOM, not a lazy-load placeholder.
- *   v3.2 Gate 11 — will add '/en/' (English landing root).
+ *   v3.2 Gate 11 — added '/en/' (English landing root). hreflang link
+ *                  tags are now managed dynamically via src/hooks/useHeadMeta
+ *                  inside each page component; the prerender captures the
+ *                  post-mount <head> state so each dist/<route>/index.html
+ *                  ships with the correct canonical + cs/en/x-default set.
  */
-const ROUTES_TO_PRERENDER = ['/', '/team', '/en/team'];
+const ROUTES_TO_PRERENDER = ['/', '/en/', '/team', '/en/team'];
 
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const POST_RENDER_SETTLE_MS = 200; // small buffer for final synchronous renders
@@ -93,12 +98,22 @@ async function startStaticServer(sirvFactory) {
 
 // ─── Render one route ──────────────────────────────────────────────────────
 
-async function renderRoute(browser, baseUrl, route) {
+async function renderRoute(browser, baseUrl, route, originalShell) {
+  // CRITICAL: restore dist/index.html to the ORIGINAL Vite SPA shell before
+  // each render. Without this, after / renders and rewrites dist/index.html
+  // to the 60 KB fully-rendered landing, sirv (with single:true fallback)
+  // serves THAT to the next route's request. Browser loads pre-rendered DOM,
+  // then main.tsx calls createRoot on the polluted <div id="root">, React
+  // 18 crashes with error #299 ("Target container is not a DOM element"),
+  // and Puppeteer captures an empty <body>. Discovered Gate 11. Symptom
+  // was: dist/{en,team,en/team}/index.html were each ~2.9 KB shell-shaped
+  // files with empty <body> and React errors in the prerender log.
+  await writeFile(INDEX_HTML, originalShell);
+
   const fullUrl = baseUrl + route;
   console.log(`[prerender] Rendering ${route} (${fullUrl})...`);
 
   const page = await browser.newPage();
-  // Don't ship console noise from the app to the build log.
   page.on('pageerror', (err) =>
     console.warn(`[prerender]   page error: ${err.message}`),
   );
@@ -108,14 +123,15 @@ async function renderRoute(browser, baseUrl, route) {
     timeout: NAVIGATION_TIMEOUT_MS,
   });
 
-  // Tiny settle for any synchronous post-mount work.
   await new Promise((r) => setTimeout(r, POST_RENDER_SETTLE_MS));
 
   const html = await page.content();
   await page.close();
 
-  // Decide the output path. '/' overwrites dist/index.html; '/team'
-  // writes dist/team/index.html; '/en/' writes dist/en/index.html.
+  return { route, html };
+}
+
+async function writeRendered({ route, html }) {
   const cleanRoute = route.replace(/^\/|\/$/g, '');
   const outDir = cleanRoute === '' ? DIST_DIR : join(DIST_DIR, cleanRoute);
   const outFile = join(outDir, 'index.html');
@@ -135,6 +151,13 @@ async function main() {
   console.log('[prerender] Starting...');
   const t0 = Date.now();
 
+  // Cache the ORIGINAL Vite-built SPA shell (empty <div id="root">) before
+  // we touch anything. Every route render restores this shell to
+  // dist/index.html so sirv's SPA fallback always serves the empty shell,
+  // not a previously-rendered page. The captured HTML for each route is
+  // staged in memory and flushed to disk AFTER all renders are done.
+  const originalShell = await readFile(INDEX_HTML, 'utf8');
+
   // Dynamic import — see top-of-file note about SKIP_PRERENDER ordering.
   const { default: puppeteer } = await import('puppeteer');
   const { default: sirv } = await import('sirv');
@@ -144,19 +167,24 @@ async function main() {
 
   const browser = await puppeteer.launch({
     headless: 'new',
-    // --no-sandbox required because Vercel build containers run as root.
-    // --disable-setuid-sandbox is the matching pair for some Linux distros.
-    // --disable-dev-shm-usage avoids /dev/shm exhaustion on small CI workers.
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   });
 
+  const captured = [];
   try {
     for (const route of ROUTES_TO_PRERENDER) {
-      await renderRoute(browser, baseUrl, route);
+      captured.push(await renderRoute(browser, baseUrl, route, originalShell));
     }
   } finally {
     await browser.close();
     server.close();
+  }
+
+  // Flush all captured HTML to dist/<route>/index.html. The order within
+  // this loop does not matter since the browser is closed and sirv is no
+  // longer running — file writes are independent of each other.
+  for (const item of captured) {
+    await writeRendered(item);
   }
 
   const elapsed = ((Date.now() - t0) / 1000).toFixed(1);

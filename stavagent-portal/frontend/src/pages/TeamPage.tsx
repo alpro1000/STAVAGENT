@@ -28,6 +28,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Linkedin, Mail } from 'lucide-react';
+import { useHeadMeta } from '../hooks/useHeadMeta';
 
 type Locale = 'cs' | 'en';
 
@@ -246,6 +247,19 @@ export default function TeamPage({ locale }: TeamPageProps) {
       document.documentElement.lang = previous;
     };
   }, [locale, t.htmlLang]);
+
+  // Per-page canonical + hreflang. Distinct from the landing pair (/ ↔ /en/)
+  // because /team and /en/team are their own resource pair.
+  useHeadMeta({
+    canonical:
+      locale === 'cs'
+        ? 'https://www.stavagent.cz/team'
+        : 'https://www.stavagent.cz/en/team',
+    hreflangs: {
+      cs: 'https://www.stavagent.cz/team',
+      en: 'https://www.stavagent.cz/en/team',
+    },
+  });
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--app-bg-concrete)', overflowX: 'hidden' }}>
