@@ -9,7 +9,7 @@ import {
   ArrowRight, LogIn, User, Calculator, HardHat, Building2, Landmark,
   TableProperties, FileSearch, Link, Cpu, Upload,
   Search, FileOutput, Database, Brain, ChevronDown, ChevronUp,
-  Check, Mail, Code,
+  Check, Mail, Code, Info,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -137,9 +137,26 @@ const COMING_SOON = {
 };
 
 const STEPS = [
-  { icon: Upload, title: 'Nahrajte soubor', text: 'Excel (.xlsx) nebo PDF s rozpočtem, soupisem prací nebo technickou dokumentací.' },
-  { icon: Search, title: 'Systém analyzuje', text: 'Automatická detekce formátu, rozparsování pozic, kontrola parametrů. Deterministické jádro: regex parsing (confidence 1.0) → databázový lookup → AI doplnění (confidence 0.7) s transparentním skóre.' },
-  { icon: FileOutput, title: 'Výstup do minuty', text: 'Analyzovaný dokument, strukturovaný přehled, export do Excelu. Každý výsledek má confidence skóre — víte přesně, čemu můžete věřit.' },
+  {
+    icon: Upload,
+    title: '1. Smeta → Klasifikátor',
+    text: 'Nahraje výkaz výměr (xlsx) nebo dokumenty (PDF, DWG). AI klasifikuje pozice + navrhne kódy z OTSKP s pravděpodobností. Vždy ke schválení uživatelem — nikdy se 100% jistotou.',
+  },
+  {
+    icon: TableProperties,
+    title: '2. Export do Registru',
+    text: 'Klasifikované pozice ve workshop přípraváře. Rozdělíte do vlastních skupin pro poptávky a oddělení. TOV — rozbor každé práce na lidé, mechanizmy, materiály.',
+  },
+  {
+    icon: Cpu,
+    title: '3. Plán objektu v Kalkulátoru',
+    text: 'Detail prvku i plán celého objektu — beton, bednění, výztuž, takty, harmonogram. Resursní mapa (brigády, doba zrání, doba odbedňování) se vrací do TOV v Registru.',
+  },
+  {
+    icon: FileOutput,
+    title: '4. Export TOV/DOV',
+    text: 'Excel pro dodavatele a oddělení. Hypertextové odkazy zpět na zdrojový soubor zachovány. Cena a harmonogram připravené k poptávce.',
+  },
 ];
 
 const PILLARS = [
@@ -150,32 +167,105 @@ const PILLARS = [
 const FAQ = [
   { q: 'Musím něco instalovat?', a: 'Ne. StavAgent je webová aplikace — stačí prohlížeč. Žádná instalace, žádné pluginy.' },
   { q: 'Jaké formáty souborů podporujete?', a: 'Excel (.xlsx, .xls) pro rozpočty a soupisy. PDF, DWG, JPG pro stavební dokumentaci.' },
-  { q: 'Jak přesné jsou výsledky?', a: 'Každý výsledek nese pravděpodobnost. Regex a OTSKP exact match mají confidence 1.0. AI návrh má pravděpodobnost typicky 60–85% — nikdy ne 100%. Vždy ke schválení uživatelem. Žádné skryté halucinace.' },
+  { q: 'Jak přesné jsou klasifikační výsledky?', a: 'Každý kandidát z Klasifikátoru nese pravděpodobnost. Regex a OTSKP exact match mají confidence 1,0. AI návrh má pravděpodobnost typicky 60–85 % — nikdy ne 100 %. Vždy ke schválení uživatelem. Žádné skryté halucinace.' },
+  { q: 'Jaká je přesnost Kalkulátoru betonáže?', a: 'Kalkulátor poskytuje orientační odhad pro přípravu rozpočtu s přesností typicky ±10–15 %. Finální detailní návrh, statický výpočet a přesnou specifikaci komponentů provádí vždy dodavatel opalubky (DOKA / PERI / ULMA / další) na základě konkrétních projektových podkladů. Pro tendrovou fázi a předběžnou kalkulaci je tato přesnost dostatečná.' },
   { q: 'Funguje to pro mosty a infrastrukturu?', a: 'Ano. 22 typů konstrukčních prvků (9 mostních + 13 pozemních) včetně pilířů, opěr, mostovek, říms, základů a opěrných zdí. Předpětí, takty betonáže, MSS technologie. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace (17 904 položek).' },
   { q: 'Pracuje StavAgent s katalogy?', a: 'Ano — s OTSKP (Otevřený třídník stavebních prací, 17 904 položek). Pro pozice, které v OTSKP nejsou, doplní AI návrh s pravděpodobností. AI návrh je vždy ke schválení uživatelem — nikdy se 100% jistotou.' },
   { q: 'Co je TOV?', a: 'Technologicko-organizační rozbor — pro každou položku v rozpočtu rozbor na lidé / mechanizmy / materiály s počty, cenami a sazbami. V Registru najdete vestavěné kalkulátory bětonpumpy (multi-supplier), dopravy betonu a kranu.' },
   { q: 'Můžu si zvolit AI model?', a: 'Ano. Klasifikátor nabízí 19 modelů na výběr (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Rozšířený režim navíc spustí multi-role validaci s 6 expertními rolemi.' },
   { q: 'Mohu výstup importovat zpět do své stávající aplikace?', a: 'Ano. Výstup je Excel (.xlsx) s kódy, popisy, MJ, množstvími a cenami. Hypertextové odkazy zpět na zdrojový soubor zachovány.' },
   { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud, Frankfurt). Každý uživatel vidí pouze své projekty. Data nejsou sdílena s třetími stranami.' },
-  { q: 'Kolik to stojí?', a: 'Aktuálně otevřená beta s 200 kredity zdarma. Placené plány spustíme v Q3 2026 přes Lemon Squeezy (Merchant of Record — žádné DPH na vás).' },
-  { q: 'Kdy začnete účtovat?', a: 'Aktuálně otevřená beta s 200 kredity zdarma. Placené plány spustíme v Q3 2026 přes Lemon Squeezy (Merchant of Record — žádné DPH na vás).' },
+  { q: 'Kolik to stojí?', a: 'Otevřená beta — 200 kreditů zdarma při registraci. Žádná kreditní karta, žádné závazky. V průběhu bety platíte kredity jen za AI operace, deterministické výpočty (regex, OTSKP, kalkulace) jsou v rámci free tieru.' },
+  { q: 'Kdy začnete účtovat?', a: 'Placené plány spustíme v Q3 2026 přes Lemon Squeezy (Merchant of Record — žádné DPH na vás, žádné nastavení fakturace na vaší straně). Do té doby beta s 200 krediti zdarma.' },
 ];
 
 const STATS = [
   { num: '17 904', label: 'položek OTSKP' },
-  { num: '21', label: 'typů prvků' },
+  { num: '22', label: 'typů prvků' },
   { num: '25', label: 'systémů bednění' },
   { num: '12+', label: 'typů dokumentace' },
 ];
 
-const EXAMPLE_LINES = [
-  'Objem:    4 \u00d7 3 \u00d7 1.5 = 18.0 m\u00b3',
-  'Bedn\u011bn\u00ed:  2\u00d7(4+3) \u00d7 1.5 = 21.0 m\u00b2',
-  'Tlak:     2400 \u00d7 9.81 \u00d7 1.5 = 35 kN/m\u00b2',
-  'V\u00fdztu\u017e:   ~130 kg/m\u00b3 = 2.3 t',
-  'Beton\u00e1\u017e:  18 m\u00b3, 1 \u010derpadlo, 1 z\u00e1b\u011br',
-  'Zr\u00e1n\u00ed:    (15+10)\u00b0C \u00d7 72h = 1800 \u00b0C\u00b7h',
+// Dva re\u00e1ln\u00e9 cases pro sekci "P\u0159\u00edklad z praxe". Case 1 je ve\u0159ejn\u00fd \u0158SD
+// tender \u2014 pln\u00e1 transparentnost. Case 2 je re\u00e1ln\u00e1 geometrie, identifikace
+// klienta nezve\u0159ejn\u011bna (anonymizov\u00e1no).
+const CASES = [
+  {
+    id: 'so-202-d6',
+    badge: 'Ve\u0159ejn\u00fd \u0158SD tender',
+    title: 'SO-202 D6 Karlovy Vary\u2013Ol\u0161ov\u00e1 Vrata \u2014 most na sil. I/6',
+    sourceNote: 'Zdroj: TZ PDPS VD-ZDS, VIAPONT s.r.o.',
+    inputs: [
+      'Most na D6, km 0,900 (2 mosty LM + PM)',
+      '6 pol\u00ed, rozp\u011bt\u00ed 15 + 4\u00d720 + 15 m',
+      'NK dvoutr\u00e1mov\u00e1 p\u0159edpjat\u00e1, \u0161\u00ed\u0159ka 10,85 m',
+      'Beton C35/45 XF2, o\u0161et\u0159ov\u00e1n\u00ed t\u0159\u00edda 4',
+      '12 kabel\u016f \u00d7 13 lan Y1860, jednostrann\u00e9 nap\u00edn\u00e1n\u00ed',
+      'Piloty \u00d8 900 mm, hloubky 7,5\u201316 m',
+    ],
+    outputs: [
+      'Mostovka:       ~ 350 m\u00b3',
+      'Plocha bedn\u011bn\u00ed: ~ 1 210 m\u00b2',
+      'Skru\u017e:          Top 50 (nosn\u00edkov\u00e9)',
+      'Stojky:         Staxo 40 (h < 8 m)',
+      'O\u0161et\u0159ov\u00e1n\u00ed:     9 d (XF2 t\u0159\u00edda 4, 15\u201325 \u00b0C)',
+      'P\u0159edp\u011bt\u00ed:       7 d zr\u00e1n\u00ed + 2 d nap\u00edn\u00e1n\u00ed + 2 d injekt\u00e1\u017e',
+      'Piloty:         122 ks, C30/37 XA2',
+    ],
+    tov: 'TOV: beton\u00e1\u0159, tesa\u0159 (skru\u017e + stojky), \u017eelez\u00e1\u0159, nap\u00edna\u010d \u00b7 b\u011btonpumpa, kran \u00b7 beton, v\u00fdztu\u017e, lana, injekt\u00e1\u017en\u00ed sm\u011bs',
+  },
+  {
+    id: 'operna-zed-156',
+    badge: 'Re\u00e1ln\u00fd projekt (anonymizov\u00e1no)',
+    title: 'Op\u011brn\u00e1 ze\u010f \u2014 pr\u016fmyslov\u00fd are\u00e1l, d\u00e9lka 156 m',
+    sourceNote: 'Re\u00e1ln\u00e1 geometrie \u00b7 identifikace klienta nezve\u0159ejn\u011bna',
+    inputs: [
+      'Line\u00e1rn\u00ed op\u011brn\u00e1 ze\u010f pod\u00e9l manipula\u010dn\u00ed plochy',
+      'D\u00e9lka 156,4 m',
+      'Pr\u016f\u0159ez (T): d\u0159\u00edk 1 450 \u00d7 250 mm + patka 800 \u00d7 300 mm',
+      'Viditeln\u00e1 v\u00fd\u0161ka 1,75 m + patka 0,3 m',
+      'Beton C30/37 XF4',
+    ],
+    outputs: [
+      'Objem:           94,231 m\u00b3',
+      'Plocha bedn\u011bn\u00ed:  547,4 m\u00b2',
+      'V\u00fdztu\u017e (D12):    5,654 t',
+      'Takty:           8 z\u00e1b\u011br\u016f \u00d7 19,5 m',
+      'Bedn\u00edc\u00ed syst\u00e9m:  Framax Xlife (r\u00e1mov\u00e9)',
+      'Brigada:         4 lid\u00e9 + 2 \u010derpadla',
+      'Harmonogram:     12 pracovn\u00edch dn\u016f',
+    ],
+    tov: 'TOV: beton\u00e1\u0159 \u00d7 12 d, tesa\u0159 (mont/demont bedn\u011bn\u00ed), \u017eelez\u00e1\u0159 \u00b7 b\u011btonpumpa, kran \u00b7 beton 94 m\u00b3, v\u00fdztu\u017e 5,7 t',
+  },
 ];
+
+// "Co StavAgent NEd\u011bl\u00e1" bullets jsou p\u0159evzat\u00e9 DOSLOVN\u011a z
+// docs/CALCULATOR_PHILOSOPHY.md \u00a72. Nep\u0159episovat \u2014 slou\u017e\u00ed jako z\u00e1vazn\u00e9
+// pozicov\u00e1n\u00ed proti DOKA Software / PERI EngineeringPad a chr\u00e1n\u00ed p\u0159ed
+// nadproduk\u010dn\u00edm o\u010dek\u00e1v\u00e1n\u00edm (acceptance criteria typu "kalkul\u00e1tor mus\u00ed
+// vr\u00e1tit p\u0159esn\u011b N K\u010d" jsou anti-pattern, viz \u00a76.1 stejn\u00e9ho dokumentu).
+const NEDELA = [
+  {
+    title: 'Nen\u00ed fin\u00e1ln\u00ed engineering software',
+    text: 'Pro detailn\u00ed statick\u00fd n\u00e1vrh, v\u00fdpo\u010det zat\u00ed\u017een\u00ed a schvalovac\u00ed dokumentaci \u2192 DOKA / PERI / ULMA design teamy.',
+  },
+  {
+    title: 'Nen\u00ed konkurent DOKA Software / PERI EngineeringPad',
+    text: 'Je to komplement\u00e1rn\u00ed n\u00e1stroj \u2014 p\u0159iprav\u00ed podklady pro discussion s engineering teamem, ne nahrazuje je.',
+  },
+  {
+    title: 'Nen\u00ed inventory tool a\u017e na posledn\u00ed \u0161roub',
+    text: 'Kalkul\u00e1tor po\u010d\u00edt\u00e1 hlavn\u00ed syst\u00e9my a procenta spot\u0159eb; konkr\u00e9tn\u00ed \u0161rouby, anchory, custom adapt\u00e9ry \u0159e\u0161\u00ed dodavatel.',
+  },
+  {
+    title: 'Nen\u00ed z\u00e1ruka p\u0159esn\u00e9 ceny',
+    text: 'Fin\u00e1ln\u00ed cena vych\u00e1z\u00ed ze statick\u00e9ho n\u00e1vrhu v\u00fdrobce + aktu\u00e1ln\u00edho cen\u00edku + projektov\u00fdch podklad\u016f. Kalkul\u00e1tor poskytuje orienta\u010dn\u00ed odhad pro tendrovou f\u00e1zi.',
+  },
+];
+
+// Disclaimer text p\u0159evzat\u00fd DOSLOVN\u011a z docs/CALCULATOR_PHILOSOPHY.md \u00a75.1
+// \u2014 povinn\u00fd viditeln\u00fd text na lendingu (a v Kalkul\u00e1toru samotn\u00e9m).
+const CALCULATOR_DISCLAIMER = 'Tento kalkul\u00e1tor poskytuje orienta\u010dn\u00ed odhad pro p\u0159\u00edpravu rozpo\u010dtu s p\u0159esnost\u00ed typicky \u00b110\u201315 %. Fin\u00e1ln\u00ed detailn\u00ed n\u00e1vrh, statick\u00fd v\u00fdpo\u010det a p\u0159esnou specifikaci komponent\u016f prov\u00e1d\u00ed v\u017edy dodavatel opalubky (DOKA / PERI / ULMA / dal\u0161\u00ed) na z\u00e1klad\u011b konkr\u00e9tn\u00edch projektov\u00fdch podklad\u016f. Pro tendrovou f\u00e1zi a p\u0159edb\u011b\u017enou kalkulaci je tato p\u0159esnost dostate\u010dn\u00e1.';
 
 // ── Component ───────────────────────────────────────────────────────────────
 export default function LandingPage() {
@@ -413,44 +503,171 @@ export default function LandingPage() {
         </blockquote>
       </section>
 
-      {/* ── 7. PŘÍPAD POUŽITÍ ── */}
-      <section style={sectionStyle('800px')}>
+      {/* ── 7. PŘÍKLAD Z PRAXE ── (dva cases: veřejný ŘSD + anonymizovaný) */}
+      <section style={sectionStyle('900px')}>
         <h2 style={h2Style}>Příklad z praxe</h2>
-        <div style={{ height: 24 }} />
-        <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-default)' }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 4px' }}>
-              Kalkulace monolitu &mdash; základ pilíře
-            </h3>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', minHeight: 200 }}>
-            <div style={{ padding: '20px 24px', borderRight: '1px solid var(--border-default)', background: 'var(--data-surface)' }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Vstup</div>
-              <p style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.6, margin: 0 }}>
-                Základ pilíře: 4.0 &times; 3.0 &times; 1.5m<br />
-                C30/37, XC2
+        <p style={subtitleStyle}>
+          Dva reálné cases: veřejný tender ŘSD a anonymizovaný projekt z portfolia.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {CASES.map((c) => (
+            <div key={c.id} style={{ ...card, padding: 0, overflow: 'hidden' }}>
+              {/* Card header */}
+              <div style={{
+                padding: '16px 24px',
+                borderBottom: '1px solid var(--border-default)',
+                display: 'flex', flexDirection: 'column', gap: 4,
+              }}>
+                <span style={{
+                  display: 'inline-block', alignSelf: 'flex-start',
+                  padding: '2px 10px', borderRadius: 12,
+                  background: 'rgba(255,159,28,0.10)',
+                  color: 'var(--accent-orange)',
+                  fontSize: 11, fontWeight: 600,
+                  textTransform: 'uppercase', letterSpacing: 0.5,
+                }}>
+                  {c.badge}
+                </span>
+                <h3 style={{
+                  fontSize: 16, fontWeight: 700,
+                  color: 'var(--text-primary)', margin: '4px 0 0',
+                }}>
+                  {c.title}
+                </h3>
+                <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                  {c.sourceNote}
+                </span>
+              </div>
+
+              {/* Vstup + Výstup grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', minHeight: 200 }}>
+                <div style={{
+                  padding: '20px 24px',
+                  borderRight: '1px solid var(--border-default)',
+                  background: 'var(--data-surface)',
+                }}>
+                  <div style={{
+                    fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
+                    textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12,
+                  }}>
+                    Vstup
+                  </div>
+                  <ul style={{
+                    margin: 0, padding: 0, listStyle: 'none',
+                    fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.7,
+                  }}>
+                    {c.inputs.map((line, i) => (
+                      <li key={i} style={{ marginBottom: 4 }}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div style={{ padding: '20px 24px' }}>
+                  <div style={{
+                    fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
+                    textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12,
+                  }}>
+                    Co StavAgent spočítal
+                  </div>
+                  <pre style={{
+                    fontFamily: "'JetBrains Mono', monospace", fontSize: 13,
+                    color: 'var(--text-primary)', lineHeight: 1.7, margin: 0,
+                    whiteSpace: 'pre-wrap', background: 'none',
+                  }}>
+{c.outputs.join('\n')}
+                  </pre>
+                </div>
+              </div>
+
+              {/* TOV chip */}
+              <div style={{
+                padding: '12px 24px',
+                borderTop: '1px solid var(--border-default)',
+                background: 'var(--data-surface)',
+                fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.55,
+              }}>
+                {c.tov}
+              </div>
+
+              {/* Time metric */}
+              <div style={{
+                padding: '12px 24px',
+                borderTop: '1px solid var(--border-default)',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                flexWrap: 'wrap', gap: 8,
+              }}>
+                <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+                  Export TOV/DOV → Excel pro poptávky a oddělení
+                </span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-orange)' }}>
+                  30 minut místo půl dne v Excelu
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Calculator disclaimer — canonical text z docs/CALCULATOR_PHILOSOPHY.md §5.1 */}
+        <div style={{
+          marginTop: 24, padding: '16px 20px',
+          borderLeft: '4px solid var(--accent-orange)',
+          background: 'var(--data-surface)',
+          borderRadius: '0 8px 8px 0',
+          display: 'flex', alignItems: 'flex-start', gap: 12,
+        }}>
+          <Info size={20} style={{ color: 'var(--accent-orange)', flexShrink: 0, marginTop: 2 }} />
+          <p style={{
+            margin: 0, fontSize: 13,
+            color: 'var(--text-secondary)', lineHeight: 1.65, fontStyle: 'italic',
+          }}>
+            {CALCULATOR_DISCLAIMER}
+          </p>
+        </div>
+      </section>
+
+      {/* ── 7b. CO STAVAGENT NEDĚLÁ ── (pozicování vs DOKA/PERI engineering) */}
+      <section id="nedela" style={sectionStyle('900px')}>
+        <h2 style={h2Style}>Co StavAgent NEdělá</h2>
+        <p style={subtitleStyle}>
+          Hranice kalkulátoru. Co se řeší u dodavatele (DOKA / PERI / ULMA) a co u nás.
+        </p>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+          gap: 16,
+        }}>
+          {NEDELA.map((n, i) => (
+            <div key={i} style={{
+              ...card,
+              padding: '20px 24px',
+              borderTop: '3px solid var(--accent-orange)',
+            }}>
+              <h3 style={{
+                fontSize: 15, fontWeight: 700,
+                color: 'var(--text-primary)', margin: '0 0 8px',
+              }}>
+                {n.title}
+              </h3>
+              <p style={{
+                fontSize: 13, color: 'var(--text-secondary)',
+                lineHeight: 1.6, margin: 0,
+              }}>
+                {n.text}
               </p>
             </div>
-            <div style={{ padding: '20px 24px' }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>Co systém spočítal</div>
-              <pre style={{
-                fontFamily: "'JetBrains Mono', monospace", fontSize: 13,
-                color: 'var(--text-primary)', lineHeight: 1.7, margin: 0,
-                whiteSpace: 'pre-wrap', background: 'none',
-              }}>
-{EXAMPLE_LINES.join('\n')}
-              </pre>
-            </div>
-          </div>
-          <div style={{ padding: '14px 24px', borderTop: '1px solid var(--border-default)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Kalkulace Kč/m&sup3; + harmonogram + export TOV/DOV</span>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-orange)' }}>2 minuty (vs. ~1 hodina ručně)</span>
-          </div>
-          <div style={{ padding: '0 24px 14px' }}>
-            <span style={{ fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic' }}>
-              Příklad je syntetický (založený na reálné logice systému).
-            </span>
-          </div>
+          ))}
+        </div>
+
+        {/* Positioning chip pod sekcí */}
+        <div style={{
+          marginTop: 20, padding: '14px 20px',
+          background: 'var(--data-surface)',
+          borderRadius: 8,
+          fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6,
+          textAlign: 'center',
+        }}>
+          Naše hodnota = <strong>rychlost + technologická správnost + vendor-neutralita</strong> v fázi předtendrové kalkulace.
         </div>
       </section>
 
