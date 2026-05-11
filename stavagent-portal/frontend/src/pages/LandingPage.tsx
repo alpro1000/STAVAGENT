@@ -311,16 +311,13 @@ export default function LandingPage() {
           fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 700,
           color: 'var(--text-primary)', lineHeight: 1.15, marginBottom: 16,
         }}>
-          Stavební rozpočty a dokumentace<br />
-          <span style={{ color: 'var(--accent-orange)' }}>pod&nbsp;kontrolou</span>
+          Z rozpočtu <span style={{ color: 'var(--accent-orange)' }}>pracovní plán.</span>
         </h1>
         <p style={{
           fontSize: 'clamp(15px, 2.5vw, 18px)', color: 'var(--text-secondary)',
           lineHeight: 1.6, maxWidth: 600, margin: '0 auto 28px',
         }}>
-          Přesné deterministické výpočty tam, kde to jde.
-          AI analýza tam, kde pomůže.
-          Vždy s transparentním confidence skóre.
+          Pro rozpočtáře a přípraváře monolitů. Klasifikace pozic, výpočet betonu, bednění, výztuže a harmonogram — vše s transparentním confidence skóre.
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 24 }}>
           <button onClick={goCta} style={orangeBtn(true)}>
