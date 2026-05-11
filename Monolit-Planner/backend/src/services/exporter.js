@@ -334,7 +334,7 @@ const applyTotalRowStyle = (row) => {
 export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServer = false) {
   try {
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'Monolit Planner';
+    workbook.creator = 'Kalkulátor betonáže';
     workbook.created = new Date();
 
     // CRITICAL: Enable formula calculation on file open

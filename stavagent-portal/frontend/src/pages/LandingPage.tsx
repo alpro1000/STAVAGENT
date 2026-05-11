@@ -115,7 +115,7 @@ const MODULES = [
     bullets: [
       'Detail prvku — 7 výpočetních jader (bednění, výztuž, betonáž, zrání, harmonogram, PERT, čerpadla)',
       'Plán objektu — tabulka všech prvků s takty, zdroji a kalkulací Kč/m³',
-      '25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 22 typů prvků',
+      '25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 24 typů prvků',
     ],
     cta: 'Otevřít Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
   },
@@ -170,7 +170,7 @@ const FAQ = [
   { q: 'Jaké formáty souborů podporujete?', a: 'Excel (.xlsx, .xls) pro rozpočty a soupisy. PDF, DWG, JPG pro stavební dokumentaci.' },
   { q: 'Jak přesné jsou klasifikační výsledky?', a: 'Každý kandidát z Klasifikátoru nese pravděpodobnost. Regex a OTSKP exact match mají confidence 1,0. AI návrh má pravděpodobnost typicky 60–85 % — nikdy ne 100 %. Vždy ke schválení uživatelem. Žádné skryté halucinace.' },
   { q: 'Jaká je přesnost Kalkulátoru betonáže?', a: 'Kalkulátor poskytuje orientační odhad pro přípravu rozpočtu s přesností typicky ±10–15 %. Finální detailní návrh, statický výpočet a přesnou specifikaci komponentů provádí vždy dodavatel opalubky (DOKA / PERI / ULMA / další) na základě konkrétních projektových podkladů. Pro tendrovou fázi a předběžnou kalkulaci je tato přesnost dostatečná.' },
-  { q: 'Funguje to pro mosty a infrastrukturu?', a: 'Ano. 22 typů konstrukčních prvků (9 mostních + 13 pozemních) včetně pilířů, opěr, mostovek, říms, základů a opěrných zdí. Předpětí, takty betonáže, MSS technologie. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace (17 904 položek).' },
+  { q: 'Funguje to pro mosty a infrastrukturu?', a: 'Ano. 24 typů konstrukčních prvků (13 mostních + 11 pozemních) včetně pilířů, opěr, mostovek, říms, základů a opěrných zdí. Předpětí, takty betonáže, MSS technologie. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace (17 904 položek).' },
   { q: 'Pracuje StavAgent s katalogy?', a: 'Ano — s OTSKP (Otevřený třídník stavebních prací, 17 904 položek). Pro pozice, které v OTSKP nejsou, doplní AI návrh s pravděpodobností. AI návrh je vždy ke schválení uživatelem — nikdy se 100% jistotou.' },
   { q: 'Co je TOV?', a: 'Technologicko-organizační rozbor — pro každou položku v rozpočtu rozbor na lidé / mechanizmy / materiály s počty, cenami a sazbami. V Registru najdete vestavěné kalkulátory bětonpumpy (multi-supplier), dopravy betonu a kranu.' },
   { q: 'Můžu si zvolit AI model?', a: 'Ano. Klasifikátor nabízí 19 modelů na výběr (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Rozšířený režim navíc spustí multi-role validaci s 6 expertními rolemi.' },
@@ -182,7 +182,7 @@ const FAQ = [
 
 const STATS = [
   { num: '17 904', label: 'položek OTSKP' },
-  { num: '22', label: 'typů prvků' },
+  { num: '24', label: 'typů prvků' },
   { num: '25', label: 'systémů bednění' },
   { num: '12+', label: 'typů dokumentace' },
 ];

@@ -22,7 +22,7 @@ export function createBlockMatchExcel(jobData) {
 
   // Sheet 1: Сводка по блокам
   const summaryData = [
-    ['URS Matcher - Результаты анализа'],
+    ['Klasifikátor — Výsledky analýzy'],
     [''],
     ['Файл:', jobData.filename || 'N/A'],
     ['Дата:', new Date().toLocaleString('cs-CZ')],
@@ -150,7 +150,7 @@ export function createJobItemsExcel(job, items) {
 
   // Заголовки
   const data = [
-    ['URS Matcher - Результаты'],
+    ['Klasifikátor — Výsledky'],
     [''],
     ['Файл:', job.filename],
     ['Дата:', new Date(job.created_at).toLocaleString('cs-CZ')],
@@ -188,7 +188,7 @@ export function createJobItemsExcel(job, items) {
     { wch: 50 }
   ];
 
-  XLSX.utils.book_append_sheet(workbook, sheet, 'Результаты');
+  XLSX.utils.book_append_sheet(workbook, sheet, 'Výsledky');
 
   return XLSX.write(workbook, {
     type: 'buffer',

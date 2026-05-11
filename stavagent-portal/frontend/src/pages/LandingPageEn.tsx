@@ -159,7 +159,7 @@ const MODULES = [
     bullets: [
       'Detail prvku — 7 deterministic engines (formwork, reinforcement, pour decision, DIN 18218 lateral pressure, Saul maturity, RCPSP scheduler + PERT, pumping)',
       'Plán objektu — whole-object table with pour stages, resources, Kč/m³',
-      '25 formwork systems (DOKA, PERI, ULMA, NOE, traditional), 22 element types, ČSN EN 13670 + TKP 18 + DIN 18218 compliant',
+      '25 formwork systems (DOKA, PERI, ULMA, NOE, traditional), 24 element types, ČSN EN 13670 + TKP 18 + DIN 18218 compliant',
     ],
     cta: 'Open Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
   },
@@ -212,7 +212,7 @@ const FAQ = [
   { q: 'Which file formats do you support?', a: 'Excel (.xlsx, .xls) for tenders and bills of quantities. PDF, DWG, JPG for construction documentation.' },
   { q: 'How accurate are the classification results?', a: 'Every candidate from Klasifikátor carries a probability. Regex and OTSKP exact-match have confidence 1.0. AI suggestions are typically 60–85% — never 100%. Always to be reviewed by the user. No hidden hallucinations.' },
   { q: 'How accurate is Kalkulátor betonáže?', a: 'Kalkulátor provides an approximate estimate for budget preparation with typical accuracy ±10–15%. The final detailed design, structural calculation and exact component specification are always performed by the formwork supplier (DOKA / PERI / ULMA / others) based on specific project documentation. For the tender phase and preliminary calculation, this accuracy is sufficient.' },
-  { q: 'Does it work for bridges and infrastructure?', a: 'Yes. 22 structural element types (9 bridge + 13 building) including piers, abutments, decks, cornices, foundations and retaining walls. Prestressing, pour stages, MSS (movable scaffolding system) technology. Czech norms ČSN EN, ŘSD specifications, OTSKP classification (17 904 items).' },
+  { q: 'Does it work for bridges and infrastructure?', a: 'Yes. 24 structural element types (13 bridge + 11 building) including piers, abutments, decks, cornices, foundations and retaining walls. Prestressing, pour stages, MSS (movable scaffolding system) technology. Czech norms ČSN EN, ŘSD specifications, OTSKP classification (17 904 items).' },
   { q: 'Does StavAgent work with catalogs?', a: 'Yes — with OTSKP (Otevřený třídník stavebních prací, the open Czech work-item catalog, 17 904 items). For items not in OTSKP, the AI suggests a code with probability. AI suggestions are always for user review — never with 100% certainty.' },
   { q: 'What is TOV?', a: 'Technical-organizational breakdown (technologicko-organizační rozbor) — for each tender item a split into people / machinery / materials with quantities, prices and rates. In Registr you will find built-in calculators for concrete pump (multi-supplier), concrete delivery, and crane.' },
   { q: 'Can I choose the AI model?', a: 'Yes. Klasifikátor offers 19 models (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Extended mode additionally runs a multi-role validation with 6 expert roles.' },
@@ -224,7 +224,7 @@ const FAQ = [
 
 const STATS = [
   { num: '17 904', label: 'OTSKP items' },
-  { num: '22', label: 'element types' },
+  { num: '24', label: 'element types' },
   { num: '25', label: 'formwork systems' },
   { num: '12+', label: 'documentation types' },
 ];
