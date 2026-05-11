@@ -1,0 +1,45 @@
+# Default Resource Ceiling — operne_zdi (Opěrná zeď)
+# Phase 1 Reference A per task §5.6 + audit §6.1 R2.
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.operne_zdi
+#
+# Baseline: VP4 FORESTINA golden test (156.4m × 1.75m × 0.4m, 94.231 m³).
+# Confidence: 0.85 (KB default, user-override has 0.99 precedence).
+
+element_type: operne_zdi
+source: kb_default
+confidence: 0.85
+
+workforce:
+  # Total cap "dolní polovina typického průmyslového rozsahu" per task §5.3.
+  # Per `computePourCrew(94, 1, 'operne_zdi')` Level 3 → ukladani=2 + vibrace=2
+  # + finiseri=1 = 5 lidí pour crew. Plus 4 tesaři + 3 železáři = 12 souběh.
+  num_workers_total: 12
+  num_carpenters: 4         # B4 bedneni.json `standard_s_jeravem` (4 osob + jeřáb)
+  num_rebar_workers: 3      # B4 productivity_rates.json armovani `pruty` (3-4 osob)
+  num_concrete_workers: 3   # 1 pump × 2 ukladani + 1 vibrace + 0 finishers
+  num_vibrators: 2          # pro inverted T průřez
+
+formwork:
+  # Standard SMB setup: 2 soupravy pro 8–12 záběrů obrátkovostí.
+  # VP4 FORESTINA má 10m spáry → ~16 záběrů / 2 soupravy = 8 obrátek.
+  num_formwork_sets: 2
+
+equipment:
+  num_pumps: 1              # 94 m³ vejde se do 1 čerpadla × 8h
+  plant_rate_m3_h: 60       # standard CZ beton plant
+  mixer_delivery_m3_h: 40   # 6 m³ truck × cycle 9 min round-trip
+  num_cranes: 1             # Framax / TRIO panely 250-400 kg vyžadují jeřáb
+  crane_max_load_kg: 4000   # standard tower crane / mobilní
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false  # opěrná zeď není MEGA pour, denní režim
+
+references:
+  - test-data/tz/VP4_FORESTINA_operna_zed_golden_test.md
+  - concrete-agent/.../B4/bedneni.json (brigady.standard_s_jeravem)
+  - concrete-agent/.../B4/productivity_rates.json (beton.bedneni.slozite)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§7 Operná zeď pozemní)
+  - planner-orchestrator.ts:computePourCrew (Level 3 formula)
