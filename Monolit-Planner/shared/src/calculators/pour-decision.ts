@@ -165,6 +165,15 @@ export const ELEMENT_DEFAULTS: Record<StructuralElementType, ElementDefaults> = 
     typical_spara_spacing_m: null,
     description_cs: 'Základy pilířů — každý základ = samostatná zachvatka, bez smejnosti',
   },
+  // Gate 2 technical debt fix: zaklady_oper added as Option α literal parallel
+  // to zaklady_piliru. Foundations under bridge abutments — same horizontal
+  // foundation tech as pier foundations, independent zachvatka per abutment.
+  zaklady_oper: {
+    typical_has_spary: true,
+    typical_sub_mode: 'independent',
+    typical_spara_spacing_m: null,
+    description_cs: 'Základy opěr — každý základ opěry = samostatná zachvatka, bez smejnosti',
+  },
   driky_piliru: {
     typical_has_spary: true,
     typical_sub_mode: 'vertical_layers',
