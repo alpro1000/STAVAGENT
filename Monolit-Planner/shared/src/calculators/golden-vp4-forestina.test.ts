@@ -78,4 +78,81 @@ describe('Golden — VP4 FORESTINA opěrná zeď', () => {
     expect(plan.rebar.mass_kg).toBeGreaterThan(5654 * 0.85);
     expect(plan.rebar.mass_kg).toBeLessThan(5654 * 1.15);
   });
+
+  // ─── Resource Ceiling Phase 1 Foundation D scenarios (task §5.6) ─────────
+  //
+  // Reference A: VP4 FORESTINA operne_zdi for the demo bug
+  // *"u nás je fixně X lidí — jak to spočítáš?"*
+
+  describe('Resource Ceiling — Phase 1 acceptance scenarios', () => {
+    it('Scenario 1: default ceiling (no user input) → feasible, KB defaults applied', () => {
+      // First-time user with no resource_ceiling — engine auto-fills from B4.
+      // VP4 default ceiling (operne_zdi): 12 lidí / 2 souprav / 1 čerpadlo / 1 jeřáb.
+      const plan = planElement(input);
+      expect(plan.resource_ceiling.source).toBe('kb_default');
+      expect(plan.resource_ceiling.workforce?.num_workers_total).toBe(12);
+      expect(plan.resource_ceiling.equipment?.num_pumps).toBe(1);
+      // Foundation C aligned defaults — no violations on default-vs-default.
+      expect(plan.resource_violations).toHaveLength(0);
+    });
+
+    it('Scenario 2: strop 5 lidí + 1 souprava + 1 čerpadlo → INFEASIBLE with critical violations', () => {
+      // Demo bug scenario A — strict SMB strop, engine demand exceeds.
+      const inputLowCeiling: PlannerInput = {
+        ...input,
+        resource_ceiling: {
+          workforce: { num_workers_total: 5 },  // scales default breakdown
+          formwork: { num_formwork_sets: 1 },
+          equipment: { num_pumps: 1 },
+        },
+      };
+      const plan = planElement(inputLowCeiling);
+
+      // User input overrides → source = 'manual', confidence 0.99
+      expect(plan.resource_ceiling.source).toBe('manual');
+      expect(plan.resource_ceiling.workforce?.num_workers_total).toBe(5);
+
+      // Engine demand: 4 tesaři, 4 železáři, ~3 pour crew → exceeds 5-total ceiling.
+      // Per-profession breakdown scales user total 5/12 ≈ 0.417 →
+      //   carpenters = round(4 × 0.417) = 2 (less than engine demand 4)
+      //   rebar_workers = round(4 × 0.417) = 2 (less than engine demand 4)
+      expect(plan.resource_violations.length).toBeGreaterThan(0);
+      const violationFields = plan.resource_violations.map(v => v.field);
+      expect(violationFields).toContain('num_carpenters');
+      expect(violationFields).toContain('num_rebar_workers');
+
+      // All severity should be 'critical' for these
+      const criticalCount = plan.resource_violations.filter(v => v.severity === 'critical').length;
+      expect(criticalCount).toBeGreaterThan(0);
+
+      // ⛔ KRITICKÉ prefix on at least one message
+      const hasCriticalEmoji = plan.warnings.some(w => w.includes('⛔ KRITICKÉ'));
+      expect(hasCriticalEmoji).toBe(true);
+
+      // Recovery hint pushed to warnings
+      const hasRecoveryHint = plan.warnings.some(w => w.includes('ℹ️ Doporučení'));
+      expect(hasRecoveryHint).toBe(true);
+    });
+
+    it('Scenario 3: strop 12 lidí + 2 soupravy + 1 čerpadlo → feasible (default-aligned)', () => {
+      // Demo bug scenario B — moderate SMB strop matching engine demand.
+      const inputMediumCeiling: PlannerInput = {
+        ...input,
+        resource_ceiling: {
+          workforce: { num_workers_total: 12 },
+          formwork: { num_formwork_sets: 2 },
+          equipment: { num_pumps: 1 },
+        },
+      };
+      const plan = planElement(inputMediumCeiling);
+
+      expect(plan.resource_ceiling.source).toBe('manual');
+      expect(plan.resource_ceiling.workforce?.num_workers_total).toBe(12);
+      // KB defaults fill remaining fields (e.g. num_cranes from VP4 defaults)
+      expect(plan.resource_ceiling.equipment?.num_cranes).toBe(1);
+
+      // Engine demand peak ≤ 4 (formwork or rebar phase max), ceiling 12 → no violation
+      expect(plan.resource_violations).toHaveLength(0);
+    });
+  });
 });

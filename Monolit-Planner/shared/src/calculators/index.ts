@@ -15,6 +15,7 @@ export * from './concreting.js';
 export * from './element-scheduler.js';
 export * from './pour-decision.js';
 export * from './pour-task-engine.js';
+export * from './resource-ceiling.js';
 export * from './pert.js';
 export * from './maturity.js';
 export * from './exposure-combination.js';
