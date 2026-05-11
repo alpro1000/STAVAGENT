@@ -1,0 +1,61 @@
+# Default Resource Ceiling — mostovkova_deska (Mostovková deska / nosná konstrukce)
+# Phase 1 Reference B per task §5.6 + audit §6.1 R2.
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.mostovkova_deska
+#
+# Baseline: SO-203 golden test (~664 m³ MEGA pour, dvoutrámový předpjatý).
+# Reference SO-202 (dvoutrámový pevná skruž), SO-207 (MSS).
+# Confidence: 0.85 (KB default, user-override has 0.99 precedence).
+
+element_type: mostovkova_deska
+source: kb_default
+confidence: 0.85
+
+workforce:
+  # MEGA pour špička: pour crew + tesaři skruž + železáři + dozor souběh.
+  # Per `computePourCrew(664, 2, 'mostovkova_deska')` Level 3 →
+  # ukladani=4 + vibrace=3 + finiseri=2 = 9 pour crew.
+  # Plus 4 tesaři + 4 železáři + 2 dozor = 19 lidí špička.
+  # Strop 21 = mírný buffer.
+  num_workers_total: 21
+  num_carpenters: 4         # B4 bedneni.json `velka_s_jeravem` (6 osob velký mostní)
+  num_rebar_workers: 4      # husté armovanie, husté pruty + hooks
+  num_concrete_workers: 6   # 2 pumps × 2 + reserve = 6 (Level 3 pump-based)
+  num_vibrators: 3          # 1.5 × num_pumps = 3
+  num_finishers: 2          # krycí vrstva, rotační hladička
+  num_supervisors: 2        # stavbyvedoucí + geodet (kotvy ±2mm)
+
+formwork:
+  # Pevná skruž = 1 sada pro celé pole (per `SKRUZ_TERMINOLOGIE_KANONICKA.md`).
+  # Top 50 (Vrstva 1 kontaktní povrch) + VARIOKIT HD 200 (Vrstva 2 nosníky)
+  # + Staxo 100 (Vrstva 3 stojky) — všechny 1 sada na celé pole.
+  num_formwork_sets: 1
+  num_falsework_sets: 1     # Top 50 / VARIOKIT (těžká skruž)
+  num_props_sets: 1         # Staxo 100 (lehké stojky doprovázející skruž)
+  mss_set_available: false  # default false — pokud construction_technology=mss
+                            # user musí explicitně přepnout na true
+  props_max_height_m: 12.0  # Staxo 100 max výška sady
+
+equipment:
+  num_pumps: 2              # MEGA pour 664 m³ ÷ (40 m³/h × 8h) = 2.1 → 2 pumps
+  num_backup_pumps: 1       # ≥500 m³ povinný backup per TASK_MegaPour_CrewLogic_Warnings.md
+  plant_rate_m3_h: 80       # větší plant kapacita pro paralelní 2 pumps
+  mixer_delivery_m3_h: 60   # 2× cyklus parallel
+  num_cranes: 1             # mostovková práce + panel transport
+  crane_max_load_kg: 6000   # Staxo věže těžší než stěnové panely
+
+time:
+  shifts_per_day: 2         # MEGA pour přes 12+ h, povolen multi-shift
+  shift_h: 10
+  allow_night_shift: true   # kontinuální pour nesmí přerušit, §116 ZP +10 %
+
+references:
+  - test-data/tz/SO-202_D6_most_golden_test.md
+  - test-data/tz/SO-203_D6_most_golden_test_v2.md
+  - test-data/tz/SO-207_D6_estakada_golden_test_v2.md
+  - docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA.md
+  - docs/normy/navody/SKRUZ_TERMINOLOGIE_KANONICKA_Section9.md
+  - Monolit-Planner/docs/AUDIT_Podpera_Terminologie.md (Gate 1 + Gate 2)
+  - TASK_MegaPour_CrewLogic_Warnings.md (crew formula, backup pump rule)
+  - planner-orchestrator.ts:computePourCrew (Level 3 pump-based formula)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§24 Mostovková deska)

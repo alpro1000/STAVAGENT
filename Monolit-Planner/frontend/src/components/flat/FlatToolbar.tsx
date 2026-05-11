@@ -45,8 +45,11 @@ export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosi
   const handleExport = async () => {
     if (!selectedProjectId) return;
     try {
-      const blob = await exportAPI.exportXLSX(selectedProjectId);
-      saveAs(blob, `monolit-export-${selectedProjectId}.xlsx`);
+      const blob = await exportAPI.exportXLSX(selectedProjectId, {
+        onlyMonoliths: showOnlyMonolity,
+      });
+      const suffix = showOnlyMonolity ? '-monolity' : '';
+      saveAs(blob, `monolit-export-${selectedProjectId}${suffix}.xlsx`);
     } catch (err) {
       console.error('Export failed:', err);
       alert('Export selhal.');
@@ -113,8 +116,11 @@ export default function FlatToolbar({ positionCount, onImportRegistry, onAddPosi
 
       <button className="flat-btn flat-btn--sm"
         onClick={handleExport}
-        disabled={!selectedProjectId || positionCount === 0}>
-        <FileSpreadsheet size={14} /> Export XLSX
+        disabled={!selectedProjectId || positionCount === 0}
+        title={showOnlyMonolity
+          ? 'Export pouze monolitických prací (filtr "Jen monolity" je aktivní)'
+          : 'Export všech pozic do XLSX'}>
+        <FileSpreadsheet size={14} /> Export XLSX{showOnlyMonolity ? ' (jen monolity)' : ''}
       </button>
 
       <button className="flat-btn flat-btn--sm"
