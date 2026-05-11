@@ -1,0 +1,48 @@
+# Default Resource Ceiling — podkladni_beton (Podkladní beton)
+# Phase 2 Group A pozemní vodorovné (per task §6 + audit §6.1 R2).
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.podkladni_beton
+#
+# Baseline: prostý beton C12/15 X0, ~10-50 m³ pod ZD, žádná výztuž,
+# žádné systémové bednění (přímo do výkopu), bez vibrátorů (kompaktace
+# vibrační lištou je součást ukládání), bez finišérů.
+# Per relevance:
+#   - num_rebar_workers=false (prostý beton)
+#   - num_vibrators=false
+#   - num_finishers=false
+#   - num_formwork_sets=false
+#   - num_cranes=false
+# Per `computePourCrew(30, 1, 'podkladni_beton')` Level 0 →
+#   ukladani=3, vibrace=0, finiseri=0, rizeni=0 = 3 total.
+# Confidence: 0.85 (KB default, user-override má 0.99 precedenci).
+
+element_type: podkladni_beton
+source: kb_default
+confidence: 0.85
+
+workforce:
+  num_workers_total: 4       # úzká osádka (rozhrnout + zarovnat)
+  # num_carpenters vynecháno (přestože relevance=true z DEFAULT_RELEVANCE,
+  # ElementProfile.needs_formwork=false → engine demand 0, no false-positive)
+  # num_rebar_workers vynecháno — relevance.num_rebar_workers=false
+  num_concrete_workers: 3    # Level 0 — větší volume bucket
+  # num_vibrators vynecháno — relevance.num_vibrators=false
+  # num_finishers vynecháno — relevance.num_finishers=false
+
+# formwork: vynecháno celkově — relevance.num_formwork_sets=false
+
+equipment:
+  num_pumps: 1               # ElementProfile.pump_typical=true
+  plant_rate_m3_h: 60
+  mixer_delivery_m3_h: 40
+  # num_cranes vynecháno — relevance.num_cranes=false
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false
+
+references:
+  - Monolit-Planner/shared/src/classifiers/element-classifier.ts (ELEMENT_CATALOG.podkladni_beton:509)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§ podkladní beton)
+  - planner-orchestrator.ts:computePourCrew (Level 0 formula — isPodkladni branch)

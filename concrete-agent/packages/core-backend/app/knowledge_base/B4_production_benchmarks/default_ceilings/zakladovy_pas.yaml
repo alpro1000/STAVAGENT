@@ -1,0 +1,43 @@
+# Default Resource Ceiling — zakladovy_pas (Základový pás)
+# Phase 2 Group A pozemní vodorovné (per task §6 + audit §6.1 R2).
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.zakladovy_pas
+#
+# Baseline: typický bytový dům / rodinný objekt 20-100 m³ pásů, do výkopu,
+# Frami Xlife / DOMINO obvodové. ElementProfile.needs_finishers=false,
+# needs_pumps=false (relevance — výsyp / žlab obvyklý), needs_crane=false.
+# Per `computePourCrew(30, 1, 'zakladovy_pas')` Level 2 →
+#   ukladani=2 + vibrace=1 + finiseri=1 = 4 pour crew (finiseri ignored
+#   per relevance.num_finishers=false).
+# Confidence: 0.85 (KB default, user-override má 0.99 precedenci).
+
+element_type: zakladovy_pas
+source: kb_default
+confidence: 0.85
+
+workforce:
+  num_workers_total: 8       # menší souběh — pásy se betonuje obvykle po sekcích
+  num_carpenters: 4          # Foundation C alignment (orchestrator DEFAULTS.crew_size)
+  num_rebar_workers: 4       # Foundation C alignment (orchestrator DEFAULTS.crew_size_rebar)
+  num_concrete_workers: 3    # Level 2 (medium volume) — ukladani + reserve
+  num_vibrators: 1           # ponorný vibrátor
+
+formwork:
+  num_formwork_sets: 2       # Frami Xlife / DOMINO obvodový — 2 sady obrátkovostí
+                             # matches orchestrator DEFAULTS.num_sets=2
+
+equipment:
+  # num_pumps vynecháno — relevance.num_pumps=false (výsyp z autodomíchávače)
+  plant_rate_m3_h: 50
+  mixer_delivery_m3_h: 35
+  # num_cranes vynecháno — relevance.num_cranes=false
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false
+
+references:
+  - Monolit-Planner/shared/src/classifiers/element-classifier.ts (ELEMENT_CATALOG.zakladovy_pas:338)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§ základový pás)
+  - planner-orchestrator.ts:computePourCrew (Level 2 formula)

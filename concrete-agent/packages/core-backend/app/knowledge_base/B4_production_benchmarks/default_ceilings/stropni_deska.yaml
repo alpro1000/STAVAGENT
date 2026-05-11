@@ -1,0 +1,50 @@
+# Default Resource Ceiling — stropni_deska (Stropní deska / podlahová deska)
+# Phase 2 Group A pozemní vodorovné (per task §6 + audit §6.1 R2).
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.stropni_deska
+#
+# Baseline: typický SMB CZ pozemní strop ~100 m³ pour, Dokaflex / SKYDECK.
+# Per `computePourCrew(100, 1, 'stropni_deska')` Level 3 →
+#   ukladani=2 + vibrace=2 + finiseri=1 = 5 pour crew.
+# Špička souběh fázi: max(4 tesaři, 4 železáři, 5 pour) = 5.
+# Strop 12 = "dolní polovina typického průmyslového rozsahu" (task §5.3),
+# obsahuje buffer pro plánované tolerování.
+# Confidence: 0.85 (KB default, user-override má 0.99 precedenci).
+
+element_type: stropni_deska
+source: kb_default
+confidence: 0.85
+
+workforce:
+  num_workers_total: 12
+  num_carpenters: 4          # B4 bedneni.json `standard_s_jeravem` (4 osob + jeřáb)
+                             # matches orchestrator DEFAULTS.crew_size — Foundation C alignment
+  num_rebar_workers: 4       # B4 productivity_rates.json armovani (4 osob)
+                             # matches orchestrator DEFAULTS.crew_size_rebar
+  num_concrete_workers: 4    # 1 pump × 2 ukladani + 2 reserve = 4 (Level 3 pump-based)
+  num_vibrators: 2           # tenká deska + krycí vrstva → 2 ponorné vibrátory
+  num_finishers: 1           # rotační hladička pro krycí vrstvu (relevance true)
+
+formwork:
+  num_formwork_sets: 2       # Dokaflex / SKYDECK / Top 50 — 2 sady obrátkovostí
+                             # matches orchestrator DEFAULTS.num_sets=2
+  num_props_sets: 1          # stojky doprovázejí formwork — needs_supports=true v ElementProfile
+
+equipment:
+  num_pumps: 1               # ~100 m³ vejde se do 1 čerpadla × 6h
+  plant_rate_m3_h: 60
+  mixer_delivery_m3_h: 40
+  num_cranes: 1              # needs_crane=true v ElementProfile (panel + stojky transport)
+  crane_max_load_kg: 4000
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false   # standardní pozemní strop = denní režim
+
+references:
+  - Monolit-Planner/shared/src/classifiers/element-classifier.ts (ELEMENT_CATALOG.stropni_deska:372)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§ stropní deska)
+  - concrete-agent/.../B4/bedneni.json (brigady.standard_s_jeravem)
+  - concrete-agent/.../B4/productivity_rates.json (beton.bedneni)
+  - planner-orchestrator.ts:computePourCrew (Level 3 formula)

@@ -1,0 +1,42 @@
+# Default Resource Ceiling — zakladova_patka (Základová patka)
+# Phase 2 Group A pozemní vodorovné (per task §6 + audit §6.1 R2).
+# Mirror: Monolit-Planner/shared/src/calculators/resource-ceiling.ts
+#         RESOURCE_CEILING_DEFAULTS.zakladova_patka
+#
+# Baseline: typická izolovaná patka pod sloup 5-15 m³, Frami Xlife.
+# ElementProfile.needs_finishers=false, needs_pumps=false (výsyp z domíchávače
+# obvykle stačí), needs_crane=false.
+# Per `computePourCrew(10, 1, 'zakladova_patka')` Level 1 (<20 m³) →
+#   ukladani=2 + vibrace=1 + finiseri=0 = 3 pour crew.
+# Confidence: 0.85 (KB default, user-override má 0.99 precedenci).
+
+element_type: zakladova_patka
+source: kb_default
+confidence: 0.85
+
+workforce:
+  num_workers_total: 8       # malé objemy, ale Foundation C alignment vyžaduje 4+4 phases
+  num_carpenters: 4          # Foundation C alignment (orchestrator DEFAULTS.crew_size)
+  num_rebar_workers: 4       # Foundation C alignment (orchestrator DEFAULTS.crew_size_rebar)
+  num_concrete_workers: 3    # Level 1 — malý objem, minimální osádka
+  num_vibrators: 1           # ponorný vibrátor
+
+formwork:
+  num_formwork_sets: 2       # Frami Xlife / DOMINO — 2 sady obrátkovostí
+                             # matches orchestrator DEFAULTS.num_sets=2
+
+equipment:
+  # num_pumps vynecháno — relevance.num_pumps=false (výsyp z autodomíchávače)
+  plant_rate_m3_h: 40
+  mixer_delivery_m3_h: 30
+  # num_cranes vynecháno — relevance.num_cranes=false (malé panely bez jeřábu)
+
+time:
+  shifts_per_day: 1
+  shift_h: 10
+  allow_night_shift: false
+
+references:
+  - Monolit-Planner/shared/src/classifiers/element-classifier.ts (ELEMENT_CATALOG.zakladova_patka:355)
+  - Monolit-Planner/docs/ELEMENT_CATALOG_REFERENCE.md (§ základová patka)
+  - planner-orchestrator.ts:computePourCrew (Level 1 formula)
