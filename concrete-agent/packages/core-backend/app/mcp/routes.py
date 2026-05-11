@@ -14,6 +14,7 @@ import hashlib
 import hmac
 import json
 import logging
+import os
 from typing import Optional
 
 from fastapi import APIRouter, Form, Header, HTTPException, Request
@@ -24,6 +25,68 @@ from app.mcp import auth as mcp_auth
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/mcp", tags=["MCP"])
+
+
+# ── Pricing source of truth ─────────────────────────────────────────────────
+# Prices must match Lemon Squeezy dashboard exactly.
+# Update both places in the same change — no other file in the repo holds
+# credit prices.
+#
+# Set Lemon Squeezy variant IDs via env to enable strict variant_id matching
+# in the webhook (LEMONSQUEEZY_VARIANT_100/500/2000). When unset, the webhook
+# falls back to variant_name substring match (e.g. "100 kreditů" → 100).
+
+PRICING_TIERS = [
+    {
+        "credits": 100,
+        "price_czk": 11,
+        "price_per_credit": 0.110,
+        "lemon_squeezy_variant_id": os.getenv("LEMONSQUEEZY_VARIANT_100", ""),
+    },
+    {
+        "credits": 500,
+        "price_czk": 55,
+        "price_per_credit": 0.110,
+        "lemon_squeezy_variant_id": os.getenv("LEMONSQUEEZY_VARIANT_500", ""),
+    },
+    {
+        "credits": 2000,
+        "price_czk": 220,
+        "price_per_credit": 0.110,
+        "lemon_squeezy_variant_id": os.getenv("LEMONSQUEEZY_VARIANT_2000", ""),
+    },
+]
+
+
+def _credits_for_lemon_squeezy_order(
+    variant_id: str, product_id: str, variant_name: str
+) -> int:
+    """Map a Lemon Squeezy order_created event to the credits to grant.
+
+    Resolution order:
+      1. Exact variant_id match (when LEMONSQUEEZY_VARIANT_* env is set).
+      2. variant_name substring (e.g. variant labelled "100 kreditů — 11 Kč").
+      3. product_id substring (legacy fallback for the original 3 SKUs).
+    Returns 0 if no tier matches.
+    """
+    if variant_id:
+        for tier in PRICING_TIERS:
+            if tier["lemon_squeezy_variant_id"] and str(variant_id) == str(
+                tier["lemon_squeezy_variant_id"]
+            ):
+                return tier["credits"]
+
+    if variant_name:
+        for tier in PRICING_TIERS:
+            if str(tier["credits"]) in variant_name:
+                return tier["credits"]
+
+    if product_id:
+        for tier in PRICING_TIERS:
+            if str(tier["credits"]) in str(product_id):
+                return tier["credits"]
+
+    return 0
 
 
 # ── Pydantic models ─────────────────────────────────────────────────────────
@@ -108,22 +171,9 @@ async def oauth_token(
 
 # ── Billing webhook (Lemon Squeezy) ─────────────────────────────────────────
 
-LEMON_SQUEEZY_WEBHOOK_SECRET = None  # Set via env in production
-
-# Product ID → credits mapping (set actual IDs after creating products)
-PRODUCT_CREDITS = {
-    # "product_id": credits_amount
-    "100": 100,
-    "500": 500,
-    "2000": 2000,
-}
-
-
 @router.post("/billing/webhook")
 async def billing_webhook(request: Request):
     """Lemon Squeezy webhook: order_created → add credits."""
-    import os
-
     body = await request.body()
     signature = request.headers.get("X-Signature", "")
 
@@ -145,25 +195,21 @@ async def billing_webhook(request: Request):
         return {"status": "ignored", "event": event}
 
     attrs = data.get("data", {}).get("attributes", {})
-    email = attrs.get("user_email", "")
-    product_id = str(attrs.get("first_order_item", {}).get("product_id", ""))
+    first_item = attrs.get("first_order_item", {})
 
-    if not email:
-        # Try custom data
-        custom = attrs.get("custom_data", {})
-        email = custom.get("email", "")
+    email = attrs.get("user_email", "") or attrs.get("custom_data", {}).get("email", "")
+    variant_id = str(first_item.get("variant_id", ""))
+    product_id = str(first_item.get("product_id", ""))
+    variant_name = first_item.get("variant_name", "")
 
-    credits_to_add = PRODUCT_CREDITS.get(product_id, 0)
-    if credits_to_add == 0:
-        # Try to infer from variant name
-        variant_name = attrs.get("first_order_item", {}).get("variant_name", "")
-        for key, val in PRODUCT_CREDITS.items():
-            if key in variant_name:
-                credits_to_add = val
-                break
+    credits_to_add = _credits_for_lemon_squeezy_order(variant_id, product_id, variant_name)
 
     if not email or credits_to_add == 0:
-        logger.warning(f"[MCP/Billing] Cannot process: email={email}, product={product_id}")
+        logger.warning(
+            f"[MCP/Billing] Cannot process: email={email!r}, "
+            f"variant_id={variant_id!r}, product_id={product_id!r}, "
+            f"variant_name={variant_name!r}"
+        )
         return {"status": "warning", "message": "Could not determine email or credits"}
 
     result = mcp_auth.add_credits(email, credits_to_add)
@@ -175,14 +221,22 @@ async def billing_webhook(request: Request):
 
 @router.get("/pricing")
 async def get_pricing():
-    """Tool credit costs and pricing tiers."""
+    """Tool credit costs and pricing tiers.
+
+    Pricing tiers come from PRICING_TIERS, which is the single source of truth
+    shared with the Lemon Squeezy webhook. Internal Lemon Squeezy variant IDs
+    are not exposed in the response.
+    """
     return {
         "tool_costs": mcp_auth.TOOL_COSTS,
         "free_credits_on_registration": mcp_auth.FREE_CREDITS,
         "pricing_tiers": [
-            {"credits": 100, "price_czk": 100, "price_per_credit": 1.0},
-            {"credits": 500, "price_czk": 450, "price_per_credit": 0.9},
-            {"credits": 2000, "price_czk": 1600, "price_per_credit": 0.8},
+            {
+                "credits": tier["credits"],
+                "price_czk": tier["price_czk"],
+                "price_per_credit": tier["price_per_credit"],
+            }
+            for tier in PRICING_TIERS
         ],
     }
 

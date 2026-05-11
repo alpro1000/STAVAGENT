@@ -111,6 +111,38 @@ Stavba je nahrazením stávajícího mostu na stávajícím úseku silnice III. 
 - Hydrologická data Mladotického potoka — Q-1, Q-5, Q-20, Q-50, Q-100 (zhotovitel u správce toku — pravděpodobně Povodí Vltavy s.p.; per ZD §4.4.b/d)
 - Geodetické zaměření terénu + koryta + mostu v souřadném systému S-JTSK + Bpv, 3. třída přesnosti (ZD §4.3.i, formát DGN+JVF dle vyhlášky č. 393/2020 Sb.)
 
+#### B.1.3 Pozemky dotčené stavbou — kadastr + souhlasy (UPDATED Phase D+E)
+
+**Zdroj:** `04_documentation/kadastr_audit/parcels_and_consents.yaml` (24 dotčených parcel × 7 vlastnických kategorií) + DXF `inputs/photos/PROJEKT_MOST_HLAVNI.dxf` (1986 parcel candidates, 16 z nich match consent list).
+
+**Vlastnické kategorie dotčených parcel:**
+
+| Kategorie | Vlastník | Počet parcel | Souhlas |
+|---|---|---:|---|
+| FO (fyzické osoby) | 4 soukromí vlastníci | 6 (392, 1723, 1714, 391/2, 385/3, 385/1) | ✅ 4 souhlasy získané (12.10–18.12.2025) |
+| Investor | SÚSPK Plzeňský kraj | 4 (1755, 1842, 1832, 1714) | ✅ N/A (investor sám) |
+| Obec | Obec Žihle | 5 (1770, 1845, 1831, 1710, 618/1) | ✅ souhlas obce (datum doplnit) |
+| Stát SPÚ | ČR — Státní pozemkový úřad | 1 (385/11) | ⏳ vyjádří se až ke konkrétnímu návrhu PD |
+| Stát Povodí | ČR — Povodí Vltavy s.p. | 2 (1836, 385/13) | ❌ **MISSING — P0 BLOCKER** |
+| Stát Lesy | ČR — Lesy ČR, LS Žatec | 6 (385/12, 613/3, 397, 614, 1769, 1843) | ✅ souhlas s podmínkami (25.11.2025) |
+| Církev | Římskokatolická farnost Kralovice | 1 (1785) | ✅ souhlas D&B (27.10.2025) |
+
+**KRITICKÉ FLAGS:**
+
+1. ⛔ **Povodí Vltavy souhlas MISSING** (parcely 1836 + 385/13 — Mladotický potok). Zásah do koryta a ochranného pásma vodního toku vyžaduje vodoprávní souhlas. **AKCE: D&B zhotovitel získá souhlas Povodí Vltavy před DUR řízením.** Bez tohoto souhlasu nelze dokončit master soupis položku SO 201 T4-08 (dlažba koryta 16.1 m³) ani SO 201 T9-18 (zaústění skluzů 4 ks).
+
+2. ⚠️ **LČR souhlas s podmínkami** (parcely 385/12, 613/3, 397, 614, 1769, 1843):
+   - **NEKÁCET** dřeviny v rámci zajištění PD na lesních parcelách
+   - **NESKLÁDAT MATERIÁL** na pozemcích PUPFL
+   - Minimalizace záboru pozemků k plnění funkce lesa
+   - Zpracovat vyhodnocení dopadů + plán rekultivace v PD (`04_documentation/master_soupis/master_soupis_SO_001.yaml T9-15+T9-16` rekultivace pokrývá tuto podmínku)
+
+3. ℹ️ **SPÚ vyjádření** — Státní pozemkový úřad standardně nevydává předběžný souhlas; vyjádří se až ke konkrétnímu návrhu PD. Není blocker pro DUR fázi.
+
+**Situace M 1:500 — viz `04_documentation/výkresy/C.2.1_situace_M1_500.svg`** (Phase E retrofit). DXF kadastr + bridge polygon + GPX provizorium + zábor staveniště ~1000 m².
+
+**Cross-validation:** vendor situace.pdf je pouze Mapy.com overview (~30 km × 25 km schematic), NE engineering M 1:500. Phase E SVG je první professional engineering výkres pro DUR submission. Detail v `04_documentation/výkresy/cross_validation_notes.md`.
+
 ### B.2 Celkový popis stavby
 
 #### B.2.1 Účel, funkce, kapacita
@@ -263,25 +295,43 @@ Architektonické řešení kompenzuje zákaz dilatačních závěrů + ložisek 
 
 ### B.8 Zásady organizace výstavby (ZOV) — KLÍČOVÁ KAPITOLA
 
-#### B.8.1 Provizorium SO 180 — POVINNÉ
+#### B.8.1 Provizorium SO 180 — POVINNÉ (UPDATED Phase D+E s vendor pricing)
 
 **Per Vysvětlení ZD č. 1 (č.j. 10186/26/SÚSPK-P, 2026-04-24):**
 
 > *„Zadavatel v rámci této veřejné zakázky alternativu úplné uzavírky komunikace v místě stavby mostu s vedením objízdné trasy po stávajících komunikacích a bez požadovaného mostního provizoria dle požadavku uvedeného v Zadávací dokumentaci (čl. 4.4. písm. o.), nepřipouští. Vzhledem k zajištění dopravní obslužnosti obce Žihle je průjezdnost po komunikaci III/206 2 Kralovice – Žihle stěžejní."*
 
-**Spec provizoria:**
-- Typ: Mabey Compact 200 / Bailey panel / Acrow 700 series (vendor RFQ vyžadováno před nabídkou)
-- Délka: ~12 m, šířka 4.20 m (single lane)
-- Únosnost: do 3.5 t + linková veřejná doprava (LM1 default Mabey overkill, splňuje)
-- Provoz: jednosměrný se světelnou signalizací
-- Doba: ~6 měsíců (montáž 1 týden + provoz 4–5 měsíců + demontáž 1 týden)
+**Spec provizoria (per Phase D master soupis SO 180):**
+- Typ: ocelové mostní provizorium 12 × 5 m (TMS / PONVIA MS / Mosty Záboří) — vendor RFQ vyžadováno před nabídkou
+- Únosnost (per ZD): vozidla do 3.5 t + linková veřejná doprava (LM1)
+- Provoz: jednosměrný se světelnou signalizací (per ZD §4.4.o)
+- Doba: 6 měsíců (1.5 měs demolice + 4.5 měs výstavba NK)
 - Umístění: vpravo od stávajícího mostu (volný prostor — viz foto `inputs/photos/20260421_132429.jpg`)
-- Souhlas vlastníka pozemku vpravo (mimo silniční pozemek dle § 11 z. 13/1997 Sb.) — ⚠️ MISSING; získat před DUR řízením
 
-**OTSKP coding gap** (per `04_documentation/otskp_mapping.yaml > SO_180`):
-> OTSKP catalog 2025/II nemá direct kód pro mostní provizorium steel system (Mabey/Bailey/Acrow). Per user decision (2026-05-05): Option A — anchor 027111 (PROVIZORNÍ OBJÍŽĎKY - ZŘÍZENÍ) + 027113 (ZRUŠENÍ) + custom non-OTSKP kódy 91091001–91091007 pro montáž / pronájem / demontáž / dopravu / signalizaci / DIO / konzultace s linkovou dopravou. Confidence všech custom položek = 0.0 (vendor RFQ pricing required).
+**Vendor pricing range (4 vendoři, per `04_documentation/vendor_pricing/vendor_quotes.yaml`):**
 
-Detailní spec: `02_design/provizorium_specs.md`.
+| Vendor | Cenový model | Total 6 měsíců (Kč bez DPH) |
+|---|---|---:|
+| TMS (Petra Vaňková) | Lehčí konstrukce (~30 t) — line-item | 405 000 |
+| PONVIA Construct s.r.o. (MS soustava) | Vn=11 t / Vr=40 t — line-item | 637 070 |
+| Mosty Záboří (varianta č. 2 — vozovka 3,5 m) | Bundled package | 654 387 |
+| Mosty Záboří (varianta č. 1 — vozovka 4,0 m) | Bundled package | 750 328 |
+| **Median per-line decomposition** | TMS+PONVIA+MZ4m+MZ3.5m | **~696 000** |
+
+**Master soupis SO 180** (`04_documentation/master_soupis/master_soupis_SO_180.yaml`) přiřazuje
+medián 4 vendorů na položky 027411 (montáž 175 590 Kč), 027412 (nájem 6 měs 206 300 Kč),
+027414 (prohlídky 76 582 Kč) — total vendor share **458 472 Kč** (22 % SO 180).
+
+**Demontáž provizoria** (027413) je accounted v SO 001 T9-11 (185 160 Kč) jako součást
+end-of-construction demolice scope (no-work-duplication: anchor 0 Kč v SO 180 T0-06).
+
+**Souhlas vlastníka pozemku vpravo** (mimo silniční pozemek dle § 11 z. 13/1997 Sb.) —
+částečně řešen via souhlasy obce Žihle + LČR (`parcels_and_consents.yaml`). **Povodí Vltavy
+ochranné pásmo** (parcely 1836, 385/13) — ⛔ MISSING souhlas, P0 blocker pre DUR.
+
+**SO 180 total per master soupis:** 2 047 138 Kč bez DPH (2 477 037 Kč s DPH 21 %).
+
+Detailní spec: `02_design/provizorium_specs.md` + `04_documentation/master_soupis/master_soupis_SO_180.yaml`.
 
 #### B.8.2 Etapy výstavby
 
@@ -307,11 +357,71 @@ Per `02_design/varianta_01_integralni_ram.md § 6 (sequence)`:
 
 **Total schedule:** ~319 dní = **~10.6 měsíců** (per Phase C `03_calculation/cost_summary.xlsx > Sheet 4 + gantt_chart.svg`). Daleko pod limitem 30 měsíců (per ZD §5.3 + §29.2 = 900 dní).
 
-#### B.8.3 Zařízení staveniště
+**Master soupis SO sequence** (per `04_documentation/master_soupis/master_soupis.yaml`):
 
-- Plocha staveniště **vpravo** od silnice (foto `20260421_132429.jpg`) — orná půda + polní cesta jako přístup
-- **MISSING:** souhlas vlastníka pozemku (mimo silniční pozemek)
-- Náklady ZS = 4 % z hlavních prací per ČSN 73 0212 (~270 000 Kč)
+| SO | Název | Položek | Kč bez DPH | Etapa |
+|---|---|---:|---:|---|
+| SO 001 | Demolice + odvozy | 30 | 1 057 831 | Měs. 1-2 (45 dní) |
+| SO 180 | Mostní provizorium | 26 | 2 047 138 | Měs. 1 setup, 6 měs provoz |
+| SO 201 | Hlavní most | 72 | 4 435 958 | Měs. 3-6 výstavba NK (135 dní) |
+| SO 290 | Silnice III/206 2 | 12 | 1 952 470 | Měs. 7 (25 dní) |
+| SO 801 | Zařízení staveniště | 9 | 780 500 | 11 měs paralelně |
+| VRN | Vedlejší rozpočtové náklady | 5 | 311 839 | 11 měs paralelně |
+| **TOTAL** | | **154** | **10 585 736** | **~11 měsíců** |
+
+#### B.8.3 Zařízení staveniště + demolice scope (UPDATED Phase D+E)
+
+**SO 801 ZS detailní** (per `master_soupis_SO_801.yaml` — replaces dříve uvažovaný 4 % paušál
+270k):
+
+- Plocha staveniště ~50 × 50 m = **2 500 m²** (foot print most + provizorium + skladovací plocha)
+- Obvod oplocení: 200 m × 350 Kč/m mobilní oplocení 2.0 m
+- Doba aktivního staveniště: **11 měsíců** (Phase C 319 dní + buffer)
+- Přístup: orná půda + polní cesta vpravo od silnice (foto `20260421_132429.jpg`)
+- 9 detailních položek SO 801: hygienická + sociální zařízení (kontejnery WC + šatna + jídelna)
+  264k, energie + voda 132k, telefon/internet 16.5k, oplocení 70k, osvětlení 60k, dočasná
+  komunikace IZD panely 80k, čistění vozidel (POVINNÉ ČSN 73 0212) 88k, tabule 10 ks 45k,
+  vytýčení obvodu + ochranná pásma sítí 25k = **780 500 Kč**
+
+**SO 001 Demolice — full scope** (per `master_soupis_SO_001.yaml` — 30 položek 1 057 831 Kč):
+
+| Sekce | Scope | Kč bez DPH |
+|---|---|---:|
+| Třída 0 | Poplatky skládka, zemník, zkoušení, dozor, info tabule | 284 560 |
+| Třída 1 | Čerpání 200 hod, ornice 30 m³, jáma 255 m³, sypanina 285 m³ | 143 305 |
+| Třída 9 D1 | Demolice ŽB (16 trámů + deska) 19 m³ + kamenné opěry/křídla 39 m³ | 224 178 |
+| Třída 9 D2 | Svršek (odvodňovače, izolace, asf frézování, svodidla, DZ) | 25 537 |
+| Třída 9 D2-koryto | Dlažba koryta + opevnění břehů (vyžaduje Povodí Vltavy) | 28 600 |
+| Třída 9 D3-D5 | Provizorium demontáž 60 m² + podložky + panely | 226 036 |
+| Třída 9 D6 | Rekultivace záboru (LČR podmínka) — ornice 30 m³ + hydroosev 1000 m² + DZ demontáž | 44 326 |
+| Odvozy | RS Žatec ŽB+kamen+asfalt, DECO TRADE Nesuchyně zemina | 81 698 |
+
+**Vendor recyklace** (per `vendor_quotes.yaml`):
+- RS Žatec (Ekostavby Louny IČO 10442481): beton armovaný 400 Kč/t, beton ≤50 cm 60 Kč/t,
+  asfalt 220–300 Kč/t
+- DECO TRADE Nesuchyně (IČO 09560530): zemina 120 Kč/t, platnost do 2026-12-31
+
+**VRN Vedlejší rozpočtové náklady** (per `master_soupis_VRN.yaml` — 5 položek 311 839 Kč =
+**3.04 %** hlavních prací, v dolním pásmu ČSN 73 0212):
+- Mimostaveniční doprava 1 % = 102 739 Kč
+- Pojištění CAR + odpovědnost 0.4 % = 41 100 Kč
+- Koordinační dokumentace + vyjádření DOSS = 30 000 Kč
+- Správní poplatky (stavební povolení, kolaudace) + AI v procesu = 50 000 Kč
+- ★ Koordinátor BOZP 11 měs × 8k = 88 000 Kč (POVINNÝ per zákon 309/2006 Sb. § 14)
+
+#### B.8.4 Celková cena (UPDATED Phase D+E)
+
+| Položka | Kč bez DPH | Kč s DPH 21 % |
+|---|---:|---:|
+| Hlavní práce (SO 001+180+201+290+801) | 10 273 897 | 12 431 415 |
+| VRN | 311 839 | 377 325 |
+| **CELKEM master soupis** | **10 585 736** | **12 808 741** |
+| ZD limit | 30 000 000 | — |
+| **Tendrová cena vs limit** | **35.3 %** | **42.7 %** |
+| **Margin** | **19 414 264** | **17 191 259** |
+
+Margin 17 M Kč pre overhead + zhotovitelská marže + cost overrun reserve. Master soupis
+**ready pre tendrový proces** per `04_documentation/master_soupis/validation_report.md` § 10.
 
 ---
 

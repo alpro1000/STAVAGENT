@@ -1,0 +1,2873 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unixml format="unixml_cz" verze="1.2">
+  <typ_souboru>SOUPIS_PRACI</typ_souboru>
+  <rozsah_exportu>CELA_STAVBA</rozsah_exportu>
+  <zdroj>STAVAGENT_MASTER_SOUPIS_FINAL</zdroj>
+  <stavba>
+    <kod_stavby>2062-1/26-DZMS</kod_stavby>
+    <nazev_stavby>Most ev.č. 2062-1 u obce Žihle, přestavba</nazev_stavby>
+    <verejna_zakazka>ANO</verejna_zakazka>
+    <datum>07.05.2026</datum>
+    <misto>Žihle, Plzeň-sever</misto>
+    <oblast>Plzeňský kraj</oblast>
+    <zpracoval>STAVAGENT Master Soupis Phase D Session 2</zpracoval>
+    <objednatel>Správa a údržba silnic Plzeňského kraje, p.o. (IČO 72053119)</objednatel>
+    <projektant>TBD — zhotovitel D&amp;B</projektant>
+    <zhotovitel>TBD</zhotovitel>
+    <investor>Plzeňský kraj</investor>
+    <kso>823 26</kso>
+    <cpv>45221111-3 Výstavba silničních mostů</cpv>
+    <poznamka>Master soupis FINAL — 181 položek, 12,201,523 Kč bez DPH. Sandbox výstup.</poznamka>
+    <objekty>
+      <objekt>
+        <kod_objektu>SO 001</kod_objektu>
+        <nazev_objektu>Demolice stávajícího mostu</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>014102</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>POPLATKY ZA SKLÁDKU</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>95,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1000,0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source:  | Cena 1000 Kč/t = midpoint pásma RS Žatec 800-1500 Kč/t inertní (per `vendor_quotes.yaml` Ekostavby Louny). OTSKP cena 0 Kč v catalog (regional).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T0-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>014201</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>POPLATKY ZA ZEMNÍK - ZEMINA</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>285,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>216,0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Cena = DECO TRADE Nesuchyně 120 Kč/t × 1.8 t/m³ = 216 Kč/m³ (per `vendor_quotes.yaml` DECO_TRADE_NESUCHYNE, platnost 2026-12-31).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T0-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02510</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>ZKOUŠENÍ MATERIÁLŮ — kontrola materiálu při bourání (ŽB pevnost, ocel třída)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source:  | OTSKP cena 0 (kompletace). Orientačně 30-50k Kč.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T0-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02960</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>ODBORNÝ DOZOR — geologický + statický při demolici</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>72000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T0-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02991</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>INFORMAČNÍ TABULE — uzavírka mostu + bypass info</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>2</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>8000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T0-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>11511</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>ČERPÁNÍ VODY DO 500 L/MIN — během demolice + výkop</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>200</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>110,71</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:  | OTSKP 2025/II 110.71 Kč/hod.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T1-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>121108</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20 KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>30,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>456,48</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T1-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>13173</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>HLOUBENÍ JAM ZAPAŽ I NEPAŽ TŘ. I — stavební jáma po demolici</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>255,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>315,27</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Tř. I = běžná zemina; IGP rozhodne přesnou kategorii (klasifikace gap pre DUR).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T1-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>17120</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>ULOŽENÍ SYPANINY DO NÁSYPU NEBO NA SKLÁDKU BEZ ZHUTNĚNÍ</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>285,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>95,0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:  | Část ornice pro zpětnou rekultivaci → odvoz max 60 % na skládku.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T1-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>966168</kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>BOURÁNÍ KONSTRUKCÍ ZE ŽELEZOBETONU S ODVOZEM DO 20 KM (16 trámů + deska)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>19,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>6851,46</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Ocelové I-280 vložky neoddělitelně součást ŽB → likvidace v rámci kódu 966168 (cena obsahuje recyklaci).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>962031</kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>BOURÁNÍ ZDIVA Z KAMENE NA MC NEBO MO — 2× opěra + 4× křídlo</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>39,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2400,0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:  | OTSKP catalog cena varies; 2400 Kč/m³ = midpoint per Kfely SO 001 reference + RS Žatec recyklace 60 Kč/t.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>966019</kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>DEMONTÁŽ MOSTNÍCH ODVODŇOVAČŮ + DRENÁŽÍ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | Odvodňovače DN 100 silnič. Cena = vendor odhad.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>966xxx</kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>DEMONTÁŽ STÁVAJÍCÍ MOSTNÍ IZOLACE (asfaltové pásy + pečetící vrstva)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>45,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>220</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | OTSKP nemá explicit kód pro demontáž asfaltové izolace → user_manual_fallback. Kfely template 711xxx demontáž ~200-300 Kč/m².</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>113728</kod_polozky>
+            <cislo_polozky>14</cislo_polozky>
+            <nazev_polozky>FRÉZOVÁNÍ ZPEVNĚNÝCH PLOCH ASFALTOVÝCH, ODVOZ DO 20 KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>1,8</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2072,2</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:  | Frézáty → RS Žatec (Ekostavby Louny) 220-300 Kč/t per `vendor_quotes.yaml`.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>9117C9</kod_polozky>
+            <cislo_polozky>15</cislo_polozky>
+            <nazev_polozky>DEMONTÁŽ STÁVAJÍCÍCH SVODIDEL OCEL (SafeStar 231 H2/W3)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>24,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>220</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:  | OTSKP demontáž svodidel sazba ~200-250 Kč/m + odvoz na recyklaci ocel (ne separate fee).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914123</kod_polozky>
+            <cislo_polozky>16</cislo_polozky>
+            <nazev_polozky>DOPRAVNÍ ZNAČKY ZÁKLADNÍ VELIKOSTI OCELOVÉ TŘ. RA1 — DEMONTÁŽ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>227,17</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914933</kod_polozky>
+            <cislo_polozky>17</cislo_polozky>
+            <nazev_polozky>SLOUPKY A STOJKY DZ Z HLINÍK TRUBEK ZABETON — DEMONTÁŽ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>227,17</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>968021</kod_polozky>
+            <cislo_polozky>18</cislo_polozky>
+            <nazev_polozky>ODSTRANĚNÍ DLAŽBY KAMENNÉ KORYTA STÁVAJÍCÍ S ODVOZEM DO 20 KM</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>50,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>380</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | OTSKP cca 350-450 Kč/m² + odvoz.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>968022</kod_polozky>
+            <cislo_polozky>19</cislo_polozky>
+            <nazev_polozky>ODSTRANĚNÍ OPEVNĚNÍ BŘEHŮ STÁVAJÍCÍ (gabiony / kamenná rovnaninka)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>30,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>320</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027413</kod_polozky>
+            <cislo_polozky>20</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ MOSTY — DEMONTÁŽ (ocelový mostní systém)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>60,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>3086</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Vendor pricing demontáž = median(TMS 102k, PONVIA 268.3k) / 60 m² = 3086 Kč/m². Per `vendor_quotes.yaml` mostni_provizorium.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>968011</kod_polozky>
+            <cislo_polozky>21</cislo_polozky>
+            <nazev_polozky>ROZEBRÁNÍ DLAŽBY POD PROVIZORIEM (podložky kamenné/beton)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>75,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>113328</kod_polozky>
+            <cislo_polozky>22</cislo_polozky>
+            <nazev_polozky>ODSTRANĚNÍ PODKLADŮ Z KAMENIVA NESTMEL (štěrkodrť pod provizoriem) S ODVOZEM DO 20 KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>22,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>745,23</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-13</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>113727</kod_polozky>
+            <cislo_polozky>23</cislo_polozky>
+            <nazev_polozky>FRÉZOVÁNÍ ASFALTU NÁJEZDU PROVIZORIA, ODVOZ DO 20 KM</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>1,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2072,2</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-14</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>181101</kod_polozky>
+            <cislo_polozky>24</cislo_polozky>
+            <nazev_polozky>ROZPROSTŘENÍ ORNICE V ROVINĚ — rekultivace záboru</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>30,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>220</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Per LČR podmínka (parcels_and_consents.yaml: LCR_ZATEC) — minimalizace záboru lesa + rekultivace povinná.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-15</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>18241</kod_polozky>
+            <cislo_polozky>25</cislo_polozky>
+            <nazev_polozky>ZALOŽENÍ TRÁVNÍKU HYDROOSETÍM — rekultivace záboru</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>1000,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>35</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Hydroosev levnější než klasické zatravnění; standardní cena 30-40 Kč/m².</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-16</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914123</kod_polozky>
+            <cislo_polozky>26</cislo_polozky>
+            <nazev_polozky>DEMONTÁŽ PROVIZORNÍCH DOPRAVNÍCH ZNAČEK (po dokončení provozu provizoria)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>12</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>227,17</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-T9-17</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91091010</kod_polozky>
+            <cislo_polozky>27</cislo_polozky>
+            <nazev_polozky>ODVOZ ŽELEZOBETONOVÉ SUTI NA RS ŽATEC (Ekostavby Louny)</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>47,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>400</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:  | Cena RS Žatec beton armovaný = 400 Kč/t per `vendor_quotes.yaml` EKOSTAVBY_LOUNY_RS_ZATEC.cost_breakdown_per_t.beton_armovany_czk.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-ODV-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91091011</kod_polozky>
+            <cislo_polozky>28</cislo_polozky>
+            <nazev_polozky>ODVOZ KAMENNÉ SUTI Z DEMOLICE OPĚR + KŘÍDEL NA RS ŽATEC</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>93,6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>60</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:  | Cena RS Žatec beton ≤50 cm = 60 Kč/t (kamenné suti se rozdělí na frakce, kde převažuje recyklát ≤50 cm).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-ODV-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91091012</kod_polozky>
+            <cislo_polozky>29</cislo_polozky>
+            <nazev_polozky>ODVOZ ASFALTOVÝCH FRÉZÁTŮ Z DEMOLICE NA RS ŽATEC</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>7,7</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>260</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:  | Cena RS Žatec asfalt = midpoint(220, 300) = 260 Kč/t.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-ODV-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91091013</kod_polozky>
+            <cislo_polozky>30</cislo_polozky>
+            <nazev_polozky>ODVOZ ZEMINY ZE STAVEBNÍ JÁMY NA SKLÁDKU DECO TRADE NESUCHYNĚ</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>459,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>120</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Cena DECO TRADE Nesuchyně 120 Kč/t per `vendor_quotes.yaml` DECO_TRADE_NESUCHYNE, platnost 2026-12-31.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO001-ODV-04</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 180</kod_objektu>
+        <nazev_objektu>Mostní provizorium + objízdná trasa</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>014102</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>POPLATKY ZA SKLÁDKU — provizorium (přepravní obaly + nepoužité materiály)</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>8,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source:  | Cena RS Žatec inertní 60-1500 Kč/t midpoint 1000.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027111</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ OBJÍŽĎKY — ZŘÍZENÍ (anchor — actual cost in 91091001/T5-04)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>522,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:  | Anchor položka pro OTSKP-konzistentní strukturu. Detail nákladů v T5 (vozovkové vrstvy).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027113</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ OBJÍŽĎKY — ZRUŠENÍ (anchor pair k 027111)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>522,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:  | Demontáž vozovkových vrstev v T1 (uložení sypaniny) + T9 demolice provizoria → SO 001.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027411</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ MOSTY — MONTÁŽ (ocel. konstrukce 12 × 5 m, median 4 vendorů)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>60,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2926</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: vendor_pricing_median | Cena = median(TMS 102k, PONVIA 268.3k, MZ-4m 187.6k, MZ-3.5m 163.6k) = 175 590 Kč / 60 m² = 2926 Kč/m². Per `vendor_quotes.yaml`.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027412</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ MOSTY — NÁJEMNÉ (6 měsíců = 180 dní), median 4 vendorů</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>6,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>34383</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: vendor_pricing_median | Cena per měsíc = median nájem 6m (206 300 Kč) / 6 měs = 34 383 Kč/měs. Median sorted([135k, 153k, 259.6k, 297.5k]) = (153+259.6)/2 = 206.3k.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027413</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ MOSTY — DEMONTÁŽ (po dokončení nového mostu — anchor; cena alokována v SO 001 T9-11)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>60,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>0</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:  | ANCHOR ONLY — actual cost (median demontáž 154 518 Kč, 2575 Kč/m²) je alokován v
+SO_001 T9-11 (027413). To zachovává no-work-duplication: provizorium demontáž je
+jeden výkon, evidovaný jednou. Per task §3.8 validation rule.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027414</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>PROVIZORNÍ MOSTY — PRAVIDELNÁ MOSTNÍ PROHLÍDKA (6× za 6 měsíců provozu)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>12764</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: vendor_pricing_median | Cena per prohlídka = median(TMS 8000, PONVIA 10990, MZ-4m 16695, MZ-3.5m 14538) = 12 764 Kč/měs. Pravidelná prohlídka per ČSN 73 6221.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02740</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>POMOCNÉ PRÁCE PROVIZORNÍCH MOSTŮ — koordinace, doprava panelů, jeřáb</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>150000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027415</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>PROVIZORIUM — SVĚTELNÁ SIGNALIZACE (semafor) PRO JEDNOSMĚRNÝ PROVOZ (per ZD §4.4.o)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>120000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027416</kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>PROVIZORIUM — DIO + DOČASNÉ DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>150000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.65 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02946</kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>FOTODOKUMENTACE PROVIZORIA (před, během, po)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>12000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02950</kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>POSUDEK STATIKA + GEOTECHNIKA (před uvedením do provozu provizoria)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>027417</kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>KONZULTACE A SOUHLAS PROVOZOVATELE LINKOVÉ VEŘEJNÉ DOPRAVY (per ZD §4.4.o)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T0-13</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>111208</kod_polozky>
+            <cislo_polozky>14</cislo_polozky>
+            <nazev_polozky>ODSTRANĚNÍ KŘOVIN S ODVOZEM DO 20 KM (zábor pro objízdku + provizorium)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>300,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>147,7</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:  | OTSKP 2025/II. LČR podmínka: pouze nutné minimum, žádný rozsáhlý zásah do dřevin (parcels_and_consents.yaml LCR_ZATEC.conditions).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T1-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>11511</kod_polozky>
+            <cislo_polozky>15</cislo_polozky>
+            <nazev_polozky>ČERPÁNÍ VODY DO 500 L/MIN — během výkopu pod provizoriem</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>100</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>110,71</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T1-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>121108</kod_polozky>
+            <cislo_polozky>16</cislo_polozky>
+            <nazev_polozky>SEJMUTÍ ORNICE NEBO LESNÍ PŮDY S ODVOZEM DO 20 KM (zábor 1000 m²)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>150,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>456,48</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | User formula 1000 × 0.15 = 150 m³. Ornice po stavbě → zpětně použitá pro rekultivaci (T1-06).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T1-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>13173</kod_polozky>
+            <cislo_polozky>17</cislo_polozky>
+            <nazev_polozky>VÝKOP PRO ZALOŽENÍ PODLOŽÍ PROVIZORIA + OBJÍZDKY, TŘ. I</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>365,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>315,27</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T1-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>17120</kod_polozky>
+            <cislo_polozky>18</cislo_polozky>
+            <nazev_polozky>ULOŽENÍ SYPANINY DO NÁSYPU NEBO NA SKLÁDKU (přebytečná zemina z výkopu)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>215,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>95</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T1-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>18241</kod_polozky>
+            <cislo_polozky>19</cislo_polozky>
+            <nazev_polozky>ZALOŽENÍ TRÁVNÍKU HYDROOSETÍM — rekultivace záboru po demontáži</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>1000,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>35</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | LČR požaduje minimalizaci záboru + rekultivaci povinná (parcels_and_consents.yaml
+LCR_ZATEC.conditions_or_requirements). Rekultivace pokrývá ornice z T1-03 zpětně
+rozprostřená + hydroosev.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T1-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>28997</kod_polozky>
+            <cislo_polozky>20</cislo_polozky>
+            <nazev_polozky>OPLÁŠTĚNÍ (ZPEVNĚNÍ) Z GEOTEXTILIE A GEOMŘÍŽOVIN (separace + zpevnění podloží)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>597,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Geotextilie GT 5 (separační) + lokálně geomřížovina pod kritické úseky.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T2-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>451523</kod_polozky>
+            <cislo_polozky>21</cislo_polozky>
+            <nazev_polozky>VÝPLŇ Z KAMENIVA DRCENÉHO, INDEX ZHUTNĚNÍ ID DO 0,8 (podloží objízdky a provizoria)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>119,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1100</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T4-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>45211</kod_polozky>
+            <cislo_polozky>22</cislo_polozky>
+            <nazev_polozky>PODKLAD KONSTR. Z DÍLCŮ BETON (panely pod ocelové provizorium)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>15,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T4-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>56333</kod_polozky>
+            <cislo_polozky>23</cislo_polozky>
+            <nazev_polozky>VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 150 MM (spodní podkladní)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>522,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T5-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>56336</kod_polozky>
+            <cislo_polozky>24</cislo_polozky>
+            <nazev_polozky>VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 300 MM (horní podkladní)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>522,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T5-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>56314</kod_polozky>
+            <cislo_polozky>25</cislo_polozky>
+            <nazev_polozky>VOZOVKOVÉ VRSTVY Z MECHANICKY ZPEVNĚNÉHO KAMENIVA TL. DO 200 MM (MZK)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>522,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>250</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source:</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T5-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>574A34</kod_polozky>
+            <cislo_polozky>26</cislo_polozky>
+            <nazev_polozky>ASFALTOVÝ BETON ACO 11+ TL. 40 MM (obrusná vrstva vozovky objízdky a nájezdů)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>522,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>220</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source:  | Pro provizorium není povinná ACO 11+ obrusná, ale doporučená pro ochranu nižších vrstev po dobu 6 měsíců. Recyklát ACO může být použit (RS Žatec).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO180-T5-04</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 201</kod_objektu>
+        <nazev_objektu>Most ev.č. 2062-1</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>0291</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — ZEMĚMĚŘIČSKÁ MĚŘENÍ (průběžně během stavby)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>45000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: paušál_administrativní</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02911</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — GEODETICKÉ ZAMĚŘENÍ (S-JTSK + Bpv, 3. tř. přesnosti, výchozí)</nazev_polozky>
+            <mj>HM</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>100000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: paušál_administrativní</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02911-skutecne</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — GEODETICKÉ ZAMĚŘENÍ SKUTEČNÉHO PROVEDENÍ</nazev_polozky>
+            <mj>HM</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>65000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: paušál_administrativní</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>029412</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — VYPRACOVÁNÍ MOSTNÍHO LISTU (per ČSN 73 6221)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>15000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02943</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — VYPRACOVÁNÍ RDS (Realizační dokumentace stavby)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>300000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.65 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02944</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — DOKUMENTACE SKUTEČNÉHO PROVEDENÍ V DIGITÁLNÍ FORMĚ (DSPS)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>80000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02510</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>ZKOUŠENÍ MATERIÁLŮ — laboratorní zkoušky betonu + výztuže (TKP 18 čl. 3.4)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>60000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: paušál_administrativní</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02953</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — HLAVNÍ MOSTNÍ PROHLÍDKA (první po dokončení per ČSN 73 6221)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>0296</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — ODBORNÝ DOZOR (autorský + statický během stavby SO 201)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>162000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: paušál_administrativní</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>02991</kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>OSTATNÍ POŽADAVKY — INFORMAČNÍ TABULE (stavba — investor + zhotovitel)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>2</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>8000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T0-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>11511</kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>ČERPÁNÍ VODY DO 500 L/MIN — během betonáže základů + opěr (etapa SO 201, časově oddělené od SO 001/180)</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>160</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>110,71</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.65 | Source: user_manual_fallback | DUPLICATION CHECK: SO 001 T1-01 (200 hod během demolice + výkopu) + SO 180 T1-02
+(100 hod během výkopu pro objízdku) + SO 201 T1-01 (160 hod během betonáže NK)
+= časově oddělené etapy. Žádné překryvné období → no-duplication PASS.
+Total all-SO čerpání 460 hod.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T1-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>17411</kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>ZÁSYP JAM A RÝH ZEMINOU SE ZHUTNĚNÍM (kolem opěr a křídel po betonáži)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>181,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>175</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | User manual SO_201 row 23 = 181 m³ EXACT MATCH → reconciliation MATCH.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T1-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>17511</kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>OBSYP POTRUBÍ A OBJEKTU SE ZHUTNĚNÍM (kolem drenáží + odvodnění opěr)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>15,75</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>920</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | User manual SO_201 row 25 = 15.75 m³ EXACT MATCH.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T1-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>17581</kod_polozky>
+            <cislo_polozky>14</cislo_polozky>
+            <nazev_polozky>OBSYP POTRUBÍ A OBJEKTU Z NAKUPOVANÝCH MATERIÁLŮ (filtračně-drenážní vrstva za opěrami)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>62,3</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1100</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | User manual SO_201 row 26 = 62.3 m³ EXACT MATCH.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T1-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>1778</kod_polozky>
+            <cislo_polozky>15</cislo_polozky>
+            <nazev_polozky>ZEMNÍ HRÁZKY Z NAKUPOVANÝCH MATERIÁLŮ (úprava terénu kolem opěr před rekultivací)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>20,8</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: user_manual_fallback | User manual SO_201 row 27 = 20.8 m³ MATCH. Specifický pro SO 201 (návazný terén kolem nového mostu, ne objízdka).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T1-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>171xx-uprava</kod_polozky>
+            <cislo_polozky>16</cislo_polozky>
+            <nazev_polozky>FINÁLNÍ ÚPRAVA TERÉNU PŘED REKULTIVACÍ (urovnání + zhutnění před hydroosevem v SO 001 T9-16)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>300,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>65</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: paušál_administrativní | Custom non-OTSKP placeholder pro úpravu terénu specifickou pro SO 201 (most kontext,
+ne objízdka). Hydroosev sám alokován v SO 001 T9-16. Zde se účtuje jen úprava před
+hydroosevem (urovnání + zhutnění + odstranění zbytkového kameniva).
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T1-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>272325</kod_polozky>
+            <cislo_polozky>17</cislo_polozky>
+            <nazev_polozky>ZÁKLADY ZE ŽELEZOBETONU DO C30/37 (2× plošný základ pod opěrami)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>30,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5775,35</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic | Calculator deterministic — element_type=zaklady_piliru (workaround per Phase 3 Gate 2a refactor — paralelní s zaklady_oper).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T2-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>272365</kod_polozky>
+            <cislo_polozky>18</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ ZÁKLADŮ Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>3,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40761,57</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T2-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>28999</kod_polozky>
+            <cislo_polozky>19</cislo_polozky>
+            <nazev_polozky>OPLÁŠTĚNÍ (ZPEVNĚNÍ) Z FÓLIE — separační/hydroizolační pod základy</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>87,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>240</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | Fólie PE 0.5 mm + ochranná geotextilie pod fólii (separace zeminy a betonu).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T2-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>21341</kod_polozky>
+            <cislo_polozky>20</cislo_polozky>
+            <nazev_polozky>DRENÁŽNÍ VRSTVY Z PLASTBETONU (PLASTMALTY) — drenážní spáry mezi základem a opěrou</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>1,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>6500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | User manual SO_201 row 35 má 21341 s mn=0 (Kfely template tento detail explicitně
+nepoužívá), ale Žihle integrální rám POTŘEBUJE drenážní vrstvy pro odvod průsaku
+za opěry per ČSN 73 6244 čl. 7.5. Hodnota 1.5 m³ = engineering estimate Žihle.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T2-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>31717</kod_polozky>
+            <cislo_polozky>21</cislo_polozky>
+            <nazev_polozky>KOVOVÉ KONSTRUKCE PRO KOTVENÍ ŘÍMSY (kotevní šrouby M16 + chemické kotvy)</nazev_polozky>
+            <mj>KG</mj>
+            <mnozstvi>80</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | User manual SO_201 row 40 = 80 kg EXACT MATCH → reconciliation MATCH.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333325</kod_polozky>
+            <cislo_polozky>22</cislo_polozky>
+            <nazev_polozky>MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOBETONU DO C30/37 (2× dříky integrální opěry)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>16,6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>9377,28</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: calculator_deterministic | ZD §4.4.l zakazuje samostatná křídla → varianta integrální rám se svahovým kuželem (Phase B varianta_01).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333365</kod_polozky>
+            <cislo_polozky>23</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ MOSTNÍCH OPĚR A KŘÍDEL Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>2,324</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40874,37</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333325-zz</kod_polozky>
+            <cislo_polozky>24</cislo_polozky>
+            <nazev_polozky>MOSTNÍ OPĚRY A KŘÍDLA ŽB DO C30/37 — ZÁVĚRNÉ ZÍDKY (subcomponent of opěr per OTSKP)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>4,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>9377,28</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: calculator_deterministic | OTSKP 333325 sub-classification — závěrné zídky jsou součást opěr per CLAUDE.md
+Phase 3 Gate 2a (mostni_zavirne_zidky element type → 333325 OTSKP). Kfely template
+neodděluje, ale Žihle to evidujeme separately pro better cost tracking.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>333365-zz</kod_polozky>
+            <cislo_polozky>25</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ ZÁVĚRNÝCH ZÍDEK Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>0,72</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>40874,37</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>317325</kod_polozky>
+            <cislo_polozky>26</cislo_polozky>
+            <nazev_polozky>ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (2× římsa, levá + pravá)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>8,64</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>16900,36</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic | Pravá římsa zahrnuje 3× chráničku DN75 mm (ZD §4.4.m) — vkládají se při betonáži, neovlivňuje cenu betonu.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>317365</kod_polozky>
+            <cislo_polozky>27</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ ŘÍMS Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>0,864</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>41635,8</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T3-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>421325</kod_polozky>
+            <cislo_polozky>28</cislo_polozky>
+            <nazev_polozky>MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C30/37 (mostovková deska)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>39,84</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>13417,9</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic | KEY ELEMENT — kritická položka SO 201. Pevná skruž ze dna stavební jámy (světlá výška ~3 m).
+ZD §4.4.k specifikuje C30/37 + XF2 (zóna stříkající vody pod mostem).
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>421365</kod_polozky>
+            <cislo_polozky>29</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ MOSTNÍ DESKOVÉ KONSTRUKCE Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>5,577</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>42334,95</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>420324</kod_polozky>
+            <cislo_polozky>30</cislo_polozky>
+            <nazev_polozky>PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30 (2× přechodová deska)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>19,92</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5360,58</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>420365</kod_polozky>
+            <cislo_polozky>31</cislo_polozky>
+            <nazev_polozky>VÝZTUŽ PŘECHODOVÝCH DESEK MOSTNÍCH OPĚR Z OCELI 10505, B500B</nazev_polozky>
+            <mj>T</mj>
+            <mnozstvi>1,992</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>41635,8</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: calculator_deterministic</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>45131A</kod_polozky>
+            <cislo_polozky>32</cislo_polozky>
+            <nazev_polozky>PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25 (sklížek pod základy)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>5,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4648,04</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: calculator_deterministic | Calculator placeholder rebar 100 kg (rebar_mass_kg=0.1 t) — sklížek je nevyztužený, calculator vyžaduje &gt; 0; cost negligible (~0.5 % celku).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>451323</kod_polozky>
+            <cislo_polozky>33</cislo_polozky>
+            <nazev_polozky>PODKLADNÍ A VÝPLŇOVÉ VRSTVY ZE ŽELEZOBETONU DO C16/20 (lokální zpevnění pod úložnými prahy)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>8,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>5800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | Calculator NEPOKRÝVÁ tento element_type (železobetonová podkladní vrstva = special
+case). User manual SO_201 row 58 = 8.5 m³ exact (Kfely template — kvalifikováno
+pre Žihle). Pre DPS projektant ověří dle skutečné kategorie podloží.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>45157</kod_polozky>
+            <cislo_polozky>34</cislo_polozky>
+            <nazev_polozky>PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z KAMENIVA TĚŽENÉHO (drenážní vrstva pod základy)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>25,1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1100</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: user_manual_fallback | Calculator NEPOKRÝVÁ těžené kamenivo (out of element catalog). User manual SO_201
+row 59 = 25.1 m³ MATCH.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T4-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>56335</kod_polozky>
+            <cislo_polozky>35</cislo_polozky>
+            <nazev_polozky>VOZOVKOVÉ VRSTVY ZE ŠTĚRKODRTI TL. DO 250 MM (spodní podkladní na nájezdech)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>112,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | User manual SO_201 row 65 = 112.5 m² (Kfely template). Žihle nájezdy mají specifickou
+redukci (per Phase B varianta_01 návrh). Pro DPS projektant ověří dle skutečného
+profilu nájezdů + návazností.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>56343</kod_polozky>
+            <cislo_polozky>36</cislo_polozky>
+            <nazev_polozky>VOZOVKOVÉ VRSTVY ZE ŠTĚRKOPÍSKU TL. DO 150 MM (horní podkladní na nájezdech)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>67,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>572123</kod_polozky>
+            <cislo_polozky>37</cislo_polozky>
+            <nazev_polozky>INFILTRAČNÍ POSTŘIK Z EMULZE DO 1,0 KG/M² (mezi podkladními vrstvami a ACP)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>450,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | Infiltrační postřik na podkladní vrstvy nájezdů + na podklad mostovky pro adhezi ACP.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>572214</kod_polozky>
+            <cislo_polozky>38</cislo_polozky>
+            <nazev_polozky>SPOJOVACÍ POSTŘIK Z MODIFIKOVANÉ EMULZE DO 0,5 KG/M² (mezi asfaltovými vrstvami)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>518,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>574C78</kod_polozky>
+            <cislo_polozky>39</cislo_polozky>
+            <nazev_polozky>ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 22+, 22S TL. 80 MM (ložná na nájezdech)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>450,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>450</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | Per ZD §4.4.j: 'OBRUSNÁ VRSTVA 100 % TLOUŠŤKY BEZ TOLERANCE' přísnější než TKP.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>574E07</kod_polozky>
+            <cislo_polozky>40</cislo_polozky>
+            <nazev_polozky>ASFALTOVÝ BETON PRO PODKLADNÍ VRSTVY ACP 22+, 22S (podkladní na nájezdech)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>36,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>3500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>574I54</kod_polozky>
+            <cislo_polozky>41</cislo_polozky>
+            <nazev_polozky>ASFALTOVÝ KOBEREC MASTIXOVÝ SMA 11+, 11S TL. 40 MM (obrusná vrstva)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>518,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>480</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | SMA 11+ jako obrusná vrstva nájezdů + přesah na most kde litý asfalt nestačí.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>575C53</kod_polozky>
+            <cislo_polozky>42</cislo_polozky>
+            <nazev_polozky>LITÝ ASFALT MA IV (OCHRANA MOSTNÍ IZOLACE) 11 TL. 40 MM (specifická obrusná na mostě)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>68,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>580</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | MA IV = ochrana mostní izolace per ČSN 73 6242. Pouze NA MOSTĚ (na nájezdech je SMA T5-07).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>576413</kod_polozky>
+            <cislo_polozky>43</cislo_polozky>
+            <nazev_polozky>POSYP KAMENIVEM OBALOVANÝM 4 KG/M² (na litý asfalt MA IV)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>68,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T5-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>62592</kod_polozky>
+            <cislo_polozky>44</cislo_polozky>
+            <nazev_polozky>ÚPRAVA POVRCHU BETONOVÝCH PLOCH A KONSTRUKCÍ — STRIÁŽ (vodorovná povrchová úprava říмs + závěrných zídek)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>52,34</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>150</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | Striáž = vodorovná stříhaná povrchová úprava betonu pro estetiku + dilatační efekt.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T6-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>938255</kod_polozky>
+            <cislo_polozky>45</cislo_polozky>
+            <nazev_polozky>ÚPRAVA POVRCHU BETONU OTRYSKÁNÍM OCELOVÝMI KULIČKAMI (spodní líc mostovky pro pohledový beton)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>99,6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>300</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | Otryskání = surface treatment pro pohledový beton spodního líce mostovky (vidí ho
+řidiči pod mostem). OTSKP cena 0 v catalog → orientační market 200-400 Kč/m²,
+midpoint 300 Kč/m².
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T6-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>711111</kod_polozky>
+            <cislo_polozky>46</cislo_polozky>
+            <nazev_polozky>IZOLACE BĚŽNÝCH KONSTRUKCÍ PROTI ZEMNÍ VLHKOSTI ASFALTOVÝMI NÁTĚRY (opěry + závěrné zídky)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>72,6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | Asfaltové nátěry na zadní straně opěr a závěrných zídek (kontakt se zeminou). Per ČSN 73 6244 čl. 7.6.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T7-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>711432</kod_polozky>
+            <cislo_polozky>47</cislo_polozky>
+            <nazev_polozky>IZOLACE MOSTOVEK POD ŘÍMSOU ASFALTOVÝMI PÁSY (NAIP — natavovaný asfaltový izolační pás)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>5,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>692,99</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | OTSKP 2025/II = 692.99 Kč/m². Calc-cross-check: Phase C calculator nezahrnuje izolaci pod říмs (out of element scope), accept user manual.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T7-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>711442</kod_polozky>
+            <cislo_polozky>48</cislo_polozky>
+            <nazev_polozky>IZOLACE MOSTOVEK CELOPLOŠNÁ ASFALTOVÝMI PÁSY S PEČETÍCÍ VRSTVOU (NAIP + pečetící)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>87,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>806,81</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | KEY ELEMENT mostní izolace. OTSKP 2025/II = 806.81 Kč/m².
+Cross-check vs Phase C calc: calculator nemá direct izolace output, ale derive z
+formwork_area (mostovkova_deska 99.6 m²). 99.6 vs user 87.4 = +14 % over-estimate
+protože calc nesubtrahuje říм strip 12.2 m². Accept user manual (engineering correct).
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T7-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>711509</kod_polozky>
+            <cislo_polozky>49</cislo_polozky>
+            <nazev_polozky>OCHRANA IZOLACE NA POVRCHU TEXTILIÍ (geotextilie GT 5 nad NAIP před vozovkovými vrstvami)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>69,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>180</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | Geotextilie ochrany izolace = vrstva mezi NAIP a litý asfalt MA IV (T5-08).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T7-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>78382</kod_polozky>
+            <cislo_polozky>50</cislo_polozky>
+            <nazev_polozky>NÁTĚRY BETONOVÝCH KONSTRUKCÍ TYP S2 (OS-B) — ochranné nátěry opěr + závěrných zídek pohledové strany</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>77,9</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | S2 (OS-B) = standardní pohledový ochranný nátěr (UV + voda + chemikálie cement-stable). ČSN EN 1504-2.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T7-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>78383</kod_polozky>
+            <cislo_polozky>51</cislo_polozky>
+            <nazev_polozky>NÁTĚRY BETONOVÝCH KONSTRUKCÍ TYP S4 (OS-C) — ochranné nátěry říмs (vyšší expozice — XF2/XD1)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>8,64</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>700</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | S4 (OS-C) = vyšší ochrana pro říмса (přímá expozice posypovým solím + dynamickému namáhání). ČSN EN 1504-2 třída OS-C.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T7-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>875332</kod_polozky>
+            <cislo_polozky>52</cislo_polozky>
+            <nazev_polozky>POTRUBÍ DREN Z TRUB PLAST DN DO 150 MM, DĚROVANÝ (rubová drenáž za opěrami)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>19,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | Rubová drenáž PE-HD DN 150 mm, děrovaná, geotextilní obal. Per ČSN 73 6244 čl. 7.4.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T8-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>87534</kod_polozky>
+            <cislo_polozky>53</cislo_polozky>
+            <nazev_polozky>POTRUBÍ DREN Z TRUB PLAST DN DO 200 MM (odvodnění mostovky — minimalizováno per ZD §4.4.l)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>12,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>350</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | ZD §4.4.l preferuje minimalizaci odvodňovačů (žádné mostní pevné odvodňovače).
+Tato podélná drenáž DN 200 vede průsak z mostní izolace + vozovky k zaústění
+v koryto Mladotického potoka via T9 zaústění skluzů. User manual SO_201 row 87
+má 0 m (Kfely template má vlastní odvodnění bez tohoto detailu); Žihle integrální
+rám potřebuje minimální drenáž.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T8-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>87634</kod_polozky>
+            <cislo_polozky>54</cislo_polozky>
+            <nazev_polozky>POTRUBÍ — CHRÁNIČKA DN 75 ZABETONOVANÁ (3× rezerva pro budoucí kabely v pravé říмse per ZD §4.4.m)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>36,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>600</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback | Chráničky DN 75 mm pro budoucí kabely (telekomunikace + řízení dopravy). Vkládají se
+při betonáži pravé říмs (T3-06). Cena pokrývá trubky + zatažení do betonu (instalace).
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T8-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>9113B1</kod_polozky>
+            <cislo_polozky>55</cislo_polozky>
+            <nazev_polozky>SVODIDLO OCEL SILNIČNÍ JEDNOSTRANNÉ, ÚROVEŇ ZADRŽENÍ H1 — DODÁVKA A MONTÁŽ (před+za mostem)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>60,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1780,96</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | ZD §4.4.i: extravilán + návaznost na nájezdy. H1 napojení na H2 mostní zábradelní svodidlo (T9-02).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>9117C1</kod_polozky>
+            <cislo_polozky>56</cislo_polozky>
+            <nazev_polozky>SVODIDLO OCEL ZÁBRADELNÍ MOSTNÍ, ÚROVEŇ ZADRŽENÍ H2 — DODÁVKA A MONTÁŽ (na říмsách mostu)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>24,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>7940,04</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback | KEY ELEMENT bezpečnosti. ZD §4.4.i: extravilán → H2 (vyšší úroveň zadržení).
+Předchozí stav HPM s.3 [4.2] = SafeStar 231 H2/W3 → zachování úrovně H2.
+Reconciliation: user manual SO_201 row 89 = 14.4 m (Kfely template, jiná délka mostu).
+Žihle 24 m = engineering correct per Phase B (2× 12 m říмса).
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91238</kod_polozky>
+            <cislo_polozky>57</cislo_polozky>
+            <nazev_polozky>SMĚROVÉ SLOUPKY Z PLAST HMOT — NÁSTAVCE NA SVODIDLA VČETNĚ ODRAZNÝCH PRVKŮ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>20</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91345</kod_polozky>
+            <cislo_polozky>58</cislo_polozky>
+            <nazev_polozky>NIVELAČNÍ ZNAČKY KOVOVÉ (geodetické body pro budoucí měření sedání)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>8</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91355</kod_polozky>
+            <cislo_polozky>59</cislo_polozky>
+            <nazev_polozky>EVIDENČNÍ ČÍSLO MOSTU (kovová tabulka 'Most ev.č. 2062-1') — 2× (vstupní + výstupní strana)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>2</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914352</kod_polozky>
+            <cislo_polozky>60</cislo_polozky>
+            <nazev_polozky>DOPRAVNÍ ZNAČKY ZMENŠENÉ VELIKOSTI HLINÍK — MONTÁŽ S PŘESUNEM (B13 + E13 nové)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>2</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback | Nahrazení starých DZ (demontovaných v SO 001 T9-07) novými hliníkovými. Stejná konfigurace per HPM.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914911</kod_polozky>
+            <cislo_polozky>61</cislo_polozky>
+            <nazev_polozky>SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCELOVÝCH TRUBEK SE ZABETONOVÁNÍM</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>2</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>915111</kod_polozky>
+            <cislo_polozky>62</cislo_polozky>
+            <nazev_polozky>VODOROVNÉ DOPRAVNÍ ZNAČENÍ BARVOU HLADKÉ — DODÁVKA A POKLÁDKA (středová čára + okraje vozovky)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>25,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>915231</kod_polozky>
+            <cislo_polozky>63</cislo_polozky>
+            <nazev_polozky>VODOR DOPRAV ZNAČ PLASTEM PROFIL ZVUČÍCÍ — DOD A POKLÁDKA (zvučící okrajový pruh)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>25,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>480</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>917223</kod_polozky>
+            <cislo_polozky>64</cislo_polozky>
+            <nazev_polozky>SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 100 MM (vnitřní okraj nájezdů)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>15,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>917224</kod_polozky>
+            <cislo_polozky>65</cislo_polozky>
+            <nazev_polozky>SILNIČNÍ A CHODNÍKOVÉ OBRUBY Z BETONOVÝCH OBRUBNÍKŮ ŠÍŘ 150 MM (vnější okraj + zaústění)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>30,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>950</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>919111</kod_polozky>
+            <cislo_polozky>66</cislo_polozky>
+            <nazev_polozky>ŘEZÁNÍ ASFALTOVÉHO KRYTU VOZOVEK TL DO 50 MM (přesné napojení nové vozovky na stávající)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>106,3</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>90</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>931326</kod_polozky>
+            <cislo_polozky>67</cislo_polozky>
+            <nazev_polozky>TĚSNĚNÍ DILATAČ SPAR ASF ZÁLIVKOU MODIFIK PRŮŘ DO 800 MM² (vozovkové dilatační spáry — NE mostní závěr)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>38,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>320</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | ⚠️ EXPLICITLY NOT mostní závěr (93152 vyloučen per ZD §4.4.l integrální rám).
+Tyto jsou asphalt expansion joints v vozovce — řeší thermal v krytu vozovky,
+ne mostní konstrukci. Integrální rám má thermal compensation via přechodové desky.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-13</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>93135</kod_polozky>
+            <cislo_polozky>68</cislo_polozky>
+            <nazev_polozky>TĚSNĚNÍ DILATAČ SPAR PRYŽ PÁSKOU NEBO KRUH PROFILEM (sekundární těsnění pod 931326)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>38,4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>280</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-14</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>93311</kod_polozky>
+            <cislo_polozky>69</cislo_polozky>
+            <nazev_polozky>ZATĚŽOVACÍ ZKOUŠKA MOSTU STATICKÁ 1. POLE DO 300 M² (★ POVINNÁ per ČSN 73 6209)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>100000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 1.0 | Source: user_manual_fallback | ★ KEY ELEMENT — POVINNÁ pro každý nový most per ČSN 73 6209 (zatěžovací zkoušky
+mostů). Plocha mostu 99.6 m² &lt; 300 m² → kategorie 1. pole do 300 m².
+Zkouška = statické zatížení ekvivalentem 0.6 × charakteristického zatížení LM1
+(per ČSN EN 1991-2). Měření průhybů + napětí + sedání opěr. Před uvedením do
+provozu mostu, financováno SÚS Plzeňského kraje.
+Cena 100k Kč = midpoint pásma 80-150k Kč (trh 2026 pro malý most do 300 m²).
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-15</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>935212</kod_polozky>
+            <cislo_polozky>70</cislo_polozky>
+            <nazev_polozky>PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600 MM DO BETONU TL 100 MM (odvodnění nájezdů)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>25,68</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1100</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-16</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>93631</kod_polozky>
+            <cislo_polozky>71</cislo_polozky>
+            <nazev_polozky>DROBNÉ DOPLŇKY KONSTR BETON MONOLIT (drobné monolitické doplňky pro detail PDPS)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>0,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4783,44</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.6 | Source: user_manual_fallback | User manual hodnota 0.01 m³ = nominal placeholder. Žihle navýšeno na 0.5 m³ pro reálné monolitické detaily.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-17</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>93639</kod_polozky>
+            <cislo_polozky>72</cislo_polozky>
+            <nazev_polozky>ZAÚSTĚNÍ SKLUZŮ (VČET DLAŽBY Z LOM KAMENE) — odvodnění mostovky do koryta Mladotického potoka</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | Zaústění drenážních potrubí (T8-01 + T8-02) do koryta s ochrannou kamennou dlažbou. Vyžaduje souhlas Povodí Vltavy.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO201-T9-18</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 290</kod_objektu>
+        <nazev_objektu>Silnice III/206 2 (návaznosti)</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>113728</kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>FRÉZOVÁNÍ ZPEVNĚNÝCH PLOCH ASFALTOVÝCH, ODVOZ DO 20 KM (frézování stávající obrusné vrstvy silnice mimo most)</nazev_polozky>
+            <mj>M3</mj>
+            <mnozstvi>67,5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2072,2</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | DUPLICATION CHECK: SO 001 T9-05 frézování (1.8 m³ vozovka mostu) + SO 290 T1-01
+(67.5 m³ silnice III/206 2 navazující úseky) = různé úseky, různé OTSKP-context.
+Frézáty → RS Žatec (Ekostavby Louny) per `vendor_quotes.yaml` 220-300 Kč/t.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T1-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>572214</kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>SPOJOVACÍ POSTŘIK Z MODIFIK EMULZE DO 0,5 KG/M² (mezi vrstvami: frézovaný podklad → ACL → SMA)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>2700,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.95 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T5-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>574C78</kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 22+, 22S TL. 80 MM (ložná vrstva silnice)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>1350,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>450</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T5-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>574I54</kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>ASFALTOVÝ KOBEREC MASTIXOVÝ SMA 11+, 11S TL. 40 MM (obrusná vrstva 100 % bez tolerance per ZD §4.4.j)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>1350,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>480</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | ZD §4.4.j: obrusná vrstva 100 % tloušťky bez tolerance — vyšší přesnost než standardní TKP, vyžaduje overpour reserve 5-10 % v praxi (zhotovitel dimenzuje).</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T5-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>919111</kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>ŘEZÁNÍ ASFALTOVÉHO KRYTU VOZOVEK TL DO 50 MM (přesné napojení na sousední úseky silnice + na nájezdy SO 201)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>24,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>90</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>935212</kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600 MM DO BETONU TL 100 MM (jednostranné odvodnění silnice)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>225,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1100</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback | DUPLICATION CHECK: SO 201 T9-16 = 25.68 m příkopové žlaby (lokálně u nájezdů mostu). SO 290 T9-02 = 225 m podél širší silniční úpravy. Different scope, no-duplication.</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>915111</kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>VODOROVNÉ DOPRAVNÍ ZNAČENÍ BARVOU HLADKÉ — DODÁVKA A POKLÁDKA (středová + okrajové čáry silnice)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>56,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>915231</kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>VODOR DOPRAV ZNAČ PLASTEM PROFIL ZVUČÍCÍ — DOD A POKLÁDKA (zvučící varianta okrajové čáry — bezpečnostní)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>28,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>480</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914352</kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>DOPRAVNÍ ZNAČKY ZÁKLADNÍ VELIKOSTI HLINÍK — MONTÁŽ S PŘESUNEM (přístupové výstrahy + omezení)</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback | DUPLICATION CHECK: SO 201 T9-06 = 2 ks (na mostě samotném). SO 290 T9-05 = 4 ks
+(na přístupech k mostu před+za, oboustranně). Different positions per HPM mapy.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>914911</kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCEL TRUBEK SE ZABETONOVÁNÍM</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1200</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>9113B1</kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>SVODIDLO OCEL SILNIČNÍ JEDNOSTRANNÉ, ÚROVEŇ ZADRŽ H1 — DODÁVKA A MONTÁŽ (podél příkopu mimo zónu nájezdů)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>100,0</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1780,96</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: user_manual_fallback | DUPLICATION CHECK: SO 201 T9-01 = 60 m (na nájezdech mostu, intenzivnější úsek).
+SO 290 T9-07 = 100 m (podél širší silnice mimo nájezdy). Different geographic
+segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy nehodovosti.
+</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky>91238</kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>SMĚROVÉ SLOUPKY Z PLAST HMOT — NÁSTAVCE NA SVODIDLA VČ. ODRAZNÝCH PRVKŮ</nazev_polozky>
+            <mj>KUS</mj>
+            <mnozstvi>33</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: user_manual_fallback</poznamka_polozky>
+            <uzivatelske_zarazeni>SO290-T9-08</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>SO 801</kod_objektu>
+        <nazev_objektu>Zařízení staveniště (detailní)</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>ZPEVNĚNÁ PLOCHA ŠTĚRKEM (přístup pro buňkoviště + skladovací prostor)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>100</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>480</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>AUTOJEŘÁB PRO MONTÁŽ ZS (vyložení buněk + dopravního značení)</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>10</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1250</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>MONTÁŽ ZAŘÍZENÍ STAVENIŠTĚ (kompletace, paušál)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>15000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>BUŇKY KANCELÁŘE — PRONÁJEM (technický zázemí pracovníků TZP)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>BUŇKY ŠATNY — PRONÁJEM</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1800</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>BUŇKY SKLADY — PRONÁJEM (nářadí, drobný materiál)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>SCHODIŠTĚ K BUŇKOVIŠTI</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>8000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>DOPRAVA BUNĚK NA / ZE STAVENIŠTĚ</nazev_polozky>
+            <mj>CESTA</mj>
+            <mnozstvi>2</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>4400</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: kfely_mostovy_benchmark</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>VYBAVENÍ BUNĚK (50 % scale: 1 stůl + 4 židle + 1 skříň + 0.25 kopírka A3)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>42104</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>WC TOI-TOI — PRONÁJEM (mobilní toalety bez kanalizace)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>2400</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>OPLOCENÍ STAVENIŠTĚ — MONTÁŽ + DEMONTÁŽ (mobilní 2.0 m výška)</nazev_polozky>
+            <mj>M</mj>
+            <mnozstvi>200</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>48</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>OPLOCENÍ STAVENIŠTĚ — NÁJEM</nazev_polozky>
+            <mj>M-MES</mj>
+            <mnozstvi>2200</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>REKLAMNÍ / IDENTIFIKAČNÍ CEDULE VELKÁ (POVINNÁ per vyhláška 499/2006 Sb.)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>75000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-13</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>14</cislo_polozky>
+            <nazev_polozky>LIKVIDACE ZAŘÍZENÍ STAVENIŠTĚ (po dokončení stavby)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>25000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-14</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>15</cislo_polozky>
+            <nazev_polozky>OSVĚTLENÍ STAVBY (LED reflektory + sloupy + kabeláž + pohybová čidla)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>130000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-15</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>16</cislo_polozky>
+            <nazev_polozky>ELEKTROCENTRÁLA PŘENOSNÁ (záložní zdroj — výpadky obecního ČEZ)</nazev_polozky>
+            <mj>KS-MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1150</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-16</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>17</cislo_polozky>
+            <nazev_polozky>ELEKTRICKÁ ENERGIE — SPOTŘEBA GRID (600 kWh/měs × 11 měs × 6.5 Kč/kWh, ČEZ D02 obchod 2026)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>66000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: kfely_mostovy_benchmark</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-17</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>18</cislo_polozky>
+            <nazev_polozky>PŘÍPOJKA ELEKTRO (provedení + měřič — Žihle obec ČEZ ~150 m)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>150000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-18</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>19</cislo_polozky>
+            <nazev_polozky>PŘÍPOJKA VODY (přípojka + měřič — vodovod přes obec)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-19</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>20</cislo_polozky>
+            <nazev_polozky>UŽITKOVÁ VODA — SPOTŘEBA (sociální + technická)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>3500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-20</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>21</cislo_polozky>
+            <nazev_polozky>ČIŠTĚNÍ KOMUNIKACÍ — MYCÍ LINKA (POVINNÉ per ČSN 73 0212 + zákon o čistotě silnic)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>105000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-21</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>22</cislo_polozky>
+            <nazev_polozky>DOPRAVNÍ ZNAČENÍ PO DOBU STAVBY (5 ks DZ + sloupky)</nazev_polozky>
+            <mj>KS</mj>
+            <mnozstvi>5</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>15000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-22</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>23</cislo_polozky>
+            <nazev_polozky>BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě + ohrada nebezpečných míst)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>80000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: kfely_mostovy_benchmark</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-23</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>24</cislo_polozky>
+            <nazev_polozky>ZIMNÍ OPATŘENÍ — ZAKRÝVÁNÍ STAVBY (geotextílie, plachty proti dešti/sněhu)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-24</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>25</cislo_polozky>
+            <nazev_polozky>ZIMNÍ OPATŘENÍ — TEMPEROVÁNÍ BETONU (zahřívání čerstvého betonu C30/37 winter pour)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>75000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>SO801-T0-25</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>PRESUN HMOT</kod_objektu>
+        <nazev_objektu>Přesun hmot stavby</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>KRAMER BEZ OBSLUHY + NAFTA (univerzální nakladač pro manipulace v staveništi)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>6</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>35000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>PH-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>POMOCNÍ PRACOVNÍCI PŘI PŘESUNECH HMOT</nazev_polozky>
+            <mj>OSOBA-MES</mj>
+            <mnozstvi>4</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>PH-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>AUTOJEŘÁB S OBSLUHOU (montáž bednění + výztuže + betonáž mostovky)</nazev_polozky>
+            <mj>HOD</mj>
+            <mnozstvi>100</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>1500</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>PH-03</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+      <objekt>
+        <kod_objektu>VRN</kod_objektu>
+        <nazev_objektu>Vedlejší rozpočtové náklady</nazev_objektu>
+        <typ_zakazky>STAVEBNI_OBJEKT</typ_zakazky>
+        <datum>07.05.2026</datum>
+        <objednatel>Správa a údržba silnic Plzeňského kraje, p.o.</objednatel>
+        <investor>Plzeňský kraj</investor>
+        <polozky>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>1</cislo_polozky>
+            <nazev_polozky>STAVBYVEDOUCÍ — část. úvazek 30 % (~12 hod/týden, real CZ market for small mostovy projects)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: kfely_mostovy_benchmark</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-01</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>2</cislo_polozky>
+            <nazev_polozky>POJIŠTĚNÍ STAVBY CAR (Contractor's All Risks + odpovědnost za škodu)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>42343</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-02</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>3</cislo_polozky>
+            <nazev_polozky>GEODET — KONTROLNÍ MĚŘENÍ BĚHEM KONSTRUKCE (continuous oversight)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>3</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-03</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>4</cislo_polozky>
+            <nazev_polozky>GEOMETRICKÝ PLÁN (kolaudační podklad pre KÚ)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>45000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-04</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>5</cislo_polozky>
+            <nazev_polozky>DIO — DOPRAVNĚ INŽENÝRSKÉ OPATŘENÍ (komunikace + přípojky stavby)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>100000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-05</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>6</cislo_polozky>
+            <nazev_polozky>MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport mimo bezprostřední staveniště)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>52929</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-06</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>7</cislo_polozky>
+            <nazev_polozky>ZÁVĚREČNÝ ÚKLID VENKOVNÍ (zábor + okolní pozemky)</nazev_polozky>
+            <mj>M2</mj>
+            <mnozstvi>1000</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>35</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-07</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>8</cislo_polozky>
+            <nazev_polozky>FOTODOKUMENTACE STAVBY (3 etapy: před / během / po)</nazev_polozky>
+            <mj>ETAPA</mj>
+            <mnozstvi>3</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>15000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-08</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>9</cislo_polozky>
+            <nazev_polozky>KOORDINÁTOR BOZP (povinný per zákon 309/2006 Sb. § 14 — staveniště s více zhotoviteli)</nazev_polozky>
+            <mj>MES</mj>
+            <mnozstvi>11</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>8000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.9 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-09</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>10</cislo_polozky>
+            <nazev_polozky>SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU (stavební povolení, kolaudace, AI)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>50000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.85 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-10</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>11</cislo_polozky>
+            <nazev_polozky>KOORDINAČNÍ DOKUMENTACE + VYJÁDŘENÍ DOSS (revize TZ + koordinace SO + dotčené orgány)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>30000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.8 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-11</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>12</cislo_polozky>
+            <nazev_polozky>POJIŠTĚNÍ ODPOVĚDNOSTI ZA ŠKODU TŘETÍM OSOBÁM (dodatkové k CAR)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>18000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.75 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-12</uzivatelske_zarazeni>
+          </polozka>
+          <polozka>
+            <typ_vety>K</typ_vety>
+            <typ_polozky>HSV</typ_polozky>
+            <kod_polozky></kod_polozky>
+            <cislo_polozky>13</cislo_polozky>
+            <nazev_polozky>POVODÍ VLTAVY VYJÁDŘENÍ + VODOPRÁVNÍ SOUHLAS (Mladotický potok)</nazev_polozky>
+            <mj>KPL</mj>
+            <mnozstvi>1</mnozstvi>
+            <typ_mnozstvi>ZADANE</typ_mnozstvi>
+            <jednotkova_cena>17000</jednotkova_cena>
+            <jednotkova_cena_dodavky>0,00</jednotkova_cena_dodavky>
+            <typ_sazby_dph>ZAKLADNI</typ_sazby_dph>
+            <poznamka_polozky>Confidence: 0.7 | Source: d6_template_scaled</poznamka_polozky>
+            <uzivatelske_zarazeni>VRN-13</uzivatelske_zarazeni>
+          </polozka>
+        </polozky>
+      </objekt>
+    </objekty>
+  </stavba>
+</unixml>

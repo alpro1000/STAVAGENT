@@ -4,6 +4,7 @@
  */
 
 import { logger } from '../utils/logger.js';
+import { isMonolithicElement } from '@stavagent/monolit-shared';
 
 /**
  * Extract concrete positions from raw Excel rows for a specific bridge
@@ -135,8 +136,15 @@ function parseConcreteRow(row) {
     concreteMark = concreteMarkMatch[0];
   }
 
-  // Determine work subtype
-  const subtype = determineSubtype(popis, mj);
+  // Determine work subtype.
+  // The keyword-based isConcreteWork() lets aggregate fills through ("podklad"
+  // matches PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z KAMENIVA TĚŽENÉHO), so route the
+  // resulting m³ subtype through the shared monolith classifier — aggregate
+  // m³ rows fall back to subtype 'jiné'.
+  let subtype = determineSubtype(popis, mj);
+  if (subtype === 'beton' && !isMonolithicElement({ item_name: popis, otskp_code: otskpCode })) {
+    subtype = 'jiné';
+  }
 
   // Build part name - prefer concrete mark if found
   let partName = extractPartName(popis);

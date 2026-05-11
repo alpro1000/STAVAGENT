@@ -1,0 +1,415 @@
+# master_soupis_SO_290.yaml — SO 290 Silnice III/206 2 (směrová úprava + návaznosti)
+#
+# Žihle 2062-1 — silniční objekt (NE mostní)
+# Scope: směrová úprava silnice III/206 2, km 0,600 – 0,900 (cca 300 m)
+#        per ZD §4.4.n: úprava před nájezdem směr Žihle (povinná) + směr Potvorov (podmíněná).
+#
+# Source primary: user manual SO_201_parsed.yaml položky které logicky patří k silničnímu
+#   objektu, NE k mostu (frézování navazujících úseků, ACL ložná na silnici, příkopové žlaby
+#   silnice mimo nájezdy mostu, dopravní značení přístupů).
+# Source fallback: ZD §4.4.n constraints + Kfely SO 290 reference.
+#
+# Pravidla:
+#   1. Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+#   2. No-work-duplication vs SO 201 (mostní vozovka SMA+ACL+ACP zostane v SO 201 t5).
+#   3. Source field per položku (primary user_manual_fallback; calc nepokrývá silnice).
+
+schema_version: 1
+created: 2026-05-06
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "SO 290 — Silnice III/206 2 (směrová úprava + návaznosti)"
+phase: "D — Master soupis (Session 2)"
+tskp_classes: ["1", "5", "9"]
+scope: "Směrová úprava silnice III/206 2 (km 0,600 – 0,900) — overlay 2 vrstvami (ACL ložná + SMA obrusná) na frézovaný podklad mimo zónu mostu (SO 201)"
+zd_constraints:
+  delka_celkova_m: 300              # km 0,600 – 0,900
+  povinna_uprava_smer_zihle_m: 150
+  podminena_uprava_smer_potvorov_m: 150
+  obrusna_vrstva_tolerance: "100 % bez tolerance (ZD §4.4.j přísnější TKP)"
+
+# ─────────────────────────────────────────────────────────────────────
+# Vstupní geometrie
+# ─────────────────────────────────────────────────────────────────────
+
+inputs:
+  uprava_silnice:
+    L_celkova_m: 225              # 150 (povinná Žihle) + 75 (částečně Potvorov, dle PDPS)
+    B_vozovky_m: 6.0              # silnice III/206 2 šířka jízdního pruhu
+    plocha_celkova_m2: 1350
+    L_vyloucena_zona_najezdu_m: 60   # 2× 30 m nájezdy SO 201 (vyloučeno z SO 290)
+    plocha_najezdu_m2: 360
+  frezovani:
+    tloustka_frezovat_m: 0.05    # frézovat ACO obrusnou vrstvu
+    objem_frezovani_m3: 67.5     # 1350 × 0.05
+  prikopove_zlaby:
+    L_jednostranne_m: 225        # 1× strana podél povinné + ~75 m podmíněné
+
+# =====================================================================
+# TŘÍDA 1 — ZEMNÍ PRÁCE / FRÉZOVÁNÍ STÁVAJÍCÍHO KRYTU
+# =====================================================================
+
+trida_1_zemni_a_frezovani:
+
+  - polozka_id: "SO290-T1-01"
+    otskp_kod: "113728"
+    popis: "FRÉZOVÁNÍ ZPEVNĚNÝCH PLOCH ASFALTOVÝCH, ODVOZ DO 20 KM (frézování stávající obrusné vrstvy silnice mimo most)"
+    mj: "M3"
+    mnozstvi: 67.5
+    vypocet:
+      formula: "L × B × t"
+      vstupy:
+        L_m: {hodnota: 225,  jednotka: m, popis: "délka úpravy mimo most (300 m celkem − 60 m vyloučená zóna SO 201 nájezdů − 15 m přechod)", zdroj: "ZD §4.4.n + Phase B"}
+        B_m: {hodnota: 6.0,  jednotka: m, popis: "šířka vozovky silnice III/206 2",                                                              zdroj: "ČSN 73 6101"}
+        t_m: {hodnota: 0.05, jednotka: m, popis: "frézovat horní obrusnou ACO vrstvu",                                                          zdroj: "ČSN 73 6121 + ZD §4.4.n"}
+      vypocet_kroky:
+        - "225 × 6.0 = 1350 m² (plocha úpravy)"
+        - "1350 × 0.05 = 67.5 m³ (objem frézovaných asfaltů)"
+    confidence: 0.85
+    jedn_cena_kc: 2072.20
+    note: |
+      DUPLICATION CHECK: SO 001 T9-05 frézování (1.8 m³ vozovka mostu) + SO 290 T1-01
+      (67.5 m³ silnice III/206 2 navazující úseky) = různé úseky, různé OTSKP-context.
+      Frézáty → RS Žatec (Ekostavby Louny) per `vendor_quotes.yaml` 220-300 Kč/t.
+    cena_celkem_kc: 139874
+    source: "user_manual_fallback"
+
+# =====================================================================
+# TŘÍDA 5 — KOMUNIKACE (overlay 2 vrstvami: ACL ložná + SMA obrusná)
+# =====================================================================
+
+trida_5_komunikace:
+
+  - polozka_id: "SO290-T5-01"
+    otskp_kod: "572214"
+    popis: "SPOJOVACÍ POSTŘIK Z MODIFIK EMULZE DO 0,5 KG/M² (mezi vrstvami: frézovaný podklad → ACL → SMA)"
+    mj: "M2"
+    mnozstvi: 2700.0
+    vypocet:
+      formula: "2_aplikace × plocha_uprava"
+      vstupy:
+        plocha_m2:    {hodnota: 1350, jednotka: m2, popis: "plocha úpravy silnice", zdroj: "T1-01"}
+        pocet_aplikaci: {hodnota: 2,  jednotka: -,  popis: "1× pod ACL + 1× mezi ACL a SMA", zdroj: "ČSN 73 6121"}
+      vypocet_kroky:
+        - "2 × 1350 = 2700 m²"
+    confidence: 0.95
+    jedn_cena_kc: 25
+    cena_celkem_kc: 67500
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T5-02"
+    otskp_kod: "574C78"
+    popis: "ASFALTOVÝ BETON PRO LOŽNÍ VRSTVY ACL 22+, 22S TL. 80 MM (ložná vrstva silnice)"
+    mj: "M2"
+    mnozstvi: 1350.0
+    vypocet:
+      formula: "plocha_uprava"
+      vstupy:
+        plocha_m2: {hodnota: 1350, jednotka: m2, popis: "celá plocha úpravy 225 × 6", zdroj: "T1-01"}
+      vypocet_kroky:
+        - "225 × 6.0 = 1350 m²"
+    confidence: 0.9
+    jedn_cena_kc: 450
+    cena_celkem_kc: 607500
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T5-03"
+    otskp_kod: "574I54"
+    popis: "ASFALTOVÝ KOBEREC MASTIXOVÝ SMA 11+, 11S TL. 40 MM (obrusná vrstva 100 % bez tolerance per ZD §4.4.j)"
+    mj: "M2"
+    mnozstvi: 1350.0
+    vypocet:
+      formula: "= mnozstvi(574C78)"
+      vstupy:
+        plocha_m2: {hodnota: 1350, jednotka: m2, popis: "stejná plocha jako ACL ložná", zdroj: "T5-02"}
+      vypocet_kroky:
+        - "1350 m²"
+    confidence: 0.9
+    jedn_cena_kc: 480
+    note: "ZD §4.4.j: obrusná vrstva 100 % tloušťky bez tolerance — vyšší přesnost než standardní TKP, vyžaduje overpour reserve 5-10 % v praxi (zhotovitel dimenzuje)."
+    cena_celkem_kc: 648000
+    source: "user_manual_fallback"
+
+# =====================================================================
+# TŘÍDA 9 — OSTATNÍ (příkopové žlaby + dopravní značení + svodidla okraj)
+# =====================================================================
+
+trida_9_ostatni:
+
+  - polozka_id: "SO290-T9-01"
+    otskp_kod: "919111"
+    popis: "ŘEZÁNÍ ASFALTOVÉHO KRYTU VOZOVEK TL DO 50 MM (přesné napojení na sousední úseky silnice + na nájezdy SO 201)"
+    mj: "M"
+    mnozstvi: 24.0
+    vypocet:
+      formula: "2_okraje × B_vozovky + propojení_s_SO201"
+      vstupy:
+        B_vozovky_m:        {hodnota: 6.0, jednotka: m, popis: "šířka silnice",                          zdroj: "T1-01"}
+        pocet_okraju:       {hodnota: 2,   jednotka: ks, popis: "začátek + konec úpravy",                zdroj: "ZD §4.4.n"}
+        SO201_napoj_m:      {hodnota: 12,  jednotka: m, popis: "2× hranice s nájezdy SO 201 (dlouhých)", zdroj: "Phase B"}
+      vypocet_kroky:
+        - "2 × 6.0 = 12 m (okraje úpravy)"
+        - "+ 12 m napojení na SO 201 nájezdy"
+        - "Total: 24 m"
+    confidence: 0.85
+    jedn_cena_kc: 90
+    cena_celkem_kc: 2160
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-02"
+    otskp_kod: "935212"
+    popis: "PŘÍKOPOVÉ ŽLABY Z BETON TVÁRNIC ŠÍŘ DO 600 MM DO BETONU TL 100 MM (jednostranné odvodnění silnice)"
+    mj: "M"
+    mnozstvi: 225.0
+    vypocet:
+      formula: "L_uprava_jednostranna"
+      vstupy:
+        L_m: {hodnota: 225, jednotka: m, popis: "podél celé úpravy 1× strana (sklon do potoka)", zdroj: "Phase B + ČSN 73 6101"}
+      vypocet_kroky:
+        - "225 m příkopové žlaby (jednostranné, gravitačně do koryta)"
+    confidence: 0.85
+    jedn_cena_kc: 1100
+    note: "DUPLICATION CHECK: SO 201 T9-16 = 25.68 m příkopové žlaby (lokálně u nájezdů mostu). SO 290 T9-02 = 225 m podél širší silniční úpravy. Different scope, no-duplication."
+    cena_celkem_kc: 247500
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-03"
+    otskp_kod: "915111"
+    popis: "VODOROVNÉ DOPRAVNÍ ZNAČENÍ BARVOU HLADKÉ — DODÁVKA A POKLÁDKA (středová + okrajové čáry silnice)"
+    mj: "M2"
+    mnozstvi: 56.0
+    vypocet:
+      formula: "L_uprava × (1_stredova + 2_okrajove) × sirka_cary"
+      vstupy:
+        L_m:          {hodnota: 225,   jednotka: m,  popis: "délka úpravy",                        zdroj: "T1-01"}
+        pocet_car:    {hodnota: 2,     jednotka: -,  popis: "2 plné čáry (středová + 1 okrajová)", zdroj: "ČSN 73 6133"}
+        sirka_cary_m: {hodnota: 0.125, jednotka: m,  popis: "standardní šířka V1/V2 čáry",          zdroj: "ČSN 73 6133"}
+      vypocet_kroky:
+        - "225 × 2 × 0.125 = 56.25 ≈ 56 m²"
+    confidence: 0.85
+    jedn_cena_kc: 200
+    cena_celkem_kc: 11200
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-04"
+    otskp_kod: "915231"
+    popis: "VODOR DOPRAV ZNAČ PLASTEM PROFIL ZVUČÍCÍ — DOD A POKLÁDKA (zvučící varianta okrajové čáry — bezpečnostní)"
+    mj: "M2"
+    mnozstvi: 28.0
+    vypocet:
+      formula: "L_uprava × 1_okrajova × sirka"
+      vstupy:
+        L_m:          {hodnota: 225,   jednotka: m, popis: "délka úpravy", zdroj: "T1-01"}
+        sirka_m:      {hodnota: 0.125, jednotka: m, popis: "okrajová zvučící čára (varování o opuštění pruhu)", zdroj: "ČSN 73 6133 + ZD §4.4.i extravilán"}
+      vypocet_kroky:
+        - "225 × 1 × 0.125 = 28 m²"
+    confidence: 0.85
+    jedn_cena_kc: 480
+    cena_celkem_kc: 13440
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-05"
+    otskp_kod: "914352"
+    popis: "DOPRAVNÍ ZNAČKY ZÁKLADNÍ VELIKOSTI HLINÍK — MONTÁŽ S PŘESUNEM (přístupové výstrahy + omezení)"
+    mj: "KUS"
+    mnozstvi: 4
+    vypocet:
+      formula: "smer_zihle_DZ + smer_potvorov_DZ"
+      vstupy:
+        zihle_DZ_pocet:    {hodnota: 2, jednotka: ks, popis: "B13 + E13 (omezení nákladních) — opakované per HPM s.3 [4.3]", zdroj: "HPM s.3"}
+        potvorov_DZ_pocet: {hodnota: 2, jednotka: ks, popis: "B13 + E13 — symetrické značení v opačném směru",               zdroj: "ČSN 73 6133"}
+      vypocet_kroky:
+        - "2 + 2 = 4 ks (oboustranné značení přístupů)"
+    confidence: 0.9
+    jedn_cena_kc: 1500
+    note: |
+      DUPLICATION CHECK: SO 201 T9-06 = 2 ks (na mostě samotném). SO 290 T9-05 = 4 ks
+      (na přístupech k mostu před+za, oboustranně). Different positions per HPM mapy.
+    cena_celkem_kc: 6000
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-06"
+    otskp_kod: "914911"
+    popis: "SLOUPKY A STOJKY DOPRAVNÍCH ZNAČEK Z OCEL TRUBEK SE ZABETONOVÁNÍM"
+    mj: "KUS"
+    mnozstvi: 4
+    vypocet:
+      formula: "= mnozstvi(914352)"
+      vstupy:
+        pocet_DZ: {hodnota: 4, jednotka: ks, popis: "T9-05", zdroj: "T9-05"}
+      vypocet_kroky:
+        - "4 × 1 sloupek per DZ = 4 ks"
+    confidence: 0.9
+    jedn_cena_kc: 1200
+    cena_celkem_kc: 4800
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-07"
+    otskp_kod: "9113B1"
+    popis: "SVODIDLO OCEL SILNIČNÍ JEDNOSTRANNÉ, ÚROVEŇ ZADRŽ H1 — DODÁVKA A MONTÁŽ (podél příkopu mimo zónu nájezdů)"
+    mj: "M"
+    mnozstvi: 100.0
+    vypocet:
+      formula: "L_uprava − L_najezdy_v_SO201 − L_bez_svodidla"
+      vstupy:
+        L_uprava_m:           {hodnota: 225, jednotka: m, popis: "délka úpravy SO 290",                                   zdroj: "T1-01"}
+        L_najezdy_SO201_m:    {hodnota: 60,  jednotka: m, popis: "2× 30 m nájezdy mostu (svodidlo H1 v SO 201 T9-01)",   zdroj: "SO201-T9-01"}
+        L_bez_svodidla_m:     {hodnota: 65,  jednotka: m, popis: "úseky bez nutnosti svodidla (terén bezpečný, mimo příkop)", zdroj: "engineering judgment"}
+      vypocet_kroky:
+        - "225 − 60 − 65 = 100 m"
+    confidence: 0.7
+    jedn_cena_kc: 1780.96
+    note: |
+      DUPLICATION CHECK: SO 201 T9-01 = 60 m (na nájezdech mostu, intenzivnější úsek).
+      SO 290 T9-07 = 100 m (podél širší silnice mimo nájezdy). Different geographic
+      segments. Pro DPS projektant ověří potřebnost dle bezpečnostní analýzy nehodovosti.
+    cena_celkem_kc: 178096
+    source: "user_manual_fallback"
+
+  - polozka_id: "SO290-T9-08"
+    otskp_kod: "91238"
+    popis: "SMĚROVÉ SLOUPKY Z PLAST HMOT — NÁSTAVCE NA SVODIDLA VČ. ODRAZNÝCH PRVKŮ"
+    mj: "KUS"
+    mnozstvi: 33
+    vypocet:
+      formula: "L_svodidla / spacing"
+      vstupy:
+        L_m:           {hodnota: 100, jednotka: m,  popis: "T9-07 délka svodidla",       zdroj: "T9-07"}
+        spacing_per_ks: {hodnota: 3,  jednotka: m,  popis: "směrový sloupek každé 3 m",  zdroj: "ČSN 73 6101"}
+      vypocet_kroky:
+        - "100 / 3 = 33.3 ≈ 33 ks"
+    confidence: 0.9
+    jedn_cena_kc: 800
+    cena_celkem_kc: 26400
+    source: "user_manual_fallback"
+
+# =====================================================================
+# TOTALS — SO 290
+# =====================================================================
+
+totals:
+  trida_1_kc: 139874     # 139874
+  trida_5_kc: 1323000    # 67500+607500+648000
+  trida_9_kc: 489596     # 2160+247500+11200+13440+6000+4800+178096+26400
+  SO_290_subtotal_kc: 1952470
+  SO_290_total_kc: 1952470
+  SO_290_total_with_vat_kc: 2362489    # × 1.21
+  total_polozek: 12      # 1 + 3 + 8
+
+source_distribution:
+  calculator_deterministic_polozek: 0    # Phase C calc nepokrývá silnici
+  calculator_deterministic_kc: 0
+  user_manual_fallback_polozek: 12
+  user_manual_fallback_kc: 1952470
+
+confidence_distribution:
+  high_0_85_to_1_0: 11
+  medium_0_70_to_0_84: 1   # T9-07 svodidlo (uncertain dle bezpečnostní analýzy)
+  total_polozek: 12
+
+# =====================================================================
+# NO-WORK-DUPLICATION VALIDATION VS SO 001 + SO 180 + SO 201 (all tříd)
+# =====================================================================
+
+no_work_duplication_validation:
+  shared_otskp_kody:
+    - kod: "113728 frézování asfaltů"
+      SO_001_polozka: "T9-05 (1.8 m³ vozovka mostu — demolice)"
+      SO_290_polozka: "T1-01 (67.5 m³ silnice navazující — úprava)"
+      explanation: |
+        DIFFERENT SCOPE: SO 001 = malá plocha mostu samotného (45 m² × 0.04 m).
+        SO 290 = širší silnice III/206 2 navazující úseky (1350 m² × 0.05 m).
+        Different geographic location, different OTSKP-context (demolice vs úprava).
+
+    - kod: "574C78 ACL 22+ + 574I54 SMA 11+"
+      SO_201_polozka: "T5-05 ACL 450 m² + T5-07 SMA 518.4 m² — vozovka mostu + nájezdy ~30 m každá strana"
+      SO_290_polozka: "T5-02 ACL 1350 m² + T5-03 SMA 1350 m² — širší silnice mimo nájezdy"
+      explanation: |
+        DIFFERENT GEOGRAPHIC SEGMENTS: SO 201 t5 pokrývá most + intenzivní nájezdy (60 m
+        každá strana = 565.5 m² total). SO 290 pokrývá zbytek silnice III/206 2
+        v rozmezí 225 m × 6 m = 1350 m² mimo zónu nájezdů SO 201. Geographic split per
+        ZD §4.4.n: SO 201 most + bezprostřední nájezdy, SO 290 širší úprava.
+
+    - kod: "572214 spojovací postřik"
+      SO_201_polozka: "T5-04 (518.4 m² mostu + nájezdy)"
+      SO_290_polozka: "T5-01 (2700 m² širší silnice 2 vrstvy postřiku)"
+      explanation: "Different geographic + different vrstva count. No-duplication PASS."
+
+    - kod: "919111 řezání asfaltu"
+      SO_201_polozka: "T9-12 (106.3 m — okraje mostní vozovky + dilatační spáry)"
+      SO_290_polozka: "T9-01 (24 m — okraje SO 290 segmentu + napojení na SO 201)"
+      explanation: "Different boundaries. SO 201 řezání kolem mostu, SO 290 řezání na hranicích širší úpravy."
+
+    - kod: "935212 příkopové žlaby"
+      SO_201_polozka: "T9-16 (25.68 m — lokálně u nájezdů mostu)"
+      SO_290_polozka: "T9-02 (225 m — podél celé silniční úpravy)"
+      explanation: "Different lengths/locations. Geographic separation."
+
+    - kod: "9113B1 silniční svodidlo H1"
+      SO_201_polozka: "T9-01 (60 m — intenzivní 30 m každá strana nájezdů mostu)"
+      SO_290_polozka: "T9-07 (100 m — podél širší silnice mimo nájezdy)"
+      explanation: "Different geographic segments. Total H1 svodidlo 160 m napříč SO 201 + SO 290."
+
+    - kod: "914352 dopravní značky + 914911 sloupky"
+      SO_201_polozka: "T9-06 + T9-07 (2 ks DZ + 2 ks sloupky NA mostě)"
+      SO_290_polozka: "T9-05 + T9-06 (4 ks DZ + 4 ks sloupky na PŘÍSTUPECH k mostu, oboustranné)"
+      SO_001_polozka: "T9-07 + T9-08 (4 ks demontáž starých DZ + sloupků)"
+      SO_180_polozka: "T0-10 (DIO + dočasné DZ — paušál 6 měs)"
+      explanation: |
+        Phased lifecycle: SO 001 demontáž starých → SO 180 dočasné během stavby →
+        SO 201 trvalé na mostě + SO 290 trvalé na přístupech. Total nové = 6 ks
+        (2 most + 4 přístupy). Žádný překryv.
+
+    - kod: "915111 vodorovné značení barvou"
+      SO_201_polozka: "T9-08 (25 m² — na mostě + bezprostřední nájezdy)"
+      SO_290_polozka: "T9-03 (56 m² — širší silnice 225 m)"
+      explanation: "Different geographic segments. Total značení barvou: 81 m²."
+
+    - kod: "915231 plast značení zvučící"
+      SO_201_polozka: "T9-09 (25 m² — most + nájezdy)"
+      SO_290_polozka: "T9-04 (28 m² — širší silnice okrajová varianta)"
+      explanation: "Different geographic + slightly different positioning (most-okraje vs silnice-okraje)."
+
+    - kod: "91238 směrové sloupky"
+      SO_201_polozka: "T9-03 (20 ks — na 60 m silničního svodidla SO 201)"
+      SO_290_polozka: "T9-08 (33 ks — na 100 m svodidla SO 290)"
+      explanation: "Sloupky vázány na svodidla — same lokace separation."
+
+  duplications_found: 0
+  validation_status: "PASS — všechny shared kódy s SO 201/SO 001/SO 180 mají geographic-segment / lifecycle-phase / scope-different separation. SO 290 = širší silniční úprava mimo zónu mostu + nájezdů."
+
+# =====================================================================
+# CROSS-REFERENCES
+# =====================================================================
+
+cross_references:
+  user_manual_source:    "../manual_reference_JS/SO_201_parsed.yaml — třída 5 (komunikace) + 9 (ostatní) — položky logicky náležící silnici"
+  reconciliation_report: "../reconciliation_report.md"
+  zd_constraints:        "../../inputs/pdf/ZD - Most ev.č. 2062-1 u obce Žihle - DaB.pdf §4.4.n + §4.4.j"
+  phase_b_design:        "../../02_design/decomposition_so.md"
+  phase_b_estimate:      "../../02_design/element_breakdown.yaml — out_of_calculator.SO_290_smerova_uprava (orientační 1.2-1.8M)"
+  task_spec:             "../../inputs/TASK_Zihle_MasterSoupis_Reconciliation.md § 3.5"
+  related_so_files:
+    - "master_soupis_SO_001.yaml (T9-05 frézování mostu — separate scope)"
+    - "master_soupis_SO_180.yaml (T5-01..T5-04 vozovka objízdky — provizorní, separate scope)"
+    - "master_soupis_SO_201_t5_t6_t7.yaml (vozovka mostu + nájezdy — geographic separation)"
+    - "master_soupis_SO_201_t8_t9.yaml (svodidla/DZ/značení mostu — geographic separation)"
+
+# =====================================================================
+# FLAGS
+# =====================================================================
+
+flags:
+  - level: info
+    message: "12 položek SO 290 — silniční úprava 225 m × 6 m vozovky (povinná Žihle 150 m + částečně Potvorov 75 m). Per ZD §4.4.n."
+  - level: info
+    message: "Source 100 % user_manual_fallback — Phase C calculator nepokrývá silniční práce (G1 reconciliation gap, backlog #1 calculator extension)."
+  - level: info
+    message: "Per ZD §4.4.j: 'OBRUSNÁ VRSTVA 100 % TLOUŠŤKY BEZ TOLERANCE' přísnější TKP. T5-03 SMA 11+ tolerance 0 mm — vyžaduje overpour reserve 5-10 % (zhotovitel dimenzuje)."
+  - level: info
+    message: "No-work-duplication PASS: 8 shared OTSKP kódů s SO 201/SO 001 — všechny geographic-segment / lifecycle-phase / scope-different separated."
+  - level: info
+    message: "Geographic split per ZD §4.4.n: SO 201 = most + bezprostřední nájezdy 60 m, SO 290 = zbytek silnice III/206 2 (300 m total − 60 m nájezdy − 15 m přechod) = 225 m."
+  - level: warning
+    message: "T9-07 silniční svodidlo H1 100 m confidence 0.7 — délka uncertain (engineering estimate 65 m bez svodidla v terénu bezpečném). Pro DPS projektant ověří dle bezpečnostní analýzy nehodovosti."
+  - level: info
+    message: "SO 290 total 1 952 470 Kč ≈ orientační odhad Phase B element_breakdown (1.2-1.8M, midpoint 1.5M) — within 30 % tolerance (overlay s ACL+SMA + 100 m svodidlo nad orientačním minimum)."

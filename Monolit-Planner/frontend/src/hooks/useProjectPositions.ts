@@ -22,9 +22,34 @@ function syncTOVToRegistry(positions: Position[]) {
     // Fire-and-forget — don't await, don't block UI
     axios.post(`${API_URL}/api/export-to-registry/position/${pos.id}/tov`)
       .catch(err => {
-        console.warn(`[TOV sync] Failed for position ${pos.id}:`, err.message);
+        // 404 = position was deleted in the backend (e.g. user re-imported
+        // the project, which DROPs and re-INSERTs positions with fresh
+        // IDs). Stale FE cache will resolve on the next refetch. Don't
+        // pollute the console for an expected condition; surface real
+        // errors only.
+        const status = err?.response?.status;
+        if (status === 404) return;
+        console.warn(`[TOV sync] Failed for position ${pos.id}:`, status, err.message);
       });
   }
+}
+
+/**
+ * Fields whose change has no effect on the TOV (work breakdown / labour
+ * costs) downstream of Registry. Updates limited to these fields do NOT
+ * need a TOV re-sync — most importantly, toggling `metadata.is_monolith_override`
+ * should not spam Registry with N×404s for every linked beton position.
+ */
+const TOV_IRRELEVANT_FIELDS = new Set(['metadata', 'position_instance_id']);
+
+function shouldSyncTOV(updates: Partial<Position>[]): boolean {
+  for (const u of updates) {
+    for (const key of Object.keys(u)) {
+      if (key === 'id') continue;
+      if (!TOV_IRRELEVANT_FIELDS.has(key)) return true;
+    }
+  }
+  return false;
 }
 
 function positionsKey(projectId: string | null, onlyRFI: boolean) {
@@ -54,11 +79,19 @@ export function useProjectPositions() {
       if (!selectedProjectId) throw new Error('No project selected');
       return positionsAPI.update(selectedProjectId, updates);
     },
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       // Update cache directly with fresh data from server
       qc.setQueryData(positionsKey(selectedProjectId, showOnlyRFI), data);
-      // Auto-sync TOV to Registry (fire-and-forget) for linked positions
-      if (data?.positions) syncTOVToRegistry(data.positions);
+
+      // Auto-sync TOV to Registry only when the update actually changes
+      // something Registry cares about (qty, days, wages, …). Metadata-only
+      // updates such as the "Není monolit" toggle would otherwise fire one
+      // POST per linked position and 404-spam the console.
+      if (!data?.positions || !variables?.length) return;
+      if (!shouldSyncTOV(variables)) return;
+      const updatedIds = new Set(variables.map(u => u.id).filter(Boolean));
+      const changed = data.positions.filter((p: Position) => p.id && updatedIds.has(p.id));
+      if (changed.length) syncTOVToRegistry(changed);
     },
   });
 

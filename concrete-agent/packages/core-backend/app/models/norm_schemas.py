@@ -204,6 +204,44 @@ class AdvisorContext(BaseModel):
     document_text: Optional[str] = None
     materials: List[str] = Field(default_factory=list)
     standards_mentioned: List[str] = Field(default_factory=list)
+    # ── Precedent-retrieval inputs (KB B5 reference matching) ────────────
+    project_type: Optional[str] = Field(
+        default=None,
+        description=(
+            "Specific classification used for KB precedent matching. "
+            "Examples: 'mostovy', 'highway_urban', 'pozemni', 'inzenyrske'. "
+            "Falls back to construction_type if not provided."
+        ),
+    )
+    scope_kc_bez_dph: Optional[float] = Field(
+        default=None,
+        description="Project scope in Kč without DPH — drives scope_range bucketing.",
+    )
+    scope_range: Optional[str] = Field(
+        default=None,
+        description=(
+            "Scope bucket — 'small' (<20M), 'mid' (20-70M), 'large' (>70M). "
+            "Auto-derived from scope_kc_bez_dph if not provided."
+        ),
+    )
+    duration_mes: Optional[float] = Field(
+        default=None,
+        description="Project duration in months (used as secondary precedent-match signal).",
+    )
+
+
+class Precedent(BaseModel):
+    """KB B5 reference project matched against AdvisorContext."""
+    name: str
+    path: str                                    # repo-relative dir under KB
+    project_type: Optional[str] = None
+    scope_kc_bez_dph: Optional[float] = None
+    scope_range: Optional[str] = None
+    duration_mes: Optional[float] = None
+    zs_pomer_pct: Optional[float] = None
+    status: Optional[str] = None
+    summary_lines: List[str] = Field(default_factory=list)   # 3-6 fact bullets
+    score: float = 0.0                           # similarity score (higher = more similar)
 
 
 class AdvisorRecommendation(BaseModel):
@@ -224,6 +262,15 @@ class AdvisorResponse(BaseModel):
     ai_model_used: Optional[str] = None
     perplexity_supplement: Optional[str] = None
     warnings: List[str] = Field(default_factory=list)
+    # ── Precedent retrieval surface (Žihle Session 5) ────────────────────
+    precedents: List[Precedent] = Field(
+        default_factory=list,
+        description="Top-K KB B5 precedents fed to LLM as few-shot examples.",
+    )
+    precedent_alignment: Optional[str] = Field(
+        default=None,
+        description="LLM-self-described alignment of output to precedent benchmarks.",
+    )
 
 
 # ---------------------------------------------------------------------------

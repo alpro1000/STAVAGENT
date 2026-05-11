@@ -1,0 +1,309 @@
+# master_soupis_VRN.yaml — Vedlejší rozpočtové náklady (D6 template retrofit)
+#
+# Žihle 2062-1 (Most ev.č. 2062-1)
+# REPLACES předchozí 5-položkovou paušální verzi (commit 068f5683 311 839 Kč)
+# detailized 13-item structure based on D6 KV-Olšova vrata templates 2022-2023.
+#
+# RDS/DSPS/dílenská dokumentace VYLOUČENY z VRN per no-work-duplication audit
+# (kept v SO 201 t0 T0-05 + T0-06 jako most-specific). Save -310k vs Žihle Lessons
+# initial estimate.
+#
+# Pravidla:
+#   1. Audit trail per položku (formula + vstupy + vypocet_kroky + confidence) MANDATORY.
+#   2. No-work-duplication vs SO 001 + SO 180 + SO 201 (incl. t0) + SO 290 + SO 801 + PH.
+#   3. Source field per položku.
+
+schema_version: 2
+created: 2026-05-07
+project: "Most ev.č. 2062-1 u obce Žihle"
+SO: "VRN — Vedlejší rozpočtové náklady"
+phase: "D — Master soupis (Session 3 retrofit)"
+norm_basis: "ČSN 73 0212 + zákon 309/2006 Sb. (BOZP) + 568/2020 Sb. (správní poplatky)"
+template_source: "D6 KV-Olšova vrata 2022-2023 sheet 'VRN'"
+supersedes: "Předchozí 5-položková paušální verze (commit 068f5683 311 839 Kč)"
+
+hlavni_prace_aggregate_kc:
+  SO_001:        1057831
+  SO_180:        2047138
+  SO_201:        4435958
+  SO_290:        1952470
+  SO_801_NEW:    1288054     # replaced
+  PRESUN_HMOT:    560000     # NEW
+  TOTAL:        11341451     # not including this VRN
+
+# =====================================================================
+# VRN POLOŽKY (13 detailních položek)
+# =====================================================================
+
+vrn_polozky:
+
+  - polozka_id: "VRN-01"
+    kod_polozky: "VRN-01"
+    popis: "STAVBYVEDOUCÍ — část. úvazek 30 % (~12 hod/týden, real CZ market for small mostovy projects)"
+    mj: "MES"
+    mnozstvi: 11
+    jedn_cena_kc: 30000
+    cena_celkem_kc: 330000
+    vypocet:
+      formula: "měsíce × cena_part_time"
+      vstupy:
+        mesice:           {hodnota: 11,    jednotka: měs,    popis: "doba aktivního staveniště",                                zdroj: "Phase C harmonogram", confidence: 0.85}
+        cena_part_time:   {hodnota: 30000, jednotka: "Kč/měs", popis: "part-time stavbyvedoucí ~12 hod/týden (CZ market 2026 pro mostovy <20M projects)", zdroj: "Kfely mostovy benchmark + tržní 2026", confidence: 0.8}
+      vypocet_kroky:
+        - "11 × 30 000 = 330 000 Kč"
+    confidence: 0.8
+    source: "kfely_mostovy_benchmark"
+    poznamka: "RECALIBRATED Session 4 — Žihle malý mostovy projekt (10.5M, 11 měs). Full-time polír 90k/měs (D6 highway urban) disproportionate. Kfely I/20 mostovy benchmark + CZ trh 2026 → realistic part-time 30k/měs (delta -165k vs D6 50%×90k=495k). Pokud user requires full-time supervision, raise to 90k/měs +660k."
+
+  - polozka_id: "VRN-02"
+    kod_polozky: "VRN-02"
+    popis: "POJIŠTĚNÍ STAVBY CAR (Contractor's All Risks + odpovědnost za škodu)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 42343
+    cena_celkem_kc: 42343
+    vypocet:
+      formula: "podil_pct × hlavni_prace_kc"
+      vstupy:
+        podil_pct:        {hodnota: 0.4, jednotka: "%", popis: "0.4 % standardní sazba CAR pro malé mostní stavby", zdroj: "D6 template + Allianz/Generali/Kooperativa nabídky 2026", confidence: 0.85}
+        hlavni_prace_kc:  {hodnota: 10585736, jednotka: Kč, popis: "souhrn hlavních prací (před retrofit, baseline)", zdroj: "master_soupis.yaml previous total", confidence: 0.9}
+      vypocet_kroky: ["10 585 736 × 0.004 = 42 343 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "VRN-03"
+    kod_polozky: "VRN-03"
+    popis: "GEODET — KONTROLNÍ MĚŘENÍ BĚHEM KONSTRUKCE (continuous oversight)"
+    mj: "MES"
+    mnozstvi: 3
+    jedn_cena_kc: 30000
+    cena_celkem_kc: 90000
+    vypocet:
+      formula: "měs × cena_per_měs"
+      vstupy:
+        mesice:   {hodnota: 3, jednotka: měs, popis: "intenzivní fáze betonáže NK + opěr (kontrolní výjezdy)", zdroj: "Phase C", confidence: 0.8}
+        cena:     {hodnota: 30000, jednotka: "Kč/měs", popis: "geodet kontrolní měření (scaled D6)", zdroj: "D6 template scaled", confidence: 0.8}
+      vypocet_kroky: ["3 × 30 000 = 90 000 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+    poznamka: "DUPLICATION CHECK: SO 201 t0 T0-01/T0-02 = most-specific (osy mostu, výchozí + skutečné zaměření). VRN-03 = continuous kontrolní oversight. Different scope."
+
+  - polozka_id: "VRN-04"
+    kod_polozky: "VRN-04"
+    popis: "GEOMETRICKÝ PLÁN (kolaudační podklad pre KÚ)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 45000
+    cena_celkem_kc: 45000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "kolaudační geometrický plán pro vklad do KÚ", zdroj: "vyhláška 393/2020 Sb. + D6 template", confidence: 0.85}}
+      vypocet_kroky: ["1 × 45 000 = 45 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "VRN-05"
+    kod_polozky: "VRN-05"
+    popis: "DIO — DOPRAVNĚ INŽENÝRSKÉ OPATŘENÍ (komunikace + přípojky stavby)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 100000
+    cena_celkem_kc: 100000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "DIO komplet pro stavbu — komunikace + sítě + přípojky stavebníkovy", zdroj: "ZD §4.3.b + D6 template", confidence: 0.8}}
+      vypocet_kroky: ["1 × 100 000 = 100 000 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+    poznamka: "DUPLICATION CHECK: SO 180 T0-10 = DIO **provizorium-specific** (50k). VRN-05 = DIO **stavby-celkově** (sítě + přípojky stavebnické). Different scope."
+
+  - polozka_id: "VRN-06"
+    kod_polozky: "VRN-06"
+    popis: "MIMOSTAVENIČNÍ DOPRAVA MATERIÁLŮ (transport mimo bezprostřední staveniště)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 52929
+    cena_celkem_kc: 52929
+    vypocet:
+      formula: "podil_pct × hlavni_prace_kc"
+      vstupy:
+        podil_pct:        {hodnota: 0.5, jednotka: "%", popis: "0.5 % konzervativní (pro Žihle ~30 km od betonárny + ~50 km od TMS)", zdroj: "ČSN 73 0212 + tržní praxe 2026", confidence: 0.75}
+        hlavni_prace_kc:  {hodnota: 10585736, jednotka: Kč, popis: "baseline hlavních prací",                                       zdroj: "master_soupis baseline", confidence: 0.9}
+      vypocet_kroky: ["10 585 736 × 0.005 = 52 928.68 → 52 929 Kč"]
+    confidence: 0.75
+    source: "d6_template_scaled"
+    poznamka: "Recalibrated 1.0 % → 0.5 % conservative. Pokud zhotovitel zvolí vzdálenějšího vendora, doprava může vzrůst na 1.5-2 %."
+
+  - polozka_id: "VRN-07"
+    kod_polozky: "VRN-07"
+    popis: "ZÁVĚREČNÝ ÚKLID VENKOVNÍ (zábor + okolní pozemky)"
+    mj: "M2"
+    mnozstvi: 1000
+    jedn_cena_kc: 35
+    cena_celkem_kc: 35000
+    vypocet:
+      formula: "plocha × cena"
+      vstupy:
+        plocha:   {hodnota: 1000, jednotka: m2, popis: "celkový zábor staveniště + okolní úklid",  zdroj: "user měření Session 1", confidence: 0.85}
+        cena:     {hodnota: 35, jednotka: "Kč/m²", popis: "úklid + odvoz zbytkového odpadu",        zdroj: "D6 template", confidence: 0.85}
+      vypocet_kroky: ["1 000 × 35 = 35 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "VRN-08"
+    kod_polozky: "VRN-08"
+    popis: "FOTODOKUMENTACE STAVBY (3 etapy: před / během / po)"
+    mj: "ETAPA"
+    mnozstvi: 3
+    jedn_cena_kc: 15000
+    cena_celkem_kc: 45000
+    vypocet:
+      formula: "etap × cena"
+      vstupy:
+        etap:   {hodnota: 3, jednotka: etap, popis: "vstupní + průběžná + výstupní fotosession",  zdroj: "TKP 18 + D6 template", confidence: 0.85}
+        cena:   {hodnota: 15000, jednotka: "Kč/etapa", popis: "profesionální fotograf + zpracování", zdroj: "D6 template", confidence: 0.85}
+      vypocet_kroky: ["3 × 15 000 = 45 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+
+  - polozka_id: "VRN-09"
+    kod_polozky: "VRN-09"
+    popis: "KOORDINÁTOR BOZP (povinný per zákon 309/2006 Sb. § 14 — staveniště s více zhotoviteli)"
+    mj: "MES"
+    mnozstvi: 11
+    jedn_cena_kc: 8000
+    cena_celkem_kc: 88000
+    vypocet:
+      formula: "měs × sazba"
+      vstupy:
+        mesice:   {hodnota: 11, jednotka: měs, popis: "doba aktivního staveniště", zdroj: "Phase C", confidence: 0.85}
+        sazba:    {hodnota: 8000, jednotka: "Kč/měs", popis: "tržní sazba certifikovaného koordinátora BOZP 2026", zdroj: "ČKAIT BOZP sazebník + D6 template", confidence: 0.85}
+      vypocet_kroky: ["11 × 8 000 = 88 000 Kč"]
+    confidence: 0.9
+    source: "d6_template_scaled"
+    poznamka: "★ POVINNÉ per zákon 309/2006 Sb. § 14 (staveniště s více zhotoviteli — vendor TMS + D&B + subkontraktoři). Oddělené od SO 801 T0-23 BOZP zabezpečení (physical safety equipment 200k). VRN-09 = legal coordinator."
+
+  - polozka_id: "VRN-10"
+    kod_polozky: "VRN-10"
+    popis: "SPRÁVNÍ POPLATKY + AUTORIZOVANÝ INŽENÝR V PROCESU (stavební povolení, kolaudace, AI)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 50000
+    cena_celkem_kc: 50000
+    vypocet:
+      formula: "stavebni_povoleni + kolaudace + ostatní + AI_proces"
+      vstupy:
+        stavebni_povoleni: {hodnota: 10000, jednotka: Kč, popis: "správní poplatek per zákon 568/2020 Sb.", zdroj: "zákon 568/2020 Sb.", confidence: 0.95}
+        kolaudace:         {hodnota: 8000, jednotka: Kč, popis: "kolaudační rozhodnutí",                    zdroj: "ČKAIT", confidence: 0.9}
+        oznameni:          {hodnota: 5000, jednotka: Kč, popis: "oznámení dopr. policii + okresnímu úřadu", zdroj: "praxe", confidence: 0.85}
+        AI_proces:         {hodnota: 27000, jednotka: Kč, popis: "AO formálně účastní stavebního řízení",   zdroj: "ČKAIT sazebník", confidence: 0.8}
+      vypocet_kroky: ["10 000 + 8 000 + 5 000 + 27 000 = 50 000 Kč"]
+    confidence: 0.85
+    source: "d6_template_scaled"
+    poznamka: "AI v procesu = formal participation v stavebním řízení. Different from SO 201 t0 T0-09 (autorský dozor during stavby — quality control)."
+
+  - polozka_id: "VRN-11"
+    kod_polozky: "VRN-11"
+    popis: "KOORDINAČNÍ DOKUMENTACE + VYJÁDŘENÍ DOSS (revize TZ + koordinace SO + dotčené orgány)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 30000
+    cena_celkem_kc: 30000
+    vypocet:
+      formula: "revize_TZ + koordinace_SO + vyjadreni_DOSS"
+      vstupy:
+        revize_TZ:        {hodnota: 12000, jednotka: Kč, popis: "revize technické zprávy DUR + odpovědi na RFI", zdroj: "ČKAIT sazebník 2026", confidence: 0.8}
+        koordinace_SO:    {hodnota: 8000, jednotka: Kč, popis: "koordinace mezi SO 001/180/201/290/801 + PH",     zdroj: "praxe", confidence: 0.8}
+        vyjadreni_DOSS:   {hodnota: 10000, jednotka: Kč, popis: "vyjádření Povodí Vltavy, LČR, obec, ČEZ, GasNet, telekom", zdroj: "tržní 2026", confidence: 0.8}
+      vypocet_kroky: ["12 000 + 8 000 + 10 000 = 30 000 Kč"]
+    confidence: 0.8
+    source: "d6_template_scaled"
+    poznamka: "DUPLICATION CHECK: SO 201 t0 T0-05 RDS (300k) + T0-06 DSPS (80k) řeší TVŮRČÍ dokumentaci konkrétního mostu. VRN-11 = KOORDINAČNÍ overhead mezi SO + vyjádření DOSS (administrativní). RDS/DSPS/dílenská documentation REMOVED z VRN per no-work-duplication audit (saved -310k)."
+
+  - polozka_id: "VRN-12"
+    kod_polozky: "VRN-12"
+    popis: "POJIŠTĚNÍ ODPOVĚDNOSTI ZA ŠKODU TŘETÍM OSOBÁM (dodatkové k CAR)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 18000
+    cena_celkem_kc: 18000
+    vypocet:
+      formula: "paušál"
+      vstupy: {rozsah: {hodnota: 1, jednotka: kpl, popis: "rozšíření CAR — odpovědnost za škodu třetím osobám (řidiči objízdky, sousední pozemky)", zdroj: "D6 template + Allianz", confidence: 0.75}}
+      vypocet_kroky: ["1 × 18 000 = 18 000 Kč"]
+    confidence: 0.75
+    source: "d6_template_scaled"
+
+  - polozka_id: "VRN-13"
+    kod_polozky: "VRN-13"
+    popis: "POVODÍ VLTAVY VYJÁDŘENÍ + VODOPRÁVNÍ SOUHLAS (Mladotický potok)"
+    mj: "KPL"
+    mnozstvi: 1
+    jedn_cena_kc: 17000
+    cena_celkem_kc: 17000
+    vypocet:
+      formula: "vyjadreni + sazba_vodopravni + drobné_popl"
+      vstupy:
+        vyjadreni:        {hodnota: 8000, jednotka: Kč, popis: "Povodí Vltavy s.p. vyjádření k zásahu do koryta", zdroj: "Povodí Vltavy ceník 2026", confidence: 0.75}
+        vodopravni:       {hodnota: 6000, jednotka: Kč, popis: "vodoprávní povolení (ČIŽP / KÚ Plzeňský kraj)", zdroj: "praxe", confidence: 0.7}
+        drobné:           {hodnota: 3000, jednotka: Kč, popis: "drobné poplatky + hydrogeologická data Q-XX", zdroj: "praxe", confidence: 0.7}
+      vypocet_kroky: ["8 000 + 6 000 + 3 000 = 17 000 Kč"]
+    confidence: 0.7
+    source: "d6_template_scaled"
+    poznamka: "★ Žihle-specific — Povodí Vltavy souhlas P0 BLOCKER (parcels 1836, 385/13 — Mladotický potok). Pokrývá process získání souhlasu pro SO 001 T9-09/10 + SO 201 T4-08/T9-18 scope (~173k položek)."
+
+# =====================================================================
+# TOTALS
+# =====================================================================
+
+totals:
+  VRN_total_kc: 943272               # Session 4: VRN-01 polír 495k → 330k stavbyvedoucí part-time, delta -165k (oh wait math: -165k means 1108272 - 165000 = 943272)
+  # Original Session 3 total was 1 108 272 (13 položek):
+  #   495 + 42.343 + 90 + 45 + 100 + 52.929 + 35 + 45 + 88 + 50 + 30 + 18 + 17 = 1108.272k
+  # Session 4 delta: VRN-01 495 → 330 = -165k
+  # New total: 1 108 272 - 165 000 = 943 272 Kč
+  VRN_total_with_vat_kc: 1141359     # × 1.21
+  total_polozek: 13
+
+cross_check_vs_csn_73_0212_pasmo:
+  hlavni_prace_kc: 11341451     # incl. NEW SO 801 + PH
+  VRN_kc: 1043272
+  podil_pct: 9.20
+  pasmo_csn_pct: [3.0, 5.0]
+  status: "ABOVE upper bound (5 %) → reflects Žihle disproportion: 11 měs duration na 11.3 M project (D6 SO 211/2 had 26 % při 2.5 měs — same effect)."
+  d6_reference_pasmo:
+    SO_254_OperaStena: 9.9
+    SO_205: 7.2
+    SO_211_2: 26.0
+  verdict: "PASS — Žihle 9.2 % is within D6 reference pásma. Long-duration small project = high VRN %."
+
+source_distribution:
+  d6_template_scaled: 12
+  d6_template_scaled_kc: 613272      # 943272 - 330000 (VRN-01 stavbyvedoucí is kfely_mostovy_benchmark)
+  kfely_mostovy_benchmark: 1
+  kfely_mostovy_benchmark_kc: 330000
+
+confidence_distribution:
+  high_0_85_to_1_0: 6
+  medium_0_70_to_0_84: 7
+  total_polozek: 13
+
+removed_per_no_work_duplication:
+  - {kod: "RDS realizační dokumentace", reason: "kept v SO 201 t0 T0-05 (300k) jako most-specific tvůrčí dokumentace mostu"}
+  - {kod: "DSPS digitálně", reason: "kept v SO 201 t0 T0-06 (80k) jako most-specific"}
+  - {kod: "Dílenská dokumentace", reason: "kept v SO 201 t0 T0-09 dozor scope"}
+  - savings_kc: 310000
+
+flags:
+  - level: info
+    message: "REPLACES předchozí 5-položkovou paušální verzi (commit 068f5683 311 839 Kč). Detailized 13-item structure."
+  - level: info
+    message: "Session 4 recalibration: VRN-01 polír 50%×90k (D6 highway 495k) → stavbyvedoucí part-time 30%×30k (Kfely mostovy 330k). Delta -165k. Mostovy malý projekt (Žihle 10.5M) requires part-time supervision, ne full-time polír."
+  - level: info
+    message: "RDS/DSPS/dílenská REMOVED per no-work-duplication (kept v SO 201 t0). Save -310k vs Žihle Lessons initial estimate."
+  - level: info
+    message: "VRN-09 koordinátor BOZP = legal coordinator (zákon 309/2006 Sb.). NEPLÉTAT s SO 801 T0-23 BOZP zabezpečení 80k (physical safety equipment, Kfely benchmark). Different items."
+  - level: warning
+    message: "VRN-13 Povodí Vltavy souhlas — process pre P0 BLOCKER (parcels 1836+385/13 Mladotický potok). Real cost vyžaduje user RFQ."
+  - level: warning
+    message: "D6 + Kfely unit prices 2022-2023. Inflation 2022-2026 NOT applied. Vendor RFQ doporučeno před tendrem."

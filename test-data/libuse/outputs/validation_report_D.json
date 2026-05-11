@@ -1,0 +1,110 @@
+{
+  "objekt": "D",
+  "extract_path": "master_extract_D.json",
+  "totals": {
+    "match": 373,
+    "changed": 0,
+    "new": 7,
+    "missing": 0
+  },
+  "gate_passed": true,
+  "sections": [
+    {
+      "section": "rooms",
+      "match": 111,
+      "changed": 0,
+      "new": 0,
+      "missing": 0,
+      "changed_details": [],
+      "new_details": [],
+      "missing_details": []
+    },
+    {
+      "section": "doors",
+      "match": 102,
+      "new": 0,
+      "missing": 0,
+      "changed": 0,
+      "new_details": [],
+      "missing_details": []
+    },
+    {
+      "section": "segment_counts",
+      "match": 90,
+      "new": 7,
+      "missing": 0,
+      "changed": 0,
+      "per_prefix": {
+        "W": {
+          "match": 6,
+          "new": 3,
+          "missing": 0,
+          "missing_details": []
+        },
+        "WF": {
+          "match": 6,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "OP": {
+          "match": 33,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "LI": {
+          "match": 12,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "TP": {
+          "match": 7,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "F": {
+          "match": 0,
+          "new": 1,
+          "missing": 0,
+          "missing_details": []
+        },
+        "CW": {
+          "match": 0,
+          "new": 2,
+          "missing": 0,
+          "missing_details": []
+        },
+        "LP": {
+          "match": 9,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        },
+        "D": {
+          "match": 14,
+          "new": 1,
+          "missing": 0,
+          "missing_details": []
+        },
+        "CF": {
+          "match": 3,
+          "new": 0,
+          "missing": 0,
+          "missing_details": []
+        }
+      }
+    },
+    {
+      "section": "skladby",
+      "match": 70,
+      "new": 0,
+      "missing": 0,
+      "changed": 0,
+      "new_details": [],
+      "missing_details": []
+    }
+  ]
+}

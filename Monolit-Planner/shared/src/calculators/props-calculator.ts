@@ -160,11 +160,9 @@ export const ELEMENT_DIMENSION_HINTS: Record<StructuralElementType, DimensionHin
     typical_height_range: [1, 3],
     has_height: true,
   },
-  // Gate 2 technical debt fix: zaklady_oper parallel to zaklady_piliru —
-  // same foundation geometry (boční bednění, žádné podpěry, výška 1-3m).
   zaklady_oper: {
     required_dimensions: ['height_m'],
-    hint_cs: 'Výška základu opěry (bednění pouze boční). Podpěry nepotřeba.',
+    hint_cs: 'Výška základu (bednění pouze boční). Podpěry nepotřeba.',
     typical_height_range: [1, 3],
     has_height: true,
   },

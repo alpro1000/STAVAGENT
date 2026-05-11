@@ -10,7 +10,8 @@
     "D3_sequence_gaps_count": 0,
     "D4_xlsx_only_rooms_count": 0,
     "D5_dxf_only_rooms_count": 0,
-    "D6_printed_legend_anomaly": "D.1.3.01 misfiled in PDF (XLSX OK)"
+    "D6_printed_legend_anomaly": "D.1.3.01 misfiled in PDF (XLSX OK)",
+    "abmv_email_items_count": 10
   },
   "D1_undefined_F_codes": {
     "description": "F-codes used in Tabulka místností XLSX but not defined in Tabulka skladeb master XLSX",
@@ -81,6 +82,8 @@
     "Printed legend Tabulka místností 1.NP — D.1.3.01 misfiled under D.1.2 byt section. Subtotaly 55.9 / 43.2 m² mají být 49.59 / 49.59 m². Regenerovat printout pro VELTON delivery.",
     "S.D.16 SKLEPNÍ KÓJE - C (7.62 m²) and S.D.42 SKLEPNÍ KÓJE - D (2.99 m²) defined in Tabulka místností XLSX but missing from DXF geometric dataset — Phase 0.x DXF parser may have skipped them (small kóje? code position outside detected polygons?).",
     "D10 v objektu D má jen STD interior treatment, zatímco v Tabulce 0041 pro objekty A/B je D10 specifikováno s bezpečnostní pack (rám + EMZ + ACS + SN2). Potvrďte zda objekt-D D10 je záměrně downgraded, nebo mělo být specifikováno stejně jako A/B.",
-    "Tabulka 0041 počítá D10=0, D11=0, D21=10 ks, ale v DWG výkresech jsou D10=1 ks (In_FAS_1600x2350 1.NP hlavní vstup), D11=1 ks (1.NP únikový), D21=11 ks. Internal documentation inconsistency — opravte Tabulku 0041 pro budoucí konzistenci A/B/C."
+    "Tabulka 0041 počítá:\n  D10 = 0 ks (DWG: 1 ks, In_FAS_1600x2350 1.NP main entrance)\n  D11 = 0 ks (DWG: 1 ks, 1.NP úniková dveř)\n  D20 = 2 ks (DWG: 1 ks)\n  D42 = 2 ks (DWG: 1 ks)\n  D21 = 10 ks (DWG: 11 ks)\n\nInternal documentation inconsistency between Tabulkou dveří 0041 and architectural DWG drawings. Confirm which is canonical for item generation, and please correct the inconsistent source for future consistency across komplex (A/B/C/D).",
+    "Pro objekt A chybí výkres ARS desek (_110_0000_*) — DWG i PDF. B/C/D mají tento výkres standardně. Prosíme potvrďte, která ze tří možností platí: (a) objekt A nemá samostatný výkres desek (vůbec se neprodukuje); (b) ARS desky pro A jsou sloučené do jiného objektu (např. společný výkres pro A+B nebo s D-deskou) — pokud ano, který soubor je referenční; (c) výkres existuje, ale byl zapomenut při uploadu — prosíme zaslat.",
+    "Pro budoucí konzistenci komplex pricing (objekty A/B/C): 4× VZT DWG (D 1.NP/2.NP/3.NP + 1pp_VZT) a 3× chlazení DWG (D 1.NP/2.NP/3.NP) aktuálně nelze konvertovat z DWG na DXF kvůli libredwg 0.13.4 chybám (DXFStructureError, group code conflicts: 'Invalid group code \"125.00\\n\"' u VZT a 'Object handle not found' u chlazení). Pro objekt D získali jsme přibližné počty heuristickým odhadem (density ratio anchored to vodovod + kanalizace actuals × 30 % VZT / 20 % chl + 1.PP machine room correction; viz probe_9_vzt_chl_manual_counts.md). Confidence 0.70 vs 0.95 pro direct extract. Pro objekty A/B/C komplexu by byla užitečná re-export VZT a chlazení DWG z původního AutoCAD/ArchiCAD source jako: (a) DXF AC1024 (AutoCAD 2010) — staré formáty libredwg čte spolehlivěji; (b) případně DWG AC1024 místo aktuálního AC1027. Není kritické pro objekt D — dokončili jsme manuálním odpočítáním. Pro A/B/C by automatizace ušetřila čas. Severity: nice-to-have (not blocking)."
   ]
 }

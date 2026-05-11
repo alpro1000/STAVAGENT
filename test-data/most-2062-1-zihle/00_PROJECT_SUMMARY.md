@@ -1,17 +1,90 @@
 # Most ev.č. 2062-1 Žihle — Project Summary (sandbox)
 
-**Status:** `documented` (Phase A + B + C + D dokončeny)
-**Datum:** 2026-05-05
+**Status:** `tender_ready` (Phase A + B + C + D + E + retrofit dokončeny — Session 2 KOMPLETNÍ)
+**Datum:** 2026-05-07
 **Tendr deadline:** 2026-07-02 10:00 (ZD §26.1)
 **NENÍ pro odevzdání tendru** — sandbox/golden-test candidate.
 
 ---
 
-## Bottom Line
+## Bottom Line (UPDATED Phase D+E retrofit, 2026-05-07)
 
-**Direct cost ~6.5 mil. Kč** vs budget **30 mil. Kč** → nominální headroom 78 %, ale tato cifra **NEZAHRNUJE** vendor margin (15-30 %), D&B PD fees (DUR + DSP + DPS), risk contingency a profit. Realistická Nabídková cena pro D&B by se pohybovala kolem **12-18 mil. Kč** (s rezervou 40-60 % proti budgetu) — **vejde se s rezervou**.
+**Master soupis: 154 položek, 10 585 736 Kč bez DPH (12 808 741 Kč s DPH 21 %)** — 6 SO objektů
++ VRN, audit trail per položku (formula + vstupy + vypocet_kroky + confidence) 100 %.
 
-**Doba realizace 10.6 měsíců** vs limit 30 měsíců → **vejde se s velkou rezervou** (i s konzervativním přidáním DUR + DSP + DPS pre-construction fází ~3-6 měsíců).
+vs **ZD limit 30 mil. Kč s DPH** → **42.7 %** → **margin 17.2 mil. Kč** pre vendor marže
+(15-30 %), D&B PD fees, risk contingency a profit. Tendrová nabídková cena by se pohybovala
+kolem 18-24 mil. Kč (zhotovitel přidá vlastní marže) — **vejde se s rezervou**.
+
+**Doba realizace 10.6 měsíců** vs limit 30 měsíců → vejde se s velkou rezervou.
+
+---
+
+## Phase D+E retrofit deliverables (Session 2, 2026-05-07)
+
+### Master soupis prací (`04_documentation/master_soupis/`)
+
+| Soubor | Obsah |
+|---|---|
+| `master_soupis.yaml` | Single-file index — totals + per-SO summary + confidence/source distribution |
+| `validation_report.md` | Globální audit (305 řádků): 10 sekcí, 16 reconciliation flags, 4 critical (★) items, OTSKP overlap detection, sanity checks PASS |
+| `soupis_praci_FINAL.xml` | UNIXML 1.2 KROS export — 6 objektů, 154 polozka elementů schema-compliant |
+| `soupis_praci_FINAL.xlsx` | 8 sheets — Souhrn + per-SO (6) + Harmonogram |
+| 10× `master_soupis_SO_*.yaml` | Per-SO + per-třída granular files (audit trail + reconciliation) |
+
+### Phase E situace M 1:500 (`04_documentation/výkresy/`)
+
+| Soubor | Obsah |
+|---|---|
+| `C.2.1_situace_M1_500.svg` | A3 portrait, 1:500 — DXF kadastr (37 polylines) + 16 parcel labels + bridge polygon (9×8.30 m, šikmost 50°) + GPX provizorium 116 m + zábor 1000 m² + title block + scale bar + N arrow + legenda |
+| `C.2.1_situace_M1_500.png` | A3 PNG export přes cairosvg, ~210 DPI |
+| `cross_validation_notes.md` | Vendor situace.pdf comparison — vendor je Mapy.com overview ~30×25 km schematic, NENÍ engineering M 1:500. Phase E SVG je první professional engineering výkres pre DUR. |
+
+### Per-SO breakdown (master soupis)
+
+| SO | Název | Položek | Kč bez DPH | Podíl |
+|---|---|---:|---:|---:|
+| SO 001 | Demolice + odvozy | 30 | 1 057 831 | 10.0 % |
+| SO 180 | Mostní provizorium + objízdná trasa | 26 | 2 047 138 | 19.3 % |
+| SO 201 | Most ev.č. 2062-1 (5 částí t0+t1_t2+t3_t4+t5_t6_t7+t8_t9) | 72 | 4 435 958 | 41.9 % |
+| SO 290 | Silnice III/206 2 (návaznosti) | 12 | 1 952 470 | 18.4 % |
+| SO 801 | Zařízení staveniště (detailní) | 9 | 780 500 | 7.4 % |
+| VRN | Vedlejší rozpočtové náklady (3.04 % per ČSN 73 0212) | 5 | 311 839 | 2.9 % |
+| **TOTAL** | | **154** | **10 585 736** | **100 %** |
+
+### Reconciliation findings — system gaps (per `validation_report.md` § 4)
+
+16 reconciliation flags |Δ%| > 10 % across calculator vs user manual SO_201_JŠ:
+- T3-06 římsy beton **+440 %** (Žihle plná 0.90×0.40 m vs Kfely tenká kantilever) — geometry-driven NOT ERROR
+- T3-02 opěry beton −36 % (integrální rám bez křídel vs Kfely klasická) — concept-driven
+- T4-04 výztuž přechodových −27 % (calc default 100 vs user 138 kg/m³) → **backlog G3** calculator default upgrade na 130 kg/m³
+- T2-02 výztuž základů −33 % (rebar_index 100 vs 140 kg/m³) — same backlog
+- … (12 dalších flags inline dokumentovány s explanation)
+
+### Vendor pricing integration
+
+4 vendoři pre SO 180 mostní provizorium (`vendor_quotes.yaml`):
+- TMS_9m: 405 000 Kč (line-item, Vn 30 t lehčí)
+- PONVIA MS: 637 070 Kč (line-item, Vr 40 t MS soustava)
+- Mosty Záboří 4 m: 750 328 Kč (bundled, vozovka 4.0 m)
+- Mosty Záboří 3.5 m: 654 387 Kč (bundled, vozovka 3.5 m)
+- **Median per-line decomposition** = ~696 000 Kč → master soupis SO 180 přiřadí 458 472 Kč
+  (montáž 175.6k + nájem 6 měs 206.3k + prohlídka 76.6k)
+
+Recyklace + odvozy:
+- RS Žatec (Ekostavby Louny): beton armovaný 400 Kč/t, asfalt 220-300 Kč/t
+- DECO TRADE Nesuchyně: zemina 120 Kč/t (platnost 2026-12-31)
+
+### Outstanding P0 blocker pre DUR
+
+⛔ **Povodí Vltavy souhlas MISSING** (parcely 1836, 385/13 — Mladotický potok).
+Vodoprávní souhlas vyžadovaný pro:
+- SO 001 T9-09 dlažba koryta 50 m² (19 000 Kč)
+- SO 001 T9-10 opevnění břehů 30 m² (9 600 Kč)
+- SO 201 T4-08 dlažba koryta 16.1 m³ (116 765 Kč)
+- SO 201 T9-18 zaústění skluzů 4 ks (18 000 Kč)
+
+**AKCE:** D&B zhotovitel získá vodoprávní souhlas Povodí Vltavy před DUR řízením.
 
 ---
 

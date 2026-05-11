@@ -1,0 +1,120 @@
+schema_version: 1
+generated: '2026-05-07'
+project: Most ev.č. 2062-1 u obce Žihle
+sandbox_status: Phase D — Master soupis (Session 2 KOMPLETNÍ)
+totals:
+  total_polozek: 181
+  total_kc_bez_dph: 12201523
+  total_kc_s_dph_21pct: 14763843
+  vs_zd_limit_30M_pct: 49.2
+per_SO:
+- SO: SO_001
+  label: Demolice stávajícího mostu
+  polozek: 30
+  kc_bez_dph: 1057831
+  kc_s_dph: 1279976
+  podil_pct: 8.7
+  source_files:
+  - master_soupis_SO_001.yaml
+  phase_c_days_approx: 45
+- SO: SO_180
+  label: Mostní provizorium + objízdná trasa
+  polozek: 26
+  kc_bez_dph: 2047138
+  kc_s_dph: 2477037
+  podil_pct: 16.8
+  source_files:
+  - master_soupis_SO_180.yaml
+  phase_c_days_approx: 30
+- SO: SO_201
+  label: Most ev.č. 2062-1
+  polozek: 72
+  kc_bez_dph: 4435958
+  kc_s_dph: 5367509
+  podil_pct: 36.4
+  source_files:
+  - master_soupis_SO_201_t0.yaml
+  - master_soupis_SO_201_t1_t2.yaml
+  - master_soupis_SO_201_t3_t4.yaml
+  - master_soupis_SO_201_t5_t6_t7.yaml
+  - master_soupis_SO_201_t8_t9.yaml
+  phase_c_days_approx: 135
+- SO: SO_290
+  label: Silnice III/206 2 (návaznosti)
+  polozek: 12
+  kc_bez_dph: 1952470
+  kc_s_dph: 2362489
+  podil_pct: 16.0
+  source_files:
+  - master_soupis_SO_290.yaml
+  phase_c_days_approx: 25
+- SO: SO_801
+  label: Zařízení staveniště (detailní)
+  polozek: 25
+  kc_bez_dph: 1204854
+  kc_s_dph: 1457873
+  podil_pct: 9.9
+  source_files:
+  - master_soupis_SO_801.yaml
+  phase_c_days_approx: 330
+- SO: PRESUN_HMOT
+  label: Přesun hmot stavby
+  polozek: 3
+  kc_bez_dph: 560000
+  kc_s_dph: 677600
+  podil_pct: 4.6
+  source_files:
+  - master_soupis_PRESUN_HMOT.yaml
+  phase_c_days_approx: 180
+- SO: VRN
+  label: Vedlejší rozpočtové náklady
+  polozek: 13
+  kc_bez_dph: 943272
+  kc_s_dph: 1141359
+  podil_pct: 7.7
+  source_files:
+  - master_soupis_VRN.yaml
+  phase_c_days_approx: 330
+confidence_distribution:
+  medium_0.70_to_0.84: 56
+  high_0.85_to_1.0: 118
+  low_0.60_to_0.69: 7
+source_distribution:
+  unspecified: 45
+  user_manual_fallback: 73
+  vendor_pricing_median: 3
+  paušál_administrativní: 6
+  calculator_deterministic: 13
+  d6_template_scaled: 37
+  kfely_mostovy_benchmark: 4
+reconciliation_flags_count: 12
+critical_items_count: 6
+otskp_codes_total_unique: 114
+otskp_codes_shared_across_SO: 21
+files:
+  validation_report: validation_report.md
+  unixml_export: soupis_praci_FINAL.xml
+  xlsx_export: soupis_praci_FINAL.xlsx
+  per_SO_yaml_files:
+  - master_soupis_SO_001.yaml
+  - master_soupis_SO_180.yaml
+  - master_soupis_SO_201_t0.yaml
+  - master_soupis_SO_201_t1_t2.yaml
+  - master_soupis_SO_201_t3_t4.yaml
+  - master_soupis_SO_201_t5_t6_t7.yaml
+  - master_soupis_SO_201_t8_t9.yaml
+  - master_soupis_SO_290.yaml
+  - master_soupis_SO_801.yaml
+  - master_soupis_PRESUN_HMOT.yaml
+  - master_soupis_VRN.yaml
+norm_basis:
+- ČSN 73 0212 (Zařízení staveniště + VRN)
+- ČSN 73 6244 (Mostní izolace)
+- ČSN 73 6242 (Mostovka)
+- ČSN 73 6209 (Zatěžovací zkoušky mostů)
+- ČSN 73 6221 (Mostní inspekce)
+- EN 1992-2 (Beton mostní konstrukce)
+- OTSKP-SP 2025/II (CS ÚRS)
+- Vyhláška 499/2006 Sb.
+- Zákon 309/2006 Sb. (BOZP)
+- ZD §92 odst. 2 ZZVZ (D&B)

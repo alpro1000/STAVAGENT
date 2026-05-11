@@ -19,12 +19,15 @@ import { uploadAPI } from '../../services/api';
 import {
   Calculator, AlertTriangle, Lock, Plus, Zap, Trash2,
   ChevronDown, ChevronRight, AlertCircle, ArrowRightLeft, Upload,
+  Check, X as XIcon,
 } from 'lucide-react';
 import type { Position, Subtype } from '@stavagent/monolit-shared';
 import {
   SUBTYPE_LABELS, UNIT_LABELS,
   sortPartsBySequence,
   calculatePositionFields,
+  isMonolithicElement,
+  readMonolithOverride,
 } from '@stavagent/monolit-shared';
 import { useUI } from '../../context/UIContext';
 import { useProjectPositions } from '../../hooks/useProjectPositions';
@@ -96,18 +99,6 @@ const PROJECT_DEFAULTS = { wage: DEFAULT_WAGE_CZK_PH, shift: DEFAULT_SHIFT_HOURS
 const COL_COUNT = 14;
 
 /* ── MAIN COMPONENT ──────────────────────────────────────────── */
-
-/**
- * Detect "monolitické práce" by OTSKP code prefix.
- * HSV 2xx = základy, 3xx = svislé konstrukce, 4xx = vodorovné konstrukce.
- * If code is missing, assume monolithic (don't hide work-in-progress).
- */
-function isMonolithicOTSKP(code?: string | null): boolean {
-  if (!code) return true;
-  const clean = String(code).replace(/\s/g, '').trim();
-  if (!clean) return true;
-  return /^[234]/.test(clean);
-}
 
 export default function FlatPositionsTable() {
   const { selectedProjectId, activeSnapshot, showOnlyMonolity } = useUI();
@@ -186,15 +177,21 @@ export default function FlatPositionsTable() {
     }));
   }, [calcPositions]);
 
-  // "Jen monolity" filter — keep only element groups that have a beton subtype
-  // (Vypočítat button shown) AND whose beton OTSKP code is monolitické (2xx/3xx/4xx)
-  // or empty (work-in-progress).
+  // "Jen monolity" filter — keep only element groups whose beton position
+  // (Vypočítat button) classifies as monolithic. The shared classifier
+  // honours the per-element override (metadata.is_monolith_override) before
+  // falling back to text + OTSKP heuristics, so the "Není monolit" /
+  // "Monolit" toggle below sticks across reloads.
   const visibleElements = useMemo(() => {
     if (!showOnlyMonolity) return elements;
     return elements.filter(el => {
       const betonPos = el.positions.find(p => p.subtype === 'beton');
       if (!betonPos) return false;
-      return isMonolithicOTSKP(betonPos.otskp_code);
+      return isMonolithicElement({
+        item_name: betonPos.item_name,
+        otskp_code: betonPos.otskp_code,
+        metadata: betonPos.metadata,
+      });
     });
   }, [elements, showOnlyMonolity]);
 
@@ -309,6 +306,36 @@ export default function FlatPositionsTable() {
     }]);
   }, [isLocked, updatePositions]);
 
+  // Manual monolith override — flips between three states:
+  //   null  → auto (shared classifier decides from text + OTSKP)
+  //   true  → forced monolithic (e.g. classifier missed a custom code)
+  //   false → forced non-monolithic (e.g. parser mis-tagged kamenivo)
+  // Stored on the BETON position's metadata so it survives reloads and
+  // round-trips through the export filter.
+  const handleSetMonolithOverride = useCallback(async (
+    element: ElementGroup, override: boolean | null
+  ) => {
+    if (isLocked) return;
+    const betonPos = element.positions.find(p => p.subtype === 'beton');
+    if (!betonPos?.id) return;
+    let meta: Record<string, any> = {};
+    if (betonPos.metadata) {
+      try {
+        meta = typeof betonPos.metadata === 'string'
+          ? JSON.parse(betonPos.metadata)
+          : (betonPos.metadata as Record<string, any>);
+      } catch {
+        meta = {};
+      }
+    }
+    if (override === null) {
+      delete meta.is_monolith_override;
+    } else {
+      meta.is_monolith_override = override;
+    }
+    await updatePositions([{ id: betonPos.id, metadata: JSON.stringify(meta) }]);
+  }, [isLocked, updatePositions]);
+
   // Delete all positions of an element
   const handleDeleteElement = useCallback(async (element: ElementGroup) => {
     if (isLocked) return;
@@ -405,6 +432,7 @@ export default function FlatPositionsTable() {
                   onToggleTOV={toggleTOV}
                   onDelete={() => handleDeleteElement(el)}
                   onDeleteTOVLaborEntry={handleDeleteTOVLaborEntry}
+                  onSetMonolithOverride={(v) => handleSetMonolithOverride(el, v)}
                 />
               ))}
             </tbody>
@@ -412,7 +440,19 @@ export default function FlatPositionsTable() {
         </div>
       )}
 
-      {positions.length > 0 && <FlatGantt positions={calcPositions} />}
+      {positions.length > 0 && (
+        <FlatGantt
+          positions={
+            // Mirror the "Jen monolity" filter in the harmonogram — without
+            // this the Gantt keeps showing all parts (HLOUBENÍ JAM, POPLATKY
+            // ZA SKL…, etc.) even though the table above hides them.
+            showOnlyMonolity
+              ? calcPositions.filter(p =>
+                  visibleElements.some(el => el.partName === p.part_name))
+              : calcPositions
+          }
+        />
+      )}
       <FlatSnapshots />
 
       {addWorkFor && (
@@ -435,7 +475,7 @@ export default function FlatPositionsTable() {
 function ElementBlock({
   element, isLocked, collapsed, expandedTOV,
   onToggle, onCalculate, onFieldChange, onSpeedChange, onOtskpSelect, onAddWork, onToggleTOV, onDelete,
-  onDeleteTOVLaborEntry,
+  onDeleteTOVLaborEntry, onSetMonolithOverride,
 }: {
   element: ElementGroup;
   isLocked: boolean;
@@ -450,6 +490,7 @@ function ElementBlock({
   onDelete: () => void;
   onToggleTOV: (posId: string) => void;
   onDeleteTOVLaborEntry?: (pos: Position, entry: { id: string; normHours: number; totalCost: number }) => Promise<void>;
+  onSetMonolithOverride?: (override: boolean | null) => void;
 }) {
   const [katalogPrice, setKatalogPrice] = useState<number | null>(null);
 
@@ -489,6 +530,16 @@ function ElementBlock({
   const vypocetColor = calcPricePerM3 > 0
     ? (katalogPrice && calcPricePerM3 > katalogPrice ? 'var(--red-500)' : 'var(--green-500)')
     : 'var(--stone-400)';
+
+  // Monolith override state — null = auto, true = forced monolith, false = forced not.
+  const monolithOverride = readMonolithOverride(betonPos?.metadata ?? null);
+  const isMonolith = betonPos
+    ? isMonolithicElement({
+        item_name: betonPos.item_name,
+        otskp_code: betonPos.otskp_code,
+        metadata: betonPos.metadata,
+      })
+    : false;
 
   return (
     <>
@@ -570,7 +621,7 @@ function ElementBlock({
               </span>
             </span>
 
-            {/* Vypočítat / Upřesnit + Delete */}
+            {/* Vypočítat / Upřesnit + Monolith override + Delete */}
             {!isLocked && betonPos && (
               <>
                 <button
@@ -581,6 +632,46 @@ function ElementBlock({
                   <Zap size={13} />
                   {hasDays ? 'Upřesnit' : 'Vypočítat'}
                 </button>
+
+                {/* Monolith override toggle. Auto state shows the opposite
+                    action; explicit override shows a small badge + "auto"
+                    reset. Sticks via metadata.is_monolith_override. */}
+                {onSetMonolithOverride && (
+                  monolithOverride === null ? (
+                    <button
+                      className="sb__icon-btn"
+                      onClick={() => onSetMonolithOverride(!isMonolith)}
+                      title={isMonolith
+                        ? 'Označit jako NEMONOLIT (skryje při filtru "Jen monolity" a vyloučí z exportu)'
+                        : 'Označit jako MONOLIT (zařadí do filtru "Jen monolity" a do exportu)'}
+                      style={{
+                        flexShrink: 0, opacity: 0.4,
+                        color: isMonolith ? 'var(--red-500)' : 'var(--green-500)',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+                      onMouseLeave={e => (e.currentTarget.style.opacity = '0.4')}
+                    >
+                      {isMonolith ? <XIcon size={13} /> : <Check size={13} />}
+                    </button>
+                  ) : (
+                    <button
+                      className="sb__icon-btn"
+                      onClick={() => onSetMonolithOverride(null)}
+                      title={`Ručně označeno jako ${monolithOverride ? 'MONOLIT' : 'NEMONOLIT'}. Klikněte pro návrat na automatické určení.`}
+                      style={{
+                        flexShrink: 0,
+                        display: 'inline-flex', alignItems: 'center', gap: 4,
+                        color: monolithOverride ? 'var(--green-500)' : 'var(--red-500)',
+                        fontSize: 10, fontWeight: 600, padding: '0 6px',
+                      }}
+                    >
+                      {monolithOverride
+                        ? <><Check size={11} /> MONOLIT</>
+                        : <><XIcon size={11} /> NE-MONOLIT</>}
+                    </button>
+                  )
+                )}
+
                 <button
                   className="sb__icon-btn sb__icon-btn--danger"
                   onClick={onDelete}

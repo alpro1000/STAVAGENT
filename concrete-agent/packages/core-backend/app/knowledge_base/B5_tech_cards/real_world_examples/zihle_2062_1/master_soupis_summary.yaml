@@ -1,0 +1,177 @@
+# master_soupis_summary.yaml — Žihle 2062-1 consolidated reference
+#
+# KB entry summary of `test-data/most-2062-1-zihle/04_documentation/master_soupis/`.
+# Values reflect Session 4 state (commit e6a20f24 + Kfely benchmark recalibration).
+# Audit trail samples illustrate Pattern 2 enforcement.
+
+schema_version: 1
+project: "Most ev.č. 2062-1 u obce Žihle"
+session: 4
+last_updated: 2026-05-08
+source_artefakty: "test-data/most-2062-1-zihle/04_documentation/master_soupis/"
+
+totals:
+  total_polozek: 181
+  total_kc_bez_dph: 12201523
+  total_kc_s_dph_21pct: 14763843
+  vs_zd_limit_30M_pct: 49.2
+  margin_kc_s_dph: 15236157
+  audit_trail_complete_pct: 100        # 0/181 missing audit, 0/181 missing confidence
+
+per_SO:
+  - {SO: "SO_001",      label: "Demolice + odvozy",                    polozek: 30, kc_bez_dph: 1057831, podil_pct: 8.7}
+  - {SO: "SO_180",      label: "Mostní provizorium + objízdná trasa",  polozek: 26, kc_bez_dph: 2047138, podil_pct: 16.8}
+  - {SO: "SO_201",      label: "Most ev.č. 2062-1 (5 částí)",          polozek: 72, kc_bez_dph: 4435958, podil_pct: 36.4}
+  - {SO: "SO_290",      label: "Silnice III/206 2 (návaznosti)",       polozek: 12, kc_bez_dph: 1952470, podil_pct: 16.0}
+  - {SO: "SO_801",      label: "Zařízení staveniště (Kfely benchmark)", polozek: 25, kc_bez_dph: 1204854, podil_pct: 9.9}
+  - {SO: "PRESUN_HMOT", label: "Přesun hmot",                          polozek:  3, kc_bez_dph:  560000, podil_pct: 4.6}
+  - {SO: "VRN",         label: "Vedlejší rozpočtové náklady",          polozek: 13, kc_bez_dph:  943272, podil_pct: 7.7}
+
+source_distribution:
+  calculator_deterministic: 31
+  user_manual_fallback: 92
+  paušál_administrativní: 12
+  vrn_kalkulace_per_norma: 0      # absorbed into d6_template_scaled in Session 3
+  d6_template_scaled: 35           # SO 801 (22) + PRESUN_HMOT (3) + VRN (10)
+  kfely_mostovy_benchmark: 4       # ZS-08, ZS-17, ZS-23, VRN-01 (Session 4 retrofit)
+  vendor_pricing_median: 3
+  custom_non_otskp: 5
+  other: 6
+
+confidence_distribution:
+  high_0_85_to_1_0: 102
+  medium_0_70_to_0_84: 70
+  low_0_60_to_0_69: 9
+  total: 181
+
+reconciliation:
+  flags_total: 16                  # |Δ%| > 10 % calc vs user manual SO_201_JŠ
+  matches: 4
+  no_recon_applicable: 161
+  details: "see reconciliation_findings.md (G1-G4 system gaps)"
+
+# =====================================================================
+# AUDIT TRAIL SAMPLES — illustrate Pattern 2 enforcement
+# =====================================================================
+# Three representative položky from different sources/contexts.
+# Full audit trail per item per Pattern 2 (formula + vstupy + vypocet_kroky +
+# confidence + source). Every one of 181 items has this structure.
+
+audit_trail_samples:
+
+  # Sample 1: calculator_deterministic — KEY ELEMENT mostovka
+  - polozka_id: "SO201-T4-01"
+    section: "trida_4_vodorovne (SO 201 t3_t4)"
+    otskp_kod: "421325"
+    popis: "MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE ZE ŽELEZOBETONU C30/37 (mostovková deska)"
+    mj: "M3"
+    mnozstvi: 39.84
+    vypocet:
+      formula: "L × B × t"
+      vstupy:
+        L_m: {hodnota: 12.0, jednotka: m, popis: "délka mostovky (rozpětí 9 m + 2× přesah 1.5 m za opěry)", zdroj: "Phase B varianta_01"}
+        B_m: {hodnota: 8.30, jednotka: m, popis: "šířka NK (vozovka 6.50 + 2× říмса 0.90)",                  zdroj: "Phase B"}
+        t_m: {hodnota: 0.40, jednotka: m, popis: "tloušťka desky (deck_thickness_m per Phase C input)",      zdroj: "Phase B element_breakdown.yaml"}
+      vypocet_kroky:
+        - "12.0 × 8.30 = 99.6 m² (plocha desky)"
+        - "99.6 × 0.40 = 39.84 m³"
+        - "Calculator deterministic: mostovkova_deska.V=39.84"
+    confidence: 1.0
+    jedn_cena_kc: 13417.90
+    cena_celkem_kc: 534569
+    source: "calculator_deterministic"
+    reconciliation:
+      user_manual_value: 37.62
+      delta_pct: 5.9
+      status: match
+      note: "Within ±10 % tolerance — calc accept. User Kfely template má L=9.0 m × t=0.45 m = 33.6 m³ (rozpětí jen, bez přesahů). Žihle Phase B má L=12 m (rozpětí + přesahy) × t=0.40 m = 39.84 m³."
+
+  # Sample 2: user_manual_fallback with reconciliation FLAG
+  - polozka_id: "SO201-T4-04"
+    section: "trida_4_vodorovne (SO 201 t3_t4)"
+    otskp_kod: "420365"
+    popis: "VÝZTUŽ PŘECHODOVÝCH DESEK MOSTNÍCH OPĚR Z OCELI 10505, B500B"
+    mj: "T"
+    mnozstvi: 1.992
+    vypocet:
+      formula: "2 × (V × rebar_index)"
+      vstupy:
+        V_m3: {hodnota: 9.96, jednotka: m3, popis: "1× přechodová deska", zdroj: "T4-03"}
+        rebar_index_kg_m3: {hodnota: 100, jednotka: kg/m3, popis: "100 kg/m³ default pro prechodova_deska (calculator)", zdroj: "Phase B element_breakdown.yaml"}
+      vypocet_kroky:
+        - "1× výztuž: 9.96 × 100 = 996 kg = 0.996 t"
+        - "2× výztuž: 2 × 0.996 = 1.992 t"
+    confidence: 1.0
+    jedn_cena_kc: 41635.80
+    cena_celkem_kc: 82939
+    source: "calculator_deterministic"
+    reconciliation:
+      user_manual_value: 2.74
+      delta_pct: -27.3
+      status: FLAG
+      explanation: |
+        ⚠️ Δ -27 % (calc 1.992 t vs user 2.74 t). User používá rebar_index 138 kg/m³,
+        calculator default 100 kg/m³ → calculator UNDER-estimates pro mostní přechodové
+        desky. **Backlog G3** navrhuje calculator default upgrade na 130 kg/m³ pro
+        prechodova_deska element_type.
+
+  # Sample 3: kfely_mostovy_benchmark (Session 4 retrofit)
+  - polozka_id: "SO801-T0-23"
+    section: "trida_0_zarizeni_staveniste (SO 801 ZS)"
+    otskp_kod: "ZS-23"
+    popis: "BOZP ZABEZPEČENÍ STAVBY (zábradlí + záchytné sítě + ohrada nebezpečných míst)"
+    mj: "KPL"
+    mnozstvi: 1
+    vypocet:
+      formula: "paušál"
+      vstupy:
+        rozsah:
+          hodnota: 1
+          jednotka: kpl
+          popis: "POVINNÉ — fyzické zabezpečení staveniště. Mostovy projekt scope (Kfely benchmark) — D6 200k urban byl over-scoped pro Žihle."
+          zdroj: "Kfely I/20 mostovy benchmark + zákon 309/2006 Sb. + ČSN 73 0212"
+          confidence: 0.9
+      vypocet_kroky:
+        - "1 × 80 000 = 80 000 Kč"
+    confidence: 0.9
+    jedn_cena_kc: 80000
+    cena_celkem_kc: 80000
+    source: "kfely_mostovy_benchmark"
+    poznamka: "★ POVINNÉ. RECALIBRATED Session 4: Kfely mostovy 80k vs D6 highway urban 200k (-120k)."
+
+# =====================================================================
+# CRITICAL ITEMS — items requiring special attention
+# =====================================================================
+critical_items:
+  - polozka: "SO201-T4-01 mostovka 421325"
+    cena_kc: 534569
+    note: "KEY element — 4.4 % rozpočtu, kritická pro statiku a životnost"
+  - polozka: "SO201-T9-15 zatěžovací zkouška 93311"
+    cena_kc: 100000
+    note: "★ POVINNÁ per ČSN 73 6209 — nelze vynechat z tendrového offer"
+  - polozka: "SO801-T0-23 BOZP zabezpečení (Kfely)"
+    cena_kc: 80000
+    note: "POVINNÉ per zákon 309/2006 Sb. + ČSN 73 0212"
+  - polozka: "VRN-09 koordinátor BOZP"
+    cena_kc: 88000
+    note: "★ POVINNÝ per zákon 309/2006 Sb. § 14 (staveniště s více zhotoviteli)"
+
+# =====================================================================
+# EXPLICIT EXCLUSIONS — items NOT in soupis per ZD §4.4.l (integrální rám)
+# =====================================================================
+explicit_exclusions:
+  - {kod: "428xxx", reason: "mostní ložiska — integrální rám = monolithic spojení"}
+  - {kod: "93152", reason: "mostní závěr — integrální rám = thermal expansion via přechodové desky"}
+  - {kod: "93315", reason: "zatěžovací zkouška 2.+další pole — Žihle 1 pole only"}
+  - {kod: "84914", reason: "mostní odpadní potrubí — minimalizace odvodňovačů per §4.4.l"}
+
+cross_references:
+  full_soupis: "test-data/most-2062-1-zihle/04_documentation/master_soupis/master_soupis.yaml"
+  validation_report: "test-data/most-2062-1-zihle/04_documentation/master_soupis/validation_report.md"
+  unixml_export: "test-data/most-2062-1-zihle/04_documentation/master_soupis/soupis_praci_FINAL.xml"
+  xlsx_export: "test-data/most-2062-1-zihle/04_documentation/master_soupis/soupis_praci_FINAL.xlsx"
+  patterns_doc: "../../ZS_templates/PATTERNS.md"
+  this_metadata: "METADATA.md"
+  reconciliation: "reconciliation_findings.md"
+  vendor_snapshot: "vendor_pricing_snapshot.yaml"
+  patterns_validated: "patterns_validated.md"
