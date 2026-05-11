@@ -181,23 +181,23 @@ const COMING_SOON = {
 const STEPS = [
   {
     icon: Upload,
-    title: '1. Tender → Klasifikátor',
-    text: 'Upload bill of quantities (xlsx) or documents (PDF, DWG). AI classifies items and suggests OTSKP codes with probability. Always for user review — never with 100% certainty.',
+    title: '1. Klasifikátor',
+    text: 'Standalone lookup tool. Paste a bill of quantities (xlsx), a single item, or upload a document (PDF, DWG) — AI suggests OTSKP codes with probability. Always for user review, never with 100% certainty. Output: Excel, CSV.',
   },
   {
     icon: TableProperties,
-    title: '2. Export to Registr',
-    text: 'Classified items in the tender workshop. Split into custom groups for supplier RFQs and departments. TOV — every work item broken down into people, machinery, materials.',
+    title: '2. Registr',
+    text: 'Tender workshop. Import your bill of quantities (xlsx), split into custom groups for supplier RFQs and departments. TOV — every work item broken down into people, machinery, materials. Built-in calculators for concrete pump, delivery, and crane.',
   },
   {
     icon: Cpu,
-    title: '3. Object plan in Kalkulátor',
-    text: 'Single-element detail and whole-object plan — concrete, formwork, reinforcement, pour stages, schedule. Resource map (crews, curing time, formwork strike time) flows back into TOV in Registr.',
+    title: '3. Kalkulátor betonáže',
+    text: 'Single-element detail and whole-object plan — concrete, formwork, reinforcement, pour stages, schedule. Resource map (crews, curing time, formwork strike time) available as export for import into TOV in Registr.',
   },
   {
     icon: FileOutput,
     title: '4. Export TOV/DOV',
-    text: 'Excel for suppliers and departments. Hyperlinks back to source file preserved. Price and schedule ready for RFQ.',
+    text: 'Excel from each module for suppliers and departments. Hyperlinks back to source file preserved. Price and schedule ready for RFQ.',
   },
 ];
 

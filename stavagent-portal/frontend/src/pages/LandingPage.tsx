@@ -140,23 +140,23 @@ const COMING_SOON = {
 const STEPS = [
   {
     icon: Upload,
-    title: '1. Smeta → Klasifikátor',
-    text: 'Nahraje výkaz výměr (xlsx) nebo dokumenty (PDF, DWG). AI klasifikuje pozice + navrhne kódy z OTSKP s pravděpodobností. Vždy ke schválení uživatelem — nikdy se 100% jistotou.',
+    title: '1. Klasifikátor',
+    text: 'Standalone lookup nástroj. Vložíte výkaz výměr (xlsx), jednu položku, nebo nahrajete dokument (PDF, DWG) — AI navrhne kódy z OTSKP s pravděpodobností. Vždy ke schválení uživatelem, nikdy se 100% jistotou. Výstup: Excel, CSV.',
   },
   {
     icon: TableProperties,
-    title: '2. Export do Registru',
-    text: 'Klasifikované pozice ve workshop přípraváře. Rozdělíte do vlastních skupin pro poptávky a oddělení. TOV — rozbor každé práce na lidé, mechanizmy, materiály.',
+    title: '2. Registr',
+    text: 'Pracovní workshop přípraváře. Importujete smetu (xlsx), rozdělíte do vlastních skupin pro poptávky a oddělení. TOV — rozbor každé práce na lidé, mechanizmy, materiály. Vestavěné kalkulátory bětonpumpy, dopravy betonu a kranu.',
   },
   {
     icon: Cpu,
-    title: '3. Plán objektu v Kalkulátoru',
-    text: 'Detail prvku i plán celého objektu — beton, bednění, výztuž, takty, harmonogram. Resursní mapa (brigády, doba zrání, doba odbedňování) se vrací do TOV v Registru.',
+    title: '3. Kalkulátor betonáže',
+    text: 'Detail prvku i plán celého objektu — beton, bednění, výztuž, takty, harmonogram. Resursní mapa (brigády, doba zrání, doba odbedňování) je k dispozici jako export pro import do TOV v Registru.',
   },
   {
     icon: FileOutput,
     title: '4. Export TOV/DOV',
-    text: 'Excel pro dodavatele a oddělení. Hypertextové odkazy zpět na zdrojový soubor zachovány. Cena a harmonogram připravené k poptávce.',
+    text: 'Z každého modulu Excel pro dodavatele a oddělení. Hypertextové odkazy zpět na zdrojový soubor zachovány. Cena a harmonogram připravené k poptávce.',
   },
 ];
 
