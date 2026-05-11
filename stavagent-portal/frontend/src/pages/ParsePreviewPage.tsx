@@ -109,7 +109,7 @@ interface FullParsedData {
 
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; bg: string; buildUrl: (fileId: string, portalUrl: string) => string }> = {
   monolit: {
-    label: 'Monolit Planner',
+    label: 'Kalkulátor betonáže',
     icon: 'Hexagon',
     color: '#6366f1',
     bg: '#eef2ff',

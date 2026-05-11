@@ -311,7 +311,7 @@ export default function CalculatorSidebar(props: CalculatorSidebarProps) {
                 value={form.element_type}
                 disabled={isTzContextLocked && lockedFieldSet?.has('element_type')}
                 title={isTzContextLocked && lockedFieldSet?.has('element_type')
-                  ? 'Typ elementu je převzat z pozice v Monolit Planner. Změňte v původní pozici.'
+                  ? 'Typ elementu je převzat z pozice v Kalkulátoru betonáže. Změňte v původní pozici.'
                   : undefined}
                 onChange={e => {
                   const next = e.target.value as StructuralElementType;

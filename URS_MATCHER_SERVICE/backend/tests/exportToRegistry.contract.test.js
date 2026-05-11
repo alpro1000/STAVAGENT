@@ -64,6 +64,15 @@ describe('Klasifikátor Export to Registr — static contract', () => {
     expect(appJs).toMatch(/sourceKiosk:\s*['"]urs-matcher['"]/);
   });
 
+  test('projectName prefix is the canonical Klasifikátor Import (post-Gate 2)', () => {
+    // Gate 2 (commit 6718feb) renamed the projectName prefix from 'URS Import'
+    // to 'Klasifikátor Import' so the imported project label in Registr
+    // matches the canonical user-facing Klasifikátor module name. This test
+    // pins the prefix so a future edit cannot silently regress it back to
+    // 'URS Import' or any other variant.
+    expect(appJs).toMatch(/projectName:\s*`Klasifik[áa]tor Import/);
+  });
+
   test('per-item payload shape is preserved (code / description / unit / metadata)', () => {
     // The Registry receiver expects each item to have at least these keys.
     expect(appJs).toMatch(/code:\s*item\.urs_code/);

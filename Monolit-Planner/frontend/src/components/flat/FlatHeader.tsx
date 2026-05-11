@@ -43,7 +43,7 @@ export default function FlatHeader() {
         </button>
       )}
 
-      <span className="app-header__app">Monolit Planner</span>
+      <span className="app-header__app">Kalkulátor betonáže</span>
 
       {selectedObj && (
         <>

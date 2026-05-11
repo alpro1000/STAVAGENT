@@ -96,7 +96,7 @@ interface ParsedSummary {
 
 const KIOSK_META = {
   monolit: {
-    label: 'Monolit Planner',
+    label: 'Kalkulátor betonáže',
     icon: '\u{1FAA8}',
     color: '#3b82f6',
     bg: '#eff6ff',

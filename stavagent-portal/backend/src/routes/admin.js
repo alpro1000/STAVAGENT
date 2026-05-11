@@ -882,9 +882,9 @@ async function pipelineProxy(req, res, method, ursPath) {
   } catch (err) {
     logger.error(`[Pipeline] Error: ${err.message}`);
     if (err.name === 'TimeoutError' || err.name === 'AbortError') {
-      return res.status(504).json({ error: 'URS Matcher timeout (5 min)' });
+      return res.status(504).json({ error: 'Klasifikátor timeout (5 min)' });
     }
-    res.status(502).json({ error: `URS Matcher unavailable: ${err.message}` });
+    res.status(502).json({ error: `Klasifikátor unavailable: ${err.message}` });
   }
 }
 

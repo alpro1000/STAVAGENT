@@ -252,7 +252,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
           title="Obnovit aplikaci (F5)"
         >
           <Building2 size={24} />
-          <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
+          <h1 className="c-header__title" style={{ fontSize: '20px' }}>Kalkulátor betonáže</h1>
         </div>
 
         <div className="u-flex u-gap-sm header-controls" style={{ flexWrap: 'wrap', alignItems: 'center', gap: '6px' }}>
@@ -312,7 +312,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             className="c-btn"
             onClick={handleToggleRegistryImport}
             disabled={isImportingFromRegistry}
-            title="Načíst pozice z Rozpočet Registry"
+            title="Načíst pozice z Registru"
             style={{ padding: '6px 10px' }}
           >
             {isImportingFromRegistry ? (
@@ -358,7 +358,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
             className="c-btn"
             onClick={handleExportToRegistry}
             disabled={!selectedBridge || isExportingToRegistry}
-            title="Exportovat pozice do Rozpočet Registry"
+            title="Exportovat pozice do Registru"
             style={{ padding: '6px 8px', background: 'var(--color-info, #3b82f6)' }}
           >
             {isExportingToRegistry ? <><Loader2 size={14} className="inline" /> Exportuji...</> : <><Upload size={14} className="inline" /> → Registry</>}
@@ -397,7 +397,7 @@ export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpe
           {loadingProjects ? (
             <span style={{ color: '#9ca3af' }}>Načítání projektů...</span>
           ) : registryProjects.length === 0 ? (
-            <span style={{ color: '#e53e3e' }}>Žádné projekty s daty z Rozpočtu. Nejdříve importujte soubor do Rozpočet Registry.</span>
+            <span style={{ color: '#e53e3e' }}>Žádné projekty s daty z Registru. Nejdříve importujte soubor do Registru.</span>
           ) : (
             <select
               value={selectedRegistryProject}

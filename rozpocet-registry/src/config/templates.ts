@@ -14,14 +14,14 @@ import { defaultImportConfig } from './defaultConfig';
 export const TEMPLATE_URS_STANDARD: ImportTemplate = {
   metadata: {
     id: 'template-urs-standard',
-    name: 'Standardní ÚRS',
+    name: 'Standardní 9místný kód',
     type: 'urs-standard',
-    description: 'Standardní formát ÚRS s kódem, popisem, MJ, množstvím a cenami',
+    description: 'Standardní formát s 9místným kódem, popisem, MJ, množstvím a cenami',
     icon: '📋',
   },
   config: {
     ...defaultImportConfig,
-    templateName: 'Standardní ÚRS',
+    templateName: 'Standardní 9místný kód',
     sheetName: '',        // Will be set dynamically
     sheetIndex: 0,        // First sheet (default)
     columns: {

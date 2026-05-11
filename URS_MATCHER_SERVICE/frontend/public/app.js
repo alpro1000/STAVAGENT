@@ -2357,7 +2357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (lines.length === 0) {
-          showError('V souboru nebyly nalezeny žádné popisky pro URS Matcher.');
+          showError('V souboru nebyly nalezeny žádné popisky ke klasifikaci.');
           return;
         }
 
