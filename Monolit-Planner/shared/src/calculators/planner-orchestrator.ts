@@ -28,6 +28,8 @@ import type { MonteCarloResult } from './pert.js';
 import { calculateCuring, PROPS_MIN_DAYS, getDefaultCuringClass } from './maturity.js';
 import type { ConcreteClass, CementType, ElementType, Season, ConstructionType, CuringClass } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
+import type { ResourceCeiling, CeilingViolation } from './resource-ceiling.js';
+import { applyResourceCeilingDefaults } from './resource-ceiling.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -285,8 +287,31 @@ export interface PlannerInput {
 
   // --- Deadline constraint ---
   /** Investor/project deadline in working days. If total_days exceeds this,
-   *  the system warns and suggests optimized resource configurations. */
+   *  the system warns and suggests optimized resource configurations.
+   *
+   *  POZN: `resource_ceiling.time.deadline_days` má precedenci pokud je obě
+   *  nastavené. Tato top-level pole zůstává jako alias pro backward compat. */
   deadline_days?: number;
+
+  // --- Resource ceiling (Phase 1 — task §5 + audit R1) -----------------------
+  /**
+   * Strop dostupných zdrojů na element (lidé per profession, soupravy
+   * bednění, čerpadla, jeřáby, deadline, ...). Engine NIKDY nepřekročí
+   * user-supplied strop (confidence 0.99). Pokud strop chybí, engine
+   * auto-fillne defaults z `B4_production_benchmarks/default_ceilings/<el>.yaml`
+   * (confidence 0.85) a UI banner ukáže *"Použity typické zdroje pro X.
+   * Upravit?"*.
+   *
+   * Per `Monolit-Planner/shared/src/calculators/resource-ceiling.ts`:
+   *   - `applyResourceCeilingDefaults()` resolve při planElement entry
+   *   - `checkCeilingFeasibility()` před každým crew/pump rozhodnutím
+   *   - INFEASIBLE → ⛔ KRITICKÉ warning + best-effort plán
+   *
+   * Engine integration: Foundation C commits (pour-decision, pour-task,
+   * element-scheduler). Tato pole je v Foundation B jen plumbing — engines
+   * ho zatím nečtou.
+   */
+  resource_ceiling?: ResourceCeiling;
 
   // --- Pile-specific (2026-04-15) ----------------------------------------
   // These fields are read ONLY when element_type === 'pilota'. They feed
@@ -474,6 +499,26 @@ export interface PlannerOutput {
     crew_size: number;
     skruz_total_days: number;  // curing + prestress
   };
+
+  // --- Resource ceiling (Phase 1 plumbing) ----------------------------------
+  /**
+   * Effective ceiling po sloučení user input + KB defaults.
+   * - source: 'manual' (user supplied, confidence 0.99) | 'kb_default'
+   *   (auto-filled from B4, confidence 0.85) | 'auto_derived' (no user + no
+   *   KB default, confidence 1.00 — Phase 2-7 elements without defaults yet)
+   * - Vždy vyplněné (i prázdné `{}` pro auto_derived case).
+   *
+   * Foundation B: stačí jen plumbing. Foundation C engine integration ho
+   * spotřebuje pro `checkCeilingFeasibility()` a zapíše violations níže.
+   */
+  resource_ceiling: ResourceCeiling;
+  /**
+   * Strukturované porušení stropu. Prázdné pole = ceiling feasible nebo
+   * engine ještě neimplementoval check pro daný typ. Foundation C engines
+   * sem zapisují ⛔ KRITICKÉ / ⚠️ / ℹ️ violations s recovery hints v
+   * `warnings[]` (textuální paralelní fronta pro UI banner).
+   */
+  resource_violations: CeilingViolation[];
 
   // --- Props (podpěry) — only for horizontal elements with needs_supports ---
   props?: PropsCalculatorResult;
@@ -765,6 +810,21 @@ export function computePourCrewByPumps(n_pump: number): PourCrewBreakdown {
 export function planElement(input: PlannerInput): PlannerOutput {
   const log: string[] = [];
   const warnings: string[] = [];
+
+  // Resource Ceiling Phase 1 (audit R1) — resolve effective ceiling at entry.
+  // User input (confidence 0.99) WINS over B4 KB defaults (0.85). For elements
+  // without KB defaults yet (Phase 2-7), `applyResourceCeilingDefaults` returns
+  // { source: 'auto_derived' } and engines behave unconstrained (current
+  // behaviour preserved). Foundation B: plumbing only — engines integration
+  // ships in Foundation C commits.
+  const effectiveResourceCeiling = applyResourceCeilingDefaults(
+    // Element type is not classified yet at this point; pass 'other' as a safe
+    // fallback so the merge logic doesn't crash for unknown types. The actual
+    // classify-time relevance check happens once we know the type.
+    (input.element_type ?? 'other'),
+    input.resource_ceiling,
+  );
+  const resourceViolations: CeilingViolation[] = [];
 
   // Unpack defaults
   let crew = input.crew_size ?? DEFAULTS.crew_size;
@@ -2273,6 +2333,12 @@ export function planElement(input: PlannerInput): PlannerOutput {
     }),
     warnings,
     decision_log: [...log, ...pourDecision.decision_log],
+    // Resource Ceiling Phase 1 plumbing (Foundation B).
+    // Engine integration (populating resource_violations from
+    // checkCeilingFeasibility against pour-decision / pour-task / scheduler
+    // demand) ships in Foundation C.
+    resource_ceiling: effectiveResourceCeiling,
+    resource_violations: resourceViolations,
   };
 }
 
@@ -2637,6 +2703,12 @@ function runPilePath(
     },
     warnings,
     decision_log: log,
+    // Resource Ceiling Phase 1 plumbing (Foundation B) — pile path mirror.
+    // Pile relevance has num_carpenters=false, num_vibrators=false,
+    // num_formwork_sets=false, num_pumps=false (tremie). User strop most
+    // commonly hits num_cranes (armokoš transport) — Foundation C check.
+    resource_ceiling: applyResourceCeilingDefaults('pilota', input.resource_ceiling),
+    resource_violations: [],
   };
 }
 

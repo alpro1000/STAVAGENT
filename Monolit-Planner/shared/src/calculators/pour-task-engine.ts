@@ -45,7 +45,16 @@ export interface PourTaskInput {
   washout_h?: number;
 
   // --- Crew ---
-  /** Pour crew size. Default: 6 */
+  /**
+   * Pour crew size.
+   *
+   * R4 (Phase 1 — 2026-05-07): INFORMATIONAL ONLY. Field is accepted on
+   * input for backward compat but NOT consumed by `calculatePourTask`.
+   * Authoritative pour-crew composition comes from `computePourCrew(volume,
+   * n_pump, element_type)` in `planner-orchestrator.ts:728`. Default-6
+   * fallback removed; engine relies on caller-provided count from the
+   * orchestrator's PourCrewBreakdown.
+   */
   crew_size?: number;
   /** Shift hours. Default: 10 */
   shift_h?: number;
@@ -130,12 +139,18 @@ export interface PourTaskResult {
 
 // ─── Defaults ────────────────────────────────────────────────────────────────
 
+// R4 fix (Phase 1 — 2026-05-07): removed `crew_size: 6`. Field was DEAD —
+// `input.crew_size` is no longer read inside calculatePourTask() since the
+// v4.24 refactor moved pour-crew composition into `computePourCrew()` in
+// planner-orchestrator.ts. The `crew_size` field on PourTaskInput is now
+// informational (orchestrator forwards it for backward compat but engine
+// ignores it). One source of truth = `computePourCrew(volume, n_pump, element)`.
+// See: docs/audits/calculator_resource_ceiling/2026-05-07_phase0_audit.md §6.1 R4
 const DEFAULTS = {
   plant_rate_m3_h: 60,
   mixer_delivery_m3_h: 40,
   setup_h: 0.5,
   washout_h: 0.5,
-  crew_size: 6,
   shift_h: 10,
 } as const;
 

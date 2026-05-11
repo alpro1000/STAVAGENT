@@ -16,6 +16,9 @@ import {
   type ResourceCeiling,
   type EngineeringDemand,
 } from './resource-ceiling.js';
+import { decidePourMode } from './pour-decision.js';
+import { calculatePourTask } from './pour-task-engine.js';
+import { planElement, type PlannerInput } from './planner-orchestrator.js';
 
 describe('ResourceCeiling — relevance flags', () => {
   it('operne_zdi: relevant fields cover workforce + formwork + pumps + cranes', () => {
@@ -313,6 +316,119 @@ describe('ResourceCeiling — VP4 FORESTINA demo scenarios (Phase 1 acceptance �
     expect(merged.equipment?.num_pumps).toBe(1);
     // Crane comes from defaults (relevant for opěrné_zdi Framax)
     expect(merged.equipment?.num_cranes).toBe(1);
+  });
+
+  // ─── Foundation B integration: planElement returns resource_ceiling ──────
+
+  it('Foundation B: planElement returns effective resource_ceiling on output', () => {
+    const input: PlannerInput = {
+      element_type: 'operne_zdi',
+      volume_m3: 94.231,
+      formwork_area_m2: 547.4,
+      height_m: 1.75,
+      has_dilatacni_spary: true,
+      spara_spacing_m: 10,
+      total_length_m: 156.4,
+      adjacent_sections: true,
+      concrete_class: 'C30/37',
+      rebar_mass_kg: 5654,
+      rebar_diameter_mm: 12,
+    };
+    const plan = planElement(input);
+    // Foundation B: ceiling resolved at entry, exposed on output.
+    expect(plan.resource_ceiling).toBeDefined();
+    expect(plan.resource_ceiling.source).toBe('kb_default');  // VP4 → operne_zdi defaults
+    expect(plan.resource_ceiling.workforce?.num_workers_total).toBe(12);
+    expect(plan.resource_ceiling.equipment?.num_pumps).toBe(1);
+    // Foundation B: violations empty (engine integration is Foundation C).
+    expect(Array.isArray(plan.resource_violations)).toBe(true);
+    expect(plan.resource_violations).toHaveLength(0);
+  });
+
+  it('Foundation B: user-supplied ceiling propagates through planElement', () => {
+    const input: PlannerInput = {
+      element_type: 'operne_zdi',
+      volume_m3: 94.231,
+      formwork_area_m2: 547.4,
+      height_m: 1.75,
+      has_dilatacni_spary: true,
+      spara_spacing_m: 10,
+      total_length_m: 156.4,
+      adjacent_sections: true,
+      concrete_class: 'C30/37',
+      rebar_mass_kg: 5654,
+      rebar_diameter_mm: 12,
+      // Demo bug scenario: user has 5 lidí strop
+      resource_ceiling: {
+        workforce: { num_workers_total: 5 },
+        equipment: { num_pumps: 1 },
+      },
+    };
+    const plan = planElement(input);
+    // User input WINS (0.99) → source = 'manual'
+    expect(plan.resource_ceiling.source).toBe('manual');
+    expect(plan.resource_ceiling.workforce?.num_workers_total).toBe(5);
+    // Scaling: 5/12 ≈ 0.417 → carpenters round(4 × 0.417) = 2
+    expect(plan.resource_ceiling.workforce?.num_carpenters).toBe(2);
+  });
+
+  // ─── R3 smoke test: pump-count consistency (v4.20 fix verification) ──────
+
+  it('R3 smoke: pour-task.pumps_required === pour-decision.pumps_required (v4.20 invariant)', () => {
+    // MEGA pour SO-203 scenario forces multi-pump.
+    const decision = decidePourMode({
+      element_type: 'mostovkova_deska',
+      volume_m3: 664,
+      has_dilatacni_spary: false,
+      working_joints_allowed: 'no',  // strictly monolithic, forces multi-pump
+      season: 'normal',
+    });
+    expect(decision.pumps_required).toBeGreaterThan(1);  // sanity: MEGA pour needs >1 pump
+
+    // Forward decision into pour-task (per orchestrator pattern at line 1641).
+    const task = calculatePourTask({
+      element_type: 'mostovkova_deska',
+      volume_m3: 664,
+      num_pumps_available: decision.pumps_required,
+    });
+    // Per v4.20 invariant: pour-task uses num_pumps_available verbatim.
+    expect(task.pumps_required).toBe(decision.pumps_required);
+  });
+
+  it('R3 smoke: small pour still consistent (single-pump baseline)', () => {
+    const decision = decidePourMode({
+      element_type: 'operne_zdi',
+      volume_m3: 94,
+      has_dilatacni_spary: true,
+      spara_spacing_m: 10,
+      total_length_m: 156,
+      adjacent_sections: true,
+      season: 'normal',
+    });
+    const task = calculatePourTask({
+      element_type: 'operne_zdi',
+      volume_m3: 94,
+      num_pumps_available: decision.pumps_required,
+    });
+    expect(task.pumps_required).toBe(decision.pumps_required);
+    expect(task.pumps_required).toBe(1);  // VP4 fits 1 pump
+  });
+
+  it('R4 smoke: pour-task ignores input.crew_size (informational only)', () => {
+    // Set drastically different crew_size values — output rate/duration must
+    // be identical because the field is informational only (R4 fix verifies
+    // the dead-input nature is intentional).
+    const baseInput = {
+      element_type: 'operne_zdi' as const,
+      volume_m3: 94,
+      num_pumps_available: 1,
+      season: 'normal' as const,
+    };
+    const taskWith2 = calculatePourTask({ ...baseInput, crew_size: 2 });
+    const taskWith20 = calculatePourTask({ ...baseInput, crew_size: 20 });
+    expect(taskWith2.effective_rate_m3_h).toBe(taskWith20.effective_rate_m3_h);
+    expect(taskWith2.pumping_hours).toBe(taskWith20.pumping_hours);
+    expect(taskWith2.pumps_required).toBe(taskWith20.pumps_required);
   });
 
   it('SO-203 mostovka with strop 12p + 1s + 1p: INFEASIBLE (engine demand exceeds)', () => {
