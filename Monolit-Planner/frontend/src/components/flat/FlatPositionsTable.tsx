@@ -440,7 +440,19 @@ export default function FlatPositionsTable() {
         </div>
       )}
 
-      {positions.length > 0 && <FlatGantt positions={calcPositions} />}
+      {positions.length > 0 && (
+        <FlatGantt
+          positions={
+            // Mirror the "Jen monolity" filter in the harmonogram — without
+            // this the Gantt keeps showing all parts (HLOUBENÍ JAM, POPLATKY
+            // ZA SKL…, etc.) even though the table above hides them.
+            showOnlyMonolity
+              ? calcPositions.filter(p =>
+                  visibleElements.some(el => el.partName === p.part_name))
+              : calcPositions
+          }
+        />
+      )}
       <FlatSnapshots />
 
       {addWorkFor && (

@@ -569,7 +569,47 @@ router.post('/position/:position_id/tov', async (req, res) => {
     ).get(position_id);
 
     if (!position) {
-      return res.status(404).json({ error: 'Position not found' });
+      // 404 root-cause diagnostics — when this fires repeatedly the most
+      // common cause is a Registry re-import that DELETE'd the previous
+      // positions and re-inserted them with fresh IDs (timestamp+random
+      // suffix). FE cache still holds the stale IDs until next refetch.
+      //
+      // Probe to disambiguate the failure mode so logs tell us which one:
+      //   • count = 0    → bridge dropped (CASCADE), nothing left
+      //   • count > 0    → bridge alive, this specific id is gone (re-import)
+      //   • bridge_prefix → id format suggests a different bridge_id
+      const bridgePrefix = String(position_id || '').split('_').slice(0, -2).join('_');
+      let siblingCount = null;
+      if (bridgePrefix) {
+        try {
+          const row = await db.prepare(
+            'SELECT COUNT(*)::int AS n FROM positions WHERE bridge_id = ?'
+          ).get(bridgePrefix);
+          siblingCount = row?.n ?? row?.count ?? 0;
+        } catch {
+          // Diagnostic only — never fail the request if the probe errors.
+          siblingCount = null;
+        }
+      }
+      console.warn('[TOV] position not found', {
+        position_id,
+        likely_bridge_id: bridgePrefix || null,
+        sibling_positions_in_bridge: siblingCount,
+        likely_cause: siblingCount === 0
+          ? 'bridge_dropped_or_renamed'
+          : siblingCount > 0
+            ? 'stale_id_after_reimport'
+            : 'unknown',
+      });
+      return res.status(404).json({
+        error: 'Position not found',
+        position_id,
+        likely_cause: siblingCount === 0
+          ? 'bridge_dropped_or_renamed'
+          : siblingCount > 0
+            ? 'stale_id_after_reimport'
+            : 'unknown',
+      });
     }
 
     if (!position.position_instance_id) {

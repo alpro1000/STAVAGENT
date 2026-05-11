@@ -22,7 +22,14 @@ function syncTOVToRegistry(positions: Position[]) {
     // Fire-and-forget — don't await, don't block UI
     axios.post(`${API_URL}/api/export-to-registry/position/${pos.id}/tov`)
       .catch(err => {
-        console.warn(`[TOV sync] Failed for position ${pos.id}:`, err.message);
+        // 404 = position was deleted in the backend (e.g. user re-imported
+        // the project, which DROPs and re-INSERTs positions with fresh
+        // IDs). Stale FE cache will resolve on the next refetch. Don't
+        // pollute the console for an expected condition; surface real
+        // errors only.
+        const status = err?.response?.status;
+        if (status === 404) return;
+        console.warn(`[TOV sync] Failed for position ${pos.id}:`, status, err.message);
       });
   }
 }
