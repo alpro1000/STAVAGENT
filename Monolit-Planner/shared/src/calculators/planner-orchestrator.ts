@@ -28,8 +28,8 @@ import type { MonteCarloResult } from './pert.js';
 import { calculateCuring, PROPS_MIN_DAYS, getDefaultCuringClass } from './maturity.js';
 import type { ConcreteClass, CementType, ElementType, Season, ConstructionType, CuringClass } from './maturity.js';
 import type { ElementProfile } from '../classifiers/element-classifier.js';
-import type { ResourceCeiling, CeilingViolation } from './resource-ceiling.js';
-import { applyResourceCeilingDefaults } from './resource-ceiling.js';
+import type { ResourceCeiling, CeilingViolation, EngineeringDemand } from './resource-ceiling.js';
+import { applyResourceCeilingDefaults, checkCeilingFeasibility } from './resource-ceiling.js';
 import type { FormworkSystemSpec } from '../constants-data/formwork-systems.js';
 import { calculateProps } from './props-calculator.js';
 import type { PropsCalculatorResult } from './props-calculator.js';
@@ -2228,6 +2228,63 @@ export function planElement(input: PlannerInput): PlannerOutput {
       `${obratkovost}× obrátka. Pronájem na element: ${rentalPerElement.toLocaleString('cs')} Kč. ` +
       `Celková doba: ${totalDuration.toFixed(1)} dní.`
     );
+  }
+
+  // ─── 8b. Resource Ceiling Feasibility Check (Phase 1 Foundation C) ────
+  //
+  // Build EngineeringDemand from computed engine outputs and check whether
+  // it fits within the effectiveResourceCeiling. Per Q3 interview decision:
+  // engine returns "warning + best-effort plan" — violations are flagged
+  // via ⛔ KRITICKÉ but the plan still ships with engine's optimum numbers.
+  //
+  // Per-profession peak (MAX-of-phases) used for num_workers_total demand
+  // because formwork (ASM/STR), rebar (REB) and pour (CON) are SEQUENTIAL
+  // phases on the RCPSP DAG — they don't all consume workers simultaneously.
+  //
+  // Sum-based total check fires only when caller doesn't pass an explicit
+  // num_workers_total in demand (legacy compat). With explicit peak set,
+  // the check compares peak ≤ ceiling.num_workers_total directly.
+  {
+    const formworkPhasePeak = numFWCrews * crew;
+    const rebarPhasePeak = numRBCrews * crewRebar;
+    const pourPhasePeak = pourCrewBreakdown.total;
+    const overallPeak = Math.max(formworkPhasePeak, rebarPhasePeak, pourPhasePeak);
+
+    const engineeringDemand: EngineeringDemand = {
+      workforce: {
+        // Peak simultaneous (MAX of phases) — not SUM, since phases are sequential.
+        num_workers_total: overallPeak,
+        num_carpenters: formworkPhasePeak,
+        num_rebar_workers: rebarPhasePeak,
+        num_concrete_workers: pourCrewBreakdown.ukladani,
+        num_vibrators: pourCrewBreakdown.vibrace,
+        num_finishers: pourCrewBreakdown.finiseri,
+        num_supervisors: pourCrewBreakdown.rizeni,
+      },
+      formwork: {
+        num_formwork_sets: fwSetsCount,
+      },
+      equipment: {
+        num_pumps: pourDecision.pumps_required,
+        num_cranes: profile.needs_crane ? 1 : 0,
+      },
+      total_days: scheduleResult.total_days,
+    };
+
+    const feasibility = checkCeilingFeasibility(
+      effectiveResourceCeiling,
+      engineeringDemand,
+      elementType,
+    );
+    resourceViolations.push(...feasibility.violations);
+    // Push violation messages to warnings[] for legacy UI banner (textual).
+    // Structured form already in resource_violations[] for new UI severity rendering.
+    for (const v of feasibility.violations) {
+      warnings.push(v.message);
+    }
+    for (const hint of feasibility.recovery_hints) {
+      warnings.push(`ℹ️ Doporučení: ${hint}`);
+    }
   }
 
   // ─── 9. Assemble Output ───────────────────────────────────────────────

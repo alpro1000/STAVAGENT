@@ -16,7 +16,12 @@ workforce:
   # + finiseri=1 = 5 lidí pour crew. Plus 4 tesaři + 3 železáři = 12 souběh.
   num_workers_total: 12
   num_carpenters: 4         # B4 bedneni.json `standard_s_jeravem` (4 osob + jeřáb)
-  num_rebar_workers: 3      # B4 productivity_rates.json armovani `pruty` (3-4 osob)
+                            # matches orchestrator DEFAULTS.crew_size
+  num_rebar_workers: 4      # B4 productivity_rates.json armovani `pruty` (4 osob)
+                            # matches orchestrator DEFAULTS.crew_size_rebar
+                            # Foundation C bump (was 3) to align with engine
+                            # default demand and avoid first-time-user
+                            # false-positive ⛔ violation
   num_concrete_workers: 3   # 1 pump × 2 ukladani + 1 vibrace + 0 finishers
   num_vibrators: 2          # pro inverted T průřez
 

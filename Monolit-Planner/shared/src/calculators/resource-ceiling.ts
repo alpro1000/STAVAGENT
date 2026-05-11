@@ -365,9 +365,12 @@ export const RESOURCE_CEILING_DEFAULTS: Partial<Record<StructuralElementType, Re
   // (4 osob + jeřáb), productivity_rates.json bedneni `slozite` (1.0 m²/h/osoba).
   operne_zdi: {
     workforce: {
+      // Peak simultaneous = MAX of phases (formwork ASM 4, rebar REB 4,
+      // pour CON ~3 per tact for ~6m³ záběr). Sum = ~13 for SUM-based ceilings.
+      // Default total 12 = lower bound of typical SMB CZ scope (task §5.3).
       num_workers_total: 12,
-      num_carpenters: 4,
-      num_rebar_workers: 3,
+      num_carpenters: 4,        // matches orchestrator DEFAULTS.crew_size
+      num_rebar_workers: 4,     // matches orchestrator DEFAULTS.crew_size_rebar (was 3, bumped Phase 1 Foundation C to remove false-positive)
       num_concrete_workers: 3,
       num_vibrators: 2,
     },
@@ -615,15 +618,21 @@ export function checkCeilingFeasibility(
       });
       recovery_hints.push(`Snížit počet souběžných čerpadel (méně ukládání naráz)`);
     }
-    // Total cap (sum check) — only if user supplied num_workers_total.
+    // Total cap — only if ceiling has num_workers_total set.
+    // Caller pattern (post-Phase-1-C): demand.num_workers_total is the PEAK
+    // simultaneous workforce (MAX across formwork/rebar/pour sequential phases).
+    // Legacy callers without explicit total fall back to SUM-of-professions
+    // (pessimistic — treats all phases as simultaneous).
     if (relevance.num_workers_total && c.num_workers_total !== undefined) {
-      const demandTotal =
+      const demandTotalExplicit = d.num_workers_total;
+      const demandTotalSum =
         (d.num_carpenters ?? 0) +
         (d.num_rebar_workers ?? 0) +
         (d.num_concrete_workers ?? 0) +
         (d.num_vibrators ?? 0) +
         (d.num_finishers ?? 0) +
         (d.num_supervisors ?? 0);
+      const demandTotal = demandTotalExplicit !== undefined ? demandTotalExplicit : demandTotalSum;
       if (demandTotal > c.num_workers_total) {
         violations.push({
           field: 'num_workers_total_sum', required: demandTotal, available: c.num_workers_total,
