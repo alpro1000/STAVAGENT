@@ -296,6 +296,7 @@ export default function LandingPage() {
           <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('pro-koho')}>Pro koho</span>
           <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('jak-to-funguje')}>Jak to funguje</span>
           <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => scrollTo('cenik')}>Ceník</span>
+          <span style={{ ...ghostBtn, border: 'none', padding: '4px 8px', fontSize: 13 }} onClick={() => navigate('/team')}>O zakladateli</span>
           <button onClick={goLogin} style={ghostBtn}>
             {isAuthenticated ? <><User size={16} />{user?.name || 'Kabinet'}</> : <><LogIn size={16} />Přihlásit se</>}
           </button>
@@ -799,13 +800,16 @@ export default function LandingPage() {
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, cursor: 'pointer' }} onClick={() => scrollTo('jak-to-funguje')}>Jak to funguje</div>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, cursor: 'pointer' }} onClick={() => scrollTo('cenik')}>Ceník</div>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, cursor: 'pointer' }} onClick={() => scrollTo('faq')}>FAQ</div>
+            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, cursor: 'pointer' }} onClick={() => navigate('/team')}>O zakladateli</div>
           </div>
           <div>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>Kontakt</h4>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>
               <a href="mailto:info@stavagent.cz" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>info@stavagent.cz</a>
             </div>
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>LinkedIn</div>
+            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 16 }}>
+              <a href="https://www.linkedin.com/in/alexander-prokopov" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>LinkedIn</a>
+            </div>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>Právní</h4>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>Obchodní podmínky</div>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6 }}>Ochrana osobních údajů</div>

@@ -50,10 +50,14 @@ const DIST_DIR = resolve(__dirname, '../dist');
  * are also kept out of this list because they only matter to logged-in
  * flows; the prerendered '/' is what Google indexes.
  *
- * When /team ships in Gate 10, add '/team'.
- * When /en/ ships in Gate 11, add '/en/' (and update for /en/team etc).
+ * Gate-by-Gate additions:
+ *   v3.2 Gate 4  — added '/'
+ *   v3.2 Gate 10 — added '/team' (CZ) + '/en/team' (EN founder page).
+ *                  EAGER-imported in App.tsx so the render captures
+ *                  fully-hydrated DOM, not a lazy-load placeholder.
+ *   v3.2 Gate 11 — will add '/en/' (English landing root).
  */
-const ROUTES_TO_PRERENDER = ['/'];
+const ROUTES_TO_PRERENDER = ['/', '/team', '/en/team'];
 
 const NAVIGATION_TIMEOUT_MS = 30_000;
 const POST_RENDER_SETTLE_MS = 200; // small buffer for final synchronous renders
@@ -68,10 +72,19 @@ if (process.env.SKIP_PRERENDER === '1') {
 // ─── Static server ─────────────────────────────────────────────────────────
 
 async function startStaticServer(sirvFactory) {
-  // single:false so unmapped paths 404 honestly — we deliberately want
-  // puppeteer to notice if it asked for a route that doesn't exist in
-  // the build (ROUTES_TO_PRERENDER must match real Vite-served paths).
-  const handler = sirvFactory(DIST_DIR, { single: false, dev: false });
+  // single:true — SPA fallback mode. Unmapped paths (e.g. /team before its
+  // own dist/team/index.html has been written) serve dist/index.html so
+  // React Router can take over and resolve the actual route. Without this,
+  // Puppeteer captures Chromium's default 404 error page and writes 244 KB
+  // of garbage to dist/<route>/index.html. (Discovered the hard way during
+  // Gate 10 local-build verification — previously had single:false which
+  // worked only because the Gate 4 allow-list had a single '/' entry.)
+  //
+  // The "misconfigured route silently succeeds" risk is caught by the
+  // post-build content-smoke greps in the caller's verification flow:
+  // if a route isn't wired in App.tsx, the captured HTML won't contain
+  // the route's expected keywords and the smoke check fails loudly.
+  const handler = sirvFactory(DIST_DIR, { single: true, dev: false });
   const server = createServer(handler);
   await new Promise((res) => server.listen(0, '127.0.0.1', res));
   const { port } = server.address();

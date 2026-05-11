@@ -12,9 +12,10 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './styles/components.css';
 
-// ── Eager imports (landing + portal = main entry points) ─────────────────────
+// ── Eager imports (landing + portal + team = main public entry points) ──────
 import LandingPage from './pages/LandingPage';
 import PortalPage from './pages/PortalPage';
+import TeamPage from './pages/TeamPage';
 
 // ── Lazy imports (loaded only when navigated to) ─────────────────────────────
 const LoginPage = lazy(() => import('./pages/LoginPage'));
@@ -87,6 +88,12 @@ function App() {
 
               {/* Public landing page (eager) */}
               <Route path="/" element={<LandingPage />} />
+
+              {/* About the founder (bilingual, eager — prerendered per Gate 10).
+                  /en/ root landing comes in Gate 11; /en/team works
+                  independently as a sister route under the team-page scope. */}
+              <Route path="/team" element={<TeamPage locale="cs" />} />
+              <Route path="/en/team" element={<TeamPage locale="en" />} />
 
               {/* Portal (eager — main hub, requires login) */}
               <Route path="/portal" element={<ProtectedRoute><PortalPage /></ProtectedRoute>} />

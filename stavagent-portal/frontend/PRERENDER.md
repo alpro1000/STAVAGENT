@@ -29,16 +29,17 @@ Routes that get prerendered are listed in
 `scripts/prerender.mjs` → `ROUTES_TO_PRERENDER`. Today:
 
 ```js
-const ROUTES_TO_PRERENDER = ['/'];
+const ROUTES_TO_PRERENDER = ['/', '/team', '/en/team'];
 ```
 
-Adding a route:
+Per-Gate additions:
 
-| Future Gate | Add to ROUTES_TO_PRERENDER |
-|---|---|
-| Gate 10 (`/team`) | `'/team'` |
-| Gate 11 (`/en/`) | `'/en/'` |
-| Gate 11 (`/en/team`) | `'/en/team'` |
+| Gate | Added entry | Output file |
+|---|---|---|
+| Gate 4 | `'/'` | `dist/index.html` (overwritten) |
+| Gate 10 | `'/team'` | `dist/team/index.html` |
+| Gate 10 | `'/en/team'` | `dist/en/team/index.html` |
+| Gate 11 (pending) | `'/en/'` | `dist/en/index.html` |
 
 **Routes that MUST NOT be in this list:**
 - `/portal/*` — auth-gated; prerender would either flash unauth content for
@@ -51,12 +52,12 @@ Adding a route:
 
 ## Output mapping
 
-| Route in allow-list | Output file |
-|---|---|
-| `/` | `dist/index.html` (overwritten) |
-| `/team` | `dist/team/index.html` |
-| `/en/` | `dist/en/index.html` |
-| `/en/team` | `dist/en/team/index.html` |
+| Route in allow-list | Output file | Active since |
+|---|---|---|
+| `/` | `dist/index.html` (overwritten) | Gate 4 |
+| `/team` | `dist/team/index.html` | Gate 10 |
+| `/en/team` | `dist/en/team/index.html` | Gate 10 |
+| `/en/` | `dist/en/index.html` | Gate 11 (pending) |
 
 Vercel serves these static files directly because static-file precedence
 beats the `vercel.json` SPA rewrite (`{"source":"/(.*)","destination":"/index.html"}`).
