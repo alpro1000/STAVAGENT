@@ -11,6 +11,7 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
+import { isMonolithicElement } from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
@@ -20,18 +21,32 @@ const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backe
 const DEFAULTS = { crew_size: 4, wage_czk_ph: 398, shift_hours: 10, days: 0 };
 
 /**
- * Determine Monolit subtype from item fields
+ * Determine Monolit subtype from item fields.
+ *
+ * Pure unit-based heuristics misclassify aggregate fills ("VÝPLŇ Z KAMENIVA
+ * DRCENÉHO", m³) and gravel sub-base ("PODKLADNÍ VRSTVY Z KAMENIVA TĚŽENÉHO",
+ * m³) as `beton`. We delegate the monolith decision to the shared classifier
+ * so non-monolithic m³ rows fall through to subtype `jiné`.
  */
 function determineSubtype(item) {
   const desc = (item.popis || '').toLowerCase();
   const unit = (item.mj || '').toLowerCase();
 
-  if (unit === 'm3' || unit === 'm³') return 'beton';
+  // Strong textual signals beat the unit heuristic.
+  if (desc.includes('výztuž') || desc.includes('ocel') || desc.includes('b500')) return 'výztuž';
+  if (desc.includes('bedn') || desc.includes('odbedň')) return 'bednění';
+
+  if (unit === 'm3' || unit === 'm³') {
+    // Aggregate fills / sub-base layers come in as m³ but are NOT concrete.
+    const isMonolith = isMonolithicElement({
+      item_name: item.popis || '',
+      otskp_code: item.kod || null,
+    });
+    return isMonolith ? 'beton' : 'jiné';
+  }
   if (unit === 'm2' || unit === 'm²') return 'bednění';
   if (unit === 't' || unit === 'kg') return 'výztuž';
 
-  if (desc.includes('výztuž') || desc.includes('ocel') || desc.includes('b500')) return 'výztuž';
-  if (desc.includes('bedn') || desc.includes('odbedň')) return 'bednění';
   if (desc.includes('beton') || desc.includes('železobet')) return 'beton';
 
   return 'jiné';

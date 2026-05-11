@@ -47,6 +47,8 @@ const UIContext = createContext<UIContextType | undefined>(undefined);
 
 const SIDEBAR_KEY = 'monolit-sidebar-open';
 const SIDEBAR_WIDTH_KEY = 'monolit-sidebar-width';
+const ONLY_RFI_KEY = 'monolit-filter-only-rfi';
+const ONLY_MONOLITY_KEY = 'monolit-filter-only-monolity';
 
 export function UIProvider({ children }: { children: ReactNode }) {
   // Selected project — read initial value from URL ?bridge= param
@@ -62,10 +64,27 @@ export function UIProvider({ children }: { children: ReactNode }) {
     return window.innerWidth >= 1280;
   });
 
-  const [showOnlyRFI, setShowOnlyRFI] = useState(false);
-  const [showOnlyMonolity, setShowOnlyMonolity] = useState(false);
+  // Filter checkboxes persist across navigation (Part A ↔ Part B ↔ refresh).
+  // Without this, navigating to the calculator and back resets them to false
+  // — including silently widening Export XLSX to non-monolith rows.
+  const [showOnlyRFI, setShowOnlyRFIRaw] = useState(() => {
+    return localStorage.getItem(ONLY_RFI_KEY) === 'true';
+  });
+  const [showOnlyMonolity, setShowOnlyMonolityRaw] = useState(() => {
+    return localStorage.getItem(ONLY_MONOLITY_KEY) === 'true';
+  });
   const [daysPerMonth, setDaysPerMonth] = useState<30 | 22>(30);
   const [activeSnapshot, setActiveSnapshot] = useState<ActiveSnapshot | null>(null);
+
+  const setShowOnlyRFI = useCallback((show: boolean) => {
+    setShowOnlyRFIRaw(show);
+    localStorage.setItem(ONLY_RFI_KEY, String(show));
+  }, []);
+
+  const setShowOnlyMonolity = useCallback((show: boolean) => {
+    setShowOnlyMonolityRaw(show);
+    localStorage.setItem(ONLY_MONOLITY_KEY, String(show));
+  }, []);
 
   const setSidebarOpen = useCallback((open: boolean) => {
     setSidebarOpenRaw(open);

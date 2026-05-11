@@ -385,9 +385,11 @@ export const plannerVariantsAPI = {
 
 // Export
 export const exportAPI = {
-  exportXLSX: async (bridgeId: string): Promise<Blob> => {
+  exportXLSX: async (bridgeId: string, opts?: { onlyMonoliths?: boolean }): Promise<Blob> => {
+    const params: Record<string, string | boolean> = { bridge_id: bridgeId };
+    if (opts?.onlyMonoliths) params.only_monoliths = true;
     const { data } = await api.get('/api/export/xlsx', {
-      params: { bridge_id: bridgeId },
+      params,
       responseType: 'blob'
     });
     return data;
