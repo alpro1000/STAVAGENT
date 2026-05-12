@@ -94,6 +94,37 @@ npm run build:no-prerender
 
 The script honors `SKIP_PRERENDER=1` and exits 0 immediately.
 
+## Chromium variant — `@sparticuz/chromium` (serverless-optimized)
+
+The prerender step uses **`puppeteer-core` + `@sparticuz/chromium`** rather than
+the full `puppeteer` package. Reason: Vercel build containers are minimal
+Linux images that do not include the GUI shared libraries (`libnss3.so`,
+`libxss1`, `libasound2`, `libatk-bridge-2.0-0`, etc.) that the standard
+Puppeteer-bundled Chromium dynamically links against. The first production
+build with the original `puppeteer` package failed at the prerender step:
+
+```
+[prerender] FAILED: Failed to launch the browser process!
+chrome: error while loading shared libraries: libnss3.so: cannot open
+shared object file: No such file or directory
+```
+
+`@sparticuz/chromium` ships a Chromium build that statically links the
+otherwise-missing libs, designed for AWS Lambda / Vercel / Cloud Run
+serverless environments. `puppeteer-core` is the same Puppeteer API as the
+main `puppeteer` package minus the bundled Chromium download — the
+Chromium binary comes from `@sparticuz/chromium.executablePath()` instead.
+
+Local developer machines (which usually have the GUI libs installed) work
+the same way — `@sparticuz/chromium` just always uses its bundled binary,
+so there is no behavior divergence between local and CI/CD.
+
+If you ever see prerender hangs or crashes that point at Chromium, the
+first thing to check is whether `@sparticuz/chromium` has a new major
+version requiring a config tweak (e.g. `chromium.setHeadlessMode(true)`).
+The launch block in `scripts/prerender.mjs:main()` should be the only place
+that needs to change.
+
 ## Debugging a broken render
 
 1. **Build failed at the prerender step:** check the Vercel build log for
