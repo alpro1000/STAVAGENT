@@ -1,0 +1,282 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "generated_at": "2026-05-12",
+    "generated_from": "STAVAGENT_Drawings_to_VV_Rozpocet_Playbook v1.0",
+    "extraction_session": "claude_chat_2026-05-12_dxf_audit",
+    "confidence_ladder": {
+      "otskp_or_urs_exact": 1.0,
+      "regex_on_code": 1.0,
+      "dxf_block_count": 0.95,
+      "dxf_dimension": 0.95,
+      "regex_on_description": 0.85,
+      "perplexity_norm": 0.85,
+      "urs_matcher_fuzzy": 0.80,
+      "ai_extraction": 0.70,
+      "dxf_visual_inference": 0.60,
+      "manual_judgement": 0.99
+    }
+  },
+  "project": {
+    "name": "Hala Hradec Králové",
+    "internal_code": "212",
+    "type": "skladová hala s technologií recyklace FV panelů",
+    "investor": {
+      "name": "SOLAR DISPOREC s.r.o.",
+      "ico": "19546220",
+      "address": "Malostranské náměstí 5/28, Malá Strana, 118 00 Praha 1"
+    },
+    "site": {
+      "address": "Vážní 857, 500 03 Hradec Králové – Slezské Předměstí",
+      "katastr_kod": "646971",
+      "parcel": "1939/1",
+      "current_owner": "KOVOŠROT GROUP CZ s.r.o."
+    },
+    "projektant_ars": {
+      "firma": "Basepoint s.r.o. (IČO 27646793)",
+      "address": "Květoslava Mašity 251, 252 31 Všenory",
+      "main": "Ing. arch. Jakub Volka",
+      "cka": "0003947",
+      "email": "volkajakub@basepoint.cz",
+      "phone": "+420 733 575 363",
+      "team": ["Anna Abrahámová", "Kristián Pócsik"]
+    },
+    "projektant_statika": {
+      "zakazkove_cislo": "6/2025",
+      "main": "Ing. Jiří Plachý",
+      "ckait": "0013051",
+      "team": ["Bc. Martin Doležal (IČO 21981078, tel. +420 606 287 393)"]
+    },
+    "stupne_dokumentace": {
+      "ars": "DPZ (08/2025)",
+      "statika_d12": "DSP (09/2025)",
+      "_abmv_ref": "#4"
+    },
+    "deadline_VV": "4 týdny od 2026-05-12"
+  },
+  "geometry": {
+    "footprint_overall_mm": {"x": 28190, "y": 19740, "_source": "A102 střecha DXF"},
+    "axes_x_mm_distances": [3170, 4000, 5000, 4000, 3170],
+    "axes_x_labels": ["A", "B", "C", "D", "E", "F"],
+    "axes_y_mm_distances": [6100, 6100, 3000, 6100, 6100],
+    "axes_y_labels": ["1", "2", "3", "4", "5", "6"],
+    "_confidence": 0.95
+  },
+  "areas": {
+    "podlahova_plocha_m2": {"value": 495, "confidence": 1.0, "_source": "A101 DXF tabulka mistností + TZ D.1.1"},
+    "zastavena_plocha_m2_range": [520, 541, "_abmv #7 — nekonzistence"],
+    "obestaveny_prostor_m3_range": [2833, 3694, "_abmv #7"]
+  },
+  "heights": {
+    "hreben_m": 7.195,
+    "okap_jvsv_m": 6.285,
+    "hloubka_zalozeni_pasy_m": -1.300,
+    "hloubka_zalozeni_patky_m": -1.900,
+    "hloubka_desky_m": -0.205,
+    "strech_sklon_deg": 5.25,
+    "_source": "A103 řezy + A102 + A105"
+  },
+  "konstrukce": {
+    "nosny_system": "ocelová rámová montovaná konstrukce S235 ČSN EN 10025",
+    "sloupy_ramove": {"profil": "IPE 400", "pocet_dxf": 30, "confidence": 0.95},
+    "sloupy_stitove": {"profil": "HEA 200", "pocet_dxf": 10, "confidence": 0.90},
+    "pricle_ramu": {"profil": "IPE 450", "pocet_dxf": 5, "spojeni": "šroubovaný náběh"},
+    "vaznice_stresne": {"profil": "IPE 160", "rozteca_mm": 1500},
+    "vaznice_krajni_OPEN": {"tz_b": "UPE 160", "a104_dxf": "C150×19,3", "_abmv_ref": "#15"},
+    "stresne_ztuzidla": {"profil": "kruhové tyče Ø20 mm", "pocet_dxf": 7, "system": "ondřejské kříže"},
+    "stenove_ztuzidla": {"profil": "L70/70/6", "umisteni": "kříže ve 2 polích na delších stranách"}
+  },
+  "zaklady": {
+    "deska": {
+      "tloustka_mm": 200,
+      "beton_PLATI": "C25/30 XC4 (statika přebíjí ARS)",
+      "_legenda_a101_uvadi": "C30/37-XC2",
+      "_abmv_ref": "#5",
+      "vyztuz": "KARI Ø8 oka 100×100 (oba povrchy)",
+      "vyztuz_grade": "B500B",
+      "kryti_mm": 30,
+      "podklad_lozisko_mm": 250,
+      "edef_2_mpa": 45,
+      "edef_2_pomer": "< 1.75",
+      "confidence": 0.95
+    },
+    "patky_ramove": {
+      "rozmery_mm": "1500×1500×(2×600) dvoustupňové",
+      "beton": "C16/20 XC0 prostý",
+      "pocet_dxf": 14,
+      "confidence": 0.95
+    },
+    "patky_stitove": {
+      "rozmery_mm": "800×800×(200+600) dvoustupňové",
+      "beton": "C16/20 XC0",
+      "pocet_dxf": 10
+    },
+    "atypicky_zaklad_alternativa": {
+      "pilota_prumer_mm": 800,
+      "pilota_delka_m": 8.0,
+      "beton": "C25/30 XC4",
+      "vyztuz": "8× R25 B500B",
+      "_podminka": "závisí na IGP",
+      "_abmv_ref": "#11"
+    },
+    "unosnost_zeminy_kpa": 200
+  },
+  "otvory": {
+    "okna": {
+      "pocet": 21,
+      "rozmer_mm": "1000×1000",
+      "ramy": "plastové, šedá",
+      "sklo": "izolační dvojsklo",
+      "labels_dxf": "V1..V21",
+      "confidence": 1.0
+    },
+    "vrata_OPEN": {
+      "pocet": 4,
+      "typ": "sekční výsuvná",
+      "rozmer_dxf_mm": "3000×4000",
+      "rozmer_tz_mm": "3500×4000",
+      "_abmv_ref": "#2",
+      "confidence": 0.7
+    },
+    "vnejsi_dvere": {
+      "pocet": 2,
+      "rozmer_mm": "1050×2100",
+      "typ": "vnější jednoduché dvoukřídlé",
+      "confidence": 1.0
+    }
+  },
+  "fasada_strecha": {
+    "obvodovy_plast": {
+      "system_OPEN": "K-roc (min. vata, DP1) NEBO IPN (PIR, DP3)",
+      "_abmv_ref": "#13",
+      "_pbr_vyzaduje": "DP1",
+      "_pracovni_volba": "KS FR K-roc 150 mm (min. vata)",
+      "barva": "bílá KS NF 100 + modrá KS NF 100",
+      "pozarna_klasifikace": "EW 15 DP1 (per PBŘ — viz ABMV #6)"
+    },
+    "strecha": {
+      "krytina": "sendvičový panel s plechovým povrchem (titanzinek)",
+      "_pracovni_volba": "KS FF K-roc 150 mm (alt. IPN RW 160 — viz ABMV #13)",
+      "klasifikace": "BROOF(t3) + EI 15 DP1",
+      "sklon_deg": 5.25
+    },
+    "sokl": "stěrka s výztužnou tkaninou + fasádní nátěr šedý"
+  },
+  "podlaha_OPEN": {
+    "tz_uvadi": "stěrka",
+    "_predpoklad": "epoxidová nebo PU stěrka (zatížení ≥ 1600 kg/m² + technologie)",
+    "_abmv_ref": "#10",
+    "confidence": 0.5
+  },
+  "odvodneni": {
+    "svody_dest_OPEN": {
+      "system": "Lindab Round Downpipe 150/100 Antique White",
+      "pocet_dxf": 3,
+      "tz_b_uvadi": 4,
+      "_abmv_ref": "#14"
+    },
+    "stresne_vpusti": {"system": "Wavin Tegra", "pocet_dxf": 3},
+    "liniovy_zlab": "MEA Mearin Plus 3000 NW300 (podél JZ + SZ fasády)",
+    "retencni_nadrz_m3": 30
+  },
+  "tzb": {
+    "vzt": {
+      "jednotka": "venkovní rekuperační, reference Duplex 4500 flexi",
+      "vykon_m3_h": 4000,
+      "dvere_clony": {"pocet": 8, "vykon_m3_h_ks": 4700, "sirka_m": 2},
+      "chlazeni_kw": 15
+    },
+    "ut": {
+      "system": "plně elektrické",
+      "salavé_panely_ECOSUN_Splus_12": {"vykon_ks_kw": 1.2, "pocet": 21, "celkem_kw": 25.2},
+      "sahary_teplovzdusne": {"vykon_ks_kw": 9, "pocet": 4, "celkem_kw": 36},
+      "celkem_topny_vykon_kw": 61.2,
+      "tepelne_ztraty_kw": 15.4
+    },
+    "elektro_OPEN": {
+      "p_inst_kw": 83,
+      "p_vyp_kw": 60.5,
+      "soudobost": 0.8,
+      "hlavni_jistic": "3×100 A",
+      "privodni_kabel": "CYKY-J 5×35 mm²",
+      "rozvadec": "Typ 1 nástěnný oceloplechový (ČSN EN IEC 61439-2)",
+      "_critical_abmv": "#1 — nepočítá s technologií strojů 80+ kW"
+    },
+    "zti": {
+      "pripojka_voda": "PE 50",
+      "vnitrni_potrubi": "PP-RCT EVO",
+      "splaskova_kanalizace_DN": 160,
+      "destova_kanalizace_DN": 200,
+      "pozarni_voda_l_s": 0.3,
+      "hydrant": "DN 25 s tvarově stálou hadicí",
+      "umyvadlo_OPEN": {"pocet": 1, "rozmer_cm": "50×40", "_abmv_ref": "#9", "_source": "A101 DXF"}
+    },
+    "lps": {
+      "norma": "ČSN EN 62305",
+      "trida_lpz": ["LPZ 0A", "LPZ 0B", "LPZ 1"],
+      "svody_pocet_min": 4,
+      "svody_material": "FeZn pásek 30×4 mm nebo kulatina Ø10",
+      "uzemneni": "FeZn 75 mm² v patkách",
+      "max_odpor_ohm": 10
+    }
+  },
+  "technologie": {
+    "stroje": [
+      {"id": "DRIFT_E1", "popis": "delaminator / separace skla z FV panelu", "vykon_kw": 80, "vyska_m": 3.5},
+      {"id": "DEFRAME", "popis": "odstranění rámu z FV panelů"},
+      {"id": "FILTRACE", "popis": "filtrační jednotka"}
+    ],
+    "bezpecnostni_oploceni_OPEN": {"_status": "BUDE UPŘESNĚNO", "_abmv_ref": "#8"},
+    "externi_dokument_OPEN": {
+      "kod": "2966-1",
+      "nazev": "návrh dispozice strojů HK",
+      "_source": "A104 DXF external reference",
+      "_abmv_ref": "#16",
+      "_status": "NEDODÁNO",
+      "_leverage": "vysoká — řeší ABMV #1 + #3"
+    },
+    "_all_critical_abmv": ["#1", "#3", "#8", "#16"]
+  },
+  "pbr": {
+    "pocet_pu": 1,
+    "plocha_pu_m2": 495,
+    "stupen_pb": "II",
+    "pozarni_zatezeni_kg_m2": 90,
+    "ekvivalentni_doba_pozaru_min": 48,
+    "obvodovy_plast_pozarna": "EW 15 DP1",
+    "stresny_plast_pozarna": "EI 15 DP1 + BROOF(t3)",
+    "nosne_konstrukce_pozarna": "R 15 DP1",
+    "hasici_pristroje": ["2× PHP práškový 27A", "2× PHP sněhový CO2 144B"],
+    "pozarni_hydrant_DN": 25,
+    "_source": "PBŘ č. 2025/60-034"
+  },
+  "vykopy": {
+    "typy_dxf": ["A-VYKOP", "B-VYKOP", "C-VYKOP"],
+    "sklon_svahu": "1:1",
+    "krizeni_se_sitemi": [
+      {"typ": "stávající splašková kanalizace", "dn": 300, "opatreni": "ručné výkopy + obetonování při křížení"},
+      {"typ": "stávající dešťová kanalizace", "dn": 300, "opatreni": "ručné výkopy + obetonování"}
+    ],
+    "celkem_m3_tz": 32,
+    "_source": "A201 DXF + TZ B kap. m.10.g"
+  },
+  "additional_elements": {
+    "rampy_OPEN": {"pocet": 4, "_source": "A102 DXF (Rampa-... blocks)", "_predpoklad": "u vrat pro vjezd vozíky", "_not_in_tz": true}
+  },
+  "scope_estimate": {
+    "total_items_min": 180,
+    "total_items_max": 255,
+    "by_kapitola": {
+      "HSV_1_zemni": "25-35",
+      "HSV_2_zaklady": "15-20",
+      "HSV_3_ocelove_konstrukce": "25-35",
+      "HSV_9_ostatni": "15-20",
+      "PSV_71x_izolace": "10-15",
+      "PSV_76x_dvere_vrata_okna": "10-15",
+      "PSV_77x_podlahy": "5-10",
+      "TZB_extended": "50-70",
+      "M_konstrukce_anchorage": "5-10",
+      "VRN_ZRN": "20-25"
+    }
+  }
+}

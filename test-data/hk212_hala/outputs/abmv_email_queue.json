@@ -1,0 +1,160 @@
+{
+  "_meta": {
+    "schema_version": "1.0",
+    "project": "hk212_hala",
+    "generated_at": "2026-05-12",
+    "total_items": 16,
+    "critical_count": 4,
+    "important_count": 9,
+    "minor_count": 3,
+    "status": "ready_for_send_pending_phase1_crosscheck",
+    "addressees": [
+      {"role": "ARS hlavní", "name": "Ing. arch. Jakub Volka", "email": "volkajakub@basepoint.cz"},
+      {"role": "Statika", "name": "Ing. Jiří Plachý / Bc. M. Doležal", "email": "TBD"}
+    ]
+  },
+  "items": [
+    {
+      "id": "ABMV_1",
+      "category": "design_clarification",
+      "severity": "critical",
+      "status": "open",
+      "title": "Energetická bilance vs. technologie strojů",
+      "summary_cs": "TZ B uvádí Pvyp = 60,5 kW, jistič 3×100 A. Výkres A106 ukazuje stroje DRIFT_E1, DEFRAME, filtrační jednotka s příkonem cca 80 kW/stroj. Při souběhu provozu navržené dimenzování nestačí.",
+      "blocks_vv": ["elektro VV", "rozvaděč VV", "přívodní kabel"],
+      "addressee": ["Volka"]
+    },
+    {
+      "id": "ABMV_2",
+      "category": "design_clarification",
+      "severity": "critical",
+      "status": "open",
+      "title": "Šířka sekčních vrat: 3000 vs 3500 mm",
+      "summary_cs": "TZ B a TZ D.1.1 uvádí 4× sekční vrata 3500×4000 mm. DXF A101 obsahuje block 'M_Vrata_výsuvná_sekční - 3000X4000 MM'.",
+      "blocks_vv": ["vrata VV", "klempířina kolem vrat"]
+    },
+    {
+      "id": "ABMV_3",
+      "category": "missing_specification",
+      "severity": "critical",
+      "status": "open",
+      "title": "Technologická specifikace strojů (DRIFT, DEFRAME, FILTRACE)",
+      "summary_cs": "A106/A107 zobrazují pracoviště + kotvící body, TZ je nepopisuje. Potřebujeme: výrobce/typ, hmotnost, požadované kotvy, přívody médií, zda dodávku zajistí investor.",
+      "blocks_vv": ["anchorage VV", "rozšířené elektro", "lokální výztuž desky", "VRN"],
+      "related": ["ABMV_16"]
+    },
+    {
+      "id": "ABMV_4",
+      "category": "documentation_metadata",
+      "severity": "important",
+      "status": "open",
+      "title": "Stupeň PD — sjednocení DPS/DPZ/DSP",
+      "summary_cs": "TZ A+B → DPS; výkresy ARS + TZ D.1.1 → DPZ; TZ statika D.1.2 → DSP. Předpokládáme překlep v TZ A+B (ARS = DPZ).",
+      "working_assumption": "ARS = DPZ, statika = DSP"
+    },
+    {
+      "id": "ABMV_5",
+      "category": "documentation_conflict",
+      "severity": "important",
+      "status": "working_assumption",
+      "title": "Třída betonu základové desky",
+      "summary_cs": "Legenda A101 → C30/37-XC2. TZ B + TZ D.1.2 → C25/30 XC4. Statika má přednost.",
+      "working_assumption": "C25/30 XC4"
+    },
+    {
+      "id": "ABMV_6",
+      "category": "documentation_conflict",
+      "severity": "important",
+      "status": "working_assumption",
+      "title": "Požární odolnost obvodového pláště",
+      "summary_cs": "TZ B str.4 → EW 15 DP3. A101 + PBŘ → EW 15 DP1. PBŘ má přednost.",
+      "working_assumption": "EW 15 DP1"
+    },
+    {
+      "id": "ABMV_7",
+      "category": "documentation_conflict",
+      "severity": "important",
+      "status": "open",
+      "title": "Nekonzistentní plochy a kubatura",
+      "summary_cs": "Zastavěná plocha: A=540,10; B=520; D.1.1=541 m². Podlahová: A=495; B=507; D.1.1=495 m². Obestavěný prostor: A=3694,62; B=2833; D.1.1=3404 m³.",
+      "working_assumption": "podlahová 495 m² (DXF + 2 ze 3 zdrojů), zbytek čeká"
+    },
+    {
+      "id": "ABMV_8",
+      "category": "missing_specification",
+      "severity": "important",
+      "status": "open",
+      "title": "Bezpečnostní oplocení strojů",
+      "summary_cs": "A106 uvádí 'BUDE UPŘESNĚNO'. Pro VV potřebujeme typ (Troax/Axelent/Brück), výšku, délku, umístění."
+    },
+    {
+      "id": "ABMV_9",
+      "category": "missing_specification",
+      "severity": "important",
+      "status": "open",
+      "title": "Umyvadlo v hale — ZTI vnitřní",
+      "summary_cs": "A101 obsahuje umyvadlo 50×40 cm. TZ B §B.3.1 → zázemí v sousední hale. Bude ZTI vnitřní (přívody SV + napojení splaškové)?"
+    },
+    {
+      "id": "ABMV_10",
+      "category": "missing_specification",
+      "severity": "important",
+      "status": "working_assumption",
+      "title": "Typ podlahy 'stěrka'",
+      "summary_cs": "Při zatížení ≥ 1600 kg/m² + technologie předpokládáme epoxidovou nebo PU stěrku.",
+      "working_assumption": "epoxidová nebo PU stěrka 3-5 mm"
+    },
+    {
+      "id": "ABMV_11",
+      "category": "missing_input",
+      "severity": "important",
+      "status": "blocking",
+      "title": "IGP — kdy bude k dispozici",
+      "summary_cs": "Závisí varianta fundamentu (patky vs pilota 800/8000). Bez IGP nelze finalizovat zemní práce + fundament VV."
+    },
+    {
+      "id": "ABMV_12",
+      "category": "missing_input",
+      "severity": "important",
+      "status": "open",
+      "title": "TZB profesní PD (D.1.4)",
+      "summary_cs": "VZT, ÚT, EL, ZTI pouze koncepčně v TZ B. Budou samostatné výkresy a tabulky?"
+    },
+    {
+      "id": "ABMV_13",
+      "category": "documentation_conflict",
+      "severity": "important",
+      "status": "working_assumption",
+      "title": "Kingspan systém: K-roc vs IPN",
+      "summary_cs": "A102 uvádí KS FR/FF K-roc (minerální vata, DP1) + KS NF/RW IPN (PIR pěna, DP3) jako alternativy. PBŘ vyžaduje DP1.",
+      "working_assumption": "K-roc s minerální vatou (DP1 satisfies PBŘ)"
+    },
+    {
+      "id": "ABMV_14",
+      "category": "minor",
+      "severity": "minor",
+      "status": "working_assumption",
+      "title": "Počet svodů dešťové vody: 3 vs 4",
+      "summary_cs": "TZ B → 4 svody DN100. A101+A105 ukazují 3 Lindab Round Downpipe + 3 Wavin vpusti.",
+      "working_assumption": "3 (DXF má přednost)"
+    },
+    {
+      "id": "ABMV_15",
+      "category": "minor",
+      "severity": "minor",
+      "status": "open",
+      "title": "Krajní vaznice: C150×19,3 vs UPE160",
+      "summary_cs": "TZ B → UPE160 S235. A104 DXF → C150×19,3 S235."
+    },
+    {
+      "id": "ABMV_16",
+      "category": "missing_input",
+      "severity": "critical",
+      "status": "open",
+      "title": "Externí dokument '2966-1 návrh dispozice strojů HK'",
+      "summary_cs": "A104 DXF obsahuje external reference '2966-1_navrh dispozice stroju-HK_dwg'. Dokument není v inputs. Jeho dodání by uzavřelo ABMV #1 + #3 najednou.",
+      "related": ["ABMV_1", "ABMV_3"],
+      "leverage": "high"
+    }
+  ]
+}
