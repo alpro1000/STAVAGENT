@@ -22,12 +22,13 @@
  *   SKIP_PRERENDER=1 npm run build
  */
 
-// puppeteer + sirv are intentionally loaded via dynamic import inside main()
-// so that `SKIP_PRERENDER=1 node scripts/prerender.mjs` works even when those
-// packages aren't installed (e.g. fast dev sandboxes that skip devDeps).
-// ES module static imports are hoisted and evaluated before any code in the
-// module body, so a top-level `import puppeteer from 'puppeteer'` would
-// crash with ERR_MODULE_NOT_FOUND before the SKIP_PRERENDER check could run.
+// puppeteer-core + @sparticuz/chromium + sirv are loaded via dynamic import
+// inside main() so that `SKIP_PRERENDER=1 node scripts/prerender.mjs` works
+// even when those packages aren't installed (e.g. fast dev sandboxes that
+// skip devDeps). ES module static imports are hoisted and evaluated before
+// any code in the module body, so a top-level `import puppeteer from
+// 'puppeteer-core'` would crash with ERR_MODULE_NOT_FOUND before the
+// SKIP_PRERENDER check could run.
 import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve, dirname, join } from 'node:path';
@@ -159,15 +160,31 @@ async function main() {
   const originalShell = await readFile(INDEX_HTML, 'utf8');
 
   // Dynamic import — see top-of-file note about SKIP_PRERENDER ordering.
-  const { default: puppeteer } = await import('puppeteer');
+  // Using puppeteer-core + @sparticuz/chromium (serverless-optimized variant)
+  // instead of full `puppeteer`. Reason: Vercel build containers are minimal
+  // Linux images that lack the GUI shared libraries (libnss3, libxss1,
+  // libasound2, libatk-bridge2.0, etc.) that the standard Puppeteer-bundled
+  // Chromium dynamically links against. The first prod build failed with:
+  //     [prerender] FAILED: Failed to launch the browser process!
+  //     chrome: error while loading shared libraries: libnss3.so: cannot
+  //     open shared object file: No such file or directory
+  // @sparticuz/chromium ships a Chromium build that statically links the
+  // missing libs, designed for AWS Lambda / Vercel / Cloud Run serverless
+  // environments. puppeteer-core is the same Puppeteer API minus the
+  // bundled Chromium download — chromium binary comes from sparticuz.
+  // Local dev machines (which usually have the GUI libs installed) work
+  // the same way — sparticuz Chromium just always uses its bundled binary.
+  const { default: chromium } = await import('@sparticuz/chromium');
+  const { default: puppeteer } = await import('puppeteer-core');
   const { default: sirv } = await import('sirv');
 
   const { server, baseUrl } = await startStaticServer(sirv);
   console.log(`[prerender] Static server listening on ${baseUrl}`);
 
   const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+    args: chromium.args,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
   });
 
   const captured = [];
