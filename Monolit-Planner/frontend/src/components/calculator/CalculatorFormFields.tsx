@@ -43,8 +43,8 @@ export default function CalculatorFormFields(props: CalculatorFormFieldsProps) {
   const isFieldLocked = (name: string) =>
     !!(isTzContextLocked && lockedFieldSet?.has(name));
   const lockedTitle = positionContext?.otskp_code
-    ? `Převzato z pozice ${positionContext.otskp_code} (Monolit Planner). Pro změnu upravte v původní pozici.`
-    : 'Převzato z Monolit Planner. Pro změnu upravte v původní pozici.';
+    ? `Převzato z pozice ${positionContext.otskp_code} (Kalkulátor betonáže). Pro změnu upravte v původní pozici.`
+    : 'Převzato z Kalkulátoru betonáže. Pro změnu upravte v původní pozici.';
 
   // B1 (2026-04-15): for bored piles the formwork-related fields are
   // still RENDERED but DISABLED (with a tooltip) so the user sees they

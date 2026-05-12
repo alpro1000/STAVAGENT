@@ -183,7 +183,7 @@ export default function PlannerPage() {
             href={isPortalMode ? PORTAL_URL : (positionContext?.bridge_id ? `/?bridge=${positionContext.bridge_id}` : '/')}
             className="r0-back-link"
           >
-            {isPortalMode ? <><ArrowLeft size={14} className="inline" /> Portál</> : <><ArrowLeft size={14} className="inline" /> Monolit Planner</>}
+            {isPortalMode ? <><ArrowLeft size={14} className="inline" /> Portál</> : <><ArrowLeft size={14} className="inline" /> Kalkulátor betonáže</>}
           </a>
           <h1 className="r0-title">
             <span className="r0-icon"><Calculator size={20} /></span>

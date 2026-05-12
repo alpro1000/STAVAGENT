@@ -90,7 +90,7 @@ function detectFileType(data: string[][]): DetectedFileType {
     return { type: 'otskp', confidence: 85, reason: 'Nalezeny OTSKP kódy (písmeno + čísla)' };
   }
   if (hasUrsCodes) {
-    return { type: 'urs', confidence: 80, reason: 'Nalezeny ÚRS kódy (6+ číslic)' };
+    return { type: 'urs', confidence: 80, reason: 'Nalezeny 9místné kódy' };
   }
   if (hasRtsCodes) {
     return { type: 'rts', confidence: 80, reason: 'Nalezeny RTS kódy (formát XXX-YYY)' };

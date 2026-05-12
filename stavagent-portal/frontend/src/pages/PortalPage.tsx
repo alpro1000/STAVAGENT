@@ -62,52 +62,47 @@ interface Service {
 // Dostupné služby STAVAGENT
 const SERVICES: Service[] = [
   // ===== FLAGSHIP (AKTIVNÍ) =====
-  {
-    id: 'monolit-calculator',
-    name: 'Monolit Planner',
-    description: 'Plánování monolitických konstrukcí. Import pozic, TOV, Gantt projektu.',
-    icon: 'Hexagon',
-    url: 'https://kalkulator.stavagent.cz',
-    status: 'active',
-    tags: ['Plánování', 'TOV', 'Gantt', 'Import']
-  },
-  {
-    id: 'element-calculator',
-    name: 'Kalkulátor betonáže',
-    description: 'Deterministický kalkulátor betonáže monolitických konstrukcí. 20 typů elementů, 7-krokový pipeline (RCPSP scheduler + PERT Monte Carlo), pravděpodobnostní odhad termínů P50/P80/P90. Normy ČSN EN 13670, DOKA/PERI. Gantt + XLSX.',
-    icon: 'Ruler',
-    url: 'https://kalkulator.stavagent.cz/planner',
-    status: 'active',
-    tags: ['Deterministický', 'Monte Carlo', 'RCPSP', 'Gantt', 'ČSN EN 13670']
-  },
+  // Tři propojené nástroje + Analýza dokumentace v beta režimu.
+  // Pořadí odpovídá workflow přípraváře na lendingu (v3.2 §6.4):
+  // Klasifikátor → Registr → Kalkulátor.
   {
     id: 'urs-matcher',
     name: 'Klasifikátor stavebních prací',
-    description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
+    description: 'AI klasifikace pozic. Vstupy: výkaz výměr (xlsx), ručně text, dokumenty (PDF, DWG). Návrh kódů s pravděpodobností, vždy ke schválení. Multi-role režim s ČSN kontrolou.',
     icon: 'Search',
     url: 'https://klasifikator.stavagent.cz',
     status: 'active',
-    tags: ['Výkaz výměr', 'URS', 'AI párování']
+    tags: ['Klasifikace', 'OTSKP', 'AI', 'Multi-role']
   },
   {
     id: 'rozpocet-registry',
     name: 'Registr Rozpočtů',
-    description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
+    description: 'Pracovní rozbor smety: rozdělení do skupin pro poptávky a oddělení. TOV — lidé, mechanizmy, materiály. Vestavěné kalkulátory bětonpumpy (multi-supplier), dopravy betonu a kranu.',
     icon: 'BarChart3',
     url: 'https://registry.stavagent.cz',
     status: 'active',
-    tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
+    tags: ['TOV', 'Skupiny', 'Bětonpumpa', 'Doprava', 'Kran']
   },
-  // ===== PŘIPRAVUJEME =====
+  {
+    id: 'monolit-calculator',
+    name: 'Kalkulátor betonáže',
+    description: 'Detail prvku + Plán objektu. 7 výpočetních jader (bednění, výztuž, betonáž, zrání, harmonogram, PERT, čerpadla). 25 systémů bednění (DOKA, PERI, ULMA, NOE, tradiční), 22 typů prvků. Normy ČSN EN 13670, DIN 18218, Saul.',
+    icon: 'Hexagon',
+    url: 'https://kalkulator.stavagent.cz',
+    status: 'active',
+    tags: ['Beton', 'Bednění', 'Takty', 'Gantt', 'ČSN EN 13670']
+  },
+  // ===== BETA =====
   {
     id: 'document-analysis',
-    name: 'Analýza dokumentů',
-    description: 'Nahrajte PDF/XLSX → automatický passport, soupis prací, AI audit, shrnutí. Univerzální modul: 4 taby (Soupis, Passport, AI Audit, Shrnutí). Multi-SO merge s detekcí rozporů.',
+    name: 'Analýza dokumentace',
+    description: 'TZ, statika, geologie, výkresy. Cross-document kontrola: geologie → statika → rozpočet. AI extrakce klíčových parametrů + porovnání s ostatními dokumenty v projektu. Beta — early access.',
     icon: 'BarChart3',
-    url: '#document-analysis',
-    status: 'coming_soon',
-    tags: ['Soupis prací', 'Passport', 'AI Audit', 'Shrnutí', 'Multi-SO']
+    url: '/portal/analysis',
+    status: 'beta',
+    tags: ['TZ', 'Statika', 'Geologie', 'Cross-document', 'Beta']
   },
+  // ===== PŘIPRAVUJEME =====
   {
     id: 'drawing-analysis',
     name: 'Analýza výkresů',

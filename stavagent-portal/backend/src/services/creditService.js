@@ -160,7 +160,8 @@ export async function deductCredits(userId, operationKey, description = null) {
 
 /**
  * Add credits to a user (top-up).
- * Called by admin or Stripe webhook.
+ * Called by /admin/topup. Self-service topup (Stripe webhook) was removed
+ * 2026-05-08; will be re-added behind Lemon Squeezy webhook in Q3 2026.
  */
 export async function addCredits(userId, amount, { description = null, referenceId = null, adminId = null } = {}) {
   try {

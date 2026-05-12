@@ -215,7 +215,7 @@ export function TzTextInput({
       if (lockSet.has(p.name)) {
         ignored.push({
           param: p, reason: 'locked',
-          reasonText: `Pole je uzamčeno z pozice${positionCode ? ` ${positionCode}` : ''} (Monolit Planner).`,
+          reasonText: `Pole je uzamčeno z pozice${positionCode ? ` ${positionCode}` : ''} (Kalkulátor betonáže).`,
         });
         continue;
       }
@@ -356,7 +356,7 @@ export function TzTextInput({
           borderRadius: 4, fontSize: 10, color: 'var(--r0-amber-text, #92400e)',
           lineHeight: 1.4,
         }}>
-          🔒 Z pozice{positionCode ? ` ${positionCode}` : ''} (Monolit Planner).
+          🔒 Z pozice{positionCode ? ` ${positionCode}` : ''} (Kalkulátor betonáže).
           Typ elementu a objem jsou uzamčené — TZ je pouze doplňkový zdroj.
         </div>
       )}

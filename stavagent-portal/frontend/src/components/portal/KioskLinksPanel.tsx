@@ -32,7 +32,7 @@ interface KioskLinksPanelProps {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; url: string }> = {
-  monolit: { label: 'Monolit Planner', icon: 'Hexagon', color: '#6366f1', url: 'https://kalkulator.stavagent.cz' },
+  monolit: { label: 'Kalkulátor betonáže', icon: 'Hexagon', color: '#6366f1', url: 'https://kalkulator.stavagent.cz' },
   registry: { label: 'Registr Rozpočtů', icon: 'BarChart3', color: '#f59e0b', url: 'https://registry.stavagent.cz' },
   urs_matcher: { label: 'Klasifikátor stavebních prací', icon: 'Search', color: '#22c55e', url: 'https://klasifikator.stavagent.cz' },
 };

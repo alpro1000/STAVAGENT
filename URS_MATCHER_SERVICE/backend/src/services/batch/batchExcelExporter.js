@@ -33,7 +33,7 @@ export async function exportToExcel(batchData) {
 
     // Create workbook
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'STAVAGENT - URS Matcher';
+    workbook.creator = 'STAVAGENT - Klasifikátor';
     workbook.created = new Date();
     workbook.modified = new Date();
 
@@ -250,7 +250,7 @@ async function createSummarySheet(workbook, batchData) {
   // ========================================================================
   sheet.mergeCells('A1:B1');
   const titleCell = sheet.getCell('A1');
-  titleCell.value = `URS Matcher - Souhrn výsledků`;
+  titleCell.value = `Klasifikátor — Souhrn výsledků`;
   titleCell.font = { bold: true, size: 16 };
   titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
   sheet.getRow(1).height = 30;

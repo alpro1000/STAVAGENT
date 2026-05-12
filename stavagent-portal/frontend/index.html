@@ -6,21 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO -->
-    <title>StavAgent — Stavební rozpočty a dokumentace pod kontrolou | CZ</title>
-    <meta name="description" content="Analyzujte stavební dokumenty, spočítejte monolitický beton a exportujte do Excelu. Pro rozpočtáře, přípraváře a stavební firmy v ČR. 17 904 položek OTSKP, 25 systémů bednění. 200 kreditů zdarma." />
-    <link rel="canonical" href="https://www.stavagent.cz" />
+    <title>StavAgent — Z rozpočtu pracovní plán | CZ</title>
+    <meta name="description" content="Klasifikace pozic smety do skupin pro poptávky a oddělení. TOV s rozborem na lidé, mechanizmy, materiály. Výpočet taktů, zdrojů a harmonogramu monolitu. Pro rozpočtáře a přípraváře v ČR. 200 kreditů zdarma." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.stavagent.cz/" />
+
+    <!-- canonical + hreflang link tags ABOVE are the BASELINE for the
+         landing /. Each React page (LandingPage, LandingPageEn, TeamPage)
+         calls useHeadMeta on mount to REPLACE the canonical with its own
+         page-specific URL and append cs/en/x-default hreflang link tags.
+         The postbuild prerender (scripts/prerender.mjs) captures the
+         post-mount <head> state — so each dist/<route>/index.html ships
+         with the correct per-page tags, while crawlers hitting the
+         landing pre-hydration still see the baseline above. -->
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="StavAgent — Stavební rozpočty a dokumentace pod kontrolou" />
-    <meta property="og:description" content="Přesné deterministické výpočty tam, kde to jde. AI analýza tam, kde pomůže. Vždy s transparentním confidence skóre." />
-    <meta property="og:url" content="https://www.stavagent.cz" />
+    <meta property="og:site_name" content="StavAgent" />
+    <meta property="og:title" content="StavAgent — Z rozpočtu pracovní plán" />
+    <meta property="og:description" content="Klasifikace, TOV, takty, zdroje, harmonogram. Pro rozpočtáře a přípraváře monolitů. Transparentní confidence — AI nikdy ne se 100% jistotou." />
+    <meta property="og:url" content="https://www.stavagent.cz/" />
     <meta property="og:locale" content="cs_CZ" />
+    <meta property="og:image" content="https://www.stavagent.cz/assets/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="StavAgent — Z rozpočtu pracovní plán. 17 904 položek OTSKP, ČSN EN 13670, DIN 18218, 200 kreditů zdarma." />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="StavAgent — Stavební rozpočty a dokumentace pod kontrolou" />
-    <meta name="twitter:description" content="Přesné deterministické výpočty tam, kde to jde. AI analýza tam, kde pomůže." />
+    <meta name="twitter:title" content="StavAgent — Z rozpočtu pracovní plán" />
+    <meta name="twitter:description" content="Klasifikace, TOV, takty, zdroje, harmonogram pro rozpočtáře a přípraváře monolitů." />
+    <meta name="twitter:image" content="https://www.stavagent.cz/assets/og-image.png" />
+    <meta name="twitter:image:alt" content="StavAgent — Z rozpočtu pracovní plán. 17 904 položek OTSKP, ČSN EN 13670, DIN 18218, 200 kreditů zdarma." />
   </head>
   <body>
     <div id="root"></div>

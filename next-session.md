@@ -328,3 +328,56 @@ Architectural foundation solid. When ready:
 
 **Cleanup deadline: 2026-07-29** (3 months from Gate 1 closure
 2026-04-29). Tracked as blocking prerequisite for public MCP launch.
+
+---
+
+## Backlog (cross-cutting, not Gate-2)
+
+### URS_MATCHER_SERVICE → Unified Retrieval Service (acronym redefinition)
+
+Recorded 2026-05-07 during Phase 0 audit of the v3.2 landing reposition
+(`AUDIT_REPORT_landing_v3.md` §18). Replaces the earlier idea of
+renaming the directory + Cloud Run service.
+
+**Approach:** keep the abbreviation `URS_MATCHER_SERVICE` everywhere in
+infra (Cloud Run service name `urs-matcher-service`, `cloudbuild-urs.yaml`,
+env var `URS_BACKEND`, repo directory, CI workflow `test-urs-matcher.yml`,
+Portal route `for-kiosk/urs_matcher`, `value="urs"` dropdown attribute,
+`urs_matcher` services-table key). Redefine the acronym in documentation
+to `Unified Retrieval Service` — defensible non-trademark term, accurately
+describes what the service does (unifies retrieval from OTSKP local DB +
+Perplexity AI semantic search + future regional integrations).
+
+**Reason:** v3.2 audit (in flight) scrubs `ÚRS` from public UI surfaces in
+~10 places (Klasifikátor `app.js` column headers + exports, Portal
+`VerifyEmailPage.tsx:149`, Portal `schema-postgres.sql:686-747` service
+seeds). Internal `URS_MATCHER_SERVICE` acronym remains. Recoding the
+acronym's official meaning closes the loop without touching infrastructure.
+
+**Where to update (when triggered):**
+- `CLAUDE.md` (root) — service-description section
+- `README.md` (root) — service-table row + architecture diagram caption
+- `URS_MATCHER_SERVICE/README.md` — replace "URS Matcher Service - Web kiosk for ÚRS position matching"
+- `URS_MATCHER_SERVICE/backend/package.json:4` — npm `description` field
+
+**Canonical doc entry:**
+
+```
+### URS_MATCHER_SERVICE
+
+Unified Retrieval Service — microservice that unifies retrieval from
+multiple catalog sources (OTSKP local DB + AI-based semantic search +
+future regional integrations). Provides matching layer between user
+input (work descriptions) and structured catalog codes.
+```
+
+**Trigger conditions** (do it when any of these happens):
+- New contributor asks "what does URS stand for?"
+- Repository becomes publicly indexed / open-sourced (npm description
+  + README will be crawled)
+- Legal/IP review surfaces trademark-proximity concern with ÚRS Praha
+- A UI/docs PR happens to touch any of the 4 files above — bundle in
+
+**Effort:** ~30 min once triggered. 4 files, ~20 lines edited.
+
+**Status:** Deferred. Not urgent.

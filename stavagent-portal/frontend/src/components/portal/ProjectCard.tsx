@@ -47,7 +47,7 @@ function withAuth(url: string): string {
 
 const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link: KioskLink, portalId: string) => string }> = {
   monolit: {
-    label: 'Monolit Planner',
+    label: 'Kalkulátor betonáže',
     icon: 'Hexagon',
     buildUrl: (link, portalId) =>
       withAuth(`https://kalkulator.stavagent.cz/?project=${link.kiosk_project_id}&portal_project=${portalId}`),
@@ -71,7 +71,7 @@ const PROJECT_TYPE_META: Record<string, { label: string; icon: string }> = {
   building: { label: 'Budova',          icon: 'Building2' },
   road:     { label: 'Komunikace',      icon: 'Milestone' },
   parking:  { label: 'Parkoviště',      icon: 'SquareParking' },
-  monolit:  { label: 'Monolit Planner', icon: 'Hexagon' },
+  monolit:  { label: 'Kalkulátor betonáže', icon: 'Hexagon' },
   custom:   { label: 'Vlastní',         icon: 'ClipboardList' },
 };
 
