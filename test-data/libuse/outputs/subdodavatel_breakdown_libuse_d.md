@@ -1,9 +1,17 @@
 # Subdodavatel breakdown — Libuše objekt D
 
-**Date:** 2026-05-10
+**Date:** 2026-05-12 (refresh after PROBE_14a + PROBE_15 + PROBE_17)
 **Source:** `items_objekt_D_complete.json` post `phase_0_21_list13_filter_view_plus.py`
 enrichment.
-**Mapping:** `test-data/libuse/data/subdodavatel_mapping.json` v1.0.
+**Mapping:** `test-data/libuse/data/subdodavatel_mapping.json` **v1.1** (was v1.0).
+
+> **Mapping changelog v1.1 (2026-05-12, PROBE_14a):** PSV-783 (Ochrana
+> konstrukcí proti agresivnímu prostředí) split z monolitního "zámečník"
+> do granular per-F-kód / per-keyword trades via new `_kapitola_popis_granular`
+> section. 91 z 93 PSV-783 items moved out of zámečník → 87 podlahář
+> (epoxidový/PU) + 2 malíř (anti-graffiti) + 2 betonář (mazaniny); 2 stayed
+> as zámečník (žárové zinkování + prášková úprava ocelových konstrukcí).
+> See PROBE_14a v carry_forward_findings.
 
 ---
 
@@ -11,11 +19,12 @@ enrichment.
 
 | Skupina | Items | % celku |
 |---|---:|---:|
-| **Vlastní** (HSV in-house — generální dodavatel) | 1 224 | **30,4 %** |
-| **Subdodavatel** (specialist trades) | 2 801 | **69,6 %** |
-| **TOTAL** | **4 025** | **100 %** |
+| **Vlastní** (HSV in-house — generální dodavatel) | 1 224 | **29,9 %** |
+| **Subdodavatel** (specialist trades) | 2 866 | **70,1 %** |
+| **TOTAL** | **4 090** | **100 %** |
 
-29 distinkt kategorií. Top 10 pokrývá **87 %** všech položek.
+31 distinkt kategorií (+2 nové od v1.0: "podlahář (epoxidový/PU)" + "malíř
+(anti-graffiti)"). Top 10 pokrývá **88 %** všech položek.
 
 ---
 
@@ -23,36 +32,55 @@ enrichment.
 
 | # | Subdodavatel | Items | % celku |
 |---:|---|---:|---:|
-| 1 | vlastní (prostupy ve stropech) | 942 | 23,4 % |
-| 2 | betonář (mazaniny) | 503 | 12,5 % |
-| 3 | malíř | 491 | 12,2 % |
-| 4 | SDK montér | 393 | 9,8 % |
-| 5 | obkladač | 374 | 9,3 % |
-| 6 | omítkář | 312 | 7,8 % |
-| 7 | zámečník | 190 | 4,7 % |
-| 8 | podlahář (vinyl / PVC) | 168 | 4,2 % |
-| 9 | izolatér | 163 | 4,0 % |
-| 10 | vlastní (osazení dveří/oken) | 101 | 2,5 % |
-| 11 | vlastní (stykové detaily) | 73 | 1,8 % |
-| 12 | truhlář | 55 | 1,4 % |
-| 13 | vlastní (prostupy ve stěnách + stropech) | 48 | 1,2 % |
-| 14 | dodavatel dveří | 43 | 1,1 % |
-| 15 | klempíř | 41 | 1,0 % |
-| 16 | izolatér + střechař | 19 | 0,5 % |
-| 17 | zedník (překlady) | 14 | 0,3 % |
-| 18 | fasádista | 13 | 0,3 % |
-| 19 | vlastní (úklid) | 13 | 0,3 % |
-| 20 | vlastní (vedlejší rozpočtové náklady) | 11 | 0,3 % |
-| 21 | vlastní (lešení) | 10 | 0,2 % |
-| 22 | pokrývač | 9 | 0,2 % |
-| 23 | vlastní (pomocné práce) | 9 | 0,2 % |
-| 24 | vlastní (prostupy ve stěnách) | 9 | 0,2 % |
-| 25 | truhlář (spec. dveře) | 8 | 0,2 % |
-| 26 | vlastní (zařízení staveniště) | 5 | 0,1 % |
-| 27 | vlastní (přesun hmot) | 3 | 0,1 % |
-| 28 | dodavatel oken | 3 | 0,1 % |
-| 29 | dodavatel oken (curtain wall) | 2 | 0,0 % |
-| **TOTAL** | | **4 025** | **100 %** |
+| 1 | vlastní (prostupy ve stropech) | 942 | 23,0 % |
+| 2 | betonář (mazaniny) | 525 | 12,8 % |
+| 3 | malíř | 523 | 12,8 % |
+| 4 | SDK montér | 401 | 9,8 % |
+| 5 | obkladač | 374 | 9,1 % |
+| 6 | omítkář | 312 | 7,6 % |
+| 7 | podlahář (vinyl / PVC) | 168 | 4,1 % |
+| 8 | izolatér | 168 | 4,1 % |
+| 9 | vlastní (osazení dveří/oken) | 101 | 2,5 % |
+| 10 | zámečník | 99 | 2,4 % |
+| 11 | **podlahář (epoxidový/PU)** 🆕 | **87** | **2,1 %** |
+| 12 | vlastní (stykové detaily) | 73 | 1,8 % |
+| 13 | truhlář | 55 | 1,3 % |
+| 14 | vlastní (prostupy ve stěnách + stropech) | 48 | 1,2 % |
+| 15 | dodavatel dveří | 43 | 1,1 % |
+| 16 | klempíř | 41 | 1,0 % |
+| 17 | izolatér + střechař | 19 | 0,5 % |
+| 18 | zedník (překlady) | 14 | 0,3 % |
+| 19 | fasádista | 13 | 0,3 % |
+| 20 | vlastní (úklid) | 13 | 0,3 % |
+| 21 | vlastní (vedlejší rozpočtové náklady) | 11 | 0,3 % |
+| 22 | vlastní (lešení) | 10 | 0,2 % |
+| 23 | pokrývač | 9 | 0,2 % |
+| 24 | vlastní (pomocné práce) | 9 | 0,2 % |
+| 25 | vlastní (prostupy ve stěnách) | 9 | 0,2 % |
+| 26 | truhlář (spec. dveře) | 8 | 0,2 % |
+| 27 | vlastní (zařízení staveniště) | 5 | 0,1 % |
+| 28 | vlastní (přesun hmot) | 3 | 0,1 % |
+| 29 | dodavatel oken | 3 | 0,1 % |
+| 30 | **malíř (anti-graffiti)** 🆕 | **2** | **0,0 %** |
+| 31 | dodavatel oken (curtain wall) | 2 | 0,0 % |
+| **TOTAL** | | **4 090** | **100 %** |
+
+---
+
+## Delta v1.0 → v1.1 (PROBE_14a impact)
+
+| Subdodavatel | v1.0 (4 025 items) | v1.1 (4 090 items) | Note |
+|---|---:|---:|---|
+| zámečník | 190 | **99** | **−91** PSV-783 reclass + 0 from new items (PSV-767 zámečnické výrobky unchanged at 97) |
+| **podlahář (epoxidový/PU)** 🆕 | 0 | **87** | F14 Sikagard ŽB stěn (78) + F11 epoxid (3) + F10 PU (4) + F14 transparentní (2) |
+| **malíř (anti-graffiti)** 🆕 | 0 | **2** | F23 penetrace + permanent nátěr |
+| betonář (mazaniny) | 503 | 525 | +2 from F00 pancéřový (PSV-783 reclass) + 20 from PROBE_17 FF20/FF30 base (penetrace + potěr + kari síť + PSB ~5 items × 5 rooms) |
+| malíř | 491 | 523 | +32 from PROBE_17 podhled malba (4 items × 8 rooms 3.NP F20→F17) |
+| SDK montér | 393 | 401 | +8 from PROBE_17 SDK podhled Knauf D112 (8 rooms 3.NP) |
+| izolatér | 163 | 168 | +5 from PROBE_17 kročejová izolace 25mm (1 item × 5 FF20/FF30 rooms) |
+| omítkář | 312 | 312 | 0 (PROBE_15 6 items HSV-611 already mapped) |
+| (other 23 categories) | unchanged | unchanged | — |
+| **TOTAL** | **4 025** | **4 090** | **+65 new** (PROBE_17) + 0 net from PROBE_14a re-tagging |
 
 ---
 

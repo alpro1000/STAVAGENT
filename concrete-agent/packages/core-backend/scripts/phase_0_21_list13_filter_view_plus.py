@@ -56,6 +56,21 @@ def load_mapping() -> dict:
         (re.compile(r["popis_regex"]), r["subdodavatel"])
         for r in raw.get("_popis_prefix_special_cases", {}).get("rules", [])
     ]
+    # Pre-lowercase intra-kapitola granular keywords for fast substring scan.
+    # Schema: { kapitola: [{keywords: [...], subdodavatel: "..."}, ...] }
+    granular_raw = raw.get("_kapitola_popis_granular", {}) or {}
+    raw["_granular_compiled"] = {
+        kap: [
+            {
+                "keywords_lc": [kw.lower() for kw in rule.get("keywords", [])],
+                "subdodavatel": rule["subdodavatel"],
+            }
+            for rule in rules
+            if isinstance(rule, dict) and "keywords" in rule
+        ]
+        for kap, rules in granular_raw.items()
+        if not kap.startswith("_")
+    }
     return raw
 
 
@@ -77,14 +92,26 @@ def discipline_of(kapitola: str | None) -> str:
 
 def subdodavatel_for(item: dict, mapping: dict) -> str:
     """Resolve subdodavatel per the priority chain documented in the
-    mapping JSON: popis-regex override → exact kapitola → kapitola
-    prefix → discipline default → 'vlastní'.
+    mapping JSON: popis-regex override → intra-kapitola granular keyword
+    rules → exact kapitola → kapitola prefix → discipline default →
+    'vlastní'.
     """
     popis = item.get("popis", "") or ""
     for rx, sub in mapping.get("_popis_compiled", []):
         if rx.match(popis):
             return sub
     kapitola = item.get("kapitola", "") or ""
+    # Intra-kapitola granular rules (v1.1): keyword scan over popis +
+    # skladba_ref.vrstva. First matching rule wins. Used for kapitoly
+    # whose scope covers multiple trades (e.g. PSV-783 Ochrana konstrukcí
+    # = epoxid/PU/Sikagard/anti-graffiti/pancéřový/žárové zinkování).
+    granular_rules = mapping.get("_granular_compiled", {}).get(kapitola)
+    if granular_rules:
+        skladba_vrstva = ((item.get("skladba_ref") or {}).get("vrstva", "") or "")
+        haystack = (popis + " " + skladba_vrstva).lower()
+        for rule in granular_rules:
+            if any(kw in haystack for kw in rule["keywords_lc"]):
+                return rule["subdodavatel"]
     exact = mapping.get("exact_kapitola_match", {})
     if kapitola in exact:
         return exact[kapitola]
