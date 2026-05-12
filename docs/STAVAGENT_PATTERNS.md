@@ -291,6 +291,87 @@ needs real prices.
 
 ---
 
+## Pattern 8: Door-vs-Gate Classification Hazard
+
+### Problem
+Tabulky dveří (Tabulka 0041, similar 0040–0049 series) list **ALL openings** as
+"dveře" — including:
+
+- **Garážová vrata** (sekční / rolovací / industriální)
+- Roll-up doors pro sklady/dílny
+- Technical room access hatches
+- Fire access panels
+- Loading-bay doors
+
+Všechny share generic `D##` code prefix in tabulkách, ale require **completely
+different work items** než standard dveře. Generator that blindly applies
+interior-door template (rám + křídlo + obložky + EMZ + zámek) na garage gate
+emits ~10 wrong items × ~5 000 Kč each = ~50 000 Kč nonsense + missing the
+actual ~80 000 – 150 000 Kč gate scope = ~200 000 Kč cumulative error per gate.
+
+### Detection signals
+Cross-check each `D##` code proti these criteria — if **any** match, suspect
+gate not door:
+
+| Signal | Door pattern | Gate pattern |
+|---|---|---|
+| **Floor type linked** | F01–F09 (interior dlažba/vinyl) | F10 PU garáž / industrial floor |
+| **Room type** | byt / chodba / WC | garáž / sklad / technická místnost |
+| **Width** | 800–1100 mm | 2 500+ mm (often 3 000–6 000) |
+| **Height** | 1 970–2 100 mm | 2 100–3 500 mm |
+| **Tabulka poznámka** | (none) / interior spec | "sekční" / "rolovací" / "industriální" / vendor name (Hörmann / TRIDO / Lomax) |
+| **Drawing block** | standard double-arc dveř block | distinct vrata block (parallel lines + motor symbol) |
+| **Linked místa.objekt** | matches current generator scope | cross-scope (place v B/C while generator runs for D) |
+
+### Resolution pattern
+1. Generate door items **conservatively** for všech `D##` (default = standard
+   interior door template).
+2. Run pre-delivery cross-check phase: any `D##` linked k `garáž` room, F10
+   floor, či wider than 2 500 mm?
+3. If yes → **reclassify** k gate-specific items + **deprecate** door items.
+4. Document reclassification in `carry_forward_findings` (audit trail).
+5. Items remain visible v výkazu s `[DEPRECATED PROBE X]` prefix, `mnozstvi=0`
+   (auditable that they were considered but rejected).
+
+### Gate-specific items pro Π.1 V1
+Per garage gate set, emit instead of door items:
+
+```
+HSV-642 / spec. kapitola: Sekční vrata Hörmann/TRIDO/Lomax kompletní set
+                          (křídlo + vodítka + těsnění)             ~50–80k Kč
+M-21x:                    Elektrický pohon (Marantec/Hörmann)      ~15–25k Kč
+PSV-952:                  Montáž pohonu + ovládací jednotky        ~5–10k Kč
+Bezpečnostní senzory:     fotobuňky + indukční smyčka + nárazové
+                          lišty (pro zpětný provoz)                ~10–15k Kč
+Ovládání:                 dálkové ovladače + nástěnné tlačítko +
+                          komunikace s domácím systémem            ~5–10k Kč
+
+NO zárubně, NO obložky, NO kliky/zámky (sekční vrata mají vlastní rám).
+Reference cena per set: ~80 000 – 150 000 Kč.
+Per objekt typically 1–2 sets.
+```
+
+### Validated in Libuše 185-01
+- **D05** = sekční vrata pro S.C.02 / S.C.03 / S.B.02 garáže (objekty B + C).
+- Generator initially used standard interior-door template → 11 items
+  deprecated v Phase 0.19 (PROBE 6).
+- **Cross-link s PROBE_14b** F10 PU garáž floors (~1 134 m² across same garáže).
+- Closed pro objekt D (no garáže → all D05 items qty=0 + `[DEPRECATED PROBE 6]`
+  prefix). Carry-forward `status=DEFERRED_TO_KOMPLEX_C_B`.
+
+### Cross-project applicability
+**HIGH** — most building projects have at least one garáž / industrial space
+s sekční / rolovací vraty coded as `D##` in tabulkách. Bridge / D&B projects:
+LOW (no buildings) — but applies to ZS sklady, technologické objekty s vraty.
+
+### Code references
+- `phase_6_2_reclassify_osazeni.py` — reclassification logic
+- `phase_0_19_*` — deprecation marker (`[DEPRECATED PROBE X]` prefix)
+- `items_objekt_D_complete.json` carry_forward `PROBE_6` next_action — gate
+  items template pro budoucí generator
+
+---
+
 ## Anti-patterns — what to AVOID
 
 ### ❌ Monolithic master_soupis.yaml generation
