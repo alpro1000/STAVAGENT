@@ -1,27 +1,42 @@
-# Prerender (post-build static-HTML capture)
+# Prerender (snapshot-based static-HTML serving)
 
 **Status:** active since landing v3.2 Gate 4 (2026-05-08).
-**Owner:** `scripts/prerender.mjs` runs as a `postbuild` lifecycle script.
+**Runtime architecture rewritten:** 2026-05-12 — Puppeteer moved off Vercel
+build runtime onto GitHub Actions (`ubuntu-latest`) because Vercel's build
+container is missing `libnss3.so` + friends that any Chromium binary —
+bundled `puppeteer` or `@sparticuz/chromium` — dynamically links against.
 
-## What it does
+## What happens, end-to-end
 
-After `vite build` produces `dist/index.html` (a thin SPA shell with an empty
-`<div id="root">`), `scripts/prerender.mjs` boots Puppeteer + a tiny
-`sirv` static server, navigates to each allow-listed route, captures the
-fully-hydrated HTML, and writes it back to disk.
+```
+  Developer push to main
+        │
+        ▼
+  .github/workflows/prerender.yml
+        │
+        ├── npm install (workspace root, hoisted deps)
+        ├── npm run build  (vite + REAL Puppeteer prerender — libs present)
+        ├── cp dist/*.html → public/prerendered/*.html
+        └── git commit "[skip prerender]" + git push origin main
+                    │
+                    ▼
+          Vercel deploy triggered by the new commit
+                    │
+                    ├── npm run build with SKIP_PRERENDER=1
+                    │      ├── vite build      → empty SPA shells in dist/
+                    │      └── postbuild       → prerender.mjs SKIP branch
+                    │                            copies public/prerendered/
+                    │                            over dist/* (4 routes)
+                    │
+                    └── dist/ contains fully-rendered HTML, served as
+                       static files (filesystem precedence beats the
+                       SPA-fallback rewrite)
+```
 
 A `curl https://www.stavagent.cz/` after deploy returns rendered `<h1>` +
 `<meta>` content instead of an empty `<div id="root">`. Search engines and
 preview-card scrapers (LinkedIn, Facebook, X) see the static content
 immediately without running JS.
-
-```
-        npm run build
-            │
-            ├── prebuild        — npm run prepare:shared
-            ├── build           — tsc && vite build  (writes dist/)
-            └── postbuild       — node scripts/prerender.mjs  (rewrites dist/<route>/index.html)
-```
 
 ## Allow-list
 
@@ -50,41 +65,76 @@ Per-Gate additions:
   `/reset-password` — flow pages that only matter to logged-in flows;
   the prerendered `/` is what Google indexes.
 
-## Output mapping
+When adding a route to the allow-list, **also extend the smoke-check loop
+and copy loop in `.github/workflows/prerender.yml`** (look for the four
+file paths that need to grow to five).
 
-| Route in allow-list | Output file | Active since |
+## Snapshot storage
+
+The committed snapshots live at:
+
+| Route | Snapshot file (in git) | Served at (after Vercel deploy) |
 |---|---|---|
-| `/` | `dist/index.html` (overwritten) | Gate 4 |
-| `/en/` | `dist/en/index.html` | Gate 11 |
-| `/team` | `dist/team/index.html` | Gate 10 |
-| `/en/team` | `dist/en/team/index.html` | Gate 10 |
+| `/` | `stavagent-portal/frontend/public/prerendered/index.html` | `dist/index.html` |
+| `/en/` | `stavagent-portal/frontend/public/prerendered/en/index.html` | `dist/en/index.html` |
+| `/team` | `stavagent-portal/frontend/public/prerendered/team/index.html` | `dist/team/index.html` |
+| `/en/team` | `stavagent-portal/frontend/public/prerendered/en/team/index.html` | `dist/en/team/index.html` |
 
-Vercel serves these static files directly because static-file precedence
-beats the `vercel.json` SPA rewrite (`{"source":"/(.*)","destination":"/index.html"}`).
-Routes NOT prerendered fall through the rewrite and serve the prerendered
-`/` shell, which then re-routes via React Router after hydration. This
-causes a brief landing-flash on auth-gated routes — acceptable trade-off
-since they redirect to /login anyway.
+Two parties write to this directory:
+- **The GitHub Action** on every push to main that touched non-snapshot files.
+- **A developer running `npm run build` locally** — useful for verifying a
+  change before pushing. Local runs are fine to commit; the Action will
+  overwrite them on the next push anyway.
 
-## Build-time impact
+## Why a snapshot, not live prerender on Vercel
 
-| Stage | Time on Vercel |
-|---|---|
-| `vite build` | ~30–60 s |
-| `puppeteer` install (first deploy after cache invalidation) | ~2–3 min |
-| `puppeteer` install (cached deploys) | ~5 s |
-| `prerender.mjs` (1 route) | ~2–4 s |
-| **Total fresh build** | ~3–4 min |
-| **Total cached build** | ~45 s |
+Vercel's build container is a minimal Linux image (`amazonlinux:2023`-ish).
+It does NOT ship the GUI shared libraries that Chromium dynamically links
+against:
 
-Vercel caches `node_modules/` between deploys when the lockfile (or
-`package.json` for projects without lockfile) is unchanged. Adding a
-new route to the allow-list does NOT invalidate the cache — only changing
-puppeteer's version does.
+- `libnss3.so` — Network Security Services
+- `libxss1`, `libasound2`, `libatk-bridge-2.0-0`, `libcups2`,
+  `libxcomposite1`, `libxdamage1`, `libxfixes3`, `libxrandr2`, `libgbm1`,
+  `libpango-1.0-0`, `libcairo2`
 
-## Skipping prerender
+Both variants of Chromium (`puppeteer`'s bundled download AND
+`@sparticuz/chromium`) hit the same `libnss3.so: cannot open shared
+object file` at launch. `@sparticuz/chromium` ships its own `chromium`
+binary that statically links *fonts*, but not the GUI libs.
 
-For fast local builds:
+`ubuntu-latest` (GitHub Actions) ships those libs preinstalled, so
+Puppeteer "just works" there. Hence the split: build + prerender on
+ubuntu-latest, serve from Vercel.
+
+## Loop prevention
+
+The workflow commits to main. Without precautions, that commit would
+re-trigger the workflow, which would re-prerender + commit again, …
+Two layers of defense:
+
+1. **`paths-ignore`** on `stavagent-portal/frontend/public/prerendered/**`
+   in the workflow's `on.push` block — the bot's commits change only
+   that path, so the trigger filters them out before the job ever starts.
+
+2. **`[skip prerender]` tag** in the commit message — the job's `if:`
+   condition checks for that substring and refuses to run. Belt-and-
+   suspenders in case a human commit accidentally bundles a snapshot
+   change with another change (paths-ignore would NOT block that mixed
+   commit, since the non-snapshot file is unfiltered).
+
+If you ever need to force-skip the prerender workflow on a normal commit,
+append `[skip prerender]` to the commit subject.
+
+## Manually triggering a re-prerender
+
+Two ways:
+
+1. **GitHub UI:** Actions → "Prerender Landing Pages" → "Run workflow"
+   (the workflow_dispatch trigger is enabled).
+2. **Empty commit:** `git commit --allow-empty -m "trigger prerender"`
+   and push to main.
+
+## Skipping prerender (locally)
 
 ```bash
 SKIP_PRERENDER=1 npm run build
@@ -92,72 +142,84 @@ SKIP_PRERENDER=1 npm run build
 npm run build:no-prerender
 ```
 
-The script honors `SKIP_PRERENDER=1` and exits 0 immediately.
+In SKIP mode, `scripts/prerender.mjs` exits without launching Puppeteer.
+If `public/prerendered/` exists in the working tree, it copies that
+snapshot over `dist/` (matching Vercel's behavior). If not, dist/ stays
+as the empty SPA shell.
 
-## Chromium variant — `@sparticuz/chromium` (serverless-optimized)
+## Build-time impact
 
-The prerender step uses **`puppeteer-core` + `@sparticuz/chromium`** rather than
-the full `puppeteer` package. Reason: Vercel build containers are minimal
-Linux images that do not include the GUI shared libraries (`libnss3.so`,
-`libxss1`, `libasound2`, `libatk-bridge-2.0-0`, etc.) that the standard
-Puppeteer-bundled Chromium dynamically links against. The first production
-build with the original `puppeteer` package failed at the prerender step:
+| Stage | Where | Time |
+|---|---|---|
+| GH Action: `npm install` (cached) | ubuntu-latest | ~10–20 s |
+| GH Action: `vite build` | ubuntu-latest | ~5–10 s |
+| GH Action: Puppeteer prerender (4 routes) | ubuntu-latest | ~10–15 s |
+| GH Action: commit + push | ubuntu-latest | ~3 s |
+| **GH Action total** | | **~30–50 s** |
+| Vercel: `vite build` | Vercel | ~30–60 s |
+| Vercel: postbuild snapshot copy | Vercel | <1 s |
+| **Vercel total** | | **~30–60 s** |
 
-```
-[prerender] FAILED: Failed to launch the browser process!
-chrome: error while loading shared libraries: libnss3.so: cannot open
-shared object file: No such file or directory
-```
-
-`@sparticuz/chromium` ships a Chromium build that statically links the
-otherwise-missing libs, designed for AWS Lambda / Vercel / Cloud Run
-serverless environments. `puppeteer-core` is the same Puppeteer API as the
-main `puppeteer` package minus the bundled Chromium download — the
-Chromium binary comes from `@sparticuz/chromium.executablePath()` instead.
-
-Local developer machines (which usually have the GUI libs installed) work
-the same way — `@sparticuz/chromium` just always uses its bundled binary,
-so there is no behavior divergence between local and CI/CD.
-
-If you ever see prerender hangs or crashes that point at Chromium, the
-first thing to check is whether `@sparticuz/chromium` has a new major
-version requiring a config tweak (e.g. `chromium.setHeadlessMode(true)`).
-The launch block in `scripts/prerender.mjs:main()` should be the only place
-that needs to change.
+Net SEO latency between developer push and rendered HTML on prod:
+~90 seconds (GH Action ≈45 s + Vercel ≈45 s, sequential because Vercel
+deploy is triggered by the GH Action's commit).
 
 ## Debugging a broken render
 
-1. **Build failed at the prerender step:** check the Vercel build log for
-   `[prerender] FAILED:` — full Puppeteer stack trace follows.
-2. **`networkidle0` timeout:** the route triggers ongoing network requests
-   (analytics, websockets, polling). Either fix the source or increase
-   `NAVIGATION_TIMEOUT_MS` in `prerender.mjs`.
-3. **Empty content captured:** the route is React.lazy'd and the chunk
-   didn't load before `networkidle0` fired. Make the route eager-import in
-   `App.tsx` or extend `POST_RENDER_SETTLE_MS`.
-4. **Hydration mismatch warnings in browser console:** the React component
-   renders different content during SSR-style prerender vs. client. Common
-   culprits: `Date.now()`, `Math.random()`, `localStorage` reads, feature
-   flags. Move those into `useEffect`.
-5. **Local repro:**
+1. **GH Action `Build frontend` step red:** check the Puppeteer trace in
+   the Actions log. Common causes: a route component crashed at mount
+   (look for `[prerender]   page error: ...`), a `networkidle0` timeout
+   from an analytics request, an exception in `useHeadMeta`.
+2. **GH Action `Smoke-check` step red ("No <h1>"):** the route rendered
+   but produced an empty body. Likely the route is `React.lazy`'d and
+   the chunk didn't load before `networkidle0` fired — eager-import it
+   in `App.tsx`, or extend `POST_RENDER_SETTLE_MS`.
+3. **Vercel deploy green but `curl /` returns empty `<div id="root">`:**
+   the snapshot copy didn't run, OR `public/prerendered/` is missing from
+   the deployed commit. Check `vercel.json` still has the
+   `build.env.SKIP_PRERENDER = "1"` block, and that the GH Action has
+   actually pushed at least once since the last force-rewrite of main.
+4. **Hydration mismatch warnings in browser console after Vercel deploy:**
+   client-side React renders different content than what's in the
+   prerendered HTML. Common culprits: `Date.now()`, `Math.random()`,
+   `localStorage` reads, feature flags. Move those into `useEffect`.
+5. **Asset 404 in browser after deploy:** the snapshot HTML references
+   asset hashes from an older build that no longer exist in `dist/`.
+   This happens if Vercel's bundled-asset hashes drift from the GH Action's
+   hashes (different Node minor, different `npm install` resolution).
+   Workarounds: pin `node-version` exactly across both runners + commit
+   `package-lock.json`. Long-term fix: configure Vite to emit stable
+   filenames, or post-process snapshot HTML to rewrite asset URLs to
+   match the current build's hashes. Open a ticket if this happens.
+6. **Local repro of the deploy flow:**
    ```bash
    cd stavagent-portal/frontend
-   npm run build              # full build with prerender
-   ls -la dist/index.html     # should be a fully-rendered HTML, not the SPA shell
-   grep -c '<h1' dist/index.html  # should be ≥ 1
+   # Step 1: simulate GH Action — full build with real Puppeteer
+   npm run build
+   cp dist/index.html         public/prerendered/index.html
+   cp dist/en/index.html      public/prerendered/en/index.html
+   cp dist/team/index.html    public/prerendered/team/index.html
+   cp dist/en/team/index.html public/prerendered/en/team/index.html
+   # Step 2: simulate Vercel — SKIP_PRERENDER copies snapshot
+   rm -rf dist
+   SKIP_PRERENDER=1 npm run build
+   ls -la dist/index.html dist/team/index.html
+   grep -c '<h1' dist/index.html dist/team/index.html  # both should be ≥ 1
    ```
 
-## Why a custom script and not vite-plugin-prerender-spa / react-snap
+## History
 
-- **Explicit allow-list.** A `const ROUTES_TO_PRERENDER = [...]` array is
-  greppable and obvious. Plugin configs often hide this in a deeply nested
-  options object.
-- **No third-party plugin maintenance risk.** All these tools wrap
-  Puppeteer the same way; this is a thin direct wrapper.
-- **Easy to extend.** When `/team` and `/en/` land, it's a one-line array
-  edit. No plugin upgrade dance.
+| Date | What changed |
+|---|---|
+| 2026-05-08 (Gate 4) | Initial puppeteer + sirv post-build prerender for `/` |
+| 2026-05-09 (Gate 10) | Added `/team` and `/en/team` to allow-list |
+| 2026-05-10 (Gate 11) | Added `/en/`; hreflang via `useHeadMeta` hook |
+| 2026-05-12 (PR #1126) | Swapped `puppeteer` → `@sparticuz/chromium` + `puppeteer-core` to try to fix Vercel build (didn't work — same libnss3 issue) |
+| 2026-05-12 (this rewrite) | Moved prerender to GitHub Action; Vercel uses committed snapshot via SKIP_PRERENDER branch in `scripts/prerender.mjs` |
 
-## Why not Astro / Next.js
+## Why not Astro / Next.js (still)
 
-Migration scope is too large for the v3.2 timeline. The post-build prerender
-gives 95% of the SEO benefit at <1% of the migration cost.
+Migration scope is too large for the v3.2 → Cemex CSC 28.06 deadline.
+The snapshot-based prerender gives 95% of the SEO benefit at <1% of the
+migration cost. A proper SSG refactor is parked as a backlog item for
+post-Cemex.
