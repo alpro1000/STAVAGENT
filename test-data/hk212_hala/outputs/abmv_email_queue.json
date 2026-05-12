@@ -3,14 +3,22 @@
     "schema_version": "1.0",
     "project": "hk212_hala",
     "generated_at": "2026-05-12",
-    "total_items": 16,
-    "critical_count": 4,
-    "important_count": 9,
-    "minor_count": 3,
+    "total_items": 17,
+    "critical_count": 5,
+    "important_count": 10,
+    "minor_count": 2,
     "status": "ready_for_send_pending_phase1_crosscheck",
     "addressees": [
-      {"role": "ARS hlavní", "name": "Ing. arch. Jakub Volka", "email": "volkajakub@basepoint.cz"},
-      {"role": "Statika", "name": "Ing. Jiří Plachý / Bc. M. Doležal", "email": "TBD"}
+      {
+        "role": "ARS hlavní",
+        "name": "Ing. arch. Jakub Volka",
+        "email": "volkajakub@basepoint.cz"
+      },
+      {
+        "role": "Statika",
+        "name": "Ing. Jiří Plachý / Bc. M. Doležal",
+        "email": "TBD"
+      }
     ]
   },
   "items": [
@@ -21,8 +29,14 @@
       "status": "open",
       "title": "Energetická bilance vs. technologie strojů",
       "summary_cs": "TZ B uvádí Pvyp = 60,5 kW, jistič 3×100 A. Výkres A106 ukazuje stroje DRIFT_E1, DEFRAME, filtrační jednotka s příkonem cca 80 kW/stroj. Při souběhu provozu navržené dimenzování nestačí.",
-      "blocks_vv": ["elektro VV", "rozvaděč VV", "přívodní kabel"],
-      "addressee": ["Volka"]
+      "blocks_vv": [
+        "elektro VV",
+        "rozvaděč VV",
+        "přívodní kabel"
+      ],
+      "addressee": [
+        "Volka"
+      ]
     },
     {
       "id": "ABMV_2",
@@ -31,7 +45,10 @@
       "status": "open",
       "title": "Šířka sekčních vrat: 3000 vs 3500 mm",
       "summary_cs": "TZ B a TZ D.1.1 uvádí 4× sekční vrata 3500×4000 mm. DXF A101 obsahuje block 'M_Vrata_výsuvná_sekční - 3000X4000 MM'.",
-      "blocks_vv": ["vrata VV", "klempířina kolem vrat"]
+      "blocks_vv": [
+        "vrata VV",
+        "klempířina kolem vrat"
+      ]
     },
     {
       "id": "ABMV_3",
@@ -40,8 +57,15 @@
       "status": "open",
       "title": "Technologická specifikace strojů (DRIFT, DEFRAME, FILTRACE)",
       "summary_cs": "A106/A107 zobrazují pracoviště + kotvící body, TZ je nepopisuje. Potřebujeme: výrobce/typ, hmotnost, požadované kotvy, přívody médií, zda dodávku zajistí investor.",
-      "blocks_vv": ["anchorage VV", "rozšířené elektro", "lokální výztuž desky", "VRN"],
-      "related": ["ABMV_16"]
+      "blocks_vv": [
+        "anchorage VV",
+        "rozšířené elektro",
+        "lokální výztuž desky",
+        "VRN"
+      ],
+      "related": [
+        "ABMV_16"
+      ]
     },
     {
       "id": "ABMV_4",
@@ -153,8 +177,63 @@
       "status": "open",
       "title": "Externí dokument '2966-1 návrh dispozice strojů HK'",
       "summary_cs": "A104 DXF obsahuje external reference '2966-1_navrh dispozice stroju-HK_dwg'. Dokument není v inputs. Jeho dodání by uzavřelo ABMV #1 + #3 najednou.",
-      "related": ["ABMV_1", "ABMV_3"],
+      "related": [
+        "ABMV_1",
+        "ABMV_3"
+      ],
       "leverage": "high"
+    },
+    {
+      "id": "ABMV_17",
+      "category": "documentation_conflict",
+      "severity": "critical",
+      "status": "open",
+      "title": "Earth works bilance — TZ B 32 m³ vs DXF-derived ~XXX m³",
+      "summary_cs": "TZ B kap. m.10.g uvádí celkem výkopy 32 m³. Nezávislý výpočet z A105+A201 geometrie + axes envelope dává 349.8 m³ (faktor 10.9× vyšší). Breakdown: figura pod deskou ~250.4 m³, dohloubky patek rámových 31.5 m³ + štítových 1.6 m³, pasy 7.2 m³, ruční výkopy u sítí 30.0 m³, +10% na svahy 1:1.",
+      "blocks_vv": [
+        "HSV-1 výkopy",
+        "HSV-1 odvoz",
+        "VRN doprava"
+      ],
+      "working_assumption": "Použít DXF-derived qty 349.8 m³ jako baseline pro HSV-1; každá položka HSV-1 musí mít _vyjasneni_ref=['ABMV_17'].",
+      "financial_impact_kc_estimate": "~80-150k Kč rozdíl při sazbě 250-500 Kč/m³ (figura/odvoz/skládkovné)",
+      "evidence": {
+        "dxf_baseline_m3": 349.8,
+        "tz_b_claim_m3": 32.0,
+        "drift_factor": 10.9,
+        "components": {
+          "figura_pod_deskou": {
+            "value_m3": 250.4,
+            "note": "zastavená plocha 556.5 m² × hloubka 0.45 m (deska 0.20 + lože 0.25)",
+            "source": "A102 axes envelope (28.19×19.74) + TZ desky 0.20 + lože 0.25"
+          },
+          "patky_ramove_dohloubky": {
+            "value_m3": 31.5,
+            "note": "14 ks × 1.5×1.5×1.0 m (dohloubky pod úroveň figury -0.45 do -1.45/-1.90)",
+            "source": "A105 ZÁKLADY DIM 1500 mm × 15 + hloubky -1.300/-1.900 mtext"
+          },
+          "patky_stitove_dohloubky": {
+            "value_m3": 1.6,
+            "note": "10 ks × 0.8×0.8×0.25 m (dohloubky -0.45 do -0.70)",
+            "source": "A105 DIM 800 mm × 8 + hloubky -0.700 mtext"
+          },
+          "pasy_mezi_patkami": {
+            "value_m3": 7.2,
+            "note": "~30 bm × 0.4×0.6 m",
+            "source": "A105 layout (estimate from axes geometry)"
+          },
+          "rucni_vykop_u_siti_DN300": {
+            "value_m3": 30.0,
+            "note": "2 křížení × 5 m × 1.5×2.0 m (ručně, obetonování stáv. potrubí)",
+            "source": "A201 layer Stávající_kan + TZ B m.10.g"
+          },
+          "sloped_safety_margin_10pct": {
+            "value_m3": 29.1,
+            "note": "10% navíc na sklon svahů 1:1 (A201 labels '1:1' × 17)",
+            "source": "A201 '1:1' annotations"
+          }
+        }
+      }
     }
   ]
 }

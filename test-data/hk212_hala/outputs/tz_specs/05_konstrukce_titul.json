@@ -1,0 +1,27 @@
+{
+  "file": "05_konstrukce_titul.pdf",
+  "pages": 1,
+  "char_count": 2107,
+  "tokens": {
+    "csn": {
+      "ČSN EN 1002": 1
+    },
+    "diameter_pile": {
+      "Ø 20": 4
+    },
+    "ipe": {
+      "IPE400": 20,
+      "IPE450": 14,
+      "IPE160": 10
+    },
+    "hea": {
+      "HEA200": 12
+    },
+    "upe": {
+      "UPE160": 17
+    },
+    "L_angle": {
+      "L70/70/6": 3
+    }
+  }
+}

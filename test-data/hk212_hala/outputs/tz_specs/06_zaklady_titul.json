@@ -1,0 +1,21 @@
+{
+  "file": "06_zaklady_titul.pdf",
+  "pages": 1,
+  "char_count": 1529,
+  "tokens": {
+    "concrete_class": {
+      "C30/37": 1,
+      "C16/20": 1
+    },
+    "exposure_class": {
+      "XC2": 1,
+      "XC0": 1
+    },
+    "csn": {
+      "ČSN EN 206": 2
+    },
+    "depth_m": {
+      "8,0m": 1
+    }
+  }
+}
