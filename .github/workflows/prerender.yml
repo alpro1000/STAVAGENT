@@ -1,0 +1,95 @@
+name: Prerender Landing Pages
+
+# Builds the frontend on ubuntu-latest (which has the GUI libs Chromium
+# needs) and commits the captured HTML to public/prerendered/. Vercel then
+# rebuilds with SKIP_PRERENDER=1 and the postbuild step copies the snapshot
+# over dist/ to serve fully-rendered HTML to crawlers + preview scrapers.
+#
+# Why not run prerender on Vercel itself: Vercel's build container is a
+# minimal Linux image without libnss3.so + libxss1 + libasound2 that
+# Chromium (bundled or @sparticuz) dynamically links against. ubuntu-latest
+# ships those libs preinstalled, so Puppeteer "just works" there.
+#
+# Loop prevention is two-layer:
+#   1. paths-ignore on public/prerendered/** — this workflow's OWN commits
+#      change only that path, so paths-ignore filters them out at trigger
+#      time.
+#   2. [skip prerender] tag in commit message — extra safety in case a
+#      developer mixes a normal change with a snapshot edit.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'stavagent-portal/frontend/public/prerendered/**'
+  workflow_dispatch:
+
+jobs:
+  prerender:
+    name: Build + commit prerendered HTML
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip prerender]')"
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          # Default GITHUB_TOKEN is sufficient for same-repo push when the
+          # job has permissions.contents=write set above.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+          cache-dependency-path: stavagent-portal/package-lock.json
+
+      - name: Install workspace dependencies
+        working-directory: ./stavagent-portal
+        run: npm install --no-audit --no-fund
+
+      - name: Build frontend (real Puppeteer prerender on this runner)
+        working-directory: ./stavagent-portal/frontend
+        run: npm run build
+
+      - name: Smoke-check captured HTML
+        working-directory: ./stavagent-portal/frontend
+        run: |
+          set -euo pipefail
+          for f in dist/index.html dist/en/index.html dist/team/index.html dist/en/team/index.html; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Missing prerender output: $f"
+              exit 1
+            fi
+            h1_count=$(grep -c '<h1' "$f" || true)
+            if [ "$h1_count" -lt 1 ]; then
+              echo "::error::No <h1> in $f — prerender likely failed silently"
+              exit 1
+            fi
+            echo "OK: $f ($(wc -c < "$f") bytes, $h1_count <h1>)"
+          done
+
+      - name: Copy dist HTML to public/prerendered/
+        working-directory: ./stavagent-portal/frontend
+        run: |
+          mkdir -p public/prerendered/en/team public/prerendered/team
+          cp dist/index.html         public/prerendered/index.html
+          cp dist/en/index.html      public/prerendered/en/index.html
+          cp dist/team/index.html    public/prerendered/team/index.html
+          cp dist/en/team/index.html public/prerendered/en/team/index.html
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stavagent-portal/frontend/public/prerendered/
+          if git diff --cached --quiet; then
+            echo "No snapshot changes — skipping commit."
+          else
+            git commit -m "chore(prerender): update static HTML [skip prerender]"
+            git push origin main
+          fi
