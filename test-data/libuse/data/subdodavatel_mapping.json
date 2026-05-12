@@ -1,11 +1,14 @@
 {
   "_doc": {
     "purpose": "Kapitola → subdodavatel mapping for List 13 (Filter_view_plus). Used by scripts/phase_0_21_list13_filter_view_plus.py to enrich each item with a subdodavatel field for filtering by trade.",
-    "version": "1.0",
-    "date": "2026-05-10",
+    "version": "1.1",
+    "date": "2026-05-12",
     "scope": "Libuše objekt D — applicable to A/B/C komplex when Π.1 V1 generator runs",
-    "convention": "Mapping lookup: kapitola prefix is matched first; if no exact match, default subdodavatel applies per discipline (HSV/PSV/M). Special-case rules (e.g. W##/D## item-code prefix in popis) are handled by the enrichment script via regex, not via this JSON.",
-    "override": "To override per-objekt or per-project: place an override JSON at test-data/<project>/data/subdodavatel_mapping_override.json. Enrichment script merges override on top of this base."
+    "convention": "Mapping lookup priority: (1) popis-regex special cases → (2) _kapitola_popis_granular (intra-kapitola popis/skladba keyword rules — added v1.1 for PSV-783) → (3) exact_kapitola_match → (4) kapitola_prefix_fallback → (5) discipline_default → 'vlastní'.",
+    "override": "To override per-objekt or per-project: place an override JSON at test-data/<project>/data/subdodavatel_mapping_override.json. Enrichment script merges override on top of this base.",
+    "changelog": {
+      "1.1 (2026-05-12)": "PROBE_14a fix — PSV-783 granular split. Was all 'zámečník' (wrong — PSV-783 = Ochrana konstrukcí proti agresivnímu prostředí: epoxid/PU/Sikagard/anti-graffiti/pancéřový/žárové zinkování — multiple trades). New _kapitola_popis_granular rules split per F-kód / popis keyword. Default fallback for PSV-783 changed to 'podlahář (epoxidový/PU)' (most common in Libuše D = Sikagard ŽB stěn 78 items)."
+    }
   },
   "exact_kapitola_match": {
     "HSV-310": "zedník",
@@ -92,7 +95,7 @@
 
     "PSV-781": "obkladač",
     "PSV-782": "obkladač (kámen)",
-    "PSV-783": "zámečník",
+    "PSV-783": "podlahář (epoxidový/PU)",
     "PSV-784": "malíř",
     "PSV-785": "truhlář (dveře montáž)",
     "PSV-787": "sklenář",
@@ -184,6 +187,18 @@
       {"popis_regex": "^(Okno|Window)\\s+W\\d{2}", "subdodavatel": "dodavatel oken"},
       {"popis_regex": "^(Dveře|Door)\\s+D\\d{2}", "subdodavatel": "dodavatel dveří"},
       {"popis_regex": "^(Prosklená příčka|Glass partition)\\s+CW\\d{2}", "subdodavatel": "dodavatel oken (curtain wall)"}
+    ]
+  },
+  "_kapitola_popis_granular": {
+    "_doc": "Intra-kapitola granular rules: when kapitola matches AND any keyword pattern is found in popis or skladba_ref.vrstva, override the exact_kapitola_match. Case-insensitive substring search. First matching rule wins (top→bottom order, so put more specific patterns first). Falls through to exact_kapitola_match if no rule matches. Added v1.1 for PSV-783 = Ochrana konstrukcí proti agresivnímu prostředí (multi-trade scope).",
+    "PSV-783": [
+      {"keywords": ["anti-graffiti", "antigraffiti", "F23"], "subdodavatel": "malíř (anti-graffiti)", "rationale": "F23 anti-graffiti = malíř specialty (penetrace + permanent nátěr)"},
+      {"keywords": ["žárové zinkování", "zarove zinkovani", "ČSN EN ISO 1461"], "subdodavatel": "zámečník", "rationale": "Hot-dip galvanizing of ocelové konstrukce = zámečník (LP##/zábradlí/schodiště)"},
+      {"keywords": ["prášková", "praskova", "prášková epoxidová barva", "RAL 7016"], "subdodavatel": "zámečník", "rationale": "Powder coating zinkovaných ocelových konstrukcí = follows zámečnické práce"},
+      {"keywords": ["pancéřový", "pancerovy", "vsyp pancéř", "F00"], "subdodavatel": "betonář (mazaniny)", "rationale": "F00 pancéřový vsyp = beton technology (rampa, hladcení)"},
+      {"keywords": ["epoxid", "F11", "EpoCem"], "subdodavatel": "podlahář (epoxidový/PU)", "rationale": "F11 epoxid sklepy 1.PP = podlahář specialist"},
+      {"keywords": ["polyuretan", "F10", "PU systém", "PU 1. vrstva", "PU 2. vrstva", "Posyp křemenného písku do PU"], "subdodavatel": "podlahář (epoxidový/PU)", "rationale": "F10 PU garáž 1.PP = podlahář specialist"},
+      {"keywords": ["sikagard", "Sikagard 552W", "Sikagard 555W", "F14", "transparentní bezprašný", "transparentní nátěr"], "subdodavatel": "podlahář (epoxidový/PU)", "rationale": "F14 Sikagard ŽB stěn = Sika/podlahář specialist (552W primer + 555W elastic top coat)"}
     ]
   }
 }
