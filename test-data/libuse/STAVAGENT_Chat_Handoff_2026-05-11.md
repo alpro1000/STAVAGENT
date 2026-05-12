@@ -383,6 +383,35 @@ applies cross-objekt.
 - [ ] Cross-check OP codes per-objekt (don't inherit D OP zeros).
 - [ ] Combine DXF tag-text + block/symbol detection.
 
+### TOOLING backlog (post-VELTON, before Π.1 V1)
+
+**Žaluzie + Kastlík consolidation view (post-VELTON):**
+- Create dedicated sheet (e.g. `14_Zaluzie_kastliky_souhrn`) or separate XLSX
+  (`zaluzie_kastliky_libuse_d.xlsx`) — user decides format at trigger
+- All OP80–OP103 items (žaluzie venkovní horizontální + žaluziové
+  kastlíky + dodávka + osazení; in D this is 24 OP codes total — 18
+  zero pro D-window-SKU split + 6 active OP86/87/89/90/96/98 = 34 ks)
+- Per-OP code breakdown: total qty + per-objekt distribution (when
+  komplex generated); D-side currently filterable in List 13 Source col
+- Total žaluzie ks pro D + total kastlíky ks pro D + implied window
+  count (≈ 1 žaluzie + 1 kastlík per okno)
+- Related items to include: **LP60–65 Skleněné zábradlí francouzských
+  oken** (related to okna), **W## okenní výplně** (if applicable),
+  **D## francouzské dveře** (typically paired with žaluzie)
+- Estimated value: ~3–5 k Kč per kastlík (Purenit schránka) + ~1–2 k
+  Kč per žaluzie (C-80 profile RAL 7016 horizontální) → D-side total
+  cca 100–200 k Kč; komplex C+B+A typically 3–4× that
+- Same generator pattern reusable pro **objekt C** (Π.1 V1), **objekt
+  B**, **objekt A** komplex + any future window-heavy building project
+- **Estimated effort: 2–3 h dev + test** (extract OP80-103 filter, sum
+  by code/objekt, add LP60-65 + W## + D## francouzské cross-refs,
+  emit new sheet via Phase 6/8/0.2x pattern with Excel Table on auto-
+  filter, idempotent re-runs)
+- **Trigger:** After Π.1 V1 generator setup OR after VELTON ack
+  (whichever earlier — don't add scope creep before 19.5 delivery)
+- Cross-reference: PROBE_14c per-window-SKU split pattern + Pattern 8
+  (door-vs-gate) for similar consolidation thinking
+
 ---
 
 ## Closeout
