@@ -115,7 +115,7 @@ const ROLES = [
   {
     icon: HardHat,
     title: 'Site preparation (přípravář)',
-    text: 'Pour stages (takty), resources, crew composition, schedule. Formwork, reinforcement, concrete works (betonáž) — at single-element or whole-object scope. TOV resource breakdown.',
+    text: 'Pour stages, resources, crew composition, schedule. Formwork, reinforcement, concrete works — at single-element or whole-object scope. TOV resource breakdown.',
   },
   {
     icon: Building2,
@@ -132,7 +132,7 @@ const ROLES = [
 const MODULES = [
   {
     icon: Link,
-    title: 'Klasifikátor stavebních prací',
+    title: 'Klasifikátor — construction works classifier',
     desc: 'AI classification of tender items. Upload bill of quantities (xlsx), paste one description, or upload documents (PDF, DWG) — the system finds OTSKP candidates and suggests codes with probability. Never with 100% certainty — always for user review.',
     bullets: [
       '3 input methods: bill of quantities (xlsx), free text, documents (PDF, DWG)',
@@ -154,11 +154,11 @@ const MODULES = [
   },
   {
     icon: Cpu,
-    title: 'Kalkulátor betonáže',
+    title: 'Kalkulátor — concrete works calculator',
     desc: 'Calculate concrete, formwork, reinforcement, pour stages and resources. Two modes: single-element detail or whole-object plan — both with schedule and Kč/m³ cost.',
     bullets: [
-      'Detail prvku — 7 deterministic engines (formwork, reinforcement, pour decision, DIN 18218 lateral pressure, Saul maturity, RCPSP scheduler + PERT, pumping)',
-      'Plán objektu — whole-object table with pour stages, resources, Kč/m³',
+      'Single-element detail — 7 deterministic engines (formwork, reinforcement, pour decision, DIN 18218 lateral pressure, Saul maturity, RCPSP scheduler + PERT, pumping)',
+      'Whole-object plan — table with pour stages, resources, Kč/m³',
       '25 formwork systems (DOKA, PERI, ULMA, NOE, traditional), 24 element types, ČSN EN 13670 + TKP 18 + DIN 18218 compliant',
     ],
     cta: 'Open Kalkulátor', href: 'https://kalkulator.stavagent.cz', external: true,
@@ -191,7 +191,7 @@ const STEPS = [
   },
   {
     icon: Cpu,
-    title: '3. Kalkulátor betonáže',
+    title: '3. Kalkulátor',
     text: 'Single-element detail and whole-object plan — concrete, formwork, reinforcement, pour stages, schedule. Resource map (crews, curing time, formwork strike time) available as export for import into TOV in Registr.',
   },
   {
@@ -211,7 +211,7 @@ const FAQ = [
   { q: 'Do I need to install anything?', a: 'No. StavAgent is a web application — a browser is enough. No installation, no plugins.' },
   { q: 'Which file formats do you support?', a: 'Excel (.xlsx, .xls) for tenders and bills of quantities. PDF, DWG, JPG for construction documentation.' },
   { q: 'How accurate are the classification results?', a: 'Every candidate from Klasifikátor carries a probability. Regex and OTSKP exact-match have confidence 1.0. AI suggestions are typically 60–85% — never 100%. Always to be reviewed by the user. No hidden hallucinations.' },
-  { q: 'How accurate is Kalkulátor betonáže?', a: 'Kalkulátor provides an approximate estimate for budget preparation with typical accuracy ±10–15%. The final detailed design, structural calculation and exact component specification are always performed by the formwork supplier (DOKA / PERI / ULMA / others) based on specific project documentation. For the tender phase and preliminary calculation, this accuracy is sufficient.' },
+  { q: 'How accurate is Kalkulátor?', a: 'Kalkulátor provides an approximate estimate for budget preparation with typical accuracy ±10–15%. The final detailed design, structural calculation and exact component specification are always performed by the formwork supplier (DOKA / PERI / ULMA / others) based on specific project documentation. For the tender phase and preliminary calculation, this accuracy is sufficient.' },
   { q: 'Does it work for bridges and infrastructure?', a: 'Yes. 24 structural element types (13 bridge + 11 building) including piers, abutments, decks, cornices, foundations and retaining walls. Prestressing, pour stages, MSS (movable scaffolding system) technology. Czech norms ČSN EN, ŘSD specifications, OTSKP classification (17 904 items).' },
   { q: 'Does StavAgent work with catalogs?', a: 'Yes — with OTSKP (Otevřený třídník stavebních prací, the open Czech work-item catalog, 17 904 items). For items not in OTSKP, the AI suggests a code with probability. AI suggestions are always for user review — never with 100% certainty.' },
   { q: 'What is TOV?', a: 'Technical-organizational breakdown (technologicko-organizační rozbor) — for each tender item a split into people / machinery / materials with quantities, prices and rates. In Registr you will find built-in calculators for concrete pump (multi-supplier), concrete delivery, and crane.' },
@@ -836,7 +836,7 @@ export default function LandingPageEn() {
         }}>
           <div>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>Modules</h4>
-            {['Klasifikátor', 'Registr', 'Kalkulátor betonáže', 'Document Analysis (coming soon)'].map(t => (
+            {['Klasifikátor', 'Registr', 'Kalkulátor', 'Document Analysis (coming soon)'].map(t => (
               <div key={t} style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 6, cursor: 'pointer' }} onClick={() => scrollTo('modules')}>{t}</div>
             ))}
           </div>
