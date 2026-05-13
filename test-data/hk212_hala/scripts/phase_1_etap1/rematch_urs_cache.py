@@ -37,8 +37,11 @@ from typing import Optional
 REPO_ROOT = Path(__file__).resolve().parents[3].parent  # test-data/hk212_hala/scripts/phase_1_etap1 → repo root
 DEFAULT_ITEMS = REPO_ROOT / "test-data/hk212_hala/outputs/phase_1_etap1/items_hk212_etap1.json"
 DEFAULT_DB = REPO_ROOT / "data/urs_cache.db"
-DEFAULT_THRESHOLD = 0.85
-DEFAULT_TOP_K = 20
+DEFAULT_THRESHOLD_HIGH = 0.55   # Calibrated for Dice over (title + path + breadcrumb).
+DEFAULT_THRESHOLD_MEDIUM = 0.30  # BM25-era "0.85" doesn't translate to Dice — see ADR in commit log.
+DEFAULT_TOP_K = 50  # FTS5 retrieval per layer; Dice rescore picks final top.
+
+STATUS_RANK = {"needs_review": 0, "matched_medium": 1, "matched_high": 2, "custom_item": 9}
 
 VINTAGE_ORDER = [
     "2026-I", "2025-II", "2025-I", "2024-II", "2024-I",
@@ -128,69 +131,79 @@ def build_fts_query(tokens: list[str]) -> str:
 # DB queries
 # ----------------------------------------------------------------------------
 
-def normalize_score(bm25_rank: float) -> float:
-    """FTS5 rank is negative BM25; lower = more relevant. Map to (0, 1]."""
-    return 1.0 / (1.0 + abs(bm25_rank))
+def dice_score(query_toks: set[str], cand_toks: set[str]) -> float:
+    """Dice coefficient 2|A∩B|/(|A|+|B|) in [0, 1].
+
+    FTS5 BM25 rank is great for retrieval (give me 50 candidates with overlap)
+    but useless as an absolute similarity score — the raw values are in some
+    unbounded negative range that depends on query length, doc length, IDF, etc.
+    So we use FTS5 only for candidate selection, then re-score with token Dice.
+    """
+    if not query_toks or not cand_toks:
+        return 0.0
+    inter = len(query_toks & cand_toks)
+    return 2.0 * inter / (len(query_toks) + len(cand_toks))
 
 
 def query_layer1(conn: sqlite3.Connection, fts_q: str, top_k: int) -> list[dict]:
-    """urs_fts: catalog item titles + breadcrumb path → join back to items table."""
+    """urs_fts: catalog item titles + breadcrumb path. Retrieval-only, no rank."""
     sql = """
-        SELECT i.urs_code, i.title, i.vintage, i.catalog_code, i.path_titles, urs_fts.rank
-        FROM urs_fts
-        JOIN items i ON i.id = urs_fts.rowid
+        SELECT i.urs_code, i.title, i.vintage, i.catalog_code, i.path_titles
+        FROM urs_fts JOIN items i ON i.id = urs_fts.rowid
         WHERE urs_fts MATCH ?
-        ORDER BY urs_fts.rank
-        LIMIT ?
+        ORDER BY rank LIMIT ?
     """
     cur = conn.execute(sql, (fts_q, top_k))
     return [
-        {
-            "urs_code": r[0], "title": r[1], "vintage": r[2],
-            "catalog_code": r[3], "path_titles": r[4],
-            "raw_score": normalize_score(r[5]),
-        }
+        {"urs_code": r[0], "title": r[1], "vintage": r[2],
+         "catalog_code": r[3], "path_titles": r[4]}
         for r in cur
     ]
 
 
 def query_layer2(conn: sqlite3.Connection, fts_q: str, top_k: int) -> list[dict]:
-    """node_texts_fts: long-form Czech HTML articles per category."""
+    """node_texts_fts: Czech long-form HTML articles. node_code may be NULL on root-level."""
     sql = """
         SELECT n.node_code, n.node_title, n.vintage, n.catalog_code,
-               substr(n.content_text, 1, 200), node_texts_fts.rank
-        FROM node_texts_fts
-        JOIN node_texts n ON n.id = node_texts_fts.rowid
+               substr(COALESCE(n.content_text, ''), 1, 200),
+               COALESCE(n.breadcrumb_path, '')
+        FROM node_texts_fts JOIN node_texts n ON n.id = node_texts_fts.rowid
         WHERE node_texts_fts MATCH ?
-        ORDER BY node_texts_fts.rank
-        LIMIT ?
+        ORDER BY rank LIMIT ?
     """
     cur = conn.execute(sql, (fts_q, top_k))
     return [
-        {
-            "urs_code": r[0] or "",  # node_code can be NULL on root-level texts
-            "title": r[1], "vintage": r[2], "catalog_code": r[3],
-            "preview": r[4],
-            "raw_score": normalize_score(r[5]),
-        }
+        {"urs_code": r[0] or "", "title": r[1], "vintage": r[2],
+         "catalog_code": r[3], "preview": r[4], "breadcrumb": r[5]}
         for r in cur if r[0]
     ]
 
 
 def merge_candidates(
+    query_toks: set[str],
     layer1: list[dict],
     layer2: list[dict],
     catalog_prefix: Optional[str],
 ) -> list[dict]:
-    """Group by urs_code, max(layer1, layer2) × vintage_weight × catalog_bonus."""
+    """Group by urs_code, Dice-score each candidate × vintage_weight × catalog_bonus."""
     by_code: dict[str, dict] = {}
     for src, cand in [("layer1", layer1), ("layer2", layer2)]:
         for c in cand:
             code = c["urs_code"]
+            # Build candidate token bag from title + path/breadcrumb + (Layer 2) preview.
+            # path_titles / breadcrumb add semantic context (catalog hierarchy)
+            # which is what makes "Skládkovné" item match catalog "800-1 / Zemní práce / Skládkování".
+            cand_text = c.get("title") or ""
+            for extra in ("path_titles", "breadcrumb", "preview"):
+                v = c.get(extra)
+                if v:
+                    cand_text += " " + v
+            cand_toks = set(tokenize(cand_text))
+            base = dice_score(query_toks, cand_toks)
             vintage_w = VINTAGE_WEIGHT.get(c["vintage"], 0.85)
             catalog_bonus = 1.10 if (catalog_prefix and c["catalog_code"]
                                       and c["catalog_code"].startswith(catalog_prefix)) else 1.0
-            score = min(c["raw_score"] * vintage_w * catalog_bonus, 1.0)
+            score = min(base * vintage_w * catalog_bonus, 1.0)
             existing = by_code.get(code)
             if not existing or score > existing["score"]:
                 by_code[code] = {
@@ -218,15 +231,16 @@ def catalog_prefix_for_item(item: dict) -> Optional[str]:
 def rematch_item(
     item: dict,
     conn: sqlite3.Connection,
-    threshold: float,
+    threshold_high: float,
+    threshold_medium: float,
     top_k: int,
     logger: logging.Logger,
 ) -> tuple[Optional[dict], list[dict]]:
     """Return (decision_dict | None, top5_alternatives).
 
     decision_dict has: urs_code, urs_match_score, urs_status, confidence, vintage_picked,
-                       source_layer, title — if score >= 0.70.
-    None means no candidate beat the keep-current threshold.
+                       source_layer, title — if score >= threshold_medium.
+    None means no candidate cleared the medium bar.
     """
     source = (item.get("raw_description") or item.get("popis") or "").strip()
     if not source:
@@ -248,7 +262,7 @@ def rematch_item(
         return None, []
 
     cat_prefix = catalog_prefix_for_item(item)
-    merged = merge_candidates(l1, l2, cat_prefix)
+    merged = merge_candidates(set(tokens), l1, l2, cat_prefix)
     if not merged:
         return None, []
 
@@ -260,9 +274,9 @@ def rematch_item(
 
     best = merged[0]
     score = best["score"]
-    if score >= threshold:
+    if score >= threshold_high:
         new_status, conf = "matched_high", 0.85
-    elif score >= 0.70:
+    elif score >= threshold_medium:
         new_status, conf = "matched_medium", 0.75
     else:
         return None, top5
@@ -354,35 +368,39 @@ def run(args, logger: logging.Logger) -> int:
         if item.get("urs_status") == "custom_item":
             continue
 
-        decision, top5 = rematch_item(item, conn, args.threshold, args.top_k, logger)
+        decision, top5 = rematch_item(
+            item, conn, args.threshold_high, args.threshold_medium, args.top_k, logger
+        )
         old_code = item.get("urs_code")
         old_score = item.get("urs_match_score") or 0.0
         old_status = item.get("urs_status")
 
-        if decision is None:
-            # No good match — refresh alternatives if new top5 has anything stronger
-            if top5 and (not item.get("urs_alternatives") or
-                         top5[0]["score"] > max((a.get("score") or 0) for a in item["urs_alternatives"])):
-                item["urs_alternatives"] = [
-                    {"code": c["code"], "score": c["score"], "title": c["title"],
-                     "vintage": c["vintage"]}
-                    for c in top5
-                ]
-                improvements_kept += 1
-            continue
-
-        new_score = decision["urs_match_score"]
-        # Only overwrite primary if new is strictly better
-        if new_score > old_score + 1e-6 or old_status == "needs_review":
-            item["urs_code"] = decision["urs_code"]
-            item["urs_match_score"] = new_score
-            item["urs_status"] = decision["urs_status"]
-            item["confidence"] = decision["confidence"]
+        # Refresh alternatives whenever FTS5 returned ANY candidates.
+        # Old alternatives use a different scoring system (Jaccard-ish ~0.667 range);
+        # new Dice scores aren't directly comparable, so a score-vs-score gate would
+        # never trigger refresh. Just trust the new top-5 — they're from the modern
+        # 11-vintage catalog with vintage + title metadata.
+        if top5:
             item["urs_alternatives"] = [
                 {"code": c["code"], "score": c["score"], "title": c["title"],
                  "vintage": c["vintage"]}
                 for c in top5
             ]
+            improvements_kept += 1
+
+        if decision is None:
+            continue
+
+        new_score = decision["urs_match_score"]
+        # Status downgrade protection: never demote matched_high → matched_medium etc.
+        # Otherwise (same or higher tier) take the new result as authoritative.
+        old_rank = STATUS_RANK.get(old_status, 0)
+        new_rank = STATUS_RANK.get(decision["urs_status"], 0)
+        if new_rank >= old_rank:
+            item["urs_code"] = decision["urs_code"]
+            item["urs_match_score"] = new_score
+            item["urs_status"] = decision["urs_status"]
+            item["confidence"] = decision["confidence"]
             deltas.append({
                 "id": item.get("id"),
                 "kapitola": item.get("kapitola"),
@@ -434,8 +452,10 @@ def run(args, logger: logging.Logger) -> int:
     # Audit + report
     audit = {
         "ran_at": datetime.now(timezone.utc).isoformat(),
-        "threshold": args.threshold,
+        "threshold_high": args.threshold_high,
+        "threshold_medium": args.threshold_medium,
         "top_k": args.top_k,
+        "scoring": "dice_v1 (token Dice over title + path_titles + breadcrumb + preview)",
         "total_items": n_items_in,
         "skipped_custom": custom_in,
         "items_updated": len(deltas),
@@ -464,7 +484,9 @@ def write_report(items: list[dict], path: Path, audit: dict, logger: logging.Log
     lines: list[str] = []
     lines.append("# HK212 — URS Cache Rematch Report\n")
     lines.append(f"_Ran at: {audit['ran_at']}_\n")
-    lines.append(f"_Threshold: {audit['threshold']}, top-k per layer: {audit['top_k']}_\n")
+    lines.append(f"_Thresholds: high={audit['threshold_high']}, medium={audit['threshold_medium']}, "
+                 f"top-k per layer: {audit['top_k']}_\n")
+    lines.append(f"_Scoring: {audit.get('scoring', 'dice_v1')}_\n")
     lines.append("")
     lines.append("## Summary\n")
     lines.append(f"- Items total: **{audit['total_items']}** (custom skipped: {audit['skipped_custom']})")
@@ -552,7 +574,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="hk212 URS rematch via local urs_cache.db")
     ap.add_argument("--items", type=Path, default=DEFAULT_ITEMS)
     ap.add_argument("--db", type=Path, default=DEFAULT_DB)
-    ap.add_argument("--threshold", type=float, default=DEFAULT_THRESHOLD)
+    ap.add_argument("--threshold-high", type=float, default=DEFAULT_THRESHOLD_HIGH,
+                    help=f"Dice score → matched_high (default {DEFAULT_THRESHOLD_HIGH})")
+    ap.add_argument("--threshold-medium", type=float, default=DEFAULT_THRESHOLD_MEDIUM,
+                    help=f"Dice score → matched_medium (default {DEFAULT_THRESHOLD_MEDIUM})")
     ap.add_argument("--top-k", type=int, default=DEFAULT_TOP_K)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--verbose", action="store_true")
@@ -561,7 +586,8 @@ def main() -> int:
     logger = setup_logging(args.verbose)
     logger.info(f"Items:  {args.items}")
     logger.info(f"DB:     {args.db}")
-    logger.info(f"Threshold: {args.threshold}, top-k: {args.top_k}, dry-run: {args.dry_run}")
+    logger.info(f"Thresholds: high={args.threshold_high}, medium={args.threshold_medium}, "
+                f"top-k={args.top_k}, dry-run={args.dry_run}")
 
     try:
         return run(args, logger)
