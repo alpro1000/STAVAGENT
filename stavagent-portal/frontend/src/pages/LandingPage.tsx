@@ -84,7 +84,7 @@ const ghostBtn = {
 const ROLES = [
   { icon: Calculator, title: 'Rozpočtář', text: 'Klasifikace pozic do vlastních skupin pro poptávky a oddělení. AI návrh kódů z popisu — vždy ke schválení. Export do Excelu jedním klikem.' },
   { icon: HardHat, title: 'Přípravář monolitu', text: 'Takty, zdroje, brigády, harmonogram. Bednění, výztuž, betonáž — na úrovni jednoho prvku nebo celého objektu. TOV s resursní mapou.' },
-  { icon: Building2, title: 'Stavební firma / generální dodavatel', text: 'Přehled přes všechny objekty a rozpočty. Smety rozdělené do skupin, ready k poptávkám. Vestavěné kalkulátory bětonpumpy, dopravy a kranu.' },
+  { icon: Building2, title: 'Stavební firma / generální dodavatel', text: 'Přehled přes všechny objekty a rozpočty. Rozpočty rozdělené do skupin, ready k poptávkám. Vestavěné kalkulátory čerpadla betonu, dopravy a jeřábu.' },
   { icon: Landmark, title: 'Mosty a infrastruktura', text: 'Mostní prvky (pilíře, opěry, mostovky, římsy), předpětí, takty betonáže. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace.' },
 ];
 
@@ -100,12 +100,12 @@ const MODULES = [
     cta: 'Otevřít Klasifikátor', href: 'https://klasifikator.stavagent.cz', external: true,
   },
   {
-    icon: TableProperties, title: 'Registr — pracovní rozbor smety',
-    desc: 'Smetu rozdělíte do vlastních skupin pro poptávky a oddělení. Pro každou položku rozbor TOV: lidé, mechanizmy, materiály. Vestavěné kalkulátory bětonpumpy, dopravy betonu a kranu.',
+    icon: TableProperties, title: 'Registr — pracovní rozbor rozpočtu',
+    desc: 'Rozpočet rozdělíte do vlastních skupin pro poptávky a oddělení. Pro každou položku rozbor TOV: lidé, stroje, materiály. Vestavěné kalkulátory čerpadla betonu, dopravy betonu a jeřábu.',
     bullets: [
       'Klasifikace pozic do vlastních skupin pro poptávky a oddělení',
-      'TOV — rozbor každé práce: lidé, mechanizmy, materiály',
-      'Vestavěné kalkulátory: bětonpumpa (multi-supplier formuly), doprava betonu, kran',
+      'TOV — rozbor každé práce: lidé, stroje, materiály',
+      'Vestavěné kalkulátory: čerpadlo betonu (multi-supplier formuly), doprava betonu, jeřáb',
     ],
     cta: 'Otevřít Registr', href: 'https://registry.stavagent.cz', external: true,
   },
@@ -146,7 +146,7 @@ const STEPS = [
   {
     icon: TableProperties,
     title: '2. Registr',
-    text: 'Pracovní workshop přípraváře. Importujete smetu (xlsx), rozdělíte do vlastních skupin pro poptávky a oddělení. TOV — rozbor každé práce na lidé, mechanizmy, materiály. Vestavěné kalkulátory bětonpumpy, dopravy betonu a kranu.',
+    text: 'Pracovní workshop přípraváře. Importujete rozpočet (xlsx), rozdělíte do vlastních skupin pro poptávky a oddělení. TOV — rozbor každé práce na lidé, stroje, materiály. Vestavěné kalkulátory čerpadla betonu, dopravy betonu a jeřábu.',
   },
   {
     icon: Cpu,
@@ -172,7 +172,7 @@ const FAQ = [
   { q: 'Jaká je přesnost Kalkulátoru betonáže?', a: 'Kalkulátor poskytuje orientační odhad pro přípravu rozpočtu s přesností typicky ±10–15 %. Finální detailní návrh, statický výpočet a přesnou specifikaci komponentů provádí vždy dodavatel opalubky (DOKA / PERI / ULMA / další) na základě konkrétních projektových podkladů. Pro tendrovou fázi a předběžnou kalkulaci je tato přesnost dostatečná.' },
   { q: 'Funguje to pro mosty a infrastrukturu?', a: 'Ano. 24 typů konstrukčních prvků (13 mostních + 11 pozemních) včetně pilířů, opěr, mostovek, říms, základů a opěrných zdí. Předpětí, takty betonáže, MSS technologie. Normy ČSN EN, předpisy ŘSD, OTSKP klasifikace (17 904 položek).' },
   { q: 'Pracuje StavAgent s katalogy?', a: 'Ano — s OTSKP (Otevřený třídník stavebních prací, 17 904 položek). Pro pozice, které v OTSKP nejsou, doplní AI návrh s pravděpodobností. AI návrh je vždy ke schválení uživatelem — nikdy se 100% jistotou.' },
-  { q: 'Co je TOV?', a: 'Technologicko-organizační rozbor — pro každou položku v rozpočtu rozbor na lidé / mechanizmy / materiály s počty, cenami a sazbami. V Registru najdete vestavěné kalkulátory bětonpumpy (multi-supplier), dopravy betonu a kranu.' },
+  { q: 'Co je TOV?', a: 'Technologicko-organizační rozbor — pro každou položku v rozpočtu rozbor na lidé / stroje / materiály s počty, cenami a sazbami. V Registru najdete vestavěné kalkulátory čerpadla betonu (multi-supplier), dopravy betonu a jeřábu.' },
   { q: 'Můžu si zvolit AI model?', a: 'Ano. Klasifikátor nabízí 19 modelů na výběr (DeepSeek, Bedrock Claude, Gemini, GPT-4, GLM, Qwen, Grok). Rozšířený režim navíc spustí multi-role validaci s 6 expertními rolemi.' },
   { q: 'Mohu výstup importovat zpět do své stávající aplikace?', a: 'Ano. Výstup je Excel (.xlsx) s kódy, popisy, MJ, množstvími a cenami. Hypertextové odkazy zpět na zdrojový soubor zachovány.' },
   { q: 'Jsou moje data v bezpečí?', a: 'Data jsou uložena na serverech v EU (Google Cloud, Frankfurt). Každý uživatel vidí pouze své projekty. Data nejsou sdílena s třetími stranami.' },
@@ -213,7 +213,7 @@ const CASES = [
       'P\u0159edp\u011bt\u00ed:       7 d zr\u00e1n\u00ed + 2 d nap\u00edn\u00e1n\u00ed + 2 d injekt\u00e1\u017e',
       'Piloty:         122 ks, C30/37 XA2',
     ],
-    tov: 'TOV: beton\u00e1\u0159, tesa\u0159 (skru\u017e + stojky), \u017eelez\u00e1\u0159, nap\u00edna\u010d \u00b7 b\u011btonpumpa, kran \u00b7 beton, v\u00fdztu\u017e, lana, injekt\u00e1\u017en\u00ed sm\u011bs',
+    tov: 'TOV: beton\u00e1\u0159, tesa\u0159 (skru\u017e + stojky), \u017eelez\u00e1\u0159, nap\u00edna\u010d \u00b7 \u010derpadlo betonu, jeřáb \u00b7 beton, v\u00fdztu\u017e, lana, injekt\u00e1\u017en\u00ed sm\u011bs',
   },
   {
     id: 'operna-zed-156',
@@ -236,7 +236,7 @@ const CASES = [
       'Brigada:         4 lid\u00e9 + 2 \u010derpadla',
       'Harmonogram:     12 pracovn\u00edch dn\u016f',
     ],
-    tov: 'TOV: beton\u00e1\u0159 \u00d7 12 d, tesa\u0159 (mont/demont bedn\u011bn\u00ed), \u017eelez\u00e1\u0159 \u00b7 b\u011btonpumpa, kran \u00b7 beton 94 m\u00b3, v\u00fdztu\u017e 5,7 t',
+    tov: 'TOV: beton\u00e1\u0159 \u00d7 12 d, tesa\u0159 (mont/demont bedn\u011bn\u00ed), \u017eelez\u00e1\u0159 \u00b7 \u010derpadlo betonu, jeřáb \u00b7 beton 94 m\u00b3, v\u00fdztu\u017e 5,7 t',
   },
 ];
 
