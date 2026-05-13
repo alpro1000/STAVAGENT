@@ -328,7 +328,7 @@ export default function LandingPage() {
           fontSize: 'clamp(15px, 2.5vw, 18px)', color: 'var(--text-secondary)',
           lineHeight: 1.6, maxWidth: 600, margin: '0 auto 28px',
         }}>
-          Pro rozpočtáře a přípraváře monolitů. Klasifikace pozic, výpočet betonu, bednění, výztuže a harmonogram — vše s transparentním confidence skóre.
+          Pro rozpočtáře a přípraváře stavby. Klasifikace pozic, výpočet betonu, bednění, výztuže a harmonogram — vše s transparentním confidence skóre.
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 24 }}>
           <button onClick={goCta} style={orangeBtn(true)}>
