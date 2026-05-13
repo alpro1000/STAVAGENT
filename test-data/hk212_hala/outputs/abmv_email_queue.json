@@ -2,12 +2,12 @@
   "_meta": {
     "schema_version": "1.0",
     "project": "hk212_hala",
-    "generated_at": "2026-05-12",
-    "total_items": 17,
-    "critical_count": 5,
-    "important_count": 10,
+    "generated_at": "2026-05-13",
+    "total_items": 20,
+    "critical_count": 6,
+    "important_count": 6,
     "minor_count": 2,
-    "status": "ready_for_send_pending_phase1_crosscheck",
+    "status": "phase_0b_rerun_complete_pending_user_review",
     "addressees": [
       {
         "role": "ARS hlavní",
@@ -19,7 +19,24 @@
         "name": "Ing. Jiří Plachý / Bc. M. Doležal",
         "email": "TBD"
       }
-    ]
+    ],
+    "rerun_changes": {
+      "items_closed_as_fabricated": [
+        "ABMV_13"
+      ],
+      "items_with_revised_evidence": [
+        "ABMV_2",
+        "ABMV_15",
+        "ABMV_16",
+        "ABMV_17"
+      ],
+      "items_added": [
+        "ABMV_18",
+        "ABMV_19",
+        "ABMV_20"
+      ]
+    },
+    "closed_count": 1
   },
   "items": [
     {
@@ -48,7 +65,13 @@
       "blocks_vv": [
         "vrata VV",
         "klempířina kolem vrat"
-      ]
+      ],
+      "rerun_evidence": {
+        "tz_d_1_1_p04": "\"dvojice sekčních vrat o rozměrech 3500 × 4000 mm\"",
+        "a101_dxf": "4 INSERT blocks 'M_Vrata_ výsuvná_ sekční - 3000X4000 MM'",
+        "pbr_p18": "table row 'vrata 2 4,000 3,500 28,00' (4 × 3.5 m orientation)",
+        "drift_confirmed": true
+      }
     },
     {
       "id": "ABMV_3",
@@ -148,10 +171,11 @@
       "id": "ABMV_13",
       "category": "documentation_conflict",
       "severity": "important",
-      "status": "working_assumption",
+      "status": "closed_fabricated",
       "title": "Kingspan systém: K-roc vs IPN",
       "summary_cs": "A102 uvádí KS FR/FF K-roc (minerální vata, DP1) + KS NF/RW IPN (PIR pěna, DP3) jako alternativy. PBŘ vyžaduje DP1.",
-      "working_assumption": "K-roc s minerální vatou (DP1 satisfies PBŘ)"
+      "working_assumption": "K-roc s minerální vatou (DP1 satisfies PBŘ)",
+      "closure_note": "RE-RUN VERIFICATION 2026-05-13: 0 occurrences of PUR/IPN/PIR/polyurethane in any of 7 TZ PDFs or 3 situace PDFs. All Kingspan panels = minerální vata per TZ statika D.1.2 p20 + p21 (KS FF-ROC for roof, KS NF for walls). Pre-baked claim was fabricated from product knowledge, not document."
     },
     {
       "id": "ABMV_14",
@@ -168,7 +192,14 @@
       "severity": "minor",
       "status": "open",
       "title": "Krajní vaznice: C150×19,3 vs UPE160",
-      "summary_cs": "TZ B → UPE160 S235. A104 DXF → C150×19,3 S235."
+      "summary_cs": "TZ B → UPE160 S235. A104 DXF → C150×19,3 S235.",
+      "rerun_evidence": {
+        "tz_b_p02": "\"Krajní nosníky jsou navrženy z profilu UPE160 z oceli S235\"",
+        "tz_statika_d_1_2_p23": "\"Krajní nosníky jsou navrženy z profilu UPE160\"",
+        "k01_konstrukce_titul_p01": "19× explicit label 'KRAJNÍ VAZNICE UPE160'",
+        "a104_pohledy_dxf": "2 INSERT blocks 'C profil - C150X19_3' (Řez 2 + Řez 3)",
+        "resolution": "TZ wins by 22:2 ratio — A104 C150 = legacy block library symbols"
+      }
     },
     {
       "id": "ABMV_16",
@@ -181,7 +212,14 @@
         "ABMV_1",
         "ABMV_3"
       ],
-      "leverage": "high"
+      "leverage": "high",
+      "rerun_evidence": {
+        "a104_pohledy_dxf": "8 INSERT blocks `2966-1_navrh dispozice stroju-HK_(02_)dwg-XXXXXX-Řez {2-5}`",
+        "a106_stroje_dxf": "1 INSERT `...HK_02_dwg-876232-1NP _ stroje`",
+        "a107_stroje_kotvici_body_dxf": "1 INSERT `...HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY`",
+        "total_references": 10,
+        "phase0b_prev_x01_drift_was_wrong": "Previous Phase 0b reported '0 XREFs found' — that was correct (these are INSERT blocks not XREF blocks), but conclusion '2966-1 NOT found' was WRONG; the reference exists as block names"
+      }
     },
     {
       "id": "ABMV_17",
@@ -233,6 +271,69 @@
             "source": "A201 '1:1' annotations"
           }
         }
+      },
+      "rerun_evidence": {
+        "tz_claim_m3": 32.0,
+        "dxf_independent_revised_m3": 530.0,
+        "previous_phase_0b_estimate_m3": 349.8,
+        "revision_reason": "Previous Phase 0b used h=0.6 m for patky height; correct h=1.2 m (rámové, dvoustupňové 2×0,6) per TZ statika D.1.2 p31. Štítové h=0.8 m (0,2+0,6).",
+        "drift_factor": 16.6
+      }
+    },
+    {
+      "id": "ABMV_18",
+      "category": "documentation_inconsistency",
+      "severity": "important",
+      "status": "open",
+      "title": "Beton třídy v 06_zaklady_titul vs TZ statika D.1.2",
+      "summary_cs": "Titul-list pro výkres A105 ZÁKLADY (`06_zaklady_titul.pdf` p01) uvádí ŽB DESKA C16/20-XC0 a PILOTA C30/37-XC2. TZ statika D.1.2 p29 + p32 však říká deska C25/30 XC4 a pilota C25/30 XC4. Inkonzistence v rámci stejné PD.",
+      "blocks_vv": [
+        "HSV-3 železobeton základová deska",
+        "HSV-3 pilota"
+      ],
+      "working_assumption": "C25/30 XC4 pro deskovou + pilotovou variantu (statika wins).",
+      "evidence": {
+        "06_zaklady_titul_p01": "ŽB DESKA C16/20-XC0; PILOTA C30/37-XC2",
+        "04_statika_d12_TZ_uplna_p29": "Základová deska beton C25/30 XC4",
+        "04_statika_d12_TZ_uplna_p32": "Pilota C25/30 XC4 + 8×R25 B500B"
+      }
+    },
+    {
+      "id": "ABMV_19",
+      "category": "documentation_inconsistency",
+      "severity": "critical",
+      "status": "open",
+      "title": "Plochy stavby — 3 různé hodnoty zastavěné plochy + obestavěného prostoru",
+      "summary_cs": "Zastavěná plocha: TZ A=540,10 m² / TZ B=520 m² / TZ D.1.1=541 m². Obestavěný prostor: TZ A=3694,62 m³ / TZ B=2833 m³ / TZ D.1.1=3404 m³. Inkonzistence napříč texty stejného projektanta.",
+      "blocks_vv": [
+        "VRN poplatky a vyjmutí ze ZPF",
+        "VRN hlavní bilance"
+      ],
+      "working_assumption": "Zastavěná plocha 520 m² (TZ B + PBŘ majority); obestavěný 3404 m³ (TZ D.1.1 střední). Až ujasní projektant.",
+      "evidence": {
+        "tz_a_p03": "540,10 / 495 / 3694,62",
+        "tz_b_p07": "520 / 507 / 2833",
+        "tz_d11_p02": "541 / 495 / 3404",
+        "pbr_p04_p06": "Sz=520, Suž=495"
+      }
+    },
+    {
+      "id": "ABMV_20",
+      "category": "documentation_inconsistency",
+      "severity": "minor",
+      "status": "open",
+      "title": "Lindab svody — A101 půdorys 3 vs TZ + A104 elevation 4",
+      "summary_cs": "A101 půdorys 1NP DXF má pouze 3 Lindab Downpipe INSERT bloky. TZ B p14+p23 a A104 pohledy DXF říkají 4 svody DN100. Chybí 1 svod v A101 (asi rohový).",
+      "blocks_vv": [
+        "PSV-76 klempířské",
+        "TZB-ZTI dešťová kanalizace"
+      ],
+      "working_assumption": "4 svody (TZ + A104 wins); doplnit kontrolu, kde 4. svod má být umístěn.",
+      "evidence": {
+        "tz_b_p14": "min. 4 ks",
+        "tz_b_p23": "4 svody DN100",
+        "a101_count": 3,
+        "a104_count": 4
       }
     }
   ]
