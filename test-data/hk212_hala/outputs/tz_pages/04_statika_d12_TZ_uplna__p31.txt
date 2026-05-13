@@ -1,0 +1,9 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+30
+Návrh 
+Sloupy rámu budou založeny na dvoustupňových patkách o rozměrech 1,5x1,5x(2x0,6m) z prostého 
+betonu C16/20  XC0. Základy  pod  štítové  sloupy  budou  navrženy  z  dvoustupňových patek  o 
+rozměrech 0,8x0,8x(0,2x0,6m) z prostého betonu C16/20 XC0. Výpočet počítá se 200 kPa únosností 
+zeminy. Po předložení IGP a zjištění vyšší únosnosti zeminy budou základy přepočítány. 

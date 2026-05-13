@@ -1,0 +1,52 @@
+ 
+6 
+ 
+skladovací haly SPÚ = 507 m2, tedy dle čl. 4.1 d) ČSN 73 0845 se sklad nenavrhuje dle ČSN 
+73 0845 a při návrhu se dále postupuje dle ČSN 73 0804, jelikož plocha PÚ jednopodlažní 
+skladovací haly, která slouží pouze pro skladování, není větší než 1000 m2.  
+Dle §25 vyhlášky 23/2008 Sb. ve znění pozdějšího předpisu je řešený objekt řešen 
+v souladu s ČSN 73 0804 a dalších souvisejících norem. V posuzované hale se neskladují 
+pyrotechnické výrobky.  
+ 
+Parametry objektu pro stanovení předpokládané kategorie stavby z hlediska PO ve smyslu 
+vyhlášky č. 460/2021 Sb.: 
+▪ Třída využití – I  
+▪ Kategorie stavby – I (§7) 
+▪ Zastavěná plocha = Sz = 520 m2 
+▪ Počet podlaží: 1 NP, 0 PP 
+▪ Výška stavby: 0 m 
+▪ Světlá výška: 4,91 m 
+▪ Projektovaný počet osob – do 100 osob 
+▪ V objektu se nenachází: 
+o prostory určené pro veřejnost, 
+o prostory určené pro osoby, jejichž evakuace při požáru je podmíněna asistencí 
+dalších osob, 
+o prostory určené pro spánek. 
+▪ Stavba není určena výhradně k bydlení. 
+▪ Stavba není kulturní památkou. 
+▪ Stavba není určena pro výskyt nebo skladování hořlavých kapalin a plynů, toxických 
+látek a pyrotechniky. 
+▪ Ve stavbě se nenachází stálý úkryt. 
+ 
+4. Rozdělení stavby do požárních úseků: 
+ 
+Celá hala tvoří 1 PÚ. V prostoru se nenachází prostory a zařízení, které musí ve smyslu ČSN 
+73 0804 tvořit samostatné PÚ. 
+ 
+Seznam PÚ: 
+▪ N01.01 – Skladovací hala 
+ 
+Ve skladovací hale nejsou žádné podhledy. Dále tak nejsou stanoveny požadavky dle ČSN 
+73 0810 na podhledy a instalace v nich vedené. 
+ 
+5. Stanovení požárního rizika, stanovení stupně požární bezpečnosti a posouzení velikosti 
+požárních úseků: 
+ 
+Parametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni 
+projektové dokumentace s ohledem na finální podobu posuzovaného objektu (rozmístění 
+technologie, množství a druh skladovaného materiálu apod.). 
+ 
+N01.01 – Skladovací hala: 
+Ve skladovací hale se budou skladovat demontované části fotovoltaických panelů. Dle pol. 5.34 
+tab. E.1 ČSN 73 0804 se uvažuje 5. skupina výrob a provozů, jelikož se jedná o sklad výroby 
+skupiny 4 (výrobková základna elektrotechnického průmyslu, výroba vodičů a kabelů; pol. 4.5 

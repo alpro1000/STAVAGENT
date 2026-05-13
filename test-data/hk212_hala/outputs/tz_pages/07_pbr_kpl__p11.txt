@@ -1,0 +1,62 @@
+ 
+11 
+ 
+- 
+konstrukce nezajišťující stabilitu objektu nebo jeho části, které se nacházejí 
+v nejvyšších dvou podlažích (většinou v nástavbách nebo vestavbách) 
+v objektech s původní požární výškou h ≤ 22,5 m (např. krovy). 
+Jedná se o objekt s požární výškou h = 0 m a 1 NP. 
+c) Mají prokázanou životnost minimálně 10 let (viz příloha D ČSN 73 0810). 
+Výrobce musí doložit. 
+ 
+Těchto ochran nelze užít pro zvýšení PO u konstrukcí požárně dělicích a nosných 
+zajišťující stabilitu objektu nebo jeho části u PÚ: 
+- 
+v podzemních podlažích, 
+- 
+navrhovaných podle ČSN 73 0831, ČSN 73 0833 – OB4 a ČSN 73 0835 – LZ2 
+a zařízení sociální péče. 
+Konstrukce se nenachází v podzemních podlažích ani se objekt nenavrhuje dle 
+zmíněných norem. 
+- 
+Způsob zajištění PO bude stanoven v dalším stupni dokumentace. 
+ 
+Nosné konstrukce uvnitř PÚ, které zajišťují stabilitu objektu: 
+Ocelové sloupy 
+- 
+Požadavek: R 15 DP1 
+- 
+Skutečná PO: Ocelové konstrukce běžně dosahují PO R 5–20 DP1. Skutečná PO bude 
+určena statickým výpočtem (není součástí tohoto PBŘ). V případě nevyhovující PO 
+musí být konstrukce chráněny protipožárním nátěrem, nástřikem či obkladem 
+s deklarovanou požadovanou PO. Průkaz vlastností pro splnění požadované požární 
+odolnosti a druhu konstrukční části, se provede před uvedením stavby do užívání 
+prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 vyhlášky o požární 
+prevenci … bude doloženo 
+- 
+V případě užití zpěňujících nátěrů, nástřiků a jiné ochrany konstrukcí pro zvýšení PO, 
+jejichž funkce je podmíněna chemickou reakcí při požáru, musí být splněny podmínky 
+dle čl. 4.12 ČSN 73 0810 – viz výše u ocelových nosníků. 
+- 
+Způsob zajištění PO bude stanoven v dalším stupni dokumentace. 
+ 
+Nosné konstrukce vně objektu, které zajišťují stabilitu objektu: 
+Nevyskytují se. 
+ 
+Nosné konstrukce uvnitř objektu, které nezajišťují stabilitu objektu: 
+Nevyskytují se. 
+ 
+Konstrukce podporující technologické zařízení, jehož zřícení přispívá k rozšíření požáru: 
+Nevyskytují se. 
+ 
+Nenosné konstrukce uvnitř PÚ: 
+Nevyskytují se. 
+ 
+Konstrukce schodišť uvnitř PÚ, které nejsou součástí CHÚC: 
+Nevyskytují se. 
+ 
+Výtahové šachty: 
+Nevyskytují se. 
+ 
+ 
+ 

@@ -1,0 +1,52 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+14/25 
+Objekt je navržen s ochranou před účinky přímého i nepřímého úderu blesku 
+podle souboru norem ČSN EN 62305 a v souladu s § 26 odst. 2 vyhlášky č. 
+146/2024 Sb. 
+V projektu jsou uvažovány následující zóny ochrany před bleskem (LPZ): 
+ 
+LPZ 0A – venkovní prostory, nechráněné před přímým úderem blesku, 
+ 
+LPZ 0B – venkovní prostory, chráněné před přímým úderem blesku 
+jímací soustavou, 
+ 
+LPZ 1 – vnitřní prostory haly chráněné před účinky přímého úderu 
+blesku a částečně i před indukovaným elektromagnetickým polem. 
+Jímací soustava bude tvořena kombinací jímacích tyčí a hřebenových jímačů 
+instalovaných na ocelovou střešní konstrukci. Všechny jímače budou propojeny 
+na svody a vedeny na obvodových stěnách objektu. 
+Svodová soustava: 
+ 
+počet svodů je navržen min. 4 ks, rozmístěných rovnoměrně po 
+obvodu, 
+ 
+svody budou vedeny co nejkratší a nejpřímější trasou k základovému 
+zemniči, 
+ 
+průřez svodů: FeZn pásek min. 30 × 4 mm nebo kulatina FeZn Ø 10 
+mm. 
+Přepěťová ochrana: 
+Pro omezení účinků bleskových proudů a spínacích přepětí jsou v hlavním 
+rozvaděči objektu instalovány svodiče přepětí typu 1+2. 
+ 
+4.2 Uzemnění 
+Uzemnění objektu je navrženo jako základový zemnič, využívající výztuž 
+základových patek. Do každé základové patky bude vložen FeZn vodič průřezu 
+min. 75 mm², vyvedený nad úroveň podlahy pro připojení svodů LPS, ocelové 
+konstrukce a hlavní ochranné přípojnice MET. 
+Hlavní ochranná přípojnice (MET) bude umístěna v prostoru hlavního 
+rozvaděče. Na tuto přípojnici budou připojeny: 
+ 
+ochranné vodiče všech silnoproudých obvodů, 
+ 
+cizí vodivé části (ocelová konstrukce haly), 
+ 
+neživé části technologických zařízení, 
+ 
+pospojování inženýrských sítí přivedených do objektu (vodovod, 
+kanalizace). 
+Celá soustava je navržena tak, aby výsledný odpor uzemnění nepřekročil 
+hodnotu 10 Ω. 
+ 
+4.3 Pospojování 
+V rámci haly bude provedeno ochranné pospojování: 

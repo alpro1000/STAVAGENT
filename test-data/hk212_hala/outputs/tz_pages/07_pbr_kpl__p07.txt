@@ -1,0 +1,54 @@
+ 
+7 
+ 
+a 4.6, tab. E.1 ČSN 73 080). V PÚ se nenachází PBZ, která by dle čl. 7.2 a tab. 4 ČSN 73 0804 
+snižovala součinitel c → c = 1. Materiál se uvažuje skladovat na paletách, přičemž skladovací 
+výška bude max. hsc = 3 m. 
+Požární riziko: 
+Požární riziko je stanoveno dle čl. 6.2.1 a) ČSN 73 0804, a to ekvivalentní dobou trvání požáru 
+dle čl. 6.2.2 a rovnice 1 ČSN 73 0804. Požární riziko je určeno pro celý PÚ pro požární zatížení 
+p dle čl. 6.3.1 ČSN 73 0804. Výpočet viz Příloha 3 tohoto PBŘ. 
+▪ p = 90 kg/m2 
+▪ F0 = 0,024 
+▪ τe = 115,29 min 
+ 
+SPB dle tab. 8 ČSN 73 0804: 
+Dle tab. 8 ČSN 73 0804 je požární úsek zařazen do II. SPB. 
+▪ k8 = 0,417 (dle čl. 8.4.1 a rovnice 25 ČSN 73 0804) 
+▪ τe ∙ k8 = 115,29 ∙ 0,417 = 48,04 min 
+ 
+Ekonomické riziko: 
+Ekonomické riziko je stanoveno dle čl. 7.1 ČSN 73 0804 vč. určení indexů pravděpodobnosti 
+P1 a P2 a následného posouzení plochy PÚ. Výpočet viz Příloha 4 tohoto PBŘ. 
+▪ P1 = 1,40 
+▪ P2 = 89,10 (dle čl. 7.1.3 ČSN 73 0804) 
+▪ P2 = 1139 (dle čl. 7.1.4 ČSN 73 0804) 
+▪ Smax = 6330 m2 ≥ SPÚ = 495 m2 … vyhovuje 
+ 
+Elektrická požární signalizace: 
+Dle čl. 7.2 ČSN 73 0804 a čl. 4.2.2 ČSN 73 0875 nemusí být vybaven EPS řešený PÚ, jelikož 
+plocha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙Smax. 
+▪ 0,5 ∙ Smax = 3165 m2 ≥ SPÚ = 495 m2 
+ 
+Samočinné stabilní zařízení: 
+Dle čl. 7.2.7 ČSN 73 0804 nemusí být vybaven SSHZ řešený PÚ, jelikož půdorysná plocha 
+PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙Smax. 
+▪ 0,3 ∙ Smax = 1899 m2 ≥ SPÚ = 495 m2 
+ 
+Zařízení pro odvod kouře a tepla: 
+Dle čl. 7.2.8 ČSN 73 0804 nemusí být vybaven ZOKT řešený PÚ, jelikož plocha PÚ 5. skupiny 
+výrobního provozu nepřesahuje plochu 0,5∙Smax. 
+▪ 0,5 ∙ Smax = 3165 m2 ≥ SPÚ = 495 m2 
+ 
+6. Stanovení navržených stavebních konstrukcí a požárních uzávěrů z hlediska jejich 
+požární odolnosti: 
+ 
+Parametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni 
+projektové dokumentace s ohledem na finální podobu posuzovaného objektu (rozměry a 
+materiál užitých stavebních konstrukcí apod.). 
+Požadovaná požární odolnost stavebních konstrukcí je stanovena v souladu s tab. 10 
+ČSN 73 0804 a ČSN 73 0845, požadavky na stavební konstrukce z hlediska jejich mezních 
+stavů jsou stanoveny podle kap. 5 ČSN 73 0810. 
+ 
+ 
+ 

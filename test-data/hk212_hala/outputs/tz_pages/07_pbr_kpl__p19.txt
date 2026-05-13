@@ -1,0 +1,46 @@
+ 
+19 
+ 
+ve svislém směru: 
+Hodnota odstupové vzdálenosti ds je určena dle čl. 9.14.6 b) ČSN 73 0804 – nepožaduje 
+se vzdálenost vyšší než dle následujícího výpočtu. 
+▪ půdorysný průmět plochy střešního pláště: As = 19,74 * 28,19 = 556,47 m2 
+▪ 𝑑𝑠= 𝐴𝑠
+1/3 = 556,471/3 = 8,23 𝑚 
+ 
+→ půdorysný průmět do půdorysu (vzdálenost od obvodové stěny) d = 8,70 m 
+ 
+V PNP od střešního pláště posuzovaného objektu se nenachází žádné jiné objekty. 
+Vykreslení PNP dle obr. 15 ČSN 73 0804 viz níže. 
+ 
+Ve smyslu čl. 10.4.12 (poznámka) ČSN 73 0804 se nehodnotí odpadávání hořících částí 
+střešního pláště, jelikož střecha má sklon do 45°. 
+ 
+ 
+PNP od střešního pláště dle obr. 15 ČSN 73 0804 
+ 
+Odstupová vzdálenost od sousedních objektů: 
+Objekt je umístěn v průmyslovém areálu. Pro tento areál je zpracováno PBŘ z 05/2019, 
+nicméně objekty v okolí posuzované haly nejsou součástí tohoto PBŘ. Tyto objekty se uvažují 
+jako součást stávajícího areálu vybudovaného před rokem 1977.  
+Nejbližší stavební objekt stojí cca 5,5 m od posuzovaného objektu. Jedná se o garáž. 
+Lze předpokládat, že PNP tohoto objektu nezasahuje stavbu řešenou tímto PBŘ. Dále jsou 
+odhadnuty odstupové vzdálenosti od tohoto objektu, reálný PNP bude pravděpodobně menší.  
+▪ Uvažovaný konstrukční systém: nehořlavý (plechová konstrukce) 
+▪ Účel užívání: garáž 
+▪ Předpokládané požární zatížení: pv = 35 kg/m2 (dle pol. 12, tab. B.1 ČSN 73 0802) 
+▪ Požární otevřenost: po = 100 % (uvažovaná plocha: SV 6,2 x 5,03 m, JV 6,3 x 5,03 m) 
+→ odstupová vzdálenost JV: d = 6,40 m 
+→ odstupová vzdálenost SV: d = 6,35 m 
+ 
+Další blízký stavební objekt stojí cca 11,5 m od posuzovaného objektu. Jedná se o výrobní halu 
+– montáž a výroba FVE panelů se zázemím pro zaměstnance. Lze předpokládat, že PNP tohoto 
+objektu nezasahuje stavbu řešenou tímto PBŘ. Dále jsou odhadnuty odstupové vzdálenosti od 
+tohoto objektu, reálný PNP bude pravděpodobně menší.  
+Požární zatížení se uvažuje shodné jako u navrhované skladovací haly. Ve skladovacích 
+halách se uvažuje větší požární zatížení než u výrobních objektů. V posuzovaném objektu se 
+navíc nachází prostory se zázemím pro zaměstnance. Lze předpokládat, že celkové požární 
+zatížení tohoto objektu nebude vyšší než u posuzované haly.  
+▪ Uvažovaný konstrukční systém: nehořlavý (zděná konstrukce) 
+▪ Účel užívání: výrobní objekt 
+▪ Předpokládané požární zatížení: τe = 118,98 min (dle posuzované haly) 

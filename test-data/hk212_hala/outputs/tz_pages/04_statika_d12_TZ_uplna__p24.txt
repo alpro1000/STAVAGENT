@@ -1,0 +1,9 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+23
+Rám:
+Vnitřní síly 
+N[kN] sloup – 191kN, příčel - 70,6kN
+Vz[kN] sloup – 60kN, příčel – 97,5kN
+My[kNm] sloup – 257,32kNm, příčel – 257,32kNm 

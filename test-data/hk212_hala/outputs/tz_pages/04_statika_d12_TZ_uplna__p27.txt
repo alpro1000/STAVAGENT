@@ -1,0 +1,11 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+26
+Deformace [mm]
+Wlim = 5400/250 = 21,4mm > 5,9 mm
+VYHOVUJE
+Posouzení: 1→ 100% (14%) 
+Návrh:
+Štítové sloupy jsou navrženy z profilu HEA200 z oceli S235. Sloup je zároveň navržen na požární 
+únosnost 15 min. 

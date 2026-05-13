@@ -1,0 +1,41 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+11/25 
+Vzduchotechnická jednotka bude vybavena automatickou regulací, která zajistí 
+udržování požadovaných parametrů mikroklimatu v hale, včetně dálkového 
+ovládání a možnosti napojení na centrální řízení. 
+ 
+Požadavky na udržování mikroklimatu: 
+Teploty Letní – NEAGREGOVÁNY 
+Teploty Zimní – Řeší UT 
+ 
+Hlučnost – venkovní prostory 
+Ve dne – LA = 50 dB(A) 
+V noci  - LA = 40 dB(A) 
+Hlučnost – hala 
+LA = 55 dB(A) 
+ 
+2. Vytápění (UT) 
+Pro vytápění haly je navrženo plně elektrické řešení, které kombinuje sálavé 
+stropní panely a teplovzdušné nástěnné jednotky („sahary“). Toto řešení bylo 
+zvoleno s ohledem na charakter provozu (skladování), požadavky na rychlý 
+náběh teploty po otevření vrat i na ekologický provoz bez emisí. 
+Sálavé panely: 
+ 
+typ ECOSUN S+ 12, výkon 1,2 kW/ks, 
+ 
+celkový počet 21 ks, 
+ 
+umístění přímo na stropní konstrukci haly, rovnoměrně rozmístěno, 
+ 
+panely pracují na principu sálavého ohřevu povrchů a osob, což zvyšuje 
+tepelný komfort i při nižší teplotě vzduchu. 
+Teplovzdušné jednotky („sahary“): 
+ 
+výkon každé jednotky 9 kW, 
+ 
+celkový počet 4 ks, 
+ 
+umístění v rozích haly tak, aby bylo zajištěno rychlé promíchání vzduchu 
+po otevření vrat a vniknutí studeného vzduchu, 
+ 
+řízení přes prostorové termostaty. 

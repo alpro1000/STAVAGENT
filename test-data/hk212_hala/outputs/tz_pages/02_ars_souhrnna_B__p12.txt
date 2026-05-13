@@ -1,0 +1,53 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+12/25 
+Celkový instalovaný výkon topidel činí cca 61,2 kW. Návrh počtu panelů 
+vychází z vypočtených tepelných ztrát objektu (cca 15,4 kW) navýšených o 
+koeﬁcienty pro přerušované vytápění a plošné pokrytí. 
+Regulace vytápění: 
+ 
+každý okruh panelů je ovládán prostorovým termostatem, 
+ 
+jednotky jsou vybaveny systémem umožňujícím dálkové ovládání (TFT WIFI), 
+ 
+sahary jsou spínány samostatně přes nástěnné termostaty, s možností 
+nezávislého ovládání podle potřeby. 
+Provoz elektrického vytápění nepředstavuje žádnou ekologickou zátěž, emise 
+vznikají pouze při výrobě elektrické energie mimo areál. 
+ 
+ 
+3. Elektroinstalace 
+3.1 Napojení objektu 
+Skladová hala je napojena na stávající trafostanici v rámci areálu. Odběrné místo 
+zůstává beze změny, fakturační měření je již zajištěno v trafostanici. Napojení 
+haly je řešeno novým přívodním kabelem CYKY-J 5×35 mm², dimenzovaným na 
+hlavní jistič 3×100 A. Tento kabel je uložen do země a vyveden do hlavního 
+rozvaděče objektu. 
+Energetická bilance: 
+ 
+světelné obvody: instalovaný výkon 5,0 kW, 
+ 
+zásuvkové obvody: 18,0 kW, 
+ 
+VZT / vytápění / chlazení: 30,0 kW, 
+ 
+ostatní technologie: 30,0 kW, 
+ 
+celkový instalovaný příkon: 83,0 kW, 
+ 
+po započtení soudobosti (0,8) vychází výpočtový příkon na 60,5 kW, 
+ 
+výpočtový proud I = 92,3 A. 
+Z výše uvedeného vyplývá, že hlavní jistič 3×100 A je dostatečný a současně 
+vytváří rezervu pro případné budoucí rozšíření. 
+ 
+3.2 Hlavní rozvaděč objektu 
+V hale je navržen oceloplechový skříňový rozvaděč o dvou polích, umístěný u 
+vstupu do objektu v místě dobře přístupném jak pro provoz, tak i pro hasičský 
+zásah. Rozvaděč je navržen dle ČSN EN IEC 61439-2. 
+Rozvaděč bude obsahovat: 
+ 
+hlavní jistič objektu, 
+ 
+modulární jističe pro jednotlivé světelné a zásuvkové obvody, 
+ 
+proudové chrániče (IΔn = 30 mA) pro ochranu zásuvkových okruhů, 

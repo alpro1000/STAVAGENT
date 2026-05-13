@@ -1,0 +1,50 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+5
+Řádné kotvení konstrukce 
+Svislé nosné monolitické konstrukce jsou  vždy vyvazovány na kotevní výztuž z předchozí 
+sousedící  monolitické  konstrukce.  Veškeré  sousedící  monolitické  konstrukce  jsou  navzájem 
+provázané výztuží. Každý vzniklý vyvázaný roh (ať ve stěně nebo v desce) musí mít zavlečenou 
+vnitřní závlačovou výztuž. Pro kotvení platí vždy délky výztuže na min. kotevní délku (dle třídy betonu 
+a profilu výztuže – cca 40 profilů). Pro nastavování výztuží platí vždy min. délka přesahu (dle třídy 
+betonu a profilu výztuže – cca 60 profilů).
+Dodatečné kotvení
+Veškeré  dodatečné  kotvení  musí  být  předem  odsouhlaseno  projektantem  prováděcí  části 
+dokumentace. Dodatečné kotvení se bude provádět pomocí navrtáváky a vlepené výztuže. Osazování 
+výztuže se řídí technologickými předpisy výrobce. Pro kotvení v tlaku platí vždy délky výztuže na min. 
+kotevní délku (dle třídy betonu a profilu výztuže – cca 40 profilů). Pro kotvení v tahu platí vždy délky 
+výztuže na min. přesahovou délku (dle třídy betonu a profilu výztuže – cca 60 profilů).
+Montáž – velikost dílů, etapy, postupy
+Dodavatel  si  sám  určí  dělení  montovaných  dílců  dle  svých  možností.  Stejně  tak  vypracuje 
+technologické postupy pro vlastní provádění. Smršťovací pásy, jejich polohu, velikost apod., si určuje 
+technolog stavby před zahájením prací v souladu s technologickými předpisy.
+Deformace betonových konstrukcí
+Svislé deformace betonové konstrukce jsou omezeny ustanoveními norem ČSN EN 1992-1-1 
+„Eurokód 2: Navrhování betonových konstrukcí. Část 1-1: Obecná pravidla a pravidla pro pozemní 
+stavby“. Vodorovné deformace nejsou omezeny ve výše uvedené normě, ale budou omezeny na 
+1/500  výšky  konstrukce  a  to  i  po  jednotlivých  podlažích.  Deformace  konstrukcí  jsou  limitovány 
+obecnými texty v ČSN EN 1992-1-1 [11] čl. 7.4.1, které definují nutnost zajištění funkčnosti a vzhledu 
+konstrukce. Dále se správně zdůrazňuje nutnost přihlédnout k povaze konstrukce a k její interakci s 
+dalším vybavením budovy (příčky, obklady, technická zařízení a povrchy). Taková kritéria je nutné 
+projednat a nechat schválit během projektování investorem a dodavateli ostatních konstrukcí. Čl. 7.4.1 
+odst. (4) uvádí údaje o limitu průhybu 1/250 rozpětí při kvazi stálém zatížení a limit nárůstu průhybu 
+1/500 rozpětí při kvazi stálém zatížení od zabudování prvku viz odst. (5). Tyto hodnoty je nutné 
+považovat za velmi orientační, pro riziko porušení nenosných částí budov nemusí být dostačující. Pro 
+kmitání nejsou v ČSN EN 1990 [1] a ČSN EN 1992-1-1 [11] stanovena konkrétní kritéria. Uvedené 
+orientační hodnoty mezních průhybů mají zajistit vyhovující funkčnost staveb, a to např. obytných, 
+administrativních a veřejných budov nebo továren, pokud na ně nejsou kladeny zvláštní požadavky.
+a) Při požadavcích na vzhled a obecnou použitelnost:
+Průhyb vypočtený při kvazi stálém zatížení nemá překročit hodnotu 1/250 rozpětí. Průhyb se stanoví 
+ve vztahu k podporám. Pro kompenzaci celého průhybu nebo jeho části lze použít nadvýšení, které 
+nemá překročit hodnotu 1/250 rozpětí.
+b) Při požadavcích na průhyby po zabudování prvku:
+Průhyb od zatížení po zabudování prvku vypočtený při kvazi stálém zatížení nemá překročit hodnotu 
+1/500 rozpětí. Toto kriterium je třeba kontrolovat, pokud nadměrné průhyby mohou poškodit připojené 
+prvky (např. příčky, zasklení, obklady, technická zařízení budov apod.).
+Svislé posuvy a průhyby od zatížení jsou omezeny následujícím způsobem:
+flt,lim
+fst,lim
+Střešní konstrukce obecně
+L/200
+L/250

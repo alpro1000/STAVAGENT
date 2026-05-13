@@ -1,0 +1,10 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+21
+Vaznice:
+Vnitřní síly:
+Vz[kN] – 7,67kN IPE 
+5,52kN - UPE
+My[kNm] – 11,65kNm IPE 
+8,44kNm - UPE

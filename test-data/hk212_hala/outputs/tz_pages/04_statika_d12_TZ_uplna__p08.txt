@@ -1,0 +1,113 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+7
+i.
+Rovinnost celkově (l = 2,0 m): 
+9 mm
+ii.
+Rovinnost místně (l = 0,2 m):
+4 mm
+b.
+Povrch bez styku s bedněním
+i.
+Rovinnost celkově (l = 2,0 m): 
+15 mm
+ii.
+Rovinnost místně (l = 0,2 m):
+6 mm
+c.
+Kosoúhlost příčného řezu:
+větší z a/25 nebo b/25, max.  30 mm
+d.
+Přímost hran
+i.
+Pro délky l < 1,0 m: 
+ 8 mm
+ii.
+Pro délky l > 1,0 m: 
+ 8 mm/m, max.  20 mm 
+13) Tolerance pro otvory (kruhové a pravoúhlé) a vložené prvky:
+a.
+Otvory a vložky pro potrubí
+i.
+Pravoúhlé otvory:
+ 
+ 25 mm
+ii.
+Kruhové otvory:
+ 
+ 10 mm
+b.
+Otvory nebo výstupek:
+ 
+ 25 mm
+c.
+Kotevní šrouby a podobné vložky
+i.
+Umístění šroubů a střed skupiny šroubů: 
+ 10 mm
+ii.
+Vnitřní vzdálenost mezi šrouby ve skupině:  10 mm
+iii.
+Volná délka šroubů:
+ 
++ 25 mm, - 5 mm
+iv.
+Naklonění:
+5 mm nebo l/200
+d.
+Kotevní desky a podobné vložky
+i.
+Odchylka v poloze:
+ 
+ 20 mm
+ii.
+Odchylka ve výšce:
+ 
+ 10 mm
+14) Vychýlení sloupu nebo stěny v některé rovině
+a.
+Pro h ≤ 10 m:
+ 
+větší z 15 mm nebo h/400
+b.
+Pro h > 10 m:
+ 
+větší z 25 mm nebo h/600
+15) Odchylka mezi středy stěn a sloupů: větší z t/30 nebo 15 mm, max. 30 mm
+16) Zakřivení sloupu nebo stěny v úrovni podlaží: větší z h/300 nebo 15 mm, max. 30 mm
+17) Poloha sloupu nebo stěny v některém podlaží: menší z 50 mm nebo Σ h/(200 n1/2)
+18) Poloha styku nosníku se sloupem: větší z  b/30 nebo  20 mm
+19) Rozměry průřezu (s lineární interpolací pro mezilehlé hodnoty)
+a.
+Pro l ≤ 150 mm:
+ 
+ 10 mm
+b.
+Pro l = 400 mm:
+ 
+ 15 mm
+c.
+Pro l ≥ 2500 mm:
+ 
+ 30 mm
+20) Poloha betonářské výztuže (s lineární interpolací pro mezilehlé hodnoty)
+a.
+Pro h ≤ 150 mm:
+ 
++ 10 mm
+b.
+Pro h = 400 mm:
+ 
++ 15 mm
+c.
+Pro h ≥ 2500 mm:
+ 
++ 20 mm
+21) Krytí výztuže:
+ 10 mm ( c
+
+def)
+22) Stykování přesahem (l = délka přesahu):
+- 0,06 l

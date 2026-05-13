@@ -1,0 +1,44 @@
+ 
+3/5 
+Uvedeno v samostatné části dokumentace PBŘ. 
+ 
+popis netradičních technologických postupů a zvláštních požadavků na provádění a jakost 
+navržených konstrukcí;  
+ 
+ 
+Na stavbě nejsou uplatněny netradiční technologické postupy. Všechny konstrukce 
+budou prováděny obvyklými stavebními technologiemi v souladu s příslušnými ČSN, 
+technickými předpisy a projektovou dokumentací. 
+ 
+konstrukční a stavebně technické řešení a technické vlastnosti stavby;  
+ 
+Základy, HTU, výkopy, spodní hydroizolace 
+Základová deska bude navržena výšky 200 mm, beton C25/30, XC4, vyztužená u 
+obou povrchů Kari sítěmi Ø8 mm s oky 100/100 mm u spodního a horního 
+povrchu, výztuž B500B, krytí 30 mm. Deska 
+je uložená na zhutněném štěrkovém loži tloušťky 250 mm. Základová spára musí 
+být před betonáží řádně zhutněna Edef,2 = 45,0 MPa, přičemž Edef2/Ede< 1,75. 
+Po předložení IGP a zjištění charakteristiky zeminy bude možné návrh podrobně 
+vypočítat. 
+Sloupy rámu budou založeny na dvoustupňových patkách o rozměrech 
+1,5x1,5x(2x0,6m) z prostého betonu C16/20 XC0. Základy pod štítové sloupy 
+budou navrženy z dvoustupňových patek o rozměrech 0,8x0,8x(0,2x0,6m) z 
+prostého betonu C16/20 XC0. Výpočet počítá se 200 kPa únosností zeminy 
+V prováděcí dokumentaci stavby bude ověřen návrh základové desky dle 
+skutečných charakteristik  zeminy z kopané sondy. 
+ 
+ 
+Svislé nosné a nenosné konstrukce 
+Hlavní nosná konstrukce bude montovaná z ocelových nosníků IPE 400. Sloupy 
+rámů budou kloubově kotveny na horní hraně základových patek. Pomocné 
+sloupy ve štítu pod rámem budou z nosníků HEA 200, sloupy budou kotveny 
+podobně jako sloupy rámu. Stěny budou podélně ztuženy diagonálními ztužidly 
+L70/70/6 upevněných do kříže, vždy ve dvou polích na každé z delších stran.   
+ 
+ 
+Vodorovné nosné konstrukce 
+Vodorovná část rámu bude montovaná z nosníků IPE 450 se sklonem 5,25°. 
+Podélné ztužení rámové konstrukce bude zajištěno diagonálními ztužidly 
+vedenými do kříže ve dvou polích. Rám bude doplněn štítovými sloupy z proﬁlu 
+HEA 200 kotvených do základových patek a nosníky ztužující konstrukci v místě 
+okenních a dveřních otvorů. 

@@ -1,0 +1,142 @@
+A
+A
+B
+B
+1
+1
+2
+2
+3
+3
+4
+4
+5
+5
+6
+6
+C
+C
+D
+D
+E
+E
+495 m²
+1.01
+Sklad fotovoltaických
+panelů
++0.000
+F
+F
+11.15°
+5.65°
+5.65°
+8.95°
+3300
+7450
+7450
+3650
+EW 15 DP1
+EW 15 DP1
+EW 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+R 15 DP1
+H
+D25
+EW 15 DP1
+N01.01-II
+27A
+27A
+2x
+2x
+R 15 DP1 (nosníky)
+18
+B75
+TS
+KM 1
+KM 1
+max. 18
+max. 18
+2500
+EI 15 DP1
+1100
+EI 15 DP1
+EI-C 15 DP1
+8700
+8700
+       EI 15 DP1
+část střešního pláště
+v PNP sousedního objektu
+Ev.č.:
+VÝKRES:
+AKCE:
+Ing. Michal Netušil,Ph.D.
+ČKAIT 0012242
+Autorizovaný inženýr pro PBS
+statiku a dynamiku staveb
+Příloha č.:
+Datum:
+Stupeň PD:
+Měřítko:
+Část PD.:
+Půdorys 1. NP
+09/2025
+DPS
+1:100
+2025/60-034
+2
+PBŘ
+Hala Hradec Králové
+LEGENDA PBS:
+N01.01-III
+Označení požárního úseku
+Hranice požárního úseku
+REI 30DP1
+Požadovaná požární odolnost 
+vodorovné konstrukce
+REI 30DP1
+Požadovaná požární odolnost svislé
+konstrukce
+Směr úniku (počet osob)
+3
+H D25
+Vnitřní hadicový systém (dimenze)
+3
+Počet osob v prostoru
+Kritické místo
+KM1
+Přenosný práškový hasicí přístroj
+21A
+Přenosný sněhový hasicí přístroj
+21A
+TS
+Total stop
+B75
+Požární žebřík s ochraným košem a
+suchovodem (dimenze)
+Požárně nebezpečný prostor od obvodových stěn
+řešeného objektu
+Požárně nebezpečný prostor od střešního pláště
+řešeného objektu
+Předpokládaný požárně nebezpečný prostor 
+sousedního objektu
+EI 30 DP3-C
+Požární uzávěr bránící šíření tepla
+se samozavíračem

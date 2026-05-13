@@ -1,0 +1,60 @@
+ 
+21 
+ 
+Vnitřní odběrní místa: 
+Dle čl. 4.4 b) ČSN 73 0873 se musí zřídit vnitřní odběrní místa v řešeném PÚ, jelikož součin 
+půdorysné plochy PÚ a požárního zatížení přesahuje hodnotu 9000. 
+ 
+Vnitřní odběrní místa – posouzení  
+PÚ 
+p [kg/m2] 
+S [m2] 
+p*S  
+Hydrant 
+N01.01 – Skladovací hala 
+90 
+495 
+44 550 
+ANO 
+ 
+Vnitřní odběrní místa a požadavky na ně musí odpovídat kap. 6 ČSN 73 0873: 
+▪ Typ hadicového systému – tvarově stálá hadice 
+Dle čl. 6.2 (poznámka) ČSN 73 0873 by byl systém se zploštitelnou hadicí nevyhovující 
+kvůli případným ohybům kolem rohů případných regálů. 
+▪ Světlost hadice – DN 25 mm  
+▪ Délka hadice – 30 m hadice + 10 m dostřik 
+▪ Zavodněný systém 
+▪ Osazení – 1,1–1,3 m nad podlahou (měřeno ve středu zařízení) 
+▪ Přetlak – 0,2 MPa  
+▪ Průtok vody z uzavíratelné proudnice – min. Q = 0,3 l/s 
+Musí být deklarováno, že nově vzniklý hadicový systém je v souladu s normovými 
+požadavky a ke kolaudaci musí být splnění požadavků doloženo. 
+▪ Materiál potrubí – nehořlavé hmoty 
+ 
+V souladu s čl. 6.7 ČSN 73 0873 musí být nejodlehlejší místo PÚ vzdáleno max. 40 m od 
+vnitřního odběrního místa a rozvinutá hadice nesmí omezovat funkci požárních uzávěrů. 
+Hydrant je umístěn u sloupu v ose F3, přičemž nejvzdálenější bod skladu (osa A6) od hydrantu 
+je max. cca 35 m – vyhovuje. 
+Dle §7 vyhlášky č. 246/2001 Sb. a přílohy C ČSN 73 0873 musí být provedena kontrola 
+a revize vnitřních odběrných míst 1x za rok podle ČSN EN 671-3. První výchozí kontrola a 
+tlaková zkouška musí být provedena dodavatelem. Následující každoroční zkoušky mohou být 
+provedeny odborným pracovníkem. 
+ 
+11. Vymezení zásahových cest a jejich technického vybavení, opatření k zajištění bezpečnosti 
+osob, provádění hašení požáru a záchranných prací, zhodnocení příjezdových 
+komunikací, popřípadě nástupních ploch pro požární techniku: 
+ 
+Příjezdová komunikace: 
+Ve smyslu čl. 13.2 ČSN 73 0804 musí k objektu vést přístupová komunikace se šířkou min. 
+3 m a končící nejvýše 10 m od vstupů do objektu, kterými se předpokládá vedení protipožárního 
+zásahu. Jednopruhová přístupová komunikace musí mít zajištěn zákaz odstavení a parkování 
+vozidel. Je-li komunikace navržena jako vícepruhová, musí být alespoň na jednom jízdním 
+pruhu zajištěn zákaz odstavení a parkování vozidel. Každá neprůjezdná jednopruhová 
+komunikace delší než 50 m musí mít v souladu s vyhláškou č. 23/2008 Sb., ve znění pozdějších 
+předpisů, na konci smyčkový objezd, nebo plochu umožňující otáčení vozidla. Vjezdy určené 
+pro příjezd požárních vozidel na ohrazené pozemky, na nichž jsou stavební objekty, musí být 
+ve světlých rozměrech nejméně 3,5 m široké a 4,1 m vysoké. 
+Jako přístupové komunikace k řešenému objektu slouží stávající zpevněné komunikace. 
+K areálu vede dvoupruhová komunikace šířky cca 6 m (ul. Vážní). Areálová komunikace je 
+šířky min. 6 m a vede až ke vchodům do objektu, tj. zastavení je možné před vchody do budovy 
+(vždy do 10 m). U vjezdu do areálu se nachází brána s nepřetržitou ostrahou – v případě potřeby 

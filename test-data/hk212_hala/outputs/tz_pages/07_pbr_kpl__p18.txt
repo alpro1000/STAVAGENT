@@ -1,0 +1,92 @@
+ 
+18 
+ 
+▪ Emisivita ε = 1,0 
+▪ Kritická hodnota tepelného toku Io,cr = 18,5 kW/m2 
+▪ Ekvivalentní doba trvání požáru τe [min] – 115,29 min 
+▪ Nehořlavý konstrukční systém: τe + 0 min 
+Výpočet byl proveden pomocí následujících rovnic: 
+I = ε ∗(TN + 273)4 ∗5,67 ∗10−11 
+TN = 20 + 345log (8 ∗pv + 1) 
+ϕ = 1
+2π [
+A
+(1 + A2)0,5 tan−1
+B
+(1 + A2)0,5 tan−1 +
+B
+(1 + B2)0,5 tan−1
+A
+(1 + B2)0,5] 
+ 
+Odstupové vzdálenosti  
+Specifikace PÚ a 
+obvodové stěny 
+Rozměry POP [m] 
+SPO 
+[m2] 
+Rozměry stěny [m] 
+SP [m2] po [%] d [m] 
+počet bPOP 
+hPOP 
+l 
+hu 
+PÚ N01.01 – Skladovací hala, τe = 115,29 min  
+JV, okna 
+18 1,000 1,000 
+18,00 
+24,795 
+1,000 
+24,80 
+73 
+3,30 
+JV, dveře 
+Požární uzávěr s PO EI-C 15 DP1 
+0,00 
+SV+JZ, vrata 
+2 4,000 3,500 
+28,00 
+13,000 
+3,500 
+45,50 
+62 
+7,45 
+SZ, okna 
+18 1,000 1,000 
+20,42 
+25,160 
+2,100 
+52,84 
+40 
+3,65 
+SZ, dveře 
+1 1,150 2,100 
+ 
+Odstupová vzdálenost od hořících částí obvodového pláště: 
+Obvodové konstrukce jsou druhu DP1 s požadovanou požární odolností a nenachází se zde 
+žádné hořlavé materiály (obklady), u kterých by se ve smyslu ČSN 73 0804 a ČSN 73 0810 
+hodnotilo odpadávání hořlavých částí obvodového pláště. 
+ 
+Odstupová vzdálenost od střešního pláště: 
+Dále jsou dle čl. 9.14.5 ČSN 73 0804 vyhodnoceny odstupové vzdálenosti od střešního pláště, 
+jelikož požadavky na střešní plášť dle tab. 10 ČSN 73 0804 jsou nulové pro II. SPB, přičemž 
+v PÚ pod střešním pláštěm je součin průměrného požárního zatížení p a součinitele c větší než 
+50 kg/m2 (p = 90 kg/m2, c = 1,0). 
+ 
+Střecha (střešní plášť) se dle čl. 9.14.5 a) ČSN 73 0804 považuje za požárně otevřenou 
+plochou s hustotou tepelného toku odpovídající ekvivalentní době trvání požáru dle výpočtu – 
+τe = 115,29 min. Za POP se nepovažuje část střešního pláště, která se nachází v PNP vedlejšího 
+objektu, jelikož v této části vykazuje střešní plášť požadovanou PO. Na straně bezpečné je však 
+PNP od střešního pláště řešeného objektu vyhodnocen od celého pláště nehledě na PO této části. 
+Toto řešení je na straně bezpečné. 
+ 
+PNP střechy (střešního pláště) je určen dle čl. 9.14.6 ČSN 73 0804 následovně: 
+ 
+ve vodorovném směru: 
+Hodnoty odstupových vzdáleností dv jsou určeny výpočtem, přesně hustotou tepelného 
+toku v hodnotě 18,5 kW/m2. 
+▪ sklon střechy: 5,25° → hu = 2 m (dle čl. 9.14.6 a) ČSN 73 0804) 
+▪ délka posuzovaného střešního pláště: 28,19 m → dv = 8,50 m 
+ 
+ 
+ 

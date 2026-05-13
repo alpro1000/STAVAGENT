@@ -1,0 +1,28 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+2/25 
+B.1 Celkový popis území a stavby 
+a) základní popis stavby; u změny stavby údaje o jejím současném stavu, závěry 
+stavebně technického, případně stavebně historického průzkumu a výsledky 
+statického posouzení nosných konstrukcí 
+ 
+Jedná se o projekt skladové haly na pozemku p. č. 1939/1 v Hradci Králové ve 
+čtvrti Slezské předměstí v oblasti s průmyslovými areály. Objekt bude sloužit k 
+uskladnění dílů demontovaných fotovoltaických panelů. V hale se bude nacházet 
+pouze skladovací prostor. Vjezd do haly bude zajištěn dvojící vrat z každé kratší 
+strany, tj. ze SV a JV. Na delších stranách budou pásy oken a dveří.  
+Konstrukce haly bude rámová, ocelová montovaná. Opláštění bude ze 
+sendvičových panelů Kingspan tl. 200 alternativně  150mm s výplní z minerální 
+vaty bílé a modré barvy.  
+Hala bude mít sedlovou střechu ze systémových sendvičových panelů Kingspan 
+s výplní z minerální vaty se sklonem 5,25°. 
+ 
+Statický posudek, výpočet konstrukcí 
+ 
+ 
+Vaznice – Návrh: 
+Vaznice jsou navrženy z proﬁlu IPE 160 z oceli S235. Krajní nosníky jsou navrženy 
+z proﬁlu UPE160 z oceli S235. Maximální osová vzdálenost vaznic činí 1,5m. 
+Vaznice jsou navržené jako prosté nosníky, nicméně je možné je na stavbě svařit 
+a vytvořit spojitý nosník. Nosníky jsou navrženy na požární odolnost 15 minut 
+ 
+ 

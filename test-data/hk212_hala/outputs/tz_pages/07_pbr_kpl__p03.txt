@@ -1,0 +1,52 @@
+ 
+3 
+ 
+1. Úvod: 
+ 
+Toto požárně bezpečnostní řešení je nedílnou součástí projektové dokumentace posuzovaného 
+objektu pro povolení stavby. Je zpracováno v rozsahu požadavku dle §41 odst. 2 vyhlášky č. 
+246/2001 Sb. o požární prevenci ve znění pozdějšího předpisu, v souladu s vyhláškou 23/2008 
+Sb. o technických podmínkách požární ochrany staveb ve znění pozdějšího předpisu a dle 
+technických předpisů a norem s nimi souvisejících. Posuzované parametry a řešení požární 
+bezpečnosti, stanovené v tomto požárně bezpečnostním řešení, jsou vázány na uvedené využití 
+objektu. V případě změny účelu využití posuzovaného prostoru, která by ovlivnila parametry 
+požární bezpečnosti, musí být provedeno přehodnocení těchto parametrů a řešení uvedeného 
+níže. 
+Vzhledem ke stupni projektové dokumentace je rozsah tohoto PBŘ v souladu s 
+ustanovením §41 odst. 4 vyhlášky č. 246/2001 Sb. o požární prevenci přiměřeně omezen. 
+Rozsah tohoto PBŘ byl upraven dle podrobnosti stavební části projektové dokumentace 
+zpracované v zákonném rozsahu dle zákona č. 283/2021 Sb., stavební zákon a prováděcí 
+vyhlášky č. 131/2024 Sb., o dokumentaci staveb. 
+ 
+2. Seznam použitých podkladů pro vypracování PBŘS: 
+ 
+▪ Projektová dokumentace z 07/2025, Ing. Arch. Jakub Volka (ČKA 0003947)  
+▪ Požárně bezpečnostní řešení dotčeného areálu „KOVOŠROT GROUP CZ s.r.o. – 
+Hradec Králové – Modernizace areálu“ ve stupni pro stavební povolení z 05/2019, Ing. 
+Miroslav Sopůšek (osv.č. Š-180/97), Ing. Petr Weissbrod (ČKAIT 1101201)  
+▪ Technické listy a certifikáty o požární odolnosti použitých stavebních materiálů a 
+konstrukcí 
+▪ Hodnoty požární odolnosti stavebních konstrukcí podle Eurokódů, Roman Zoufal a kol., 
+Praha 2009 
+▪ Zákon č. 133/1985 Sb. O požární ochraně v platném znění 
+▪ Zákon č. 283/2021 Sb. Stavební zákon 
+▪ Vyhláška 246/2001 Sb. O požární prevenci (ve znění vyhlášky 221/2012 Sb.) 
+▪ Vyhláška 23/2008 Sb. ve znění pozdějších předpisů (ve znění vyhlášky 268/2011 Sb.) 
+O technických podmínkách požární ochrany staveb 
+▪ Vyhláška 460/2021 Sb. O kategorizaci staveb z hlediska požární bezpečnosti a ochrany 
+obyvatelstva 
+▪ NV 375/2017Sb – Nařízení vlády o vzhledu, umístění a provedení bezpečnostních 
+značek a značení a zavedení signálů 
+▪ ČSN 01 3495 – Výkresy požární bezpečnosti staveb 
+▪ ČSN EN ISO 7010 – Grafické značky. Bezpečnostní barvy a bezpečnostní značky – 
+Registrované bezpečnostní značky 
+▪ ČSN 06 1008 – Požární bezpečnost tepelných zařízení 
+▪ ČSN 73 0802 ed.2 – Požární bezpečnost staveb. Nevýrobní objekty 
+▪ ČSN 73 0804 ed.2 – Požární bezpečnost staveb. Výrobní objekty 
+▪ ČSN 73 0810 – Požární bezpečnost staveb. Společná ustanovení 
+▪ ČSN 73 0818 – Požární bezpečnost staveb. Obsazení objektu osobami 
+▪ ČSN 73 0845 – Požární bezpečnost staveb. Sklady 
+▪ ČSN 73 0848 – Požární bezpečnost staveb. Kabelové rozvody 
+▪ ČSN 73 0872 – Požární bezpečnost staveb. Ochrana staveb proti šíření požáru VZT 
+zařízením 
+▪ ČSN 73 0873 – Požární bezpečnost staveb. Zásobování požární vodou 

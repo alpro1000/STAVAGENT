@@ -1,0 +1,44 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+9
+Funkční tolerance jsou dány v D. 2 normy ČSN EN 1090-2. Obecně jsou hodnoty uvedeny pro dvě 
+toleranční třídy. Jestliže není v technické zprávě nebo ve výkresech stanoveno jinak, bude použita 
+toleranční třída „1“.
+Kontrola, zkoušení a oprava
+Kontrola, zkoušení a opravy se musí provádět v průběhu prací podle specifikace, třídy provedení a 
+v souladu s požadavky na jakost uvedenými v normě ČSN EN 1090-2 – kapitola 12, resp. příloha A3. 
+Všechny kontroly a zkoušení se musí provádět podle předem stanoveného plánu s dokumentovanými 
+postupy. Zvláštní kontrolní zkoušení a s tím spojené opravy se musí dokumentovat.
+Provedení ocelové konstrukce s ohledem na požární zatížení
+Pokud není níže v tomto dokumentu uvedeno jinak, ocelová konstrukce není dimenzována na požární 
+zatížení. Případná požadovaná požární odolnost bude docílena vhodnými opatřeními (obklady, nátěry 
+apod.) dle projektu požární ochrany.
+V případě, že mechanická odolnost po příslušnou dobu požáru bude docílena samotnou ocelovou 
+konstrukcí  (=  dimenzováno  na  mimořádnou  kombinaci  zatížení  požárem),  pak  předpokládáme 
+dodržení  veškerých  požadavků  a  doporučení  v normě  ČSN  EN  1993-1-2  Navrhování  ocelových 
+konstrukcí  –  Část  1-2:  Obecná  pravidla  –  Navrhování  konstrukcí  na  účinky  požáru.  Zejména 
+upozorňujeme na nutnost provedení styčníků dle doporučení přílohy „D“ normy ČSN EN 1993-1-2. 
+Konstrukce – všeobecně:
+Při provádění veškerých stavebních prací je třeba se řídit závaznými ustanoveními platných norem a 
+podmínkami bezpečnosti práce obsažené v Zákoníku práce a vyhláškách Státního úřadu inspekce 
+práce.
+č. 591/2006 Sb.Požadavky na bezpečnost a ochranu zdraví při práci na staveništích
+č. 309/2006 Sb.Zajištění dalších podmínek bezpečnosti a ochrany zdraví při práci
+č. 362/2005 Sb.Požadavky na bezpečnost a ochranu zdraví při nebezpečí pádu
+Stavbu budou provádět osoby s příslušnou odborností a zkušeností. Vedení stavby bude prováděno 
+v souladu se Stavebním zákonem č. 183/2006 Sb.
+Všichni zúčastnění pracovníci musí být s předpisy seznámeni před zahájením prací.
+Předkládaná  dokumentace  je  zhotovena  v souladu  s prováděcí  vyhláškou  č.  499/2006  Sb. 
+o dokumentaci staveb.
+POŽADAVKY NA PRŮZKUMNÉ PRÁCE
+Stavebně technický průzkum
+-
+stanovení pevnostní třídy stávajících dřevěných konstrukcí, jejich rozměry, rozsah 
+případné degradace a provedení mykologického průzkumu
+-
+hloubka založení stávajících základů. 
+Inženýrsko-geologický průzkum
+-
+zatřídění zeminy v místě budoucí základové spáry a stanovení její způsobilosti 
+k založení na desce (min. únosnost základové spáry 150 kPa).
