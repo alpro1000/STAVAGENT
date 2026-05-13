@@ -242,7 +242,9 @@ def rematch_item(
         l1 = query_layer1(conn, fts_q, top_k)
         l2 = query_layer2(conn, fts_q, top_k)
     except sqlite3.OperationalError as e:
-        logger.debug(f"  FTS query failed for {item.get('id')}: {e}; tokens={tokens}")
+        # Elevated from debug → warning so silent FTS5 syntax failures are visible
+        # without --verbose. Run diagnose_urs_fts.py for a focused repro.
+        logger.warning(f"FTS query failed for {item.get('id')}: {e}; query={fts_q!r}")
         return None, []
 
     cat_prefix = catalog_prefix_for_item(item)
@@ -320,6 +322,21 @@ def run(args, logger: logging.Logger) -> int:
     except sqlite3.OperationalError:
         layer2_n = 0
     logger.info(f"Cache: {layer1_n:,} items (Layer 1), {layer2_n:,} node texts (Layer 2)")
+
+    # FTS5 sync check — fail fast if the virtual tables are empty while content
+    # tables are full (trigger only fires on INSERT, so older content rows
+    # never got indexed). Diagnose script offers the rebuild SQL.
+    fts1_n = conn.execute("SELECT COUNT(*) FROM urs_fts").fetchone()[0]
+    fts2_n = conn.execute("SELECT COUNT(*) FROM node_texts_fts").fetchone()[0] if layer2_n else 0
+    logger.info(f"FTS5: {fts1_n:,} urs_fts rows, {fts2_n:,} node_texts_fts rows")
+    if (layer1_n > 0 and fts1_n == 0) or (layer2_n > 0 and fts2_n == 0):
+        logger.error("FTS5 index out of sync with content tables. Rebuild:")
+        logger.error("  python -c \"import sqlite3; c=sqlite3.connect('data/urs_cache.db'); "
+                     "c.execute(\\\"INSERT INTO urs_fts(urs_fts) VALUES('rebuild')\\\"); "
+                     "c.execute(\\\"INSERT INTO node_texts_fts(node_texts_fts) VALUES('rebuild')\\\"); "
+                     "c.commit(); print('OK')\"")
+        conn.close()
+        return 2
 
     # Backup (idempotent — only once)
     backup_path = items_path.with_name(items_path.stem + "_pre_rematch.json")
