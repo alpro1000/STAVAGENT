@@ -163,64 +163,119 @@ def load_urs_catalog(path: Path | None = None) -> list[UrsEntry]:
     return entries
 
 
+PREFIX_LEN = 3
+
+# Stop-tokens that are too generic to carry signal — usually preposition stems
+# or single-letter Czech particles. Excluded from both index and query.
+STOP_PREFIXES = {
+    "do", "na", "pro", "po", "od", "k", "ke", "u", "v", "ve", "z", "ze", "s", "se",
+    "be", "pri", "pre", "pod", "nad", "tr", "st", "mm", "kg", "ks", "le", "ne",
+    "co", "kd", "jak", "tak",
+}
+
+
+def to_prefix(token: str, n: int = PREFIX_LEN) -> str:
+    """Reduce token to its first N chars — robust against stemmer differences.
+
+    URS authors' stemmer and our best-effort stemmer agree on the first
+    consonant/vowel cluster but diverge on later positions (URS's
+    ``betn``/``betonvh`` vs ours ``bet``/``betnvch``). Compressing both to
+    their 3-char prefix recovers the lost overlap.
+    """
+    if not token:
+        return ""
+    return token[:n]
+
+
+def to_prefix_set(tokens: list[str]) -> set[str]:
+    """Return the set of 3-char prefixes for non-trivial tokens (stop-tokens filtered)."""
+    out: set[str] = set()
+    for t in tokens:
+        if is_dim_token(t):
+            out.add(t)  # keep full dim token (C16/20, ipe400, xc4 …)
+            continue
+        if len(t) < 2:
+            continue
+        p = to_prefix(t)
+        if p in STOP_PREFIXES:
+            continue
+        out.add(p)
+    return out
+
+
+MIN_CATALOG_TOKENS = 3  # skip URS rows with too few signal tokens (false-friend short rows like "tr", "do", "hloubk")
+
+
 class UrsIndex:
-    """Inverted index over the stemmed catalog tokens for fast top-N retrieval."""
+    """Inverted index over catalog token 3-char prefixes."""
 
     def __init__(self, entries: list[UrsEntry]) -> None:
         self.entries = entries
-        self.token_to_entries: dict[str, list[int]] = defaultdict(list)
+        # Per-entry prefix sets (pre-computed once)
+        self.entry_prefixes: list[set[str]] = []
+        # Inverted index: prefix → list of entry indices
+        self.prefix_to_entries: dict[str, list[int]] = defaultdict(list)
         for i, e in enumerate(entries):
-            for t in set(e.tokens):
-                self.token_to_entries[t].append(i)
+            ps = to_prefix_set(list(e.tokens))
+            self.entry_prefixes.append(ps)
+            # Index only entries with enough signal — short rows are false friends
+            if len(ps) < MIN_CATALOG_TOKENS:
+                continue
+            for p in ps:
+                self.prefix_to_entries[p].append(i)
 
     def lookup(
         self,
         popis: str,
         kapitola_prefix_hint: str | None = None,
         top_n: int = 3,
-        min_score: float = 0.15,
+        min_score: float = 0.20,
     ) -> list[UrsMatch]:
-        """Return top-N catalog matches ranked by token overlap.
+        """Return top-N catalog matches ranked by 3-char-prefix overlap.
 
-        - ``popis`` is the natural-language Czech description.
-        - ``kapitola_prefix_hint`` (e.g. ``"1"`` for zemní, ``"27"`` for ŽB,
-          ``"76"`` for zámečnické) boosts matches whose URS code begins with
-          the same prefix (+0.10).
-        - Dimension tokens (C16/20, IPE 400, XC4 …) that match exactly add
-          an additional +0.05 per token.
+        Score = max(Jaccard, OverlapCoefficient) with boosts:
+        - ``kapitola_prefix_hint`` match on URS code: +0.10
+        - exact dimension token match (C16/20, IPE 400, XC4 …): +0.10 per token
+        - high coverage (≥60 % of query prefixes appear in catalog row): +0.10
+        - short catalog row (≤4 prefixes) fully covered by query: +0.15
         """
-        tokens = stem_tokens(tokenize_text(popis))
-        if not tokens:
+        q_tokens = stem_tokens(tokenize_text(popis))
+        if not q_tokens:
             return []
-        query_set = set(tokens)
-        query_dims = {t for t in tokens if is_dim_token(t)}
+        q_prefixes = to_prefix_set(q_tokens)
+        q_dims = {t for t in q_tokens if is_dim_token(t)}
 
         candidate_ids: set[int] = set()
-        for t in query_set:
-            candidate_ids.update(self.token_to_entries.get(t, ()))
+        for p in q_prefixes:
+            candidate_ids.update(self.prefix_to_entries.get(p, ()))
 
         scored: list[UrsMatch] = []
         for idx in candidate_ids:
             e = self.entries[idx]
-            cat_set = set(e.tokens)
-            inter = query_set & cat_set
+            cat_prefixes = self.entry_prefixes[idx]
+            inter = q_prefixes & cat_prefixes
             if not inter:
                 continue
-            union = query_set | cat_set
+            union = q_prefixes | cat_prefixes
             jaccard = len(inter) / len(union) if union else 0.0
+            overlap = len(inter) / min(len(q_prefixes), len(cat_prefixes)) if cat_prefixes else 0.0
+            base = max(jaccard, overlap)
 
             # Boosts
             boost = 0.0
             if kapitola_prefix_hint and e.code.startswith(kapitola_prefix_hint):
                 boost += 0.10
-            dim_overlap = query_dims & cat_set
-            boost += 0.05 * len(dim_overlap)
-            # If most query tokens are present in catalog row, boost (high precision)
-            coverage = len(inter) / max(len(query_set), 1)
-            if coverage >= 0.6:
+            dim_overlap = q_dims & set(e.tokens)
+            boost += 0.10 * len(dim_overlap)
+            coverage_q = len(inter) / max(len(q_prefixes), 1)
+            if coverage_q >= 0.6:
                 boost += 0.10
+            # Reward short-ish catalog row fully covered by query (precise hit)
+            # but require absolute intersection ≥ 3 prefixes to avoid trivial single-token "matches"
+            if len(cat_prefixes) <= 6 and inter == cat_prefixes and len(inter) >= 3:
+                boost += 0.15
 
-            score = min(1.0, jaccard + boost)
+            score = min(1.0, base + boost)
             if score >= min_score:
                 scored.append(UrsMatch(code=e.code, typ=e.typ, tokens=e.tokens, score=round(score, 3)))
 

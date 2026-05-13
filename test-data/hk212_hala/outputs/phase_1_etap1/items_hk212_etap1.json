@@ -1,0 +1,2540 @@
+{
+  "metadata": {
+    "project": "hk212_hala",
+    "phase": "1_etap1",
+    "scope": "HSV + PSV + M + VRN + VZT (etap 1 IN-scope per §3)",
+    "catalog": "URS201801.csv (39742 stemmed rows)",
+    "export_wrapper_default": "KROS Komplet",
+    "kapitola_modules_loaded": [
+      "kap_hsv1 (27 items)",
+      "kap_hsv2 (18 items)",
+      "kap_hsv3 (14 items)",
+      "kap_hsv9 (4 items)"
+    ],
+    "total_items": 63,
+    "status_counts": {
+      "matched_medium": 14,
+      "needs_review": 48,
+      "matched_high": 1
+    },
+    "match_rate_high_plus_medium": 0.238,
+    "vyjasneni_ref_distribution": {
+      "ABMV_17": 22,
+      "ABMV_11": 5,
+      "ABMV_15": 1
+    }
+  },
+  "items": [
+    {
+      "id": "HSV-1-001",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Hloubení figury pod základovou desku, stroj. v hor. tř. 3",
+      "mj": "m³",
+      "mnozstvi": 222.75,
+      "urs_code": "60511064",
+      "urs_alternatives": [
+        {
+          "code": "60511064",
+          "score": 0.667,
+          "tokens": "deskv neoprcvn stred"
+        },
+        {
+          "code": "60511110",
+          "score": 0.667,
+          "tokens": "deskv neoprcvn stredv"
+        },
+        {
+          "code": "60511113",
+          "score": 0.667,
+          "tokens": "deskv neoprcvn stredv"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "A102 zastavěná 28.19×19.74 + TZ B m.10.g + Phase 0b RE-RUN §3.10",
+      "raw_description": "figura pod deskou — výkop pro polštář a desku",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495 m² × 0.45 m (deska 0.20 + lože 0.25)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-002",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Hloubení dohloubek pro patky rámové, hor. tř. 3, do 1 m hloubky",
+      "mj": "m³",
+      "mnozstvi": 31.5,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55345887",
+          "score": 0.4,
+          "tokens": "garazv hloubk hormnn kovov lpu rozmr sekcn stavb"
+        },
+        {
+          "code": "460070161",
+          "score": 0.333,
+          "tokens": "k relvm s prmstnm v hornn"
+        },
+        {
+          "code": "460070162",
+          "score": 0.333,
+          "tokens": "k relvm s prmstnm v hornn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "A105 ZÁKLADY DIM 1500 mm × 15 + RE-RUN §3.3 sloupy IPE 400 = 36 ks (14 rámových pos)",
+      "raw_description": "dohloubky patek rámových",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "14 ks × 1.5 m × 1.5 m × 1.0 m (od úr. figury -0.45 do -1.45/-1.90)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-003",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Hloubení dohloubek pro patky štítové, hor. tř. 3, do 0.5 m hloubky",
+      "mj": "m³",
+      "mnozstvi": 1.28,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55345887",
+          "score": 0.4,
+          "tokens": "garazv hloubk hormnn kovov lpu rozmr sekcn stavb"
+        },
+        {
+          "code": "460070161",
+          "score": 0.333,
+          "tokens": "k relvm s prmstnm v hornn"
+        },
+        {
+          "code": "460070162",
+          "score": 0.333,
+          "tokens": "k relvm s prmstnm v hornn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "A105 DIM 800 mm × 8 + RE-RUN §3.3 sloupy HEA 200 = 8 ks",
+      "raw_description": "dohloubky patek štítových",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "8 ks × 0.8 × 0.8 × 0.25 m (od figury -0.45 do -0.70)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-004",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Hloubení atypického základu — varianta jako pilota Ø800 / L=8 m",
+      "mj": "m³",
+      "mnozstvi": 12.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "00572510",
+          "score": 0.333,
+          "tokens": "optigrn picnn varint"
+        },
+        {
+          "code": "48467181",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        },
+        {
+          "code": "48467182",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 MTEXT 'ATYPICKÝ ZÁKLAD MOŽNO VYMĚNIT ZA PILOTU Ø800 / L=8,0m'",
+      "raw_description": "atypický základ — pilota variant",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_11",
+        "ABMV_17"
+      ],
+      "_status_flag": "variant_pending_IGP",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.6,
+      "_qty_formula": "placeholder 12 m³ (vrt + zaplnění; variantní řešení per A105 mtext)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-005",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Hloubení rýh pro krátké pasy mezi patkami, hor. tř. 3, do 0.6 m hloubky",
+      "mj": "m³",
+      "mnozstvi": 7.2,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "19620101",
+          "score": 0.35,
+          "tokens": "kotoc medi mm pasy pruh ve"
+        },
+        {
+          "code": "19620102",
+          "score": 0.35,
+          "tokens": "kotoc medi mm pasy pruh ve"
+        },
+        {
+          "code": "60515111",
+          "score": 0.333,
+          "tokens": "cm krajn krajnv neoprcvn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.35,
+      "skladba_ref": null,
+      "source": "A105 layout estimate (Phase 0b RE-RUN §3.10 pasy_mezi_patkami)",
+      "raw_description": "pasy mezi patkami",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "~30 bm × 0.4 m × 0.6 m (krátké propojovací pasy)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-006",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Ruční výkop v ochranných pásmech stávajících sítí DN300, hor. tř. 3",
+      "mj": "m³",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "42651000",
+          "score": 0.5,
+          "tokens": "pistv pohonm rucnm standrd"
+        },
+        {
+          "code": "013264000",
+          "score": 0.4,
+          "tokens": "geodtck projktv pruzkmn stavb textv vykrsv"
+        },
+        {
+          "code": "42650800",
+          "score": 0.4,
+          "tokens": "ii pistv pohonm rucnm standrd"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "A201 layer Stávající_kan + TZ B m.10.g + RE-RUN §6 splašková+dešťová DN300",
+      "raw_description": "ruční výkop u sítí",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 křížení × 5 m délka × 1.5 m š × 2.0 m h",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-007",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Příplatek za stížené podmínky — ruční výkop u stávajících sítí",
+      "mj": "m³",
+      "mnozstvi": 30.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "42651000",
+          "score": 0.5,
+          "tokens": "pistv pohonm rucnm standrd"
+        },
+        {
+          "code": "14011010",
+          "score": 0.433,
+          "tokens": "tepl valcvn za"
+        },
+        {
+          "code": "14011012",
+          "score": 0.433,
+          "tokens": "mm tepl valcvn za"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "ČSN požadavek na opatrný výkop v ochranných pásmech",
+      "raw_description": "příplatek ruční výkop",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= ruční výkop u sítí (m³)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-008",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Pažení výkopů hloubky nad 1.3 m — atypický základ",
+      "mj": "m²",
+      "mnozstvi": 20.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220830011",
+          "score": 0.4,
+          "tokens": "betonvh celk form hlodvcm male na nasmrvn nastvn"
+        },
+        {
+          "code": "220830012",
+          "score": 0.4,
+          "tokens": "betonvh celk form hlodvcm male na nasmrvn nastvn"
+        },
+        {
+          "code": "220830013",
+          "score": 0.4,
+          "tokens": "betonvh celk form hlodvcm male na nasmrvn nastvn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "ČSN 73 3050 + Phase 0b RE-RUN §3.10 hloubka -1.90",
+      "raw_description": "pažení výkopu",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_11",
+        "ABMV_17"
+      ],
+      "_status_flag": "placeholder_engineering_estimate",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder 20 m² (perimetr atypického základu × hloubka)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-009",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Obetonování stávajícího potrubí splaškové kanalizace DN300 betonem C16/20",
+      "mj": "m³",
+      "mnozstvi": 5.0,
+      "urs_code": "59244270",
+      "urs_alternatives": [
+        {
+          "code": "59244270",
+          "score": 0.667,
+          "tokens": "beta kmb standrd"
+        },
+        {
+          "code": "59244271",
+          "score": 0.667,
+          "tokens": "beta kmb standrd"
+        },
+        {
+          "code": "59244272",
+          "score": 0.667,
+          "tokens": "beta kmb standrd"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "A201 stávající splašková kan DN300 + TZ B m.10.g obetonování",
+      "raw_description": "obetonování splaškové DN300",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~5 m³ (úsek 5 m × tlouš. 0.3 m × š. 0.8 m + ofset)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-010",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Obetonování stávajícího potrubí dešťové kanalizace DN300 betonem C16/20",
+      "mj": "m³",
+      "mnozstvi": 5.0,
+      "urs_code": "59244270",
+      "urs_alternatives": [
+        {
+          "code": "59244270",
+          "score": 0.667,
+          "tokens": "beta kmb standrd"
+        },
+        {
+          "code": "59244271",
+          "score": 0.667,
+          "tokens": "beta kmb standrd"
+        },
+        {
+          "code": "59244272",
+          "score": 0.667,
+          "tokens": "beta kmb standrd"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "A201 stávající dešťová kan DN300 + TZ B m.10.g",
+      "raw_description": "obetonování dešťové DN300",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~5 m³ (úsek 5 m × 0.3 × 0.8 + ofset)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-011",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Pomocné výkopy pro novou přípojku vodovod DN150 LT",
+      "mj": "m³",
+      "mnozstvi": 8.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "210921018",
+          "score": 0.333,
+          "tokens": "aykc izolvnch vodic"
+        },
+        {
+          "code": "210921045",
+          "score": 0.333,
+          "tokens": "aykc izolvnch vodic"
+        },
+        {
+          "code": "210921048",
+          "score": 0.333,
+          "tokens": "aykc izolvnch vodic"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "RE-RUN §6 externí sítě — vodovod LT DN150",
+      "raw_description": "pomocný výkop vodovod",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "cca 16 m × 0.5 m š × 1.0 m h (TZ B m.10.g + RE-RUN §6)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-012",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Pomocné výkopy pro novou areálovou kanalizaci DN200",
+      "mj": "m³",
+      "mnozstvi": 49.2,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "27255770",
+          "score": 0.333,
+          "tokens": "lite mm novoflr podlhvn pryzv"
+        },
+        {
+          "code": "27255776",
+          "score": 0.333,
+          "tokens": "lite mm novoflr podlhvn pryzv st"
+        },
+        {
+          "code": "28412101",
+          "score": 0.333,
+          "tokens": "na noviln podlhvn podlzc polyvnlchlrd viva"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "RE-RUN §6 — Areálová kanalizace DN200 SN12 (82 m grav. + 3 m tlak.)",
+      "raw_description": "pomocný výkop kanalizace nová",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "82 m gravitační × 0.5 m š × 1.2 m h",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-013",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Štěrkové lože pod základovou deskou, tl. 250 mm, frakce 0/63",
+      "mj": "m³",
+      "mnozstvi": 123.75,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59010504",
+          "score": 0.4,
+          "tokens": "deskm stepkcmntvm technlg velox ztracnh"
+        },
+        {
+          "code": "113106111",
+          "score": 0.35,
+          "tokens": "dilc ploch s lozm vozovk"
+        },
+        {
+          "code": "113106121",
+          "score": 0.35,
+          "tokens": "dilc ploch s lozm vozovk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "TZ B + statika D.1.2 + §1 invariant",
+      "raw_description": "štěrkové lože tl. 250 mm",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495 m² × 0.25 m",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-014",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Zhutnění podloží Edef,2 ≥ 45 MPa, Edef2/Ede < 1.75",
+      "mj": "m²",
+      "mnozstvi": 495.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "38841149",
+          "score": 0.333,
+          "tokens": "mpa standrdn typ"
+        },
+        {
+          "code": "27231250",
+          "score": 0.333,
+          "tokens": "gox mm mpa pracvn"
+        },
+        {
+          "code": "27232420",
+          "score": 0.333,
+          "tokens": "mm mpa pracvn smk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "TZ B + statika D.1.2 § ground bearing",
+      "raw_description": "zhutnění lože pod deskou",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= plocha desky",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-015",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Zásyp výkopů kolem patek + okolo obetonovaných sítí, zhutněný",
+      "mj": "m³",
+      "mnozstvi": 30.0,
+      "urs_code": "34551140",
+      "urs_alternatives": [
+        {
+          "code": "34551140",
+          "score": 0.667,
+          "tokens": "kolikm spoj zasuvkv"
+        },
+        {
+          "code": "55451029",
+          "score": 0.333,
+          "tokens": "mincvn tv zas"
+        },
+        {
+          "code": "59211200",
+          "score": 0.333,
+          "tokens": "azp kolejncv podpr vany"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "Phase 0b RE-RUN §3.10 zásypy",
+      "raw_description": "zásyp výkopů zhutněný",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~30 m³ (zásypy okolo patek + nad obetonovanými sítěmi)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-016",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Nakládání zeminy hor. tř. 1-4 na dopravní prostředek",
+      "mj": "m³",
+      "mnozstvi": 350.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "081203000",
+          "score": 0.5,
+          "tokens": "dals doprv na nakld pracvnk"
+        },
+        {
+          "code": "42616030",
+          "score": 0.4,
+          "tokens": "dopr elektrmtr horizntln hydrdnmck jednstpnv jp kolem l/s"
+        },
+        {
+          "code": "42616036",
+          "score": 0.4,
+          "tokens": "dopr elektrmtr em horizntln hydrdnmck jednstpnv jet kolem"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "Phase 0b RE-RUN §3.10 total výkop 341.8 m³ rounded 350 m³",
+      "raw_description": "nakládání zeminy",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= celkový objem výkopu 350 m³ (Phase 0b baseline)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-017",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Vodorovné přemístění zeminy do 5000 m, sklon do 5 %",
+      "mj": "m³",
+      "mnozstvi": 350.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "63482241",
+          "score": 0.5,
+          "tokens": "foamgls penov sklo stavbn t4 tepeln vodivst w/mk"
+        },
+        {
+          "code": "63482242",
+          "score": 0.5,
+          "tokens": "foamgls penov sklo stavbn t4 tepeln vodivst w/mk"
+        },
+        {
+          "code": "63482243",
+          "score": 0.5,
+          "tokens": "foamgls penov sklo stavbn t4 tepeln vodivst w/mk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "RE-RUN — deponie default 5 km",
+      "raw_description": "vodorovné přemístění zeminy",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.8,
+      "_qty_formula": "= 350 m³ × 1 (default 5 km deponie)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-018",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odvoz výkopu na deponii / skládku — kontejnerová doprava",
+      "mj": "m³",
+      "mnozstvi": 350.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "63482710",
+          "score": 0.5,
+          "tokens": "copilt doplnk proflt proflv sklo stavbn"
+        },
+        {
+          "code": "63482712",
+          "score": 0.5,
+          "tokens": "copilt doplnk proflt proflv sklo stavbn"
+        },
+        {
+          "code": "63482713",
+          "score": 0.5,
+          "tokens": "copilt doplnk proflt proflv sklo stavbn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "Phase 0b RE-RUN baseline + ABMV_17",
+      "raw_description": "odvoz výkopu",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= 350 m³",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-019",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Skládkovné — uložení vytěžené zeminy na řízené skládce",
+      "mj": "t",
+      "mnozstvi": 630.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59224160",
+          "score": 0.4,
+          "tokens": "betonv drenzn kanal ocelv odpadn pe potrb povlkm"
+        },
+        {
+          "code": "59224161",
+          "score": 0.4,
+          "tokens": "betonv drenzn kanal ocelv odpadn pe potrb povlkm"
+        },
+        {
+          "code": "59224162",
+          "score": 0.4,
+          "tokens": "betonv drenzn kanal ocelv odpadn pe potrb povlkm"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "ČSN výpočet objem→hmotnost",
+      "raw_description": "skládkovné zemina",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "350 m³ × 1.8 t/m³ (zhutněná zemina)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-020",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Kácení vzrostlých stromů Ø < 80 cm — bříza, dub červený",
+      "mj": "ks",
+      "mnozstvi": 2.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59660202",
+          "score": 0.5,
+          "tokens": "cern cm krytn palen stresn tondch"
+        },
+        {
+          "code": "59660237",
+          "score": 0.429,
+          "tokens": "cervnhnd cm hlinkv krytn palen stresn tondch"
+        },
+        {
+          "code": "59640008",
+          "score": 0.4,
+          "tokens": "cm heluz kerambtnv nosnk stropn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "TZ B chapter m.7.b chráněné porosty + C3 situace kácení",
+      "raw_description": "kácení vzrostlé dřeviny",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 ks (TZ B m.7.b)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-021",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Kácení drobných dřevin a semenáčků — javor klen, dub letní",
+      "mj": "ks",
+      "mnozstvi": 5.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "11131211",
+          "score": 0.433,
+          "tokens": "drobn kg mogul obal"
+        },
+        {
+          "code": "02650312",
+          "score": 0.333,
+          "tokens": "drevn listnt okrasn"
+        },
+        {
+          "code": "02650327",
+          "score": 0.333,
+          "tokens": "drevn listnt okrasn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "TZ B + C3 situace kácení",
+      "raw_description": "kácení drobné dřeviny",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "placeholder 5 ks (TZ B m.7.b)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-022",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Frézování pařezů po kácení dřevin",
+      "mj": "ks",
+      "mnozstvi": 7.0,
+      "urs_code": "61152123",
+      "urs_alternatives": [
+        {
+          "code": "61152123",
+          "score": 0.667,
+          "tokens": "classc drevn paradr podlh podlhvn"
+        },
+        {
+          "code": "61152124",
+          "score": 0.667,
+          "tokens": "classc drevn paradr parkt podlhvn"
+        },
+        {
+          "code": "61152125",
+          "score": 0.667,
+          "tokens": "classc drevn paradr parkt podlhvn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "ČSN postup likvidace pařezů",
+      "raw_description": "frézování pařezů",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 vzrostlé + 5 drobné = 7 pařezů",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-023",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odvoz dřevní hmoty po kácení a likvidace",
+      "mj": "m³",
+      "mnozstvi": 6.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "60756110",
+          "score": 0.4,
+          "tokens": "bazi desk drev hmot marmlm na real"
+        },
+        {
+          "code": "60756111",
+          "score": 0.4,
+          "tokens": "bazi desk drev hmot marmlm na real"
+        },
+        {
+          "code": "60756112",
+          "score": 0.4,
+          "tokens": "bazi desk drev hmot marmlm na real"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "estimate na základě počtu stromů",
+      "raw_description": "odvoz dřevní hmoty",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~6 m³ dřevní hmoty",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-024",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Náhradní výsadba dřevin per rozhodnutí orgánu životního prostředí",
+      "mj": "ks",
+      "mnozstvi": 2.0,
+      "urs_code": "95261145",
+      "urs_alternatives": [
+        {
+          "code": "95261145",
+          "score": 0.667,
+          "tokens": "peri rc vysk"
+        },
+        {
+          "code": "61155353",
+          "score": 0.4,
+          "tokens": "beneflr drevn perfrmnc plovcm plus podlhm podlhvn prislsnstv"
+        },
+        {
+          "code": "60627010",
+          "score": 0.333,
+          "tokens": "drevn jak pn tp"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "TZ B m.7.b",
+      "raw_description": "náhradní výsadba",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 ks (per TZ B m.7.b náhradní výsadba)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-025",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odstranění stávající asfaltové vrstvy + podkladu, tl. do 250 mm",
+      "mj": "m²",
+      "mnozstvi": 540.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "023103000",
+          "score": 0.5,
+          "tokens": "konstrkc materl odstrnn priprv stavnst"
+        },
+        {
+          "code": "023203000",
+          "score": 0.5,
+          "tokens": "konstrkc materl odstrnn priprv stavnst"
+        },
+        {
+          "code": "023303000",
+          "score": 0.5,
+          "tokens": "konstrkc materl odstrnn priprv stavnst"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "C3 situace + Phase 0b RE-RUN §3.10",
+      "raw_description": "odstranění asfaltu + podkladu",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~540 m² (z C3 situace + plocha pod halou)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-026",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Nakládání stavební suti na dopravní prostředek",
+      "mj": "t",
+      "mnozstvi": 80.0,
+      "urs_code": "55343510",
+      "urs_alternatives": [
+        {
+          "code": "55343510",
+          "score": 0.667,
+          "tokens": "doplnk kovov mm stavbn"
+        },
+        {
+          "code": "55343513",
+          "score": 0.667,
+          "tokens": "doplnk kovov mm stavbn"
+        },
+        {
+          "code": "55348225",
+          "score": 0.667,
+          "tokens": "doplnk kovov stavbn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "estimate na základě plochy bouraného povrchu",
+      "raw_description": "nakládání suti",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder 540 m² × 0.25 m × 2 t/m³ × 30% = ~80 t",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-1-027",
+      "kapitola": "HSV-1",
+      "SO": "SO-01",
+      "popis": "Odvoz stavební suti k recyklaci — vč. skládkovného",
+      "mj": "t",
+      "mnozstvi": 80.0,
+      "urs_code": "63127220",
+      "urs_alternatives": [
+        {
+          "code": "63127220",
+          "score": 0.667,
+          "tokens": "mm mrizv pro sklenn stavbnctv"
+        },
+        {
+          "code": "63127260",
+          "score": 0.667,
+          "tokens": "mm mrizv pro sklenn stavbnctv"
+        },
+        {
+          "code": "63127261",
+          "score": 0.667,
+          "tokens": "mm mrizv pro sklenn stavbnctv"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "zákon o odpadech 541/2020 Sb. recyklace",
+      "raw_description": "odvoz suti recyklace",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "zemni_prace",
+      "_vyjasneni_ref": [
+        "ABMV_17"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "= nakládání suti",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-001",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Beton patek rámových C16/20 XC0 prostý, dvoustupňové",
+      "mj": "m³",
+      "mnozstvi": 18.9,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59373786",
+          "score": 0.333,
+          "tokens": "hzs podest prvk ramen"
+        },
+        {
+          "code": "59373789",
+          "score": 0.333,
+          "tokens": "hzs podest prvk ramen"
+        },
+        {
+          "code": "59373792",
+          "score": 0.333,
+          "tokens": "hzs podest prvk ramen"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 + statika D.1.2 + RE-RUN §3.3 + §3.4",
+      "raw_description": "patky rámové C16/20",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "14 ks × 1.5 × 1.5 × 0.6 m = 18.9 m³",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-002",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Bednění patek rámových dvoustupňových — zřízení",
+      "mj": "m²",
+      "mnozstvi": 100.8,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220860205",
+          "score": 0.4,
+          "tokens": "bednch brevn fixnm jamy kabel napajn ovladch pripjn"
+        },
+        {
+          "code": "55712970",
+          "score": 0.333,
+          "tokens": "c196 dvoukrdlv kovov"
+        },
+        {
+          "code": "D2N603VI30",
+          "score": 0.333,
+          "tokens": "asfaltv dvouvrstv nater"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "A105 + skladba dvoustupňová",
+      "raw_description": "bednění patek rámových zřízení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "14 ks × 4 × (1.5 × 0.6 × 2 stupně) — obvodový plech / dřevo",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-003",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Bednění patek rámových dvoustupňových — odstranění",
+      "mj": "m²",
+      "mnozstvi": 100.8,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "24629111",
+          "score": 0.4,
+          "tokens": "antikrzn bal csn dvouslzkv kg kovy odstn p150"
+        },
+        {
+          "code": "24629116",
+          "score": 0.4,
+          "tokens": "bal cervn doprvn dvouslzkv jednvrstv kg kovy matn"
+        },
+        {
+          "code": "24629118",
+          "score": 0.4,
+          "tokens": "bal dvouslzkv jednvrstv kg kovy matn odstn polyrtnv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "standardní pár",
+      "raw_description": "bednění patek rámových odstranění",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= bednění zřízení",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-004",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Beton patek štítových C16/20 XC0 prostý, dvoustupňové",
+      "mj": "m³",
+      "mnozstvi": 4.096,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59381338",
+          "score": 0.333,
+          "tokens": "betonv izd prefbrkt zelezbtnv"
+        },
+        {
+          "code": "59383630",
+          "score": 0.333,
+          "tokens": "beton lp most predpjth pro"
+        },
+        {
+          "code": "59383631",
+          "score": 0.333,
+          "tokens": "beton lp most predpjth pro"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 + statika D.1.2 + RE-RUN §3.3 sloupy HEA 200 = 8 ks",
+      "raw_description": "patky štítové C16/20",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "8 ks × 0.8 × 0.8 × 0.8 m = 4.10 m³",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-005",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Bednění patek štítových — zřízení",
+      "mj": "m²",
+      "mnozstvi": 20.8,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59311454",
+          "score": 0.333,
+          "tokens": "patkzb zelezbtnv zzp"
+        },
+        {
+          "code": "95261130",
+          "score": 0.333,
+          "tokens": "bednn gt peri"
+        },
+        {
+          "code": "95261161",
+          "score": 0.333,
+          "tokens": "bednn peri varikt"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 layout",
+      "raw_description": "bednění patek štítových zřízení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "8 ks × (0.8 × 0.8 × obvod 3.2 m × 2 stupně) — zjednodušeně",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-006",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Bednění patek štítových — odstranění",
+      "mj": "m²",
+      "mnozstvi": 20.8,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "23531358",
+          "score": 0.5,
+          "tokens": "bal dv epoxdvch garaz kryc lita litych materl"
+        },
+        {
+          "code": "59311454",
+          "score": 0.333,
+          "tokens": "patkzb zelezbtnv zzp"
+        },
+        {
+          "code": "95261130",
+          "score": 0.333,
+          "tokens": "bednn gt peri"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "standardní pár",
+      "raw_description": "bednění patek štítových odstranění",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= bednění zřízení",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-007",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Beton krátkých pasů v rozích a propojení mezi patkami C16/20 XC0",
+      "mj": "m³",
+      "mnozstvi": 7.2,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220550861",
+          "score": 0.5,
+          "tokens": "koncvch mezilhlch podprnch rozmstn vcetn"
+        },
+        {
+          "code": "59341217",
+          "score": 0.333,
+          "tokens": "betonv cm prefbrkt zelezbtnv"
+        },
+        {
+          "code": "59342075",
+          "score": 0.333,
+          "tokens": "betonv desk prefbrkt zelezbtnv"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "A105 layout estimate",
+      "raw_description": "pasy C16/20",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.8,
+      "_qty_formula": "~30 bm × 0.4 × 0.6 m = 7.2 m³",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-008",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Bednění pasů — zřízení",
+      "mj": "m²",
+      "mnozstvi": 36.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "24681101",
+          "score": 0.333,
+          "tokens": "bal barev do dufa hmot kompnnt litr mx"
+        },
+        {
+          "code": "24681102",
+          "score": 0.333,
+          "tokens": "bal barev do dufa hmot kompnnt litr na"
+        },
+        {
+          "code": "24744623",
+          "score": 0.333,
+          "tokens": "bal krytn lepidl na op pasek podlhv reditln"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 layout",
+      "raw_description": "bednění pasů zřízení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.8,
+      "_qty_formula": "~30 bm × 2 × 0.6 m boční plocha = 36 m²",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-009",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Výztuž patek a pasů ze svařovaných sítí + vázaná B500B",
+      "mj": "kg",
+      "mnozstvi": 600.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "59311454",
+          "score": 0.333,
+          "tokens": "patkzb zelezbtnv zzp"
+        },
+        {
+          "code": "28355020",
+          "score": 0.333,
+          "tokens": "bal pasy plast"
+        },
+        {
+          "code": "28355021",
+          "score": 0.333,
+          "tokens": "bal pasy plast"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + RE-RUN §3.4 B500B",
+      "raw_description": "výztuž patek + pasů B500B",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "placeholder 600 kg per RE-RUN §3.4 statika dimensioning",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-010",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "VARIANTA — pilota Ø800 / L=8 m C25/30 XC4 vrtná",
+      "mj": "ks",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "48467181",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        },
+        {
+          "code": "48467182",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        },
+        {
+          "code": "48467183",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 MTEXT 'ATYPICKÝ ZÁKLAD ... PILOTA Ø800 L=8,0m'",
+      "raw_description": "pilota Ø800 / L=8m variant",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [
+        "ABMV_11"
+      ],
+      "_status_flag": "variant_pending_IGP",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.65,
+      "_qty_formula": "1 ks pilota Ø800 × 8 m délka",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-011",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "VARIANTA — vrtání piloty Ø800 do hor. tř. 3-4",
+      "mj": "bm",
+      "mnozstvi": 8.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "00572510",
+          "score": 0.333,
+          "tokens": "optigrn picnn varint"
+        },
+        {
+          "code": "48467181",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        },
+        {
+          "code": "48467182",
+          "score": 0.333,
+          "tokens": "cerpdlv typ varimt"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "A105 + variant pilota L=8m",
+      "raw_description": "vrtání piloty",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [
+        "ABMV_11"
+      ],
+      "_status_flag": "variant_pending_IGP",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.65,
+      "_qty_formula": "1 ks × 8 m délka",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-012",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "VARIANTA — výztuž piloty 8× R25 podélná + třmínky Ø10 á 200 B500B",
+      "mj": "kg",
+      "mnozstvi": 380.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "44981020",
+          "score": 0.333,
+          "tokens": "prof strojrnsk tajfn vyzbrj"
+        },
+        {
+          "code": "44981011",
+          "score": 0.333,
+          "tokens": "d25 strojrnsk vyzbrj"
+        },
+        {
+          "code": "44981015",
+          "score": 0.333,
+          "tokens": "d25 strojrnsk vyzbrj"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + A105 výztuž piloty",
+      "raw_description": "výztuž piloty R25 + třmínky",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [
+        "ABMV_11"
+      ],
+      "_status_flag": "variant_pending_IGP",
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "8 ks × 3.86 kg/m × 8 m + třmínky placeholder",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-013",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Beton podlahové desky C25/30 XC4, tl. 200 mm — strojně rovnaný povrch",
+      "mj": "m³",
+      "mnozstvi": 99.0,
+      "urs_code": "60511064",
+      "urs_alternatives": [
+        {
+          "code": "60511064",
+          "score": 0.667,
+          "tokens": "deskv neoprcvn stred"
+        },
+        {
+          "code": "60511110",
+          "score": 0.667,
+          "tokens": "deskv neoprcvn stredv"
+        },
+        {
+          "code": "60511113",
+          "score": 0.667,
+          "tokens": "deskv neoprcvn stredv"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "TZ B + statika D.1.2 + RE-RUN §3.4 deska C25/30",
+      "raw_description": "deska C25/30 XC4",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495 m² × 0.2 m = 99 m³",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-014",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Bednění obvodové desky — zřízení",
+      "mj": "bm",
+      "mnozstvi": 95.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "55324000",
+          "score": 0.5,
+          "tokens": "alpolc deskv dilc fr kovov obvodv stavbn"
+        },
+        {
+          "code": "55324001",
+          "score": 0.5,
+          "tokens": "alpolc deskv dilc fr kovov obvodv stavbn"
+        },
+        {
+          "code": "55324002",
+          "score": 0.5,
+          "tokens": "alpolc deskv dilc fr kovov obvodv stavbn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "A101 půdorys + RE-RUN §3.2",
+      "raw_description": "bednění desky obvodové",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "obvod desky ~95 bm",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-015",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — horní vrstva",
+      "mj": "kg",
+      "mnozstvi": 1955.25,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "27241000",
+          "score": 0.433,
+          "tokens": "desk mm pryzv tesnc"
+        },
+        {
+          "code": "27241001",
+          "score": 0.433,
+          "tokens": "desk mm pryzv tesnc"
+        },
+        {
+          "code": "27241002",
+          "score": 0.433,
+          "tokens": "desk mm pryzv tesnc"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + RE-RUN §3.4 KARI horní + dolní",
+      "raw_description": "KARI Ø8 100×100 horní",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495 m² × 3.95 kg/m² (KARI Ø8 100×100)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-016",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Výztuž desky KARI síť Ø8 oka 100×100 mm B500B — dolní vrstva",
+      "mj": "kg",
+      "mnozstvi": 1955.25,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "27241000",
+          "score": 0.433,
+          "tokens": "desk mm pryzv tesnc"
+        },
+        {
+          "code": "27241001",
+          "score": 0.433,
+          "tokens": "desk mm pryzv tesnc"
+        },
+        {
+          "code": "27241002",
+          "score": 0.433,
+          "tokens": "desk mm pryzv tesnc"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + RE-RUN §3.4",
+      "raw_description": "KARI Ø8 100×100 dolní",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= horní vrstva",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-017",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Distanční podložky výztuže desky — plast / beton, krytí 30 mm",
+      "mj": "ks",
+      "mnozstvi": 2475.0,
+      "urs_code": "59341410",
+      "urs_alternatives": [
+        {
+          "code": "59341410",
+          "score": 0.667,
+          "tokens": "betonv desk prefbrkt zelezbtnv"
+        },
+        {
+          "code": "59341411",
+          "score": 0.667,
+          "tokens": "betonv desk prefbrkt zelezbtnv"
+        },
+        {
+          "code": "59341412",
+          "score": 0.667,
+          "tokens": "betonv desk prefbrkt zelezbtnv"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "ČSN krytí 30 mm dle XC4",
+      "raw_description": "distanční podložky KARI",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "495 m² × 5 ks/m² (typická hustota)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-2-018",
+      "kapitola": "HSV-2",
+      "SO": "SO-01",
+      "popis": "Hydroizolace plošná pod podlahovou desku — 1× SBS modifikovaný asfaltový pás",
+      "mj": "m²",
+      "mnozstvi": 495.0,
+      "urs_code": "62852673",
+      "urs_alternatives": [
+        {
+          "code": "62852673",
+          "score": 0.957,
+          "tokens": "asfaltv bitulst design hydrzlcn modifkvn pas sbs"
+        },
+        {
+          "code": "62852674",
+          "score": 0.933,
+          "tokens": "asfaltv bitulst hydrzlcn modifkvn pas sbs"
+        },
+        {
+          "code": "62852015",
+          "score": 0.814,
+          "tokens": "asfaltvn extr hydrzlcn modifkvn pas sbs sklolst"
+        }
+      ],
+      "urs_status": "matched_high",
+      "urs_match_score": 0.957,
+      "skladba_ref": null,
+      "source": "TZ B + standardní skladba pod desku",
+      "raw_description": "hydroizolace pod desku",
+      "confidence": 0.85,
+      "subdodavatel_chapter": "GD_zaklady_beton",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= plocha desky",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-001",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka sloupy IPE 400 S235 jakost J0, EXC2 dle ČSN EN 1090-2",
+      "mj": "kg",
+      "mnozstvi": 10263.24,
+      "urs_code": "59164710",
+      "urs_alternatives": [
+        {
+          "code": "59164710",
+          "score": 0.6,
+          "tokens": "csn ipe mm pozink prislsnstv vlakncmntv"
+        },
+        {
+          "code": "95250507",
+          "score": 0.5,
+          "tokens": "csn en lesen sit"
+        },
+        {
+          "code": "95250508",
+          "score": 0.5,
+          "tokens": "csn en lesen sit"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.6,
+      "skladba_ref": null,
+      "source": "DXF A101 INSERT 'Sloup IPE' × 36 + RE-RUN §3.3 + statika D.1.2",
+      "raw_description": "Sloup IPE 400 S235 — A101 INSERT block name",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "36 ks × 4.3 m × 66.3 kg/m = 10 263 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-002",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka sloupy HEA 200 S235 jakost J0, štítové, EXC2",
+      "mj": "kg",
+      "mnozstvi": 1455.12,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "13611301",
+          "score": 0.4,
+          "tokens": "cern hladk jr s235 tlust"
+        },
+        {
+          "code": "55431060",
+          "score": 0.333,
+          "tokens": "do hyginckch nabytk prostr slo"
+        },
+        {
+          "code": "55431061",
+          "score": 0.333,
+          "tokens": "do hyginckch nabytk prostr slo"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "DXF A101 INSERT 'M_S profily_ sloup' × 8 + statika D.1.2",
+      "raw_description": "M_S profily HEA 200 — A101 INSERT",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "8 ks × 4.3 m × 42.3 kg/m = 1 455 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-003",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka příčlí IPE 450 S235 s náběhem (sklon 5.25°)",
+      "mj": "kg",
+      "mnozstvi": 9474.96,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "13611301",
+          "score": 0.4,
+          "tokens": "cern hladk jr s235 tlust"
+        },
+        {
+          "code": "59164710",
+          "score": 0.35,
+          "tokens": "csn ipe mm pozink prislsnstv vlakncmntv"
+        },
+        {
+          "code": "55431060",
+          "score": 0.333,
+          "tokens": "do hyginckch nabytk prostr slo"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + geom. rozpon 18.5 m + sklon 5.25° (NE 5.65° per RE-RUN §9.2)",
+      "raw_description": "Příčle IPE 450 + náběh",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.85,
+      "_qty_formula": "6 rámů × 18.5 m × 77.6 kg/m × 1.1 (náběh) = 9 478 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-004",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka vaznice IPE 160 S235 jakost J0",
+      "mj": "kg",
+      "mnozstvi": 5195.04,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "13611301",
+          "score": 0.4,
+          "tokens": "cern hladk jr s235 tlust"
+        },
+        {
+          "code": "59164710",
+          "score": 0.35,
+          "tokens": "csn ipe mm pozink prislsnstv vlakncmntv"
+        },
+        {
+          "code": "27245125",
+          "score": 0.25,
+          "tokens": "gelflr mm sf specl vyrobk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + geom. délka haly + rozteca 1.5 m",
+      "raw_description": "vaznice IPE 160",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.8,
+      "_qty_formula": "12 řad × 27.4 m × 15.8 kg/m = 5 195 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-005",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka vaznice krajní UPE 160 S235 jakost J0",
+      "mj": "kg",
+      "mnozstvi": 1030.24,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "13611301",
+          "score": 0.4,
+          "tokens": "cern hladk jr s235 tlust"
+        },
+        {
+          "code": "60515111",
+          "score": 0.333,
+          "tokens": "cm krajn krajnv neoprcvn"
+        },
+        {
+          "code": "60515112",
+          "score": 0.333,
+          "tokens": "cm krajn krajnv neoprcvn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "statika D.1.2 (UPE 160 — NE C150×19.3 per RE-RUN §9.4)",
+      "raw_description": "vaznice krajní UPE 160",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [
+        "ABMV_15"
+      ],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "2 ks × 27.4 m × 18.8 kg/m = 1 030 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-006",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka ztužidla stěnová L 70/70/6 S235",
+      "mj": "kg",
+      "mnozstvi": 327.68,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "13611301",
+          "score": 0.4,
+          "tokens": "cern hladk jr s235 tlust"
+        },
+        {
+          "code": "64221042",
+          "score": 0.333,
+          "tokens": "ecco stenv stenvtp v200"
+        },
+        {
+          "code": "776144111",
+          "score": 0.333,
+          "tokens": "mm podstpnc pres sterk tloustk vysk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "statika D.1.2 L70/70/6 stěnová ztužidla",
+      "raw_description": "ztužidla stěnová L 70/70/6",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.8,
+      "_qty_formula": "8 ks × 6.4 m × 6.4 kg/m = 328 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-007",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Specifikace + dodávka ztužidla střešní z kruhových tyčí Ø20 S235",
+      "mj": "kg",
+      "mnozstvi": 237.12,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "13021037",
+          "score": 0.433,
+          "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
+        },
+        {
+          "code": "13021035",
+          "score": 0.433,
+          "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
+        },
+        {
+          "code": "13021038",
+          "score": 0.433,
+          "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "DXF A101 INSERT 'Kruhové tyče' × 8 + statika D.1.2",
+      "raw_description": "ztužidla střešní Ø20",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "8 ks × 12 m × 2.47 kg/m = 237 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-008",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Styčníkové plechy + spojovací materiál šroubový grade 8.8 — celk. paušál 6%",
+      "mj": "kg",
+      "mnozstvi": 1450.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "31197012",
+          "score": 0.4,
+          "tokens": "din materl specln spojvc zinek"
+        },
+        {
+          "code": "31197013",
+          "score": 0.4,
+          "tokens": "din materl specln spojvc zinek"
+        },
+        {
+          "code": "31197014",
+          "score": 0.4,
+          "tokens": "din materl specln spojvc zinek"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "ČSN EN 1090-2 + standardní podíl spojovacího materiálu",
+      "raw_description": "spojovací materiál grade 8.8",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "~6% × součet OK 27 985 kg ≈ 1 450 kg",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-009",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Kotvení sloupů ke patkám — chemická kotva M20 nebo zalité šrouby, výztužná deska",
+      "mj": "ks",
+      "mnozstvi": 176.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "953271121",
+          "score": 0.4,
+          "tokens": "avsak bez cca cementtrskv desk dodavk izolc kotevnh"
+        },
+        {
+          "code": "13021470",
+          "score": 0.386,
+          "tokens": "betonrsk hs kotevn lokst ocel prislsnstv slow tyce"
+        },
+        {
+          "code": "13021475",
+          "score": 0.386,
+          "tokens": "betonrsk hs kotevn lokst ocel prislsnstv slow tyce"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "A105 sokly patek + statika D.1.2 kotevní detail",
+      "raw_description": "kotvení sloupů M20",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "(36 + 8) sloupů × 4 kotvy/sloup = 176 ks",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-010",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Montáž ocelové konstrukce — kompletní rámová hala, dle ČSN EN 1090-2 EXC2 tol. cl. 1",
+      "mj": "t",
+      "mnozstvi": 28.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "95250507",
+          "score": 0.5,
+          "tokens": "csn en lesen sit"
+        },
+        {
+          "code": "95250508",
+          "score": 0.5,
+          "tokens": "csn en lesen sit"
+        },
+        {
+          "code": "58521130",
+          "score": 0.5,
+          "tokens": "cem csn en i vl"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "statika D.1.2 + standardní montážní normohodiny",
+      "raw_description": "montáž OK kompletní",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "součet OK profilů + kotev = ~28 t",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-011",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Doprava ocelové konstrukce na stavbu (default 50 km)",
+      "mj": "t·km",
+      "mnozstvi": 1400,
+      "urs_code": "95120120",
+      "urs_alternatives": [
+        {
+          "code": "95120120",
+          "score": 0.667,
+          "tokens": "konstrkc pro stavbn zarizn"
+        },
+        {
+          "code": "95120130",
+          "score": 0.667,
+          "tokens": "konstrkc stavbn zarizn"
+        },
+        {
+          "code": "55343510",
+          "score": 0.667,
+          "tokens": "doplnk kovov mm stavbn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "default 50 km výrobna → stavba",
+      "raw_description": "doprava OK 50 km",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "28 t × 50 km",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-012",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Antikorozní nátěr 2-vrstvý dle ISO 12944, korozní katego­rie C2, P1, životnost 15 let",
+      "mj": "m²",
+      "mnozstvi": 850.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "711113115",
+          "score": 0.433,
+          "tokens": "c2 combflx schombrg"
+        },
+        {
+          "code": "711113125",
+          "score": 0.433,
+          "tokens": "c2 combflx schombrg"
+        },
+        {
+          "code": "711413111",
+          "score": 0.433,
+          "tokens": "c2 combflx schombrg"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.433,
+      "skladba_ref": null,
+      "source": "statika D.1.2 C2 P1 životnost 15 + ISO 12944",
+      "raw_description": "antikor 2-vrstvý ISO 12944 C2 P1",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "celk. povrch profilů ~30 m²/t × 28 t = 850 m²",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-013",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Protipožární nátěr — interiérové prvky R 15 DP1",
+      "mj": "m²",
+      "mnozstvi": 850.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "220840051",
+          "score": 0.4,
+          "tokens": "betonvh bez dodan dratv dverm forem form kabel"
+        },
+        {
+          "code": "55251531",
+          "score": 0.4,
+          "tokens": "dvoukmrvm ggg hrdlm integrl krycm naterm tlakv troub"
+        },
+        {
+          "code": "55251532",
+          "score": 0.4,
+          "tokens": "dvoukmrvm ggg hrdlm integrl krycm naterm tlakv troub"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "PBŘ §1 nosné konstrukce R 15 DP1",
+      "raw_description": "protipožární nátěr R 15",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "= antikor plocha (interiérové prvky stejně)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-3-014",
+      "kapitola": "HSV-3",
+      "SO": "SO-01",
+      "popis": "Revize ocelové konstrukce + protokol o předání, EXC2 ČSN EN 1090-2",
+      "mj": "paušál",
+      "mnozstvi": 1.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "58521130",
+          "score": 0.5,
+          "tokens": "cem csn en i vl"
+        },
+        {
+          "code": "95250507",
+          "score": 0.5,
+          "tokens": "csn en lesen sit"
+        },
+        {
+          "code": "95250508",
+          "score": 0.5,
+          "tokens": "csn en lesen sit"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.5,
+      "skladba_ref": null,
+      "source": "ČSN EN 1090-2 + autorský dozor",
+      "raw_description": "revize OK + protokol",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "OK_dodavka_montaz",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 1.0,
+      "_qty_formula": "paušál",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-9-001",
+      "kapitola": "HSV-9",
+      "SO": "SO-01",
+      "popis": "Přesun hmot HSV vodorovně — beton, výztuž, ocel, klempířina",
+      "mj": "t·km",
+      "mnozstvi": 200.0,
+      "urs_code": "13021030",
+      "urs_alternatives": [
+        {
+          "code": "13021030",
+          "score": 0.667,
+          "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
+        },
+        {
+          "code": "13021031",
+          "score": 0.667,
+          "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
+        },
+        {
+          "code": "13021032",
+          "score": 0.667,
+          "tokens": "betonrsk mm ocel prislsnstv tyce tycich"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "ČSN přesun hmot HSV",
+      "raw_description": "přesun hmot HSV vodorovně",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_vodorovne_dopravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.75,
+      "_qty_formula": "placeholder 200 t·km (in-site přesuny, default)",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-9-002",
+      "kapitola": "HSV-9",
+      "SO": "SO-01",
+      "popis": "Pomocné lešení pro montáž ocelové konstrukce, výška do 6 m",
+      "mj": "m³",
+      "mnozstvi": 200.0,
+      "urs_code": "95250154",
+      "urs_alternatives": [
+        {
+          "code": "95250154",
+          "score": 0.667,
+          "tokens": "dilcvh lesen od vysk"
+        },
+        {
+          "code": "95250155",
+          "score": 0.667,
+          "tokens": "dilcvh lesen od vysk"
+        },
+        {
+          "code": "95250515",
+          "score": 0.667,
+          "tokens": "konstrkc lesen na zavesn"
+        }
+      ],
+      "urs_status": "matched_medium",
+      "urs_match_score": 0.667,
+      "skladba_ref": null,
+      "source": "standardní lešení pro montáž OK",
+      "raw_description": "pomocné lešení OK",
+      "confidence": 0.75,
+      "subdodavatel_chapter": "GD_vodorovne_dopravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~200 m³ prostorové lešení pro halu 28×19×6 m",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-9-003",
+      "kapitola": "HSV-9",
+      "SO": "SO-01",
+      "popis": "Demontáž pomocného lešení po dokončení montáže",
+      "mj": "m³",
+      "mnozstvi": 200.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "24592753",
+          "score": 0.4,
+          "tokens": "bal barev fixovch chemck jind kg lak leskl"
+        },
+        {
+          "code": "34871302",
+          "score": 0.333,
+          "tokens": "kovov lestn reflktr"
+        },
+        {
+          "code": "95250154",
+          "score": 0.333,
+          "tokens": "dilcvh lesen od vysk"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.4,
+      "skladba_ref": null,
+      "source": "standardní pár",
+      "raw_description": "demontáž pomocného lešení",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_vodorovne_dopravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "= pomocné lešení",
+      "_export_wrapper_hint": null
+    },
+    {
+      "id": "HSV-9-004",
+      "kapitola": "HSV-9",
+      "SO": "SO-01",
+      "popis": "Pomocné lešení pro montáž opláštění (Kingspan) a klempířiny — pojízdné",
+      "mj": "m³",
+      "mnozstvi": 120.0,
+      "urs_code": null,
+      "urs_alternatives": [
+        {
+          "code": "34523600",
+          "score": 0.333,
+          "tokens": "cast dily pojistk"
+        },
+        {
+          "code": "34523603",
+          "score": 0.333,
+          "tokens": "cast dily pojistk"
+        },
+        {
+          "code": "34571150",
+          "score": 0.333,
+          "tokens": "materl monoflx ulozn"
+        }
+      ],
+      "urs_status": "needs_review",
+      "urs_match_score": 0.333,
+      "skladba_ref": null,
+      "source": "standardní lešení pro fasádu",
+      "raw_description": "pomocné lešení fasáda",
+      "confidence": 0.5,
+      "subdodavatel_chapter": "GD_vodorovne_dopravy",
+      "_vyjasneni_ref": [],
+      "_status_flag": null,
+      "_data_source": "TZ+DXF",
+      "_completeness": 0.7,
+      "_qty_formula": "placeholder ~120 m³ pojízdné lešení pro obvodový plášť",
+      "_export_wrapper_hint": null
+    }
+  ]
+}
