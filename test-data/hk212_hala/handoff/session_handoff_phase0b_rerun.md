@@ -150,3 +150,56 @@ Per user request — previous Phase 0b validation contained inaccuracies from ch
 - **§3.6 Fasáda klempířské** — only TZ summary captured; per-element specs (parapetní plech, atika, žlaby) need detail pass
 - **Cleanup root-level DXF duplicates** — `/home/user/STAVAGENT/*.dxf` (4 files) — still untracked, recommend rm after user OK
 - **Phase 1 generator design** — pending user approval of corrected header + closure of critical ABMVs
+
+---
+
+## §13 ADDENDUM — Precedent inventory + pattern + alignment (DONE)
+
+**Date appended:** 2026-05-13
+**Trigger:** user uploaded `test-data/hk212_hala/example_vv/` (20 files, ~8.5 MB) — §13.5 STOP cleared.
+
+### Discovery (§13.1)
+- 6 hala-typed precedent xlsx (Rožmitál ⭐ primary, Hala JHV, Kralovice, ANTRACIT, Sklad škrobu, Třemošná)
+- 6 Forestina (residential/sklad — non-primary)
+- 6 PDF výkresů (D.1.1.1..D.1.1.6 — supporting docs)
+- 1 XML mirror, 1 dummy file
+- Report: `outputs/phase_0b_rerun/example_precedents_inventory.md`
+
+### Pattern analysis (§13.2)
+- **Formats:** RTS_ROZPOCET (Rožmitál) + URS_KROS_KOMPLET (4× — defacto standard) + CUSTOM_INVESTOR (ANTRACIT)
+- **Hierarchy:** Stavba → Objekt (SO) → Rozpočet → Díl → Položka (POL + POP + VV)
+- **Granularity per ŽB element:** 4-5 položek (beton + bednění zřízení + bednění odstr + výztuž + přesun hmot)
+- **Granularity per ocel:** 2-3 položek (specifikace + montáž + nátěr)
+- **Granularity per Kingspan:** 2 položek
+- **Subdodavatel split:** column "Dodavatel" = `Vlastní` default, fill at contracting time. 6-8 trades typical pro hala-sized projects
+- **VRN:** 8-12 položek (geodet, ZS, doprava, zkoušky, atesty, pojištění)
+- **Excel layout:** 25 sloupců (RTS standard, recommended)
+- Report: `outputs/phase_0b_rerun/example_pattern_analysis.md` + `.json`
+
+### Apply to hk212 (§13.3)
+- **11-SO skeleton:** SO-01 ASŘ + SO-02 Statika + SO-03 ZTI vnitř + SO-04 ZTI venk + SO-05 VZT + SO-06 ÚT + SO-07 EL + SO-08 LPS + SO-09 PBŘ + SO-10 Technologie M + SO-11 VRN
+- **Target items:** ~200-310 (matches spec ≥180)
+- **Default format:** URS_KROS_KOMPLET (preferred pro Czech standard procurement); RTS interchangeable
+- **Custom items:** Rpol* prefix pro technologii strojů (SO-10) + jakékoli mimo URS catalog
+
+### Discrepancy check (§13.4)
+- ✅ Granularity matches precedent pro ŽB / ocel / Kingspan / klempířské / vrata / VRN
+- ⚠️ SO-10 Technologie strojů — Rožmitál nemá precedent (žádná strojní technologie); použít Rpol* custom položky, KAŽDÁ s `_vyjasneni_ref: ['ABMV_3', 'ABMV_16']`
+- ⚠️ HSV-1 výkopy — Rožmitál má jen 17 položek (kombinováno s demolicí); použít FULL precedent breakdown (6-8 položek), KAŽDÁ s `_vyjasneni_ref: ['ABMV_17']`
+- ⚠️ Beton desky podlahy — Rožmitál má 1 položku; hk212 vyžaduje 6 položek (lož + beton + 2× bednění + KH síť + vlákna do betonu + povrchová úprava)
+- ❌ NEPOUŽÍVAT ANTRACIT custom investor format pro hk212 (jiná filozofie, nepřenese se do zadávacího řízení)
+- Report: `outputs/phase_0b_rerun/structure_alignment_check.md`
+
+### Privacy guardrails (§13.6) — aktivně dodrženo
+- 0 cen, 0 IČO/DIČ, 0 kontaktů, 0 adres v output reportech
+- Investor / projektant class abstraktně (veřejný/soukromý/krajská správa atd.)
+- Subdodavatel attribution pouze na chapter-level granularitě
+
+### REVISED Phase 1 start gate
+Phase 1 generator nyní MÁ kompletní precedent strukturu. Single remaining blocker pre-Phase-1:
+1. **User review + approval** drifts z `drift_audit_vs_header.md` (7 drifts + 7 confirmed precedent recommendations)
+2. **Critical ABMV closure** (alespoň #1 80kW DRIFT, #3 stroje, #11 IGP pilota, #13 Kingspan typ, #15 UPE 160 vs C150, #17 výkopy)
+3. **Format volba:** URS_KROS_KOMPLET (default) nebo RTS_ROZPOCET
+4. **Confirm 11-SO struktura** nebo navrhni změny
+
+Po přijetí těchto 4 → Phase 1 spustím separátně.

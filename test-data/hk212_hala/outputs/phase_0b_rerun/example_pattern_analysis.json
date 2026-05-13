@@ -1,0 +1,4532 @@
+{
+  "ROZMITAL_salt_hala": {
+    "file": "20241219_Hala na sul Rozmital_rozpocet_slepy.xlsx",
+    "format": "RTS_ROZPOCET",
+    "sheet_count": 7,
+    "sheet_names": [
+      "Pokyny pro vyplnění",
+      "Stavba",
+      "VzorPolozky",
+      "SO01 01 Pol",
+      "SO02 01 Pol",
+      "SO02 02 Pol",
+      "SO03 01 Naklady"
+    ],
+    "sheet_analyses": [
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 2,
+        "sheet": "Pokyny pro vyplnění",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 161,
+        "sheet": "Stavba",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 5,
+        "sheet": "VzorPolozky",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": 6,
+        "columns": [
+          "P.č.",
+          "Číslo položky",
+          "Název položky",
+          "MJ",
+          "Množství",
+          "Cena / MJ",
+          "Celkem",
+          "Dodávka",
+          "Dodávka celk.",
+          "Montáž",
+          "Montáž celk.",
+          "DPH",
+          "Cena s DPH",
+          "Hmotnost / MJ",
+          "Hmotnost celk.(t)",
+          "Dem. hmotnost / MJ",
+          "Dem. hmotnost celk.(t)",
+          "Ceník",
+          "Cen. soustava / platnost",
+          "Cenová úroveň",
+          "Nhod / MJ",
+          "Nhod celk.",
+          "Dodavatel",
+          "Typ položky",
+          "Stav položky"
+        ],
+        "column_count": 25,
+        "row_count_total": 5000,
+        "sheet": "SO01 01 Pol",
+        "item_count": 170,
+        "sample_items": [
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "113107222",
+            "popis": "Odstranění podkladu z kameniva drceného tl přes 100 do 200 mm strojně pl přes 20",
+            "mj": "m2",
+            "bucket": "HSV-1 Zemní práce"
+          },
+          {
+            "code": "",
+            "popis": "Poznámka k položce:",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 6,
+        "columns": [
+          "P.č.",
+          "Číslo položky",
+          "Název položky",
+          "MJ",
+          "Množství",
+          "Cena / MJ",
+          "Celkem",
+          "Dodávka",
+          "Dodávka celk.",
+          "Montáž",
+          "Montáž celk.",
+          "DPH",
+          "Cena s DPH",
+          "Hmotnost / MJ",
+          "Hmotnost celk.(t)",
+          "Dem. hmotnost / MJ",
+          "Dem. hmotnost celk.(t)",
+          "Ceník",
+          "Cen. soustava / platnost",
+          "Cenová úroveň",
+          "Nhod / MJ",
+          "Nhod celk.",
+          "Dodavatel",
+          "Typ položky",
+          "Stav položky"
+        ],
+        "column_count": 25,
+        "row_count_total": 5000,
+        "sheet": "SO02 01 Pol",
+        "item_count": 255,
+        "sample_items": [
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "131201112",
+            "popis": "Hloubení nezapaž. jam hor.3 do 1000 m3, STROJNĚ",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          },
+          {
+            "code": "",
+            "popis": "jáma na halu : 0,550*(13,000+1,000)*(24,600+1,000)",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 6,
+        "columns": [
+          "P.č.",
+          "Číslo položky",
+          "Název položky",
+          "MJ",
+          "Množství",
+          "Cena / MJ",
+          "Celkem",
+          "Dodávka",
+          "Dodávka celk.",
+          "Montáž",
+          "Montáž celk.",
+          "DPH",
+          "Cena s DPH",
+          "Hmotnost / MJ",
+          "Hmotnost celk.(t)",
+          "Dem. hmotnost / MJ",
+          "Dem. hmotnost celk.(t)",
+          "Ceník",
+          "Cen. soustava / platnost",
+          "Cenová úroveň",
+          "Nhod / MJ",
+          "Nhod celk.",
+          "Dodavatel",
+          "Typ položky",
+          "Stav položky"
+        ],
+        "column_count": 25,
+        "row_count_total": 5000,
+        "sheet": "SO02 02 Pol",
+        "item_count": 99,
+        "sample_items": [
+          {
+            "code": "21-M",
+            "popis": "Elektromontáže",
+            "mj": "",
+            "bucket": "HSV-2 Základy / M-Elektro"
+          },
+          {
+            "code": "210010351",
+            "popis": "Montáž rozvodek nástěnných plastových čtyřhranných  vodič D do 4 mm2",
+            "mj": "kus",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Rpol10.078.068",
+            "popis": "Krabice 855 IP67",
+            "mj": "KS",
+            "bucket": "Custom Rpol/Specifikace"
+          }
+        ]
+      },
+      {
+        "header_row": 6,
+        "columns": [
+          "P.č.",
+          "Číslo položky",
+          "Název položky",
+          "MJ",
+          "Množství",
+          "Cena / MJ",
+          "Celkem",
+          "Dodávka",
+          "Dodávka celk.",
+          "Montáž",
+          "Montáž celk.",
+          "DPH",
+          "Cena s DPH",
+          "Hmotnost / MJ",
+          "Hmotnost celk.(t)",
+          "Dem. hmotnost / MJ",
+          "Dem. hmotnost celk.(t)",
+          "Ceník",
+          "Cen. soustava / platnost",
+          "Cenová úroveň",
+          "Nhod / MJ",
+          "Nhod celk.",
+          "Dodavatel",
+          "Typ položky",
+          "Stav položky"
+        ],
+        "column_count": 25,
+        "row_count_total": 5000,
+        "sheet": "SO03 01 Naklady",
+        "item_count": 28,
+        "sample_items": [
+          {
+            "code": "VN",
+            "popis": "Vedlejší náklady",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "00511 R",
+            "popis": "Geodetické práce",
+            "mj": "Soubor",
+            "bucket": "VRN"
+          },
+          {
+            "code": "005121 R",
+            "popis": "Zařízení staveniště",
+            "mj": "měsíc",
+            "bucket": "VRN"
+          }
+        ]
+      }
+    ],
+    "total_items": 552,
+    "bucket_distribution": {
+      "—": 304,
+      "OTHER": 56,
+      "HSV-9 Ostatní práce": 34,
+      "HSV-3 Svislé a kompletní konstrukce": 34,
+      "PSV-76 Konstrukce truhlářské, zámečnické": 27,
+      "PSV-73-74 Ústřední vytápění, OTK": 25,
+      "HSV-1 Zemní práce": 17,
+      "Custom Rpol/Specifikace": 15,
+      "HSV-6 Úpravy povrchů, podlahy": 13,
+      "VRN": 12,
+      "HSV-4 Vodorovné konstrukce": 8,
+      "HSV-7 Konstrukce a práce PSV": 3,
+      "HSV-2 Základy / M-Elektro": 2,
+      "HSV-5 Komunikace": 2
+    },
+    "mj_distribution": {
+      "kus": 64,
+      "m": 35,
+      "m2": 27,
+      "m3": 22,
+      "t": 20,
+      "Soubor": 11,
+      "KS": 6,
+      "kg": 5,
+      "%": 5,
+      "ks": 5,
+      "M": 3,
+      "tis kus": 2,
+      "den": 1,
+      "kpl": 1,
+      "km": 1
+    },
+    "vrn_item_count": 12,
+    "vrn_samples": [
+      {
+        "code": "00511 R",
+        "popis": "Geodetické práce"
+      },
+      {
+        "code": "005121 R",
+        "popis": "Zařízení staveniště"
+      },
+      {
+        "code": "00523  R",
+        "popis": "Zkoušky a revize"
+      },
+      {
+        "code": "005211020R",
+        "popis": "Ochrana stávaj. inženýrských sítí na staveništi"
+      },
+      {
+        "code": "005211030R",
+        "popis": "Dočasná dopravní opatření"
+      },
+      {
+        "code": "005241010R",
+        "popis": "Dílenská dokumentace"
+      },
+      {
+        "code": "005241020R",
+        "popis": "Geodetické zaměření skutečného provedení"
+      },
+      {
+        "code": "005241030Rpol",
+        "popis": "Geometrický plán včetně zavkladování"
+      },
+      {
+        "code": "005241031Rpol",
+        "popis": "Dokumentace skutečného provedení v elektronické i v tištěné "
+      },
+      {
+        "code": "005241032Rpol",
+        "popis": "Vypracování a předání TP, KZP, plán BOZP, seznam rizik"
+      }
+    ],
+    "granularity_probes": {
+      "patka_zaklad": 27,
+      "sloup_ocel": 0,
+      "vaznice_pricel": 2,
+      "kingspan_oplasten": 1,
+      "okna_dvere_vrata": 2,
+      "vykop_zem": 15,
+      "beton_konstr": 39
+    },
+    "granularity_samples": {
+      "patka_zaklad": [
+        {
+          "code": "",
+          "popis": "(21,292*9,307)*0,2\"základová deska :",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "18,715\"základové pasy :",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "(21,292*9,307)*0,2\"základová deska :",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "18,715\"základové pasy :",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "Strojní odbourání železobetonové základové desky t",
+          "mj": ""
+        }
+      ],
+      "vaznice_pricel": [
+        {
+          "code": "",
+          "popis": "Sekundární nosné konstukce střechy jsou ocelové va",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "Sekundární nosné konstukce střechy jsou ocelové va",
+          "mj": ""
+        }
+      ],
+      "kingspan_oplasten": [
+        {
+          "code": "741372062",
+          "popis": "Montáž svítidlo LED bytové přisazené stropní panel",
+          "mj": "kus"
+        }
+      ],
+      "okna_dvere_vrata": [
+        {
+          "code": "",
+          "popis": "Vrata vč. ocelové zárubně",
+          "mj": ""
+        },
+        {
+          "code": "Rpol741372063",
+          "popis": "D+M svítidla nad vrata",
+          "mj": "kus"
+        }
+      ],
+      "vykop_zem": [
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "V cenách je započteno přemístění sypaniny ze vzdál",
+          "mj": ""
+        },
+        {
+          "code": "162451106",
+          "popis": "Vodorovné přemístění přes 1 500 do 2000 m výkopku/",
+          "mj": "m3"
+        },
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "131201112",
+          "popis": "Hloubení nezapaž. jam hor.3 do 1000 m3, STROJNĚ",
+          "mj": "m3"
+        }
+      ],
+      "beton_konstr": [
+        {
+          "code": "",
+          "popis": "(21,292*9,307)*0,15\"kamenný podklad pod žb deskou ",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "(21,292*9,307)*0,15\"kamenný podklad pod žb deskou ",
+          "mj": ""
+        },
+        {
+          "code": "981511114",
+          "popis": "Demolice konstrukcí objektů z betonu železového po",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Strojní odbourání železobetonové základové desky t",
+          "mj": ""
+        },
+        {
+          "code": "962052211",
+          "popis": "Bourání zdiva nadzákladového ze ŽB přes 1 m3",
+          "mj": "m3"
+        }
+      ]
+    },
+    "matched_filename": "20241219_Hala na sul Rozmital_rozpocet_slepy.xlsx"
+  },
+  "HALA_JHV_deponace": {
+    "file": "14ZM-230523 - HALA JHV [zadání].xlsx",
+    "format": "URS_KROS_KOMPLET",
+    "sheet_count": 26,
+    "sheet_names": [
+      "Rekapitulace stavby",
+      "SO-02-1 - ASŘ",
+      "SO-02-2 - KSŘ",
+      "SO-02-4.1-1 - VODA",
+      "SO-02-4.1-2 - DEŠŤOVÁ KAN...",
+      "SO-02-4.1-3 - KANALIZACE",
+      "SO-02-4.3 - VZDUCHOTECHNIKA",
+      "SO-02-4.4 - VYTÁPĚNÍ",
+      "SO-02-4.7 - SILNOPROUDÁ E...",
+      "SO-02-4.8 - SLABOPROUDÁ Z...",
+      "SO-02-4.9 - ELEKTRICKÁ PO...",
+      "D.2.2 SO-03 - ÚPRAVA STÁV...",
+      "SO-04.1 - PŘÍPOJKA PLYNOVODU",
+      "SO-04.2 - PŘÍPOJKA POŽÁRN...",
+      "SO-04.A - NOVÁ KANALIZAČN...",
+      "D.2.4 SO-05 - KÁCENÍ A NÁ...",
+      "D.2.5 SO-06 - ÚPRAVA KOMU...",
+      "D.2.5 SO-07 - PŘEMÍSTĚNÍ ...",
+      "SO 12 - ODVODNĚNÍ TT - MTP",
+      "SO-13 - RETENČNÍ NÁDRŽ - MTP",
+      "SO-14 - OPĚRNÁ ZEĎ - MTP",
+      "SO 21 - TROLEJOVÉ VEDENÍ ...",
+      "SO-23 - ELEKTOPŘÍPOJKA K ...",
+      "VON - VEDLEJŠÍ A OSTATNÍ ...",
+      "Seznam figur",
+      "Pokyny pro vyplnění"
+    ],
+    "sheet_analyses": [
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 83,
+        "sheet": "Rekapitulace stavby",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": 115,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 1424,
+        "sheet": "SO-02-1 - ASŘ",
+        "item_count": 756,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "115101203",
+            "popis": "Čerpání vody na dopravní výšku do 10 m průměrný přítok přes 1 000 do 2 000 l/min",
+            "mj": "hod",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 98,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 1215,
+        "sheet": "SO-02-2 - KSŘ",
+        "item_count": 426,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "151711121",
+            "popis": "Osazení zápor ocelových dl do 14 m",
+            "mj": "m",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 94,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 207,
+        "sheet": "SO-02-4.1-1 - VODA",
+        "item_count": 101,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "ZAŘIZOVACÍ PŘEDMĚTY - již neuváděny v části kanalizace, VIZ Technická zpráva",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "R-722-01",
+            "popis": "Sestava pro umyvadlo se stojánkovou baterií",
+            "mj": "kpl",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Sestava pro umyvadlo se stojánkovou baterií",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 96,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 150,
+        "sheet": "SO-02-4.1-2 - DEŠŤOVÁ KAN...",
+        "item_count": 42,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Svislé svodné potrubí v budově",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "721174055",
+            "popis": "Potrubí kanalizační z PP dešťové DN 110",
+            "mj": "m",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          },
+          {
+            "code": "",
+            "popis": "Potrubí z trub polypropylenových dešťové DN 110",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 96,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 208,
+        "sheet": "SO-02-4.1-3 - KANALIZACE",
+        "item_count": 97,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Zařizovací předměty",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "721211912",
+            "popis": "Montáž vpustí podlahových DN 50/75 ostatní typ",
+            "mj": "kus",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          },
+          {
+            "code": "",
+            "popis": "Podlahové vpusti montáž podlahových vpustí ostatních typů DN 50/75",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 103,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 583,
+        "sheet": "SO-02-4.3 - VZDUCHOTECHNIKA",
+        "item_count": 362,
+        "sample_items": [
+          {
+            "code": "PSV",
+            "popis": "Práce a dodávky PSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "č.1",
+            "popis": "Zařízení č.1",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "751611141",
+            "popis": "Montáž centrální vzduchotechnické jednotky s rekuperací tepla nástřešní s výměno",
+            "mj": "kus",
+            "bucket": "PSV-75 Slaboproudé rozvody"
+          }
+        ]
+      },
+      {
+        "header_row": 97,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 283,
+        "sheet": "SO-02-4.4 - VYTÁPĚNÍ",
+        "item_count": 164,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Napojení na zdroj tepla",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "713463411",
+            "popis": "Montáž izolace tepelné potrubí a ohybů návlekovými izolačními pouzdry",
+            "mj": "m",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          },
+          {
+            "code": "",
+            "popis": "Montáž izolace tepelné potrubí a ohybů tvarovkami nebo deskami potrubními pouzdr",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 96,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 413,
+        "sheet": "SO-02-4.7 - SILNOPROUDÁ E...",
+        "item_count": 260,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Položka",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "741210103",
+            "popis": "Montáž rozváděčů litinových, hliníkových nebo plastových sestava do 300 kg",
+            "mj": "kus",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "",
+            "popis": "Montáž rozváděčů litinových, hliníkových nebo plastových bez zapojení vodičů ses",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 95,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 413,
+        "sheet": "SO-02-4.8 - SLABOPROUDÁ Z...",
+        "item_count": 316,
+        "sample_items": [
+          {
+            "code": "PSV",
+            "popis": "Práce a dodávky PSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "741",
+            "popis": "Elektroinstalace - silnoproud",
+            "mj": "",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "741810003",
+            "popis": "Celková prohlídka elektrického rozvodu a zařízení přes 0,5 do 1 milionu Kč",
+            "mj": "kus",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          }
+        ]
+      },
+      {
+        "header_row": 95,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 258,
+        "sheet": "SO-02-4.9 - ELEKTRICKÁ PO...",
+        "item_count": 160,
+        "sample_items": [
+          {
+            "code": "PSV",
+            "popis": "Práce a dodávky PSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "741",
+            "popis": "Elektroinstalace - silnoproud",
+            "mj": "",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "741810003",
+            "popis": "Celková prohlídka elektrického rozvodu a zařízení přes 0,5 do 1 milionu Kč",
+            "mj": "kus",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          }
+        ]
+      },
+      {
+        "header_row": 90,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 294,
+        "sheet": "D.2.2 SO-03 - ÚPRAVA STÁV...",
+        "item_count": 151,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "3",
+            "popis": "Svislé a kompletní konstrukce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "310236261",
+            "popis": "Zazdívka otvorů pl přes 0,0225 do 0,09 m2 ve zdivu nadzákladovém cihlami páleným",
+            "mj": "kus",
+            "bucket": "HSV-3 Svislé a kompletní konstrukce"
+          }
+        ]
+      },
+      {
+        "header_row": 91,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 198,
+        "sheet": "SO-04.1 - PŘÍPOJKA PLYNOVODU",
+        "item_count": 91,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "ARMATURY A POTRUBÍ",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "723212106",
+            "popis": "Mezipřírubová uzavírací klapka DN 100",
+            "mj": "soubor",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          },
+          {
+            "code": "",
+            "popis": "Armatury přírubové uzavírací klapky mezipřírubové DN 100",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 90,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 161,
+        "sheet": "SO-04.2 - PŘÍPOJKA POŽÁRN...",
+        "item_count": 60,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "POTRUBÍ PŘÍPOJKA",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "871211141",
+            "popis": "Montáž potrubí z PE100 SDR 11 otevřený výkop svařovaných na tupo D 63 x 5,8 mm",
+            "mj": "m",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Montáž vodovodního potrubí z plastů v otevřeném výkopu z polyetylenu PE 100 svař",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 92,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 207,
+        "sheet": "SO-04.A - NOVÁ KANALIZAČN...",
+        "item_count": 100,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Svodné ležaté potrubí kamenina",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "831352121",
+            "popis": "Montáž potrubí z trub kameninových hrdlových s integrovaným těsněním výkop sklon",
+            "mj": "m",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Montáž potrubí z trub kameninových hrdlových s integrovaným těsněním v otevřeném",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 81,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 234,
+        "sheet": "D.2.4 SO-05 - KÁCENÍ A NÁ...",
+        "item_count": 64,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "111211201",
+            "popis": "Odstranění křovin a stromů průměru kmene do 100 mm i s kořeny sklonu terénu přes",
+            "mj": "m2",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 86,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 352,
+        "sheet": "D.2.5 SO-06 - ÚPRAVA KOMU...",
+        "item_count": 205,
+        "sample_items": [
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "113106123",
+            "popis": "Rozebrání dlažeb ze zámkových dlaždic komunikací pro pěší ručně",
+            "mj": "M2",
+            "bucket": "HSV-1 Zemní práce"
+          },
+          {
+            "code": "",
+            "popis": "Rozebrání dlažeb komunikací pro pěší s přemístěním hmot na skládku na vzdálenost",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 81,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 195,
+        "sheet": "D.2.5 SO-07 - PŘEMÍSTĚNÍ ...",
+        "item_count": 95,
+        "sample_items": [
+          {
+            "code": "M",
+            "popis": "Práce a dodávky M",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "21-M",
+            "popis": "Elektromontáže",
+            "mj": "",
+            "bucket": "HSV-2 Základy / M-Elektro"
+          },
+          {
+            "code": "210021351",
+            "popis": "Odrezivění konstrukcí rozvoden kartáčováním",
+            "mj": "m2",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 84,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 294,
+        "sheet": "SO 12 - ODVODNĚNÍ TT - MTP",
+        "item_count": 118,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132254205",
+            "popis": "Hloubení zapažených rýh š do 2000 mm v hornině třídy těžitelnosti I skupiny 3 ob",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 89,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 355,
+        "sheet": "SO-13 - RETENČNÍ NÁDRŽ - MTP",
+        "item_count": 182,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "113100010",
+            "popis": "Odstranění dlažby z kamenných kostek velkých do jakéhokoliv lože z tramvajového ",
+            "mj": "m2",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 88,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 265,
+        "sheet": "SO-14 - OPĚRNÁ ZEĎ - MTP",
+        "item_count": 117,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "131251103",
+            "popis": "Hloubení jam nezapažených v hornině třídy těžitelnosti I skupiny 3 objem do 100 ",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 80,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 106,
+        "sheet": "SO 21 - TROLEJOVÉ VEDENÍ ...",
+        "item_count": 22,
+        "sample_items": [
+          {
+            "code": "21-M",
+            "popis": "Elektromontáže",
+            "mj": "",
+            "bucket": "HSV-2 Základy / M-Elektro"
+          },
+          {
+            "code": "210910311D",
+            "popis": "Demontáž hliníkových kabelů AYKCY 6 kV 1x500 mm2 volně uložených",
+            "mj": "m",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Demontáž hliníkových kabelů AYKCY 6 kV 1x500 mm2 volně uložených",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 79,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 129,
+        "sheet": "SO-23 - ELEKTOPŘÍPOJKA K ...",
+        "item_count": 48,
+        "sample_items": [
+          {
+            "code": "1",
+            "popis": "Silové rozvody",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "740001",
+            "popis": "úpravy v rozvaděči R3",
+            "mj": "kus",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "",
+            "popis": "úpravy v rozvaděči R3",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 79,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]",
+          "Dodavatel"
+        ],
+        "column_count": 17,
+        "row_count_total": 102,
+        "sheet": "VON - VEDLEJŠÍ A OSTATNÍ ...",
+        "item_count": 21,
+        "sample_items": [
+          {
+            "code": "OST",
+            "popis": "Všeobecný objekt",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "R1",
+            "popis": "Nájmy hrazené zhotovitelem stavby",
+            "mj": "kpl",
+            "bucket": "Custom Rpol/Specifikace"
+          },
+          {
+            "code": "",
+            "popis": "Nájmy hrazené zhotovitelem stavby",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 9,
+        "columns": [
+          "Kód",
+          "Popis",
+          "MJ",
+          "Výměra"
+        ],
+        "column_count": 4,
+        "row_count_total": 466,
+        "sheet": "Seznam figur",
+        "item_count": 445,
+        "sample_items": [
+          {
+            "code": "D.1 - SO-02/ SO-02-1",
+            "popis": "ASŘ",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "BP",
+            "popis": "beton pohledový",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "BP",
+            "popis": "P101 + P102+P103+P106+P201+P202AB+P203+P204+P205+M101+M102+M103+M106+M201",
+            "mj": "",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 218,
+        "sheet": "Pokyny pro vyplnění",
+        "item_count": 0,
+        "sample_items": []
+      }
+    ],
+    "total_items": 4403,
+    "bucket_distribution": {
+      "—": 2397,
+      "OTHER": 703,
+      "PSV-73-74 Ústřední vytápění, OTK": 176,
+      "HSV-1 Zemní práce": 162,
+      "HSV-9 Ostatní práce": 131,
+      "HSV-7 Konstrukce a práce PSV": 116,
+      "HSV-3 Svislé a kompletní konstrukce": 108,
+      "HSV-4 Vodorovné konstrukce": 106,
+      "HSV-5 Komunikace": 95,
+      "PSV-76 Konstrukce truhlářské, zámečnické": 89,
+      "PSV-75 Slaboproudé rozvody": 83,
+      "PSV-78 Dokončovací práce": 79,
+      "HSV-6 Úpravy povrchů, podlahy": 61,
+      "PSV-77 Podlahy": 59,
+      "Custom Rpol/Specifikace": 19,
+      "VRN": 17,
+      "HSV-2 Základy / M-Elektro": 2
+    },
+    "mj_distribution": {
+      "kus": 530,
+      "m2": 352,
+      "m": 270,
+      "t": 121,
+      "m3": 98,
+      "kpl": 54,
+      "M2": 36,
+      "M": 22,
+      "soubor": 16,
+      "hod": 14,
+      "M3": 13,
+      "kg": 12,
+      "KUS": 11,
+      "T": 10,
+      "ks": 5
+    },
+    "vrn_item_count": 17,
+    "vrn_samples": [
+      {
+        "code": "0030R",
+        "popis": "Venkovní IP dome kamera"
+      },
+      {
+        "code": "0065R",
+        "popis": "IP hemisférická kamera, 180° a 360°"
+      },
+      {
+        "code": "0061092",
+        "popis": "LCD LED monitor, 27\", 16:9, Full HD 1920x1080, VGA, HDMI, 23"
+      },
+      {
+        "code": "0051R",
+        "popis": "Patch panel CAT6a 24xRJ45"
+      },
+      {
+        "code": "0050R",
+        "popis": "Switch 24xSFP port + 2xCOMBO port (SFP/RJ45)"
+      },
+      {
+        "code": "0049R",
+        "popis": "Switch 48x PoE + SFP"
+      },
+      {
+        "code": "0048R",
+        "popis": "Průmyslový managed switch 24x PoE+ Gigabit, 2x Gigabit SFP, "
+      },
+      {
+        "code": "0051589",
+        "popis": "NVR server s funkcí detekce a rozpoznávání obličejů"
+      },
+      {
+        "code": "0068R",
+        "popis": "Záložní zdroj UPS 1500VA, 2U"
+      },
+      {
+        "code": "0066R",
+        "popis": "Bypass pro UPS 10A"
+      }
+    ],
+    "granularity_probes": {
+      "patka_zaklad": 113,
+      "sloup_ocel": 27,
+      "vaznice_pricel": 0,
+      "kingspan_oplasten": 28,
+      "okna_dvere_vrata": 76,
+      "vykop_zem": 151,
+      "beton_konstr": 272
+    },
+    "granularity_samples": {
+      "patka_zaklad": [
+        {
+          "code": "271572211",
+          "popis": "Podsyp pod základové konstrukce se zhutněním z net",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Podsyp pod základové konstrukce se zhutněním a uro",
+          "mj": ""
+        },
+        {
+          "code": "271922223",
+          "popis": "Podsyp pod základové konstrukce se zhutněním ze sk",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Podsyp pod základové konstrukce se zhutněním a uro",
+          "mj": ""
+        },
+        {
+          "code": "311351411",
+          "popis": "Zřízení kruhového oboustranného bednění nosných na",
+          "mj": "m2"
+        }
+      ],
+      "sloup_ocel": [
+        {
+          "code": "55342281",
+          "popis": "zábradlí s prutovou výplní, horní kotvení, kulatý ",
+          "mj": "m"
+        },
+        {
+          "code": "",
+          "popis": "zábradlí s prutovou výplní, horní kotvení, kulatý ",
+          "mj": ""
+        },
+        {
+          "code": "",
+          "popis": "Montáž záchytného systému proti pádu nástavců urče",
+          "mj": ""
+        },
+        {
+          "code": "282606011",
+          "popis": "Trysková injektáž sloupy D do 1000 mm standardní p",
+          "mj": "m"
+        },
+        {
+          "code": "",
+          "popis": "Trysková injektáž sloupů ve standardních podmínkác",
+          "mj": ""
+        }
+      ],
+      "kingspan_oplasten": [
+        {
+          "code": "767610123",
+          "popis": "Montáž oken kovových jednoduchých otevíravých do p",
+          "mj": "m2"
+        },
+        {
+          "code": "767610124",
+          "popis": "Montáž oken kovových jednoduchých otevíravých do p",
+          "mj": "m2"
+        },
+        {
+          "code": "735152572",
+          "popis": "Otopné těleso panelové VK dvoudeskové 2 přídavné p",
+          "mj": "kus"
+        },
+        {
+          "code": "",
+          "popis": "Otopná tělesa panelová VK dvoudesková PN 1,0 MPa, ",
+          "mj": ""
+        },
+        {
+          "code": "735152575",
+          "popis": "Otopné těleso panelové VK dvoudeskové 2 přídavné p",
+          "mj": "kus"
+        }
+      ],
+      "okna_dvere_vrata": [
+        {
+          "code": "642942611",
+          "popis": "Osazování zárubní nebo rámů dveřních kovových do 2",
+          "mj": "kus"
+        },
+        {
+          "code": "",
+          "popis": "Osazování zárubní nebo rámů kovových dveřních liso",
+          "mj": ""
+        },
+        {
+          "code": "642945111",
+          "popis": "Osazování protipožárních nebo protiplynových zárub",
+          "mj": "kus"
+        },
+        {
+          "code": "",
+          "popis": "Osazování ocelových zárubní protipožárních nebo pr",
+          "mj": ""
+        },
+        {
+          "code": "766660001",
+          "popis": "Montáž dveřních křídel otvíravých jednokřídlových ",
+          "mj": "kus"
+        }
+      ],
+      "vykop_zem": [
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "131351206",
+          "popis": "Hloubení jam zapažených v hornině třídy těžitelnos",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Hloubení zapažených jam a zářezů strojně s urovnán",
+          "mj": ""
+        },
+        {
+          "code": "162751135",
+          "popis": "Vodorovné přemístění přes 7 000 do 8000 m výkopku/",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": ""
+        }
+      ],
+      "beton_konstr": [
+        {
+          "code": "311351911",
+          "popis": "Příplatek k cenám bednění nosných nadzákladových z",
+          "mj": "m2"
+        },
+        {
+          "code": "",
+          "popis": "Bednění nadzákladových zdí nosných Příplatek k cen",
+          "mj": ""
+        },
+        {
+          "code": "311361821",
+          "popis": "Výztuž nosných zdí betonářskou ocelí 10 505",
+          "mj": "t"
+        },
+        {
+          "code": "312321815",
+          "popis": "Výplňová zeď ze ŽB pohledového tř. C 30/37 bez výz",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Nadzákladové zdi z betonu železového (bez výztuže)",
+          "mj": ""
+        }
+      ]
+    },
+    "matched_filename": "14ZM-230523 - HALA JHV [zadání].xlsx"
+  },
+  "KRALOVICE_skolska": {
+    "file": "23 06 26_rev02 - PROJEKTOVÁ DOKUMENTACE PRO VÝSTAVBU NOVÉ HALY V DÍLNÁCH SŠ KRALOVICE [zadání].xlsx",
+    "format": "URS_KROS_KOMPLET",
+    "sheet_count": 21,
+    "sheet_names": [
+      "Rekapitulace stavby",
+      "D.1.1.1 - ARCHITEKTONICKO...",
+      "D.2.1 - Komunikace",
+      "000 - VON - Vedlější a os...",
+      "D.1.1.2 - ARCHITEKTONICKO...",
+      "D.1.4.3.1 - VYTÁPĚNÍ",
+      "D.1.1. - ARCHITEKTONICKO-...",
+      "D.1.2.1 - Železobetonové ...",
+      "D.1.2.2 -  Železobetonové...",
+      "D.1.3. - POŽÁRNĚ BEZPEČNO...",
+      "D.1.4.1 - Zdravotně techn...",
+      "D.1.4.2 - Vzduchotechnika",
+      "D.1.4.3 - VYTÁPĚNÍ",
+      "D.1.4.4 - Silnoprouda ele...",
+      "D.1.4.5 - Stlačený vzduch",
+      "D.1.4.6 - Měření a regulace",
+      "D.1.4.7 - Proj.prev.radon...",
+      "D.2.2 - Vodohospodářská část",
+      "D.2.3 - Arealove rozvody ...",
+      "D.2.4 - Arealove rozvody NN",
+      "Pokyny pro vyplnění"
+    ],
+    "sheet_analyses": [
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 80,
+        "sheet": "Rekapitulace stavby",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": 88,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 150,
+        "sheet": "D.1.1.1 - ARCHITEKTONICKO...",
+        "item_count": 41,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "112151020",
+            "popis": "Pokácení stromu volné v celku s odřezáním kmene a s odvětvením průměru kmene pře",
+            "mj": "kus",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 96,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 359,
+        "sheet": "D.2.1 - Komunikace",
+        "item_count": 196,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "113100013.dp",
+            "popis": "DMTŽ stávající vpusti vč. obetonování s naložením na DP a vč. zaslepení přípojky",
+            "mj": "kus",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 88,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 112,
+        "sheet": "000 - VON - Vedlější a os...",
+        "item_count": 22,
+        "sample_items": [
+          {
+            "code": "VRN",
+            "popis": "Vedlejší rozpočtové náklady",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "VRN1",
+            "popis": "Průzkumné, geodetické a projektové práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "012103000",
+            "popis": "Geodetické práce před výstavbou",
+            "mj": "kus",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 94,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 970,
+        "sheet": "D.1.1.2 - ARCHITEKTONICKO...",
+        "item_count": 92,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "3",
+            "popis": "Svislé a kompletní konstrukce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "311272225",
+            "popis": "Zdivo z pórobetonových tvárnic na tenké maltové lože, tl. zdiva 300 mm pevnost t",
+            "mj": "m2",
+            "bucket": "HSV-3 Svislé a kompletní konstrukce"
+          }
+        ]
+      },
+      {
+        "header_row": 88,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 154,
+        "sheet": "D.1.4.3.1 - VYTÁPĚNÍ",
+        "item_count": 53,
+        "sample_items": [
+          {
+            "code": "PSV",
+            "popis": "Práce a dodávky PSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "731",
+            "popis": "Ústřední vytápění - kotelny",
+            "mj": "",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "731244494",
+            "popis": "Kotle ocelové teplovodní plynové stacionární kondenzační montáž kotlů kondenzačn",
+            "mj": "soubor",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          }
+        ]
+      },
+      {
+        "header_row": 110,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 3218,
+        "sheet": "D.1.1. - ARCHITEKTONICKO-...",
+        "item_count": 671,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "131251100",
+            "popis": "Hloubení nezapažených jam a zářezů strojně s urovnáním dna do předepsaného profi",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 98,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 216,
+        "sheet": "D.1.2.1 - Železobetonové ...",
+        "item_count": 85,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "3",
+            "popis": "Svislé a kompletní konstrukce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "332381321",
+            "popis": "Sloupy železobetonové z trub ocelových, bez výztuže, včetně betonové výplně vnit",
+            "mj": "m",
+            "bucket": "HSV-3 Svislé a kompletní konstrukce"
+          }
+        ]
+      },
+      {
+        "header_row": 103,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 613,
+        "sheet": "D.1.2.2 -  Železobetonové...",
+        "item_count": 119,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1001R",
+            "popis": "Zemní práce pro piloty - odvoz a skládkovné vykopané zeminy, pomocné zemní práce",
+            "mj": "kus",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 87,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 118,
+        "sheet": "D.1.3. - POŽÁRNĚ BEZPEČNO...",
+        "item_count": 10,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "9",
+            "popis": "Ostatní konstrukce a práce, bourání",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "953943211",
+            "popis": "Osazování drobných kovových předmětů kotvených do stěny hasicího přístroje",
+            "mj": "kus",
+            "bucket": "HSV-9 Ostatní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 103,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 625,
+        "sheet": "D.1.4.1 - Zdravotně techn...",
+        "item_count": 249,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132251101",
+            "popis": "Hloubení nezapažených rýh šířky do 800 mm strojně s urovnáním dna do předepsanéh",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 102,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 250,
+        "sheet": "D.1.4.2 - Vzduchotechnika",
+        "item_count": 99,
+        "sample_items": [
+          {
+            "code": "1",
+            "popis": "Kovárna",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1.1",
+            "popis": "Přívodní sestavná jednotka s EC motory ve složení: nasávací komora, filtrační tř",
+            "mj": "ks",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Poznámka k položce:_x000d_\n(parametry dle  přílohy č.5 TPZ a tab.č.2 v TZ)",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 100,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 398,
+        "sheet": "D.1.4.3 - VYTÁPĚNÍ",
+        "item_count": 234,
+        "sample_items": [
+          {
+            "code": "PSV",
+            "popis": "Práce a dodávky PSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "713",
+            "popis": "Izolace tepelné",
+            "mj": "",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          },
+          {
+            "code": "713311211",
+            "popis": "Montáž izolace tepelné těles pásy nebo rohožemi s povrchovou úpravou hliníkovou ",
+            "mj": "m2",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          }
+        ]
+      },
+      {
+        "header_row": 101,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 382,
+        "sheet": "D.1.4.4 - Silnoprouda ele...",
+        "item_count": 219,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "D1",
+            "popis": "Dodávky zařízení",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "000713177",
+            "popis": "skříň zasu IP43 24V 230V 400V/16/32A/5p chránič",
+            "mj": "ks",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 95,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 139,
+        "sheet": "D.1.4.5 - Stlačený vzduch",
+        "item_count": 42,
+        "sample_items": [
+          {
+            "code": "PSV",
+            "popis": "Práce a dodávky PSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "723",
+            "popis": "Rozvody stlačeného vzduchu",
+            "mj": "",
+            "bucket": "HSV-7 Konstrukce a práce PSV"
+          },
+          {
+            "code": "230170001",
+            "popis": "Příprava pro zkoušku těsnosti potrubí DN do 40",
+            "mj": "sada",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 100,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 175,
+        "sheet": "D.1.4.6 - Měření a regulace",
+        "item_count": 73,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "1.  Rozvaděč MR-1",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "D2",
+            "popis": "1.1  Řídící systém",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "A1,A11",
+            "popis": "Sada PLC mark130 a I/O modulu RCIO - C/mark130+RCIO",
+            "mj": "ks",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 96,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 182,
+        "sheet": "D.1.4.7 - Proj.prev.radon...",
+        "item_count": 48,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132251101",
+            "popis": "Hloubení nezapažených rýh šířky do 800 mm strojně s urovnáním dna do předepsanéh",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 93,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 421,
+        "sheet": "D.2.2 - Vodohospodářská část",
+        "item_count": 179,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "115101201",
+            "popis": "Čerpání vody na dopravní výšku do 10 m s uvažovaným průměrným přítokem do 500 l/",
+            "mj": "hod",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 99,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 252,
+        "sheet": "D.2.3 - Arealove rozvody ...",
+        "item_count": 91,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132254102",
+            "popis": "Hloubení zapažených rýh šířky do 800 mm strojně s urovnáním dna do předepsaného ",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 93,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 156,
+        "sheet": "D.2.4 - Arealove rozvody NN",
+        "item_count": 61,
+        "sample_items": [
+          {
+            "code": "Materiál elektromont",
+            "popis": "Materiál elektromont",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "000101209",
+            "popis": "kabel CYKY 4x10",
+            "mj": "m",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "000152215",
+            "popis": "kabel 1kV AYKY 3x95+70",
+            "mj": "m",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 218,
+        "sheet": "Pokyny pro vyplnění",
+        "item_count": 0,
+        "sample_items": []
+      }
+    ],
+    "total_items": 2584,
+    "bucket_distribution": {
+      "—": 995,
+      "OTHER": 769,
+      "HSV-7 Konstrukce a práce PSV": 170,
+      "HSV-9 Ostatní práce": 121,
+      "HSV-1 Zemní práce": 109,
+      "PSV-73-74 Ústřední vytápění, OTK": 97,
+      "HSV-6 Úpravy povrchů, podlahy": 69,
+      "HSV-5 Komunikace": 60,
+      "HSV-4 Vodorovné konstrukce": 50,
+      "PSV-78 Dokončovací práce": 39,
+      "HSV-3 Svislé a kompletní konstrukce": 38,
+      "PSV-76 Konstrukce truhlářské, zámečnické": 31,
+      "PSV-75 Slaboproudé rozvody": 22,
+      "PSV-77 Podlahy": 9,
+      "VRN": 4,
+      "HSV-2 Základy / M-Elektro": 1
+    },
+    "mj_distribution": {
+      "kus": 467,
+      "m": 239,
+      "m2": 228,
+      "ks": 189,
+      "m3": 107,
+      "t": 79,
+      "soubor": 42,
+      "hod": 20,
+      "kg": 12,
+      "kpl": 8,
+      "%": 4,
+      "kompl": 3,
+      "soub": 2,
+      "úsek": 2,
+      "mb": 1
+    },
+    "vrn_item_count": 4,
+    "vrn_samples": [
+      {
+        "code": "00572410",
+        "popis": "osivo směs travní parková"
+      },
+      {
+        "code": "0030101",
+        "popis": "Ekologická likvidace demontovaného materiálu"
+      },
+      {
+        "code": "0030201",
+        "popis": "Požární těsnění prostupů potrubí do DN50 stavebními konstruk"
+      },
+      {
+        "code": "00572470",
+        "popis": "osivo směs travní univerzál"
+      }
+    ],
+    "granularity_probes": {
+      "patka_zaklad": 50,
+      "sloup_ocel": 31,
+      "vaznice_pricel": 8,
+      "kingspan_oplasten": 38,
+      "okna_dvere_vrata": 56,
+      "vykop_zem": 100,
+      "beton_konstr": 182
+    },
+    "granularity_samples": {
+      "patka_zaklad": [
+        {
+          "code": "310235241",
+          "popis": "Zazdívka otvorů ve zdivu nadzákladovém cihlami pál",
+          "mj": "kus"
+        },
+        {
+          "code": "310279842",
+          "popis": "Zazdívka otvorů ve zdivu nadzákladovém nepálenými ",
+          "mj": "m3"
+        },
+        {
+          "code": "971033461",
+          "popis": "Vybourání otvorů ve zdivu základovém nebo nadzákla",
+          "mj": "kus"
+        },
+        {
+          "code": "971033651",
+          "popis": "Vybourání otvorů ve zdivu základovém nebo nadzákla",
+          "mj": "m3"
+        },
+        {
+          "code": "783314203",
+          "popis": "Základní antikorozní nátěr zámečnických konstrukcí",
+          "mj": "m2"
+        }
+      ],
+      "sloup_ocel": [
+        {
+          "code": "Och01R",
+          "popis": "Och01 D + M Zábrana sloupek - Och01 - vč.chemické ",
+          "mj": "kus"
+        },
+        {
+          "code": "Och06R",
+          "popis": "Och06 D + M Ochrana sloupů - Och06 - vč.chemické k",
+          "mj": "kus"
+        },
+        {
+          "code": "Och07R",
+          "popis": "Och07 D + M Ochrana sloupů - Och07 - viz specifika",
+          "mj": "kus"
+        },
+        {
+          "code": "332381321",
+          "popis": "Sloupy železobetonové z trub ocelových, bez výztuž",
+          "mj": "m"
+        },
+        {
+          "code": "",
+          "popis": "Poznámka k položce:_x000d_\ndetail 4 - uložení obvo",
+          "mj": ""
+        }
+      ],
+      "vaznice_pricel": [
+        {
+          "code": "VA1R",
+          "popis": "VA1 D + M Prefa vaznice 160-400/800/10575mm Beton ",
+          "mj": "kus"
+        },
+        {
+          "code": "VA1aR",
+          "popis": "VA1a D + M Prefa vaznice 160-400/800/10575mm Beton",
+          "mj": "kus"
+        },
+        {
+          "code": "VA1bR",
+          "popis": "VA1b D + M Prefa vaznice 160-400/800/10575mm Beton",
+          "mj": "kus"
+        },
+        {
+          "code": "VA1cR",
+          "popis": "VA1c D + M Prefa vaznice 160-400/800/10575mm Beton",
+          "mj": "kus"
+        },
+        {
+          "code": "VA1dR",
+          "popis": "VA1d D + M Prefa vaznice 160-400/800/10575mm Beton",
+          "mj": "kus"
+        }
+      ],
+      "kingspan_oplasten": [
+        {
+          "code": "342151111",
+          "popis": "Montáž opláštění stěn ocelové konstrukce ze sendvi",
+          "mj": "m2"
+        },
+        {
+          "code": "55324765",
+          "popis": "panel sendvičový stěnový vnější, izolace minerální",
+          "mj": "m2"
+        },
+        {
+          "code": "763182411",
+          "popis": "Výplně otvorů konstrukcí ze sádrokartonových desek",
+          "mj": "m"
+        },
+        {
+          "code": "Kl18R",
+          "popis": "Kl18 D + M lemování čtvercového prostupu v sendvič",
+          "mj": "kus"
+        },
+        {
+          "code": "Kl19R",
+          "popis": "Kl19 D + M lemování čtvercového prostupu v sendvič",
+          "mj": "kus"
+        }
+      ],
+      "okna_dvere_vrata": [
+        {
+          "code": "968062375",
+          "popis": "Vybourání dřevěných rámů oken s křídly, dveřních z",
+          "mj": "m2"
+        },
+        {
+          "code": "968072245",
+          "popis": "Vybourání kovových rámů oken s křídly, dveřních zá",
+          "mj": "m2"
+        },
+        {
+          "code": "968072455",
+          "popis": "Vybourání kovových rámů oken s křídly, dveřních zá",
+          "mj": "m2"
+        },
+        {
+          "code": "968072456",
+          "popis": "Vybourání kovových rámů oken s křídly, dveřních zá",
+          "mj": "m2"
+        },
+        {
+          "code": "",
+          "popis": "Poznámka k položce:_x000d_\nKl09\tprefa parapety mim",
+          "mj": ""
+        }
+      ],
+      "vykop_zem": [
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "132251101",
+          "popis": "Hloubení nezapažených rýh šířky do 800 mm strojně ",
+          "mj": "m3"
+        },
+        {
+          "code": "133251101",
+          "popis": "Hloubení nezapažených šachet strojně v hornině tří",
+          "mj": "m3"
+        },
+        {
+          "code": "162751117.dp",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": "m3"
+        }
+      ],
+      "beton_konstr": [
+        {
+          "code": "113100013.dp",
+          "popis": "DMTŽ stávající vpusti vč. obetonování s naložením ",
+          "mj": "kus"
+        },
+        {
+          "code": "452311131",
+          "popis": "Podkladní a zajišťovací konstrukce z betonu prosté",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Poznámka k položce:_x000d_\nPoznámka k položce: bet",
+          "mj": ""
+        },
+        {
+          "code": "452386111",
+          "popis": "Podkladní a vyrovnávací konstrukce z betonu vyrovn",
+          "mj": "kus"
+        },
+        {
+          "code": "564952111",
+          "popis": "Podklad z mechanicky zpevněného kameniva MZK (mine",
+          "mj": "m2"
+        }
+      ]
+    },
+    "matched_filename": "23 06 26_rev02 - PROJEKTOVÁ DOKUMENTACE PRO VÝSTAVBU NOVÉ HALY V DÍLNÁCH SŠ KRALOVICE [zadání].xlsx"
+  },
+  "ANTRACIT_logistika": {
+    "file": "Novostavba logistické haly ANTRACIT, Město Touškov - oceňovací tabulka.xlsx",
+    "format": "UNKNOWN",
+    "sheet_count": 2,
+    "sheet_names": [
+      "Krycí list CZK",
+      "Položkový rozpočet CZK"
+    ],
+    "sheet_analyses": [
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 57,
+        "sheet": "Krycí list CZK",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 116,
+        "sheet": "Položkový rozpočet CZK",
+        "item_count": 0,
+        "sample_items": []
+      }
+    ],
+    "total_items": 0,
+    "bucket_distribution": {},
+    "mj_distribution": {},
+    "vrn_item_count": 0,
+    "vrn_samples": [],
+    "granularity_probes": {
+      "patka_zaklad": 0,
+      "sloup_ocel": 0,
+      "vaznice_pricel": 0,
+      "kingspan_oplasten": 0,
+      "okna_dvere_vrata": 0,
+      "vykop_zem": 0,
+      "beton_konstr": 0
+    },
+    "granularity_samples": {},
+    "matched_filename": "Novostavba logistické haly ANTRACIT, Město Touškov - oceňovací tabulka.xlsx"
+  },
+  "SKLAD_SKROBU_P001": {
+    "file": "Příloha č. 5 - Slepý položkový rozpočet_oprava.xlsx",
+    "format": "URS_KROS_KOMPLET",
+    "sheet_count": 13,
+    "sheet_names": [
+      "Rekapitulace stavby",
+      "2023-003-a - SO-21 - Stav...",
+      "2023-003-b - SO-21 - Elek...",
+      "2023-003-c - SO-21 - Zdra...",
+      "2023-003-d - SO-21 - Vytá...",
+      "2023-003-i - SO-21 - bles...",
+      "2023-003-g - SO-22 - potr...",
+      "a - příprava území",
+      "n - návrh",
+      "2023-003-e - SO-24 - dešť...",
+      "2023-003-f - SO-25 - vodo...",
+      "2023-003-j - VRN",
+      "Pokyny pro vyplnění"
+    ],
+    "sheet_analyses": [
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 68,
+        "sheet": "Rekapitulace stavby",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": 94,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 404,
+        "sheet": "2023-003-a - SO-21 - Stav...",
+        "item_count": 195,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132251254",
+            "popis": "Hloubení nezapažených rýh šířky přes 800 do 2 000 mm strojně s urovnáním dna do ",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 86,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 243,
+        "sheet": "2023-003-b - SO-21 - Elek...",
+        "item_count": 155,
+        "sample_items": [
+          {
+            "code": "741",
+            "popis": "Elektroinstalace",
+            "mj": "",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "D1",
+            "popis": "Projektové práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Pol1",
+            "popis": "Aktualizace projektu na skutečný stav",
+            "mj": "sada",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 85,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 114,
+        "sheet": "2023-003-c - SO-21 - Zdra...",
+        "item_count": 27,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Zdravotně technické instalace",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "D2",
+            "popis": "A.)  Vodovod",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "D3",
+            "popis": "1.) Potrubí (včetně tvarovek montáže a upevnění)",
+            "mj": "",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 82,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 102,
+        "sheet": "2023-003-d - SO-21 - Vytá...",
+        "item_count": 18,
+        "sample_items": [
+          {
+            "code": "731",
+            "popis": "Ústřední vytápění",
+            "mj": "",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          },
+          {
+            "code": "D1",
+            "popis": "Hala 1.01",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "731001R1",
+            "popis": "Elektrická vytápěcí jednotka Sahara Maxx",
+            "mj": "kpl",
+            "bucket": "PSV-73-74 Ústřední vytápění, OTK"
+          }
+        ]
+      },
+      {
+        "header_row": 81,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 103,
+        "sheet": "2023-003-i - SO-21 - bles...",
+        "item_count": 20,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "BLESKOSVOD VČETNĚ MONTÁŽE A ZAPOJENÍ",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Pol96",
+            "popis": "\"SK\" svorka křížová Fe/Zn",
+            "mj": "ks",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Pol97",
+            "popis": "\"SS\" svorka spojovací Fe/Zn",
+            "mj": "ks",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 86,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 150,
+        "sheet": "2023-003-g - SO-22 - potr...",
+        "item_count": 50,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132251251",
+            "popis": "Hloubení nezapažených rýh šířky přes 800 do 2 000 mm strojně s urovnáním dna do ",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 89,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 268,
+        "sheet": "a - příprava území",
+        "item_count": 75,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "112101101",
+            "popis": "Odstranění stromů listnatých průměru kmene přes 100 do 300 mm",
+            "mj": "kus",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 93,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 380,
+        "sheet": "n - návrh",
+        "item_count": 117,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "122251104",
+            "popis": "Odkopávky a prokopávky nezapažené v hornině třídy těžitelnosti I skupiny 3 objem",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 83,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 253,
+        "sheet": "2023-003-e - SO-24 - dešť...",
+        "item_count": 77,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "131251204",
+            "popis": "Hloubení zapažených jam a zářezů strojně s urovnáním dna do předepsaného profilu",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 83,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 147,
+        "sheet": "2023-003-f - SO-25 - vodo...",
+        "item_count": 46,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "113107432",
+            "popis": "Odstranění podkladů nebo krytů při překopech inženýrských sítí s přemístěním hmo",
+            "mj": "m2",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 82,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 96,
+        "sheet": "2023-003-j - VRN",
+        "item_count": 12,
+        "sample_items": [
+          {
+            "code": "VRN",
+            "popis": "Vedlejší rozpočtové náklady",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "VRN1",
+            "popis": "Průzkumné, geodetické a projektové práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "010001000",
+            "popis": "Průzkumné, geodetické práce",
+            "mj": "kpl",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 218,
+        "sheet": "Pokyny pro vyplnění",
+        "item_count": 0,
+        "sample_items": []
+      }
+    ],
+    "total_items": 792,
+    "bucket_distribution": {
+      "—": 304,
+      "OTHER": 226,
+      "HSV-9 Ostatní práce": 79,
+      "HSV-1 Zemní práce": 78,
+      "HSV-5 Komunikace": 26,
+      "PSV-73-74 Ústřední vytápění, OTK": 16,
+      "HSV-6 Úpravy povrchů, podlahy": 13,
+      "PSV-76 Konstrukce truhlářské, zámečnické": 12,
+      "PSV-78 Dokončovací práce": 11,
+      "HSV-7 Konstrukce a práce PSV": 10,
+      "HSV-3 Svislé a kompletní konstrukce": 8,
+      "HSV-4 Vodorovné konstrukce": 6,
+      "VRN": 3
+    },
+    "mj_distribution": {
+      "ks": 86,
+      "m2": 76,
+      "m3": 54,
+      "t": 53,
+      "m": 49,
+      "kus": 41,
+      "kpl": 14,
+      "sada": 10,
+      "kg": 6,
+      "bm": 3,
+      "hod": 2,
+      "…": 1
+    },
+    "vrn_item_count": 3,
+    "vrn_samples": [
+      {
+        "code": "00572410",
+        "popis": "osivo směs travní parková"
+      },
+      {
+        "code": "00572410",
+        "popis": "osivo směs travní parková"
+      },
+      {
+        "code": "00572410",
+        "popis": "osivo směs travní parková"
+      }
+    ],
+    "granularity_probes": {
+      "patka_zaklad": 23,
+      "sloup_ocel": 5,
+      "vaznice_pricel": 1,
+      "kingspan_oplasten": 7,
+      "okna_dvere_vrata": 5,
+      "vykop_zem": 57,
+      "beton_konstr": 59
+    },
+    "granularity_samples": {
+      "patka_zaklad": [
+        {
+          "code": "271532211",
+          "popis": "Podsyp pod základové konstrukce se zhutněním a uro",
+          "mj": "m3"
+        },
+        {
+          "code": "273321511",
+          "popis": "Základy z betonu železového (bez výztuže) desky z ",
+          "mj": "m3"
+        },
+        {
+          "code": "273351121",
+          "popis": "Bednění základů desek zřízení",
+          "mj": "m2"
+        },
+        {
+          "code": "273351122",
+          "popis": "Bednění základů desek odstranění",
+          "mj": "m2"
+        },
+        {
+          "code": "273361821",
+          "popis": "Výztuž základů desek z betonářské oceli 10 505 (R)",
+          "mj": "t"
+        }
+      ],
+      "sloup_ocel": [
+        {
+          "code": "999001R1",
+          "popis": "OK komplet, provedení pozink (vazníky, vaznice, sl",
+          "mj": "kg"
+        },
+        {
+          "code": "7643114R1",
+          "popis": "Oplechování sloupu OpS_1",
+          "mj": "ks"
+        },
+        {
+          "code": "7643114R2",
+          "popis": "Oplechování sloupu OpS_2",
+          "mj": "ks"
+        },
+        {
+          "code": "7643114R3",
+          "popis": "Oplechování sloupu OpS_3",
+          "mj": "ks"
+        },
+        {
+          "code": "9491011R2",
+          "popis": "Obetonování kotvení sloupu v celé ploše patky, výš",
+          "mj": "ks"
+        }
+      ],
+      "vaznice_pricel": [
+        {
+          "code": "999001R1",
+          "popis": "OK komplet, provedení pozink (vazníky, vaznice, sl",
+          "mj": "kg"
+        }
+      ],
+      "kingspan_oplasten": [
+        {
+          "code": "999001R6",
+          "popis": "opláštění stěn - sendvičový panel s výplní 100 PUR",
+          "mj": "m2"
+        },
+        {
+          "code": "999001R7",
+          "popis": "opláštění stěn - sendvičový panel s výplní 100 MV,",
+          "mj": "m2"
+        },
+        {
+          "code": "999001R8",
+          "popis": "opláštění stěn - dělící příčka - sendvičový panel ",
+          "mj": "m2"
+        },
+        {
+          "code": "999001R9",
+          "popis": "lemování opláštění (střecha x stěna, rohy opláštěn",
+          "mj": "bm"
+        },
+        {
+          "code": "999001R10",
+          "popis": "lemování opláštění interiér - RAL 9002, viz. výkre",
+          "mj": "bm"
+        }
+      ],
+      "okna_dvere_vrata": [
+        {
+          "code": "999001R1",
+          "popis": "OK komplet, provedení pozink (vazníky, vaznice, sl",
+          "mj": "kg"
+        },
+        {
+          "code": "999001R9",
+          "popis": "lemování opláštění (střecha x stěna, rohy opláštěn",
+          "mj": "bm"
+        },
+        {
+          "code": "999001R13",
+          "popis": "dveře (obvodové stěny + dělící příčka), viz výkres",
+          "mj": "kpl"
+        },
+        {
+          "code": "999001R14",
+          "popis": "okenní výplně (obvodové stěny) (sklopná okna vč. s",
+          "mj": "kpl"
+        },
+        {
+          "code": "Pol16",
+          "popis": "Dveřní spínač osvětlení",
+          "mj": "ks"
+        }
+      ],
+      "vykop_zem": [
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "132251254",
+          "popis": "Hloubení nezapažených rýh šířky přes 800 do 2 000 ",
+          "mj": "m3"
+        },
+        {
+          "code": "162751117",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": "m3"
+        },
+        {
+          "code": "162751119",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": "m3"
+        },
+        {
+          "code": "174151101",
+          "popis": "Zásyp sypaninou z jakékoliv horniny strojně s ulož",
+          "mj": "m3"
+        }
+      ],
+      "beton_konstr": [
+        {
+          "code": "273321511",
+          "popis": "Základy z betonu železového (bez výztuže) desky z ",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Poznámka k položce:_x000D_\nBETON ČSN EN 206-1 ZMĚN",
+          "mj": ""
+        },
+        {
+          "code": "273361821",
+          "popis": "Výztuž základů desek z betonářské oceli 10 505 (R)",
+          "mj": "t"
+        },
+        {
+          "code": "274321511",
+          "popis": "Základy z betonu železového (bez výztuže) pasy z b",
+          "mj": "m3"
+        },
+        {
+          "code": "",
+          "popis": "Poznámka k položce:_x000D_\nBETON ČSN EN 206+A2 C25",
+          "mj": ""
+        }
+      ]
+    },
+    "matched_filename": "Příloha č. 5 - Slepý položkový rozpočet_oprava.xlsx"
+  },
+  "TREMOSNA_KD": {
+    "file": "SOUPIS-PRACI-Tremosna-KD-20.12.2023.xlsx",
+    "format": "URS_KROS_KOMPLET",
+    "sheet_count": 12,
+    "sheet_names": [
+      "Rekapitulace stavby",
+      "01 - Architektonicko stav...",
+      "02 - Zdravotní instalace",
+      "03 - Vytápění",
+      "04 - Vzduchotechnika",
+      "05 - Elektroinstalace",
+      "06 - Splašková kanalizace",
+      "07 - Dešťová kanalizace",
+      "08 - Zpevněné plochy",
+      "09 - Úprava stávající NTL...",
+      "VON - Vedlejší rozpočtové...",
+      "Seznam figur"
+    ],
+    "sheet_analyses": [
+      {
+        "header_row": null,
+        "columns": null,
+        "row_count_total": 66,
+        "sheet": "Rekapitulace stavby",
+        "item_count": 0,
+        "sample_items": []
+      },
+      {
+        "header_row": 104,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 1258,
+        "sheet": "01 - Architektonicko stav...",
+        "item_count": 593,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "122351104",
+            "popis": "Odkopávky a prokopávky nezapažené strojně v hornině třídy těžitelnosti II skupin",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 88,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 301,
+        "sheet": "02 - Zdravotní instalace",
+        "item_count": 169,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132251102",
+            "popis": "Hloubení nezapažených rýh šířky do 800 mm strojně s urovnáním dna do předepsanéh",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 78,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 140,
+        "sheet": "03 - Vytápění",
+        "item_count": 60,
+        "sample_items": [
+          {
+            "code": "Pol77",
+            "popis": "Závěsný plynový kotel kondenzační , výkon : 8,5 – 46,6 kW , včetně koaxiálního o",
+            "mj": "ks",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Pol78",
+            "popis": "Rozdělovač a sběrač topné vody – DN 65 , L = 0,8 m",
+            "mj": "ks",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Pol79",
+            "popis": "Hydraulický vyrovnávač tlaku – anuloid – Q = 2,6 m3/hod",
+            "mj": "ks",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 92,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 228,
+        "sheet": "04 - Vzduchotechnika",
+        "item_count": 134,
+        "sample_items": [
+          {
+            "code": "1",
+            "popis": "Sál",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1.1",
+            "popis": "Bloková větrací jednotka vnitřní srojaté provedení s rekuperací tepla, filtrací,",
+            "mj": "ks",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Poznámka k položce:_x000d_\n(složení a parametry dle techniky  v příloze č.6 TPZ ",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 114,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 239,
+        "sheet": "05 - Elektroinstalace",
+        "item_count": 123,
+        "sample_items": [
+          {
+            "code": "D1",
+            "popis": "Dodávky",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "D2",
+            "popis": "Svítidla - specifikace dle knihy svítidel",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "Pol1",
+            "popis": "LH1",
+            "mj": "ks",
+            "bucket": "OTHER"
+          }
+        ]
+      },
+      {
+        "header_row": 83,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 125,
+        "sheet": "06 - Splašková kanalizace",
+        "item_count": 28,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "132254102",
+            "popis": "Hloubení zapažených rýh šířky do 800 mm strojně s urovnáním dna do předepsaného ",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 86,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 160,
+        "sheet": "07 - Dešťová kanalizace",
+        "item_count": 47,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "131251102",
+            "popis": "Hloubení nezapažených jam a zářezů strojně s urovnáním dna do předepsaného profi",
+            "mj": "m3",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 88,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 344,
+        "sheet": "08 - Zpevněné plochy",
+        "item_count": 175,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "113106121",
+            "popis": "Rozebrání dlažeb komunikací pro pěší s přemístěním hmot na skládku na vzdálenost",
+            "mj": "m2",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 90,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 221,
+        "sheet": "09 - Úprava stávající NTL...",
+        "item_count": 129,
+        "sample_items": [
+          {
+            "code": "HSV",
+            "popis": "Práce a dodávky HSV",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "1",
+            "popis": "Zemní práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "119001411",
+            "popis": "Dočasné zajištění podzemního potrubí nebo vedení ve výkopišti ve stavu i poloze,",
+            "mj": "m",
+            "bucket": "HSV-1 Zemní práce"
+          }
+        ]
+      },
+      {
+        "header_row": 83,
+        "columns": [
+          "PČ",
+          "Typ",
+          "Kód",
+          "Popis",
+          "MJ",
+          "Množství",
+          "J.cena [CZK]",
+          "Cena celkem [CZK]",
+          "Cenová soustava",
+          "DPH",
+          "J. Nh [h]",
+          "Nh celkem [h]",
+          "J. hmotnost [t]",
+          "Hmotnost celkem [t]",
+          "J. suť [t]",
+          "Suť Celkem [t]"
+        ],
+        "column_count": 16,
+        "row_count_total": 112,
+        "sheet": "VON - Vedlejší rozpočtové...",
+        "item_count": 27,
+        "sample_items": [
+          {
+            "code": "VRN1",
+            "popis": "Průzkumné, geodetické a projektové práce",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "012203000",
+            "popis": "Geodetické práce před a při provádění stavby",
+            "mj": "Kč",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "Poznámka k položce:_x000d_\n-VYTÝČENÍ INŽENÝRSKÝCH SÍTÍ NA STAVENIŠTI VČETNĚ OBNO",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      },
+      {
+        "header_row": 9,
+        "columns": [
+          "Kód",
+          "Popis",
+          "MJ",
+          "Výměra"
+        ],
+        "column_count": 4,
+        "row_count_total": 160,
+        "sheet": "Seznam figur",
+        "item_count": 145,
+        "sample_items": [
+          {
+            "code": "01",
+            "popis": "Architektonicko stavební řešení",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "deska",
+            "popis": "deska",
+            "mj": "",
+            "bucket": "OTHER"
+          },
+          {
+            "code": "",
+            "popis": "podkladní beton tl 150mm",
+            "mj": "",
+            "bucket": "—"
+          }
+        ]
+      }
+    ],
+    "total_items": 1630,
+    "bucket_distribution": {
+      "—": 546,
+      "OTHER": 522,
+      "HSV-7 Konstrukce a práce PSV": 111,
+      "HSV-1 Zemní práce": 81,
+      "HSV-9 Ostatní práce": 70,
+      "PSV-76 Konstrukce truhlářské, zámečnické": 67,
+      "HSV-5 Komunikace": 61,
+      "HSV-6 Úpravy povrchů, podlahy": 57,
+      "PSV-77 Podlahy": 36,
+      "PSV-78 Dokončovací práce": 27,
+      "HSV-4 Vodorovné konstrukce": 26,
+      "HSV-3 Svislé a kompletní konstrukce": 23,
+      "Custom Rpol/Specifikace": 1,
+      "VRN": 1,
+      "HSV-2 Základy / M-Elektro": 1
+    },
+    "mj_distribution": {
+      "m2": 203,
+      "ks": 191,
+      "kus": 152,
+      "m": 141,
+      "m3": 68,
+      "t": 62,
+      "soubor": 43,
+      "bm": 20,
+      "Kč": 11,
+      "hod": 8,
+      "kg": 6,
+      "%": 5,
+      "úsek": 3,
+      "kpl": 2,
+      "lus": 1
+    },
+    "vrn_item_count": 1,
+    "vrn_samples": [
+      {
+        "code": "00572410",
+        "popis": "osivo směs travní parková"
+      }
+    ],
+    "granularity_probes": {
+      "patka_zaklad": 32,
+      "sloup_ocel": 16,
+      "vaznice_pricel": 0,
+      "kingspan_oplasten": 3,
+      "okna_dvere_vrata": 52,
+      "vykop_zem": 67,
+      "beton_konstr": 84
+    },
+    "granularity_samples": {
+      "patka_zaklad": [
+        {
+          "code": "271532212",
+          "popis": "Podsyp pod základové konstrukce se zhutněním a uro",
+          "mj": "m3"
+        },
+        {
+          "code": "273321211",
+          "popis": "Základy z betonu železového (bez výztuže) desky z ",
+          "mj": "m3"
+        },
+        {
+          "code": "273321611",
+          "popis": "Základy z betonu železového (bez výztuže) desky z ",
+          "mj": "m3"
+        },
+        {
+          "code": "273351121",
+          "popis": "Bednění základů desek zřízení",
+          "mj": "m2"
+        },
+        {
+          "code": "273351122",
+          "popis": "Bednění základů desek odstranění",
+          "mj": "m2"
+        }
+      ],
+      "sloup_ocel": [
+        {
+          "code": "330321611",
+          "popis": "Sloupy, pilíře, táhla, rámové stojky, vzpěry z bet",
+          "mj": "m3"
+        },
+        {
+          "code": "332351115",
+          "popis": "Bednění kruhových a oblých sloupů a pilířů včetně ",
+          "mj": "m2"
+        },
+        {
+          "code": "332351116",
+          "popis": "Bednění kruhových a oblých sloupů a pilířů včetně ",
+          "mj": "m2"
+        },
+        {
+          "code": "332361821",
+          "popis": "Výztuž sloupů, pilířů, rámových stojek, táhel nebo",
+          "mj": "t"
+        },
+        {
+          "code": "14550441.R2",
+          "popis": "profil ocelový pozink sloup průřez obdelníkový 250",
+          "mj": "t"
+        }
+      ],
+      "kingspan_oplasten": [
+        {
+          "code": "211971121",
+          "popis": "Zřízení opláštění výplně z geotextilie odvodňovací",
+          "mj": "m2"
+        },
+        {
+          "code": "348171146",
+          "popis": "Montáž oplocení z dílců kovových panelových svařov",
+          "mj": "m"
+        },
+        {
+          "code": "55342412",
+          "popis": "plotový panel svařovaný v 1,5-2,0m š do 2,5m průmě",
+          "mj": "kus"
+        }
+      ],
+      "okna_dvere_vrata": [
+        {
+          "code": "725291721.R20",
+          "popis": "D+M Dveřní zarážka s gumou k našroubování do podla",
+          "mj": "soubor"
+        },
+        {
+          "code": "59244318",
+          "popis": "okno střešní výstupní pro krytinu betonovou 460x51",
+          "mj": "kus"
+        },
+        {
+          "code": "61140046",
+          "popis": "okno plastové s fixním zasklením trojsklo přes plo",
+          "mj": "m2"
+        },
+        {
+          "code": "61140052",
+          "popis": "okno plastové otevíravé/sklopné trojsklo přes ploc",
+          "mj": "m2"
+        },
+        {
+          "code": "61140054",
+          "popis": "okno plastové otevíravé/sklopné trojsklo přes ploc",
+          "mj": "m2"
+        }
+      ],
+      "vykop_zem": [
+        {
+          "code": "1",
+          "popis": "Zemní práce",
+          "mj": ""
+        },
+        {
+          "code": "131351100",
+          "popis": "Hloubení nezapažených jam a zářezů strojně s urovn",
+          "mj": "m3"
+        },
+        {
+          "code": "162351103",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": "m3"
+        },
+        {
+          "code": "162751117",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": "m3"
+        },
+        {
+          "code": "162751119",
+          "popis": "Vodorovné přemístění výkopku nebo sypaniny po such",
+          "mj": "m3"
+        }
+      ],
+      "beton_konstr": [
+        {
+          "code": "58933323",
+          "popis": "beton C 30/37 X0 kamenivo frakce 0/16",
+          "mj": "m3"
+        },
+        {
+          "code": "231611114",
+          "popis": "Výztuž pilot betonovaných do země z oceli 10 505 (",
+          "mj": "t"
+        },
+        {
+          "code": "273321211",
+          "popis": "Základy z betonu železového (bez výztuže) desky z ",
+          "mj": "m3"
+        },
+        {
+          "code": "273321611",
+          "popis": "Základy z betonu železového (bez výztuže) desky z ",
+          "mj": "m3"
+        },
+        {
+          "code": "274321611",
+          "popis": "Základy z betonu železového (bez výztuže) pasy z b",
+          "mj": "m3"
+        }
+      ]
+    },
+    "matched_filename": "SOUPIS-PRACI-Tremosna-KD-20.12.2023.xlsx"
+  }
+}
