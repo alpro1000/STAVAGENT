@@ -121,10 +121,14 @@ Pro každý element z hk212 facts §3.3:
 - hk212 deska podlahy je C 25/30 XC4 (per §3.4 RE-RUN) + má vetkáním vláken vetonu (per TZ B) — to je rozdílná granularita
 - **Doporučení:** Generuj 6 položek pro podlahovou desku: lož pod desku (m³) + železobeton desky (m³) + bednění zřízení (m²) + bednění odstr (m²) + ocelová vlákna do betonu (kg) + KH síť výztuž (t) + povrchová úprava (m²) + případně tvrdá maska (m²). To je o 2 položky více než pure Rožmitál pattern.
 
-⚠️ **Format discrepancy:**
-- Pokud uživatel generuje pro **veřejnou zakázku** → použij URS_KROS_KOMPLET format (zadávací řízení akceptuje pouze tento format pro slepý rozpočet — protistrana otevírá v KROS 4 software).
-- Pokud uživatel generuje pro **vlastní cost tracking** nebo nabídku pro soukromého investora → RTS Rozpočet je interchangeable, vlastně preferable (úplnější 25 sloupců).
-- ANTRACIT-format flat investor template = ❌ **NEPOUŽÍVAT** pro hk212 generator (různá filozofie, nepřenese se do zadávacího řízení).
+⚠️ **Catalog vs Export wrapper — vyjasnění (per user feedback 2026-05-13):**
+- **Catalog jádra:** **URS 9-mistné kódy** jsou jedna kanonická pravda. Rožmitál, Hala JHV, Kralovice, Sklad škrobu, Třemošná — všichni používají identický URS katalog.
+- **Export wrapper:** RTS Rozpočet (`#RTSROZP#` header) vs KROS Komplet (`Export Komplet` header) jsou jen různé software exportery NAD URS katalogem. Pro Phase 1 generátor je catalog jeden.
+- **Volba wrapperu (pro hk212):**
+  - **Veřejná zakázka** → KROS Komplet (zadávací řízení očekává; protistrana otevírá v KROS 4).
+  - **Vlastní cost tracking / nabídka pro soukromého investora** → RTS Rozpočet je interchangeable, vlastně preferable (úplnější 25 sloupců).
+- **Price book overlay:** sloupec "Ceník" (`RTS 24/ II` / `URS 24/I` / `Vlastní`) řeší jen Kč/MJ údaje, ne catalog. Pro slepý rozpočet (hk212 default) lze nechat default RTS / URS / Vlastní mix per položka.
+- ANTRACIT-format flat investor template = ❌ **NEPOUŽÍVAT** pro hk212 (jiný catalog, jiná filozofie, nepřenese se do zadávacího řízení).
 
 ---
 
@@ -132,7 +136,7 @@ Pro každý element z hk212 facts §3.3:
 
 **Phase 1 generator nyní MÁ dostatek precedent struktury pro start:**
 
-1. ✓ Format zvolen: **URS_KROS_KOMPLET** (default) nebo **RTS_ROZPOCET** (user volba)
+1. ✓ Catalog: **URS 9-mistné kódy** (canonical, identický napříč všemi 5 precedenty). Export wrapper KROS Komplet (default) nebo RTS Rozpočet (user volba — interchangeable).
 2. ✓ SO hierarchie: 11 SO (SO-01..SO-11) + Rekapitulace stavby sheet
 3. ✓ Granularita per element type: jasně mapovaná (tabulka výše)
 4. ✓ Naming convention: URS 9-mistné kódy + `Rpol*` pro custom

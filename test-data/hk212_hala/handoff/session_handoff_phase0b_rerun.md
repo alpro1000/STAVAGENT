@@ -166,7 +166,9 @@ Per user request — previous Phase 0b validation contained inaccuracies from ch
 - Report: `outputs/phase_0b_rerun/example_precedents_inventory.md`
 
 ### Pattern analysis (§13.2)
-- **Formats:** RTS_ROZPOCET (Rožmitál) + URS_KROS_KOMPLET (4× — defacto standard) + CUSTOM_INVESTOR (ANTRACIT)
+- **Catalog (jádro):** URS 9-mistné kódy (1 kanonický catalog, identický napříč 5/6 precedenty — per user feedback 2026-05-13)
+- **Export wrappers:** RTS Rozpočet (Rožmitál `#RTSROZP#`) vs KROS Komplet (4× — `Export Komplet`) — oba interchangeable nad stejným URS catalogem; volba wrapperu je výstupní formátovací rozhodnutí, ne catalog volba. ANTRACIT (custom investor format) = jiný catalog, nepřenosný.
+- **Price book overlay:** sloupec "Ceník" (`RTS 24/ II` / `URS 24/I` / `Vlastní`) řeší jen Kč/MJ údaje nad URS kódy.
 - **Hierarchy:** Stavba → Objekt (SO) → Rozpočet → Díl → Položka (POL + POP + VV)
 - **Granularity per ŽB element:** 4-5 položek (beton + bednění zřízení + bednění odstr + výztuž + přesun hmot)
 - **Granularity per ocel:** 2-3 položek (specifikace + montáž + nátěr)
@@ -179,7 +181,7 @@ Per user request — previous Phase 0b validation contained inaccuracies from ch
 ### Apply to hk212 (§13.3)
 - **11-SO skeleton:** SO-01 ASŘ + SO-02 Statika + SO-03 ZTI vnitř + SO-04 ZTI venk + SO-05 VZT + SO-06 ÚT + SO-07 EL + SO-08 LPS + SO-09 PBŘ + SO-10 Technologie M + SO-11 VRN
 - **Target items:** ~200-310 (matches spec ≥180)
-- **Default format:** URS_KROS_KOMPLET (preferred pro Czech standard procurement); RTS interchangeable
+- **Default catalog:** URS 9-mistné kódy. **Default export wrapper:** KROS Komplet (preferred pro veřejné zakázky); RTS Rozpočet interchangeable
 - **Custom items:** Rpol* prefix pro technologii strojů (SO-10) + jakékoli mimo URS catalog
 
 ### Discrepancy check (§13.4)
@@ -199,7 +201,7 @@ Per user request — previous Phase 0b validation contained inaccuracies from ch
 Phase 1 generator nyní MÁ kompletní precedent strukturu. Single remaining blocker pre-Phase-1:
 1. **User review + approval** drifts z `drift_audit_vs_header.md` (7 drifts + 7 confirmed precedent recommendations)
 2. **Critical ABMV closure** (alespoň #1 80kW DRIFT, #3 stroje, #11 IGP pilota, #13 Kingspan typ, #15 UPE 160 vs C150, #17 výkopy)
-3. **Format volba:** URS_KROS_KOMPLET (default) nebo RTS_ROZPOCET
+3. **Export wrapper volba** (catalog vždy URS): KROS Komplet (default — veřejné zakázky) nebo RTS Rozpočet (interchangeable, 25-sloupcový layout)
 4. **Confirm 11-SO struktura** nebo navrhni změny
 
 Po přijetí těchto 4 → Phase 1 spustím separátně.

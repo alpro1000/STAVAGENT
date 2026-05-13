@@ -22,6 +22,8 @@
 
 **Format dominance:** **URS_KROS_KOMPLET** (4/6) > RTS_ROZPOCET (1/6) > CUSTOM (1/6). URS_KROS je defacto standard pro státní/veřejné zakázky a většinu DPS-stage prácí.
 
+> **Důležité upřesnění (per user feedback 2026-05-13):** "RTS_ROZPOCET" vs "URS_KROS_KOMPLET" jsou **dva různé software export wrappers nad stejným URS katalogem**. 9-mistné kódy (`113107222`, `273321311`, `741421811` atd.) jsou URS catalog codes — fungují identicky v RTS Rozpočet i v KROS 4. Sloupec "Ceník" v Rožmitálu uvádí `RTS 24/ II` = RTS price book release použitý poverh URS kódů. Pro non-catalog položky (custom výrobky, technologie) oba wrappers používají `Vlastní` ceník + `Rpol*` prefix. **Pro hk212 generátor je catalog jeden = URS 9-mistné kódy; volba RTS vs KROS Komplet je jen výstupní formátovací rozhodnutí.**
+
 ---
 
 ## §13.2 A — Struktura soupisu
@@ -232,7 +234,7 @@ KROS export typicky má 18-22 viditelných sloupců + sloupce po pozici 11 jsou 
 
 ## §13.2 G — Cross-precedent format differences (notes)
 
-- **Rožmitál (RTS)** vs **Komplet (URS)** se liší primárně v magickém header (`#RTSROZP#` vs `Export Komplet`) a v reprezentaci. Položkové kódy jsou identické — oba používají URS 9-mistné catalog. RTS layoutem podobnější skladbě 25 sloupců — vidíš všechno.
+- **Rožmitál (RTS Rozpočet)** vs **KROS Komplet (Export Komplet)** = dva různé software exportery nad **identickým URS catalog jádrem**. Magické header (`#RTSROZP#` vs `Export Komplet`) signalizuje jen import target software. Položkové kódy = identické 9-mistné URS catalog codes (1xx zemní, 2x základy, 27x ŽB desky, 6xx povrchy, 7xx PSV, 21-M / 22-M elektromontáže, 95x revize, 99x přesun hmot, 005x VRN). Sloupec "Ceník" v Rožmitálu (`RTS 24/ II`) je price book overlay — řeší cenové údaje (Kč/MJ) **nad** URS kódy, ne sám catalog. RTS layoutem podobnější skladbě 25 sloupců — vidíš všechno. KROS Komplet exporty mají hidden columns (>11), ale stejné field-set.
 - **ANTRACIT** (custom investor format) je *fundamentálně jiný typ dokumentu* — to není soupis prací, ale **cenová nabídka pro investora** s vysoko-úrovňovou strukturou (V./P. codes). Investorské použití pro internal cost tracking, ne pro výběrové řízení. **NEPOUŽÍVEJ pro hk212 generator** — produced format by neprošel přes Tender / KROS proces.
 - Třemošná je kulturní dům (ne čistá hala) — má ale stejnou URS strukturu jako hala-precedenty, takže metric struktury je platná.
 
@@ -242,7 +244,9 @@ KROS export typicky má 18-22 viditelných sloupců + sloupce po pozici 11 jsou 
 
 | Atribut | Doporučená hodnota pro hk212 |
 |---|---|
-| Format | **URS_KROS_KOMPLET** (preferred) nebo **RTS_ROZPOCET** (interchangeable) |
+| **Catalog (jádro)** | **URS 9-mistné kódy** (one canonical source) |
+| **Export wrapper (výstupní formát)** | **KROS Komplet** (preferred — defacto pro veřejné zakázky) nebo **RTS Rozpočet** (interchangeable, lepší 25-sloupcový layout pro estimátora) |
+| **Price book overlay** | RTS / URS / Vlastní (řeší jen Kč/MJ, ne catalog) |
 | Sheets per projekt | 7-10 (Rekapitulace + 1 sheet per SO/profese) |
 | Hierarchy | S → O (SO) → R (Rozpočet) → Díl → Položka |
 | Items target pro hk212 (495 m² hala) | ~250-400 položek (Rožmitál baseline 552 + technologie strojů + redukce demolic) |
