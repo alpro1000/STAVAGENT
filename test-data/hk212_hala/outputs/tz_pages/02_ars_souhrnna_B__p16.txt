@@ -1,0 +1,54 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+16/25 
+Rozvody jsou vedeny volně při stěnách, uchyceny na společných závěsech (SV a 
+TUV), a opatřeny tepelnou izolací: 
+ 
+studená voda (SV): tloušťka izolace min. 9 mm, 
+ 
+teplá voda (TUV): tloušťka izolace min. 13 mm. 
+Izolace je provedena z materiálů jako Mirelon nebo Armstrong. 
+Příprava TUV je řešena tlakově nezávislým elektrickým zásobníkem umístěným 
+přímo v objektu. Roční spotřeba TUV se odhaduje na cca 25 m³. 
+ 
+5.3 Kanalizační přípojky 
+Na pozemku před halou jsou vedeny dvě stávající kanalizace – splašková a 
+dešťová. 
+ 
+Splašková kanalizace: z objektu je vyvedena nová přípojka PVC KG DN 
+160, ukončená revizní šachtou před objektem. 
+ 
+Dešťová kanalizace: z objektu je vyvedena nová přípojka PVC KG DN 
+200, rovněž ukončená revizní šachtou a retenční nadrží., Celkem se 
+odvodňuje 595m2 plochy. 
+ 
+5.4 Vnitřní kanalizace 
+Vnitřní kanalizační potrubí je navrženo z PVC systémů s hrdlovými spoji. Rozvody 
+jsou vedeny pod podlahou a částečně při stěnách. V místech napojení na 
+zařizovací předměty jsou instalovány čistící kusy. 
+Splaškové vody budou odváděny do areálové kanalizace. Dešťové vody ze střechy 
+objektu budou odváděny střešními vpustěmi a potrubím do Retenční nádrže 
+kapacity 30m3, která reguluje tok vody do areálové dešťové kanalizace. 
+ 
+ 
+5.5 Materiálové požadavky a montáž 
+ 
+Potrubí bude použito výhradně od jednoho výrobce, s jasně čitelným 
+označením. Neoznačené výrobky nebudou použity. 
+ 
+Montáž smí provádět pouze ﬁrma s oprávněním a certiﬁkací výrobce. 
+Svařování potrubí PP-RCT může provádět jen pracovníci s platným 
+svářečským průkazem. 
+ 
+Montáž bude provedena podle montážních předpisů výrobce a 
+příslušných norem (ČSN 73 6660, ČSN 75 5411 aj.). 
+ 
+5.6 Spotřeby vody - Bilance 
+ 
+Počet zaměstnanců: cca 5-7 osob, 
+ 
+Denní potřeba vody: 49,3 l/os/den → 246,5 l/den, 
+ 
+Denní potřeba TUV: cca 98 l/den, 
+ 
+Roční potřeba vody (SV + TUV): cca 90 m³/rok. 
+ 

@@ -1,0 +1,65 @@
+ 
+10 
+ 
+požární odolnosti a druhu konstrukční části, se provede před uvedením stavby do 
+užívání prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 vyhlášky o 
+požární prevenci … bude doloženo    
+Systémové fasádní panely zasažené PNP 
+- 
+Z důvodu zasažení části obvodové konstrukce posuzovaného objektu PNP sousedního 
+objektu (garáž) se požaduje PO z vnější strany. Dle pol. 12, tab. B.1 ČSN 73 0802 se 
+uvažuje požární zatížení garáže pv = 35 kg/m2, objekt má nehořlavý konstrukční systém 
+a 1 NP. Dle tab. 8 ČSN 73 0802 lze uvažovat garáž v I. SPB.  
+- 
+Dle čl. 9.4.6 ČSN 73 0804 musí být konstrukce, která se nachází v PNP, druhu DP1. 
+- 
+Požadavek: EI 15 DP1  
+- 
+Skutečná PO: min. EI 15 DP1. Požadovanou PO musí vykazovat i kotvicí prvky 
+zajišťující upevnění k nosné konstrukci. Průkaz vlastností pro splnění požadované 
+požární odolnosti a druhu konstrukční části, se provede před uvedením stavby do 
+užívání prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 vyhlášky o 
+požární prevenci … bude doloženo    
+Vstupní dveře zasažené PNP 
+- 
+Z důvodu zasažení části obvodové konstrukce posuzovaného objektu PNP sousedního 
+objektu (garáž) se požaduje PO z vnější strany. Dle pol. 12, tab. B.1 ČSN 73 0802 se 
+uvažuje požární zatížení garáže pv = 35 kg/m2, objekt má nehořlavý konstrukční systém 
+a 1 NP. Dle tab. 8 ČSN 73 0802 lze uvažovat garáž v I. SPB.  
+- 
+Dle čl. 9.4.6 ČSN 73 0804 musí být konstrukce, která se nachází v PNP, druhu DP1. 
+U dveřního uzávěru se navíc požaduje instalace samozavírače. 
+- 
+Požadavek: EI 15 DP1  
+- 
+Skutečná PO: min. EI 15 DP1. Průkaz vlastností pro splnění požadované požární 
+odolnosti a druhu konstrukční části, se provede před uvedením stavby do užívání 
+prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 vyhlášky o požární 
+prevenci … bude doloženo    
+ 
+Nosné konstrukce střech: 
+Ocelové nosníky 
+- 
+Požadavek: R 15 DP1 
+- 
+Skutečná PO: Ocelové konstrukce běžně dosahují PO R 5–20 DP1. Skutečná PO bude 
+určena statickým výpočtem (není součástí tohoto PBŘ). V případě nevyhovující PO 
+musí být konstrukce chráněny protipožárním nátěrem, nástřikem či obkladem 
+s deklarovanou požadovanou PO. Průkaz vlastností pro splnění požadované požární 
+odolnosti a druhu konstrukční části se v tomto případě provede před uvedením stavby 
+do užívání prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 vyhlášky o 
+požární prevenci … bude doloženo 
+- 
+V případě užití zpěňujících nátěrů, nástřiků a jiné ochrany konstrukcí pro zvýšení PO, 
+jejichž funkce je podmíněna chemickou reakcí při požáru, musí být splněny následující 
+podmínky dle čl. 4.12 ČSN 73 0810: 
+a) Jsou použity na těch konstrukcích, které i po zabudování jsou přístupné 
+k obnovování ochran, jakož i ke kontrole stavu (kontrole provozuschopnosti – jedná 
+se o PBZ); intumescentní systémy smí být použity pouze tam, kde je prostor pro 
+vlastní napěnění. 
+Konstrukce jsou přístupné. Prostor na napěnění musí být dodržen dle výrobce. 
+b) V případech, kde požadovaná požární odolnost konstrukcí je nejvýše 30 minut,  
+jde-li o: 
+- 
+objekty s požární výškou h ≤ 9 m, nejvýše však o objekty o čtyřech nadzemních 
+podlažích, včetně nástaveb, vestaveb apod., nebo 

@@ -1,0 +1,51 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+7/25 
+ 
+Zastavěná plocha: 
+520m2 
+Podlahová plocha: 
+507m2 
+Obestavěný prostor: 
+2833 m3 
+ 
+k) limitní bilance stavby - potřeby a spotřeby médií a hmot, hospodaření se srážkovou 
+vodou, celkové produkované množství, druhy a kategorie odpadů a emisí apod… 
+ 
+Bilance dešťových vod  
+ 
+Dešťová voda bude odvedena sítí retenční regulační nádrže dešťové kanalizace, která 
+bude napojena na stávající areálovou oddílnou kanalizační síť dešťové vody.   
+ 
+Bilance tepla pro vytápění  
+Celková tepelná ztráta objektu [kW ]
+20
+Výkonová rezerva pokrytí tepelných ztrát vzduchotechnických 
+jednotek [kW ] 
+20
+Roční spotřeba tepla [MWh/rok ]
+61
+ 
+Bilance vzduchu 
+Dimenzování vzduchotechnických zařízení: 
+Hala: 4000 m3 /hod/hala 
+Nároky na energie:  
+NÁROKY NA ENERGIE 
+ZAŘÍZENÍ 1
+ZAŘÍZENÍ 2
+Teplo (el.energie) - kW
+9,6
+-
+El. energie chlazení - kW
+4,69
+-
+El. energie pohony - kW
+4,8
+8,12
+ 
+l) požadavky na kapacity veřejných sítí komunikačních vedení a elektronického 
+komunikačního zařízení veřejné komunikační sítě 
+Objekt je napojen na areálové rozvody a nevyžaduje změny v připojení na 
+veřejnou infrastrukturu 
+ 
+m) základní předpoklady výstavby - časové údaje o realizaci stavby, členění na etapy, 
+věcné a časové vazby stavby, podmiňující, vyvolané a související investice 

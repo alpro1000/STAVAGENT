@@ -1,0 +1,42 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+3/25 
+ 
+Rám  
+Příčel rámu je navržena z proﬁlu IPE450 z oceli S235. Příčel je ve styku se 
+sloupem opatřena náběhem. Návrh spoje bude zpracován v prováděcí 
+dokumentaci stavby.  Sloup je navržen z proﬁlu IPE400 z oceli S235. 
+Prvky jsou navrženy na požární odolnost 15min. Příčel musí být stabilizována 
+vaznicemi o maximální rozteči 1,5m jinak požární odolnost nevyhoví. 
+ 
+Štítové Sloupy  
+Štítové sloupy jsou navrženy z proﬁlu HEA200 z oceli S235. Sloup je zároveň 
+navržen na požární  odolnost 15 min. 
+ 
+Ztužení Objektu 
+Střešní ztužidla jsou navržena z ocelové kulatiny Ø20mm z oceli S235. 
+Stěnová ztužidla jsou navržena z ocelového proﬁlu L70/70/6 z oceli S235. 
+ 
+Základová deska  
+Základová deska bude výšky 200 mm, beton C25/30, XC4, vyztužená u obou 
+povrchů Kari sítěmi Ø8 mm s oky 100/100 mm u spodního a horního povrchu, 
+výztuž B500B, krytí 30 mm. Deska je uložená na zhutněném štěrkovém loži 
+tloušťky 250 mm. Základová spára musí být před betonáží řádně zhutněna Edef,2 
+= 45,0 MPa, přičemž Edef2/Ede< 1,75. 
+ 
+V prováděcí dokumentaci stavby bude ověřen návrh základové desky dle 
+skutečných charakteristik  zeminy z kopané sondy. 
+ 
+Základové Patky 
+Sloupy rámu budou založeny na dvoustupňových patkách o rozměrech 
+1,5x1,5x(2x0,6m) z prostého betonu C16/20 XC0. Základy pod štítové sloupy 
+budou navrženy z dvoustupňových patek o rozměrech 0,8x0,8x(0,2x0,6m) z 
+prostého betonu C16/20 XC0. Výpočet počítá se 200 kPa únosností zeminy.  
+ 
+V prováděcí dokumentaci stavby bude ověřen návrh patky dle skutečných 
+charakteristik  zeminy z kopané sondy. 
+ 
+b) charakteristika území a stavebního pozemku, dosavadní využití a zastavěnost 
+území, poloha vzhledem k záplavovému území, poddolovanému území apod. 
+ 
+Pozemek se nachází SV části Hradce Králové, k.ú. Slezské předměstí (646971), 
+ul. Vážní. Příjezdová cesta k pozemku a hlavní vstup do areálu je z JZ z ul. Vážní. 

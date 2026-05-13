@@ -1,0 +1,2508 @@
+{
+  "file": "A104_pohledy.dxf",
+  "units": "mm",
+  "entity_types": {
+    "HATCH": 200,
+    "INSERT": 155,
+    "LINE": 642,
+    "SPLINE": 35,
+    "LWPOLYLINE": 5,
+    "ARC": 4,
+    "MTEXT": 35
+  },
+  "layer_entity_counts": {
+    "A-ROOF-1": 2,
+    "A-ROOF-2": 4,
+    "A-WALL-1": 74,
+    "A-WALL-2": 17,
+    "A-ROOF-OTLN-1": 10,
+    "A-WALL-3": 15,
+    "A-WALL-4": 23,
+    "A-FLOR-1": 8,
+    "S-COLS": 9,
+    "S-FSTN": 12,
+    "S-BEAM": 4,
+    "A-ROOF": 24,
+    "A-WALL": 309,
+    "A-GLAZ": 42,
+    "A-ROOF-OTLN": 68,
+    "P-SANR-FIXT": 1,
+    "Nedefinovaný_Trubky-tvarovka": 10,
+    "A-FLOR-LEVL": 10,
+    "A-DOOR": 6,
+    "A-FLOR": 26,
+    "2966-1_navrh dispozice stroju-HK_dwg-1": 4,
+    "2966-1_navrh dispozice stroju-HK_02_dwg-1": 4,
+    "212_HK_situace_03_dwg-1": 4,
+    "HK_TEREN_SESAZENI_dwg-1": 4,
+    "Vlastní 1_A-DETL-GENF-1": 4,
+    "A-DETL-THIN": 10,
+    "A-DETL-MBND": 20,
+    "A-GENM-1": 38,
+    "A-FLOR-3": 2,
+    "A-GENM-2": 196,
+    "Nedefinovaný_Potrubí_VZT_příslušenství": 3,
+    "A-WALL-5": 3,
+    "A-DOOR-GLAZ-2": 4,
+    "G-ANNO-DIMS": 33,
+    "A-ANNO-IDEN": 48,
+    "A-ANNO-IDEN-1": 23,
+    "G-ANNO-TEXT": 2
+  },
+  "block_counts": {
+    "Sloup IPE - 387971-Řez 2": 1,
+    "Rámový roh_ šroubovaný s náběhem - 387987-Řez 2": 1,
+    "Sloup IPE - 388008-Řez 2": 1,
+    "Rámový roh_ šroubovaný s náběhem - 388024-Řez 2": 1,
+    "IPE - IPE160-854151-Řez 2": 1,
+    "OKNO_1k - Okno Hala 1000x1000-586513-Řez 2": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2": 4,
+    "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2": 10,
+    "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2": 3,
+    "Umyvadlo - 50x40 cm-459123-Řez 2": 1,
+    "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 2": 1,
+    "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 2": 1,
+    "Rampa - Rampa-819336-Řez 2": 1,
+    "Rampa - Rampa-823350-Řez 2": 1,
+    "Rampa - Rampa-823366-Řez 2": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 2": 1,
+    "C profil - C150X19_3-854068-Řez 2": 1,
+    "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 2": 1,
+    "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 2": 1,
+    "212_HK_situace_03_dwg-886969-Řez 2": 1,
+    "HK_TEREN_SESAZENI_dwg-918098-Řez 2": 1,
+    "Sloup IPE - 387972-Řez 3": 1,
+    "Rámový roh_ šroubovaný s náběhem - 387988-Řez 3": 1,
+    "Sloup IPE - 388009-Řez 3": 1,
+    "Rámový roh_ šroubovaný s náběhem - 388025-Řez 3": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3": 1,
+    "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3": 9,
+    "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3": 3,
+    "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3": 3,
+    "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 3": 1,
+    "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 3": 1,
+    "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 3": 1,
+    "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V19-Řez 3": 1,
+    "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V20-Řez 3": 1,
+    "OKNO_1k - Okno Hala 1000x1000-796436-Řez 3": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V21-Řez 3": 1,
+    "Rampa - Rampa-818641-Řez 3": 1,
+    "Rampa - Rampa-819336-Řez 3": 1,
+    "Rampa - Rampa-823350-Řez 3": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 3": 1,
+    "IPE - IPE160-854659-Řez 3": 1,
+    "C profil - C150X19_3-854695-Řez 3": 1,
+    "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 3": 1,
+    "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 3": 1,
+    "212_HK_situace_03_dwg-886969-Řez 3": 1,
+    "HK_TEREN_SESAZENI_dwg-918098-Řez 3": 1,
+    "M_S profily_ sloup - 374564-Řez 4": 1,
+    "M_S profily_ sloup - 374570-Řez 4": 1,
+    "M_S profily_ sloup - 374572-Řez 4": 1,
+    "Patní deska s ořezem - 388233-Řez 4": 1,
+    "Patní deska s ořezem - 388242-Řez 4": 1,
+    "Patní deska s ořezem - 388251-Řez 4": 1,
+    "Patní deska s ořezem - 388260-Řez 4": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-Řez 4": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-Řez 4": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4": 1,
+    "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 4": 1,
+    "OKNO_1k - Okno Hala 1000x1000-796436-Řez 4": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V27-Řez 4": 1,
+    "Rampa - Rampa-823350-Řez 4": 1,
+    "Rampa - Rampa-823366-Řez 4": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 4": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V28-Řez 4": 1,
+    "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 4": 1,
+    "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 4": 1,
+    "212_HK_situace_03_dwg-886969-Řez 4": 1,
+    "HK_TEREN_SESAZENI_dwg-918098-Řez 4": 1,
+    "M_S profily_ sloup - 388384-Řez 5": 1,
+    "M_S profily_ sloup - 388385-Řez 5": 1,
+    "Patní deska s ořezem - 388404-Řez 5": 1,
+    "Patní deska s ořezem - 388405-Řez 5": 1,
+    "Patní deska s ořezem - 388406-Řez 5": 1,
+    "Patní deska s ořezem - 388407-Řez 5": 1,
+    "OKNO_1k - Okno Hala 1000x1000-586513-Řez 5": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V39-Řez 5": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-Řez 5": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V40-Řez 5": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V41-Řez 5": 1,
+    "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 5": 1,
+    "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 5": 1,
+    "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 5": 1,
+    "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V42-Řez 5": 1,
+    "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V43-Řez 5": 1,
+    "OKNO_1k - Okno Hala 1000x1000-796436-Řez 5": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V44-Řez 5": 1,
+    "Rampa - Rampa-818641-Řez 5": 1,
+    "Rampa - Rampa-819336-Řez 5": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 5": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V45-Řez 5": 1,
+    "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 5": 1,
+    "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 5": 1,
+    "212_HK_situace_03_dwg-886969-Řez 5": 1,
+    "HK_TEREN_SESAZENI_dwg-918098-Řez 5": 1,
+    "Výškové kóty - Horní-314756-Řez 2": 2,
+    "Popiska materiálu - Popis-329410-Řez 2": 5,
+    "Výškové kóty - Horní-314756-Řez 3": 2,
+    "Popiska materiálu - Popis-329410-Řez 3": 8,
+    "Výškové kóty - Horní-314756-Řez 4": 3,
+    "Popiska materiálu - Popis-329410-Řez 4": 6,
+    "Výškové kóty - Horní-314756-Řez 5": 3,
+    "Popiska materiálu - Popis-329410-Řez 5": 5
+  },
+  "block_instances": [
+    {
+      "name": "Sloup IPE - 387971-Řez 2",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rámový roh_ šroubovaný s náběhem - 387987-Řez 2",
+      "layer": "S-FSTN",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388008-Řez 2",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rámový roh_ šroubovaný s náběhem - 388024-Řez 2",
+      "layer": "S-FSTN",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - IPE160-854151-Řez 2",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -1999.999999999958,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -5770.000000001507,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -17237.75312223355,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -21007.75312223509,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Umyvadlo - 50x40 cm-459123-Řez 2",
+      "layer": "P-SANR-FIXT",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -15237.75312223358,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -15237.75312223356,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        3770.000000001659,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -999.9999999999771,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -16237.75312223356,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V1-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -14827.5000000037,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -10057.50000000217,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -11057.50000000215,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V3-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -9057.500000002174,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-Řez 2",
+      "layer": "A-GLAZ",
+      "insert": [
+        -9057.500000002192,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 2",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 2",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-819336-Řez 2",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-823350-Řez 2",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-823366-Řez 2",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 2",
+      "layer": "A-DOOR",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "C profil - C150X19_3-854068-Řez 2",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 2",
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 2",
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "212_HK_situace_03_dwg-886969-Řez 2",
+      "layer": "212_HK_situace_03_dwg-1",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "HK_TEREN_SESAZENI_dwg-918098-Řez 2",
+      "layer": "HK_TEREN_SESAZENI_dwg-1",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387972-Řez 3",
+      "layer": "S-COLS",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rámový roh_ šroubovaný s náběhem - 387988-Řez 3",
+      "layer": "S-FSTN",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388009-Řez 3",
+      "layer": "S-COLS",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rámový roh_ šroubovaný s náběhem - 388025-Řez 3",
+      "layer": "S-FSTN",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 3",
+      "layer": "A-GENM-2",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -258416.4462151507,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -260416.4462151507,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -259416.4462151507,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -245306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -229196.9524596171,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -243306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 3",
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V17-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -238409.7524596182,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -254519.4993373851,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -253519.499337385,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -252519.4993373851,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -238409.7524596182,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V18-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -229196.952459617,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 3",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 3",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V19-Řez 3",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V20-Řez 3",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V21-Řez 3",
+      "layer": "A-GLAZ",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-818641-Řez 3",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-819336-Řez 3",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-823350-Řez 3",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 3",
+      "layer": "A-DOOR",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - IPE160-854659-Řez 3",
+      "layer": "S-BEAM",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "C profil - C150X19_3-854695-Řez 3",
+      "layer": "S-BEAM",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 3",
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 3",
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "212_HK_situace_03_dwg-886969-Řez 3",
+      "layer": "212_HK_situace_03_dwg-1",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "HK_TEREN_SESAZENI_dwg-918098-Řez 3",
+      "layer": "HK_TEREN_SESAZENI_dwg-1",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374564-Řez 4",
+      "layer": "S-COLS",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374570-Řez 4",
+      "layer": "S-COLS",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374572-Řez 4",
+      "layer": "S-COLS",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388233-Řez 4",
+      "layer": "S-FSTN",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388242-Řez 4",
+      "layer": "S-FSTN",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388251-Řez 4",
+      "layer": "S-FSTN",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388260-Řez 4",
+      "layer": "S-FSTN",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-Řez 4",
+      "layer": "A-DOOR",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-Řez 4",
+      "layer": "A-DOOR",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-Řez 4",
+      "layer": "A-GENM-2",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-Řez 4",
+      "layer": "A-GENM-2",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-Řez 4",
+      "layer": "A-GENM-2",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 4",
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 4",
+      "layer": "A-GLAZ",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V27-Řez 4",
+      "layer": "A-GLAZ",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-823350-Řez 4",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-823366-Řez 4",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 4",
+      "layer": "A-DOOR-GLAZ-2",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V28-Řez 4",
+      "layer": "A-DOOR-GLAZ-2",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 4",
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 4",
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "212_HK_situace_03_dwg-886969-Řez 4",
+      "layer": "212_HK_situace_03_dwg-1",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "HK_TEREN_SESAZENI_dwg-918098-Řez 4",
+      "layer": "HK_TEREN_SESAZENI_dwg-1",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388384-Řez 5",
+      "layer": "S-COLS",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388385-Řez 5",
+      "layer": "S-COLS",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388404-Řez 5",
+      "layer": "S-FSTN",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388405-Řez 5",
+      "layer": "S-FSTN",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388406-Řez 5",
+      "layer": "S-FSTN",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Patní deska s ořezem - 388407-Řez 5",
+      "layer": "S-FSTN",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-Řez 5",
+      "layer": "A-GLAZ",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V39-Řez 5",
+      "layer": "A-GLAZ",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-Řez 5",
+      "layer": "A-DOOR",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V40-Řez 5",
+      "layer": "A-DOOR",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V41-Řez 5",
+      "layer": "A-GLAZ",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-Řez 5",
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-776421-Řez 5",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-776422-Řez 5",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Round_Iron_Cover_Wavin__nested_ - Var_-V42-Řez 5",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Z_PIF_UN_Tegra_Concrete_Ring_Wavin__nested_ - Var_-V43-Řez 5",
+      "layer": "Nedefinovaný_Trubky-tvarovka",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-796436-Řez 5",
+      "layer": "A-GLAZ",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V44-Řez 5",
+      "layer": "A-GLAZ",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-818641-Řez 5",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rampa - Rampa-819336-Řez 5",
+      "layer": "A-FLOR-LEVL",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-Řez 5",
+      "layer": "A-DOOR-GLAZ-2",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-V45-Řez 5",
+      "layer": "A-DOOR-GLAZ-2",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_dwg-867852-Řez 5",
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_02_dwg-876232-Řez 5",
+      "layer": "2966-1_navrh dispozice stroju-HK_02_dwg-1",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "212_HK_situace_03_dwg-886969-Řez 5",
+      "layer": "212_HK_situace_03_dwg-1",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "HK_TEREN_SESAZENI_dwg-918098-Řez 5",
+      "layer": "HK_TEREN_SESAZENI_dwg-1",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 2",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 2",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -146.2391118222901,
+        7397.031967360417,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 2",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 2",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        10442.27508818899,
+        2219.60430236276,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 2",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        209.7328636654969,
+        5816.266669706741,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 2",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        2778.880377951504,
+        6412.061755517353,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 2",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        7121.216410748279,
+        6336.585798674059,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 3",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 3",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -244608.1162224039,
+        -7394.031967360445,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -244306.6993373838,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -244475.7976951763,
+        -6094.701133197244,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -233612.540732863,
+        -3890.777644420098,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -236228.8181877852,
+        474.8817464065036,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -239005.0516670806,
+        -3890.777644420096,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -245061.9985448463,
+        -3890.777644420095,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -229901.9985448463,
+        -3890.777644420144,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 3",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -247896.0952565287,
+        -4121.273822553296,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 4",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 4",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        104019.0173469592,
+        7414.992677648102,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 4",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        243800.1144109456,
+        6482.315316744605,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 4",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        115455.9896975618,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 4",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        114649.0858305096,
+        -3488.174897351266,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 4",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        127050.5287600236,
+        -2401.384031306622,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 4",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        118067.1656953582,
+        -2401.384031306622,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 4",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        133236.4996889892,
+        -3940.408414968701,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 4",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        126991.9504156291,
+        805.0503181627106,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 5",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 5",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -151466.6479349213,
+        -906.925594762166,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-Řez 5",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -152600.8682845151,
+        -7397.031967360468,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 5",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -240214.1960041067,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 5",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -240137.4710041492,
+        -3434.074040820375,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 5",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -237092.2918052094,
+        -2084.318924441952,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 5",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -228067.2918052096,
+        -2084.318924441981,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Popiska materiálu - Popis-329410-Řez 5",
+      "layer": "A-ANNO-IDEN",
+      "insert": [
+        -224646.3243595898,
+        -5568.669586537198,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    }
+  ],
+  "dimensions": [],
+  "text_entries": [
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.205",
+      "insert": [
+        -124578.0770649961,
+        140.5955698418009
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "+7.195",
+      "insert": [
+        -124761.0439850926,
+        7537.627537202234
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "03",
+      "insert": [
+        -150197.46518319,
+        150.0840029055174
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "02",
+      "insert": [
+        -139755.1900950011,
+        2369.688305268279
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "01",
+      "insert": [
+        -149987.7323195247,
+        5966.350672612262
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "05",
+      "insert": [
+        -143076.2487724418,
+        6486.669801579582
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "+7.195",
+      "insert": [
+        -89299.92016985471,
+        7537.627537202247
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "VENKOVNÍ VZT JEDNOTKA",
+      "insert": [
+        -94930.03494621394,
+        -2325.403102357592
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.200",
+      "insert": [
+        -89564.60924660045,
+        143.5955698418008
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "01",
+      "insert": [
+        -116018.4265455807,
+        6254.09708291426
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "03",
+      "insert": [
+        -116187.5249033732,
+        159.3959497170174
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "02",
+      "insert": [
+        -105324.2679410599,
+        2363.319438494163
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "05",
+      "insert": [
+        -107940.545395982,
+        6728.978829320765
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "08",
+      "insert": [
+        -110716.7788752775,
+        2363.319438494165
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "08",
+      "insert": [
+        -116773.7257530432,
+        2363.319438494166
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "08",
+      "insert": [
+        -101613.7257530433,
+        2363.319438494116
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "07",
+      "insert": [
+        -119607.8224647256,
+        2132.823260360965
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.195",
+      "insert": [
+        -64529.14549616766,
+        148.3866256954471
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "+7.195",
+      "insert": [
+        -76002.84565504464,
+        7563.379303343556
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "+6.285",
+      "insert": [
+        -64675.02206097044,
+        6630.701942440058
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "01",
+      "insert": [
+        -82274.37003927781,
+        5920.859170577034
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "02",
+      "insert": [
+        -83081.2739063301,
+        2432.684273225767
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "06",
+      "insert": [
+        -70679.83097681603,
+        3519.475139270412
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "06",
+      "insert": [
+        -79663.19404148152,
+        3519.475139270411
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "07",
+      "insert": [
+        -64493.86004785045,
+        1980.450755608332
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "04",
+      "insert": [
+        -70738.40932121062,
+        6725.909488739744
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "VENKOVNÍ VZT JEDNOTKA",
+      "insert": [
+        -83715.82736069984,
+        -1898.754345048505
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "+7.195",
+      "insert": [
+        -50690.17590408705,
+        7537.627537202221
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "+6.285",
+      "insert": [
+        -38954.14281712647,
+        6630.701942440058
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.205",
+      "insert": [
+        -37783.19465925847,
+        140.59556984175
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "01",
+      "insert": [
+        -57474.93787251931,
+        5770.958772802141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "02",
+      "insert": [
+        -57398.21287256159,
+        2336.884731981767
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "06",
+      "insert": [
+        -54353.03367362189,
+        3686.63984836019
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "06",
+      "insert": [
+        -45328.03367362195,
+        3686.639848360161
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-ANNO-IDEN-1",
+      "text": "03",
+      "insert": [
+        -41907.06622800222,
+        202.2891862649451
+      ]
+    }
+  ],
+  "hatch_per_layer": {
+    "A-ROOF-1": 2,
+    "A-ROOF-2": 4,
+    "A-WALL-1": 74,
+    "A-WALL-2": 17,
+    "A-ROOF-OTLN-1": 10,
+    "A-WALL-3": 15,
+    "A-WALL-4": 23,
+    "A-FLOR-1": 8,
+    "Vlastní 1_A-DETL-GENF-1": 4,
+    "A-GENM-1": 38,
+    "A-FLOR-3": 2,
+    "A-WALL-5": 3
+  },
+  "closed_polylines": [],
+  "xrefs": []
+}

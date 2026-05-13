@@ -1,0 +1,24 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+11
+Zatížení:
+Proměnná zatížení:
+Klimatická zatížení:
+Zatížení sněhem: I. sněhová oblast - střecha
+PROTOKOL ZATÍŽENÍ: ZATÍŽENÍ VĚTREM
+Zatížení podle ČSN EN 1991-1-4
+Větrná oblast: II
+Rychlost větru vₑ,  = 25,00 m/s
+₀
+Kategorie terénu: II
+Referenční výška budovy zₑ = 7,20 m
+Součinitel směru větru c_dir = 1,00
+Součinitel ročního období c_season = 1,00
+Měrná hmotnost vzduchu ρ = 1,250 kg/m³
+Součinitel orografie c  = 1,00
+₀
+Maximální dynamický tlak q  = 0,80 kN/m²
+ₚ
+Součinitel zatížení γ_f = 1,50
+Plocha pro stanovení c ₑₚ  A = 10,00 m²

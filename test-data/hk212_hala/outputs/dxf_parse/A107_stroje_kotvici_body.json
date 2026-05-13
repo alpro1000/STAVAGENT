@@ -1,0 +1,2997 @@
+{
+  "file": "A107_stroje_kotvici_body.dxf",
+  "units": "mm",
+  "entity_types": {
+    "HATCH": 16,
+    "LINE": 332,
+    "INSERT": 135,
+    "ARC": 24,
+    "SPLINE": 4,
+    "MTEXT": 65,
+    "DIMENSION": 83
+  },
+  "layer_entity_counts": {
+    "Vlastní 1_A-DETL-GENF-1": 1,
+    "A-DETL-THIN": 12,
+    "Vlastní 1_A-DETL-GENF": 2,
+    "Vlastní 1_A-DETL-GENF-2": 1,
+    "S-COLS": 44,
+    "S-BEAM": 14,
+    "A-FLOR": 21,
+    "A-WALL-PATT-1": 12,
+    "A-WALL-1": 97,
+    "A-GLAZ": 35,
+    "A-WALL": 81,
+    "A-DOOR-HDLN": 4,
+    "A-GENM-1": 35,
+    "A-GENM-2": 3,
+    "P-SANR-FIXT": 1,
+    "Nedefinovaný_Potrubí_VZT_příslušenství": 1,
+    "E-ELEC-FIXT": 1,
+    "A-DETL-MBND": 49,
+    "A-FLOR-LEVL": 21,
+    "A-DOOR-FRAM": 2,
+    "2966-1_navrh dispozice stroju-HK_dwg-1": 1,
+    "A-DETL-THIN-1": 20,
+    "A-DETL-1": 1,
+    "G-ANNO-TEXT-1": 8,
+    "S-GRID-IDEN": 24,
+    "S-GRID-IDEN-1": 24,
+    "S-GRID-1": 12,
+    "G-ANNO-SYMB-1": 4,
+    "G-ANNO-SYMB": 4,
+    "G-ANNO-SYMB-2": 4,
+    "A-ANNO-DIMS": 83,
+    "G-ANNO-TEXT": 17,
+    "A-AREA-IDEN-1": 4,
+    "G-ANNO-DIMS": 1,
+    "G-ANNO-DIMS-1": 15
+  },
+  "block_counts": {
+    "Sloup IPE - 374558-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 374564-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 374570-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 374571-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 374572-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 374573-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 387892-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 387893-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 387934-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 387935-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 387971-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 387972-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 388008-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 388009-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 388045-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 388046-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 388383-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 388384-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 388385-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_S profily_ sloup - 388386-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 390062-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 396249-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 400226-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 400484-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 400880-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 401579-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 401588-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 401597-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V1-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V2-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V3-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY": 6,
+    "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY": 5,
+    "OKNO_1k - Okno Hala 1000x1000-V6-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Umyvadlo - 50x40 cm-459123-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY": 7,
+    "OKNO_1k - Okno Hala 1000x1000-V9-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V10-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V11-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 487110-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 487111-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V12-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "IPE - 489591-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V13-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V14-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V15-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "IPE - 500084-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "IPE - 500435-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "IPE - 500572-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 502209-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 502210-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 502301-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 502302-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 503362-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 504078-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 504742-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 505106-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 505107-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 505273-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Kruhové tyče - 505274-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 506871-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 507568-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 507725-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 507857-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 507956-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 508019-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 508076-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 508146-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 508228-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 508229-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Sloup IPE - 508303-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V16-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V17-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V18-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "IPE - 568342-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V19-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY": 2,
+    "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "IPE - 888049-1NP _ stroje - KOTVÍCÍ BODY": 1,
+    "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY": 24,
+    "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY": 4,
+    "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje - KOTVÍCÍ BODY": 1
+  },
+  "block_instances": [
+    {
+      "name": "Sloup IPE - 374558-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374564-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374570-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374571-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374572-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 374573-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387892-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387893-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387934-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387935-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387971-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387972-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388008-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388009-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388045-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388046-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388383-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388384-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388385-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388386-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 390062-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 396249-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 400226-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 400484-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 400880-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 401579-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 401588-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 401597-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        19023.77178022551,
+        129075.3916404817,
+        0.0
+      ],
+      "rotation": 270.000000000004,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V1-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        19023.77178022542,
+        131075.3916404817,
+        0.0
+      ],
+      "rotation": 270.000000000004,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995069,
+        133845.3916404832,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V3-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995055,
+        135845.3916404833,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995046,
+        136845.3916404833,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995075,
+        132845.3916404831,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V6-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995075,
+        151083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995069,
+        152083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        33060.78733967672,
+        153284.19196923,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        24077.27955995197,
+        153279.1919692301,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        33077.27955995209,
+        125514.3916404849,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        24072.27955995212,
+        125514.3916404849,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GENM-2",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GENM-2",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GENM-2",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Umyvadlo - 50x40 cm-459123-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "P-SANR-FIXT",
+      "insert": [
+        19123.77178022571,
+        126429.0069765298,
+        0.0
+      ],
+      "rotation": 89.99999999999949,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994723,
+        143945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V9-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.7795599472,
+        129835.6447627175,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V10-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994706,
+        127835.6447627176,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V11-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994714,
+        128835.6447627175,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 487110-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 487111-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.779559947,
+        126835.6447627176,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V12-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994726,
+        130835.6447627175,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 489591-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V13-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994717,
+        142945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994708,
+        141945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V14-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994726,
+        144945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V15-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995084,
+        149083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995093,
+        148083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 500084-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 500435-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 500572-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502209-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502210-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502301-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502302-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 503362-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 504078-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 504742-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505106-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505107-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505273-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505274-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 506871-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507568-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507725-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507857-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507956-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508019-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508076-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508146-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508228-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508229-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508303-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-COLS",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "insert": [
+        39638.86100038837,
+        147271.2928348457,
+        0.0
+      ],
+      "rotation": 90.00000000000044,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V16-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        19023.77178022548,
+        130075.3916404817,
+        0.0
+      ],
+      "rotation": 270.000000000004,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V17-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995061,
+        134845.3916404833,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.7795599474,
+        132732.5916404833,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994749,
+        133732.5916404833,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994752,
+        134732.5916404832,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994758,
+        135732.5916404832,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.7795599477,
+        136732.5916404832,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V18-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995081,
+        150083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955994985,
+        145902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955994997,
+        143902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955994991,
+        144902.8916404854,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995011,
+        141902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        18997.27955995005,
+        142902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 568342-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rozvaděč nastenny  - Typ 1-584972-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "E-ELEC-FIXT",
+      "insert": [
+        36494.59653518573,
+        153279.1919692298,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994735,
+        145945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-796436-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994767,
+        148635.3916404849,
+        0.0
+      ],
+      "rotation": 89.99999999999642,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V19-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-GLAZ",
+      "insert": [
+        38139.77955994772,
+        149635.3916404849,
+        0.0
+      ],
+      "rotation": 89.99999999999642,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-DOOR-FRAM",
+      "insert": [
+        38133.42955994781,
+        150710.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999963,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "A-DOOR-FRAM",
+      "insert": [
+        19030.12178022563,
+        128000.3916404817,
+        0.0
+      ],
+      "rotation": 90.00000000000394,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "2966-1_navrh dispozice stroju-HK_dwg-867852-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "2966-1_navrh dispozice stroju-HK_dwg-1",
+      "insert": [
+        16148.33218901901,
+        123038.4719204386,
+        0.0
+      ],
+      "rotation": 301.0103595051954,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 888049-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-BEAM",
+      "insert": [
+        -161918.4100760854,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        19299.77955994871,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        19299.77955994866,
+        119750.8165802119,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        22069.77955994874,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        22069.77955994871,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        14351.90690802352,
+        153090.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        42889.2427758688,
+        153090.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        14351.90690802349,
+        146990.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        42889.24277586883,
+        146990.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        14351.90690802349,
+        140892.8916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        42889.2427758688,
+        140892.8916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        14351.90690802349,
+        137895.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        42889.2427758688,
+        137895.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        14351.90690802346,
+        131797.8916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        42889.24277586877,
+        131797.8916404847,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        14351.90690802346,
+        125700.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999994,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        42889.24277586877,
+        125700.3916404847,
+        0.0
+      ],
+      "rotation": 269.9999999999994,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        26069.77955994863,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        26069.77955994869,
+        119750.8165802119,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        31069.77955994871,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        31069.77955994871,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        35069.77955994866,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        35069.77955994869,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -43306.40784888846,
+        128432.743620636,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        12395.57361112168,
+        128432.7436206361,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -24276.03180179867,
+        118756.6096725442,
+        0.0
+      ],
+      "rotation": 90.00000000000064,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        24276.0318017987,
+        159211.2167676495,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        37839.77955994866,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        37839.77955994863,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-1NP _ stroje - KOTVÍCÍ BODY",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        28360.99836147865,
+        138709.9784043552,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    }
+  ],
+  "dimensions": [
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3169.9999999981665,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4000.000000000029,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4999.999999999967,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.999999999942,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3146.0077797229824,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6100.000000000116,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.5,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2997.4999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.500000000116,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.499999999985,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 27969.80032874539,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1149.9999999996944,
+      "text_override": "<>\\X2200",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3000.000000000131,
+      "text_override": "3x1000\\X1000 (1350)",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 770.000000001397,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.000000000087,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4057.500000002212,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1180.2531222309917,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4999.999999999884,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 801.047206514515,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 921.2531222326943,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 896.9468777657021,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4212.800000001182,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3172.4999999984793,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.999999999818,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.000000000091,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.9999999999745,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3169.999999998967,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2769.99999999992,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.999999999938,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.000000000062,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.999999999909,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2770.000000000091,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 19312.47949849034,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2329.7467824333,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2327.7725800304033,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2334.659461802905,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2330.3164390878956,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2010.9999999967986,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2098.8003287448955,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3150.0,
+      "text_override": "3X1000\\X1000(1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1690.0000000004948,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 764.0814404401244,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1499.999999999971,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1632.000000000051,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1267.138439297847,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1690.8846640942065,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1700.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 402.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1578.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1149.9999999999127,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 966.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 570.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 430.0034084773797,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2450.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1150.0000078763987,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1690.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 842.0000019510044,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 766.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 841.9999980489956,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1779.9999921236013,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1700.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 7138.996591384319,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3775.9999999998618,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2145.1384392986693,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 10709.3651096994,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1700.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 398.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1582.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3730.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2450.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1575.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 400.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1700.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2588.4042182088015,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2292.5077797543927,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3762.000000000149,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2015.500000029344,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1163.0000000000582,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1499.9999999999854,
+      "text_override": "",
+      "dimtype": 32
+    }
+  ],
+  "text_entries": [
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "LEGENDA MATERIÁL",
+      "insert": [
+        2166.19708782411,
+        4691.553421647499
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Ů:",
+      "insert": [
+        4189.598129490775,
+        4691.553421647499
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Obvodový pláš",
+      "insert": [
+        3267.037594892531,
+        4334.417745031492
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "ť -",
+      "insert": [
+        3936.102699059197,
+        4334.417745031492
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "panely Kingspan",
+      "insert": [
+        4061.118324059197,
+        4334.417745031492
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "s požární odolností EW 15 DP1",
+      "insert": [
+        3267.037594892531,
+        4172.360453364826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Železobeton",
+      "insert": [
+        3267.037594892531,
+        3956.664321298286
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Beton prostý",
+      "insert": [
+        3267.03759489253,
+        3656.664321298284
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "A",
+      "insert": [
+        19046.91777037812,
+        159342.8470565122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "A",
+      "insert": [
+        19046.91777037803,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "B",
+      "insert": [
+        21802.74277037813,
+        159342.8470565122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "B",
+      "insert": [
+        21802.74277037807,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "1",
+      "insert": [
+        14138.57100146441,
+        153467.0673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "1",
+      "insert": [
+        42675.90686930969,
+        153467.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "2",
+      "insert": [
+        14138.57100146441,
+        147367.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "2",
+      "insert": [
+        42675.90686930972,
+        147367.0673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "3",
+      "insert": [
+        14138.57100146441,
+        141269.5673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "3",
+      "insert": [
+        42675.90686930969,
+        141269.5673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "4",
+      "insert": [
+        14138.57100146441,
+        138272.0673509144
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "4",
+      "insert": [
+        42675.90686930972,
+        138272.0673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "5",
+      "insert": [
+        14138.57100146438,
+        132174.5673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "5",
+      "insert": [
+        42675.90686930969,
+        132174.5673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "6",
+      "insert": [
+        14138.57100146436,
+        126077.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "6",
+      "insert": [
+        42675.90686930972,
+        126077.0673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "C",
+      "insert": [
+        25802.74277037804,
+        159342.8470565122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "C",
+      "insert": [
+        25802.7427703781,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "D",
+      "insert": [
+        30795.01634951931,
+        120121.8681736527
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "D",
+      "insert": [
+        30795.01634951931,
+        159339.3252433939
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "E",
+      "insert": [
+        34823.74277037804,
+        159342.8470565121
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "E",
+      "insert": [
+        34823.74277037807,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "A",
+      "insert": [
+        42153.71617243785,
+        129419.5002757474
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "A",
+      "insert": [
+        13034.81528757227,
+        129419.5002757475
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "B",
+      "insert": [
+        24517.16345691,
+        119395.8513489948
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "B",
+      "insert": [
+        24517.16345691006,
+        158030.175091199
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "F",
+      "insert": [
+        37614.21777037802,
+        159342.8470565121
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "F",
+      "insert": [
+        37614.21777037802,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "SO.01",
+      "insert": [
+        28267.62553638042,
+        140595.7084468362
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "HALA",
+      "insert": [
+        28267.62553638045,
+        140178.9896968362
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "EL_HLAVNÍ",
+      "insert": [
+        37639.95073441943,
+        155514.6981830279
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ROZVAD",
+      "insert": [
+        37639.95073441943,
+        155097.9794330279
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ĚČ",
+      "insert": [
+        39187.76323441946,
+        155097.9794330279
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "495 m²",
+      "insert": [
+        28206.37607891057,
+        141487.7101145698
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "1.01",
+      "insert": [
+        28380.15107891063,
+        142448.6048471487
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "Sklad fotovoltaických panel",
+      "insert": [
+        26758.42607891059,
+        141982.7490571826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "ů",
+      "insert": [
+        30418.60576641056,
+        141982.7490571826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "+0.000",
+      "insert": [
+        28482.45697094974,
+        139073.2144172128
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "VENKOVNÍ VZT",
+      "insert": [
+        41388.03044537961,
+        148742.2673273847
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "JEDNOTKA",
+      "insert": [
+        41388.03044537955,
+        148325.5485773847
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        22556.07314296148,
+        154117.4716657277
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        31394.05753915949,
+        154078.7449355902
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        31456.68134565881,
+        123993.0138151488
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        22350.53692267259,
+        123872.7534504104
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "2.00°",
+      "insert": [
+        17680.20418739735,
+        127680.3586214019
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "2.00°",
+      "insert": [
+        17680.20418739735,
+        127680.3586214019
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "2.00°",
+      "insert": [
+        38858.92612060296,
+        152742.2150609166
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "FILTRA",
+      "insert": [
+        41553.22249943929,
+        142796.595407758
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ČNÍ",
+      "insert": [
+        42823.22249943932,
+        142796.595407758
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "JEDNOTKA",
+      "insert": [
+        41553.22249943929,
+        142379.876657758
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "KOTVÍCÍ BODY",
+      "insert": [
+        21109.73072974823,
+        148007.7822372012
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "PRACOVIŠT",
+      "insert": [
+        21109.73072974826,
+        147591.0634872012
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "Ě DEFRAME",
+      "insert": [
+        23242.93385474826,
+        147591.0634872012
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "KOTVÍCÍ BODY",
+      "insert": [
+        31780.00505054474,
+        134545.0765509778
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "PRACOVIŠT",
+      "insert": [
+        31780.00505054474,
+        134128.3578009778
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "Ě D",
+      "insert": [
+        33913.20817554474,
+        134128.3578009778
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "RIFT_E1",
+      "insert": [
+        34528.36442554474,
+        134128.3578009778
+      ]
+    }
+  ],
+  "hatch_per_layer": {
+    "Vlastní 1_A-DETL-GENF-1": 1,
+    "Vlastní 1_A-DETL-GENF": 2,
+    "Vlastní 1_A-DETL-GENF-2": 1,
+    "A-WALL-PATT-1": 12
+  },
+  "closed_polylines": [],
+  "xrefs": []
+}

@@ -1,0 +1,15 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+22
+deformace [mm]
+Wlim IPE = 6100/250 = 24,4 > 18,00 mm
+VYHOVUJE
+Wlim UPE = 6100/250 = 24,4 > 12,30 mm
+VYHOVUJE
+Posouzení: 1→ 100% (95%)
+Návrh:
+Vaznice jsou navrženy z profilu IPE 160 z oceli S235. Krajní nosníky jsou navrženy z profilu UPE160 z 
+oceli S235. Maximální osová vzdálenost vaznic činí 1,5m. Vaznice jsou navržení jako prosté nosníky, 
+nicméně je možné je na stavbě svařit a vytvořit spojitý nosník. Nosníky jsou navrženy na požární 
+odolnost 15 mimnut.

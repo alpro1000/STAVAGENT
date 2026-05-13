@@ -1,0 +1,2723 @@
+{
+  "file": "A101_pudorys_1np.dxf",
+  "units": "mm",
+  "entity_types": {
+    "HATCH": 16,
+    "INSERT": 135,
+    "LINE": 339,
+    "ARC": 24,
+    "SPLINE": 4,
+    "MTEXT": 57,
+    "DIMENSION": 49
+  },
+  "layer_entity_counts": {
+    "Vlastní 1_A-DETL-GENF": 1,
+    "S-COLS": 44,
+    "S-BEAM": 13,
+    "A-FLOR": 21,
+    "A-WALL-PATT-1": 12,
+    "A-WALL-1": 97,
+    "A-GLAZ": 35,
+    "A-WALL": 80,
+    "A-DOOR-HDLN": 4,
+    "A-GENM-1": 35,
+    "A-GENM-2": 3,
+    "P-SANR-FIXT": 1,
+    "Nedefinovaný_Potrubí_VZT_příslušenství": 1,
+    "E-ELEC-FIXT": 1,
+    "A-DETL-MBND": 49,
+    "A-FLOR-LEVL": 21,
+    "A-DOOR-FRAM": 2,
+    "A-DETL-THIN": 28,
+    "Vlastní 1_A-DETL-GENF-1": 1,
+    "A-DETL-THIN-1": 12,
+    "Vlastní 1_A-DETL-GENF-2": 2,
+    "S-GRID-IDEN": 24,
+    "S-GRID-IDEN-1": 24,
+    "S-GRID-1": 12,
+    "A-ANNO-DIMS": 49,
+    "G-ANNO-SYMB-1": 4,
+    "G-ANNO-SYMB": 4,
+    "G-ANNO-SYMB-2": 4,
+    "G-ANNO-TEXT": 7,
+    "A-AREA-IDEN-1": 4,
+    "G-ANNO-DIMS": 1,
+    "G-ANNO-DIMS-1": 15,
+    "G-ANNO-TEXT-1": 9,
+    "G-ANNO-REVC-1": 1,
+    "G-ANNO-REVC-IDEN": 3
+  },
+  "block_counts": {
+    "Sloup IPE - 374558-1NP": 1,
+    "M_S profily_ sloup - 374564-1NP": 1,
+    "M_S profily_ sloup - 374570-1NP": 1,
+    "M_S profily_ sloup - 374571-1NP": 1,
+    "M_S profily_ sloup - 374572-1NP": 1,
+    "Sloup IPE - 374573-1NP": 1,
+    "Sloup IPE - 387892-1NP": 1,
+    "Sloup IPE - 387893-1NP": 1,
+    "Sloup IPE - 387934-1NP": 1,
+    "Sloup IPE - 387935-1NP": 1,
+    "Sloup IPE - 387971-1NP": 1,
+    "Sloup IPE - 387972-1NP": 1,
+    "Sloup IPE - 388008-1NP": 1,
+    "Sloup IPE - 388009-1NP": 1,
+    "Sloup IPE - 388045-1NP": 1,
+    "Sloup IPE - 388046-1NP": 1,
+    "M_S profily_ sloup - 388383-1NP": 1,
+    "M_S profily_ sloup - 388384-1NP": 1,
+    "M_S profily_ sloup - 388385-1NP": 1,
+    "M_S profily_ sloup - 388386-1NP": 1,
+    "Kruhové tyče - 390062-1NP": 1,
+    "Sloup IPE - 396249-1NP": 1,
+    "Sloup IPE - 400226-1NP": 1,
+    "Sloup IPE - 400484-1NP": 1,
+    "Sloup IPE - 400880-1NP": 1,
+    "Sloup IPE - 401579-1NP": 1,
+    "Sloup IPE - 401588-1NP": 1,
+    "Sloup IPE - 401597-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-586513-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V1-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V2-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V3-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V4-1NP": 3,
+    "OKNO_1k - Okno Hala 1000x1000-V5-1NP": 3,
+    "OKNO_1k - Okno Hala 1000x1000-V6-1NP": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP": 1,
+    "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP": 1,
+    "Umyvadlo - 50x40 cm-459123-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V8-1NP": 7,
+    "OKNO_1k - Okno Hala 1000x1000-V9-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V10-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V11-1NP": 1,
+    "Sloup IPE - 487110-1NP": 1,
+    "Sloup IPE - 487111-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V12-1NP": 3,
+    "OKNO_1k - Okno Hala 1000x1000-V13-1NP": 1,
+    "IPE - 489591-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V14-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V15-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V16-1NP": 1,
+    "IPE - 500084-1NP": 1,
+    "IPE - 500435-1NP": 1,
+    "IPE - 500572-1NP": 1,
+    "Sloup IPE - 502209-1NP": 1,
+    "Sloup IPE - 502210-1NP": 1,
+    "Sloup IPE - 502301-1NP": 1,
+    "Sloup IPE - 502302-1NP": 1,
+    "Kruhové tyče - 503362-1NP": 1,
+    "Kruhové tyče - 504078-1NP": 1,
+    "Kruhové tyče - 504742-1NP": 1,
+    "Kruhové tyče - 505106-1NP": 1,
+    "Kruhové tyče - 505107-1NP": 1,
+    "Kruhové tyče - 505273-1NP": 1,
+    "Kruhové tyče - 505274-1NP": 1,
+    "Sloup IPE - 506871-1NP": 1,
+    "Sloup IPE - 507568-1NP": 1,
+    "Sloup IPE - 507725-1NP": 1,
+    "Sloup IPE - 507857-1NP": 1,
+    "Sloup IPE - 507956-1NP": 1,
+    "Sloup IPE - 508019-1NP": 1,
+    "Sloup IPE - 508076-1NP": 1,
+    "Sloup IPE - 508146-1NP": 1,
+    "Sloup IPE - 508228-1NP": 1,
+    "Sloup IPE - 508229-1NP": 1,
+    "Sloup IPE - 508303-1NP": 1,
+    "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V17-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V18-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V19-1NP": 2,
+    "OKNO_1k - Okno Hala 1000x1000-V20-1NP": 1,
+    "IPE - 568342-1NP": 1,
+    "Rozvaděč nastenny  - Typ 1-584972-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-796436-1NP": 1,
+    "OKNO_1k - Okno Hala 1000x1000-V21-1NP": 1,
+    "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP": 2,
+    "Osnova - 6mm-307864-1NP": 24,
+    "Řez - Velká značka-308779-1NP": 4,
+    "Výškové kóty - Výšková kóta - Základová-780896-1NP": 1,
+    "Family - ___-887816-1NP": 1,
+    "Popisek revize - Popisek revize-490849-1NP": 1
+  },
+  "block_instances": [
+    {
+      "name": "Sloup IPE - 374558-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374564-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374570-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374571-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 374572-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 374573-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387892-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387893-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387934-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387935-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387971-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 387972-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388008-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388009-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388045-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 388046-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388383-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388384-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388385-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_S profily_ sloup - 388386-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 390062-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 396249-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 400226-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 400484-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 400880-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 401579-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 401588-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 401597-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-586513-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180942.1818563109,
+        129075.3916404817,
+        0.0
+      ],
+      "rotation": 270.000000000004,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V1-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180942.1818563108,
+        131075.3916404817,
+        0.0
+      ],
+      "rotation": 270.000000000004,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V2-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360361,
+        133845.3916404832,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V3-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360359,
+        135845.3916404833,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360359,
+        136845.3916404833,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360361,
+        132845.3916404831,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V6-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360361,
+        151083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360361,
+        152083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-499574-1NP",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        194979.1974157621,
+        153284.19196923,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-444875-1NP",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        185995.6896360374,
+        153279.1919692301,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-840892-1NP",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        194995.6896360375,
+        125514.3916404849,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "M_Vrata_ výsuvná_ sekční - 3000X4000 MM-V7-1NP",
+      "layer": "A-DOOR-HDLN",
+      "insert": [
+        185990.6896360375,
+        125514.3916404849,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-1NP",
+      "layer": "A-GENM-2",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-1NP",
+      "layer": "A-GENM-2",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-1NP",
+      "layer": "A-GENM-2",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Umyvadlo - 50x40 cm-459123-1NP",
+      "layer": "P-SANR-FIXT",
+      "insert": [
+        181042.1818563111,
+        126429.0069765298,
+        0.0
+      ],
+      "rotation": 89.99999999999949,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360326,
+        143945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V9-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360326,
+        129835.6447627175,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V10-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360324,
+        127835.6447627176,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V11-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360325,
+        128835.6447627175,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 487110-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 487111-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V12-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360324,
+        126835.6447627176,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V13-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360327,
+        130835.6447627175,
+        0.0
+      ],
+      "rotation": 89.99999999999626,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 489591-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V14-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360326,
+        142945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V12-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360325,
+        141945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V15-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360327,
+        144945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V16-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360362,
+        149083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360363,
+        148083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 500084-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 500435-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 500572-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502209-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502210-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502301-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 502302-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 503362-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 504078-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 504742-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505106-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505107-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505273-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Kruhové tyče - 505274-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 506871-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507568-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507725-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507857-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 507956-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508019-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508076-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508146-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508228-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508229-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Sloup IPE - 508303-1NP",
+      "layer": "S-COLS",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Větrací tlumičová jednotka_ levá - VZT S REKUPERACI-581700-1NP",
+      "layer": "Nedefinovaný_Potrubí_VZT_příslušenství",
+      "insert": [
+        201557.2710764738,
+        147271.2928348457,
+        0.0
+      ],
+      "rotation": 90.00000000000044,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V17-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180942.1818563109,
+        130075.3916404817,
+        0.0
+      ],
+      "rotation": 270.000000000004,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V18-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.689636036,
+        134845.3916404833,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V12-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360328,
+        132732.5916404833,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360329,
+        133732.5916404833,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360329,
+        134732.5916404832,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.189636033,
+        135732.5916404832,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V19-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360331,
+        136732.5916404832,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V20-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360362,
+        150083.1447627164,
+        0.0
+      ],
+      "rotation": 270.0000000000038,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V4-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360352,
+        145902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360354,
+        143902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360353,
+        144902.8916404854,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V5-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360355,
+        141902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V8-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        180915.6896360354,
+        142902.8916404855,
+        0.0
+      ],
+      "rotation": 270.0000000000039,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "IPE - 568342-1NP",
+      "layer": "S-BEAM",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Rozvaděč nastenny  - Typ 1-584972-1NP",
+      "layer": "E-ELEC-FIXT",
+      "insert": [
+        198413.0066112711,
+        153279.1919692298,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V19-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360327,
+        145945.3916404844,
+        0.0
+      ],
+      "rotation": 89.99999999999628,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-796436-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360331,
+        148635.3916404849,
+        0.0
+      ],
+      "rotation": 89.99999999999642,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "OKNO_1k - Okno Hala 1000x1000-V21-1NP",
+      "layer": "A-GLAZ",
+      "insert": [
+        200058.1896360331,
+        149635.3916404849,
+        0.0
+      ],
+      "rotation": 89.99999999999642,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP",
+      "layer": "A-DOOR-FRAM",
+      "insert": [
+        200051.8396360332,
+        150710.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999963,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Vnější jednoduché dvoukřídlé dveře - 1050 x 2100mm-849430-1NP",
+      "layer": "A-DOOR-FRAM",
+      "insert": [
+        180948.531856311,
+        128000.3916404817,
+        0.0
+      ],
+      "rotation": 90.00000000000394,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        181218.1896360341,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        181218.189636034,
+        119750.8165802119,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        183988.1896360341,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        183988.1896360341,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        153090.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        153090.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        146990.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        146990.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        140892.8916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        140892.8916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        137895.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        137895.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        131797.8916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        131797.8916404847,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        125700.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999994,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        125700.3916404847,
+        0.0
+      ],
+      "rotation": 269.9999999999994,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        187988.189636034,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        187988.1896360341,
+        119750.8165802119,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        192988.1896360341,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        192988.1896360341,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        196988.189636034,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        196988.1896360341,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -202125.1265605195,
+        128432.743620636,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        179122.7057601938,
+        128432.7436206361,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -186194.441877884,
+        124454.2048278153,
+        0.0
+      ],
+      "rotation": 90.00000000000064,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-1NP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        186194.4418778841,
+        154599.2194992287,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-1NP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        190279.408437564,
+        138709.9784043552,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        199758.189636034,
+        158968.273649953,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-1NP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        199758.189636034,
+        119750.8165802118,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Family - ___-887816-1NP",
+      "layer": "G-ANNO-REVC-1",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 31.01035950519298,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Popisek revize - Popisek revize-490849-1NP",
+      "layer": "G-ANNO-REVC-IDEN",
+      "insert": [
+        205281.5275239035,
+        149898.2883044109,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    }
+  ],
+  "dimensions": [
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3169.9999999981956,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4000.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3146.007779723004,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6100.000000000116,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.5,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2997.4999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.500000000116,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.499999999985,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 27969.80032874539,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1149.9999999996944,
+      "text_override": "<>\\X2200",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3000.0000000001164,
+      "text_override": "3x1000\\X1000 (1350)",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 770.000000001397,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.000000000087,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4057.500000002212,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1180.2531222309917,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4999.999999999884,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 801.047206514515,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 814.6153360449971,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 921.2531222325924,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 896.9468777658185,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4212.800000001182,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4999.999999999913,
+      "text_override": "5x1000\\X1000 (1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3172.4999999984284,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.9999999997963,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.000000000087,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4000.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3169.9999999989814,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2769.9999999999127,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4000.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2770.0000000001164,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 19312.479498490313,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2329.7467824333,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2327.7725800304033,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2334.659461802905,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2330.3164390878956,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2010.9999999967986,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2098.800328744808,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1150.0000000000873,
+      "text_override": "<>\\X2200",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2000.0,
+      "text_override": "2X1000\\X1000(1350)",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1690.0000000004075,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 764.081440440088,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    }
+  ],
+  "text_entries": [
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "A",
+      "insert": [
+        180965.3278464635,
+        159342.8470565122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "A",
+      "insert": [
+        180965.3278464634,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "B",
+      "insert": [
+        183721.1528464635,
+        159342.8470565122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "B",
+      "insert": [
+        183721.1528464635,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "1",
+      "insert": [
+        176056.9810775498,
+        153467.0673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "1",
+      "insert": [
+        204594.3169453951,
+        153467.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "2",
+      "insert": [
+        176056.9810775498,
+        147367.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "2",
+      "insert": [
+        204594.3169453951,
+        147367.0673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "3",
+      "insert": [
+        176056.9810775498,
+        141269.5673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "3",
+      "insert": [
+        204594.3169453951,
+        141269.5673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "4",
+      "insert": [
+        176056.9810775498,
+        138272.0673509144
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "4",
+      "insert": [
+        204594.3169453951,
+        138272.0673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "5",
+      "insert": [
+        176056.9810775498,
+        132174.5673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "5",
+      "insert": [
+        204594.3169453951,
+        132174.5673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "6",
+      "insert": [
+        176056.9810775497,
+        126077.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "6",
+      "insert": [
+        204594.3169453951,
+        126077.0673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "C",
+      "insert": [
+        187721.1528464634,
+        159342.8470565122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "C",
+      "insert": [
+        187721.1528464635,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "D",
+      "insert": [
+        192713.4264256047,
+        120121.8681736527
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "D",
+      "insert": [
+        192713.4264256047,
+        159339.3252433939
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "E",
+      "insert": [
+        196742.1528464634,
+        159342.8470565121
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "E",
+      "insert": [
+        196742.1528464635,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "A",
+      "insert": [
+        200972.434884069,
+        129419.5002757474
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "A",
+      "insert": [
+        179761.9474366443,
+        129419.5002757475
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "B",
+      "insert": [
+        186435.5735329954,
+        125093.4465042659
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "B",
+      "insert": [
+        186435.5735329954,
+        153418.1778227781
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "SO.01",
+      "insert": [
+        190186.0356124658,
+        140595.7084468362
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "HALA",
+      "insert": [
+        190186.0356124658,
+        140178.9896968362
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "EL_HLAVNÍ",
+      "insert": [
+        194552.5720804662,
+        151697.2847346594
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ROZVAD",
+      "insert": [
+        194552.5720804662,
+        151280.5659846594
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ĚČ",
+      "insert": [
+        196100.3845804662,
+        151280.5659846594
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "495 m²",
+      "insert": [
+        190124.786154996,
+        141487.7101145698
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "1.01",
+      "insert": [
+        190298.561154996,
+        142448.6048471487
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "Sklad fotovoltaických panel",
+      "insert": [
+        188676.836154996,
+        141982.7490571826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "A-AREA-IDEN-1",
+      "text": "ů",
+      "insert": [
+        192337.015842496,
+        141982.7490571826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "+0.000",
+      "insert": [
+        190400.8670470351,
+        139073.2144172128
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "F",
+      "insert": [
+        199532.6278464634,
+        159342.8470565121
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "F",
+      "insert": [
+        199532.6278464634,
+        120125.389986771
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "VENKOVNÍ VZT",
+      "insert": [
+        203067.3499465318,
+        145252.3750757932
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "JEDNOTKA",
+      "insert": [
+        203067.3499465318,
+        144835.6563257932
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "B",
+      "insert": [
+        186325.3856702725,
+        156863.4123252173
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        184474.4832190469,
+        154117.4716657277
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        193312.4676152449,
+        154078.7449355902
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        193375.0914217442,
+        123993.0138151488
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "5.65°",
+      "insert": [
+        184268.946998758,
+        123872.7534504104
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "2.00°",
+      "insert": [
+        179598.6142634827,
+        127680.3586214019
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "2.00°",
+      "insert": [
+        179598.6142634827,
+        127680.3586214019
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "2.00°",
+      "insert": [
+        200777.3361966887,
+        152082.2150609166
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-REVC-IDEN",
+      "text": "1",
+      "insert": [
+        205101.1535049572,
+        150125.5095879459
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "LEGENDA MATERIÁL",
+      "insert": [
+        206911.1646576356,
+        4691.553421647499
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Ů:",
+      "insert": [
+        208934.5656993023,
+        4691.553421647499
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Obvodový pláš",
+      "insert": [
+        208012.005164704,
+        4334.417745031492
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "ť -",
+      "insert": [
+        208681.0702688707,
+        4334.417745031492
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "panely Kingspan",
+      "insert": [
+        208806.0858938707,
+        4334.417745031492
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "s požární odolností EW 15 DP1",
+      "insert": [
+        208012.005164704,
+        4172.360453364826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Železobeton",
+      "insert": [
+        208012.005164704,
+        3956.664321298286
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "Beton prostý",
+      "insert": [
+        208012.005164704,
+        3656.664321298284
+      ]
+    }
+  ],
+  "hatch_per_layer": {
+    "Vlastní 1_A-DETL-GENF": 1,
+    "A-WALL-PATT-1": 12,
+    "Vlastní 1_A-DETL-GENF-1": 1,
+    "Vlastní 1_A-DETL-GENF-2": 2
+  },
+  "closed_polylines": [],
+  "xrefs": []
+}

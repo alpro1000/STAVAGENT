@@ -1,0 +1,12 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+28
+Základová deska:
+Návrh 
+Základová deska bude navržena výšky 200 mm, beton C25/30, XC4, vyztužená u obou povrchů Kari 
+sítěmi Ø8 mm s oky 100/100 mm u spodního a horního povrchu, výztuž B500B, krytí 30 mm. Deska 
+je uložená na zhutněném štěrkovém loži tloušťky 250 mm. Základová spára musí být před betonáží 
+řádně zhutněna Edef,2 = 45,0 MPa, přičemž Edef2/Ede< 1,75.
+Po předložení IGP a zjištění charakteristiky zeminy bude možné návrh podrobně vypočítat.
+Deska je navržena na užitné zatížení 16kN/m2

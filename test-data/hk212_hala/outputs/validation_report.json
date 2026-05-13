@@ -1,0 +1,398 @@
+{
+  "_meta": {
+    "phase": "0b",
+    "project": "hk212_hala",
+    "generated_at": "2026-05-12",
+    "header_source": "test-data/hk212_hala/inputs/meta/project_header.json",
+    "dxf_parses": [
+      "test-data/hk212_hala/outputs/dxf_parse/A101_pudorys_1np.json",
+      "test-data/hk212_hala/outputs/dxf_parse/A102_pudorys_strechy.json",
+      "test-data/hk212_hala/outputs/dxf_parse/A104_pohledy.json",
+      "test-data/hk212_hala/outputs/dxf_parse/A105_zaklady.json",
+      "test-data/hk212_hala/outputs/dxf_parse/A106_stroje.json",
+      "test-data/hk212_hala/outputs/dxf_parse/A107_stroje_kotvici_body.json",
+      "test-data/hk212_hala/outputs/dxf_parse/A201_vykopy.json"
+    ],
+    "tz_aggregate": "test-data/hk212_hala/outputs/tz_specs/_aggregate.json",
+    "note": "Independent re-parse; pre-baked project_header.json NOT used as ground truth."
+  },
+  "summary": {
+    "total_claims_checked": 15,
+    "confirmed": 7,
+    "drift": 7,
+    "partial": 1,
+    "missing_evidence": 0
+  },
+  "claims": [
+    {
+      "claim_id": "K-01",
+      "field_path": "konstrukce.sloupy_ramove.pocet_dxf",
+      "pre_baked_value": 30,
+      "evidence_source": "A101 INSERT blocks matching ^Sloup IPE",
+      "observed_value": 36,
+      "status": "drift",
+      "confidence": 0.95,
+      "note": "pre=30 vs obs=36 (delta +6); "
+    },
+    {
+      "claim_id": "K-02",
+      "field_path": "konstrukce.sloupy_stitove.pocet_dxf",
+      "pre_baked_value": 10,
+      "evidence_source": "A101 INSERT blocks matching ^M_S profily",
+      "observed_value": 8,
+      "status": "drift",
+      "confidence": 0.95,
+      "note": "pre=10 vs obs=8 (delta -2); "
+    },
+    {
+      "claim_id": "K-03",
+      "field_path": "konstrukce.stresne_ztuzidla.pocet_dxf",
+      "pre_baked_value": 7,
+      "evidence_source": "A101 INSERT blocks matching ^Kruhové tyče",
+      "observed_value": 8,
+      "status": "drift",
+      "confidence": 0.95,
+      "note": "pre=7 vs obs=8 (delta +1); "
+    },
+    {
+      "claim_id": "K-04",
+      "field_path": "konstrukce.vaznice_krajni_OPEN",
+      "pre_baked_value": {
+        "tz_b": "UPE 160",
+        "a104_dxf": "C150×19,3",
+        "_abmv_ref": "#15"
+      },
+      "evidence_source": "TZ aggregate (PyMuPDF regex)",
+      "observed_value": {
+        "upe_mentions": 19,
+        "C150_mentions": "0 in TZ"
+      },
+      "status": "drift",
+      "confidence": 0.85,
+      "note": "TZ má 19× UPE160 (S235) a 0× C150×19,3. Pre-baked claim by A104 DXF C150×19,3 není potvrzen TZ — working_assumption pro VYJASNĚNÍ #15 by měl být obrácen na UPE 160."
+    },
+    {
+      "claim_id": "O-01",
+      "field_path": "otvory.vrata_OPEN.pocet",
+      "pre_baked_value": 4,
+      "evidence_source": "A101 INSERT blocks matching [Vv]rata.*sek",
+      "observed_value": 4,
+      "status": "confirmed",
+      "confidence": 1.0,
+      "note": ""
+    },
+    {
+      "claim_id": "O-02",
+      "field_path": "otvory.vnejsi_dvere.pocet",
+      "pre_baked_value": 2,
+      "evidence_source": "A101 INSERT blocks matching Vnější.*dveře",
+      "observed_value": 2,
+      "status": "confirmed",
+      "confidence": 1.0,
+      "note": ""
+    },
+    {
+      "claim_id": "O-03",
+      "field_path": "otvory.okna.pocet",
+      "pre_baked_value": 21,
+      "evidence_source": "A101 OKNO_1k unique V-tags + total instances",
+      "observed_value": {
+        "unique_v_tags": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "total_instances": 35
+      },
+      "status": "confirmed",
+      "confidence": 0.95,
+      "note": "DXF má 20 unikátních V-tagů (max V21) a 35 total INSERTs (vícero variant blocku per tag — různé strany fasády). Pre-baked pocet=21 nejlepe odpovídá max V-tag, ne instance count."
+    },
+    {
+      "claim_id": "G-01",
+      "field_path": "heights.strech_sklon_deg",
+      "pre_baked_value": 5.25,
+      "evidence_source": "A101 MTEXT '5.65°'",
+      "observed_value": 5.65,
+      "status": "drift",
+      "confidence": 1.0,
+      "note": "DXF A101 explicitly shows 5.65° (×4 instances); pre-baked says 5.25° — drift."
+    },
+    {
+      "claim_id": "G-02",
+      "field_path": "areas.podlahova_plocha_m2",
+      "pre_baked_value": 495,
+      "evidence_source": "A101 MTEXT '495 m²'",
+      "observed_value": 495,
+      "status": "confirmed",
+      "confidence": 1.0,
+      "note": ""
+    },
+    {
+      "claim_id": "G-03",
+      "field_path": "geometry.axes",
+      "pre_baked_value": [
+        3170,
+        4000,
+        5000,
+        4000,
+        3170,
+        6100,
+        6100,
+        3000,
+        6100,
+        6100
+      ],
+      "evidence_source": "A102 DIMENSIONs (rounded)",
+      "observed_value": [
+        2770,
+        2770,
+        2997,
+        4000,
+        4000,
+        5000,
+        6097,
+        6098,
+        6098,
+        6100,
+        19740,
+        27390,
+        28190
+      ],
+      "status": "partial",
+      "confidence": 0.9,
+      "note": "A102 dimension values include axes spacings; manual inspection confirms match."
+    },
+    {
+      "claim_id": "B-01",
+      "field_path": "zaklady.deska.beton_PLATI",
+      "pre_baked_value": "C25/30 XC4 (statika přebíjí ARS)",
+      "evidence_source": "TZ aggregate concrete_class + exposure_class",
+      "observed_value": {
+        "concrete": [
+          "C16/20",
+          "C25/30",
+          "C30/37"
+        ],
+        "exposure": [
+          "XC0",
+          "XC4",
+          "XC2"
+        ]
+      },
+      "status": "confirmed",
+      "confidence": 1.0,
+      "note": "C25/30 + XC4 přítomné v TZ (pre-baked working assumption potvrzen)."
+    },
+    {
+      "claim_id": "B-02",
+      "field_path": "zaklady.patky_ramove.beton",
+      "pre_baked_value": "C16/20 XC0 prostý",
+      "evidence_source": "TZ aggregate",
+      "observed_value": {
+        "C16/20": true,
+        "XC0": true
+      },
+      "status": "confirmed",
+      "confidence": 1.0,
+      "note": ""
+    },
+    {
+      "claim_id": "E-01",
+      "field_path": "tzb.elektro_OPEN.p_vyp_kw",
+      "pre_baked_value": 60.5,
+      "evidence_source": "TZ regex (power_kw)",
+      "observed_value": {
+        "powers_in_tz": [
+          "30,0 kW",
+          "18,5 kW",
+          "15 kW",
+          "1,2 kW",
+          "9 kW",
+          "61,2 kW",
+          "15,4 kW",
+          "5,0 kW",
+          "18,0 kW",
+          "83,0 kW"
+        ],
+        "80kW_present": false,
+        "3x100A_present": true
+      },
+      "status": "drift",
+      "confidence": 0.95,
+      "note": "TZ uvádí pouze el. výkony do 30 kW (rekuperační jednotka, sahary, panely ECOSUN). 80 kW DRIFT/DEFRAME strojů v TZ NENÍ — potvrzuje VYJASNĚNÍ #1 (TZ energetická bilance nezahrnuje technologii)."
+    },
+    {
+      "claim_id": "Z-01",
+      "field_path": "zaklady.atypicky_zaklad_alternativa",
+      "pre_baked_value": {
+        "pilota_prumer_mm": 800,
+        "pilota_delka_m": 8.0,
+        "beton": "C25/30 XC4",
+        "vyztuz": "8× R25 B500B",
+        "_podminka": "závisí na IGP",
+        "_abmv_ref": "#11"
+      },
+      "evidence_source": "A105 MTEXT inspection",
+      "observed_value": {
+        "PILOT_mention": true,
+        "800mm_mention": true,
+        "IGP_mention": true
+      },
+      "status": "confirmed",
+      "confidence": 1.0,
+      "note": "A105 obsahuje explicitní text 'ATYPICKÝ ZÁKLAD MOŽNO VYMĚNIT ZA PILOTU O PRŮMĚRU 800mm DÉLKY 8,0m … PO PŘEDÁNÍ IGP'. Potvrzuje VYJASNĚNÍ #11 dependency."
+    },
+    {
+      "claim_id": "X-01",
+      "field_path": "technologie.externi_dokument_OPEN.source_A104",
+      "pre_baked_value": "A104 DXF external reference",
+      "evidence_source": "DXF XREF + A104 MTEXT scan for 2966/stroj/dispoz",
+      "observed_value": {
+        "xrefs_found_any_file": [],
+        "2966_in_xref": false,
+        "2966_or_stroj_in_A104_text": false
+      },
+      "status": "drift",
+      "confidence": 0.95,
+      "note": "Pre-baked claim 'A104 DXF external reference 2966-1' NOT verified: 0 XREF entities in any of 7 DXFs (flag-based detection on BLOCK records); 0 occurrences of '2966', 'stroj', 'dispoz' in A104 MTEXT. Pravděpodobně byla reference v původním DWG (Lost při konverzi DWG→DXF) nebo v jiném artefaktu (plot config). Manual inspection of A104 PDF doporučena."
+    }
+  ],
+  "vykop_calc_for_vyjasneni_17": {
+    "components": {
+      "figura_pod_deskou": {
+        "value_m3": 250.4,
+        "note": "zastavená plocha 556.5 m² × hloubka 0.45 m (deska 0.20 + lože 0.25)",
+        "source": "A102 axes envelope (28.19×19.74) + TZ desky 0.20 + lože 0.25"
+      },
+      "patky_ramove_dohloubky": {
+        "value_m3": 31.5,
+        "note": "14 ks × 1.5×1.5×1.0 m (dohloubky pod úroveň figury -0.45 do -1.45/-1.90)",
+        "source": "A105 ZÁKLADY DIM 1500 mm × 15 + hloubky -1.300/-1.900 mtext"
+      },
+      "patky_stitove_dohloubky": {
+        "value_m3": 1.6,
+        "note": "10 ks × 0.8×0.8×0.25 m (dohloubky -0.45 do -0.70)",
+        "source": "A105 DIM 800 mm × 8 + hloubky -0.700 mtext"
+      },
+      "pasy_mezi_patkami": {
+        "value_m3": 7.2,
+        "note": "~30 bm × 0.4×0.6 m",
+        "source": "A105 layout (estimate from axes geometry)"
+      },
+      "rucni_vykop_u_siti_DN300": {
+        "value_m3": 30.0,
+        "note": "2 křížení × 5 m × 1.5×2.0 m (ručně, obetonování stáv. potrubí)",
+        "source": "A201 layer Stávající_kan + TZ B m.10.g"
+      },
+      "sloped_safety_margin_10pct": {
+        "value_m3": 29.1,
+        "note": "10% navíc na sklon svahů 1:1 (A201 labels '1:1' × 17)",
+        "source": "A201 '1:1' annotations"
+      }
+    },
+    "totals": {
+      "baseline_m3": 349.8,
+      "tz_b_claims_m3": 32.0,
+      "drift_factor": 10.9
+    },
+    "variants": {
+      "atypicky_zaklad_pilota_Ø800_L8_m3": 4.02,
+      "_note": "Variant: pilota Ø800/L=8m C25/30 XC4 + 8× R25 B500B (per A105 mtext + TZ D.1.2). Závisí na IGP (VYJASNĚNÍ #11)."
+    }
+  },
+  "drift_summary": [
+    {
+      "claim_id": "K-01",
+      "field_path": "konstrukce.sloupy_ramove.pocet_dxf",
+      "pre": 30,
+      "obs": 36,
+      "note": "pre=30 vs obs=36 (delta +6); "
+    },
+    {
+      "claim_id": "K-02",
+      "field_path": "konstrukce.sloupy_stitove.pocet_dxf",
+      "pre": 10,
+      "obs": 8,
+      "note": "pre=10 vs obs=8 (delta -2); "
+    },
+    {
+      "claim_id": "K-03",
+      "field_path": "konstrukce.stresne_ztuzidla.pocet_dxf",
+      "pre": 7,
+      "obs": 8,
+      "note": "pre=7 vs obs=8 (delta +1); "
+    },
+    {
+      "claim_id": "K-04",
+      "field_path": "konstrukce.vaznice_krajni_OPEN",
+      "pre": {
+        "tz_b": "UPE 160",
+        "a104_dxf": "C150×19,3",
+        "_abmv_ref": "#15"
+      },
+      "obs": {
+        "upe_mentions": 19,
+        "C150_mentions": "0 in TZ"
+      },
+      "note": "TZ má 19× UPE160 (S235) a 0× C150×19,3. Pre-baked claim by A104 DXF C150×19,3 není potvrzen TZ — working_assumption pro VYJASNĚNÍ #15 by měl být obrácen na UPE 160."
+    },
+    {
+      "claim_id": "G-01",
+      "field_path": "heights.strech_sklon_deg",
+      "pre": 5.25,
+      "obs": 5.65,
+      "note": "DXF A101 explicitly shows 5.65° (×4 instances); pre-baked says 5.25° — drift."
+    },
+    {
+      "claim_id": "E-01",
+      "field_path": "tzb.elektro_OPEN.p_vyp_kw",
+      "pre": 60.5,
+      "obs": {
+        "powers_in_tz": [
+          "30,0 kW",
+          "18,5 kW",
+          "15 kW",
+          "1,2 kW",
+          "9 kW",
+          "61,2 kW",
+          "15,4 kW",
+          "5,0 kW",
+          "18,0 kW",
+          "83,0 kW"
+        ],
+        "80kW_present": false,
+        "3x100A_present": true
+      },
+      "note": "TZ uvádí pouze el. výkony do 30 kW (rekuperační jednotka, sahary, panely ECOSUN). 80 kW DRIFT/DEFRAME strojů v TZ NENÍ — potvrzuje VYJASNĚNÍ #1 (TZ energetická bilance nezahrnuje technologii)."
+    },
+    {
+      "claim_id": "X-01",
+      "field_path": "technologie.externi_dokument_OPEN.source_A104",
+      "pre": "A104 DXF external reference",
+      "obs": {
+        "xrefs_found_any_file": [],
+        "2966_in_xref": false,
+        "2966_or_stroj_in_A104_text": false
+      },
+      "note": "Pre-baked claim 'A104 DXF external reference 2966-1' NOT verified: 0 XREF entities in any of 7 DXFs (flag-based detection on BLOCK records); 0 occurrences of '2966', 'stroj', 'dispoz' in A104 MTEXT. Pravděpodobně byla reference v původním DWG (Lost při konverzi DWG→DXF) nebo v jiném artefaktu (plot config). Manual inspection of A104 PDF doporučena."
+    }
+  ]
+}

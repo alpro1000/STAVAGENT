@@ -1,0 +1,44 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+10
+Požadavky na kontrolu
+-
+Únosnost základové spáry 200 kPa
+Bezpečnost práce a další opatření
+Při výstavbě bude realizační firma bezpodmínečně dodržovat všechna zákonná ustanovení a předpisy 
+o bezpečnosti a ochraně zdraví při práci a technických norem ČSN týkajících se bezpečnosti a 
+ochrany zdraví při práci. 
+Jedná se především o dodržování jednotlivých ustanovení zákona č. 309/2006 Sb. ve znění vyhlášky 
+591/2006  Sb.  o  bližších  minimálních  požadavcích  na  bezpečnost  a  ochranu  zdraví  při  práci 
+na staveništích. Dále je také nezbytné dodržet ustanovení zákona č. 262/2006 Sb. zákoník práce, a 
+nařízení vlády č. 362/2005Sb. o bližších požadavcích na bezpečnost a ochranu zdraví při práci a 
+na pracovištích s nebezpečím pádu z výšky nebo do hloubky.
+Pracovníci musí být před zahájením prací seznámeni s technologickými postupy a s příslušnými 
+bezpečnostními předpisy. Dále musí být seznámeni a musí se řídit bezpečnostními předpisy a pravidly 
+jednotlivých  dodavatelů,  souvisejícími  s realizací  díla.  Práce  budou  prováděny  v souladu 
+s technologickými předpisy dodavatele a ČSN EN 1536, ČSN 73 2400 a ČSN EN 1992-1-1.
+V případě odlišností od uvažovaných geologických poměrů, především při výskytu větších mocností 
+vrstev navážek, budou práce přerušeny a bude přivolán projektant.
+Před zahájením výkopových a vrtných prací musí být ověřeno, že navržené konstrukce nejsou 
+v kolizi se stávajícími funkčními inženýrskými sítěmi.
+KONSTRUKCE – výpočet:
+Pro  optimalizaci  konstrukce  byl  proveden  statický  výpočet  celé  konstrukce  prostorovým 
+stěnodeskovým a prutovým modelem v programu SCIA ENGINEER, který umožnil zachytit chování 
+konstrukce jako celku. Byla modelována kombinace zatížení tvořená 3-mi zatěžovacími stavy. Ve 
+vodorovných konstrukcích byly zachyceny polohy hlavních otvorů, šachty apod.
+S ohledem na velikost objektu byla zvolena velikost prvků cca 0,2 m, s automatickým zahuštěním 
+v místě podpor a napojení prutových a stěnodeskových prvků (generuje program sám). 
+Analýza  konstrukce  je  provedena  lineárním  výpočtem,  uvažováno  je  pouze  působení  zatížení 
+na nedeformované konstrukci. 
+Výpočet deformace pro ŽB desky je proveden nelineárním výpočtem, aby se co nejvíce přiblížilo k 
+reálnému chování kce. 
+Použité výpočetní programy:
+SCIA
+program pro prostorovou analýzu konstrukcí deskových i prutových prvků podle 
+metodiky MKP, Scia CZ s.r.o. 
+FIN EC
+program  pro rovinnou  a  prostorovou  analýzu  prutových  konstrukcí  deformační 
+variantou MKP včetně dimenzování podle platných ČSN EN, FINE s.r.o.
+EXCEL
+pomocné tabulky pro dimenzování prvků

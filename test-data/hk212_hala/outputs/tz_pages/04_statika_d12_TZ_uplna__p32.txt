@@ -1,0 +1,13 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+31
+Základy - pilota:
+Pod jedním základem se nachází staré vodní trubky, které nelze narušit. Jedním z možných řešení je 
+pilota 
+Návrh
+Pilota je navržena o průměru 800mm a délky 8,0m z betonu C25/30 XC4. Vyztužena 8x R25 B500B 
+třmínky (šroubovice) R10 á 200 m.
+Rozměry a návrh piloty je vypočten z odhadovaných charakteristik zeminy. Po předložení IGP bude 
+pilota přepočítána. V případě skalního podloží pod objektem bude pilota vetknuta až do těchto 
+míst.

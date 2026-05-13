@@ -1,0 +1,48 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+13/25 
+ 
+přepěťové ochrany typ 1+2, 
+ 
+prostor pro napojení technologických zařízení (VZT, vytápění), 
+ 
+minimálně 35 % volné kapacity pro budoucí dozbrojení. 
+Hlavní vypínač bude umístěn na čelní straně rozvaděče a umožní odpojit celý 
+objekt. 
+ 
+3.3 Zásuvkové rozvody 
+Zásuvkové rozvody jsou vedeny k samostatným zásuvkovým skříním, které jsou 
+osazeny kombinací: 
+ 
+400 V / 32 A / 5p, 
+ 
+400 V / 16 A / 5p, 
+ 
+230 V / 16 A (2×). 
+Každá skříň bude vybavena vlastní ochranou – jističem a proudovým chráničem. 
+Rozmístění zásuvek je navrženo tak, aby pokrylo obvod haly a umožnilo připojení 
+ručního i stacionárního nářadí. 
+ 
+3.4 Osvětlení 
+Osvětlení je navrženo pomocí LED průmyslových svítidel s vysokou světelnou 
+účinností, odolností vůči prachu a vlhkosti (IP 65). Počet a rozmístění svítidel je 
+navrženo tak, aby byla splněna norma ČSN EN 12464-1 pro osvětlení vnitřních 
+pracovišť – průměrná intenzita 200 lx a rovnoměrnost min. 0,6. 
+Ovládání je řešeno prosvětlenými tlačítky, která umožní snadnou orientaci i v 
+zatemněném prostoru. Okruhy jsou rozděleny na 1/3 a 2/3 svítidel, což 
+umožňuje jednoduchou regulaci intenzity osvětlení při různých provozních 
+režimech. 
+Nouzové osvětlení není požadováno požárně-bezpečnostním řešením, proto není 
+navrženo. Únikové cesty budou označeny fotoluminiscenčními tabulkami se 
+směry úniku, které jsou umístěny nad východy a na trase k nim. 
+ 
+3.5 Uložení kabelových vedení 
+Hlavní kabelové trasy jsou vedeny po kabelových roštech a drátěných žlabech 
+pod stropem haly. Ostatní rozvody jsou ukládány do elektroinstalačních trubek 
+nebo lišt a připevněny na povrch konstrukcí pomocí typizovaných příchytek. 
+Všechny kabely budou řádně označeny a barevně rozlišeny dle funkce. 
+Použité kabely budou minimálně ve třídě reakce na oheň Eca, kabely pro nouzové 
+systémy (např. přívod požárního čerpadla hydrantu) musí splňovat požadavky na 
+funkčnost při požáru. 
+ 
+4. Ochrana před bleskem a uzemnění 
+4.1 Ochrana před bleskem (LPS) 

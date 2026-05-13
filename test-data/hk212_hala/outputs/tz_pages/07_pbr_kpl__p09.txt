@@ -1,0 +1,128 @@
+ 
+9 
+ 
+2) ostatních šachet (instalačních, 
+výtahových apod.) 
+b) požární uzávěry otvorů 
+v požárně dělicích konstrukcích 
+1) šachet evakuačních a 
+požárních výtahů 
+2) ostatních šachet (instalačních, 
+výtahových apod.) 
+ 
+ 
+15 DP2 
+ 
+ 
+15 DP2 
+ 
+ 
+ 
+ 
+ 
+ 
+15 DP1 
+ 
+ 
+ 
+15 DP1 
+ 
+ 
+30 DP1 
+ 
+ 
+ 
+30 DP1 
+ 
+ 
+ 
+45 DP1 
+ 
+12 
+Střešní plášť (viz 9.14.1) 
+– 
+– 
+15 
+15 
+30 
+30 DP1 
+45 DP1 
+13 
+Jednopodlažní objekty podle 9.1.4 
+a) požární stěny 
+b) požární uzávěry otvorů 
+v požárních stěnách 
+c) svislé požární pásy 
+v obvodových stěnách mezi 
+objekty a obvodové stěny, 
+pokud mají být bez požárně 
+otevřených ploch 
+staticky nezávislé 
+30 DP1 
+15 DP1 
+ 
+15 DP1 
+45 DP1 
+30 DP1 
+ 
+30 DP1 
+60 DP1 
+30 DP1 
+ 
+30 DP1 
+90 DP1 
+45 DP1 
+ 
+45 DP1 
+120 DP1 
+60 DP1 
+ 
+60 DP1 
+– 
+– 
+ 
+– 
+– 
+– 
+ 
+– 
+Hodnoty s označením: 
+1) musí být splněny v těch případech, kde se počítá se snižujícím součinitelem Δc1 podle položky 1 tabulky 4; v ostatních 
+případech se jejich splnění pouze doporučuje; pokud není dosaženo u položky 3a3) a 4 požární odolnosti 15 minut, 
+posuzují se tyto konstrukce jako zcela požárně otevřené plochy (požadavek se týká položky 4 jen v případě, že nosná 
+konstrukce střechy je současně střešním pláštěm). 
+2) se pouze doporučují; pokud není dosaženo u položky 3b) požární odolnosti z vnitřní strany obvodové stěny, posuzují 
+se tyto konstrukce jako požárně otevřené plochy. 
+3) konstrukce označené křížkem (+) viz 9.1.3. 
+ 
+Vzhledem k nehořlavému konstrukčnímu systému objektu musí být ve smyslu čl. 5.7.1 a) 
+ČSN 73 0804 požárně dělicí a nosné konstrukce druhu DP1, pokud tab. 10 ČSN 73 0804 
+nestanovuje nižší požadavek. Při posuzování konstrukčního systému se dle čl. 5.7.4 ČSN 
+73 0804 nebere zřetel na konstrukce obvodových stěn, které nezajišťují stabilitu objektu či jeho 
+části a ani nezajišťují stabilitu technických nebo technologických výrobních nebo skladových 
+provozů.  
+ 
+Jedná se o jednopodlažní objekt. V souladu s čl. 9.1.4 ČSN 73 0804 jsou konstrukce 
+posouzeny dle pol. 1–12 tab. 10 ČSN 73 0804 jako konstrukce v posledním nadzemním podlaží. 
+ 
+Požární stěny a stropy: 
+Nevyskytují se. 
+ 
+Požární uzávěry: 
+Nevyskytují se. 
+ 
+Obvodové konstrukce zajišťující stabilitu objektu: 
+Nevyskytují se. 
+ 
+Obvodové konstrukce nezajišťující stabilitu objektu: 
+Systémové fasádní panely 
+- 
+Požadavek: EW 15 DP1 
+- 
+Z důvodu omezení PNP objektu se uvažují obvodové konstrukce jako požárně uzavřené 
+plochy a ve smyslu čl. 9.4.3 ČSN 73 0804 se požaduje PO od obvodových konstrukcí, 
+přičemž ve smyslu čl. 9.5 ČSN 73 0804 se požaduje druh konstrukce DP1 s povrchovou 
+vrstvou třídy reakce na oheň A1/A2. 
+- 
+Skutečná PO: min. EW 15 DP1. Požadovanou PO musí vykazovat i kotvicí prvky 
+zajišťující upevnění k nosné konstrukci. Průkaz vlastností pro splnění požadované 

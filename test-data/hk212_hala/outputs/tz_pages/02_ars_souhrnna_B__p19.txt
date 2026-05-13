@@ -1,0 +1,31 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+19/25 
+objektu se nenachází stálý úkryt. Požární zatížení bylo stanoveno na hodnotu 90 kg/m², 
+přičemž požární úsek je zařazen do II. stupně požární bezpečnosti. Ekonomické riziko 
+bylo posouzeno jako vyhovující, s rezervou vůči maximálně přípustné ploše požárního 
+úseku. 
+ 
+B.3.7 Úspora energie a tepelná ochrana budovy 
+Zohlednění plnění požadavků na energetickou náročnost, úsporu energie a tepelnou 
+ochranu budov. 
+Budova je navržena v souladu s požadavky vyhlášky č. 264/2020 Sb., o 
+energetické náročnosti budov. 
+Veškeré konstrukce budou splňovat minimálně požadované hodnoty podle ČSN 
+73 0540. 
+ 
+ 
+B.3.8 Hygienické požadavky na stavbu, požadavky na pracovní a komunální prostředí 
+Zásady řešení parametrů stavby (větrání, osvětlení, proslunění, stínění, zásobování 
+vodou, ochrana proti hluku a vibracím, odpady apod.) a vlivu stavby na okolí (vibrace, 
+hluk, zastínění, prašnost apod.). 
+ 
+Vzduchotechnická zařízení jsou sestavena z následujících výrobků: 
+sestavná rekuperační jednotka ve venkovním provedení 
+dveřní clony bez ohřevu 
+ 
+potrubí spiro a další běžné vzduchotechnické výrobky. 
+Podle potřeby izolace a nátěry. 
+ 
+Umělé osvětlení bylo navrženo dle výše uvedených zásad a těchto požadavků ČSN EN 12464-1: 
+ 
+Požadavky dle ČSN EN 12464-1, Tabulka 12: Skladové prostory a chladírny 

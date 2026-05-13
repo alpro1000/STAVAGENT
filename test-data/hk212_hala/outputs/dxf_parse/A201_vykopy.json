@@ -1,0 +1,3633 @@
+{
+  "file": "A201_vykopy.dxf",
+  "units": "mm",
+  "entity_types": {
+    "LINE": 765,
+    "SPLINE": 77,
+    "LWPOLYLINE": 110,
+    "ARC": 40,
+    "INSERT": 91,
+    "HATCH": 55,
+    "MTEXT": 185,
+    "DIMENSION": 120,
+    "CIRCLE": 52
+  },
+  "layer_entity_counts": {
+    "C-TOPO-MAJR": 3,
+    "C-TOPO": 176,
+    "S-FNDN-1": 148,
+    "A-GENM-1": 155,
+    "A-GENM-2": 3,
+    "A-DETL-1": 1,
+    "Stávající dešťová kan__Trubky-1": 6,
+    "Stávající splašková kan__Trubky-1": 5,
+    "A-DETL-THIN": 4,
+    "C-TOPO-PATT-1": 3,
+    "C-TOPO-1": 65,
+    "C-TOPO-2": 71,
+    "Stávající dešťová kan__Trubky-2": 33,
+    "Stávající splašková kan__Trubky-2": 19,
+    "S-GRID-IDEN": 24,
+    "S-GRID-IDEN-1": 24,
+    "S-GRID-1": 12,
+    "A-ANNO-DIMS": 120,
+    "G-ANNO-TEXT": 12,
+    "G-ANNO-TEXT-1": 1,
+    "G-ANNO-DIMS": 457,
+    "A-ANNO-NOTE": 21,
+    "G-ANNO-DIMS-1": 9,
+    "G-ANNO-DIMS-2": 102,
+    "G-ANNO-SYMB-1": 6,
+    "G-ANNO-SYMB": 6,
+    "G-ANNO-SYMB-2": 6,
+    "G-ANNO-TEXT-2": 3
+  },
+  "block_counts": {
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP": 1,
+    "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP": 1,
+    "Osnova - 6mm-307864-VÝKOP": 24,
+    "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP": 18,
+    "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP": 3,
+    "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP": 5,
+    "Řez - Velká značka-308779-VÝKOP": 6,
+    "Výškové kóty - Horní-314756-A-VYKOP": 8,
+    "Výškové kóty - Dolní-314757-A-VYKOP": 2,
+    "Výškové kóty - Horní-314756-C_VYKOP": 7,
+    "Výškové kóty - Dolní-314757-C_VYKOP": 6,
+    "Výškové kóty - Dolní-314757-B_VYKOP": 3,
+    "Výškové kóty - Horní-314756-B_VYKOP": 6
+  },
+  "block_instances": [
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815811-VÝKOP",
+      "layer": "A-GENM-2",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-794159-VÝKOP",
+      "layer": "A-GENM-2",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Construction_Roof-Accessories_Lindab_Round- - Lindab Round Downpipe System 150_100 High Build Polyester 001 Antique White-815879-VÝKOP",
+      "layer": "A-GENM-2",
+      "insert": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        181218.1896360341,
+        157516.1383646609,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        181218.1896360341,
+        121458.5786594641,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        183988.1896360342,
+        157516.1383646609,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        183988.1896360341,
+        121458.5786594641,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176213.75297505,
+        153090.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        153090.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176213.7529750499,
+        146990.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        146990.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176213.7529750498,
+        140892.8916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        140892.8916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        137895.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        137895.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        131797.8916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        131797.8916404847,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        176270.3169841089,
+        125700.3916404848,
+        0.0
+      ],
+      "rotation": 269.9999999999994,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        204807.6528519542,
+        125700.3916404847,
+        0.0
+      ],
+      "rotation": 269.9999999999994,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        187988.189636034,
+        157516.1383646609,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        187988.189636034,
+        121458.5786594641,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        192988.1896360341,
+        121458.5786594641,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        192988.1896360341,
+        157516.1383646608,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        196988.1896360341,
+        157516.1383646609,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        196988.189636034,
+        121458.5786594641,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        199758.189636034,
+        157516.1383646609,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Osnova - 6mm-307864-VÝKOP",
+      "layer": "S-GRID-IDEN",
+      "insert": [
+        199758.189636034,
+        121458.5786594641,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        191358.6290159714,
+        155736.2181477772,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        202075.2151915542,
+        145650.2535794834,
+        0.0
+      ],
+      "rotation": 270.1456095788393,
+      "xscale": 150.0000000000001,
+      "yscale": 150.0000000000001,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        190112.0128853771,
+        123041.4710175145,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        178764.0962920945,
+        145541.8981904264,
+        0.0
+      ],
+      "rotation": 89.91424284925009,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        180405.2149122985,
+        123207.0727566972,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        200487.8699990497,
+        123368.5627906701,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        180233.3464028362,
+        155491.9234686775,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        200786.2373628905,
+        155429.1678749208,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        190490.2974292833,
+        150675.0896883107,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        190490.2974292832,
+        128110.4875149468,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        189727.5181439769,
+        132758.8297660442,
+        0.0
+      ],
+      "rotation": 141.6378764085464,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915153-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        194370.5322347675,
+        136292.268507932,
+        0.0
+      ],
+      "rotation": 137.4545171694701,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        183383.9450843416,
+        131797.8916404848,
+        0.0
+      ],
+      "rotation": 269.9254877407288,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        194344.2606080401,
+        138142.3206007124,
+        0.0
+      ],
+      "rotation": 174.0028796067269,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        192409.8942977096,
+        142369.0518703094,
+        0.0
+      ],
+      "rotation": 354.0028796067183,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        185649.1418868709,
+        144441.9931681891,
+        0.0
+      ],
+      "rotation": 316.7621147809961,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        197590.631756693,
+        135407.1915266718,
+        0.0
+      ],
+      "rotation": 90.00000000000058,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        197592.4155078443,
+        148054.6312430005,
+        0.0
+      ],
+      "rotation": 90.00000000000058,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        183386.2871012857,
+        147871.539739661,
+        0.0
+      ],
+      "rotation": 270.2838541423094,
+      "xscale": 150.0000000000001,
+      "yscale": 150.0000000000001,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        202014.681440443,
+        133472.6397423382,
+        0.0
+      ],
+      "rotation": 270.1456095788393,
+      "xscale": 150.0000000000001,
+      "yscale": 150.0000000000001,
+      "attribs": null
+    },
+    {
+      "name": "VYKOP_ZNACKA_POZN - VYKOP_ZNACKA_POZN-915148-VÝKOP",
+      "layer": "A-ANNO-NOTE",
+      "insert": [
+        178744.426293789,
+        133985.8896595666,
+        0.0
+      ],
+      "rotation": 89.91424284925009,
+      "xscale": 150.0,
+      "yscale": 150.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        199231.3427451919,
+        150429.3537128772,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        189846.4411997977,
+        126021.3427837735,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        195090.496327567,
+        136417.9039064477,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        195458.7201952743,
+        130679.7486346768,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Výšková kóta - Základová-780896-VÝKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -180453.6576069002,
+        151095.3599603616,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-VÝKOP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -205115.6543283373,
+        131521.8546287015,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-VÝKOP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        175046.722904409,
+        131521.8546287016,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-VÝKOP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -183856.2607740863,
+        118939.3560223489,
+        0.0
+      ],
+      "rotation": 90.00000000000064,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-VÝKOP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        183856.2607740864,
+        158638.4917595434,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-VÝKOP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        -199758.189636034,
+        118939.3560223489,
+        0.0
+      ],
+      "rotation": 90.00000000000075,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Řez - Velká značka-308779-VÝKOP",
+      "layer": "G-ANNO-SYMB",
+      "insert": [
+        199758.1896360341,
+        157965.3916404849,
+        0.0
+      ],
+      "rotation": 269.9999999999995,
+      "xscale": 149.9999999999999,
+      "yscale": 149.9999999999999,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        33933.65534492839,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        34989.86186989604,
+        -1139.855862182573,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -395189.7610071599,
+        -1139.855862182573,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -396005.3215410249,
+        -322.8558621825735,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        50426.64129674295,
+        -322.8558621825735,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        52244.73675997376,
+        -1460.855862182634,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -414606.5641074943,
+        -183.3094395542904,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        33933.65534492839,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -412087.0641833378,
+        -1139.855862182573,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-A-VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        15622.20719256253,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        422318.146075715,
+        1185.402795800181,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        -422639.146075715,
+        -16549.02625482559,
+        0.0
+      ],
+      "rotation": 180.0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        422318.146075715,
+        19899.9461969513,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        422318.146075715,
+        24926.86955635215,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        422318.146075715,
+        28769.43924468997,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421340.3112607903,
+        30467.01283988032,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        6144.907452761848,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        12118.16944594932,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        15162.01559573447,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        20894.97394551788,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-C_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        421285.3989005024,
+        27165.75473530085,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499740.4392459082,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499461.4392459083,
+        11183.34259001689,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Dolní-314757-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499740.4392459082,
+        27131.8017549261,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499740.4392459082,
+        0.0,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1,
+      "yscale": 1,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499958.0525737203,
+        3496.345904573728,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499958.0525737202,
+        9740.697011338674,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499958.0525737203,
+        16659.78153828446,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499958.0525737203,
+        27676.3381077833,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    },
+    {
+      "name": "Výškové kóty - Horní-314756-B_VYKOP",
+      "layer": "G-ANNO-DIMS",
+      "insert": [
+        499662.7423691062,
+        31209.48765345777,
+        0.0
+      ],
+      "rotation": 0,
+      "xscale": 1.0,
+      "yscale": 1.0,
+      "attribs": null
+    }
+  ],
+  "dimensions": [
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6100.000000000116,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.499999999884,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2997.4999999999127,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.500000000204,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 6097.499999999985,
+      "text_override": "",
+      "dimtype": 160
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 5000.000000000116,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3999.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2770.0000000001164,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2770.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2517.690876963784,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.053761077293,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 30061.375777400404,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1143.3233270639903,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0000000002037,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 422.4999999985157,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1499.9999999997963,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 599.8090933281928,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1029.0893732563127,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 599.9955567235011,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4571.384663953213,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4597.499999999884,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0000000001164,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1492.5,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4600.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1499.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4600.000000000102,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4597.499999999898,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4597.500000000087,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1497.5,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4597.5,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4600.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1500.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 599.9955567237048,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 981.8332930909964,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 571.3802206766268,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1017.3960137592803,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 800.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3200.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 800.0000000001164,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4200.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 800.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3200.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 800.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 599.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0000000002037,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 599.9999999997963,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 422.4999999985157,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1499.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 599.8090933281928,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1029.0893732563127,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 420.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1499.9999999998836,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 597.6909066733206,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1089.324231276085,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 239.15351096848383,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4340.440339964023,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1137.9996179958007,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1164.396384920056,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4125.359975555742,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1134.44934191835,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1137.406087990675,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1739.9976443838275,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1137.4060320669817,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1137.4050590921088,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1739.9960416535823,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1137.40506365667,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 320.8320923888397,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1739.99560020403,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 320.83209080024665,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1137.9996179956759,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 870.7467571098235,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 3900.7480346284215,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1134.4493419184225,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 799.9999999998981,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1734.5219795158046,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1665.6769975702919,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 800.0000000001164,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1417.0000000000873,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 22555.999999999578,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1417.0000000003056,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0000000001019,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 12157.011972450622,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 816.9428167807409,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2699.9999680528967,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1139.6807380814528,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 955.3509459087529,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2683.2923871271687,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 807.0938893884618,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 817.0402883561261,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 2700.078715601895,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1028.942187017664,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 8828.378650479892,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 7784.435652168089,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 4114.565491033107,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 14206.13948900251,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 14206.139489002655,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 10275.676192744233,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 9689.751603480792,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1139.8558621825764,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 778.9250000000011,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 1138.000000000065,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 956.6189477462559,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 321.06812999022713,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.00000000007,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 600.0000000000709,
+      "text_override": "",
+      "dimtype": 32
+    },
+    {
+      "layer": "A-ANNO-DIMS",
+      "actual": 945.4303483681365,
+      "text_override": "",
+      "dimtype": 32
+    }
+  ],
+  "text_entries": [
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "A",
+      "insert": [
+        180965.3278464634,
+        157890.71177122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "A",
+      "insert": [
+        180965.3278464635,
+        121833.1520660233
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "B",
+      "insert": [
+        183721.1528464635,
+        157890.7117712201
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "B",
+      "insert": [
+        183721.1528464635,
+        121833.1520660232
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "1",
+      "insert": [
+        176000.4170684908,
+        153467.0673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "1",
+      "insert": [
+        204594.3169453951,
+        153467.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "2",
+      "insert": [
+        176000.4170684908,
+        147367.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "2",
+      "insert": [
+        204594.3169453951,
+        147367.0673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "3",
+      "insert": [
+        176000.4170684908,
+        141269.5673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "3",
+      "insert": [
+        204594.3169453951,
+        141269.5673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "4",
+      "insert": [
+        176056.9810775498,
+        138272.0673509144
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "4",
+      "insert": [
+        204594.3169453951,
+        138272.0673509143
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "5",
+      "insert": [
+        176056.9810775498,
+        132174.5673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "5",
+      "insert": [
+        204594.3169453951,
+        132174.5673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "6",
+      "insert": [
+        176056.9810775497,
+        126077.0673509142
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "6",
+      "insert": [
+        204594.3169453951,
+        126077.0673509141
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "C",
+      "insert": [
+        187721.1528464635,
+        157890.7117712201
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "C",
+      "insert": [
+        187721.1528464635,
+        121833.1520660233
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "D",
+      "insert": [
+        192713.4264256047,
+        121829.6302529049
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "D",
+      "insert": [
+        192713.4264256047,
+        157887.1899581017
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "E",
+      "insert": [
+        196742.1528464635,
+        157890.7117712201
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "E",
+      "insert": [
+        196742.1528464635,
+        121833.1520660233
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "F",
+      "insert": [
+        199532.6278464634,
+        157890.71177122
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "S-GRID-IDEN-1",
+      "text": "F",
+      "insert": [
+        199532.6278464634,
+        121833.1520660232
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "\"A\"",
+      "insert": [
+        190186.0356124658,
+        140999.2303971468
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "SO.01",
+      "insert": [
+        190186.0356124658,
+        140582.5116471468
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "HALA",
+      "insert": [
+        190186.0356124658,
+        140165.7928971468
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-1",
+      "text": "B",
+      "insert": [
+        186325.3856702725,
+        156863.4123252173
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        201328.9943095712,
+        148338.4144230599
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        197680.3962787815,
+        146743.0594367364
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        192298.4201656172,
+        137041.885856208
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        195290.463899963,
+        138233.0219730169
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        188442.5000722644,
+        127148.6476847365
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "-1.300",
+      "insert": [
+        199385.8559395527,
+        150792.5897257349
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "-1.900",
+      "insert": [
+        190000.9543941586,
+        126384.5787966312
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "-0.483",
+      "insert": [
+        195245.0095219279,
+        136781.1399193054
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "-1.621",
+      "insert": [
+        195613.2333896352,
+        131042.9846475345
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        197616.9450729587,
+        137177.7232541952
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        197616.9450729587,
+        137177.7232541952
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        199659.1471167756,
+        154551.0897132125
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        197512.0477605684,
+        126754.4875939688
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "Neznámá p",
+      "insert": [
+        186958.6020666751,
+        146027.4283061188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ředpokládaná poloha areálových sítí.",
+      "insert": [
+        188823.9145666751,
+        146027.4283061188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "Při styku se sítěmi během výkopových prací je nutné",
+      "insert": [
+        186958.6020666751,
+        145610.7095561188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "jejich nalezení neprodleně nahlásit stavbyvedoucímu",
+      "insert": [
+        186958.602066675,
+        145193.9908061188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "+",
+      "insert": [
+        195511.258316675,
+        145193.9908061188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "projektantovi a zajistit jejich vytyčení.",
+      "insert": [
+        186958.6020666751,
+        144777.2720561188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        189475.4741789818,
+        154544.1426828828
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        179009.3017049087,
+        147218.27474885
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        178768.5420096133,
+        133488.3852701899
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        180619.4147288095,
+        123626.9444289343
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        188452.06739138,
+        123268.5305435243
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        199107.4108021407,
+        123635.6264969833
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        201090.4916761163,
+        135112.5408517925
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        190876.1467762636,
+        151004.4335046386
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        182467.4928990279,
+        149520.0102510781
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        183703.7061457803,
+        145062.2753256782
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        190773.8725715137,
+        141605.5152877134
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        188525.0664007879,
+        134035.4173859717
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        182512.3476012602,
+        133447.244713541
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS-1",
+      "text": "-1.300",
+      "insert": [
+        180572.4313873051,
+        150957.4807829594
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.160",
+      "insert": [
+        176989.6409111753,
+        122421.0835695363
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.165",
+      "insert": [
+        179257.5386819548,
+        122002.3947503155
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.165",
+      "insert": [
+        179362.2108867601,
+        122865.9404399585
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.320",
+      "insert": [
+        200090.2563558054,
+        122825.867192366
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.320",
+      "insert": [
+        200123.234366141,
+        122364.1750476675
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.345",
+      "insert": [
+        202339.3566606937,
+        123234.7945205274
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.265",
+      "insert": [
+        200226.2683067773,
+        156347.7194726381
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.265",
+      "insert": [
+        200237.738919068,
+        156938.4560056063
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.270",
+      "insert": [
+        202440.0964788719,
+        156370.6606972194
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.220",
+      "insert": [
+        179828.6871074108,
+        156476.389908672
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.220",
+      "insert": [
+        179794.2752705389,
+        157239.1856259999
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.210",
+      "insert": [
+        177574.711792299,
+        156573.8901131425
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        180223.0223829121,
+        154380.5556237317
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        199911.6458124806,
+        154367.7718230921
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        199970.4601201465,
+        124880.9312004316
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        180034.6373749595,
+        124875.8663135606
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        183130.3008778671,
+        154096.6418998097
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        196682.3125123146,
+        154002.7646692419
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        196682.3125123147,
+        152614.7202142163
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        183214.241197435,
+        152610.6431636327
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        183824.5383255872,
+        150202.4842236126
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        195561.7637498411,
+        150280.2899682849
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        184812.6155030726,
+        146505.250377188
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        187589.2126658909,
+        143576.0929306984
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        196193.6126649541,
+        142828.5475407088
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        196361.4289769926,
+        137794.0581795548
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        193478.0396156044,
+        137977.1305199604
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        196300.4048635241,
+        134544.5241373554
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        200075.3650337273,
+        130348.0667796813
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        199433.1391629651,
+        136003.516007662
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        198986.4360193196,
+        136576.479368685
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        192894.9670666997,
+        128964.3775664219
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        184501.7105002376,
+        129347.723419217
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        183936.7797698026,
+        136207.5965744986
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        181238.8668839331,
+        127504.4248270063
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        183555.3080251943,
+        125228.3186837325
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        183387.4917131559,
+        126586.1052084074
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        196791.8012656075,
+        125326.3680127179
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        196450.7443316171,
+        126630.4092309162
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.485",
+      "insert": [
+        195700.616406401,
+        127307.7864646579
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        199218.6706596882,
+        127514.4981163684
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        198767.4428978423,
+        132209.7462132463
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        199872.3099058135,
+        128781.3022265524
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        201969.9839011185,
+        125917.3386907151
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        180143.1360414349,
+        142735.5370395552
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        180396.9225246688,
+        146034.7613215969
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        180096.9930444833,
+        149414.7358483041
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        181446.6757053185,
+        148353.4469184165
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        181400.5327083668,
+        139551.6702498925
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        180189.2790383865,
+        139667.0277422716
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        181648.5159142511,
+        150006.9712019661
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "A-VYKOP",
+      "insert": [
+        201121.6626518868,
+        132508.6112838129
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "A-VYKOP",
+      "insert": [
+        175685.9645808596,
+        132508.6112838129
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "B_VYKOP",
+      "insert": [
+        184097.3924291977,
+        119578.5976987995
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "B_VYKOP",
+      "insert": [
+        184097.3924291978,
+        154450.2500830928
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "C_VYKOP",
+      "insert": [
+        199999.3212911454,
+        119578.5976987995
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-SYMB-2",
+      "text": "C_VYKOP",
+      "insert": [
+        199999.3212911454,
+        153777.1499640344
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "Obetonování Potr. - CCA pr",
+      "insert": [
+        223791.4795336629,
+        -2611.411417928876
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT",
+      "text": "ůbeh",
+      "insert": [
+        228276.1670336629,
+        -2611.411417928876
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.160",
+      "insert": [
+        212449.2456209086,
+        126.9216413885967
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        213524.3287578495,
+        -974.543903820788
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        215575.5610007244,
+        -981.1395058879099
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        216597.8120435241,
+        -139.4044301582184
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        228967.3143424421,
+        -182.1908819147131
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        230760.2243433633,
+        -1260.919819356744
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.345",
+      "insert": [
+        235074.5927930846,
+        -25.36012625952118
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        213474.5753142706,
+        -978.0910960999441
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        216582.9305661444,
+        -1539.602680084634
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:2",
+      "insert": [
+        226187.3052969945,
+        -956.1940887866864
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        234927.0708969524,
+        -1132.363491899246
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        233375.6543915083,
+        -2956.420052599374
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        232679.554685837,
+        -956.4044301582197
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        215064.2062391424,
+        -2956.420052599374
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-2",
+      "text": "Ř",
+      "insert": [
+        224051.4121214439,
+        -530.7563660523524
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-2",
+      "text": "ez ve sklonu",
+      "insert": [
+        224249.8496214439,
+        -530.7563660523524
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-TEXT-2",
+      "text": ", kolmý sklon 1:1",
+      "insert": [
+        225748.0527464439,
+        -530.7563660523524
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        226974.8594598,
+        -1636.950077141513
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        231606.19598023,
+        -1675.684864296031
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        233924.5908913145,
+        -1717.418493624404
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.265",
+      "insert": [
+        279246.2121254465,
+        -15808.819498853
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        280278.959300659,
+        -14623.4167030528
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        280599.9593006591,
+        -1563.521791452314
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        280278.959300659,
+        4091.126698098318
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        280278.959300659,
+        9118.050057499164
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.300",
+      "insert": [
+        280278.959300659,
+        12960.61974583703
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.320",
+      "insert": [
+        279301.1244857343,
+        14658.19334102734
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        282278.9749231001,
+        -14067.90382657616
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        282278.9749231001,
+        -7922.996373814301
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        282278.9749231001,
+        -1949.73438062683
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        282278.9749231002,
+        1094.111769158324
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        282278.9749231002,
+        6827.07011894174
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        282278.9749231002,
+        13097.8509087247
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        280352.2762901868,
+        -16076.02746910708
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        280352.2762901868,
+        -16076.02746910708
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        281071.4429700802,
+        -13082.18703299351
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        280858.7676351472,
+        14341.82301434887
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        281135.1315079203,
+        -1615.074362677384
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        281544.882500686,
+        -332.2233107421026
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        362175.5233072013,
+        -13914.36536851315
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.620",
+      "insert": [
+        361896.5233072014,
+        -2731.022778496223
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-1.900",
+      "insert": [
+        362175.5233072015,
+        13217.43638641303
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.265",
+      "insert": [
+        359140.8943569483,
+        -15729.34352553992
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        359358.5076847601,
+        -12232.99762096624
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        359358.5076847603,
+        -5988.646514201279
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        359358.5076847603,
+        930.4380127445287
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.485",
+      "insert": [
+        359358.5076847603,
+        11946.99458224339
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "-0.190",
+      "insert": [
+        359063.1974801461,
+        15480.14412791787
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360554.8762210763,
+        12192.12608374573
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360962.6284570743,
+        14920.27631885564
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360950.5392774241,
+        585.0529294030184
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360514.7392950262,
+        -4625.053628430387
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360514.7392950262,
+        -4625.053628430387
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360731.8468872453,
+        -5784.835250817176
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360736.2660630585,
+        -5778.788839501988
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        361036.8351985393,
+        -1768.239446660803
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360399.607237395,
+        -2422.614230297826
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360477.6341748238,
+        1135.516282995349
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        361008.7621067796,
+        -14794.02885766531
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        361926.2190608913,
+        -14900.66227543419
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360486.4651632299,
+        -15266.28497410063
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        361089.868392729,
+        -12596.96361679902
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        360999.3411884237,
+        12845.84476664713
+      ]
+    },
+    {
+      "type": "MTEXT",
+      "layer": "G-ANNO-DIMS",
+      "text": "1:1",
+      "insert": [
+        361907.1971814966,
+        12723.20975088017
+      ]
+    }
+  ],
+  "hatch_per_layer": {
+    "C-TOPO-PATT-1": 3,
+    "G-ANNO-DIMS-1": 1,
+    "G-ANNO-DIMS-2": 51
+  },
+  "closed_polylines": [],
+  "xrefs": []
+}

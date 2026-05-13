@@ -1,0 +1,59 @@
+ 
+13 
+ 
+Výpočet půdorysné plochy PÚ připadající na 1 osobu 
+PÚ 
+SPÚ [m2] 
+E 
+m2/osoba 
+N01.01 – Skladovací hala 
+495 
+18 
+28,21 
+ 
+Zhodnocení konstrukce střech a podhledů stropních konstrukcí z hlediska odpadávání a 
+odkapávání: 
+Plocha PÚ N01.01 – Skladovací hala je větší než 250 m2. Z tohoto důvodu se dle čl. 9.9.2 a) 
+ČSN 73 0804 v konstrukcích podhledů stropů PÚ nesmí použít výrobků, které při požáru (při 
+požární zkoušce dle ČSN 73 0865) jako hořící odkapávají nebo odpadávají.  
+ 
+Průsvitné střešní pláště a světlíky je možné dle čl. 9.9.2 b) ČSN 73 0804 užít pouze 
+v množství odpovídající max. dvojnásobku podílu půdorysné plochy a metrů čtverečních 
+podlahové plochy připadající na 1 osobu (podle ČSN 73 0818), tj. např. 30 % světlíků na 15 m2 
+na osobu. 
+Výše zmíněná ustanovení platí také pro hmoty použité na osvětlovací tělesa, pokud 
+plocha těchto těles (jejich půdorysný průmět) je větší než 30 % podlahové plochy.  
+→ Podhledové konstrukce ani světlíky se v objektu nenachází.  
+→ Světla musí být provedena o ploše menší než 30 % plochy PÚ. 
+ 
+Kontaktní zateplovací systém obvodových stěn: 
+Obvodové konstrukce jsou tvořeny systémovými sendvičovými stěnami vyplněnými minerální 
+vlnou (třída reakce na oheň A1). Tyto obvodové konstrukce dosahují požadované PO. Nejedná 
+se o kontaktní zateplovací systém. Z tohoto důvodu nejsou stanoveny požadavky dle čl. 3.1.3 
+ČSN 73 0810. 
+ 
+Střešní plášť 
+Střešní plášť musí v souladu s čl. 9.14.1 ČSN 73 0804 vykazovat PO dle pol. 12 a 4 tab. 10 
+ČSN 73 0804. PO konstrukcí požadavkům vyhovují, viz hodnocení dříve. 
+Na střešní plášť je dle §7 vyhlášky č. 23/2008 Sb. požadavek na klasifikaci BROOF (t3) 
+– nachází se v PNP jiného PÚ (resp. objektu – garáž), mimo PNP se požaduje klasifikace 
+BROOF (t1). Střešní plášť je tvořen sendvičovým panelem s plechovým povrchem, klasifikace 
+BROOF (t3) bude doložena od výrobce. 
+ 
+Prostupy rozvodů technických a technologických zařízení požárně dělícími konstrukcemi, 
+případně konstrukcemi s požadovanou požární odolností: 
+V objektu se nenachází požárně dělicí konstrukce, kterými by procházely prostupy rozvodů 
+technických a technologických zařízení. Z tohoto důvodu dále nejsou dále hodnoceny 
+požadavky na prostupy těmito konstrukcemi ani požadavky na těsnění spár. Prostupy rozvodů 
+však nesmí snižovat PO konstrukcí, kterými prochází. 
+ 
+7. Zhodnocení navržených hmot: 
+ 
+Užité stavební hmoty a výrobky budou podrobněji řešeny v dalším stupni projektové 
+dokumentace s ohledem na finální podobu posuzovaného objektu. 
+V posuzovaném objektu jsou navrženy níže uvedené stavební hmoty a výrobky. Třídy 
+reakce na oheň těchto stavebních hmot a výrobků jsou určeny v souladu s Přílohou A ČSN 73 
+0810 nebo v souladu s technickými listy těchto výrobků na základě provedených příslušných 
+zkoušek podle norem EN. Všechny použité stavební výrobky a hmoty vyhovují normovým 
+požadavkům. 
+ 

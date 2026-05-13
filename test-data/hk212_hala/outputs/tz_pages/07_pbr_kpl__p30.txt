@@ -1,0 +1,135 @@
+N01.01 – Skladovací hala
+p n 
+=
+kg/m2
+p s 
+=
+kg/m2
+p
+=
+=
+kg/m2
+Δc 1
+=
+0,00
+zásah JPO v časovém pásmu H1
+ne
+Δc 2
+=
+0,00
+SHZ
+ne
+zásah JPO v časovém pásmu H2
+ne
+Δc 3
+=
+0,00
+ZOKT
+ne
+zásah JPO v časovém pásmu H2
+ne
+c
+=
+1,00
+Otvory v obvodové stěně a střešní konstrukci (otevíravé/bez požární odolnosti)
+Stavební konstrukce
+Půdorys 
+je
+obdélníkový.
+h s 
+=
+m
+S PÚ
+=
+m2
+k 3
+=
+dle tab. 2 ČSN 73 0804
+PBŘ 2025/60-034 – Hala Hradec Králové – Příloha 3
+Výpočet požárního rizika a stanovení SPB
+Výpočet nahodilého požárního zatížení p n
+Místnost
+S  [m2]
+p ni  [kg/m2]
+a ni  [-]
+p ni *S i
+p ni *a ni *S i
+Položka dle ČSN 
+73 0802, Příl. A
+Sklad (h sc  ≤ 3 m)
+495,00
+85
+–
+42075,00
+–
+13.8.5 + 13.2.2
+Celkem
+495,00
+42075,00
+Výpočet stálého požárního zatížení p s
+S  [m2]
+p s  [kg/m2]
+okna
+do 500
+3
+dveře
+do 500
+2
+podlaha
+nehořlavá
+0
+Celkem
+5
+Výpočet požárního zatížení p
+85,00
+5,00
+p n +p s
+90,00
+Stanovení součinitele c
+Popis
+boi [m]
+hoi [m]
+počet [ks]
+S oi  [m2]
+S oi *√h oi
+S oi *h oi
+okna
+1,000
+1,000
+36
+36,00
+36,00
+36,00
+vrata, dveře
+V souladu s čl. 6.4.2 ČSN 73 0804 se na straně bezpečné pro výpočet S o 
+nezapočítávají tyto otvory, jelikož výplně otvorů jsou kovové, tedy při 
+požáru neumožňují přístup vzduchu a odvod zplodin hoření z PÚ, přičemž 
+jejich samočinné otevření při požáru není spolehlivě zajištěno.
+Celkem
+36,00
+36,00
+36,00
+Popis
+b ki  [m]
+h ki  [m]
+počet [ks]
+S ki  [m2]
+stěny
+93,025
+5,820
+1
+541,41
+strop, podlaha
+495,000
+2
+990,00
+Celkem
+1531,41
+Celkem bez otvorů S k
+1495,41
+Stanovení součinitele k 3
+4,91
+495,00
+2,91
+Strana 1/2
+Hala Hradec Králové, Příloha 3

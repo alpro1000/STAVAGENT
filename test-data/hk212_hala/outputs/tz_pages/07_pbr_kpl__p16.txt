@@ -1,0 +1,56 @@
+ 
+16 
+ 
+Značení únikových cest 
+Označení únikových cest musí být v souladu s čl. 10.19 ČSN 73 0804, resp. ČSN ISO 3864-1. 
+Označení musí být umístěno minimálně tam, kde se mění směr úniku, případně dochází ke 
+křížení komunikací. V místech se sníženou viditelností se doporučuje doplnit značení směru 
+úniku značkami ze svítících barev, s vnitřním zdrojem světla nebo jinou obdobnou úpravou. 
+ 
+Pokud budou ÚC používány též dopravními vozíky apod., musí se na podlaze vyznačit 
+(např. pruhy typu zebra) plochy ÚC, na nichž platí zákaz odstavování vozíků, materiálů apod. 
+ 
+Zhodnocení požadavků na provedení únikových cest: 
+Dveře na ÚC: 
+Dveře na únikových cestách musí odpovídat čl. 10.16 ČSN 73 0804: 
+- 
+Dveře na ÚC musí umožňovat snadný a rychlý průchod, zabraňovat zachycení oděvu 
+apod. a svým zajištěním nesmí bránit evakuaci unikajících osob ani zásahu požárních 
+jednotek.  
+- 
+Dveře ovládané motoricky musí umožňovat také ruční otevření. 
+- 
+Dveře, jimiž prochází úniková cesta, nesmí mít prahy a podlaha na obou stranách dveří 
+musí být do vzdálenosti šířky dveřního křídla na stejné výškové úrovni, s výjimkou 
+dveří na volné prostranství, za nimiž může být podlaha (chodník apod.) snížena až o 
+180 mm, v případě dveří z PÚ skladu může být snížena až o 200 mm. 
+- 
+Dveře na VP musí být otevíravé ve směru úniku otáčením křídel v postranních závěsech 
+nebo čepech. Pokud jimi neprochází více než 200 evakuovaných osob (E ∙ s), mohou 
+mít směr otáčení křídel i opačný. 
+- 
+Podlaha na obou stranách dveří, jimiž prochází ÚC, musí být do vzdálenosti rovné 
+alespoň šířce této ÚC určené podle čl. 10.13.1 ČSN 73 0804 (viz výše) ve stejné výškové 
+úrovni kromě dveří na VP, za nimiž může být podlaha (chodník) snížena až do 200 mm. 
+- 
+U dveří se požaduje instalovat panikové kování dle ČSN EN 179, pokud budou se 
+zámkovou vložkou. V případě, že z venkovní strany nebude umožněno otevření 
+nepovolanými osobami (např. bude zámek zaslepen), panikové kování se nepožaduje – 
+uvažuje se, že v provozní době budou dveře odemknuté a zaměstnancům bude umožněn 
+únik ze zázemí těmito dveřmi. 
+ 
+9. Stanovení odstupových, popřípadě bezpečnostních vzdáleností a vymezení požárně 
+nebezpečného prostoru, zhodnocení odstupových, popřípadě bezpečnostních vzdáleností 
+ve vztahu k okolní zástavbě, sousedním pozemkům a volným skladům 
+ 
+Parametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni 
+projektové dokumentace s ohledem na finální podobu posuzovaného objektu (požární 
+otevřenost obvodových stěn apod.). 
+Obvodový plášť posuzovaného objektu je navržen ze systémových fasádních panelů 
+(DP1) s požadovanou PO a v souladu s čl. 3.1.3 ČSN 73 0810 je posuzován jako požárně 
+uzavřená plocha. Za zcela požárně otevřenou plochu jsou považovány pouze výplně otvorů 
+v obvodových stěnách (okna, dveře) bez požadované PO – od dveří s PO EI-C 15 DP1 se 
+odstupové vzdálenosti neurčují. 
+ 
+ 
+ 

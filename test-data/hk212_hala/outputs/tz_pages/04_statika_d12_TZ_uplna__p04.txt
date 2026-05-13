@@ -1,0 +1,56 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+3
+ÚVOD:
+Obsahem dokumentace je návrh a posouzení nosných konstrukcí ocelové haly. Objekt se bude 
+nacházet  na  adrese  Vážní  857  v  Hradci  Králové.  Objekt  bude  mít  půdorysné  rozměry 
+18,54x28,19x7,195m. Sklon střechy 5,25°. Osová vzdálenost hlavních nosných konstrukcí 6,1m a 
+3,0m. Dokumentace je vypracována v rozsahu pro stavební povolení. Dokumentace je vypracována 
+na základě objednávky pana Ing. Arch. Jakuba Volky
+IDENTIFIKAČNÍ ÚDAJE:
+Název stavby
+Hala Hradec Králové – SOLAR DISPOREC
+Místo stavby
+Vážní 857 Hradec Králové
+Účel stavby
+Hala
+Charakter stavby
+Novostavba
+Investor
+SOLAR DISPOREC s.r.o. Malostranské náměstí 5/28,  Malá Strana 
+(Praha 1)
+ZADÁVACÍ PODMÍNKY:
+Konstrukce  jsou  navrženy  podle  platných  ČSN  a  EN.  Nebyly  předepsány  zvláštní  tolerance  na 
+provádění konstrukcí, předpokládá se dodržení platných norem. 
+Použité normy a předpisy:
+Zásady navrhování konstrukcí
+ČSN EN 1990
+Zásady navrhování konstrukcí
+Zatížení stavebních konstrukcí
+ČSN EN 1991-1-1
+Eurokód 1: Zatížení konstrukcí - Část 1-1: Obecná zatížení - Objemové 
+tíhy, vlastní tíha a užitná zatížení pozemních staveb
+ČSN EN 1991-1-2
+Eurokód 1: Zatížení konstrukcí - Část 1-2: Obecná zatížení - Zatížení 
+konstrukcí vystavených účinkům požáru
+ČSN EN 1991-1-3
+Eurokód  1:  Zatížení  konstrukcí-Část  1-3:  Obecná  zatížení  -  Zatížení 
+sněhem
+ČSN EN 1991-1-4
+Eurokód  1:  Zatížení  konstrukcí-Část  1-4:  Obecná  zatížení  -  Zatížení 
+větrem
+Betonové konstrukce – navrhování
+ČSN EN 1992-1-1
+Eurokód 2: Navrhování betonových konstrukcí. Část 1-1: Obecná pravidla 
+a pravidla pro pozemní stavby
+ČSN EN 1992-1-2
+Eurokód 2: Navrhování betonových konstrukcí - Část 1-2: Obecná pravidla 
+- Navrhování konstrukcí na účinky požáru
+Ocelové konstrukce – navrhování
+ČSN EN 1993-1-1
+Eurokód 3: Navrhování ocelových konstrukcí - Část 1-1: Obecná pravidla a 
+pravidla pro pozemní stavby
+ČSN EN 1993-1-2
+Eurokód 3: Navrhování ocelových konstrukcí - Část 1-2: Obecná pravidla - 
+Navrhování konstrukcí na účinky požáru

@@ -1,0 +1,63 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+6
+Stropní konstrukce obecně
+L/250
+L/300
+Stropní a střešní konstrukce s dlažbou nebo omítkou
+L/250
+L/350
+Případy, kdy průhyb může narušit vzhled konstrukce
+L/400
+kde max je výsledný průhyb a 2 je průhyb od užitného zatížení
+Vodorovné posuvy a průhyby od zatížení větrem jsou omezeny následujícím způsobem:
+u vícepodlažních budov každé patro
+H/300,
+kde H je výška patra
+konstrukce jako celek
+H0/500,
+kde H0 je výška budovy.
+Pracovní spáry
+Pracovní spáry při betonáži se předpokládají vždy na spodním a horním líci stropní konstrukce. 
+Konstrukce vertikálních komunikačních prvků (rampy, schodiště) budou betonovány dodatečně a 
+navázání výztuže bude provedeno s pomocí přípravků osazených před betonáží do souvisejících 
+svislých konstrukcí. Pracovní spáry budou v případu požadavků na vodotěsnost řešeny těsnícími 
+systémy.
+Smršťování a dotvarování betonu
+Nepříznivé účinky od smršťování betonu budou omezeny vhodným uspořádáním výztuže, například 
+uložením výztuže i v tlačené oblasti stropní desky, vhodnou technologií ukládání betonu (smršťovací 
+pruhy),  dodržováním  technologické  kázně,  kvalitním  ošetřováním  uloženého  betonu,  vhodným 
+složením  betonové  směsi  a  případně  použitím  betonu,  u  kterého  je  dosaženo  požadovaných 
+vlastností  po  devadesáti  dnech.  Standardně  bude  použit  beton,  který  dosáhne  požadovaných 
+vlastností po 28 dnech od uložení betonové směsi. U desek i stěn bude vodorovná výztuž navržena 
+na šířku trhliny od vynucených přetvoření. 
+Tolerance betonových konstrukcí
+Tolerance vertikální i horizontální, jak celkové tak lokální, nosné železobetonové konstrukce jsou 
+omezeny  podle  znění  ČSN EN  13670  „Provádění  betonových  konstrukcí“  –  Toleranční  třída  1. 
+Požadavky na dodržení výrobních rozměrových a povrchových tolerancí budou následující:
+1)
+Poloha základu v půdorysu vztažená k sekundárním přímkám:  25 mm
+2)
+Poloha základu ve svislém směru vztažená k sekundární úrovni:  20 mm
+3)
+Poloha sloupu a stěny v půdorysu vztažená k sekundárním přímkám:  25 mm
+4)
+Volný prostor mezi sousedními sloupy nebo stěnami: větší z   20 mm nebo   l/600, max. 
+60 mm
+5)
+Vodorovná přímost nosníků: větší z  20 mm nebo  l/600
+6)
+Vzdálenost mezi sousedními nosníky: větší z  20 mm nebo  l/600, max. 40 mm
+7)
+Vychýlení nosníku nebo desky:  (10 + l/500) mm
+8)
+Úroveň sousedních nosníků:  (10 + l/500) mm
+9)
+Úrovně sousedních stropů u podpěr:  20 mm
+10) Rovina nejvyššího stropu měřená k sekundární úrovni:  20 mm nebo  0,5 (H+20) mm, max. 
+60 mm
+11) Pravoúhlost příčného řezu desky (nosníku): větší z  0,04 h nebo  10 mm, max.  20 mm
+12) Tolerance pro rovinnost povrchů a přímost hran:
+a.
+Povrch ve styku s bedněním

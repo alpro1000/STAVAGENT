@@ -1,0 +1,15 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+24
+deformace [mm]
+Wlim sloup = 5400/250 = 21,4mm > 7,6mm
+VYHOVUJE
+Wlim příčel = 18540/250 = 74,16mm > 62,3,mm
+VYHOVUJE
+Posouzení: 1→ 100% (84%)
+Návrh:
+Příčel rámu je navržena z profilu IPE450 z oceli S235. Příčel je se styku se sloupem opatřena 
+náběhem. Návrh spoje ve vyšším stupni PD. Sloup je navržen z profilu IPE400 z oceli S235.
+Prvky  jsou  navrženy  na  požární  únosnost  15min.  Příčel  musí  být  stabilizována  vaznicemi  o 
+maximální rozteči 1,5m jinak požární únosnost nevyhoví.

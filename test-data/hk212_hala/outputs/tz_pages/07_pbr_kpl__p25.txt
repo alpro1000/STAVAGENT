@@ -1,0 +1,53 @@
+ 
+25 
+ 
+Otvory pro nepotrubní větrání: 
+V požárně dělicích konstrukcí se nenachází otvory pro nepotrubní větrání na hranicích PÚ. 
+Dále tak nejsou stanoveny požadavky na tyto otvory dle čl. 9.2.5 a 9.2.6 ČSN 73 0810. 
+ 
+Vyústění VZT potrubí: 
+V souladu s čl. 4.3.1 ČSN 73 0872 musí být vyústění VZT potrubí vně objektu uspořádáno a 
+umístěno tak, aby jím nemohl být přenesen oheň nebo kouř do PÚ téhož objektu nebo jiných 
+objektů. 
+ 
+V souladu s čl. 4.3.2 ČSN 73 0872 musí být otvory pro výfuk vzduchu umístěny nejméně 1,5 m 
+od (uvedená vzdálenost se měří mezi nejbližšími okraji posuzovaných otvorů): 
+▪ východů z únikových cest na volné prostranství; 
+▪ otvorů pro přirozené větrání chráněných či částečně chráněných ÚC; 
+▪ nasávacích otvorů VZT zařízení. 
+ 
+V souladu s čl. 4.3.3 ČSN 73 0872 musí být otvory pro sání vzduchu: 
+▪ vzdáleny vodorovně alespoň 1,5 m a svisle alespoň 3 m od POP obvodových stěn; 
+▪ potrubím vyvedeny alespoň 1 m nad rovinu střešního pláště, pokud střešní plášť je 
+schopen šířit požár. 
+ 
+Pozn.: V souladu s čl. 4.3.5 ČSN 73 0872 nemusí být výše uvedené požadavky na vyústění VZT potrubí 
+vně objektu dodrženy, pokud se VZT samočinně vypne při výskytu zplodin hoření v jeho potrubí. 
+ 
+Výše uvedené vzdálenosti budou dodrženy. 
+ 
+Vyhodnocení:  
+Projekt větrání je samostatnou částí projektové dokumentace a musí respektovat výše uvedené 
+požadavky. 
+ 
+14. Stanovení zvláštních požadavků na zvýšení požární odolnosti stavebních konstrukcí nebo 
+snížení hořlavosti stavebních hmot: 
+ 
+V případě nevyhovující PO ocelových konstrukcí budou tyto konstrukce chráněny požárními 
+obklady nebo jinou úpravou (nátěry, nástřiky apod.), která zajistí požadovanou PO těchto 
+konstrukcí. Požární odolnost použité ochrany ke kolaudaci bude doložena certifikátem výrobce 
+platným na území ČR.  
+ 
+15. Posouzení požadavků na zabezpečení stavby požárně bezpečnostními zařízeními, 
+následně stanovení podmínek a návrh způsobu jejich umístění a instalace do stavby: 
+ 
+Parametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni 
+projektové dokumentace s ohledem na finální podobu posuzovaného objektu (užité PBZ apod.). 
+ 
+EPS: 
+V souladu s čl. 7.2 ČSN 73 0804 a čl. 4.2.2 ČSN 73 0875 řešený sklad není vybaven EPS, 
+jelikož plocha PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,5∙Smax. 
+▪ 0,5 ∙ Smax = 3165 m2 ≥ SPÚ = 495 m2 
+ 
+ 
+ 

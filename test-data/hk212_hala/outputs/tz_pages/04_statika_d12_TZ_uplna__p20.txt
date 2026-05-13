@@ -1,0 +1,12 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+19
+MSP1: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 sníh + 1,0 . (0,6) vítr I
+MSÚ2: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 sníh + 1,5 . (0,6) vítr II
+MSP2: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 sníh + 1,0 . (0,6) vítr II
+MSÚ3: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 . (0,5) sníh + 1,5 . vítr I
+MSP3: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 . (0,5) sníh + 1,0 .  vítr I
+MSÚ4: 1,35 vl. tíha + 1,35 ostatní stálé + 1,5 . (0,5) sníh + 1,5 . vítr II
+MSP4: 1,0 vl. tíha + 1,0 ostatní stálé + 1,0 . (0,5) sníh + 1,0 . vítr II
+Střešní a stěnové panely KINGSPAN

@@ -1,0 +1,23 @@
+{
+  "C1_sirsi_vztahy.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 830,
+      "path": "test-data/hk212_hala/outputs/situace_pages/C1_sirsi_vztahy__p01.txt"
+    }
+  ],
+  "C2_katastr.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 928,
+      "path": "test-data/hk212_hala/outputs/situace_pages/C2_katastr__p01.txt"
+    }
+  ],
+  "C3_situace_kaceni.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 4034,
+      "path": "test-data/hk212_hala/outputs/situace_pages/C3_situace_kaceni__p01.txt"
+    }
+  ]
+}

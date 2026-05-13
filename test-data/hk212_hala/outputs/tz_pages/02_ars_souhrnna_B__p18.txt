@@ -1,0 +1,48 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+18/25 
+ 
+6.6 Technická a technologická zařízení z hlediska PO 
+ 
+Vzduchotechnika: vybavena tlumiči hluku, pružným uložením, bez 
+nutnosti speciálních požárních opatření. 
+ 
+Vytápění: elektrické sálavé panely a nástěnné jednotky – neobsahují 
+paliva ani plynové spotřebiče, požární riziko minimální. 
+ 
+Elektroinstalace: hlavní vypínač je u vstupu do objektu, umožňuje 
+odpojení všech zařízení. Rozvody kabelů jsou navrženy v souladu s ČSN 
+73 0848 (požární bezpečnost kabelových rozvodů). 
+ 
+6.7 Hasicí přístroje a vybavení 
+V objektu budou rozmístěny přenosné práškové a sněhové hasicí přístroje. S 
+ohledem na druh skladovaného materiálu se požaduje vybavit sklad 2x PHP 
+práškový 27 A  + 2x PHP sněhový (CO2) 144 B. 
+ 
+6.8 Požárně nebezpečný prostor a odstupy 
+Požárně nebezpečný prostor kolem objektu nepřesahuje hranice pozemku. 
+Odstupy k okolní zástavbě jsou dostatečné, požadavky norem jsou splněny. 
+ 
+B.3.6 Zásady požární bezpečnosti 
+a) charakteristiky a kritéria pro stanovení kategorie stavby podle požadavků jiného 
+právního předpisu2) - výška stavby, zastavěná plocha, počet podlaží, počet osob, pro 
+který je stavba určena, nebo jiný parametr stavby, zejména světlá výška podlaží nebo 
+délka tunelu apod. 
+ 
+ 
+Posuzovaná stavba – novostavba skladovací haly – je zařazena do kategorie I dle 
+vyhlášky č. 460/2021 Sb., přičemž odpovídá také třídě využití I. Objekt je jednopodlažní, 
+nepodsklepený, s celkovou zastavěnou plochou 520 m² a užitnou plochou 495 m². Výška 
+stavby od upraveného terénu činí 7,195 m, požární výška je 0,00 m, světlá výška 
+vnitřního prostoru 5 m. Stavba má jedno nadzemní podlaží. Projektovaný počet osob 
+nepřekračuje 100, skutečná maximální obsazenost dle normových výpočtů vychází na 
+cca 17 osob. Celý objekt tvoří jeden požární úsek o ploše 495 m². Stavba je určena pro 
+skladování demontovaných částí fotovoltaických panelů. 
+ 
+b) kritéria - třída využití, přítomnost nebezpečných látek nebo jiných rizikových 
+faktorů, prohlášení stavby za kulturní památku 
+ 
+ 
+Stavba náleží do třídy využití I a kategorie stavby I. V objektu se nenacházejí 
+prostory určené pro veřejnost, prostory pro spánek ani prostory pro osoby, jejichž 
+evakuace by vyžadovala asistenci dalších osob. Stavba není kulturní památkou. Neslouží 
+ke skladování hořlavých kapalin, plynů, toxických látek ani pyrotechnických výrobků. V 
