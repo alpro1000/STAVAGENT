@@ -3,6 +3,14 @@ package-lock.json
 *.db
 .claude/
 
+# URS cache — derived locally by scripts/urs_cache/, ~140 MB
+data/urs_cache.db
+data/urs_cache.db-journal
+data/urs_cache.db-wal
+data/urs_cache.db-shm
+data/urs_cache/
+urs_cache_*.zip
+
 # Environment files (keep .env.example tracked)
 .env
 .env.*
