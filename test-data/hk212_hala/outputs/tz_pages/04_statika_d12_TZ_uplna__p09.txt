@@ -1,0 +1,47 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+8
+Provedení betonových konstrukcí s ohledem na požární zatížení
+Není-li uvedeno jinak, jsou železobetonové konstrukce standardně navrženy na požární odolnost 
+90 minut. Pro posouzení požární odolnosti nosných železobetonových prvků byly použity tabulky firmy 
+PAVUS a.s. - „Hodnoty požární odolnosti stavebních konstrukcí podle Eurokódů“. Tyto hodnoty jsou 
+z hlediska návrhu na straně bezpečné a odpovídají požadavkům normy ČSN EN 1992-1-2: „Eurokód 
+2: Navrhování betonových konstrukcí - Část 1-2: Obecná pravidla - Navrhování konstrukcí na účinky 
+požáru“.
+PROVEDENÍ OCELOVÝCH KONSTRUKCÍ:
+Výpočet spolehlivosti konstrukce dle výše citovaných norem je proveden s předpokladem, že bude 
+uplatňována odpovídající úroveň stavebních prací a systém řízení jakosti dle ČSN EN 1090-2 – 
+Provádění ocelových konstrukcí a hliníkových konstrukcí – Část 2: Technické požadavky na ocelové 
+konstrukce.
+Třídy provedení
+Jsou čtyři třídy provedení vztažené k výrobním kategoriím, kategoriím použití a třídami následků od 1 
+do 4, označené jako EXC1 až EXC4, pro které požadavek přísnosti vzrůstá od EXC1 do EXC4. Pokud 
+v technické zprávě nebo ve výkresech není třída provedení pro danou konstrukci uvedena, bude 
+použita třída EXC2. Požadavky ve vztahu k třídám provedení jsou v Tabulce A. 3 normy ČSN EN 
+1090-2.
+Stupně přípravy povrchu
+Jsou tři stupně přípravy povrchu, označené P1 až P3 podle ISO 8501-3, pro které požadavek přísnosti 
+vzrůstá od P1 do P3. Stupně přípravy povrchu jsou vztaženy k očekávané životnosti protikorozní 
+ochrany a kategorii korozní agresivity. Pokud není v technické zprávě nebo ve výkresech uvedeno 
+jinak, pak předpokládáme životnost protikorozní ochrany 15let a korozní kategorii C2. Pro tyto kritéria 
+je třída přípravy povrchu definována stupněm „P1“.
+Tento projekt neřeší detailní požadavky pro protikorozní ochranné systémy, které předpokládáme 
+provedeny v souladu s normami EN ISO 12 944 a přílohou F normy ČSN EN 1090-2 pro natírané 
+konstrukce, resp. normami EN ISO 1461, EN ISO 14713 a přílohou F normy ČSN EN 1090-2 pro 
+povrchy pozinkované ponorem. 
+Žárově zinkované konstrukce
+Pokud jsou ocelové konstrukce navrženy jako žárově zinkované, předpokládáme jejich provedení dle 
+normy ČSN EN ISO 1461. Tyto konstrukce budou na stavbě montované šroubovými spoji. Případné 
+opravy na staveništi je možné provádět pouze v souladu s bodem 6.3 normy ČSN EN ISO 1461. 
+Oprava po svařování žárově zinkovaných konstrukcí bude provedena žárovým stříkáním zinku (dle 
+ISO 2063) nebo nanesením vhodného nátěru obsahujícího pigment práškového zinku dle ISO 3549.
+Geometrické tolerance
+Geometrické  úchylky  jsou  děleny  na  „základní  tolerance“,  které  jsou  zásadní  pro  mechanickou 
+únosnost a stabilitu smontované konstrukce a na funkční tolerance požadované pro splnění dalších 
+kritérií jako je přesnost a vzhled.
+Základní tolerance musí být v souladu s přílohou D. 1 normy ČSN EN 1090-2. Stanovené hodnoty 
+jsou dovolené úchylky. Jestliže skutečné úchylky přesahují dovolené hodnoty, s naměřenou hodnotou 
+bude jednáno jako s neshodou podle kapitoly 12 normy ČSN EN 1090-2. V některých případech je 
+možnost překročenou úchylku základních tolerancí ponechat v souladu s návrhem konstrukce, jestliže 
+překročená úchylka je posouzena přepočtem. Jestliže to není možné, musí se neshoda opravit.

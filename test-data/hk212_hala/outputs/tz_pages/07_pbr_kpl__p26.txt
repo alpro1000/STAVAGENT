@@ -1,0 +1,53 @@
+ 
+26 
+ 
+Samočinné stabilní hasicí zařízení: 
+V souladu s čl. 7.2.7 ČSN 73 0804 řešený sklad není vybaven SSHZ, jelikož půdorysná plocha 
+PÚ 5. skupiny výrobního provozu nepřesahuje plochu 0,3∙Smax. 
+▪ 0,3 ∙ Smax = 1899 m2 ≥ SPÚ = 495 m2 
+ 
+Zařízení pro odvod tepla a kouře: 
+V souladu s čl. 7.2.8 ČSN 73 0804 řešený sklad není vybaven ZOKT, jelikož plocha PÚ 5. 
+skupiny výrobního provozu nepřesahuje plochu 0,5∙Smax. 
+▪ 0,5 ∙ Smax = 3165 m2 ≥ SPÚ = 495 m2 
+ 
+Nouzové osvětlení: 
+V souladu s čl. 10.18 ČSN 73 0804 se v objektu nezřizuje nouzové osvětlení. 
+ 
+Vypínání elektrické energie při požárech a mimořádných událostech: 
+Dle kap. 6 ČSN 73 0848 se požaduje jednostupňové vypínání elektrické energie z důvodu 
+instalace PBZ s integrovanou baterií → ve smyslu čl. 6.1.4 ČSN 73 0848 se požaduje pouze 
+HLAVNÍ VYPÍNAČ ELEKTRICKÉ ENERGIE.  
+V souladu s čl. 6.1.2 ČSN 73 0848 musí být prostor, odkud je umožněno vypnutí 
+elektrické energie objektu, v případě požáru přístupný z volného prostranství. Ovládání musí 
+být do maximální vzdálenosti 5 m od vstupu do objektu. Umístění hlavního vypínače musí 
+být označeno zelenou bezpečnostní tabulkou „HLAVNÍ VYPÍNAČ ELEKTRICKÉ 
+ENERGIE – TOTAL STOP“ a takového označení se předpokládá s použitím písma 
+velikosti alespoň 20 mm dle čl. 6.2.3 ČSN 73 0848.  
+Dle čl. 6.1.6 ČSN 73 0848 musí být pro funkci hlavního vypínače elektrické energie 
+použit prvek určený pro „vypínání s funkcí odpojení“ a zároveň umožňující obsluhu laiky. 
+Nelze tedy používat odpojovače, výkonové pojistky apod. Tento prvek může být s přímým 
+ovládáním (vypínač, jistič atd.) nebo s dálkovým ovládáním (jistič nebo vypínač s ovládací 
+cívkou, stykač a podobně) a ovládacím prvkem, tj. například tlačítkem. 
+Hlavní vypínač elektrické energie je umístěn v hlavním rozvaděči, který je umístěn po 
+pravé straně za hlavním vstupem do objektu. 
+ 
+16. Rozsah a způsob umístění výstražných a bezpečnostních značek a tabulek, včetně 
+vyhodnocení nutnosti označení míst, na kterých se nachází věcné prostředky požární 
+ochrany a požárně bezpečnostní zařízení: 
+ 
+Umístění a vzhled bezpečnostních značek bude proveden v souladu s NV 375/2017Sb. a ČSN 
+ISO 3864 – 1,3,4. 
+ 
+Příslušnými výstražnými tabulkami podle ČSN EN ISO 7010 budou označeny: 
+▪ Hlavní rozvaděč elektrické energie 
+▪ Hlavní vypínač elektrické energie – TOTAL STOP 
+▪ Hlavní uzávěr vody 
+▪ Hlavní uzávěr plynu 
+ 
+Dalšími tabulkami, které vyplývají z tohoto PBŘ, musí být dle ČSN EN ISO 7010, ČSN 
+73 08xx a vyhlášky 23/2008 Sb. označeny: 
+▪ Hasicí přístroje 
+▪ Vnitřní odběrní místa 
+▪ Únikový východ 
+▪ Směr úniku 

@@ -1,0 +1,346 @@
+ 
+8 
+ 
+Hodnocení požární odolnosti stavebních konstrukcí: 
+Dle §5 a §25 vyhlášky 23/2008 Sb. nejsou na posuzovaný objekt stanoveny žádné požadavky 
+převyšující požadavky ČSN 73 0804 a ČSN 73 0810. 
+ 
+Požadovaná požární odolnost stavebních konstrukcí dle tab. 10 ČSN 73 0804: 
+Poznámka: Odkazy v tabulce se vztahují na články ČSN 73 0804. 
+ 
+Pol. 
+Stavební konstrukce 
+Stupeň požární bezpečnosti požárního úseku 
+I. 
+II. 
+III. 
+IV. 
+V. 
+VI. 
+VII. 
+Požární odolnost stavebních konstrukcí a její druh (viz 5.6.1)3) 
+1 
+Požární stěny a požární stropy  
+(viz 9.2 a 9.3) 
+a) v podzemních podlažích 
+b) v nadzemních podlažích 
+c) v posledním NP 
+d) mezi objekty 
+ 
+ 
+30 DP1 
+15+ 
+15+ 
+30 DP1 
+ 
+ 
+45 DP1 
+30+ 
+15+ 
+45 DP1 
+ 
+ 
+60 DP1 
+45+ 
+30+ 
+60 DP1 
+ 
+ 
+90 DP1 
+60+ 
+30+ 
+90 DP1 
+ 
+ 
+120 DP1 
+90+ 
+45+ 
+120 DP1 
+ 
+ 
+180 DP1 
+120 DP1 
+60 DP1 
+180 DP1 
+ 
+ 
+180 DP1 
+180 DP1 
+90 DP1 
+180 DP1 
+2 
+Požární uzávěry otvorů v požárních 
+stěnách a požárních stropech  
+(viz 9.7) 
+a) v podzemních podlažích a  
+ve všech podlažích mezi objekty 
+b) v nadzemních podlažích 
+c) v posledním NP 
+ 
+ 
+ 
+15 DP1 
+ 
+15 DP3 
+15 DP3 
+ 
+ 
+ 
+30 DP1 
+ 
+15 DP3 
+15 DP3 
+ 
+ 
+ 
+30 DP1 
+ 
+30 DP3 
+15 DP3 
+ 
+ 
+ 
+45 DP1 
+ 
+30 DP3 
+30 DP3 
+ 
+ 
+ 
+60 DP1 
+ 
+45 DP2 
+30 DP3 
+ 
+ 
+ 
+90 DP1 
+ 
+60 DP1 
+45 DP2 
+ 
+ 
+ 
+90 DP1 
+ 
+90 DP1 
+60 DP1 
+3 
+Obvodové stěny (viz 9.4.1 a 9.6.4) 
+a) zajišťující stabilitu objektu  
+nebo jeho části 
+1) v podzemních podlažích 
+2) v nadzemních podlažích 
+3) v posledním NP 
+b) nezajišťující stabilitu objektu 
+nebo jeho části2) 
+ 
+ 
+ 
+30 DP1 
+15+ 
+15+1) 
+ 
+15+ 
+ 
+ 
+ 
+45 DP1 
+30+ 
+15+ 
+ 
+15+ 
+ 
+ 
+ 
+60 DP1 
+45+ 
+30+ 
+ 
+30+ 
+ 
+ 
+ 
+90 DP1 
+60+ 
+30+ 
+ 
+30+ 
+ 
+ 
+ 
+120 DP1 
+90+ 
+45+ 
+ 
+45+ 
+ 
+ 
+ 
+180 DP1 
+120 DP1 
+60 DP1 
+ 
+60 DP1 
+ 
+ 
+ 
+180 DP1 
+180 DP1 
+90 DP1 
+ 
+90 DP1 
+4 
+Nosné konstrukce střech (viz 9.8.2) 
+15+1) 
+15 
+30 
+30 
+45 
+60 DP1 
+90 DP1 
+5 
+Nosné konstrukce uvnitř požárního 
+úseku, které zajišťují stabilitu 
+objektu (viz 9.8.1) 
+a) v podzemních podlažích 
+b) v nadzemních podlažích 
+c) v posledním NP 
+ 
+ 
+ 
+30 DP1 
+15 
+151) 
+ 
+ 
+ 
+45 DP1 
+30 
+15 
+ 
+ 
+ 
+60 DP1 
+45 
+30 
+ 
+ 
+ 
+90 DP1 
+60 
+30 
+ 
+ 
+ 
+120 DP1 
+90 
+45 
+ 
+ 
+ 
+180 DP1 
+120 DP1 
+60 DP1 
+ 
+ 
+ 
+180 DP1 
+180 DP1 
+90 DP1 
+6 
+Nosné konstrukce vně objektu, 
+které zajišťují stabilitu objektu  
+(viz 9.8.5) 
+151) 
+15 
+15 
+30 
+30 DP1 
+45 DP1 
+60 DP1 
+7 
+Nosné konstrukce uvnitř požárního 
+úseku, které nezajišťují stabilitu 
+objektu (viz 9.8.7) 
+151) 
+15 
+30 
+30 
+45 
+45 DP1 
+60 DP1 
+8 
+Konstrukce podporující 
+technologické zařízení, jehož 
+zřícení přispívá k rozšíření požáru 
+(viz 9.8.7) 
+151) 
+15 
+30 
+30 
+45 
+45 DP1 
+60 DP1 
+9 
+Nenosné konstrukce uvnitř 
+požárního úseku 
+– 
+– 
+– 
+DP3 
+DP2 
+DP2 
+DP1 
+10 
+Konstrukce schodišť uvnitř 
+požárního úseku, které nejsou 
+součástí CHÚC (viz 9.10) 
+– 
+15 DP3 
+15 DP3 
+15 DP1 
+30 DP1 
+45 DP1 
+45 DP1 
+11 
+Výtahové a instalační šachty 
+(viz 9.11) 
+a) požárně dělicí konstrukce 
+1) šachet evakuačních a 
+požárních výtahů 
+ 
+ 
+30 DP2 
+ 
+ 
+ 
+ 
+30 DP2 
+ 
+ 
+ 
+ 
+30 DP1 
+ 
+ 
+ 
+ 
+30 DP1 
+ 
+ 
+ 
+ 
+45 DP1 
+ 
+ 
+ 
+ 
+60 DP1 
+ 
+ 
+ 
+ 
+90 DP1 
+ 
+ 

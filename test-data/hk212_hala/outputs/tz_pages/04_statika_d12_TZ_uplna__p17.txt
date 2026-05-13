@@ -1,0 +1,21 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+16
+3D Model :
+Pozn.: štítové sloupy – červeně, rám – modře, vaznice – zelená, ztužidla – šedivá
+Zatížení - vlastní tíha generována programem
+Ostatní stálé:
+váha panelů
+gk= 0,25kN/m2
+proměnné:
+sníh
+qk= 0,8 kN/m2
+Vítr – tlak střecha
+qk= 0,14 kN/m2
+Vítr – sání střecha
+qk= 0,44 kN/m2
+Vítr – tlak stěny
+qk= 0,45 kN/m2
+Vítr – sání stěny
+qk= 0,50 kN/m2

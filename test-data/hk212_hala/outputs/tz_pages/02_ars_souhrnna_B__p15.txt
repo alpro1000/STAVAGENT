@@ -1,0 +1,40 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+15/25 
+ 
+všechny kovové části konstrukce (sloupy, vazníky) budou spojeny s 
+MET, 
+ 
+rozvody vody budou pospojovány přes vodivé spojky, 
+ 
+kabelové žlaby a technologická zařízení budou vodivě propojena. 
+ 
+4.4 Materiálové a provozní požadavky 
+ 
+Všechny uzemňovací vodiče budou provedeny z materiálu FeZn, v 
+přechodech mezi betonem a půdou z materiálu nerez V4A kvůli 
+ochraně proti korozi. 
+ 
+Spoje zemnicího systému budou provedeny svařením nebo 
+šroubovými spoji s antikorozní ochranou. 
+ 
+Přístupné části MET a svodů budou řádně označeny a chráněny proti 
+mechanickému poškození. 
+Energetická bilance: 
+ 
+5. Zdravotně-technické instalace (ZTI) 
+5.1 Vodovodní přípojka 
+Na pozemku před halou je veden stávající areálový vodovod. Z něj je navržena 
+nová areálová přípojka PE 50, která bude zaústěna do objektu. Za vstupem do 
+objektu bude osazen hlavní objektový uzávěr a podružný vodoměr. 
+Vodovodní rozvod je dělen na dvě části: 
+ 
+spotřební vodovod – napájí hygienická zařízení a přípravu TUV, 
+ 
+požární vodovod – samostatná trasa vedoucí k vnitřnímu odběrnému 
+místu (hydrantu s tvarově stálou hadicí). 
+Potřeba požární vody byla stanovena na 0,3 l/s. 
+ 
+5.2 Vnitřní rozvody vody 
+Vnitřní rozvody jsou provedeny z PP-RCT EVO (polypropylenový systém) 
+svařovaný polyfuzně. Tento materiál je hygienicky nezávadný, má vysokou 
+životnost a odolnost proti korozi. 

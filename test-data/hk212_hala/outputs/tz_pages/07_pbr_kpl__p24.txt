@@ -1,0 +1,55 @@
+ 
+24 
+ 
+Vytápění: 
+Objekt je vytápěn pomocí 21 ks sálavých elektrických stropních panelů o výkonu 
+21*1200W/230V a 4 ks nástěnných elektrických ohřívačů o výkonu 4*9000W/400V. Celkový 
+instalovaný výkon topidel bude 61200 W.  
+Bezpečné vzdálenosti od jednotlivých spotřebičů, které se v objektu nachází, jsou dány 
+přílohou 8 vyhlášky 23/2008 Sb. a ČSN 06 1008, není-li v dokumentaci výrobku uvedena 
+vzdálenost vyšší. V této vzdálenosti od spotřebiče se nesmí nacházet žádné hořlavé konstrukce 
+a materiály. Dle tab. 1 ČSN 06 1008 je bezpečná vzdálenost od tepelného čerpadla 100 mm ve 
+všech směrech a od elektrického přímotopu 500 mm ve směru hlavního sálání a 100 mm 
+v ostatních směrech.  
+Součástí posuzovaných zařízení nejsou komíny (resp. spalinové cesty). Z tohoto důvodu 
+dále nejsou stanoveny požadavky na tyto části zařízení. 
+ 
+Větrání: 
+Objekt je větrán nuceně pomocí vestavné venkovní vzduchotechnické jednotky s rekuperací. 
+Pro ohřev větracího vzduchu u VZT zařízení je určena el. energie. Chlazení přiváděného 
+vzduchu je pomocí přímého výparníku.  
+ 
+Obecné požadavky na větrání: 
+VZT zařízení musí být provedena tak, aby se jimi nebo po nich nemohl šířit požár nebo jeho 
+zplodiny do jiných PÚ a musí být vyrobeno a namontováno tak, aby po dobu požadované 
+požární odolnosti se nezřítilo a nepoškodilo související konstrukce s nosnou či požárně dělící 
+funkcí. VZT rozvody budou provedeny z nehořlavých hmot. VZT zařízení musí být chráněna 
+proti účinkům statické elektřiny. 
+ 
+Dle čl. 4.1.6 ČSN 73 0872, VZT potrubí, nacházející se nad střešním pláštěm schopným 
+šířit požár, musí být z nehořlavých nebo z nesnadno hořlavých hmot (třída reakce na oheň 
+A1/A2) a vzdálenost tohoto potrubí od střešního pláště musí být rovna délce strany potrubí, 
+která může přímo sdílet teplo na střešní plášť, nejméně však 500 mm. 
+Povrchová vrstva střešního pláště je z plechové krytiny, tj. jedná se o střešní plášť třídy reakce 
+na oheň BROOF (t3), který nešíří požár. 
+V souladu s čl. 12.3 ČSN 73 0872 se musí větrací a klimatizační zařízení samočinně 
+vypínat, vznikne-li požár ve strojovně VZT nebo stoupne-li teplota v hlavním potrubí pro přítok 
+vzduchu za filtrem o 20 °C nad nejvyšší provozní teplotu nebo v potrubí pro zpětný tok vzduchu 
+nad 70 °C. VZT zařízení, u kterých může dojít k jejich přehřátí, musí být samočinně vypínatelná 
+v okamžiku dosažení kritického stavu s cílem zabránění vzniku požáru s ohledem na dané 
+provozní podmínky. 
+ 
+Strojovna VZT: 
+VZT jednotka je umístěna vně objektu na fasádě. V souladu s čl. 7.1 ČSN 73 0872 strojovna 
+VZT netvoří samostatný PÚ, jelikož pouze pro 1 PÚ.  
+ 
+Požadavky na šachty, průduchy a kanály VZT zařízení:  
+Potrubí není vedeno v šachtách, průduchách nebo kanálech. Z tohoto důvodu dále nejsou 
+stanoveny požadavky na tato zařízení. 
+ 
+Prostup VZT požárně dělicími konstrukcemi: 
+VZT potrubí neprochází požárně dělicími konstrukcemi. Z tohoto důvodu dále nejsou 
+stanoveny požadavky na prostupy požárně dělicími konstrukcemi dle ČSN 73 0872. 
+ 
+ 
+ 

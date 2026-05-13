@@ -1,0 +1,11 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+27
+Ztužení objektu:
+Vnitřní síly:
+N[kN] střešní – 48,3kN, stěnová  – 125,43kN 
+Posouzení: 1→ 100% (14%) 
+Návrh:
+Střešní ztužidla jsou navržena z ocelové kulatiny Ø20mm z oceli S235.
+Stěnová ztužidla jsou navržena z ocelového profilu L70/70/6 z oceli S235.

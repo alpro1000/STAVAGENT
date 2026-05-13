@@ -1,0 +1,54 @@
+ 
+4 
+ 
+▪ ČSN 73 0875 – Požární bezpečnost staveb. Stanovení podmínek pro navrhování 
+elektrické požární signalizace v rámci PBŘ 
+ 
+Podklady pro vypracování PBŘ byly použity v platném znění ke dni zpracování. 
+ 
+Použité zkratky: 
+▪ PBŘ – Požárně bezpečnostní řešení 
+▪ SPB – Stupeň požární bezpečnosti 
+▪ PO – Požární odolnost 
+▪ PÚ – Požární úsek 
+▪ ÚC – Úniková cesta 
+▪ NÚC – Nechráněná úniková cesta 
+▪ CHÚC – Chráněná úniková cesta  
+▪ VP – Volné prostranství 
+▪ ú.p. – Únikový pruh 
+▪ PBZ – Požárně bezpečnostní zařízení 
+▪ EPS – Elektrická požární signalizace 
+▪ SHZ – Stabilní hasicí zařízení 
+▪ ZOKT – Zařízení pro odvod kouře a tepla 
+▪ PHP – Přenosný hasicí přístroj 
+▪ PNP – Požárně nebezpečný prostor 
+▪ POP – Požárně otevřená plocha 
+▪ JPO – Jednotka požární ochrany 
+▪ PD – Projektová dokumentace 
+▪ VZT – Vzduchotechnika  
+ 
+3. Stručný popis stavby z hlediska stavebních konstrukcí, výšky stavby, účelu užití, umístění 
+stavby ve vztahu k okolní zástavbě: 
+ 
+Předmětem tohoto PBŘ je novostavba skladovací haly ve stávajícím areálu. Předmětný sklad 
+se nachází na p. č. 1939/1, k. ú. Slezské předměstí. Umístění stavby je zastavěné části na okraji 
+obce, převážně se v dotčeném území jedná o průmyslové objekty.  
+ 
+Tvarové a dispoziční řešení: 
+Stavba má 1 NP a není podsklepena. Objekt je ve tvaru obdélníka o rozměrech 19,31 x 27,97 m. 
+Střecha objektu je se sklonem 5,25° a výšky od upraveného terénu (± 0,000) 7,195 m.  
+ 
+Parametry řešeného objektu: 
+▪ Počet podlaží – np = 1 
+▪ Zastavěná plocha objektu – Sz = 520 m2 
+▪ Užitná plocha objektu – Suž = 495 m2 
+▪ Skladovaný materiál – demontované části FVE panelů 
+ 
+Konstrukční a materiálové řešení: 
+Nosné konstrukce předmětné haly tvoří ocelové sloupy a nosníky. Nenosný obvodový plášť je 
+tvořen sendvičovými deskami (Kingspan). Střešní plášť je ze sendvičových panelů. Zateplení 
+objektu je řešeno v rámci sendvičové obvodové konstrukce. V hale se nenachází žádné vnitřní 
+nenosné konstrukce (příčky) nebo schodiště.     
+ 
+ 
+ 

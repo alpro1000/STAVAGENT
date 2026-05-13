@@ -1,0 +1,8 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+17
+ZS01 – Vlastní tíha – generováno programem
+ZS02 – váha panelů – skladba střechy
+ZS03 – sníh
+ZS04 – vítr I

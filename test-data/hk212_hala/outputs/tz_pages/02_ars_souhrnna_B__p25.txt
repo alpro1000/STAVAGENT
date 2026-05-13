@@ -1,0 +1,93 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+25/25 
+Katalogu odpadů a posuzovaní vlastností odpadů. Seznam nebezpečných 
+odpadů a seznamy odpadů pro účely vývozu, dovozu a tranzitu odpadů a postup 
+při udělování souhlasu k vývozu, dovozu a tranzitu odpadů budou kategorizovány 
+takto: 
+ 
+        Tabulka předpokládaného odpadu během stavby 
+Kód   
+ 
+ Název odpadu/popis   
+                                                            Kategorie 
+08 0 1 11 
+Odpadní barvy a laky obsahující organická rozpouštědla          
+N 
+             Jedná se o barvy použitých při ﬁnálních nátěrech jednotlivých 
+             prostor a technologií objektu. Tyto se budou skladovat 
+             v přistaveném kontejneru a poté budou hromadně odvezeny 
+             k odstranění. 
+15 0 1 01  
+Papírové a lepenkové obaly                               
+ 
+ 
+ 
+O 
+15 0 1 04 
+Kovové obaly                                                              
+ 
+ 
+ 
+O 
+15 0 1 06   
+ Směsné obaly                                               
+ 
+ 
+ 
+O   
+           
+Jedná se o obaly ze stavebních materiálů použitých při výstavbě. 
+15 0 1 10    
+Obaly obsahující zbytky nebezpečných látek nebo obaly těmito          N 
+              
+látkami znečištěné 
+          Obaly od barev, tmelů a lepidel se zbytky nebezpečných látek. 
+15 0 2 02   
+Čistící tkaniny a ochranné oděvy znečištěné nebezpečnými  
+N  
+látkami      
+ 
+17 0 2 01    
+Dřevo                                                                       
+ 
+ 
+ 
+O 
+               
+Odpad z pomocných bednících konstrukcí apod. 
+17 0 2 03   
+Plast                                                                     
+ 
+ 
+ 
+O 
+               
+Jedná se o použité obaly různých stavebních materiálů. 
+17 0 4 05   
+Železo a ocel                                                                 
+ 
+ 
+O 
+               
+Jedná se převážně o odpad vzniklý při samotné výstavbě. 
+17 0 4 11    
+Kabely                                                                   
+  
+ 
+ 
+O 
+17 0 4 05    
+Odpadní železo, ocel                                                       
+ 
+ 
+O 
+17 09 04    
+Směsné stavební a demoliční odpady neuvedené                           
+O 
+ 
+ 
+f) zásady bezpečnosti a ochrany zdraví při práci na staveništi4) 
+ 
+Při realizaci stavby je nutno dodržovat veškeré obecně platné předpisy, normy, 
+vyhlášky a nařízení k zajištění bezpečnosti práce. Zejména je třeba se řídit 
+ustanoveními: 

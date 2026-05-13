@@ -1,0 +1,74 @@
+=
+S k
+=
+m2
+F 0
+=
+p
+=
+kg/m2
+c
+=
+k 3
+=
+F 0
+=
+τ e
+=
+min
+n p
+=
+1
+k 5
+=
+=
+k 6
+=
+=
+k 8
+=
+=
+τ e
+=
+min
+τe  ∙ k 8
+=
+min
+SPB
+=
+II.
+ČSN 73 0804, tab. 8
+Výpočet parametru odvětrání F 0
+ƩS oi *√h oi
+36,00
+1495,41
+0,024
+Výpočet ekvivalentní doby trvání požáru τ e
+90,00
+(k 5  ∙ k 6 )/2,4
+0,417
+115,29
+48,04
+1,00
+2,91
+0,02
+115,29
+Stanovení stupně požární bezpečnosti
+n p
+1/2
+1,00
+nehořlavý
+1,00
+𝐹଴=
+∑
+𝑆௢௜ȉ ℎ௢௜
+ଵ/ଶ
+௝
+௜ୀଵ
+𝑆௞
+τ௘=
+2𝑝ȉ 𝑐
+𝑘ଷȉ 𝐹଴
+ଵ/଺
+Strana 2/2
+Hala Hradec Králové, Příloha 3

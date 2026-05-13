@@ -1,0 +1,78 @@
+ 
+15 
+ 
+dle tab. 16 ČSN 73 0804, 5. skupina provozu, více ÚC 
+▪ E (počet evakuovaných osob dle obsazenosti objektu) = 17 osob 
+▪ s (podmínky evakuace) = 1 
+dle tab. 18 ČSN 73 0804, pol. 1, současná evakuace, NÚC 
+▪ Ku (jednotková kapacita únikového pruhu) = 40 osob/min  
+dle tab. 17 ČSN 73 0804, po rovině 
+▪ u (započitatelný počet únikových pruhů) = 1 
+uvažuje se minimální šířka NÚC dle čl. 10.10.1 ČSN 73 0804 
+▪ 𝑙𝑢,𝑚𝑎𝑥=
+𝑣𝑢
+0,75 (𝑡𝑢,𝑚𝑎𝑥−
+𝐸∙𝑠
+𝐾𝑢∙𝑢) =
+30
+0,75 (2,5 −
+17∙1
+40∙1) = 83 𝑚 
+▪ lu,skut = 21 m 
+▪ lu,max ≥ lu,skut → vyhovuje 
+ 
+→ Doba evakuace: 
+Předpokládaná doba evakuace je určena dle čl. 10.9.1 a rovnice 29 ČSN 73 0804. 
+▪ lu,skut = 21 m 
+▪ vu = 30 m/min  
+▪ E = 17 osob 
+▪ s = 1 
+▪ Ku = 40 osob/min  
+▪ u = 1 
+▪ tu,max = 2,5 min  
+▪ 𝑡𝑢=
+0,75𝑙𝑢
+𝑣𝑢
++
+𝐸∙𝑠
+𝐾𝑢∙𝑢=
+0,75∙21
+30
++
+17∙1
+40∙1 = 0,95 𝑚𝑖𝑛 
+▪ tu,max ≥ tu,skut → vyhovuje 
+ 
+→ Šířka NÚC: 
+Šířka NÚC je posuzována dle čl. 10.13.1 a rovnice 33 ČSN 73 0804. 
+▪ E = 17 osob 
+▪ s = 1 
+▪ Ku = 40 osob/min  
+▪ tu,max = 2,5 min  
+▪ lu,skut = 21 m 
+▪ vu = 30 m/min  
+▪ 𝑢𝑚𝑖𝑛=
+𝐸∙𝑠
+𝐾𝑢(𝑡𝑢.𝑚𝑎𝑥−0,75𝑙𝑢
+𝑣𝑢) =
+17∙1
+40(2,5−0,75∙21
+30
+) = 0,22 →1 ú. 𝑝. = 550 𝑚𝑚 
+▪ uskut = 1150 mm (KM 1 – dveře vedoucí na VP) 
+▪ umin ≤ uskut → vyhovuje 
+▪ Skladovaný materiál musí být umístěn tak, aby byly dodrženy uličky široké min. 
+550 mm. 
+ 
+Zhodnocení požadavků na vybavení NÚC: 
+Nouzové osvětlení 
+V rámci řešeného PÚ skladu není požadována ve smyslu čl. 10.18 ČSN 73 0804 instalace 
+nouzového osvětlení. 
+ 
+Požadavky na běžné osvětlení ÚC: 
+- 
+ÚC musí být osvětleny denním nebo umělým světlem alespoň během provozní doby 
+v objektu. 
+- 
+NÚC musí mít elektrické osvětlení všude, kde je v objektu běžná elektroinstalace pro 
+osvětlení. 

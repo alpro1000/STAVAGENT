@@ -1,0 +1,53 @@
+ 
+23 
+ 
+Závěr: 
+Umístění PHP musí umožňovat jejich snadné a rychlé použití, zároveň je nutné zajistit, aby 
+byly přístroje snadno viditelné a lehce přístupné. PHP se umísťují na svislé stavební konstrukci 
+a v případě, že jsou k tomu konstrukčně přizpůsobeny, na vodorovné stavební konstrukci. 
+Rukojeť hasicího přístroje umístěného na svislé stavební konstrukci musí být nejvýše 1,5 m nad 
+podlahou. Hasicí přístroje umístěné na podlaze nebo na jiné vodorovné stavební konstrukci 
+musí být vhodným způsobem zajištěny proti pádu. U PHP musí být dle §9 vyhlášky č. 246/2001 
+Sb. o požární prevenci provedena alespoň 1x za rok kontrola a dále v intervalu 1x za 3 roky u 
+vodních a pěnových PHP a 1x za 5 let u ostatních PHP musí být zajištěna periodická zkouška 
+(jejíž součástí je mj. tlaková zkouška PHP). První kontrola provozuschopnosti hasicího přístroje 
+musí být provedena nejdéle jeden rok před jeho instalací. 
+ 
+13. Zhodnocení technických, popřípadě technologických zařízení stavby (rozvodná potrubí, 
+vzduchotechnická zařízení, vytápění, apod.) z hlediska požární bezpečnosti: 
+ 
+Parametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni 
+projektové dokumentace s ohledem na finální podobu posuzovaného objektu (užité technické a 
+technologické zařízení stavby apod.). 
+ 
+Prostupy: 
+Nehodnotí se – v objektu se nenachází požárně dělicí konstrukce. Prostupy instalací nesmí 
+snižovat PO konstrukcí, kterými prochází. 
+ 
+Elektroinstalace: 
+Veškerá elektroinstalace a hromosvod musí být provedeny v souladu s platnými 
+bezpečnostními předpisy v příslušném krytí a na všechna elektrozařízení musí být provedena 
+revize osobou s příslušnou odbornou způsobilostí. Požadavky na elektroinstalaci z pohledu PBS 
+jsou řešeny dle ČSN 73 0848. Elektrické rozvaděče budou osazeny v samostatných 
+konstrukcích, které nesnižují odolnosti okolních požárně dělících a nosných konstrukcí objektu. 
+V posuzovaném objektu nejsou navržena PBZ, pro která se požaduje dvoustupňové 
+vypínání. Elektroinstalace a vypnutí elektrické energie musí odpovídat normovým požadavkům 
+a funkčnost a vypnutí elektrické energie musí být doloženo revizní zprávou. 
+ 
+Rozvaděče pro elektrická zařízení bez požadované funkce za požáru: 
+Umístění rozvaděče: 
+Hlavní rozvaděč se nachází u hlavního vstupu do objektu. 
+ 
+Požadavky na rozvaděč: 
+Elektrické rozvaděče jsou ve smyslu čl. 4.4.2.1 a 4.4.2.2 ČSN 73 0848 bez požadavku na PO, 
+jelikož se v objektu nenachází prostory zmíněné v těchto článcích. 
+ 
+Požadavky na volně vedené kabely a vodiče: 
+Na volně vedené kabely a vodiče nejsou stanoveny požadavky na kabeláž se sníženou 
+hořlavostí, jelikož se nenachází v prostorech jmenovaných v čl. 4.1.1 ČSN 73 0848. 
+ 
+Ochrana stavby před bleskem: 
+V případě navržení osazení zařízení tvořící systém ochrany před bleskem na objekt, musí být v 
+souladu s §9 vyhlášky č. 23/2008 Sb., o technických podmínkách požární ochrany staveb, 
+veškeré komponenty zařízení tvořících systém ochrany před bleskem z výrobků třídy reakce na 
+oheň A1 nebo A2 a musí na něj být prováděny pravidelné revize. 

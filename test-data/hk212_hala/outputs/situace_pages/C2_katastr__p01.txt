@@ -1,0 +1,76 @@
+LEGENDA
+NAVRHOVANÝ OBJEKT
+STÁVAJÍCÍ OBJEKTY
+HRANICE ŘEŠENÉHO POZEMKU
+1930/1
+1475/13
+1475/17
+1475/19
+2657
+2658
+2660
+179/23
+1475/1
+1475/3
+1475/4
+1475/7
+179/9
+179/10
+260/8
+260/12
+1475/18
+27,98
+19,31
+11,75
+12,59
+37,75
+59,26
+2659
+Markovice
+1939/1
+STUPEŇ PROJEKTU
+Vážní 857, 50003 Hradec Králové - Slezské 
+HALA 
+ODPOVĚDNÝ PROJEKTANT
+Ing.arch. Jakub Volka, ČKA 03947
+733 575 363, jakub.volka@basepoint.cz
+VYPRACOVAL
+INVESTOR
+SOLAR DISPOREC s.r.o.
+Malostranské náměstí 5/28, Malá Strana
+DÍL
+ČÁST DOKUMENTACE
+OBSAH VÝKRESU
+MĚŘÍTKO
+FORMÁT
+DATUM
+ČÍSLO
+GENERÁLNÍ PROJEKTANT
+2 X A4
+ZPRACOVATEL ČÁSTI
+Basepoint s.r.o
+V Benátkách 2350/6 
+149 00 Praha 11
+www.basepoint.cz
+STUPEŇ
+DÍL
+ČÁST
+PŘÍLOHA
+REVIZE
+DOKUMENTACE PRO POVOLENÍ ZÁMĚRU
+(DPZ)
++0,000 = 234,69 mnm Bpv
+Anna Abrahámová
+C
+07/2025
+Basepoint s.r.o
+V Benátkách 2350/6 
+149 00 Praha 11
+www.basepoint.cz
+HRADEC KRÁLOVÉ
+118 00 Praha 1
+Předměstí
+C.2
+KATASTRÁLNÍ SITUAČNÍ VÝKRES
+1:500
+SIGN

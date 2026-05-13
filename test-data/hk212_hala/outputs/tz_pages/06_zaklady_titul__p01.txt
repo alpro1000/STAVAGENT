@@ -1,0 +1,113 @@
+Poznámky:
+- Při provádění je potřeba posutpovat podle nejnovější revize výkresů.
+- Před prováděním je potřeba porovnat výkresy stavebně konstrukční a
+architektonicko-stavební části a na případné rozpory upozornit hlavního
+inženýra projektu a statika
+- Dokumentace je vypracovaná ve stupni dokumentace pro stavební povolení a
+nenahrazuje prováděcí dokumentaci. Cílem posudku je ověřit proveditelnost
+konstrukce a předpokládá se v pokračování projekčních prací v dalším stupni.
+A
+B
+1
+2
+3
+4
+5
+6
+C
+D
+E
+F
+HH = -1,300
+SH = -1,900
+HH = -0,700
+SH = -1,300
+HH = -0,700
+SH = -1,900
+HH = -0,700
+SH = -1,900
+HH = -0,700
+SH = -1,300
+HH = -1,300
+SH = -1,900
+HH = ±0,000
+SH = -1,100
+HH = ±0,000
+SH = -1,100
+HH = ±0,000
+SH = -1,100
+HH = ±0,000
+SH = -1,100
+1500
+4600
+1500
+4600
+1500
+1500
+1500
+4600
+1500
+4600
+1500
+27890
+19040
+500
+18040
+500
+26890
+500
+500
+500 500 500
+1500
+1000 250
+250
+800
+3200
+800
+1620
+1500
+4200
+800
+3200
+800
+1620
+1500
+150
+500
+150
+STÁVAJÍCÍ
+KANALIZACE
+PŘEKÁŽÍ
+ZÁKLADU
+2000
+2000
+2000
+2000
+ATYPICKÝ ZÁKLAD MOŽNO
+VYMĚNIT ZA PILOTU O PRŮMĚRU
+800mm DÉLKY 8,0m (VELMI HRUBÝ
+ODHAD PO PŘEDÁNÍ IGP BUDE
+PILOTA NADIMENZOVÁNA
+BETON ČSN EN 206
+C30/37-XC2, (CZ,F.1)-Cl 0,4-Dmax 16-S3
+ŽB DESKA
+BETON ČSN EN 206
+C16/20-XC0, (CZ,F.1)-Cl 0,4-Dmax 16-S3
+ZÁKLADY
+01
+09/2025
+HALA - PŮDORYS ZÁKLADŮ
+STAVEBNĚ KONSTRUKČNÍ
+Ing. arch Jakub Volka, Kristián Pócsik
+D.2.3
+DSP
+Bc. Martin Doležal
+Ing. Jiří Plachý, ČKAIT 0013051
+1:100
+HALA HRADEC KRÁLOVÉ
+SOLAR DISPOREC s.r.o
+Malostranské náměstí 5/28
+VÁŽNÍ 857
+SOLAR DISPOREC
+Malá Strana (Praha 1)
+118 00 Praha

@@ -1,0 +1,526 @@
+{
+  "01_ars_pruvodni_A.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 441,
+      "path": "test-data/hk212_hala/outputs/tz_pages/01_ars_pruvodni_A__p01.txt"
+    },
+    {
+      "page_number": 2,
+      "char_count": 1557,
+      "path": "test-data/hk212_hala/outputs/tz_pages/01_ars_pruvodni_A__p02.txt"
+    },
+    {
+      "page_number": 3,
+      "char_count": 1261,
+      "path": "test-data/hk212_hala/outputs/tz_pages/01_ars_pruvodni_A__p03.txt"
+    },
+    {
+      "page_number": 4,
+      "char_count": 925,
+      "path": "test-data/hk212_hala/outputs/tz_pages/01_ars_pruvodni_A__p04.txt"
+    }
+  ],
+  "02_ars_souhrnna_B.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 456,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p01.txt"
+    },
+    {
+      "page_number": 2,
+      "char_count": 1356,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p02.txt"
+    },
+    {
+      "page_number": 3,
+      "char_count": 1935,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p03.txt"
+    },
+    {
+      "page_number": 4,
+      "char_count": 819,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p04.txt"
+    },
+    {
+      "page_number": 5,
+      "char_count": 2065,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p05.txt"
+    },
+    {
+      "page_number": 6,
+      "char_count": 1873,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p06.txt"
+    },
+    {
+      "page_number": 7,
+      "char_count": 1319,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p07.txt"
+    },
+    {
+      "page_number": 8,
+      "char_count": 2169,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p08.txt"
+    },
+    {
+      "page_number": 9,
+      "char_count": 1697,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p09.txt"
+    },
+    {
+      "page_number": 10,
+      "char_count": 2183,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p10.txt"
+    },
+    {
+      "page_number": 11,
+      "char_count": 1305,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p11.txt"
+    },
+    {
+      "page_number": 12,
+      "char_count": 1905,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p12.txt"
+    },
+    {
+      "page_number": 13,
+      "char_count": 2033,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p13.txt"
+    },
+    {
+      "page_number": 14,
+      "char_count": 1957,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p14.txt"
+    },
+    {
+      "page_number": 15,
+      "char_count": 1423,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p15.txt"
+    },
+    {
+      "page_number": 16,
+      "char_count": 1961,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p16.txt"
+    },
+    {
+      "page_number": 17,
+      "char_count": 2222,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p17.txt"
+    },
+    {
+      "page_number": 18,
+      "char_count": 2402,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p18.txt"
+    },
+    {
+      "page_number": 19,
+      "char_count": 1355,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p19.txt"
+    },
+    {
+      "page_number": 20,
+      "char_count": 1102,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p20.txt"
+    },
+    {
+      "page_number": 21,
+      "char_count": 2172,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p21.txt"
+    },
+    {
+      "page_number": 22,
+      "char_count": 2123,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p22.txt"
+    },
+    {
+      "page_number": 23,
+      "char_count": 1921,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p23.txt"
+    },
+    {
+      "page_number": 24,
+      "char_count": 2730,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p24.txt"
+    },
+    {
+      "page_number": 25,
+      "char_count": 2424,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p25.txt"
+    },
+    {
+      "page_number": 26,
+      "char_count": 1774,
+      "path": "test-data/hk212_hala/outputs/tz_pages/02_ars_souhrnna_B__p26.txt"
+    }
+  ],
+  "03_ars_d11_TZ.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 436,
+      "path": "test-data/hk212_hala/outputs/tz_pages/03_ars_d11_TZ__p01.txt"
+    },
+    {
+      "page_number": 2,
+      "char_count": 2037,
+      "path": "test-data/hk212_hala/outputs/tz_pages/03_ars_d11_TZ__p02.txt"
+    },
+    {
+      "page_number": 3,
+      "char_count": 2122,
+      "path": "test-data/hk212_hala/outputs/tz_pages/03_ars_d11_TZ__p03.txt"
+    },
+    {
+      "page_number": 4,
+      "char_count": 2147,
+      "path": "test-data/hk212_hala/outputs/tz_pages/03_ars_d11_TZ__p04.txt"
+    },
+    {
+      "page_number": 5,
+      "char_count": 482,
+      "path": "test-data/hk212_hala/outputs/tz_pages/03_ars_d11_TZ__p05.txt"
+    }
+  ],
+  "04_statika_d12_TZ_uplna.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 573,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p01.txt"
+    },
+    {
+      "page_number": 2,
+      "char_count": 5505,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p02.txt"
+    },
+    {
+      "page_number": 3,
+      "char_count": 967,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p03.txt"
+    },
+    {
+      "page_number": 4,
+      "char_count": 2085,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p04.txt"
+    },
+    {
+      "page_number": 5,
+      "char_count": 2953,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p05.txt"
+    },
+    {
+      "page_number": 6,
+      "char_count": 3619,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p06.txt"
+    },
+    {
+      "page_number": 7,
+      "char_count": 2761,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p07.txt"
+    },
+    {
+      "page_number": 8,
+      "char_count": 1801,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p08.txt"
+    },
+    {
+      "page_number": 9,
+      "char_count": 3400,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p09.txt"
+    },
+    {
+      "page_number": 10,
+      "char_count": 2689,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p10.txt"
+    },
+    {
+      "page_number": 11,
+      "char_count": 2688,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p11.txt"
+    },
+    {
+      "page_number": 12,
+      "char_count": 617,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p12.txt"
+    },
+    {
+      "page_number": 13,
+      "char_count": 624,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p13.txt"
+    },
+    {
+      "page_number": 14,
+      "char_count": 325,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p14.txt"
+    },
+    {
+      "page_number": 15,
+      "char_count": 133,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p15.txt"
+    },
+    {
+      "page_number": 16,
+      "char_count": 101,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p16.txt"
+    },
+    {
+      "page_number": 17,
+      "char_count": 427,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p17.txt"
+    },
+    {
+      "page_number": 18,
+      "char_count": 189,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p18.txt"
+    },
+    {
+      "page_number": 19,
+      "char_count": 181,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p19.txt"
+    },
+    {
+      "page_number": 20,
+      "char_count": 633,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p20.txt"
+    },
+    {
+      "page_number": 21,
+      "char_count": 486,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p21.txt"
+    },
+    {
+      "page_number": 22,
+      "char_count": 178,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p22.txt"
+    },
+    {
+      "page_number": 23,
+      "char_count": 546,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p23.txt"
+    },
+    {
+      "page_number": 24,
+      "char_count": 223,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p24.txt"
+    },
+    {
+      "page_number": 25,
+      "char_count": 574,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p25.txt"
+    },
+    {
+      "page_number": 26,
+      "char_count": 162,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p26.txt"
+    },
+    {
+      "page_number": 27,
+      "char_count": 289,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p27.txt"
+    },
+    {
+      "page_number": 28,
+      "char_count": 336,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p28.txt"
+    },
+    {
+      "page_number": 29,
+      "char_count": 584,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p29.txt"
+    },
+    {
+      "page_number": 30,
+      "char_count": 99,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p30.txt"
+    },
+    {
+      "page_number": 31,
+      "char_count": 464,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p31.txt"
+    },
+    {
+      "page_number": 32,
+      "char_count": 540,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p32.txt"
+    },
+    {
+      "page_number": 33,
+      "char_count": 3409,
+      "path": "test-data/hk212_hala/outputs/tz_pages/04_statika_d12_TZ_uplna__p33.txt"
+    }
+  ],
+  "05_konstrukce_titul.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 2107,
+      "path": "test-data/hk212_hala/outputs/tz_pages/05_konstrukce_titul__p01.txt"
+    }
+  ],
+  "06_zaklady_titul.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 1529,
+      "path": "test-data/hk212_hala/outputs/tz_pages/06_zaklady_titul__p01.txt"
+    }
+  ],
+  "07_pbr_kpl.pdf": [
+    {
+      "page_number": 1,
+      "char_count": 1136,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p01.txt"
+    },
+    {
+      "page_number": 2,
+      "char_count": 3815,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p02.txt"
+    },
+    {
+      "page_number": 3,
+      "char_count": 2996,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p03.txt"
+    },
+    {
+      "page_number": 4,
+      "char_count": 2001,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p04.txt"
+    },
+    {
+      "page_number": 5,
+      "char_count": 2153,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p05.txt"
+    },
+    {
+      "page_number": 6,
+      "char_count": 2196,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p06.txt"
+    },
+    {
+      "page_number": 7,
+      "char_count": 2291,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p07.txt"
+    },
+    {
+      "page_number": 8,
+      "char_count": 3034,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p08.txt"
+    },
+    {
+      "page_number": 9,
+      "char_count": 2783,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p09.txt"
+    },
+    {
+      "page_number": 10,
+      "char_count": 3196,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p10.txt"
+    },
+    {
+      "page_number": 11,
+      "char_count": 2172,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p11.txt"
+    },
+    {
+      "page_number": 12,
+      "char_count": 2165,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p12.txt"
+    },
+    {
+      "page_number": 13,
+      "char_count": 2891,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p13.txt"
+    },
+    {
+      "page_number": 14,
+      "char_count": 2496,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p14.txt"
+    },
+    {
+      "page_number": 15,
+      "char_count": 1677,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p15.txt"
+    },
+    {
+      "page_number": 16,
+      "char_count": 2919,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p16.txt"
+    },
+    {
+      "page_number": 17,
+      "char_count": 384,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p17.txt"
+    },
+    {
+      "page_number": 18,
+      "char_count": 2378,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p18.txt"
+    },
+    {
+      "page_number": 19,
+      "char_count": 2401,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p19.txt"
+    },
+    {
+      "page_number": 20,
+      "char_count": 1844,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p20.txt"
+    },
+    {
+      "page_number": 21,
+      "char_count": 3013,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p21.txt"
+    },
+    {
+      "page_number": 22,
+      "char_count": 2511,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p22.txt"
+    },
+    {
+      "page_number": 23,
+      "char_count": 3088,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p23.txt"
+    },
+    {
+      "page_number": 24,
+      "char_count": 3020,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p24.txt"
+    },
+    {
+      "page_number": 25,
+      "char_count": 2382,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p25.txt"
+    },
+    {
+      "page_number": 26,
+      "char_count": 2592,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p26.txt"
+    },
+    {
+      "page_number": 27,
+      "char_count": 893,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p27.txt"
+    },
+    {
+      "page_number": 28,
+      "char_count": 903,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p28.txt"
+    },
+    {
+      "page_number": 29,
+      "char_count": 1496,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p29.txt"
+    },
+    {
+      "page_number": 30,
+      "char_count": 1567,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p30.txt"
+    },
+    {
+      "page_number": 31,
+      "char_count": 471,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p31.txt"
+    },
+    {
+      "page_number": 32,
+      "char_count": 979,
+      "path": "test-data/hk212_hala/outputs/tz_pages/07_pbr_kpl__p32.txt"
+    }
+  ]
+}

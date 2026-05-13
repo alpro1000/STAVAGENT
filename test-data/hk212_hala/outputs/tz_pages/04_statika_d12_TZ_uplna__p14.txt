@@ -1,0 +1,14 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+13
+Užitná zatížení:
+Kategorie H  -  nepochozí střechy 
+ qk = 0,75kN/m2
+Kategorie E  -  plochy pro skladování a průmysl
+ qk = 15kN/m2
+Stálé zatížení:
+Střešní a Stěnové panely Kingspan
+gk=0,25kN/m2
+Podklady:
+Půdorys základů + stávající kanalizace

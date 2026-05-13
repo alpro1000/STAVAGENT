@@ -1,0 +1,61 @@
+ 
+22 
+ 
+umožní otevření brány. Žádné další překážky, které by omezovaly průjezd či podjezd vozidel 
+JPO, se zde nenachází. V souladu s přílohou 3 vyhlášky 23/2008 Sb. musí být místa zastavení 
+JPO umístěna mimo ochranné pásmo nadzemního vedení vysokého napětí s vodiči bez izolace, 
+aby byl umožněn příjezd JPO a provedení zásahu mimo ochranné pásmo. Takto provedené 
+komunikace lze považovat za vyhovující.  
+ 
+Zásahové cesty: 
+Vnitřní zásahové cesty: 
+V souladu s čl. 13.5.1 ČSN 73 0804 se nezřizují vnitřní zásahové cesty – stavba s požární 
+výškou do 22,5 m a protipožární zásah je umožněn z vnějších stran objektu. 
+ 
+Vnější zásahové cesty: 
+V souladu s čl. 13.7.3 ČSN 73 0804 se zřizují vnější zásahové cesty, a to: 
+▪ požární žebříky 
+ 
+Požární žebříky musí být dle čl. 13.7.3 ČSN 73 0804 provedeny v souladu s ČSN 74 3282. 
+Žebříky se rozmisťují pravidelně po obvodu objektu, vzájemná vzdálenost nesmí být více než 
+200 m. Obvod objektu je menší než 200 m a z tohoto důvodu se u posuzované haly umisťuje 
+pouze 1 žebřík. Žebřík je připevněn ke sloupu zajišťujícího stabilitu objektu s PO R 15 DP1. 
+Požární žebřík je svislý a navrhuje se jako příčlový se dvěma štěříny a ochranným košem. Jeden 
+štěřín požárního žebříku je vždy zároveň stoupacím potrubím nezavodněného požárního 
+vodovodu s pevnou spojkou B75 a víčkem B75 s řetízkem.  
+Střešní plášť svou konstrukcí nebrání případnému pohybu osob po této konstrukci. 
+Z tohoto důvodu se v souladu s čl. 13.7.4 ČSN 73 0804 nenavrhují požární lávky na střeše 
+posuzované haly. 
+ 
+Vnější zásahové cesty musí být vybaveny opatřením omezující přístup veřejnosti. 
+ 
+Nástupní plocha: 
+V souladu s čl. 13.4.4 b) ČSN 73 0804 se nezřizuje nástupní plocha, jelikož se jedná o objekt 
+s výškou h ≤ 12 m. 
+ 
+12. Stanovení počtu, druhu a způsobu rozmístění hasicích přístrojů, popřípadě dalších 
+věcných prostředků požární ochrany nebo techniky: 
+ 
+Požadovaný počet přenosných hasicích přístrojů je stanoven v souladu s čl. 13.9 ČSN 73 0804 
+a přílohou 4 vyhlášky 23/2008 Sb. V rámci hodnocených PÚ je uvažováno s převážným 
+výskytem předmětů charakteristických pro požár třídy A.  
+ 
+Požadovaný počet PHP: 
+Navrhují se následující počty a typy PHP, které jsou určeny výpočtem dle výše zmíněných 
+dokumentů.  
+ 
+Počet a typ PHP 
+PÚ 
+SPÚ [m2] 
+P1 [–] 
+nr 
+nHJ 
+Typ a počet PHP 
+N01.01 – Skladovací hala 
+495 
+1,40 
+6,00 
+36,00 4x 27 A (36 HJ) 
+ 
+S ohledem na druh skladovaného materiálu se požaduje vybavit sklad 2x PHP práškový 27 A 
++ 2x PHP sněhový (CO2) 144 B. 

@@ -1,0 +1,53 @@
+ 
+5 
+ 
+Provozní řešení: 
+Jedná se o skladovací halu, kde se budou skladovat demontované části FVE panelů. Součástí 
+haly nejsou žádné vestavky, administrativní části nebo hygienické zázemí – tyto prostory jsou 
+řešeny v rámci vedlejších objektů v areálu. 
+ 
+Technická a technologická zařízení: 
+Inženýrské sítě: 
+V řešeném objektu jsou zřízeny inženýrské sítě následovně: 
+▪ Vodovod – ano 
+▪ Kanalizace – ano 
+▪ Plynovod – ne 
+▪ Elektroinstalace – ano 
+ 
+V objektu se nenachází instalační šachty, rozvody jsou vedeny volně při stěnách, případně 
+v podlaze. 
+ 
+Vytápění: 
+Objekt je vytápěn pomocí 21 ks sálavých elektrických stropních panelů o výkonu 
+21*1200W/230V a 4 ks nástěnných elektrických ohřívačů o výkonu 4*9000W/400V. Celkový 
+instalovaný výkon topidel bude 61200 W.  
+ 
+Větrání: 
+Objekt bude větrán nuceně pomocí vestavné venkovní vzduchotechnické jednotky s rekuperací. 
+Pro ohřev větracího vzduchu u VZT zařízení je určena el. energie. Chlazení přiváděného 
+vzduchu je pomocí přímého výparníku. 
+ 
+Elektroinstalace: 
+V řešeném objektu jsou navrženy běžné zásuvkové a světelné okruhy. Elektroinstalace je 
+vedena volně při stěnách. Hlavní rozvaděč se nachází u vstupu do objektu. Požadavky na 
+elektroinstalaci a vypnutí elektrické energie v případě požáru viz dále v tomto PBŘ (kapitola 
+13 a 15). 
+ 
+Další technická zařízení: 
+V řešeném objektu se dále nachází následující zařízení, z pohledu PBS na tato zařízení nejsou 
+stanoveny žádné požadavky. 
+▪ Bezpečnostní kamerový systém – CCTV  
+▪ Elektrická zabezpečovací signalizace – EZS  
+ 
+Technologická zařízení: 
+V posuzovaném objektu nejsou navržena žádná další technická nebo technologická zařízení. 
+ 
+Základní charakteristiky z hlediska PBS: 
+▪ Počet nadzemních užitných podlaží nNP: 1 
+▪ Požární výška nadzemní části dle čl. 5.2.3 ČSN 73 0802: h = 0,00 m 
+▪ Světlá výška: hs = 4,91 m 
+▪ Konstrukční systém dle čl. 7.2.8 a čl. 7.2.12 ČSN 73 0802: nehořlavý 
+▪ Výrobní objekt ve smyslu ČSN 73 0804 
+ 
+Součástí objektu skladovací haly nejsou žádné další prostory (administrativa, šatny, hygienické 
+zázemí apod.), jedná se pouze o plochu určenou ke skladování. Plocha PÚ jednopodlažní 

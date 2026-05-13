@@ -1,0 +1,36 @@
+ 
+20 
+ 
+▪ Požární otevřenost: po = 80 % (uvažovaná plocha 41 x 3 m) 
+→ odstupová vzdálenost d = 10,60 m 
+ 
+Závěr: 
+Výše uvedené odstupové vzdálenosti jsou znázorněny v přiloženém situačním výkresu 
+(Příloha 1 tohoto PBŘ). Objekt se nenachází v PNP objektů v okolí. PNP řešeného objektu 
+nezasahuje za hranici pozemku stavebníka. PNP řešeného objektu nezasahuje na jiné objekty. 
+Odstupové vzdálenosti lze považovat za vyhovující.  
+ 
+10. Určení způsobu zabezpečení stavby požární vodou včetně rozmístění vnitřních a vnějších 
+odběrních míst, popřípadě způsobu zabezpečení jiných hasebních prostředků u staveb, 
+kde nelze použít vodu jako hasební látku: 
+ 
+Vnější odběrní místa: 
+Ve smyslu ČSN 73 0873 musí mít posuzované objekty k dispozici vnější odběrní místa. 
+V souladu s ČSN 73 0873 jsou pro zajištění zásobování předmětných prostor požární vodou 
+požadovány následující parametry vnějších odběrních míst (SPÚ ≤ 500 m2): 
+▪ Vzdálenost max. 150 m od objektu/300 m mezi sebou (podzemní hydranty) 
+▪ Vzdálenost max. 600 m od objektu/1200 m mezi sebou (nadzemní hydranty) 
+▪ Potrubí DN100 
+▪ Odběr Q = 6 l/s při rychlosti v = 0,8 m/s, popř. Q = 12 l/s při v = 1,5 m/s (s požárním 
+čerpadlem) 
+Případně je možné navrhnout jiná odběrní místa dle požadavků ČSN 73 0873, např. požární 
+nádrž ve vzdálenosti do 600 m od objektu s objemem 22 m3. 
+ 
+Dle PBŘ z 05/2019 zpracovaného pro dotčený areál se v areálu nachází 2 podzemní a 
+1 nadzemní hydrant na potrubí DN100 s odběrem Q = 9,5 l/s při přetlaku 0,25 MPa. Nejbližší 
+hydrant pro požární účely (podzemní) je vzdálen cca 41 m od objektu. Další hydrant pro požární 
+účely (nadzemní) je vzdálen cca 144 m od tohoto hydrantu. Za předpokladu dodržení odběru výše 
+lze takto provedená vnější odběrní místa považovat za vyhovující. 
+ 
+ 
+Umístění vnějších odběrních míst vůči sobě a řešenému objektu 

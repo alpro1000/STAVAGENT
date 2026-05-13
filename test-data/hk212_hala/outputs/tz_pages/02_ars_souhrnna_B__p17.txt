@@ -1,0 +1,47 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+17/25 
+6. Požárně-bezpečnostní řešení a opatření 
+6.1 Rozdělení stavby na požární úseky 
+Celý objekt skladové haly tvoří jeden požární úsek o ploše cca 495 m². Hala má 
+1 nadzemní podlaží, světlou výšku 5 m a zastavěnou plochu cca 520 m². Uvnitř 
+se nenacházejí žádné vestavby, příčky ani samostatné prostory, které by musely 
+tvořit samostatný požární úsek. 
+ 
+6.2 Konstrukční systém a požární odolnost 
+Nosná konstrukce je tvořena ocelovými sloupy a vazníky, opláštění haly z 
+sendvičových panelů Kingspan s nehořlavou izolací. Střešní plášť je plechový. 
+Konstrukční systém je posuzován jako nehořlavý. 
+ 
+Požární odolnost konstrukcí: 
+ 
+nosné prvky konstrukce vyhovují požadavkům ČSN 73 0804 pro výrobní 
+objekty, 
+ 
+opláštění z panelů má klasiﬁkaci DP1/DP3 (nehořlavé), 
+ 
+kabely elektroinstalace budou provedeny min. třídy reakce na oheň Eca, 
+ 
+prostupy požárně dělícími konstrukcemi (např. při napojení na sousední 
+objekty) budou utěsněny a opatřeny požárním značením. 
+ 
+6.3 Požární riziko a stupeň požární bezpečnosti 
+Hala slouží ke skladování demontovaných částí fotovoltaických panelů, které 
+spadají do skupiny výrob elektrotechnického průmyslu. Na základě výpočtu 
+požárního zatížení a posouzení podle ČSN 73 0804 je pro objekt stanoven stupeň 
+požární bezpečnosti II. 
+Požární zatížení činí cca 90 kg/m², ekvivalentní doba trvání požáru byla 
+stanovena na cca 48 minut. Objekt je posuzován jako výrobní objekt – sklad, kde 
+plocha PÚ nepřesahuje limitní hodnoty (1 000 m²). 
+ 
+6.4 Únikové cesty a evakuace 
+Objekt má čtyři vstupní vrata a doplňkové dveřní východy. Tyto výstupy slouží 
+zároveň jako únikové cesty. Vzhledem k malé kapacitě haly (do 100 osob) jsou 
+navržené východy dostatečné. Únikové cesty jsou označeny ﬂuorescenčními 
+tabulkami se směry úniku (fotoluminiscenční materiál dle ČSN EN ISO 7010). 
+Nouzové osvětlení není požadováno ani navrženo. 
+ 
+6.5 Zásobování požární vodou 
+V hale je zřízen vnitřní požární vodovod s hydrantem vybaveným tvarově stálou 
+hadicí DN 25. Požární voda je zajištěna z areálového vodovodního řadu. 
+Minimální požární průtok činí 0,3 l/s. Vnější odběr požární vody je zajištěn 
+areálovým systémem hydrantů. 

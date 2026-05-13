@@ -1,0 +1,56 @@
+ 
+14 
+ 
+Použité stavební hmoty: 
+▪ Sklo, ocel, plech, beton – A1 
+▪ SDK panely – A2 
+ 
+8. Zhodnocení možnosti provedení požárního zásahu, evakuace osob, zvířat a majetku a 
+stanovení druhů a počtu únikových cest, jejich kapacity, provedení a vybavení: 
+ 
+Parametry stanovené a posuzované v této kapitole budou podrobněji řešeny v dalším stupni 
+projektové dokumentace s ohledem na finální podobu posuzovaného objektu (rozmístění 
+technologie a regálů apod.). 
+ 
+Zhodnocení možnosti provedení požárního zásahu: 
+Provedení požárního zásahu je hodnoceno v rámci kap. 10 a 11 tohoto PBŘ. Ve smyslu těchto 
+kapitol je provedení požárního zásahu hodnoceno jako vyhovující, požadavky uvedené v kap. 
+10 a 11 tohoto PBŘ musí být dodrženy. 
+Požární zásah lze účinně vést z vnější strany objektu (skrz otvory v obvodových 
+stěnách). Předpokládá se požární zásah s použitím vody jako hasiva. 
+ 
+Evakuace osob: 
+Evakuace z objektu je vedena NÚC (prostorem posuzovaného PÚ) přímo na volné prostranství. 
+Vyhovující délka a šířka NÚC je posouzena v následujících odstavcích tohoto PBŘ. V objektu 
+se nenachází výtah a není navržena CHÚC. V celém objektu se uvažuje se současnou evakuací.  
+ 
+Počet evakuovaných osob dle ČSN 73 0818: 
+V posuzovaném objektu je počet evakuovaných osob stanoven v souladu s ČSN 73 0818, 
+přičemž se vychází z provozního řešení objektu.  
+ 
+N01.01-II – Skladovací hala: 
+Plocha skladovací haly je 495 m2 a dle PD není určen přesný počet osob, které budou halu 
+využívat. Dle tab. 1, pol. 12.1 ČSN 73 0818 vychází celková obsazenost haly na E = 17 osob: 
+- 
+Prvních 50 m2 → 0 osob 
+- 
+Další plocha nad 50 m2 do 150 m2 → 10,0 m2/osoba → 10 osob 
+- 
+Další plocha nad 150 m2 do 1000 m2 → 50,0 m2/osoba → 7 osob 
+ 
+Popis koncepce evakuace osob z posuzovaného objektu: 
+NÚC: 
+V souladu s čl. 10.8.1 ČSN 73 0804 lze užít v objektu s požární výškou h = 0 m pouze NÚC. 
+NÚC jsou vedeny prostorem posuzovaného PÚ. Posouzení délky a šířky ÚC je provedeno níže. 
+ 
+N01.01-II – Skladovací hala: 
+Z prostoru lze unikat více ÚC. Únik je veden po rovině prostorem tohoto PÚ přímo na volné 
+prostranství. Dále jsou mezní rozměry ÚC na straně bezpečné hodnoceny pro maximální 
+obsazenost ÚC (osoby se nerozdělují na 1/3 a 2/3). 
+ 
+→ Délka NÚC: 
+Délka NÚC je posuzována dle čl. 10.12.1 a rovnice 32 ČSN 73 0804. Skutečná délka 
+NÚC je měřena od středu haly k únikovému východu.  
+▪ vu (rychlost pohybu osob) = 30 m/min  
+dle tab. 17 ČSN 73 0804, po rovině 
+▪ tu,max (mezní doba evakuace) = 2,5 min  

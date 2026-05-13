@@ -1,0 +1,59 @@
+ 
+12 
+ 
+Instalační šachty: 
+Nevyskytují se. 
+ 
+Střešní plášť: 
+Střešní plášť mimo PNP – střešní panely 
+- 
+Dle tab. 10 ČSN 73 0804 je střešní plášť bez požadavku na PO, jelikož PÚ pod 
+střešním pláštěm je ve II. SPB. Pro objekt je navržen střešní plášť s plechovou krytinou. 
+Střešní plášť zasažený PNP vedlejšího objektu – střešní panely 
+- 
+Z důvodu zasažení části střešního pláště posuzovaného objektu PNP sousedního objektu 
+(garáž) se požaduje PO z vnější strany. Dle pol. 12, tab. B.1 ČSN 73 0802 se uvažuje 
+požární zatížení garáže pv = 35 kg/m2, objekt má nehořlavý konstrukční systém a 1 NP. 
+Dle tab. 8 ČSN 73 0802 lze uvažovat garáž v I. SPB.  
+- 
+Dle čl. 9.14.4 ČSN 73 0804 musí být konstrukce, která se nachází v PNP, druhu DP1 
+(včetně povrchové vrstvy) a klasifikace třídy reakce na oheň BROOF(t3) podle ČSN EN 
+13501-5. 
+- 
+Požadavek: EI 15 DP1 + klasifikace BROOF(t3) 
+- 
+Skutečná PO: min. EI 15 DP1 + klasifikace BROOF(t3). Požadovanou PO musí vykazovat 
+i kotvicí prvky zajišťující upevnění k nosné konstrukci. Průkaz vlastností pro splnění 
+požadované požární odolnosti a druhu konstrukční části, se provede před uvedením 
+stavby do užívání prostřednictvím dokladů uvedených v ustanovení § 46 odst. 5 
+vyhlášky o požární prevenci … bude doloženo    
+ 
+Jednopodlažní objekty: 
+Konstrukce v posuzovaném objektu jsou řešeny dle pol. 1–12, tab. 10 ČSN 73 0804. 
+ 
+Povrchové úpravy stavebních konstrukcí: 
+V rámci předmětných prostor jsou navrženy následující povrchové úpravy (třída reakce na oheň 
+dle přílohy A ČSN 73 0810). 
+ 
+Podlahy: 
+▪ Betonová mazanina – A1fl 
+ 
+Obvodové konstrukce: 
+▪ Sendvičová stěna (JV fasáda) – A1/A2, is = 0 mm/min (dle tech. l. výrobce) 
+▪ Sendvičová stěna (ostatní fasády) – max. E 
+ 
+Stropy: 
+▪ Bez povrchových úprav 
+ 
+Střešní plášť: 
+▪ Sendvičové panely, plechový povrch – BROOF (t3) 
+ 
+Požadavky na vlastnosti stavebních hmot s ohledem na charakter využití objektu nebo 
+samostatného PÚ: 
+Z vyhl. 23/2008 Sb. neplynou požadavky na vlastnosti stavebních hmot, které by převyšovaly 
+požadavky ČSN a jsou v tomto dokumentu zmíněny. 
+ 
+Dle čl. 9.13.3 a 9.13.4 ČSN 73 0804 nejsou v objektu PÚ skupiny U1 a U2. 
+ 
+ 
+ 

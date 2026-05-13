@@ -1,0 +1,53 @@
+Hala Hradec Králové – SOLAR DISPOREC
+Technická zpráva a statický výpočet
+6/2025
+4
+ČSN EN 1993-1-8
+Eurokód  3:  Navrhování  ocelových  konstrukcí  -  Část  1-8:  Navrhování 
+styčníků
+ČSN EN 1993-1-11
+Eurokód  3:  Navrhování  ocelových  konstrukcí  -  Část  1-11:  Navrhování 
+ocelových tažených prvků
+ČSN 73 1411
+Rozteče, roztečné čáry, průměry šroubů nebo nýtů a těžištní osy pro 
+šroubové a nýtové spoje
+ČSN EN ISO 12944-2
+Nátěrové hmoty – Protikorozní ochrana ocelových konstrukcí ochrannými 
+nátěrovými systémy – Část 2: Klasifikace vnějšího prostředí
+Zakládání konstrukcí
+ČSN EN 1997-1
+Eurokód 7: Navrhování  geotechnických  konstrukcí  –  Část  1:  Obecná 
+pravidla
+ČSN EN 1997-2
+Eurokód 7: Navrhování geotechnických konstrukcí – Část 1: Průzkum a 
+zkoušení základové půdy
+ČSN 73 0037
+Zemní tlak na stavební konstrukce
+ČSN 72 1006
+Kontrola hutnění zemin a sypanin
+PROVEDENÍ BETONOVÝCH KONSTRUKCÍ:
+Kvalita betonových konstrukcí
+Konstrukce  musí  být  provedeny  v tolerancích  požadovanými  platnými  normami  ČSN EN 13670. 
+Z hlediska kvality výsledného povrchu betonu jsou konstrukce rozděleny do tří kategorií:
+a) běžný povrh bez zvláštních nároků
+b) pohledový beton bez mimořádných nároků
+c) pohledový beton s maximálními nároky na kvalitu provedení
+Kategorie a) platí pro všechny povrchy, které nebudou trvale viditelné. Z konstrukčního hlediska musí 
+tyto  povrchy  vyhovět  pouze  běžným  požadavkům  na  kvalitní  beton  s patřičným  krytím  výztuže 
+bez hnízd a nepřiměřených trhlin. Rovinatost povrchu musí vyhovovat navazujícím konstrukcím.
+Kategorie  b) platí  pro  povrchy  betonu  ve  všech  pomocných  prostorech,  parkingu,  strojovnách, 
+pomocných schodištích, nebo povrchy dostatečně vzdálené od přímého kontaktu. Povrch musí být 
+takový, aby jej nebylo nutné dále stěrkovat, či omítat. Má být hutný, hladký, uzavřený, množství pórů 
+velikostí 1 – 15 mm, maximálně 0,3% ze zkušební plochy 0,50 x 0,50 m. Ostré hrany musí být 
+zkoseny, do pracovních spar musí být osazeny lišty, dilatační spáry musí být utěsněny proti vniknutí 
+vody a kryty lištami nebo pásy. Rozmístění pracovních a optických spar musí být odsouhlaseno 
+architektem a zadavatelem. Pracovní postup musí být navržen tak, aby nedocházelo ke vzniku větších 
+než vlasových trhlin nebo k následnému znečištění nebo poškození povrchu.
+Kategorie  c) platí  pro  vizuálně  exponované  povrchy  a  esteticky  náročné  prostory.  Rozměrová 
+tolerance se zpřísňuje na   10mm v obou směrech, bednění je nutné překontrolovat z hlediska 
+nerovností. Povrch musí být hladký, celistvý, vyrovnaný, ve stejném barevném odstínu, napínací 
+zámky  a místa  styku  bednění  musí  být  odsouhlasena  architektem.  Předpokládá  se  provedení 
+zkušebních vzorků, jejich schválení a uchovávání pro další porovnávání. Až do kolaudace musí být 
+plochy chráněny před možným poškozením.
+Poznámka: Jeden a týž prvek může být zařazen do různých kategorií, rozhoduje kategorie s vyššími 
+nároky.

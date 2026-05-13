@@ -1,0 +1,47 @@
+C:\Users\Anna Abrahámová\Nextcloud2\010_Projekty architektura\212_Hradec Králové hala\30_Podklady\50_Zadání\PDF Images\Jitka C.3. SITUACE-Model97711753.png
+C:\Users\Anna Abrahámová\Nextcloud2\010_Projekty architektura\212_Hradec Králové hala\30_Podklady\50_Zadání\PDF Images\Jitka C.3. SITUACE-Model20feb042.png
+2658
+2660
+1475/3
+1475/18
+2659
+1939/1
+VZT
+6350
+10600
+3300
+7450
+7450
+3650
+8690
+8700
+S
+Situační výkres – Požárně nebezpečný prostor
+Ev.č.:
+VÝKRES:
+AKCE:
+Ing. Michal Netušil,Ph.D.
+ČKAIT 0012242
+Autorizovaný inženýr pro PBS
+statiku a dynamiku staveb
+Příloha č.:
+Datum:
+Stupeň PD:
+Měřítko:
+Část PD.:
+09/2025
+DPS
+1:500
+2025/60-034
+1
+PBŘ
+Hala Hradec Králové
+LEGENDA PBS:
+Hranice pozemku stavebníka
+Řešený objekt
+Požárně nebezpečný prostor řešeného objektu
+od obvodových stěn
+Předpokládaný požárně nebezpečný prostor
+sousedního objektu
+Požárně nebezpečný prostor řešeného objektu
+od střešního pláště

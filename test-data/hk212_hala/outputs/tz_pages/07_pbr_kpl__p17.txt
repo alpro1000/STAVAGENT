@@ -1,0 +1,17 @@
+ 
+17 
+ 
+Pohledy na řešené fasády objektu: 
+ 
+ 
+ 
+ 
+ 
+ 
+Odstupové vzdálenosti od obvodových stěn: 
+Odstupové vzdálenosti jsou pro posuzovaný objekt stanoveny v souladu s §11 odst.2 vyhlášky 
+23/2008 Sb. ve znění pozdějšího předpisu a v souladu s kap. 11 ČSN 73 0804 pomocí výpočtu 
+hustoty tepelného toku.  
+ 
+Okrajové podmínky výpočtu: 
+▪ Průběh požáru podle normové teplotní křivky 

@@ -1,0 +1,48 @@
+basepoint  s.r.o. ©  [212] Hala Hradec Králové 
+10/25 
+Objekt bude nosný ocelový skelet, opláštěný sendvičovou konstrukcí LOP. Objekt 
+bude založen na betonových základových  pasech  z prostého betonu. V místech 
+sloupů budou provedeny samostatné základové patky.  
+Nosná konstrukce bude montovaná z ocelových nosníků.  
+Obvodový plášť bude zhotoven ze sendvičových panelů Kingspan. 
+Střecha bude ze sendvičových panelů Kingspan.  
+ 
+B.3.5 Technologické řešení – základní popis technických a technologických zařízení 
+a) popis stávajícího stavu 
+ 
+Jedná se o novostavbu.  
+ 
+b) popis navrženého řešení 
+ 
+ 
+ 
+1. Vzduchotechnika (VZT) 
+Výměna vzduchu v hale je navržena jako nucené větrání s využitím centrální 
+sestavné rekuperační jednotky ve venkovním provedení. Tato jednotka je 
+umístěna přímo na terénu vedle objektu, čímž je umožněna snadná instalace i 
+následná údržba. 
+Jednotka je vybavena následujícími funkčními celky: 
+ 
+ﬁltrace přívodního vzduchu, 
+ 
+deskový rekuperátor s účinností zpětného zisku tepla, 
+ 
+elektrický ohřev vzduchu, 
+ 
+přímý výparník napojený na venkovní kondenzační jednotku chlazení, 
+která má výkon 15 kW. 
+Vzduchový výkon jednotky (Zařízení č. 1) je stanoven na cca 4 000 m³/h, což 
+odpovídá průměrné výměně vzduchu v hale 1,5× za hodinu. 
+Potrubní rozvody jsou navrženy z kruhového pozinkovaného potrubí systému 
+SPIRO, vedeného pod stropní konstrukcí haly. Přívodní potrubí je distribuováno 
+po obvodě haly, zatímco odtah je soustředěn do centrálního místa uprostřed 
+haly. Do potrubí jsou vloženy tlumiče hluku, které zajišťují omezení hlučnosti 
+přívodního i odtahovaného vzduchu. 
+Šíření vibrací a chvění je eliminováno pružným uložením točivých částí jednotky 
+na antivibračních prvcích a napojením potrubí přes pružné manžety. Jednotka 
+bude při montáži podložena rýhovanou gumou. 
+Součástí systému jsou i dveřní clony (Zařízení č.2) umístěné nad vstupními vraty 
+– pro každá ze 4 vrat jsou navrženy 2 horizontální clony, celkem tedy 8 ks. Clony 
+mají šířku 2 m, spodní hrana je umístěna cca 4 m nad podlahou a vzduchový 
+výkon jedné clony činí 4 700 m³/h. Ovládání je řešeno přes systém MaR s 
+dveřním kontaktem a kabelovým ovladačem. 
