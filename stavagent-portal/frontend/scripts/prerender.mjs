@@ -30,7 +30,8 @@
 // 'puppeteer-core'` would crash with ERR_MODULE_NOT_FOUND before the
 // SKIP_PRERENDER check could run.
 import { createServer } from 'node:http';
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -38,6 +39,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST_DIR = resolve(__dirname, '../dist');
+const PRERENDERED_DIR = resolve(__dirname, '../public/prerendered');
 const INDEX_HTML = join(DIST_DIR, 'index.html');
 
 /**
@@ -69,9 +71,51 @@ const NAVIGATION_TIMEOUT_MS = 30_000;
 const POST_RENDER_SETTLE_MS = 200; // small buffer for final synchronous renders
 
 // ─── Skip switch ───────────────────────────────────────────────────────────
+//
+// SKIP_PRERENDER=1 means "do not launch Puppeteer in this build". This is
+// what Vercel build containers set, because their minimal Linux image lacks
+// libnss3.so + friends that Chromium dynamically links against. Local dev
+// also uses it for fast iteration via `npm run build:no-prerender`.
+//
+// When skipping Puppeteer we still need to land FULLY-RENDERED HTML at the
+// expected `dist/<route>/index.html` paths so that crawlers + preview-card
+// scrapers see the landing content (not the empty `<div id="root">` shell).
+//
+// The trick: a snapshot of the prerendered HTML is checked into git at
+// `public/prerendered/{index,en/index,team/index,en/team/index}.html`.
+// On every push to main the `.github/workflows/prerender.yml` GitHub Action
+// runs this script WITHOUT SKIP_PRERENDER on `ubuntu-latest` (which has the
+// system libs Chromium needs) and commits the freshly-rendered HTML back to
+// `public/prerendered/`. Vercel then runs the build with SKIP_PRERENDER=1
+// and this branch copies the snapshot over `dist/` to override the empty
+// SPA shell that `vite build` just produced.
+//
+// If the snapshot directory is missing (e.g. a brand-new clone before the
+// first GH Action run) we leave dist/* as the empty SPA shell — the SPA
+// would still work, just without SEO content. That's the same fallback
+// behavior as before this script learned to apply snapshots.
+async function applySnapshotIfPresent() {
+  if (!existsSync(PRERENDERED_DIR)) {
+    console.log(
+      `[prerender] No snapshot directory at ${PRERENDERED_DIR} — leaving SPA shell as-is.`,
+    );
+    return;
+  }
+  console.log(
+    `[prerender] Applying snapshot from public/prerendered/ → dist/ ...`,
+  );
+  // fs.cp with recursive:true copies the CONTENTS of source into dest.
+  // public/prerendered/index.html → dist/index.html (overrides empty shell)
+  // public/prerendered/en/index.html → dist/en/index.html
+  // public/prerendered/team/index.html → dist/team/index.html
+  // public/prerendered/en/team/index.html → dist/en/team/index.html
+  await cp(PRERENDERED_DIR, DIST_DIR, { recursive: true, force: true });
+  console.log('[prerender] Snapshot applied.');
+}
 
 if (process.env.SKIP_PRERENDER === '1') {
-  console.log('[prerender] Skipped (SKIP_PRERENDER=1).');
+  console.log('[prerender] Skipped Puppeteer (SKIP_PRERENDER=1).');
+  await applySnapshotIfPresent();
   process.exit(0);
 }
 
